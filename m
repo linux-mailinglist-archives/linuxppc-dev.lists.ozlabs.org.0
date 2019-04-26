@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0C1B2CD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 07:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7863B2D0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 07:13:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rf8X27lVzDq72
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:08:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rfFZ1kxXzDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:13:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=julietk@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rNwy0W4DzDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 05:12:49 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x3QJ8TRY029238
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2019 15:12:46 -0400
-Received: from e17.ny.us.ibm.com (e17.ny.us.ibm.com [129.33.205.207])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2s467451vx-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rP516H0RzDqXC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 05:19:49 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x3QJFVMY130627
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2019 15:19:45 -0400
+Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2s45588bj9-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2019 15:12:46 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2019 15:19:45 -0400
 Received: from localhost
- by e17.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <julietk@linux.ibm.com>;
- Fri, 26 Apr 2019 20:07:45 +0100
-Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
- by e17.ny.us.ibm.com (146.89.104.204) with IBM ESMTP SMTP Gateway: Authorized
+ Fri, 26 Apr 2019 20:19:44 +0100
+Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
+ by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
  Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 26 Apr 2019 20:07:43 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x3QJ6Rds16515146
+ Fri, 26 Apr 2019 20:19:42 +0100
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x3QJJfk38913254
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Apr 2019 19:06:27 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0CEFAC064;
- Fri, 26 Apr 2019 19:06:26 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF2F4AC06D;
- Fri, 26 Apr 2019 19:06:26 +0000 (GMT)
+ Fri, 26 Apr 2019 19:19:41 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA7956A05A;
+ Fri, 26 Apr 2019 19:19:40 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C26256A057;
+ Fri, 26 Apr 2019 19:19:40 +0000 (GMT)
 Received: from ltcalpine2-lp21.aus.stglabs.ibm.com (unknown [9.40.195.230])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 26 Apr 2019 19:06:26 +0000 (GMT)
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Apr 2019 19:19:40 +0000 (GMT)
 Received: by ltcalpine2-lp21.aus.stglabs.ibm.com (Postfix, from userid 0)
- id 1F8DC10272B; Fri, 26 Apr 2019 15:06:26 -0400 (EDT)
-Date: Fri, 26 Apr 2019 15:06:26 -0400
+ id D2C8A16111B; Fri, 26 Apr 2019 15:19:39 -0400 (EDT)
+Date: Fri, 26 Apr 2019 15:19:39 -0400
 From: Juliet Kim<julietk@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [PATCH]powerpc/mobility: Serialize PRRN and LPM in device tree update
@@ -65,14 +65,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19042619-0040-0000-0000-000004E7B699
+x-cbid: 19042619-0016-0000-0000-000009A77640
 X-IBM-SpamModules-Scores: 
 X-IBM-SpamModules-Versions: BY=3.00011000; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000285; SDB=6.01194770; UDB=6.00626435; IPR=6.00975605; 
- MB=3.00026612; MTD=3.00000008; XFM=3.00000015; UTC=2019-04-26 19:07:43
+ PH=3.00000004; SC=3.00000285; SDB=6.01194774; UDB=6.00626437; IPR=6.00975609; 
+ MB=3.00026612; MTD=3.00000008; XFM=3.00000015; UTC=2019-04-26 19:19:43
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19042619-0041-0000-0000-000008F3B75B
-Message-Id: <5cc356b2.U4B2o+r/yDreVzL0%julietk@linux.ibm.com>
+x-cbparentid: 19042619-0017-0000-0000-000042F8A2C1
+Message-Id: <5cc359cb.vtkUQVWEs1xLqLLf%julietk@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-04-26_13:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -80,7 +80,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904260129
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1904260130
 X-Mailman-Approved-At: Sat, 27 Apr 2019 15:04:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
