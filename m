@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07502B3A7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1694BB388
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:09:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rsky2yhyzDqDY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:50:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rrqP3MGtzDqc8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:09:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.135; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZx3x8FzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSg3JFmzDqYk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:15 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MBltM-1hUJWA0Zhs-00CCVD; Sat, 27 Apr 2019 14:52:42 +0200
+ 1M26iv-1hMqrC03Wz-002bb0; Sat, 27 Apr 2019 14:52:43 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 10/41] drivers: tty: serial: sb1250-duart: fix missing
- parentheses
-Date: Sat, 27 Apr 2019 14:51:51 +0200
-Message-Id: <1556369542-13247-11-git-send-email-info@metux.net>
+Subject: [PATCH 11/41] drivers: tty: serial: sb1250-duart: fix formatting error
+Date: Sat, 27 Apr 2019 14:51:52 +0200
+Message-Id: <1556369542-13247-12-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:Q5d+R5/xof5LSpkM+m/1QK4rIat5cet+2kq+5TbMlzlAg7YOwcq
- yY6SxH8FWCXU0xZpYSh06YbjnruYS3jvbIaTQGqHoabIXLaqLV16hsMLD2TgWS4RStegv55
- BXylfzMhBa4VLDqOgexGnNJRWU6fc3oOK3V503qwx9kOQsSqkjZe8MoxRvmw7LEmLadmc7U
- bud6UfVRg0CpivgeZa72w==
+X-Provags-ID: V03:K1:+TzVLpdAa88s4dLeOAxWyCsRhuc7KaUZKNLF0uRArPgYGfXSgiH
+ Cc2vSSp3JHtH5Dh6TLARezDiIKDVv/NGSmiD/ku3dsWnfWOrtj1Cfj89ntRTXnSvx6PBKgU
+ dt1TF7JLIo4mMJjyQ165GdSVmp05k1wOQx9x8rk+vVa9HNdzhgzqFQ2ZALqM5/sIDIRqkKv
+ zpE63Uj8QixDSf+H4FfiQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/cEwRct3WtI=:pGRTLNVHSidz524v/P9lm6
- IOVXBlcHq3QwTLXY7qdfbOsmO0kZzTY9DTx5ix7/A3uo3ezoqe1VWaWDGX0zoIBdIfmRtNzJO
- Zh1jHm3voTHDSPbCEJ9dkN/gyKRpp6P/CAYGSFbq2mauBYNr7hC3ffLEs7VoWceOoxO20UucM
- ZlttfbP0hc4PosLUj9TslTn1UddpbJasul+p3sou9zjLca1N8EK4J1CVYxEtIZsHSCfWItyV0
- E4ExbIIi+CGKhMXlD1KmaI/9ThDx9cVPVpg64Mlib82vMeorSJzLQMU9k1wLuLTCM9/3XcbQ0
- vE9wooAIkGsyhG2W3XGMgeAyREF6m7kg2mZvTLpurBkFfUzWqvP6fLjBdT9A0+abArSnaGyik
- Mu1Wk2nxkTMVS4+9bncH/Mhipy6wdFhikWt6VBeKmHgTwxELRmxkNbCdcRtATXUNn+1nsypkB
- IC19IsFBQRDTQ65ePqnaYiUaMP8lwlIWWecCfsv11xW/pVUIiWAs5UaijESBvCZZ2loF5FPrA
- 6lM1k65xGXC8xxkPngMYK0Lt1WFbdB13eV4TUsi4uKLAQpRk4jbh8Irc6s+g4YXhR9Gh6wLnQ
- CNhhIuRAYIAAhWio+rzWPdHjXqaI36GFxnyd7xahyOu6s9wTpJFBAYdnY6qhQtt/p1fvFo7rM
- 6H3x1rzpKrpXcECUbMc6IzMzRXHxDBKZRbk4prLOydpao5Rq3jW8mPxBjc/yMpnA2ixoisEjU
- zECHSQedvsLx4EoCabl7MF4qKzBZ1f9BKI5oXw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7g9mhemK6rI=:1LPea258+vT4cAu97il+UN
+ TYKyF9QgPM9xIe6eeQ+jqNe+ggTMLP2Rvkb4j9U9H13Sg9CbVn9iCrF0YTfPvJy7st+0uGM2f
+ /PnRFLO51z8114t2VgJaesPsgRavI/NG+JNJ7cfluxQbMaKGaxT6e/dwtJS7cjr1YYOomqA9G
+ muP/UMza5Daoz+E60ichje3jvTqidA4lMSrQ9I6Hysh36D1wrMiCAB8NPPvc4nrvaddLXw6wB
+ HgP1Z28SnAs7F4M7EpvU2+lQ0OTn37drJgeY/1adD+7p8We3CNEdSVlX/aiCHuYBdhtA0tQwk
+ twP7c4eBkXAVXYagsNKW0MBlXlR0YW7fkDWkpusCcqgmZEquGN++8kKA5YtYIXEcg1RQIv5ze
+ 3sYNpA8wkk3GGqvshvtdRF4i/V07DDAKHjaZS4rViY5umoot7vu2gWZ7lETfiboO5z0AnKiNW
+ ArDLwY9233EwB1kTHm54Jg7uCj6lRpmvrGsTo5d38MvHFBdNvTBRnyt2zIMulQmJtFb8kkKio
+ L5hyUjTr2yPVMh8mBfg+gFuzlyXZDST0R3Rsxc16FX1n2PRzy15BgDF5VnY6vbekE+syIAUnQ
+ CpezAGe8b0r4rC4XtzPF0T9lR/Pa1UWdKJH90iIIxuaLrBDvbaT57qKKbgRo+xkQtguPp6B41
+ KnkPQ1UxL/FbNXzdFiuI/RSGrM7xIsl18lv3lduPbUzSCDcj7qPBT1cj99Wx+ndaKrPl0OaXi
+ dDx2xwj2GagsyKcjT96JpuA4aPHWH0zLebvvLA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,11 +71,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix checkpatch warning:
+checkpatch complains:
 
-    ERROR: Macros with complex values should be enclosed in parentheses
-    #911: FILE: drivers/tty/serial/sb1250-duart.c:911:
-    +#define SERIAL_SB1250_DUART_CONSOLE	&sbd_console
+    ERROR: space required before the open parenthesis '('
+    #659: FILE: drivers/tty/serial/sb1250-duart.c:659:
+    +	if(refcount_dec_and_test(&duart->map_guard))
+
+Just add this missing space to make checkpatch happy.
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
@@ -84,18 +85,18 @@ Signed-off-by: Enrico Weigelt <info@metux.net>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
-index 1184226..ec74f09 100644
+index ec74f09..0023ed0 100644
 --- a/drivers/tty/serial/sb1250-duart.c
 +++ b/drivers/tty/serial/sb1250-duart.c
-@@ -908,7 +908,7 @@ static int __init sbd_serial_console_init(void)
+@@ -656,7 +656,7 @@ static void sbd_release_port(struct uart_port *uport)
+ 	iounmap(uport->membase);
+ 	uport->membase = NULL;
  
- console_initcall(sbd_serial_console_init);
- 
--#define SERIAL_SB1250_DUART_CONSOLE	&sbd_console
-+#define SERIAL_SB1250_DUART_CONSOLE	(&sbd_console)
- #else
- #define SERIAL_SB1250_DUART_CONSOLE	NULL
- #endif /* CONFIG_SERIAL_SB1250_DUART_CONSOLE */
+-	if(refcount_dec_and_test(&duart->map_guard))
++	if (refcount_dec_and_test(&duart->map_guard))
+ 		release_mem_region(duart->mapctrl, DUART_CHANREG_SPACING);
+ 	release_mem_region(uport->mapbase, uport->mapsize);
+ }
 -- 
 1.9.1
 
