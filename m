@@ -2,50 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC70B38D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B902B3AE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:04:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rryC38YLzDqbm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:15:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rt2h5GpmzDqdp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:04:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSj5p8dzDqHv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrb13r71zDqb9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:53 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M2OEw-1hM22x2IWM-003z2b; Sat, 27 Apr 2019 14:52:33 +0200
+ 1N8XHV-1gh8Cp1oHJ-014PTe; Sat, 27 Apr 2019 14:52:34 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: serial drivers polishing
-Date: Sat, 27 Apr 2019 14:51:41 +0200
-Message-Id: <1556369542-13247-1-git-send-email-info@metux.net>
+Subject: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of
+ printk()
+Date: Sat, 27 Apr 2019 14:51:42 +0200
+Message-Id: <1556369542-13247-2-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
-X-Provags-ID: V03:K1:KJDamy/sLPxVA6+e/xJ3QUvJO2vZRQRZ7H0KMjcX3Xau2yWekpn
- NpGyWcv0BdxhaW7aX7/vr2xwwxMEX+6774NoAKSIMs3MmeEZ+xYywOxnE2TTovvdXTrh2yJ
- RNeD0ze+njam53jHsvoBAF38TFF8FCMFOboXlpNsaf5RaLhhCCBqtkthfNYpeDWcM41q4C0
- CVkuapPP3KK3JkmPsaT5g==
+In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+X-Provags-ID: V03:K1:ZsvBvAt/rLDu1xNT1sLalxIcX9jz7QA0qevymQS/WxRCH2zr6Wl
+ xgtlPQz+G8tT6HFrUdOePnL/g6Nz/IIjRENpXyf+TYdtSi3HrsJGdjKV+IdrLIpqWKUpGIr
+ dGZH3/KAvVSKXLhp+eDtJ5SZp4iM/k7bWZWc3G+D3RpE/VH31kx+tVU+u8Iwg2ZCwcrt7Md
+ VmQRsAPpOo0raWOEg8/zQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:UgSrRnCWrUY=:7fJ0rhQipVcqjbOMouuuLX
- HpGMJ1r9jBZF63ISf/g4eJR7MR4pim7nBhig4Jl6mL9rhhjlxhwR2qh1N4i4VbbUFcAAJS4Ir
- 3ehiLQX6cqWnF50zJ7z21t0eDxTtPggAbzQRa+2t5Cjiod8h5Wb5R4iORC6PmyUH6vKKXXUM+
- R9rHMmPwJ7xow24gQslekOboEkjLcPhRKBzHll9gB05PrKyGQOO6IpPuj6JsGixD3/SV3rmAI
- WRreW0Q86/xSc9xzAZ/s0Tg16UGmFtYYzADiDOPYcz3bsuoRYHOUzjkSUBY7pks4GDFdjYMMY
- J/JvztrHNATKtF+xcSdHOfYpteSdbEr/adF2EdyGRbxXQKt/TrGXW7mmq08GeH8Pf+Ddxxi57
- gX4f5PaLFHVVAJwJNkdrPkVeh2oB4ZHHOgB7VwynKoG66tYGIwGyrt4JIE1NQxJ6/CCNQokSN
- tV88raPuIGD29SSpSBLoPwxN2NaH59lI0OHOA+RLEySArhq2aDwIEO1siM+Ym55O0C23LpHF/
- hhfoTRUvhYjfKChKVcwQzaBKOc6JX3KasD/lLqJOlFd4rOiG+bk5N2aqTqu9WhMZGPdByTTNn
- dZijwtgoeZ/ESNSagGa5Wp6TuGjsZnfKLyqzZ9EJkEAL0lFMwoIHRDBYlKB3pdj5Z6vK9cpbZ
- wU/2h8/Ce7j4rFZJwmpQfbVxZ6ipvpbPepnAyc6fl580YIKcwbDd50N+z74IAAonMBK2/PlY6
- SM9MoLwOFEsiV5jP9jDXm+Fk2osf8+pzyh1JcQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HsrgCbi2IK0=:LxZuNdOiXRzOLFOMqdcIUO
+ ujN2qs1zVbC69CJApm+RMGjnmSWIBU1ovdNeVTBPIJzlZbi7KW7gnEOkRPpCg2KOtn0Aw9Z82
+ Tyu61JVdJZqXMP9DikKB+3Klc88bt2h9BOsLCfijrP+5RE9ueY64d41JK0Xpm689y+Y7j972X
+ vf9dATGY/0ld/zBDutesrHbCPPeBB4D//wHcHK/7UAM+UvSwmMsYzFEG1Dni7Xep7lGaqJ/eX
+ bS43BwXXCB40VnWFdGmI514GvUWrZsDP4mIktpmc4j4OLZEFHDK84BkjXStPt4VLlYWS0LJti
+ TLyIETk7FgHkqfdjaEs//NEhHzaXaAvFH63sFyUkuLJH3T7J89dzjgDHQWuFBaw2ISJNVqRDE
+ C+nw3SIscszw6R8O7qhxsXYzJVOHgG7Dg5FzBsiJiryKnbf4OWE21JFdpaB/tCfCIUOtkDOWE
+ Hwhs8BMTzIAJIfkgSe8hYaFwXKvMLzxPIRCSgrRXqz9P7MABHfMKmczKzTv56g97v7er+vbJT
+ fUpCa7qKtFCawIeayw33iw2nVuBDChUxK30rQ9cLZUckt3xOZ/gD2KdqzK7RaX8/XzUoH+ul4
+ 1ORmht/a2rX/5fhm1eVoNIVIYBv5mek0kA4NOuzzreONA3KrD4Ghp3XLHVdgNSW4BUvNcuZ/7
+ WgA49uWJ/ZsGam7QwgZhZNajXy8G0jvNIXabcMENTCu/UmteFIRtC0EHtdUKECqG2Q3D0Q4+1
+ jRNzmpygMuCmvDdoEeilRd4698MvaTADm+UgJw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,31 +72,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello folks,
+Using dev_err() instead of printk() for more consistent output.
+(prints device name, etc).
 
+Signed-off-by: Enrico Weigelt <info@metux.net>
+---
+ drivers/tty/serial/dz.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-here's another attempt of polishing the serial drivers:
-
-* lots of minor cleanups to make checkpatch happier
-  (eg. formatting, includes, inttypes, ...)
-
-* use appropriate logging helpers instead of printk()
-
-* consequent use of mapsize/mapbase fields:
-  the basic idea is, all drivers should fill mapbase/mapbase fields at
-  init time and later only use those fields, instead of hardcoded values
-  (later on, we can add generic helpers for the map/unmap stuff, etc)
-
-* untwisting serial8250_port_size() at all:
-  move the iomem size probing to initialization time, move out some
-  platform specific magic to corresponding platform code, etc.
-
-
-Unfortunately, I don't have the actual hardware to really test all
-the code, so please let me know if there's something broken in here.
-
-
-have fun,
-
---mtx
+diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
+index 7b57e84..96e35af 100644
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -416,7 +416,7 @@ static int dz_startup(struct uart_port *uport)
+ 			  IRQF_SHARED, "dz", mux);
+ 	if (ret) {
+ 		atomic_add(-1, &mux->irq_guard);
+-		printk(KERN_ERR "dz: Cannot get IRQ %d!\n", dport->port.irq);
++		dev_err(uport->dev, "Cannot get IRQ %d!\n", dport->port.irq);
+ 		return ret;
+ 	}
+ 
+@@ -680,7 +680,7 @@ static int dz_map_port(struct uart_port *uport)
+ 		uport->membase = ioremap_nocache(uport->mapbase,
+ 						 dec_kn_slot_size);
+ 	if (!uport->membase) {
+-		printk(KERN_ERR "dz: Cannot map MMIO\n");
++		dev_err(uport->dev, "Cannot map MMIO\n");
+ 		return -ENOMEM;
+ 	}
+ 	return 0;
+@@ -697,8 +697,8 @@ static int dz_request_port(struct uart_port *uport)
+ 		if (!request_mem_region(uport->mapbase, dec_kn_slot_size,
+ 					"dz")) {
+ 			atomic_add(-1, &mux->map_guard);
+-			printk(KERN_ERR
+-			       "dz: Unable to reserve MMIO resource\n");
++			dev_err(uport->dev,
++				"Unable to reserve MMIO resource\n");
+ 			return -EBUSY;
+ 		}
+ 	}
+-- 
+1.9.1
 
