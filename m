@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B91B410
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 19:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C56A5B414
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 19:20:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44ryLy23GWzDqNL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 03:18:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44ryNW1B4jzDqLv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 03:20:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,40 +17,43 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="poKkCc9h"; dkim-atps=neutral
+ header.b="daPx8Yik"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44ryKQ6nQYzDq6M
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 03:17:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44ryL002SnzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 03:17:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=BrHF07zYw1XVu0tEvTnGpMr1OkuigjWVhQxqr86f0Tw=; b=poKkCc9hoL0tN0EHuvdyOZFJc
- I/KnBGgebnnQOmU+f9qBKc8if436wWlpFUQcoOcOXaA7vSOesU2AkPYLD22S8poQPVUVFE0jegTfv
- c63FPyc5BlugbBz8DHRNcNCXS8GcL0BN2BOYCug5XsIvQpdQ5ERRuUHvGPM2dyBohESmE=;
+ bh=9Ni2YRPbf4GMMunOYWIHYcrCRiFTp5FPuVt13sVOpXA=; b=daPx8YikwrUepaPWMqT4aN8tI
+ SsXhwvgRFVOFZwsMtbroir3Z3uFn2W3wa/io6Npseaelpj5R4Sx10dcqtBSDhLWea/OenRSOJzpt+
+ LmrSZnN7aIPhLKz5XY+Vdel7xQqa5tYtZR53RQatBvM5tjlZURKGKY3nLlR4iVaDcDDZQ=;
 Received: from [211.55.52.15] (helo=finisterre.ee.mobilebroadband)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hKQwy-0004XU-1x; Sat, 27 Apr 2019 17:17:20 +0000
+ id 1hKQxS-0004YI-UN; Sat, 27 Apr 2019 17:17:51 +0000
 Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
- id BE38E441D3B; Sat, 27 Apr 2019 18:17:15 +0100 (BST)
-Date: Sat, 27 Apr 2019 18:17:15 +0100
+ id 1E81C441D3B; Sat, 27 Apr 2019 18:17:46 +0100 (BST)
+Date: Sat, 27 Apr 2019 18:17:46 +0100
 From: Mark Brown <broonie@kernel.org>
-To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH V3] ASoC: fsl_esai: Add pm runtime function
-Message-ID: <20190427171715.GF14916@sirena.org.uk>
-References: <VE1PR04MB64797233B0BFE833550094C3E33E0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Subject: Re: [PATCH 2/3 v2] ASoC: fsl_sai: Add support for runtime pm
+Message-ID: <20190427171746.GG14916@sirena.org.uk>
+References: <20190421193853.10188-1-daniel.baluta@nxp.com>
+ <20190421193853.10188-3-daniel.baluta@nxp.com>
+ <20190426100025.GD14916@sirena.org.uk>
+ <CAEnQRZCPPr1iHvKEj=fOsE8A2iW=XZd=CaoFqAoUqJftg4pN9Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="pyE8wggRBhVBcj8z"
+ protocol="application/pgp-signature"; boundary="p7qwJlK53pWzbayA"
 Content-Disposition: inline
-In-Reply-To: <VE1PR04MB64797233B0BFE833550094C3E33E0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+In-Reply-To: <CAEnQRZCPPr1iHvKEj=fOsE8A2iW=XZd=CaoFqAoUqJftg4pN9Q@mail.gmail.com>
 X-Cookie: -- I have seen the FUN --
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -65,51 +68,47 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "timur@kernel.org" <timur@kernel.org>,
  "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "festevam@gmail.com" <festevam@gmail.com>, "S.j. Wang" <shengjiu.wang@nxp.com>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "perex@perex.cz" <perex@perex.cz>,
  "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+ dl-linux-imx <linux-imx@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---pyE8wggRBhVBcj8z
+--p7qwJlK53pWzbayA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 26, 2019 at 10:51:15AM +0000, S.j. Wang wrote:
-> > On Mon, Apr 22, 2019 at 02:31:55AM +0000, S.j. Wang wrote:
-> > > Add pm runtime support and move clock handling there.
-> > > Close the clocks at suspend to reduce the power consumption.
+On Fri, Apr 26, 2019 at 03:10:10PM +0300, Daniel Baluta wrote:
 
-> > > fsl_esai_suspend is replaced by pm_runtime_force_suspend.
-> > > fsl_esai_resume is replaced by pm_runtime_force_resume.
+> The only patch left in the series that needs to be applied is this:
 
-> > This doesn't apply against current code, please check and resend.
+> https://www.spinics.net/lists/alsa-devel/msg89733.html
 
-> Which branch are you using?  I tried for-next and for-linus, both
-> Are successful applied.
+> I will reply also to that email, to be easier for you to find it.
 
-I'm applying against for-5.2, though if it depends on a patch queued for
-5.1 that's fine, I can just merge that up - please just resend.  I think
-I did try merging 5.1 though...
+Content free pings don't help...
 
---pyE8wggRBhVBcj8z
+--p7qwJlK53pWzbayA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzEjpoACgkQJNaLcl1U
-h9CHlQf6A1P1Ke+eIk6AjsV7q+IJv+iAexa+x1wOv3kVyxN9HNXMrrjuzMEX9GHF
-5r7c9xhmJkX6qp8qFYVofOXeK3E9muhfjvSakheiyz6b3bpOP4bTNpZPK2m48Eda
-aKkSFsu/TBWB42fymUVC5tAo45RWNe+5OSZrpCHou5DnvhhEMmdoMNS2ZDzrYFSt
-h0rgmD+tb0YTZgP7WuEx0L/iSe0epJDpXyN8wgBozUQJp7muUvLnBPHEWqsNnoY9
-bLVkFnRQhyZVi/urL0G5fGfbDwjRSXtoJJwjczQDAwXy20veWbr10l88uPXRbL5R
-rIYLJu11thD17a4mSdf/UCUix1rE0A==
-=tACM
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzEjrkACgkQJNaLcl1U
+h9AWVwf+KSlrvfBfUuZMLNHSHD7WREpZgHjLFsCPB8QHrdYC2CjypGjl9cjkYFDL
+zvVk9IotX8UodiLJN5KwgU9eO38JRbxXR+oVTN4+HnRIJv690m8LztYI9tAcqGIp
+2BvosaU2xv5RTitkpD8v3rykVDyAvDNvYDWK6gj8/Mz4UHi68onYaKMmoDNTnTKC
+9jAwU6oCeivjDydZIzMbyoQb1lUBpeHXHZrTn4e8iar9AfOEGEoR8QEhD+7D5k01
+y/t2YU6KD1U9YlHUK+FEfUeXLAMslI4284MVKw960xesrxvOcSltnQozVvR/tESL
+a+JaBF7FAsQc29UsdOCjSKKubkfKQw==
+=phjH
 -----END PGP SIGNATURE-----
 
---pyE8wggRBhVBcj8z--
+--p7qwJlK53pWzbayA--
