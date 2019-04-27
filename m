@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF7BB3B0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:08:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8DEB392
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:21:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rs4n1LK9zDqRH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:21:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rt7Q6srdzDqfC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:08:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSr69SFzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrb817JpzDqZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:59 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N5G1V-1gbeYR2mc1-0118EA; Sat, 27 Apr 2019 14:52:58 +0200
+ 1MVNF1-1hBGYO2EDP-00SLNE; Sat, 27 Apr 2019 14:52:59 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 29/41] drivers: tty: serial: sunzilog: cleanup logging
-Date: Sat, 27 Apr 2019 14:52:10 +0200
-Message-Id: <1556369542-13247-30-git-send-email-info@metux.net>
+Subject: [PATCH 30/41] drivers: tty: serial: ioc4_serial: use dev_warn()
+ instead of printk()
+Date: Sat, 27 Apr 2019 14:52:11 +0200
+Message-Id: <1556369542-13247-31-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:uxxvCa66CYSGi3Em4nuMPvtSzL45VE6ce5qM7EP5uZ2jwnJH/Rf
- VzWdbFvPirBwCJNu9f+Jwyc9lVwLpUGhejFkC7ldZJdxwR7DA2BRn+Vl0BQckBceQIF7qXC
- WyxgtztRffigF7v1SzndzvbVeMKNS2DbGfpYfH4EV+kNq293CGWXupsg6VWK6tqIR7aTFMf
- +tRlOKQpyia0QglzkJKNA==
+X-Provags-ID: V03:K1:feZjQEPGewpWSo2bykBkAQkXP9Lb/ZtVsJ70Hc9aX4own7v09FA
+ e65s7fBpQb+RWeo/XsvBCLQDRKkUOdSWYbg6QCmXdWbNheYrxgq5Ys1L3nrokeJAVzT8JZ+
+ 6QZ7hrXczsjiQ2m1ogHA/r87Uy8zuLwqRpXTsIxH63Kg2ZR+GURXbvN2XWzuqCWUQaBZhlg
+ o8S6PJbm8wTsqW6D1wobQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:y11A1qYqUqI=:8rPS9vSRvAXoCM5mb5BhuI
- WjE5yIVWUmfvDmA/AQ4ypZ+srkteIQs198t/oJOqUwZx5Rp3SPAGlO++llU7eG0RNjUsALBZq
- ZUvb6zw3f9sYxfEGhrGcIODhWtEO5jSQT4jIVhGurbVttXmC6195bA40SA690OEhhnFI/qCEi
- WSwQCTE70G9mH5ZlezP2NFueEhbG7kWFhxlgd96LRp1M9Nb1RFDllOpLiSlWwuEgrwYc/txEZ
- Jz5ZQj7Ur9cWxizBCpYX6lQ8MA/6iwg/+OwOBQFBaO9/oRTiS2RJak0h4ldhbLbwq2zihGidG
- 1rGx2U2IrRbLZ4JMDQtJAaneQYfRx5ecqZDD3UkLCP4Ei05fNui5iI8OpZLsbkAWQMiKsryvO
- 2kCFC0VRHePJTFZPqt9Ik9I0+gIoWPxwpdB8LfjEbEvj6k6/XPYQgonaBdL12TN97JkTvX7X2
- zPhIz62y5IwAPzLzViaQBeYU5gJWmkOIO+mcjozxcMghEPjcS0OHpgnDA8TYNsChOcClWQN5U
- ZTY0rQijbKo7+Fr6crZw1sEjpHfTqC53E74pOXaRvnpUsI/uBenbneEDtTlLAdpaHpm6wTBvF
- WLYWF5qQwW7fPx/YeqvLiajUl4U2/pvABrvxsQRwW6Zi/tOfEaKerfDWvrHkfNX97OpQ9rjqO
- aqTj8y5/k3NSG39yLJhNMUwbIOnBHg3Ua0eJn7jjxkxpYM82/aUzhOuEWTDJOxHkTsenB2gj8
- mCkokTH7YsmuOy7tzDvemUKChz641N4UkAKV+w==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nHmHVGZ+sFw=:XEUcLjplSSh4cLN3S86osQ
+ RRbCB7db/0vzL9crkypDqE14Bon4jX8tkQp+cV84NUEPnutsi1rZQXkR4sVogL2UAX1EfdiiB
+ ZWKYz5bKoCvZlKSiftMKZUka/T9wvECXHUhnEKxzzueMi2of8Uxue3lfBBkJH9b8PZkdj/aBu
+ hAVrybHlnoB+Hts3s4Qq9Yy5z2frg+23hoDafdGDKzIJ0fvLfEsLMDIFMxm7LE/J9SKGTgIa7
+ tZ58qm9OQ3Txpe70s8HAz/xkXSK4+XoXJQBqu7ZrQNx/jcX2JYhMfAepdO1NCxTYgqslwtvn+
+ kxGGMTf6L2XUp+N+gXomgjjRSJMgH3W3gTzsgBNFIef44wNrxXIRqWnS0dqhzwnML+I21nJgT
+ JsP72f0z1irz3kvXLjiL0k7sMDTuisgI6xTr5ERBxmcxPaoFNhcsOAkmaQTVpLiNF0fEV5/dL
+ WK4RMr7D9o56XTKE0EQzBnfQDa7Zfr8vDHqPF4Vu3WxThIrFjgXz8Zsg61lyIUN4ZZjDrsICU
+ PDnYPVUjW2oyN/4KWwTygxJqxEDU5ZojGlkJKNHwGdRLqoDvsOo0Hjgegt6+vxBdV7hn9HGQb
+ Ugkk9R/zIcgd5+5y91jWlvjIUgrdf9fTgbe4Kfzgh4wQDYu3gYVeEwWAgn8sWpj2uVSa2HNmz
+ hlBwqixysxqraJN0XG+N+twjuf4CX7sV3lyqftOAlfA0RV0fskMINh/77gW9ct+dzrZzjQeA2
+ si+Yy2zUBy990FyaAGOADvUOkyowhyO4YvHeJQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,54 +72,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix checkpatch warning:
-
-    WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
-    #1238: FILE: drivers/tty/serial/sunzilog.c:1238:
-    +	printk(KERN_INFO "Console: ttyS%d (SunZilog zs%d)\n",
+Using dev_warn() instead of printk() for more consistent output.
+(prints device name, etc).
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/sunzilog.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/tty/serial/ioc4_serial.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
-index 85edb0d..dba723c 100644
---- a/drivers/tty/serial/sunzilog.c
-+++ b/drivers/tty/serial/sunzilog.c
-@@ -1235,7 +1235,7 @@ static int __init sunzilog_console_setup(struct console *con, char *options)
- 	if (up->port.type != PORT_SUNZILOG)
- 		return -1;
- 
--	printk(KERN_INFO "Console: ttyS%d (SunZilog zs%d)\n",
-+	pr_info("Console: ttyS%d (SunZilog zs%d)\n",
- 	       (sunzilog_reg.minor - 64) + con->index, con->index);
- 
- 	/* Get firmware console settings.  */
-@@ -1615,9 +1615,8 @@ static int __init sunzilog_init(void)
- 		while (up) {
- 			struct zilog_channel __iomem *channel;
- 
--			/* printk(KERN_INFO
--			 *        "Enable IRQ for ZILOG Hardware %p\n",
--			 *        up);
-+			/* pr_info("Enable IRQ for ZILOG Hardware %p\n",
-+			 *         up);
- 			 */
- 			channel          = ZILOG_CHANNEL_FROM_PORT(&up->port);
- 			up->flags       |= SUNZILOG_FLAG_ISR_HANDLER;
-@@ -1655,9 +1654,8 @@ static void __exit sunzilog_exit(void)
- 		while (up) {
- 			struct zilog_channel __iomem *channel;
- 
--			/* printk(KERN_INFO
--			 *        "Disable IRQ for ZILOG Hardware %p\n",
--			 *        up);
-+			/* pr_info("Disable IRQ for ZILOG Hardware %p\n",
-+			 *         up);
- 			 */
- 			channel          = ZILOG_CHANNEL_FROM_PORT(&up->port);
- 			up->flags       &= ~SUNZILOG_FLAG_ISR_HANDLER;
+diff --git a/drivers/tty/serial/ioc4_serial.c b/drivers/tty/serial/ioc4_serial.c
+index db5b979..21c1b8f 100644
+--- a/drivers/tty/serial/ioc4_serial.c
++++ b/drivers/tty/serial/ioc4_serial.c
+@@ -2752,7 +2752,7 @@ static int ioc4_serial_remove_one(struct ioc4_driver_data *idd)
+ 		the_port->dev = &pdev->dev;
+ 		spin_lock_init(&the_port->lock);
+ 		if (uart_add_one_port(u_driver, the_port) < 0) {
+-			printk(KERN_WARNING
++			dev_warn(&pdev->dev,
+ 		           "%s: unable to add port %d bus %d\n",
+ 			       __func__, the_port->line, pdev->bus->number);
+ 		} else {
 -- 
 1.9.1
 
