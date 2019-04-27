@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21B7B39E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 402D5B3A2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:46:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rsTm1NGFzDqQ0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:39:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rsfM5dZPzDqH5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:46:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZq49VHzDqb5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZw0hr1zDqZT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:47 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1Mspy4-1gVqbT38iO-00tCHb; Sat, 27 Apr 2019 14:52:51 +0200
+ 1MhUDj-1gqW7b2XwJ-00efAG; Sat, 27 Apr 2019 14:52:52 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 21/41] drivers: tty: serial: cpm_uart: fix includes
-Date: Sat, 27 Apr 2019 14:52:02 +0200
-Message-Id: <1556369542-13247-22-git-send-email-info@metux.net>
+Subject: [PATCH 22/41] drivers: tty: serial: cpm_uart: fix logging calls
+Date: Sat, 27 Apr 2019 14:52:03 +0200
+Message-Id: <1556369542-13247-23-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:xQq23jU9i9rUL2fNQuvkwl6eGPDVSQvpkDbQ/zveful4zboC1HW
- oNd3D0zOYk84zfCJ0Xuzpmh6YQ79oPwoYvw/oeAO14yaLEcslLKcMENViWN+rlXtE9vM1qv
- 1jCwWuLOXgdLjw4fxAGT3BB8TcpKk2wNp9jWPWPgaYVVv0WEj/TEQ/U7sklnKXLuZSVuAgG
- ee5Mn3D1VCygJnSepJUyg==
+X-Provags-ID: V03:K1:6aniEe4uJcRcav5vVBfcQ4eLLFWMnqJpVC4vZyHJ9k0A6q/tn4j
+ b9DaJRxToUGOhrA8XctR1mPhJ0cf7Ttk2f4rAFWNa3fQjR7YkDeiN3gu2Jkvl9J2LTCqub4
+ NvWiLxdxAxFk1k9fhSMKs/EVAw4rvAGYukqY9dkQaz94+MijAkIVPXhEPMgivLXBUM8RACd
+ PwxeoNLw6M7rcZKmGYaIg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:G6YjMjuCEzU=:vTbjOK57YMxDpyHJDCsvgf
- g5oSd2GABlrVrg6R3Y2bibtDmrWjuJETHno5Baj4LpBZm6EeK2HYZ1OFvfKTLXiZu+lwgaBdl
- Qac2M4i+nAw5rOrAw2ow775Sclco5rlIvEYaZn9n+JvQdxwhsEMG47EoWyn/ndEiv0D382c1j
- VcxXa0YV2wDanrP23G5UgPydtCBUW3WmBO1JtKXAW7IKnMCVM/8CBvGdxWWlp6xSIZNcnqX50
- +6UMTFNjs6rWE7tAgAHhSt53/vMlfs2segTSR4Ej9genNrs5l5pn68GqZYLFmx/SIha3LVMad
- oeE867ky2ohaZuVLoEeZmShtJ+6kHaB3EJrNUBmO6mfcv6BOFAGaJTrkij+dzySWyEKMrs7/k
- c/ieUXGQb3gWaXyFRkFpeOxRwEYUaB8XGQmecH9NKRVV10m4DvNGPz9Y64pQuKNUiPuYPMRLh
- sRo9hufn0Wdv5bLRF2gxpF7M9j68eBxmtgmobENUwLNFjLCrQhnIxTnO75TVL4S+LzKM+9uNj
- R0lxv0wx2tlf0WYPAwgVEhDMDSZPu62EVjTqJqocmGaCmVfBVbHxH7GUqGTPb5wtk/fsOeMKk
- 23J9Zg4qsvkXBMG6i9rDbRv4frJBGt0AfD8OmXdpSmZhpXV7CUFtmWllY5odxIkOhZ9mqOHuI
- HAoX2YlQaOPn+CGIvsgNdrpDxk+3hYt45FHWcJ6fe6fs6nHQSm/mcfSwhd68KN3jKp1Zt81C9
- tPbxzWFyE1TQmFbx1N4B8YhOIYg9ssLx1tizDw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4ae+pXryDgc=:mx0SCluB4vmxIoFPECpZI0
+ I+pi99k37uAp/PBAy5oVXSCaXHiGTG6dqW38LtyfujehIJipGNKdaMmdazfpDadjAEgwWsmX4
+ W7Und1DBuKx/nWHjtssgjEb+TBTcTmXzLurc8piE/KzQS8bd8JlSKed3+k452MwfKq3+35IzJ
+ M6TyJgB8TUW0HJIysE0RjSi4sJqSgXl8rJscZAw2l13jHSnEj3/rJwrbQJJOFC5P1075DM+wk
+ WGBZT4LjsbjnB2by0QUmFtCQAl7B060lVus4iVl5bwIgmLGtAuaVBUYl/Z8M3jLhLIqC0JAC6
+ +mB3/lJgI2f1Nvs33f9bS5YcQiXmmfVenjRMrNi2di59SDG0jYAXnIpXY4sJs1ZAu8YnsZRsU
+ 37osy93VtkEcKNvzLFbEG++IG89LRjdH9d8NQEr/K2M2oALKpj+kvh4dg3eHLDdXQxSdkD92B
+ WVwAcm5EvCrGAxmiByZuHAzWoq3sJ4ZhAPePEUfJkAnCEaDkpN0tOu1XGCbELCMhCzuMdSC7j
+ 391oyi6l66AnQpVtOW/xN4q0n/U6j6889kTq7oArvf5bOqS+CGWrt4GeHYMhDjJgb67JeV1O5
+ VJObZETt5SKMQvcEzRSmPjDhRxKdNgWwD7Lycw/XQtIwLzDgn7tob6yNJiWhf2OPx8oDuVFhf
+ 9EKWLB531/XmZjW8vl3u+dinoMueW3XdTJHfx8LQ1QRZKyfFcd5erZRfdf67oUUhcOFqLTE5w
+ UM355inC0Yw+C74Qjz0UYWJgtfMZqucLadoUmw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,55 +71,76 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixing checkpatch warning:
+Fix checkpatch warnings by using pr_err():
 
-    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
-    #25: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:25:
-    +#include <asm/io.h>
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    #109: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:109:
+    +		printk(KERN_ERR
 
-    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
-    +#include <asm/io.h>
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    #128: FILE: drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c:128:
+    +		printk(KERN_ERR
 
-    WARNING: Use #include <linux/delay.h> instead of <asm/delay.h>
-    +#include <asm/delay.h>
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    +           printk(KERN_ERR
+
+    WARNING: Prefer [subsystem eg: netdev]_err([subsystem]dev, ... then dev_err(dev, ... then pr_err(...  to printk(KERN_ERR ...
+    +           printk(KERN_ERR
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/cpm_uart/cpm_uart_core.c | 4 ++--
- drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c | 6 ++----
+ drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 6 ++----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index 374b8bb..c831d31 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -33,10 +33,10 @@
- #include <linux/gpio.h>
- #include <linux/of_gpio.h>
- #include <linux/clk.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+index 56fc527..aed61e9 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+@@ -71,8 +71,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+ 	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
+ 	dp_offset = cpm_dpalloc(dpmemsz, 8);
+ 	if (IS_ERR_VALUE(dp_offset)) {
+-		printk(KERN_ERR
+-		       "cpm_uart_cpm1.c: could not allocate buffer descriptors\n");
++		pr_err("cpm_uart_cpm1.c: could not allocate buffer descriptors\n");
+ 		return -ENOMEM;
+ 	}
+ 	dp_mem = cpm_dpram_addr(dp_offset);
+@@ -90,8 +89,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
  
--#include <asm/io.h>
- #include <asm/irq.h>
--#include <asm/delay.h>
- #include <asm/fs_pd.h>
- #include <asm/udbg.h>
+ 	if (mem_addr == NULL) {
+ 		cpm_dpfree(dp_offset);
+-		printk(KERN_ERR
+-		       "cpm_uart_cpm1.c: could not allocate coherent memory\n");
++		pr_err("cpm_uart_cpm1.c: could not allocate coherent memory\n");
+ 		return -ENOMEM;
+ 	}
  
 diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-index ef1ae08..40cfcf4 100644
+index 40cfcf4..a0fccda 100644
 --- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
 +++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-@@ -21,8 +21,8 @@
- #include <linux/device.h>
- #include <linux/memblock.h>
- #include <linux/dma-mapping.h>
-+#include <linux/io.h>
+@@ -106,8 +106,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+ 	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
+ 	dp_offset = cpm_dpalloc(dpmemsz, 8);
+ 	if (IS_ERR_VALUE(dp_offset)) {
+-		printk(KERN_ERR
+-		       "cpm_uart_cpm.c: could not allocate buffer descriptors\n");
++		pr_err("cpm_uart_cpm.c: could not allocate buffer descriptors\n");
+ 		return -ENOMEM;
+ 	}
  
--#include <asm/io.h>
- #include <asm/irq.h>
- #include <asm/fs_pd.h>
- #include <asm/prom.h>
+@@ -125,8 +124,7 @@ int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+ 
+ 	if (mem_addr == NULL) {
+ 		cpm_dpfree(dp_offset);
+-		printk(KERN_ERR
+-		       "cpm_uart_cpm.c: could not allocate coherent memory\n");
++		pr_err("cpm_uart_cpm.c: could not allocate coherent memory\n");
+ 		return -ENOMEM;
+ 	}
+ 
 -- 
 1.9.1
 
