@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4A0B3A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:54:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44827B3A3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:48:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rshY2nt2zDqBK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:48:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rsqc0HZxzDqdc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:54:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.135; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZw49mvzDqZB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZy28ZPzDqMw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:49 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MmDAW-1gu8kq1m7s-00iDvn; Sat, 27 Apr 2019 14:52:40 +0200
+ 1MVNF1-1hBGZC1Cwp-00SLNE; Sat, 27 Apr 2019 14:52:41 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 08/41] drivers: tty: serial: sb1250-duart: fix checkpatch
- warning on printk()
-Date: Sat, 27 Apr 2019 14:51:49 +0200
-Message-Id: <1556369542-13247-9-git-send-email-info@metux.net>
+Subject: [PATCH 09/41] drivers: tty: serial: sb1250-duart: fill mapsize and
+ use it
+Date: Sat, 27 Apr 2019 14:51:50 +0200
+Message-Id: <1556369542-13247-10-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:9XC3q0bfB2HQ4mApDU4u33n5sD/YoC7EqQPmqP5NMOedGA7sE7R
- zQ+4UMW4bXxRANtgf2zvHO2GKXDxkdKE28JdO/iNudeY0F3mJ+xc3fTNvs7ITqMXpD+h9nY
- QJb/I3M0+a59qd+LyzEcKpCXtBXjQ/BRgErxc0fambEKaAP14TyYVth7y55V4vy+3k5d+oN
- x/fGxgcPqoZSgK+QJd3pA==
+X-Provags-ID: V03:K1:ZaCk4lb7tsU+VMSXb76laO+FYz7IB7DvruPd8DW8Z5VN86cLAXx
+ XoTjgpy1D4cW0l6Dtk8ovOsbJ8N9Wa/Bbip0AWVSYaXLx73ljAgB+eT7NLTxRv9yXwxk0n6
+ HH2/FDKHKTK7DJe3OrFZeO4xRkkEqT/D7RK5KNlvmu7PNcsk+uX5W9PhxlgNSIsAXElPf5S
+ ey1fWSh+9w6GIdr1VGyZQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mA+DGbL3pn0=:LUwdV9FCkWYd8ew6AybJGN
- FyaYZYw27YD3za0BlTEdQTephU9v3aoDL7yH3xhlNPmX+5CM2PApdrigTC+ri8jcVQSmJ4rIZ
- tzjIZ7eEfYrHTPgsrBV4gEVQdGY0ZDyZx1NWo7s2aamBco75jVJh9WQ6GrN3mZ3pI4Ap1jWtK
- 6c1sGlcYAomFgphkq8BH0qiKX1Y9a9NmvUArm8RIzX+ly9033kZwLR5tQmOvy3Quox0DSlQpA
- pYlu8M2iFL4kLArnCS1+1A0AfKy936ST8Yu7Wu5uWaQqtVEGOQWaJ50m/nf7mVYSWDnXDyy12
- lThD0nacpT5LNSK+F8rEaZvKfHMnNKlSc0KVB302O4ivHoBJI2eutUcuwHocV7ib9006cTrD7
- 53H7kaHqt3lZV0LWdJkX7kc1UqBSSDkp4MPliAr50IVqjE5IlH5Z3DlTDghsTQqsCzoKrKEtH
- syFnn+I0PpYyNheAH3S8usOqqnfRFG/Ng1njF6jkgJ4p65qhFDaftDtLo0tLwn832At0vzYkN
- qGuVhCVMlHTVDEfvhiwUGmRHwkmm/IObaZ7FHB9BRejjgeCmzOTnWdXmkapyDTcFhKGQ/WWu/
- 1gJKhScFqVxhyDgpd3/Q8Zx//i/vYjTYm5fUY/Vv5d6srYHH97E0UzBIsSEdLPSRaUJEDpQM3
- Gauk38ExJHTos8640rpLdqyTiLn/gAGfs8IlXPjViSeqlfTCehT7nmldWLacXvxvPgK6JCk8o
- QHrstXkPJ7dKqqvFajXBPfihCad38hiIfrsyWA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RtxnkcS4BNw=:W1X4jBRlBVWuJD4Pv6ByqF
+ uzEI8ecJpCWed3KCre2mLXW0OXV5A1OENmZaS058fCcGLtY/MMyJk+3j/FIE64fyPp6Mf1QNf
+ aHI+BXIFLgyXi8UWEs7I7dkNTUzS1hd1Y+tVx2kiPwebsxB/XUlrxaR7Fd+F1i430VFQ0lSPO
+ zSE9MVSXtx3rkP7LVIC2YS72tpsG3/731cMYzZEP7TddPWMBZbiYH9zO7cZTzd2MNiiTn7gKK
+ hL0UsISQtmQIYESfFp9BFNeBK5uNoWKVjQc/7YFpnrQdlzWxKNceujqFxbVb5puKYKdvXqjKn
+ z86W63uetedU7jZV89p57IdEVW50fhVwtsq/1k62INBnzcGtu9HFtpvtB1HcvQmiooA4rwVvS
+ 0BZ+xEx9lAH3SG3mbmfItGYnZ5cRjYfSIQghjdQqIpjmqIwpwXwDqILuPsriyG22f4TRyKS94
+ lHaIV8x4nkWZmMTQptjrpfGBagay9++hR/f76Q2bocX+TYmsHkI1DGJ6erhO34vQq3s0okRk9
+ TE0oDSgCtr4m9lwBGxUMVcPXpTxEcRTF53n02LZQq3FeWLotqFA0dysl3/8hYVuYTMh8IdYQm
+ /CQD2IWCzXYDtoh7t0cqt+i4178a5QRyQzlkeXcgbEU6JPbsQLGHTKIiy/t1N9MPvU2iSapEE
+ Crhd85EZKZrNEXL+/T18e96NxkLVjar2G6zwr2dxfT7zIrQE6jllrRgUBUQsGpCvy5NVL+gB8
+ lhEo+qVJmxmGmT6o0g1nqWttNWpKWOXBo1THCA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,54 +72,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-checkpatch complaints:
+Fill the struct uart_port->mapsize field and use it, insteaf of
+hardcoded values in many places. This makes the code layout a bit
+more consistent and easily allows using generic helpers for the
+io memory handling.
 
-    WARNING: printk() should include KERN_<LEVEL> facility level
-    #698: FILE: drivers/tty/serial/sb1250-duart.c:698:
-    +		printk(err);
-
-    WARNING: printk() should include KERN_<LEVEL> facility level
-    #706: FILE: drivers/tty/serial/sb1250-duart.c:706:
-    +			printk(err);
-
-Even though it's a false alarm here (the string is already prefixed
-w/ KERN_ERR), it's nicer to use pr_err() here, which also makes
-checkpatch happy.
+Candidates for such helpers could be eg. the request+ioremap and
+iounmap+release combinations.
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/sb1250-duart.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sb1250-duart.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
-index b4342c8..227af87 100644
+index 227af87..1184226 100644
 --- a/drivers/tty/serial/sb1250-duart.c
 +++ b/drivers/tty/serial/sb1250-duart.c
-@@ -689,13 +689,13 @@ static int sbd_map_port(struct uart_port *uport)
+@@ -658,7 +658,7 @@ static void sbd_release_port(struct uart_port *uport)
  
- static int sbd_request_port(struct uart_port *uport)
- {
--	const char *err = KERN_ERR "sbd: Unable to reserve MMIO resource\n";
-+	const char *err = "sbd: Unable to reserve MMIO resource\n";
+ 	if(refcount_dec_and_test(&duart->map_guard))
+ 		release_mem_region(duart->mapctrl, DUART_CHANREG_SPACING);
+-	release_mem_region(uport->mapbase, DUART_CHANREG_SPACING);
++	release_mem_region(uport->mapbase, uport->mapsize);
+ }
+ 
+ static int sbd_map_port(struct uart_port *uport)
+@@ -668,7 +668,7 @@ static int sbd_map_port(struct uart_port *uport)
+ 
+ 	if (!uport->membase)
+ 		uport->membase = ioremap_nocache(uport->mapbase,
+-						 DUART_CHANREG_SPACING);
++						 uport->mapsize);
+ 	if (!uport->membase) {
+ 		dev_err(uport->dev, "Cannot map MMIO (base)\n");
+ 		return -ENOMEM;
+@@ -693,7 +693,7 @@ static int sbd_request_port(struct uart_port *uport)
  	struct sbd_duart *duart = to_sport(uport)->duart;
  	int ret = 0;
  
- 	if (!request_mem_region(uport->mapbase, DUART_CHANREG_SPACING,
+-	if (!request_mem_region(uport->mapbase, DUART_CHANREG_SPACING,
++	if (!request_mem_region(uport->mapbase, uport->mapsize,
  				"sb1250-duart")) {
--		printk(err);
-+		pr_err(err);
+ 		pr_err(err);
  		return -EBUSY;
- 	}
- 	refcount_inc(&duart->map_guard);
-@@ -703,7 +703,7 @@ static int sbd_request_port(struct uart_port *uport)
- 		if (!request_mem_region(duart->mapctrl, DUART_CHANREG_SPACING,
- 					"sb1250-duart")) {
- 			refcount_dec(&duart->map_guard);
--			printk(err);
-+			pr_err(err);
- 			ret = -EBUSY;
+@@ -716,7 +716,7 @@ static int sbd_request_port(struct uart_port *uport)
  		}
  	}
+ 	if (ret) {
+-		release_mem_region(uport->mapbase, DUART_CHANREG_SPACING);
++		release_mem_region(uport->mapbase, uport->mapsize);
+ 		return ret;
+ 	}
+ 	return 0;
+@@ -812,6 +812,7 @@ static void __init sbd_probe_duarts(void)
+ 			uport->ops	= &sbd_ops;
+ 			uport->line	= line;
+ 			uport->mapbase	= SBD_CHANREGS(line);
++			uport->mapsize	= DUART_CHANREG_SPACING;
+ 		}
+ 	}
+ }
 -- 
 1.9.1
 
