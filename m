@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B902B3AE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF0CB384
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:05:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rt2h5GpmzDqdp
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:04:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rrkz16xfzDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:05:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.187; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrb13r71zDqb9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSf0mwkzDqYV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:21 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N8XHV-1gh8Cp1oHJ-014PTe; Sat, 27 Apr 2019 14:52:34 +0200
+ 1M72wZ-1hQgsG1F7v-008djg; Sat, 27 Apr 2019 14:52:35 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of
- printk()
-Date: Sat, 27 Apr 2019 14:51:42 +0200
-Message-Id: <1556369542-13247-2-git-send-email-info@metux.net>
+Subject: [PATCH 02/41] drivers: tty: serial: dz: include <linux/io.h> instead
+ of <asm/io.h>
+Date: Sat, 27 Apr 2019 14:51:43 +0200
+Message-Id: <1556369542-13247-3-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:ZsvBvAt/rLDu1xNT1sLalxIcX9jz7QA0qevymQS/WxRCH2zr6Wl
- xgtlPQz+G8tT6HFrUdOePnL/g6Nz/IIjRENpXyf+TYdtSi3HrsJGdjKV+IdrLIpqWKUpGIr
- dGZH3/KAvVSKXLhp+eDtJ5SZp4iM/k7bWZWc3G+D3RpE/VH31kx+tVU+u8Iwg2ZCwcrt7Md
- VmQRsAPpOo0raWOEg8/zQ==
+X-Provags-ID: V03:K1:vWpyHvDheL6gbLjo3etBs2JZ/UueJUyOwv5jXuZL9y2wfL1t2Sz
+ Q/+Nt5v3237WzwYwrkHtvh8CdRpqwPqpHpcjERpTIKU+EcAYTF+qBG0cw4jXtPhcJu5L1xP
+ kkBztdWdJQKAWhxdJmybmuQlVUbgmAr1fvOkc6orv3ghX86g6ax2Ao2WppX1ubS4UHmC3BK
+ omfMVJUQwR4EJT11yTj+A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HsrgCbi2IK0=:LxZuNdOiXRzOLFOMqdcIUO
- ujN2qs1zVbC69CJApm+RMGjnmSWIBU1ovdNeVTBPIJzlZbi7KW7gnEOkRPpCg2KOtn0Aw9Z82
- Tyu61JVdJZqXMP9DikKB+3Klc88bt2h9BOsLCfijrP+5RE9ueY64d41JK0Xpm689y+Y7j972X
- vf9dATGY/0ld/zBDutesrHbCPPeBB4D//wHcHK/7UAM+UvSwmMsYzFEG1Dni7Xep7lGaqJ/eX
- bS43BwXXCB40VnWFdGmI514GvUWrZsDP4mIktpmc4j4OLZEFHDK84BkjXStPt4VLlYWS0LJti
- TLyIETk7FgHkqfdjaEs//NEhHzaXaAvFH63sFyUkuLJH3T7J89dzjgDHQWuFBaw2ISJNVqRDE
- C+nw3SIscszw6R8O7qhxsXYzJVOHgG7Dg5FzBsiJiryKnbf4OWE21JFdpaB/tCfCIUOtkDOWE
- Hwhs8BMTzIAJIfkgSe8hYaFwXKvMLzxPIRCSgrRXqz9P7MABHfMKmczKzTv56g97v7er+vbJT
- fUpCa7qKtFCawIeayw33iw2nVuBDChUxK30rQ9cLZUckt3xOZ/gD2KdqzK7RaX8/XzUoH+ul4
- 1ORmht/a2rX/5fhm1eVoNIVIYBv5mek0kA4NOuzzreONA3KrD4Ghp3XLHVdgNSW4BUvNcuZ/7
- WgA49uWJ/ZsGam7QwgZhZNajXy8G0jvNIXabcMENTCu/UmteFIRtC0EHtdUKECqG2Q3D0Q4+1
- jRNzmpygMuCmvDdoEeilRd4698MvaTADm+UgJw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PWTU6h30wog=:g3KXzB9M32PW8Kl8vCIU73
+ qJ8Hw/X5UhMxHr5PXZ5NJLP8zF+n5L1AYhbxdz0HkWq3pRijKJD3ZZgMPMXT5AC0MCjgTwTnG
+ BKB6ehulTwMDvn0rk/0UWp57hVY8n65jpID29G2/RtuijyesvETIRsoOmsEDDklXWWrpv6Hvq
+ J5ApyjRxjwebOu+2DLtzw/iHyVZjoSBSJ3tfl+uRrcbirei0rvO8pIPPAp9hShgt6wvsRCnWy
+ 69Nm4xD9n73QNYwZz1WgLz31zuE/AXQbiEv14NTsptf7xQB3TMb47qEcLeEIXQttLDlssfrUu
+ sUnzAbwiXa9qXMynpyfRG2WmHpKy3Sb57NCyp79kJVZNqzTeWy5rJ580LJtiNOnKV5l0NEl4P
+ ft43B9g3QEw0dE2RA1G9sPuGJvuILiXEPeqUqYjhTT+UmVrLG83+OrotnH1YPjhkzWg9WZGyl
+ ZsMxaVC5zUJY8olqHlPJl3lfAv4fxzGIBE75jKtOJwB61iyMmTGCbLZT9aUnRGj+9CHDKLe70
+ r7+eZMXeXJ9eT1W7HDMQibFCPL6QSTKhCVVawhfq7GZkd2tcZx4GWCO7RGRNgouXD8JVSy7qz
+ m5Wbs2AH+EWnYtwKwE+ERMHMsz/tgMtlUXwgbizNPnSQPzD9LYY+Bqrq0DeP+AXy3VjT0jaZn
+ /zPlxBehxOKrsnCjM3aDW+YERQBO5njRt7YPdL+ImY78ofqqhgs0vMjuBK7/voIREnYQyHmyR
+ QiZRIDUO7YShRpDwljxwkZ//0pWuawyNDeyJ3w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,47 +72,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using dev_err() instead of printk() for more consistent output.
-(prints device name, etc).
+fixing checkpatch warning:
+
+  WARNING: Use #include <linux/io.h> instead of <asm/io.h>
+  #55: FILE: dz.c:55:
+  +#include <asm/io.h>
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/dz.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/dz.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index 7b57e84..96e35af 100644
+index 96e35af..fd4f0cc 100644
 --- a/drivers/tty/serial/dz.c
 +++ b/drivers/tty/serial/dz.c
-@@ -416,7 +416,7 @@ static int dz_startup(struct uart_port *uport)
- 			  IRQF_SHARED, "dz", mux);
- 	if (ret) {
- 		atomic_add(-1, &mux->irq_guard);
--		printk(KERN_ERR "dz: Cannot get IRQ %d!\n", dport->port.irq);
-+		dev_err(uport->dev, "Cannot get IRQ %d!\n", dport->port.irq);
- 		return ret;
- 	}
+@@ -52,7 +52,7 @@
  
-@@ -680,7 +680,7 @@ static int dz_map_port(struct uart_port *uport)
- 		uport->membase = ioremap_nocache(uport->mapbase,
- 						 dec_kn_slot_size);
- 	if (!uport->membase) {
--		printk(KERN_ERR "dz: Cannot map MMIO\n");
-+		dev_err(uport->dev, "Cannot map MMIO\n");
- 		return -ENOMEM;
- 	}
- 	return 0;
-@@ -697,8 +697,8 @@ static int dz_request_port(struct uart_port *uport)
- 		if (!request_mem_region(uport->mapbase, dec_kn_slot_size,
- 					"dz")) {
- 			atomic_add(-1, &mux->map_guard);
--			printk(KERN_ERR
--			       "dz: Unable to reserve MMIO resource\n");
-+			dev_err(uport->dev,
-+				"Unable to reserve MMIO resource\n");
- 			return -EBUSY;
- 		}
- 	}
+ #include <linux/atomic.h>
+ #include <asm/bootinfo.h>
+-#include <asm/io.h>
++#include <linux/io.h>
+ 
+ #include <asm/dec/interrupts.h>
+ #include <asm/dec/kn01.h>
 -- 
 1.9.1
 
