@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBEF9B400
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 18:49:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rxhq37W1zDqfv
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 02:49:15 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1ADB3F9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 18:41:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rxWZ50FczDqgx
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 02:41:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,31 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lunn.ch
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=lunn.ch header.i=@lunn.ch header.b="MQ0lfL6d"; 
+ unprotected) header.d=lunn.ch header.i=@lunn.ch header.b="NP4Xq1US"; 
  dkim-atps=neutral
+X-Greylist: delayed 456 seconds by postgrey-1.36 at bilbo;
+ Sun, 28 Apr 2019 02:39:48 AEST
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rxgL0r3nzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 02:47:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rxTw6YQBzDqbh
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 02:39:48 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
  s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
  Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=c8Bux03tjjC8g0RTzqUC1nUbzfL5pVXpfOPA0tXBHRg=; b=MQ0lfL6dxkAgb5GpK8RRtxkbd9
- l4cp8MqqwAuN12ZCsK2fKY4xXvea7ZoYi5hP4+9GkeIQwpDO/vzWQc5P7/ItBl4HsvQOw/Q3fEwIW
- aUUXZzu92B0JcV0AjOzPfJcbEOSEsV63RPz+CZRhNkRS6plNbLgyFxgErChiqspLgr/4=;
+ bh=3x96KLf+7WG5HZo66dPuyudWlNtB7m+kcjzsKB7rZzg=; b=NP4Xq1USCnJhhYgYDDYXEAfO7F
+ FGgqIcxVfyzF/TNICY/nGs8WP7a4PxioELoSKoCFgpAu3TA2hS6u0jXIgcnYNXUS0c/DcMANKnWb3
+ WaCK+nEJcGW7H4R96huF6cNNCPFWroHi82Or7gh9W1yQdJIRu+R0A5bwWFXhP1+YNzSU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.89)
  (envelope-from <andrew@lunn.ch>)
- id 1hKQEZ-0002go-EJ; Sat, 27 Apr 2019 18:31:27 +0200
-Date: Sat, 27 Apr 2019 18:31:27 +0200
+ id 1hKQMF-0002l5-3c; Sat, 27 Apr 2019 18:39:23 +0200
+Date: Sat, 27 Apr 2019 18:39:23 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>
 Subject: Re: [PATCH 2/4] dt-bindings: doc: Reflect new NVMEM
  of_get_mac_address behaviour
-Message-ID: <20190427163127.GB9816@lunn.ch>
+Message-ID: <20190427163923.GC9816@lunn.ch>
 References: <1556320002-26213-1-git-send-email-ynezz@true.cz>
  <1556320002-26213-3-git-send-email-ynezz@true.cz>
 MIME-Version: 1.0
@@ -87,20 +89,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/Documentation/devicetree/bindings/net/ethernet.txt b/Documentation/devicetree/bindings/net/ethernet.txt
-> index 2974e63..1e2bc9a 100644
-> --- a/Documentation/devicetree/bindings/net/ethernet.txt
-> +++ b/Documentation/devicetree/bindings/net/ethernet.txt
-> @@ -10,6 +10,8 @@ Documentation/devicetree/bindings/phy/phy-bindings.txt.
->    the boot program; should be used in cases where the MAC address assigned to
->    the device by the boot program is different from the "local-mac-address"
->    property;
-> +- nvmem-cells: phandle, reference to an nvmem node for the MAC address
-> +- nvmem-cell-names: string, should be "mac-address" if nvmem is to be used
+> diff --git a/Documentation/devicetree/bindings/net/macb.txt b/Documentation/devicetree/bindings/net/macb.txt
+> index 8b80515..92c5642 100644
+> --- a/Documentation/devicetree/bindings/net/macb.txt
+> +++ b/Documentation/devicetree/bindings/net/macb.txt
+> @@ -26,15 +26,15 @@ Required properties:
+>  	Optional elements: 'tsu_clk'
+>  - clocks: Phandles to input clocks.
+>  
+> -Optional properties:
+> -- nvmem-cells: phandle, reference to an nvmem node for the MAC address
+> -- nvmem-cell-names: string, should be "mac-address" if nvmem is to be used
+> -
+>  Optional properties for PHY child node:
+>  - reset-gpios : Should specify the gpio for phy reset
+>  - magic-packet : If present, indicates that the hardware supports waking
+>    up via magic packet.
+>  - phy-handle : see ethernet.txt file in the same directory
+> +- mac-address: See ethernet.txt in the same directory.
+> +- local-mac-address: See ethernet.txt in the same directory.
+> +- nvmem-cells: See ethernet.txt in the same directory.
+> +- nvmem-cell-names: See ethernet.txt in the same directory.
 
-You put the new values after local-mac-address and mac-address. That
-suggests they are of lower priority. That conflicts with the current
-patch. If you think NVMEM should take priority, please put the
-properties first.
+This looks wrong. The MAC address is not a PHY property, so should not
+be inside the PHY child node.
+
+phy-handle is in the wrong place, but that is a separate problem.
 
 	   Andrew
