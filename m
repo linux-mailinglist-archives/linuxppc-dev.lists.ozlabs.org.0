@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB36B3AF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:06:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rt5H24bdzDqNr
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:06:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA79B3AC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:58:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rswG1bj4zDqQl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:58:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrb26R0gzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZz248HzDqLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:50 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MQ5nE-1h759i2pEm-00M2Ff; Sat, 27 Apr 2019 14:52:38 +0200
+ 1MNss4-1h9I592Io4-00OFB5; Sat, 27 Apr 2019 14:52:39 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 06/41] drivers: tty: serial: sb1250-duart: use dev_err()
- instead of printk()
-Date: Sat, 27 Apr 2019 14:51:47 +0200
-Message-Id: <1556369542-13247-7-git-send-email-info@metux.net>
+Subject: [PATCH 07/41] drivers: tty: serial: sb1250-duart: include
+ <linux/io.h> instead of <asm/io.h>
+Date: Sat, 27 Apr 2019 14:51:48 +0200
+Message-Id: <1556369542-13247-8-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:virapGaLe72N04lun9WdAKkbszb/ggQMqOiOUSHBcLWgpMmeSap
- mBYtyGLtkO8bfsb4eQ43Ka/Pvv/b4cCI/WGEqijtDJEFEcNTc93ifR7R/FI82p+Et0Hzuoy
- 6Mqe+toYlTBM2KOFgvujwEBfyVHzntqNkA4zWfZ1M4ILi8IQFR+Hd6QOrw7CXV2bkioPk2/
- 824zpPHm55RHdm67u7Kxw==
+X-Provags-ID: V03:K1:rdRXb5foI78ZUKXg0PVAe5Z5nzYlAxuzsWdK2nGI/ZCG+/6jRlM
+ hI3kp/kBUUgLKHfqLAS7fc8k7GQ2ADy4ZKXhqdqZiryVc7Z/Z2r9L5PNnJpvCGJ5Wm3QKlp
+ qfPO4bQ3xuErAjl1GwNDMV08O2NC44IuFF/UesW2Ttt/YM+Ee5ZbuxprWyPUKJV4WjcRcmA
+ KbeNYOb/RogJgZxW+H2Qg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SXNQXQp8sh0=:R+aDQv3lvekLyrADiGHuEK
- CtjfTAKoGHRmAjJ6Xb8dN2lYsNh+W28aEMdgh54xOhuTgRpDw4N5AydwVa1GkJGE/tBGvdfAD
- LGbG75FmSB3lV4Wn/TKhId58KXrWjy4NasiTvMWwcEQCMJzYAkG/jiv4voibWWMGGn5SGimjx
- Ri5mwvqYchoCMBxp5G8fq8TAC3jOucf6Mss2WGvap1Dy1W51Z7vBnDhn+i5v7TDsglctmWzan
- Ke8R49dCVVJFUaYWtPYEn/kT9DlGBvcvv6NSuH1LmfFzwVSaM7Oc++m734vQgRN+BQmrZrEai
- niQ5mxsmA06CCqcVnq1OGyvvC+jd8DI6V5EHytHjcZdD5BWacXE3X1Ph37DGnF5QaAElvcJNx
- JHZmdDuln4PJd69ya3LTzIHfVGfys5Hu+kB1hnqYHdNmnKP7BueWXVbU/UC9QKwlYqeU6G66o
- ru2DwKVH9t45x6cXhEa7yA2jvN3ouOU76Sz+H5Cp+nlDq1Ybci8/nhjNiwfo4jawKsg+zj3Iw
- RbGPd4x2mRMaP3PWyH5HvBuQSzrNsyMmhQ8SHnxzTbWwqf9KPTumzBJ0iHnYYxttOp5cJTjdg
- 6mSjPGkYGuHLjRrkoaTi1lfmVInfsYZ4Lr37aECl4PjQqWv+wlisIiGO0YN6Vjqb/PWhlVKsX
- 0xddrJBapb3NNXPajntYjHK3wk4Ry+UwAxRBGz7v3H7C4gehhm/qGZtQVkt5NAFC55ZbINGVA
- O/1LHfyS5WzFTyyM6LXbhxXCsAQY2rESpK26aQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jvvsYo9LuQY=:0CBFF1B+GF8XcuC/OEGe+u
+ lE4du1nr2BxJUF3un6Key4aTFwXC9M1MP7vy6bRFShSWpMf0LqNeZ0PIMA0Boouqvq/LrWtch
+ Bk8WIgPTVxONhX5cGTvv16KtAPX0N4Fc9XShLvZ3WIf85Pb8B1cmctvJO+91Vowqbv+OcZI7t
+ u+klW1Y8h/XcHrCaCI9URzloY+8Skh09MjkRvd8JImBxErSZR4TrV4lBw/vZvh3JRZ3nDa87F
+ 2Ofw4ntjWDHq9/4ydwL8/MS8Ra0tJ7FucapkGNCI03gw6bHg/Zq4CUz1NxvvtMpgxBnM44EhT
+ 2A3Z5OphsucVUhbQFEvQY9hXMAtMHGW4rZOtjflDCKjXwJn18oRU+SQ/6LI35sYnI0g+RNJXj
+ tcWYqG4u9L0O8K8B4QVhUS7hRnlp2mbXd445I0YV8wXTD24XSK5SWOLFwReIA2lMQsJebO8bf
+ kOYGnaMypkS+rVMNELRAxXUQTHj6gaeBgDMuxEmFbm0dchrEnZ00FbAiLxbs/e9Y/E/n9X0Eq
+ o+xS5zS5vti1O/IP6Ues2fjQ1nTyVd/xw4wMImB6WzxwnZmNp0YWHbZLvjJL63nIoXq9Qz+BJ
+ x7N9TE7pgE2XwhIytU04iiIwK8ScI8APYxb0YztNJoFdEZciwryk1L+87RQy/1IYdGGBwWFcL
+ QUDI0D0Z4viNgV6YKzf3QKqTOX97ZXwOA6V8297sBPuZdKsbJllrR12CsQvQnG8kj12Fs0lKS
+ H6/3+9ybOTfmXynKHeq0NbNED/Mh0mZepeJ+kw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,44 +72,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using dev_err() instead of printk() for more consistent output.
-(prints device name, etc).
+Fix checkpatch warning:
+
+    WARNING: Use #include <linux/io.h> instead of <asm/io.h>
+    #41: FILE: drivers/tty/serial/sb1250-duart.c:41:
+    +#include <asm/io.h>
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/sb1250-duart.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sb1250-duart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
-index 329aced..655961c 100644
+index 655961c..b4342c8 100644
 --- a/drivers/tty/serial/sb1250-duart.c
 +++ b/drivers/tty/serial/sb1250-duart.c
-@@ -663,7 +663,6 @@ static void sbd_release_port(struct uart_port *uport)
+@@ -38,7 +38,7 @@
+ #include <linux/types.h>
  
- static int sbd_map_port(struct uart_port *uport)
- {
--	const char *err = KERN_ERR "sbd: Cannot map MMIO\n";
- 	struct sbd_port *sport = to_sport(uport);
- 	struct sbd_duart *duart = sport->duart;
+ #include <linux/refcount.h>
+-#include <asm/io.h>
++#include <linux/io.h>
+ #include <asm/war.h>
  
-@@ -671,7 +670,7 @@ static int sbd_map_port(struct uart_port *uport)
- 		uport->membase = ioremap_nocache(uport->mapbase,
- 						 DUART_CHANREG_SPACING);
- 	if (!uport->membase) {
--		printk(err);
-+		dev_err(uport->dev, "Cannot map MMIO (base)\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -679,7 +678,7 @@ static int sbd_map_port(struct uart_port *uport)
- 		sport->memctrl = ioremap_nocache(duart->mapctrl,
- 						 DUART_CHANREG_SPACING);
- 	if (!sport->memctrl) {
--		printk(err);
-+		dev_err(uport->dev, "Cannot map MMIO (ctrl)\n");
- 		iounmap(uport->membase);
- 		uport->membase = NULL;
- 		return -ENOMEM;
+ #include <asm/sibyte/sb1250.h>
 -- 
 1.9.1
 
