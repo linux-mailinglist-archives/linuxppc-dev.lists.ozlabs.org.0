@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55677B308
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 09:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B34B30D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 09:19:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rhwy4Y8ZzDqYJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 17:13:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rj3K66f8zDqLG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 17:19:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,26 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rhsF5lLVzDqXK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rhsF5R8bzDqWk
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 17:10:39 +1000 (AEST)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7B7EC1A0099;
- Sat, 27 Apr 2019 09:10:36 +0200 (CEST)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 16FBD1A009D;
+ Sat, 27 Apr 2019 09:10:37 +0200 (CEST)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com
  [134.27.226.22])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6D9111A000B;
- Sat, 27 Apr 2019 09:10:36 +0200 (CEST)
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 097C41A000B;
+ Sat, 27 Apr 2019 09:10:37 +0200 (CEST)
 Received: from fsr-ub1864-101.ea.freescale.net
  (fsr-ub1864-101.ea.freescale.net [10.171.82.13])
- by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id E1EA5205ED;
- Sat, 27 Apr 2019 09:10:35 +0200 (CEST)
+ by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 7DD72205ED;
+ Sat, 27 Apr 2019 09:10:36 +0200 (CEST)
 From: laurentiu.tudor@nxp.com
 To: netdev@vger.kernel.org, madalin.bucur@nxp.com, roy.pledge@nxp.com,
  camelia.groza@nxp.com, leoyang.li@nxp.com
-Subject: [PATCH v2 2/9] soc/fsl/qbman_portals: add APIs to retrieve the
- probing status
-Date: Sat, 27 Apr 2019 10:10:24 +0300
-Message-Id: <20190427071031.6563-3-laurentiu.tudor@nxp.com>
+Subject: [PATCH v2 3/9] fsl/fman: backup and restore ICID registers
+Date: Sat, 27 Apr 2019 10:10:25 +0300
+Message-Id: <20190427071031.6563-4-laurentiu.tudor@nxp.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190427071031.6563-1-laurentiu.tudor@nxp.com>
 References: <20190427071031.6563-1-laurentiu.tudor@nxp.com>
@@ -63,236 +62,121 @@ Sender: "Linuxppc-dev"
 
 From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-Add a couple of new APIs to check the probing status of the required
-cpu bound qman and bman portals:
- 'int bman_portals_probed()' and 'int qman_portals_probed()'.
-They return the following values.
- *  1 if qman/bman portals were all probed correctly
- *  0 if qman/bman portals were not yet probed
- * -1 if probing of qman/bman portals failed
-Portals are considered successful probed if no error occurred during
-the probing of any of the portals and if enough portals were probed
-to have one available for each cpu.
-The error handling paths were slightly rearranged in order to fit this
-new functionality without being too intrusive.
-Drivers that use qman/bman portal driver services are required to use
-these APIs before calling any functions exported by these drivers or
-otherwise they will crash the kernel.
-First user will be the dpaa1 ethernet driver, coming in a subsequent
-patch.
+During probing, FMAN is reset thus losing all its register
+settings. Backup port ICID registers before reset and restore
+them after, similarly to how it's done on powerpc / PAMU based
+platforms.
+This also has the side effect of disabling the old code path
+(liodn backup/restore handling) that obviously make no sense
+in the context of SMMU on ARMs.
 
 Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Acked-by: Madalin Bucur <madalin.bucur@nxp.com>
 ---
- drivers/soc/fsl/qbman/bman_portal.c | 20 ++++++++++++++++----
- drivers/soc/fsl/qbman/qman_portal.c | 21 +++++++++++++++++----
- include/soc/fsl/bman.h              |  8 ++++++++
- include/soc/fsl/qman.h              |  9 +++++++++
- 4 files changed, 50 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/freescale/fman/fman.c | 35 +++++++++++++++++++++-
+ drivers/net/ethernet/freescale/fman/fman.h |  4 +++
+ 2 files changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qbman/bman_portal.c b/drivers/soc/fsl/qbman/bman_portal.c
-index 2c95cf59f3e7..cf4f10d6f590 100644
---- a/drivers/soc/fsl/qbman/bman_portal.c
-+++ b/drivers/soc/fsl/qbman/bman_portal.c
-@@ -32,6 +32,7 @@
- 
- static struct bman_portal *affine_bportals[NR_CPUS];
- static struct cpumask portal_cpus;
-+static int __bman_portals_probed;
- /* protect bman global registers and global data shared among portals */
- static DEFINE_SPINLOCK(bman_lock);
- 
-@@ -87,6 +88,12 @@ static int bman_online_cpu(unsigned int cpu)
- 	return 0;
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index e80fedb27cee..ae833e215b74 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -629,6 +629,7 @@ static void set_port_order_restoration(struct fman_fpm_regs __iomem *fpm_rg,
+ 	iowrite32be(tmp, &fpm_rg->fmfp_prc);
  }
  
-+int bman_portals_probed(void)
-+{
-+	return __bman_portals_probed;
-+}
-+EXPORT_SYMBOL_GPL(bman_portals_probed);
-+
- static int bman_portal_probe(struct platform_device *pdev)
++#ifdef CONFIG_PPC
+ static void set_port_liodn(struct fman *fman, u8 port_id,
+ 			   u32 liodn_base, u32 liodn_ofst)
  {
- 	struct device *dev = &pdev->dev;
-@@ -104,8 +111,10 @@ static int bman_portal_probe(struct platform_device *pdev)
- 	}
- 
- 	pcfg = devm_kmalloc(dev, sizeof(*pcfg), GFP_KERNEL);
--	if (!pcfg)
-+	if (!pcfg) {
-+		__bman_portals_probed = -1;
- 		return -ENOMEM;
-+	}
- 
- 	pcfg->dev = dev;
- 
-@@ -113,14 +122,14 @@ static int bman_portal_probe(struct platform_device *pdev)
- 					     DPAA_PORTAL_CE);
- 	if (!addr_phys[0]) {
- 		dev_err(dev, "Can't get %pOF property 'reg::CE'\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
- 	}
- 
- 	addr_phys[1] = platform_get_resource(pdev, IORESOURCE_MEM,
- 					     DPAA_PORTAL_CI);
- 	if (!addr_phys[1]) {
- 		dev_err(dev, "Can't get %pOF property 'reg::CI'\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
- 	}
- 
- 	pcfg->cpu = -1;
-@@ -128,7 +137,7 @@ static int bman_portal_probe(struct platform_device *pdev)
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq <= 0) {
- 		dev_err(dev, "Can't get %pOF IRQ'\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
- 	}
- 	pcfg->irq = irq;
- 
-@@ -150,6 +159,7 @@ static int bman_portal_probe(struct platform_device *pdev)
- 	spin_lock(&bman_lock);
- 	cpu = cpumask_next_zero(-1, &portal_cpus);
- 	if (cpu >= nr_cpu_ids) {
-+		__bman_portals_probed = 1;
- 		/* unassigned portal, skip init */
- 		spin_unlock(&bman_lock);
- 		return 0;
-@@ -175,6 +185,8 @@ static int bman_portal_probe(struct platform_device *pdev)
- err_ioremap2:
- 	memunmap(pcfg->addr_virt_ce);
- err_ioremap1:
-+	 __bman_portals_probed = -1;
-+
- 	return -ENXIO;
+@@ -646,6 +647,27 @@ static void set_port_liodn(struct fman *fman, u8 port_id,
+ 	iowrite32be(tmp, &fman->dma_regs->fmdmplr[port_id / 2]);
+ 	iowrite32be(liodn_ofst, &fman->bmi_regs->fmbm_spliodn[port_id - 1]);
  }
- 
-diff --git a/drivers/soc/fsl/qbman/qman_portal.c b/drivers/soc/fsl/qbman/qman_portal.c
-index 661c9b234d32..e2186b681d87 100644
---- a/drivers/soc/fsl/qbman/qman_portal.c
-+++ b/drivers/soc/fsl/qbman/qman_portal.c
-@@ -38,6 +38,7 @@ EXPORT_SYMBOL(qman_dma_portal);
- #define CONFIG_FSL_DPA_PIRQ_FAST  1
- 
- static struct cpumask portal_cpus;
-+static int __qman_portals_probed;
- /* protect qman global registers and global data shared among portals */
- static DEFINE_SPINLOCK(qman_lock);
- 
-@@ -220,6 +221,12 @@ static int qman_online_cpu(unsigned int cpu)
- 	return 0;
- }
- 
-+int qman_portals_probed(void)
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++static void save_restore_port_icids(struct fman *fman, bool save)
 +{
-+	return __qman_portals_probed;
-+}
-+EXPORT_SYMBOL_GPL(qman_portals_probed);
++	int port_idxes[] = {
++		0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc,
++		0xd, 0xe, 0xf, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
++		0x10, 0x11, 0x30, 0x31
++	};
++	int idx, i;
 +
- static int qman_portal_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -238,8 +245,10 @@ static int qman_portal_probe(struct platform_device *pdev)
- 	}
- 
- 	pcfg = devm_kmalloc(dev, sizeof(*pcfg), GFP_KERNEL);
--	if (!pcfg)
-+	if (!pcfg) {
-+		__qman_portals_probed = -1;
- 		return -ENOMEM;
++	for (i = 0; i < ARRAY_SIZE(port_idxes); i++) {
++		idx = port_idxes[i];
++		if (save)
++			fman->sp_icids[idx] =
++				ioread32be(&fman->bmi_regs->fmbm_spliodn[idx]);
++		else
++			iowrite32be(fman->sp_icids[idx],
++				    &fman->bmi_regs->fmbm_spliodn[idx]);
 +	}
++}
++#endif
  
- 	pcfg->dev = dev;
+ static void enable_rams_ecc(struct fman_fpm_regs __iomem *fpm_rg)
+ {
+@@ -1914,7 +1936,10 @@ static int fman_reset(struct fman *fman)
+ static int fman_init(struct fman *fman)
+ {
+ 	struct fman_cfg *cfg = NULL;
+-	int err = 0, i, count;
++	int err = 0, count;
++#ifdef CONFIG_PPC
++	int i;
++#endif
  
-@@ -247,19 +256,20 @@ static int qman_portal_probe(struct platform_device *pdev)
- 					     DPAA_PORTAL_CE);
- 	if (!addr_phys[0]) {
- 		dev_err(dev, "Can't get %pOF property 'reg::CE'\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
+ 	if (is_init_done(fman->cfg))
+ 		return -EINVAL;
+@@ -1934,6 +1959,7 @@ static int fman_init(struct fman *fman)
+ 	memset_io((void __iomem *)(fman->base_addr + CGP_OFFSET), 0,
+ 		  fman->state->fm_port_num_of_cg);
+ 
++#ifdef CONFIG_PPC
+ 	/* Save LIODN info before FMan reset
+ 	 * Skipping non-existent port 0 (i = 1)
+ 	 */
+@@ -1953,6 +1979,9 @@ static int fman_init(struct fman *fman)
+ 		}
+ 		fman->liodn_base[i] = liodn_base;
  	}
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	save_restore_port_icids(fman, true);
++#endif
  
- 	addr_phys[1] = platform_get_resource(pdev, IORESOURCE_MEM,
- 					     DPAA_PORTAL_CI);
- 	if (!addr_phys[1]) {
- 		dev_err(dev, "Can't get %pOF property 'reg::CI'\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
- 	}
+ 	err = fman_reset(fman);
+ 	if (err)
+@@ -2181,8 +2210,12 @@ int fman_set_port_params(struct fman *fman,
+ 	if (err)
+ 		goto return_err;
  
- 	err = of_property_read_u32(node, "cell-index", &val);
- 	if (err) {
- 		dev_err(dev, "Can't get %pOF property 'cell-index'\n", node);
-+		__qman_portals_probed = -1;
- 		return err;
- 	}
- 	pcfg->channel = val;
-@@ -267,7 +277,7 @@ static int qman_portal_probe(struct platform_device *pdev)
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq <= 0) {
- 		dev_err(dev, "Can't get %pOF IRQ\n", node);
--		return -ENXIO;
-+		goto err_ioremap1;
- 	}
- 	pcfg->irq = irq;
++#ifdef CONFIG_PPC
+ 	set_port_liodn(fman, port_id, fman->liodn_base[port_id],
+ 		       fman->liodn_offset[port_id]);
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	save_restore_port_icids(fman, false);
++#endif
  
-@@ -291,6 +301,7 @@ static int qman_portal_probe(struct platform_device *pdev)
- 	spin_lock(&qman_lock);
- 	cpu = cpumask_next_zero(-1, &portal_cpus);
- 	if (cpu >= nr_cpu_ids) {
-+		__qman_portals_probed = 1;
- 		/* unassigned portal, skip init */
- 		spin_unlock(&qman_lock);
- 		return 0;
-@@ -321,6 +332,8 @@ static int qman_portal_probe(struct platform_device *pdev)
- err_ioremap2:
- 	memunmap(pcfg->addr_virt_ce);
- err_ioremap1:
-+	__qman_portals_probed = -1;
-+
- 	return -ENXIO;
- }
+ 	if (fman->state->rev_info.major < 6)
+ 		set_port_order_restoration(fman->fpm_regs, port_id);
+diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
+index 935c317fa696..19f20fa58053 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.h
++++ b/drivers/net/ethernet/freescale/fman/fman.h
+@@ -346,8 +346,12 @@ struct fman {
+ 	unsigned long fifo_offset;
+ 	size_t fifo_size;
  
-diff --git a/include/soc/fsl/bman.h b/include/soc/fsl/bman.h
-index 5b99cb2ea5ef..173e4049d963 100644
---- a/include/soc/fsl/bman.h
-+++ b/include/soc/fsl/bman.h
-@@ -133,5 +133,13 @@ int bman_acquire(struct bman_pool *pool, struct bm_buffer *bufs, u8 num);
-  * failed to probe or 0 if the bman driver did not probed yet.
-  */
- int bman_is_probed(void);
-+/**
-+ * bman_portals_probed - Check if all cpu bound bman portals are probed
-+ *
-+ * Returns 1 if all the required cpu bound bman portals successfully probed,
-+ * -1 if probe errors appeared or 0 if the bman portals did not yet finished
-+ * probing.
-+ */
-+int bman_portals_probed(void);
++#ifdef CONFIG_PPC
+ 	u32 liodn_base[64];
+ 	u32 liodn_offset[64];
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	u32 sp_icids[64];
++#endif
  
- #endif	/* __FSL_BMAN_H */
-diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-index 5cc7af06c1ba..aa31c05a103a 100644
---- a/include/soc/fsl/qman.h
-+++ b/include/soc/fsl/qman.h
-@@ -1194,6 +1194,15 @@ int qman_release_cgrid(u32 id);
-  */
- int qman_is_probed(void);
- 
-+/**
-+ * qman_portals_probed - Check if all cpu bound qman portals are probed
-+ *
-+ * Returns 1 if all the required cpu bound qman portals successfully probed,
-+ * -1 if probe errors appeared or 0 if the qman portals did not yet finished
-+ * probing.
-+ */
-+int qman_portals_probed(void);
-+
- /**
-  * qman_dqrr_get_ithresh - Get coalesce interrupt threshold
-  * @portal: portal to get the value for
+ 	struct fman_dts_params dts_params;
+ };
 -- 
 2.17.1
 
