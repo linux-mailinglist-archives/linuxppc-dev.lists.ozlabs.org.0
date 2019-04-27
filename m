@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6997EB3A1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:45:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rscQ6VpjzDqKZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:45:10 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34717B37D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 14:56:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rrXH0qz2zDqYb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 22:56:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.135; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrZs5TNXzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSd4JD1zDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:21 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M3UhO-1hKv3E1nDW-000feT; Sat, 27 Apr 2019 14:52:46 +0200
+ 1MdeSn-1glaAQ1CHx-00ZjUI; Sat, 27 Apr 2019 14:52:47 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 15/41] drivers: tty: serial: uartlite: fix use fix bare
- 'unsigned'
-Date: Sat, 27 Apr 2019 14:51:56 +0200
-Message-Id: <1556369542-13247-16-git-send-email-info@metux.net>
+Subject: [PATCH 16/41] drivers: tty: serial: uartlite: fix overlong lines
+Date: Sat, 27 Apr 2019 14:51:57 +0200
+Message-Id: <1556369542-13247-17-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:H9Hq+xMuwfZXnigABXZrW477+wXowxTgyBBLY0HAV0mnCDYh/e0
- TH2w4PbDOyXyM86Lq7DloZ+B8ibFAqHgCXXMWMGOq9YWJ3Y3vlKsyrAZnSi1E5Li5qxc0Ar
- AY0Hr5JlBrCnebDS4GMDfCcj7dIYVLdfUOg6Bcei5qLQJLaC/QfWMzWDYdXhqXpmqWR3y/g
- yAdYT/Wa4x9gI+B2VhpoQ==
+X-Provags-ID: V03:K1:Ck93dTfp9+M+xebhyVSLDIJuo4MjSGOjDhbkWBRUIflN7U9qSCe
+ pUde8jE0w5A43JR5NuYza+AsYcjHeRQdVwFH5DfzOGQOqRZzgRch+fJcKukuNGfeEOytvZR
+ 5/10Xwz0fpHNGToPKDV3mQbY+HwaGvDTud8ym7VEBca8ousV2I6zja+sNCKPIsmKUiAW4+V
+ hJqAZT0gvkBV1/kztVb2Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:D2oOUfp8uCo=:5lrDda8U5aFZpudo3KrlHw
- QfcRhxGTGMLAHkNzBRnnd+lkn58nSdvpn7c9TUOtolJKzKAO+OHtV4ghnYuB42I+wrqdaJeQA
- gYzoWs33uC4a7MEOzq8e49qWA7R1n0n0CJXL9li7QI/rlHHOjSfmzNdtlYGandPhoSKIZvmze
- MZNSv5A3AiESPc+6rxlOMHPKPhMXZxYwhozZkykdv45FqWIFy3tXM953eirGCdE+zz/ARHgat
- inDIaIanbYbslfbRuGRyZDgiwBLaZ5wBoMw36vPZAqBoB/PebQqlI5oSdjHbqQo8cTAvg5zKx
- Fz8Dga5iu6r26bwr12d4/0kttmebIxOIoYseRF8DO7Hk6PAPhZ0OV+kDQW4QMdDyS22ZbCKBW
- v6sHArgHVJFBy5P/N3j8+k9hJ9bpVK8T+1DDkd4C8oYNMdfE97O8l32iuy1M0xj0Jyrr52TVe
- Y6R5XXFCfdmUx0vkMgfiK90/uHq46F6svsco7pON2WLshBLO7OJK4Y5HoH+m0+H9KX5b8kY7s
- TVJ5KGWYNOKUm8TPEj4gzeLLiCdU02YlIHTDvy1bwOH1SSDC6P1nUfopB+g5e+bAxSIYL1HTu
- sJ20OB/G1JxxPGIzUZa2KTTSoDO3t3r6M79VoqO6FbffsYG64Ppl0en3PtH0FxAt7ec2xRW0S
- DB6fvKXx3fq2SygcFrdjvFulYTqPmWXFVeAqZY1I3+Rgqoi+SBC+HeSGk4J1i+wvp6+yc0Lqh
- 6Hw2xJD0bTtvS6/ZIe53IAofiXy3wk5bOBPxkg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lFLVA5ANqXA=:+nwoqH7LETA5l4ZD6Cy0by
+ 9QQxF9w7JwL9dfUQLkTSklNQAm9TDaWBKAb/AK8KrfiMTcGzLt9Ee5RiujQGuJAuFYCa25OaW
+ PsRCxkE462T85gSy8Pd/1exhcYQsoX46KyLQ4ZKSeHvVV8tbKS/OwkFfGrRHmBQ8UlBeXLZK5
+ ebF4s0a/Z8QgHeSqLp8Mld3p8Su8UoV9Y8qvT6GUpcFbwp930569alSTM8wqnyrp9aFJ3bviY
+ wC6Tzx19GZ9/leyIqE3JEmv02FWM4Ec4A6QWgiqsopsuDAzIuR2eWi4DxrYaPHzxccOjVXhW2
+ RfH12CPwxeEkAGqjze7Djw/S5IYL86ng+BscK9UV3x0uudrqH2DvL3151YkbTo13FkHwqeNnW
+ DIe1MAVVKDPOOe4QN7noYVLhRj71YKuN4gMT/LJ+u880TUoLEHCWMILbm5ZFZyvlzBG6K47hU
+ 9N57YDdSPilc+UdCPlSqXcQ4hJByXjZkI6wRREnTfmyit5sfL61G8Cy9lTvJngnoKEflZ/q/D
+ +VkFl7qZhum7WEPeks7u2yKFDTGflXCZYn2mA1tQq+cnqN0OJ85RJZpWS9w6/wqjPbVQmeHnX
+ K1uOze3TXyWYC56Tqwpenyo+uVz9fCc59R4P6VjWRvoYFvUN2alVsNGhQFk7qhdBWZ+GW9efn
+ J+EJarUbpowxoppGXDdCKd50A08hfJxVUT6cLO8NZbGm/sKEm6hc8cXIke/czqdZS6Z34iUaH
+ iiO7jtF61oWxoOCw5a6wqJbKewrFO8VHKUZg/A==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,41 +73,63 @@ Sender: "Linuxppc-dev"
 
 Fix checkpatch warnings:
 
-    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-    #562: FILE: drivers/tty/serial/uartlite.c:562:
-    +	unsigned retries = 1000000;
+    WARNING: line over 80 characters
+    #283: FILE: drivers/tty/serial/uartlite.c:283:
+    +	ret = request_irq(port->irq, ulite_isr, IRQF_SHARED | IRQF_TRIGGER_RISING,
 
-    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-    #574: FILE: drivers/tty/serial/uartlite.c:574:
-    +				 const char *s, unsigned n)
+    WARNING: Missing a blank line after declarations
+    #577: FILE: drivers/tty/serial/uartlite.c:577:
+    +	struct earlycon_device *device = console->data;
+    +	uart_console_write(&device->port, s, n, early_uartlite_putc);
+
+    WARNING: line over 80 characters
+    #590: FILE: drivers/tty/serial/uartlite.c:590:
+    +OF_EARLYCON_DECLARE(uartlite_b, "xlnx,opb-uartlite-1.00.b", early_uartlite_setup);
+
+    WARNING: line over 80 characters
+    #591: FILE: drivers/tty/serial/uartlite.c:591:
+    +OF_EARLYCON_DECLARE(uartlite_a, "xlnx,xps-uartlite-1.00.a", early_uartlite_setup);
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/uartlite.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/uartlite.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-index 4c28600..6f79353 100644
+index 6f79353..0140cec 100644
 --- a/drivers/tty/serial/uartlite.c
 +++ b/drivers/tty/serial/uartlite.c
-@@ -559,7 +559,7 @@ static void early_uartlite_putc(struct uart_port *port, int c)
- 	 * we'll never timeout on a working UART.
- 	 */
+@@ -280,7 +280,8 @@ static int ulite_startup(struct uart_port *port)
+ 		return ret;
+ 	}
  
--	unsigned retries = 1000000;
-+	unsigned int retries = 1000000;
- 	/* read status bit - 0x8 offset */
- 	while (--retries && (readl(port->membase + 8) & (1 << 3)))
- 		;
-@@ -571,7 +571,7 @@ static void early_uartlite_putc(struct uart_port *port, int c)
- }
- 
- static void early_uartlite_write(struct console *console,
--				 const char *s, unsigned n)
-+				 const char *s, unsigned int n)
+-	ret = request_irq(port->irq, ulite_isr, IRQF_SHARED | IRQF_TRIGGER_RISING,
++	ret = request_irq(port->irq, ulite_isr,
++			  IRQF_SHARED | IRQF_TRIGGER_RISING,
+ 			  "uartlite", port);
+ 	if (ret)
+ 		return ret;
+@@ -574,6 +575,7 @@ static void early_uartlite_write(struct console *console,
+ 				 const char *s, unsigned int n)
  {
  	struct earlycon_device *device = console->data;
++
  	uart_console_write(&device->port, s, n, early_uartlite_putc);
+ }
+ 
+@@ -587,8 +589,10 @@ static int __init early_uartlite_setup(struct earlycon_device *device,
+ 	return 0;
+ }
+ EARLYCON_DECLARE(uartlite, early_uartlite_setup);
+-OF_EARLYCON_DECLARE(uartlite_b, "xlnx,opb-uartlite-1.00.b", early_uartlite_setup);
+-OF_EARLYCON_DECLARE(uartlite_a, "xlnx,xps-uartlite-1.00.a", early_uartlite_setup);
++OF_EARLYCON_DECLARE(uartlite_b, "xlnx,opb-uartlite-1.00.b",
++		    early_uartlite_setup);
++OF_EARLYCON_DECLARE(uartlite_a, "xlnx,xps-uartlite-1.00.a",
++		    early_uartlite_setup);
+ 
+ #endif /* CONFIG_SERIAL_UARTLITE_CONSOLE */
+ 
 -- 
 1.9.1
 
