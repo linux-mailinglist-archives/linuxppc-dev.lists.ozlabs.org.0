@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49461B38F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:17:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453DDB3AD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:01:57 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rszk4JdXzDqTF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:01:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rs0Z5ZtXzDqKj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:17:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrb01xGQzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:58:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSm2lZ3zDqHv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:28 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MoNy4-1h0jOB13NY-00ooZP; Sat, 27 Apr 2019 14:52:55 +0200
+ 1MG9c4-1hYhE40ZmG-00GaDP; Sat, 27 Apr 2019 14:52:56 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 25/41] drivers: tty: serial: timbuart: fix formatting issues
-Date: Sat, 27 Apr 2019 14:52:06 +0200
-Message-Id: <1556369542-13247-26-git-send-email-info@metux.net>
+Subject: [PATCH 26/41] drivers: tty: serial: sunzilog: use dev_info() instead
+ of printk()
+Date: Sat, 27 Apr 2019 14:52:07 +0200
+Message-Id: <1556369542-13247-27-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:dHmoa7nRbvk336kCXOJfWYY+mUp7+Lq3TccEDqKxr5HUdU0dY6C
- yzuj71JxmIOUypO0f3pRhohp2gsNBabdH6V+CbQXryApBGH2Qcpkk/9cghWYtQLFmk7hZJw
- tepHWArJtIL3O9kTqTVYZs321PvyO/k3/FRT6KFOh/DxNZXymlya5ap69Okq5lTHOD9MAiI
- qb5auophN8XTtreo3NFMg==
+X-Provags-ID: V03:K1:mAhDCbido9+iZFtRE4TdsCbv1vAr9Joy1VbiPU+XYBGA3j+D1i7
+ 8tBC3ZCd802YRf6g/j2wz/Rpr+rNfM3/C9qVun5TY7ecwFsuAGNQ9PkxsomQbrK7CQSqD9t
+ lNVdEtEZXMG24nxtzJ9rZ1N16lMRzqr8eSk0ACn+9ciZWtRdbmtCGj6cenKYS6p9eJZMPGK
+ +Gf+FP3wxSs4kFyyMktug==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gjnUy8VjKBc=:6/DHqsP7yN5wzO9+7DC2n8
- lNG/EpmmowAYCu/KGzhIX5p6LhSK32c1yrm86RdntgiIPGYdN8gMaLZCPNnxnwghsQFRAJ5zV
- 9xkdt896UlAtGYFCFPzpOaO1cbPAsThUpqssiRHx1engI+/lkzXk9yABXMY3YCHlXjinOPsTm
- KzI0dHA353sgQlnD6dWM3kFr5I/ygx4Cs7xhhcW6YgjI/81AJ7j9KR0eoXwiM2UpaZHUdv5Fo
- nALAZ5w6CscrZMqX/uPEAH0x8etUEfcXGJHZrh4U7Q9oZANiZqLD9DMXv1+9yIdkAR5XJYYh5
- pBhFM1LhNxD7X7TpGFn16aHdJGVj8/1tLALG17dzuxtQXwNwdaTeIqKukYtxP+ZULUb1RQpkP
- 1yGXAGe7RGMf/TaeT4VuiXdbUtMi+NhQesZBUxFhjwTgKMUy7w3JutjCYV65XHxnn5gjDOtKM
- UJPdpek1o+BLdUd0AcvpwD1rsDsLRqddKOysAxluJZ/AtEiXr+XxGYPYc2a7gMQpo/7Nv85z6
- rkRH6X4G9SHkobTiu1ADzRnH13BfzWnIDBC2/wretXlYyRQKnn2jYL2dvWT+HkIrXzGI72Yzt
- 9JN3tpLmuO+ealCBwKZZN2xrAvuNFosYEJlYoJagelLSdZOMrwNHthgU31iZCjXRa/vKgM+jy
- XYEUKfUU8DV/qvpgHch/zvy4F6lg+4hxgAT6qUFPg0xknu2WCgg6egJURn36Vn5FOaRpHJagq
- WrCZKX9d2oKU+YkR8yqWzaVlLTr7gYIJp5r+mg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0SWS/YPHXl4=:xXTpK4xlmi8jyBmh5+ECF2
+ 2f9XUV5idTnhYPicmiA4uN9epzHkr0tM2wgGgfiaPSshMy4/xofCE6fehmo0kVhDKiF8UVbMG
+ XR8itAO4whaeeAqp9zT5DYaaSKJ2vtlF2N3zWHCsj7pHbAGbhkSM9yxnLE5xXWK/rrI3rNFKs
+ YIL05g1WGyY8xdJe4HFEc4NcJhKh0f6h9LUIcxhmKvH9XKe8ycd0Xe3RywlvzHmnWjcU1z9Vj
+ T6vHj0osI3kq595a3frTeGB0+jpxTiEP9p6T6XiuZvNJcMFcVfR19rf4Gj2yDgphVYvMsQryv
+ Ksrc5FpwDCtuUawC5zqz/Epzic7ZckEfLjO0q7+UoqsY0qU2w5PVM0DrEJwWrMmVrMhIrOFFw
+ 81XKksVUTD4AuR+sXqurAVCxRwn6CXlYCaUeQij0f2JVzNuq7fbmsbAgJpeEfV5/tIPLtdEaR
+ vBt9XarGGDlzVuyi92jSjgdBgtKrY7LZr+9m6ioeJxy2ufRg0N32AcwiJeOcaGThmWCpht23Y
+ m1ocX1+Dlr8+TlglVKRnWgCqKWI2lhH9KcTZN8l27ajs49owlLXy8zkyJUHaswH8NaJ7Vo4HJ
+ /Q2JJ0/z9DlIk0AXgG0IJq1NdJttYEUAtvhk5Ms9Ad6jVBqAzeWwQ3FXaB1XSVn+7YmVjffw6
+ nb8ej0Ia5DlAdpZ4D1aTwGxiigyP+2TidNSBWB6whE/gbiB9kfqBscb0vJZXs8WN/bVMk7qiH
+ gIjVcmF0qrPRPdGta3xTuJy8beZywXyoAWaOnw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,92 +72,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix checkpatch warnings:
-
-    WARNING: Missing a blank line after declarations
-    #43: FILE: drivers/tty/serial/timbuart.c:43:
-    +	u32 ier = ioread32(port->membase + TIMBUART_IER) & ~RXFLAGS;
-    +	iowrite32(ier, port->membase + TIMBUART_IER);
-
-    WARNING: Missing a blank line after declarations
-    #50: FILE: drivers/tty/serial/timbuart.c:50:
-    +	u32 ier = ioread32(port->membase + TIMBUART_IER) & ~TXBAE;
-    +	iowrite32(ier, port->membase + TIMBUART_IER);
-
-    WARNING: Missing a blank line after declarations
-    #86: FILE: drivers/tty/serial/timbuart.c:86:
-    +		u8 ch = ioread8(port->membase + TIMBUART_RXFIFO);
-    +		port->icount.rx++;
-
-    WARNING: Missing a blank line after declarations
-    #202: FILE: drivers/tty/serial/timbuart.c:202:
-    +	u8 cts = ioread8(port->membase + TIMBUART_CTRL);
-    +	dev_dbg(port->dev, "%s - cts %x\n", __func__, cts);
-
-    WARNING: Block comments use * on subsequent lines
-    #296: FILE: drivers/tty/serial/timbuart.c:296:
-    +	/* The serial layer calls into this once with old = NULL when setting
-    +	   up initially */
-
-    WARNING: Block comments use a trailing */ on a separate line
-    #296: FILE: drivers/tty/serial/timbuart.c:296:
+Using dev_info() instead of printk() for more consistent output.
+(prints device name, etc).
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/timbuart.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sunzilog.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/timbuart.c b/drivers/tty/serial/timbuart.c
-index dcce936..d80c332 100644
---- a/drivers/tty/serial/timbuart.c
-+++ b/drivers/tty/serial/timbuart.c
-@@ -40,6 +40,7 @@ static void timbuart_stop_rx(struct uart_port *port)
- {
- 	/* spin lock held by upper layer, disable all RX interrupts */
- 	u32 ier = ioread32(port->membase + TIMBUART_IER) & ~RXFLAGS;
-+
- 	iowrite32(ier, port->membase + TIMBUART_IER);
- }
- 
-@@ -47,6 +48,7 @@ static void timbuart_stop_tx(struct uart_port *port)
- {
- 	/* spinlock held by upper layer, disable TX interrupt */
- 	u32 ier = ioread32(port->membase + TIMBUART_IER) & ~TXBAE;
-+
- 	iowrite32(ier, port->membase + TIMBUART_IER);
- }
- 
-@@ -83,6 +85,7 @@ static void timbuart_rx_chars(struct uart_port *port)
- 
- 	while (ioread32(port->membase + TIMBUART_ISR) & RXDP) {
- 		u8 ch = ioread8(port->membase + TIMBUART_RXFIFO);
-+
- 		port->icount.rx++;
- 		tty_insert_flip_char(tport, ch, TTY_NORMAL);
- 	}
-@@ -199,6 +202,7 @@ static void timbuart_tasklet(unsigned long arg)
- static unsigned int timbuart_get_mctrl(struct uart_port *port)
- {
- 	u8 cts = ioread8(port->membase + TIMBUART_CTRL);
-+
- 	dev_dbg(port->dev, "%s - cts %x\n", __func__, cts);
- 
- 	if (cts & TIMBUART_CTRL_CTS)
-@@ -293,7 +297,8 @@ static void timbuart_set_termios(struct uart_port *port,
- 	baud = baudrates[bindex];
- 
- 	/* The serial layer calls into this once with old = NULL when setting
--	   up initially */
-+	 * up initially
-+	 */
- 	if (old)
- 		tty_termios_copy_hw(termios, old);
- 	tty_termios_encode_baud_rate(termios, baud, baud);
-@@ -500,4 +505,3 @@ static int timbuart_remove(struct platform_device *dev)
- MODULE_DESCRIPTION("Timberdale UART driver");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:timb-uart");
--
+diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
+index bc7af8b..6285bba 100644
+--- a/drivers/tty/serial/sunzilog.c
++++ b/drivers/tty/serial/sunzilog.c
+@@ -1489,14 +1489,12 @@ static int zs_probe(struct platform_device *op)
+ 		}
+ 		uart_inst++;
+ 	} else {
+-		printk(KERN_INFO "%s: Keyboard at MMIO 0x%llx (irq = %d) "
++		dev_info(&op->dev, "Keyboard at MMIO 0x%llx (irq = %d) "
+ 		       "is a %s\n",
+-		       dev_name(&op->dev),
+ 		       (unsigned long long) up[0].port.mapbase,
+ 		       op->archdata.irqs[0], sunzilog_type(&up[0].port));
+-		printk(KERN_INFO "%s: Mouse at MMIO 0x%llx (irq = %d) "
++		dev_info(&op->dev, "Mouse at MMIO 0x%llx (irq = %d) "
+ 		       "is a %s\n",
+-		       dev_name(&op->dev),
+ 		       (unsigned long long) up[1].port.mapbase,
+ 		       op->archdata.irqs[0], sunzilog_type(&up[1].port));
+ 		kbm_inst++;
 -- 
 1.9.1
 
