@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69596B3FE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 18:47:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1ADB3F9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 18:41:17 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rxWZ50FczDqgx
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 02:41:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rxfy7593zDqd0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 02:47:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lunn.ch
- (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+3f90203c368c328dc3a3+5725+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lunn.ch
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=lunn.ch header.i=@lunn.ch header.b="NP4Xq1US"; 
- dkim-atps=neutral
-X-Greylist: delayed 456 seconds by postgrey-1.36 at bilbo;
- Sun, 28 Apr 2019 02:39:48 AEST
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rxTw6YQBzDqbh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 02:39:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
- s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
- Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=3x96KLf+7WG5HZo66dPuyudWlNtB7m+kcjzsKB7rZzg=; b=NP4Xq1USCnJhhYgYDDYXEAfO7F
- FGgqIcxVfyzF/TNICY/nGs8WP7a4PxioELoSKoCFgpAu3TA2hS6u0jXIgcnYNXUS0c/DcMANKnWb3
- WaCK+nEJcGW7H4R96huF6cNNCPFWroHi82Or7gh9W1yQdJIRu+R0A5bwWFXhP1+YNzSU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.89)
- (envelope-from <andrew@lunn.ch>)
- id 1hKQMF-0002l5-3c; Sat, 27 Apr 2019 18:39:23 +0200
-Date: Sat, 27 Apr 2019 18:39:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>
-Subject: Re: [PATCH 2/4] dt-bindings: doc: Reflect new NVMEM
- of_get_mac_address behaviour
-Message-ID: <20190427163923.GC9816@lunn.ch>
-References: <1556320002-26213-1-git-send-email-ynezz@true.cz>
- <1556320002-26213-3-git-send-email-ynezz@true.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rxdR4NCWzDqbh
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 02:46:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=3A4MMVFyJaHzHHkM6gHiD57x9smeH3QHU7KPXmbZSDw=; b=JFslVtbqb8Xk7UezEFwCOzsYq
+ Z5Aq2Y8zTTk/51MJN1Ed1yMVT19PprZKmDEFj46MAfuXJV5chkPuzPZqP0Lplm7tgTy+m9hW1IPMI
+ Dlvjg0nWkgVsCdsVf0JGrGxcrLXnafW00jFTiJxun/0fMpr10ILMzOjXnhdKzwuNpGy6Xzh4kw8Hi
+ fa/PPcK89psBW4qLC510FYerG4xn0hYW8TuaG+SnKEdUvdEnIc47HCZGllN6BlIFHTrxiuQnVgilo
+ vSqlQ/Ov084psRj/0LeF7fevR94oXo07muDL90zv2NWuemOC+yjiDtNedJg0sR/cw8Or3XA1cLRa7
+ WErQZxx0Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
+ Hat Linux)) id 1hKQSr-0004Wb-09; Sat, 27 Apr 2019 16:46:13 +0000
+Date: Sat, 27 Apr 2019 09:46:12 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: laurentiu.tudor@nxp.com
+Subject: Re: [PATCH v2 7/9] dpaa_eth: fix iova handling for contiguous frames
+Message-ID: <20190427164612.GA12450@infradead.org>
+References: <20190427071031.6563-1-laurentiu.tudor@nxp.com>
+ <20190427071031.6563-8-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1556320002-26213-3-git-send-email-ynezz@true.cz>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190427071031.6563-8-laurentiu.tudor@nxp.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,59 +61,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Heiko Stuebner <heiko@sntech.de>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Neil Armstrong <narmstrong@baylibre.com>,
- Maxime Ripard <maxime.ripard@bootlin.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Li Yang <leoyang.li@nxp.com>, Frank Rowand <frowand.list@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- Florian Fainelli <f.fainelli@gmail.com>, linux-rockchip@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Woojung Huh <woojung.huh@microchip.com>, devicetree@vger.kernel.org,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Jassi Brar <jaswinder.singh@linaro.org>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- linux-mediatek@lists.infradead.org, Matthias Brugger <matthias.bgg@gmail.com>,
- Kalle Valo <kvalo@codeaurora.org>, Salil Mehta <salil.mehta@huawei.com>,
- Fugang Duan <fugang.duan@nxp.com>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alban Bedel <albeu@free.fr>,
- linux-oxnas@groups.io, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Heiner Kallweit <hkallweit1@gmail.com>
+Cc: madalin.bucur@nxp.com, netdev@vger.kernel.org, roy.pledge@nxp.com,
+ linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
+ iommu@lists.linux-foundation.org, camelia.groza@nxp.com,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/Documentation/devicetree/bindings/net/macb.txt b/Documentation/devicetree/bindings/net/macb.txt
-> index 8b80515..92c5642 100644
-> --- a/Documentation/devicetree/bindings/net/macb.txt
-> +++ b/Documentation/devicetree/bindings/net/macb.txt
-> @@ -26,15 +26,15 @@ Required properties:
->  	Optional elements: 'tsu_clk'
->  - clocks: Phandles to input clocks.
->  
-> -Optional properties:
-> -- nvmem-cells: phandle, reference to an nvmem node for the MAC address
-> -- nvmem-cell-names: string, should be "mac-address" if nvmem is to be used
-> -
->  Optional properties for PHY child node:
->  - reset-gpios : Should specify the gpio for phy reset
->  - magic-packet : If present, indicates that the hardware supports waking
->    up via magic packet.
->  - phy-handle : see ethernet.txt file in the same directory
-> +- mac-address: See ethernet.txt in the same directory.
-> +- local-mac-address: See ethernet.txt in the same directory.
-> +- nvmem-cells: See ethernet.txt in the same directory.
-> +- nvmem-cell-names: See ethernet.txt in the same directory.
+On Sat, Apr 27, 2019 at 10:10:29AM +0300, laurentiu.tudor@nxp.com wrote:
+> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> 
+> The driver relies on the no longer valid assumption that dma addresses
+> (iovas) are identical to physical addressees and uses phys_to_virt() to
+> make iova -> vaddr conversions. Fix this by adding a function that does
+> proper iova -> phys conversions using the iommu api and update the code
+> to use it.
+> Also, a dma_unmap_single() call had to be moved further down the code
+> because iova -> vaddr conversions were required before the unmap.
+> For now only the contiguous frame case is handled and the SG case is
+> split in a following patch.
+> While at it, clean-up a redundant dpaa_bpid2pool() and pass the bp
+> as parameter.
 
-This looks wrong. The MAC address is not a PHY property, so should not
-be inside the PHY child node.
-
-phy-handle is in the wrong place, but that is a separate problem.
-
-	   Andrew
+Err, this is broken.  A driver using the DMA API has no business
+call IOMMU APIs.  Just save the _virtual_ address used for the mapping
+away and use that again.  We should not go through crazy gymnastics
+like this.
