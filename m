@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1E8B393
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500DCB3B2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 16:10:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rs6s1WGczDqQ4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:23:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rt9j4cn8zDqGp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2019 00:10:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
  envelope-from=info@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSw1xDHzDqZ3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrbK0TtwzDqLX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:59:08 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MkYkI-1gvnxz13qI-00m5Hh; Sat, 27 Apr 2019 14:53:01 +0200
+ 1M2wCi-1hLTog0PAy-003R4p; Sat, 27 Apr 2019 14:53:02 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 32/41] drivers: tty: serial: 21285: define's for address/size,
- use mapsize field
-Date: Sat, 27 Apr 2019 14:52:13 +0200
-Message-Id: <1556369542-13247-33-git-send-email-info@metux.net>
+Subject: [PATCH 33/41] drivers: tty: serial: zs: use dev_err() instead of
+ printk()
+Date: Sat, 27 Apr 2019 14:52:14 +0200
+Message-Id: <1556369542-13247-34-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:iEBl2J6aAGLLUc9gogjDel0fwK0zVBbCxPMJri/kbrSvb4JuRHU
- dMsu93FBbFwYR3dVsvSh1GJRRBnAct7RY5hnMruBRe4fpX6nxjKZ9a+FpdnPqRrRM6zajm/
- Zq6YvL7nAO4JNPTwsDDpcQwnA8FjfR6ICxhwBH3BRm3TCq2eoup3NR3iCqD3FNfZx2YoV/8
- V7MKmxrrBIOBo3I5f/tZw==
+X-Provags-ID: V03:K1:QF40RLIzjg39yF+kkJLwWE6eyJO2lDQl6Yzy88yH5771K+U+/wt
+ 1Wjl3D+kIur6TBPIOh4jOyMYXzSox/0XX1Hcf4zFuPQmKc9TKSN1fBoJRYlf+0M/kOR3PC/
+ l9Y251gM1AKpBxtXImahYkduMkU7yDZeVYsF1N1b7uZfo2UV2TlEEwBb0bCY34hAZbZneXk
+ NbA8aA4/MktrW0coiKTyQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:93H1R8MWbBw=:L0iEwc82GdE63pmHfe42UJ
- uQxcquJ3aJJ6XagNGb5FGjO5+Gqe68JZ8HjPmYBjEOz5cxI4FLV/EJb7ZZ4Y1tXzXf5DmiQSC
- jGjsnJLejS63nxXDdr7G7i1Zj87ckczGHw41+SX07w+g0h/OAWEt0Qrpak9E3FGVcyCmOJUga
- hbJqfS4JWsxbQKPw0kI+6ndJ373LfddM/MvpO5ERt4PzWcL0nspeNGet1o9gjCpUiD9nD01IT
- LngnK8dwnJOnWh/L/7tvgAI9bkBVglAvI4stcaTG+KJ02WFNPNQFlNn3tX8C/qqQ5ZoVtoH0o
- YCOtR2V+YpRlbPmvzp/NjwosNMtNg2fr2A4+jp8LVxwHEKx6Mq9rQlCZn48cIitdMCx3u2/8Z
- M7TdoDS9GdEIVYbxytMx9G63q7f34b7N4ovgVOyFqvk3EDR2ExnMQfI79d7+TthEa+OBHcMcP
- hc4ClgExLQpo/LSINaPEy9n00HY/I4d9QypfPIAHCYEnzCXADrc2t7CkhNepxTht+kgBJy1aS
- k+FsfSyCi2AqYiHiKoYXXuhlarg3YviDJeu51x/XK4YxQPvIdXBJG5P2i6KsHaq6UluVDG+QC
- qwQkfxB5GTCJhn4IkC2Um1VQxHSOGPJji3pBLjiV5pKZyGr1odsWyJb3bcwdxoTWDC1A0LmcQ
- VW3zq4vScC/GbUtZRrJdUVGJaF/4tuvZLntHWr9wcbtii+rDlmL0H4rk+Paj3NeMT503X+vXM
- zHbXOUjI7IZVWOStZx9mJyCXuG7NHF8tiIcRnA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PUEIAZHq084=:kxQMrXXEM11XkaImEQol+w
+ YRDcBRFVIfJV/kZpoTtR3bHPPNubpwQ7L9FlRGCd1xACbBhX2X9/DK4LUw8062FZnQswsMCpZ
+ aAxvH2fDWo0piTBjlBhh5WKxTMf/2NdY0bGl8KvANiJmVr8N3btRCf4twxtWgoaM2yQlvx9Dh
+ XX1W2DVx7AW/84N/b1/Qp40K+Uov6Mtc+JCnVHuehXjvoeVbL94pxRcRVNaHLnmJoN67b8R9T
+ Z2DQh6rRomE0Xn0QWOVfzQeux5PT7vOu7PNyRhmElwC7KOOfG9OZ4RlBtgu8MyY1+px0473p8
+ 7BoepyA+XJmpF6bm7lpsbwAkIyB01RMOyARkYp0B7XYHb8m5MNrOdJFPQQdpVAYUpjMVwAeOA
+ 3AnSE3gnazF3GghmURzxARDymYGOK2OG92ix0oQ/Mn9CAFRiTdP5vLKjuU5zx/53PAMbktFVQ
+ Ofi9MttGWE1lXfXQ2Js+qs2VnA80M6YnjSefpWu4gLeQ9hrverj6UipU00xRtpJcND/HLgwB8
+ 86FKuRfg6ZIdG8hkJ36pYeLp+cA+qeNsaNvhZ/vxTHE8HxNB12/lqkIyDz9/C4OsNRYgcSvhz
+ rhY4Axk21INx26qURBJm+xTpHFrpsEDdYuBLmR7fqp/mCOMItkRRJoWGX9rxsu/FP3r8E5gBH
+ +GjN8e2uue3oQZyfU+v0B9LgPNRv5q5NX7cxHgX9eBzVe7u0l+I+giY5mmQxqMTLmDhHME0V6
+ xOUf5VJvIC5tXkV9iOU1J3YxRZ2V8igq50uU7A==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,56 +72,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of hardcoding raw numbers, add define's for the mmio address/size.
-Also fill the mapsize field and use it on mem request/release calls, for
-more consistency and allowing generic helpers to be used later.
+Using dev_err() instead of printk() for more consistent output.
+(prints device name, etc).
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/21285.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/tty/serial/zs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/21285.c b/drivers/tty/serial/21285.c
-index 32b3acf..90684cd 100644
---- a/drivers/tty/serial/21285.c
-+++ b/drivers/tty/serial/21285.c
-@@ -27,6 +27,9 @@
- #define SERIAL_21285_MAJOR	204
- #define SERIAL_21285_MINOR	4
+diff --git a/drivers/tty/serial/zs.c b/drivers/tty/serial/zs.c
+index b03d3e4..adbfe79 100644
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -767,7 +767,7 @@ static int zs_startup(struct uart_port *uport)
+ 				  IRQF_SHARED, "scc", scc);
+ 		if (ret) {
+ 			atomic_add(-1, &scc->irq_guard);
+-			printk(KERN_ERR "zs: can't get irq %d\n",
++			dev_err(uport->dev, "zs: can't get irq %d\n",
+ 			       zport->port.irq);
+ 			return ret;
+ 		}
+@@ -995,7 +995,7 @@ static int zs_map_port(struct uart_port *uport)
+ 		uport->membase = ioremap_nocache(uport->mapbase,
+ 						 ZS_CHAN_IO_SIZE);
+ 	if (!uport->membase) {
+-		printk(KERN_ERR "zs: Cannot map MMIO\n");
++		dev_err(port->dev, "zs: Cannot map MMIO\n");
+ 		return -ENOMEM;
+ 	}
+ 	return 0;
+@@ -1006,7 +1006,7 @@ static int zs_request_port(struct uart_port *uport)
+ 	int ret;
  
-+#define SERIAL_21285_ADDRESS	0x42000160
-+#define SERIAL_21285_SIZE	32
-+
- #define RXSTAT_DUMMY_READ	0x80000000
- #define RXSTAT_FRAME		(1 << 0)
- #define RXSTAT_PARITY		(1 << 1)
-@@ -305,12 +308,14 @@ static const char *serial21285_type(struct uart_port *port)
- 
- static void serial21285_release_port(struct uart_port *port)
- {
--	release_mem_region(port->mapbase, 32);
-+	release_mem_region(port->mapbase, port->mapsize);
- }
- 
- static int serial21285_request_port(struct uart_port *port)
- {
--	return request_mem_region(port->mapbase, 32, serial21285_name)
-+	return request_mem_region(port->mapbase,
-+				  port->mapsize,
-+				  serial21285_name)
- 			 != NULL ? 0 : -EBUSY;
- }
- 
-@@ -354,7 +359,8 @@ static int serial21285_verify_port(struct uart_port *port, struct serial_struct
- };
- 
- static struct uart_port serial21285_port = {
--	.mapbase	= 0x42000160,
-+	.mapbase	= SERIAL_21285_BASE,
-+	.mapsize	= SERIAL_21285_SIZE,
- 	.iotype		= UPIO_MEM,
- 	.irq		= 0,
- 	.fifosize	= 16,
+ 	if (!request_mem_region(uport->mapbase, ZS_CHAN_IO_SIZE, "scc")) {
+-		printk(KERN_ERR "zs: Unable to reserve MMIO resource\n");
++		dev_err(uport->dev, "zs: Unable to reserve MMIO resource\n");
+ 		return -EBUSY;
+ 	}
+ 	ret = zs_map_port(uport);
 -- 
 1.9.1
 
