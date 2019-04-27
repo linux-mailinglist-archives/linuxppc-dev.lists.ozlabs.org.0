@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33B3B38C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:13:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B479B381
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 15:03:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44rrhG2PFnzDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:03:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44rrvx33v3zDqY2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2019 23:13:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,36 +18,37 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSd4HvVzDqYM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44rrSg3LjwzDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2019 22:53:15 +1000 (AEST)
 Received: from orion.localdomain ([77.2.90.210]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1Mspy4-1gVqbE43aa-00tCHb; Sat, 27 Apr 2019 14:52:37 +0200
+ 1Mzz6s-1gXTgh3Td8-00x1Ur; Sat, 27 Apr 2019 14:52:37 +0200
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 04/41] drivers: tty: serial: dz: fix use fix bare 'unsigned'
-Date: Sat, 27 Apr 2019 14:51:45 +0200
-Message-Id: <1556369542-13247-5-git-send-email-info@metux.net>
+Subject: [PATCH 05/41] drivers: tty: serial: dz: use pr_info() instead of
+ incomplete printk()
+Date: Sat, 27 Apr 2019 14:51:46 +0200
+Message-Id: <1556369542-13247-6-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:CBJBinnswYpZ8Sdk7wFOAsULywVOOhB0O51QI1ZS6aG2XtvP5Ax
- rUdddfq4rw+u/9EFqOQzXc3/JM5V7fsK23L/z85bPCOANxd2GuzAoLWyurSK9Ii+GNlroRp
- D+hqD+3RuR/9qgEHat/Ucs2oZfFOYySxVG+wr6Q+wrWn6MY4YELLqYiMi6+Z1GHMHZ9Sbi6
- A0dnBU9i+mqDN3d/fmLxg==
+X-Provags-ID: V03:K1:0divRPlMaEn/Gqkn0bF/qffr0mtJMzUIhhcgUCpKp3L8QfEx3BT
+ Sct6DXQKPsKml0HbjLEbqZ0BVdAAcNgJ6gXOI6JC8K/1+PAe8EFl5Aq1lbdbexf9MvYSvJI
+ wDh21F+qIQxeFuU3Myc3hkjl/lhNuC86c6zCO8DZIQRpkFEogbQN+oxEVR+QjYaXv/F2Er3
+ D3Hg7fjgdOldNL+SYlAwQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MH/lZafoCx0=:C6VQMV1HsKH9OxnmfiwWwi
- ls6ASJ0mneciKIXS+1V+wSxBJcpan2IpZ08XLTD6SYv7YXOIMII1L/KWbG0T9oFUOLphs/Fg3
- l2AlwPRiDgZqonUsBVKpGTsKSv27ETHk1u8CP6XiFhZ9cNW2T3FLm/M/RZiJJEVU+b4hat+oG
- V/t5hoDjxIiN6XeMIGY3ZKep3tzRsiG+Yf5WrxF7xmHK3ns0GM3BNTiW1nXz2EqwNDtGAyeZq
- Vvqo3PBXcwPXiB6IUXXnKOdfKgojhgqctY7SufpZAYrm+1D2LBSe3PgUHcGQeS6y3DDBI1EER
- ik2lMkxjtSrUzyrZhTKgo1kjcSBthFwMG5B29FUWZC9SlsTzEYflKLY1mlrZ/DBKrktMH6+KG
- e3fXGk80CchhUtjMmL7Eyykp3o924p2zhQIBYAL0puuxE6/cYR/3HyeTlGe42KZuMH9EZn0+g
- n/3ogS9RFBh7aesoWqrAsTgXRq6ILeiUjg/9gPYWefwJguOeS1NTOW2WOOrphR2Dfrcvy72gC
- mu2hsdgjoNnA4njyhs3XxuFnlYyWLsuBOT3jqHXTTXDPK9vFMOFSfp50AeuB6lwEo12Rxs0Ip
- 8eo0NdOrxwE+PMaT+iD6IJzKHMvoTFwflMb6JOcc69Pg8tOMFpOm2QWk0WlCbVyrrlaOAVFD2
- JxVH/iny2tox/lLVNnjx1smE1j9T7d7BKieB2e6XjF/H3MzZFm2Qw/hD3pnmYq+Kcy8sdTENK
- uVS7NH13R3Km3ewXsX6v4Ea4yuju79Q+cCDxjQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+RM97HlEygc=:XCYgbldeM4fHTujSYLo9ci
+ ZNeOghoSWPCt1C8c6NBMLSfGNddK58lmCDc3rlfBH3ynfXNXoutb/zjRBWM8D3BIY49a4i4UE
+ w61HuHHGGrE/nW055rXaTuGx9TatMuVoyD47DJXczfb3oO2GbP0EmAQmzpC+6kDBZdseEXdDC
+ Q/7Dzh91Dv5viwhjSOg8QB3blGvc6npMCA3+LRAVdg7cmGKN+31NplbmdslmfdvUCt7Zt8txu
+ wu1qVJ20ms6soMtiV40LnA1aD9QGbuHc7kSx8ChK0JcxawU9TBzFvD7nHcdQCkga/Pam6wIlh
+ SozaRebsNHrmz6K0Nxx5GSTQPTFKcxIbQTjsZTv+UXWB6g6MdVA8xNYDMcxFB3I9a/OOa1+q6
+ SDNeRbSCUbiTqPPGCr4Wlwd5pr0t1wGkI38yOimXepPKVf4067XO8agDegepX6eMqr1dnbVEl
+ 7E6hKunNpdkhyB0sNKvUPq+uvwV2l/VdX95oOhRD4521oJmMRY3DJ+fuI9JwMF0+0d43RkioS
+ NAq5fkYK+cja/PvgpcgRoKs9fOqvE/DvkG7oyD8aLe7kzR0MXQDK6+nm2GtMVAfo9rLlZIslt
+ eYSqlXLx6iAbP5p7IGgKyS6G3mEq0IT3MizlVzwRrPBrTI6P7aSZVck/9N5HOec9ocrRvZ2zy
+ eP3CmOH7ndIUhAxgSzvJujudRMq1laldwLQ9qL1Fz34ZpgICHygnXc7BQ2s/IBPS3Nvdokjth
+ xKIhRxBJYIbWNhrxBOQ1AQzGdb2SfJPFzpfkeQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,41 +72,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix checkpatch warnings:
+Fix the checkpatch warning:
 
-    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-    #103: FILE: dz.c:103:
-    +static u16 dz_in(struct dz_port *dport, unsigned offset)
-
-    WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-    #110: FILE: dz.c:110:
-    +static void dz_out(struct dz_port *dport, unsigned offset, u16 value)
+    WARNING: printk() should include KERN_<LEVEL> facility level
+    #934: FILE: dz.c:934:
+    +	printk("%s%s\n", dz_name, dz_version);
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- drivers/tty/serial/dz.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/dz.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/dz.c b/drivers/tty/serial/dz.c
-index b3e9313..559d076 100644
+index 559d076..e2670c4 100644
 --- a/drivers/tty/serial/dz.c
 +++ b/drivers/tty/serial/dz.c
-@@ -100,14 +100,14 @@ static inline struct dz_port *to_dport(struct uart_port *uport)
-  * ------------------------------------------------------------
-  */
+@@ -931,7 +931,7 @@ static int __init dz_init(void)
+ 	if (IOASIC)
+ 		return -ENXIO;
  
--static u16 dz_in(struct dz_port *dport, unsigned offset)
-+static u16 dz_in(struct dz_port *dport, unsigned int offset)
- {
- 	void __iomem *addr = dport->port.membase + offset;
+-	printk("%s%s\n", dz_name, dz_version);
++	pr_info("%s%s\n", dz_name, dz_version);
  
- 	return readw(addr);
- }
- 
--static void dz_out(struct dz_port *dport, unsigned offset, u16 value)
-+static void dz_out(struct dz_port *dport, unsigned int offset, u16 value)
- {
- 	void __iomem *addr = dport->port.membase + offset;
+ 	dz_init_ports();
  
 -- 
 1.9.1
