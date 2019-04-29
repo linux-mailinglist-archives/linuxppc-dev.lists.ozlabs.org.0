@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B444E0DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:52:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846C5E0D8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:50:58 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1fS0Jm6zDqGB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:50:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1gz6FC7zDqM0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:52:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Mw0z8BzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0My0TSgzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="j33W6qxK"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="WdEqVyhl"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Mv6M6lz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Mx6YWwz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:17 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0Mv5Nr2z9sML; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
+ id 44t0Mx5vTzz9sCJ; Mon, 29 Apr 2019 19:53:17 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="j33W6qxK"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="WdEqVyhl"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Mv0rMcz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Mx16tBz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:17 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8A35820449;
- Mon, 29 Apr 2019 09:53:12 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2F87A206BF;
+ Mon, 29 Apr 2019 09:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531593;
- bh=EhD4hZrhE+NtZNPD6wGeOCaNU7jgV1aX9ikXIYnRpco=;
+ s=default; t=1556531595;
+ bh=aRgh64GW2w1UVgZOiZFmAA8SkdACvSo/6Xi++cdnK4o=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=j33W6qxK5aeY3ezy6bOvfqVBB+39qQ9SomRS3REpB7iNma66LXBHclldS5FSt6LMR
- BOXfaX9zOiq86YfobS066UzvoGXIkWyXYR9jud2UEnp73lY+YNGRLx9wLXu4SzUc5I
- VDIURybjbvetvBce+PkQX/wTwqnO2vojr5xw/Ets=
-Subject: Patch "powerpc/pseries: Set or clear security feature flags" has been
- added to the 4.4-stable tree
+ b=WdEqVyhljXJtUw1ZKV2F8sua85FawyBWvyK+N9VrEE/GG0Gh7LYE4Szu5u+R2C/C5
+ c9KtPcysVyX6f/CePAcaRR7czx43ycdXFy9PQSsViT0/lB2hTC1M6vLQRucE2Yny1n
+ qaDBTQqHaVTEpRYGkhegFtzU3dUlewg2pBpT1wew=
+Subject: Patch "powerpc/pseries: Add new H_GET_CPU_CHARACTERISTICS flags" has
+ been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:28 +0200
-In-Reply-To: <20190421142037.21881-13-mpe@ellerman.id.au>
-Message-ID: <155653148825420@kroah.com>
+In-Reply-To: <20190421142037.21881-10-mpe@ellerman.id.au>
+Message-ID: <15565314885987@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/pseries: Set or clear security feature flags
+    powerpc/pseries: Add new H_GET_CPU_CHARACTERISTICS flags
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-pseries-set-or-clear-security-feature-flags.patch
+     powerpc-pseries-add-new-h_get_cpu_characteristics-flags.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,98 +101,37 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:19:57 +1000
-Subject: powerpc/pseries: Set or clear security feature flags
+Date: Mon, 22 Apr 2019 00:19:54 +1000
+Subject: powerpc/pseries: Add new H_GET_CPU_CHARACTERISTICS flags
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-13-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-10-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit f636c14790ead6cc22cf62279b1f8d7e11a67116 upstream.
+commit c4bc36628d7f8b664657d8bd6ad1c44c177880b7 upstream.
 
-Now that we have feature flags for security related things, set or
-clear them based on what we receive from the hypercall.
+Add some additional values which have been defined for the
+H_GET_CPU_CHARACTERISTICS hypercall.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/setup.c |   43 +++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ arch/powerpc/include/asm/hvcall.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -67,6 +67,7 @@
- #include <asm/eeh.h>
- #include <asm/reg.h>
- #include <asm/plpar_wrappers.h>
-+#include <asm/security_features.h>
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -292,6 +292,9 @@
+ #define H_CPU_CHAR_L1D_FLUSH_ORI30	(1ull << 61) // IBM bit 2
+ #define H_CPU_CHAR_L1D_FLUSH_TRIG2	(1ull << 60) // IBM bit 3
+ #define H_CPU_CHAR_L1D_THREAD_PRIV	(1ull << 59) // IBM bit 4
++#define H_CPU_CHAR_BRANCH_HINTS_HONORED	(1ull << 58) // IBM bit 5
++#define H_CPU_CHAR_THREAD_RECONFIG_CTRL	(1ull << 57) // IBM bit 6
++#define H_CPU_CHAR_COUNT_CACHE_DISABLED	(1ull << 56) // IBM bit 7
  
- #include "pseries.h"
- 
-@@ -499,6 +500,40 @@ static void __init find_and_init_phbs(vo
- 	of_pci_check_probe_only();
- }
- 
-+static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
-+{
-+	if (result->character & H_CPU_CHAR_SPEC_BAR_ORI31)
-+		security_ftr_set(SEC_FTR_SPEC_BAR_ORI31);
-+
-+	if (result->character & H_CPU_CHAR_BCCTRL_SERIALISED)
-+		security_ftr_set(SEC_FTR_BCCTRL_SERIALISED);
-+
-+	if (result->character & H_CPU_CHAR_L1D_FLUSH_ORI30)
-+		security_ftr_set(SEC_FTR_L1D_FLUSH_ORI30);
-+
-+	if (result->character & H_CPU_CHAR_L1D_FLUSH_TRIG2)
-+		security_ftr_set(SEC_FTR_L1D_FLUSH_TRIG2);
-+
-+	if (result->character & H_CPU_CHAR_L1D_THREAD_PRIV)
-+		security_ftr_set(SEC_FTR_L1D_THREAD_PRIV);
-+
-+	if (result->character & H_CPU_CHAR_COUNT_CACHE_DISABLED)
-+		security_ftr_set(SEC_FTR_COUNT_CACHE_DISABLED);
-+
-+	/*
-+	 * The features below are enabled by default, so we instead look to see
-+	 * if firmware has *disabled* them, and clear them if so.
-+	 */
-+	if (!(result->character & H_CPU_BEHAV_FAVOUR_SECURITY))
-+		security_ftr_clear(SEC_FTR_FAVOUR_SECURITY);
-+
-+	if (!(result->character & H_CPU_BEHAV_L1D_FLUSH_PR))
-+		security_ftr_clear(SEC_FTR_L1D_FLUSH_PR);
-+
-+	if (!(result->character & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
-+		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
-+}
-+
- void pseries_setup_rfi_flush(void)
- {
- 	struct h_cpu_char_result result;
-@@ -512,6 +547,8 @@ void pseries_setup_rfi_flush(void)
- 
- 	rc = plpar_get_cpu_characteristics(&result);
- 	if (rc == H_SUCCESS) {
-+		init_cpu_char_feature_flags(&result);
-+
- 		if (result.character & H_CPU_CHAR_L1D_FLUSH_TRIG2)
- 			types |= L1D_FLUSH_MTTRIG;
- 		if (result.character & H_CPU_CHAR_L1D_FLUSH_ORI30)
-@@ -522,6 +559,12 @@ void pseries_setup_rfi_flush(void)
- 			enable = false;
- 	}
- 
-+	/*
-+	 * We're the guest so this doesn't apply to us, clear it to simplify
-+	 * handling of it elsewhere.
-+	 */
-+	security_ftr_clear(SEC_FTR_L1D_FLUSH_HV);
-+
- 	setup_rfi_flush(types, enable);
- }
- 
+ #define H_CPU_BEHAV_FAVOUR_SECURITY	(1ull << 63) // IBM bit 0
+ #define H_CPU_BEHAV_L1D_FLUSH_PR	(1ull << 62) // IBM bit 1
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
