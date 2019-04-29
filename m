@@ -1,57 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2CBDFBE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:46:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1D0DED6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:11:37 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44szRp548LzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:11:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0DQ1y00zDqQQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:46:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.47; helo=mail-ot1-f47.google.com;
- envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=metux.net
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
- [209.85.210.47])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=metux.net
+X-Greylist: delayed 10459 seconds by postgrey-1.36 at bilbo;
+ Mon, 29 Apr 2019 19:44:02 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44szNf6B0QzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:08:50 +1000 (AEST)
-Received: by mail-ot1-f47.google.com with SMTP id b18so1664362otq.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 02:08:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=2VWJO2MGiduBgVwh+y0rSMdiohlU2hlJmSsmX8IMxNI=;
- b=M++RhD0uq23pzaFCVgcGqv8ccid/Nx3rEt75y1R2kdcpeZAFyAzdU5vP27ud+6ReMe
- 9WVVO7SepZgXwmRrmjddv9B420tLAxFBdirYeMZpcRQs0iP/lNPklViU41skegrudA3Q
- SSbqXYXChW+EmRPJYFUL61co74vaDH0+q+TBg/QppcTxkridmA4KqNejfk86tRHBFlGl
- vWyrdVEKfWJnei7eHPSjzVnv7P4nyaeYlbLlJtV7N8sIan2jd7KDzzUlP5WJ9jwrQZy6
- +1ros1bWr/5fQNjHpV++ayUqXwyRoKth48M6/He/T3YMm1tUJmJK3Mebnc1iwftgnwVu
- /nwg==
-X-Gm-Message-State: APjAAAVvhz/YWYTDMGqwYeVdp/VD8o5yCwIohb0Cyl3NcRymIbf7ntTS
- ZvnOJkzOdN6iJhvFWXC1pLE2qpSxH9iq8lTDxJQ=
-X-Google-Smtp-Source: APXvYqxhvgorRjOjGR5KwL0tVgrlRLyMivMC1DNNtT60AWmSWUv/MAR76xN6ZmJSFy/scEaQioWysRLnEkElcaBCY80=
-X-Received: by 2002:a9d:6e17:: with SMTP id e23mr7531429otr.65.1556528928156; 
- Mon, 29 Apr 2019 02:08:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t09G4JB8zDqNT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:44:01 +1000 (AEST)
+Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1N2m3G-1gdyq42eM8-0133kZ; Mon, 29 Apr 2019 11:43:20 +0200
+Subject: Re: [PATCH 40/41] drivers: tty: serial: helper for setting mmio range
+To: Esben Haabendal <esben@haabendal.dk>,
+ "Enrico Weigelt, metux IT consult" <info@metux.net>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+ <1556369542-13247-41-git-send-email-info@metux.net>
+ <87ef5lz423.fsf@haabendal.dk>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <d0b966eb-46b7-d145-92ed-3c62c495f41b@metux.net>
+Date: Mon, 29 Apr 2019 11:43:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-References: <5fdabbb9-0a62-4802-f1ca-f83584f935fa@molgen.mpg.de>
- <CAJZ5v0gobp60Pn5cdh0CohGAXSBs-EvntNqKc_dj_UTnOiogkQ@mail.gmail.com>
- <c4c2f89f-9af7-01de-9144-9f11a8dafd58@molgen.mpg.de>
-In-Reply-To: <c4c2f89f-9af7-01de-9144-9f11a8dafd58@molgen.mpg.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Apr 2019 11:08:37 +0200
-Message-ID: <CAJZ5v0jhrtaRmb9_n_=hpqZU0iFvEsV8FKoZ1v7QANXq-dWVFQ@mail.gmail.com>
-Subject: Re: Why is suspend with s2idle available on POWER8 systems?
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <87ef5lz423.fsf@haabendal.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:68dkhGSAKsaCjO526gNf2WSoTW6jL84pVEW36g5e32fJf4hZfEa
+ B5yR5eOo/trCHlzEMiqf88gr4lugIpFcu4i7DTW0T8FoWZiDwOwvxkhUV//Oq9txPyP1qxO
+ p0s8teHbOF2xnbWjYTCy/e6+F0vybuPcYhQPvcgRagIqrGRZ5ZI4QdP/10WEUP7zI9Ka+YU
+ NVd7BerOC+zYOaIOiK9cQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NvmcDnTkNeI=:ba8d+q8YRab3rFKFqBt24t
+ Zg9Zpq/zp8ESR/s4VsMdM2nnOKEofNFRgQuqib0Eoa+F6Di5aptfGcy2fbPQ8PlEnZZ9eFk2I
+ W8lkLs1brmFQ4pMtwo1NaxLwJO+yyvyfB7yhUe3mP3ipOkVy3TvxwOqCpUxbn7cvLhhjdXYOV
+ RACHse6YI1rEPLKisTi4jbY/Z2xia1z7JZNNtXMm7NyYuxlDHoAmeM51Uq1Sm9jqHrh3VjIFE
+ zH5gWFbcmJhRKcS506T4D0qDLdiTRWb5HWe08PMYOLEyCWt6KkONz7ZlQEuLletC4+ebSyFne
+ +YblDaPDYWW6s7TMZS94IzEKoglkP06ZU7juKMArxn0JPRB97yN78PMrSGLDm4zCHngdgwukX
+ 8QhoUFb/g5oGgRP7xEm3XeyGV0XvRu9ft3THf7jFb/oF+7zCYEmaFMR7HLRHU94BxlelmoOUT
+ hf0mEVyRlee3ckCEnDTzSPPktrpdeTwqaoCQIhlRInQVIwdhHJ8XZKfDN1mzvZ2IlFCWEBcMH
+ +/+AxD4dkbOiJWktWAReEU2MAQiJAuIPnt8UjKkg2V6v0lHpO3+n8CFCI9Jvijm6LfpHzTHUN
+ Z7KbPljaibH9464lnBZleel3EqRWzc88wYjkyJ4C3GZdlzFeP8imAVrJmxNQRR3yOT8ND3ssO
+ MC6KOR0+WrmqVYkvJIvXzV6xd3FMar2vZbSJ2ckBe+smk2GbBP44mQDVVrZ5aKzyo4QDZBzHk
+ BkVF8qEdunqnt+mSaL40iQ9yOh8uAqzpNBWyyGax+adypiNnzhrhF9jigoE=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,122 +70,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux PM <linux-pm@vger.kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- LKML <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-ia64@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ linux-mips@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
+ gregkh@linuxfoundation.org, sudeep.holla@arm.com, liviu.dudau@arm.com,
+ linux-kernel@vger.kernel.org, vz@mleia.com, linux@prisktech.co.nz,
+ sparclinux@vger.kernel.org, khilman@baylibre.com, macro@linux-mips.org,
+ slemieux.tyco@gmail.com, matthias.bgg@gmail.com, jacmet@sunsite.dk,
+ linux-amlogic@lists.infradead.org, andriy.shevchenko@linux.intel.com,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 29, 2019 at 10:50 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Dear Rafael,
->
->
-> On 04/29/2019 09:17 AM, Rafael J. Wysocki wrote:
-> > On Sat, Apr 27, 2019 at 12:54 PM Paul Menzel <pmenzel@molgen.mpg.de> wr=
-ote:
->
-> >> Updating an IBM S822LC from Ubuntu 18.10 to 19.04 some user space stuf=
-f
-> >> seems to have changed, so that going into sleep/suspend is enabled.
-> >>
-> >> That raises two questions.
-> >>
-> >> 1.  Is suspend actually supported on a POWER8 processor?
-> >
-> > Suspend-to-idle is a special variant of system suspend that does not
-> > depend on any special platform support.  It works by suspending
-> > devices and letting all of the CPUs in the system go idle (hence the
-> > name).
-> >
-> > Also see https://www.kernel.org/doc/html/latest/admin-guide/pm/sleep-st=
-ates.html#suspend-to-idle
->
-> Thanks. I guess I mixed it up with the new S0ix-states [1].
+On 29.04.19 09:03, Esben Haabendal wrote:
 
-Those can be entered via suspend-to-idle, if supported and actually
-reachable on a given platform, but suspend-to-idle is more general
-than that.
+> Why not simply replace iobase, mapbase and mapsize with a struct
+> resource value instead?
 
-> >>> Apr 27 10:18:13 power NetworkManager[7534]: <info>  [1556353093.7224]=
- manager: sleep: sleep requested (sleeping: no  e
-> >>> Apr 27 10:18:13 power systemd[1]: Reached target Sleep.
-> >>> Apr 27 10:18:13 power systemd[1]: Starting Suspend...
-> >>> Apr 27 10:18:13 power systemd-sleep[82190]: Suspending system...
-> >>> Apr 27 10:18:13 power kernel: PM: suspend entry (s2idle)
-> >>> -- Reboot --
-> >>
-> >>> $ uname -m
-> >>> ppc64le
-> >>> $ more /proc/version
-> >>> Linux version 5.1.0-rc6+ (joey@power) (gcc version 8.3.0 (Ubuntu 8.3.=
-0-6ubuntu1)) #1 SMP Sat Apr 27 10:01:48 CEST 2019
-> >>> $ more /sys/power/mem_sleep
-> >>> [s2idle]
-> >>> $ more /sys/power/state
-> >>> freeze mem
-> >>> $ grep _SUSPEND /boot/config-5.0.0-14-generic # also enabled in Ubunt=
-u=E2=80=99s configuration
-> >>> CONFIG_ARCH_SUSPEND_POSSIBLE=3Dy
-> >>> CONFIG_SUSPEND=3Dy
-> >>> CONFIG_SUSPEND_FREEZER=3Dy
-> >>> # CONFIG_SUSPEND_SKIP_SYNC is not set
-> >>> # CONFIG_PM_TEST_SUSPEND is not set
-> >>
-> >> Should the Kconfig symbol `SUSPEND` be selectable? If yes, should thei=
-r
-> >> be some detection during runtime?
-> >>
-> >> 2.  If it is supported, what are the ways to getting it to resume? Wha=
-t
-> >> would the IPMI command be?
-> >
-> > That would depend on the distribution.
-> >
-> > Generally, you need to set up at least one device to generate wakeup
-> > interrupts.
-> >
-> > The interface to do that are the /sys/devices/.../power/wakeup files,
-> > but that has to cause enble_irq_wake() to be called for the given IRQ,
-> > so some support in the underlying drivers need to be present for it to
-> > work.
-> >
-> > USB devices generally work as wakeup sources if the controllers reside
-> > on a PCI bus, for example.
->
-> ```
-> $ find /sys/devices/ -name wakeup | xargs grep enabled
-> /sys/devices/pci0021:00/0021:00:00.0/0021:01:00.0/0021:02:09.0/0021:0d:00=
-.0/usb1/1-3/1-3.4/power/wakeup:enabled
-> /sys/devices/pci0021:00/0021:00:00.0/0021:01:00.0/0021:02:09.0/0021:0d:00=
-.0/power/wakeup:enabled
-> $ lsusb -t
-> /:  Bus 02.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dxhci_hcd/4p, 5000M
-> /:  Bus 01.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dxhci_hcd/4p, 480M
->     |__ Port 3: Dev 2, If 0, Class=3DHub, Driver=3Dhub/5p, 480M
->         |__ Port 1: Dev 3, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
-ge, 480M
->         |__ Port 2: Dev 4, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
-ge, 480M
->         |__ Port 3: Dev 5, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
-ge, 480M
->         |__ Port 4: Dev 6, If 0, Class=3DHuman Interface Device, Driver=
-=3Dusbhid, 1.5M
->         |__ Port 4: Dev 6, If 1, Class=3DHuman Interface Device, Driver=
-=3Dusbhid, 1.5M
-> $ lsusb
-> Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-> Bus 001 Device 006: ID 046b:ff10 American Megatrends, Inc. Virtual Keyboa=
-rd and Mouse
-> Bus 001 Device 005: ID 046b:ff31 American Megatrends, Inc.
-> Bus 001 Device 004: ID 046b:ff40 American Megatrends, Inc.
-> Bus 001 Device 003: ID 046b:ff20 American Megatrends, Inc.
-> Bus 001 Device 002: ID 046b:ff01 American Megatrends, Inc.
-> Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-> ```
+That was actually my original goal, when I started this. But the
+situation is a bit more tricky. Many drivers (especially the old ones)
+initialize these fields in different ways. And there're many places
+accessing these fields.
 
-I'm not really sure what you wanted to say here, but it looks like
-system wakeup is not enabled for device 6 on bus 1 which is probably
-what you want.
+Drivers for old devices should be handled w/ great care. I don't have
+access to all that hardware, so I can't test it. Therefore, I'm trying
+to move in small steps. One step ahead another.
+
+One of my next steps would be factoring out more common operations
+(eg. mapping, etc) into helpers, up to a point, where someday no driver
+is accessing these fields directly anymore.
+
+Then we could easily move everything into struct resource. On that
+road, we'd also need to find a way for handling the specialities of
+the various UPIO_* modes via struct resource.
+
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
