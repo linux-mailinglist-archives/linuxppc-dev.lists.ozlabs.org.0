@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6DBDB9A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 07:43:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A032FDB96
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 07:40:12 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44stlt1XV7zDqNP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 15:40:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44str30j55zDqNZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 15:43:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,53 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="J9Diuxq2"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="GBn5k5rb"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44stkN40yqzDqNN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 15:38:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44stpg2VJBzDqNN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 15:42:35 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44stkC0TTWz9v2FH;
- Mon, 29 Apr 2019 07:38:43 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 44stpW2dr9z9v2qc;
+ Mon, 29 Apr 2019 07:42:27 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=J9Diuxq2; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=GBn5k5rb; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id QfqWnvAqRgfA; Mon, 29 Apr 2019 07:38:43 +0200 (CEST)
+ with ESMTP id sIqs7sYSYNTh; Mon, 29 Apr 2019 07:42:27 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44stkB6Pcmz9v2FG;
- Mon, 29 Apr 2019 07:38:42 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44stpW1PDDz9v2qb;
+ Mon, 29 Apr 2019 07:42:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556516322; bh=ZKKrFmF/Qg7y1/xbUklGb27c326MUz9UlbNLYXon2fI=;
+ t=1556516547; bh=vCo6HO+bvH6twPE8JOuA6qlWCorfETJ9g6zPu5afPpc=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=J9Diuxq2CKRI5daT6QxO9P+maJQTTshn/k9aWCkJaN+4TLYCGUrR8BHuHJ6VekJxd
- VHYNNTVFbFqLw/Z+MPa2LxVAUyT4VmZfltRR8jO8hNjdiSk7/7xFFD+ilCM55ogcSU
- sCTnqdoE5VFPs2q8IWq44XrcNdIbR6dv3wohMXG8=
+ b=GBn5k5rbn/rFkpRcToTfYS04YqzBxPbpn+UorRZC1KUW98mjXWab5LRW6UjXlSOos
+ uUk8NmKW6Klgpl16MwbZjUmNs76nSq1Sq/e0dnRKkBuPUzCSFfx96xdC0KlcwGeH1u
+ 6oj8GW2nHRwMdGREquLvJXMdjCAsbPQ6W6RdhpoI=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FC8D8B798;
- Mon, 29 Apr 2019 07:38:47 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 995888B798;
+ Mon, 29 Apr 2019 07:42:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qBvGq3zh-Vxg; Mon, 29 Apr 2019 07:38:47 +0200 (CEST)
+ with ESMTP id OjHvgxC0o7bT; Mon, 29 Apr 2019 07:42:31 +0200 (CEST)
 Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.6])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 25E2E8B795;
- Mon, 29 Apr 2019 07:38:47 +0200 (CEST)
-Subject: Re: [PATCH v2 1/2] powerpc/perf: init pmu from core-book3s
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 719CC8B795;
+ Mon, 29 Apr 2019 07:42:31 +0200 (CEST)
+Subject: Re: [PATCH v2 2/2] powerpc/perf: Add generic compat mode pmu driver
 To: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, mpe@ellerman.id.au
 References: <1556506368-29329-1-git-send-email-maddy@linux.vnet.ibm.com>
+ <1556506368-29329-2-git-send-email-maddy@linux.vnet.ibm.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b3678667-a550-8ab2-c904-99f92e4251be@c-s.fr>
-Date: Mon, 29 Apr 2019 07:38:47 +0200
+Message-ID: <639fe9ec-365e-10dd-551e-44eb4bffd352@c-s.fr>
+Date: Mon, 29 Apr 2019 07:42:31 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <1556506368-29329-1-git-send-email-maddy@linux.vnet.ibm.com>
+In-Reply-To: <1556506368-29329-2-git-send-email-maddy@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -85,243 +86,343 @@ Sender: "Linuxppc-dev"
 
 
 Le 29/04/2019 à 04:52, Madhavan Srinivasan a écrit :
-> Currenty pmu driver file for each ppc64 generation processor
-> has a __init call in itself. Refactor the code by moving the
-> __init call to core-books.c. This also clean's up compat mode
-> pmu driver registration.
-
-Can you explain the advantage of doing so ?
-For me it makes more sense to have independant drivers with their own 
-init call.
-
-
+> Most of the power processor generation performance monitoring
+> unit (PMU) driver code is bundled in the kernel and one of those
+> is enabled/registered based on the oprofile_cpu_type check at
+> the boot.
 > 
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> But things get little tricky incase of "compat" mode boot.
+> IBM POWER System Server based processors has a compactibility
+> mode feature, which simpily put is, Nth generation processor
+> (lets say POWER8) will act and appear in a mode consistent
+> with an earlier generation (N-1) processor (that is POWER7).
+> And in this "compat" mode boot, kernel modify the
+> "oprofile_cpu_type" to be Nth generation (POWER8). If Nth
+> generation pmu driver is bundled (POWER8), it gets registered.
+> 
+> Key dependency here is to have distro support for latest
+> processor performance monitoring support. Patch here adds
+> a generic "compat-mode" performance monitoring driver to
+> be register in absence of powernv platform specific pmu driver.
+> 
+> Driver supports "cycles", "instruction" and "branch-miss" events.
+> "0x100F0" used as event code for "cycles", "0x00002"
+> used as event code for "instruction" events and "0x400F6"
+> used as event code for "branch miss". These are architected events
+> as part of ISA. New file called "generic-compat-pmu.c" is
+> created to contain the driver specific code. And base raw event
+> code format modeled on PPMU_ARCH_207S.
+> 
 > Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 > ---
 > Changelog v1:
-> - Added "internal.h" file and moved the extern definitions to that file
+> - Updated architected event opcodes
+> - included branch miss with architected event opcode
 > 
->   arch/powerpc/perf/core-book3s.c | 28 ++++++++++++++++++++++++++++
->   arch/powerpc/perf/internal.h    | 16 ++++++++++++++++
->   arch/powerpc/perf/power5+-pmu.c |  4 +---
->   arch/powerpc/perf/power5-pmu.c  |  4 +---
->   arch/powerpc/perf/power6-pmu.c  |  4 +---
->   arch/powerpc/perf/power7-pmu.c  |  4 +---
->   arch/powerpc/perf/power8-pmu.c  |  3 +--
->   arch/powerpc/perf/power9-pmu.c  |  3 +--
->   arch/powerpc/perf/ppc970-pmu.c  |  4 +---
->   9 files changed, 51 insertions(+), 19 deletions(-)
->   create mode 100644 arch/powerpc/perf/internal.h
+>   arch/powerpc/perf/Makefile             |   3 +-
+>   arch/powerpc/perf/core-book3s.c        |   2 +-
+>   arch/powerpc/perf/generic-compat-pmu.c | 245 +++++++++++++++++++++++++++++++++
+>   arch/powerpc/perf/internal.h           |   1 +
+>   4 files changed, 249 insertions(+), 2 deletions(-)
+>   create mode 100644 arch/powerpc/perf/generic-compat-pmu.c
 > 
+> diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+> index ab26df5bacb9..c155dcbb8691 100644
+> --- a/arch/powerpc/perf/Makefile
+> +++ b/arch/powerpc/perf/Makefile
+> @@ -5,7 +5,8 @@ obj-$(CONFIG_PERF_EVENTS)	+= callchain.o perf_regs.o
+>   obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o bhrb.o
+>   obj64-$(CONFIG_PPC_PERF_CTRS)	+= ppc970-pmu.o power5-pmu.o \
+>   				   power5+-pmu.o power6-pmu.o power7-pmu.o \
+> -				   isa207-common.o power8-pmu.o power9-pmu.o
+> +				   isa207-common.o power8-pmu.o power9-pmu.o \
+> +				   generic-compat-pmu.o
+
+Isn't that name a bit long ? What about compat-pmu instead ?
+
+>   obj32-$(CONFIG_PPC_PERF_CTRS)	+= mpc7450-pmu.o
+>   
+>   obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
 > diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index b0723002a396..a96f9420139c 100644
+> index a96f9420139c..a66fb9c01c9e 100644
 > --- a/arch/powerpc/perf/core-book3s.c
 > +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -22,6 +22,10 @@
->   #include <asm/ptrace.h>
->   #include <asm/code-patching.h>
->   
-> +#ifdef CONFIG_PPC64
-
-Can we avoid that CONFIG_PPC64 ifdef ? Why isn't it compatible with PPC32 ?
-
-> +#include "internal.h"
-> +#endif
-> +
->   #define BHRB_MAX_ENTRIES	32
->   #define BHRB_TARGET		0x0000000000000002
->   #define BHRB_PREDICTION		0x0000000000000001
-> @@ -2294,3 +2298,27 @@ int register_power_pmu(struct power_pmu *pmu)
->   			  power_pmu_prepare_cpu, NULL);
->   	return 0;
+> @@ -2318,7 +2318,7 @@ static int __init init_ppc64_pmu(void)
+>   	else if (!init_ppc970_pmu())
+>   		return 0;
+>   	else
+> -		return -ENODEV;
+> +		return init_generic_compat_pmu();
 >   }
-> +
-> +#ifdef CONFIG_PPC64
-
-Same, why PPC64 ?
-
-> +static int __init init_ppc64_pmu(void)
-> +{
-> +	/* run through all the pmu drivers one at a time */
-> +	if (!init_power5_pmu())
-> +		return 0;
-> +	else if (!init_power5p_pmu())
-> +		return 0;
-> +	else if (!init_power6_pmu())
-> +		return 0;
-> +	else if (!init_power7_pmu())
-> +		return 0;
-> +	else if (!init_power8_pmu())
-> +		return 0;
-> +	else if (!init_power9_pmu())
-> +		return 0;
-> +	else if (!init_ppc970_pmu())
-> +		return 0;
-> +	else
-> +		return -ENODEV;
-> +}
-> +early_initcall(init_ppc64_pmu);
-> +#endif
-> diff --git a/arch/powerpc/perf/internal.h b/arch/powerpc/perf/internal.h
+>   early_initcall(init_ppc64_pmu);
+>   #endif
+> diff --git a/arch/powerpc/perf/generic-compat-pmu.c b/arch/powerpc/perf/generic-compat-pmu.c
 > new file mode 100644
-> index 000000000000..e54d524d4283
+> index 000000000000..9c2d4bbc5c87
 > --- /dev/null
-> +++ b/arch/powerpc/perf/internal.h
-> @@ -0,0 +1,16 @@
+> +++ b/arch/powerpc/perf/generic-compat-pmu.c
+> @@ -0,0 +1,245 @@
 > +/*
+> + * Performance counter support.
+> + *
 > + * Copyright 2019 Madhavan Srinivasan, IBM Corporation.
 > + *
 > + * This program is free software; you can redistribute it and/or
 > + * modify it under the terms of the GNU General Public License
 > + * as published by the Free Software Foundation; either version
-> + * 2 of the License, or (at your option) any later version.
+> + * 2 of the License, or later version.
+
+Shouldn't we use the new licence format for new files ? ie:
+
+// SPDX-License-Identifier: GPL-2.0+
+
 > + */
 > +
-> +extern int init_ppc970_pmu(void);
-> +extern int init_power5_pmu(void);
-> +extern int init_power5p_pmu(void);
-> +extern int init_power6_pmu(void);
-> +extern int init_power7_pmu(void);
-> +extern int init_power8_pmu(void);
-> +extern int init_power9_pmu(void);
+> +#define pr_fmt(fmt)	"generic-compat-pmu: " fmt
+> +
+> +#include "isa207-common.h"
+> +
+> +/*
+> + * Raw event encoding:
+> + *
+> + *        60        56        52        48        44        40        36        32
+> + * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
+> + *
+> + *        28        24        20        16        12         8         4         0
+> + * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
+> + *                                 [ pmc ]   [unit ]   [ ]   m   [    pmcxsel    ]
+> + *                                                     |     |
+> + *                                                     |     *- mark
+> + *                                                     |
+> + *                                                     |
+> + *                                                     *- combine
+> + *
+> + * Below uses IBM bit numbering.
+> + *
+> + * MMCR1[x:y] = unit    (PMCxUNIT)
+> + * MMCR1[24]   = pmc1combine[0]
+> + * MMCR1[25]   = pmc1combine[1]
+> + * MMCR1[26]   = pmc2combine[0]
+> + * MMCR1[27]   = pmc2combine[1]
+> + * MMCR1[28]   = pmc3combine[0]
+> + * MMCR1[29]   = pmc3combine[1]
+> + * MMCR1[30]   = pmc4combine[0]
+> + * MMCR1[31]   = pmc4combine[1]
+> + *
+> + */
+> +
+> +/*
+> + * Some power9 event codes.
+> + */
+> +#define EVENT(_name, _code)	_name = _code,
+> +
+> +enum {
+> +EVENT(PM_CYC,					0x100F0)
+> +EVENT(PM_INST_CMPL,				0x00002)
+> +EVENT(PM_BR_MPRED_CMPL,				0x400F6)
+> +};
+> +
+> +#undef EVENT
+> +
+> +GENERIC_EVENT_ATTR(cpu-cycles,			PM_CYC);
+> +GENERIC_EVENT_ATTR(instructions,		PM_INST_CMPL);
+> +GENERIC_EVENT_ATTR(branch-misses,               PM_BR_MPRED_CMPL);
+> +
+> +static struct attribute *generic_compat_events_attr[] = {
+> +	GENERIC_EVENT_PTR(PM_CYC),
+> +	GENERIC_EVENT_PTR(PM_INST_CMPL),
+> +	GENERIC_EVENT_PTR(PM_BR_MPRED_CMPL),
+> +	NULL
+> +};
+> +
+> +static struct attribute_group generic_compat_pmu_events_group = {
+> +	.name = "events",
+> +	.attrs = generic_compat_events_attr,
+> +};
+> +
+> +PMU_FORMAT_ATTR(event,		"config:0-19");
+> +PMU_FORMAT_ATTR(pmcxsel,	"config:0-7");
+> +PMU_FORMAT_ATTR(mark,		"config:8");
+> +PMU_FORMAT_ATTR(combine,	"config:10-11");
+> +PMU_FORMAT_ATTR(unit,		"config:12-15");
+> +PMU_FORMAT_ATTR(pmc,		"config:16-19");
+> +
+> +static struct attribute *generic_compat_pmu_format_attr[] = {
+> +	&format_attr_event.attr,
+> +	&format_attr_pmcxsel.attr,
+> +	&format_attr_mark.attr,
+> +	&format_attr_combine.attr,
+> +	&format_attr_unit.attr,
+> +	&format_attr_pmc.attr,
+> +	NULL,
+> +};
+> +
+> +static struct attribute_group generic_compat_pmu_format_group = {
+> +	.name = "format",
+> +	.attrs = generic_compat_pmu_format_attr,
+> +};
+> +
+> +static const struct attribute_group *generic_compat_pmu_attr_groups[] = {
+> +	&generic_compat_pmu_format_group,
+> +	&generic_compat_pmu_events_group,
+> +	NULL,
+> +};
+> +
+> +static int compat_generic_events[] = {
+> +	[PERF_COUNT_HW_CPU_CYCLES] =			PM_CYC,
+> +	[PERF_COUNT_HW_INSTRUCTIONS] =			PM_INST_CMPL,
+> +	[PERF_COUNT_HW_BRANCH_MISSES] =                 PM_BR_MPRED_CMPL,
+> +};
+> +
+> +#define C(x)	PERF_COUNT_HW_CACHE_##x
+> +
+> +/*
+> + * Table of generalized cache-related events.
+> + * 0 means not supported, -1 means nonsensical, other values
+> + * are event codes.
+> + */
+> +static int generic_compat_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
+> +	[ C(L1D) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +	},
+> +	[ C(L1I) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +	},
+> +	[ C(LL) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +	},
+> +	[ C(DTLB) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +	},
+> +	[ C(ITLB) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +	},
+> +	[ C(BPU) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = 0,
+> +			[ C(RESULT_MISS)   ] = 0,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +	},
+> +	[ C(NODE) ] = {
+> +		[ C(OP_READ) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_WRITE) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +		[ C(OP_PREFETCH) ] = {
+> +			[ C(RESULT_ACCESS) ] = -1,
+> +			[ C(RESULT_MISS)   ] = -1,
+> +		},
+> +	},
+> +};
+> +
+> +#undef C
+> +
+> +static struct power_pmu generic_compat_pmu = {
+> +	.name			= "GENERIC_COMPAT",
+> +	.n_counter		= MAX_PMU_COUNTERS,
+> +	.add_fields		= ISA207_ADD_FIELDS,
+> +	.test_adder		= ISA207_TEST_ADDER,
+> +	.compute_mmcr		= isa207_compute_mmcr,
+> +	.get_constraint		= isa207_get_constraint,
+> +	.disable_pmc		= isa207_disable_pmc,
+> +	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
+> +	.n_generic		= ARRAY_SIZE(compat_generic_events),
+> +	.generic_events		= compat_generic_events,
+> +	.cache_events		= &generic_compat_cache_events,
+> +	.attr_groups		= generic_compat_pmu_attr_groups,
+> +};
+> +
+> +int init_generic_compat_pmu(void)
+> +{
+> +	int rc = 0;
+> +
+> +	rc = register_power_pmu(&generic_compat_pmu);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* Tell userspace that EBB is supported */
+> +	cur_cpu_spec->cpu_user_features2 |= PPC_FEATURE2_EBB;
+> +
+> +	return 0;
+> +}
+> diff --git a/arch/powerpc/perf/internal.h b/arch/powerpc/perf/internal.h
+> index e54d524d4283..185a40d1adff 100644
+> --- a/arch/powerpc/perf/internal.h
+> +++ b/arch/powerpc/perf/internal.h
+> @@ -14,3 +14,4 @@ extern int init_power6_pmu(void);
+>   extern int init_power7_pmu(void);
+>   extern int init_power8_pmu(void);
+>   extern int init_power9_pmu(void);
+> +extern int init_generic_compat_pmu(void);
 
-'extern' keyword is pointless, please remove it (checkpatch --strict 
-probably told it to you).
-
+Don't use 'extern' keyword.
 
 Christophe
 
-
-> diff --git a/arch/powerpc/perf/power5+-pmu.c b/arch/powerpc/perf/power5+-pmu.c
-> index 0526dac66007..9aa803504cb2 100644
-> --- a/arch/powerpc/perf/power5+-pmu.c
-> +++ b/arch/powerpc/perf/power5+-pmu.c
-> @@ -677,7 +677,7 @@ static struct power_pmu power5p_pmu = {
->   	.cache_events		= &power5p_cache_events,
->   };
->   
-> -static int __init init_power5p_pmu(void)
-> +int init_power5p_pmu(void)
->   {
->   	if (!cur_cpu_spec->oprofile_cpu_type ||
->   	    (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5+")
-> @@ -686,5 +686,3 @@ static int __init init_power5p_pmu(void)
->   
->   	return register_power_pmu(&power5p_pmu);
->   }
-> -
-> -early_initcall(init_power5p_pmu);
-> diff --git a/arch/powerpc/perf/power5-pmu.c b/arch/powerpc/perf/power5-pmu.c
-> index 4dc99f9f7962..30cb13d081a9 100644
-> --- a/arch/powerpc/perf/power5-pmu.c
-> +++ b/arch/powerpc/perf/power5-pmu.c
-> @@ -618,7 +618,7 @@ static struct power_pmu power5_pmu = {
->   	.flags			= PPMU_HAS_SSLOT,
->   };
->   
-> -static int __init init_power5_pmu(void)
-> +int init_power5_pmu(void)
->   {
->   	if (!cur_cpu_spec->oprofile_cpu_type ||
->   	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5"))
-> @@ -626,5 +626,3 @@ static int __init init_power5_pmu(void)
->   
->   	return register_power_pmu(&power5_pmu);
->   }
-> -
-> -early_initcall(init_power5_pmu);
-> diff --git a/arch/powerpc/perf/power6-pmu.c b/arch/powerpc/perf/power6-pmu.c
-> index 9c9d646b68a1..80ec48632cfe 100644
-> --- a/arch/powerpc/perf/power6-pmu.c
-> +++ b/arch/powerpc/perf/power6-pmu.c
-> @@ -540,7 +540,7 @@ static struct power_pmu power6_pmu = {
->   	.cache_events		= &power6_cache_events,
->   };
->   
-> -static int __init init_power6_pmu(void)
-> +int init_power6_pmu(void)
->   {
->   	if (!cur_cpu_spec->oprofile_cpu_type ||
->   	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power6"))
-> @@ -548,5 +548,3 @@ static int __init init_power6_pmu(void)
->   
->   	return register_power_pmu(&power6_pmu);
->   }
-> -
-> -early_initcall(init_power6_pmu);
-> diff --git a/arch/powerpc/perf/power7-pmu.c b/arch/powerpc/perf/power7-pmu.c
-> index 6dbae9884ec4..bb6efd5d2530 100644
-> --- a/arch/powerpc/perf/power7-pmu.c
-> +++ b/arch/powerpc/perf/power7-pmu.c
-> @@ -445,7 +445,7 @@ static struct power_pmu power7_pmu = {
->   	.cache_events		= &power7_cache_events,
->   };
->   
-> -static int __init init_power7_pmu(void)
-> +int init_power7_pmu(void)
->   {
->   	if (!cur_cpu_spec->oprofile_cpu_type ||
->   	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power7"))
-> @@ -456,5 +456,3 @@ static int __init init_power7_pmu(void)
->   
->   	return register_power_pmu(&power7_pmu);
->   }
-> -
-> -early_initcall(init_power7_pmu);
-> diff --git a/arch/powerpc/perf/power8-pmu.c b/arch/powerpc/perf/power8-pmu.c
-> index d12a2db26353..bcc3409a06de 100644
-> --- a/arch/powerpc/perf/power8-pmu.c
-> +++ b/arch/powerpc/perf/power8-pmu.c
-> @@ -379,7 +379,7 @@ static struct power_pmu power8_pmu = {
->   	.bhrb_nr		= 32,
->   };
->   
-> -static int __init init_power8_pmu(void)
-> +int init_power8_pmu(void)
->   {
->   	int rc;
->   
-> @@ -399,4 +399,3 @@ static int __init init_power8_pmu(void)
->   
->   	return 0;
->   }
-> -early_initcall(init_power8_pmu);
-> diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-> index 030544e35959..3a31ac6f4805 100644
-> --- a/arch/powerpc/perf/power9-pmu.c
-> +++ b/arch/powerpc/perf/power9-pmu.c
-> @@ -437,7 +437,7 @@ static struct power_pmu power9_pmu = {
->   	.bhrb_nr		= 32,
->   };
->   
-> -static int __init init_power9_pmu(void)
-> +int init_power9_pmu(void)
->   {
->   	int rc = 0;
->   	unsigned int pvr = mfspr(SPRN_PVR);
-> @@ -467,4 +467,3 @@ static int __init init_power9_pmu(void)
->   
->   	return 0;
->   }
-> -early_initcall(init_power9_pmu);
-> diff --git a/arch/powerpc/perf/ppc970-pmu.c b/arch/powerpc/perf/ppc970-pmu.c
-> index 8b6a8a36fa38..1d3370914022 100644
-> --- a/arch/powerpc/perf/ppc970-pmu.c
-> +++ b/arch/powerpc/perf/ppc970-pmu.c
-> @@ -490,7 +490,7 @@ static struct power_pmu ppc970_pmu = {
->   	.flags			= PPMU_NO_SIPR | PPMU_NO_CONT_SAMPLING,
->   };
->   
-> -static int __init init_ppc970_pmu(void)
-> +int init_ppc970_pmu(void)
->   {
->   	if (!cur_cpu_spec->oprofile_cpu_type ||
->   	    (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/970")
-> @@ -499,5 +499,3 @@ static int __init init_ppc970_pmu(void)
->   
->   	return register_power_pmu(&ppc970_pmu);
->   }
-> -
-> -early_initcall(init_ppc970_pmu);
-> 
