@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAFFE05D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8074E068
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:18:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0sT0yBZzDqR2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:15:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0wZ1bBfzDqWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:18:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lk27M4zDqPQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lp3F3czDqQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="FvCRK/ho"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="vM8pZHPZ"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lj6KY7z8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:13 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lp1Wdcz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:18 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0Lj58pSz9s70; Mon, 29 Apr 2019 19:52:13 +1000 (AEST)
+ id 44t0Lp14Qrz9sCJ; Mon, 29 Apr 2019 19:52:18 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="FvCRK/ho"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="vM8pZHPZ"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Lh68Kfz9sML
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:12 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Ln4KWjz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:17 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 40936206BF;
- Mon, 29 Apr 2019 09:52:10 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 95F19206BF;
+ Mon, 29 Apr 2019 09:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531530;
- bh=wvu/1IKRRCp8Rg8wB8IlTP/qQ8+qrfcD4Rsud7DNdzk=;
+ s=default; t=1556531536;
+ bh=ELO59nsAYyqxVeZTrTAL6+8jJIbFJ8yM1G9oW0FSY9k=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=FvCRK/hoOQaxD3mf8lBYPpPslqym3WowbEeoRSVhoO9t3M7fzsMEHG4u6B8ofIlvp
- Hs+vp4NW7qLrO5tvZghYStk+FiagsjATZw4rsJJl1QG4sDDi13RJL0zNmL522z/+GQ
- ardSK5Ifkp+eIxOlYG6xgDRqcy0tRM+4XRurzJP8=
-Subject: Patch "powerpc/64s: Move cpu_show_meltdown()" has been added to the
- 4.4-stable tree
+ b=vM8pZHPZgHSVetFk5T3QiTnAcDXu4E+c689Jdw9AxGtYTjAbn4GuBl9yYoWyUdbfr
+ V3JhR+PKzlUuH36sLO3zCeE59XwNYL0iDzJYEsoID/Ow26n7UM47klHQ/nLsfM42x/
+ EfdJWrjpopIgugsr06soKKmPNG5yMsipwD3Gfs54=
+Subject: Patch "powerpc/64s: Wire up cpu_show_spectre_v1()" has been added to
+ the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2019 11:51:23 +0200
-In-Reply-To: <20190421142037.21881-15-mpe@ellerman.id.au>
-Message-ID: <155653148320487@kroah.com>
+Date: Mon, 29 Apr 2019 11:51:24 +0200
+In-Reply-To: <20190421142037.21881-19-mpe@ellerman.id.au>
+Message-ID: <1556531484926@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64s: Move cpu_show_meltdown()
+    powerpc/64s: Wire up cpu_show_spectre_v1()
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64s-move-cpu_show_meltdown.patch
+     powerpc-64s-wire-up-cpu_show_spectre_v1.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,66 +101,44 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:19:59 +1000
-Subject: powerpc/64s: Move cpu_show_meltdown()
+Date: Mon, 22 Apr 2019 00:20:03 +1000
+Subject: powerpc/64s: Wire up cpu_show_spectre_v1()
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-15-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-19-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 8ad33041563a10b34988800c682ada14b2612533 upstream.
+commit 56986016cb8cd9050e601831fe89f332b4e3c46e upstream.
 
-This landed in setup_64.c for no good reason other than we had nowhere
-else to put it. Now that we have a security-related file, that is a
-better place for it so move it.
+Add a definition for cpu_show_spectre_v1() to override the generic
+version. Currently this just prints "Not affected" or "Vulnerable"
+based on the firmware flag.
+
+Although the kernel does have array_index_nospec() in a few places, we
+haven't yet audited all the powerpc code to see where it's necessary,
+so for now we don't list that as a mitigation.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/security.c |   11 +++++++++++
- arch/powerpc/kernel/setup_64.c |    8 --------
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/security.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 --- a/arch/powerpc/kernel/security.c
 +++ b/arch/powerpc/kernel/security.c
-@@ -5,6 +5,8 @@
- // Copyright 2018, Michael Ellerman, IBM Corporation.
+@@ -50,3 +50,11 @@ ssize_t cpu_show_meltdown(struct device
  
- #include <linux/kernel.h>
-+#include <linux/device.h>
+ 	return sprintf(buf, "Vulnerable\n");
+ }
 +
- #include <asm/security_features.h>
- 
- 
-@@ -13,3 +15,12 @@ unsigned long powerpc_security_features
- 	SEC_FTR_L1D_FLUSH_PR | \
- 	SEC_FTR_BNDS_CHK_SPEC_BAR | \
- 	SEC_FTR_FAVOUR_SECURITY;
-+
-+
-+ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
++ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
 +{
-+	if (rfi_flush)
-+		return sprintf(buf, "Mitigation: RFI Flush\n");
++	if (!security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR))
++		return sprintf(buf, "Not affected\n");
 +
 +	return sprintf(buf, "Vulnerable\n");
 +}
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -961,12 +961,4 @@ static __init int rfi_flush_debugfs_init
- }
- device_initcall(rfi_flush_debugfs_init);
- #endif
--
--ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	if (rfi_flush)
--		return sprintf(buf, "Mitigation: RFI Flush\n");
--
--	return sprintf(buf, "Vulnerable\n");
--}
- #endif /* CONFIG_PPC_BOOK3S_64 */
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
