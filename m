@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A425BE072
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B04E06F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:22:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t13V1W0yzDqSc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:24:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t11b42hszDqH1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:22:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0M21jW0zDq9m
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Ly12jgzDqPP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="S2JGuHo6"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Vc4hiElV"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0M16w3Yz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:29 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lx6kN1z8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0M162Lmz9sCJ; Mon, 29 Apr 2019 19:52:29 +1000 (AEST)
+ id 44t0Lx5ppwz9sCJ; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="S2JGuHo6"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Vc4hiElV"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0M11qFjz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:28 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Lx23Tsz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CB08D20449;
- Mon, 29 Apr 2019 09:52:25 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 53702205ED;
+ Mon, 29 Apr 2019 09:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531546;
- bh=L165qoYj/gKHDT2cxNtiIGBGfIiYGvI2W1pTPOafnxs=;
+ s=default; t=1556531543;
+ bh=AdhYUX1ich2INILPIoPdX9edYOtQl1mH0wNClc0ihYw=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=S2JGuHo6G4Om3AyQT/e0QIYfB1chLgZ/IVrZsU3DKOv3TZ6SCvK5peoigSr+X2yUM
- i5RfYDEB7U43rUD5xB/hp+QXIOhP2lokYHA6NRQ8n/06q4KCmshBdf/tklYUkLMQR0
- oUUkyl0OI8rCuWR0rR0tda29NlsW3l/vA+vHpMBw=
-Subject: Patch "powerpc/64s: Patch barrier_nospec in modules" has been added
- to the 4.4-stable tree
+ b=Vc4hiElVXMUv7QjG633Sh3fqo19MVhupRamDbjhJM22iaCG7z44xL9zabWotayant
+ ZH9kqSrHPP4S1t2NYYlqgzSPwoxs9sreDyq72RPwNFT4v3yjp+50asqLsw7iwDYrAA
+ UL3jpkV04a8yyufhlfNGiCviIk+7tTyIfTy9mbUQ=
+Subject: Patch "powerpc/asm: Add a patch_site macro & helpers for patching
+ instructions" has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:24 +0200
-In-Reply-To: <20190421142037.21881-28-mpe@ellerman.id.au>
-Message-ID: <155653148421735@kroah.com>
+In-Reply-To: <20190421142037.21881-40-mpe@ellerman.id.au>
+Message-ID: <1556531484213139@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64s: Patch barrier_nospec in modules
+    powerpc/asm: Add a patch_site macro & helpers for patching instructions
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64s-patch-barrier_nospec-in-modules.patch
+     powerpc-asm-add-a-patch_site-macro-helpers-for-patching-instructions.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,113 +101,97 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:12 +1000
-Subject: powerpc/64s: Patch barrier_nospec in modules
+Date: Mon, 22 Apr 2019 00:20:24 +1000
+Subject: powerpc/asm: Add a patch_site macro & helpers for patching instructions
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-28-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-40-mpe@ellerman.id.au>
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 815069ca57c142eb71d27439bc27f41a433a67b3 upstream.
+commit 06d0bbc6d0f56dacac3a79900e9a9a0d5972d818 upstream.
 
-Note that unlike RFI which is patched only in kernel the nospec state
-reflects settings at the time the module was loaded.
+Add a macro and some helper C functions for patching single asm
+instructions.
 
-Iterating all modules and re-patching every time the settings change
-is not implemented.
+The gas macro means we can do something like:
 
-Based on lwsync patching.
+  1:	nop
+  	patch_site 1b, patch__foo
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Which is less visually distracting than defining a GLOBAL symbol at 1,
+and also doesn't pollute the symbol table which can confuse eg. perf.
+
+These are obviously similar to our existing feature sections, but are
+not automatically patched based on CPU/MMU features, rather they are
+designed to be manually patched by C code at some arbitrary point.
+
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/setup.h  |    7 +++++++
- arch/powerpc/kernel/module.c      |    6 ++++++
- arch/powerpc/kernel/security.c    |    2 +-
- arch/powerpc/lib/feature-fixups.c |   16 +++++++++++++---
- 4 files changed, 27 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/code-patching-asm.h |   18 ++++++++++++++++++
+ arch/powerpc/include/asm/code-patching.h     |    2 ++
+ arch/powerpc/lib/code-patching.c             |   16 ++++++++++++++++
+ 3 files changed, 36 insertions(+)
+ create mode 100644 arch/powerpc/include/asm/code-patching-asm.h
 
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -39,6 +39,13 @@ enum l1d_flush_type {
- void setup_rfi_flush(enum l1d_flush_type, bool enable);
- void do_rfi_flush_fixups(enum l1d_flush_type types);
- void do_barrier_nospec_fixups(bool enable);
-+extern bool barrier_nospec_enabled;
+--- /dev/null
++++ b/arch/powerpc/include/asm/code-patching-asm.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2018, Michael Ellerman, IBM Corporation.
++ */
++#ifndef _ASM_POWERPC_CODE_PATCHING_ASM_H
++#define _ASM_POWERPC_CODE_PATCHING_ASM_H
 +
-+#ifdef CONFIG_PPC_BOOK3S_64
-+void do_barrier_nospec_fixups_range(bool enable, void *start, void *end);
-+#else
-+static inline void do_barrier_nospec_fixups_range(bool enable, void *start, void *end) { };
-+#endif
- 
- #endif /* !__ASSEMBLY__ */
- 
---- a/arch/powerpc/kernel/module.c
-+++ b/arch/powerpc/kernel/module.c
-@@ -67,6 +67,12 @@ int module_finalize(const Elf_Ehdr *hdr,
- 		do_feature_fixups(powerpc_firmware_features,
- 				  (void *)sect->sh_addr,
- 				  (void *)sect->sh_addr + sect->sh_size);
++/* Define a "site" that can be patched */
++.macro patch_site label name
++	.pushsection ".rodata"
++	.balign 4
++	.global \name
++\name:
++	.4byte	\label - .
++	.popsection
++.endm
 +
-+	sect = find_section(hdr, sechdrs, "__spec_barrier_fixup");
-+	if (sect != NULL)
-+		do_barrier_nospec_fixups_range(barrier_nospec_enabled,
-+				  (void *)sect->sh_addr,
-+				  (void *)sect->sh_addr + sect->sh_size);
- #endif
++#endif /* _ASM_POWERPC_CODE_PATCHING_ASM_H */
+--- a/arch/powerpc/include/asm/code-patching.h
++++ b/arch/powerpc/include/asm/code-patching.h
+@@ -28,6 +28,8 @@ unsigned int create_cond_branch(const un
+ 				unsigned long target, int flags);
+ int patch_branch(unsigned int *addr, unsigned long target, int flags);
+ int patch_instruction(unsigned int *addr, unsigned int instr);
++int patch_instruction_site(s32 *addr, unsigned int instr);
++int patch_branch_site(s32 *site, unsigned long target, int flags);
  
- 	sect = find_section(hdr, sechdrs, "__lwsync_fixup");
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -16,7 +16,7 @@
- 
- unsigned long powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
- 
--static bool barrier_nospec_enabled;
-+bool barrier_nospec_enabled;
- 
- static void enable_barrier_nospec(bool enable)
- {
---- a/arch/powerpc/lib/feature-fixups.c
-+++ b/arch/powerpc/lib/feature-fixups.c
-@@ -275,14 +275,14 @@ void do_rfi_flush_fixups(enum l1d_flush_
- 						: "unknown");
+ int instr_is_relative_branch(unsigned int instr);
+ int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr);
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -32,6 +32,22 @@ int patch_branch(unsigned int *addr, uns
+ 	return patch_instruction(addr, create_branch(addr, target, flags));
  }
  
--void do_barrier_nospec_fixups(bool enable)
-+void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_end)
- {
- 	unsigned int instr, *dest;
- 	long *start, *end;
- 	int i;
- 
--	start = PTRRELOC(&__start___barrier_nospec_fixup),
--	end = PTRRELOC(&__stop___barrier_nospec_fixup);
-+	start = fixup_start;
-+	end = fixup_end;
- 
- 	instr = 0x60000000; /* nop */
- 
-@@ -301,6 +301,16 @@ void do_barrier_nospec_fixups(bool enabl
- 	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
- }
- 
-+void do_barrier_nospec_fixups(bool enable)
++int patch_branch_site(s32 *site, unsigned long target, int flags)
 +{
-+	void *start, *end;
++	unsigned int *addr;
 +
-+	start = PTRRELOC(&__start___barrier_nospec_fixup),
-+	end = PTRRELOC(&__stop___barrier_nospec_fixup);
-+
-+	do_barrier_nospec_fixups_range(enable, start, end);
++	addr = (unsigned int *)((unsigned long)site + *site);
++	return patch_instruction(addr, create_branch(addr, target, flags));
 +}
 +
- #endif /* CONFIG_PPC_BOOK3S_64 */
- 
- void do_lwsync_fixups(unsigned long value, void *fixup_start, void *fixup_end)
++int patch_instruction_site(s32 *site, unsigned int instr)
++{
++	unsigned int *addr;
++
++	addr = (unsigned int *)((unsigned long)site + *site);
++	return patch_instruction(addr, instr);
++}
++
+ unsigned int create_branch(const unsigned int *addr,
+ 			   unsigned long target, int flags)
+ {
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
