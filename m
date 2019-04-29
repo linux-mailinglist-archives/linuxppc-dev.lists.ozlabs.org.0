@@ -2,63 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2CBDFBE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD99ADFB6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:45:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0DQ1y00zDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:46:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0BS33sZzDqQl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:45:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-X-Greylist: delayed 10459 seconds by postgrey-1.36 at bilbo;
- Mon, 29 Apr 2019 19:44:02 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t08n5kGszDqNC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:43:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ahGBurIg"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t08n31yQz8t9Z
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:43:37 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 44t08n2p2zz9sCJ; Mon, 29 Apr 2019 19:43:37 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ahGBurIg"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t09G4JB8zDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:44:01 +1000 (AEST)
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N2m3G-1gdyq42eM8-0133kZ; Mon, 29 Apr 2019 11:43:20 +0200
-Subject: Re: [PATCH 40/41] drivers: tty: serial: helper for setting mmio range
-To: Esben Haabendal <esben@haabendal.dk>,
- "Enrico Weigelt, metux IT consult" <info@metux.net>
-References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-41-git-send-email-info@metux.net>
- <87ef5lz423.fsf@haabendal.dk>
-From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <d0b966eb-46b7-d145-92ed-3c62c495f41b@metux.net>
-Date: Mon, 29 Apr 2019 11:43:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+ by ozlabs.org (Postfix) with ESMTPS id 44t08n0hLfz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:43:35 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 45E4A2075E;
+ Mon, 29 Apr 2019 09:43:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1556531012;
+ bh=aSHmGzzq/V1JxyY2tqNTpgwP94DZg2qxTfI03dMWZtY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ahGBurIgPWOS3WsQsutYLZ5WEdIWgNAgGce5qJR6KDIJp5dSb24myXD0gOAdJWQIG
+ +BWmrv9xwZQd/j4Tm5eXFQAVnyq/0T9I16m+hpniR1B6mYQCqDSehqAHTlVCM9Ms3a
+ eHQIf9wAQkc8/+em7W3Qy27EqfYPJ2Ne+rQA8YnY=
+Date: Mon, 29 Apr 2019 11:43:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH stable v4.4 00/52] powerpc spectre backports for 4.4
+Message-ID: <20190429094330.GA30526@kroah.com>
+References: <20190421142037.21881-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87ef5lz423.fsf@haabendal.dk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:68dkhGSAKsaCjO526gNf2WSoTW6jL84pVEW36g5e32fJf4hZfEa
- B5yR5eOo/trCHlzEMiqf88gr4lugIpFcu4i7DTW0T8FoWZiDwOwvxkhUV//Oq9txPyP1qxO
- p0s8teHbOF2xnbWjYTCy/e6+F0vybuPcYhQPvcgRagIqrGRZ5ZI4QdP/10WEUP7zI9Ka+YU
- NVd7BerOC+zYOaIOiK9cQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NvmcDnTkNeI=:ba8d+q8YRab3rFKFqBt24t
- Zg9Zpq/zp8ESR/s4VsMdM2nnOKEofNFRgQuqib0Eoa+F6Di5aptfGcy2fbPQ8PlEnZZ9eFk2I
- W8lkLs1brmFQ4pMtwo1NaxLwJO+yyvyfB7yhUe3mP3ipOkVy3TvxwOqCpUxbn7cvLhhjdXYOV
- RACHse6YI1rEPLKisTi4jbY/Z2xia1z7JZNNtXMm7NyYuxlDHoAmeM51Uq1Sm9jqHrh3VjIFE
- zH5gWFbcmJhRKcS506T4D0qDLdiTRWb5HWe08PMYOLEyCWt6KkONz7ZlQEuLletC4+ebSyFne
- +YblDaPDYWW6s7TMZS94IzEKoglkP06ZU7juKMArxn0JPRB97yN78PMrSGLDm4zCHngdgwukX
- 8QhoUFb/g5oGgRP7xEm3XeyGV0XvRu9ft3THf7jFb/oF+7zCYEmaFMR7HLRHU94BxlelmoOUT
- hf0mEVyRlee3ckCEnDTzSPPktrpdeTwqaoCQIhlRInQVIwdhHJ8XZKfDN1mzvZ2IlFCWEBcMH
- +/+AxD4dkbOiJWktWAReEU2MAQiJAuIPnt8UjKkg2V6v0lHpO3+n8CFCI9Jvijm6LfpHzTHUN
- Z7KbPljaibH9464lnBZleel3EqRWzc88wYjkyJ4C3GZdlzFeP8imAVrJmxNQRR3yOT8ND3ssO
- MC6KOR0+WrmqVYkvJIvXzV6xd3FMar2vZbSJ2ckBe+smk2GbBP44mQDVVrZ5aKzyo4QDZBzHk
- BkVF8qEdunqnt+mSaL40iQ9yOh8uAqzpNBWyyGax+adypiNnzhrhF9jigoE=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190421142037.21881-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,44 +75,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, lorenzo.pieralisi@arm.com,
- linux-mips@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
- gregkh@linuxfoundation.org, sudeep.holla@arm.com, liviu.dudau@arm.com,
- linux-kernel@vger.kernel.org, vz@mleia.com, linux@prisktech.co.nz,
- sparclinux@vger.kernel.org, khilman@baylibre.com, macro@linux-mips.org,
- slemieux.tyco@gmail.com, matthias.bgg@gmail.com, jacmet@sunsite.dk,
- linux-amlogic@lists.infradead.org, andriy.shevchenko@linux.intel.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: npiggin@gmail.com, diana.craciun@nxp.com, linuxppc-dev@ozlabs.org,
+ stable@vger.kernel.org, msuchanek@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29.04.19 09:03, Esben Haabendal wrote:
+On Mon, Apr 22, 2019 at 12:19:45AM +1000, Michael Ellerman wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+> 
+> Hi Greg/Sasha,
+> 
+> Please queue up these powerpc patches for 4.4 if you have no objections.
 
-> Why not simply replace iobase, mapbase and mapsize with a struct
-> resource value instead?
+All now queued up, thanks.
 
-That was actually my original goal, when I started this. But the
-situation is a bit more tricky. Many drivers (especially the old ones)
-initialize these fields in different ways. And there're many places
-accessing these fields.
-
-Drivers for old devices should be handled w/ great care. I don't have
-access to all that hardware, so I can't test it. Therefore, I'm trying
-to move in small steps. One step ahead another.
-
-One of my next steps would be factoring out more common operations
-(eg. mapping, etc) into helpers, up to a point, where someday no driver
-is accessing these fields directly anymore.
-
-Then we could easily move everything into struct resource. On that
-road, we'd also need to find a way for handling the specialities of
-the various UPIO_* modes via struct resource.
-
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+greg k-h
