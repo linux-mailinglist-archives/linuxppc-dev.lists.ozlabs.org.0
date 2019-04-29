@@ -1,56 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DBEE1A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:54:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t3413Wp8zDqSL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:54:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF9CE1AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:56:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t35q4MwZzDqRj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:56:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+3f5cf76c63215fb3955b+5727+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="k6XXwcfv"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t32S53JYzDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 21:53:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=IENXPLnoXusqcRveMX69IYLx+6Bv7CG1f5ec/sjff1M=; b=k6XXwcfvJKs14QwpAHSnhoBW1
- aGO/aRuD5TOGfyMDr8h4Gz3KEDQSvMqK5Ou5K7tbhNbbm3Fu8Gw8ReZKCvFO+T5GkW6pxcc8Xsvzq
- oJDgGrUwFKgqhnnvQnYtZ6XYZWqLPriWNF2duXpV9kKGaTMIBgL4DGcT4g7ubCt3/36Mu9ARTJD3u
- 5TVaTYYoY2PYA/6sOnpqcX0hrs9x4dfGDO+HjAy96Qh24Oz5EDZ5P8F+qKoQtRM9TFqPzkhAMmA3Y
- YVbE90qYMrBuE+IZGRIuO2J0scJaDnpWY7e52ma0NV7iSUpghZp906mXESIg118fB+0t6CMv4hwY4
- pgnNHxB2g==;
-Received: from 65-114-90-19.dia.static.qwest.net ([65.114.90.19]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hL4qS-0008Fg-NM; Mon, 29 Apr 2019 11:53:16 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc: remove the __kernel_io_end export
-Date: Mon, 29 Apr 2019 06:52:41 -0500
-Message-Id: <20190429115241.12621-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t3494pYhzDqS6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 21:54:49 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x3TBsWU9018817;
+ Mon, 29 Apr 2019 06:54:32 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x3TBsV00018809;
+ Mon, 29 Apr 2019 06:54:31 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 29 Apr 2019 06:54:31 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 2/3] powerpc/module32: Use symbolic instructions names.
+Message-ID: <20190429115431.GN8599@gate.crashing.org>
+References: <23167861f6095456b4ba3b52c55a514201ca738f.1556534520.git.christophe.leroy@c-s.fr>
+ <14f88b27ff94f2d5a07a8cbc33ec75e2f8af9cf9.1556534520.git.christophe.leroy@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <14f88b27ff94f2d5a07a8cbc33ec75e2f8af9cf9.1556534520.git.christophe.leroy@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,33 +51,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This export was added in this merge window, but without any actual
-user, or justification for a modular user.
+On Mon, Apr 29, 2019 at 10:43:27AM +0000, Christophe Leroy wrote:
+> To increase readability/maintainability, replace hard coded
+> instructions values by symbolic names.
 
-Fixes: a35a3c6f6065 ("powerpc/mm/hash64: Add a variable to track the end of IO mapping")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/mm/pgtable_64.c | 1 -
- 1 file changed, 1 deletion(-)
+> +	/* lis r12,sym@ha */
+> +#define ENTRY_JMP0(sym)	(PPC_INST_ADDIS | __PPC_RT(R12) | PPC_HA(sym))
+> +	/* addi r12,r12,sym@l */
+> +#define ENTRY_JMP1(sym)	(PPC_INST_ADDI | __PPC_RT(R12) | __PPC_RA(R12) | PPC_LO(sym))
 
-diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-index 72f58c076e26..1fddc81cc682 100644
---- a/arch/powerpc/mm/pgtable_64.c
-+++ b/arch/powerpc/mm/pgtable_64.c
-@@ -96,7 +96,6 @@ unsigned long __vmalloc_end;
- EXPORT_SYMBOL(__vmalloc_end);
- unsigned long __kernel_io_start;
- EXPORT_SYMBOL(__kernel_io_start);
--unsigned long __kernel_io_end;
- EXPORT_SYMBOL(__kernel_io_end);
- struct page *vmemmap;
- EXPORT_SYMBOL(vmemmap);
--- 
-2.20.1
+Those aren't "jump" instructions though, as the name suggests...  And you
+only have names for the first two of the four insns.  ("2" and "3" were
+still available ;-) )
 
+> -	entry->jump[0] = 0x3d800000+((val+0x8000)>>16); /* lis r12,sym@ha */
+> -	entry->jump[1] = 0x398c0000 + (val&0xffff);     /* addi r12,r12,sym@l*/
+> -	entry->jump[2] = 0x7d8903a6;                    /* mtctr r12 */
+> -	entry->jump[3] = 0x4e800420;			/* bctr */
+> +	entry->jump[0] = ENTRY_JMP0(val);
+> +	entry->jump[1] = ENTRY_JMP1(val);
+> +	entry->jump[2] = PPC_INST_MTCTR | __PPC_RS(R12);
+> +	entry->jump[3] = PPC_INST_BCTR;
+
+Deleting the comment here is not an improvement imo.
+
+
+Segher
