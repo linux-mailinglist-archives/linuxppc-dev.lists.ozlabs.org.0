@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65474E052
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:12:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0pR02FSzDqQn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:12:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E23E04C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:11:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0mq6hx9zDqDC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lc2YVhzDqPb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lb2PTbzDqPb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="GcWs7tMh"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qWjwcKAh"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lc09kfz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:08 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0LZ3xzcz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:06 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0Lb59j1z9sML; Mon, 29 Apr 2019 19:52:07 +1000 (AEST)
+ id 44t0LZ10Tjz9sN9; Mon, 29 Apr 2019 19:52:06 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="GcWs7tMh"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qWjwcKAh"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Lb0P02z9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:07 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0LY13dVz9sN6
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:05 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 18D05206BF;
- Mon, 29 Apr 2019 09:52:04 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9169920578;
+ Mon, 29 Apr 2019 09:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531525;
- bh=S5ws91sOl66qBukQDg8iPTxlG+50DBmtR+Qwnx2NGlE=;
+ s=default; t=1556531523;
+ bh=+bRBI6xl74e9nT7jn9FWbMmItYWEK06sYddjt/KTht4=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=GcWs7tMhhkDbPjA4d5g/oYSoBre2SdbxxCoy2FwxPG1CtyPEeDQn1otkxLIFulz0I
- N0y+tvzr0TUGL/QPlaAZX8b+V7qCJjtrR+Z6UjJa6jrjdS1ZSaNgeG60cheZBq2cEW
- klFiLOL/FPdqjVBtTccAP2I9ZFF7rc4PRIUS0E8E=
-Subject: Patch "powerpc/64s: Fix section mismatch warnings from
- setup_rfi_flush()" has been added to the 4.4-stable tree
+ b=qWjwcKAh3C2FskB2/kfjxW/JrnOn4zWQulB6ofFANMKlurXTYnBcHyUCEe820JS2Y
+ mKz0JIORNhZWsVKGEVm5B9HiPaaOXwzQqHXCObbQcsZeTnMwkRMOQMRfEZYQ3WyjPp
+ pOlkwsDA/zzHfubqY4lQtY1+tJIBtd5AT8c2a8T0=
+Subject: Patch "powerpc/64s: Enhance the information in cpu_show_spectre_v1()"
+ has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:23 +0200
-In-Reply-To: <20190421142037.21881-24-mpe@ellerman.id.au>
-Message-ID: <15565314836957@kroah.com>
+In-Reply-To: <20190421142037.21881-32-mpe@ellerman.id.au>
+Message-ID: <1556531483174182@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64s: Fix section mismatch warnings from setup_rfi_flush()
+    powerpc/64s: Enhance the information in cpu_show_spectre_v1()
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64s-fix-section-mismatch-warnings-from-setup_rfi_flush.patch
+     powerpc-64s-enhance-the-information-in-cpu_show_spectre_v1.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,60 +101,38 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:08 +1000
-Subject: powerpc/64s: Fix section mismatch warnings from setup_rfi_flush()
+Date: Mon, 22 Apr 2019 00:20:16 +1000
+Subject: powerpc/64s: Enhance the information in cpu_show_spectre_v1()
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-24-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-32-mpe@ellerman.id.au>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit 501a78cbc17c329fabf8e9750a1e9ab810c88a0e upstream.
+commit a377514519b9a20fa1ea9adddbb4129573129cef upstream.
 
-The recent LPM changes to setup_rfi_flush() are causing some section
-mismatch warnings because we removed the __init annotation on
-setup_rfi_flush():
+We now have barrier_nospec as mitigation so print it in
+cpu_show_spectre_v1() when enabled.
 
-  The function setup_rfi_flush() references
-  the function __init ppc64_bolted_size().
-  the function __init memblock_alloc_base().
-
-The references are actually in init_fallback_flush(), but that is
-inlined into setup_rfi_flush().
-
-These references are safe because:
- - only pseries calls setup_rfi_flush() at runtime
- - pseries always passes L1D_FLUSH_FALLBACK at boot
- - so the fallback flush area will always be allocated
- - so the check in init_fallback_flush() will always return early:
-   /* Only allocate the fallback flush area once (at boot time). */
-   if (l1d_flush_fallback_area)
-   	return;
-
- - and therefore we won't actually call the freed init routines.
-
-We should rework the code to make it safer by default rather than
-relying on the above, but for now as a quick-fix just add a __ref
-annotation to squash the warning.
-
-Fixes: abf110f3e1ce ("powerpc/rfi-flush: Make it possible to call setup_rfi_flush() again")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/setup_64.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/security.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -882,7 +882,7 @@ void rfi_flush_enable(bool enable)
- 	rfi_flush = enable;
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -121,6 +121,9 @@ ssize_t cpu_show_spectre_v1(struct devic
+ 	if (!security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR))
+ 		return sprintf(buf, "Not affected\n");
+ 
++	if (barrier_nospec_enabled)
++		return sprintf(buf, "Mitigation: __user pointer sanitization\n");
++
+ 	return sprintf(buf, "Vulnerable\n");
  }
  
--static void init_fallback_flush(void)
-+static void __ref init_fallback_flush(void)
- {
- 	u64 l1d_size, limit;
- 	int cpu;
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
