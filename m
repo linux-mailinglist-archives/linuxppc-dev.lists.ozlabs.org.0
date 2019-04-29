@@ -2,44 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED826E1D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 14:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE206E2E0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 14:39:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t3Hf3cXWzDqS6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 22:04:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t4456TQ2zDq5k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 22:39:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=metux.net
+ (client-ip=217.72.192.74; helo=mout.kundenserver.de;
+ envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=metux.net
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t3GG53drzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 22:03:34 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x3TC3N75019409;
- Mon, 29 Apr 2019 07:03:23 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x3TC3MCq019406;
- Mon, 29 Apr 2019 07:03:22 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 29 Apr 2019 07:03:22 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/32s: fix BATs setting with
- CONFIG_STRICT_KERNEL_RWX
-Message-ID: <20190429120322.GP8599@gate.crashing.org>
-References: <3a21c6f19637847e6ed080186a834ede619f3849.1556528569.git.christophe.leroy@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a21c6f19637847e6ed080186a834ede619f3849.1556528569.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t41n1tpQzDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 22:37:46 +1000 (AEST)
+Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MPoPd-1h7YiS0myB-00MpYJ; Mon, 29 Apr 2019 14:37:11 +0200
+Subject: Re: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of
+ printk()
+To: Greg KH <gregkh@linuxfoundation.org>,
+ "Enrico Weigelt, metux IT consult" <info@metux.net>
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+ <1556369542-13247-2-git-send-email-info@metux.net>
+ <20190427133117.GC11368@kroah.com>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <bae3f23b-8823-f089-c40e-024ba225555f@metux.net>
+Date: Mon, 29 Apr 2019 14:37:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
+MIME-Version: 1.0
+In-Reply-To: <20190427133117.GC11368@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:KHUlUYtstuOEVXKZKNHyCnLCt6mq7L7HHLmuMvln4md2is42m2D
+ Gvo9vOwjIRj6LOt0W8pXYE9v/qI7Zt147k18Yao4ebuIrvwMIQUsLt/uhZdnIkf6TXIF/2S
+ i841E/m6um4E5qYu5wWiUl7XOuDGZarAmJeOQLoXfq89S/4wJw/bTUhC+J+wfkeAy6LT8O0
+ 2Q4XNEfbMs6baSq1jfeqg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qsR2mgXWc80=:kOaVYs2+zc60ka2vcrJS1G
+ 6jjjD2rzIyURBuqEL6QGX/rLYjQoEewtndqbo2z/Zeq3LWRQK7VVV/g3jzsqHfHK0pRbR3iWW
+ lHzYu+Ocphgh3aYHOj1tT4XVJikTmy1DGrmwSaYPiqxxRYGEOHHKgsd8MwiJvcyFqrJmY4bZf
+ CmMGOlXqmGS4/mcQcfpGcPWy/tHy81F4dTNC+fHe1ORcaaPnQILx0hNuDe34B22WYlKx/NSnB
+ G26mudb1+zA7rCK11WN5pz1xNscoklrB4MG7l23BtLE3kTqFh2AD2CWhWMF650iI91vzCekSl
+ 81iaSY9aOKIG/IWZlr4bOF2ADTZFekb5jsCGBI9fJ0XxDOOZmKOfU4m5yoYV3qUZjIkjqdwjR
+ BNGBKyeNceGPrXYEpckfa+hDYD5k/aFeWiymyqiRbWXtiTGL1l91toEPNqF8usmeATFJZo30c
+ 2tPDHQVcb5UtItD0TEupC6+LC8CUPRmifWN4DmMjmQs+rYTCL7XWL72+ruXo4kMgAfKDXW0IG
+ d6AUbAR06eze8qNuIXBOydRC/nRDTIv9BLJwnixcfqonqBiXSLRQ9XEhmZMC+gCQEmQPvRuGo
+ v/L1GiKVpib2P2r06lK31PMfqW4f59ibIiaMTwNj/cpXrKc1s7+ephQ78zpKUW19SiZDmrDpJ
+ CD2b/FyvoP+mFBB5xvOL+xjqTCggBjuFXC+oC8/QD0xSSAX2fub+agHpSpCGZT2CmyXSPquCS
+ nDXXmSecoORpQFCPaPHR5Z12wTg4UfBlSqiv6ZT6mrUg8zSf+/GRQVmfBVM=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,31 +69,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Serge Belyshev <belyshev@depni.sinp.msu.ru>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ linux-mips@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
+ khilman@baylibre.com, sudeep.holla@arm.com, liviu.dudau@arm.com,
+ linux-kernel@vger.kernel.org, vz@mleia.com, linux@prisktech.co.nz,
+ sparclinux@vger.kernel.org, macro@linux-mips.org, slemieux.tyco@gmail.com,
+ matthias.bgg@gmail.com, jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
+ andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+On 27.04.19 15:31, Greg KH wrote:
+> On Sat, Apr 27, 2019 at 02:51:42PM +0200, Enrico Weigelt, metux IT consult wrote:
+>> Using dev_err() instead of printk() for more consistent output.
+>> (prints device name, etc).
+>>
+>> Signed-off-by: Enrico Weigelt <info@metux.net>
+>> ---
+>>  drivers/tty/serial/dz.c | 8 ++++----
+> 
+> Do you have this hardware to test any of these changes with?
 
-(But see comments below.)
-
-On Mon, Apr 29, 2019 at 09:08:09AM +0000, Christophe Leroy wrote:
-> diff --git a/arch/powerpc/mm/ppc_mmu_32.c b/arch/powerpc/mm/ppc_mmu_32.c
-> index bf1de3ca39bc..37cf2af98f6a 100644
-> --- a/arch/powerpc/mm/ppc_mmu_32.c
-> +++ b/arch/powerpc/mm/ppc_mmu_32.c
-> @@ -101,7 +101,7 @@ static int find_free_bat(void)
->  static unsigned int block_size(unsigned long base, unsigned long top)
->  {
->  	unsigned int max_size = (cpu_has_feature(CPU_FTR_601) ? 8 : 256) << 20;
-> -	unsigned int base_shift = (fls(base) - 1) & 31;
-> +	unsigned int base_shift = (ffs(base) - 1) & 31;
->  	unsigned int block_shift = (fls(top - base) - 1) & 31;
-
-The code is quite confusing now...  Add a comment, or improve it?
+Unfortunately not :(
 
 
-Segher
+--mtx
+
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
