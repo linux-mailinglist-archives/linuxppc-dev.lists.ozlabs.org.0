@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724A1E0A5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:39:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1Nn05QtzDqXN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:39:05 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846C5E0D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1fS0Jm6zDqGB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:50:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0MY5TFJzDqG0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Mw0z8BzDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Ucono4QV"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="j33W6qxK"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0MY2VpVz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:57 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Mv6M6lz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0MY0JMPz9sML; Mon, 29 Apr 2019 19:52:57 +1000 (AEST)
+ id 44t0Mv5Nr2z9sML; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Ucono4QV"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="j33W6qxK"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0MX2Yzdz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:56 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Mv0rMcz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:15 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5620420449;
- Mon, 29 Apr 2019 09:52:54 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8A35820449;
+ Mon, 29 Apr 2019 09:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531574;
- bh=y9uzfLAt/oLqYvVcDyhnlF12/U1MIGOS6TakMrGAGjI=;
+ s=default; t=1556531593;
+ bh=EhD4hZrhE+NtZNPD6wGeOCaNU7jgV1aX9ikXIYnRpco=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=Ucono4QVBeIh6wjGdCiqLAkf2cSa+bKYxKjKrkpPVBLNvO4PAQDYi/zL477yAFh27
- /mCkQKunJTHmCayukky6uVNg0oxtH6timZOtRZ/KUK/+10YWHISdYGv/GNM4hd7PgA
- DyyNQMGo1X4IPhoDHH5863NXdi32/Ll4GlwyVUUs=
-Subject: Patch "powerpc/powernv: Set or clear security feature flags" has been
+ b=j33W6qxK5aeY3ezy6bOvfqVBB+39qQ9SomRS3REpB7iNma66LXBHclldS5FSt6LMR
+ BOXfaX9zOiq86YfobS066UzvoGXIkWyXYR9jud2UEnp73lY+YNGRLx9wLXu4SzUc5I
+ VDIURybjbvetvBce+PkQX/wTwqnO2vojr5xw/Ets=
+Subject: Patch "powerpc/pseries: Set or clear security feature flags" has been
  added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2019 11:51:27 +0200
-In-Reply-To: <20190421142037.21881-14-mpe@ellerman.id.au>
-Message-ID: <155653148780209@kroah.com>
+Date: Mon, 29 Apr 2019 11:51:28 +0200
+In-Reply-To: <20190421142037.21881-13-mpe@ellerman.id.au>
+Message-ID: <155653148825420@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/powernv: Set or clear security feature flags
+    powerpc/pseries: Set or clear security feature flags
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-powernv-set-or-clear-security-feature-flags.patch
+     powerpc-pseries-set-or-clear-security-feature-flags.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,101 +101,98 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:19:58 +1000
-Subject: powerpc/powernv: Set or clear security feature flags
+Date: Mon, 22 Apr 2019 00:19:57 +1000
+Subject: powerpc/pseries: Set or clear security feature flags
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-14-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-13-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 77addf6e95c8689e478d607176b399a6242a777e upstream.
+commit f636c14790ead6cc22cf62279b1f8d7e11a67116 upstream.
 
 Now that we have feature flags for security related things, set or
-clear them based on what we see in the device tree provided by
-firmware.
+clear them based on what we receive from the hypercall.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/setup.c |   56 +++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ arch/powerpc/platforms/pseries/setup.c |   43 +++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -37,9 +37,63 @@
- #include <asm/smp.h>
- #include <asm/tm.h>
- #include <asm/setup.h>
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -67,6 +67,7 @@
+ #include <asm/eeh.h>
+ #include <asm/reg.h>
+ #include <asm/plpar_wrappers.h>
 +#include <asm/security_features.h>
  
- #include "powernv.h"
+ #include "pseries.h"
  
-+
-+static bool fw_feature_is(const char *state, const char *name,
-+			  struct device_node *fw_features)
+@@ -499,6 +500,40 @@ static void __init find_and_init_phbs(vo
+ 	of_pci_check_probe_only();
+ }
+ 
++static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
 +{
-+	struct device_node *np;
-+	bool rc = false;
-+
-+	np = of_get_child_by_name(fw_features, name);
-+	if (np) {
-+		rc = of_property_read_bool(np, state);
-+		of_node_put(np);
-+	}
-+
-+	return rc;
-+}
-+
-+static void init_fw_feat_flags(struct device_node *np)
-+{
-+	if (fw_feature_is("enabled", "inst-spec-barrier-ori31,31,0", np))
++	if (result->character & H_CPU_CHAR_SPEC_BAR_ORI31)
 +		security_ftr_set(SEC_FTR_SPEC_BAR_ORI31);
 +
-+	if (fw_feature_is("enabled", "fw-bcctrl-serialized", np))
++	if (result->character & H_CPU_CHAR_BCCTRL_SERIALISED)
 +		security_ftr_set(SEC_FTR_BCCTRL_SERIALISED);
 +
-+	if (fw_feature_is("enabled", "inst-spec-barrier-ori31,31,0", np))
++	if (result->character & H_CPU_CHAR_L1D_FLUSH_ORI30)
 +		security_ftr_set(SEC_FTR_L1D_FLUSH_ORI30);
 +
-+	if (fw_feature_is("enabled", "inst-l1d-flush-trig2", np))
++	if (result->character & H_CPU_CHAR_L1D_FLUSH_TRIG2)
 +		security_ftr_set(SEC_FTR_L1D_FLUSH_TRIG2);
 +
-+	if (fw_feature_is("enabled", "fw-l1d-thread-split", np))
++	if (result->character & H_CPU_CHAR_L1D_THREAD_PRIV)
 +		security_ftr_set(SEC_FTR_L1D_THREAD_PRIV);
 +
-+	if (fw_feature_is("enabled", "fw-count-cache-disabled", np))
++	if (result->character & H_CPU_CHAR_COUNT_CACHE_DISABLED)
 +		security_ftr_set(SEC_FTR_COUNT_CACHE_DISABLED);
 +
 +	/*
 +	 * The features below are enabled by default, so we instead look to see
 +	 * if firmware has *disabled* them, and clear them if so.
 +	 */
-+	if (fw_feature_is("disabled", "speculation-policy-favor-security", np))
++	if (!(result->character & H_CPU_BEHAV_FAVOUR_SECURITY))
 +		security_ftr_clear(SEC_FTR_FAVOUR_SECURITY);
 +
-+	if (fw_feature_is("disabled", "needs-l1d-flush-msr-pr-0-to-1", np))
++	if (!(result->character & H_CPU_BEHAV_L1D_FLUSH_PR))
 +		security_ftr_clear(SEC_FTR_L1D_FLUSH_PR);
 +
-+	if (fw_feature_is("disabled", "needs-l1d-flush-msr-hv-1-to-0", np))
-+		security_ftr_clear(SEC_FTR_L1D_FLUSH_HV);
-+
-+	if (fw_feature_is("disabled", "needs-spec-barrier-for-bound-checks", np))
++	if (!(result->character & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
 +		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
 +}
 +
- static void pnv_setup_rfi_flush(void)
+ void pseries_setup_rfi_flush(void)
  {
- 	struct device_node *np, *fw_features;
-@@ -55,6 +109,8 @@ static void pnv_setup_rfi_flush(void)
- 	of_node_put(np);
+ 	struct h_cpu_char_result result;
+@@ -512,6 +547,8 @@ void pseries_setup_rfi_flush(void)
  
- 	if (fw_features) {
-+		init_fw_feat_flags(fw_features);
+ 	rc = plpar_get_cpu_characteristics(&result);
+ 	if (rc == H_SUCCESS) {
++		init_cpu_char_feature_flags(&result);
 +
- 		np = of_get_child_by_name(fw_features, "inst-l1d-flush-trig2");
- 		if (np && of_property_read_bool(np, "enabled"))
- 			type = L1D_FLUSH_MTTRIG;
+ 		if (result.character & H_CPU_CHAR_L1D_FLUSH_TRIG2)
+ 			types |= L1D_FLUSH_MTTRIG;
+ 		if (result.character & H_CPU_CHAR_L1D_FLUSH_ORI30)
+@@ -522,6 +559,12 @@ void pseries_setup_rfi_flush(void)
+ 			enable = false;
+ 	}
+ 
++	/*
++	 * We're the guest so this doesn't apply to us, clear it to simplify
++	 * handling of it elsewhere.
++	 */
++	security_ftr_clear(SEC_FTR_L1D_FLUSH_HV);
++
+ 	setup_rfi_flush(types, enable);
+ }
+ 
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
