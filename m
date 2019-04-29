@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2ECDFF5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E64E041
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:08:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0W11Cs5zDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0jH0rDhzDqT4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:08:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0LB0cvTzDqQ3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0LS66MYzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="toiXLNMY"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="tpMZo00j"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0L82sLGz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:44 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0LS41fdz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0L814DQz9sCJ; Mon, 29 Apr 2019 19:51:44 +1000 (AEST)
+ id 44t0LS33lLz9sCJ; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="toiXLNMY"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="tpMZo00j"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0L71wdYz9s3Z
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:43 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0LR20ZXz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:59 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 710B62087B;
- Mon, 29 Apr 2019 09:51:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 403A12075E;
+ Mon, 29 Apr 2019 09:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531501;
- bh=Z2C2E7d9q6JRTmoOqilhXA9iH1g/i7ZFGqS+/04VXic=;
+ s=default; t=1556531517;
+ bh=fHGgDnY7NYBBzmC9xy4NIgEtGXMZOOe4TuzPxS+MMvc=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=toiXLNMYFOFNQ/Ggu215SZ1c54gYE50IoKqmil3YyZSXEZ7ZA/aJhiExA5aWBJcni
- NRKyj2+BA/oSDd4vUyYl0uSviD5iWFYxzO6UJNyDV1D+oxc2508NHJnhlgRa00uDvE
- kFy+LGZwUZzBMz/fVVJXu395+/4btXTM7HJLY8xs=
-Subject: Patch "powerpc/64: Use barrier_nospec in syscall entry" has been
- added to the 4.4-stable tree
+ b=tpMZo00jfbhpavJ6OVnoDDzEi3dhaFk/iGClJWxbSNQHCh0XwY4ULup8q0b49EG4j
+ UFsiGp2sxNDaNy/KJEXapRX+9x4w8tRNXx0KXDorPpeZu/gyjC5+FwIkGHdNj45YLb
+ 3mfyVh1YUI8hHTtmIljN633vVc6mTkRALaoNN78c=
+Subject: Patch "powerpc/64s: Enable barrier_nospec based on firmware settings"
+ has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:22 +0200
-In-Reply-To: <20190421142037.21881-30-mpe@ellerman.id.au>
-Message-ID: <15565314821342@kroah.com>
+In-Reply-To: <20190421142037.21881-29-mpe@ellerman.id.au>
+Message-ID: <155653148212385@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64: Use barrier_nospec in syscall entry
+    powerpc/64s: Enable barrier_nospec based on firmware settings
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64-use-barrier_nospec-in-syscall-entry.patch
+     powerpc-64s-enable-barrier_nospec-based-on-firmware-settings.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,54 +101,129 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:14 +1000
-Subject: powerpc/64: Use barrier_nospec in syscall entry
+Date: Mon, 22 Apr 2019 00:20:13 +1000
+Subject: powerpc/64s: Enable barrier_nospec based on firmware settings
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-30-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-29-mpe@ellerman.id.au>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit 51973a815c6b46d7b23b68d6af371ad1c9d503ca upstream.
+commit cb3d6759a93c6d0aea1c10deb6d00e111c29c19c upstream.
 
-Our syscall entry is done in assembly so patch in an explicit
-barrier_nospec.
+Check what firmware told us and enable/disable the barrier_nospec as
+appropriate.
 
-Based on a patch by Michal Suchanek.
+We err on the side of enabling the barrier, as it's no-op on older
+systems, see the comment for more detail.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/entry_64.S |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/powerpc/include/asm/setup.h       |    1 
+ arch/powerpc/kernel/security.c         |   59 +++++++++++++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/setup.c |    1 
+ arch/powerpc/platforms/pseries/setup.c |    1 
+ 4 files changed, 62 insertions(+)
 
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -36,6 +36,7 @@
- #include <asm/hw_irq.h>
- #include <asm/context_tracking.h>
- #include <asm/tm.h>
-+#include <asm/barrier.h>
- #ifdef CONFIG_PPC_BOOK3S
- #include <asm/exception-64s.h>
- #else
-@@ -177,6 +178,15 @@ system_call:			/* label this so stack tr
- 	clrldi	r8,r8,32
- 15:
- 	slwi	r0,r0,4
+--- a/arch/powerpc/include/asm/setup.h
++++ b/arch/powerpc/include/asm/setup.h
+@@ -38,6 +38,7 @@ enum l1d_flush_type {
+ 
+ void setup_rfi_flush(enum l1d_flush_type, bool enable);
+ void do_rfi_flush_fixups(enum l1d_flush_type types);
++void setup_barrier_nospec(void);
+ void do_barrier_nospec_fixups(bool enable);
+ extern bool barrier_nospec_enabled;
+ 
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -24,6 +24,65 @@ static void enable_barrier_nospec(bool e
+ 	do_barrier_nospec_fixups(enable);
+ }
+ 
++void setup_barrier_nospec(void)
++{
++	bool enable;
 +
-+	barrier_nospec_asm
 +	/*
-+	 * Prevent the load of the handler below (based on the user-passed
-+	 * system call number) being speculatively executed until the test
-+	 * against NR_syscalls and branch to .Lsyscall_enosys above has
-+	 * committed.
++	 * It would make sense to check SEC_FTR_SPEC_BAR_ORI31 below as well.
++	 * But there's a good reason not to. The two flags we check below are
++	 * both are enabled by default in the kernel, so if the hcall is not
++	 * functional they will be enabled.
++	 * On a system where the host firmware has been updated (so the ori
++	 * functions as a barrier), but on which the hypervisor (KVM/Qemu) has
++	 * not been updated, we would like to enable the barrier. Dropping the
++	 * check for SEC_FTR_SPEC_BAR_ORI31 achieves that. The only downside is
++	 * we potentially enable the barrier on systems where the host firmware
++	 * is not updated, but that's harmless as it's a no-op.
 +	 */
++	enable = security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) &&
++		 security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR);
 +
- 	ldx	r12,r11,r0	/* Fetch system call handler [ptr] */
- 	mtctr   r12
- 	bctrl			/* Call handler */
++	enable_barrier_nospec(enable);
++}
++
++#ifdef CONFIG_DEBUG_FS
++static int barrier_nospec_set(void *data, u64 val)
++{
++	switch (val) {
++	case 0:
++	case 1:
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (!!val == !!barrier_nospec_enabled)
++		return 0;
++
++	enable_barrier_nospec(!!val);
++
++	return 0;
++}
++
++static int barrier_nospec_get(void *data, u64 *val)
++{
++	*val = barrier_nospec_enabled ? 1 : 0;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(fops_barrier_nospec,
++			barrier_nospec_get, barrier_nospec_set, "%llu\n");
++
++static __init int barrier_nospec_debugfs_init(void)
++{
++	debugfs_create_file("barrier_nospec", 0600, powerpc_debugfs_root, NULL,
++			    &fops_barrier_nospec);
++	return 0;
++}
++device_initcall(barrier_nospec_debugfs_init);
++#endif /* CONFIG_DEBUG_FS */
++
+ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	bool thread_priv;
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -123,6 +123,7 @@ static void pnv_setup_rfi_flush(void)
+ 		  security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV));
+ 
+ 	setup_rfi_flush(type, enable);
++	setup_barrier_nospec();
+ }
+ 
+ static void __init pnv_setup_arch(void)
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -574,6 +574,7 @@ void pseries_setup_rfi_flush(void)
+ 		 security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR);
+ 
+ 	setup_rfi_flush(types, enable);
++	setup_barrier_nospec();
+ }
+ 
+ static void __init pSeries_setup_arch(void)
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
