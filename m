@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE15E0CC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:46:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1Xv5vNjzDqR0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:46:07 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A0BE0D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:48:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1b25xRLzDqCV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:47:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Mm0McKzDqPW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Mp2kmDzDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Ct6HJhpd"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="KA386QM+"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Ml6mYyz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:07 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Mp00Wwz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:10 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0Ml6Jd9z9sCJ; Mon, 29 Apr 2019 19:53:07 +1000 (AEST)
+ id 44t0Mn6GXpz9sCJ; Mon, 29 Apr 2019 19:53:09 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Ct6HJhpd"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="KA386QM+"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Ml2fCZz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:07 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Mn2YzSz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:09 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BA57B206BF;
- Mon, 29 Apr 2019 09:53:04 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5C3EF20449;
+ Mon, 29 Apr 2019 09:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531585;
- bh=clUiv6ugijwC9rsqF2Jn8u1iqNhio4WzVuGK8KOLksU=;
+ s=default; t=1556531587;
+ bh=0FiM+TMSfdbIrgYQOd/aFFLIZji9LQwmBBNsT9Yea08=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=Ct6HJhpdIva0OTNFCXEP5khi304d9GRRJj4fvxkIlmGvCzdonUby16yb3ViE2fv19
- JEJGqTQLFFUVpb4oLafynz8RYDgvkuUp18vwIaX4xJ44BlXqa8CVGeMrCoJUJb2AWH
- fs/436ce3bRWUsL8hWTu/6uRoW0/iDhd/XCqK0f4=
-Subject: Patch "powerpc/pseries: Fix clearing of security feature flags" has
- been added to the 4.4-stable tree
+ b=KA386QM+gecctF7uf+BGrENxqMqFv3bkEMU/7Q54wAIqe4Ck67iDaNDxaAATddmbn
+ Xnu/FuUkWMOG09e7CaEPyWRSLXKebt23gKD7AJ1n8rBSYAm3tm88yVy2q2AWu3i52Z
+ F2OIQGYFFvzx+BP716O6RonSLmytzQH4avJLcmJI=
+Subject: Patch "powerpc/pseries: Query hypervisor for count cache flush
+ settings" has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
- linuxppc-dev@ozlabs.org, mauricfo@linux.vnet.ibm.com, mpe@ellerman.id.au,
- msuchanek@suse.de, npiggin@gmail.com
+ linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
+ npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:28 +0200
-In-Reply-To: <20190421142037.21881-21-mpe@ellerman.id.au>
-Message-ID: <155653148817156@kroah.com>
+In-Reply-To: <20190421142037.21881-43-mpe@ellerman.id.au>
+Message-ID: <155653148821231@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/pseries: Fix clearing of security feature flags
+    powerpc/pseries: Query hypervisor for count cache flush settings
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-pseries-fix-clearing-of-security-feature-flags.patch
+     powerpc-pseries-query-hypervisor-for-count-cache-flush-settings.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,85 +101,65 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:05 +1000
-Subject: powerpc/pseries: Fix clearing of security feature flags
+Date: Mon, 22 Apr 2019 00:20:27 +1000
+Subject: powerpc/pseries: Query hypervisor for count cache flush settings
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-21-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-43-mpe@ellerman.id.au>
 
-From: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 0f9bdfe3c77091e8704d2e510eb7c2c2c6cde524 upstream.
+commit ba72dc171954b782a79d25e0f4b3ed91090c3b1e upstream.
 
-The H_CPU_BEHAV_* flags should be checked for in the 'behaviour' field
-of 'struct h_cpu_char_result' -- 'character' is for H_CPU_CHAR_*
-flags.
+Use the existing hypercall to determine the appropriate settings for
+the count cache flush, and then call the generic powerpc code to set
+it up based on the security feature flags.
 
-Found by playing around with QEMU's implementation of the hypercall:
-
-  H_CPU_CHAR=0xf000000000000000
-  H_CPU_BEHAV=0x0000000000000000
-
-  This clears H_CPU_BEHAV_FAVOUR_SECURITY and H_CPU_BEHAV_L1D_FLUSH_PR
-  so pseries_setup_rfi_flush() disables 'rfi_flush'; and it also
-  clears H_CPU_CHAR_L1D_THREAD_PRIV flag. So there is no RFI flush
-  mitigation at all for cpu_show_meltdown() to report; but currently
-  it does:
-
-  Original kernel:
-
-    # cat /sys/devices/system/cpu/vulnerabilities/meltdown
-    Mitigation: RFI Flush
-
-  Patched kernel:
-
-    # cat /sys/devices/system/cpu/vulnerabilities/meltdown
-    Not affected
-
-  H_CPU_CHAR=0x0000000000000000
-  H_CPU_BEHAV=0xf000000000000000
-
-  This sets H_CPU_BEHAV_BNDS_CHK_SPEC_BAR so cpu_show_spectre_v1() should
-  report vulnerable; but currently it doesn't:
-
-  Original kernel:
-
-    # cat /sys/devices/system/cpu/vulnerabilities/spectre_v1
-    Not affected
-
-  Patched kernel:
-
-    # cat /sys/devices/system/cpu/vulnerabilities/spectre_v1
-    Vulnerable
-
-Brown-paper-bag-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: f636c14790ea ("powerpc/pseries: Set or clear security feature flags")
-Signed-off-by: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/setup.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/hvcall.h      |    2 ++
+ arch/powerpc/platforms/pseries/setup.c |    7 +++++++
+ 2 files changed, 9 insertions(+)
 
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -295,10 +295,12 @@
+ #define H_CPU_CHAR_BRANCH_HINTS_HONORED	(1ull << 58) // IBM bit 5
+ #define H_CPU_CHAR_THREAD_RECONFIG_CTRL	(1ull << 57) // IBM bit 6
+ #define H_CPU_CHAR_COUNT_CACHE_DISABLED	(1ull << 56) // IBM bit 7
++#define H_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54) // IBM bit 9
+ 
+ #define H_CPU_BEHAV_FAVOUR_SECURITY	(1ull << 63) // IBM bit 0
+ #define H_CPU_BEHAV_L1D_FLUSH_PR	(1ull << 62) // IBM bit 1
+ #define H_CPU_BEHAV_BNDS_CHK_SPEC_BAR	(1ull << 61) // IBM bit 2
++#define H_CPU_BEHAV_FLUSH_COUNT_CACHE	(1ull << 58) // IBM bit 5
+ 
+ #ifndef __ASSEMBLY__
+ #include <linux/types.h>
 --- a/arch/powerpc/platforms/pseries/setup.c
 +++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -524,13 +524,13 @@ static void init_cpu_char_feature_flags(
+@@ -524,6 +524,12 @@ static void init_cpu_char_feature_flags(
+ 	if (result->character & H_CPU_CHAR_COUNT_CACHE_DISABLED)
+ 		security_ftr_set(SEC_FTR_COUNT_CACHE_DISABLED);
+ 
++	if (result->character & H_CPU_CHAR_BCCTR_FLUSH_ASSIST)
++		security_ftr_set(SEC_FTR_BCCTR_FLUSH_ASSIST);
++
++	if (result->behaviour & H_CPU_BEHAV_FLUSH_COUNT_CACHE)
++		security_ftr_set(SEC_FTR_FLUSH_COUNT_CACHE);
++
+ 	/*
  	 * The features below are enabled by default, so we instead look to see
  	 * if firmware has *disabled* them, and clear them if so.
- 	 */
--	if (!(result->character & H_CPU_BEHAV_FAVOUR_SECURITY))
-+	if (!(result->behaviour & H_CPU_BEHAV_FAVOUR_SECURITY))
- 		security_ftr_clear(SEC_FTR_FAVOUR_SECURITY);
+@@ -574,6 +580,7 @@ void pseries_setup_rfi_flush(void)
+ 		 security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR);
  
--	if (!(result->character & H_CPU_BEHAV_L1D_FLUSH_PR))
-+	if (!(result->behaviour & H_CPU_BEHAV_L1D_FLUSH_PR))
- 		security_ftr_clear(SEC_FTR_L1D_FLUSH_PR);
- 
--	if (!(result->character & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
-+	if (!(result->behaviour & H_CPU_BEHAV_BNDS_CHK_SPEC_BAR))
- 		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
+ 	setup_rfi_flush(types, enable);
++	setup_count_cache_flush();
  }
  
+ static void __init pSeries_setup_arch(void)
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
