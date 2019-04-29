@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A685DFED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:56:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B0BDFE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:55:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0QG1P3nzDqR0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:55:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0Rm4BYbzDqQk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:56:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0L04w8szDqP9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0L32BKxzDqP6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="fa3JYms8"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="azEC2EvP"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0L01dXWz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:36 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0L26tTlz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:38 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0L01Nw3z9sMM; Mon, 29 Apr 2019 19:51:36 +1000 (AEST)
+ id 44t0L26Ymtz9sCJ; Mon, 29 Apr 2019 19:51:38 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="fa3JYms8"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="azEC2EvP"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Kz4sNyz9sCJ
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:35 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0L22v1Jz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:38 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A16C32087B;
- Mon, 29 Apr 2019 09:51:33 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 571782147A;
+ Mon, 29 Apr 2019 09:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531494;
- bh=0e7kFU+VaW9TL3q2XXnTSFD+MuebMCxmZHhGk9ACVOI=;
+ s=default; t=1556531496;
+ bh=gmwpvURrrGYDfuv5YuXvB30JDkHnXTo1BAm/HLjrcsY=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=fa3JYms8m5T+Cql5uveeLTTIydymqSnHHUNtOypMuXsnYI2gVSqNY/R0F+vOu7zBU
- uDKBHGa46vo3QgvdmkGFQ8JFTJMY5KeXZw4AgoMFS9hl6LJr3ZUhjheXWYNgOaaizs
- e32L1uRyvVZZ0OOfAY1oMd/MU6lryKMhjGBOJtAs=
-Subject: Patch "powerpc/64: Call setup_barrier_nospec() from setup_arch()" has
- been added to the 4.4-stable tree
+ b=azEC2EvPghP+5pagRclTOp8qpBfGn+3nZYxmO8C7rUhIZKwOOIPcNfovaGxcKCHTp
+ OI5xjPa+59YR9eSYADxjs20aawPDalOE322TJDQuTgJn0wsWs3IYktFOHr9kJamZ4j
+ ppxG/t8Rio63+rxLLb2CrnTKn99TgpuJTSWETTfg=
+Subject: Patch "powerpc/64: Disable the speculation barrier from the command
+ line" has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:21 +0200
-In-Reply-To: <20190421142037.21881-37-mpe@ellerman.id.au>
-Message-ID: <155653148166139@kroah.com>
+In-Reply-To: <20190421142037.21881-34-mpe@ellerman.id.au>
+Message-ID: <1556531481253117@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64: Call setup_barrier_nospec() from setup_arch()
+    powerpc/64: Disable the speculation barrier from the command line
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64-call-setup_barrier_nospec-from-setup_arch.patch
+     powerpc-64-disable-the-speculation-barrier-from-the-command-line.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,87 +101,56 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:21 +1000
-Subject: powerpc/64: Call setup_barrier_nospec() from setup_arch()
+Date: Mon, 22 Apr 2019 00:20:18 +1000
+Subject: powerpc/64: Disable the speculation barrier from the command line
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-37-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-34-mpe@ellerman.id.au>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Diana Craciun <diana.craciun@nxp.com>
 
-commit af375eefbfb27cbb5b831984e66d724a40d26b5c upstream.
+commit cf175dc315f90185128fb061dc05b6fbb211aa2f upstream.
 
-Currently we require platform code to call setup_barrier_nospec(). But
-if we add an empty definition for the !CONFIG_PPC_BARRIER_NOSPEC case
-then we can call it in setup_arch().
+The speculation barrier can be disabled from the command line
+with the parameter: "nospectre_v1".
 
 Signed-off-by: Diana Craciun <diana.craciun@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/setup.h       |    4 ++++
- arch/powerpc/kernel/setup_32.c         |    2 ++
- arch/powerpc/kernel/setup_64.c         |    2 ++
- arch/powerpc/platforms/powernv/setup.c |    1 -
- arch/powerpc/platforms/pseries/setup.c |    1 -
- 5 files changed, 8 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/security.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -38,7 +38,11 @@ enum l1d_flush_type {
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -17,6 +17,7 @@
+ unsigned long powerpc_security_features __read_mostly = SEC_FTR_DEFAULT;
  
- void setup_rfi_flush(enum l1d_flush_type, bool enable);
- void do_rfi_flush_fixups(enum l1d_flush_type types);
-+#ifdef CONFIG_PPC_BARRIER_NOSPEC
- void setup_barrier_nospec(void);
-+#else
-+static inline void setup_barrier_nospec(void) { };
-+#endif
- void do_barrier_nospec_fixups(bool enable);
- extern bool barrier_nospec_enabled;
+ bool barrier_nospec_enabled;
++static bool no_nospec;
  
---- a/arch/powerpc/kernel/setup_32.c
-+++ b/arch/powerpc/kernel/setup_32.c
-@@ -322,6 +322,8 @@ void __init setup_arch(char **cmdline_p)
- 		ppc_md.setup_arch();
- 	if ( ppc_md.progress ) ppc_md.progress("arch: exit", 0x3eab);
+ static void enable_barrier_nospec(bool enable)
+ {
+@@ -43,9 +44,18 @@ void setup_barrier_nospec(void)
+ 	enable = security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) &&
+ 		 security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR);
  
-+	setup_barrier_nospec();
-+
- 	paging_init();
- 
- 	/* Initialize the MMU context management stuff */
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -736,6 +736,8 @@ void __init setup_arch(char **cmdline_p)
- 	if (ppc_md.setup_arch)
- 		ppc_md.setup_arch();
- 
-+	setup_barrier_nospec();
-+
- 	paging_init();
- 
- 	/* Initialize the MMU context management stuff */
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -123,7 +123,6 @@ static void pnv_setup_rfi_flush(void)
- 		  security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV));
- 
- 	setup_rfi_flush(type, enable);
--	setup_barrier_nospec();
+-	enable_barrier_nospec(enable);
++	if (!no_nospec)
++		enable_barrier_nospec(enable);
  }
  
- static void __init pnv_setup_arch(void)
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -574,7 +574,6 @@ void pseries_setup_rfi_flush(void)
- 		 security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR);
- 
- 	setup_rfi_flush(types, enable);
--	setup_barrier_nospec();
- }
- 
- static void __init pSeries_setup_arch(void)
++static int __init handle_nospectre_v1(char *p)
++{
++	no_nospec = true;
++
++	return 0;
++}
++early_param("nospectre_v1", handle_nospectre_v1);
++
+ #ifdef CONFIG_DEBUG_FS
+ static int barrier_nospec_set(void *data, u64 val)
+ {
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
