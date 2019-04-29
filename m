@@ -1,79 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D32DA8E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 04:55:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44sq5x612NzDqP5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:55:33 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3EFDA98
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 05:06:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44sqLX5BR3zDqPb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:06:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=maddy@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
+ envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="sCS33Wo8"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44sq310csJzDqMn
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 12:53:00 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x3T2i9sX004004
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 22:52:58 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2s5b1ppau6-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 22:52:58 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.vnet.ibm.com>;
- Mon, 29 Apr 2019 03:52:56 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 29 Apr 2019 03:52:54 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x3T2qsRU45744332
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2019 02:52:54 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EACC8A4055;
- Mon, 29 Apr 2019 02:52:53 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CA4FDA4040;
- Mon, 29 Apr 2019 02:52:52 +0000 (GMT)
-Received: from SrihariSrinidhi.in.ibm.com (unknown [9.77.213.89])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 29 Apr 2019 02:52:52 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/2] powerpc/perf: Add generic compat mode pmu driver
-Date: Mon, 29 Apr 2019 08:22:48 +0530
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1556506368-29329-1-git-send-email-maddy@linux.vnet.ibm.com>
-References: <1556506368-29329-1-git-send-email-maddy@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19042902-4275-0000-0000-0000032F5A61
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19042902-4276-0000-0000-0000383EAE07
-Message-Id: <1556506368-29329-2-git-send-email-maddy@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-04-29_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904290021
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44sqJy1lwkzDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 13:05:03 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id m188so7690676ioa.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 20:05:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=dJMl90O95ELh7MccR/gotQ0iR4kxpXltz+n2rVMWVek=;
+ b=sCS33Wo854rOecdEepHQFeUD38yV4m0fx8fxGIDGiFttKs1dNNsEKXEkbVeyxlSjum
+ 3xNFDFhJ2iF9Fh9LzN6/xoVy+YhiXgEoshszIQJUnps+YrJhuuw9lAxDcYmGEDff9HrD
+ TJ6Xu79Wqbtq1Tpi2wfMrvCOrwmCbJWN+8K8iOxPa9yGhqwXJHYJPfAWhw1jyiGBSsz3
+ 6X4n0WUjEhAKyIGR/WesQJtN5xfG2amZp32CAU7q0+TYECzjxRQ/mdLi88A/Ti2/Vfqv
+ +JnR2yMzE207qkPhJUQQMzIyz+UetNgniIOCbX3kN+O9VLWgT/dAd33CFP0gKgTqhMkH
+ ZRgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dJMl90O95ELh7MccR/gotQ0iR4kxpXltz+n2rVMWVek=;
+ b=WDnBr1GGBT+mTQJeXcJgrbPtyTt1NA9Q4FaK7XbRZcSr1hpIb4VdyUe6XujVpuHTCU
+ QhHFFq0nCXVC9py+81c2HOcloIDI/zKaPaQLf1MYUip42UGgW2i7vsOaZi+hBoODl8ft
+ 0gxhR4fNgPhBKgyh3Rree5Vk9lgsq+akWH9oT6XZb+pU161Reai6xH8UCCxxawByds/w
+ P5nmhG46SJJvsbYVtDv4XfZTL5/XYfpZlQbChi2vxUmPu6EGd/AE/YcjuvzbB2OvNNVk
+ bh8qGqix1DQo/djMkZi1duktT/Xm+3DV4ZiYZANIIuq0vdUN9XjQIA+vW4dJD7jNqhQi
+ Nrag==
+X-Gm-Message-State: APjAAAVVODIvkvkp9gtvbnHiAM7BjZNx0E56730xX8f2FY2oV/6RtbvX
+ kkI6AB8CX0jV0/PfZvy/sITxOwPIkE8rlgAyug==
+X-Google-Smtp-Source: APXvYqzeszOwZP14RtOC6mV9rY3uOhFyM1yQpZi/QDojtM4wzbayqEf6L0iWYkrbUvWs9aPmzqXndCUfaebQxYOHnc8=
+X-Received: by 2002:a6b:7d08:: with SMTP id c8mr3138801ioq.259.1556507100502; 
+ Sun, 28 Apr 2019 20:05:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com>
+ <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com>
+ <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+ <20190428083710.GA11981@dhcp-128-65.nay.redhat.com>
+In-Reply-To: <20190428083710.GA11981@dhcp-128-65.nay.redhat.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Mon, 29 Apr 2019 11:04:49 +0800
+Message-ID: <CAFgQCTvQezGM7xgY2Q1RSUiQ7wLdxtUAeztrO3AqDfjx8f2kdg@mail.gmail.com>
+Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
+ more indicant
+To: Dave Young <dyoung@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,339 +76,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Julien Thierry <julien.thierry@arm.com>, Yangtao Li <tiny.windzz@gmail.com>,
+ Palmer Dabbelt <palmer@sifive.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Stefan Agner <stefan@agner.ch>, linux-mips@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Logan Gunthorpe <logang@deltatee.com>,
+ linux-s390@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Fenghua Yu <fenghua.yu@intel.com>, Tony Luck <tony.luck@intel.com>,
+ Will Deacon <will.deacon@arm.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ Matthias Brugger <mbrugger@suse.com>, Baoquan He <bhe@redhat.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Robin Murphy <robin.murphy@arm.com>, kexec@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>, Ralf Baechle <ralf@linux-mips.org>,
+ Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+ Paul Burton <paul.burton@mips.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Greg Hackmann <ghackmann@android.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most of the power processor generation performance monitoring
-unit (PMU) driver code is bundled in the kernel and one of those
-is enabled/registered based on the oprofile_cpu_type check at
-the boot.
+On Sun, Apr 28, 2019 at 4:37 PM Dave Young <dyoung@redhat.com> wrote:
+>
+> On 04/25/19 at 04:20pm, Pingfan Liu wrote:
+> > On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
+> > >
+> > >
+> > [...]
+> > > > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
+> > > >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
+> > > >               return -EINVAL;
+> > > >       }
+> > > > +     if (*crash_size == 0)
+> > > > +             return -EINVAL;
+> > >
+> > > This covers the case where I pass an argument like "crashkernel=0M" ?
+> > > Can't we fix that by using kstrtoull() in memparse and check if the return value
+> > > is < 0? In that case we could return without updating the retptr and we will be
+> > > fine.
+> > >
+> > It seems that kstrtoull() treats 0M as invalid parameter, while
+> > simple_strtoull() does not.
+> >
+> > If changed like your suggestion, then all the callers of memparse()
+> > will treats 0M as invalid parameter. This affects many components
+> > besides kexec.  Not sure this can be done or not.
+>
+> simple_strtoull is obsolete, move to kstrtoull is the right way.
+>
+> $ git grep memparse|wc
+>     158     950   10479
+>
+> Except some documentation/tools etc there are still a log of callers
+> which directly use the return value as the ull number without error
+> checking.
+>
+> So it would be good to mark memparse as obsolete as well in
+> lib/cmdline.c, and introduce a new function eg. kmemparse() to use
+> kstrtoull,  and return a real error code, and save the size in an
+> argument like &size.  Then update X86 crashkernel code to use it.
+>
+Thank for your good suggestion.
 
-But things get little tricky incase of "compat" mode boot.
-IBM POWER System Server based processors has a compactibility
-mode feature, which simpily put is, Nth generation processor
-(lets say POWER8) will act and appear in a mode consistent
-with an earlier generation (N-1) processor (that is POWER7).
-And in this "compat" mode boot, kernel modify the
-"oprofile_cpu_type" to be Nth generation (POWER8). If Nth
-generation pmu driver is bundled (POWER8), it gets registered.
-
-Key dependency here is to have distro support for latest
-processor performance monitoring support. Patch here adds
-a generic "compat-mode" performance monitoring driver to
-be register in absence of powernv platform specific pmu driver.
-
-Driver supports "cycles", "instruction" and "branch-miss" events.
-"0x100F0" used as event code for "cycles", "0x00002"
-used as event code for "instruction" events and "0x400F6"
-used as event code for "branch miss". These are architected events
-as part of ISA. New file called "generic-compat-pmu.c" is
-created to contain the driver specific code. And base raw event
-code format modeled on PPMU_ARCH_207S.
-
-Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
----
-Changelog v1:
-- Updated architected event opcodes
-- included branch miss with architected event opcode
-
- arch/powerpc/perf/Makefile             |   3 +-
- arch/powerpc/perf/core-book3s.c        |   2 +-
- arch/powerpc/perf/generic-compat-pmu.c | 245 +++++++++++++++++++++++++++++++++
- arch/powerpc/perf/internal.h           |   1 +
- 4 files changed, 249 insertions(+), 2 deletions(-)
- create mode 100644 arch/powerpc/perf/generic-compat-pmu.c
-
-diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
-index ab26df5bacb9..c155dcbb8691 100644
---- a/arch/powerpc/perf/Makefile
-+++ b/arch/powerpc/perf/Makefile
-@@ -5,7 +5,8 @@ obj-$(CONFIG_PERF_EVENTS)	+= callchain.o perf_regs.o
- obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o bhrb.o
- obj64-$(CONFIG_PPC_PERF_CTRS)	+= ppc970-pmu.o power5-pmu.o \
- 				   power5+-pmu.o power6-pmu.o power7-pmu.o \
--				   isa207-common.o power8-pmu.o power9-pmu.o
-+				   isa207-common.o power8-pmu.o power9-pmu.o \
-+				   generic-compat-pmu.o
- obj32-$(CONFIG_PPC_PERF_CTRS)	+= mpc7450-pmu.o
- 
- obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index a96f9420139c..a66fb9c01c9e 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2318,7 +2318,7 @@ static int __init init_ppc64_pmu(void)
- 	else if (!init_ppc970_pmu())
- 		return 0;
- 	else
--		return -ENODEV;
-+		return init_generic_compat_pmu();
- }
- early_initcall(init_ppc64_pmu);
- #endif
-diff --git a/arch/powerpc/perf/generic-compat-pmu.c b/arch/powerpc/perf/generic-compat-pmu.c
-new file mode 100644
-index 000000000000..9c2d4bbc5c87
---- /dev/null
-+++ b/arch/powerpc/perf/generic-compat-pmu.c
-@@ -0,0 +1,245 @@
-+/*
-+ * Performance counter support.
-+ *
-+ * Copyright 2019 Madhavan Srinivasan, IBM Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the License, or later version.
-+ */
-+
-+#define pr_fmt(fmt)	"generic-compat-pmu: " fmt
-+
-+#include "isa207-common.h"
-+
-+/*
-+ * Raw event encoding:
-+ *
-+ *        60        56        52        48        44        40        36        32
-+ * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
-+ *
-+ *        28        24        20        16        12         8         4         0
-+ * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
-+ *                                 [ pmc ]   [unit ]   [ ]   m   [    pmcxsel    ]
-+ *                                                     |     |
-+ *                                                     |     *- mark
-+ *                                                     |
-+ *                                                     |
-+ *                                                     *- combine
-+ *
-+ * Below uses IBM bit numbering.
-+ *
-+ * MMCR1[x:y] = unit    (PMCxUNIT)
-+ * MMCR1[24]   = pmc1combine[0]
-+ * MMCR1[25]   = pmc1combine[1]
-+ * MMCR1[26]   = pmc2combine[0]
-+ * MMCR1[27]   = pmc2combine[1]
-+ * MMCR1[28]   = pmc3combine[0]
-+ * MMCR1[29]   = pmc3combine[1]
-+ * MMCR1[30]   = pmc4combine[0]
-+ * MMCR1[31]   = pmc4combine[1]
-+ *
-+ */
-+
-+/*
-+ * Some power9 event codes.
-+ */
-+#define EVENT(_name, _code)	_name = _code,
-+
-+enum {
-+EVENT(PM_CYC,					0x100F0)
-+EVENT(PM_INST_CMPL,				0x00002)
-+EVENT(PM_BR_MPRED_CMPL,				0x400F6)
-+};
-+
-+#undef EVENT
-+
-+GENERIC_EVENT_ATTR(cpu-cycles,			PM_CYC);
-+GENERIC_EVENT_ATTR(instructions,		PM_INST_CMPL);
-+GENERIC_EVENT_ATTR(branch-misses,               PM_BR_MPRED_CMPL);
-+
-+static struct attribute *generic_compat_events_attr[] = {
-+	GENERIC_EVENT_PTR(PM_CYC),
-+	GENERIC_EVENT_PTR(PM_INST_CMPL),
-+	GENERIC_EVENT_PTR(PM_BR_MPRED_CMPL),
-+	NULL
-+};
-+
-+static struct attribute_group generic_compat_pmu_events_group = {
-+	.name = "events",
-+	.attrs = generic_compat_events_attr,
-+};
-+
-+PMU_FORMAT_ATTR(event,		"config:0-19");
-+PMU_FORMAT_ATTR(pmcxsel,	"config:0-7");
-+PMU_FORMAT_ATTR(mark,		"config:8");
-+PMU_FORMAT_ATTR(combine,	"config:10-11");
-+PMU_FORMAT_ATTR(unit,		"config:12-15");
-+PMU_FORMAT_ATTR(pmc,		"config:16-19");
-+
-+static struct attribute *generic_compat_pmu_format_attr[] = {
-+	&format_attr_event.attr,
-+	&format_attr_pmcxsel.attr,
-+	&format_attr_mark.attr,
-+	&format_attr_combine.attr,
-+	&format_attr_unit.attr,
-+	&format_attr_pmc.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group generic_compat_pmu_format_group = {
-+	.name = "format",
-+	.attrs = generic_compat_pmu_format_attr,
-+};
-+
-+static const struct attribute_group *generic_compat_pmu_attr_groups[] = {
-+	&generic_compat_pmu_format_group,
-+	&generic_compat_pmu_events_group,
-+	NULL,
-+};
-+
-+static int compat_generic_events[] = {
-+	[PERF_COUNT_HW_CPU_CYCLES] =			PM_CYC,
-+	[PERF_COUNT_HW_INSTRUCTIONS] =			PM_INST_CMPL,
-+	[PERF_COUNT_HW_BRANCH_MISSES] =                 PM_BR_MPRED_CMPL,
-+};
-+
-+#define C(x)	PERF_COUNT_HW_CACHE_##x
-+
-+/*
-+ * Table of generalized cache-related events.
-+ * 0 means not supported, -1 means nonsensical, other values
-+ * are event codes.
-+ */
-+static int generic_compat_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
-+	[ C(L1D) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+	},
-+	[ C(L1I) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+	},
-+	[ C(LL) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+	},
-+	[ C(DTLB) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+	},
-+	[ C(ITLB) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+	},
-+	[ C(BPU) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = 0,
-+			[ C(RESULT_MISS)   ] = 0,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+	},
-+	[ C(NODE) ] = {
-+		[ C(OP_READ) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_WRITE) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+		[ C(OP_PREFETCH) ] = {
-+			[ C(RESULT_ACCESS) ] = -1,
-+			[ C(RESULT_MISS)   ] = -1,
-+		},
-+	},
-+};
-+
-+#undef C
-+
-+static struct power_pmu generic_compat_pmu = {
-+	.name			= "GENERIC_COMPAT",
-+	.n_counter		= MAX_PMU_COUNTERS,
-+	.add_fields		= ISA207_ADD_FIELDS,
-+	.test_adder		= ISA207_TEST_ADDER,
-+	.compute_mmcr		= isa207_compute_mmcr,
-+	.get_constraint		= isa207_get_constraint,
-+	.disable_pmc		= isa207_disable_pmc,
-+	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
-+	.n_generic		= ARRAY_SIZE(compat_generic_events),
-+	.generic_events		= compat_generic_events,
-+	.cache_events		= &generic_compat_cache_events,
-+	.attr_groups		= generic_compat_pmu_attr_groups,
-+};
-+
-+int init_generic_compat_pmu(void)
-+{
-+	int rc = 0;
-+
-+	rc = register_power_pmu(&generic_compat_pmu);
-+	if (rc)
-+		return rc;
-+
-+	/* Tell userspace that EBB is supported */
-+	cur_cpu_spec->cpu_user_features2 |= PPC_FEATURE2_EBB;
-+
-+	return 0;
-+}
-diff --git a/arch/powerpc/perf/internal.h b/arch/powerpc/perf/internal.h
-index e54d524d4283..185a40d1adff 100644
---- a/arch/powerpc/perf/internal.h
-+++ b/arch/powerpc/perf/internal.h
-@@ -14,3 +14,4 @@ extern int init_power6_pmu(void);
- extern int init_power7_pmu(void);
- extern int init_power8_pmu(void);
- extern int init_power9_pmu(void);
-+extern int init_generic_compat_pmu(void);
--- 
-2.7.4
-
+Regards,
+Pingfan
