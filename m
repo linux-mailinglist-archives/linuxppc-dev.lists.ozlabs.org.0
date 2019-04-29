@@ -2,72 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB29E79B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 18:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104A2E7A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 18:22:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t8y02KzmzDqTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 02:19:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t9121hMdzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 02:22:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=metux.net
+ (client-ip=212.227.17.13; helo=mout.kundenserver.de;
+ envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="BjQx+kaE"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=metux.net
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t8wY372FzDqC0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 02:18:37 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44t8wN2pCvz9vDbs;
- Mon, 29 Apr 2019 18:18:28 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=BjQx+kaE; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id aXsRFK1QTZr9; Mon, 29 Apr 2019 18:18:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44t8wN1Rbrz9vDbr;
- Mon, 29 Apr 2019 18:18:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556554708; bh=FmG0gTYs5oq5h81q7jEyc4Wov/smm6KptMn1bWZZ6UY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=BjQx+kaEHgEJb9T/61rt3diCsJNYkiNHUhfzgr+mvjN4Pnywq5MbgYBcqpdIQz91l
- MOoWYXEzdn4IgWuIaWT6IQgLGYQmiTbu4vZxYLhMqB1ljWxO3BTYx68HtfYfrLa2pJ
- DnY47LpRSIwR+sTZMzdaApWHw4o+sdP3BfWcan1g=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 671608B8B4;
- Mon, 29 Apr 2019 18:18:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id J9zNcQs8Cgt1; Mon, 29 Apr 2019 18:18:33 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.231.6])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 094208B8B3;
- Mon, 29 Apr 2019 18:18:33 +0200 (CEST)
-Subject: Re: serial drivers polishing
-To: "Enrico Weigelt, metux IT consult" <info@metux.net>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t8zd6JNczDqC0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 02:21:16 +1000 (AEST)
+Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1Mwwm5-1gaMFo1KN1-00yOxX; Mon, 29 Apr 2019 18:20:39 +0200
+Subject: Re: [PATCH 22/41] drivers: tty: serial: cpm_uart: fix logging calls
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ "Enrico Weigelt, metux IT consult" <info@metux.net>,
  linux-kernel@vger.kernel.org
 References: <1556369542-13247-1-git-send-email-info@metux.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <7471c418-4058-db7b-b2ed-af9a67fff201@c-s.fr>
-Date: Mon, 29 Apr 2019 16:16:34 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ <1556369542-13247-23-git-send-email-info@metux.net>
+ <a00ba23b-e73e-c964-a6d0-347cb605b8c8@c-s.fr>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <fc01df37-3e7e-0c71-745d-63fbd83c1079@metux.net>
+Date: Mon, 29 Apr 2019 18:20:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-In-Reply-To: <1556369542-13247-1-git-send-email-info@metux.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <a00ba23b-e73e-c964-a6d0-347cb605b8c8@c-s.fr>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:tyjLH/89kE1DHJTcj7yQUi5/jAAZ5RWHEAZ1BEYsF/kWEbRkhEH
+ ZeaoyF1df0iBCTPcuY9nMjeSr96B+reEDpUpVACuMx58hYfg0Ovl49rQYub23PLjPK+yUID
+ slNmJJYsTtoV+aOWQj1HRbA5ynpZ744EoI0A3tjgNZt1lZntfjDIcPBJU9Pfhs6+X+GK7WP
+ t2o2PeOOqkzRGtr61EECg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:VjVnj6n6CTk=:oLoFfSXyDvVj4bcXT6Ih/4
+ kL0M02IkYcM23hQBqWuWitHhRHbYjCdwo7yZCm+3pBB5no8X/Ztr8zkGyrVRrPMSlNYX0gK3B
+ zLkvJlnWomR5UquIKZ13gZBV4/wjOl1kSv+4LiRfmqDVFOKnXIw+UAnjDoRPwbvqi2dxuhVHa
+ IXOpQP00pNeser50seIPI/ovlbFbXJMBOVj1rt+0+0uSk0wstKhVVSaWsva/3NcMpYr44iwKN
+ pL8XlLZaS2QOBl/ynF7SoVxFIvZnEMQhJorItjLuphNxXCvtzj8rhqLrrkkajgQ/0pjUy4Tiq
+ 3WJvabYmjDHm85gs3l1RGTIP/leL/aifhMaOXM4Qx1sHVTJJxlMw1it7I31wrFqe0C0T5Tnk3
+ +5c0iqDZF6VBw0XsN+FMTdvwwN5so9je+rNUHID3sD5Yvm8xjw93Uo6bviA4/IiHvX0mEdSAj
+ xKxitSG92ozPUuigbzb+oogChLmFoFbXi6s3ER6JiRSVDa9POQO26X1cecixkOz2/SyaNrtd5
+ wi3bBiZX/zwK/cEVJZg0BMo3ilxjtajTeiY2OsNJmCcBp61mptn8TueHekBXTEmqhyvIWEcks
+ Pwcb//riDg9W1mzMTxm5SPvVgmRR3xYRVRFYmTDZ46n62kPQaVUbket7jbv2AqHlWLKiCqkR4
+ n4RNCb4xflN9afHD65/ruEWM68k3MVK9H9CPTVyg90priPsyjBaWTOwBYdw4mnSSnWx3W9pFV
+ HxWHJkWswPIQsZuk5ib+4UBHe5duPTXhYEDd7bKV8coJopag7yNzn+KUAT2H9z/JPgKcId2QY
+ fg2wigxSa7xJUSvPOamObTx2eMiO5lok3NOq7YtNTSlPbcGNlc13ID61c5JH/6t6NJ6lPjs
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,70 +82,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On 29.04.19 17:59, Christophe Leroy wrote:
 
-On 04/27/2019 12:51 PM, Enrico Weigelt, metux IT consult wrote:
-> Hello folks,
-> 
-> 
-> here's another attempt of polishing the serial drivers:
-> 
-> * lots of minor cleanups to make checkpatch happier
->    (eg. formatting, includes, inttypes, ...)
-> 
-> * use appropriate logging helpers instead of printk()
-> 
-> * consequent use of mapsize/mapbase fields:
->    the basic idea is, all drivers should fill mapbase/mapbase fields at
->    init time and later only use those fields, instead of hardcoded values
->    (later on, we can add generic helpers for the map/unmap stuff, etc)
-> 
-> * untwisting serial8250_port_size() at all:
->    move the iomem size probing to initialization time, move out some
->    platform specific magic to corresponding platform code, etc.
-> 
-> 
-> Unfortunately, I don't have the actual hardware to really test all
-> the code, so please let me know if there's something broken in here.
-> 
-> 
-> have fun,
-> 
-> --mtx
-> 
+> If we want to do something useful, wouldn't it make more sense to
+> introduce the use of dev_err() in order to identify the faulting device
+> in the message ?
+
+Well, I could get the struct device* pointer via pinfo.port->dev,
+but I wasn't entirely sure that it's always defined before these
+functions could be called.
+
+Shall I change it to dev_*() ?
 
 
-Got the following build  error while compiling for my powerpc board with 
-your full series applied. No time to investigate though.
+--mtx
 
-   CC      arch/powerpc/kernel/setup-common.o
-In file included from ./include/linux/serial_8250.h:14:0,
-                  from arch/powerpc/kernel/setup-common.c:33:
-./include/linux/serial_core.h: In function ‘uart_memres_set_res’:
-./include/linux/serial_core.h:446:18: error: ‘resource’ undeclared 
-(first use in this function)
-    port->iobase = resource->start;
-                   ^
-./include/linux/serial_core.h:446:18: note: each undeclared identifier 
-is reported only once for each function it appears in
-./include/linux/serial_core.h:450:2: error: ‘uart’ undeclared (first use 
-in this function)
-   uart->mapbase = res->start;
-   ^
-./include/linux/serial_core.h: In function ‘uart_memres_set_start_len’:
-./include/linux/serial_core.h:464:6: error: ‘struct uart_driver’ has no 
-member named ‘mapbase’
-   uart->mapbase = start;
-       ^
-./include/linux/serial_core.h:465:6: error: ‘struct uart_driver’ has no 
-member named ‘mapsize’
-   uart->mapsize = len;
-       ^
-./include/linux/serial_core.h:466:6: error: ‘struct uart_driver’ has no 
-member named ‘iotype’
-   uart->iotype  = UPIO_MEM;
-       ^
-make[3]: *** [arch/powerpc/kernel/setup-common.o] Error 1
-
-
-Christophe
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
