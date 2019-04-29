@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874ECE08A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:29:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1B10wYvzDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:29:45 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD6AE090
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:31:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1CZ2TnnzDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:31:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0MC3QJdzDqJg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0MF5s3mzDqQ8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="vPmEV9CY"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="JsXUvJIE"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0MC228Lz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:39 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0MF4f42z8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:41 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0MC0Zhpz9sCJ; Mon, 29 Apr 2019 19:52:39 +1000 (AEST)
+ id 44t0MF3pTNz9sML; Mon, 29 Apr 2019 19:52:41 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="vPmEV9CY"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="JsXUvJIE"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0MB2RZ1z9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:38 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0MD60xZz9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:40 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4C78120449;
- Mon, 29 Apr 2019 09:52:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D71D0205ED;
+ Mon, 29 Apr 2019 09:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531556;
- bh=iO34pZnfvzofDlSyrGa+mF2U6sY9anpUiHoFnbps2Gg=;
+ s=default; t=1556531559;
+ bh=VH8EnipIgXJSWGpWBCpxUMjA9AOnoSlBpScZOHnM7Eg=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=vPmEV9CYxvalrYoKBgUk3bwipYVlkKN2O0afQNnKdsEvj1WuNrZrnsFAk7rHieROc
- 5QHlKruMFJksCgZjMR4LDxJXE+izXbEt4cRGeqQhKhFymUlADxr+YeEyGjghjF2NrR
- kK8G/3AirhdN/BxIxx/Gg+YW3ysaLzruZ3cNsBw4=
-Subject: Patch "powerpc/fsl: Add nospectre_v2 command line argument" has been
+ b=JsXUvJIEnw6rZ8VyCgRzaf6wFZeXa1dCpAqfFiMm8nCAq9d6y9E5ETISdVVFa4Qtj
+ Pq7EHrIUC8ddDJLVC7XAq+m7gV2TRWcb6qNCy8IuVasJb4No7El17eCTXy2zsPCTKo
+ ++RQkz+axPtM2OEZLZW64FEFA/TEPG67ke2hcFh4=
+Subject: Patch "powerpc: Avoid code patching freed init sections" has been
  added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
- linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
- npiggin@gmail.com
+ linuxppc-dev@ozlabs.org, mikey@neuling.org, mpe@ellerman.id.au,
+ msuchanek@suse.de, npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:25 +0200
-In-Reply-To: <20190421142037.21881-49-mpe@ellerman.id.au>
-Message-ID: <1556531485108182@kroah.com>
+In-Reply-To: <20190421142037.21881-45-mpe@ellerman.id.au>
+Message-ID: <1556531485193218@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/fsl: Add nospectre_v2 command line argument
+    powerpc: Avoid code patching freed init sections
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-fsl-add-nospectre_v2-command-line-argument.patch
+     powerpc-avoid-code-patching-freed-init-sections.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,78 +101,105 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:33 +1000
-Subject: powerpc/fsl: Add nospectre_v2 command line argument
+Date: Mon, 22 Apr 2019 00:20:29 +1000
+Subject: powerpc: Avoid code patching freed init sections
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-49-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-45-mpe@ellerman.id.au>
 
-From: Diana Craciun <diana.craciun@nxp.com>
+From: Michael Neuling <mikey@neuling.org>
 
-commit f633a8ad636efb5d4bba1a047d4a0f1ef719aa06 upstream.
+commit 51c3c62b58b357e8d35e4cc32f7b4ec907426fe3 upstream.
 
-When the command line argument is present, the Spectre variant 2
-mitigations are disabled.
+This stops us from doing code patching in init sections after they've
+been freed.
 
-Signed-off-by: Diana Craciun <diana.craciun@nxp.com>
+In this chain:
+  kvm_guest_init() ->
+    kvm_use_magic_page() ->
+      fault_in_pages_readable() ->
+	 __get_user() ->
+	   __get_user_nocheck() ->
+	     barrier_nospec();
+
+We have a code patching location at barrier_nospec() and
+kvm_guest_init() is an init function. This whole chain gets inlined,
+so when we free the init section (hence kvm_guest_init()), this code
+goes away and hence should no longer be patched.
+
+We seen this as userspace memory corruption when using a memory
+checker while doing partition migration testing on powervm (this
+starts the code patching post migration via
+/sys/kernel/mobility/migration). In theory, it could also happen when
+using /sys/kernel/debug/powerpc/barrier_nospec.
+
+Signed-off-by: Michael Neuling <mikey@neuling.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/setup.h |    5 +++++
- arch/powerpc/kernel/security.c   |   21 +++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ arch/powerpc/include/asm/setup.h |    1 +
+ arch/powerpc/lib/code-patching.c |   13 +++++++++++++
+ arch/powerpc/mm/mem.c            |    2 ++
+ 3 files changed, 16 insertions(+)
 
 --- a/arch/powerpc/include/asm/setup.h
 +++ b/arch/powerpc/include/asm/setup.h
-@@ -53,6 +53,11 @@ void do_barrier_nospec_fixups_range(bool
- static inline void do_barrier_nospec_fixups_range(bool enable, void *start, void *end) { };
+@@ -8,6 +8,7 @@ extern void ppc_printk_progress(char *s,
+ 
+ extern unsigned int rtas_data;
+ extern unsigned long long memory_limit;
++extern bool init_mem_is_free;
+ extern unsigned long klimit;
+ extern void *zalloc_maybe_bootmem(size_t size, gfp_t mask);
+ 
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -14,12 +14,25 @@
+ #include <asm/page.h>
+ #include <asm/code-patching.h>
+ #include <asm/uaccess.h>
++#include <asm/setup.h>
++#include <asm/sections.h>
+ 
+ 
++static inline bool is_init(unsigned int *addr)
++{
++	return addr >= (unsigned int *)__init_begin && addr < (unsigned int *)__init_end;
++}
++
+ int patch_instruction(unsigned int *addr, unsigned int instr)
+ {
+ 	int err;
+ 
++	/* Make sure we aren't patching a freed init section */
++	if (init_mem_is_free && is_init(addr)) {
++		pr_debug("Skipping init section patching addr: 0x%px\n", addr);
++		return 0;
++	}
++
+ 	__put_user_size(instr, addr, 4, err);
+ 	if (err)
+ 		return err;
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -62,6 +62,7 @@
  #endif
  
-+#ifdef CONFIG_PPC_FSL_BOOK3E
-+void setup_spectre_v2(void);
-+#else
-+static inline void setup_spectre_v2(void) {};
-+#endif
- void do_btb_flush_fixups(void);
+ unsigned long long memory_limit;
++bool init_mem_is_free;
  
- #endif /* !__ASSEMBLY__ */
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -27,6 +27,10 @@ static enum count_cache_flush_type count
- 
- bool barrier_nospec_enabled;
- static bool no_nospec;
-+static bool btb_flush_enabled;
-+#ifdef CONFIG_PPC_FSL_BOOK3E
-+static bool no_spectrev2;
-+#endif
- 
- static void enable_barrier_nospec(bool enable)
+ #ifdef CONFIG_HIGHMEM
+ pte_t *kmap_pte;
+@@ -381,6 +382,7 @@ void __init mem_init(void)
+ void free_initmem(void)
  {
-@@ -102,6 +106,23 @@ static __init int barrier_nospec_debugfs
- device_initcall(barrier_nospec_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
+ 	ppc_md.progress = ppc_printk_progress;
++	init_mem_is_free = true;
+ 	free_initmem_default(POISON_FREE_INITMEM);
+ }
  
-+#ifdef CONFIG_PPC_FSL_BOOK3E
-+static int __init handle_nospectre_v2(char *p)
-+{
-+	no_spectrev2 = true;
-+
-+	return 0;
-+}
-+early_param("nospectre_v2", handle_nospectre_v2);
-+void setup_spectre_v2(void)
-+{
-+	if (no_spectrev2)
-+		do_btb_flush_fixups();
-+	else
-+		btb_flush_enabled = true;
-+}
-+#endif /* CONFIG_PPC_FSL_BOOK3E */
-+
- #ifdef CONFIG_PPC_BOOK3S_64
- ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
- {
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
