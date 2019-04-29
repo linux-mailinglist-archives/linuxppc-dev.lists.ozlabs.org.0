@@ -2,55 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A085E4A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 16:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58931E592
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 16:57:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t6PG4rp7zDqVR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 00:24:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t76d6hRszDqVS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 00:57:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="DbpGdnjd"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (mailfrom) smtp.mailfrom=metux.net
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=metux.net
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t6Mg4gw0zDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:23:25 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 05EF02087B;
- Mon, 29 Apr 2019 14:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556547803;
- bh=CkUjjUJoMHq8rlvMrsqjvKQxwGL4ZgTcgUZqqiiE4wk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=DbpGdnjdtpdQJlRzLjdXk/CzMnGnx2UImW/X2Ktk2CSjyqyJm9+xzPJkeajfWT9Qd
- N3PRnB8M7vrDlYE0ETDEyal91HTyIwFfrFHNs92GYThQ8pojlh/IRIH3MXMHNa5heE
- ZNgpK7yyRwLUt1w0xCmLk/cfr533cOSm5sUVT9v0=
-Date: Mon, 29 Apr 2019 16:23:21 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Subject: Re: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of
- printk()
-Message-ID: <20190429142321.GA29007@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t75G276MzDq7h
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:56:01 +1000 (AEST)
+Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MzhSh-1gYdpR49Nx-00vcL0; Mon, 29 Apr 2019 16:55:13 +0200
+Subject: Re: [PATCH 36/41] drivers: tty: serial: 8250: store mmio resource
+ size in port struct
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Enrico Weigelt, metux IT consult" <info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-2-git-send-email-info@metux.net>
- <20190427132959.GA11368@kroah.com>
- <e10175d0-bc3b-a4ab-cb47-0b4761bfb629@metux.net>
+ <1556369542-13247-37-git-send-email-info@metux.net>
+ <20190428151848.GO9224@smile.fi.intel.com>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <4bab941a-c2f2-7f1c-9bc2-86c63f171c25@metux.net>
+Date: Mon, 29 Apr 2019 16:55:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e10175d0-bc3b-a4ab-cb47-0b4761bfb629@metux.net>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190428151848.GO9224@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:3sNaGIwVieBtMMPDbaHtnQ9WqDYUZdXDzXdtSPxuDKdaXl1IhJx
+ gExeQeuUVBW9F8lPEU32YFMe/ujn/jKm3Qo/yQgDM0nzyQYP+uCPSUDJN/wl74WlUhOFl0H
+ b9FygV4JGeGXjaq1ueGEJHfa2utbBtfqmEwr5N/Cg0mgACNio7NSt3lhmpR00vRsMaYfrz8
+ XlPVJlU6S0ovAYl+qK9DA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4eAEJ0wqyW0=:R8Lq31LWiuM3bZqp1AQZRZ
+ jyqOXktZyU/EhjOWGDvRMWW3paokS57Sx0yc4uwnO6dW+U4GGDyD5OGfx43RER6pilTojd0Cc
+ 1UvhRZhNvHyNSboccxXg4jxVr61SiKbaiipZqc+naHd1ejutU8kiPSah1j2BPJMskurk632/Y
+ nukzV2GRHNrvPqdoyfrS6s+qBz9aDlcAx9P6cdOpirdL0w0XVqfr+tiPUixOrykaqEPKMVtKL
+ 4OGgSljM9ZDmNeIvVFhlvLWLVFKmPMfuyzdRN0JRAjZGHQP8bk3aTcH8A8onXk/l0QJqHKhDX
+ ZQ4bypEgU32hQ4fqOqnWyQmKcfVmdEkraWqwANE/QrsjnJU89kjPxH4M9ZfgkJf1GE7bGdCt1
+ XhrQ8ybROPrVDOJCthK1AGoo0AmLPY6uR2O1MZa5KaS3QjuUVPykBRE01dQJR2GvK2jlSiPXW
+ zZ6hxOJP8CI1RzsHOkTMtdomXf7Gm8m2tF4WFR6XxuWUgOBnt3ZZIIlrPwEeD6KS08lQpQRZD
+ 3qMm83rz1mRcgd9SJaG5GP6l1TZznT12n5BWoD4OS3VG6a46jzylv2wemvehNTDk4TTOjt62R
+ OncMDUxVV4h+DnfwTXj+a6L5MPoAszfUepWtuwGjKsEhwBb+0x+CAUGIFYQFSjobFQD0BxRfx
+ r0b01pqkzW9vQJ/lMSLIZWsbJ91UXnzPMnujJVFsM8G2B6NAhnk2yAV+0RvlzpNVO1H9zAvDC
+ XLBBWgy4vh7jwZz35FbEeJ2gzJ9/pMyOzs3Y5+E5mRhxkcAYeGmPmyAuSLg=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,37 +69,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, lorenzo.pieralisi@arm.com,
- linux-mips@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
- khilman@baylibre.com, sudeep.holla@arm.com, liviu.dudau@arm.com,
- linux-kernel@vger.kernel.org, vz@mleia.com, linux@prisktech.co.nz,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- macro@linux-mips.org, slemieux.tyco@gmail.com, matthias.bgg@gmail.com,
- jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
- andriy.shevchenko@linux.intel.com, "Enrico Weigelt,
- metux IT consult" <info@metux.net>, davem@davemloft.net
+Cc: lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org,
+ linux-serial@vger.kernel.org, andrew@aj.id.au, gregkh@linuxfoundation.org,
+ sudeep.holla@arm.com, liviu.dudau@arm.com, linux-kernel@vger.kernel.org,
+ vz@mleia.com, linux@prisktech.co.nz, sparclinux@vger.kernel.org,
+ khilman@baylibre.com, macro@linux-mips.org, slemieux.tyco@gmail.com,
+ matthias.bgg@gmail.com, jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 29, 2019 at 04:11:15PM +0200, Enrico Weigelt, metux IT consult wrote:
-> On 27.04.19 15:29, Greg KH wrote:
-> > On Sat, Apr 27, 2019 at 02:51:42PM +0200, Enrico Weigelt, metux IT consult wrote:
-> >> Using dev_err() instead of printk() for more consistent output.
-> >> (prints device name, etc).
-> >>
-> >> Signed-off-by: Enrico Weigelt <info@metux.net>
-> > 
-> > Your "From:" line does not match the signed-off-by line, so I can't take
-> > any of these if I wanted to :(
+On 28.04.19 17:18, Andy Shevchenko wrote:
+> On Sat, Apr 27, 2019 at 02:52:17PM +0200, Enrico Weigelt, metux IT consult wrote:
+>> The io resource size is currently recomputed when it's needed but this
+>> actually needs to be done once (or drivers could specify fixed values)
 > 
-> Grmpf. I've manually changed it, as you isisted in having my company
-> name remove from it ....
+> io -> IO
 
-Yes, that's fine, but the lines have to match.  See the documentation
-for how to have a "From:" in the changelog text to override whatever
-your email client happens to pollute the email with :)
+fixed.
 
-thanks,
+>> Simplify that by doing this computation only once and storing the result
+>> into the mapsize field. serial8250_register_8250_port() is now called
+>> only once on driver init, the previous call sites now just fetch the
+>> value from the mapsize field.
+> 
+> Do I understand correctly that this has no side effects?
 
-greg k-h
+I don't know of any. (except someting changes things like regshift after
+the initialization phase ... :o)
+
+>> @@ -979,6 +979,9 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
+>>  	if (up->port.uartclk == 0)
+>>  		return -EINVAL;
+>>  
+>> +	/* compute the mapsize in case the driver didn't specify one */
+>> +	up->mapsize = serial8250_port_size(up);
+> 
+> I don't know all quirks in 8250 drivers by heart, though can you guarantee that
+> at this point the device reports correct IO resource size? (If I'm not mistaken
+> some broken hardware needs some magic to be done before card can be properly
+> handled)
+
+Actually, I don't see anything talking to the hardware at all here.
+It's all derived from values that are set up before
+serial8250_register_8250_port() is called.
+
+>> -	unsigned int size = serial8250_port_size(up);
+>>  	struct uart_port *port = &up->port;
+> 
+>> -	int ret = 0;
+> 
+> This and Co is a separate change that can be done in its own patch.
+
+I don't really understand :(
+Do you mean the splitting off the retval part from the rest ?
+
+>> +			port->membase = ioremap_nocache(port->mapbase,
+>> +							port->mapsize);
+> 
+> You may increase readability by introducing temporary variables
+> 
+> 	... mapbase = port->mapbase;
+> 	... mapsize = port->mapsize;
+> 	...
+> 	port->membase = ioremap_nocache(mapbase, mapsize);
+> 	...
+
+Is that really necessary ? Maybe it's just my personal taste, but I
+don't feel the more more verbose one is really easier to read.
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
