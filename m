@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A22E05C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:14:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E23E04C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:11:26 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0mq6hx9zDqDC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:11:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0r45fSLzDqDQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:14:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lb2PTbzDqPb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lf38X6zDqPf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="qWjwcKAh"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="gXIzW3Az"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0LZ3xzcz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:06 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lf2CP7z8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:10 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0LZ10Tjz9sN9; Mon, 29 Apr 2019 19:52:06 +1000 (AEST)
+ id 44t0Lf1g9Xz9sML; Mon, 29 Apr 2019 19:52:10 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="qWjwcKAh"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="gXIzW3Az"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0LY13dVz9sN6
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:05 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Ld3zMqz9sCJ
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:09 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9169920578;
- Mon, 29 Apr 2019 09:52:02 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9345C20578;
+ Mon, 29 Apr 2019 09:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531523;
- bh=+bRBI6xl74e9nT7jn9FWbMmItYWEK06sYddjt/KTht4=;
+ s=default; t=1556531528;
+ bh=MsteLY+rnvWsY1nWvXjNMr0CcBgs1lhKCPTWB69K0/Q=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=qWjwcKAh3C2FskB2/kfjxW/JrnOn4zWQulB6ofFANMKlurXTYnBcHyUCEe820JS2Y
- mKz0JIORNhZWsVKGEVm5B9HiPaaOXwzQqHXCObbQcsZeTnMwkRMOQMRfEZYQ3WyjPp
- pOlkwsDA/zzHfubqY4lQtY1+tJIBtd5AT8c2a8T0=
-Subject: Patch "powerpc/64s: Enhance the information in cpu_show_spectre_v1()"
- has been added to the 4.4-stable tree
+ b=gXIzW3AzgT2qo8gCP5qLfrcTstgxeFhBSmiiHHtP4EMTgbTThg78M/HWzxb9SHzzi
+ bce9TqEJ8TeGXJPwZGzSeOXWdYqrIzteE5I5N2IlL/LV0oYA9oSlGRfShvnAqY0Me4
+ Xo/j8C1GVoeC7/lgg3KYE5+NtjpPEWuBR1OZ+Y3Q=
+Subject: Patch "powerpc/64s: Improve RFI L1-D cache flush fallback" has been
+ added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:23 +0200
-In-Reply-To: <20190421142037.21881-32-mpe@ellerman.id.au>
-Message-ID: <1556531483174182@kroah.com>
+In-Reply-To: <20190421142037.21881-3-mpe@ellerman.id.au>
+Message-ID: <155653148322018@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64s: Enhance the information in cpu_show_spectre_v1()
+    powerpc/64s: Improve RFI L1-D cache flush fallback
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64s-enhance-the-information-in-cpu_show_spectre_v1.patch
+     powerpc-64s-improve-rfi-l1-d-cache-flush-fallback.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,38 +101,223 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:16 +1000
-Subject: powerpc/64s: Enhance the information in cpu_show_spectre_v1()
+Date: Mon, 22 Apr 2019 00:19:47 +1000
+Subject: powerpc/64s: Improve RFI L1-D cache flush fallback
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-32-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-3-mpe@ellerman.id.au>
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-commit a377514519b9a20fa1ea9adddbb4129573129cef upstream.
+commit bdcb1aefc5b3f7d0f1dc8b02673602bca2ff7a4b upstream.
 
-We now have barrier_nospec as mitigation so print it in
-cpu_show_spectre_v1() when enabled.
+The fallback RFI flush is used when firmware does not provide a way
+to flush the cache. It's a "displacement flush" that evicts useful
+data by displacing it with an uninteresting buffer.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+The flush has to take care to work with implementation specific cache
+replacment policies, so the recipe has been in flux. The initial
+slow but conservative approach is to touch all lines of a congruence
+class, with dependencies between each load. It has since been
+determined that a linear pattern of loads without dependencies is
+sufficient, and is significantly faster.
+
+Measuring the speed of a null syscall with RFI fallback flush enabled
+gives the relative improvement:
+
+P8 - 1.83x
+P9 - 1.75x
+
+The flush also becomes simpler and more adaptable to different cache
+geometries.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/security.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/paca.h      |    3 -
+ arch/powerpc/kernel/asm-offsets.c    |    3 -
+ arch/powerpc/kernel/exceptions-64s.S |   76 ++++++++++++++++-------------------
+ arch/powerpc/kernel/setup_64.c       |   13 -----
+ arch/powerpc/xmon/xmon.c             |    2 
+ 5 files changed, 39 insertions(+), 58 deletions(-)
 
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -121,6 +121,9 @@ ssize_t cpu_show_spectre_v1(struct devic
- 	if (!security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR))
- 		return sprintf(buf, "Not affected\n");
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -199,8 +199,7 @@ struct paca_struct {
+ 	 */
+ 	u64 exrfi[13] __aligned(0x80);
+ 	void *rfi_flush_fallback_area;
+-	u64 l1d_flush_congruence;
+-	u64 l1d_flush_sets;
++	u64 l1d_flush_size;
+ #endif
+ };
  
-+	if (barrier_nospec_enabled)
-+		return sprintf(buf, "Mitigation: __user pointer sanitization\n");
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -245,8 +245,7 @@ int main(void)
+ 	DEFINE(PACA_IN_MCE, offsetof(struct paca_struct, in_mce));
+ 	DEFINE(PACA_RFI_FLUSH_FALLBACK_AREA, offsetof(struct paca_struct, rfi_flush_fallback_area));
+ 	DEFINE(PACA_EXRFI, offsetof(struct paca_struct, exrfi));
+-	DEFINE(PACA_L1D_FLUSH_CONGRUENCE, offsetof(struct paca_struct, l1d_flush_congruence));
+-	DEFINE(PACA_L1D_FLUSH_SETS, offsetof(struct paca_struct, l1d_flush_sets));
++	DEFINE(PACA_L1D_FLUSH_SIZE, offsetof(struct paca_struct, l1d_flush_size));
+ #endif
+ 	DEFINE(PACAHWCPUID, offsetof(struct paca_struct, hw_cpu_id));
+ 	DEFINE(PACAKEXECSTATE, offsetof(struct paca_struct, kexec_state));
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1571,39 +1571,37 @@ rfi_flush_fallback:
+ 	std	r9,PACA_EXRFI+EX_R9(r13)
+ 	std	r10,PACA_EXRFI+EX_R10(r13)
+ 	std	r11,PACA_EXRFI+EX_R11(r13)
+-	std	r12,PACA_EXRFI+EX_R12(r13)
+-	std	r8,PACA_EXRFI+EX_R13(r13)
+ 	mfctr	r9
+ 	ld	r10,PACA_RFI_FLUSH_FALLBACK_AREA(r13)
+-	ld	r11,PACA_L1D_FLUSH_SETS(r13)
+-	ld	r12,PACA_L1D_FLUSH_CONGRUENCE(r13)
+-	/*
+-	 * The load adresses are at staggered offsets within cachelines,
+-	 * which suits some pipelines better (on others it should not
+-	 * hurt).
+-	 */
+-	addi	r12,r12,8
++	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
++	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
+ 	mtctr	r11
+ 	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
+ 
+ 	/* order ld/st prior to dcbt stop all streams with flushing */
+ 	sync
+-1:	li	r8,0
+-	.rept	8 /* 8-way set associative */
+-	ldx	r11,r10,r8
+-	add	r8,r8,r12
+-	xor	r11,r11,r11	// Ensure r11 is 0 even if fallback area is not
+-	add	r8,r8,r11	// Add 0, this creates a dependency on the ldx
+-	.endr
+-	addi	r10,r10,128 /* 128 byte cache line */
 +
- 	return sprintf(buf, "Vulnerable\n");
++	/*
++	 * The load adresses are at staggered offsets within cachelines,
++	 * which suits some pipelines better (on others it should not
++	 * hurt).
++	 */
++1:
++	ld	r11,(0x80 + 8)*0(r10)
++	ld	r11,(0x80 + 8)*1(r10)
++	ld	r11,(0x80 + 8)*2(r10)
++	ld	r11,(0x80 + 8)*3(r10)
++	ld	r11,(0x80 + 8)*4(r10)
++	ld	r11,(0x80 + 8)*5(r10)
++	ld	r11,(0x80 + 8)*6(r10)
++	ld	r11,(0x80 + 8)*7(r10)
++	addi	r10,r10,0x80*8
+ 	bdnz	1b
+ 
+ 	mtctr	r9
+ 	ld	r9,PACA_EXRFI+EX_R9(r13)
+ 	ld	r10,PACA_EXRFI+EX_R10(r13)
+ 	ld	r11,PACA_EXRFI+EX_R11(r13)
+-	ld	r12,PACA_EXRFI+EX_R12(r13)
+-	ld	r8,PACA_EXRFI+EX_R13(r13)
+ 	GET_SCRATCH0(r13);
+ 	rfid
+ 
+@@ -1614,39 +1612,37 @@ hrfi_flush_fallback:
+ 	std	r9,PACA_EXRFI+EX_R9(r13)
+ 	std	r10,PACA_EXRFI+EX_R10(r13)
+ 	std	r11,PACA_EXRFI+EX_R11(r13)
+-	std	r12,PACA_EXRFI+EX_R12(r13)
+-	std	r8,PACA_EXRFI+EX_R13(r13)
+ 	mfctr	r9
+ 	ld	r10,PACA_RFI_FLUSH_FALLBACK_AREA(r13)
+-	ld	r11,PACA_L1D_FLUSH_SETS(r13)
+-	ld	r12,PACA_L1D_FLUSH_CONGRUENCE(r13)
+-	/*
+-	 * The load adresses are at staggered offsets within cachelines,
+-	 * which suits some pipelines better (on others it should not
+-	 * hurt).
+-	 */
+-	addi	r12,r12,8
++	ld	r11,PACA_L1D_FLUSH_SIZE(r13)
++	srdi	r11,r11,(7 + 3) /* 128 byte lines, unrolled 8x */
+ 	mtctr	r11
+ 	DCBT_STOP_ALL_STREAM_IDS(r11) /* Stop prefetch streams */
+ 
+ 	/* order ld/st prior to dcbt stop all streams with flushing */
+ 	sync
+-1:	li	r8,0
+-	.rept	8 /* 8-way set associative */
+-	ldx	r11,r10,r8
+-	add	r8,r8,r12
+-	xor	r11,r11,r11	// Ensure r11 is 0 even if fallback area is not
+-	add	r8,r8,r11	// Add 0, this creates a dependency on the ldx
+-	.endr
+-	addi	r10,r10,128 /* 128 byte cache line */
++
++	/*
++	 * The load adresses are at staggered offsets within cachelines,
++	 * which suits some pipelines better (on others it should not
++	 * hurt).
++	 */
++1:
++	ld	r11,(0x80 + 8)*0(r10)
++	ld	r11,(0x80 + 8)*1(r10)
++	ld	r11,(0x80 + 8)*2(r10)
++	ld	r11,(0x80 + 8)*3(r10)
++	ld	r11,(0x80 + 8)*4(r10)
++	ld	r11,(0x80 + 8)*5(r10)
++	ld	r11,(0x80 + 8)*6(r10)
++	ld	r11,(0x80 + 8)*7(r10)
++	addi	r10,r10,0x80*8
+ 	bdnz	1b
+ 
+ 	mtctr	r9
+ 	ld	r9,PACA_EXRFI+EX_R9(r13)
+ 	ld	r10,PACA_EXRFI+EX_R10(r13)
+ 	ld	r11,PACA_EXRFI+EX_R11(r13)
+-	ld	r12,PACA_EXRFI+EX_R12(r13)
+-	ld	r8,PACA_EXRFI+EX_R13(r13)
+ 	GET_SCRATCH0(r13);
+ 	hrfid
+ 
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -902,19 +902,8 @@ static void init_fallback_flush(void)
+ 	memset(l1d_flush_fallback_area, 0, l1d_size * 2);
+ 
+ 	for_each_possible_cpu(cpu) {
+-		/*
+-		 * The fallback flush is currently coded for 8-way
+-		 * associativity. Different associativity is possible, but it
+-		 * will be treated as 8-way and may not evict the lines as
+-		 * effectively.
+-		 *
+-		 * 128 byte lines are mandatory.
+-		 */
+-		u64 c = l1d_size / 8;
+-
+ 		paca[cpu].rfi_flush_fallback_area = l1d_flush_fallback_area;
+-		paca[cpu].l1d_flush_congruence = c;
+-		paca[cpu].l1d_flush_sets = c / 128;
++		paca[cpu].l1d_flush_size = l1d_size;
+ 	}
  }
  
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -2146,8 +2146,6 @@ static void dump_one_paca(int cpu)
+ 		printf(" slb_cache[%d]:        = 0x%016lx\n", i, p->slb_cache[i]);
+ 
+ 	DUMP(p, rfi_flush_fallback_area, "px");
+-	DUMP(p, l1d_flush_congruence, "llx");
+-	DUMP(p, l1d_flush_sets, "llx");
+ #endif
+ 	DUMP(p, dscr_default, "llx");
+ #ifdef CONFIG_PPC_BOOK3E
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
