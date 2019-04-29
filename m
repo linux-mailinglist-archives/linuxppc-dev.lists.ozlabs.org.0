@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCF7E0FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:01:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C95E0FC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:00:28 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1sP1S48zDqdR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:00:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1tw3pfzzDqXP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:01:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0NF3lbCzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0NH74gPzDqPQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="07VDsl4N"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="xJ6+D1rk"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0NF1K4Jz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0NH532Kz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:35 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0NF02Lfz9s70; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
+ id 44t0NH4TqHz9sN6; Mon, 29 Apr 2019 19:53:35 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="07VDsl4N"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="xJ6+D1rk"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0ND3fdWz9sCJ
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:32 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0NG6fjjz9sML
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:34 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 754D5206BF;
- Mon, 29 Apr 2019 09:53:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id EF26420449;
+ Mon, 29 Apr 2019 09:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531610;
- bh=pKmw2lHQ1UPhbktOb7wO1b4NVseOwH/92dMUxch8cQg=;
+ s=default; t=1556531613;
+ bh=yPbW5I1y/gg1pa44Czahy5Xjvo3HpRhsGbrj849sd+8=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=07VDsl4Nfmp1xHaluPNUZ/yjKcO/AbGe4USjq1uVbPydtSWiirCjluZPMSeTnIT7U
- zgyJcURPsFhvp27vfQEuLIIkYLwJVufLaqMqXC/7k8dOT2l1kHKjLdKYCL3mJndbP+
- Q6BlbGmq7AkwQxMFBhHTWQQnRG6dkB3+cPFotu3E=
-Subject: Patch "powerpc/rfi-flush: Move the logic to avoid a redo into the
- debugfs code" has been added to the 4.4-stable tree
+ b=xJ6+D1rkf5O7Q+4v0dULCqbVPlnQnq8IRu32rsVfSXwW1Q6iCrsW8Sn064oPthduK
+ 15nDOl2iPQrHuBotdasXfbCFLGj+ZRxFME5AooZK88mxVltuNdxgH7gRCLWTKhOvjD
+ yqon7BuuxTzJG3O4pt2qHxHWtS0oic73TbuUApOg=
+Subject: Patch "powerpc/security: Fix spectre_v2 reporting" has been added to
+ the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
- linuxppc-dev@ozlabs.org, mauricfo@linux.vnet.ibm.com, mpe@ellerman.id.au,
+ linuxppc-dev@ozlabs.org, mikey@neuling.org, mpe@ellerman.id.au,
  msuchanek@suse.de, npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:31 +0200
-In-Reply-To: <20190421142037.21881-6-mpe@ellerman.id.au>
-Message-ID: <1556531491186207@kroah.com>
+In-Reply-To: <20190421142037.21881-52-mpe@ellerman.id.au>
+Message-ID: <1556531491129252@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/rfi-flush: Move the logic to avoid a redo into the debugfs code
+    powerpc/security: Fix spectre_v2 reporting
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-rfi-flush-move-the-logic-to-avoid-a-redo-into-the-debugfs-code.patch
+     powerpc-security-fix-spectre_v2-reporting.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,66 +101,93 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:19:50 +1000
-Subject: powerpc/rfi-flush: Move the logic to avoid a redo into the debugfs code
+Date: Mon, 22 Apr 2019 00:20:36 +1000
+Subject: powerpc/security: Fix spectre_v2 reporting
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-6-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-52-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 1e2a9fc7496955faacbbed49461d611b704a7505 upstream.
+commit 92edf8df0ff2ae86cc632eeca0e651fd8431d40d upstream.
 
-rfi_flush_enable() includes a check to see if we're already
-enabled (or disabled), and in that case does nothing.
+When I updated the spectre_v2 reporting to handle software count cache
+flush I got the logic wrong when there's no software count cache
+enabled at all.
 
-But that means calling setup_rfi_flush() a 2nd time doesn't actually
-work, which is a bit confusing.
+The result is that on systems with the software count cache flush
+disabled we print:
 
-Move that check into the debugfs code, where it really belongs.
+  Mitigation: Indirect branch cache disabled, Software count cache flush
 
+Which correctly indicates that the count cache is disabled, but
+incorrectly says the software count cache flush is enabled.
+
+The root of the problem is that we are trying to handle all
+combinations of options. But we know now that we only expect to see
+the software count cache flush enabled if the other options are false.
+
+So split the two cases, which simplifies the logic and fixes the bug.
+We were also missing a space before "(hardware accelerated)".
+
+The result is we see one of:
+
+  Mitigation: Indirect branch serialisation (kernel only)
+  Mitigation: Indirect branch cache disabled
+  Mitigation: Software count cache flush
+  Mitigation: Software count cache flush (hardware accelerated)
+
+Fixes: ee13cb249fab ("powerpc/64s: Add support for software count cache flush")
+Cc: stable@vger.kernel.org # v4.19+
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>
+Reviewed-by: Michael Neuling <mikey@neuling.org>
+Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/setup_64.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/powerpc/kernel/security.c |   23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -873,9 +873,6 @@ static void do_nothing(void *unused)
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -190,29 +190,22 @@ ssize_t cpu_show_spectre_v2(struct devic
+ 	bcs = security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED);
+ 	ccd = security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED);
  
- void rfi_flush_enable(bool enable)
- {
--	if (rfi_flush == enable)
--		return;
+-	if (bcs || ccd || count_cache_flush_type != COUNT_CACHE_FLUSH_NONE) {
+-		bool comma = false;
++	if (bcs || ccd) {
+ 		seq_buf_printf(&s, "Mitigation: ");
+ 
+-		if (bcs) {
++		if (bcs)
+ 			seq_buf_printf(&s, "Indirect branch serialisation (kernel only)");
+-			comma = true;
+-		}
+ 
+-		if (ccd) {
+-			if (comma)
+-				seq_buf_printf(&s, ", ");
+-			seq_buf_printf(&s, "Indirect branch cache disabled");
+-			comma = true;
+-		}
 -
- 	if (enable) {
- 		do_rfi_flush_fixups(enabled_flush_types);
- 		on_each_cpu(do_nothing, NULL, 1);
-@@ -929,13 +926,19 @@ void __init setup_rfi_flush(enum l1d_flu
- #ifdef CONFIG_DEBUG_FS
- static int rfi_flush_set(void *data, u64 val)
- {
-+	bool enable;
-+
- 	if (val == 1)
--		rfi_flush_enable(true);
-+		enable = true;
- 	else if (val == 0)
--		rfi_flush_enable(false);
-+		enable = false;
- 	else
- 		return -EINVAL;
+-		if (comma)
++		if (bcs && ccd)
+ 			seq_buf_printf(&s, ", ");
  
-+	/* Only do anything if we're changing state */
-+	if (enable != rfi_flush)
-+		rfi_flush_enable(enable);
-+
- 	return 0;
- }
+-		seq_buf_printf(&s, "Software count cache flush");
++		if (ccd)
++			seq_buf_printf(&s, "Indirect branch cache disabled");
++	} else if (count_cache_flush_type != COUNT_CACHE_FLUSH_NONE) {
++		seq_buf_printf(&s, "Mitigation: Software count cache flush");
  
+ 		if (count_cache_flush_type == COUNT_CACHE_FLUSH_HW)
+-			seq_buf_printf(&s, "(hardware accelerated)");
++			seq_buf_printf(&s, " (hardware accelerated)");
+ 	} else if (btb_flush_enabled) {
+ 		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
+ 	} else {
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
