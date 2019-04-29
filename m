@@ -1,65 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589F9E6AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:37:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275B8E68E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:31:46 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t7tR4Tf3zDqND
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:31:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t81664ZbzDqGq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:37:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=efficios.com
- (client-ip=167.114.142.138; helo=mail.efficios.com;
- envelope-from=mathieu.desnoyers@efficios.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.b="djkcTcOT";
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Q5o3w0VV"; 
  dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.142.138])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t7r022srzDq8v
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:29:34 +1000 (AEST)
-Received: from localhost (ip6-localhost [IPv6:::1])
- by mail.efficios.com (Postfix) with ESMTP id E14411C1D5F;
- Mon, 29 Apr 2019 11:29:30 -0400 (EDT)
-Received: from mail.efficios.com ([IPv6:::1])
- by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
- with ESMTP id 5MW_MUXV3BF9; Mon, 29 Apr 2019 11:29:30 -0400 (EDT)
-Received: from localhost (ip6-localhost [IPv6:::1])
- by mail.efficios.com (Postfix) with ESMTP id 43A221C1D1D;
- Mon, 29 Apr 2019 11:29:28 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 43A221C1D1D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1556551768;
- bh=wPddiBdShBppXNiDLwqz7lNkyC8NrgYYgntI0yfX9Z0=;
- h=From:To:Date:Message-Id;
- b=djkcTcOTO2e0LgcW0rucWSFWEWUJPhpyMGSN2HRPFxnhMnfknL1g2oJ4jHd8pSNT1
- DpXvmoEQC/i53SVp2ypPnpeqL5bNqJSjZ2h8pYY9Ro8iUScNFXUO7rhvvJLmbcXK7m
- PN5qjiCPP2kkGQzDgyc30y0pYGP9xeraRKzGnWepX2GKjl60bdLbVdcITd24T58/GY
- 0Qtej+HIRS6o14IUNO+w6c+VZ4yWG6fTM9sb1LMVQm2DikKa+CvhgjO5jJdIsc9JZD
- zXBjvuPJS4vQ9E3mxvftE1SPhUju+PFJpkHba447OYkaYzZNMw1V0OvPtc/mY6+Y98
- yYo2PXp6psyuA==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([IPv6:::1])
- by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
- with ESMTP id NRO-4hextqik; Mon, 29 Apr 2019 11:29:28 -0400 (EDT)
-Received: from thinkos.internal.efficios.com (192-222-157-41.qc.cable.ebox.net
- [192.222.157.41])
- by mail.efficios.com (Postfix) with ESMTPSA id 49AF71C1CFA;
- Mon, 29 Apr 2019 11:29:27 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Shuah Khan <shuah@kernel.org>
-Subject: [PATCH for 5.2 10/12] rseq/selftests: powerpc code signature:
- generate valid instructions
-Date: Mon, 29 Apr 2019 11:28:01 -0400
-Message-Id: <20190429152803.7719-11-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20190429152803.7719-1-mathieu.desnoyers@efficios.com>
-References: <20190429152803.7719-1-mathieu.desnoyers@efficios.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t7zN5pDwzDqD0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:35:59 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 44t7z96kGcz9vD31;
+ Mon, 29 Apr 2019 17:35:49 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Q5o3w0VV; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id kbO7e4z3Oado; Mon, 29 Apr 2019 17:35:49 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44t7z95Zr4z9vD30;
+ Mon, 29 Apr 2019 17:35:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1556552149; bh=XXe83/pZb9AFMZAVXoUoxnryoMR8eaO+qKHpnqnFOB8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Q5o3w0VVtDkuaQJ720CrXVg1D1EEff1tyfslomh/gdc4+yk1/Dkug0ZmjOpliak9E
+ SNq24Cb/75QU4Vbo8GkPeMa5ZqrlcCuuxHVxWzptG/UbSIeVfGgHzF9GoK962b/vuv
+ 2GQOk16RVxWf7DSmpu538h1my8dNOApiD0oga2ow=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EDA2C8B8B4;
+ Mon, 29 Apr 2019 17:35:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id P3bLUxeO-Wfq; Mon, 29 Apr 2019 17:35:54 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AEE718B8B3;
+ Mon, 29 Apr 2019 17:35:54 +0200 (CEST)
+Subject: Re: [RESEND PATCH v3 09/11] powerpc/mm/radix: mark
+ __radix__flush_tlb_range_psize() as __always_inline
+To: Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linux-arch <linux-arch@vger.kernel.org>
+References: <20190423034959.13525-1-yamada.masahiro@socionext.com>
+ <20190423034959.13525-10-yamada.masahiro@socionext.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <40b48947-b80e-7971-376d-52b594e26d17@c-s.fr>
+Date: Mon, 29 Apr 2019 17:35:53 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190423034959.13525-10-yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,63 +81,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joel Fernandes <joelaf@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Dave Watson <davejwatson@fb.com>,
- Will Deacon <will.deacon@arm.com>, Andi Kleen <andi@firstfloor.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- Chris Lameter <cl@linux.com>, Russell King <linux@arm.linux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Michael Kerrisk <mtk.manpages@gmail.com>,
- "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>, Paul Turner <pjt@google.com>,
- Alan Modra <amodra@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>,
- Ben Maurer <bmaurer@fb.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-api@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Andy Lutomirski <luto@amacapital.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Mathieu Malaterre <malat@debian.org>, x86@kernel.org,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use "twui" as the guard instruction for the restartable sequence abort
-handler.
 
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Paul Mackerras <paulus@samba.org>
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Boqun Feng <boqun.feng@gmail.com>
-CC: Peter Zijlstra <peterz@infradead.org>
-CC: "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
-CC: Alan Modra <amodra@gmail.com>
-CC: linuxppc-dev@lists.ozlabs.org
----
- tools/testing/selftests/rseq/rseq-ppc.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rseq/rseq-ppc.h b/tools/testing/selftests/rseq/rseq-ppc.h
-index 9df18487fa9f..76be90196fe4 100644
---- a/tools/testing/selftests/rseq/rseq-ppc.h
-+++ b/tools/testing/selftests/rseq/rseq-ppc.h
-@@ -6,7 +6,15 @@
-  * (C) Copyright 2016-2018 - Boqun Feng <boqun.feng@gmail.com>
-  */
- 
--#define RSEQ_SIG	0x53053053
-+/*
-+ * RSEQ_SIG is used with the following trap instruction:
-+ *
-+ * powerpc-be:    0f e5 00 0b           twui   r5,11
-+ * powerpc64-le:  0b 00 e5 0f           twui   r5,11
-+ * powerpc64-be:  0f e5 00 0b           twui   r5,11
-+ */
-+
-+#define RSEQ_SIG	0x0fe5000b
- 
- #define rseq_smp_mb()		__asm__ __volatile__ ("sync"	::: "memory", "cc")
- #define rseq_smp_lwsync()	__asm__ __volatile__ ("lwsync"	::: "memory", "cc")
--- 
-2.11.0
+Le 23/04/2019 à 05:49, Masahiro Yamada a écrit :
+> This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
+> place. We need to eliminate potential issues beforehand.
 
+How did you identify the functions requiring __always_inline as this one 
+? Just by 'test and see if it fails', or did you have some script or so ?
+
+Here the problem is that one of the parameters of the function are used 
+as "immediate" constraint for the inline assembly, therefore requiring 
+the function to always be inline.
+
+I guess this should be explained in the commit log and I'm wondering how 
+you ensure that you did identify all functions like this.
+
+Christophe
+
+> 
+> If it is enabled for powerpc, the following error is reported:
+> 
+> arch/powerpc/mm/tlb-radix.c: In function '__radix__flush_tlb_range_psize':
+> arch/powerpc/mm/tlb-radix.c:104:2: error: asm operand 3 probably doesn't match constraints [-Werror]
+>    asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+>    ^~~
+> arch/powerpc/mm/tlb-radix.c:104:2: error: impossible constraint in 'asm'
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+> Changes in v3: None
+> Changes in v2:
+>    - split into a separate patch
+> 
+>   arch/powerpc/mm/tlb-radix.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/tlb-radix.c b/arch/powerpc/mm/tlb-radix.c
+> index 6a23b9ebd2a1..a2b2848f0ae3 100644
+> --- a/arch/powerpc/mm/tlb-radix.c
+> +++ b/arch/powerpc/mm/tlb-radix.c
+> @@ -928,7 +928,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+>   	tlb->need_flush_all = 0;
+>   }
+>   
+> -static inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+> +static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+>   				unsigned long start, unsigned long end,
+>   				int psize, bool also_pwc)
+>   {
+> 
