@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20583E096
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A68CE098
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:35:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1GX4tlpzDqht
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:33:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1J75xYYzDqZ3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:35:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0MM0kn6zDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0MP3lHyzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="igg8PF/P"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="B68QThEf"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0ML5mPPz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:46 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0MP1ynsz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:49 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0ML52PNz9sN6; Mon, 29 Apr 2019 19:52:46 +1000 (AEST)
+ id 44t0MP18Vzz9sN9; Mon, 29 Apr 2019 19:52:49 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="igg8PF/P"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="B68QThEf"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0ML0hw4z9sML
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:46 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0MN44ZNz9sML
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:48 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 13D6D206BF;
- Mon, 29 Apr 2019 09:52:43 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 972442147A;
+ Mon, 29 Apr 2019 09:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531564;
- bh=KUOQLHfAcL/nuZ/PmVIVu3kn0wixrSrRezG5uwbObl8=;
+ s=default; t=1556531567;
+ bh=DfOpI8F+qHHuSGy+R5AGXs+D2L43xV0YGp9flw4x66Y=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=igg8PF/PWoaY61EjbW8II8Hf+e0YaWRGF9vMI/f/+wACzDO9ZvqOtfT6u5tLCtEy/
- vQVnShbCmvP/jZKqGaiHv24OWPbJQ/HyYsn7OYLe7hBMsqphMXQXIvjoVYzGPJwzBN
- +2XIKnamDoWj0zvZvnhCbndzUABP4XxBY5a7q+ls=
-Subject: Patch "powerpc/fsl: Flush the branch predictor at each kernel entry
- (64bit)" has been added to the 4.4-stable tree
+ b=B68QThEf1fb+3usfHk3BodntjsaCSGonTOhnIN93g+VdtQ8R7G/ojFx7AmizeqMXU
+ l8HGclEkpD7p03H7YFxsD9TdyIdopY5+2MVml8LudC6edlqQ95LfvVgRidDHV5CcF+
+ 3EnSOLOB/cLNt1JTmyRXB+HLOoLvUi6L1UNzhEr4=
+Subject: Patch "powerpc/fsl: Update Spectre v2 reporting" has been added to
+ the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:26 +0200
-In-Reply-To: <20190421142037.21881-50-mpe@ellerman.id.au>
-Message-ID: <1556531486232226@kroah.com>
+In-Reply-To: <20190421142037.21881-51-mpe@ellerman.id.au>
+Message-ID: <1556531486163176@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/fsl: Flush the branch predictor at each kernel entry (64bit)
+    powerpc/fsl: Update Spectre v2 reporting
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-fsl-flush-the-branch-predictor-at-each-kernel-entry-64bit.patch
+     powerpc-fsl-update-spectre-v2-reporting.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,105 +101,41 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:34 +1000
-Subject: powerpc/fsl: Flush the branch predictor at each kernel entry (64bit)
+Date: Mon, 22 Apr 2019 00:20:35 +1000
+Subject: powerpc/fsl: Update Spectre v2 reporting
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-50-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-51-mpe@ellerman.id.au>
 
 From: Diana Craciun <diana.craciun@nxp.com>
 
-commit 10c5e83afd4a3f01712d97d3bb1ae34d5b74a185 upstream.
+commit dfa88658fb0583abb92e062c7a9cd5a5b94f2a46 upstream.
 
-In order to protect against speculation attacks on
-indirect branches, the branch predictor is flushed at
-kernel entry to protect for the following situations:
-- userspace process attacking another userspace process
-- userspace process attacking the kernel
-Basically when the privillege level change (i.e. the
-kernel is entered), the branch predictor state is flushed.
+Report branch predictor state flush as a mitigation for
+Spectre variant 2.
 
 Signed-off-by: Diana Craciun <diana.craciun@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/entry_64.S       |    5 +++++
- arch/powerpc/kernel/exceptions-64e.S |   26 +++++++++++++++++++++++++-
- arch/powerpc/mm/tlb_low_64e.S        |    7 +++++++
- 3 files changed, 37 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/security.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -77,6 +77,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
- 	std	r0,GPR0(r1)
- 	std	r10,GPR1(r1)
- 	beq	2f			/* if from kernel mode */
-+#ifdef CONFIG_PPC_FSL_BOOK3E
-+START_BTB_FLUSH_SECTION
-+	BTB_FLUSH(r10)
-+END_BTB_FLUSH_SECTION
-+#endif
- 	ACCOUNT_CPU_USER_ENTRY(r10, r11)
- 2:	std	r2,GPR2(r1)
- 	std	r3,GPR3(r1)
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -295,7 +295,8 @@ ret_from_mc_except:
- 	andi.	r10,r11,MSR_PR;		/* save stack pointer */	    \
- 	beq	1f;			/* branch around if supervisor */   \
- 	ld	r1,PACAKSAVE(r13);	/* get kernel stack coming from usr */\
--1:	cmpdi	cr1,r1,0;		/* check if SP makes sense */	    \
-+1:	type##_BTB_FLUSH		\
-+	cmpdi	cr1,r1,0;		/* check if SP makes sense */	    \
- 	bge-	cr1,exc_##n##_bad_stack;/* bad stack (TODO: out of line) */ \
- 	mfspr	r10,SPRN_##type##_SRR0;	/* read SRR0 before touching stack */
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -213,8 +213,11 @@ ssize_t cpu_show_spectre_v2(struct devic
  
-@@ -327,6 +328,29 @@ ret_from_mc_except:
- #define SPRN_MC_SRR0	SPRN_MCSRR0
- #define SPRN_MC_SRR1	SPRN_MCSRR1
+ 		if (count_cache_flush_type == COUNT_CACHE_FLUSH_HW)
+ 			seq_buf_printf(&s, "(hardware accelerated)");
+-	} else
++	} else if (btb_flush_enabled) {
++		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
++	} else {
+ 		seq_buf_printf(&s, "Vulnerable");
++	}
  
-+#ifdef CONFIG_PPC_FSL_BOOK3E
-+#define GEN_BTB_FLUSH			\
-+	START_BTB_FLUSH_SECTION		\
-+		beq 1f;			\
-+		BTB_FLUSH(r10)			\
-+		1:		\
-+	END_BTB_FLUSH_SECTION
-+
-+#define CRIT_BTB_FLUSH			\
-+	START_BTB_FLUSH_SECTION		\
-+		BTB_FLUSH(r10)		\
-+	END_BTB_FLUSH_SECTION
-+
-+#define DBG_BTB_FLUSH CRIT_BTB_FLUSH
-+#define MC_BTB_FLUSH CRIT_BTB_FLUSH
-+#define GDBELL_BTB_FLUSH GEN_BTB_FLUSH
-+#else
-+#define GEN_BTB_FLUSH
-+#define CRIT_BTB_FLUSH
-+#define DBG_BTB_FLUSH
-+#define GDBELL_BTB_FLUSH
-+#endif
-+
- #define NORMAL_EXCEPTION_PROLOG(n, intnum, addition)			    \
- 	EXCEPTION_PROLOG(n, intnum, GEN, addition##_GEN(n))
+ 	seq_buf_printf(&s, "\n");
  
---- a/arch/powerpc/mm/tlb_low_64e.S
-+++ b/arch/powerpc/mm/tlb_low_64e.S
-@@ -69,6 +69,13 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
- 	std	r15,EX_TLB_R15(r12)
- 	std	r10,EX_TLB_CR(r12)
- #ifdef CONFIG_PPC_FSL_BOOK3E
-+START_BTB_FLUSH_SECTION
-+	mfspr r11, SPRN_SRR1
-+	andi. r10,r11,MSR_PR
-+	beq 1f
-+	BTB_FLUSH(r10)
-+1:
-+END_BTB_FLUSH_SECTION
- 	std	r7,EX_TLB_R7(r12)
- #endif
- 	TLB_MISS_PROLOG_STATS
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
