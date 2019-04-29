@@ -1,68 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAB1DEB0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:09:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44szPj6RKLzDqNC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:09:45 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1D0DED6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 11:11:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44szRp548LzDqQR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 19:11:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.47; helo=mail-ot1-f47.google.com;
+ envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="j6+5GTXY"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
+ [209.85.210.47])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44szMz0BkyzDqLb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:08:13 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44szMn4n1dz9v17r;
- Mon, 29 Apr 2019 11:08:05 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=j6+5GTXY; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id LqzIKKeKLX-I; Mon, 29 Apr 2019 11:08:05 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44szMn3kNLz9v16q;
- Mon, 29 Apr 2019 11:08:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556528885; bh=wPADqUqD8mDw+pQQQH/8169RzAM7f9xUN6V+5LlCT/c=;
- h=From:Subject:To:Cc:Date:From;
- b=j6+5GTXYdzVYlCc188ch1qPmnKg0dOewpFavjxZMtB0PIYE6jCLcEZ9S3H4fnyy7I
- CZKgdb3VZ4lAnPpPuJP5EUiHvyoUjdZ0GQOmEJX06ALEjLzDRHD4a6BWV/RE7tH3nq
- r9BLTXQpsqeGBDvVKupP1k3NLZvSg5tr8RCGcLDU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 32A958B8AA;
- Mon, 29 Apr 2019 11:08:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JDSUbMBhw-PR; Mon, 29 Apr 2019 11:08:10 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.231.6])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0DE4D8B8A8;
- Mon, 29 Apr 2019 11:08:10 +0200 (CEST)
-Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id A1F7C666FE; Mon, 29 Apr 2019 09:08:09 +0000 (UTC)
-Message-Id: <3a21c6f19637847e6ed080186a834ede619f3849.1556528569.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/32s: fix BATs setting with CONFIG_STRICT_KERNEL_RWX
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Serge Belyshev <belyshev@depni.sinp.msu.ru>
-Date: Mon, 29 Apr 2019 09:08:09 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44szNf6B0QzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:08:50 +1000 (AEST)
+Received: by mail-ot1-f47.google.com with SMTP id b18so1664362otq.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 02:08:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=2VWJO2MGiduBgVwh+y0rSMdiohlU2hlJmSsmX8IMxNI=;
+ b=M++RhD0uq23pzaFCVgcGqv8ccid/Nx3rEt75y1R2kdcpeZAFyAzdU5vP27ud+6ReMe
+ 9WVVO7SepZgXwmRrmjddv9B420tLAxFBdirYeMZpcRQs0iP/lNPklViU41skegrudA3Q
+ SSbqXYXChW+EmRPJYFUL61co74vaDH0+q+TBg/QppcTxkridmA4KqNejfk86tRHBFlGl
+ vWyrdVEKfWJnei7eHPSjzVnv7P4nyaeYlbLlJtV7N8sIan2jd7KDzzUlP5WJ9jwrQZy6
+ +1ros1bWr/5fQNjHpV++ayUqXwyRoKth48M6/He/T3YMm1tUJmJK3Mebnc1iwftgnwVu
+ /nwg==
+X-Gm-Message-State: APjAAAVvhz/YWYTDMGqwYeVdp/VD8o5yCwIohb0Cyl3NcRymIbf7ntTS
+ ZvnOJkzOdN6iJhvFWXC1pLE2qpSxH9iq8lTDxJQ=
+X-Google-Smtp-Source: APXvYqxhvgorRjOjGR5KwL0tVgrlRLyMivMC1DNNtT60AWmSWUv/MAR76xN6ZmJSFy/scEaQioWysRLnEkElcaBCY80=
+X-Received: by 2002:a9d:6e17:: with SMTP id e23mr7531429otr.65.1556528928156; 
+ Mon, 29 Apr 2019 02:08:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <5fdabbb9-0a62-4802-f1ca-f83584f935fa@molgen.mpg.de>
+ <CAJZ5v0gobp60Pn5cdh0CohGAXSBs-EvntNqKc_dj_UTnOiogkQ@mail.gmail.com>
+ <c4c2f89f-9af7-01de-9144-9f11a8dafd58@molgen.mpg.de>
+In-Reply-To: <c4c2f89f-9af7-01de-9144-9f11a8dafd58@molgen.mpg.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 29 Apr 2019 11:08:37 +0200
+Message-ID: <CAJZ5v0jhrtaRmb9_n_=hpqZU0iFvEsV8FKoZ1v7QANXq-dWVFQ@mail.gmail.com>
+Subject: Re: Why is suspend with s2idle available on POWER8 systems?
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,92 +63,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Linux PM <linux-pm@vger.kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ LKML <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Serge reported some crashes with CONFIG_STRICT_KERNEL_RWX enabled
-on a book3s32 machine.
+On Mon, Apr 29, 2019 at 10:50 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> Dear Rafael,
+>
+>
+> On 04/29/2019 09:17 AM, Rafael J. Wysocki wrote:
+> > On Sat, Apr 27, 2019 at 12:54 PM Paul Menzel <pmenzel@molgen.mpg.de> wr=
+ote:
+>
+> >> Updating an IBM S822LC from Ubuntu 18.10 to 19.04 some user space stuf=
+f
+> >> seems to have changed, so that going into sleep/suspend is enabled.
+> >>
+> >> That raises two questions.
+> >>
+> >> 1.  Is suspend actually supported on a POWER8 processor?
+> >
+> > Suspend-to-idle is a special variant of system suspend that does not
+> > depend on any special platform support.  It works by suspending
+> > devices and letting all of the CPUs in the system go idle (hence the
+> > name).
+> >
+> > Also see https://www.kernel.org/doc/html/latest/admin-guide/pm/sleep-st=
+ates.html#suspend-to-idle
+>
+> Thanks. I guess I mixed it up with the new S0ix-states [1].
 
-Analysis shows two issues:
-- BATs addresses and sizes are not properly aligned.
-- There is a gap between the last address covered by BATs and the
-first address covered by pages.
+Those can be entered via suspend-to-idle, if supported and actually
+reachable on a given platform, but suspend-to-idle is more general
+than that.
 
-Memory mapped with DBATs:
-0: 0xc0000000-0xc07fffff 0x00000000 Kernel RO coherent
-1: 0xc0800000-0xc0bfffff 0x00800000 Kernel RO coherent
-2: 0xc0c00000-0xc13fffff 0x00c00000 Kernel RW coherent
-3: 0xc1400000-0xc23fffff 0x01400000 Kernel RW coherent
-4: 0xc2400000-0xc43fffff 0x02400000 Kernel RW coherent
-5: 0xc4400000-0xc83fffff 0x04400000 Kernel RW coherent
-6: 0xc8400000-0xd03fffff 0x08400000 Kernel RW coherent
-7: 0xd0400000-0xe03fffff 0x10400000 Kernel RW coherent
+> >>> Apr 27 10:18:13 power NetworkManager[7534]: <info>  [1556353093.7224]=
+ manager: sleep: sleep requested (sleeping: no  e
+> >>> Apr 27 10:18:13 power systemd[1]: Reached target Sleep.
+> >>> Apr 27 10:18:13 power systemd[1]: Starting Suspend...
+> >>> Apr 27 10:18:13 power systemd-sleep[82190]: Suspending system...
+> >>> Apr 27 10:18:13 power kernel: PM: suspend entry (s2idle)
+> >>> -- Reboot --
+> >>
+> >>> $ uname -m
+> >>> ppc64le
+> >>> $ more /proc/version
+> >>> Linux version 5.1.0-rc6+ (joey@power) (gcc version 8.3.0 (Ubuntu 8.3.=
+0-6ubuntu1)) #1 SMP Sat Apr 27 10:01:48 CEST 2019
+> >>> $ more /sys/power/mem_sleep
+> >>> [s2idle]
+> >>> $ more /sys/power/state
+> >>> freeze mem
+> >>> $ grep _SUSPEND /boot/config-5.0.0-14-generic # also enabled in Ubunt=
+u=E2=80=99s configuration
+> >>> CONFIG_ARCH_SUSPEND_POSSIBLE=3Dy
+> >>> CONFIG_SUSPEND=3Dy
+> >>> CONFIG_SUSPEND_FREEZER=3Dy
+> >>> # CONFIG_SUSPEND_SKIP_SYNC is not set
+> >>> # CONFIG_PM_TEST_SUSPEND is not set
+> >>
+> >> Should the Kconfig symbol `SUSPEND` be selectable? If yes, should thei=
+r
+> >> be some detection during runtime?
+> >>
+> >> 2.  If it is supported, what are the ways to getting it to resume? Wha=
+t
+> >> would the IPMI command be?
+> >
+> > That would depend on the distribution.
+> >
+> > Generally, you need to set up at least one device to generate wakeup
+> > interrupts.
+> >
+> > The interface to do that are the /sys/devices/.../power/wakeup files,
+> > but that has to cause enble_irq_wake() to be called for the given IRQ,
+> > so some support in the underlying drivers need to be present for it to
+> > work.
+> >
+> > USB devices generally work as wakeup sources if the controllers reside
+> > on a PCI bus, for example.
+>
+> ```
+> $ find /sys/devices/ -name wakeup | xargs grep enabled
+> /sys/devices/pci0021:00/0021:00:00.0/0021:01:00.0/0021:02:09.0/0021:0d:00=
+.0/usb1/1-3/1-3.4/power/wakeup:enabled
+> /sys/devices/pci0021:00/0021:00:00.0/0021:01:00.0/0021:02:09.0/0021:0d:00=
+.0/power/wakeup:enabled
+> $ lsusb -t
+> /:  Bus 02.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dxhci_hcd/4p, 5000M
+> /:  Bus 01.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dxhci_hcd/4p, 480M
+>     |__ Port 3: Dev 2, If 0, Class=3DHub, Driver=3Dhub/5p, 480M
+>         |__ Port 1: Dev 3, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
+ge, 480M
+>         |__ Port 2: Dev 4, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
+ge, 480M
+>         |__ Port 3: Dev 5, If 0, Class=3DMass Storage, Driver=3Dusb-stora=
+ge, 480M
+>         |__ Port 4: Dev 6, If 0, Class=3DHuman Interface Device, Driver=
+=3Dusbhid, 1.5M
+>         |__ Port 4: Dev 6, If 1, Class=3DHuman Interface Device, Driver=
+=3Dusbhid, 1.5M
+> $ lsusb
+> Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> Bus 001 Device 006: ID 046b:ff10 American Megatrends, Inc. Virtual Keyboa=
+rd and Mouse
+> Bus 001 Device 005: ID 046b:ff31 American Megatrends, Inc.
+> Bus 001 Device 004: ID 046b:ff40 American Megatrends, Inc.
+> Bus 001 Device 003: ID 046b:ff20 American Megatrends, Inc.
+> Bus 001 Device 002: ID 046b:ff01 American Megatrends, Inc.
+> Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> ```
 
-Memory mapped with pages:
-0xe1000000-0xefffffff  0x21000000       240M        rw       present           dirty  accessed
-
-This patch fixes both issues. With the patch, we get the following
-which is as expected:
-
-Memory mapped with DBATs:
-0: 0xc0000000-0xc07fffff 0x00000000 Kernel RO coherent
-1: 0xc0800000-0xc0bfffff 0x00800000 Kernel RO coherent
-2: 0xc0c00000-0xc0ffffff 0x00c00000 Kernel RW coherent
-3: 0xc1000000-0xc1ffffff 0x01000000 Kernel RW coherent
-4: 0xc2000000-0xc3ffffff 0x02000000 Kernel RW coherent
-5: 0xc4000000-0xc7ffffff 0x04000000 Kernel RW coherent
-6: 0xc8000000-0xcfffffff 0x08000000 Kernel RW coherent
-7: 0xd0000000-0xdfffffff 0x10000000 Kernel RW coherent
-
-Memory mapped with pages:
-0xe0000000-0xefffffff  0x20000000       256M        rw       present           dirty  accessed
-
-Reported-by: Serge Belyshev <belyshev@depni.sinp.msu.ru>
-Fixes: 63b2bc619565 ("powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/ppc_mmu_32.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/mm/ppc_mmu_32.c b/arch/powerpc/mm/ppc_mmu_32.c
-index bf1de3ca39bc..37cf2af98f6a 100644
---- a/arch/powerpc/mm/ppc_mmu_32.c
-+++ b/arch/powerpc/mm/ppc_mmu_32.c
-@@ -101,7 +101,7 @@ static int find_free_bat(void)
- static unsigned int block_size(unsigned long base, unsigned long top)
- {
- 	unsigned int max_size = (cpu_has_feature(CPU_FTR_601) ? 8 : 256) << 20;
--	unsigned int base_shift = (fls(base) - 1) & 31;
-+	unsigned int base_shift = (ffs(base) - 1) & 31;
- 	unsigned int block_shift = (fls(top - base) - 1) & 31;
- 
- 	return min3(max_size, 1U << base_shift, 1U << block_shift);
-@@ -157,7 +157,7 @@ static unsigned long __init __mmu_mapin_ram(unsigned long base, unsigned long to
- 
- unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- {
--	int done;
-+	unsigned long done;
- 	unsigned long border = (unsigned long)__init_begin - PAGE_OFFSET;
- 
- 	if (__map_without_bats) {
-@@ -169,10 +169,10 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- 		return __mmu_mapin_ram(base, top);
- 
- 	done = __mmu_mapin_ram(base, border);
--	if (done != border - base)
-+	if (done != border)
- 		return done;
- 
--	return done + __mmu_mapin_ram(border, top);
-+	return __mmu_mapin_ram(border, top);
- }
- 
- void mmu_mark_initmem_nx(void)
--- 
-2.13.3
-
+I'm not really sure what you wanted to say here, but it looks like
+system wakeup is not enabled for device 6 on bus 1 which is probably
+what you want.
