@@ -2,62 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58931E592
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 16:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AE6E625
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:22:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t76d6hRszDqVS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 00:57:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t7gf1HXxzDqQr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:22:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com;
+ envelope-from=jacmet@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=korsgaard.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="BBvSV/Sr"; 
+ dkim-atps=neutral
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t75G276MzDq7h
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:56:01 +1000 (AEST)
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MzhSh-1gYdpR49Nx-00vcL0; Mon, 29 Apr 2019 16:55:13 +0200
-Subject: Re: [PATCH 36/41] drivers: tty: serial: 8250: store mmio resource
- size in port struct
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "Enrico Weigelt, metux IT consult" <info@metux.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t7d50fFkzDqLj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:20:05 +1000 (AEST)
+Received: by mail-ed1-x541.google.com with SMTP id y67so9511128ede.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 08:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:from:to:cc:subject:references:date:in-reply-to:message-id
+ :user-agent:mime-version;
+ bh=dPnq76BudBLUCskM0DaeuuctlwoGzT39qQr2q1xJdTg=;
+ b=BBvSV/SrDNJ31+/UOkSM5bpG5QGX9iuVEAlHSpvrDOGj+4PW80QrSA2NQvvNYxzojp
+ Zd++WkJIJdsJI48+0P5HrqTBvNXDC1r245KbMoADl3uY5vH+mVrnUi6+8qjpF2ydE+tq
+ TwF1hj4480FhhbTHgn4M/QznEs6p0sHaHA9yrWx15VQqD4rerfkEYjhIuk1lUIvL8NJx
+ M8wE73xeYfkcTLVAM5oCB5RVNjauTgvl4PjUAhsoMUZ5oTPhnvZ5wvz6bSMifDGNwT/e
+ KSK9tYNcpfIF8GPBuVeJpf2B9oLlA2ItKshISp7tatkcaGkzhTIiD3dveMl7nJ6B+iIV
+ zmmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:from:to:cc:subject:references:date
+ :in-reply-to:message-id:user-agent:mime-version;
+ bh=dPnq76BudBLUCskM0DaeuuctlwoGzT39qQr2q1xJdTg=;
+ b=ICgp9a+OuGFHLAeEcd6hkDWUSM3PxBp5s8cTT876PsV6JH9NFG1w09DiPXTir0Kmzn
+ 6K9HiqfKU7rACWVaZzRZCPTCERLp3UjTkLWrLjZFmh+I2IhNpkRcucbBiWrLps2cR8KK
+ UNZig6+PWjrN4/ywMCl1F+yipWxkLskRY8RPkRUYZjVaUMXttjPz43nnhR+sOviCXDy6
+ agjjsEgAcDnUD1xZ9UHC5vj2nMSrv6jrotdf21jX0FZyFHXX8uqazoDmhQIzfnDGr6Iv
+ mslre7ZDleoqGSXpgSQ/qCM2xzUHtQtnr6O6s/sQS5A+7Q3/rZ61Au0vny4qbomXjlUl
+ eEvA==
+X-Gm-Message-State: APjAAAXvykZ0rSMpbTCNHWQooIvnoIWcjBnWw1HDWqMQRiV2LV+Rhe/Y
+ zkYq/2jCKE2yJmP7HybToUc=
+X-Google-Smtp-Source: APXvYqwQbi0omP7jYdcby2odHruq4pxaQ7sP2Qij52VODZOog6lth6WIRzjEKd0jUTWzRbOuB+nVlQ==
+X-Received: by 2002:a17:906:2482:: with SMTP id
+ e2mr12684688ejb.289.1556551199464; 
+ Mon, 29 Apr 2019 08:19:59 -0700 (PDT)
+Received: from dell.be.48ers.dk (d51A5BC31.access.telenet.be. [81.165.188.49])
+ by smtp.gmail.com with ESMTPSA id
+ p18sm5851269ejm.4.2019.04.29.08.19.58
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 29 Apr 2019 08:19:58 -0700 (PDT)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.89)
+ (envelope-from <peter@korsgaard.com>)
+ id 1hL84T-0000dV-Kj; Mon, 29 Apr 2019 17:19:57 +0200
+From: Peter Korsgaard <peter@korsgaard.com>
+To: "Enrico Weigelt\, metux IT consult" <info@metux.net>
+Subject: Re: [PATCH 13/41] drivers: tty: serial: uartlite: fill mapsize and
+ use it
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-37-git-send-email-info@metux.net>
- <20190428151848.GO9224@smile.fi.intel.com>
-From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <4bab941a-c2f2-7f1c-9bc2-86c63f171c25@metux.net>
-Date: Mon, 29 Apr 2019 16:55:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+ <1556369542-13247-14-git-send-email-info@metux.net>
+Date: Mon, 29 Apr 2019 17:19:57 +0200
+In-Reply-To: <1556369542-13247-14-git-send-email-info@metux.net> (Enrico
+ Weigelt's message of "Sat, 27 Apr 2019 14:51:54 +0200")
+Message-ID: <87muk8rg82.fsf@dell.be.48ers.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190428151848.GO9224@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:3sNaGIwVieBtMMPDbaHtnQ9WqDYUZdXDzXdtSPxuDKdaXl1IhJx
- gExeQeuUVBW9F8lPEU32YFMe/ujn/jKm3Qo/yQgDM0nzyQYP+uCPSUDJN/wl74WlUhOFl0H
- b9FygV4JGeGXjaq1ueGEJHfa2utbBtfqmEwr5N/Cg0mgACNio7NSt3lhmpR00vRsMaYfrz8
- XlPVJlU6S0ovAYl+qK9DA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4eAEJ0wqyW0=:R8Lq31LWiuM3bZqp1AQZRZ
- jyqOXktZyU/EhjOWGDvRMWW3paokS57Sx0yc4uwnO6dW+U4GGDyD5OGfx43RER6pilTojd0Cc
- 1UvhRZhNvHyNSboccxXg4jxVr61SiKbaiipZqc+naHd1ejutU8kiPSah1j2BPJMskurk632/Y
- nukzV2GRHNrvPqdoyfrS6s+qBz9aDlcAx9P6cdOpirdL0w0XVqfr+tiPUixOrykaqEPKMVtKL
- 4OGgSljM9ZDmNeIvVFhlvLWLVFKmPMfuyzdRN0JRAjZGHQP8bk3aTcH8A8onXk/l0QJqHKhDX
- ZQ4bypEgU32hQ4fqOqnWyQmKcfVmdEkraWqwANE/QrsjnJU89kjPxH4M9ZfgkJf1GE7bGdCt1
- XhrQ8ybROPrVDOJCthK1AGoo0AmLPY6uR2O1MZa5KaS3QjuUVPykBRE01dQJR2GvK2jlSiPXW
- zZ6hxOJP8CI1RzsHOkTMtdomXf7Gm8m2tF4WFR6XxuWUgOBnt3ZZIIlrPwEeD6KS08lQpQRZD
- 3qMm83rz1mRcgd9SJaG5GP6l1TZznT12n5BWoD4OS3VG6a46jzylv2wemvehNTDk4TTOjt62R
- OncMDUxVV4h+DnfwTXj+a6L5MPoAszfUepWtuwGjKsEhwBb+0x+CAUGIFYQFSjobFQD0BxRfx
- r0b01pqkzW9vQJ/lMSLIZWsbJ91UXnzPMnujJVFsM8G2B6NAhnk2yAV+0RvlzpNVO1H9zAvDC
- XLBBWgy4vh7jwZz35FbEeJ2gzJ9/pMyOzs3Y5+E5mRhxkcAYeGmPmyAuSLg=
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,79 +86,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org,
- linux-serial@vger.kernel.org, andrew@aj.id.au, gregkh@linuxfoundation.org,
- sudeep.holla@arm.com, liviu.dudau@arm.com, linux-kernel@vger.kernel.org,
- vz@mleia.com, linux@prisktech.co.nz, sparclinux@vger.kernel.org,
- khilman@baylibre.com, macro@linux-mips.org, slemieux.tyco@gmail.com,
- matthias.bgg@gmail.com, jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org, macro@linux-mips.org,
+ andrew@aj.id.au, gregkh@linuxfoundation.org, slemieux.tyco@gmail.com,
+ liviu.dudau@arm.com, linux-kernel@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, linux-mips@vger.kernel.org,
+ linux@prisktech.co.nz, matthias.bgg@gmail.com, khilman@baylibre.com,
+ linux-serial@vger.kernel.org, sudeep.holla@arm.com, sparclinux@vger.kernel.org,
+ jacmet@sunsite.dk, linux-amlogic@lists.infradead.org, vz@mleia.com,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28.04.19 17:18, Andy Shevchenko wrote:
-> On Sat, Apr 27, 2019 at 02:52:17PM +0200, Enrico Weigelt, metux IT consult wrote:
->> The io resource size is currently recomputed when it's needed but this
->> actually needs to be done once (or drivers could specify fixed values)
-> 
-> io -> IO
+>>>>> "Enrico" == Enrico Weigelt, metux IT consult <info@metux.net> writes:
 
-fixed.
+ > Fill the struct uart_port->mapsize field and use it, insteaf of
 
->> Simplify that by doing this computation only once and storing the result
->> into the mapsize field. serial8250_register_8250_port() is now called
->> only once on driver init, the previous call sites now just fetch the
->> value from the mapsize field.
-> 
-> Do I understand correctly that this has no side effects?
+s/insteaf/instead/
 
-I don't know of any. (except someting changes things like regshift after
-the initialization phase ... :o)
+ > hardcoded values in many places. This makes the code layout a bit
+ > more consistent and easily allows using generic helpers for the
+ > io memory handling.
 
->> @@ -979,6 +979,9 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
->>  	if (up->port.uartclk == 0)
->>  		return -EINVAL;
->>  
->> +	/* compute the mapsize in case the driver didn't specify one */
->> +	up->mapsize = serial8250_port_size(up);
-> 
-> I don't know all quirks in 8250 drivers by heart, though can you guarantee that
-> at this point the device reports correct IO resource size? (If I'm not mistaken
-> some broken hardware needs some magic to be done before card can be properly
-> handled)
+ > Candidates for such helpers could be eg. the request+ioremap and
+ > iounmap+release combinations.
 
-Actually, I don't see anything talking to the hardware at all here.
-It's all derived from values that are set up before
-serial8250_register_8250_port() is called.
+ > Signed-off-by: Enrico Weigelt <info@metux.net>
 
->> -	unsigned int size = serial8250_port_size(up);
->>  	struct uart_port *port = &up->port;
-> 
->> -	int ret = 0;
-> 
-> This and Co is a separate change that can be done in its own patch.
-
-I don't really understand :(
-Do you mean the splitting off the retval part from the rest ?
-
->> +			port->membase = ioremap_nocache(port->mapbase,
->> +							port->mapsize);
-> 
-> You may increase readability by introducing temporary variables
-> 
-> 	... mapbase = port->mapbase;
-> 	... mapsize = port->mapsize;
-> 	...
-> 	port->membase = ioremap_nocache(mapbase, mapsize);
-> 	...
-
-Is that really necessary ? Maybe it's just my personal taste, but I
-don't feel the more more verbose one is really easier to read.
-
---mtx
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
 
 -- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Bye, Peter Korsgaard
