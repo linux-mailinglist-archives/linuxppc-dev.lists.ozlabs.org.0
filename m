@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C863DE0DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC09FE0EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:55:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1jj2kj5zDqDQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:53:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1l63RLHzDqY5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:54:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0N23Wq0zDqJg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0N36SBnzDqPW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ok/0Sv6U"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="0fXUN2NR"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0N20ZS5z8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:22 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0N34Vz8z8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:23 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0N15xHFz9sCJ; Mon, 29 Apr 2019 19:53:21 +1000 (AEST)
+ id 44t0N33tDmz9sCJ; Mon, 29 Apr 2019 19:53:23 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ok/0Sv6U"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="0fXUN2NR"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Mz5VhRz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:19 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0N26sGLz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:22 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C159120449;
- Mon, 29 Apr 2019 09:53:17 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5883B206BF;
+ Mon, 29 Apr 2019 09:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531598;
- bh=M+3uB4cLv1XIDhsxT0fwdMWZgOMy2+sgJyJ8ir+BcI4=;
+ s=default; t=1556531600;
+ bh=yFTXVBYC4XqFv+4JgHQrzyBj212EhzimNkyQTELEnrY=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=ok/0Sv6U0z/8j+nYFoLZPfcNRfc6x6OiJEYwzcdU4/etZ9lnWjrvVNhfpBvVbw2XP
- 69llIfLa4bbMmDl276a4GAyDwrCJT/RsZYcyoa5/ZXDZ4RnqR0yEGrFmK8zVVQm/tV
- 0bUgUgb0+deW4KTTdGahrilUsfr1Q04i+urD4EAs=
-Subject: Patch "powerpc/pseries: Use the security flags in
- pseries_setup_rfi_flush()" has been added to the 4.4-stable tree
+ b=0fXUN2NRqiqGsUhRNmRk39+j8nGY1UpqdQKv2F/q7DEaDFmttX8zNWbkbeHUlvcUc
+ CHBQGKJgirpelgm5BBBQitS/bpaKzQlgs+Lr6lFiz5VIz9sX4OAF4dEtJzb8U94FwR
+ XKzIPnDBSoNPGhpM9v9xxsgTfV/t6LZo833gS6HU=
+Subject: Patch "powerpc/pseries: Support firmware disable of RFI flush" has
+ been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:29 +0200
-In-Reply-To: <20190421142037.21881-18-mpe@ellerman.id.au>
-Message-ID: <155653148924354@kroah.com>
+In-Reply-To: <20190421142037.21881-4-mpe@ellerman.id.au>
+Message-ID: <155653148911550@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/pseries: Use the security flags in pseries_setup_rfi_flush()
+    powerpc/pseries: Support firmware disable of RFI flush
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-pseries-use-the-security-flags-in-pseries_setup_rfi_flush.patch
+     powerpc-pseries-support-firmware-disable-of-rfi-flush.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,71 +101,38 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:02 +1000
-Subject: powerpc/pseries: Use the security flags in pseries_setup_rfi_flush()
+Date: Mon, 22 Apr 2019 00:19:48 +1000
+Subject: powerpc/pseries: Support firmware disable of RFI flush
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-18-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-4-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 2e4a16161fcd324b1f9bf6cb6856529f7eaf0689 upstream.
+commit 582605a429e20ae68fd0b041b2e840af296edd08 upstream.
 
-Now that we have the security flags we can simplify the code in
-pseries_setup_rfi_flush() because the security flags have pessimistic
-defaults.
+Some versions of firmware will have a setting that can be configured
+to disable the RFI flush, add support for it.
 
+Fixes: 8989d56878a7 ("powerpc/pseries: Query hypervisor for RFI flush settings")
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/setup.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/powerpc/platforms/pseries/setup.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/arch/powerpc/platforms/pseries/setup.c
 +++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -541,30 +541,27 @@ void pseries_setup_rfi_flush(void)
- 	bool enable;
- 	long rc;
+@@ -522,7 +522,8 @@ static void pseries_setup_rfi_flush(void
+ 		if (types == L1D_FLUSH_NONE)
+ 			types = L1D_FLUSH_FALLBACK;
  
--	/* Enable by default */
--	enable = true;
--	types = L1D_FLUSH_FALLBACK;
--
- 	rc = plpar_get_cpu_characteristics(&result);
--	if (rc == H_SUCCESS) {
-+	if (rc == H_SUCCESS)
- 		init_cpu_char_feature_flags(&result);
- 
--		if (result.character & H_CPU_CHAR_L1D_FLUSH_TRIG2)
--			types |= L1D_FLUSH_MTTRIG;
--		if (result.character & H_CPU_CHAR_L1D_FLUSH_ORI30)
--			types |= L1D_FLUSH_ORI;
--
--		if ((!(result.behaviour & H_CPU_BEHAV_L1D_FLUSH_PR)) ||
--		    (!(result.behaviour & H_CPU_BEHAV_FAVOUR_SECURITY)))
--			enable = false;
--	}
--
- 	/*
- 	 * We're the guest so this doesn't apply to us, clear it to simplify
- 	 * handling of it elsewhere.
- 	 */
- 	security_ftr_clear(SEC_FTR_L1D_FLUSH_HV);
- 
-+	types = L1D_FLUSH_FALLBACK;
-+
-+	if (security_ftr_enabled(SEC_FTR_L1D_FLUSH_TRIG2))
-+		types |= L1D_FLUSH_MTTRIG;
-+
-+	if (security_ftr_enabled(SEC_FTR_L1D_FLUSH_ORI30))
-+		types |= L1D_FLUSH_ORI;
-+
-+	enable = security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) && \
-+		 security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR);
-+
- 	setup_rfi_flush(types, enable);
- }
- 
+-		if (!(result.behaviour & H_CPU_BEHAV_L1D_FLUSH_PR))
++		if ((!(result.behaviour & H_CPU_BEHAV_L1D_FLUSH_PR)) ||
++		    (!(result.behaviour & H_CPU_BEHAV_FAVOUR_SECURITY)))
+ 			enable = false;
+ 	} else {
+ 		/* Default to fallback if case hcall is not available */
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
