@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBFEDFFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:02:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E64E041
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:08:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t0jH0rDhzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:08:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t0ZW2b4BzDqQQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:02:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0LS66MYzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0LH3GfGzDqPB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="tpMZo00j"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="lCyrMK7i"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0LS41fdz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0LG74wlz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:51:50 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0LS33lLz9sCJ; Mon, 29 Apr 2019 19:52:00 +1000 (AEST)
+ id 44t0LG4g89z9sCJ; Mon, 29 Apr 2019 19:51:50 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="tpMZo00j"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="lCyrMK7i"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0LR20ZXz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:59 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0LF2hM2z9s70
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:51:49 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 403A12075E;
- Mon, 29 Apr 2019 09:51:57 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id ADE0D2087B;
+ Mon, 29 Apr 2019 09:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531517;
- bh=fHGgDnY7NYBBzmC9xy4NIgEtGXMZOOe4TuzPxS+MMvc=;
+ s=default; t=1556531507;
+ bh=uRpTyx1hj5EgQ9bQkOx0OWX+ZW47NlKoC4etnBBfW8I=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=tpMZo00jfbhpavJ6OVnoDDzEi3dhaFk/iGClJWxbSNQHCh0XwY4ULup8q0b49EG4j
- UFsiGp2sxNDaNy/KJEXapRX+9x4w8tRNXx0KXDorPpeZu/gyjC5+FwIkGHdNj45YLb
- 3mfyVh1YUI8hHTtmIljN633vVc6mTkRALaoNN78c=
-Subject: Patch "powerpc/64s: Enable barrier_nospec based on firmware settings"
- has been added to the 4.4-stable tree
+ b=lCyrMK7iFiPpVqwYPnV4CO7GnoQeX4D284pK18unX22k1JV+S4qv/av6Vchru8cDL
+ KPqxF0qSpBMf78/Pvi2bhVezoWKCGB0aGOCdPD7KNhm4ZNzVHF3ovCYsRsO2LEo3af
+ D0x/zpU2214d1PcegyDDJlbogvqfD02KBjsHHs1U=
+Subject: Patch "powerpc/64s: Add new security feature flags for count cache
+ flush" has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:22 +0200
-In-Reply-To: <20190421142037.21881-29-mpe@ellerman.id.au>
-Message-ID: <155653148212385@kroah.com>
+In-Reply-To: <20190421142037.21881-41-mpe@ellerman.id.au>
+Message-ID: <1556531482143208@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/64s: Enable barrier_nospec based on firmware settings
+    powerpc/64s: Add new security feature flags for count cache flush
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-64s-enable-barrier_nospec-based-on-firmware-settings.patch
+     powerpc-64s-add-new-security-feature-flags-for-count-cache-flush.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,129 +101,48 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:13 +1000
-Subject: powerpc/64s: Enable barrier_nospec based on firmware settings
+Date: Mon, 22 Apr 2019 00:20:25 +1000
+Subject: powerpc/64s: Add new security feature flags for count cache flush
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-29-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-41-mpe@ellerman.id.au>
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit cb3d6759a93c6d0aea1c10deb6d00e111c29c19c upstream.
+commit dc8c6cce9a26a51fc19961accb978217a3ba8c75 upstream.
 
-Check what firmware told us and enable/disable the barrier_nospec as
-appropriate.
-
-We err on the side of enabling the barrier, as it's no-op on older
-systems, see the comment for more detail.
+Add security feature flags to indicate the need for software to flush
+the count cache on context switch, and for the presence of a hardware
+assisted count cache flush.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/setup.h       |    1 
- arch/powerpc/kernel/security.c         |   59 +++++++++++++++++++++++++++++++++
- arch/powerpc/platforms/powernv/setup.c |    1 
- arch/powerpc/platforms/pseries/setup.c |    1 
- 4 files changed, 62 insertions(+)
+ arch/powerpc/include/asm/security_features.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -38,6 +38,7 @@ enum l1d_flush_type {
+--- a/arch/powerpc/include/asm/security_features.h
++++ b/arch/powerpc/include/asm/security_features.h
+@@ -59,6 +59,9 @@ static inline bool security_ftr_enabled(
+ // Indirect branch prediction cache disabled
+ #define SEC_FTR_COUNT_CACHE_DISABLED	0x0000000000000020ull
  
- void setup_rfi_flush(enum l1d_flush_type, bool enable);
- void do_rfi_flush_fixups(enum l1d_flush_type types);
-+void setup_barrier_nospec(void);
- void do_barrier_nospec_fixups(bool enable);
- extern bool barrier_nospec_enabled;
++// bcctr 2,0,0 triggers a hardware assisted count cache flush
++#define SEC_FTR_BCCTR_FLUSH_ASSIST	0x0000000000000800ull
++
  
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -24,6 +24,65 @@ static void enable_barrier_nospec(bool e
- 	do_barrier_nospec_fixups(enable);
- }
+ // Features indicating need for Spectre/Meltdown mitigations
  
-+void setup_barrier_nospec(void)
-+{
-+	bool enable;
-+
-+	/*
-+	 * It would make sense to check SEC_FTR_SPEC_BAR_ORI31 below as well.
-+	 * But there's a good reason not to. The two flags we check below are
-+	 * both are enabled by default in the kernel, so if the hcall is not
-+	 * functional they will be enabled.
-+	 * On a system where the host firmware has been updated (so the ori
-+	 * functions as a barrier), but on which the hypervisor (KVM/Qemu) has
-+	 * not been updated, we would like to enable the barrier. Dropping the
-+	 * check for SEC_FTR_SPEC_BAR_ORI31 achieves that. The only downside is
-+	 * we potentially enable the barrier on systems where the host firmware
-+	 * is not updated, but that's harmless as it's a no-op.
-+	 */
-+	enable = security_ftr_enabled(SEC_FTR_FAVOUR_SECURITY) &&
-+		 security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR);
-+
-+	enable_barrier_nospec(enable);
-+}
-+
-+#ifdef CONFIG_DEBUG_FS
-+static int barrier_nospec_set(void *data, u64 val)
-+{
-+	switch (val) {
-+	case 0:
-+	case 1:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (!!val == !!barrier_nospec_enabled)
-+		return 0;
-+
-+	enable_barrier_nospec(!!val);
-+
-+	return 0;
-+}
-+
-+static int barrier_nospec_get(void *data, u64 *val)
-+{
-+	*val = barrier_nospec_enabled ? 1 : 0;
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(fops_barrier_nospec,
-+			barrier_nospec_get, barrier_nospec_set, "%llu\n");
-+
-+static __init int barrier_nospec_debugfs_init(void)
-+{
-+	debugfs_create_file("barrier_nospec", 0600, powerpc_debugfs_root, NULL,
-+			    &fops_barrier_nospec);
-+	return 0;
-+}
-+device_initcall(barrier_nospec_debugfs_init);
-+#endif /* CONFIG_DEBUG_FS */
-+
- ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
- {
- 	bool thread_priv;
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -123,6 +123,7 @@ static void pnv_setup_rfi_flush(void)
- 		  security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV));
+@@ -74,6 +77,9 @@ static inline bool security_ftr_enabled(
+ // Firmware configuration indicates user favours security over performance
+ #define SEC_FTR_FAVOUR_SECURITY		0x0000000000000200ull
  
- 	setup_rfi_flush(type, enable);
-+	setup_barrier_nospec();
- }
++// Software required to flush count cache on context switch
++#define SEC_FTR_FLUSH_COUNT_CACHE	0x0000000000000400ull
++
  
- static void __init pnv_setup_arch(void)
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -574,6 +574,7 @@ void pseries_setup_rfi_flush(void)
- 		 security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR);
- 
- 	setup_rfi_flush(types, enable);
-+	setup_barrier_nospec();
- }
- 
- static void __init pSeries_setup_arch(void)
+ // Features enabled by default
+ #define SEC_FTR_DEFAULT \
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
