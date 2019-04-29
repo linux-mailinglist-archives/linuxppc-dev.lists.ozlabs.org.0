@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AE6E625
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F95E63C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:24:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t7gf1HXxzDqQr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:22:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t7jy631mzDqSc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:24:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com;
+ (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
  envelope-from=jacmet@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=korsgaard.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="BBvSV/Sr"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NMtm7loE"; 
  dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
+ [IPv6:2a00:1450:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t7d50fFkzDqLj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:20:05 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id y67so9511128ede.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 08:20:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t7f25cJwzDqSP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:20:58 +1000 (AEST)
+Received: by mail-ed1-x542.google.com with SMTP id a6so9517176edv.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 08:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=sender:from:to:cc:subject:references:date:in-reply-to:message-id
  :user-agent:mime-version;
- bh=dPnq76BudBLUCskM0DaeuuctlwoGzT39qQr2q1xJdTg=;
- b=BBvSV/SrDNJ31+/UOkSM5bpG5QGX9iuVEAlHSpvrDOGj+4PW80QrSA2NQvvNYxzojp
- Zd++WkJIJdsJI48+0P5HrqTBvNXDC1r245KbMoADl3uY5vH+mVrnUi6+8qjpF2ydE+tq
- TwF1hj4480FhhbTHgn4M/QznEs6p0sHaHA9yrWx15VQqD4rerfkEYjhIuk1lUIvL8NJx
- M8wE73xeYfkcTLVAM5oCB5RVNjauTgvl4PjUAhsoMUZ5oTPhnvZ5wvz6bSMifDGNwT/e
- KSK9tYNcpfIF8GPBuVeJpf2B9oLlA2ItKshISp7tatkcaGkzhTIiD3dveMl7nJ6B+iIV
- zmmg==
+ bh=mcdMJtYTzbrFusKEz05dVZkKSln24Oc8rmFJOLHlFyc=;
+ b=NMtm7loEpc1LtkiaskUlbbeKkI7Yur5IYVgFyYL/NUTYqRo00L+1M56sDV1wd61Eic
+ 074Hciwdzeq59lUY+emKFAFZuwf6s0YdW71qd918YF2wGclyc0PYWeqExnpOiAhdtCU+
+ CugXqkaoE30DMKVWaPIwatHrP4MHEtOIK+xDDsmltZh5gMFXbPuH28VGT0LKdDVx7Kci
+ NM9fmLAlxt3fKfmamYW2yxGr9RbaioIm25eCrQYGbaQLBSlnmiE5E79RZy2SAIQzJ09y
+ /8xviY57bx916zBUV5eOMAwXesFB85WVdwsbKrEe802pzwew/ZbsAd943pi/DNCJaLOo
+ Cx8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:sender:from:to:cc:subject:references:date
  :in-reply-to:message-id:user-agent:mime-version;
- bh=dPnq76BudBLUCskM0DaeuuctlwoGzT39qQr2q1xJdTg=;
- b=ICgp9a+OuGFHLAeEcd6hkDWUSM3PxBp5s8cTT876PsV6JH9NFG1w09DiPXTir0Kmzn
- 6K9HiqfKU7rACWVaZzRZCPTCERLp3UjTkLWrLjZFmh+I2IhNpkRcucbBiWrLps2cR8KK
- UNZig6+PWjrN4/ywMCl1F+yipWxkLskRY8RPkRUYZjVaUMXttjPz43nnhR+sOviCXDy6
- agjjsEgAcDnUD1xZ9UHC5vj2nMSrv6jrotdf21jX0FZyFHXX8uqazoDmhQIzfnDGr6Iv
- mslre7ZDleoqGSXpgSQ/qCM2xzUHtQtnr6O6s/sQS5A+7Q3/rZ61Au0vny4qbomXjlUl
- eEvA==
-X-Gm-Message-State: APjAAAXvykZ0rSMpbTCNHWQooIvnoIWcjBnWw1HDWqMQRiV2LV+Rhe/Y
- zkYq/2jCKE2yJmP7HybToUc=
-X-Google-Smtp-Source: APXvYqwQbi0omP7jYdcby2odHruq4pxaQ7sP2Qij52VODZOog6lth6WIRzjEKd0jUTWzRbOuB+nVlQ==
-X-Received: by 2002:a17:906:2482:: with SMTP id
- e2mr12684688ejb.289.1556551199464; 
- Mon, 29 Apr 2019 08:19:59 -0700 (PDT)
+ bh=mcdMJtYTzbrFusKEz05dVZkKSln24Oc8rmFJOLHlFyc=;
+ b=bQkubdfp342lD9F15wVYaJwbppKYYjmOXRbHMk6CGapuyaMWeLlZFF0lnwkqpzQvF7
+ Ul2hdcsPdHFpu8W+jMup5u2eqjFWhNEFC5BA14vvKuz/ssF7L2Ee2bFF4zVPCtjXOsFE
+ wIrXcWSrQsAHboJcs4CBmFcREeMZqSKQ9jwhBnKkUPpvK0zht3gDe5qbw9B9Jdvb+a0M
+ 9CVBMSzpO61DsnuELIeAeT9+U/dsnF9mmET07Bfg9V1eHMXC6LKGHo4y6zLVmkkvBHQs
+ z4Id9YWObXa9goY2G1lhZqGQaRj93cTOKeYafwtvIUxuJL+U8uMOF8fLTP7hLa58MJ0q
+ E7Fw==
+X-Gm-Message-State: APjAAAXOj1kW32OltvU8Z7sZWlNeeP+UY8SI74O+pLotvCWn4wEbs6cu
+ MM97GzOcKFsPkGlfiBbkEpA=
+X-Google-Smtp-Source: APXvYqweysPzcxqvyw2tG1BMJOB/LdC5EufVXTrbhZSqeXGXptVb/Oa4KlfV9hkDZfTJPecfQ5Owcg==
+X-Received: by 2002:a17:906:e119:: with SMTP id
+ gj25mr7661484ejb.7.1556551255068; 
+ Mon, 29 Apr 2019 08:20:55 -0700 (PDT)
 Received: from dell.be.48ers.dk (d51A5BC31.access.telenet.be. [81.165.188.49])
  by smtp.gmail.com with ESMTPSA id
- p18sm5851269ejm.4.2019.04.29.08.19.58
+ o9sm5761786edh.95.2019.04.29.08.20.54
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 29 Apr 2019 08:19:58 -0700 (PDT)
+ Mon, 29 Apr 2019 08:20:54 -0700 (PDT)
 Received: from peko by dell.be.48ers.dk with local (Exim 4.89)
  (envelope-from <peter@korsgaard.com>)
- id 1hL84T-0000dV-Kj; Mon, 29 Apr 2019 17:19:57 +0200
+ id 1hL85N-0000ep-Qh; Mon, 29 Apr 2019 17:20:53 +0200
 From: Peter Korsgaard <peter@korsgaard.com>
 To: "Enrico Weigelt\, metux IT consult" <info@metux.net>
-Subject: Re: [PATCH 13/41] drivers: tty: serial: uartlite: fill mapsize and
- use it
+Subject: Re: [PATCH 14/41] drivers: tty: serial: uartlite: remove unnecessary
+ braces
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-14-git-send-email-info@metux.net>
-Date: Mon, 29 Apr 2019 17:19:57 +0200
-In-Reply-To: <1556369542-13247-14-git-send-email-info@metux.net> (Enrico
- Weigelt's message of "Sat, 27 Apr 2019 14:51:54 +0200")
-Message-ID: <87muk8rg82.fsf@dell.be.48ers.dk>
+ <1556369542-13247-15-git-send-email-info@metux.net>
+Date: Mon, 29 Apr 2019 17:20:53 +0200
+In-Reply-To: <1556369542-13247-15-git-send-email-info@metux.net> (Enrico
+ Weigelt's message of "Sat, 27 Apr 2019 14:51:55 +0200")
+Message-ID: <87imuwrg6i.fsf@dell.be.48ers.dk>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -100,16 +100,13 @@ Sender: "Linuxppc-dev"
 
 >>>>> "Enrico" == Enrico Weigelt, metux IT consult <info@metux.net> writes:
 
- > Fill the struct uart_port->mapsize field and use it, insteaf of
-
-s/insteaf/instead/
-
- > hardcoded values in many places. This makes the code layout a bit
- > more consistent and easily allows using generic helpers for the
- > io memory handling.
-
- > Candidates for such helpers could be eg. the request+ioremap and
- > iounmap+release combinations.
+ > checkpatch complains:
+ >     WARNING: braces {} are not necessary for any arm of this statement
+ >     #489: FILE: drivers/tty/serial/uartlite.c:489:
+ >     +	if (oops_in_progress) {
+ >     [...]
+ >     +	} else
+ >     [...]
 
  > Signed-off-by: Enrico Weigelt <info@metux.net>
 
