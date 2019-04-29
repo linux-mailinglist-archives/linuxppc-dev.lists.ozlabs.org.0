@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25090E0F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C95E0FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:00:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t1n157tdzDqLj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:56:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1sP1S48zDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:00:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0N60RFpzDq6N
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0NF3lbCzDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="SgPW0jud"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="07VDsl4N"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0N55hTFz8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:25 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0NF1K4Jz8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0N52rxcz9sCJ; Mon, 29 Apr 2019 19:53:25 +1000 (AEST)
+ id 44t0NF02Lfz9s70; Mon, 29 Apr 2019 19:53:33 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="SgPW0jud"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="07VDsl4N"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0N45Dxmz9s70
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:24 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0ND3fdWz9sCJ
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:53:32 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E0B1320449;
- Mon, 29 Apr 2019 09:53:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 754D5206BF;
+ Mon, 29 Apr 2019 09:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531603;
- bh=P2gJ8fBi8o8s4ojMk93OCwcqSGmdZuUDrMknLPBsQsc=;
+ s=default; t=1556531610;
+ bh=pKmw2lHQ1UPhbktOb7wO1b4NVseOwH/92dMUxch8cQg=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=SgPW0judq6zycZ1xaCdBwJjvrwnQgDRDwQKwvU5K9KzvTE+yDzVCpFdmP18VOCqgw
- 8/ritnqPQGgeWSXKXhfqE/90Ez+iXv9ai+UksO11lk7RaXyGomMTc2KzX+z7G2dZ7T
- xQHMV2xOAACWil5An1EEfpwXVWqOJKy9OOusRj00=
-Subject: Patch "powerpc/rfi-flush: Call setup_rfi_flush() after LPM migration"
- has been added to the 4.4-stable tree
+ b=07VDsl4Nfmp1xHaluPNUZ/yjKcO/AbGe4USjq1uVbPydtSWiirCjluZPMSeTnIT7U
+ zgyJcURPsFhvp27vfQEuLIIkYLwJVufLaqMqXC/7k8dOT2l1kHKjLdKYCL3mJndbP+
+ Q6BlbGmq7AkwQxMFBhHTWQQnRG6dkB3+cPFotu3E=
+Subject: Patch "powerpc/rfi-flush: Move the logic to avoid a redo into the
+ debugfs code" has been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mauricfo@linux.vnet.ibm.com, mpe@ellerman.id.au,
  msuchanek@suse.de, npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Apr 2019 11:51:30 +0200
-In-Reply-To: <20190421142037.21881-11-mpe@ellerman.id.au>
-Message-ID: <155653149018184@kroah.com>
+Date: Mon, 29 Apr 2019 11:51:31 +0200
+In-Reply-To: <20190421142037.21881-6-mpe@ellerman.id.au>
+Message-ID: <1556531491186207@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/rfi-flush: Call setup_rfi_flush() after LPM migration
+    powerpc/rfi-flush: Move the logic to avoid a redo into the debugfs code
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-rfi-flush-call-setup_rfi_flush-after-lpm-migration.patch
+     powerpc-rfi-flush-move-the-logic-to-avoid-a-redo-into-the-debugfs-code.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,61 +101,66 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:19:55 +1000
-Subject: powerpc/rfi-flush: Call setup_rfi_flush() after LPM migration
+Date: Mon, 22 Apr 2019 00:19:50 +1000
+Subject: powerpc/rfi-flush: Move the logic to avoid a redo into the debugfs code
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-11-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-6-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 921bc6cf807ceb2ab8005319cf39f33494d6b100 upstream.
+commit 1e2a9fc7496955faacbbed49461d611b704a7505 upstream.
 
-We might have migrated to a machine that uses a different flush type,
-or doesn't need flushing at all.
+rfi_flush_enable() includes a check to see if we're already
+enabled (or disabled), and in that case does nothing.
+
+But that means calling setup_rfi_flush() a 2nd time doesn't actually
+work, which is a bit confusing.
+
+Move that check into the debugfs code, where it really belongs.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/mobility.c |    3 +++
- arch/powerpc/platforms/pseries/pseries.h  |    2 ++
- arch/powerpc/platforms/pseries/setup.c    |    2 +-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/setup_64.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -314,6 +314,9 @@ void post_mobility_fixup(void)
- 		printk(KERN_ERR "Post-mobility device tree update "
- 			"failed: %d\n", rc);
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -873,9 +873,6 @@ static void do_nothing(void *unused)
  
-+	/* Possibly switch to a new RFI flush type */
-+	pseries_setup_rfi_flush();
-+
- 	return;
- }
- 
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -81,4 +81,6 @@ extern struct pci_controller_ops pseries
- 
- unsigned long pseries_memory_block_size(void);
- 
-+void pseries_setup_rfi_flush(void);
-+
- #endif /* _PSERIES_PSERIES_H */
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -499,7 +499,7 @@ static void __init find_and_init_phbs(vo
- 	of_pci_check_probe_only();
- }
- 
--static void pseries_setup_rfi_flush(void)
-+void pseries_setup_rfi_flush(void)
+ void rfi_flush_enable(bool enable)
  {
- 	struct h_cpu_char_result result;
- 	enum l1d_flush_type types;
+-	if (rfi_flush == enable)
+-		return;
+-
+ 	if (enable) {
+ 		do_rfi_flush_fixups(enabled_flush_types);
+ 		on_each_cpu(do_nothing, NULL, 1);
+@@ -929,13 +926,19 @@ void __init setup_rfi_flush(enum l1d_flu
+ #ifdef CONFIG_DEBUG_FS
+ static int rfi_flush_set(void *data, u64 val)
+ {
++	bool enable;
++
+ 	if (val == 1)
+-		rfi_flush_enable(true);
++		enable = true;
+ 	else if (val == 0)
+-		rfi_flush_enable(false);
++		enable = false;
+ 	else
+ 		return -EINVAL;
+ 
++	/* Only do anything if we're changing state */
++	if (enable != rfi_flush)
++		rfi_flush_enable(enable);
++
+ 	return 0;
+ }
+ 
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
