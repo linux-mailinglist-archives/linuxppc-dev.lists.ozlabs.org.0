@@ -2,52 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113B7E3CA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 15:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEF4E466
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 16:14:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t5DB4FKHzDqS7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 23:31:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t68m50jLzDq8v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 00:14:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ spf=none (mailfrom) smtp.mailfrom=metux.net
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
+ envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=metux.net
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t58b4TlJzDqRy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 23:28:46 +1000 (AEST)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2019 06:28:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,409,1549958400"; d="scan'208";a="341805320"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
- by fmsmga006.fm.intel.com with ESMTP; 29 Apr 2019 06:28:39 -0700
-Received: from andy by smile with local (Exim 4.92)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1hL6Kj-0008Iz-6u; Mon, 29 Apr 2019 16:28:37 +0300
-Date: Mon, 29 Apr 2019 16:28:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Subject: Re: [PATCH 40/41] drivers: tty: serial: helper for setting mmio range
-Message-ID: <20190429132837.GF9224@smile.fi.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t66V5FgtzDqSj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:12:00 +1000 (AEST)
+Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1N9d4t-1ggOYm2XMj-015Xti; Mon, 29 Apr 2019 16:11:21 +0200
+Subject: Re: [PATCH 01/41] drivers: tty: serial: dz: use dev_err() instead of
+ printk()
+To: Greg KH <gregkh@linuxfoundation.org>,
+ "Enrico Weigelt, metux IT consult" <info@metux.net>
 References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-41-git-send-email-info@metux.net>
- <20190428153905.GR9224@smile.fi.intel.com>
- <c75f4ca9-367c-25d5-2597-75f2dccf6e1c@metux.net>
+ <1556369542-13247-2-git-send-email-info@metux.net>
+ <20190427132959.GA11368@kroah.com>
+From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <e10175d0-bc3b-a4ab-cb47-0b4761bfb629@metux.net>
+Date: Mon, 29 Apr 2019 16:11:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c75f4ca9-367c-25d5-2597-75f2dccf6e1c@metux.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190427132959.GA11368@kroah.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:w68pyQn6kRKE7GRI8D4DIjXrIG1rM4JVO8YNhN1PjmA9qeJlTnd
+ FRfk7wZg3723UrBQe25rwfOnwSzGszEb1MIoCQQLNzhyCTgLVqEInQLMVDSZ6SrfQMpGeUD
+ sSICNMoMdNK6YaqchK3BXnaBaPE/dmfwd/DCv3Rgt3Peb9t9zVGwhF+PiwHnSknkczZ5jwA
+ iaTSwPj+i6uzJ5jOg0EOg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GSBkrDSKESA=:2lO9/amCuq6fFF597Ih05m
+ lHF5oKmclj72Zzkyd/7n7OIiwaRhSBo7oYOd2+ffp/NEUvN2Jn/raFhf0e6E8K+EU2aJRWYj6
+ xPazKtRy6+71hDxb8N8/muna5/ompU5XUHAHWvNiNsi3xQSwdRdyVk8toFHaLpavPormaaAC5
+ x6cZ0/wtOs54z6LsUIHciLayFiB+BmZ83+sLMyUYXe0KBI/zPixrZD+tu0VcsfcS7r7VYQj4/
+ JjNFl9B8X8o/Sjh9uG6Y3vBTGv49VcPY/5tQwUnsC39CoM168B+bxUNpEQ5zA3Jhrk95A+B1n
+ 6nETxBNJQ3EbF6WPXuX4E75BpNeVCeXQKfLnBOd3nrSBkj/uFH76O1vrWS4AgsfOTt4MHiI62
+ WKvPVRgqATCb3N2+oJ8px9tLb4lTxX6XUOOyI503AcT66SDfLFH39tMUPPkDqizBhpx9VxXp2
+ FfZsnVaVxHhAOPNsBpVjuzon/QzxCbElmVdBDB7ooHtQ3iaspczt+e5dMm0V3iq1okxyFRY5F
+ F/WoUUpE4JmdzZv6STWYNcXwQiTMhpJKgYW0+6X2Vmh2qw16Aiuqtn+H6LLyYHl3ToJgVosT6
+ IXgBwLjn12BZ5AjiiM6dfeDhbcZqWNCFedbIreNfGBORb11xOTrYSFbUOSyh0j1BEZIcGO+gz
+ XzZByfB5wMLlxYXWanXG9Wg07pbtgY6qOVP/x1S66+XQvoODts6tl2AdS2HQ7qtZOiBu6Jcml
+ CvF1VoxkjSF83yH+uX/lseAL7VLzTmM1k9ETeNvnTFIEjvXYr5L640CRVkc=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,143 +69,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sparclinux@vger.kernel.org, lorenzo.pieralisi@arm.com,
- linux-ia64@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
- gregkh@linuxfoundation.org, sudeep.holla@arm.com, liviu.dudau@arm.com,
+Cc: linux-ia64@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ linux-mips@vger.kernel.org, linux-serial@vger.kernel.org, andrew@aj.id.au,
+ khilman@baylibre.com, sudeep.holla@arm.com, liviu.dudau@arm.com,
  linux-kernel@vger.kernel.org, vz@mleia.com, linux@prisktech.co.nz,
- linuxppc-dev@lists.ozlabs.org, khilman@baylibre.com, macro@linux-mips.org,
- slemieux.tyco@gmail.com, matthias.bgg@gmail.com, jacmet@sunsite.dk,
- linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, "Enrico Weigelt,
- metux IT consult" <info@metux.net>, davem@davemloft.net
+ sparclinux@vger.kernel.org, macro@linux-mips.org, slemieux.tyco@gmail.com,
+ matthias.bgg@gmail.com, jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
+ andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 29, 2019 at 12:12:35PM +0200, Enrico Weigelt, metux IT consult wrote:
-> On 28.04.19 17:39, Andy Shevchenko wrote:
-
-> seems I've forgot to add "RFC:" in the subject - I'm not entirely happy
-> w/ that patch myself, just want to hear your oppinions.
+On 27.04.19 15:29, Greg KH wrote:
+> On Sat, Apr 27, 2019 at 02:51:42PM +0200, Enrico Weigelt, metux IT consult wrote:
+>> Using dev_err() instead of printk() for more consistent output.
+>> (prints device name, etc).
+>>
+>> Signed-off-by: Enrico Weigelt <info@metux.net>
 > 
-> Moreover, the size argument seems wrong here.
+> Your "From:" line does not match the signed-off-by line, so I can't take
+> any of these if I wanted to :(
 
-Something went wrong with quoting style in your reply.
+Grmpf. I've manually changed it, as you isisted in having my company
+name remove from it ....
 
-> hmm, I'm actually not sure yet, what the correct size really would be,
-> where the value actually comes from. Just assumed that it would be the
-> whole area that the BAR tells. But now I recognized that I'd need to
-> substract 'offset' here.
-
-It will be still wrong. The driver in question defines resource window based on
-several parameters. So, this should be supplied with a real understanding of
-all variety of hardware the certain driver serves for.
-
-> Rethinking it further, we'd probably could deduce the UPIO_* from the
-> struct resource, too.
-> 
-> >> +		uart_memres_set_start_len(>> +			&port,>> +			FRODO_BASE + FRODO_APCI_OFFSET(1), 0);> > Please,
-> avoid such splitting, first parameter is quite fit above line.
-> 
-> Ok. My intention was having both parameters starting at the same line,
-> but then the second line would get too long again. > ...and here, and
-> maybe in other places you split the assignments to the members> in two
-> part. Better to call your function before or after these blocks of>
-> assignments.
-> the reason what I've just replaced the exactly the assignments, trying
-> not to touch too much ;-)
-> I'll have a closer look on what can be moved w/o side effects.
-
-Just try to avoid
-
-	foo(
-		bar, ...
-
--like splitting.
-
-> >> +static inline void uart_memres_set_res(struct uart_port *port,
-> > 
-> > Perhaps better name can be found.
-> > Especially taking into account that it handles IO / MMIO here.
-> 
-> hmm, lacking creativity here ;-)
-> any suggestions ?
-
-No immediate suggestions.
-
-uart_set_io_resource()
-uart_clear_io_resource()
-
-at least sounds more plausible to me.
-
-> >> +				       struct resource *res)
-> >> +{
-> >> +	if (!res) {
-> > 
-> > It should return an error in such case.
-> 
-> It's not an error, but desired behaviour: NULL resource
-> clears the value.
-
-Oh, then why it's in this function, which is *setter* according to its name,
-at all?
-
-> 
-> >> +		port->mapsize = 0;
-> >> +		port->mapbase = 0;
-> >> +		port->iobase = 0;
-> >> +		return;
-> >> +	}
-> >> +
-> >> +	if (resource_type(res) == IORESOURCE_IO) {
-> >> +		port->iotype = UPIO_PORT;
-> >> +		port->iobase = resource->start;
-> >> +		return;
-> >> +	}
-> >> +
-> >> +	uart->mapbase = res->start;
-> >> +	uart->mapsize = resource_size(res);
-> > 
-> >> +	uart->iotype  = UPIO_MEM;
-> > 
-> > Only one type? Why type is even set here?
-> 
-> It's the default case. The special cases (eg. UPIO_MEM32) need to be
-> set explicitly, after that call.
-
-Which is weird.
-
-> Not really nice, but haven't found a better solution yet.
-
-Just simple not touching it?
-
-> I don't like
-> the idea of passing an UPIO_* parameter to the function, most callers
-> should not care, if they don't really need to.
-
-They do care. The driver on its own knows better than any generic code what
-type of hardware it serves to.
-
-> >> + */
-> > 
-> >> +static inline void uart_memres_set_start_len(struct uart_driver *uart,
-> >> +					     resource_size_t start,
-> >> +					     resource_size_t len)
-> > 
-> > The comment doesn't tell why this is needed when we have one for struct
-> > resource.
-> 
-> Renamed it to uart_memres_set_mmio_range().
-
-See also above about naming patterns.
-
-> 
-> This helper is meant for drivers that don't work w/ struct resource,
-> or explicitly set their own len.
-
-Then why it's not mentioned in the description of the function?
+--mtx
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
