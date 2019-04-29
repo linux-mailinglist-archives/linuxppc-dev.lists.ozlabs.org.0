@@ -1,51 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E5DE121
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:16:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t2CV2850zDqNK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:16:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C47E116
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 13:11:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t26M1QF3zDqLY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 21:11:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=178.33.111.220; helo=1.mo179.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 1200 seconds by postgrey-1.36 at bilbo;
- Mon, 29 Apr 2019 21:12:36 AEST
-Received: from 1.mo179.mail-out.ovh.net (1.mo179.mail-out.ovh.net
- [178.33.111.220])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jIEsWsNr"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t27S5dYdzDqJP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 21:12:34 +1000 (AEST)
-Received: from player158.ha.ovh.net (unknown [10.108.57.50])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id 25AC0127301
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 12:37:09 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player158.ha.ovh.net (Postfix) with ESMTPSA id C9E2051F45C6;
- Mon, 29 Apr 2019 10:37:01 +0000 (UTC)
-Date: Mon, 29 Apr 2019 12:36:59 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH] powerpc/powernv/npu: Fix reference leak
-Message-ID: <20190429123659.00c0622b@bahia.lan>
-In-Reply-To: <962c1d9e-719c-cb82-cabc-1cf619e1510b@ozlabs.ru>
-References: <155568805354.600470.13376593185688810607.stgit@bahia.lan>
- <962c1d9e-719c-cb82-cabc-1cf619e1510b@ozlabs.ru>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 15264106512109181429
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddriedvgdefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t1Tv21pwzDqjX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 20:43:29 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 44t1Tj49xNz9v0KF;
+ Mon, 29 Apr 2019 12:43:21 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=jIEsWsNr; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id h6P2FVo-9-Er; Mon, 29 Apr 2019 12:43:21 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44t1Tj31N8z9v0KD;
+ Mon, 29 Apr 2019 12:43:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1556534601; bh=LdoI2qT2aaRj/eKoZVF9HzfAiu1O/6qZbR/YCdBfHpw=;
+ h=From:Subject:To:Cc:Date:From;
+ b=jIEsWsNrnFHt8xpb23J3uqys7xSTOshMZ5puFweZYkxfqU03ZR3cMcXicleTjn07s
+ jRYeKbA0uCKYoSkgxQqyX678USkfDryn6T/JxhkGMj8oioaaAkc4F8BgvLCwqhx3fT
+ YByhpH00SdJHOf9wEnjWMlr1KxNd9JbZin2yTbiA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 37DBF8B8AE;
+ Mon, 29 Apr 2019 12:43:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id mGYo9Qa2Q9VL; Mon, 29 Apr 2019 12:43:26 +0200 (CEST)
+Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.231.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1424C8B7FB;
+ Mon, 29 Apr 2019 12:43:26 +0200 (CEST)
+Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0767466702; Mon, 29 Apr 2019 10:43:26 +0000 (UTC)
+Message-Id: <23167861f6095456b4ba3b52c55a514201ca738f.1556534520.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 1/3] powerpc: Move PPC_HA() PPC_HI() and PPC_LO() to
+ ppc-opcode.h
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 29 Apr 2019 10:43:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,127 +74,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Alistair Popple <alistair@popple.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 29 Apr 2019 16:01:29 +1000
-Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+PPC_HA() PPC_HI() and PPC_LO() macros are nice macros. Move them
+from module64.c to ppc-opcode.h in order to use them in other places.
 
-> On 20/04/2019 01:34, Greg Kurz wrote:
-> > Since 902bdc57451c, get_pci_dev() calls pci_get_domain_bus_and_slot(). This
-> > has the effect of incrementing the reference count of the PCI device, as
-> > explained in drivers/pci/search.c:
-> > 
-> >  * Given a PCI domain, bus, and slot/function number, the desired PCI
-> >  * device is located in the list of PCI devices. If the device is
-> >  * found, its reference count is increased and this function returns a
-> >  * pointer to its data structure.  The caller must decrement the
-> >  * reference count by calling pci_dev_put().  If no device is found,
-> >  * %NULL is returned.
-> > 
-> > Nothing was done to call pci_dev_put() and the reference count of GPU and
-> > NPU PCI devices rockets up.
-> > 
-> > A natural way to fix this would be to teach the callers about the change,
-> > so that they call pci_dev_put() when done with the pointer. This turns
-> > out to be quite intrusive, as it affects many paths in npu-dma.c,
-> > pci-ioda.c and vfio_pci_nvlink2.c.  
-> 
-> 
-> afaict this referencing is only done to protect the current traverser
-> and what you've done is actually a natural way (and the generic
-> pci_get_dev_by_id() does exactly the same), although this looks a bit weird.
-> 
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/ppc-opcode.h | 7 +++++++
+ arch/powerpc/kernel/module_64.c       | 7 -------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-Not exactly the same: pci_get_dev_by_id() always increment the refcount
-of the returned PCI device. The refcount is only decremented when this
-device is passed to pci_get_dev_by_id() to continue searching.
-
-That means that the users of the PCI device pointer returned by
-pci_get_dev_by_id() or its exported variants pci_get_subsys(),
-pci_get_device() and pci_get_class() do handle the refcount. They
-all pass the pointer to pci_dev_put() or continue the search,
-which calls pci_dev_put() internally.
-
-Direct and indirect callers of get_pci_dev() don't care for the
-refcount at all unless I'm missing something.
-
-> 
-> > Also, the issue appeared in 4.16 and
-> > some affected code got moved around since then: it would be problematic
-> > to backport the fix to stable releases.
-> > 
-> > All that code never cared for reference counting anyway. Call pci_dev_put()
-> > from get_pci_dev() to revert to the previous behavior.  
-> >> Fixes: 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary pcidev  
-> from pci_dn")
-> > Cc: stable@vger.kernel.org # v4.16
-> > Signed-off-by: Greg Kurz <groug@kaod.org>
-> > ---
-> >  arch/powerpc/platforms/powernv/npu-dma.c |   15 ++++++++++++++-
-> >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-> > index e713ade30087..d8f3647e8fb2 100644
-> > --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> > +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> > @@ -31,9 +31,22 @@ static DEFINE_SPINLOCK(npu_context_lock);
-> >  static struct pci_dev *get_pci_dev(struct device_node *dn)
-> >  {
-> >  	struct pci_dn *pdn = PCI_DN(dn);
-> > +	struct pci_dev *pdev;
-> >  
-> > -	return pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
-> > +	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
-> >  					   pdn->busno, pdn->devfn);
-> > +
-> > +	/*
-> > +	 * pci_get_domain_bus_and_slot() increased the reference count of
-> > +	 * the PCI device, but callers don't need that actually as the PE
-> > +	 * already holds a reference to the device.  
-> 
-> Imho this would be just enough.
-> 
-> Anyway,
-> 
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> 
-
-Thanks !
-
-I now realize that I forgot to add the --cc option for stable on my stgit
-command line :-\.
-
-Cc'ing now.
-
-> 
-> How did you find it? :)
-> 
-
-While reading code to find some inspiration for OpenCAPI passthrough. :)
-
-I saw the following in vfio_pci_ibm_npu2_init():
-
-	if (!pnv_pci_get_gpu_dev(vdev->pdev))
-		return -ENODEV;
-
-and simply followed the function calls.
-
-> 
-> > Since callers aren't
-> > +	 * aware of the reference count change, call pci_dev_put() now to
-> > +	 * avoid leaks.
-> > +	 */
-> > +	if (pdev)
-> > +		pci_dev_put(pdev);
-> > +
-> > +	return pdev;
-> >  }
-> >  
-> >  /* Given a NPU device get the associated PCI device. */
-> >   
-> 
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 23f7ed796f38..c5ff44400d4d 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -412,6 +412,13 @@
+ #define __PPC_SPR(r)	((((r) & 0x1f) << 16) | ((((r) >> 5) & 0x1f) << 11))
+ #define __PPC_RC21	(0x1 << 10)
+ 
++/* Both low and high 16 bits are added as SIGNED additions, so if low
++   16 bits has high bit set, high 16 bits must be adjusted.  These
++   macros do that (stolen from binutils). */
++#define PPC_LO(v) ((v) & 0xffff)
++#define PPC_HI(v) (((v) >> 16) & 0xffff)
++#define PPC_HA(v) PPC_HI ((v) + 0x8000)
++
+ /*
+  * Only use the larx hint bit on 64bit CPUs. e500v1/v2 based CPUs will treat a
+  * larx with EH set as an illegal instruction.
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 8661eea78503..c2e1b06253b8 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -400,13 +400,6 @@ static inline unsigned long my_r2(const Elf64_Shdr *sechdrs, struct module *me)
+ 	return (sechdrs[me->arch.toc_section].sh_addr & ~0xfful) + 0x8000;
+ }
+ 
+-/* Both low and high 16 bits are added as SIGNED additions, so if low
+-   16 bits has high bit set, high 16 bits must be adjusted.  These
+-   macros do that (stolen from binutils). */
+-#define PPC_LO(v) ((v) & 0xffff)
+-#define PPC_HI(v) (((v) >> 16) & 0xffff)
+-#define PPC_HA(v) PPC_HI ((v) + 0x8000)
+-
+ /* Patch stub to reference function and correct r2 value. */
+ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 			      struct ppc64_stub_entry *entry,
+-- 
+2.13.3
 
