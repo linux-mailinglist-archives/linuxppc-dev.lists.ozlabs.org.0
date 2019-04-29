@@ -2,72 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33721DA07
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 02:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BB8DA62
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 04:07:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44slP52MxJzDqNf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 10:08:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44sp2G4Q3xzDqP6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:07:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Or6uEcGq"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44slMW0dVlzDqNF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 10:07:02 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id i21so840244pgi.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2019 17:07:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=n2mvnFGe7DhWnAVJ4HPTWEsItuKdoQBnBqAP6kIcYug=;
- b=Or6uEcGq20/dbV741dpgRcmnluoZolSsauu907Q2n5IqtHesTqLypagpN4KylfV4J4
- gV/Ri1WN8QiMSpSFwMNVrtg+g50Mh9dq9f59O5tPGvKm4CoKzYz808goOti/dswLGmR1
- AYMHlHdbG1/yE0hzyy72pnjLNc6uo7AC6CMfw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=n2mvnFGe7DhWnAVJ4HPTWEsItuKdoQBnBqAP6kIcYug=;
- b=Ozcb41vbtvqlTxcwldI8PgrpBN4PUFIy8oLINLzv1aOqwqH1TsiSYIQ0myHdy3pc5/
- cXVA2hfwubhzBo/i2Px1MNm/KEswaB0AJPiogJpshe/KLIlRzpqbAvR6WdgTf5IUHCQb
- pBRbCDm4cWeS9kr4EMJo22j0drohZSxGtiQ4Z6P64xWcC4yFR7LQB4W0vvXB1TdM2h4a
- /KkU/thNB8lPIUZORp/OORkUsPWWD+D9mpVRBIGeXRE0UyUG5Kl0+/23Gh9M8q1KRdjF
- /gSzqQZB5DRBAxR0eEYf/Y2LjW1GKUNTuazRsOF/+c7/lyuA+YYv4ih0VZ/i49u0sm/7
- Jimg==
-X-Gm-Message-State: APjAAAVpd4E7doGh74QMyHWoJtUzY9Z2dQGjpp8IEdeFskLO5xdJnXQ0
- l9o/lqIUQILfSYt51MlCh9FvIg==
-X-Google-Smtp-Source: APXvYqwb6MwKjVD4beBIgVSrqvnOCys+S049kGs7qQXovjqAUY28iQ+jdtiBGffI7iAuh/EIjCR1vg==
-X-Received: by 2002:a63:4714:: with SMTP id u20mr47465141pga.316.1556496419070; 
- Sun, 28 Apr 2019 17:06:59 -0700 (PDT)
-Received: from localhost (ppp121-45-207-92.bras1.cbr1.internode.on.net.
- [121.45.207.92])
- by smtp.gmail.com with ESMTPSA id w23sm44714029pgj.72.2019.04.28.17.06.56
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 28 Apr 2019 17:06:57 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Matthew Garrett <mjg59@google.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>
-Subject: Re: [PATCH V32 01/27] Add the ability to lock down access to the
- running kernel image
-In-Reply-To: <CACdnJus9AhAAYs-R94BH7HDuuQfXjgdhdqUR6Pvk9mxbuPx1=Q@mail.gmail.com>
-References: <20190404003249.14356-1-matthewgarrett@google.com>
- <20190404003249.14356-2-matthewgarrett@google.com>
- <059c523e-926c-24ee-0935-198031712145@au1.ibm.com>
- <CACdnJus9AhAAYs-R94BH7HDuuQfXjgdhdqUR6Pvk9mxbuPx1=Q@mail.gmail.com>
-Date: Mon, 29 Apr 2019 10:06:51 +1000
-Message-ID: <87wojdy8ro.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44sp0k2kMJzDqNG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 12:05:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="ZDh+JJdW"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 44sp0j4Vkwz9s7T; Mon, 29 Apr 2019 12:05:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1556503557; bh=C9jMjFQh8bIIcTLpSucBn3+IOPxRQfPJx62R3f27fHA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ZDh+JJdWNbUnjZwYJ2OgXrlC5Te6OdRn22WeQuX4mEFi/3J71pfQo+39F6D6VmfIs
+ gN6aTHh8fhD28hDxoQTNfGh80vVwOayHLTgGy/WObYcwr29+LgPtSFjpNYGvpucq7e
+ RFvR2OWhFp0B7fWmnkVIVl5FSX1jogLJM1ivdGOqA7fkxhMHaDiTR0CdT1LUZLyBXU
+ kNwsUKwXM2eBaXfB8xSfPnOIqb8nOoKndLFvhgA8sb3l7oGWYMgduupXvs/dphOqD1
+ 8Md0UWqf3a3EcS154gfVMUDHZtwTRPKEseYrZA6+ZANLVUVipPwrDyKTM5PLPIDLER
+ jBXEXZZQAZv0g==
+Date: Mon, 29 Apr 2019 12:05:55 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH v8 05/20] KVM: PPC: Book3S HV: Remove pmd_is_leaf()
+Message-ID: <20190429020555.GB11154@blackberry>
+References: <20190403141627.11664-1-steven.price@arm.com>
+ <20190403141627.11664-6-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190403141627.11664-6-steven.price@arm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,48 +54,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux API <linux-api@vger.kernel.org>, cmr <cmr@informatik.wtf>,
- James Morris <jmorris@namei.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- David Howells <dhowells@redhat.com>,
- LSM List <linux-security-module@vger.kernel.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mm@kvack.org, "H. Peter Anvin" <hpa@zytor.com>, "Liang,
+ Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Arnd Bergmann <arnd@arndb.de>, kvm-ppc@vger.kernel.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Matthew Garrett <mjg59@google.com> writes:
+On Wed, Apr 03, 2019 at 03:16:12PM +0100, Steven Price wrote:
+> Since pmd_large() is now always available, pmd_is_leaf() is redundant.
+> Replace all uses with calls to pmd_large().
 
-> On Tue, Apr 16, 2019 at 1:40 AM Andrew Donnellan
-> <andrew.donnellan@au1.ibm.com> wrote:
->> I'm thinking about whether we should lock down the powerpc xmon debug
->> monitor - intuitively, I think the answer is yes if for no other reason
->> than Least Astonishment, when lockdown is enabled you probably don't
->> expect xmon to keep letting you access kernel memory.
->
-> The original patchset contained a sysrq hotkey to allow physically
-> present users to disable lockdown, so I'm not super concerned about
-> this case - I could definitely be convinced otherwise, though.
+NAK.  I don't want to do this, because pmd_is_leaf() is purely about
+the guest page tables (the "partition-scoped" radix tree which
+specifies the guest physical to host physical translation), not about
+anything to do with the Linux process page tables.  The guest page
+tables have the same format as the Linux process page tables, but they
+are managed separately.
 
-So currently (and I'm pretty new to this as I've only recently rejoined
-IBM) we aren't considering access to the console to be sufficient to
-assert physical presence on bare-metal server-class Power machines. The
-short argument for this is that with IPMI and BMCs, a server's console
-isn't what it used to be. Our console is also a bit different to x86:
-we don't generally have bios configuration screens on the console.
+If it makes things clearer, I could rename it to "guest_pmd_is_leaf()"
+or something similar.
 
-In your example, a sysrq key would allow you to disable lockdown after
-the system has booted. On Power though, we use Linux as a bootloader
-(Petitboot: https://github.com/open-power/petitboot) so being able to
-disable lockdown there allows an IPMI-connected user to prevent a signed
-kernel being loaded in the first place. I don't know if this is
-_actually_ worse, but it certainly feels worse.
-
-There are of course some arguments against our approach. I'm aware of
-some of them. I'm also very open to being told that not equating console
-access with physical access is fundamentally silly or broken and that we
-should rethink things.
-
-Regards,
-Daniel
+Paul.
