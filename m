@@ -2,79 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A3AE65F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275B8E68E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 17:31:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t7qM53rzzDqPW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:29:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t7tR4Tf3zDqND
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 01:31:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
- envelope-from=jacmet@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=efficios.com
+ (client-ip=167.114.142.138; helo=mail.efficios.com;
+ envelope-from=mathieu.desnoyers@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=korsgaard.com
+ dmarc=pass (p=none dis=none) header.from=efficios.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="MqOlHKGB"; 
+ unprotected) header.d=efficios.com header.i=@efficios.com header.b="djkcTcOT";
  dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.efficios.com (mail.efficios.com [167.114.142.138])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t7ly39d3zDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:26:06 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id k45so9505713edb.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 08:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:references:date:in-reply-to:message-id
- :user-agent:mime-version;
- bh=aonALYgL+fC9zvkDd9D30wIh1ca4DE2TOFz5g+1UCQg=;
- b=MqOlHKGBUrtkGw/thEAiOVcQipneXzleb0RM/WE/NAIrWKwuZ/igOcZfZutIC36Y+D
- kLv5JhJxZNlHfPV2unFalEBIn+R251ZYHMnUFKHLzWPTKPDBh4j1DH5fBQWKGZMvzLVb
- SMz6kHEmwAk1jVmwT0zVVqmJxkqUZFnh5Be3UtymNcZBxrZC1dCeA8ZWGCke6h3WuDTI
- PsjH3VSHWs1BZGE7yQ1Vs9L+vcwsR8eXgeZFz0UjkEq1+l6KvTCFALNtGLuE09m3CghC
- cx6yoPLSQGZxVeq6086SUPMPKPbmJkifbBv8cOkt/YaQS5IgtCtZFbdEKFHyYcct3Z1K
- HqIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:references:date
- :in-reply-to:message-id:user-agent:mime-version;
- bh=aonALYgL+fC9zvkDd9D30wIh1ca4DE2TOFz5g+1UCQg=;
- b=XZhRRsGKGxT4DGRinxARhUcTSgXDqr+XLGjYzQFOmGeGfhxmOsD76nvxgFyNXD4Oet
- gifdhOQbNitq/F6l6m9G8TIDrJzESo9kMwOrT9YLAuzSKPfnMfdn7lz0RLXCqyK12XYF
- zPjZM7kUBFmyyvN+rGU/kXPlp8LTRjmWEOTuPDIk2g3WQxoMkjE6LotILskB8AUheX+t
- VxnVNsII4eKtWJMaKbkzizoOTPfGOuLP9VLWz7WoPx0VYggV47J/aXLj658fTQT9z6FA
- QE0rGc3OL8FIUI5dyyOh6jnqnrfXtlu1TECdmeI/irJ7XNBVd01cEErEjUCxBs2Gnduh
- C4bA==
-X-Gm-Message-State: APjAAAV/hind7xSJT16iMtPS7DNiwhG8HEkEcwdMI83n0wC94ufwplzf
- GbdO8Fmy/p5RV5y8IJKCgVo=
-X-Google-Smtp-Source: APXvYqyEQJEsE2ti6PwOMykBv5n2TIgt00/3l4kIKwcwjUrTagamP80EumknDfmmfKrxqeVCL9NbNA==
-X-Received: by 2002:a17:906:4c95:: with SMTP id
- q21mr31492152eju.14.1556551561666; 
- Mon, 29 Apr 2019 08:26:01 -0700 (PDT)
-Received: from dell.be.48ers.dk (d51A5BC31.access.telenet.be. [81.165.188.49])
- by smtp.gmail.com with ESMTPSA id
- z32sm862711edz.85.2019.04.29.08.26.00
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 29 Apr 2019 08:26:00 -0700 (PDT)
-Received: from peko by dell.be.48ers.dk with local (Exim 4.89)
- (envelope-from <peter@korsgaard.com>)
- id 1hL8AK-0000pF-C1; Mon, 29 Apr 2019 17:26:00 +0200
-From: Peter Korsgaard <peter@korsgaard.com>
-To: "Enrico Weigelt\, metux IT consult" <info@metux.net>
-Subject: Re: [PATCH 12/41] drivers: tty: serial: uartlite: use dev_dbg()
- instead of pr_debug()
-References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-13-git-send-email-info@metux.net>
-Date: Mon, 29 Apr 2019 17:26:00 +0200
-In-Reply-To: <1556369542-13247-13-git-send-email-info@metux.net> (Enrico
- Weigelt's message of "Sat, 27 Apr 2019 14:51:53 +0200")
-Message-ID: <875zqwrfxz.fsf@dell.be.48ers.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t7r022srzDq8v
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:29:34 +1000 (AEST)
+Received: from localhost (ip6-localhost [IPv6:::1])
+ by mail.efficios.com (Postfix) with ESMTP id E14411C1D5F;
+ Mon, 29 Apr 2019 11:29:30 -0400 (EDT)
+Received: from mail.efficios.com ([IPv6:::1])
+ by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10032)
+ with ESMTP id 5MW_MUXV3BF9; Mon, 29 Apr 2019 11:29:30 -0400 (EDT)
+Received: from localhost (ip6-localhost [IPv6:::1])
+ by mail.efficios.com (Postfix) with ESMTP id 43A221C1D1D;
+ Mon, 29 Apr 2019 11:29:28 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 43A221C1D1D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1556551768;
+ bh=wPddiBdShBppXNiDLwqz7lNkyC8NrgYYgntI0yfX9Z0=;
+ h=From:To:Date:Message-Id;
+ b=djkcTcOTO2e0LgcW0rucWSFWEWUJPhpyMGSN2HRPFxnhMnfknL1g2oJ4jHd8pSNT1
+ DpXvmoEQC/i53SVp2ypPnpeqL5bNqJSjZ2h8pYY9Ro8iUScNFXUO7rhvvJLmbcXK7m
+ PN5qjiCPP2kkGQzDgyc30y0pYGP9xeraRKzGnWepX2GKjl60bdLbVdcITd24T58/GY
+ 0Qtej+HIRS6o14IUNO+w6c+VZ4yWG6fTM9sb1LMVQm2DikKa+CvhgjO5jJdIsc9JZD
+ zXBjvuPJS4vQ9E3mxvftE1SPhUju+PFJpkHba447OYkaYzZNMw1V0OvPtc/mY6+Y98
+ yYo2PXp6psyuA==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([IPv6:::1])
+ by localhost (mail02.efficios.com [IPv6:::1]) (amavisd-new, port 10026)
+ with ESMTP id NRO-4hextqik; Mon, 29 Apr 2019 11:29:28 -0400 (EDT)
+Received: from thinkos.internal.efficios.com (192-222-157-41.qc.cable.ebox.net
+ [192.222.157.41])
+ by mail.efficios.com (Postfix) with ESMTPSA id 49AF71C1CFA;
+ Mon, 29 Apr 2019 11:29:27 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Shuah Khan <shuah@kernel.org>
+Subject: [PATCH for 5.2 10/12] rseq/selftests: powerpc code signature:
+ generate valid instructions
+Date: Mon, 29 Apr 2019 11:28:01 -0400
+Message-Id: <20190429152803.7719-11-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20190429152803.7719-1-mathieu.desnoyers@efficios.com>
+References: <20190429152803.7719-1-mathieu.desnoyers@efficios.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,26 +71,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org, macro@linux-mips.org,
- andrew@aj.id.au, gregkh@linuxfoundation.org, slemieux.tyco@gmail.com,
- liviu.dudau@arm.com, linux-kernel@vger.kernel.org,
- andriy.shevchenko@linux.intel.com, linux-mips@vger.kernel.org,
- linux@prisktech.co.nz, matthias.bgg@gmail.com, khilman@baylibre.com,
- linux-serial@vger.kernel.org, sudeep.holla@arm.com, sparclinux@vger.kernel.org,
- jacmet@sunsite.dk, linux-amlogic@lists.infradead.org, vz@mleia.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Joel Fernandes <joelaf@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Dave Watson <davejwatson@fb.com>,
+ Will Deacon <will.deacon@arm.com>, Andi Kleen <andi@firstfloor.org>,
+ Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
+ Chris Lameter <cl@linux.com>, Russell King <linux@arm.linux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Michael Kerrisk <mtk.manpages@gmail.com>,
+ "Paul E . McKenney" <paulmck@linux.vnet.ibm.com>, Paul Turner <pjt@google.com>,
+ Alan Modra <amodra@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Ben Maurer <bmaurer@fb.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-api@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Andy Lutomirski <luto@amacapital.net>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->>>>> "Enrico" == Enrico Weigelt, metux IT consult <info@metux.net> writes:
+Use "twui" as the guard instruction for the restartable sequence abort
+handler.
 
- > Using dev_dbg() instead of pr_debg() for more consistent output.
- > (prints device name, etc).
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: Peter Zijlstra <peterz@infradead.org>
+CC: "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>
+CC: Alan Modra <amodra@gmail.com>
+CC: linuxppc-dev@lists.ozlabs.org
+---
+ tools/testing/selftests/rseq/rseq-ppc.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
- > Signed-off-by: Enrico Weigelt <info@metux.net>
-
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-
+diff --git a/tools/testing/selftests/rseq/rseq-ppc.h b/tools/testing/selftests/rseq/rseq-ppc.h
+index 9df18487fa9f..76be90196fe4 100644
+--- a/tools/testing/selftests/rseq/rseq-ppc.h
++++ b/tools/testing/selftests/rseq/rseq-ppc.h
+@@ -6,7 +6,15 @@
+  * (C) Copyright 2016-2018 - Boqun Feng <boqun.feng@gmail.com>
+  */
+ 
+-#define RSEQ_SIG	0x53053053
++/*
++ * RSEQ_SIG is used with the following trap instruction:
++ *
++ * powerpc-be:    0f e5 00 0b           twui   r5,11
++ * powerpc64-le:  0b 00 e5 0f           twui   r5,11
++ * powerpc64-be:  0f e5 00 0b           twui   r5,11
++ */
++
++#define RSEQ_SIG	0x0fe5000b
+ 
+ #define rseq_smp_mb()		__asm__ __volatile__ ("sync"	::: "memory", "cc")
+ #define rseq_smp_lwsync()	__asm__ __volatile__ ("lwsync"	::: "memory", "cc")
 -- 
-Bye, Peter Korsgaard
+2.11.0
+
