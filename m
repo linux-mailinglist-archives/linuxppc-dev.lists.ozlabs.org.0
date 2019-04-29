@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B04E06F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B59CDE06C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 12:21:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44t11b42hszDqH1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:22:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44t1091mWWzDqPG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:21:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Ly12jgzDqPP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44t0Lw5HVFzDqPb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Vc4hiElV"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="JHUwb3nI"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lx6kN1z8tDC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44t0Lw2x28z8tDC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:52:24 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44t0Lx5ppwz9sCJ; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
+ id 44t0Lw123qz9s70; Mon, 29 Apr 2019 19:52:24 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,35 +33,35 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Vc4hiElV"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="JHUwb3nI"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44t0Lx23Tsz9s3Z
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:25 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44t0Lt5bCDz9sCJ
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Apr 2019 19:52:22 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 53702205ED;
- Mon, 29 Apr 2019 09:52:23 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C66E620449;
+ Mon, 29 Apr 2019 09:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556531543;
- bh=AdhYUX1ich2INILPIoPdX9edYOtQl1mH0wNClc0ihYw=;
+ s=default; t=1556531541;
+ bh=A+Y/pcw62qhBPyAVHZQoAerX67/4/apJZK8MDsjI/5Y=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=Vc4hiElVXMUv7QjG633Sh3fqo19MVhupRamDbjhJM22iaCG7z44xL9zabWotayant
- ZH9kqSrHPP4S1t2NYYlqgzSPwoxs9sreDyq72RPwNFT4v3yjp+50asqLsw7iwDYrAA
- UL3jpkV04a8yyufhlfNGiCviIk+7tTyIfTy9mbUQ=
-Subject: Patch "powerpc/asm: Add a patch_site macro & helpers for patching
- instructions" has been added to the 4.4-stable tree
+ b=JHUwb3nIegqhItOdSOIYjCGDE7do8brmlTFrNT7UqhwqPaeBw0HSgIt/YIBH3t5kE
+ w65PqVYNiLBJ1K4rbYlx3Y7+IQz9avqkSgnogXuNAn4GwRKlWgL2NqTKMUDVL7Un0j
+ 8AexKyAUTdQweKIJvMe622WQPKgPgyBFWyXwONek=
+Subject: Patch "powerpc: Add security feature flags for Spectre/Meltdown" has
+ been added to the 4.4-stable tree
 To: christophe.leroy@c-s.fr, diana.craciun@nxp.com, gregkh@linuxfoundation.org,
  linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, msuchanek@suse.de,
  npiggin@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Apr 2019 11:51:24 +0200
-In-Reply-To: <20190421142037.21881-40-mpe@ellerman.id.au>
-Message-ID: <1556531484213139@kroah.com>
+In-Reply-To: <20190421142037.21881-12-mpe@ellerman.id.au>
+Message-ID: <1556531484152164@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/asm: Add a patch_site macro & helpers for patching instructions
+    powerpc: Add security feature flags for Spectre/Meltdown
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-asm-add-a-patch_site-macro-helpers-for-patching-instructions.patch
+     powerpc-add-security-feature-flags-for-spectre-meltdown.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -101,97 +101,136 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Mon 29 Apr 2019 11:38:37 AM CEST
 From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 22 Apr 2019 00:20:24 +1000
-Subject: powerpc/asm: Add a patch_site macro & helpers for patching instructions
+Date: Mon, 22 Apr 2019 00:19:56 +1000
+Subject: powerpc: Add security feature flags for Spectre/Meltdown
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, diana.craciun@nxp.com, msuchanek@suse.de, npiggin@gmail.com, christophe.leroy@c-s.fr
-Message-ID: <20190421142037.21881-40-mpe@ellerman.id.au>
+Message-ID: <20190421142037.21881-12-mpe@ellerman.id.au>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 06d0bbc6d0f56dacac3a79900e9a9a0d5972d818 upstream.
+commit 9a868f634349e62922c226834aa23e3d1329ae7f upstream.
 
-Add a macro and some helper C functions for patching single asm
-instructions.
+This commit adds security feature flags to reflect the settings we
+receive from firmware regarding Spectre/Meltdown mitigations.
 
-The gas macro means we can do something like:
+The feature names reflect the names we are given by firmware on bare
+metal machines. See the hostboot source for details.
 
-  1:	nop
-  	patch_site 1b, patch__foo
-
-Which is less visually distracting than defining a GLOBAL symbol at 1,
-and also doesn't pollute the symbol table which can confuse eg. perf.
-
-These are obviously similar to our existing feature sections, but are
-not automatically patched based on CPU/MMU features, rather they are
-designed to be manually patched by C code at some arbitrary point.
+Arguably these could be firmware features, but that then requires them
+to be read early in boot so they're available prior to asm feature
+patching, but we don't actually want to use them for patching. We may
+also want to dynamically update them in future, which would be
+incompatible with the way firmware features work (at the moment at
+least). So for now just make them separate flags.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/code-patching-asm.h |   18 ++++++++++++++++++
- arch/powerpc/include/asm/code-patching.h     |    2 ++
- arch/powerpc/lib/code-patching.c             |   16 ++++++++++++++++
- 3 files changed, 36 insertions(+)
- create mode 100644 arch/powerpc/include/asm/code-patching-asm.h
+ arch/powerpc/include/asm/security_features.h |   65 +++++++++++++++++++++++++++
+ arch/powerpc/kernel/Makefile                 |    2 
+ arch/powerpc/kernel/security.c               |   15 ++++++
+ 3 files changed, 81 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/security_features.h
+ create mode 100644 arch/powerpc/kernel/security.c
 
 --- /dev/null
-+++ b/arch/powerpc/include/asm/code-patching-asm.h
-@@ -0,0 +1,18 @@
++++ b/arch/powerpc/include/asm/security_features.h
+@@ -0,0 +1,65 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
++ * Security related feature bit definitions.
++ *
 + * Copyright 2018, Michael Ellerman, IBM Corporation.
 + */
-+#ifndef _ASM_POWERPC_CODE_PATCHING_ASM_H
-+#define _ASM_POWERPC_CODE_PATCHING_ASM_H
 +
-+/* Define a "site" that can be patched */
-+.macro patch_site label name
-+	.pushsection ".rodata"
-+	.balign 4
-+	.global \name
-+\name:
-+	.4byte	\label - .
-+	.popsection
-+.endm
++#ifndef _ASM_POWERPC_SECURITY_FEATURES_H
++#define _ASM_POWERPC_SECURITY_FEATURES_H
 +
-+#endif /* _ASM_POWERPC_CODE_PATCHING_ASM_H */
---- a/arch/powerpc/include/asm/code-patching.h
-+++ b/arch/powerpc/include/asm/code-patching.h
-@@ -28,6 +28,8 @@ unsigned int create_cond_branch(const un
- 				unsigned long target, int flags);
- int patch_branch(unsigned int *addr, unsigned long target, int flags);
- int patch_instruction(unsigned int *addr, unsigned int instr);
-+int patch_instruction_site(s32 *addr, unsigned int instr);
-+int patch_branch_site(s32 *site, unsigned long target, int flags);
- 
- int instr_is_relative_branch(unsigned int instr);
- int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr);
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -32,6 +32,22 @@ int patch_branch(unsigned int *addr, uns
- 	return patch_instruction(addr, create_branch(addr, target, flags));
- }
- 
-+int patch_branch_site(s32 *site, unsigned long target, int flags)
++
++extern unsigned long powerpc_security_features;
++
++static inline void security_ftr_set(unsigned long feature)
 +{
-+	unsigned int *addr;
-+
-+	addr = (unsigned int *)((unsigned long)site + *site);
-+	return patch_instruction(addr, create_branch(addr, target, flags));
++	powerpc_security_features |= feature;
 +}
 +
-+int patch_instruction_site(s32 *site, unsigned int instr)
++static inline void security_ftr_clear(unsigned long feature)
 +{
-+	unsigned int *addr;
-+
-+	addr = (unsigned int *)((unsigned long)site + *site);
-+	return patch_instruction(addr, instr);
++	powerpc_security_features &= ~feature;
 +}
 +
- unsigned int create_branch(const unsigned int *addr,
- 			   unsigned long target, int flags)
- {
++static inline bool security_ftr_enabled(unsigned long feature)
++{
++	return !!(powerpc_security_features & feature);
++}
++
++
++// Features indicating support for Spectre/Meltdown mitigations
++
++// The L1-D cache can be flushed with ori r30,r30,0
++#define SEC_FTR_L1D_FLUSH_ORI30		0x0000000000000001ull
++
++// The L1-D cache can be flushed with mtspr 882,r0 (aka SPRN_TRIG2)
++#define SEC_FTR_L1D_FLUSH_TRIG2		0x0000000000000002ull
++
++// ori r31,r31,0 acts as a speculation barrier
++#define SEC_FTR_SPEC_BAR_ORI31		0x0000000000000004ull
++
++// Speculation past bctr is disabled
++#define SEC_FTR_BCCTRL_SERIALISED	0x0000000000000008ull
++
++// Entries in L1-D are private to a SMT thread
++#define SEC_FTR_L1D_THREAD_PRIV		0x0000000000000010ull
++
++// Indirect branch prediction cache disabled
++#define SEC_FTR_COUNT_CACHE_DISABLED	0x0000000000000020ull
++
++
++// Features indicating need for Spectre/Meltdown mitigations
++
++// The L1-D cache should be flushed on MSR[HV] 1->0 transition (hypervisor to guest)
++#define SEC_FTR_L1D_FLUSH_HV		0x0000000000000040ull
++
++// The L1-D cache should be flushed on MSR[PR] 0->1 transition (kernel to userspace)
++#define SEC_FTR_L1D_FLUSH_PR		0x0000000000000080ull
++
++// A speculation barrier should be used for bounds checks (Spectre variant 1)
++#define SEC_FTR_BNDS_CHK_SPEC_BAR	0x0000000000000100ull
++
++// Firmware configuration indicates user favours security over performance
++#define SEC_FTR_FAVOUR_SECURITY		0x0000000000000200ull
++
++#endif /* _ASM_POWERPC_SECURITY_FEATURES_H */
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -40,7 +40,7 @@ obj-$(CONFIG_PPC64)		+= setup_64.o sys_p
+ obj-$(CONFIG_VDSO32)		+= vdso32/
+ obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
+ obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_ppc970.o cpu_setup_pa6t.o
+-obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_power.o
++obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_power.o security.o
+ obj-$(CONFIG_PPC_BOOK3S_64)	+= mce.o mce_power.o
+ obj64-$(CONFIG_RELOCATABLE)	+= reloc_64.o
+ obj-$(CONFIG_PPC_BOOK3E_64)	+= exceptions-64e.o idle_book3e.o
+--- /dev/null
++++ b/arch/powerpc/kernel/security.c
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0+
++//
++// Security related flags and so on.
++//
++// Copyright 2018, Michael Ellerman, IBM Corporation.
++
++#include <linux/kernel.h>
++#include <asm/security_features.h>
++
++
++unsigned long powerpc_security_features __read_mostly = \
++	SEC_FTR_L1D_FLUSH_HV | \
++	SEC_FTR_L1D_FLUSH_PR | \
++	SEC_FTR_BNDS_CHK_SPEC_BAR | \
++	SEC_FTR_FAVOUR_SECURITY;
 
 
 Patches currently in stable-queue which might be from mpe@ellerman.id.au are
