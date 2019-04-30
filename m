@@ -1,90 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95430EF9A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 06:28:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E755EF93
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 06:27:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tT5L6nVGzDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 14:27:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tT6p6Sm3zDqMK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 14:28:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=andrew.donnellan@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::141; helo=mail-it1-x141.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="jvQCAxGN"; 
+ dkim-atps=neutral
+Received: from mail-it1-x141.google.com (mail-it1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tT3n2lt0zDq7g
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 14:25:56 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x3U4LpRs029046
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:25:53 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2s6e9j207a-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 00:25:53 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <andrew.donnellan@au1.ibm.com>;
- Tue, 30 Apr 2019 05:25:51 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 30 Apr 2019 05:25:48 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x3U4PlH158851398
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Apr 2019 04:25:47 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85A744C04A;
- Tue, 30 Apr 2019 04:25:47 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E2D704C044;
- Tue, 30 Apr 2019 04:25:46 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 30 Apr 2019 04:25:46 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D61FEA01D2;
- Tue, 30 Apr 2019 14:25:44 +1000 (AEST)
-Subject: Re: [PATCH v4 2/7] ocxl: Don't pass pci_dev around
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20190327053137.15173-1-alastair@au1.ibm.com>
- <20190327053137.15173-3-alastair@au1.ibm.com>
-From: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
-Date: Tue, 30 Apr 2019 14:25:44 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tT4R0GrKzDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 14:26:30 +1000 (AEST)
+Received: by mail-it1-x141.google.com with SMTP id q19so2620313itk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 21:26:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=t1AHa4y9HItu8pWR+Cc3jqH3r77ZUtY/LFLvQb33vwg=;
+ b=jvQCAxGNAh6u7Q+yQEV6dMmG3ymyY5vcVzNfGa0WR47bFA2dos1g2PYidD9fR8BZFG
+ sEKJ7ryTYwiCygqCq5gAW6TF2Hsdtzk1aleW1kegbyy682P695VLjikwx0G9ID1PucRK
+ ItjHrGSZLd/G5QRj6vL2RqIIT3Ru5EYh0c0NKIioALX5V83TUI/JQltTJoRnDzC5QFo9
+ VcH6md8PqT3PU1nB6qnVz0SZux6iDu/od193XYIFJhNeA3gvawy2/x2axbzDpefYv1iC
+ yxbc8yj95N2Q18J+rsxIzKAE7TpbEr+ozEzwbvwKwhUgrxHMia/zbawfP4GnOqVYoLlf
+ HDKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=t1AHa4y9HItu8pWR+Cc3jqH3r77ZUtY/LFLvQb33vwg=;
+ b=oNgzKYEWW2eQYnd1kT53RgNUcV8OUEMF3RtO7k6dEMorI0aj2XjNWVkHfrvyEgn4pf
+ XD1p9YnvUHscF3I8mg5zF/3pMYPuCOqqRQDzGsxSs+DR9bxO9zr8KP97PvSpOZH0FE+J
+ 1w+Y60AJM6VPLK0eKUTWjX5pE6FzxpQ0MKlhnrfk/QlVAI0Ol8AN7WF4fWubTZ5w8vws
+ Cj9Gt7xyHIqzKl4OBxt6l+07DH9k6EI9cDy2/T+aw7dmA1Su7WvCTAWvsFPgAkkZ8/oO
+ Lw7ZCA0n40DBWU2k5R81ySo6eiDS9RUSFU/U9aRzQW92uZ4qHqQ7Pyf3VyIgcVTGtIKM
+ 69qg==
+X-Gm-Message-State: APjAAAXDjJC7oZnYNS0/EQS/Wdw5ixqmQeje6BeVW1wZGInKdJUl797K
+ V+7NLIk522nv4Z0TOPzSln2MsX4sS06qVCeHlbo=
+X-Google-Smtp-Source: APXvYqyI6lVgp9aOsLjj03ex4HBhpqIrxoMl1W0IkO6i89AEn/j+YFvp1mF4USodJGyF4UDAZ5kUTrXQ2Y8JQE8Nq/0=
+X-Received: by 2002:a24:e85:: with SMTP id 127mr2033755ite.4.1556598388424;
+ Mon, 29 Apr 2019 21:26:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190327053137.15173-3-alastair@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19043004-0008-0000-0000-000002E1ADC5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19043004-0009-0000-0000-0000224E13CA
-Message-Id: <f550af38-35b8-0e77-0833-e23ab2c4aa76@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-04-30_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904300028
+References: <20190311115233.6514-1-s.miroshnichenko@yadro.com>
+ <20190311115233.6514-3-s.miroshnichenko@yadro.com>
+In-Reply-To: <20190311115233.6514-3-s.miroshnichenko@yadro.com>
+From: Oliver <oohall@gmail.com>
+Date: Tue, 30 Apr 2019 14:26:16 +1000
+Message-ID: <CAOSf1CF5gVPdBZpbzr+8cp1dC6Ki+XtkfsSqdR0CP8pDPCnPYQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/8] powerpc/powernv/pci: Suppress an EEH error when
+ reading an empty slot
+To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,182 +74,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Cc: Stewart Smith <stewart@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, linux-pci@vger.kernel.org,
+ linux@yadro.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/3/19 4:31 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> This data is already available in a struct
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-
-Acked-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
-
+On Mon, Mar 11, 2019 at 10:52 PM Sergey Miroshnichenko
+<s.miroshnichenko@yadro.com> wrote:
+>
+> Reading an empty slot returns all ones, which triggers a false
+> EEH error event on PowerNV. This patch unfreezes the bus where
+> it has happened.
+>
+> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 > ---
->   drivers/misc/ocxl/core.c | 38 +++++++++++++++++++++-----------------
->   1 file changed, 21 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c
-> index 1a4411b72d35..2f2fe12eac1e 100644
-> --- a/drivers/misc/ocxl/core.c
-> +++ b/drivers/misc/ocxl/core.c
-> @@ -66,10 +66,11 @@ static int set_afu_device(struct ocxl_afu *afu, const char *location)
->   	return rc;
->   }
->   
-> -static int assign_afu_actag(struct ocxl_afu *afu, struct pci_dev *dev)
-> +static int assign_afu_actag(struct ocxl_afu *afu)
->   {
->   	struct ocxl_fn *fn = afu->fn;
->   	int actag_count, actag_offset;
-> +	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
->   
->   	/*
->   	 * if there were not enough actags for the function, each afu
-> @@ -79,16 +80,16 @@ static int assign_afu_actag(struct ocxl_afu *afu, struct pci_dev *dev)
->   		fn->actag_enabled / fn->actag_supported;
->   	actag_offset = ocxl_actag_afu_alloc(fn, actag_count);
->   	if (actag_offset < 0) {
-> -		dev_err(&afu->dev, "Can't allocate %d actags for AFU: %d\n",
-> +		dev_err(&pci_dev->dev, "Can't allocate %d actags for AFU: %d\n",
->   			actag_count, actag_offset);
->   		return actag_offset;
->   	}
->   	afu->actag_base = fn->actag_base + actag_offset;
->   	afu->actag_enabled = actag_count;
->   
-> -	ocxl_config_set_afu_actag(dev, afu->config.dvsec_afu_control_pos,
-> +	ocxl_config_set_afu_actag(pci_dev, afu->config.dvsec_afu_control_pos,
->   				afu->actag_base, afu->actag_enabled);
-> -	dev_dbg(&afu->dev, "actag base=%d enabled=%d\n",
-> +	dev_dbg(&pci_dev->dev, "actag base=%d enabled=%d\n",
->   		afu->actag_base, afu->actag_enabled);
->   	return 0;
->   }
-> @@ -103,10 +104,11 @@ static void reclaim_afu_actag(struct ocxl_afu *afu)
->   	ocxl_actag_afu_free(afu->fn, start_offset, size);
->   }
->   
-> -static int assign_afu_pasid(struct ocxl_afu *afu, struct pci_dev *dev)
-> +static int assign_afu_pasid(struct ocxl_afu *afu)
->   {
->   	struct ocxl_fn *fn = afu->fn;
->   	int pasid_count, pasid_offset;
-> +	struct pci_dev *pci_dev = to_pci_dev(fn->dev.parent);
->   
->   	/*
->   	 * We only support the case where the function configuration
-> @@ -115,7 +117,7 @@ static int assign_afu_pasid(struct ocxl_afu *afu, struct pci_dev *dev)
->   	pasid_count = 1 << afu->config.pasid_supported_log;
->   	pasid_offset = ocxl_pasid_afu_alloc(fn, pasid_count);
->   	if (pasid_offset < 0) {
-> -		dev_err(&afu->dev, "Can't allocate %d PASIDs for AFU: %d\n",
-> +		dev_err(&pci_dev->dev, "Can't allocate %d PASIDs for AFU: %d\n",
->   			pasid_count, pasid_offset);
->   		return pasid_offset;
->   	}
-> @@ -123,10 +125,10 @@ static int assign_afu_pasid(struct ocxl_afu *afu, struct pci_dev *dev)
->   	afu->pasid_count = 0;
->   	afu->pasid_max = pasid_count;
->   
-> -	ocxl_config_set_afu_pasid(dev, afu->config.dvsec_afu_control_pos,
-> +	ocxl_config_set_afu_pasid(pci_dev, afu->config.dvsec_afu_control_pos,
->   				afu->pasid_base,
->   				afu->config.pasid_supported_log);
-> -	dev_dbg(&afu->dev, "PASID base=%d, enabled=%d\n",
-> +	dev_dbg(&pci_dev->dev, "PASID base=%d, enabled=%d\n",
->   		afu->pasid_base, pasid_count);
->   	return 0;
->   }
-> @@ -172,9 +174,10 @@ static void release_fn_bar(struct ocxl_fn *fn, int bar)
->   	WARN_ON(fn->bar_used[idx] < 0);
->   }
->   
-> -static int map_mmio_areas(struct ocxl_afu *afu, struct pci_dev *dev)
-> +static int map_mmio_areas(struct ocxl_afu *afu)
->   {
->   	int rc;
-> +	struct pci_dev *pci_dev = to_pci_dev(afu->fn->dev.parent);
->   
->   	rc = reserve_fn_bar(afu->fn, afu->config.global_mmio_bar);
->   	if (rc)
-> @@ -187,10 +190,10 @@ static int map_mmio_areas(struct ocxl_afu *afu, struct pci_dev *dev)
->   	}
->   
->   	afu->global_mmio_start =
-> -		pci_resource_start(dev, afu->config.global_mmio_bar) +
-> +		pci_resource_start(pci_dev, afu->config.global_mmio_bar) +
->   		afu->config.global_mmio_offset;
->   	afu->pp_mmio_start =
-> -		pci_resource_start(dev, afu->config.pp_mmio_bar) +
-> +		pci_resource_start(pci_dev, afu->config.pp_mmio_bar) +
->   		afu->config.pp_mmio_offset;
->   
->   	afu->global_mmio_ptr = ioremap(afu->global_mmio_start,
-> @@ -198,7 +201,7 @@ static int map_mmio_areas(struct ocxl_afu *afu, struct pci_dev *dev)
->   	if (!afu->global_mmio_ptr) {
->   		release_fn_bar(afu->fn, afu->config.pp_mmio_bar);
->   		release_fn_bar(afu->fn, afu->config.global_mmio_bar);
-> -		dev_err(&dev->dev, "Error mapping global mmio area\n");
-> +		dev_err(&pci_dev->dev, "Error mapping global mmio area\n");
->   		return -ENOMEM;
->   	}
->   
-> @@ -234,17 +237,17 @@ static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct pci_dev *dev)
->   	if (rc)
->   		return rc;
->   
-> -	rc = assign_afu_actag(afu, dev);
-> +	rc = assign_afu_actag(afu);
->   	if (rc)
->   		return rc;
->   
-> -	rc = assign_afu_pasid(afu, dev);
-> +	rc = assign_afu_pasid(afu);
->   	if (rc) {
->   		reclaim_afu_actag(afu);
->   		return rc;
->   	}
->   
-> -	rc = map_mmio_areas(afu, dev);
-> +	rc = map_mmio_areas(afu);
->   	if (rc) {
->   		reclaim_afu_pasid(afu);
->   		reclaim_afu_actag(afu);
-> @@ -331,7 +334,7 @@ void remove_afu(struct ocxl_afu *afu)
->   	device_unregister(&afu->dev);
->   }
->   
-> -static struct ocxl_fn *alloc_function(struct pci_dev *dev)
-> +static struct ocxl_fn *alloc_function(void)
->   {
->   	struct ocxl_fn *fn;
->   
-> @@ -342,6 +345,7 @@ static struct ocxl_fn *alloc_function(struct pci_dev *dev)
->   	INIT_LIST_HEAD(&fn->afu_list);
->   	INIT_LIST_HEAD(&fn->pasid_list);
->   	INIT_LIST_HEAD(&fn->actag_list);
+>  arch/powerpc/include/asm/ppc-pci.h   |  1 +
+>  arch/powerpc/kernel/pci_dn.c         |  2 +-
+>  arch/powerpc/platforms/powernv/pci.c | 31 +++++++++++++++++++++++++---
+>  3 files changed, 30 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+> index f191ef0d2a0a..a22d52a9bb1f 100644
+> --- a/arch/powerpc/include/asm/ppc-pci.h
+> +++ b/arch/powerpc/include/asm/ppc-pci.h
+> @@ -40,6 +40,7 @@ void *traverse_pci_dn(struct pci_dn *root,
+>                       void *(*fn)(struct pci_dn *, void *),
+>                       void *data);
+>  extern void pci_devs_phb_init_dynamic(struct pci_controller *phb);
+> +struct pci_dn *pci_bus_to_pdn(struct pci_bus *bus);
+>
+>  /* From rtas_pci.h */
+>  extern void init_pci_config_tokens (void);
+> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+> index ab147a1909c8..341ed71250f1 100644
+> --- a/arch/powerpc/kernel/pci_dn.c
+> +++ b/arch/powerpc/kernel/pci_dn.c
+> @@ -40,7 +40,7 @@
+>   * one of PF's bridge. For other devices, their firmware
+>   * data is linked to that of their bridge.
+>   */
+> -static struct pci_dn *pci_bus_to_pdn(struct pci_bus *bus)
+> +struct pci_dn *pci_bus_to_pdn(struct pci_bus *bus)
+>  {
+>         struct pci_bus *pbus;
+>         struct device_node *dn;
+> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+> index 41a381dfc2a1..8cc6661781e2 100644
+> --- a/arch/powerpc/platforms/powernv/pci.c
+> +++ b/arch/powerpc/platforms/powernv/pci.c
+> @@ -761,6 +761,21 @@ static inline pnv_pci_cfg_check(struct pci_dn *pdn)
+>  }
+>  #endif /* CONFIG_EEH */
+>
+> +static int get_bus_pe_number(struct pci_bus *bus)
+> +{
+> +       struct pci_dn *pdn = pci_bus_to_pdn(bus);
+> +       struct pci_dn *child;
 > +
->   	return fn;
->   }
->   
-> @@ -491,7 +495,7 @@ struct ocxl_fn *init_function(struct pci_dev *dev)
->   	struct ocxl_fn *fn;
->   	int rc;
->   
-> -	fn = alloc_function(dev);
-> +	fn = alloc_function();
->   	if (!fn)
->   		return ERR_PTR(-ENOMEM);
->   
-> 
+> +       if (!pdn)
+> +               return IODA_INVALID_PE;
+> +
+> +       list_for_each_entry(child, &pdn->child_list, list)
+> +               if (child->pe_number != IODA_INVALID_PE)
+> +                       return child->pe_number;
+> +
+> +       return IODA_INVALID_PE;
+> +}
+> +
+>  static int pnv_pci_read_config(struct pci_bus *bus,
+>                                unsigned int devfn,
+>                                int where, int size, u32 *val)
+> @@ -772,9 +787,19 @@ static int pnv_pci_read_config(struct pci_bus *bus,
+>
+>         *val = 0xFFFFFFFF;
+>         pdn = pci_get_pdn_by_devfn(bus, devfn);
+> -       if (!pdn)
+> -               return pnv_pci_cfg_read_raw(phb->opal_id, bus->number, devfn,
+> -                                           where, size, val);
+> +       if (!pdn) {
+> +               int pe_number = get_bus_pe_number(bus);
+> +
+> +               ret = pnv_pci_cfg_read_raw(phb->opal_id, bus->number, devfn,
+> +                                          where, size, val);
+> +
+> +               if (!ret && (*val == EEH_IO_ERROR_VALUE(size)) && phb->unfreeze_pe)
+> +                       phb->unfreeze_pe(phb, (pe_number == IODA_INVALID_PE) ?
+> +                                        phb->ioda.reserved_pe_idx : pe_number,
+> +                                        OPAL_EEH_ACTION_CLEAR_FREEZE_ALL);
+> +
+> +               return ret;
+> +       }
+>
+>         if (!pnv_pci_cfg_check(pdn))
+>                 return PCIBIOS_DEVICE_NOT_FOUND;
+> --
+> 2.20.1
+>
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-andrew.donnellan@au1.ibm.com  IBM Australia Limited
-
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
