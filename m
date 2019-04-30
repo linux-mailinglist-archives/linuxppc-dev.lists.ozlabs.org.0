@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9DDF984
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 15:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2941F97C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 15:05:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44thdC25XmzDq9l
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 23:07:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44thZy2K0tzDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 23:05:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jVkBxiSf"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="nxg+KDjr"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44th0n2GbhzDqNp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 22:39:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44th0p19vhzDqNT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 22:39:06 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44th0h6Skgz9vD35;
- Tue, 30 Apr 2019 14:39:00 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 44th0j5hSbz9vD36;
+ Tue, 30 Apr 2019 14:39:01 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jVkBxiSf; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=nxg+KDjr; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id LdDPldxYfxVO; Tue, 30 Apr 2019 14:39:00 +0200 (CEST)
+ with ESMTP id PplqtvjuJU4e; Tue, 30 Apr 2019 14:39:01 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44th0h5NXhz9vD30;
- Tue, 30 Apr 2019 14:39:00 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44th0j4f5Mz9vD30;
+ Tue, 30 Apr 2019 14:39:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556627940; bh=nKNkh+9M+azIVENVognMyOnKj/MQdKoYB9p0ZvWJLDs=;
+ t=1556627941; bh=a3LgC/TWB61IjoKWSIc8/7TYo0QSbf2V60yzmDxaGl8=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=jVkBxiSfiaR98K+iIHgBcU+kOEifPxTZdhWZ+z1u9wHdTkz14Tqtxnt08pzn+aCfH
- YjXMwTq/dbZp+VwXQBYN4UsHPDaT81p0ZIJubGZRGUVBVzCHoUZMPH1ip+xJD7Umel
- RBqng6mZxGTLoNtaBsYdqNnl8IcfdMchedC7NKkI=
+ b=nxg+KDjr28i9q9sLJuxg7SO/nuWX+XOVrsn2l1XxGUlVrHkab9UEFkIDt33u051Bb
+ QHGwvFrPYiN5kSmgBUuFA924WytblOQxOYcDyIa13apQxbYEuPZ37haSkv7I24W6EJ
+ /gc2XfbhH6+Ty8dPYkZCxRruD5JI5mfCPJk8OOxQ=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 205748B8DF;
- Tue, 30 Apr 2019 14:39:02 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0979C8B8DF;
+ Tue, 30 Apr 2019 14:39:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DQCJzSfk09IN; Tue, 30 Apr 2019 14:39:02 +0200 (CEST)
+ with ESMTP id WUV_mrps_IuE; Tue, 30 Apr 2019 14:39:02 +0200 (CEST)
 Received: from po16846vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B71708B8C2;
- Tue, 30 Apr 2019 14:39:01 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B5C9E8B8C2;
+ Tue, 30 Apr 2019 14:39:02 +0200 (CEST)
 Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 7A42F666F8; Tue, 30 Apr 2019 12:39:01 +0000 (UTC)
-Message-Id: <08a881c9ae7cdcbca83ef2c995b17b1f3fbd55ef.1556627571.git.christophe.leroy@c-s.fr>
+ id 81190666F8; Tue, 30 Apr 2019 12:39:02 +0000 (UTC)
+Message-Id: <5684c7d81dd77421061340e493f436d5f09f37f3.1556627571.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1556627571.git.christophe.leroy@c-s.fr>
 References: <cover.1556627571.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 12/16] powerpc: Fix 32-bit handling of MSR_EE on exceptions
+Subject: [PATCH v3 13/16] powerpc/32: implement fast entry for syscalls on non
+ BOOKE
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
  Nicholas Piggin <npiggin@gmail.com>
-Date: Tue, 30 Apr 2019 12:39:01 +0000 (UTC)
+Date: Tue, 30 Apr 2019 12:39:02 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,229 +81,234 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[text mostly copied from benh's RFC/WIP]
+This patch implements a fast entry for syscalls.
 
-ppc32 are still doing something rather gothic and wrong on 32-bit
-which we stopped doing on 64-bit a while ago.
+Syscalls don't have to preserve non volatile registers except LR.
 
-We have that thing where some handlers "copy" the EE value from the
-original stack frame into the new MSR before transferring to the
-handler.
+This patch then implement a fast entry for syscalls, where
+volatile registers get clobbered.
 
-Thus for a number of exceptions, we enter the handlers with interrupts
-enabled.
+As this entry is dedicated to syscall it always sets MSR_EE
+and warns in case MSR_EE was previously off
 
-This is rather fishy, some of the stuff that handlers might do early
-on such as irq_enter/exit or user_exit, context tracking, etc...
-should be run with interrupts off afaik.
+It also assumes that the call is always from user, system calls are
+unexpected from kernel.
 
-Generally our handlers know when to re-enable interrupts if needed.
+The overall series improves null_syscall selftest by 12,5% on an 83xx
+and by 17% on a 8xx.
 
-The problem we were having is that we assumed these interrupts would
-return with interrupts enabled. However that isn't the case.
-
-Instead, this patch changes things so that we always enter exception
-handlers with interrupts *off* with the notable exception of syscalls
-which are special (and get a fast path).
-
-Suggested-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/entry_32.S | 116 ++++++++++++++++++++++++-----------------
- 1 file changed, 67 insertions(+), 49 deletions(-)
+ arch/powerpc/kernel/entry_32.S | 32 ++++++++++++++++
+ arch/powerpc/kernel/head_32.S  |  3 +-
+ arch/powerpc/kernel/head_32.h  | 85 ++++++++++++++++++++++++++++++++++++++++--
+ arch/powerpc/kernel/head_40x.S |  3 +-
+ arch/powerpc/kernel/head_8xx.S |  3 +-
+ 5 files changed, 116 insertions(+), 10 deletions(-)
 
 diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index d0cea3deb86c..0c555f9f1543 100644
+index 0c555f9f1543..184cc1de2f37 100644
 --- a/arch/powerpc/kernel/entry_32.S
 +++ b/arch/powerpc/kernel/entry_32.S
-@@ -37,6 +37,7 @@
- #include <asm/feature-fixups.h>
- #include <asm/barrier.h>
- #include <asm/kup.h>
-+#include <asm/bug.h>
- 
- #include "head_32.h"
- 
-@@ -206,19 +207,42 @@ transfer_to_handler_cont:
- 	mtspr	SPRN_NRI, r0
- #endif
- #ifdef CONFIG_TRACE_IRQFLAGS
-+	/*
-+	 * When tracing IRQ state (lockdep) we enable the MMU before we call
-+	 * the IRQ tracing functions as they might access vmalloc space or
-+	 * perform IOs for console output.
-+	 *
-+	 * To speed up the syscall path where interrupts stay on, let's check
-+	 * first if we are changing the MSR value at all.
-+	 */
-+	tophys(r12, r1)
-+	lwz	r12,_MSR(r12)
-+	xor	r12,r10,r12
-+	andi.	r12,r12,MSR_EE
-+	bne	1f
-+
-+	/* MSR isn't changing, just transition directly */
-+#endif
-+	mtspr	SPRN_SRR0,r11
-+	mtspr	SPRN_SRR1,r10
-+	mtlr	r9
-+	SYNC
-+	RFI				/* jump to handler, enable MMU */
-+
-+#ifdef CONFIG_TRACE_IRQFLAGS
-+1:	/* MSR is changing, re-enable MMU so we can notify lockdep. We need to
-+	 * keep interrupts disabled at this point otherwise we might risk
-+	 * taking an interrupt before we tell lockdep they are enabled.
-+	 */
- 	lis	r12,reenable_mmu@h
- 	ori	r12,r12,reenable_mmu@l
-+	LOAD_MSR_KERNEL(r0, MSR_KERNEL)
- 	mtspr	SPRN_SRR0,r12
--	mtspr	SPRN_SRR1,r10
-+	mtspr	SPRN_SRR1,r0
+@@ -342,6 +342,35 @@ stack_ovf:
  	SYNC
  	RFI
--reenable_mmu:				/* re-enable mmu so we can */
--	mfmsr	r10
--	lwz	r12,_MSR(r1)
--	xor	r10,r10,r12
--	andi.	r10,r10,MSR_EE		/* Did EE change? */
--	beq	1f
  
-+reenable_mmu:
- 	/*
- 	 * The trace_hardirqs_off will use CALLER_ADDR0 and CALLER_ADDR1.
- 	 * If from user mode there is only one stack frame on the stack, and
-@@ -233,14 +257,24 @@ reenable_mmu:				/* re-enable mmu so we can */
- 	 * they aren't useful past this point (aren't syscall arguments),
- 	 * the rest is restored from the exception frame.
- 	 */
-+
-+	/* Are we enabling or disabling interrupts ? */
-+	andi.	r0,r10,MSR_EE
-+
- 	stwu	r1,-32(r1)
- 	stw	r9,8(r1)
- 	stw	r11,12(r1)
- 	stw	r3,16(r1)
- 	stw	r4,20(r1)
- 	stw	r5,24(r1)
--	bl	trace_hardirqs_off
--	lwz	r5,24(r1)
-+
-+	bne-	0f
-+
-+	/* If we are disabling interrupts (normal case), simply log it with
-+	 * lockdep
-+	 */
-+1:	bl	trace_hardirqs_off
-+2:	lwz	r5,24(r1)
- 	lwz	r4,20(r1)
- 	lwz	r3,16(r1)
- 	lwz	r11,12(r1)
-@@ -250,15 +284,22 @@ reenable_mmu:				/* re-enable mmu so we can */
- 	lwz	r6,GPR6(r1)
- 	lwz	r7,GPR7(r1)
- 	lwz	r8,GPR8(r1)
--1:	mtctr	r11
-+	mtctr	r11
- 	mtlr	r9
- 	bctr				/* jump to handler */
--#else /* CONFIG_TRACE_IRQFLAGS */
--	mtspr	SPRN_SRR0,r11
--	mtspr	SPRN_SRR1,r10
--	mtlr	r9
--	SYNC
--	RFI				/* jump to handler, enable MMU */
-+
-+	/* If we are enabling interrupt, this is a syscall. They shouldn't
-+	 * happen while interrupts are disabled, so let's do a warning here.
++#ifndef CONFIG_BOOKE	/* to be removed once BOOKE uses fast syscall entry */
++#ifdef CONFIG_TRACE_IRQFLAGS
++trace_syscall_entry_irq_off:
++	/*
++	 * Syscall shouldn't happen while interrupts are disabled,
++	 * so let's do a warning here.
 +	 */
 +0:	trap
 +	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
 +	bl	trace_hardirqs_on
 +
 +	/* Now enable for real */
-+	mfmsr	r10
-+	ori	r10,r10,MSR_EE
++	LOAD_MSR_KERNEL(r10, MSR_KERNEL | MSR_EE)
 +	mtmsr	r10
-+	b	2b
- #endif /* CONFIG_TRACE_IRQFLAGS */
- 
- #if defined (CONFIG_PPC_BOOK3S_32) || defined(CONFIG_E500)
-@@ -316,29 +357,13 @@ _GLOBAL(DoSyscall)
++
++	REST_GPR(0, r1)
++	REST_4GPRS(3, r1)
++	REST_2GPRS(7, r1)
++	b	DoSyscall
++#endif /* CONFIG_TRACE_IRQFLAGS */
++
++	.globl	transfer_to_syscall
++transfer_to_syscall:
++#ifdef CONFIG_TRACE_IRQFLAGS
++	andi.	r12,r9,MSR_EE
++	beq-	trace_syscall_entry_irq_off
++#endif /* CONFIG_TRACE_IRQFLAGS */
++#endif /* !CONFIG_BOOKE */
++
+ /*
+  * Handle a system call.
+  */
+@@ -353,9 +382,11 @@ _GLOBAL(DoSyscall)
+ 	stw	r3,ORIG_GPR3(r1)
+ 	li	r12,0
+ 	stw	r12,RESULT(r1)
++#ifdef CONFIG_BOOKE	/* to be removed once BOOKE uses fast syscall entry */
+ 	lwz	r11,_CCR(r1)	/* Clear SO bit in CR */
  	rlwinm	r11,r11,0,4,2
  	stw	r11,_CCR(r1)
- #ifdef CONFIG_TRACE_IRQFLAGS
--	/* Return from syscalls can (and generally will) hard enable
--	 * interrupts. You aren't supposed to call a syscall with
--	 * interrupts disabled in the first place. However, to ensure
--	 * that we get it right vs. lockdep if it happens, we force
--	 * that hard enable here with appropriate tracing if we see
--	 * that we have been called with interrupts off
--	 */
-+	/* Make sure interrupts are enabled */
- 	mfmsr	r11
- 	andi.	r12,r11,MSR_EE
--	bne+	1f
--	/* We came in with interrupts disabled, we enable them now */
--	bl	trace_hardirqs_on
--	mfmsr	r11
--	lwz	r0,GPR0(r1)
--	lwz	r3,GPR3(r1)
--	lwz	r4,GPR4(r1)
--	ori	r11,r11,MSR_EE
--	lwz	r5,GPR5(r1)
--	lwz	r6,GPR6(r1)
--	lwz	r7,GPR7(r1)
--	lwz	r8,GPR8(r1)
--	mtmsr	r11
--1:
-+	/* We came in with interrupts disabled, we WARN and mark them enabled
-+	 * for lockdep now */
-+0:	tweqi	r12, 0
-+	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
- #endif /* CONFIG_TRACE_IRQFLAGS */
- 	lwz	r11,TI_FLAGS(r2)
- 	andi.	r11,r11,_TIF_SYSCALL_DOTRACE
-@@ -392,8 +417,7 @@ syscall_exit_cont:
- 	lwz	r8,_MSR(r1)
- #ifdef CONFIG_TRACE_IRQFLAGS
- 	/* If we are going to return from the syscall with interrupts
--	 * off, we trace that here. It shouldn't happen though but we
--	 * want to catch the bugger if it does right ?
-+	 * off, we trace that here. It shouldn't normally happen.
- 	 */
- 	andi.	r10,r8,MSR_EE
- 	bne+	1f
-@@ -918,13 +942,6 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_47x)
- 	 * off in this assembly code while peeking at TI_FLAGS() and such. However
- 	 * we need to inform it if the exception turned interrupts off, and we
- 	 * are about to trun them back on.
--	 *
--	 * The problem here sadly is that we don't know whether the exceptions was
--	 * one that turned interrupts off or not. So we always tell lockdep about
--	 * turning them on here when we go back to wherever we came from with EE
--	 * on, even if that may meen some redudant calls being tracked. Maybe later
--	 * we could encode what the exception did somewhere or test the exception
--	 * type in the pt_regs but that sounds overkill
- 	 */
- 	andi.	r10,r9,MSR_EE
- 	beq	1f
-@@ -1212,9 +1229,10 @@ do_work:			/* r10 contains MSR_KERNEL here */
- 	beq	do_user_signal
- 
- do_resched:			/* r10 contains MSR_KERNEL here */
--	/* Note: We don't need to inform lockdep that we are enabling
--	 * interrupts here. As far as it knows, they are already enabled
--	 */
-+#ifdef CONFIG_TRACE_IRQFLAGS
-+	bl	trace_hardirqs_on
-+	mfmsr	r10
 +#endif
- 	ori	r10,r10,MSR_EE
- 	SYNC
- 	MTMSRD(r10)		/* hard-enable interrupts */
+ #ifdef CONFIG_TRACE_IRQFLAGS
+ 	/* Make sure interrupts are enabled */
+ 	mfmsr	r11
+@@ -1219,6 +1250,7 @@ load_dbcr0:
+ 
+ 	.section .bss
+ 	.align	4
++	.global global_dbcr0
+ global_dbcr0:
+ 	.space	8*NR_CPUS
+ 	.previous
+diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
+index 2404c39373d3..f1da8fef726a 100644
+--- a/arch/powerpc/kernel/head_32.S
++++ b/arch/powerpc/kernel/head_32.S
+@@ -370,8 +370,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_FPU_UNAVAILABLE)
+ 	. = 0xc00
+ 	DO_KVM  0xc00
+ SystemCall:
+-	EXCEPTION_PROLOG
+-	EXC_XFER_SYS(0xc00, DoSyscall)
++	SYSCALL_ENTRY	0xc00
+ 
+ /* Single step - not used on 601 */
+ 	EXCEPTION(0xd00, SingleStep, single_step_exception, EXC_XFER_STD)
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 14cb0af2f494..4a692553651f 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -73,6 +73,87 @@
+ 	SAVE_2GPRS(7, r11)
+ .endm
+ 
++.macro SYSCALL_ENTRY trapno
++	mfspr	r12,SPRN_SPRG_THREAD
++	mfcr	r10
++	lwz	r11,TASK_STACK-THREAD(r12)
++	mflr	r9
++	addi	r11,r11,THREAD_SIZE - INT_FRAME_SIZE
++	rlwinm	r10,r10,0,4,2	/* Clear SO bit in CR */
++	tophys(r11,r11)
++	stw	r10,_CCR(r11)		/* save registers */
++	mfspr	r10,SPRN_SRR0
++	stw	r9,_LINK(r11)
++	mfspr	r9,SPRN_SRR1
++	stw	r1,GPR1(r11)
++	stw	r1,0(r11)
++	tovirt(r1,r11)			/* set new kernel sp */
++	stw	r10,_NIP(r11)
++#ifdef CONFIG_40x
++	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
++#else
++	LOAD_MSR_KERNEL(r10, MSR_KERNEL & ~(MSR_IR|MSR_DR)) /* can take exceptions */
++	MTMSRD(r10)			/* (except for mach check in rtas) */
++#endif
++	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
++	stw	r2,GPR2(r11)
++	addi	r10,r10,STACK_FRAME_REGS_MARKER@l
++	stw	r9,_MSR(r11)
++	li	r2, \trapno + 1
++	stw	r10,8(r11)
++	stw	r2,_TRAP(r11)
++	SAVE_GPR(0, r11)
++	SAVE_4GPRS(3, r11)
++	SAVE_2GPRS(7, r11)
++	addi	r11,r1,STACK_FRAME_OVERHEAD
++	addi	r2,r12,-THREAD
++	stw	r11,PT_REGS(r12)
++#if defined(CONFIG_40x)
++	/* Check to see if the dbcr0 register is set up to debug.  Use the
++	   internal debug mode bit to do this. */
++	lwz	r12,THREAD_DBCR0(r12)
++	andis.	r12,r12,DBCR0_IDM@h
++#endif
++	ACCOUNT_CPU_USER_ENTRY(r2, r11, r12)
++#if defined(CONFIG_40x)
++	beq+	3f
++	/* From user and task is ptraced - load up global dbcr0 */
++	li	r12,-1			/* clear all pending debug events */
++	mtspr	SPRN_DBSR,r12
++	lis	r11,global_dbcr0@ha
++	tophys(r11,r11)
++	addi	r11,r11,global_dbcr0@l
++	lwz	r12,0(r11)
++	mtspr	SPRN_DBCR0,r12
++	lwz	r12,4(r11)
++	addi	r12,r12,-1
++	stw	r12,4(r11)
++#endif
++
++3:
++	tovirt(r2, r2)			/* set r2 to current */
++	lis	r11, transfer_to_syscall@h
++	ori	r11, r11, transfer_to_syscall@l
++#ifdef CONFIG_TRACE_IRQFLAGS
++	/*
++	 * If MSR is changing we need to keep interrupts disabled at this point
++	 * otherwise we might risk taking an interrupt before we tell lockdep
++	 * they are enabled.
++	 */
++	LOAD_MSR_KERNEL(r10, MSR_KERNEL)
++	rlwimi	r10, r9, 0, MSR_EE
++#else
++	LOAD_MSR_KERNEL(r10, MSR_KERNEL | MSR_EE)
++#endif
++#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
++	mtspr	SPRN_NRI, r0
++#endif
++	mtspr	SPRN_SRR1,r10
++	mtspr	SPRN_SRR0,r11
++	SYNC
++	RFI				/* jump to handler, enable MMU */
++.endm
++
+ /*
+  * Note: code which follows this uses cr0.eq (set if from kernel),
+  * r11, r12 (SRR0), and r9 (SRR1).
+@@ -119,8 +200,4 @@
+ 	EXC_XFER_TEMPLATE(hdlr, n+1, MSR_KERNEL, transfer_to_handler, \
+ 			  ret_from_except)
+ 
+-#define EXC_XFER_SYS(n, hdlr)		\
+-	EXC_XFER_TEMPLATE(hdlr, n+1, MSR_KERNEL | MSR_EE, transfer_to_handler, \
+-			  ret_from_except)
+-
+ #endif /* __HEAD_32_H__ */
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index b68de183faf1..e115248edda1 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -348,8 +348,7 @@ _ENTRY(saved_ksp_limit)
+ 
+ /* 0x0C00 - System Call Exception */
+ 	START_EXCEPTION(0x0C00,	SystemCall)
+-	EXCEPTION_PROLOG
+-	EXC_XFER_SYS(0xc00, DoSyscall)
++	SYSCALL_ENTRY	0xc00
+ 
+ 	EXCEPTION(0x0D00, Trap_0D, unknown_exception, EXC_XFER_STD)
+ 	EXCEPTION(0x0E00, Trap_0E, unknown_exception, EXC_XFER_STD)
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 4ebcdfdae920..a5826defad1f 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -185,8 +185,7 @@ Alignment:
+ /* System call */
+ 	. = 0xc00
+ SystemCall:
+-	EXCEPTION_PROLOG
+-	EXC_XFER_SYS(0xc00, DoSyscall)
++	SYSCALL_ENTRY	0xc00
+ 
+ /* Single step - not used on 601 */
+ 	EXCEPTION(0xd00, SingleStep, single_step_exception, EXC_XFER_STD)
 -- 
 2.13.3
 
