@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EBBFED7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 19:28:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDE2FEBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 19:20:36 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tpFY5fjpzDqR6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 03:20:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tpQp00rCzDqXB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 03:28:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,56 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="UDLJlhBF"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ujTQdwmK"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tpCz62bDzDqNn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 03:19:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tpPN3CgtzDqGN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 03:27:20 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44tpCv00Zkz9v1kM;
- Tue, 30 Apr 2019 19:19:07 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 44tpPF1kWvz9vB2f;
+ Tue, 30 Apr 2019 19:27:13 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=UDLJlhBF; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=ujTQdwmK; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id rKe8bcM0kqZZ; Tue, 30 Apr 2019 19:19:06 +0200 (CEST)
+ with ESMTP id SKPy5gPho9In; Tue, 30 Apr 2019 19:27:13 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44tpCt5h8rz9v1kF;
- Tue, 30 Apr 2019 19:19:06 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44tpPF0PWvz9vB2d;
+ Tue, 30 Apr 2019 19:27:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556644746; bh=8M9gBHLm9qLvpKuZX/2ssSbHZfFKU8w8o0K+AXL3j6o=;
+ t=1556645233; bh=CiyJsTqHm5VKfq00rEpHJAK9KzqoqbhlzPXSaD1Lpgg=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=UDLJlhBFtSat+7juCpwpai6J+FXOCEyq4VXAoPPRThPSgZT484ylZa/AuqFsDhQQt
- xovxPbswSQzR14ffx8wMPLNOtUo3+ADODFGJqkRt3KwbLYSEjkr/WuOQwkyhL/eypA
- ot7Rx5E4eT0Go6ISIxv7Sdc/0wzZ7J1sQWjS8QBQ=
+ b=ujTQdwmKpxAV2UodghfYbrsSATH3/PVUAoOrjQfQUYNrxXSxkIp4zrCYatyJo5LNR
+ 9hZz+mTp+IkfkVh4yB6psaCKP1wkDe9JZFK65y9UmS3QTr+rtd7eAWziXs7ROr3wb3
+ UQUC/+jpg8SYsMhJp94oYo+R5SCpGUxeEyPcAXPU=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E11F8B8F3;
- Tue, 30 Apr 2019 19:19:08 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B88F98B8F3;
+ Tue, 30 Apr 2019 19:27:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ROkgZ5J4l8t6; Tue, 30 Apr 2019 19:19:08 +0200 (CEST)
+ with ESMTP id ch6gyJW-WEhM; Tue, 30 Apr 2019 19:27:14 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D37A18B8DF;
- Tue, 30 Apr 2019 19:19:07 +0200 (CEST)
-Subject: Re: [PATCH 4/5] soc/fsl/qe: qe.c: support fsl,qe-snums property
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 100C68B8DF;
+ Tue, 30 Apr 2019 19:27:14 +0200 (CEST)
+Subject: Re: [PATCH 5/5] soc/fsl/qe: qe.c: fold qe_get_num_of_snums into
+ qe_snums_init
 To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
  Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
 References: <20190430133615.25721-1-rasmus.villemoes@prevas.dk>
- <20190430133615.25721-5-rasmus.villemoes@prevas.dk>
+ <20190430133615.25721-6-rasmus.villemoes@prevas.dk>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <4c1c4fe8-9412-2543-e9bc-83b7e5d7c202@c-s.fr>
-Date: Tue, 30 Apr 2019 19:19:07 +0200
+Message-ID: <35a50a5b-061c-236a-16ff-0389bf34d736@c-s.fr>
+Date: Tue, 30 Apr 2019 19:27:13 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190430133615.25721-5-rasmus.villemoes@prevas.dk>
+In-Reply-To: <20190430133615.25721-6-rasmus.villemoes@prevas.dk>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -92,95 +93,157 @@ Sender: "Linuxppc-dev"
 
 
 Le 30/04/2019 à 15:36, Rasmus Villemoes a écrit :
-> The current code assumes that the set of snum _values_ to populate the
-> snums[] array with is a function of the _number_ of snums
-> alone. However, reading table 4-30, and its footnotes, of the QUICC
-> Engine Block Reference Manual shows that that is a bit too naive.
+> The comment "No QE ever has fewer than 28 SNUMs" is false; e.g. the
+> MPC8309 has 14. The code path returning -EINVAL is also a recipe for
+> instant disaster, since the caller (qe_snums_init) uncritically
+> assigns the return value to the unsigned qe_num_of_snum, and would
+> thus proceed to attempt to copy 4GB from snum_init_46[] to the snum[]
+> array.
 > 
-> As an alternative, this introduces a new binding fsl,qe-snums, which
-> automatically encodes both the number of snums and the actual values to
-> use. Conveniently, of_property_read_variable_u8_array does exactly
-> what we need.
-> 
-> For example, for the MPC8309, one would specify the property as
-> 
->                 fsl,qe-snums = /bits/ 8 <
->                         0x88 0x89 0x98 0x99 0xa8 0xa9 0xb8 0xb9
->                         0xc8 0xc9 0xd8 0xd9 0xe8 0xe9>;
+> So fold the handling of the legacy fsl,qe-num-snums into
+> qe_snums_init, and make sure we do not end up using the snum_init_46
+> array in cases other than the two where we know it makes sense.
 > 
 > Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 > ---
->   .../devicetree/bindings/soc/fsl/cpm_qe/qe.txt      |  8 +++++++-
->   drivers/soc/fsl/qe/qe.c                            | 14 +++++++++++++-
->   2 files changed, 20 insertions(+), 2 deletions(-)
+>   drivers/net/ethernet/freescale/ucc_geth.c |  2 +-
+>   drivers/soc/fsl/qe/qe.c                   | 54 +++++++----------------
+>   include/soc/fsl/qe/qe.h                   |  2 +-
+>   3 files changed, 19 insertions(+), 39 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt
-> index d7afaff5faff..05f5f485562a 100644
-> --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt
-> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt
-> @@ -18,7 +18,8 @@ Required properties:
->   - reg : offset and length of the device registers.
->   - bus-frequency : the clock frequency for QUICC Engine.
->   - fsl,qe-num-riscs: define how many RISC engines the QE has.
-> -- fsl,qe-num-snums: define how many serial number(SNUM) the QE can use for the
-> +- fsl,qe-snums: This property has to be specified as '/bits/ 8' value,
-> +  defining the array of serial number (SNUM) values for the virtual
->     threads.
+> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+> index eb3e65e8868f..5748eb8464d0 100644
+> --- a/drivers/net/ethernet/freescale/ucc_geth.c
+> +++ b/drivers/net/ethernet/freescale/ucc_geth.c
+> @@ -3837,7 +3837,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+>   		}
 >   
->   Optional properties:
-> @@ -34,6 +35,11 @@ Recommended properties
->   - brg-frequency : the internal clock source frequency for baud-rate
->     generators in Hz.
+>   	if (max_speed == SPEED_1000) {
+> -		unsigned int snums = qe_get_num_of_snums();
+> +		unsigned int snums = qe_num_of_snum;
 >   
-> +Deprecated properties
-> +- fsl,qe-num-snums: define how many serial number(SNUM) the QE can use
-> +  for the threads. Use fsl,qe-snums instead to not only specify the
-> +  number of snums, but also their values.
-> +
->   Example:
->        qe@e0100000 {
->   	#address-cells = <1>;
+>   		/* configure muram FIFOs for gigabit operation */
+>   		ug_info->uf_info.urfs = UCC_GETH_URFS_GIGA_INIT;
 > diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-> index aff9d1373529..af3c2b2b268f 100644
+> index af3c2b2b268f..8c3b3c62d81b 100644
 > --- a/drivers/soc/fsl/qe/qe.c
 > +++ b/drivers/soc/fsl/qe/qe.c
-> @@ -283,7 +283,6 @@ EXPORT_SYMBOL(qe_clock_source);
->    */
->   static void qe_snums_init(void)
->   {
-> -	int i;
+> @@ -52,7 +52,8 @@ EXPORT_SYMBOL(qe_immr);
+>   
+>   static u8 snums[QE_NUM_OF_SNUM];	/* Dynamically allocated SNUMs */
+>   static DECLARE_BITMAP(snum_state, QE_NUM_OF_SNUM);
+> -static unsigned int qe_num_of_snum;
+> +unsigned int qe_num_of_snum;
+> +EXPORT_SYMBOL(qe_num_of_snum);
 
-Why do you move this one ?
+By exporting the object you allow other drivers to modify it. Is that 
+really what we want ?
 
->   	static const u8 snum_init_76[] = {
->   		0x04, 0x05, 0x0C, 0x0D, 0x14, 0x15, 0x1C, 0x1D,
->   		0x24, 0x25, 0x2C, 0x2D, 0x34, 0x35, 0x88, 0x89,
-> @@ -304,9 +303,22 @@ static void qe_snums_init(void)
->   		0x28, 0x29, 0x38, 0x39, 0x48, 0x49, 0x58, 0x59,
->   		0x68, 0x69, 0x78, 0x79, 0x80, 0x81,
->   	};
-> +	struct device_node *qe;
->   	const u8 *snum_init;
-> +	int i;
+Why not keep qe_get_num_of_snums() as a helper that simply returns 
+qe_num_of_snum ?
+
+>   
+>   static phys_addr_t qebase = -1;
+>   
+> @@ -308,26 +309,34 @@ static void qe_snums_init(void)
+>   	int i;
 >   
 >   	bitmap_zero(snum_state, QE_NUM_OF_SNUM);
-> +	qe = qe_get_device_node();
-> +	if (qe) {
-> +		i = of_property_read_variable_u8_array(qe, "fsl,qe-snums",
-> +						       snums, 1, QE_NUM_OF_SNUM);
+> +	qe_num_of_snum = 28; /* The default number of snum for threads is 28 */
+>   	qe = qe_get_device_node();
+>   	if (qe) {
+>   		i = of_property_read_variable_u8_array(qe, "fsl,qe-snums",
+>   						       snums, 1, QE_NUM_OF_SNUM);
+> -		of_node_put(qe);
+>   		if (i > 0) {
+> +			of_node_put(qe);
+>   			qe_num_of_snum = i;
+>   			return;
+>   		}
+> +		/*
+> +		 * Fall back to legacy binding of using the value of
+> +		 * fsl,qe-num-snums to choose one of the static arrays
+> +		 * above.
+> +		 */
+> +		of_property_read_u32(qe, "fsl,qe-num-snums", &qe_num_of_snum);
 > +		of_node_put(qe);
-> +		if (i > 0) {
-> +			qe_num_of_snum = i;
-> +			return;
+>   	}
+>   
+> -	qe_num_of_snum = qe_get_num_of_snums();
+> -
+>   	if (qe_num_of_snum == 76)
+>   		snum_init = snum_init_76;
+> -	else
+> +	else if (qe_num_of_snum == 28 || qe_num_of_snum == 46)
+>   		snum_init = snum_init_46;
+> -
+> -	for (i = 0; i < qe_num_of_snum; i++)
+> -		snums[i] = snum_init[i];
+> +	else {
+> +		pr_err("QE: unsupported value of fsl,qe-num-snums: %u\n", qe_num_of_snum);
+> +		return;
+> +	}
 
-In that case you skip the rest of the init ? Can you explain ?
+The first leg of the if/else must have {} too when the second leg has them.
+
+> +	memcpy(snums, snum_init, qe_num_of_snum);
+>   }
+>   
+>   int qe_get_snum(void)
+> @@ -645,35 +654,6 @@ unsigned int qe_get_num_of_risc(void)
+>   }
+>   EXPORT_SYMBOL(qe_get_num_of_risc);
+>   
+> -unsigned int qe_get_num_of_snums(void)
+
+I think this function should remain and just return num_of_snums, see my 
+other comment above.
 
 Christophe
 
-> +		}
-> +	}
-> +
->   	qe_num_of_snum = qe_get_num_of_snums();
+
+> -{
+> -	struct device_node *qe;
+> -	int size;
+> -	unsigned int num_of_snums;
+> -	const u32 *prop;
+> -
+> -	num_of_snums = 28; /* The default number of snum for threads is 28 */
+> -	qe = qe_get_device_node();
+> -	if (!qe)
+> -		return num_of_snums;
+> -
+> -	prop = of_get_property(qe, "fsl,qe-num-snums", &size);
+> -	if (prop && size == sizeof(*prop)) {
+> -		num_of_snums = *prop;
+> -		if ((num_of_snums < 28) || (num_of_snums > QE_NUM_OF_SNUM)) {
+> -			/* No QE ever has fewer than 28 SNUMs */
+> -			pr_err("QE: number of snum is invalid\n");
+> -			of_node_put(qe);
+> -			return -EINVAL;
+> -		}
+> -	}
+> -
+> -	of_node_put(qe);
+> -
+> -	return num_of_snums;
+> -}
+> -EXPORT_SYMBOL(qe_get_num_of_snums);
+> -
+>   static int __init qe_init(void)
+>   {
+>   	struct device_node *np;
+> diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
+> index b3d1aff5e8ad..af5739850bf4 100644
+> --- a/include/soc/fsl/qe/qe.h
+> +++ b/include/soc/fsl/qe/qe.h
+> @@ -212,7 +212,7 @@ int qe_setbrg(enum qe_clock brg, unsigned int rate, unsigned int multiplier);
+>   int qe_get_snum(void);
+>   void qe_put_snum(u8 snum);
+>   unsigned int qe_get_num_of_risc(void);
+> -unsigned int qe_get_num_of_snums(void);
+> +extern unsigned int qe_num_of_snum;
 >   
->   	if (qe_num_of_snum == 76)
+>   static inline int qe_alive_during_sleep(void)
+>   {
 > 
