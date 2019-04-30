@@ -1,63 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A467EA20
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2019 20:29:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tCqt4LfQzDqPm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 04:29:46 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D95BEEE7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 05:01:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tRB82s7czDqNQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 13:01:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=metux.net
- (client-ip=212.227.17.10; helo=mout.kundenserver.de;
- envelope-from=lkml@metux.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=windriver.com
+ (client-ip=147.11.146.13; helo=mail1.windriver.com;
+ envelope-from=pablo.rodriguez-quesada@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=metux.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=windriver.com
+X-Greylist: delayed 7829 seconds by postgrey-1.36 at bilbo;
+ Tue, 30 Apr 2019 13:00:05 AEST
+Received: from mail1.windriver.com (mail1.windriver.com [147.11.146.13])
+ (using TLSv1.1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tCpM4GnvzDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 04:28:25 +1000 (AEST)
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N0FE1-1gWweB2srv-00xJGe; Mon, 29 Apr 2019 20:27:00 +0200
-Subject: Re: [PATCH 13/41] drivers: tty: serial: uartlite: fill mapsize and
- use it
-To: Peter Korsgaard <peter@korsgaard.com>,
- "Enrico Weigelt, metux IT consult" <info@metux.net>
-References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-14-git-send-email-info@metux.net>
- <87muk8rg82.fsf@dell.be.48ers.dk>
-From: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <cb01328c-6308-d9c7-17ba-644d983b0a50@metux.net>
-Date: Mon, 29 Apr 2019 20:26:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
-MIME-Version: 1.0
-In-Reply-To: <87muk8rg82.fsf@dell.be.48ers.dk>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tR8j6mHZzDqLR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 13:00:03 +1000 (AEST)
+Received: from ALA-HCB.corp.ad.wrs.com ([147.11.189.41])
+ by mail1.windriver.com (8.15.2/8.15.1) with ESMTPS id x3U0nRL5015621
+ (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
+ Mon, 29 Apr 2019 17:49:27 -0700 (PDT)
+Received: from ALA-MBD.corp.ad.wrs.com ([169.254.3.163]) by
+ ALA-HCB.corp.ad.wrs.com ([147.11.189.41]) with mapi id 14.03.0439.000; Mon,
+ 29 Apr 2019 17:49:15 -0700
+From: "Rodriguez Quesada, Pablo" <Pablo.Rodriguez-Quesada@windriver.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: RE: Machine Check Exceptions
+Thread-Topic: Machine Check Exceptions
+Thread-Index: AdT61Io1ul16C2EtScWIxTsT0pjndwAis6KAAAauFKAAxLJIgAAYKEIA
+Date: Tue, 30 Apr 2019 00:49:15 +0000
+Message-ID: <0CDD4071D6ACF54ABB9CF1A6D90375A809BA18D7@ALA-MBD.corp.ad.wrs.com>
+References: <0CDD4071D6ACF54ABB9CF1A6D90375A809B91A41@ALA-MBD.corp.ad.wrs.com>
+ <64209dd1-7cce-4061-1139-15e7ef394e66@c-s.fr>
+ <0CDD4071D6ACF54ABB9CF1A6D90375A809B91C51@ALA-MBD.corp.ad.wrs.com>
+ <49f28ecd-b2c2-aa9f-8183-f6c945824292@c-s.fr>
+In-Reply-To: <49f28ecd-b2c2-aa9f-8183-f6c945824292@c-s.fr>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:au94e1eq1t1YlnnJViJhE/K6kMah+BGDcbk5VT8+2eMOcjazNzP
- K5DjPTgP9xkJSFVa90iiUwfTMbygt1pa/q/QVqLjBcRjKGldPhF1PlUIGuwEcvTYnwNYXHD
- 4V5xXevhSRFXCoXSYK9fBGWVz8C7Tl/uH4wFGRM4rQiiRQ/9UA/oGA18KOJhfyGX6iPZWpN
- XbvZlLq2pR9jNFgvXr4Sg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9sF2aDxgqew=:FGiiUO8PT3ifq3hod8tMoL
- +SEtG8hOTCH9pJUceAM5iP2H5Es8lUmMB0syxlho4LBC+yxxXRhOFRB2cWsSjbWIidwwPruTU
- 0EH2VtAuQux2vVmh6WCiw729yobnsE6+P1JmGeH3xjLZdERrEdqLAdFjESsBb3Q0acApejZtZ
- zF8Viv5HEqMjOgJ1mYJhsAFbtXu1GQ8IITc7sTnty/rlKmhJexVwNJgnBjdqF5ZvLqLxecutK
- kZYcw0VOhspQU0gpK38Kxzp7r0nRLryCZTn/J1G4yqdgXd9ZksMtMoU9Aq3CF83pBTmKEuMfc
- W6iTXMoanXU5yPYQUsjPJ4X8CSucyPOh99f8HWSnnz59FeA5v7yE/kp7l1fIlr5K1u57DIYas
- R7YtCVkI4bBRX3RmDPo/y1IOHz2JqWRDKz2GpU26JYmU2yzf9ADZMm3w9nHD2iQOS21515NNx
- aQoEbBqIk+5kUHNVp2sw8kl8W5rbQ5QZSsgH/c8toQw67UhsUeuPvx425Yp7z4mplQmH4NlbT
- NgVx6Ahvz5wR9VoYhgLcei+Vz3/MqzReS6oP0JQ4aQh/MwUkU8lJwFW9tBu361Ays/BqoFyDb
- xiUN4IP0nNNMQp9V228OUBdjFFGdu4aU8k6c+QTT3D33uXP0z0uWrG8na7KNTfy7xff4cGQ0o
- TMDfGeX3+/tR9Z8ZWz8juRpzoZCUwqW4ATnaFyO1hO1XGHBPU/Tr30mlExcmRm/bx7EI73fMC
- AI9rD1w3c+BVcecBqTfQ0HHodM0p73pOlAR0KOmXf0piKKh5JjRv5OoDRY4=
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [147.11.119.144]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,44 +60,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lorenzo.pieralisi@arm.com, linux-ia64@vger.kernel.org, macro@linux-mips.org,
- andrew@aj.id.au, gregkh@linuxfoundation.org, slemieux.tyco@gmail.com,
- liviu.dudau@arm.com, linux-kernel@vger.kernel.org,
- andriy.shevchenko@linux.intel.com, linux-mips@vger.kernel.org,
- linux@prisktech.co.nz, matthias.bgg@gmail.com, khilman@baylibre.com,
- linux-serial@vger.kernel.org, sudeep.holla@arm.com, sparclinux@vger.kernel.org,
- jacmet@sunsite.dk, linux-amlogic@lists.infradead.org, vz@mleia.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29.04.19 17:19, Peter Korsgaard wrote:
->>>>>> "Enrico" == Enrico Weigelt, metux IT consult <info@metux.net> writes:
-> 
->  > Fill the struct uart_port->mapsize field and use it, insteaf of
-> 
-> s/insteaf/instead/
-
-Fixed.
-
->  > hardcoded values in many places. This makes the code layout a bit
->  > more consistent and easily allows using generic helpers for the
->  > io memory handling.
-> 
->  > Candidates for such helpers could be eg. the request+ioremap and
->  > iounmap+release combinations.
-> 
->  > Signed-off-by: Enrico Weigelt <info@metux.net>
-> 
-> Acked-by: Peter Korsgaard <peter@korsgaard.com>
-
-thanks for review.
-
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+SGkgQ2hyaXN0b3BoZSwNCg0KSSB3aWxsIHRyeSB3aXRoIHRoZSBOTUkgYXBwcm9hY2guIEp1c3Qg
+b25lIHF1ZXN0aW9uOiANCg0KPlRoZSBkcml2ZXIgSSB3cm90ZSB0aGF0IHlvdSBhcmUgcmVmZXJy
+aW5nIHRvIGlzIHRvIGhhbmRsZSB0aGUgd2F0Y2hkb2cgaW4gZTMwMCBwb3dlcnBjIGNvcmUuIFRo
+aXMgaXMgYmVjYXVzZSB0aGUgZTMwMCBnZXJlcmF0ZXMgYSBtYWNoaW5lIGNoZWNrIG9uIGV4cGly
+eSA+d2hlbiB0aGUgd2F0Y2hkb2cgaXMgY29uZmlndXJlZCBpbiBOTUkgbW9kZS4NCg0KQnkgTk1J
+IG1vZGUgZG8geW91IG1lYW4gZW5hYmxpbmcgdGhlIENPTkZJR19IQVZFX05NSV9XQVRDSERPRyBz
+eW1ib2wgb24gdGhlIC5jb25maWc/DQoNCg0KVGhhbmsgeW91LA0KUGFibG8NCg0KLS0tLS1Pcmln
+aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVy
+b3lAYy1zLmZyPiANClNlbnQ6IE1vbmRheSwgQXByaWwgMjksIDIwMTkgMTI6MTAgQU0NClRvOiBS
+b2RyaWd1ZXogUXVlc2FkYSwgUGFibG8gPFBhYmxvLlJvZHJpZ3Vlei1RdWVzYWRhQHdpbmRyaXZl
+ci5jb20+DQpDYzogbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcNClN1YmplY3Q6IFJlOiBN
+YWNoaW5lIENoZWNrIEV4Y2VwdGlvbnMNCg0KSGkgUGFibG8sDQoNCkkga25vdyBub3RoaW5nIGFi
+b3V0IG1jZS1pbmplY3QuDQoNClRoZSBkcml2ZXIgSSB3cm90ZSB0aGF0IHlvdSBhcmUgcmVmZXJy
+aW5nIHRvIGlzIHRvIGhhbmRsZSB0aGUgd2F0Y2hkb2cgaW4gZTMwMCBwb3dlcnBjIGNvcmUuIFRo
+aXMgaXMgYmVjYXVzZSB0aGUgZTMwMCBnZXJlcmF0ZXMgYSBtYWNoaW5lIGNoZWNrIG9uIGV4cGly
+eSB3aGVuIHRoZSB3YXRjaGRvZyBpcyBjb25maWd1cmVkIGluIE5NSSBtb2RlLg0KDQpUaGVyZWZv
+cmUsIHRyaWdnZXJpbmcgdGhlIG1hY2hpbmUgY2hlY2sgaXMgcmF0aGVyIGVhc3kgaW4gdGhhdCBj
+YXNlLCBJIGp1c3QgaGF2ZSB0byBzdG9wIHJlZnJlc2hpbmcgdGhlIHdhdGNoZG9nLg0KDQpDaHJp
+c3RvcGhlDQoNCkxlIDI1LzA0LzIwMTkgw6AgMTc6MzUsIFJvZHJpZ3VleiBRdWVzYWRhLCBQYWJs
+byBhIMOpY3JpdMKgOg0KPiBIaSBDaHJpc3RvcGhlciwNCj4gDQo+IEkgYW0gdHJ5aW5nIHRvIGNy
+ZWF0ZSBhIGN1c3RvbSBoYW5kbGVyIGZvciBNQ0UsIGJ1dCBJIGRvbid0IGhhdmUgYSB3YXkgDQo+
+IHRvIHRyaWdnZXIgaXQgKE9yIGRvbid0IGtub3cgaG93KQ0KPiANCj4gVGhlcmVmb3JlIEkgbG9v
+a2VkIGF0IHRoZSBtY2UtaW5qZWN0IHRvb2woKiopIGFuZCBjb21waWxlIGl0IGZvciBQUEMgYnV0
+IHRoZSBwYXRoICIvc3lzL2RldmljZXMvc3lzdGVtL21hY2hpbmUgY2hlY2svbWFjaGluZWNoZWNr
+MCIgZG9lc24ndCBleGlzdCB1bmxpa2UgSW50ZWwgYXJjaGl0ZWN0dXJlIGFuZCB0aGUgYXBwIGZh
+aWxzLiBJIHdhbnQgdG8gZml4IGl0Lg0KPiANCj4gTXkgcXVlc3Rpb24gaXM6IERvIHlvdSBrbm93
+IGlmIHRoZXJlIGlzIGEgd2F5IHRvIGluamVjdCBhbiBNQ0Ugb24gUG93ZXJQQz8gT3IgY2FuIHlv
+dSBndWlkZSBtZSBvbiBob3cgdG8gc3RhcnQgbXkgcmVzZWFyY2ggYWJvdXQgaXQuIEkgZmluZCBp
+dCB2ZXJ5IGRpZmZpY3VsdCB0byBzZWFyY2ggZm9yIFBQQyBkb2N1bWVudGF0aW9uLiBUaGF0IGlz
+IHdoeSBJIGFtIHdyaXRpbmcgdG8geW91LCB0byBnZXQgYW55IHRpcHMgZm9yIGRldmVsb3Bpbmcg
+YSBtY2UtaW5qZWN0IGZvciBQUEMuIEFuZCBvZiBjb3Vyc2UsIEkgd291bGQgYmUgbW9yZSB0aGFu
+IGdsYWQgdG8gY29udHJpYnV0ZSB0byB0aGUgT3BlblNvdXJjZSBjb21tdW5pdHkuDQo+IA0KPiBB
+bHNvLCBob3cgZGlkIHlvdSB0ZXN0IHlvdXIgaGFuZGxlcj8gRG8geW91IGhhdmUgYW4gZWFzeSBt
+ZWNoYW5pc20gdG8gdHJpZ2dlciB0aGUgZXhjZXB0aW9ucz8NCj4gDQo+IFRoYW5rIHlvdSwNCj4g
+UGFibG8NCj4gDQo+ICgqKikgaHR0cHM6Ly9naXRodWIuY29tL2FuZGlrbGVlbi9tY2UtaW5qZWN0
+Lw0KPiANCj4gDQo+IA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDaHJp
+c3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGMtcy5mcj4NCj4gU2VudDogV2VkbmVzZGF5
+LCBBcHJpbCAyNCwgMjAxOSAxMTowNyBQTQ0KPiBUbzogUm9kcmlndWV6IFF1ZXNhZGEsIFBhYmxv
+IDxQYWJsby5Sb2RyaWd1ZXotUXVlc2FkYUB3aW5kcml2ZXIuY29tPg0KPiBTdWJqZWN0OiBSZTog
+TWFjaGluZSBDaGVjayBFeGNlcHRpb25zDQo+IA0KPiBIaSBQYWJsbywNCj4gDQo+IE5vIHByb2Js
+ZW0NCj4gDQo+IENocmlzdG9waGUNCj4gDQo+IA0KPiBMZSAyNC8wNC8yMDE5IMOgIDIxOjMzLCBS
+b2RyaWd1ZXogUXVlc2FkYSwgUGFibG8gYSDDqWNyaXTCoDoNCj4+IEhpIENyaXN0b3BoZXIsDQo+
+Pg0KPj4gSG9wZSB5b3UgYXJlIGRvaW5nIGdvb2QhDQo+Pg0KPj4gSSBhbSBsZWFybmluZyBhYm91
+dCBNYWNoaW5lIENoZWNrIEV4Y2VwdGlvbnMgb24gUFBDLCBhbmQgSSBmb3VuZCB0aGlzIA0KPj4g
+Y29tbWl0IG9mIHlvdXJzOg0KPj4NCj4+IGh0dHBzOi8vZ2l0aHViLmNvbS90b3J2YWxkcy9saW51
+eC9jb21taXQvMGRlYWUzOWNlYzZkYWIzYTY2Nzk0ZjNlOWU4Mw0KPj4gYw0KPj4gYTRkYzMwMDgw
+ZjENCj4+DQo+PiBXb3VsZCB5b3UgbWluZCBpZiBJIGFzayB5b3UgYSBjb3VwbGUgb2YgcXVlc3Rp
+b25zPw0KPj4NCj4+IFRoYW5rIHlvdSwNCj4+DQo+PiBXUiBsb2dvIHNpZ25pdHVyZSA8aHR0cDov
+L3d3dy53aW5kcml2ZXIuY29tLz4NCj4+DQo+PiAJDQo+Pg0KPj4gKlBhYmxvIFJvZHJpZ3Vleios
+IEludGVybiwgV2luZCBSaXZlciBDb3N0YSBSaWNhDQo+Pg0K
