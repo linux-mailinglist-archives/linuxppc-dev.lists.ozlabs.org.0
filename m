@@ -1,54 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB7CEE45
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 03:17:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D95BEEE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 05:01:23 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tRB82s7czDqNQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 13:01:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tNtq5b8bzDqP4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 11:17:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=windriver.com
- (client-ip=147.11.146.13; helo=mail1.windriver.com;
- envelope-from=pablo.rodriguez-quesada@windriver.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com;
+ envelope-from=tobin@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=windriver.com
-X-Greylist: delayed 7829 seconds by postgrey-1.36 at bilbo;
- Tue, 30 Apr 2019 13:00:05 AEST
-Received: from mail1.windriver.com (mail1.windriver.com [147.11.146.13])
- (using TLSv1.1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="q7gOVqI+"; dkim-atps=neutral
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
+ [66.111.4.25])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tR8j6mHZzDqLR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 13:00:03 +1000 (AEST)
-Received: from ALA-HCB.corp.ad.wrs.com ([147.11.189.41])
- by mail1.windriver.com (8.15.2/8.15.1) with ESMTPS id x3U0nRL5015621
- (version=TLSv1 cipher=AES128-SHA bits=128 verify=FAIL);
- Mon, 29 Apr 2019 17:49:27 -0700 (PDT)
-Received: from ALA-MBD.corp.ad.wrs.com ([169.254.3.163]) by
- ALA-HCB.corp.ad.wrs.com ([147.11.189.41]) with mapi id 14.03.0439.000; Mon,
- 29 Apr 2019 17:49:15 -0700
-From: "Rodriguez Quesada, Pablo" <Pablo.Rodriguez-Quesada@windriver.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: RE: Machine Check Exceptions
-Thread-Topic: Machine Check Exceptions
-Thread-Index: AdT61Io1ul16C2EtScWIxTsT0pjndwAis6KAAAauFKAAxLJIgAAYKEIA
-Date: Tue, 30 Apr 2019 00:49:15 +0000
-Message-ID: <0CDD4071D6ACF54ABB9CF1A6D90375A809BA18D7@ALA-MBD.corp.ad.wrs.com>
-References: <0CDD4071D6ACF54ABB9CF1A6D90375A809B91A41@ALA-MBD.corp.ad.wrs.com>
- <64209dd1-7cce-4061-1139-15e7ef394e66@c-s.fr>
- <0CDD4071D6ACF54ABB9CF1A6D90375A809B91C51@ALA-MBD.corp.ad.wrs.com>
- <49f28ecd-b2c2-aa9f-8183-f6c945824292@c-s.fr>
-In-Reply-To: <49f28ecd-b2c2-aa9f-8183-f6c945824292@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [147.11.119.144]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tNsN0089zDqN8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 11:16:39 +1000 (AEST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailout.nyi.internal (Postfix) with ESMTP id D05DF21FED;
+ Mon, 29 Apr 2019 21:10:11 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute3.internal (MEProxy); Mon, 29 Apr 2019 21:10:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=c8rP92N4ywgTy0CI4
+ uV13/RhNnhdhHkkmq5K58OlFZg=; b=q7gOVqI+/OW320Nm92TAhwq6pdaQ8zFol
+ r8B8hEsAab5FVpqHvg+kZQawXQ4J9IscJLVAZUEcRINko2QqM/iS6KyiVnOd8/Oq
+ v6VRqVNokyhQ8YCYsij4bpKJmVMKSwG66OHSEGd5Ga5Zpa9EfYn8fsa/rnsY//KK
+ 2/JG5aMlzi1nvIZbiALrLpAc6NXnSXmBOT4PJqGHbHEqslC2ZfEemVSvwXsZXtX7
+ ea2SOfaNXxI8B9fKJVL//u3CmSpLXNoowdG8KvZ8G1R6qnQulgK10B1j/rTOO998
+ R7OxpG1OTBIDKD10+Diakn3l/azqWi/JnYFa/CCTswXBc1BJAuSCw==
+X-ME-Sender: <xms:c6DHXJ26Gf0REUwV-rgOqPX6sdDNeCBQPD_UDLJUJSUMEWYeJ1IaQg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieefgdeghecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepfdfvohgsihhnucev
+ rdcujfgrrhguihhnghdfuceothhosghinheskhgvrhhnvghlrdhorhhgqeenucfkphepud
+ dvuddrgeegrddvfedtrddukeeknecurfgrrhgrmhepmhgrihhlfhhrohhmpehtohgsihhn
+ sehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:c6DHXHh6K8LNshbxjd2eOSHP5nlKus3t-tTTyrhUb_g86DI5rhVLOA>
+ <xmx:c6DHXHT9qOd5AaT_RehwNRRLK6H9zYyhdDYpr2W134nBuJkqu7UVUQ>
+ <xmx:c6DHXAimZJ4QN0SJHPrZ7LUMj15iYPgWhD3Jaz1D3dmZr7vLBR55mQ>
+ <xmx:c6DHXEhKho_rLtAE4JA2wpWRhRPqwMPlYwHWqgeZkU2V2f0sh3D9lQ>
+Received: from eros.localdomain (ppp121-44-230-188.bras2.syd2.internode.on.net
+ [121.44.230.188])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 6802FE4173;
+ Mon, 29 Apr 2019 21:10:08 -0400 (EDT)
+From: "Tobin C. Harding" <tobin@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Fix kobject memleak
+Date: Tue, 30 Apr 2019 11:09:23 +1000
+Message-Id: <20190430010923.17092-1-tobin@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,58 +75,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "Tobin C. Harding" <tobin@kernel.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgQ2hyaXN0b3BoZSwNCg0KSSB3aWxsIHRyeSB3aXRoIHRoZSBOTUkgYXBwcm9hY2guIEp1c3Qg
-b25lIHF1ZXN0aW9uOiANCg0KPlRoZSBkcml2ZXIgSSB3cm90ZSB0aGF0IHlvdSBhcmUgcmVmZXJy
-aW5nIHRvIGlzIHRvIGhhbmRsZSB0aGUgd2F0Y2hkb2cgaW4gZTMwMCBwb3dlcnBjIGNvcmUuIFRo
-aXMgaXMgYmVjYXVzZSB0aGUgZTMwMCBnZXJlcmF0ZXMgYSBtYWNoaW5lIGNoZWNrIG9uIGV4cGly
-eSA+d2hlbiB0aGUgd2F0Y2hkb2cgaXMgY29uZmlndXJlZCBpbiBOTUkgbW9kZS4NCg0KQnkgTk1J
-IG1vZGUgZG8geW91IG1lYW4gZW5hYmxpbmcgdGhlIENPTkZJR19IQVZFX05NSV9XQVRDSERPRyBz
-eW1ib2wgb24gdGhlIC5jb25maWc/DQoNCg0KVGhhbmsgeW91LA0KUGFibG8NCg0KLS0tLS1Pcmln
-aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVy
-b3lAYy1zLmZyPiANClNlbnQ6IE1vbmRheSwgQXByaWwgMjksIDIwMTkgMTI6MTAgQU0NClRvOiBS
-b2RyaWd1ZXogUXVlc2FkYSwgUGFibG8gPFBhYmxvLlJvZHJpZ3Vlei1RdWVzYWRhQHdpbmRyaXZl
-ci5jb20+DQpDYzogbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcNClN1YmplY3Q6IFJlOiBN
-YWNoaW5lIENoZWNrIEV4Y2VwdGlvbnMNCg0KSGkgUGFibG8sDQoNCkkga25vdyBub3RoaW5nIGFi
-b3V0IG1jZS1pbmplY3QuDQoNClRoZSBkcml2ZXIgSSB3cm90ZSB0aGF0IHlvdSBhcmUgcmVmZXJy
-aW5nIHRvIGlzIHRvIGhhbmRsZSB0aGUgd2F0Y2hkb2cgaW4gZTMwMCBwb3dlcnBjIGNvcmUuIFRo
-aXMgaXMgYmVjYXVzZSB0aGUgZTMwMCBnZXJlcmF0ZXMgYSBtYWNoaW5lIGNoZWNrIG9uIGV4cGly
-eSB3aGVuIHRoZSB3YXRjaGRvZyBpcyBjb25maWd1cmVkIGluIE5NSSBtb2RlLg0KDQpUaGVyZWZv
-cmUsIHRyaWdnZXJpbmcgdGhlIG1hY2hpbmUgY2hlY2sgaXMgcmF0aGVyIGVhc3kgaW4gdGhhdCBj
-YXNlLCBJIGp1c3QgaGF2ZSB0byBzdG9wIHJlZnJlc2hpbmcgdGhlIHdhdGNoZG9nLg0KDQpDaHJp
-c3RvcGhlDQoNCkxlIDI1LzA0LzIwMTkgw6AgMTc6MzUsIFJvZHJpZ3VleiBRdWVzYWRhLCBQYWJs
-byBhIMOpY3JpdMKgOg0KPiBIaSBDaHJpc3RvcGhlciwNCj4gDQo+IEkgYW0gdHJ5aW5nIHRvIGNy
-ZWF0ZSBhIGN1c3RvbSBoYW5kbGVyIGZvciBNQ0UsIGJ1dCBJIGRvbid0IGhhdmUgYSB3YXkgDQo+
-IHRvIHRyaWdnZXIgaXQgKE9yIGRvbid0IGtub3cgaG93KQ0KPiANCj4gVGhlcmVmb3JlIEkgbG9v
-a2VkIGF0IHRoZSBtY2UtaW5qZWN0IHRvb2woKiopIGFuZCBjb21waWxlIGl0IGZvciBQUEMgYnV0
-IHRoZSBwYXRoICIvc3lzL2RldmljZXMvc3lzdGVtL21hY2hpbmUgY2hlY2svbWFjaGluZWNoZWNr
-MCIgZG9lc24ndCBleGlzdCB1bmxpa2UgSW50ZWwgYXJjaGl0ZWN0dXJlIGFuZCB0aGUgYXBwIGZh
-aWxzLiBJIHdhbnQgdG8gZml4IGl0Lg0KPiANCj4gTXkgcXVlc3Rpb24gaXM6IERvIHlvdSBrbm93
-IGlmIHRoZXJlIGlzIGEgd2F5IHRvIGluamVjdCBhbiBNQ0Ugb24gUG93ZXJQQz8gT3IgY2FuIHlv
-dSBndWlkZSBtZSBvbiBob3cgdG8gc3RhcnQgbXkgcmVzZWFyY2ggYWJvdXQgaXQuIEkgZmluZCBp
-dCB2ZXJ5IGRpZmZpY3VsdCB0byBzZWFyY2ggZm9yIFBQQyBkb2N1bWVudGF0aW9uLiBUaGF0IGlz
-IHdoeSBJIGFtIHdyaXRpbmcgdG8geW91LCB0byBnZXQgYW55IHRpcHMgZm9yIGRldmVsb3Bpbmcg
-YSBtY2UtaW5qZWN0IGZvciBQUEMuIEFuZCBvZiBjb3Vyc2UsIEkgd291bGQgYmUgbW9yZSB0aGFu
-IGdsYWQgdG8gY29udHJpYnV0ZSB0byB0aGUgT3BlblNvdXJjZSBjb21tdW5pdHkuDQo+IA0KPiBB
-bHNvLCBob3cgZGlkIHlvdSB0ZXN0IHlvdXIgaGFuZGxlcj8gRG8geW91IGhhdmUgYW4gZWFzeSBt
-ZWNoYW5pc20gdG8gdHJpZ2dlciB0aGUgZXhjZXB0aW9ucz8NCj4gDQo+IFRoYW5rIHlvdSwNCj4g
-UGFibG8NCj4gDQo+ICgqKikgaHR0cHM6Ly9naXRodWIuY29tL2FuZGlrbGVlbi9tY2UtaW5qZWN0
-Lw0KPiANCj4gDQo+IA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDaHJp
-c3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGMtcy5mcj4NCj4gU2VudDogV2VkbmVzZGF5
-LCBBcHJpbCAyNCwgMjAxOSAxMTowNyBQTQ0KPiBUbzogUm9kcmlndWV6IFF1ZXNhZGEsIFBhYmxv
-IDxQYWJsby5Sb2RyaWd1ZXotUXVlc2FkYUB3aW5kcml2ZXIuY29tPg0KPiBTdWJqZWN0OiBSZTog
-TWFjaGluZSBDaGVjayBFeGNlcHRpb25zDQo+IA0KPiBIaSBQYWJsbywNCj4gDQo+IE5vIHByb2Js
-ZW0NCj4gDQo+IENocmlzdG9waGUNCj4gDQo+IA0KPiBMZSAyNC8wNC8yMDE5IMOgIDIxOjMzLCBS
-b2RyaWd1ZXogUXVlc2FkYSwgUGFibG8gYSDDqWNyaXTCoDoNCj4+IEhpIENyaXN0b3BoZXIsDQo+
-Pg0KPj4gSG9wZSB5b3UgYXJlIGRvaW5nIGdvb2QhDQo+Pg0KPj4gSSBhbSBsZWFybmluZyBhYm91
-dCBNYWNoaW5lIENoZWNrIEV4Y2VwdGlvbnMgb24gUFBDLCBhbmQgSSBmb3VuZCB0aGlzIA0KPj4g
-Y29tbWl0IG9mIHlvdXJzOg0KPj4NCj4+IGh0dHBzOi8vZ2l0aHViLmNvbS90b3J2YWxkcy9saW51
-eC9jb21taXQvMGRlYWUzOWNlYzZkYWIzYTY2Nzk0ZjNlOWU4Mw0KPj4gYw0KPj4gYTRkYzMwMDgw
-ZjENCj4+DQo+PiBXb3VsZCB5b3UgbWluZCBpZiBJIGFzayB5b3UgYSBjb3VwbGUgb2YgcXVlc3Rp
-b25zPw0KPj4NCj4+IFRoYW5rIHlvdSwNCj4+DQo+PiBXUiBsb2dvIHNpZ25pdHVyZSA8aHR0cDov
-L3d3dy53aW5kcml2ZXIuY29tLz4NCj4+DQo+PiAJDQo+Pg0KPj4gKlBhYmxvIFJvZHJpZ3Vleios
-IEludGVybiwgV2luZCBSaXZlciBDb3N0YSBSaWNhDQo+Pg0K
+Currently error return from kobject_init_and_add() is not followed by a
+call to kobject_put().  This means there is a memory leak.
+
+Add call to kobject_put() in error path of kobject_init_and_add().
+
+Signed-off-by: Tobin C. Harding <tobin@kernel.org>
+---
+
+Untested, did not even build.  Bad Tobin, no biscuit.
+
+No call to kobject_uevent()?  I'll be back to check usage of
+kobject_create_and_add() later, then I intend to check all the uevent
+stuff, feel free to leave this for me to check later if you don't know
+the reasoning straight off the top of your head.
+
+thanks,
+Tobin.
+
+arch/powerpc/kernel/cacheinfo.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/kernel/cacheinfo.c b/arch/powerpc/kernel/cacheinfo.c
+index 53102764fd2f..f2ed3ef4b129 100644
+--- a/arch/powerpc/kernel/cacheinfo.c
++++ b/arch/powerpc/kernel/cacheinfo.c
+@@ -759,23 +759,22 @@ static void cacheinfo_create_index_dir(struct cache *cache, int index,
+ 
+ 	index_dir = kzalloc(sizeof(*index_dir), GFP_KERNEL);
+ 	if (!index_dir)
+-		goto err;
++		return;
+ 
+ 	index_dir->cache = cache;
+ 
+ 	rc = kobject_init_and_add(&index_dir->kobj, &cache_index_type,
+ 				  cache_dir->kobj, "index%d", index);
+-	if (rc)
+-		goto err;
++	if (rc) {
++		kobject_put(&index_dir->kobj);
++		kfree(index_dir);
++		return;
++	}
+ 
+ 	index_dir->next = cache_dir->index;
+ 	cache_dir->index = index_dir;
+ 
+ 	cacheinfo_create_index_opt_attrs(index_dir);
+-
+-	return;
+-err:
+-	kfree(index_dir);
+ }
+ 
+ static void cacheinfo_sysfs_populate(unsigned int cpu_id,
+-- 
+2.21.0
+
