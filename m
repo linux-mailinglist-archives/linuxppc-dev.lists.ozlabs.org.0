@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9401F47A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 12:49:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tdZ43lrszDq8F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 20:49:16 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17ABFF478
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 12:47:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tdXJ4d72zDqGg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 20:47:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tdNH5Y7jzDqLX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tdNF6zjQzDqJg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="oCt3Zhrf"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="vETDSwrt"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44tdNH3Nlxz8tPR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:47 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44tdNF2NdVz8vGV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:45 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44tdNH1jSkz9sD4; Tue, 30 Apr 2019 20:40:47 +1000 (AEST)
+ id 44tdND5tt3z9sD4; Tue, 30 Apr 2019 20:40:44 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,34 +33,34 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="oCt3Zhrf"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="vETDSwrt"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44tdNG3ymyz9s4V
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Apr 2019 20:40:46 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44tdND1RzNz9sCF
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Apr 2019 20:40:44 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9317121734;
- Tue, 30 Apr 2019 10:40:44 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0417721707;
+ Tue, 30 Apr 2019 10:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556620845;
- bh=xMz3pE2tPXTvI4bcT5G2ObUsUAVabmMbGBzcwREZ3r0=;
+ s=default; t=1556620842;
+ bh=Np6ZnrCDcQ/d1wR6YnS+8YKVIG9KXfX5s1gx2cHmeYo=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=oCt3ZhrfSJsLNrLYj66CdgOxZFO0in4Fy6bH5yTbJYpqpRlka2ITZBHbH05cAZqBA
- yHHEBD7nmtJsk5OjiMd8LVoFbW5kfORtdyDZ+z7AlRG59y0eOKSvyYx8KIgtpvoM6l
- 1VJReMCMc3rvTEfpkFYixcaW644HB7wyheuJUFx8=
-Subject: Patch "powerpc/fsl: Flush branch predictor when entering KVM" has
- been added to the 4.4-stable tree
+ b=vETDSwrtle4e/frGU+xcfnuRrBtzrcfsZryXTvxG5tHIjNwktfImNd557YqqCaLEU
+ YuASRguBxCxqxaH7+mBD2rM7dCpKM8P+M2yvXZBnZIfP3feD+0o5LHLnVyQbhRP7/O
+ 1U77bUx21mgNT4/WCXCO9Wnm0ldIu/Xl2u1RhBXw=
+Subject: Patch "powerpc/fsl: Fixed warning: orphan section
+ `__btb_flush_fixup'" has been added to the 4.4-stable tree
 To: diana.craciun@nxp.com, gregkh@linuxfoundation.org, linuxppc-dev@ozlabs.org,
  mpe@ellerman.id.au
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 30 Apr 2019 12:40:29 +0200
-In-Reply-To: <1556552948-24957-3-git-send-email-diana.craciun@nxp.com>
-Message-ID: <15566208293433@kroah.com>
+In-Reply-To: <1556552948-24957-7-git-send-email-diana.craciun@nxp.com>
+Message-ID: <1556620829231185@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -85,13 +85,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/fsl: Flush branch predictor when entering KVM
+    powerpc/fsl: Fixed warning: orphan section `__btb_flush_fixup'
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-fsl-flush-branch-predictor-when-entering-kvm.patch
+     powerpc-fsl-fixed-warning-orphan-section-__btb_flush_fixup.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -100,40 +100,69 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Tue 30 Apr 2019 12:38:50 PM CEST
 From: Diana Craciun <diana.craciun@nxp.com>
-Date: Mon, 29 Apr 2019 18:49:02 +0300
-Subject: powerpc/fsl: Flush branch predictor when entering KVM
+Date: Mon, 29 Apr 2019 18:49:06 +0300
+Subject: powerpc/fsl: Fixed warning: orphan section `__btb_flush_fixup'
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, Diana Craciun <diana.craciun@nxp.com>
-Message-ID: <1556552948-24957-3-git-send-email-diana.craciun@nxp.com>
+Message-ID: <1556552948-24957-7-git-send-email-diana.craciun@nxp.com>
 
 From: Diana Craciun <diana.craciun@nxp.com>
 
-commit e7aa61f47b23afbec41031bc47ca8d6cb6516abc upstream.
+commit 039daac5526932ec731e4499613018d263af8b3e upstream.
 
-Switching from the guest to host is another place
-where the speculative accesses can be exploited.
-Flush the branch predictor when entering KVM.
+Fixed the following build warning:
+powerpc-linux-gnu-ld: warning: orphan section `__btb_flush_fixup' from
+`arch/powerpc/kernel/head_44x.o' being placed in section
+`__btb_flush_fixup'.
 
 Signed-off-by: Diana Craciun <diana.craciun@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/bookehv_interrupts.S |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/head_booke.h |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/powerpc/kvm/bookehv_interrupts.S
-+++ b/arch/powerpc/kvm/bookehv_interrupts.S
-@@ -75,6 +75,10 @@
- 	PPC_LL	r1, VCPU_HOST_STACK(r4)
- 	PPC_LL	r2, HOST_R2(r1)
+--- a/arch/powerpc/kernel/head_booke.h
++++ b/arch/powerpc/kernel/head_booke.h
+@@ -31,6 +31,16 @@
+  */
+ #define THREAD_NORMSAVE(offset)	(THREAD_NORMSAVES + (offset * 4))
  
-+START_BTB_FLUSH_SECTION
-+	BTB_FLUSH(r10)
++#ifdef CONFIG_PPC_FSL_BOOK3E
++#define BOOKE_CLEAR_BTB(reg)									\
++START_BTB_FLUSH_SECTION								\
++	BTB_FLUSH(reg)									\
 +END_BTB_FLUSH_SECTION
++#else
++#define BOOKE_CLEAR_BTB(reg)
++#endif
 +
- 	mfspr	r10, SPRN_PID
- 	lwz	r8, VCPU_HOST_PID(r4)
- 	PPC_LL	r11, VCPU_SHARED(r4)
++
+ #define NORMAL_EXCEPTION_PROLOG(intno)						     \
+ 	mtspr	SPRN_SPRG_WSCRATCH0, r10;	/* save one register */	     \
+ 	mfspr	r10, SPRN_SPRG_THREAD;					     \
+@@ -42,9 +52,7 @@
+ 	andi.	r11, r11, MSR_PR;	/* check whether user or kernel    */\
+ 	mr	r11, r1;						     \
+ 	beq	1f;							     \
+-START_BTB_FLUSH_SECTION					\
+-	BTB_FLUSH(r11)						\
+-END_BTB_FLUSH_SECTION					\
++	BOOKE_CLEAR_BTB(r11)						\
+ 	/* if from user, start at top of this thread's kernel stack */       \
+ 	lwz	r11, THREAD_INFO-THREAD(r10);				     \
+ 	ALLOC_STACK_FRAME(r11, THREAD_SIZE);				     \
+@@ -130,9 +138,7 @@ END_BTB_FLUSH_SECTION					\
+ 	stw	r9,_CCR(r8);		/* save CR on stack		   */\
+ 	mfspr	r11,exc_level_srr1;	/* check whether user or kernel    */\
+ 	DO_KVM	BOOKE_INTERRUPT_##intno exc_level_srr1;		             \
+-START_BTB_FLUSH_SECTION								\
+-	BTB_FLUSH(r10)									\
+-END_BTB_FLUSH_SECTION								\
++	BOOKE_CLEAR_BTB(r10)						\
+ 	andi.	r11,r11,MSR_PR;						     \
+ 	mfspr	r11,SPRN_SPRG_THREAD;	/* if from user, start at top of   */\
+ 	lwz	r11,THREAD_INFO-THREAD(r11); /* this thread's kernel stack */\
 
 
 Patches currently in stable-queue which might be from diana.craciun@nxp.com are
