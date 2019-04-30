@@ -2,86 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8CEF01E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 07:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F7DF031
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 08:03:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tW3J3jb3zDqDb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 15:55:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tWCx4trVzDqRR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 16:03:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::141; helo=mail-it1-x141.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="HUVLnUCh"; 
+ dkim-atps=neutral
+Received: from mail-it1-x141.google.com (mail-it1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tW1m5cMRzDqB2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 15:54:20 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x3U5qRkx147176
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:54:18 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2s6gkfg1g4-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 01:54:17 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Tue, 30 Apr 2019 06:54:15 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 30 Apr 2019 06:54:13 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x3U5sC3u42795262
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Apr 2019 05:54:12 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A629D5204F;
- Tue, 30 Apr 2019 05:54:12 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0BCF552052;
- Tue, 30 Apr 2019 05:54:12 +0000 (GMT)
-Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DA13DA01D2;
- Tue, 30 Apr 2019 15:54:10 +1000 (AEST)
-Date: Tue, 30 Apr 2019 15:54:09 +1000
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: "Oliver O'Halloran" <oohall@gmail.com>
-Subject: Re: [PATCH 6/8] powerpc/eeh: Initialize EEH address cache earlier
-References: <cover.1553050609.git.sbobroff@linux.ibm.com>
- <0ca5b600a69f73323b269e4bfdaec1a53cdb4282.1553050609.git.sbobroff@linux.ibm.com>
- <ab420fc4bdfae1bd85f3e478eb1629b1e41f768c.camel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tW8t4GFLzDqR5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 16:00:30 +1000 (AEST)
+Received: by mail-it1-x141.google.com with SMTP id t200so2845660itf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 23:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=x9h6HedQ8QLA/SIO/+1Eh8TR7sVgMBSYRby5yCQpHng=;
+ b=HUVLnUChJSkEvFFgpKcpEeStINEEDdmYiVKGBRYqBSzvIBn3RjD3uN/0DyDbWkcowy
+ bPHOyuCxxLB6S5j9K9fy1JRJ84zoGb/ahfIuHRU1qoCfambtZYlPPEkuNhTqZ2rzbQqW
+ LffZIVhzXWG/UPpjBd8RaQdcP+6ZXikXGrY7ovHJW/E1sGhiYkSVm+z8VFsvPoKPsCEK
+ HL53N8sdBS6MZkG/VfRPcasQeJ/hdiNCAsXCP/Am+hRAkXYtzVr6l2+PFkoP2Y4CrkRj
+ z0vXm7zK+UrUBzAc89EC5IGD7Aujlx4itRp61Mg0WwP8W4SSa/B7CkL1VtVHF5vI0KQo
+ nbJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=x9h6HedQ8QLA/SIO/+1Eh8TR7sVgMBSYRby5yCQpHng=;
+ b=NP7QZRGkY/mJhEpGppE6+khyOd+4Dw/V2UUWNTKucVnuI0Drb8v3eZ+W45jBduUq1J
+ T1wioXipzjOcJqGRKPfg53H+MgNYlHaM+UMhfxFai22vxutCs30ylYMvGpndQPyjRtMl
+ EcYC5twFbEuwxEyYLiYGuCLcCThvtM7nbAWq2KTo0GuofSOD7Km9I7YbcSHnMMBVRU0c
+ kQ+rCamA7Otu7y9Vl3rlvfliXJ57tnARm+eWzKYFa5C3sPAvvrUXdYtxajhhhXgjzCcP
+ aUHzxgHafVNAtCLgzD/UInePFHpYurLcGylsLS1DBZ4IbIByakmxZkmsKNvvu6567A9o
+ l2Lw==
+X-Gm-Message-State: APjAAAVh6FQQhjbmo2QYIh8e5YU/yNxYNjsCOqAmSZPtWgXsU8rfngzN
+ 0bcu/KCRbhffsxXVDY7gcav3RymG
+X-Google-Smtp-Source: APXvYqx7FqghdIfVWjHGZyrB+LmDy5eA5C2oYOWQSSj5SHjkNf5fKQs5afrDO6+XCvFFMl1KPsnbfw==
+X-Received: by 2002:a05:660c:78e:: with SMTP id
+ h14mr566691itk.49.1556604028105; 
+ Mon, 29 Apr 2019 23:00:28 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.googlemail.com with ESMTPSA id u5sm10607624iog.80.2019.04.29.23.00.24
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 29 Apr 2019 23:00:27 -0700 (PDT)
+Message-ID: <e27c1caebdbc4dc71fb8d132db24f04fa65a7a69.camel@gmail.com>
+Subject: Re: [PATCH v5 5/8] powerpc/pci/IOV: Add support for runtime
+ enabling the VFs
+From: Oliver O'Halloran <oohall@gmail.com>
+To: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>, 
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+Date: Tue, 30 Apr 2019 16:00:22 +1000
+In-Reply-To: <20190311115233.6514-6-s.miroshnichenko@yadro.com>
+References: <20190311115233.6514-1-s.miroshnichenko@yadro.com>
+ <20190311115233.6514-6-s.miroshnichenko@yadro.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="JWEK1jqKZ6MHAcjA"
-Content-Disposition: inline
-In-Reply-To: <ab420fc4bdfae1bd85f3e478eb1629b1e41f768c.camel@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
-X-TM-AS-GCONF: 00
-x-cbid: 19043005-0020-0000-0000-00000337B591
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19043005-0021-0000-0000-0000218A321A
-Message-Id: <20190430055409.GC9630@tungsten.ozlabs.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-04-30_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904300039
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,145 +83,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Stewart Smith <stewart@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 2019-03-11 at 14:52 +0300, Sergey Miroshnichenko wrote:
 
---JWEK1jqKZ6MHAcjA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> When called within pcibios_sriov_enable(), the pci_sriov_get_totalvfs(pdev)
+> returns zero, because the device is yet preparing to enable the VFs.
 
-On Thu, Apr 18, 2019 at 08:13:53PM +1000, Oliver O'Halloran wrote:
-> On Wed, 2019-03-20 at 13:58 +1100, Sam Bobroff wrote:
-> > The EEH address cache is currently initialized and populated by a
-> > single function: eeh_addr_cache_build().  While the initial population
-> > of the cache can only be done once resources are allocated,
-> > initialization (just setting up a spinlock) could be done much
-> > earlier.
-> >=20
-> > So move the initialization step into a separate function and call it
-> > from a core_initcall (rather than a subsys initcall).
-> >=20
->=20
-> > This will allow future work to make use of the cache during boot time
-> > PCI scanning.
->=20
-> What's the idea there? Checking for overlaps in the BAR assignments?
+I don't think this is correct. The earliest pcibios_sriov_enable() can
+be called is during a driver probe function. The totalvfs field is
+initialised by pci_iov_init() which is called before the device has
+been added to the bus. If it's returning zero then maybe the driver
+limited the number of VFs to zero?
 
-The idea is just to be able to populate the cache earlier during boot
-time, because that allows more code to be consolidated:
+That said, you need to reset numvfs to zero before changing the value. 
+So limiting the number of pci_dns that are created to the number
+actually required rather than totalvfs doesn't hurt.
 
-Before this set, the pcibios_add_device handlers were called during boot
-but they couldn't populate the cache because it wasn't set up. Instead,
-the handlers did nothing and a separate sweep was done after setting up
-the cache. (This is annoying because when devices are added after boot,
-the pcibios_add_device handlers are the only place where the cache can
-be populated.)
+> With this patch it becomes possible to enable VFs via sysfs "sriov_numvfs"
+> on PowerNV.
 
-> > Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-> > ---
-> >  arch/powerpc/include/asm/eeh.h  |  3 +++
-> >  arch/powerpc/kernel/eeh.c       |  2 ++
-> >  arch/powerpc/kernel/eeh_cache.c | 13 +++++++++++--
-> >  3 files changed, 16 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/=
-eeh.h
-> > index e217ccda55d0..791b9e6fcc45 100644
-> > --- a/arch/powerpc/include/asm/eeh.h
-> > +++ b/arch/powerpc/include/asm/eeh.h
-> > @@ -295,6 +295,7 @@ int __init eeh_ops_register(struct eeh_ops *ops);
-> >  int __exit eeh_ops_unregister(const char *name);
-> >  int eeh_check_failure(const volatile void __iomem *token);
-> >  int eeh_dev_check_failure(struct eeh_dev *edev);
-> > +void eeh_addr_cache_init(void);
-> >  void eeh_addr_cache_build(void);
-> >  void eeh_add_device_early(struct pci_dn *);
-> >  void eeh_add_device_tree_early(struct pci_dn *);
-> > @@ -362,6 +363,8 @@ static inline int eeh_check_failure(const volatile =
-void __iomem *token)
-> > =20
-> >  #define eeh_dev_check_failure(x) (0)
-> > =20
-> > +static inline void eeh_addr_cache_init(void) { }
-> > +
-> >  static inline void eeh_addr_cache_build(void) { }
-> > =20
-> >  static inline void eeh_add_device_early(struct pci_dn *pdn) { }
-> > diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> > index 3dcff29cb9b3..7a406d58d2c0 100644
-> > --- a/arch/powerpc/kernel/eeh.c
-> > +++ b/arch/powerpc/kernel/eeh.c
-> > @@ -1219,6 +1219,8 @@ static int eeh_init(void)
-> >  	list_for_each_entry_safe(hose, tmp, &hose_list, list_node)
-> >  		eeh_dev_phb_init_dynamic(hose);
-> > =20
-> > +	eeh_addr_cache_init();
-> > +
-> >  	/* Initialize EEH event */
-> >  	return eeh_event_init();
-> >  }
-> > diff --git a/arch/powerpc/kernel/eeh_cache.c b/arch/powerpc/kernel/eeh_=
-cache.c
-> > index 9c68f0837385..f93dd5cf6a39 100644
-> > --- a/arch/powerpc/kernel/eeh_cache.c
-> > +++ b/arch/powerpc/kernel/eeh_cache.c
-> > @@ -267,6 +267,17 @@ void eeh_addr_cache_rmv_dev(struct pci_dev *dev)
-> >  	spin_unlock_irqrestore(&pci_io_addr_cache_root.piar_lock, flags);
-> >  }
-> > =20
-> > +/**
-> > + * eeh_addr_cache_init - Initialize a cache of I/O addresses
-> > + *
-> > + * Initialize a cache of pci i/o addresses.  This cache will be used to
-> > + * find the pci device that corresponds to a given address.
-> > + */
-> > +void eeh_addr_cache_init(void)
-> > +{
-> > +	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
-> > +}
->=20
-> You could move this out of the pci_io_addr_cache structure and use
-> DEFINE_SPINLOCK() too. We might even be able to get rid of the hand-
-> rolled interval tree in eeh_cache.c in favour of the generic
-> implementation (see mm/interval_tree.c). I'm pretty sure the generic
-> one is a drop-in replacement, but I haven't had a chance to have a
-> detailed look to see if there's any differences in behaviour.
+I tested on a few of our lab systems with random kernel versions
+spanning from 4.15 to 5.0 and sriov_numvfs seemed to work fine on all
+of them. Is there a specific configuration you're testing that needed
+this change?
 
-Sounds good, I'll try to take a look at doing it in a future patch :-)
-
-> > +
-> >  /**
-> >   * eeh_addr_cache_build - Build a cache of I/O addresses
-> >   *
-> > @@ -282,8 +293,6 @@ void eeh_addr_cache_build(void)
-> >  	struct eeh_dev *edev;
-> >  	struct pci_dev *dev =3D NULL;
-> > =20
-> > -	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
-> > -
-> >  	for_each_pci_dev(dev) {
-> >  		pdn =3D pci_get_pdn_by_devfn(dev->bus, dev->devfn);
-> >  		if (!pdn)
->=20
-
---JWEK1jqKZ6MHAcjA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAlzH4wEACgkQMX8w6AQl
-/iITkAf9GAXkUlcj3rRFfJYcIdvRpdrGIt15kBy+gkDcAZHmApAQ2TIvajGrN3w7
-zz7vc2tjxm7DzodDT4yIDc6zxRpO7DCRvcFtVuAuHY9Dzc9YpfM6Os3mkmGGJjKK
-/pbzJNDTgh/gyawsCCj6TrGJUlhG3Irr+dPJ4asOdd5dkTcq4ISbQQRdy/A1KQr5
-QGyt61Kf1mbMczlPPL2cZhmliw2ykhTAWqIm1TuQJvgOV85P7VY5nN29RwysI1CT
-bKY+Ppc5tgYoHBcHlK38AA5aT/tGXPvVGcDNv5LXXCZVMMxr/VDWJQQFpVRXR6+x
-CqH58xmMRGNxhf6mye2sBxLgkibeuQ==
-=nhNT
------END PGP SIGNATURE-----
-
---JWEK1jqKZ6MHAcjA--
+> Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+> ---
+>  arch/powerpc/include/asm/pci-bridge.h     |  4 +--
+>  arch/powerpc/kernel/pci_dn.c              | 32 ++++++++++++++---------
+>  arch/powerpc/platforms/powernv/pci-ioda.c |  4 +--
+>  arch/powerpc/platforms/pseries/pci.c      |  4 +--
+>  4 files changed, 25 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+> index fc188e0e9179..6479bc96e0b6 100644
+> --- a/arch/powerpc/include/asm/pci-bridge.h
+> +++ b/arch/powerpc/include/asm/pci-bridge.h
+> @@ -225,8 +225,8 @@ struct pci_dn {
+>  extern struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
+>  					   int devfn);
+>  extern struct pci_dn *pci_get_pdn(struct pci_dev *pdev);
+> -extern struct pci_dn *add_dev_pci_data(struct pci_dev *pdev);
+> -extern void remove_dev_pci_data(struct pci_dev *pdev);
+> +extern struct pci_dn *pci_create_vf_pdns(struct pci_dev *pdev, int num_vfs);
+> +extern void pci_destroy_vf_pdns(struct pci_dev *pdev);
+>  extern struct pci_dn *pci_add_device_node_info(struct pci_controller *hose,
+>  					       struct device_node *dn);
+>  extern void pci_remove_device_node_info(struct device_node *dn);
+> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+> index 7f12882d8882..7fa362f8038d 100644
+> --- a/arch/powerpc/kernel/pci_dn.c
+> +++ b/arch/powerpc/kernel/pci_dn.c
+> @@ -222,18 +222,19 @@ static struct pci_dn *pci_create_pdn_from_dev(struct pci_dev *pdev,
+>  	return pdn;
+>  }
+>  
+> -struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
+> +struct pci_dn *pci_create_vf_pdns(struct pci_dev *pdev, int num_vfs)
+>  {
+> +	struct pci_dn *pdn = pci_get_pdn(pdev);
+> +
+>  #ifdef CONFIG_PCI_IOV
+> -	struct pci_dn *parent, *pdn;
+> +	struct pci_dn *parent;
+>  	int i;
+>  
+>  	/* Only support IOV for now */
+>  	if (!pdev->is_physfn)
+> -		return pci_get_pdn(pdev);
+> +		return pdn;
+>  
+>  	/* Check if VFs have been populated */
+> -	pdn = pci_get_pdn(pdev);
+>  	if (!pdn || (pdn->flags & PCI_DN_FLAG_IOV_VF))
+>  		return NULL;
+>  
+> @@ -242,33 +243,38 @@ struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
+>  	if (!parent)
+>  		return NULL;
+>  
+> -	for (i = 0; i < pci_sriov_get_totalvfs(pdev); i++) {
+> +	for (i = 0; i < num_vfs; i++) {
+>  		struct eeh_dev *edev __maybe_unused;
+> +		struct pci_dn *vpdn;
+>  
+> -		pdn = pci_alloc_pdn(parent,
+> -				    pci_iov_virtfn_bus(pdev, i),
+> -				    pci_iov_virtfn_devfn(pdev, i));
+> -		if (!pdn) {
+> +		vpdn = pci_alloc_pdn(parent,
+> +				     pci_iov_virtfn_bus(pdev, i),
+> +				     pci_iov_virtfn_devfn(pdev, i));
+> +		if (!vpdn) {
+>  			dev_warn(&pdev->dev, "%s: Cannot create firmware data for VF#%d\n",
+>  				 __func__, i);
+>  			return NULL;
+>  		}
+>  
+> -		pdn->vf_index = i;
+> +		vpdn->vf_index = i;
+> +		vpdn->vendor_id = pdn->vendor_id;
+> +		vpdn->device_id = pdn->device_id;
+> +		vpdn->class_code = pdn->class_code;
+> +		vpdn->pci_ext_config_space = 0;
+>  
+>  #ifdef CONFIG_EEH
+>  		/* Create the EEH device for the VF */
+> -		edev = eeh_dev_init(pdn);
+> +		edev = eeh_dev_init(vpdn);
+>  		BUG_ON(!edev);
+>  		edev->physfn = pdev;
+>  #endif /* CONFIG_EEH */
+>  	}
+>  #endif /* CONFIG_PCI_IOV */
+>  
+> -	return pci_get_pdn(pdev);
+> +	return pdn;
+>  }
+>  
+> -void remove_dev_pci_data(struct pci_dev *pdev)
+> +void pci_destroy_vf_pdns(struct pci_dev *pdev)
+>  {
+>  #ifdef CONFIG_PCI_IOV
+>  	struct pci_dn *parent;
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index ed500f51d449..979c901535f2 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -1720,14 +1720,14 @@ int pnv_pcibios_sriov_disable(struct pci_dev *pdev)
+>  	pnv_pci_sriov_disable(pdev);
+>  
+>  	/* Release PCI data */
+> -	remove_dev_pci_data(pdev);
+> +	pci_destroy_vf_pdns(pdev);
+>  	return 0;
+>  }
+>  
+>  int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+>  {
+>  	/* Allocate PCI data */
+> -	add_dev_pci_data(pdev);
+> +	pci_create_vf_pdns(pdev, num_vfs);
+>  
+>  	return pnv_pci_sriov_enable(pdev, num_vfs);
+>  }
+> diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
+> index 37a77e57893e..5e87596903a6 100644
+> --- a/arch/powerpc/platforms/pseries/pci.c
+> +++ b/arch/powerpc/platforms/pseries/pci.c
+> @@ -205,7 +205,7 @@ int pseries_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+>  int pseries_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+>  {
+>  	/* Allocate PCI data */
+> -	add_dev_pci_data(pdev);
+> +	pci_create_vf_pdns(pdev, num_vfs);
+>  	return pseries_pci_sriov_enable(pdev, num_vfs);
+>  }
+>  
+> @@ -217,7 +217,7 @@ int pseries_pcibios_sriov_disable(struct pci_dev *pdev)
+>  	/* Releasing pe_num_map */
+>  	kfree(pdn->pe_num_map);
+>  	/* Release PCI data */
+> -	remove_dev_pci_data(pdev);
+> +	pci_destroy_vf_pdns(pdev);
+>  	pci_vf_drivers_autoprobe(pdev, true);
+>  	return 0;
+>  }
 
