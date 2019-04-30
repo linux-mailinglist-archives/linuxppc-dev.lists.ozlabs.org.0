@@ -1,90 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9E710158
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 23:04:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E02C100FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 22:39:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44ttgJ10S6zDqTk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 06:39:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tvCq3S9ZzDqV3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 07:04:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=tyreld@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (mailfrom) smtp.mailfrom=mleia.com
+ (client-ip=178.79.152.223; helo=mail.mleia.com; envelope-from=vz@mleia.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=mleia.com
+X-Greylist: delayed 590 seconds by postgrey-1.36 at bilbo;
+ Wed, 01 May 2019 07:02:57 AEST
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44ttdH1wy2zDqCF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 06:37:54 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x3UKb56D031812
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 16:37:52 -0400
-Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2s6uqqcuqy-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 16:37:51 -0400
-Received: from localhost
- by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <tyreld@linux.vnet.ibm.com>;
- Tue, 30 Apr 2019 21:37:51 +0100
-Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
- by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 30 Apr 2019 21:37:47 +0100
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x3UKbkTI52625520
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Apr 2019 20:37:46 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F79B6A04D;
- Tue, 30 Apr 2019 20:37:46 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BB646A04F;
- Tue, 30 Apr 2019 20:37:44 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.85.196.56])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 30 Apr 2019 20:37:44 +0000 (GMT)
-Subject: Re: [PATCH] powerpc: Fix kobject memleak
-To: "Tobin C. Harding" <tobin@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20190430010923.17092-1-tobin@kernel.org>
-From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Date: Tue, 30 Apr 2019 13:37:44 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tvB91CplzDqNn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 07:02:56 +1000 (AEST)
+Received: from mail.mleia.com (localhost [127.0.0.1])
+ by mail.mleia.com (Postfix) with ESMTP id 6A35D4668DD;
+ Tue, 30 Apr 2019 21:53:00 +0100 (BST)
+Subject: Re: [PATCH 41/41] drivers: tty: serial: lpc32xx_hs: fill mapsize and
+ use it
+To: "Enrico Weigelt, metux IT consult" <info@metux.net>,
+ linux-kernel@vger.kernel.org
+References: <1556369542-13247-1-git-send-email-info@metux.net>
+ <1556369542-13247-42-git-send-email-info@metux.net>
+From: Vladimir Zapolskiy <vz@mleia.com>
+Message-ID: <3cfc4396-b152-e9a6-bf29-a4c901ac90e6@mleia.com>
+Date: Tue, 30 Apr 2019 23:52:58 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ Thunderbird/52.6.0
 MIME-Version: 1.0
-In-Reply-To: <20190430010923.17092-1-tobin@kernel.org>
+In-Reply-To: <1556369542-13247-42-git-send-email-info@metux.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19043020-0020-0000-0000-00000EDEC793
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011024; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000285; SDB=6.01196706; UDB=6.00627605; IPR=6.00977555; 
- MB=3.00026672; MTD=3.00000008; XFM=3.00000015; UTC=2019-04-30 20:37:50
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19043020-0021-0000-0000-000065A00A14
-Message-Id: <2cf94d15-1e41-dd03-7b35-d69907dbb8b2@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-04-30_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=834 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1904300122
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20190430_215300_466850_76BEA83B 
+X-CRM114-Status: UNSURE (   6.73  )
+X-CRM114-Notice: Please train this message. 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,20 +56,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: sudeep.holla@arm.com, linux-ia64@vger.kernel.org,
+ linux-serial@vger.kernel.org, andrew@aj.id.au, gregkh@linuxfoundation.org,
+ slemieux.tyco@gmail.com, liviu.dudau@arm.com, linux-mips@vger.kernel.org,
+ linux@prisktech.co.nz, sparclinux@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ macro@linux-mips.org, khilman@baylibre.com, matthias.bgg@gmail.com,
+ jacmet@sunsite.dk, linux-amlogic@lists.infradead.org,
+ andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/29/2019 06:09 PM, Tobin C. Harding wrote:
-> Currently error return from kobject_init_and_add() is not followed by a
-> call to kobject_put().  This means there is a memory leak.
-> 
-> Add call to kobject_put() in error path of kobject_init_and_add().
-> 
-> Signed-off-by: Tobin C. Harding <tobin@kernel.org>
-> ---
+Hi Enrico,
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+On 04/27/2019 03:52 PM, Enrico Weigelt, metux IT consult wrote:
+> Fill the struct uart_port->mapsize field and use it, insteaf of
 
+typo, s/insteaf/instead/
+
+> hardcoded values in many places. This makes the code layout a bit
+> more consistent and easily allows using generic helpers for the
+> io memory handling.
+> 
+> Candidates for such helpers could be eg. the request+ioremap and
+> iounmap+release combinations.
+> 
+> Signed-off-by: Enrico Weigelt <info@metux.net>
+
+Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+
+--
+Best wishes,
+Vladimir
