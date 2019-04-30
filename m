@@ -1,69 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB7CEE45
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 03:17:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tNtq5b8bzDqP4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 11:17:55 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4B2EED5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 04:48:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tQvJ6zwNzDqLk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 12:48:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com;
- envelope-from=tobin@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="q7gOVqI+"; dkim-atps=neutral
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
- [66.111.4.25])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="kpvZIF17"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tNsN0089zDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 11:16:39 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id D05DF21FED;
- Mon, 29 Apr 2019 21:10:11 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute3.internal (MEProxy); Mon, 29 Apr 2019 21:10:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=c8rP92N4ywgTy0CI4
- uV13/RhNnhdhHkkmq5K58OlFZg=; b=q7gOVqI+/OW320Nm92TAhwq6pdaQ8zFol
- r8B8hEsAab5FVpqHvg+kZQawXQ4J9IscJLVAZUEcRINko2QqM/iS6KyiVnOd8/Oq
- v6VRqVNokyhQ8YCYsij4bpKJmVMKSwG66OHSEGd5Ga5Zpa9EfYn8fsa/rnsY//KK
- 2/JG5aMlzi1nvIZbiALrLpAc6NXnSXmBOT4PJqGHbHEqslC2ZfEemVSvwXsZXtX7
- ea2SOfaNXxI8B9fKJVL//u3CmSpLXNoowdG8KvZ8G1R6qnQulgK10B1j/rTOO998
- R7OxpG1OTBIDKD10+Diakn3l/azqWi/JnYFa/CCTswXBc1BJAuSCw==
-X-ME-Sender: <xms:c6DHXJ26Gf0REUwV-rgOqPX6sdDNeCBQPD_UDLJUJSUMEWYeJ1IaQg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieefgdeghecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepfdfvohgsihhnucev
- rdcujfgrrhguihhnghdfuceothhosghinheskhgvrhhnvghlrdhorhhgqeenucfkphepud
- dvuddrgeegrddvfedtrddukeeknecurfgrrhgrmhepmhgrihhlfhhrohhmpehtohgsihhn
- sehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:c6DHXHh6K8LNshbxjd2eOSHP5nlKus3t-tTTyrhUb_g86DI5rhVLOA>
- <xmx:c6DHXHT9qOd5AaT_RehwNRRLK6H9zYyhdDYpr2W134nBuJkqu7UVUQ>
- <xmx:c6DHXAimZJ4QN0SJHPrZ7LUMj15iYPgWhD3Jaz1D3dmZr7vLBR55mQ>
- <xmx:c6DHXEhKho_rLtAE4JA2wpWRhRPqwMPlYwHWqgeZkU2V2f0sh3D9lQ>
-Received: from eros.localdomain (ppp121-44-230-188.bras2.syd2.internode.on.net
- [121.44.230.188])
- by mail.messagingengine.com (Postfix) with ESMTPA id 6802FE4173;
- Mon, 29 Apr 2019 21:10:08 -0400 (EDT)
-From: "Tobin C. Harding" <tobin@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Fix kobject memleak
-Date: Tue, 30 Apr 2019 11:09:23 +1000
-Message-Id: <20190430010923.17092-1-tobin@kernel.org>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tQsR4rV7zDqN9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 12:46:51 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id l2so3253551plt.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2019 19:46:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=ZpJQsgca0/LVXSQJRGMNekhujVFwpXEhIaVfT5sfHAQ=;
+ b=kpvZIF17L9G03YJq6KG5vubutPEqXMbRlH2u3ftH+O+AKf2OGcWUdaTlOlazuQl36C
+ T3YXt2hVzvcuh99ojGDB+1JXLF5u3RMsWoFk8UK3vWKWLRxhP85QZ7kQvaxE4q94m60X
+ 44wOHbQ63X6mjvJxlsky7M9GOFR4Tig1feUjYeiVoPj9F7gOx8xSGLksb14lXxnn7HsF
+ qk6HxsKulWIihT8kN9ZUDmrDJRGFsrutS08zYZkGoTRuNDGSvzb1jhQCsuLv21wgUENE
+ i1LLb6rNnKp3tPGoQ9XSv5thHAWIJe290G7aDuUqHbmu7BQTTrkG0YQwSxZlYAZ22wXj
+ JksQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=ZpJQsgca0/LVXSQJRGMNekhujVFwpXEhIaVfT5sfHAQ=;
+ b=X8i5GzCnWRt3rKnY6YNwCXPyM2oAs52MGvnENUEtiW+iV0U137Vq94Ir6V3b6pU9GZ
+ TQtMRb4cu9oy8Aw0aaUSBPdBILD5K3g08L/tL1xdJeAwRiT06q4VYu2KeicBrNFYZLR9
+ BSTgrw9BYa82ToBaZSBa8C4+qk/ax7Xco+aP1cITZLIj7lTbmi38TIzbh7z9jRWaQ/dB
+ V4lfWIrcwaISQydD4GhHDfIcbsZuwEb54VZL7wDCuC+FbFi7ZpFLKl11s4l009j0RyhC
+ W+dFOfgqY2t7uEFWJstC9O6ycRsVcUvwGqKtcXIuVhjDOtKxVS9cGJkNyKHHMx0RJUdp
+ 7EJw==
+X-Gm-Message-State: APjAAAWQu813buqUiwpoR2z9VwLezGK6CEtHg3+DOZ5V1ghcM76UXDWb
+ 4AJGJaozLyw33dA8yCcw2xY=
+X-Google-Smtp-Source: APXvYqxJ3bN9p+xxhe52PIxCipNM8t93ISXM/JyGKmdLl5vcETLdScqbbeuA8ScDP+AwIhXCzD2n9w==
+X-Received: by 2002:a17:902:8c85:: with SMTP id
+ t5mr7315616plo.23.1556592408950; 
+ Mon, 29 Apr 2019 19:46:48 -0700 (PDT)
+Received: from localhost (60-240-193-213.tpgi.com.au. [60.240.193.213])
+ by smtp.gmail.com with ESMTPSA id 17sm66294013pfw.65.2019.04.29.19.46.46
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 29 Apr 2019 19:46:46 -0700 (PDT)
+Date: Tue, 30 Apr 2019 12:46:40 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/5] Allow CPU0 to be nohz full
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20190411033448.20842-1-npiggin@gmail.com>
+ <20190425120427.GS4038@hirez.programming.kicks-ass.net>
+In-Reply-To: <20190425120427.GS4038@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1556592099.38esq4uhhz.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,68 +81,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, "Tobin C. Harding" <tobin@kernel.org>,
- linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, Frederic Weisbecker <fweisbec@gmail.com>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently error return from kobject_init_and_add() is not followed by a
-call to kobject_put().  This means there is a memory leak.
+Peter Zijlstra's on April 25, 2019 10:04 pm:
+> On Thu, Apr 11, 2019 at 01:34:43PM +1000, Nicholas Piggin wrote:
+>> Since last time, I added a compile time option to opt-out of this
+>> if the platform does not support suspend on non-zero, and tried to
+>> improve legibility of changelogs and explain the justification
+>> better.
+>>=20
+>> I have been testing this on powerpc/pseries and it seems to work
+>> fine (the firmware call to suspend can be called on any CPU and
+>> resumes where it left off), but not included here because the
+>> code has some bitrot unrelated to this series which I hacked to
+>> fix. I will discuss it and either send an acked patch to go with
+>> this series if it is small, or fix it in powerpc tree.
+>>=20
+>=20
+> Rafael, Frederic, any comments?
+>=20
 
-Add call to kobject_put() in error path of kobject_init_and_add().
+Sorry to ping again, I guess people are probably busy after vacation.
+Any chance we could get this in next merge window? Peter are you okay
+with the config option as it is, then we can look at adapting it to
+what x86 needs as a follow up (e.g., allow nohz CPU0 for
+cpu0_hotpluggable case)?
 
-Signed-off-by: Tobin C. Harding <tobin@kernel.org>
----
+Thanks,
+Nick
 
-Untested, did not even build.  Bad Tobin, no biscuit.
-
-No call to kobject_uevent()?  I'll be back to check usage of
-kobject_create_and_add() later, then I intend to check all the uevent
-stuff, feel free to leave this for me to check later if you don't know
-the reasoning straight off the top of your head.
-
-thanks,
-Tobin.
-
-arch/powerpc/kernel/cacheinfo.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/kernel/cacheinfo.c b/arch/powerpc/kernel/cacheinfo.c
-index 53102764fd2f..f2ed3ef4b129 100644
---- a/arch/powerpc/kernel/cacheinfo.c
-+++ b/arch/powerpc/kernel/cacheinfo.c
-@@ -759,23 +759,22 @@ static void cacheinfo_create_index_dir(struct cache *cache, int index,
- 
- 	index_dir = kzalloc(sizeof(*index_dir), GFP_KERNEL);
- 	if (!index_dir)
--		goto err;
-+		return;
- 
- 	index_dir->cache = cache;
- 
- 	rc = kobject_init_and_add(&index_dir->kobj, &cache_index_type,
- 				  cache_dir->kobj, "index%d", index);
--	if (rc)
--		goto err;
-+	if (rc) {
-+		kobject_put(&index_dir->kobj);
-+		kfree(index_dir);
-+		return;
-+	}
- 
- 	index_dir->next = cache_dir->index;
- 	cache_dir->index = index_dir;
- 
- 	cacheinfo_create_index_opt_attrs(index_dir);
--
--	return;
--err:
--	kfree(index_dir);
- }
- 
- static void cacheinfo_sysfs_populate(unsigned int cpu_id,
--- 
-2.21.0
-
+=
