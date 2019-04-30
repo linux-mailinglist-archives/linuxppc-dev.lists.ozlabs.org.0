@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED770F464
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 12:43:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44tdRL3dyNzDqSL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 20:43:26 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D96F47D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 12:50:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44tdbk5d40zDqDl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 20:50:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44tdN4725XzDqDb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44tdNL678fzDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="AUyI9p4e"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qyycKs9S"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44tdN45PcFz8xWF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:36 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44tdNL36Vyz8vSF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 20:40:50 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 44tdN31QJgz9sCJ; Tue, 30 Apr 2019 20:40:35 +1000 (AEST)
+ id 44tdNL2H0tz9sCF; Tue, 30 Apr 2019 20:40:50 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,34 +33,34 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="AUyI9p4e"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qyycKs9S"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44tdN23mB3z9sBr
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Apr 2019 20:40:34 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 44tdNK503Wz9s4V
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Apr 2019 20:40:49 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 65EEE2075E;
- Tue, 30 Apr 2019 10:40:31 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 165CE2075E;
+ Tue, 30 Apr 2019 10:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556620831;
- bh=6OGh/D6+lmZrMFWqbUfRXThWoAmAWAVCODIvzqUIiX8=;
+ s=default; t=1556620847;
+ bh=05dbtnNrDFE3881i6fS6fnnWaDRKtqLpXV7+vUj1aOk=;
  h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=AUyI9p4e3/ntiatOEeYFxrOLKTflFECZqj+8EUVgSD8l2dr9a+YdlIWSkC9RfL2Zt
- YP5NqXWE1F8TPL5f7zO3bwodvd+8o/asIbZ6NBcXl6SUANuHA8exafk28lO48jn0pr
- iTAmJZ2zMRvkS+PrdBIrrUffsl/8dz7ho6ckOgyc=
-Subject: Patch "powerpc/fsl: Emulate SPRN_BUCSR register" has been added to
- the 4.4-stable tree
+ b=qyycKs9Sc7yTeiA/zVy+c6BshrEuPkCQyvefjPzHZsI2UM2qkunwOxtHHJZxhqPGN
+ vuMZXHPq1URimyIn27AL4kWyI4KVRafJk18tHh1+sw7+EYTHOKMNS/c+dg/HVMZhqT
+ GNNSPh8G23N92JGQFLop0e6bmhDeBaFtak4VKd44=
+Subject: Patch "powerpc/fsl: Sanitize the syscall table for NXP PowerPC 32 bit
+ platforms" has been added to the 4.4-stable tree
 To: diana.craciun@nxp.com, gregkh@linuxfoundation.org, linuxppc-dev@ozlabs.org,
  mpe@ellerman.id.au
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Apr 2019 12:40:29 +0200
-In-Reply-To: <1556552948-24957-4-git-send-email-diana.craciun@nxp.com>
-Message-ID: <155662082920054@kroah.com>
+Date: Tue, 30 Apr 2019 12:40:30 +0200
+In-Reply-To: <1556552948-24957-6-git-send-email-diana.craciun@nxp.com>
+Message-ID: <155662083031129@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -85,13 +85,13 @@ Sender: "Linuxppc-dev"
 
 This is a note to let you know that I've just added the patch titled
 
-    powerpc/fsl: Emulate SPRN_BUCSR register
+    powerpc/fsl: Sanitize the syscall table for NXP PowerPC 32 bit platforms
 
 to the 4.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     powerpc-fsl-emulate-sprn_bucsr-register.patch
+     powerpc-fsl-sanitize-the-syscall-table-for-nxp-powerpc-32-bit-platforms.patch
 and it can be found in the queue-4.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
@@ -100,46 +100,51 @@ please let <stable@vger.kernel.org> know about it.
 
 From foo@baz Tue 30 Apr 2019 12:38:50 PM CEST
 From: Diana Craciun <diana.craciun@nxp.com>
-Date: Mon, 29 Apr 2019 18:49:03 +0300
-Subject: powerpc/fsl: Emulate SPRN_BUCSR register
+Date: Mon, 29 Apr 2019 18:49:05 +0300
+Subject: powerpc/fsl: Sanitize the syscall table for NXP PowerPC 32 bit platforms
 To: stable@vger.kernel.org, gregkh@linuxfoundation.org
 Cc: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, Diana Craciun <diana.craciun@nxp.com>
-Message-ID: <1556552948-24957-4-git-send-email-diana.craciun@nxp.com>
+Message-ID: <1556552948-24957-6-git-send-email-diana.craciun@nxp.com>
 
 From: Diana Craciun <diana.craciun@nxp.com>
 
-commit 98518c4d8728656db349f875fcbbc7c126d4c973 upstream.
+commit c28218d4abbf4f2035495334d8bfcba64bda4787 upstream.
 
-In order to flush the branch predictor the guest kernel performs
-writes to the BUCSR register which is hypervisor privilleged. However,
-the branch predictor is flushed at each KVM entry, so the branch
-predictor has been already flushed, so just return as soon as possible
-to guest.
+Used barrier_nospec to sanitize the syscall table.
 
 Signed-off-by: Diana Craciun <diana.craciun@nxp.com>
-[mpe: Tweak comment formatting]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kvm/e500_emulate.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/entry_32.S |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/powerpc/kvm/e500_emulate.c
-+++ b/arch/powerpc/kvm/e500_emulate.c
-@@ -277,6 +277,13 @@ int kvmppc_core_emulate_mtspr_e500(struc
- 		vcpu->arch.pwrmgtcr0 = spr_val;
- 		break;
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -33,6 +33,7 @@
+ #include <asm/unistd.h>
+ #include <asm/ftrace.h>
+ #include <asm/ptrace.h>
++#include <asm/barrier.h>
  
-+	case SPRN_BUCSR:
-+		/*
-+		 * If we are here, it means that we have already flushed the
-+		 * branch predictor, so just return to guest.
-+		 */
-+		break;
+ /*
+  * MSR_KERNEL is > 0x10000 on 4xx/Book-E since it include MSR_CE.
+@@ -340,6 +341,15 @@ syscall_dotrace_cont:
+ 	ori	r10,r10,sys_call_table@l
+ 	slwi	r0,r0,2
+ 	bge-	66f
 +
- 	/* extra exceptions */
- #ifdef CONFIG_SPE_POSSIBLE
- 	case SPRN_IVOR32:
++	barrier_nospec_asm
++	/*
++	 * Prevent the load of the handler below (based on the user-passed
++	 * system call number) being speculatively executed until the test
++	 * against NR_syscalls and branch to .66f above has
++	 * committed.
++	 */
++
+ 	lwzx	r10,r10,r0	/* Fetch system call handler [ptr] */
+ 	mtlr	r10
+ 	addi	r9,r1,STACK_FRAME_OVERHEAD
 
 
 Patches currently in stable-queue which might be from diana.craciun@nxp.com are
