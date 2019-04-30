@@ -2,67 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD40C100CC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 22:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E02C100FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2019 22:39:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44ttQm0jN1zDqMM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 06:28:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44ttgJ10S6zDqTk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 06:39:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="COv+Fw3q"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=tyreld@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44ttMP3k7TzDq8F
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 06:25:52 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id j26so7370581pgl.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 13:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=PumMms/fmvRZNGgk1wpaT/iecwtP2mfoCrsOEiXiMBw=;
- b=COv+Fw3qYpQJGBIu/FlHN4GwAnWb+mBOMG3BzMpMWRcjr0uvOtAeIxDScZFZT+bw7k
- nvDtQ1BYuJQ9P1OVIjzsX8vbEFl6U9x1i62pua//qQiKBVPaM0GruaoDc01Sgq5ZCvEO
- zAeBrm73peFGCc4ffFShl5jVh79XwrcrTrS/600nprTYXF/O60fZtpjAMDo+sfyXoiAh
- U0j6I2sp7hCnCLsoE8QzLLeGghv6zAIxRTrar+5bEildulXLpmV+svPWfe+WSqap9x+2
- o0gDraqO7iUecqRNdiF7D2r0Y5GD7l6giiH+OWVuccUhC9mCOSPv3XgOrD7uurIhnkQF
- JbmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=PumMms/fmvRZNGgk1wpaT/iecwtP2mfoCrsOEiXiMBw=;
- b=I1K1XGfPU203OEuNaWxZMqteMXW8cjbYUQuWJTd8RIN4wpImrD52TF2BKzo3Ocm1iZ
- zDr6aa4ZYsu0KLoDbnyitP1iQ27iiS13u3jqjLGrc554qJdoB6BrZTL6Np7+lDfU0wAD
- T9gbkr5ZjlioGGHQ1A1HXASlS0SdWE8ow1NDsAglJzimZW55jsLFV4as6NLMT40UNnFZ
- ad+49UPVWMkLwsrijsUoa6z0Hss1CQx1GYv3yWLJqsVVSlqmQhY9VcqFexsk9s4wS1ar
- cqFbx53pQbQZ5wlGpaF3QtE/B4vdvZvzJEpwLkTgFB6KXFQe4sY6uYmjsFd1r82ABfSQ
- fzNQ==
-X-Gm-Message-State: APjAAAUvCA5CdaBk9Q0hQZZ3CNqccEZMUQx3RmqBtiN5fQcj5A0tlvNM
- z04VMMbWE43zIU8TYVvbtg+jX2YxeDK4vIAGPhmi1g==
-X-Google-Smtp-Source: APXvYqxPruPo3q2EEOLkAgwqeO24bHPYSbHgRM4IkVR8xVhZ8jhDuWMYQDccRT/raKHKAmEfAQt5wvtxASCfnyBCnjc=
-X-Received: by 2002:a63:f817:: with SMTP id n23mr27483996pgh.302.1556655950636; 
- Tue, 30 Apr 2019 13:25:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44ttdH1wy2zDqCF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 06:37:54 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x3UKb56D031812
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 16:37:52 -0400
+Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2s6uqqcuqy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2019 16:37:51 -0400
+Received: from localhost
+ by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <tyreld@linux.vnet.ibm.com>;
+ Tue, 30 Apr 2019 21:37:51 +0100
+Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
+ by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 30 Apr 2019 21:37:47 +0100
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x3UKbkTI52625520
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Apr 2019 20:37:46 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F79B6A04D;
+ Tue, 30 Apr 2019 20:37:46 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0BB646A04F;
+ Tue, 30 Apr 2019 20:37:44 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.85.196.56])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 30 Apr 2019 20:37:44 +0000 (GMT)
+Subject: Re: [PATCH] powerpc: Fix kobject memleak
+To: "Tobin C. Harding" <tobin@kernel.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20190430010923.17092-1-tobin@kernel.org>
+From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Date: Tue, 30 Apr 2019 13:37:44 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20190423211116.261111-1-ndesaulniers@google.com>
-In-Reply-To: <20190423211116.261111-1-ndesaulniers@google.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 30 Apr 2019 13:25:39 -0700
-Message-ID: <CAKwvOd=dBLXQUzv8R3-JqF=pUTH0-5O3v+_ceekT3W23VxtDbg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: vdso: drop unnecessary cc-ldoption
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190430010923.17092-1-tobin@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19043020-0020-0000-0000-00000EDEC793
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011024; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01196706; UDB=6.00627605; IPR=6.00977555; 
+ MB=3.00026672; MTD=3.00000008; XFM=3.00000015; UTC=2019-04-30 20:37:50
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19043020-0021-0000-0000-000065A00A14
+Message-Id: <2cf94d15-1e41-dd03-7b35-d69907dbb8b2@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-04-30_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=834 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1904300122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,69 +96,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 23, 2019 at 2:11 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> Towards the goal of removing cc-ldoption, it seems that --hash-style=
-> was added to binutils 2.17.50.0.2 in 2006. The minimal required version
-> of binutils for the kernel according to
-> Documentation/process/changes.rst is 2.20.
->
-> Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
-> Cc: clang-built-linux@googlegroups.com
-> Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+On 04/29/2019 06:09 PM, Tobin C. Harding wrote:
+> Currently error return from kobject_init_and_add() is not followed by a
+> call to kobject_put().  This means there is a memory leak.
+> 
+> Add call to kobject_put() in error path of kobject_init_and_add().
+> 
+> Signed-off-by: Tobin C. Harding <tobin@kernel.org>
 > ---
->  arch/powerpc/kernel/vdso32/Makefile | 5 ++---
->  arch/powerpc/kernel/vdso64/Makefile | 5 ++---
->  2 files changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
-> index ce199f6e4256..06f54d947057 100644
-> --- a/arch/powerpc/kernel/vdso32/Makefile
-> +++ b/arch/powerpc/kernel/vdso32/Makefile
-> @@ -26,9 +26,8 @@ GCOV_PROFILE := n
->  KCOV_INSTRUMENT := n
->  UBSAN_SANITIZE := n
->
-> -ccflags-y := -shared -fno-common -fno-builtin
-> -ccflags-y += -nostdlib -Wl,-soname=linux-vdso32.so.1 \
-> -               $(call cc-ldoption, -Wl$(comma)--hash-style=both)
-> +ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
-> +       -Wl,-soname=linux-vdso32.so.1 -Wl,--hash-style=both
->  asflags-y := -D__VDSO32__ -s
->
->  obj-y += vdso32_wrapper.o
-> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
-> index 28e7d112aa2f..32ebb3522ea1 100644
-> --- a/arch/powerpc/kernel/vdso64/Makefile
-> +++ b/arch/powerpc/kernel/vdso64/Makefile
-> @@ -12,9 +12,8 @@ GCOV_PROFILE := n
->  KCOV_INSTRUMENT := n
->  UBSAN_SANITIZE := n
->
-> -ccflags-y := -shared -fno-common -fno-builtin
-> -ccflags-y += -nostdlib -Wl,-soname=linux-vdso64.so.1 \
-> -               $(call cc-ldoption, -Wl$(comma)--hash-style=both)
-> +ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
-> +       -Wl,-soname=linux-vdso64.so.1 -Wl,--hash-style=both
->  asflags-y := -D__VDSO64__ -s
->
->  obj-y += vdso64_wrapper.o
-> --
-> 2.21.0.593.g511ec345e18-goog
->
 
-bumping for review
--- 
-Thanks,
-~Nick Desaulniers
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+
