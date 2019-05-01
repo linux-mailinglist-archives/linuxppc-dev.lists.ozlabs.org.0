@@ -2,38 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87781059B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 08:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89047105AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 09:06:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44v87F1bPRzDqSD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 16:46:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44v8Z40wmLzDqSf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 17:06:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=russell.cc
+ (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com;
+ envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="LUFDtgkh"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="JT1mxwUJ"; dkim-atps=neutral
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44v85W4556zDqCZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 16:44:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44v85V4jQNz9sNQ;
- Wed,  1 May 2019 16:44:46 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Lombard <clombard@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, fbarrat@linux.vnet.ibm.com,
- vaibhav@linux.vnet.ibm.com, andrew.donnellan@au1.ibm.com
-Subject: Re: [PATCH] cxl: Add new kernel traces
-In-Reply-To: <1520933440-24652-1-git-send-email-clombard@linux.vnet.ibm.com>
-References: <1520933440-24652-1-git-send-email-clombard@linux.vnet.ibm.com>
-Date: Wed, 01 May 2019 16:44:45 +1000
-Message-ID: <87muk6ad2a.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44v8Xh23vKzDqHq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 17:04:51 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 56FEE575;
+ Wed,  1 May 2019 03:04:49 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Wed, 01 May 2019 03:04:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
+ 8sKnl7/rBgZD6ViKOUA7iuC1Sja05lkEBS/a1jGjHFA=; b=LUFDtgkhwe+b6WOp
+ 68G8c7qvntquYP/Iuq3v9mtZ4UuVH9MEwkdR8jX8fibo7Vd7YlqauN8C94uSbwEm
+ QOfin1TBmC+EZfFINupdCbTL4hXHYSMqh8UwqI8TZ1zVYo1VJd0zBW5SvznNPLab
+ sJbR/ijmSA6zMDpQ55fJIZEADHgmgJWC0gopEHbew0G3m/BfQmKtNTQjNztJGA20
+ f92ZyTWX/waK+Qj4b3CmLvnS1E2wc0eQJWWqT63IVcE3p9BD2dLBGm16gf7xleYB
+ TG5MySTVex6rwi5IrhYSlUpUL89ebh9XgPFeMEaJUHfTm7BaZF6YMAGRih8uUcVR
+ 3p+LJQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; bh=8sKnl7/rBgZD6ViKOUA7iuC1Sja05lkEBS/a1jGjH
+ FA=; b=JT1mxwUJ8cupobmdT7v5qv/Q1KTC7nM92l70/VWpTyfiwjoAIXksW5u68
+ XDqZJJGoTrczPJINs/vW2Q3OdsySPA5LfXTicS3nLjDB17WhdJNME6E2f8h+DKEn
+ iKWWvfvdaQYbdCEdYixuAQpy7Z3fk9Z78qeenUTRvmeevQCTilnYpFIdI7tQTWPX
+ UB2rvbJ9PCZsXr4Q8c8ExUe0Mv2+4bAr3mMomRwgOSKN0HQtgzmczigDnB5DacKw
+ MEcbBUpPnGQY8lOLNNtkGGct0e8dcARdiXcJb6jk/+rnqwJb93CTY9/43sqjztaH
+ 0kaLWitpmfMkEJsKBcw5zPEtnUsUw==
+X-ME-Sender: <xms:EEXJXCJJ55mgclpLDl9KvfTxqYvdnz_DZIEOrInhpzuhW026oB5Npg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieeigdduudejucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ gfrhhlucfvnfffucdlfedtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddt
+ reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+ hsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecurfgrrhgrmhepmhgr
+ ihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggtnecuvehluhhsthgvrhfuih
+ iivgeptd
+X-ME-Proxy: <xmx:EEXJXAs0nJKsvNALQPY2Ve_tMSVydnsfhnvL54a8MxdI_sCsZGg04g>
+ <xmx:EEXJXAKUhO4KX9sFGFWEqdD0SfeLYI4dpFW2lXb63ZF6YWrDo7RFog>
+ <xmx:EEXJXHm0aAzNtUFp-FR6JkGmRn6AdjbdfMX6fqDs6IbFIvr2nlhPvA>
+ <xmx:EEXJXMQ6GkosMbzQOzoxIwgPbblLU52CragxKlfNHFXDLIM3CjZaLg>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id E4DFE103CA;
+ Wed,  1 May 2019 03:04:45 -0400 (EDT)
+Message-ID: <ca5e1db5fca5c12ca69d7810d575a437ae39ec87.camel@russell.cc>
+Subject: Re: [PATCH 2/2] powerpc/mm: Warn if W+X pages found on boot
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 01 May 2019 17:04:42 +1000
+In-Reply-To: <8e659a8f-af3f-e889-3f7a-560178c1f7b1@c-s.fr>
+References: <20190424063958.24559-1-ruscur@russell.cc>
+ <20190424063958.24559-2-ruscur@russell.cc>
+ <8e659a8f-af3f-e889-3f7a-560178c1f7b1@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.1 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,34 +92,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Lombard <clombard@linux.vnet.ibm.com> writes:
+On Wed, 2019-04-24 at 09:14 +0200, Christophe Leroy wrote:
+> 
+> Le 24/04/2019 à 08:39, Russell Currey a écrit :
+> > Implement code to walk all pages and warn if any are found to be
+> > both
+> > writable and executable.  Depends on STRICT_KERNEL_RWX enabled, and
+> > is
+> > behind the DEBUG_WX config option.
+> > 
+> > This only runs on boot and has no runtime performance implications.
+> > 
+> > Very heavily influenced (and in some cases copied verbatim) from
+> > the
+> > ARM64 code written by Laura Abbott (thanks!), since our ptdump
+> > infrastructure is similar.
+> > 
+> > Signed-off-by: Russell Currey <ruscur@russell.cc>
+> > ---
+> >   arch/powerpc/Kconfig.debug         | 19 +++++++++++++++
+> >   arch/powerpc/include/asm/pgtable.h |  5 ++++
+> >   arch/powerpc/mm/pgtable_32.c       |  5 ++++
+> >   arch/powerpc/mm/pgtable_64.c       |  5 ++++
+> >   arch/powerpc/mm/ptdump/ptdump.c    | 38
+> > ++++++++++++++++++++++++++++++
+> >   5 files changed, 72 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/Kconfig.debug
+> > b/arch/powerpc/Kconfig.debug
+> > index 4e00cb0a5464..a4160ff02ed4 100644
+> > --- a/arch/powerpc/Kconfig.debug
+> > +++ b/arch/powerpc/Kconfig.debug
+> > @@ -361,6 +361,25 @@ config PPC_PTDUMP
+> >   
+> >   	  If you are unsure, say N.
+> >   
+> > +config DEBUG_WX
+> 
+> I would call it PPC_DEBUG_WX to avoid confusion.
 
-> This patch adds new kernel traces in the current in-kernel 'library'
-> which can be called by other drivers to help interacting with an
-> IBM XSL on a POWER9 system.
+It's the same functionality as on other architectures and is an arch-
+local thing, I personally think it should be left as-is but given we
+already put the PPC prefix on PTDUMP, I'll add it so it's consistent
+
+<snip>
+
+> > +	if (radix_enabled())
+> > +		st.start_address = PAGE_OFFSET;
+> > +	else
+> +		st.start_address = KERN_VIRT_START;
 >
-> If some kernel traces exist in the 'normal path' to handle a page or a
-> segment fault, some others are missing when a page fault is handle
-> through cxllib.
->
-> Signed-off-by: Christophe Lombard <clombard@linux.vnet.ibm.com>
-> ---
->  drivers/misc/cxl/cxllib.c |   3 ++
->  drivers/misc/cxl/fault.c  |   2 +
->  drivers/misc/cxl/irq.c    |   2 +-
->  drivers/misc/cxl/trace.h  | 115 ++++++++++++++++++++++++++--------------------
->  4 files changed, 72 insertions(+), 50 deletions(-)
+> KERN_VIRT_START doesn't exist on PPC32.
+> 
+> Christophe
+> 
+Thanks a lot for the review!  Applied all your suggestions.  What
+should I use on PPC32 instead?
 
-Sorry this no longer builds:
+- Russell
 
-drivers/misc/cxl/cxllib.c:215:35: note: each undeclared identifier is reported only once for each function it appears in
-drivers/misc/cxl/cxllib.c:215:41: error: 'flags' undeclared (first use in this function); did you mean 'class'?
-  trace_cxl_lib_handle_fault(addr, size, flags);
-                                         ^~~~~
-                                         class
-
-cheers
