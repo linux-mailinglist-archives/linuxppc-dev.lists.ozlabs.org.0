@@ -2,34 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9631310542
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 07:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEEEB10553
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 07:50:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44v6V76QsvzDqB2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 15:32:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44v6vL2M2JzDqWG
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 15:50:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 44v6Q51F1xzDqQ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 15:29:01 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 0BE5DAE802F9;
- Wed,  1 May 2019 01:28:27 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v2 2/2] powerpc/powernv/ioda2: Create bigger default
- window with 64k IOMMU pages
-Date: Wed,  1 May 2019 15:28:22 +1000
-Message-Id: <20190501052822.64667-3-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190501052822.64667-1-aik@ozlabs.ru>
-References: <20190501052822.64667-1-aik@ozlabs.ru>
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44v6t2303JzDqS7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 15:49:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 44v6t10X4Rz9s9T;
+ Wed,  1 May 2019 15:49:44 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: vakul.garg@nxp.com
+Subject: Re: [PATCH] crypto: caam/jr - Remove extra memory barrier during job
+ ring dequeue
+In-Reply-To: 20190409063505.16664-1-vakul.garg@nxp.com
+Date: Wed, 01 May 2019 15:49:44 +1000
+Message-ID: <87pnp2aflz.fsf@concordia.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,245 +43,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>, Oliver O'Halloran <oohall@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: aymen.sghaier@nxp.com, herbert@gondor.apana.org.au, horia.geanta@nxp.com,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the moment we create a small window only for 32bit devices, the window
-maps 0..2GB of the PCI space only. For other devices we either use
-a sketchy bypass or hardware bypass but the former can only work if
-the amount of RAM is no bigger than the device's DMA mask and the latter
-requires devices to support at least 59bit DMA.
+Vakul Garg wrote:
+> In function caam_jr_dequeue(), a full memory barrier is used before
+> writing response job ring's register to signal removal of the completed
+> job. Therefore for writing the register, we do not need another write
+> memory barrier. Hence it is removed by replacing the call to wr_reg32()
+> with a newly defined function wr_reg32_relaxed().
+> 
+> Signed-off-by: Vakul Garg <vakul.garg@nxp.com>
+> ---
+>  drivers/crypto/caam/jr.c   | 2 +-
+>  drivers/crypto/caam/regs.h | 8 ++++++++
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/crypto/caam/jr.c b/drivers/crypto/caam/jr.c
+> index 4e9b3fca5627..2ce6d7d2ad72 100644
+> --- a/drivers/crypto/caam/jr.c
+> +++ b/drivers/crypto/caam/jr.c
+> @@ -266,7 +266,7 @@ static void caam_jr_dequeue(unsigned long devarg)
+>  		mb();
+>  
+>  		/* set done */
+> -		wr_reg32(&jrp->rregs->outring_rmvd, 1);
+> +		wr_reg32_relaxed(&jrp->rregs->outring_rmvd, 1);
+>  
+>  		jrp->out_ring_read_index = (jrp->out_ring_read_index + 1) &
+>  					   (JOBR_DEPTH - 1);
+> diff --git a/drivers/crypto/caam/regs.h b/drivers/crypto/caam/regs.h
+> index 3cd0822ea819..9e912c722e33 100644
+> --- a/drivers/crypto/caam/regs.h
+> +++ b/drivers/crypto/caam/regs.h
+> @@ -96,6 +96,14 @@ cpu_to_caam(16)
+>  cpu_to_caam(32)
+>  cpu_to_caam(64)
+>  
+> +static inline void wr_reg32_relaxed(void __iomem *reg, u32 data)
+> +{
+> +	if (caam_little_end)
+> +		writel_relaxed(data, reg);
+> +	else
+> +		writel_relaxed(cpu_to_be32(data), reg);
+> +}
+> +
+>  static inline void wr_reg32(void __iomem *reg, u32 data)
+>  {
+>  	if (caam_little_end)
 
-This extends the default DMA window to the maximum size possible to allow
-a wider DMA mask than just 32bit. The default window size is now limited
-by the the iommu_table::it_map allocation bitmap which is a contiguous
-array, 1 bit per an IOMMU page.
+This crashes on my p5020ds. Did you test on powerpc?
 
-This increases the default IOMMU page size from hard coded 4K to
-the system page size to allow wider DMA masks.
+# first bad commit: [bbfcac5ff5f26aafa51935a62eb86b6eacfe8a49] crypto: caam/jr - Remove extra memory barrier during job ring dequeue
 
-This increases the level number to not exceed the max order allocation
-limit per TCE level. By the same time, this keeps minimal levels number
-as 2 in order to save memory.
+Log:
 
-As the extended window now overlaps the 32bit MMIO region, this adds
-an area reservation to iommu_init_table().
+  ------------[ cut here ]------------
+  kernel BUG at drivers/crypto/caam/jr.c:191!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  BE PAGE_SIZE=4K SMP NR_CPUS=24 CoreNet Generic
+  Modules linked in:
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.1.0-rc1-gcc-8.2.0-00060-gbbfcac5ff5f2 #31
+  NIP:  c00000000079d704 LR: c00000000079d498 CTR: c000000000086914
+  REGS: c0000000fffc7970 TRAP: 0700   Not tainted  (5.1.0-rc1-gcc-8.2.0-00060-gbbfcac5ff5f2)
+  MSR:  0000000080029000 <CE,EE,ME>  CR: 28008484  XER: 00000000
+  IRQMASK: 0
+  GPR00: c00000000079d6b0 c0000000fffc7c00 c000000000fbc800 0000000000000001
+  GPR04: 000000007e080080 000000000000ffc0 0000000000000001 00000000000067d7
+  GPR08: 00000000880401a9 0000000000000000 0000000000000001 00000000fa83b2da
+  GPR12: 0000000028008224 c00000003ffff800 c000000000fc20b0 0000000000000100
+  GPR16: 8920f09520bea117 c000000000def480 0000000000000000 0000000000000001
+  GPR20: c000000000fc3940 c0000000f3537e18 0000000000000001 c000000001026cc5
+  GPR24: 0000000000000001 c0000000f3328000 0000000000000001 c0000000f3451010
+  GPR28: 0000000000000000 0000000000000001 0000000000000000 0000000000000000
+  NIP [c00000000079d704] .caam_jr_dequeue+0x2f0/0x410
+  LR [c00000000079d498] .caam_jr_dequeue+0x84/0x410
+  Call Trace:
+  [c0000000fffc7c00] [c00000000079d6b0] .caam_jr_dequeue+0x29c/0x410 (unreliable)
+  [c0000000fffc7cd0] [c00000000004fef0] .tasklet_action_common.isra.3+0xac/0x180
+  [c0000000fffc7d80] [c000000000a2f99c] .__do_softirq+0x174/0x3f8
+  [c0000000fffc7e90] [c00000000004fb94] .irq_exit+0xc4/0xdc
+  [c0000000fffc7f00] [c000000000007348] .__do_irq+0x8c/0x1b0
+  [c0000000fffc7f90] [c0000000000150c4] .call_do_irq+0x14/0x24
+  [c0000000f3137930] [c0000000000074e4] .do_IRQ+0x78/0xd4
+  [c0000000f31379c0] [c000000000019998] exc_0x500_common+0xfc/0x100
+  --- interrupt: 501 at .book3e_idle+0x24/0x5c
+      LR = .book3e_idle+0x24/0x5c
+  [c0000000f3137cc0] [c00000000000a6a4] .arch_cpu_idle+0x34/0xa0 (unreliable)
+  [c0000000f3137d30] [c000000000a2f2e8] .default_idle_call+0x5c/0x70
+  [c0000000f3137da0] [c000000000084210] .do_idle+0x1b0/0x1f4
+  [c0000000f3137e40] [c000000000084434] .cpu_startup_entry+0x28/0x30
+  [c0000000f3137eb0] [c000000000021538] .start_secondary+0x59c/0x5b0
+  [c0000000f3137f90] [c00000000000045c] start_secondary_prolog+0x10/0x14
+  Instruction dump:
+  7d284a14 e9290018 2fa90000 40de001c 3bbd0001 57bd05fe 7d3db050 712901ff
+  7fbd07b4 40e2ffcc 93b500dc 4bffff94 <0fe00000> 78890022 79270020 41d600ec
+  ---[ end trace 7bedbdf37a95ab35 ]---
 
-After this change the default window size is 0x80000000000==1<<43 so
-devices limited to DMA mask smaller than the amount of system RAM can
-still use more than just 2GB of memory for DMA.
+That's hitting:
 
-With the on-demand allocation of indirect TCE table levels enabled and
-2 levels, the first TCE level size is just
-1<<ceil((log2(0x7ffffffffff+1)-16)/2)=16384 TCEs or 2 system pages.
+		/* we should never fail to find a matching descriptor */
+		BUG_ON(CIRC_CNT(head, tail + i, JOBR_DEPTH) <= 0);
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
-Changes:
-v2:
-* adjusted level number to the max order
----
- arch/powerpc/include/asm/iommu.h          |  8 +++-
- arch/powerpc/kernel/iommu.c               | 58 +++++++++++++++--------
- arch/powerpc/platforms/powernv/pci-ioda.c | 40 +++++++++++++---
- 3 files changed, 79 insertions(+), 27 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 0ac52392ed99..5ea782e04803 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -124,6 +124,8 @@ struct iommu_table {
- 	struct iommu_table_ops *it_ops;
- 	struct kref    it_kref;
- 	int it_nid;
-+	unsigned long it_reserved_start; /* Start of not-DMA-able (MMIO) area */
-+	unsigned long it_reserved_end;
- };
- 
- #define IOMMU_TABLE_USERSPACE_ENTRY_RO(tbl, entry) \
-@@ -162,8 +164,10 @@ extern int iommu_tce_table_put(struct iommu_table *tbl);
- /* Initializes an iommu_table based in values set in the passed-in
-  * structure
-  */
--extern struct iommu_table *iommu_init_table(struct iommu_table * tbl,
--					    int nid);
-+extern struct iommu_table *iommu_init_table_res(struct iommu_table *tbl,
-+		int nid, unsigned long res_start, unsigned long res_end);
-+#define iommu_init_table(tbl, nid) iommu_init_table_res((tbl), (nid), 0, 0)
-+
- #define IOMMU_TABLE_GROUP_MAX_TABLES	2
- 
- struct iommu_table_group;
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 33bbd59cff79..209306ce7f4b 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -646,11 +646,43 @@ static void iommu_table_clear(struct iommu_table *tbl)
- #endif
- }
- 
-+static void iommu_table_reserve_pages(struct iommu_table *tbl)
-+{
-+	int i;
-+
-+	/*
-+	 * Reserve page 0 so it will not be used for any mappings.
-+	 * This avoids buggy drivers that consider page 0 to be invalid
-+	 * to crash the machine or even lose data.
-+	 */
-+	if (tbl->it_offset == 0)
-+		set_bit(0, tbl->it_map);
-+
-+	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
-+		set_bit(i, tbl->it_map);
-+}
-+
-+static void iommu_table_release_pages(struct iommu_table *tbl)
-+{
-+	int i;
-+
-+	/*
-+	 * In case we have reserved the first bit, we should not emit
-+	 * the warning below.
-+	 */
-+	if (tbl->it_offset == 0)
-+		clear_bit(0, tbl->it_map);
-+
-+	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
-+		clear_bit(i, tbl->it_map);
-+}
-+
- /*
-  * Build a iommu_table structure.  This contains a bit map which
-  * is used to manage allocation of the tce space.
-  */
--struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid)
-+struct iommu_table *iommu_init_table_res(struct iommu_table *tbl, int nid,
-+		unsigned long res_start, unsigned long res_end)
- {
- 	unsigned long sz;
- 	static int welcomed = 0;
-@@ -669,13 +701,9 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid)
- 	tbl->it_map = page_address(page);
- 	memset(tbl->it_map, 0, sz);
- 
--	/*
--	 * Reserve page 0 so it will not be used for any mappings.
--	 * This avoids buggy drivers that consider page 0 to be invalid
--	 * to crash the machine or even lose data.
--	 */
--	if (tbl->it_offset == 0)
--		set_bit(0, tbl->it_map);
-+	tbl->it_reserved_start = res_start;
-+	tbl->it_reserved_end = res_end;
-+	iommu_table_reserve_pages(tbl);
- 
- 	/* We only split the IOMMU table if we have 1GB or more of space */
- 	if ((tbl->it_size << tbl->it_page_shift) >= (1UL * 1024 * 1024 * 1024))
-@@ -727,12 +755,7 @@ static void iommu_table_free(struct kref *kref)
- 		return;
- 	}
- 
--	/*
--	 * In case we have reserved the first bit, we should not emit
--	 * the warning below.
--	 */
--	if (tbl->it_offset == 0)
--		clear_bit(0, tbl->it_map);
-+	iommu_table_release_pages(tbl);
- 
- 	/* verify that table contains no entries */
- 	if (!bitmap_empty(tbl->it_map, tbl->it_size))
-@@ -1037,8 +1060,7 @@ int iommu_take_ownership(struct iommu_table *tbl)
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_lock(&tbl->pools[i].lock);
- 
--	if (tbl->it_offset == 0)
--		clear_bit(0, tbl->it_map);
-+	iommu_table_reserve_pages(tbl);
- 
- 	if (!bitmap_empty(tbl->it_map, tbl->it_size)) {
- 		pr_err("iommu_tce: it_map is not empty");
-@@ -1068,9 +1090,7 @@ void iommu_release_ownership(struct iommu_table *tbl)
- 
- 	memset(tbl->it_map, 0, sz);
- 
--	/* Restore bit#0 set by iommu_init_table() */
--	if (tbl->it_offset == 0)
--		set_bit(0, tbl->it_map);
-+	iommu_table_release_pages(tbl);
- 
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_unlock(&tbl->pools[i].lock);
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 3ead4c237ed0..d4fd23fc7b86 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2421,6 +2421,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- {
- 	struct iommu_table *tbl = NULL;
- 	long rc;
-+	unsigned long res_start, res_end;
- 
- 	/*
- 	 * crashkernel= specifies the kdump kernel's maximum memory at
-@@ -2434,19 +2435,46 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 	 * DMA window can be larger than available memory, which will
- 	 * cause errors later.
- 	 */
--	const u64 window_size = min((u64)pe->table_group.tce32_size, max_memory);
-+	const u64 maxblock = 1UL << (PAGE_SHIFT + MAX_ORDER - 1);
- 
--	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0,
--			IOMMU_PAGE_SHIFT_4K,
--			window_size,
--			POWERNV_IOMMU_DEFAULT_LEVELS, false, &tbl);
-+	/*
-+	 * We create the default window as big as we can. The constraint is
-+	 * the max order of allocation possible. The TCE tableis likely to
-+	 * end up being multilevel and with on-demand allocation in place,
-+	 * the initial use is not going to be huge as the default window aims
-+	 * to support cripplied devices (i.e. not fully 64bit DMAble) only.
-+	 */
-+	/* iommu_table::it_map uses 1 bit per IOMMU page, hence 8 */
-+	const u64 window_size = min((maxblock * 8) << PAGE_SHIFT, max_memory);
-+	/* Each TCE level cannot exceed maxblock so go multilevel if needed */
-+	unsigned long tces = window_size >> PAGE_SHIFT;
-+	unsigned long tces_level = maxblock >> 3;
-+	unsigned int levels = tces / tces_level;
-+
-+	if (tces % tces_level)
-+		levels += 1;
-+	/*
-+	 * We try to stick to default levels (which is >1 at the moment) in
-+	 * order to save memory by relying on on-demain TCE level allocation.
-+	 */
-+	levels = max_t(unsigned int, levels, POWERNV_IOMMU_DEFAULT_LEVELS);
-+
-+	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0, PAGE_SHIFT,
-+			window_size, levels, false, &tbl);
- 	if (rc) {
- 		pe_err(pe, "Failed to create 32-bit TCE table, err %ld",
- 				rc);
- 		return rc;
- 	}
- 
--	iommu_init_table(tbl, pe->phb->hose->node);
-+	/* We use top part of 32bit space for MMIO so exclude it from DMA */
-+	res_start = 0;
-+	res_end = 0;
-+	if (window_size > pe->phb->ioda.m32_pci_base) {
-+		res_start = pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
-+		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
-+	}
-+	iommu_init_table_res(tbl, pe->phb->hose->node, res_start, res_end);
- 
- 	rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
- 	if (rc) {
--- 
-2.17.1
-
+cheers
