@@ -1,156 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C5C105E2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 09:30:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44v962391TzDqMK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 17:30:18 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACA710660
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 11:31:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vCnD6M7FzDqTQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 19:30:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (helo)
+ smtp.helo=eur02-ve1-obe.outbound.protection.outlook.com
+ (client-ip=40.107.2.131; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=rasmus.villemoes@prevas.se; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="P8YVJmSl"; 
+ dmarc=none (p=none dis=none) header.from=prevas.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=prevas.se header.i=@prevas.se header.b="ICMnzefB"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr20131.outbound.protection.outlook.com [40.107.2.131])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44v94W302TzDqKV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 17:28:57 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id b3so8286549pfd.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2019 00:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=+lcfJ/1QBe+beURVW5WAqgL0wvZzYAsGCv6AuqiLRSw=;
- b=P8YVJmSlWznwka5luxRqeslQ1xqtNdJVCI4QtBgbo6skNEy05YC5fulNvFR4wduyOR
- OD/n0y8ipOnBgKDrNTwGZ/oHGIWMbtiMyO02AmENKkSZPJGT79Wi1mdSGk09+FvwCw3/
- +2KlbpAPeejbc8pE1FtPj+Id1ZiGlu1h4747Nh6SvEawd8mAOsPCZANtlIo/NkkO3mHE
- fHr5tjTNdTE0Wy1l3iWQM+VceFN9d1fhqOKSCzf4nvs7RTtA14mrwKrEOecnWubqaDsT
- P5/viy3Zxw8aTPSzj35uqq1cEVEQVcrV3uLNajW/IrNmnKkUsNbi34SB2nbTPkgKywP4
- fLVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=+lcfJ/1QBe+beURVW5WAqgL0wvZzYAsGCv6AuqiLRSw=;
- b=eFcfxQSa3GP7GvSqywoVOKOES2xggjOWCFBT3R2P5fF7bkyM769p8Kgey+Ob5UW10q
- Gly4LzM1PHUwRRD+MATO8gpZlEYm6HCL0+hHV4Vx8N1sP9ftM7ysHd0p4pydASlokiku
- 8mKK7FtS40hq7R5oQBUDqTqrNM0ovWJqsInldp0WneAukv8n25/M+6+CexSIkT8NC2NG
- iPnZnsdAaSENNUZJsrVwilur9RXzvqAiKgTvVzPo3Ln9s35xXOJRZxBGXFmzV1I4vf7I
- tCUWlEDXMcxOQZaK17WR1p603bN/jvl6COWxPpUD+6L79Ad//ImeCCt/8JN3VNfoSnfc
- sQ4Q==
-X-Gm-Message-State: APjAAAV5yypLITantDxb25G6ECq4jgMc/RCEc466TMuHuV9/giCYrIHO
- hTREhGk4iYhglvwEBJ0znBviCA==
-X-Google-Smtp-Source: APXvYqwLHb8DaE4vW90LFygsF9OtsnzLhS72mQko0mq4d4HMHu1BZT7ppljSKNQhJimzFu7DO+YNzA==
-X-Received: by 2002:a63:28c8:: with SMTP id
- o191mr30948211pgo.164.1556695734487; 
- Wed, 01 May 2019 00:28:54 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id f87sm65198212pff.56.2019.05.01.00.28.51
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 01 May 2019 00:28:53 -0700 (PDT)
-Subject: Re: [PATCH kernel v2 0/2] powerpc/ioda2: Another attempt to allow DMA
- masks between 32 and 59
-To: Alistair Popple <alistair@popple.id.au>
-References: <20190501052822.64667-1-aik@ozlabs.ru>
- <2637621.o3tU8Khc0e@townsend>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Openpgp: preference=signencrypt
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <ffc44b1c-ca9d-84c9-e72b-4de51d36900f@ozlabs.ru>
-Date: Wed, 1 May 2019 17:28:49 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <2637621.o3tU8Khc0e@townsend>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vClG03htzDqNj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 19:29:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.se; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oEHOss+tChlyXXqJGO0y71EE80c9sJqiMhQ3L42wg/E=;
+ b=ICMnzefBkqPEe1WQ1oDKxGJLNa49EFVdRve5P9kLhJJKgKtOoIRP/BjgLY+dxtkmne0OS5mvcI0hxUUJeOLLqtzxOnKEwHjbGEXoAgdPTE6N/3qB77b7+x3nVaNQuWWrxkq88APcOPLNZAyeJ4f+tnUf+Kywm8W/+1XmPjXbeH0=
+Received: from VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM (20.178.126.212) by
+ VI1PR10MB2143.EURPRD10.PROD.OUTLOOK.COM (20.177.60.21) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.14; Wed, 1 May 2019 09:29:02 +0000
+Received: from VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::48b8:9cff:182:f3d8]) by VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::48b8:9cff:182:f3d8%2]) with mapi id 15.20.1856.008; Wed, 1 May 2019
+ 09:29:02 +0000
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+To: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Qiang Zhao
+ <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
+Subject: [PATCH v2 0/6] soc/fsl/qe: cleanups and new DT binding
+Thread-Topic: [PATCH v2 0/6] soc/fsl/qe: cleanups and new DT binding
+Thread-Index: AQHVAABPKUiIhooNmUW5rKx1Bivkwg==
+Date: Wed, 1 May 2019 09:29:01 +0000
+Message-ID: <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
+References: <20190430133615.25721-1-rasmus.villemoes@prevas.dk>
+In-Reply-To: <20190430133615.25721-1-rasmus.villemoes@prevas.dk>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: HE1PR0102CA0052.eurprd01.prod.exchangelabs.com
+ (2603:10a6:7:7d::29) To VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:e3::20)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Rasmus.Villemoes@prevas.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.20.1
+x-originating-ip: [81.216.59.226]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f816a075-9126-4083-d6bc-08d6ce1771db
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);
+ SRVR:VI1PR10MB2143; 
+x-ms-traffictypediagnostic: VI1PR10MB2143:
+x-microsoft-antispam-prvs: <VI1PR10MB214388D2EA8446B203679CF18A3B0@VI1PR10MB2143.EURPRD10.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 00246AB517
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(979002)(376002)(136003)(39850400004)(346002)(396003)(366004)(189003)(199004)(14454004)(81166006)(110136005)(54906003)(26005)(68736007)(8676002)(6512007)(4326008)(8976002)(486006)(74482002)(71200400001)(2906002)(7416002)(6486002)(72206003)(186003)(316002)(478600001)(2501003)(36756003)(6436002)(71190400001)(25786009)(1076003)(6506007)(2616005)(305945005)(3846002)(44832011)(256004)(11346002)(6116002)(5660300002)(8936002)(14444005)(446003)(476003)(50226002)(76176011)(42882007)(7736002)(99286004)(66446008)(64756008)(53936002)(52116002)(107886003)(386003)(66066001)(66946007)(66476007)(102836004)(66556008)(81156014)(73956011)(969003)(989001)(999001)(1009001)(1019001);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:VI1PR10MB2143;
+ H:VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: prevas.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: YQmxWf/qj7b+Ws9BfLs0RRpmC1F41s5yP5TXw9h2GKXqYXM/DIbb3RHgmoXyx3dC/luIAGLQQg6hgV/NorahWeKQxI8Dzs2zy9/u7mWlvu9d6dUEhNHzVEUj31lRHDc1UPaBTA/P+K7N6DJ+SBMXPlDY2VMecEIHaKe9dYBfYcN+kA88rF58z7L+snjE9gv8stfgFsocGu/IJl9Cr9eWHWjEl5pvGF9g+bUZum82Ru//ITSOCcA21b7RkszLUBVAuZZSsci1EFw+bwL2zRMyXqARHVmkHR7QNpZRjNbI2DaSLFKnUi/rXFUfSjo6ApaXfMgdtiTjGKBbvsBJgYJFP9kML3RSiuxvzXugsYp+HDywKDR2cGcTjMmdQsHIIKONNRbn3krvUp4TYP6Ct1NKqJAFQgruyEHPaRTm6r0H80I=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: f816a075-9126-4083-d6bc-08d6ce1771db
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2019 09:29:01.9393 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB2143
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -162,94 +97,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
+ Rob Herring <robh+dt@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 01/05/2019 16:09, Alistair Popple wrote:
-> Hi Alexey,
-> 
-> Do we need a seperate patch to allow this to be used? Last time I tried 
-> calling dma_set_mask(52) on powernv it returned an error and there doesn't 
-> seem to be anything obvious to me in this series to change that behaviour, but 
-> perhaps I missed something.
-
-
-Right now (this could have changed with the Hellwig's patches) when
-called with MASK(52), dma_iommu_dma_supported() will select the default
-ops and allow any mask. The kernel won't be able to use the entire mask
-(since the default window won't be that big) and eventually
-dma_map_ops::alloc() will fail when the entire DMA window is used but
-this may happen anyway. This patchset does not change this behaviour,
-just moves the upper limit for DMA window further up.
-
-
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/kernel/dma-iommu.c?h=v5.1-rc7#n117
-
-int dma_iommu_dma_supported(struct device *dev, u64 mask)
-{
-	struct iommu_table *tbl = get_iommu_table_base(dev);
-
-	if (!tbl) {
-		dev_info(dev, "Warning: IOMMU dma not supported: mask 0x%08llx"
-			", table unavailable\n", mask);
-		return 0;
-	}
-
-	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
-		dev->archdata.iommu_bypass = true;
-		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
-		return 1;
-	}
-
-	if (tbl->it_offset > (mask >> tbl->it_page_shift)) {
-		dev_info(dev, "Warning: IOMMU offset too big for device mask\n");
-		dev_info(dev, "mask: 0x%08llx, table offset: 0x%08lx\n",
-				mask, tbl->it_offset << tbl->it_page_shift);
-		return 0;
-	}
-
-	dev_dbg(dev, "iommu: not 64-bit, using default ops\n");
-	dev->archdata.iommu_bypass = false;
-	return 1;
-}
-
-
-> 
-> - Alistair
-> 
-> On Wednesday, 1 May 2019 3:28:20 PM AEST Alexey Kardashevskiy wrote:
->> This is an attempt to allow DMA masks between 32..59 which are not large
->> enough to use either a PHB3 bypass mode or a sketchy bypass. Depending
->> on the max order, up to 40 is usually available.
->>
->>
->> This is based on sha1
->> 37624b58542f Linus Torvalds "Linux 5.1-rc7".
->>
->> Please comment. Thanks.
->>
->>
->>
->> Alexey Kardashevskiy (2):
->>   powerpc/powernv/ioda2: Allocate TCE table levels on demand for default
->>     DMA window
->>   powerpc/powernv/ioda2: Create bigger default window with 64k IOMMU
->>     pages
->>
->>  arch/powerpc/include/asm/iommu.h              |  8 ++-
->>  arch/powerpc/platforms/powernv/pci.h          |  2 +-
->>  arch/powerpc/kernel/iommu.c                   | 58 +++++++++++++------
->>  arch/powerpc/platforms/powernv/pci-ioda-tce.c | 20 +++----
->>  arch/powerpc/platforms/powernv/pci-ioda.c     | 40 +++++++++++--
->>  5 files changed, 90 insertions(+), 38 deletions(-)
-> 
-> 
-
--- 
-Alexey
+VGhpcyBzbWFsbCBzZXJpZXMgY29uc2lzdHMgb2Ygc29tZSBzbWFsbCBjbGVhbnVwcyBhbmQgc2lt
+cGxpZmljYXRpb25zDQpvZiB0aGUgUVVJQ0MgZW5naW5lIGRyaXZlciwgYW5kIGludHJvZHVjZXMg
+YSBuZXcgRFQgYmluZGluZyB0aGF0IG1ha2VzDQppdCBtdWNoIGVhc2llciB0byBzdXBwb3J0IG90
+aGVyIHZhcmlhbnRzIG9mIHRoZSBRVUlDQyBlbmdpbmUgSVAgYmxvY2sNCnRoYXQgYXBwZWFycyBp
+biB0aGUgd2lsZDogVGhlcmUncyBubyByZWFzb24gdG8gZXhwZWN0IGluIGdlbmVyYWwgdGhhdA0K
+dGhlIG51bWJlciBvZiB2YWxpZCBTTlVNcyB1bmlxdWVseSBkZXRlcm1pbmVzIHRoZSBzZXQgb2Yg
+c3VjaCwgc28gaXQncw0KYmV0dGVyIHRvIHNpbXBseSBsZXQgdGhlIGRldmljZSB0cmVlIHNwZWNp
+ZnkgdGhlIHZhbHVlcyAoYW5kLA0KaW1wbGljaXRseSB2aWEgdGhlIGFycmF5IGxlbmd0aCwgYWxz
+byB0aGUgY291bnQpLg0KDQp2MjoNCi0gQWRkcmVzcyBjb21tZW50cyBmcm9tIENocmlzdG9waGUg
+TGVyb3kNCi0gQWRkIGhpcyBSZXZpZXdlZC1ieSB0byAxLzYgYW5kIDMvNg0KLSBTcGxpdCBEVCBi
+aW5kaW5nIHVwZGF0ZSB0byBzZXBhcmF0ZSBwYXRjaCBhcyBwZXINCiAgRG9jdW1lbnRhdGlvbi9k
+ZXZpY2V0cmVlL2JpbmRpbmdzL3N1Ym1pdHRpbmctcGF0Y2hlcy50eHQNCg0KDQpSYXNtdXMgVmls
+bGVtb2VzICg2KToNCiAgc29jL2ZzbC9xZTogcWUuYzogZHJvcCB1c2VsZXNzIHN0YXRpYyBxdWFs
+aWZpZXINCiAgc29jL2ZzbC9xZTogcWUuYzogcmVkdWNlIHN0YXRpYyBtZW1vcnkgZm9vdHByaW50
+IGJ5IDEuN0sNCiAgc29jL2ZzbC9xZTogcWUuYzogaW50cm9kdWNlIHFlX2dldF9kZXZpY2Vfbm9k
+ZSBoZWxwZXINCiAgZHQtYmluZGluZ3M6IHNvYy9mc2w6IHFlOiBkb2N1bWVudCBuZXcgZnNsLHFl
+LXNudW1zIGJpbmRpbmcNCiAgc29jL2ZzbC9xZTogcWUuYzogc3VwcG9ydCBmc2wscWUtc251bXMg
+cHJvcGVydHkNCiAgc29jL2ZzbC9xZTogcWUuYzogZm9sZCBxZV9nZXRfbnVtX29mX3NudW1zIGlu
+dG8gcWVfc251bXNfaW5pdA0KDQogLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc29jL2ZzbC9jcG1f
+cWUvcWUudHh0IHwgICA4ICstDQogZHJpdmVycy9zb2MvZnNsL3FlL3FlLmMgICAgICAgICAgICAg
+ICAgICAgICAgIHwgMTY0ICsrKysrKystLS0tLS0tLS0tLQ0KIDIgZmlsZXMgY2hhbmdlZCwgNzIg
+aW5zZXJ0aW9ucygrKSwgMTAwIGRlbGV0aW9ucygtKQ0KDQotLSANCjIuMjAuMQ0KDQo=
