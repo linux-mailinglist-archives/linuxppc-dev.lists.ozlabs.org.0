@@ -2,78 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D8410BF5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 19:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F40310C4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 19:42:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vQGP62DfzDqSx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 03:23:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vQh513FwzDqNj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 03:42:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+fbe6eae7536a933b5243+5729+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="dNFlA7q+"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="Siqt2t2t"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vQF24T19zDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 03:22:13 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44vQDv2VRLz9tyc2;
- Wed,  1 May 2019 19:22:07 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=dNFlA7q+; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id InMtWq2E-DNV; Wed,  1 May 2019 19:22:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44vQDv1Rlxz9tybh;
- Wed,  1 May 2019 19:22:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556731327; bh=P+ycD4GZ6KQ1BUKCv6VtK/4BHfP/mJbbQKvt313twl8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=dNFlA7q+L3AUpX1FPbXjlvyXrkKoTPNPVmqPEu1AZxaF47kLmQoiAHYJWDTdEqeeY
- OqLMsekNdjBkK3IaPX3BwfKLDJj/oaY8dKB5zA7LSYsBdjglEVtP8y+Z96EbAuRa1z
- faemrRGFe5Rvhfesl97Rn8XF59+XQ714ce3b2fzk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E49368B84C;
- Wed,  1 May 2019 19:22:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id t2ZbW3fjtIaX; Wed,  1 May 2019 19:22:08 +0200 (CEST)
-Received: from [192.168.232.53] (unknown [192.168.232.53])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BE8B8B74C;
- Wed,  1 May 2019 19:22:08 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc/32s: fix BATs setting with
- CONFIG_STRICT_KERNEL_RWX
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Serge Belyshev <belyshev@depni.sinp.msu.ru>,
- Segher Boessenkool <segher@kernel.crashing.org>
-References: <09733bd9d90f2ab9dfee9838442e0bea01df194d.1556640535.git.christophe.leroy@c-s.fr>
- <878svrat7x.fsf@concordia.ellerman.id.au>
-From: christophe leroy <christophe.leroy@c-s.fr>
-Message-ID: <47f3caee-510b-a95c-cf08-013a282141b6@c-s.fr>
-Date: Wed, 1 May 2019 19:22:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vQf22xtszDqJf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 03:40:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=QqltW55b8MUQJ4hT00KXOPTP8JAvi8T4BIhthG30Yx4=; b=Siqt2t2t4zEqN0iLnZ24k3d+G
+ m82DDcwqoZT5k50q5BTCcMKa9H/ZjhdrxxVMbvw0X84aALXe96hXoi+M8jXdAaMkLtfD35nXhwQ/j
+ j6v9Eqb9c5oEJHEWYzvOkaM3yRkKH/AOTh4DbKtkliloZyGQIToOHq3cjzZMuJTIG1lexvBOCqwV2
+ 3JZvLH8Bcv0R/w5z0VAfKIQezaMIteokjtW3COC7nesut2A/fcsLFphoXc9+z38BaT7MkEB9u9i4y
+ g+IucfVsN5mxw4RRjt9zVQdSFpTp4DwV9+waGcdbovSiuEsdfpHbvAzIiThaSOoECuJM3rY2rDeAz
+ SZCd2toTA==;
+Received: from adsl-173-228-226-134.prtc.net ([173.228.226.134] helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hLtDQ-0005te-Ro; Wed, 01 May 2019 17:40:21 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Oleg Nesterov <oleg@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: remove asm-generic/ptrace.h
+Date: Wed,  1 May 2019 13:39:38 -0400
+Message-Id: <20190501173943.5688-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <878svrat7x.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Antivirus: Avast (VPS 190501-4, 01/05/2019), Outbound message
-X-Antivirus-Status: Clean
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,77 +62,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi all,
 
-
-Le 01/05/2019 à 02:55, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> Serge reported some crashes with CONFIG_STRICT_KERNEL_RWX enabled
->> on a book3s32 machine.
->>
->> Analysis shows two issues:
->> - BATs addresses and sizes are not properly aligned.
->> - There is a gap between the last address covered by BATs and the
->> first address covered by pages.
->>
->> Memory mapped with DBATs:
->> 0: 0xc0000000-0xc07fffff 0x00000000 Kernel RO coherent
->> 1: 0xc0800000-0xc0bfffff 0x00800000 Kernel RO coherent
->> 2: 0xc0c00000-0xc13fffff 0x00c00000 Kernel RW coherent
->> 3: 0xc1400000-0xc23fffff 0x01400000 Kernel RW coherent
->> 4: 0xc2400000-0xc43fffff 0x02400000 Kernel RW coherent
->> 5: 0xc4400000-0xc83fffff 0x04400000 Kernel RW coherent
->> 6: 0xc8400000-0xd03fffff 0x08400000 Kernel RW coherent
->> 7: 0xd0400000-0xe03fffff 0x10400000 Kernel RW coherent
->>
->> Memory mapped with pages:
->> 0xe1000000-0xefffffff  0x21000000       240M        rw       present           dirty  accessed
->>
->> This patch fixes both issues. With the patch, we get the following
->> which is as expected:
->>
->> Memory mapped with DBATs:
->> 0: 0xc0000000-0xc07fffff 0x00000000 Kernel RO coherent
->> 1: 0xc0800000-0xc0bfffff 0x00800000 Kernel RO coherent
->> 2: 0xc0c00000-0xc0ffffff 0x00c00000 Kernel RW coherent
->> 3: 0xc1000000-0xc1ffffff 0x01000000 Kernel RW coherent
->> 4: 0xc2000000-0xc3ffffff 0x02000000 Kernel RW coherent
->> 5: 0xc4000000-0xc7ffffff 0x04000000 Kernel RW coherent
->> 6: 0xc8000000-0xcfffffff 0x08000000 Kernel RW coherent
->> 7: 0xd0000000-0xdfffffff 0x10000000 Kernel RW coherent
->>
->> Memory mapped with pages:
->> 0xe0000000-0xefffffff  0x20000000       256M        rw       present           dirty  accessed
->>
->> Reported-by: Serge Belyshev <belyshev@depni.sinp.msu.ru>
->> Fixes: 63b2bc619565 ("powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX")
->> Cc: stable@vger.kernel.org
-> 
-> I could probably still get this into v5.1 if you're confident it's a
-> good fix.
-
-If possible it would be great.
-
-Yes I'm confident it is a good fix:
-- The fix has no impact on the configurations I tested originally (they 
-were lacking a trailing area not mapped with BATs and the boundarie 
-between RW and RO was a power of 2 so ffs() returned the same as lfs())
-- The fix was tested by myself on QEMU.
-- The fix was tested by Serge.
-- The fix was acked by Segher.
-- The fix make sense (ie ffs() is the good one, fls() was definitly wrong)
-
-Christophe
-
-> 
-> cheers
-> 
-
----
-L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
-https://www.avast.com/antivirus
-
+asm-generic/ptrace.h is a little weird in that it doesn't actually
+implement any functionality, but it provided multiple layers of macros
+that just implement trivial inline functions.  We implement those
+directly in the few architectures and be off with a much simpler
+design.
