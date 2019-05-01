@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868ED10C5E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 19:46:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4392410C5A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2019 19:44:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vQl53sWkzDqRG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 03:44:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vQmq118JzDqM0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 03:46:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="NscaRcvv"; dkim-atps=neutral
+ header.b="kTy6Fwcp"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vQf63fpJzDqJf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 03:40:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vQf861SPzDqJf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 03:40:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Gkftjl1SPlwlgHVgBmP2lO3UX5HsGm179rqO0LQY9FM=; b=NscaRcvvcFam/+9Ik1AIzVKDij
- YWabhL+Jh814K8jMkQoMdj5UgoXHhsEF2KGzC7I0TBtfntOjKYdkFr3wAsayjvBQ8uYa78Rf+SC3p
- mRkT8ibnXaX/VdzziwnP0W/eECj9/wKKL+oIZNfGgfabggKXBZLNbxldRE6HYZ2haQ8pODXKNg+qM
- Zbab2LJDFqkgBhgxFPoppkTOj+vwRCehKfBLueO2MVWQE1Vame9yXRU74zEfBcG3rEzIozxn+q3gJ
- wiX6YrPalHa35TAil4z+/zYPdnoSg/390QsqmuOuXRJFJ2GxJbrtWeLWJojF9SxHQ4MNS3bV8xZMk
- mMcEiWZg==;
+ bh=ngUiwEDQptjC481jfdI3glduioMsRJldRZETJeFfRw8=; b=kTy6FwcpjbvgRSyTlVgtpyoXEn
+ bwCehv5Pin9sLdarGRLYz9ywdSvNZ+QGFj4WWNbAKwCA+o9L4E+ktqYnzvnAPr9QlD59B89CTXn6P
+ oi1Q36/DqDbp2WhGcGyzvYMN+3oZcP2tc44XiDrCqlXFN2PBf/KSCr7bjpfD7mGBqVPhwRwiV0jpe
+ atzqim91mIiaTIy+gbjEiBNz6uLbm12UHOuwOdramGl9kNU5m0DqVzGEbrqF8AScavkagQOFohFPb
+ uqWr+Df3TL3WZ44vwBmYeE7Jkc9uvhUoOtl7FYriNpMxVR8CNfr6LtrvEqKmImIe6QRYg24nCy0VR
+ b92je/3g==;
 Received: from adsl-173-228-226-134.prtc.net ([173.228.226.134] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hLtDU-0005uM-Hp; Wed, 01 May 2019 17:40:24 +0000
+ id 1hLtDW-0005wL-9P; Wed, 01 May 2019 17:40:26 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Oleg Nesterov <oleg@redhat.com>,
 	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 2/5] powerpc: don't use asm-generic/ptrace.h
-Date: Wed,  1 May 2019 13:39:40 -0400
-Message-Id: <20190501173943.5688-3-hch@lst.de>
+Subject: [PATCH 3/5] sh: don't use asm-generic/ptrace.h
+Date: Wed,  1 May 2019 13:39:41 -0400
+Message-Id: <20190501173943.5688-4-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190501173943.5688-1-hch@lst.de>
 References: <20190501173943.5688-1-hch@lst.de>
@@ -78,54 +78,55 @@ Note that only the helpers actually used are implemented now.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/powerpc/include/asm/ptrace.h | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ arch/sh/include/asm/ptrace.h | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index 64271e562fed..5d30944f1f6b 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -108,18 +108,33 @@ struct pt_regs
+diff --git a/arch/sh/include/asm/ptrace.h b/arch/sh/include/asm/ptrace.h
+index 9143c7babcbe..6c89e3e04cee 100644
+--- a/arch/sh/include/asm/ptrace.h
++++ b/arch/sh/include/asm/ptrace.h
+@@ -16,8 +16,31 @@
+ #define user_mode(regs)			(((regs)->sr & 0x40000000)==0)
+ #define kernel_stack_pointer(_regs)	((unsigned long)(_regs)->regs[15])
  
- #ifndef __ASSEMBLY__
- 
--#define GET_IP(regs)		((regs)->nip)
--#define GET_USP(regs)		((regs)->gpr[1])
--#define GET_FP(regs)		(0)
--#define SET_FP(regs, val)
+-#define GET_FP(regs)	((regs)->regs[14])
+-#define GET_USP(regs)	((regs)->regs[15])
 +static inline unsigned long instruction_pointer(struct pt_regs *regs)
 +{
-+	return regs->nip;
++	return regs->pc;
 +}
-+
 +static inline void instruction_pointer_set(struct pt_regs *regs,
 +		unsigned long val)
 +{
-+	regs->nip = val;
-+}
-+
-+static inline unsigned long user_stack_pointer(struct pt_regs *regs)
-+{
-+	return regs->gpr[1];
++	regs->pc = val;
 +}
 +
 +static inline unsigned long frame_pointer(struct pt_regs *regs)
 +{
-+	return 0;
++	return regs->regs[14];
++}
++
++static inline unsigned long user_stack_pointer(struct pt_regs *regs)
++{
++	return regs->regs[15];
++}
++
++static inline void user_stack_pointer_set(struct pt_regs *regs,
++		unsigned long val)
++{
++	regs->regs[15] = val;
 +}
  
- #ifdef CONFIG_SMP
- extern unsigned long profile_pc(struct pt_regs *regs);
+ #define arch_has_single_step()	(1)
+ 
+@@ -112,7 +135,5 @@ static inline unsigned long profile_pc(struct pt_regs *regs)
+ 
+ 	return pc;
+ }
 -#define profile_pc profile_pc
-+#else
-+#define profile_pc(regs) instruction_pointer(regs)
- #endif
  
 -#include <asm-generic/ptrace.h>
--
- #define kernel_stack_pointer(regs) ((regs)->gpr[1])
- static inline int is_syscall_success(struct pt_regs *regs)
- {
+ #endif /* __ASM_SH_PTRACE_H */
 -- 
 2.20.1
 
