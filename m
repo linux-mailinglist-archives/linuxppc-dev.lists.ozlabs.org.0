@@ -2,38 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B691126E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 07:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A7D1128E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 07:22:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vjlt4Nm8zDqTb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 15:01:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vkD424y7zDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 15:22:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="RwrwSph5"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vjkT3HJszDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 15:00:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44vjkS1Hszz9s3l;
- Thu,  2 May 2019 15:00:15 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vakul Garg <vakul.garg@nxp.com>
-Subject: RE: [PATCH] crypto: caam/jr - Remove extra memory barrier during job
- ring dequeue
-In-Reply-To: <VE1PR04MB667093258EC804912EFAE6A18B3B0@VE1PR04MB6670.eurprd04.prod.outlook.com>
-References: <87pnp2aflz.fsf@concordia.ellerman.id.au>
- <VE1PR04MB667093258EC804912EFAE6A18B3B0@VE1PR04MB6670.eurprd04.prod.outlook.com>
-Date: Thu, 02 May 2019 15:00:10 +1000
-Message-ID: <87d0l1a1t1.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vkBl4VKvzDqPR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 15:21:19 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id 10so557059pfo.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2019 22:21:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CDbIdtvG1kQrUcuU/weLxKnbEgWbhwiqX9j2S/J1p2k=;
+ b=RwrwSph5WzbTQK0lMLlwpgVxPapPOMk7HqSS9HUz8sz4OkHL7Ho8on+Uw54gouZFgi
+ qGzU5+6tOd/ReKDUs0N5M7RF2m7aK6tTxlxcn7AKk7xqbGyqDbg0I3g7hL7OejfYUtAT
+ sAWFU3BK5rQy1LBik8glbcW9RTHVXy39UnapnHYgIXk5f8r2Ana7Z5R/llieZIxvHKbf
+ LTbLHX+VttfcGSvqUXAdbAv5Es8Gqpf0vmlT1G3OII0h6togmGJ4I4142U19XJLZ7cf7
+ UZT+asIreOrzxwfo0wjS7FZoWC+z0J0iWAObB8+CPYu2xJFcFBvrfXyo3NB16iVjegGU
+ g0/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=CDbIdtvG1kQrUcuU/weLxKnbEgWbhwiqX9j2S/J1p2k=;
+ b=Tzlo6UIop6QDaXFve+ikr3HIq/0l61/DQcqjdtGGu7vY084jhimYRq4WzekULlt047
+ dBnmrRCvrYmy+i703daCdESnEEkaPxbgDAHQ2lNlFY+N6gA+YLfZX3BGxlfkqK9uq1Fc
+ kyK3+P7AMYKnrikl1+YyxxkAdxUsJJdy+mHHOUyOMFad6iCvl1ABO8j3y1KiOz62fem4
+ 3/7ACQOVHgSi0G0NPnFP2v51MyPFs4g/7zRsiVYnO3udTO03N+8h9CC/kIuNMm9BYV90
+ Kkqbqjxwp+Vkf7sp4vjrWc9EgFacLWnyXwZ+AW7ab+lFVxniwZlp1+RT6kH2TVwsfoXA
+ h7cQ==
+X-Gm-Message-State: APjAAAVQd6O6Y0gepE9XgEt0bfNk/5FaTK9kIwn5JxuOYdD8mCDJBOmR
+ gby/04DqGKryl2htCYzcI8WlzmMR
+X-Google-Smtp-Source: APXvYqwri3m5U4NTedd0KErm0J/lkGTtvWzctTUuUxx3SHOWvz5zIy0Vuiifv0tF/Nqbr9mYxp4bAw==
+X-Received: by 2002:aa7:8b12:: with SMTP id f18mr1968755pfd.178.1556774477124; 
+ Wed, 01 May 2019 22:21:17 -0700 (PDT)
+Received: from bobo.local0.net ([61.68.7.233])
+ by smtp.gmail.com with ESMTPSA id g13sm14577550pgr.63.2019.05.01.22.21.14
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 01 May 2019 22:21:16 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: Don't trace code that runs with the soft irq mask
+ unreconciled
+Date: Thu,  2 May 2019 15:21:07 +1000
+Message-Id: <20190502052107.24738-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,152 +77,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Aymen Sghaier <aymen.sghaier@nxp.com>,
- "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
- Horia Geanta <horia.geanta@nxp.com>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vakul Garg <vakul.garg@nxp.com> writes:
->> -----Original Message-----
->> From: Michael Ellerman <mpe@ellerman.id.au>
->> Sent: Wednesday, May 1, 2019 11:20 AM
->> To: Vakul Garg <vakul.garg@nxp.com>
->> Cc: linux-crypto@vger.kernel.org; Aymen Sghaier
->> <aymen.sghaier@nxp.com>; davem@davemloft.net;
->> herbert@gondor.apana.org.au; Horia Geanta <horia.geanta@nxp.com>;
->> linuxppc-dev@lists.ozlabs.org
->> Subject: Re: [PATCH] crypto: caam/jr - Remove extra memory barrier during
->> job ring dequeue
->> 
->> Vakul Garg wrote:
->> > In function caam_jr_dequeue(), a full memory barrier is used before
->> > writing response job ring's register to signal removal of the
->> > completed job. Therefore for writing the register, we do not need
->> > another write memory barrier. Hence it is removed by replacing the
->> > call to wr_reg32() with a newly defined function wr_reg32_relaxed().
->> >
->> > Signed-off-by: Vakul Garg <vakul.garg@nxp.com>
->> > ---
->> >  drivers/crypto/caam/jr.c   | 2 +-
->> >  drivers/crypto/caam/regs.h | 8 ++++++++
->> >  2 files changed, 9 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/crypto/caam/jr.c b/drivers/crypto/caam/jr.c index
->> > 4e9b3fca5627..2ce6d7d2ad72 100644
->> > --- a/drivers/crypto/caam/jr.c
->> > +++ b/drivers/crypto/caam/jr.c
->> > @@ -266,7 +266,7 @@ static void caam_jr_dequeue(unsigned long
->> devarg)
->> >  		mb();
->> >
->> >  		/* set done */
->> > -		wr_reg32(&jrp->rregs->outring_rmvd, 1);
->> > +		wr_reg32_relaxed(&jrp->rregs->outring_rmvd, 1);
->> >
->> >  		jrp->out_ring_read_index = (jrp->out_ring_read_index + 1) &
->> >  					   (JOBR_DEPTH - 1);
->> > diff --git a/drivers/crypto/caam/regs.h b/drivers/crypto/caam/regs.h
->> > index 3cd0822ea819..9e912c722e33 100644
->> > --- a/drivers/crypto/caam/regs.h
->> > +++ b/drivers/crypto/caam/regs.h
->> > @@ -96,6 +96,14 @@ cpu_to_caam(16)
->> >  cpu_to_caam(32)
->> >  cpu_to_caam(64)
->> >
->> > +static inline void wr_reg32_relaxed(void __iomem *reg, u32 data) {
->> > +	if (caam_little_end)
->> > +		writel_relaxed(data, reg);
->> > +	else
->> > +		writel_relaxed(cpu_to_be32(data), reg); }
->> > +
->> >  static inline void wr_reg32(void __iomem *reg, u32 data)  {
->> >  	if (caam_little_end)
->> 
->> This crashes on my p5020ds. Did you test on powerpc?
->> 
-> I did not test on powerpc.
+"Reconciling" in terms of interrupt handling, is to bring the soft irq
+mask state in to synch with the hardware, after an interrupt causes
+MSR[EE] to be cleared (while the soft mask may be enabled, and hard
+irqs not marked disabled).
 
-OK, so I might be the first person who has :)
+General kernel code should not be called while unreconciled, because
+local_irq_disable, etc. manipulations can cause surprising irq traces,
+and it's fragile because the soft irq code does not really expect to
+be called in this situation.
 
->> # first bad commit: [bbfcac5ff5f26aafa51935a62eb86b6eacfe8a49] crypto:
->> caam/jr - Remove extra memory barrier during job ring dequeue
->> 
->> Log:
->> 
->>   ------------[ cut here ]------------
->>   kernel BUG at drivers/crypto/caam/jr.c:191!
->>   Oops: Exception in kernel mode, sig: 5 [#1]
->>   BE PAGE_SIZE=4K SMP NR_CPUS=24 CoreNet Generic
->>   Modules linked in:
->>   CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.1.0-rc1-gcc-8.2.0-00060-
->> gbbfcac5ff5f2 #31
->>   NIP:  c00000000079d704 LR: c00000000079d498 CTR: c000000000086914
->>   REGS: c0000000fffc7970 TRAP: 0700   Not tainted  (5.1.0-rc1-gcc-8.2.0-
->> 00060-gbbfcac5ff5f2)
->>   MSR:  0000000080029000 <CE,EE,ME>  CR: 28008484  XER: 00000000
->>   IRQMASK: 0
->>   GPR00: c00000000079d6b0 c0000000fffc7c00 c000000000fbc800
->> 0000000000000001
->>   GPR04: 000000007e080080 000000000000ffc0 0000000000000001
->> 00000000000067d7
->>   GPR08: 00000000880401a9 0000000000000000 0000000000000001
->> 00000000fa83b2da
->>   GPR12: 0000000028008224 c00000003ffff800 c000000000fc20b0
->> 0000000000000100
->>   GPR16: 8920f09520bea117 c000000000def480 0000000000000000
->> 0000000000000001
->>   GPR20: c000000000fc3940 c0000000f3537e18 0000000000000001
->> c000000001026cc5
->>   GPR24: 0000000000000001 c0000000f3328000 0000000000000001
->> c0000000f3451010
->>   GPR28: 0000000000000000 0000000000000001 0000000000000000
->> 0000000000000000
->>   NIP [c00000000079d704] .caam_jr_dequeue+0x2f0/0x410
->>   LR [c00000000079d498] .caam_jr_dequeue+0x84/0x410
->>   Call Trace:
->>   [c0000000fffc7c00] [c00000000079d6b0] .caam_jr_dequeue+0x29c/0x410
->> (unreliable)
->>   [c0000000fffc7cd0] [c00000000004fef0]
->> .tasklet_action_common.isra.3+0xac/0x180
->>   [c0000000fffc7d80] [c000000000a2f99c] .__do_softirq+0x174/0x3f8
->>   [c0000000fffc7e90] [c00000000004fb94] .irq_exit+0xc4/0xdc
->>   [c0000000fffc7f00] [c000000000007348] .__do_irq+0x8c/0x1b0
->>   [c0000000fffc7f90] [c0000000000150c4] .call_do_irq+0x14/0x24
->>   [c0000000f3137930] [c0000000000074e4] .do_IRQ+0x78/0xd4
->>   [c0000000f31379c0] [c000000000019998]
->> exc_0x500_common+0xfc/0x100
->>   --- interrupt: 501 at .book3e_idle+0x24/0x5c
->>       LR = .book3e_idle+0x24/0x5c
->>   [c0000000f3137cc0] [c00000000000a6a4] .arch_cpu_idle+0x34/0xa0
->> (unreliable)
->>   [c0000000f3137d30] [c000000000a2f2e8] .default_idle_call+0x5c/0x70
->>   [c0000000f3137da0] [c000000000084210] .do_idle+0x1b0/0x1f4
->>   [c0000000f3137e40] [c000000000084434] .cpu_startup_entry+0x28/0x30
->>   [c0000000f3137eb0] [c000000000021538] .start_secondary+0x59c/0x5b0
->>   [c0000000f3137f90] [c00000000000045c]
->> start_secondary_prolog+0x10/0x14
->>   Instruction dump:
->>   7d284a14 e9290018 2fa90000 40de001c 3bbd0001 57bd05fe 7d3db050
->> 712901ff
->>   7fbd07b4 40e2ffcc 93b500dc 4bffff94 <0fe00000> 78890022 79270020
->> 41d600ec
->>   ---[ end trace 7bedbdf37a95ab35 ]---
->> 
->> That's hitting:
->> 
->> 		/* we should never fail to find a matching descriptor */
->> 		BUG_ON(CIRC_CNT(head, tail + i, JOBR_DEPTH) <= 0);
->> 
->
-> Is it hitting under high traffic to caam?
-> How to reproduce it?
+When exiting from an interrupt, MSR[EE] is cleared to prevent races,
+but soft irq state is enabled for the returned-to context, so this is
+now an unreconciled state. restore_math is called in this state, and
+that can be ftraced, and the ftrace subsystem disables local irqs.
 
-No that's just booting the system. I don't even have the crypto
-selftests enabled.
+Mark restore_math and its callees as notrace. Restore a sanity check
+in the soft irq code that had to be disabled for this case, by commit
+4da1f79227ad4 ("powerpc/64: Disable irq restore warning for now").
 
-cheers
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/fpu.S     |  1 +
+ arch/powerpc/kernel/irq.c     | 13 +++----------
+ arch/powerpc/kernel/process.c | 18 +++++++++++++++---
+ arch/powerpc/kernel/vector.S  |  1 +
+ 4 files changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
+index 529dcc21c3f9..cecd57e1d046 100644
+--- a/arch/powerpc/kernel/fpu.S
++++ b/arch/powerpc/kernel/fpu.S
+@@ -63,6 +63,7 @@ _GLOBAL(load_fp_state)
+ 	REST_32FPVSRS(0, R4, R3)
+ 	blr
+ EXPORT_SYMBOL(load_fp_state)
++_ASM_NOKPROBE_SYMBOL(load_fp_state); /* used by restore_math */
+ 
+ /*
+  * Store FP state into memory, including FPSCR
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 8a936723c791..083934ecabb2 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -261,16 +261,9 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	 */
+ 	irq_happened = get_irq_happened();
+ 	if (!irq_happened) {
+-		/*
+-		 * FIXME. Here we'd like to be able to do:
+-		 *
+-		 * #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
+-		 *   WARN_ON(!(mfmsr() & MSR_EE));
+-		 * #endif
+-		 *
+-		 * But currently it hits in a few paths, we should fix those and
+-		 * enable the warning.
+-		 */
++#ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
++		WARN_ON(!(mfmsr() & MSR_EE));
++#endif
+ 		return;
+ 	}
+ 
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index f7b2e3b3db28..c4279e1a4a38 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -133,7 +133,8 @@ static int __init enable_strict_msr_control(char *str)
+ }
+ early_param("ppc_strict_facility_enable", enable_strict_msr_control);
+ 
+-unsigned long msr_check_and_set(unsigned long bits)
++/* notrace because it's called by restore_math */
++unsigned long notrace msr_check_and_set(unsigned long bits)
+ {
+ 	unsigned long oldmsr = mfmsr();
+ 	unsigned long newmsr;
+@@ -152,7 +153,8 @@ unsigned long msr_check_and_set(unsigned long bits)
+ }
+ EXPORT_SYMBOL_GPL(msr_check_and_set);
+ 
+-void __msr_check_and_clear(unsigned long bits)
++/* notrace because it's called by restore_math */
++void notrace __msr_check_and_clear(unsigned long bits)
+ {
+ 	unsigned long oldmsr = mfmsr();
+ 	unsigned long newmsr;
+@@ -525,7 +527,17 @@ void giveup_all(struct task_struct *tsk)
+ }
+ EXPORT_SYMBOL(giveup_all);
+ 
+-void restore_math(struct pt_regs *regs)
++/*
++ * The exception exit path calls restore_math() with interrupts hard disabled
++ * but the soft irq state not "reconciled". ftrace code that calls
++ * local_irq_save/restore causes warnings.
++ *
++ * Rather than complicate the exit path, just don't trace restore_math. This
++ * could be done by having ftrace entry code check for this un-reconciled
++ * condition where MSR[EE]=0 and PACA_IRQ_HARD_DIS is not set, and
++ * temporarily fix it up for the duration of the ftrace call.
++ */
++void notrace restore_math(struct pt_regs *regs)
+ {
+ 	unsigned long msr;
+ 
+diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
+index 21165da0052d..8eb867dbad5f 100644
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -21,6 +21,7 @@ _GLOBAL(load_vr_state)
+ 	REST_32VRS(0,r4,r3)
+ 	blr
+ EXPORT_SYMBOL(load_vr_state)
++_ASM_NOKPROBE_SYMBOL(load_vr_state); /* used by restore_math */
+ 
+ /*
+  * Store VMX state into memory, including VSCR.
+-- 
+2.20.1
+
