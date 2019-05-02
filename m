@@ -2,80 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769461145E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2539C11615
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 11:07:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vnL84Cb4zDqG9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:42:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vqCN1Gk0zDqSG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 19:07:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.14.70; helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="A2P5l8gh"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="H8jjEIVV"; dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="rkIIYT8a"; 
+ dkim-atps=neutral
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140070.outbound.protection.outlook.com [40.107.14.70])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vnH76p3kzDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 17:40:19 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id E211C689;
- Thu,  2 May 2019 03:40:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Thu, 02 May 2019 03:40:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm1; bh=9pZiVq15lplTU
- qpAlIk5Hr+1+O0njVS94GtHdTGr72s=; b=A2P5l8gh2gPH4sE/rCdppgB9aBPho
- t4FxHZXz6pD8GlVB4aG5Q+fSpux/vuAHGSItxdaPHRNKLZdCTooEwCXgkbwKCU6e
- t/kDwvFpz96xy44bL9t3hMsIVkSoFGkVMPdMIEBkxNtEGIX621NrRqsEZ9r1+Ssu
- 46TjG48H7vLCwBX87AHe6LTjwvHTIkSw0hIp7BogAGMuwqXeNjgH0pX2Bvv0uWCg
- Dg7xtAn0EoNWTrnUPgfs2p3o6e8/NGMD39yq1t5UiKMr2oj/PiUBl+BBCx83cwrp
- /R1uvncPzVJQjf+AkNHHkV4uL5sxjTJqvaDC/yaaNKkIVVb1HwZ8OlPeQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=9pZiVq15lplTUqpAlIk5Hr+1+O0njVS94GtHdTGr72s=; b=H8jjEIVV
- CLQngfJ/m9xgDLxKpvjUXK4rY07UgVxGDfGEaBfB3H4JMypcFWp/gd0+hIEBzTV2
- smy0fNjdrJgWDqjkJw6o1+6L3+jdtro5Ir6OjROuTouZ/KxV+b8eiEdnwtdo1n6t
- v54fjoQtJ6BRdFco0Ak5+FjGv8CQajX30TvK9kT9oaSpsTyWpIWfv7V1B5MAlpCw
- MUp+cHaIqrZmCdjlu6B9cXFoeDMfUyWklInfbGlWvweqbJNLRC2m61cmT/pJsVdg
- 5qvqcKak7Kw1gD8+THObJz15bsEeAxFQyMfv7L/sDXqtgp2Vt9DCgwxv0q/Ob1h3
- o5kbeOB+ZcHDFA==
-X-ME-Sender: <xms:4J7KXE52zdfQrPxU8TYKUMBHyojbJ3edNXw3391_2uwcWDeqDY3boA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieekgdduuddvucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
- fufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhr
- vgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecukfhppeduvddvrdelledrke
- dvrddutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhl
- rdgttgenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:4J7KXCX0PBK4scN-octo3sOWttXtbOSIG5qVoor_v_tZ54b-o02Xog>
- <xmx:4J7KXKt8R7pGv6hOloO1oRO0bWGSs0jnAxeN3qZTyHh4eNH7ClNYjw>
- <xmx:4J7KXPrSan82OKkbBAimr_1osqpC-oBwL2tV72QAfUDPI2pUJ4Q_nw>
- <xmx:4J7KXLv7uDRhc-PTfw3pSrUB2KqPYOg0NG-SDH7r4ny6BQU84a2eUg>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id EDEA3103CB;
- Thu,  2 May 2019 03:40:13 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc/mm: Warn if W+X pages found on boot
-Date: Thu,  2 May 2019 17:39:47 +1000
-Message-Id: <20190502073947.6481-2-ruscur@russell.cc>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190502073947.6481-1-ruscur@russell.cc>
-References: <20190502073947.6481-1-ruscur@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vq9r14czzDqMr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 19:05:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qdC19H38zi5+A8RC77iYiWFkQGBZunhUFHwr1Ygr+sc=;
+ b=rkIIYT8addpS7I+Ki1RBiiRjIhyTvCoM0Z3OeuNNbxzduj29iI4gaIblWxo3h4n0qo0ZnVXInn8FND5TC9UYZKgNo0T36oZ74tQP/JEjKdFZKIOUfPfM3TlInUTO7U+w+cMlQbi03AlQHwpgZKMyrmTv5Mk2IUdoagpl7uSn8GE=
+Received: from VI1PR04MB5134.eurprd04.prod.outlook.com (20.177.50.159) by
+ VI1PR04MB4253.eurprd04.prod.outlook.com (52.134.31.28) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1856.10; Thu, 2 May 2019 09:05:41 +0000
+Received: from VI1PR04MB5134.eurprd04.prod.outlook.com
+ ([fe80::81d8:f74b:f91e:f071]) by VI1PR04MB5134.eurprd04.prod.outlook.com
+ ([fe80::81d8:f74b:f91e:f071%7]) with mapi id 15.20.1835.018; Thu, 2 May 2019
+ 09:05:41 +0000
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+To: "jocke@infinera.com" <joakim.tjernlund@infinera.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Madalin-cristian Bucur
+ <madalin.bucur@nxp.com>, Leo Li <leoyang.li@nxp.com>, Roy Pledge
+ <roy.pledge@nxp.com>, Camelia Alexandra Groza <camelia.groza@nxp.com>
+Subject: RE: [PATCH v2 9/9] dpaa_eth: fix SG frame cleanup
+Thread-Topic: [PATCH v2 9/9] dpaa_eth: fix SG frame cleanup
+Thread-Index: AQHU/MhUOSfNbgWjXk28jO3/UbT5S6ZQPsaAgAdTq4A=
+Date: Thu, 2 May 2019 09:05:41 +0000
+Message-ID: <VI1PR04MB5134C0D6707E78D674B96898EC340@VI1PR04MB5134.eurprd04.prod.outlook.com>
+References: <20190427071031.6563-1-laurentiu.tudor@nxp.com>
+ <20190427071031.6563-10-laurentiu.tudor@nxp.com>
+ <2c6f5d170edab346e0a87b1dfeb12e2f65801685.camel@infinera.com>
+In-Reply-To: <2c6f5d170edab346e0a87b1dfeb12e2f65801685.camel@infinera.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=laurentiu.tudor@nxp.com; 
+x-originating-ip: [192.88.166.1]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: bd868a55-ef45-47d3-4c6b-08d6cedd5a3e
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR04MB4253; 
+x-ms-traffictypediagnostic: VI1PR04MB4253:
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-microsoft-antispam-prvs: <VI1PR04MB4253D8E678A58DD5115D9743EC340@VI1PR04MB4253.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-forefront-prvs: 0025434D2D
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(376002)(346002)(39860400002)(366004)(136003)(396003)(199004)(189003)(13464003)(8936002)(5660300002)(229853002)(8676002)(99286004)(256004)(66066001)(25786009)(14444005)(2906002)(6436002)(55016002)(76116006)(486006)(44832011)(14454004)(74316002)(86362001)(53936002)(2501003)(66556008)(9686003)(66446008)(64756008)(7696005)(66476007)(66946007)(73956011)(316002)(54906003)(110136005)(6246003)(446003)(11346002)(6506007)(4326008)(76176011)(71200400001)(81156014)(71190400001)(68736007)(81166006)(476003)(186003)(478600001)(7736002)(52536014)(305945005)(102836004)(6116002)(3846002)(26005)(33656002)(6636002)(491001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR04MB4253;
+ H:VI1PR04MB5134.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: mOmsPNF9QNL8W5itImUGGLc7AK6Em/IIvhIZKNexYmzVGd2mFgHqrZ9peg8anXyPh9GFF1JEpusyNkFlzgotURUbLsemaYx8Kjl+SPvVS2ZsBr7l5v3W+jCc7dW6RmlcxTOigKPpTAVluSWv6UFRxeMdP7Sxj9x65gjSlYWDOGjvBGEx5ZPLUB47XSGOuXPmM0rJye7Jx9YaDh9aHzVP0SVU10p8wxRTbamMo332n6OlOZvnA8e/Vxq4ynopQFF/goVcb9vPUgU25GnyevbvFTK1pGG5S5ljnmO/W8elvuga6k17JWO0K44RyD/cWWXeZvzYwwO9bAiEAKvVVJTQFuayGautV4+N9YNyX81kZDHilDHvs+NNKYH9iiO7GtHuOW+Cl9lOzjc3E61rdSqwrvbgsQW6ief0jHdgvg3cY18=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd868a55-ef45-47d3-4c6b-08d6cedd5a3e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 May 2019 09:05:41.5379 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4253
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,188 +98,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com,
- Russell Currey <ruscur@russell.cc>
+Cc: "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement code to walk all pages and warn if any are found to be both
-writable and executable.  Depends on STRICT_KERNEL_RWX enabled, and is
-behind the DEBUG_WX config option.
-
-This only runs on boot and has no runtime performance implications.
-
-Very heavily influenced (and in some cases copied verbatim) from the
-ARM64 code written by Laura Abbott (thanks!), since our ptdump
-infrastructure is similar.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
-v2: A myriad of fixes and cleanups thanks to Christophe Leroy
-
- arch/powerpc/Kconfig.debug         | 19 ++++++++++++++
- arch/powerpc/include/asm/pgtable.h |  6 +++++
- arch/powerpc/mm/pgtable_32.c       |  3 +++
- arch/powerpc/mm/pgtable_64.c       |  3 +++
- arch/powerpc/mm/ptdump/ptdump.c    | 41 +++++++++++++++++++++++++++++-
- 5 files changed, 71 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-index 4e00cb0a5464..9e8bcddd8b8f 100644
---- a/arch/powerpc/Kconfig.debug
-+++ b/arch/powerpc/Kconfig.debug
-@@ -361,6 +361,25 @@ config PPC_PTDUMP
- 
- 	  If you are unsure, say N.
- 
-+config PPC_DEBUG_WX
-+	bool "Warn on W+X mappings at boot"
-+	select PPC_PTDUMP
-+	help
-+	  Generate a warning if any W+X mappings are found at boot.
-+
-+	  This is useful for discovering cases where the kernel is leaving
-+	  W+X mappings after applying NX, as such mappings are a security risk.
-+
-+	  Note that even if the check fails, your kernel is possibly
-+	  still fine, as W+X mappings are not a security hole in
-+	  themselves, what they do is that they make the exploitation
-+	  of other unfixed kernel bugs easier.
-+
-+	  There is no runtime or memory usage effect of this option
-+	  once the kernel has booted up - it's a one time check.
-+
-+	  If in doubt, say "Y".
-+
- config PPC_FAST_ENDIAN_SWITCH
- 	bool "Deprecated fast endian-switch syscall"
-         depends on DEBUG_KERNEL && PPC_BOOK3S_64
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 505550fb2935..50c0d06fac2f 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -108,6 +108,12 @@ void mark_initmem_nx(void);
- static inline void mark_initmem_nx(void) { }
- #endif
- 
-+#ifdef CONFIG_PPC_DEBUG_WX
-+void ptdump_check_wx(void);
-+#else
-+static inline void ptdump_check_wx(void) { }
-+#endif
-+
- /*
-  * When used, PTE_FRAG_NR is defined in subarch pgtable.h
-  * so we are sure it is included when arriving here.
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 6e56a6240bfa..6f919779ee06 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -384,6 +384,9 @@ void mark_rodata_ro(void)
- 		   PFN_DOWN((unsigned long)__start_rodata);
- 
- 	change_page_attr(page, numpages, PAGE_KERNEL_RO);
-+
-+	// mark_initmem_nx() should have already run by now
-+	ptdump_check_wx();
- }
- #endif
- 
-diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-index fb1375c07e8c..bfa18453625e 100644
---- a/arch/powerpc/mm/pgtable_64.c
-+++ b/arch/powerpc/mm/pgtable_64.c
-@@ -328,6 +328,9 @@ void mark_rodata_ro(void)
- 		radix__mark_rodata_ro();
- 	else
- 		hash__mark_rodata_ro();
-+
-+	// mark_initmem_nx() should have already run by now
-+	ptdump_check_wx();
- }
- 
- void mark_initmem_nx(void)
-diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-index a4a132f92810..e69b53a8a841 100644
---- a/arch/powerpc/mm/ptdump/ptdump.c
-+++ b/arch/powerpc/mm/ptdump/ptdump.c
-@@ -31,7 +31,7 @@
- #include "ptdump.h"
- 
- #ifdef CONFIG_PPC32
--#define KERN_VIRT_START	0
-+#define KERN_VIRT_START	PAGE_OFFSET
- #endif
- 
- /*
-@@ -68,6 +68,8 @@ struct pg_state {
- 	unsigned long last_pa;
- 	unsigned int level;
- 	u64 current_flags;
-+	bool check_wx;
-+	unsigned long wx_pages;
- };
- 
- struct addr_marker {
-@@ -177,6 +179,20 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
- 
- }
- 
-+static void note_prot_wx(struct pg_state *st, unsigned long addr)
-+{
-+	if (!st->check_wx)
-+		return;
-+
-+	if (!((st->current_flags & pgprot_val(PAGE_KERNEL_X)) == pgprot_val(PAGE_KERNEL_X)))
-+		return;
-+
-+	WARN_ONCE(1, "powerpc/mm: Found insecure W+X mapping at address %p/%pS\n",
-+		  (void *)st->start_address, (void *)st->start_address);
-+
-+	st->wx_pages += (addr - st->start_address) / PAGE_SIZE;
-+}
-+
- static void note_page(struct pg_state *st, unsigned long addr,
- 	       unsigned int level, u64 val)
- {
-@@ -206,6 +222,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
- 
- 		/* Check the PTE flags */
- 		if (st->current_flags) {
-+			note_prot_wx(st, addr);
- 			dump_addr(st, addr);
- 
- 			/* Dump all the flags */
-@@ -378,6 +395,28 @@ static void build_pgtable_complete_mask(void)
- 				pg_level[i].mask |= pg_level[i].flag[j].mask;
- }
- 
-+void ptdump_check_wx(void)
-+{
-+	struct pg_state st = {
-+		.seq = NULL,
-+		.marker = address_markers,
-+		.check_wx = true,
-+	};
-+
-+	if (radix_enabled())
-+		st.start_address = PAGE_OFFSET;
-+	else
-+		st.start_address = KERN_VIRT_START;
-+
-+	walk_pagetables(&st);
-+
-+	if (st.wx_pages)
-+		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found\n",
-+			st.wx_pages);
-+	else
-+		pr_info("Checked W+X mappings: passed, no W+X pages found\n");
-+}
-+
- static int ptdump_init(void)
- {
- 	struct dentry *debugfs_file;
--- 
-2.21.0
-
+SGkgSm9ha2ltLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpvYWtp
+bSBUamVybmx1bmQgPEpvYWtpbS5UamVybmx1bmRAaW5maW5lcmEuY29tPg0KPiBTZW50OiBTYXR1
+cmRheSwgQXByaWwgMjcsIDIwMTkgODoxMSBQTQ0KPiANCj4gT24gU2F0LCAyMDE5LTA0LTI3IGF0
+IDEwOjEwICswMzAwLCBsYXVyZW50aXUudHVkb3JAbnhwLmNvbSB3cm90ZToNCj4gPiBGcm9tOiBM
+YXVyZW50aXUgVHVkb3IgPGxhdXJlbnRpdS50dWRvckBueHAuY29tPg0KPiA+DQo+ID4gRml4IGlz
+c3VlIHdpdGggdGhlIGVudHJ5IGluZGV4aW5nIGluIHRoZSBzZyBmcmFtZSBjbGVhbnVwIGNvZGUg
+YmVpbmcNCj4gPiBvZmYtYnktMS4gVGhpcyBwcm9ibGVtIHNob3dlZCB1cCB3aGVuIGRvaW5nIHNv
+bWUgYmFzaWMgaXBlcmYgdGVzdHMgYW5kDQo+ID4gbWFuaWZlc3RlZCBpbiB0cmFmZmljIGNvbWlu
+ZyB0byBhIGhhbHQuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBMYXVyZW50aXUgVHVkb3IgPGxh
+dXJlbnRpdS50dWRvckBueHAuY29tPg0KPiA+IEFja2VkLWJ5OiBNYWRhbGluIEJ1Y3VyIDxtYWRh
+bGluLmJ1Y3VyQG54cC5jb20+DQo+IA0KPiBXYXNuJ3QgdGhpcyBhIHN0YWJsZSBjYW5kaWRhdGUg
+dG9vPw0KDQpZZXMsIGl0IGlzLiBJIGZvcmdvdCB0byBhZGQgdGhlIGNjOnN0YWJsZSB0YWcsIHNv
+cnJ5IGFib3V0IHRoYXQuDQoNCi0tLQ0KQmVzdCBSZWdhcmRzLCBMYXVyZW50aXUNCiANCj4gPiAt
+LS0NCj4gPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2RwYWEvZHBhYV9ldGguYyB8
+IDIgKy0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0p
+DQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2Rw
+YWEvZHBhYV9ldGguYw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9kcGFhL2Rw
+YWFfZXRoLmMNCj4gPiBpbmRleCBkYWVkZTcyNzI3NjguLjQwNDIwZWRjOWNlNiAxMDA2NDQNCj4g
+PiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZHBhYS9kcGFhX2V0aC5jDQo+
+ID4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2RwYWEvZHBhYV9ldGguYw0K
+PiA+IEBAIC0xNjYzLDcgKzE2NjMsNyBAQCBzdGF0aWMgc3RydWN0IHNrX2J1ZmYgKmRwYWFfY2xl
+YW51cF90eF9mZChjb25zdA0KPiBzdHJ1Y3QgZHBhYV9wcml2ICpwcml2LA0KPiA+ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHFtX3NnX2VudHJ5X2dldF9sZW4oJnNndFswXSksIGRt
+YV9kaXIpOw0KPiA+DQo+ID4gICAgICAgICAgICAgICAgIC8qIHJlbWFpbmluZyBwYWdlcyB3ZXJl
+IG1hcHBlZCB3aXRoIHNrYl9mcmFnX2RtYV9tYXAoKQ0KPiAqLw0KPiA+IC0gICAgICAgICAgICAg
+ICBmb3IgKGkgPSAxOyBpIDwgbnJfZnJhZ3M7IGkrKykgew0KPiA+ICsgICAgICAgICAgICAgICBm
+b3IgKGkgPSAxOyBpIDw9IG5yX2ZyYWdzOyBpKyspIHsNCj4gPiAgICAgICAgICAgICAgICAgICAg
+ICAgICBXQVJOX09OKHFtX3NnX2VudHJ5X2lzX2V4dCgmc2d0W2ldKSk7DQo+ID4NCj4gPiAgICAg
+ICAgICAgICAgICAgICAgICAgICBkbWFfdW5tYXBfcGFnZShkZXYsIHFtX3NnX2FkZHIoJnNndFtp
+XSksDQo+ID4gLS0NCj4gPiAyLjE3LjENCj4gPg0KDQo=
