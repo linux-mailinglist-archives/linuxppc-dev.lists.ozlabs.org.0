@@ -1,119 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA4111254
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 06:49:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vjVN6wSczDqW3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 14:49:48 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36CA119DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 15:14:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vwhL16DRzDqSr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 23:14:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=embeddedor.com
- (client-ip=192.185.68.24; helo=gateway20.websitewelcome.com;
- envelope-from=gustavo@embeddedor.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=embeddedor.com
-X-Greylist: delayed 1500 seconds by postgrey-1.36 at bilbo;
- Thu, 02 May 2019 14:48:40 AEST
-Received: from gateway20.websitewelcome.com (gateway20.websitewelcome.com
- [192.185.68.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vjT43TtGzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 14:48:40 +1000 (AEST)
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
- by gateway20.websitewelcome.com (Postfix) with ESMTP id 6EA43400C5933
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2019 22:59:04 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
- id M2sChvwy8dnCeM2sChfxbg; Wed, 01 May 2019 22:59:04 -0500
-X-Authority-Reason: nr=8
-Received: from [189.250.119.203] (port=48716 helo=[192.168.1.76])
- by gator4166.hostgator.com with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128) (Exim 4.91)
- (envelope-from <gustavo@embeddedor.com>)
- id 1hM2s9-002xCn-S2; Wed, 01 May 2019 22:59:02 -0500
-Subject: Re: [PATCH V5] ASoC: fsl_esai: Fix missing break in switch statement
-To: "S.j. Wang" <shengjiu.wang@nxp.com>, "timur@kernel.org"
- <timur@kernel.org>, "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
-References: <a2c4e289d292ac0e691131784962305f8207a4d8.1554971930.git.shengjiu.wang@nxp.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- VtSixD1uOgytAP7RWS474w==
-Message-ID: <dc58fb7a-dab8-2ee0-43e0-76da75ca2e0d@embeddedor.com>
-Date: Wed, 1 May 2019 22:59:00 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vwds3qSczDqLf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 23:12:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.b="UHUPD3aG"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 44vwds1CQcz9sBV; Thu,  2 May 2019 23:12:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1556802721;
+ bh=37+4LcvVNpQJpbna+sVAcGmSAv0VpF1uIFPuyG9MbFs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=UHUPD3aG2Ev4xDvhfulyFSnV0UUi3Rpzt+n+AyjfB+g/yNIs16bqcInMrnZya/N7J
+ KIxRzmMwXg73yINekpTO1Y5AGs6Rh8HtkKe4fCpQoRuAS+VE1Iff4dP9dfnmfWaoYv
+ diLtGHhadWrFR2ulQbHpZgbSyPae4sLngoPhxop4=
+Date: Thu, 2 May 2019 14:27:03 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
+ system firmware
+Message-ID: <20190502042702.GH13618@umbus.fritz.box>
+References: <20190501034221.18437-1-aik@ozlabs.ru>
 MIME-Version: 1.0
-In-Reply-To: <a2c4e289d292ac0e691131784962305f8207a4d8.1554971930.git.shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.250.119.203
-X-Source-L: No
-X-Exim-ID: 1hM2s9-002xCn-S2
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.1.76]) [189.250.119.203]:48716
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 8
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="CEUtFxTsmBsHRLs3"
+Content-Disposition: inline
+In-Reply-To: <20190501034221.18437-1-aik@ozlabs.ru>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,55 +53,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark,
 
-I wonder if you are going to take this patch.
+--CEUtFxTsmBsHRLs3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
---
-Gustavo
+On Wed, May 01, 2019 at 01:42:21PM +1000, Alexey Kardashevskiy wrote:
+> At the moment, on 256CPU + 256 PCI devices guest, it takes the guest
+> about 8.5sec to fetch the entire device tree via the client interface
+> as the DT is traversed twice - for strings blob and for struct blob.
+> Also, "getprop" is quite slow too as SLOF stores properties in a linked
+> list.
+>=20
+> However, since [1] SLOF builds flattened device tree (FDT) for another
+> purpose. [2] adds a new "fdt-fetch" client interface for the OS to fetch
+> the FDT.
+>=20
+> This tries the new method; if not supported, this falls back to
+> the old method.
+>=20
+> There is a change in the FDT layout - the old method produced
+> (reserved map, strings, structs), the new one receives only strings and
+> structs from the firmware and adds the final reserved map to the end,
+> so it is (fw reserved map, strings, structs, reserved map).
+> This still produces the same unflattened device tree.
+>=20
+> This merges the reserved map from the firmware into the kernel's reserved
+> map. At the moment SLOF generates an empty reserved map so this does not
+> change the existing behaviour in regard of reservations.
+>=20
+> This supports only v17 onward as only that version provides dt_struct_size
+> which works as "fdt-fetch" only produces v17 blobs.
+>=20
+> If "fdt-fetch" is not available, the old method of fetching the DT is use=
+d.
+>=20
+> [1] https://git.qemu.org/?p=3DSLOF.git;a=3Dcommitdiff;h=3De6fc84652c9c00
+> [2] https://git.qemu.org/?p=3DSLOF.git;a=3Dcommit;h=3Decda95906930b80
+>=20
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-On 4/11/19 3:43 AM, S.j. Wang wrote:
-> case ESAI_HCKT_EXTAL and case ESAI_HCKR_EXTAL should be
-> independent of each other, so replace fall-through with break.
-> 
-> Fixes: 43d24e76b698 ("ASoC: fsl_esai: Add ESAI CPU DAI driver")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> Cc: <stable@vger.kernel.org>
+Hrm.  I've gotta say I'm not terribly convinced that it's worth adding
+a new interface we'll need to maintain to save 8s on a somewhat
+contrived testcase.
+
 > ---
-> Changes in v5
-> - remove new line after Fixes
-> 
-> Changes in v4
-> - Add acked-by
-> 
-> Changes in v3
-> - Update subject line and cc stable
-> 
-> Changes in v2
-> - Fix "Fixes" tag
-> 
->  sound/soc/fsl/fsl_esai.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-> index 3623aa9a6f2e..15202a637197 100644
-> --- a/sound/soc/fsl/fsl_esai.c
-> +++ b/sound/soc/fsl/fsl_esai.c
-> @@ -251,7 +251,7 @@ static int fsl_esai_set_dai_sysclk(struct snd_soc_dai *dai, int clk_id,
->  		break;
->  	case ESAI_HCKT_EXTAL:
->  		ecr |= ESAI_ECR_ETI;
-> -		/* fall through */
-> +		break;
->  	case ESAI_HCKR_EXTAL:
->  		ecr |= ESAI_ECR_ERI;
->  		break;
-> 
+>  arch/powerpc/kernel/prom_init.c | 43 +++++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>=20
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
+nit.c
+> index f33ff4163a51..72e7a602b68e 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -2457,6 +2457,48 @@ static void __init flatten_device_tree(void)
+>  		prom_panic("Can't allocate initial device-tree chunk\n");
+>  	mem_end =3D mem_start + room;
+> =20
+> +	hdr =3D (void *) mem_start;
+> +	if (!call_prom_ret("fdt-fetch", 2, 1, NULL, mem_start,
+> +				room - sizeof(mem_reserve_map)) &&
+> +			hdr->version >=3D 17) {
+> +		u32 size;
+> +		struct mem_map_entry *fwrmap;
+> +
+> +		/* Fixup the boot cpuid */
+> +		hdr->boot_cpuid_phys =3D cpu_to_be32(prom.cpu);
+> +
+> +		/*
+> +		 * Store the struct and strings addresses, mostly
+> +		 * for consistency, only dt_header_start actually matters later.
+> +		 */
+> +		dt_header_start =3D mem_start;
+> +		dt_string_start =3D mem_start + be32_to_cpu(hdr->off_dt_strings);
+> +		dt_string_end =3D dt_string_start +
+> +			be32_to_cpu(hdr->dt_strings_size);
+> +		dt_struct_start =3D mem_start + be32_to_cpu(hdr->off_dt_struct);
+> +		dt_struct_end =3D dt_struct_start +
+> +			be32_to_cpu(hdr->dt_struct_size);
+> +
+> +		/*
+> +		 * Calculate the reserved map location (which we put
+> +		 * at the blob end) and update total size.
+> +		 */
+> +		fwrmap =3D (void *)(mem_start + be32_to_cpu(hdr->off_mem_rsvmap));
+> +		hdr->off_mem_rsvmap =3D hdr->totalsize;
+> +		size =3D be32_to_cpu(hdr->totalsize);
+> +		hdr->totalsize =3D cpu_to_be32(size + sizeof(mem_reserve_map));
+> +
+> +		/* Merge reserved map from firmware to ours */
+> +		for ( ; fwrmap->size; ++fwrmap)
+> +			reserve_mem(be64_to_cpu(fwrmap->base),
+> +					be64_to_cpu(fwrmap->size));
+> +
+> +		rsvmap =3D (u64 *)(mem_start + size);
+> +
+> +		prom_debug("Fetched DTB: %d bytes to @%lx\n", size, mem_start);
+> +		goto finalize_exit;
+> +	}
+> +
+>  	/* Get root of tree */
+>  	root =3D call_prom("peer", 1, 1, (phandle)0);
+>  	if (root =3D=3D (phandle)0)
+> @@ -2504,6 +2546,7 @@ static void __init flatten_device_tree(void)
+>  	/* Version 16 is not backward compatible */
+>  	hdr->last_comp_version =3D cpu_to_be32(0x10);
+> =20
+> +finalize_exit:
+>  	/* Copy the reserve map in */
+>  	memcpy(rsvmap, mem_reserve_map, sizeof(mem_reserve_map));
+> =20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--CEUtFxTsmBsHRLs3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlzKcZYACgkQbDjKyiDZ
+s5LlfRAAp/Y+Kv7jJhsP8gVvMzrCmB+EzSmQsZw2/Lr8Esf1LbPJSdar5HTMz1Dp
+S0tg3EJQpr7aVwQGnj+tcZFVv1uR/dxgFvOI6QdrNtBDL4tCGW5V9noTUtR0pUXu
+rqxbWbiJEYt46S4/TxHAy+qSIWsu1NeI9/+PXXLhVPFPaVqa1WGhtO7Eal1ZC3EH
+VIEr/eTM1krKV7/VTEOzeb8ChE9xOI17izwarGhx1gpkCPgbq3hzHArVbcRbtpi0
+ie9xHfgda1csijb5gjAKyUjnzGZHHItpjLTHmg3yHeXYKvlFr8OkpemfioHA8rth
+oirwyi4dM+Z+uRRNQaV1oEh8/Q4nMlTZR2KhZFI3yaVJaPapCrHafCi4eqyuRz9b
+ZAdYRuDxPhsiLndKpGd78cyCU2uYRAVCwKkx8I4AuG2C0YKBpIVBsrlm9/E+GU1K
+jo5d0qYo3c6kHqFfjDA4FWe/yOzyYDkvoGpD737OgpxxQvtwHLBsiJyhsg5E3ys8
+HZ2LHDKKVKo8WTGXkPEUgWhe6D/ndMQQPL7PBY4e4wZs6pBnv/ysa4Eru46L2BqO
+x3UJxKGaDweuGJ4W7SHG6EY6EtBwIfd3NvRWXfhmZbqHX2kzLD0BXgshUkDxa7Cn
+4aE/K7EU/1+9CNI4aeTSdLfJEY+AOczoTJ5QTK+e8cV5L4sjEok=
+=SFqR
+-----END PGP SIGNATURE-----
+
+--CEUtFxTsmBsHRLs3--
