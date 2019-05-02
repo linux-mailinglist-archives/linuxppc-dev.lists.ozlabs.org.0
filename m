@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAABD11259
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 06:52:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vjYy2wz7zDqQw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 14:52:54 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9B81125E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 06:54:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vjbQ1XkjzDqS0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 14:54:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,58 +16,57 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="RRbCPbxn"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="oC51hi27"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vjXf12jHzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 14:51:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vjYt3CwfzDqPR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 14:52:50 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44vjXT3tPVz9v0dC;
- Thu,  2 May 2019 06:51:37 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 44vjYn5z2vz9v0BV;
+ Thu,  2 May 2019 06:52:45 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=RRbCPbxn; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=oC51hi27; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 3NqOSpeVpOTg; Thu,  2 May 2019 06:51:37 +0200 (CEST)
+ with ESMTP id 0TUnsWMW3vXT; Thu,  2 May 2019 06:52:45 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44vjXT2pDFz9v0dB;
- Thu,  2 May 2019 06:51:37 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44vjYn4rZBz9v0BC;
+ Thu,  2 May 2019 06:52:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556772697; bh=bKp40p29ww5rWYWudCtNM/eqZO3Koty1E3gHLJJDIRc=;
+ t=1556772765; bh=oTUoNAvTbptkwHiQB4BoNv5xEebc0qVEEYx9fowqT+s=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=RRbCPbxnLgXWlaX1rtHvlgQTduiVbrwYwYfPRqWoCouk04XpiXQ4Oit7TlcLBvUqI
- IORSjyEt82psaGWuAiiWAVwdpQWgiDy+eFb5WNCfasy8kTeLF6pIzHcB/cNJXU0Gtr
- XCbWeCzkzjM0zp7Lc2jdnYlhWjFqR3hVxBy/aKww=
+ b=oC51hi27WAkc8iHZkPAl58pflieW+TouGLtmSDXZSe87JlN74wedySK6NhkoeGFA1
+ Jq+AyX73+z7yScKsRYE+TYvzCeieb6eQ15HoV7fS9NC/ot6sx+7berTcq+2fmHLuJ/
+ wmUYb/IjZpoGDMHaiuuZ/GwuFwGZdzX13EV1SlyU=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 305578B84C;
- Thu,  2 May 2019 06:51:38 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 79AC18B84E;
+ Thu,  2 May 2019 06:52:46 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pErdMFLohumg; Thu,  2 May 2019 06:51:38 +0200 (CEST)
+ with ESMTP id lb_56fQc7pmk; Thu,  2 May 2019 06:52:46 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 894618B74C;
- Thu,  2 May 2019 06:51:37 +0200 (CEST)
-Subject: Re: [PATCH v2 2/6] soc/fsl/qe: qe.c: reduce static memory footprint
- by 1.7K
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DD09C8B74C;
+ Thu,  2 May 2019 06:52:45 +0200 (CEST)
+Subject: Re: [PATCH v2 5/6] soc/fsl/qe: qe.c: support fsl,qe-snums property
 To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
  "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
  Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
 References: <20190430133615.25721-1-rasmus.villemoes@prevas.dk>
  <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
- <20190501092841.9026-3-rasmus.villemoes@prevas.dk>
+ <20190501092841.9026-6-rasmus.villemoes@prevas.dk>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <cae22a68-40f3-5993-22a0-222134e76def@c-s.fr>
-Date: Thu, 2 May 2019 06:51:37 +0200
+Message-ID: <53c8e642-5efa-c476-92b7-a70d5598b217@c-s.fr>
+Date: Thu, 2 May 2019 06:52:45 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190501092841.9026-3-rasmus.villemoes@prevas.dk>
+In-Reply-To: <20190501092841.9026-6-rasmus.villemoes@prevas.dk>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -95,117 +94,62 @@ Sender: "Linuxppc-dev"
 
 
 Le 01/05/2019 à 11:29, Rasmus Villemoes a écrit :
-> The current array of struct qe_snum use 256*4 bytes for just keeping
-> track of the free/used state of each index, and the struct layout
-> means there's another 768 bytes of padding. If we just unzip that
-> structure, the array of snum values just use 256 bytes, while the
-> free/inuse state can be tracked in a 32 byte bitmap.
+> Add driver support for the newly introduced fsl,qe-snums property.
 > 
-> So this reduces the .data footprint by 1760 bytes. It also serves as
-> preparation for introducing another DT binding for specifying the snum
-> values.
+> Conveniently, of_property_read_variable_u8_array does exactly what we
+> need: If the property fsl,qe-snums is found (and has an allowed size),
+> the array of values get copied to snums, and the return value is the
+> number of snums - we cannot assign directly to num_of_snums, since we
+> need to check whether the return value is negative.
 > 
 > Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 
 Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Trivial comment below
-
 > ---
->   drivers/soc/fsl/qe/qe.c | 43 ++++++++++++-----------------------------
->   1 file changed, 12 insertions(+), 31 deletions(-)
+>   drivers/soc/fsl/qe/qe.c | 16 ++++++++++++++--
+>   1 file changed, 14 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-> index 855373deb746..303aa29cb27d 100644
+> index 0fb8b59f61ad..325d689cbf5c 100644
 > --- a/drivers/soc/fsl/qe/qe.c
 > +++ b/drivers/soc/fsl/qe/qe.c
-> @@ -14,6 +14,7 @@
->    * Free Software Foundation;  either version 2 of the  License, or (at your
->    * option) any later version.
+> @@ -283,7 +283,6 @@ EXPORT_SYMBOL(qe_clock_source);
 >    */
-> +#include <linux/bitmap.h>
->   #include <linux/errno.h>
->   #include <linux/sched.h>
->   #include <linux/kernel.h>
-> @@ -43,25 +44,14 @@ static DEFINE_SPINLOCK(qe_lock);
->   DEFINE_SPINLOCK(cmxgcr_lock);
->   EXPORT_SYMBOL(cmxgcr_lock);
+>   static void qe_snums_init(void)
+>   {
+> -	int i;
+>   	static const u8 snum_init_76[] = {
+>   		0x04, 0x05, 0x0C, 0x0D, 0x14, 0x15, 0x1C, 0x1D,
+>   		0x24, 0x25, 0x2C, 0x2D, 0x34, 0x35, 0x88, 0x89,
+> @@ -304,7 +303,21 @@ static void qe_snums_init(void)
+>   		0x28, 0x29, 0x38, 0x39, 0x48, 0x49, 0x58, 0x59,
+>   		0x68, 0x69, 0x78, 0x79, 0x80, 0x81,
+>   	};
+> +	struct device_node *qe;
+>   	const u8 *snum_init;
+> +	int i;
+> +
+> +	bitmap_zero(snum_state, QE_NUM_OF_SNUM);
+> +	qe = qe_get_device_node();
+> +	if (qe) {
+> +		i = of_property_read_variable_u8_array(qe, "fsl,qe-snums",
+> +						       snums, 1, QE_NUM_OF_SNUM);
+> +		of_node_put(qe);
+> +		if (i > 0) {
+> +			qe_num_of_snum = i;
+> +			return;
+> +		}
+> +	}
 >   
-> -/* QE snum state */
-> -enum qe_snum_state {
-> -	QE_SNUM_STATE_USED,
-> -	QE_SNUM_STATE_FREE
-> -};
-> -
-> -/* QE snum */
-> -struct qe_snum {
-> -	u8 num;
-> -	enum qe_snum_state state;
-> -};
-> -
->   /* We allocate this here because it is used almost exclusively for
->    * the communication processor devices.
->    */
->   struct qe_immap __iomem *qe_immr;
->   EXPORT_SYMBOL(qe_immr);
+>   	qe_num_of_snum = qe_get_num_of_snums();
 >   
-> -static struct qe_snum snums[QE_NUM_OF_SNUM];	/* Dynamically allocated SNUMs */
-> +static u8 snums[QE_NUM_OF_SNUM];	/* Dynamically allocated SNUMs */
-> +static DECLARE_BITMAP(snum_state, QE_NUM_OF_SNUM);
->   static unsigned int qe_num_of_snum;
->   
->   static phys_addr_t qebase = -1;
-> @@ -315,10 +305,8 @@ static void qe_snums_init(void)
+> @@ -313,7 +326,6 @@ static void qe_snums_init(void)
 >   	else
 >   		snum_init = snum_init_46;
 >   
-> -	for (i = 0; i < qe_num_of_snum; i++) {
-> -		snums[i].num = snum_init[i];
-> -		snums[i].state = QE_SNUM_STATE_FREE;
-> -	}
-> +	bitmap_zero(snum_state, QE_NUM_OF_SNUM);
-> +	memcpy(snums, snum_init, qe_num_of_snum);
+> -	bitmap_zero(snum_state, QE_NUM_OF_SNUM);
+>   	memcpy(snums, snum_init, qe_num_of_snum);
 >   }
->   
->   int qe_get_snum(void)
-> @@ -328,12 +316,10 @@ int qe_get_snum(void)
->   	int i;
->   
->   	spin_lock_irqsave(&qe_lock, flags);
-> -	for (i = 0; i < qe_num_of_snum; i++) {
-> -		if (snums[i].state == QE_SNUM_STATE_FREE) {
-> -			snums[i].state = QE_SNUM_STATE_USED;
-> -			snum = snums[i].num;
-> -			break;
-> -		}
-> +	i = find_first_zero_bit(snum_state, qe_num_of_snum);
-> +	if (i < qe_num_of_snum) {
-> +		set_bit(i, snum_state);
-> +		snum = snums[i];
->   	}
->   	spin_unlock_irqrestore(&qe_lock, flags);
->   
-> @@ -343,14 +329,9 @@ EXPORT_SYMBOL(qe_get_snum);
->   
->   void qe_put_snum(u8 snum)
->   {
-> -	int i;
-> -
-> -	for (i = 0; i < qe_num_of_snum; i++) {
-> -		if (snums[i].num == snum) {
-> -			snums[i].state = QE_SNUM_STATE_FREE;
-> -			break;
-> -		}
-> -	}
-> +	const u8 *p = memchr(snums, snum, qe_num_of_snum);
-
-A blank line is expected here.
-
-Christophe
-
-> +	if (p)
-> +		clear_bit(p - snums, snum_state);
->   }
->   EXPORT_SYMBOL(qe_put_snum);
 >   
 > 
