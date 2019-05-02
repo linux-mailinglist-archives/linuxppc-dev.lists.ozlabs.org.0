@@ -2,38 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FDB11FB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 18:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 196431204A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 18:32:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44w0T51RPczDqYM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 02:04:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44w15P45ZFzDqPC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 02:32:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="VoBsxNlz"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vzkZ6Q6wzDqN2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 01:31:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44vzkR0Xvsz9sPk;
- Fri,  3 May 2019 01:31:11 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mike Rapoport <rppt@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] memblock: make keeping memblock memory opt-in rather than
- opt-out
-In-Reply-To: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-References: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-Date: Fri, 03 May 2019 01:31:10 +1000
-Message-ID: <87h8acyitd.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44w0zY0ZW6zDqBN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 02:27:34 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 44w0zN6BMBz9tycl;
+ Thu,  2 May 2019 18:27:28 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=VoBsxNlz; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Lfd0sENGpsVg; Thu,  2 May 2019 18:27:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44w0zN576Xz9tyck;
+ Thu,  2 May 2019 18:27:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1556814448; bh=iX8N4X4/3jjKfRo8rxN9aW8cVxuV4eTVr3P4dhOrlOU=;
+ h=From:Subject:To:Cc:Date:From;
+ b=VoBsxNlzz9eC6YVtElAtODt4EuGF5A3Xq6mQaiwLsl56b6KkjMOecvheqzJ/GC0aF
+ BUmTl5UaUoIB47hO4ofSSa/aXhZYPSAnLLMdhlKvuV7Ri6z2LaidCFbpW6AtCkw/Y2
+ +DsVVlfUjIAeA+SqajX45OWMxytPUHvbXq5DUAhE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 604178B8FE;
+ Thu,  2 May 2019 18:27:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id KPo6y13lIc8o; Thu,  2 May 2019 18:27:30 +0200 (CEST)
+Received: from po16846vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C2778B899;
+ Thu,  2 May 2019 18:27:30 +0200 (CEST)
+Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id E0BE6672AF; Thu,  2 May 2019 16:27:29 +0000 (UTC)
+Message-Id: <298f344bdb21ab566271f5d18c6782ed20f072b7.1556814003.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 1/3] powerpc: Move PPC_HA() PPC_HI() and PPC_LO() to
+ ppc-opcode.h
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu,  2 May 2019 16:27:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,39 +73,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-hexagon@vger.kernel.org, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- Fenghua Yu <fenghua.yu@intel.com>, Will Deacon <will.deacon@arm.com>,
- linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
- nios2-dev@lists.rocketboards.org, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, Richard Kuo <rkuo@codeaurora.org>,
- Paul Burton <paul.burton@mips.com>, Eric Biederman <ebiederm@xmission.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, Ley Foon Tan <lftan@altera.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mike Rapoport <rppt@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 2d0be82..39877b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -143,6 +143,7 @@ config PPC
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->  	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> +	select ARCH_KEEP_MEMBLOCK
+PPC_HA() PPC_HI() and PPC_LO() macros are nice macros. Move them
+from module64.c to ppc-opcode.h in order to use them in other places.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+v2: no change
 
-cheers
+ arch/powerpc/include/asm/ppc-opcode.h | 7 +++++++
+ arch/powerpc/kernel/module_64.c       | 7 -------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 23f7ed796f38..c5ff44400d4d 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -412,6 +412,13 @@
+ #define __PPC_SPR(r)	((((r) & 0x1f) << 16) | ((((r) >> 5) & 0x1f) << 11))
+ #define __PPC_RC21	(0x1 << 10)
+ 
++/* Both low and high 16 bits are added as SIGNED additions, so if low
++   16 bits has high bit set, high 16 bits must be adjusted.  These
++   macros do that (stolen from binutils). */
++#define PPC_LO(v) ((v) & 0xffff)
++#define PPC_HI(v) (((v) >> 16) & 0xffff)
++#define PPC_HA(v) PPC_HI ((v) + 0x8000)
++
+ /*
+  * Only use the larx hint bit on 64bit CPUs. e500v1/v2 based CPUs will treat a
+  * larx with EH set as an illegal instruction.
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 8661eea78503..c2e1b06253b8 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -400,13 +400,6 @@ static inline unsigned long my_r2(const Elf64_Shdr *sechdrs, struct module *me)
+ 	return (sechdrs[me->arch.toc_section].sh_addr & ~0xfful) + 0x8000;
+ }
+ 
+-/* Both low and high 16 bits are added as SIGNED additions, so if low
+-   16 bits has high bit set, high 16 bits must be adjusted.  These
+-   macros do that (stolen from binutils). */
+-#define PPC_LO(v) ((v) & 0xffff)
+-#define PPC_HI(v) (((v) >> 16) & 0xffff)
+-#define PPC_HA(v) PPC_HI ((v) + 0x8000)
+-
+ /* Patch stub to reference function and correct r2 value. */
+ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 			      struct ppc64_stub_entry *entry,
+-- 
+2.13.3
+
