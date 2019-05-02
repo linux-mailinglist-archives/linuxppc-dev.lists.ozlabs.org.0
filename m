@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F278511173
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 04:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8AA111AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 04:41:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vfJ73n6bzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 12:25:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vffB4PtPzDqTd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 12:41:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,38 +17,42 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="pBr7tviu"; dkim-atps=neutral
+ header.b="Cb5V6HQQ"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vf8H14GyzDqNt
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 12:18:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vfcW6t99zDqDM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 12:39:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
- Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
- List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=s/aeLHmcSaCGZGW2T/ryaeA0ktI3wfHggwlvpiCdiGs=; b=pBr7tviub0M4
- Y7B+GAiIE0/H/6glIphSg1+JN79huRE/j+YTI3NQ8U8Ngjerot3AmpFSTaWjMQnGMlH6D7sZc9AUF
- 3KdkDIC/cUuL6ULBrrDQkXR65KG+hNHiJxGyDwLWrIXCheEHEoXTtb4tYDKdoVda2u6WvOL4XHiHy
- b4dDw=;
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=AOg+ZncfoqT6OZPyimiwJ+flH8XXCIhe4A54zI2KK28=; b=Cb5V6HQQ4gnGG3LZN1YTJSqcw
+ pulWeJA0UGmo7LW4DpqAG6I4UuXXDLRLzIDRKL+XkUg3SdVIEaZ8q1FeB1/44M+YWpm/ZqUWVxrNV
+ +e/NtKkTZ8jt/JEG83MKeTPQA7Po//H3Id7lWSYCTfnhB3P1+t6BATI/zGJEh3O65Bi5U=;
 Received: from [211.55.52.15] (helo=finisterre.ee.mobilebroadband)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hM1J8-0005tL-2M; Thu, 02 May 2019 02:18:46 +0000
+ id 1hM1dU-0005zv-N8; Thu, 02 May 2019 02:39:49 +0000
 Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
- id 03B03441D3B; Thu,  2 May 2019 03:18:43 +0100 (BST)
+ id 6F730441D3C; Thu,  2 May 2019 03:39:45 +0100 (BST)
+Date: Thu, 2 May 2019 11:39:45 +0900
 From: Mark Brown <broonie@kernel.org>
-To: YueHaibing <yuehaibing@huawei.com>
-Subject: Applied "ASoC: fsl_micfil: Remove set but not used variable 'osr'" to
- the asoc tree
-In-Reply-To: <20190417150915.37968-1-yuehaibing@huawei.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20190502021843.03B03441D3B@finisterre.ee.mobilebroadband>
-Date: Thu,  2 May 2019 03:18:42 +0100 (BST)
+To: "S.j. Wang" <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH V4] ASoC: fsl_esai: Add pm runtime function
+Message-ID: <20190502023945.GA19532@sirena.org.uk>
+References: <c4cf809a66b8c98de11e43f7e9fa2823cf3c5ba6.1556417687.git.shengjiu.wang@nxp.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
+Content-Disposition: inline
+In-Reply-To: <c4cf809a66b8c98de11e43f7e9fa2823cf3c5ba6.1556417687.git.shengjiu.wang@nxp.com>
+X-Cookie: Vax Vobiscum
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,77 +64,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com,
- linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
- Mark Brown <broonie@kernel.org>, perex@perex.cz, linuxppc-dev@lists.ozlabs.org
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch
 
-   ASoC: fsl_micfil: Remove set but not used variable 'osr'
+--RnlQjJ0d97Da+TV1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the asoc tree at
+On Sun, Apr 28, 2019 at 02:24:54AM +0000, S.j. Wang wrote:
+> Add pm runtime support and move clock handling there.
+> Close the clocks at suspend to reduce the power consumption.
+>=20
+> fsl_esai_suspend is replaced by pm_runtime_force_suspend.
+> fsl_esai_resume is replaced by pm_runtime_force_resume.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+This doesn't apply against for-5.2 again.  Sorry about this, I think
+this one is due to some messups with my scripts which caused some
+patches to be dropped for a while (and it's likely to be what happened
+the last time as well).  Can you check and resend again please?  Like I
+say sorry about this, I think it's my mistake.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--RnlQjJ0d97Da+TV1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzKWHAACgkQJNaLcl1U
+h9DAmAf/ZznWBwoyQXL+nQLRK1eWpBZg9ma0CiFNxH/eUHzwZYIKALZvQ/XtxTgU
+loMrwMJLbC8TRCPxVnH77AQRIKS0VJMheOaYCv9wmu+hFNjnEuuhRT0wg/30oMba
+gt6LFb/SdSap+9uDN0x6m6BEAoM44d9efhi8M2zc9F9TegdXH1Vehcg9Z+andnzx
+0zj6hZtkD22iTm7Cc866VIvc8SfOEsn3TK7mtFUtH3dwX7uJC11HFQnlBcLqyMrV
+Wxny0faTSxjZXYxrMJMd7vk7ekzyvb57Rg58Si3234fbU8yL/vOJS8xLNbWjvjYX
+4+wYCtvBSLTk76eOCZIBx+Hi2ifAGw==
+=YKw2
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From a0c34c7629bee46ffd8121987d27df25a6433cc7 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Wed, 17 Apr 2019 23:09:15 +0800
-Subject: [PATCH] ASoC: fsl_micfil: Remove set but not used variable 'osr'
-
-Fixes gcc '-Wunused-but-set-variable' warning:
-
-sound/soc/fsl/fsl_micfil.c: In function 'get_clk_div':
-sound/soc/fsl/fsl_micfil.c:154:6: warning: variable 'osr' set but not used [-Wunused-but-set-variable]
-
-It is never used since introduction in
-commit 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver.")
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/fsl/fsl_micfil.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 40c07e756481..f7f2d29f1bfe 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -151,12 +151,9 @@ static inline int get_clk_div(struct fsl_micfil *micfil,
- {
- 	u32 ctrl2_reg;
- 	long mclk_rate;
--	int osr;
- 	int clk_div;
- 
- 	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
--	osr = 16 - ((ctrl2_reg & MICFIL_CTRL2_CICOSR_MASK)
--		    >> MICFIL_CTRL2_CICOSR_SHIFT);
- 
- 	mclk_rate = clk_get_rate(micfil->mclk);
- 
--- 
-2.20.1
-
+--RnlQjJ0d97Da+TV1--
