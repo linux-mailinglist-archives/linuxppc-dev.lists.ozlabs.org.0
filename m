@@ -2,75 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B464121F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 20:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB11224D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 21:04:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44w3q11Xn8zDqSK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 04:35:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44w4SY2zz9zDqV6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 05:04:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=wavecomp.com
+ (client-ip=40.107.77.120; helo=nam02-sn1-obe.outbound.protection.outlook.com;
+ envelope-from=pburton@wavecomp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="L9VDpZd7"; 
+ dmarc=none (p=none dis=none) header.from=mips.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=wavesemi.onmicrosoft.com
+ header.i=@wavesemi.onmicrosoft.com header.b="FGA90EGc"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-eopbgr770120.outbound.protection.outlook.com [40.107.77.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44w3nZ0JP2zDqNr
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 04:34:09 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id z28so1557817pfk.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 May 2019 11:34:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=9pb3Jn+Vd+nDYRO/WKHx1a5dMNfMG+2SwDRrQcgz14A=;
- b=L9VDpZd7yhW7D4dES1p8F41DXoL4cI3oVP+xeAgaVLAPRICbbOmA8zCIYc8C7R10Ze
- aCmnVONmStqlxASn958ixGMTiMe42NqhfrNP+IeyeHPz2U1dvNMIducxvXB5BrKhRFNT
- zFlkpyzKVJRe9BvjM2tdiX78/f+qY+6yrjlCPuDfuiIRnEKQddP5LNl+3KwMh7QhYB0p
- Qy/FnzYhkVHiPrnt9wPbeHn0ZbMyZtpwYNuRyfwfzQ4kCnnS6/XX1bWAsy8psDCMq6b9
- BdAZe1Ovpcb4kKWCP4t8G8K/7CJlXKC2fhUlMn2PklQX4oPYNEiPuLfsvnp1XZAEL0sD
- 0aGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=9pb3Jn+Vd+nDYRO/WKHx1a5dMNfMG+2SwDRrQcgz14A=;
- b=pRizOlge9xZa4ddrLJeobnmjwYHNi/TKF8B3AjkLYzY0R5bBsPDHaB/MQgDd+A3IFc
- U3ED3RZ7mIkyQ+d3smG+jw1IlWWE7n4YlCsmcufjWTHOczlXCJNaB32FDdYTIPGDthwH
- Fu7gqLhF083i7GTSDvIS+pLPoWo/ll/AuGORlHSW1887kIGoGPeahGGOrukZ3hwVRBB/
- kQAPYMt/vEf8UUDQ4nH9TnSNiBm6IV+2xN/NrsncNIaiqjjeKq76x9eL2onxUzP61Qye
- at5DHzduUxkPBdm697EiiGbWrQmbCAnQGNRad1nybhfDz71P5KTEttUCsXAZnAntMeYR
- b9AA==
-X-Gm-Message-State: APjAAAWFbcHc5QDqLFaEQ2BOALQGE54ppKCJp/evX9G3Jezv3Rfm2E/D
- EuiGDRVnFHozR5Itc8q3gmE=
-X-Google-Smtp-Source: APXvYqwJitXju3fizMVEW7pWswOKDMbqed3Yj6lTTZT5fp0epxAX+wzjtiPHMb8hQMZDeFkYoswyMQ==
-X-Received: by 2002:a62:e501:: with SMTP id n1mr5757562pff.17.1556822046126;
- Thu, 02 May 2019 11:34:06 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id n15sm34696825pfb.111.2019.05.02.11.34.05
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 02 May 2019 11:34:05 -0700 (PDT)
-Date: Thu, 2 May 2019 11:32:31 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [EXT] Re: [PATCH V4] ASoC: fsl_esai: Add pm runtime function
-Message-ID: <20190502183230.GA25229@Asurada-Nvidia.nvidia.com>
-References: <c4cf809a66b8c98de11e43f7e9fa2823cf3c5ba6.1556417687.git.shengjiu.wang@nxp.com>
- <20190502023945.GA19532@sirena.org.uk>
- <VE1PR04MB6479F3EED50613DF8F041713E3340@VE1PR04MB6479.eurprd04.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44w4RF33CWzDqNy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 05:03:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N5vP4AkogQ4iAySrvubINU0ejgtxmv383VKMfJfN8uU=;
+ b=FGA90EGc7npOswhWXNdDBkBfgDW/YA/wBfpJCQnsBf1uiEWNICbqv2coEb6dq+1Y4hICqJ/nl2A2VwS/1ZUlMbldSFF6fWidwS8+avtmYwhLrkNREz5iMe6RkM6Tlq/OsbEaA56KDIXpnYm3xhcIZZ9CO5fMLLwwWKgv9G3slaE=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1216.namprd22.prod.outlook.com (10.174.161.149) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.13; Thu, 2 May 2019 19:03:12 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1835.018; Thu, 2 May 2019
+ 19:03:12 +0000
+From: Paul Burton <paul.burton@mips.com>
+To: Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH 01/15] asm-generic, x86: introduce generic
+ pte_{alloc,free}_one[_kernel]
+Thread-Topic: [PATCH 01/15] asm-generic, x86: introduce generic
+ pte_{alloc,free}_one[_kernel]
+Thread-Index: AQHVAPvLitxTe6gGvUam7UWTEvfeuaZYMWYA
+Date: Thu, 2 May 2019 19:03:11 +0000
+Message-ID: <20190502190310.voenw3pwgpelmdgw@pburton-laptop>
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+ <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+In-Reply-To: <1556810922-20248-2-git-send-email-rppt@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR01CA0064.prod.exchangelabs.com (2603:10b6:a03:94::41)
+ To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.94.197.246]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 5584fd04-cb54-4e5f-1234-08d6cf30d264
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);
+ SRVR:MWHPR2201MB1216; 
+x-ms-traffictypediagnostic: MWHPR2201MB1216:
+x-microsoft-antispam-prvs: <MWHPR2201MB1216E79B37D05304A7091D29C1340@MWHPR2201MB1216.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-forefront-prvs: 0025434D2D
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(7916004)(136003)(396003)(366004)(376002)(346002)(39840400004)(199004)(189003)(186003)(26005)(44832011)(6506007)(8936002)(256004)(3846002)(81166006)(446003)(486006)(11346002)(42882007)(102836004)(476003)(76176011)(14454004)(81156014)(478600001)(6246003)(99286004)(229853002)(25786009)(6436002)(6486002)(6116002)(8676002)(7406005)(7416002)(5660300002)(4326008)(305945005)(6916009)(54906003)(58126008)(7736002)(53936002)(386003)(66066001)(6512007)(52116002)(64756008)(66446008)(1076003)(4744005)(71190400001)(2906002)(33716001)(66946007)(68736007)(66556008)(66476007)(316002)(73956011)(71200400001)(9686003)(41533002)(142933001);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:MWHPR2201MB1216;
+ H:MWHPR2201MB1277.namprd22.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: N7pT2D98deMj6gdm9WFDpL/BCReV8Dm4aZB8yOnNr59VPnbj8T7nWBk4fHyWTOq/nmQqMsk83NqSPJJj8qUO7BE6KcNSyMoVbL/0lMquZu7SRYLvDnMKwUxj1JVI/AaUgM/9WT/5ybmz43VEdmyDQv2ljwflxCkVRDT/Bsg90HjOr+I96N/C54k5ibt/TQI8bjY0DvFTHZZRKLHscLDWQrRmiviTh8DROTiodXO6VyPG4wGmPWVgfi+k87s15NnPE+sue9LVHDnHyHDdrW/ci/n6q0a4v9SemaPZBbDVFX9ZHkeAosVjMqd10ZuFYJguVHP31ldjeAcX5ARFt0UfwVozYTru4XPmC1f8l8kWNHlop4thdTqeXvnreCI4Z784VquKXPUdBCVprKJVKSShs+9KhxfovWtW5UkuYQzD1dk=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <FEE563E1598F8E42B0910251031F2C94@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VE1PR04MB6479F3EED50613DF8F041713E3340@VE1PR04MB6479.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5584fd04-cb54-4e5f-1234-08d6cf30d264
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 May 2019 19:03:12.0171 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1216
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,42 +102,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>,
+Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@sifive.com>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Helge Deller <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
+ "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+ "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+ "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+ Greentime Hu <green.hu@gmail.com>,
+ "nios2-dev@lists.rocketboards.org" <nios2-dev@lists.rocketboards.org>,
+ Guan Xuetao <gxt@pku.edu.cn>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Mark Brown <broonie@kernel.org>,
+ Richard Kuo <rkuo@codeaurora.org>, Richard Weinberger <richard@nod.at>,
+ Ley Foon Tan <lftan@altera.com>, Andrew Morton <akpm@linux-foundation.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 02, 2019 at 09:13:58AM +0000, S.j. Wang wrote:
-> > On Sun, Apr 28, 2019 at 02:24:54AM +0000, S.j. Wang wrote:
-> > > Add pm runtime support and move clock handling there.
-> > > Close the clocks at suspend to reduce the power consumption.
-> > >
-> > > fsl_esai_suspend is replaced by pm_runtime_force_suspend.
-> > > fsl_esai_resume is replaced by pm_runtime_force_resume.
-> > 
-> > This doesn't apply against for-5.2 again.  Sorry about this, I think this one is
-> > due to some messups with my scripts which caused some patches to be
-> > dropped for a while (and it's likely to be what happened the last time as
-> > well).  Can you check and resend again please?  Like I say sorry about this, I
-> > think it's my mistake.
-> 
-> I am checking, but I don't know why this patch failed in your side. I 
-> Tried to apply this patch on for-5.1, for 5.2,  for-linus  and for-next, all are
+Hi Mike,
 
-I just tried to apply it against top of trees of for-next and for-5.2
-and both were fine on my side too.
+On Thu, May 02, 2019 at 06:28:28PM +0300, Mike Rapoport wrote:
+> +/**
+> + * pte_free_kernel - free PTE-level user page table page
+> + * @mm: the mm_struct of the current context
+> + * @pte_page: the `struct page` representing the page table
+> + */
+> +static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+> +{
+> +	pgtable_page_dtor(pte_page);
+> +	__free_page(pte_page);
+> +}
 
-> Successful.  The git is git://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git.
+Nit: the comment names the wrong function (s/pte_free_kernel/pte_free/).
 
-Btw, this git link no longer works for me, not sure why:
-# git remote add broonie git://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git
-# git fetch broonie
-fatal: remote error: access denied or repository not exported: /m/korg/pub/scm/linux/kernel/git/broonie/sound.git
-
-It started to work after I changed "git://" to "https://" though...
+Thanks,
+    Paul
