@@ -2,75 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CF611260
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 06:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B691126E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 07:01:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vjcr4nL4zDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 14:55:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vjlt4Nm8zDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 15:01:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="i34RksDU"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vjbR4JztzDqQB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 14:54:11 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44vjbM5M91z9v0BV;
- Thu,  2 May 2019 06:54:07 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=i34RksDU; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fsoG583XIQdN; Thu,  2 May 2019 06:54:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44vjbM41xVz9v0BC;
- Thu,  2 May 2019 06:54:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556772847; bh=I0FeEl/w+6bt1GR2o7dyQEdLVhu5vJLVUHB5TTIyQLM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=i34RksDU0m+1D9lH5cGRWzmbilcKtHDaRv5ToGo9d6faaqXA3nnFcxEChzcW4WNRj
- r5bQzwZP3VUqOInhA8yiITExOyffCWXBQ5nPmvz8u6fxSEPbYd9u3ZQFU2jhDEH24i
- N+I8zab8zf7Uaxq0qv8xBEQdzhpCBkMjYPdAdDOM=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 583318B852;
- Thu,  2 May 2019 06:54:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fI6na7e6-yyE; Thu,  2 May 2019 06:54:08 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A81188B74C;
- Thu,  2 May 2019 06:54:07 +0200 (CEST)
-Subject: Re: [PATCH v2 6/6] soc/fsl/qe: qe.c: fold qe_get_num_of_snums into
- qe_snums_init
-To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
-References: <20190430133615.25721-1-rasmus.villemoes@prevas.dk>
- <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
- <20190501092841.9026-7-rasmus.villemoes@prevas.dk>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <5457d33f-b691-6406-138d-0fc633c1d24c@c-s.fr>
-Date: Thu, 2 May 2019 06:54:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vjkT3HJszDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 15:00:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 44vjkS1Hszz9s3l;
+ Thu,  2 May 2019 15:00:15 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Vakul Garg <vakul.garg@nxp.com>
+Subject: RE: [PATCH] crypto: caam/jr - Remove extra memory barrier during job
+ ring dequeue
+In-Reply-To: <VE1PR04MB667093258EC804912EFAE6A18B3B0@VE1PR04MB6670.eurprd04.prod.outlook.com>
+References: <87pnp2aflz.fsf@concordia.ellerman.id.au>
+ <VE1PR04MB667093258EC804912EFAE6A18B3B0@VE1PR04MB6670.eurprd04.prod.outlook.com>
+Date: Thu, 02 May 2019 15:00:10 +1000
+Message-ID: <87d0l1a1t1.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20190501092841.9026-7-rasmus.villemoes@prevas.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,112 +45,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Scott Wood <oss@buserror.net>, Rob Herring <robh+dt@kernel.org>,
+Cc: Aymen Sghaier <aymen.sghaier@nxp.com>,
+ "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+ Horia Geanta <horia.geanta@nxp.com>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Vakul Garg <vakul.garg@nxp.com> writes:
+>> -----Original Message-----
+>> From: Michael Ellerman <mpe@ellerman.id.au>
+>> Sent: Wednesday, May 1, 2019 11:20 AM
+>> To: Vakul Garg <vakul.garg@nxp.com>
+>> Cc: linux-crypto@vger.kernel.org; Aymen Sghaier
+>> <aymen.sghaier@nxp.com>; davem@davemloft.net;
+>> herbert@gondor.apana.org.au; Horia Geanta <horia.geanta@nxp.com>;
+>> linuxppc-dev@lists.ozlabs.org
+>> Subject: Re: [PATCH] crypto: caam/jr - Remove extra memory barrier during
+>> job ring dequeue
+>> 
+>> Vakul Garg wrote:
+>> > In function caam_jr_dequeue(), a full memory barrier is used before
+>> > writing response job ring's register to signal removal of the
+>> > completed job. Therefore for writing the register, we do not need
+>> > another write memory barrier. Hence it is removed by replacing the
+>> > call to wr_reg32() with a newly defined function wr_reg32_relaxed().
+>> >
+>> > Signed-off-by: Vakul Garg <vakul.garg@nxp.com>
+>> > ---
+>> >  drivers/crypto/caam/jr.c   | 2 +-
+>> >  drivers/crypto/caam/regs.h | 8 ++++++++
+>> >  2 files changed, 9 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/crypto/caam/jr.c b/drivers/crypto/caam/jr.c index
+>> > 4e9b3fca5627..2ce6d7d2ad72 100644
+>> > --- a/drivers/crypto/caam/jr.c
+>> > +++ b/drivers/crypto/caam/jr.c
+>> > @@ -266,7 +266,7 @@ static void caam_jr_dequeue(unsigned long
+>> devarg)
+>> >  		mb();
+>> >
+>> >  		/* set done */
+>> > -		wr_reg32(&jrp->rregs->outring_rmvd, 1);
+>> > +		wr_reg32_relaxed(&jrp->rregs->outring_rmvd, 1);
+>> >
+>> >  		jrp->out_ring_read_index = (jrp->out_ring_read_index + 1) &
+>> >  					   (JOBR_DEPTH - 1);
+>> > diff --git a/drivers/crypto/caam/regs.h b/drivers/crypto/caam/regs.h
+>> > index 3cd0822ea819..9e912c722e33 100644
+>> > --- a/drivers/crypto/caam/regs.h
+>> > +++ b/drivers/crypto/caam/regs.h
+>> > @@ -96,6 +96,14 @@ cpu_to_caam(16)
+>> >  cpu_to_caam(32)
+>> >  cpu_to_caam(64)
+>> >
+>> > +static inline void wr_reg32_relaxed(void __iomem *reg, u32 data) {
+>> > +	if (caam_little_end)
+>> > +		writel_relaxed(data, reg);
+>> > +	else
+>> > +		writel_relaxed(cpu_to_be32(data), reg); }
+>> > +
+>> >  static inline void wr_reg32(void __iomem *reg, u32 data)  {
+>> >  	if (caam_little_end)
+>> 
+>> This crashes on my p5020ds. Did you test on powerpc?
+>> 
+> I did not test on powerpc.
 
+OK, so I might be the first person who has :)
 
-Le 01/05/2019 à 11:29, Rasmus Villemoes a écrit :
-> The comment "No QE ever has fewer than 28 SNUMs" is false; e.g. the
-> MPC8309 has 14. The code path returning -EINVAL is also a recipe for
-> instant disaster, since the caller (qe_snums_init) uncritically
-> assigns the return value to the unsigned qe_num_of_snum, and would
-> thus proceed to attempt to copy 4GB from snum_init_46[] to the snum[]
-> array.
-> 
-> So fold the handling of the legacy fsl,qe-num-snums into
-> qe_snums_init, and make sure we do not end up using the snum_init_46
-> array in cases other than the two where we know it makes sense.
-> 
-> Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+>> # first bad commit: [bbfcac5ff5f26aafa51935a62eb86b6eacfe8a49] crypto:
+>> caam/jr - Remove extra memory barrier during job ring dequeue
+>> 
+>> Log:
+>> 
+>>   ------------[ cut here ]------------
+>>   kernel BUG at drivers/crypto/caam/jr.c:191!
+>>   Oops: Exception in kernel mode, sig: 5 [#1]
+>>   BE PAGE_SIZE=4K SMP NR_CPUS=24 CoreNet Generic
+>>   Modules linked in:
+>>   CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.1.0-rc1-gcc-8.2.0-00060-
+>> gbbfcac5ff5f2 #31
+>>   NIP:  c00000000079d704 LR: c00000000079d498 CTR: c000000000086914
+>>   REGS: c0000000fffc7970 TRAP: 0700   Not tainted  (5.1.0-rc1-gcc-8.2.0-
+>> 00060-gbbfcac5ff5f2)
+>>   MSR:  0000000080029000 <CE,EE,ME>  CR: 28008484  XER: 00000000
+>>   IRQMASK: 0
+>>   GPR00: c00000000079d6b0 c0000000fffc7c00 c000000000fbc800
+>> 0000000000000001
+>>   GPR04: 000000007e080080 000000000000ffc0 0000000000000001
+>> 00000000000067d7
+>>   GPR08: 00000000880401a9 0000000000000000 0000000000000001
+>> 00000000fa83b2da
+>>   GPR12: 0000000028008224 c00000003ffff800 c000000000fc20b0
+>> 0000000000000100
+>>   GPR16: 8920f09520bea117 c000000000def480 0000000000000000
+>> 0000000000000001
+>>   GPR20: c000000000fc3940 c0000000f3537e18 0000000000000001
+>> c000000001026cc5
+>>   GPR24: 0000000000000001 c0000000f3328000 0000000000000001
+>> c0000000f3451010
+>>   GPR28: 0000000000000000 0000000000000001 0000000000000000
+>> 0000000000000000
+>>   NIP [c00000000079d704] .caam_jr_dequeue+0x2f0/0x410
+>>   LR [c00000000079d498] .caam_jr_dequeue+0x84/0x410
+>>   Call Trace:
+>>   [c0000000fffc7c00] [c00000000079d6b0] .caam_jr_dequeue+0x29c/0x410
+>> (unreliable)
+>>   [c0000000fffc7cd0] [c00000000004fef0]
+>> .tasklet_action_common.isra.3+0xac/0x180
+>>   [c0000000fffc7d80] [c000000000a2f99c] .__do_softirq+0x174/0x3f8
+>>   [c0000000fffc7e90] [c00000000004fb94] .irq_exit+0xc4/0xdc
+>>   [c0000000fffc7f00] [c000000000007348] .__do_irq+0x8c/0x1b0
+>>   [c0000000fffc7f90] [c0000000000150c4] .call_do_irq+0x14/0x24
+>>   [c0000000f3137930] [c0000000000074e4] .do_IRQ+0x78/0xd4
+>>   [c0000000f31379c0] [c000000000019998]
+>> exc_0x500_common+0xfc/0x100
+>>   --- interrupt: 501 at .book3e_idle+0x24/0x5c
+>>       LR = .book3e_idle+0x24/0x5c
+>>   [c0000000f3137cc0] [c00000000000a6a4] .arch_cpu_idle+0x34/0xa0
+>> (unreliable)
+>>   [c0000000f3137d30] [c000000000a2f2e8] .default_idle_call+0x5c/0x70
+>>   [c0000000f3137da0] [c000000000084210] .do_idle+0x1b0/0x1f4
+>>   [c0000000f3137e40] [c000000000084434] .cpu_startup_entry+0x28/0x30
+>>   [c0000000f3137eb0] [c000000000021538] .start_secondary+0x59c/0x5b0
+>>   [c0000000f3137f90] [c00000000000045c]
+>> start_secondary_prolog+0x10/0x14
+>>   Instruction dump:
+>>   7d284a14 e9290018 2fa90000 40de001c 3bbd0001 57bd05fe 7d3db050
+>> 712901ff
+>>   7fbd07b4 40e2ffcc 93b500dc 4bffff94 <0fe00000> 78890022 79270020
+>> 41d600ec
+>>   ---[ end trace 7bedbdf37a95ab35 ]---
+>> 
+>> That's hitting:
+>> 
+>> 		/* we should never fail to find a matching descriptor */
+>> 		BUG_ON(CIRC_CNT(head, tail + i, JOBR_DEPTH) <= 0);
+>> 
+>
+> Is it hitting under high traffic to caam?
+> How to reproduce it?
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+No that's just booting the system. I don't even have the crypto
+selftests enabled.
 
-> ---
->   drivers/soc/fsl/qe/qe.c | 46 ++++++++++++++---------------------------
->   1 file changed, 16 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-> index 325d689cbf5c..276d7d78ebfc 100644
-> --- a/drivers/soc/fsl/qe/qe.c
-> +++ b/drivers/soc/fsl/qe/qe.c
-> @@ -308,24 +308,33 @@ static void qe_snums_init(void)
->   	int i;
->   
->   	bitmap_zero(snum_state, QE_NUM_OF_SNUM);
-> +	qe_num_of_snum = 28; /* The default number of snum for threads is 28 */
->   	qe = qe_get_device_node();
->   	if (qe) {
->   		i = of_property_read_variable_u8_array(qe, "fsl,qe-snums",
->   						       snums, 1, QE_NUM_OF_SNUM);
-> -		of_node_put(qe);
->   		if (i > 0) {
-> +			of_node_put(qe);
->   			qe_num_of_snum = i;
->   			return;
->   		}
-> +		/*
-> +		 * Fall back to legacy binding of using the value of
-> +		 * fsl,qe-num-snums to choose one of the static arrays
-> +		 * above.
-> +		 */
-> +		of_property_read_u32(qe, "fsl,qe-num-snums", &qe_num_of_snum);
-> +		of_node_put(qe);
->   	}
->   
-> -	qe_num_of_snum = qe_get_num_of_snums();
-> -
-> -	if (qe_num_of_snum == 76)
-> +	if (qe_num_of_snum == 76) {
->   		snum_init = snum_init_76;
-> -	else
-> +	} else if (qe_num_of_snum == 28 || qe_num_of_snum == 46) {
->   		snum_init = snum_init_46;
-> -
-> +	} else {
-> +		pr_err("QE: unsupported value of fsl,qe-num-snums: %u\n", qe_num_of_snum);
-> +		return;
-> +	}
->   	memcpy(snums, snum_init, qe_num_of_snum);
->   }
->   
-> @@ -641,30 +650,7 @@ EXPORT_SYMBOL(qe_get_num_of_risc);
->   
->   unsigned int qe_get_num_of_snums(void)
->   {
-> -	struct device_node *qe;
-> -	int size;
-> -	unsigned int num_of_snums;
-> -	const u32 *prop;
-> -
-> -	num_of_snums = 28; /* The default number of snum for threads is 28 */
-> -	qe = qe_get_device_node();
-> -	if (!qe)
-> -		return num_of_snums;
-> -
-> -	prop = of_get_property(qe, "fsl,qe-num-snums", &size);
-> -	if (prop && size == sizeof(*prop)) {
-> -		num_of_snums = *prop;
-> -		if ((num_of_snums < 28) || (num_of_snums > QE_NUM_OF_SNUM)) {
-> -			/* No QE ever has fewer than 28 SNUMs */
-> -			pr_err("QE: number of snum is invalid\n");
-> -			of_node_put(qe);
-> -			return -EINVAL;
-> -		}
-> -	}
-> -
-> -	of_node_put(qe);
-> -
-> -	return num_of_snums;
-> +	return qe_num_of_snum;
->   }
->   EXPORT_SYMBOL(qe_get_num_of_snums);
->   
-> 
+cheers
