@@ -2,71 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F141141A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC03211458
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:41:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vmyR58KyzDqTN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:25:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vnJg3yzPzDqKb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:41:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=russell.cc
+ (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com;
+ envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="FeqAubAK"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="YVH6Db1/"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="sqVubO9i"; dkim-atps=neutral
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
+ [64.147.123.25])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vmx60wNlzDq74
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 17:24:41 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44vmx06S8Lz9v0B5;
- Thu,  2 May 2019 09:24:36 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=FeqAubAK; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id w-82r1tBlzxt; Thu,  2 May 2019 09:24:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44vmx05QGrz9v0B4;
- Thu,  2 May 2019 09:24:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1556781876; bh=G48SgTD8MZ7+zweAo8RFqAosj90VXu0rwEgFUQxNSew=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=FeqAubAK5XKD82KCZj1diB10IxkVrKOKtgXy9Mk9wDtdouGln3Xdviu/ttUSOBv+M
- ZSDINo+m8k29cnXLxBV46gKgmmu6ghlRgmqnV9qfyRN3j8KD10e5LlIsyRPJdvpp6L
- S08avm9zPreoUEzPzi6MAyyOqGVEvy0PkQYtqv4Y=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B03BC8B74C;
- Thu,  2 May 2019 09:24:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id G1ANH9jVu9tn; Thu,  2 May 2019 09:24:37 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 52B378B880;
- Thu,  2 May 2019 09:24:37 +0200 (CEST)
-Subject: Re: [PATCH 2/3] powerpc/module32: Use symbolic instructions names.
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <23167861f6095456b4ba3b52c55a514201ca738f.1556534520.git.christophe.leroy@c-s.fr>
- <14f88b27ff94f2d5a07a8cbc33ec75e2f8af9cf9.1556534520.git.christophe.leroy@c-s.fr>
- <20190429115431.GN8599@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <e1b55a87-cde0-895b-4cef-2c1ae9b63763@c-s.fr>
-Date: Thu, 2 May 2019 09:24:37 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vnH80BPKzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 17:40:19 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 8E83B6BF;
+ Thu,  2 May 2019 03:40:15 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Thu, 02 May 2019 03:40:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm1; bh=k4pXtm8xkHvUx4Scv5VFXn9Qq5
+ qoA16qYXPG+Z0X1Qg=; b=YVH6Db1/ghTeJeLV4YTCyETcx79TzRj3DNFz5Dp7uk
+ b5r/W2kUy9ulUZlmPonwzjkM9Puk9h3aM8gpQ3iPHadKSXw2PZPN9I9XGWC7e9HK
+ IFXOpSPnNd7JtHSY8x/IQYSWDDG5tn7fCQTV0GnvNyKS6PRl2tNcNkyLTTUx44g/
+ FdvASVfJGRxImWpU9YdkhV7bAghYzMLPzhIM6OwOL+ZRD2S9E6NQqX+Ha5A1Z1vP
+ Y0Mf3lIiuoOhFN7Wgsg8Cs3n84d3dVJZgtOyw76ePd1LCdVLShUeru+5l/6djEAP
+ 2W54pw1CDeYl2eFfEGe42lts24IaxYilfahXIMt0GjGQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=k4pXtm8xkHvUx4Scv
+ 5VFXn9Qq5qoA16qYXPG+Z0X1Qg=; b=sqVubO9ihHFivF7BXLEVj0v5nVyN0DW4Q
+ j8Lv2rXJVoc02TICNG/sWJJZI13gltrseuf5DA/g5xRSCT8KLOGYXYrXDDxkdasR
+ FxlbMcSTA8HqThl0/+5qa7ftJPJOTSAheXNNfjA1dSdIBREP9BfaE7RlhCeneRLA
+ gA1cSpUMi2CqWaEqeN/ut9A7PH7ouc7N5ZA4dCMnHXI9ws6DA+szoN/JX2XhVfSL
+ Zpf4O6D/MBGN6mCiLXK5uYADd67aKIRmfw3htSeJa4jUVz8rrHb7AxhZN9Ze0CHL
+ oFI4R6D6Kjmw2tiV39Mys1yS930+gWRjUC0ojOoStSTltm/ATtScw==
+X-ME-Sender: <xms:3Z7KXLb38xPmfU-vccBj5e2moL4pevmAyArBdufzDVN7My6l9j96mA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieekgdduuddvucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
+ fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
+ uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrd
+ dutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgt
+ tgenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:3Z7KXOHv-3zOnVGJ-R21Qi_OpqNqfy-Fozp9KF793Kh_bIJyeSnNUA>
+ <xmx:3Z7KXGmWrJk30zE-kCHtD6U1mfcXA8igsC6KMPkg8yvLYHTxJcywBg>
+ <xmx:3Z7KXDCo6mTHb7PY-soZfEcYoUsTUIFSQS-njCqC2vehc-gGD7xw2A>
+ <xmx:357KXGu1IuEP5y-OWW4XapWZhgpvMEjgWtdhTliAxG8sdUyR6cpq-A>
+Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 1794A10369;
+ Thu,  2 May 2019 03:40:10 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 1/2] powerpc/mm/ptdump: Wrap seq_printf() to handle NULL
+ pointers
+Date: Thu,  2 May 2019 17:39:46 +1000
+Message-Id: <20190502073947.6481-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190429115431.GN8599@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,48 +85,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com,
+ Russell Currey <ruscur@russell.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Lovingly borrowed from the arch/arm64 ptdump code.
 
+This doesn't seem to be an issue in practice, but is necessary for my
+upcoming commit.
 
-Le 29/04/2019 à 13:54, Segher Boessenkool a écrit :
-> On Mon, Apr 29, 2019 at 10:43:27AM +0000, Christophe Leroy wrote:
->> To increase readability/maintainability, replace hard coded
->> instructions values by symbolic names.
-> 
->> +	/* lis r12,sym@ha */
->> +#define ENTRY_JMP0(sym)	(PPC_INST_ADDIS | __PPC_RT(R12) | PPC_HA(sym))
->> +	/* addi r12,r12,sym@l */
->> +#define ENTRY_JMP1(sym)	(PPC_INST_ADDI | __PPC_RT(R12) | __PPC_RA(R12) | PPC_LO(sym))
-> 
-> Those aren't "jump" instructions though, as the name suggests...  And you
-> only have names for the first two of the four insns.  ("2" and "3" were
-> still available ;-) )
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+v2: Fix putc to actually putc thanks to Christophe Leroy
 
-Well, the idea was to say they are defining the jump destination.
-Anyway, as they are used only once, let's put it directly in.
+ arch/powerpc/mm/ptdump/ptdump.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-> 
->> -	entry->jump[0] = 0x3d800000+((val+0x8000)>>16); /* lis r12,sym@ha */
->> -	entry->jump[1] = 0x398c0000 + (val&0xffff);     /* addi r12,r12,sym@l*/
->> -	entry->jump[2] = 0x7d8903a6;                    /* mtctr r12 */
->> -	entry->jump[3] = 0x4e800420;			/* bctr */
->> +	entry->jump[0] = ENTRY_JMP0(val);
->> +	entry->jump[1] = ENTRY_JMP1(val);
->> +	entry->jump[2] = PPC_INST_MTCTR | __PPC_RS(R12);
->> +	entry->jump[3] = PPC_INST_BCTR;
-> 
-> Deleting the comment here is not an improvement imo.
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 37138428ab55..a4a132f92810 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -104,6 +104,18 @@ static struct addr_marker address_markers[] = {
+ 	{ -1,	NULL },
+ };
+ 
++#define pt_dump_seq_printf(m, fmt, args...)	\
++({						\
++	if (m)					\
++		seq_printf(m, fmt, ##args);	\
++})
++
++#define pt_dump_seq_putc(m, c)		\
++({					\
++	if (m)				\
++		seq_putc(m, c);		\
++})
++
+ static void dump_flag_info(struct pg_state *st, const struct flag_info
+ 		*flag, u64 pte, int num)
+ {
+@@ -121,19 +133,19 @@ static void dump_flag_info(struct pg_state *st, const struct flag_info
+ 			val = pte & flag->val;
+ 			if (flag->shift)
+ 				val = val >> flag->shift;
+-			seq_printf(st->seq, "  %s:%llx", flag->set, val);
++			pt_dump_seq_printf(st->seq, "  %s:%llx", flag->set, val);
+ 		} else {
+ 			if ((pte & flag->mask) == flag->val)
+ 				s = flag->set;
+ 			else
+ 				s = flag->clear;
+ 			if (s)
+-				seq_printf(st->seq, "  %s", s);
++				pt_dump_seq_printf(st->seq, "  %s", s);
+ 		}
+ 		st->current_flags &= ~flag->mask;
+ 	}
+ 	if (st->current_flags != 0)
+-		seq_printf(st->seq, "  unknown flags:%llx", st->current_flags);
++		pt_dump_seq_printf(st->seq, "  unknown flags:%llx", st->current_flags);
+ }
+ 
+ static void dump_addr(struct pg_state *st, unsigned long addr)
+@@ -148,12 +160,12 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
+ #define REG		"0x%08lx"
+ #endif
+ 
+-	seq_printf(st->seq, REG "-" REG " ", st->start_address, addr - 1);
++	pt_dump_seq_printf(st->seq, REG "-" REG " ", st->start_address, addr - 1);
+ 	if (st->start_pa == st->last_pa && st->start_address + PAGE_SIZE != addr) {
+-		seq_printf(st->seq, "[" REG "]", st->start_pa);
++		pt_dump_seq_printf(st->seq, "[" REG "]", st->start_pa);
+ 		delta = PAGE_SIZE >> 10;
+ 	} else {
+-		seq_printf(st->seq, " " REG " ", st->start_pa);
++		pt_dump_seq_printf(st->seq, " " REG " ", st->start_pa);
+ 		delta = (addr - st->start_address) >> 10;
+ 	}
+ 	/* Work out what appropriate unit to use */
+@@ -161,7 +173,7 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
+ 		delta >>= 10;
+ 		unit++;
+ 	}
+-	seq_printf(st->seq, "%9lu%c", delta, *unit);
++	pt_dump_seq_printf(st->seq, "%9lu%c", delta, *unit);
+ 
+ }
+ 
+@@ -178,7 +190,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
+ 		st->start_address = addr;
+ 		st->start_pa = pa;
+ 		st->last_pa = pa;
+-		seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
++		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
+ 	/*
+ 	 * Dump the section of virtual memory when:
+ 	 *   - the PTE flags from one entry to the next differs.
+@@ -202,7 +214,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
+ 					  st->current_flags,
+ 					  pg_level[st->level].num);
+ 
+-			seq_putc(st->seq, '\n');
++			pt_dump_seq_putc(st->seq, '\n');
+ 		}
+ 
+ 		/*
+@@ -211,7 +223,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
+ 		 */
+ 		while (addr >= st->marker[1].start_address) {
+ 			st->marker++;
+-			seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
++			pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
+ 		}
+ 		st->start_address = addr;
+ 		st->start_pa = pa;
+-- 
+2.21.0
 
-Ok, I'll leave them in as I did for module64
-
-Christophe
-
-> 
-> 
-> Segher
-> 
