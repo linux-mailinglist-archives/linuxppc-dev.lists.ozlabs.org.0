@@ -1,82 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575A711354
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 08:23:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48DF11415
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:23:13 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vmvM2QWzzDqXV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:23:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vlZs3fJSzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 16:23:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::141; helo=mail-it1-x141.google.com;
+ envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="OUxx+AAH"; 
+ dkim-atps=neutral
+Received: from mail-it1-x141.google.com (mail-it1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vl4Z6VNWzDqNX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 16:00:59 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x425v6Cr041160
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 May 2019 02:00:56 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2s7msu25cq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 May 2019 02:00:55 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Thu, 2 May 2019 07:00:53 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 2 May 2019 07:00:52 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4260prd36962452
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 May 2019 06:00:51 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8883652067
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 06:00:50 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3902152050
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 06:00:50 +0000 (GMT)
-Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B1436A034A;
- Thu,  2 May 2019 16:00:48 +1000 (AEST)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] MAINTAINERS: Update cxl/ocxl email address
-Date: Thu,  2 May 2019 16:00:41 +1000
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vlYB0PR9zDqLV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 16:22:21 +1000 (AEST)
+Received: by mail-it1-x141.google.com with SMTP id q19so1447535itk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2019 23:22:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=k56mmNJm2c37muwGSNyw5prel5SUd23hcD0vEkYllYY=;
+ b=OUxx+AAHpV80+7jWx8f1+E7itJj9D1rgHeIv5/3VMm7TKAnaU1bHWCA0kR/Uu4B/N0
+ YiDM2kOhNwjBsVDh7yPbvcSscs4wrg/XbXz1H/w3lDdnJU4TQ9QwedxsTFe/Bbjt18D3
+ JRn/qzW0ooD8Rl7s9nAI0qgl8XU1Fhb9EsRc0VNWcSWwmT5yQ/Ep3gbO5ZmDWB/2TOjs
+ 56aGZ16FpdQ10TxCUNbdRMfiLjvkeIGo1brUr0GBhS/X+j6ZJRXFbl8XXTiVI/tpSorx
+ HgJ21xXoiQgpOYV/KzFy4OYZm4ZtO8AhUMxPfwPWagYl7mDnLgavitYf7mYuADYjNy/N
+ 5KRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=k56mmNJm2c37muwGSNyw5prel5SUd23hcD0vEkYllYY=;
+ b=jTCnwodCu9o8Y44kYY2SRHQeb7F5Fdc9QzPHNTBNBhwVwodTZuNplhLyqX8TCsDFcp
+ uVlwybWGtYAB/aLDQ5/xRv8kvdjJ41TZaDr3+2VuOr50MDdFOtAamX/KSMeaVfLu6ITm
+ IYuJQtEzjo+WLCDJ0yec5OmZXHr7k0gm3EtArho5uLK3IMQF23tH0/6EmOE5lo6dfOGR
+ rmuHYEiaT81MvKbLu4Aio47fCyVCg/cqcQK+uxBYZeDNrGERtgNJV4kCX+zYvkhaY5Fu
+ U4NTp89zID4Cd9YU+1XXMNMe9/q8uDr4q47JI1X8wkqNRX7N0Hceg4r2lRpp+ak+YfPo
+ WL2A==
+X-Gm-Message-State: APjAAAV8b6kyZm/Ya2H1O+SYO+tfRjHmGnMt1fkFjn1fUpC6YMJybhG+
+ MzoGFiXF/zmXu3YbqQxJ7BmPRIB6CglJH9P4KQ==
+X-Google-Smtp-Source: APXvYqx2USGvNZCoaLJnd+1UamBCWbf1OMfqf8foQXGwbUGpu68tSJhvorSVm2AnXEjYEs1kPbB4DdJnuY+hXU3VFhQ=
+X-Received: by 2002:a05:660c:38e:: with SMTP id
+ x14mr1138760itj.146.1556778137619; 
+ Wed, 01 May 2019 23:22:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050206-0012-0000-0000-000003176D3F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050206-0013-0000-0000-0000214FDB05
-Message-Id: <20190502060041.794-1-ajd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-02_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=496 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905020047
-X-Mailman-Approved-At: Thu, 02 May 2019 17:22:01 +1000
+References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com>
+ <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com>
+ <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+In-Reply-To: <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Thu, 2 May 2019 14:22:06 +0800
+Message-ID: <CAFgQCTtQm7SuBRfXik6B065Aa+uQ=Mx6i+Y1q+NJU1GEiUgH4g@mail.gmail.com>
+Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
+ more indicant
+To: Matthias Brugger <mbrugger@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,40 +76,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fbarrat@linux.ibm.com
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Julien Thierry <julien.thierry@arm.com>, Yangtao Li <tiny.windzz@gmail.com>,
+ Palmer Dabbelt <palmer@sifive.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Stefan Agner <stefan@agner.ch>, linux-mips@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Logan Gunthorpe <logang@deltatee.com>,
+ linux-s390@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Dave Young <dyoung@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Will Deacon <will.deacon@arm.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ Tony Luck <tony.luck@intel.com>, Baoquan He <bhe@redhat.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Robin Murphy <robin.murphy@arm.com>, LKML <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+ Paul Burton <paul.burton@mips.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Greg Hackmann <ghackmann@android.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use my @linux.ibm.com email to avoid a layer of redirection.
+On Thu, Apr 25, 2019 at 4:20 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>
+> On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
+> >
+> >
+> [...]
+> > > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
+> > >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
+> > >               return -EINVAL;
+> > >       }
+> > > +     if (*crash_size == 0)
+> > > +             return -EINVAL;
+> >
+> > This covers the case where I pass an argument like "crashkernel=0M" ?
+> > Can't we fix that by using kstrtoull() in memparse and check if the return value
+> > is < 0? In that case we could return without updating the retptr and we will be
+> > fine.
+After a series of work, I suddenly realized that it can not be done
+like this way. "0M" causes kstrtoull() to return -EINVAL, but this is
+caused by "M", not "0". If passing "0" to kstrtoull(), it will return
+0 on success.
 
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> It seems that kstrtoull() treats 0M as invalid parameter, while
+> simple_strtoull() does not.
+>
+My careless going through the code. And I tested with a valid value
+"256M" using kstrtoull(), it also returned -EINVAL.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5c38f21aee78..386e2336fe7e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4293,7 +4293,7 @@ F:	drivers/net/ethernet/chelsio/cxgb4vf/
- 
- CXL (IBM Coherent Accelerator Processor Interface CAPI) DRIVER
- M:	Frederic Barrat <fbarrat@linux.ibm.com>
--M:	Andrew Donnellan <andrew.donnellan@au1.ibm.com>
-+M:	Andrew Donnellan <ajd@linux.ibm.com>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Supported
- F:	arch/powerpc/platforms/powernv/pci-cxl.c
-@@ -11173,7 +11173,7 @@ F:	tools/objtool/
- 
- OCXL (Open Coherent Accelerator Processor Interface OpenCAPI) DRIVER
- M:	Frederic Barrat <fbarrat@linux.ibm.com>
--M:	Andrew Donnellan <andrew.donnellan@au1.ibm.com>
-+M:	Andrew Donnellan <ajd@linux.ibm.com>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Supported
- F:	arch/powerpc/platforms/powernv/ocxl.c
--- 
-2.20.1
+So I think there is no way to distinguish 0 from a positive value
+inside this basic math function.
+Do I miss anything?
 
+Thanks and regards,
+Pingfan
