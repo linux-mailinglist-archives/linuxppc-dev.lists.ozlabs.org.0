@@ -1,88 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6FF112C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 07:52:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vktw0PjyzDqV9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 15:52:40 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48DF11415
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:23:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vmvM2QWzzDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:23:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="NSlRPYIQ"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="XTknv/fy"; dkim-atps=neutral
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com
- [64.147.123.21])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vksS4v2WzDqNt
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 15:51:23 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id B71BC665;
- Thu,  2 May 2019 01:51:21 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Thu, 02 May 2019 01:51:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- z3feKxzzz6GlsK4M3kbZV3st+zoBxa0Qgkb2ifjb1q0=; b=NSlRPYIQaF1OraSR
- xcacuU09eS01nt4VLBKmY4fDGFqxEyfWy0WTw5pcfQ15xfiMTCqNszOzlb2sw4mE
- x3gW7siJFzlEBG0HSXwYGB2m5oO4HIMWGd/Sa2yqlkzz3+hEYO7ik7JN6kae/H7k
- 7jbU9RI1j2c5ZP9+rFcXN2b0HDm3Nu1m+S23WcHFUY0hflxq28ia8qg3ouwiWGig
- DiyQr1qStyrCYhmlQWtjQj1v08WWVGFVMnJ+QCdvmod3W8d6X1PVMA4nkOsj5TXf
- D+InKhPMSGJ7WjLQ6TdWrBZrMTmEHj4Xa7tqeXWp9wGvXHT4ULqe7qLdRZXt7CbK
- GNa0Rg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=z3feKxzzz6GlsK4M3kbZV3st+zoBxa0Qgkb2ifjb1
- q0=; b=XTknv/fy84XvsvbwGTCleNXYwRgF7XX8xVxCm1SrGz7nMwdVnwJGgMySD
- GsVl75RHHAnyQkdHp1bMIsmJk6WDBHDZLRbjF7ZD6Gt3qq0xxc7WG/f57Y8e5/DK
- RyFW1GByar7A6KZtEJX1LCxUBdbJikUQAR8ZCBBwVCCD4z5hLaL5PVrRSyi6w1ma
- amWt2fu8zvJbI1vbY5ZZPjjHD3dxDJUdeq/QdaCXNFUdCPuRRl53168hnUWLOA6U
- XBG+Hlu4xte3bC15uNK1qq0T9LNPsL7rkUsJTZCxDOnMVEnLSnir7WdrM12ZJ3cU
- CGO/C7WeIUOJKblGIGRKUrSys6w/w==
-X-ME-Sender: <xms:WIXKXLUqgcsSyvO__HmzAIVKlCgzf7Fh9A3Wx0Xmi30BmlUvKlfexw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieekgdeludcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdeftddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucfrrghrrghmpehmrghi
- lhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttgenucevlhhushhtvghrufhiii
- gvpedt
-X-ME-Proxy: <xmx:WIXKXKUd_Ym7OZMyxtq6_EQCIKqxjiR5Gwk9AiEuYnTX1eNKW8baYg>
- <xmx:WIXKXJK9N8Zu7IgFwKEaqZBKrbL3s251cIZfeOBGcciJGnuFap6Bdg>
- <xmx:WIXKXCC4wl_EwqwYNfP6fJOPBwBvkMMbJQTIBdZFQvznW5DmUz32jQ>
- <xmx:WYXKXJz-RdvpWAv_N5beimdUx01IqkgTYYOrtgS7TsBIS9-b3mXJuw>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 608DAE448F;
- Thu,  2 May 2019 01:51:18 -0400 (EDT)
-Message-ID: <6f3c93698669da36cb6bb354394a1f63c93a58cc.camel@russell.cc>
-Subject: Re: [PATCH 2/2] powerpc/mm: Warn if W+X pages found on boot
-From: Russell Currey <ruscur@russell.cc>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 02 May 2019 15:51:15 +1000
-In-Reply-To: <673532fb-cd09-748f-e936-14c0cab854b1@c-s.fr>
-References: <20190424063958.24559-1-ruscur@russell.cc>
- <20190424063958.24559-2-ruscur@russell.cc>
- <8e659a8f-af3f-e889-3f7a-560178c1f7b1@c-s.fr>
- <ca5e1db5fca5c12ca69d7810d575a437ae39ec87.camel@russell.cc>
- <673532fb-cd09-748f-e936-14c0cab854b1@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vl4Z6VNWzDqNX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 16:00:59 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x425v6Cr041160
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 May 2019 02:00:56 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2s7msu25cq-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 May 2019 02:00:55 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 2 May 2019 07:00:53 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 2 May 2019 07:00:52 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4260prd36962452
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 May 2019 06:00:51 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8883652067
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 06:00:50 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3902152050
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 06:00:50 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B1436A034A;
+ Thu,  2 May 2019 16:00:48 +1000 (AEST)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] MAINTAINERS: Update cxl/ocxl email address
+Date: Thu,  2 May 2019 16:00:41 +1000
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19050206-0012-0000-0000-000003176D3F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050206-0013-0000-0000-0000214FDB05
+Message-Id: <20190502060041.794-1-ajd@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-02_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=496 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905020047
+X-Mailman-Approved-At: Thu, 02 May 2019 17:22:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,34 +88,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com
+Cc: fbarrat@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> > > > +	if (radix_enabled())
-> > > > +		st.start_address = PAGE_OFFSET;
-> > > > +	else
-> > > +		st.start_address = KERN_VIRT_START;
-> > > 
-> > > KERN_VIRT_START doesn't exist on PPC32.
-> > > 
-> > > Christophe
-> > > 
-> > Thanks a lot for the review!  Applied all your suggestions.  What
-> > should I use on PPC32 instead?
-> 
-> Indeed it looks like KERN_VIRT_START is defined as 0 for PPC32 at
-> the 
-> top of ptdump.c, which look strange to me.
-> 
-> I guess PAGE_OFFSET should be the good value for KERN_VIRT_START on
-> PPC32.
-> 
-> Christophe
+Use my @linux.ibm.com email to avoid a layer of redirection.
 
-git blame says you put it there :) I'll set it to PAGE_OFFSET instead
-of zero.  Cheers
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-- Russell
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c38f21aee78..386e2336fe7e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4293,7 +4293,7 @@ F:	drivers/net/ethernet/chelsio/cxgb4vf/
+ 
+ CXL (IBM Coherent Accelerator Processor Interface CAPI) DRIVER
+ M:	Frederic Barrat <fbarrat@linux.ibm.com>
+-M:	Andrew Donnellan <andrew.donnellan@au1.ibm.com>
++M:	Andrew Donnellan <ajd@linux.ibm.com>
+ L:	linuxppc-dev@lists.ozlabs.org
+ S:	Supported
+ F:	arch/powerpc/platforms/powernv/pci-cxl.c
+@@ -11173,7 +11173,7 @@ F:	tools/objtool/
+ 
+ OCXL (Open Coherent Accelerator Processor Interface OpenCAPI) DRIVER
+ M:	Frederic Barrat <fbarrat@linux.ibm.com>
+-M:	Andrew Donnellan <andrew.donnellan@au1.ibm.com>
++M:	Andrew Donnellan <ajd@linux.ibm.com>
+ L:	linuxppc-dev@lists.ozlabs.org
+ S:	Supported
+ F:	arch/powerpc/platforms/powernv/ocxl.c
+-- 
+2.20.1
 
