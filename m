@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC03211458
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:41:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44vnJg3yzPzDqKb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:41:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769461145E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 09:42:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44vnL84Cb4zDqG9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2019 17:42:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,62 +16,64 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="YVH6Db1/"; 
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="A2P5l8gh"; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="sqVubO9i"; dkim-atps=neutral
+ header.b="H8jjEIVV"; dkim-atps=neutral
 Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
  [64.147.123.25])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44vnH80BPKzDqFs
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44vnH76p3kzDq6l
  for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2019 17:40:19 +1000 (AEST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id 8E83B6BF;
- Thu,  2 May 2019 03:40:15 -0400 (EDT)
+ by mailout.west.internal (Postfix) with ESMTP id E211C689;
+ Thu,  2 May 2019 03:40:16 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Thu, 02 May 2019 03:40:15 -0400
+ by compute6.internal (MEProxy); Thu, 02 May 2019 03:40:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=fm1; bh=k4pXtm8xkHvUx4Scv5VFXn9Qq5
- qoA16qYXPG+Z0X1Qg=; b=YVH6Db1/ghTeJeLV4YTCyETcx79TzRj3DNFz5Dp7uk
- b5r/W2kUy9ulUZlmPonwzjkM9Puk9h3aM8gpQ3iPHadKSXw2PZPN9I9XGWC7e9HK
- IFXOpSPnNd7JtHSY8x/IQYSWDDG5tn7fCQTV0GnvNyKS6PRl2tNcNkyLTTUx44g/
- FdvASVfJGRxImWpU9YdkhV7bAghYzMLPzhIM6OwOL+ZRD2S9E6NQqX+Ha5A1Z1vP
- Y0Mf3lIiuoOhFN7Wgsg8Cs3n84d3dVJZgtOyw76ePd1LCdVLShUeru+5l/6djEAP
- 2W54pw1CDeYl2eFfEGe42lts24IaxYilfahXIMt0GjGQ==
+ from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding; s=fm1; bh=9pZiVq15lplTU
+ qpAlIk5Hr+1+O0njVS94GtHdTGr72s=; b=A2P5l8gh2gPH4sE/rCdppgB9aBPho
+ t4FxHZXz6pD8GlVB4aG5Q+fSpux/vuAHGSItxdaPHRNKLZdCTooEwCXgkbwKCU6e
+ t/kDwvFpz96xy44bL9t3hMsIVkSoFGkVMPdMIEBkxNtEGIX621NrRqsEZ9r1+Ssu
+ 46TjG48H7vLCwBX87AHe6LTjwvHTIkSw0hIp7BogAGMuwqXeNjgH0pX2Bvv0uWCg
+ Dg7xtAn0EoNWTrnUPgfs2p3o6e8/NGMD39yq1t5UiKMr2oj/PiUBl+BBCx83cwrp
+ /R1uvncPzVJQjf+AkNHHkV4uL5sxjTJqvaDC/yaaNKkIVVb1HwZ8OlPeQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=k4pXtm8xkHvUx4Scv
- 5VFXn9Qq5qoA16qYXPG+Z0X1Qg=; b=sqVubO9ihHFivF7BXLEVj0v5nVyN0DW4Q
- j8Lv2rXJVoc02TICNG/sWJJZI13gltrseuf5DA/g5xRSCT8KLOGYXYrXDDxkdasR
- FxlbMcSTA8HqThl0/+5qa7ftJPJOTSAheXNNfjA1dSdIBREP9BfaE7RlhCeneRLA
- gA1cSpUMi2CqWaEqeN/ut9A7PH7ouc7N5ZA4dCMnHXI9ws6DA+szoN/JX2XhVfSL
- Zpf4O6D/MBGN6mCiLXK5uYADd67aKIRmfw3htSeJa4jUVz8rrHb7AxhZN9Ze0CHL
- oFI4R6D6Kjmw2tiV39Mys1yS930+gWRjUC0ojOoStSTltm/ATtScw==
-X-ME-Sender: <xms:3Z7KXLb38xPmfU-vccBj5e2moL4pevmAyArBdufzDVN7My6l9j96mA>
+ :in-reply-to:message-id:mime-version:references:subject:to
+ :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm2; bh=9pZiVq15lplTUqpAlIk5Hr+1+O0njVS94GtHdTGr72s=; b=H8jjEIVV
+ CLQngfJ/m9xgDLxKpvjUXK4rY07UgVxGDfGEaBfB3H4JMypcFWp/gd0+hIEBzTV2
+ smy0fNjdrJgWDqjkJw6o1+6L3+jdtro5Ir6OjROuTouZ/KxV+b8eiEdnwtdo1n6t
+ v54fjoQtJ6BRdFco0Ak5+FjGv8CQajX30TvK9kT9oaSpsTyWpIWfv7V1B5MAlpCw
+ MUp+cHaIqrZmCdjlu6B9cXFoeDMfUyWklInfbGlWvweqbJNLRC2m61cmT/pJsVdg
+ 5qvqcKak7Kw1gD8+THObJz15bsEeAxFQyMfv7L/sDXqtgp2Vt9DCgwxv0q/Ob1h3
+ o5kbeOB+ZcHDFA==
+X-ME-Sender: <xms:4J7KXE52zdfQrPxU8TYKUMBHyojbJ3edNXw3391_2uwcWDeqDY3boA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrieekgdduuddvucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
- fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
- uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrd
- dutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgt
- tgenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:3Z7KXOHv-3zOnVGJ-R21Qi_OpqNqfy-Fozp9KF793Kh_bIJyeSnNUA>
- <xmx:3Z7KXGmWrJk30zE-kCHtD6U1mfcXA8igsC6KMPkg8yvLYHTxJcywBg>
- <xmx:3Z7KXDCo6mTHb7PY-soZfEcYoUsTUIFSQS-njCqC2vehc-gGD7xw2A>
- <xmx:357KXGu1IuEP5y-OWW4XapWZhgpvMEjgWtdhTliAxG8sdUyR6cpq-A>
+ fufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhr
+ vgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecukfhppeduvddvrdelledrke
+ dvrddutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhl
+ rdgttgenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:4J7KXCX0PBK4scN-octo3sOWttXtbOSIG5qVoor_v_tZ54b-o02Xog>
+ <xmx:4J7KXKt8R7pGv6hOloO1oRO0bWGSs0jnAxeN3qZTyHh4eNH7ClNYjw>
+ <xmx:4J7KXPrSan82OKkbBAimr_1osqpC-oBwL2tV72QAfUDPI2pUJ4Q_nw>
+ <xmx:4J7KXLv7uDRhc-PTfw3pSrUB2KqPYOg0NG-SDH7r4ny6BQU84a2eUg>
 Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 1794A10369;
- Thu,  2 May 2019 03:40:10 -0400 (EDT)
+ by mail.messagingengine.com (Postfix) with ESMTPA id EDEA3103CB;
+ Thu,  2 May 2019 03:40:13 -0400 (EDT)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/2] powerpc/mm/ptdump: Wrap seq_printf() to handle NULL
- pointers
-Date: Thu,  2 May 2019 17:39:46 +1000
-Message-Id: <20190502073947.6481-1-ruscur@russell.cc>
+Subject: [PATCH v2 2/2] powerpc/mm: Warn if W+X pages found on boot
+Date: Thu,  2 May 2019 17:39:47 +1000
+Message-Id: <20190502073947.6481-2-ruscur@russell.cc>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190502073947.6481-1-ruscur@russell.cc>
+References: <20190502073947.6481-1-ruscur@russell.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,116 +93,182 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lovingly borrowed from the arch/arm64 ptdump code.
+Implement code to walk all pages and warn if any are found to be both
+writable and executable.  Depends on STRICT_KERNEL_RWX enabled, and is
+behind the DEBUG_WX config option.
 
-This doesn't seem to be an issue in practice, but is necessary for my
-upcoming commit.
+This only runs on boot and has no runtime performance implications.
+
+Very heavily influenced (and in some cases copied verbatim) from the
+ARM64 code written by Laura Abbott (thanks!), since our ptdump
+infrastructure is similar.
 
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
-v2: Fix putc to actually putc thanks to Christophe Leroy
+v2: A myriad of fixes and cleanups thanks to Christophe Leroy
 
- arch/powerpc/mm/ptdump/ptdump.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ arch/powerpc/Kconfig.debug         | 19 ++++++++++++++
+ arch/powerpc/include/asm/pgtable.h |  6 +++++
+ arch/powerpc/mm/pgtable_32.c       |  3 +++
+ arch/powerpc/mm/pgtable_64.c       |  3 +++
+ arch/powerpc/mm/ptdump/ptdump.c    | 41 +++++++++++++++++++++++++++++-
+ 5 files changed, 71 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-index 37138428ab55..a4a132f92810 100644
---- a/arch/powerpc/mm/ptdump/ptdump.c
-+++ b/arch/powerpc/mm/ptdump/ptdump.c
-@@ -104,6 +104,18 @@ static struct addr_marker address_markers[] = {
- 	{ -1,	NULL },
- };
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 4e00cb0a5464..9e8bcddd8b8f 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -361,6 +361,25 @@ config PPC_PTDUMP
  
-+#define pt_dump_seq_printf(m, fmt, args...)	\
-+({						\
-+	if (m)					\
-+		seq_printf(m, fmt, ##args);	\
-+})
-+
-+#define pt_dump_seq_putc(m, c)		\
-+({					\
-+	if (m)				\
-+		seq_putc(m, c);		\
-+})
-+
- static void dump_flag_info(struct pg_state *st, const struct flag_info
- 		*flag, u64 pte, int num)
- {
-@@ -121,19 +133,19 @@ static void dump_flag_info(struct pg_state *st, const struct flag_info
- 			val = pte & flag->val;
- 			if (flag->shift)
- 				val = val >> flag->shift;
--			seq_printf(st->seq, "  %s:%llx", flag->set, val);
-+			pt_dump_seq_printf(st->seq, "  %s:%llx", flag->set, val);
- 		} else {
- 			if ((pte & flag->mask) == flag->val)
- 				s = flag->set;
- 			else
- 				s = flag->clear;
- 			if (s)
--				seq_printf(st->seq, "  %s", s);
-+				pt_dump_seq_printf(st->seq, "  %s", s);
- 		}
- 		st->current_flags &= ~flag->mask;
- 	}
- 	if (st->current_flags != 0)
--		seq_printf(st->seq, "  unknown flags:%llx", st->current_flags);
-+		pt_dump_seq_printf(st->seq, "  unknown flags:%llx", st->current_flags);
- }
+ 	  If you are unsure, say N.
  
- static void dump_addr(struct pg_state *st, unsigned long addr)
-@@ -148,12 +160,12 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
- #define REG		"0x%08lx"
++config PPC_DEBUG_WX
++	bool "Warn on W+X mappings at boot"
++	select PPC_PTDUMP
++	help
++	  Generate a warning if any W+X mappings are found at boot.
++
++	  This is useful for discovering cases where the kernel is leaving
++	  W+X mappings after applying NX, as such mappings are a security risk.
++
++	  Note that even if the check fails, your kernel is possibly
++	  still fine, as W+X mappings are not a security hole in
++	  themselves, what they do is that they make the exploitation
++	  of other unfixed kernel bugs easier.
++
++	  There is no runtime or memory usage effect of this option
++	  once the kernel has booted up - it's a one time check.
++
++	  If in doubt, say "Y".
++
+ config PPC_FAST_ENDIAN_SWITCH
+ 	bool "Deprecated fast endian-switch syscall"
+         depends on DEBUG_KERNEL && PPC_BOOK3S_64
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+index 505550fb2935..50c0d06fac2f 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -108,6 +108,12 @@ void mark_initmem_nx(void);
+ static inline void mark_initmem_nx(void) { }
  #endif
  
--	seq_printf(st->seq, REG "-" REG " ", st->start_address, addr - 1);
-+	pt_dump_seq_printf(st->seq, REG "-" REG " ", st->start_address, addr - 1);
- 	if (st->start_pa == st->last_pa && st->start_address + PAGE_SIZE != addr) {
--		seq_printf(st->seq, "[" REG "]", st->start_pa);
-+		pt_dump_seq_printf(st->seq, "[" REG "]", st->start_pa);
- 		delta = PAGE_SIZE >> 10;
- 	} else {
--		seq_printf(st->seq, " " REG " ", st->start_pa);
-+		pt_dump_seq_printf(st->seq, " " REG " ", st->start_pa);
- 		delta = (addr - st->start_address) >> 10;
- 	}
- 	/* Work out what appropriate unit to use */
-@@ -161,7 +173,7 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
- 		delta >>= 10;
- 		unit++;
- 	}
--	seq_printf(st->seq, "%9lu%c", delta, *unit);
-+	pt_dump_seq_printf(st->seq, "%9lu%c", delta, *unit);
++#ifdef CONFIG_PPC_DEBUG_WX
++void ptdump_check_wx(void);
++#else
++static inline void ptdump_check_wx(void) { }
++#endif
++
+ /*
+  * When used, PTE_FRAG_NR is defined in subarch pgtable.h
+  * so we are sure it is included when arriving here.
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index 6e56a6240bfa..6f919779ee06 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -384,6 +384,9 @@ void mark_rodata_ro(void)
+ 		   PFN_DOWN((unsigned long)__start_rodata);
+ 
+ 	change_page_attr(page, numpages, PAGE_KERNEL_RO);
++
++	// mark_initmem_nx() should have already run by now
++	ptdump_check_wx();
+ }
+ #endif
+ 
+diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
+index fb1375c07e8c..bfa18453625e 100644
+--- a/arch/powerpc/mm/pgtable_64.c
++++ b/arch/powerpc/mm/pgtable_64.c
+@@ -328,6 +328,9 @@ void mark_rodata_ro(void)
+ 		radix__mark_rodata_ro();
+ 	else
+ 		hash__mark_rodata_ro();
++
++	// mark_initmem_nx() should have already run by now
++	ptdump_check_wx();
+ }
+ 
+ void mark_initmem_nx(void)
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index a4a132f92810..e69b53a8a841 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -31,7 +31,7 @@
+ #include "ptdump.h"
+ 
+ #ifdef CONFIG_PPC32
+-#define KERN_VIRT_START	0
++#define KERN_VIRT_START	PAGE_OFFSET
+ #endif
+ 
+ /*
+@@ -68,6 +68,8 @@ struct pg_state {
+ 	unsigned long last_pa;
+ 	unsigned int level;
+ 	u64 current_flags;
++	bool check_wx;
++	unsigned long wx_pages;
+ };
+ 
+ struct addr_marker {
+@@ -177,6 +179,20 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
  
  }
  
-@@ -178,7 +190,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
- 		st->start_address = addr;
- 		st->start_pa = pa;
- 		st->last_pa = pa;
--		seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
-+		pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
- 	/*
- 	 * Dump the section of virtual memory when:
- 	 *   - the PTE flags from one entry to the next differs.
-@@ -202,7 +214,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
- 					  st->current_flags,
- 					  pg_level[st->level].num);
++static void note_prot_wx(struct pg_state *st, unsigned long addr)
++{
++	if (!st->check_wx)
++		return;
++
++	if (!((st->current_flags & pgprot_val(PAGE_KERNEL_X)) == pgprot_val(PAGE_KERNEL_X)))
++		return;
++
++	WARN_ONCE(1, "powerpc/mm: Found insecure W+X mapping at address %p/%pS\n",
++		  (void *)st->start_address, (void *)st->start_address);
++
++	st->wx_pages += (addr - st->start_address) / PAGE_SIZE;
++}
++
+ static void note_page(struct pg_state *st, unsigned long addr,
+ 	       unsigned int level, u64 val)
+ {
+@@ -206,6 +222,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
  
--			seq_putc(st->seq, '\n');
-+			pt_dump_seq_putc(st->seq, '\n');
- 		}
+ 		/* Check the PTE flags */
+ 		if (st->current_flags) {
++			note_prot_wx(st, addr);
+ 			dump_addr(st, addr);
  
- 		/*
-@@ -211,7 +223,7 @@ static void note_page(struct pg_state *st, unsigned long addr,
- 		 */
- 		while (addr >= st->marker[1].start_address) {
- 			st->marker++;
--			seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
-+			pt_dump_seq_printf(st->seq, "---[ %s ]---\n", st->marker->name);
- 		}
- 		st->start_address = addr;
- 		st->start_pa = pa;
+ 			/* Dump all the flags */
+@@ -378,6 +395,28 @@ static void build_pgtable_complete_mask(void)
+ 				pg_level[i].mask |= pg_level[i].flag[j].mask;
+ }
+ 
++void ptdump_check_wx(void)
++{
++	struct pg_state st = {
++		.seq = NULL,
++		.marker = address_markers,
++		.check_wx = true,
++	};
++
++	if (radix_enabled())
++		st.start_address = PAGE_OFFSET;
++	else
++		st.start_address = KERN_VIRT_START;
++
++	walk_pagetables(&st);
++
++	if (st.wx_pages)
++		pr_warn("Checked W+X mappings: FAILED, %lu W+X pages found\n",
++			st.wx_pages);
++	else
++		pr_info("Checked W+X mappings: passed, no W+X pages found\n");
++}
++
+ static int ptdump_init(void)
+ {
+ 	struct dentry *debugfs_file;
 -- 
 2.21.0
 
