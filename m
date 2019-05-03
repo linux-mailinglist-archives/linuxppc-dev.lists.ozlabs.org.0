@@ -1,35 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657121295E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:58:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wPf86wlZzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:58:56 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE04C12936
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:57:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wPc02LynzDqDs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:57:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKc6DlWzDqPP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKc4CNqzDqQ0
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKc0KZFz9sPd; Fri,  3 May 2019 16:59:31 +1000 (AEST)
+ id 44wNKb2wTjz9sBb; Fri,  3 May 2019 16:59:31 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 1e496391a8452101308a23b7395cdd4983b6e5bd
+X-powerpc-patch-commit: 5f18cbdbdd42b050c51eb9859f8ce43db3f51846
 X-Patchwork-Hint: ignore
-In-Reply-To: <f4003df27f480c533b311dc9515f13fdaa962563.1490869145.git.joe@perches.com>
-To: Joe Perches <joe@perches.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+In-Reply-To: <20190502073947.6481-1-ruscur@russell.cc>
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/powernv/ioda2: Add __printf format/argument
- verification
-Message-Id: <44wNKc0KZFz9sPd@ozlabs.org>
+Subject: Re: [PATCH v2 1/2] powerpc/mm/ptdump: Wrap seq_printf() to handle
+ NULL pointers
+Message-Id: <44wNKb2wTjz9sBb@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:31 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -42,18 +40,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Julia.Lawall@lip6.fr, rashmica.g@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2017-03-30 at 10:19:25 UTC, Joe Perches wrote:
-> Fix fallout too.
+On Thu, 2019-05-02 at 07:39:46 UTC, Russell Currey wrote:
+> Lovingly borrowed from the arch/arm64 ptdump code.
 > 
-> Signed-off-by: Joe Perches <joe@perches.com>
+> This doesn't seem to be an issue in practice, but is necessary for my
+> upcoming commit.
+> 
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
 
-Applied to powerpc next, thanks.
+Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/1e496391a8452101308a23b7395cdd49
+https://git.kernel.org/powerpc/c/5f18cbdbdd42b050c51eb9859f8ce43d
 
 cheers
