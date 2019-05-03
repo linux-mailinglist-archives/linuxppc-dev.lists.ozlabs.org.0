@@ -2,85 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AD3125DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 02:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C070126F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 06:50:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wDGv2HTVzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:56:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wKT85TrszDqW7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 14:50:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="mcqoaD00"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="4JAy1yuV"; dkim-atps=neutral
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com
- [64.147.123.25])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wDFR1q1FzDqLB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 10:55:23 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id A151F5A7;
- Thu,  2 May 2019 20:55:20 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Thu, 02 May 2019 20:55:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- UEIQv5LWUL+GdzdBZmIUWxKe8JPzQq56Ac0tlzTHnmo=; b=mcqoaD00l8Bq5jg9
- c8/pGIJXC4LbJgoP/uNi9ugl5TmECbHjDCoQrrtOWOaPAzrPjVM0h3Gp4l0FWVaZ
- noTOpwY21mXM+SgIsPY4jRDAzFAFI9I9LjvkA7JuWI252QfPhznb7mfI2A7T58kB
- mTnejxJDVv3DMbL6/vvUm6Eab1lDACqzukXwXfCBXWzbbysrUMEphSEZOUlAAmzq
- E/KEx+syH+lB6x9a3Ivo5eYSKI4K2vatwIWK2C6lYcG+kszHs5Bewbq5uGK8ab8i
- 2AigP6tzBBo8gfk1bvF7Lh/FqF/EU4ESvXU1xrlSRF5ijhZKyBCg+RCnaJoJpW+K
- 2kHxZw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=UEIQv5LWUL+GdzdBZmIUWxKe8JPzQq56Ac0tlzTHn
- mo=; b=4JAy1yuV7+ziviIt7hM1Zsc+bpr5Nei9inJKjIPAWz9/eZNDKiT1o60P1
- GXCPAnI8P2mufJRGwsnu+LDrTYTFZPcWQvFtQxup7jaPAGxerPCTTPe7nJFM/QSb
- zLae9PVfMjk8UXt7t3z3gk512zBCjt+OIGlnkZvlHf5HTtijjeVVADx7ppIE9mGW
- CQiNwNOpurVQkV40Jf4eSVjGFMpUFBWuBQNffMsZgsS7HcwFGYpXKDborIS8dVpI
- s40M16mzoHf5SBGpY9s8Qd26qFSEaupctHEGcT4z+uc+D7bb5GjRu0v31j66MKl9
- f/4DGanTWzV2r9ZAi/njooGGZO0+A==
-X-ME-Sender: <xms:d5HLXGm9iAzGeXRxMNExnBvs2PKhlhmMHj4A3aZ-4fjvt2aV0ARW5g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrjedtgdegtdcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdeftddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecukfhppeduvddvrdelledrkedvrddutdenucfrrghrrghmpehmrghi
- lhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttgenucevlhhushhtvghrufhiii
- gvpedt
-X-ME-Proxy: <xmx:d5HLXGFWla6Ck7CM6dNhiRN5KA8i_gbiBFieqprXwTadhwNVVk6XKA>
- <xmx:d5HLXCdQB8joxLe7s_dRc56UUNItvVKBNqlgcBcxso_EAo4oApuIXg>
- <xmx:d5HLXPhu7ceq9cA8XFnL59NzzXzTx61ZfBqnPlXu0ycTC4ReL8ed0Q>
- <xmx:eJHLXOcGzl1E_8KMFp0iAjDGc75Z_X7XkKgczjYitB5A-TbogUw43w>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id 75146103D4;
- Thu,  2 May 2019 20:55:17 -0400 (EDT)
-Message-ID: <5074405df506970edc7c3fe7604bc60f345163eb.camel@russell.cc>
-Subject: Re: [PATCH v2 2/2] powerpc/mm: Warn if W+X pages found on boot
-From: Russell Currey <ruscur@russell.cc>
-To: Joel Stanley <joel@jms.id.au>
-Date: Fri, 03 May 2019 10:55:13 +1000
-In-Reply-To: <CACPK8XeGD85Yt1bZvuDo4LnYwn0xg15eDJoOep1JC3bg0s0uXA@mail.gmail.com>
-References: <20190502073947.6481-1-ruscur@russell.cc>
- <20190502073947.6481-2-ruscur@russell.cc>
- <CACPK8XeGD85Yt1bZvuDo4LnYwn0xg15eDJoOep1JC3bg0s0uXA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wKRh2hwgzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 14:49:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.b="cFBI4On3"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 44wKRg5lYJz9s9y; Fri,  3 May 2019 14:49:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1556858975;
+ bh=lXYAFi5HS9VNSfsQRczwFXhO31BOOOPUKAtoP1hnd10=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=cFBI4On3Jp2hFf5UDVmMRXF5/9cVXBCe+LatHO76rb0jSTEz36RhzpZWQrUC3mK30
+ pLvbMfsyuuTEfIOPMgrKB5s0+3r1c/qhnMKVIQpH4cr+fUBL3mQKLx9GFhhj4S6rDN
+ Cuu5xcPeKiwhPqSGyBT9QPP46F9qba9DYHt5Bpro=
+Date: Fri, 3 May 2019 12:35:11 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Stewart Smith <stewart@linux.ibm.com>
+Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
+ system firmware
+Message-ID: <20190503023511.GI13618@umbus.fritz.box>
+References: <20190501034221.18437-1-aik@ozlabs.ru>
+ <20190502042702.GH13618@umbus.fritz.box>
+ <87bm0ktn1q.fsf@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="tctmm6wHVGT/P6vA"
+Content-Disposition: inline
+In-Reply-To: <87bm0ktn1q.fsf@linux.vnet.ibm.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,61 +55,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Julia Lawall <Julia.Lawall@lip6.fr>, Rashmica Gupta <rashmica.g@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-05-03 at 00:37 +0000, Joel Stanley wrote:
-> On Thu, 2 May 2019 at 07:42, Russell Currey <ruscur@russell.cc>
-> wrote:
-> > Implement code to walk all pages and warn if any are found to be
-> > both
-> > writable and executable.  Depends on STRICT_KERNEL_RWX enabled, and
-> > is
-> > behind the DEBUG_WX config option.
-> > 
-> > This only runs on boot and has no runtime performance implications.
-> > 
-> > Very heavily influenced (and in some cases copied verbatim) from
-> > the
-> > ARM64 code written by Laura Abbott (thanks!), since our ptdump
-> > infrastructure is similar.
-> > 
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > ---
-> > v2: A myriad of fixes and cleanups thanks to Christophe Leroy
-> > 
-> >  arch/powerpc/Kconfig.debug         | 19 ++++++++++++++
-> >  arch/powerpc/include/asm/pgtable.h |  6 +++++
-> >  arch/powerpc/mm/pgtable_32.c       |  3 +++
-> >  arch/powerpc/mm/pgtable_64.c       |  3 +++
-> >  arch/powerpc/mm/ptdump/ptdump.c    | 41
-> > +++++++++++++++++++++++++++++-
-> >  5 files changed, 71 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig.debug
-> > b/arch/powerpc/Kconfig.debug
-> > index 4e00cb0a5464..9e8bcddd8b8f 100644
-> > --- a/arch/powerpc/Kconfig.debug
-> > +++ b/arch/powerpc/Kconfig.debug
-> > @@ -361,6 +361,25 @@ config PPC_PTDUMP
-> > 
-> >           If you are unsure, say N.
-> > 
-> > +config PPC_DEBUG_WX
-> 
-> The other architectures call this DEBUG_WX, in case you wanted to
-> name
-> it the same.
 
-I did originally, I changed it since we have PPC_PTDUMP but I don't
-really care either way.  mpe can change it if he wants
+--tctmm6wHVGT/P6vA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > +       bool "Warn on W+X mappings at boot"
-> > +       select PPC_PTDUMP
-> > +       help
-> > +         Generate a warning if any W+X mappings are found at boot.
+On Fri, May 03, 2019 at 10:10:57AM +1000, Stewart Smith wrote:
+> David Gibson <david@gibson.dropbear.id.au> writes:
+> > On Wed, May 01, 2019 at 01:42:21PM +1000, Alexey Kardashevskiy wrote:
+> >> At the moment, on 256CPU + 256 PCI devices guest, it takes the guest
+> >> about 8.5sec to fetch the entire device tree via the client interface
+> >> as the DT is traversed twice - for strings blob and for struct blob.
+> >> Also, "getprop" is quite slow too as SLOF stores properties in a linked
+> >> list.
+> >>=20
+> >> However, since [1] SLOF builds flattened device tree (FDT) for another
+> >> purpose. [2] adds a new "fdt-fetch" client interface for the OS to fet=
+ch
+> >> the FDT.
+> >>=20
+> >> This tries the new method; if not supported, this falls back to
+> >> the old method.
+> >>=20
+> >> There is a change in the FDT layout - the old method produced
+> >> (reserved map, strings, structs), the new one receives only strings and
+> >> structs from the firmware and adds the final reserved map to the end,
+> >> so it is (fw reserved map, strings, structs, reserved map).
+> >> This still produces the same unflattened device tree.
+> >>=20
+> >> This merges the reserved map from the firmware into the kernel's reser=
+ved
+> >> map. At the moment SLOF generates an empty reserved map so this does n=
+ot
+> >> change the existing behaviour in regard of reservations.
+> >>=20
+> >> This supports only v17 onward as only that version provides dt_struct_=
+size
+> >> which works as "fdt-fetch" only produces v17 blobs.
+> >>=20
+> >> If "fdt-fetch" is not available, the old method of fetching the DT is =
+used.
+> >>=20
+> >> [1] https://git.qemu.org/?p=3DSLOF.git;a=3Dcommitdiff;h=3De6fc84652c9c=
+00
+> >> [2] https://git.qemu.org/?p=3DSLOF.git;a=3Dcommit;h=3Decda95906930b80
+> >>=20
+> >> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> >
+> > Hrm.  I've gotta say I'm not terribly convinced that it's worth adding
+> > a new interface we'll need to maintain to save 8s on a somewhat
+> > contrived testcase.
+>=20
+> 256CPUs aren't that many anymore though. Although I guess that many PCI
+> devices is still a little uncommon.
 
+Yeah, it was the PCI devices I was meaning, not the cpus.
+
+> A 4 socket POWER8 or POWER9 can easily be that large, and a small test
+> kernel/userspace will boot in ~2.5-4 seconds. So it's possible that
+> the device tree fetch could be surprisingly non-trivial percentage of boot
+> time at least on some machines.
+>=20
+>=20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--tctmm6wHVGT/P6vA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlzLqN0ACgkQbDjKyiDZ
+s5LOrRAAgHrSb8wyNCKWroczzgLT880OBXLyUu2sMjzbU7pkaq+x1yxpGfhRVDUW
++VSD/VGl/3T2q3dQRCQn0Ur8/jB0Sd31uSJilslPCwjt+cv9BPHmE6z0HxpKzysJ
+BswzxH90eJcsnwiCNHmBcAmQuu2R3MNMUcM9Yr6WAJW2871wY9MVHMnU8TMcfuzh
+ZbUhUFwMCYDqAKwG4rTd+/4dw0GzjfjFOYfZr/uiQi7lNEzRUfB0jOGongWiaOut
+tEfwVlTQsXN4RPvtnw2EhdNZmjtwVTz/z1jGpCnRPTe1mulQwdRQn5ndtaR4cBWc
+p+ulIc64SYuR8qvbZcYsZIcMnHDbKXTGcfl/XM952rV/g1UlCtWMfVL02fnk9IW6
+vVCSQDtmUfLtFMK/M2QyjcRhGNx0vUMIQYk1KDqYbH9ExguY9e2QZvZLUjeKEu+T
+eRB0dHAcEla4cg2+YTYNPC5j4QUi62MHtK4MaV8CMob3uuRf0fmex3H9JjND7vvv
+7SP2d5h0qZj+/oGfLi18HALI2+Hy1aLp6bDBkeo6YiBf8M/y1YttZQr4tpng0DcF
+M4SoqzMCnk5Bx4dMiMKPnTW+L4XuN1C2a1AiPJV6xYNJ+hALYET4VbTUt0mQXVif
+CjXP5A93hNy6AFpYR+TCK6F1BKtbgk9YgG3bE9dCDLBqYbS9P+s=
+=gVtK
+-----END PGP SIGNATURE-----
+
+--tctmm6wHVGT/P6vA--
