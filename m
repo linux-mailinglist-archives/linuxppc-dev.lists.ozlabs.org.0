@@ -2,33 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E203112905
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0CD12904
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:42:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wPJ13X7bzDqNS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:43:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wPGg071SzDqZN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:42:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKS2bC6zDqQh
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKR6S6yzDqQB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKS0PfWz9s9y; Fri,  3 May 2019 16:59:23 +1000 (AEST)
+ id 44wNKR4m2Pz9sNC; Fri,  3 May 2019 16:59:23 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: a521c44c3ded9fe184c5de3eed3a442af2d26f00
+X-powerpc-patch-commit: 5ba666d56c4ff9b011c1b029dcc689cff8b176fb
 X-Patchwork-Hint: ignore
-In-Reply-To: <11addb677de7449523fd0023a9ca43b8898c207a.1556258135.git.christophe.leroy@c-s.fr>
+In-Reply-To: <3814377306ac3acdd404e2f23ff05dcf7e6bee26.1556202029.git.christophe.leroy@c-s.fr>
 To: Christophe Leroy <christophe.leroy@c-s.fr>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2 03/17] powerpc/book3e: drop mmu_get_tsize()
-Message-Id: <44wNKS0PfWz9s9y@ozlabs.org>
+Subject: Re: [PATCH v2 01/11] powerpc/mm: fix erroneous duplicate
+ slb_addr_limit init
+Message-Id: <44wNKR4m2Pz9sNC@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:23 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,14 +47,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-04-26 at 05:59:38 UTC, Christophe Leroy wrote:
-> This function is not used anymore, drop it.
+On Thu, 2019-04-25 at 14:29:27 UTC, Christophe Leroy wrote:
+> Commit 67fda38f0d68 ("powerpc/mm: Move slb_addr_linit to
+> early_init_mmu") moved slb_addr_limit init out of setup_arch().
 > 
-> Fixes: b42279f0165c ("powerpc/mm/nohash: MM_SLICE is only used by book3s 64")
+> Commit 701101865f5d ("powerpc/mm: Reduce memory usage for mm_context_t
+> for radix") brought it back into setup_arch() by error.
+> 
+> This patch reverts that erroneous regress.
+> 
+> Fixes: 701101865f5d ("powerpc/mm: Reduce memory usage for mm_context_t for radix")
 > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Patches 3-17 applied to powerpc next, thanks.
+Patches 1-10 applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/a521c44c3ded9fe184c5de3eed3a442a
+https://git.kernel.org/powerpc/c/5ba666d56c4ff9b011c1b029dcc689cf
 
 cheers
