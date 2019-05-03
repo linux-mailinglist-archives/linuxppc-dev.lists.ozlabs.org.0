@@ -2,52 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A67129B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4661B129D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:21:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wQ4W1pTDzDqL7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:18:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wQ885qdVzDqKy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:21:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="l+D9dQDq"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (mailfrom) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.118; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=perches.com
+Received: from smtprelay.hostedemail.com (smtprelay0118.hostedemail.com
+ [216.40.44.118])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wPfd2y76zDqNB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 17:59:20 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0EFD72087F;
- Fri,  3 May 2019 07:59:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556870358;
- bh=PZYQ9Tj9LI839HJlHFlgqPUtItLYVkefHu8rg0J8fTk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=l+D9dQDqA09kH4sGIKFnic5MlfyUhhLFaYJG0dYt7B1pbneUkIUcCCEKOF/M2JW8A
- PtPrS7fF29LCFFQcsWqMAc5YRwcnA/sKAgXoeoucpBjRRJQbWfkOTpQDdkwG97yrsy
- fjRjPl0JALe5xJ5tlm27ZfLNPUil37AMMiApUpAs=
-Date: Fri, 3 May 2019 09:59:16 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/powernv: Restrict OPAL symbol map to only be
- readable by root
-Message-ID: <20190503075916.GA14960@kroah.com>
-References: <20190503075253.22798-1-ajd@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190503075253.22798-1-ajd@linux.ibm.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wPxZ0J8vzDqNS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 18:12:15 +1000 (AEST)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay03.hostedemail.com (Postfix) with ESMTP id 709E1837F27B;
+ Fri,  3 May 2019 08:12:11 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::,
+ RULES_HIT:41:355:379:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1515:1516:1518:1534:1537:1561:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2559:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3867:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6642:9025:10004:10400:10848:11232:11658:11914:12043:12438:12555:12740:12760:12895:12986:13069:13311:13357:13439:14181:14659:14721:21080:21365:21627:30054:30069:30091,
+ 0, RBL:84.16.30.4:@perches.com:.lbl8.mailshell.net-62.14.6.100 64.201.201.201,
+ CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
+ MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:26,
+ LUA_SUMMARY:none
+X-HE-Tag: silk87_12ba163999c4b
+X-Filterd-Recvd-Size: 1189
+Received: from XPS-9350 (unknown [84.16.30.4])
+ (Authenticated sender: joe@perches.com)
+ by omf17.hostedemail.com (Postfix) with ESMTPA;
+ Fri,  3 May 2019 08:12:08 +0000 (UTC)
+Message-ID: <cf6948fb8ab8e395e139a3440f3600a6050c1efa.camel@perches.com>
+Subject: Re: [PATCH] powerpc/powernv/ioda2: Add __printf format/argument
+ verification
+From: Joe Perches <joe@perches.com>
+To: Michael Ellerman <patch-notifications@ellerman.id.au>, Benjamin
+ Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Date: Fri, 03 May 2019 01:12:05 -0700
+In-Reply-To: <44wNKc0KZFz9sPd@ozlabs.org>
+References: <44wNKc0KZFz9sPd@ozlabs.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.1-1build1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,69 +62,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- Stewart Smith <stewart@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 03, 2019 at 05:52:53PM +1000, Andrew Donnellan wrote:
-> Currently the OPAL symbol map is globally readable, which seems bad as it
-> contains physical addresses.
+On Fri, 2019-05-03 at 16:59 +1000, Michael Ellerman wrote:
+> On Thu, 2017-03-30 at 10:19:25 UTC, Joe Perches wrote:
+> > Fix fallout too.
+> > 
+> > Signed-off-by: Joe Perches <joe@perches.com>
 > 
-> Restrict it to root.
+> Applied to powerpc next, thanks.
 > 
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Jordan Niethe <jniethe5@gmail.com>
-> Cc: Stewart Smith <stewart@linux.ibm.com>
-> Fixes: c8742f85125d ("powerpc/powernv: Expose OPAL firmware symbol map")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> 
-> ---
-> 
-> v1->v2:
-> 
-> - fix tabs vs spaces (Greg)
-> ---
->  arch/powerpc/platforms/powernv/opal.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-> index 2b0eca104f86..0582a02623d0 100644
-> --- a/arch/powerpc/platforms/powernv/opal.c
-> +++ b/arch/powerpc/platforms/powernv/opal.c
-> @@ -681,7 +681,10 @@ static ssize_t symbol_map_read(struct file *fp, struct kobject *kobj,
->  				       bin_attr->size);
->  }
->  
-> -static BIN_ATTR_RO(symbol_map, 0);
-> +static struct bin_attribute symbol_map_attr = {
-> +	.attr = {.name = "symbol_map", .mode = 0400},
-> +	.read = symbol_map_read
-> +};
+> https://git.kernel.org/powerpc/c/1e496391a8452101308a23b7395cdd49
 
-There's no real need to rename the structure, right?  Why not just keep
-the bin_attr_symbol_map name?  That would make this patch even smaller.
+2+ years later.
 
->  static void opal_export_symmap(void)
->  {
-> @@ -698,10 +701,10 @@ static void opal_export_symmap(void)
->  		return;
->  
->  	/* Setup attributes */
-> -	bin_attr_symbol_map.private = __va(be64_to_cpu(syms[0]));
-> -	bin_attr_symbol_map.size = be64_to_cpu(syms[1]);
-> +	symbol_map_attr.private = __va(be64_to_cpu(syms[0]));
-> +	symbol_map_attr.size = be64_to_cpu(syms[1]);
->  
-> -	rc = sysfs_create_bin_file(opal_kobj, &bin_attr_symbol_map);
-> +	rc = sysfs_create_bin_file(opal_kobj, &symbol_map_attr);
 
-Meta-comment, odds are you are racing userspace when you create this
-sysfs file, why not add it to the device's default attributes so the
-driver core creates it for you at the correct time?
-
-thanks,
-
-greg k-h
