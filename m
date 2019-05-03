@@ -1,36 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB5912871
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:07:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wNWC2xNZzDqWF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:07:51 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFCA1286E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:06:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wNTm0qzwzDqV6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:06:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK74HqxzDqPW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK64wLyzDqPW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 44wNK71wzrz9sNf; Fri,  3 May 2019 16:59:07 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNK66JHGz9sDn; Fri,  3 May 2019 16:59:06 +1000 (AEST)
+ id 44wNK649xcz9sD4; Fri,  3 May 2019 16:59:06 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: de269129a48a2d590ba1d20c719e19d86e3ddb3f
+X-powerpc-patch-commit: 83e367f9ad18d42a1883ee29f20608a2b93e1071
 X-Patchwork-Hint: ignore
-In-Reply-To: <155172853902.20037.16712960724031791025.stgit@jupiter>
-To: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
+In-Reply-To: <1547744514-7276-1-git-send-email-leitao@debian.org>
+To: Breno Leitao <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/hmi: Fix kernel hang when TB is in error state.
-Message-Id: <44wNK66JHGz9sDn@ozlabs.org>
+Subject: Re: [PATCH] Selftests/powerpc: Add a signal fuzzer selftest
+Message-Id: <44wNK649xcz9sD4@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:06 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -43,26 +39,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stewart Smith <stewart@linux.vnet.ibm.com>
+Cc: Breno Leitao <leitao@debian.org>, mikey@neuling.org,
+ gromero@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-03-04 at 19:42:19 UTC, Mahesh J Salgaonkar wrote:
-> From: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+On Thu, 2019-01-17 at 17:01:54 UTC, Breno Leitao wrote:
+> This is a new selftest that raises SIGUSR1 signals and handles it in a set
+> of different ways, trying to create different scenario for testing
+> purpose.
 > 
-> On TOD/TB errors timebase register stops/freezes until HMI error recovery
-> gets TOD/TB back into running state. On successful recovery, TB starts
-> running again and udelay() that relies on TB value continues to function
-> properly. But in case when HMI fails to recover from TOD/TB errors, the
-> TB register stay freezed. With TB not running the __delay() function
-> keeps looping and never return. If __delay() is called while in panic
-> path then system hangs and never reboots after panic.
+> This test works raising a signal and calling sigreturn interleaved with
+> TM operations, as starting, suspending and terminating a transaction. The
+> test depends on random numbers, and, based on them, it sets different TM
+> states.
 > 
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+> Other than that, the test fills out the user context struct that is passed
+> to the sigreturn system call with random data, in order to make sure that
+> the signal handler syscall can handle different and invalid states
+> properly.
+> 
+> This selftest has command line parameters to control what kind of tests the
+> user wants to run, as for example, if a transaction should be started prior
+> to signal being raised, or, after the signal being raised and before the
+> sigreturn. If no parameter is given, the default is enabling all options.
+> 
+> This test does not check if the user context is being read and set
+> properly by the kernel. Its purpose, at this time, is basically
+> guaranteeing that the kernel does not crash on invalid scenarios.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/de269129a48a2d590ba1d20c719e19d8
+https://git.kernel.org/powerpc/c/83e367f9ad18d42a1883ee29f20608a2
 
 cheers
