@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05CAC1280A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 08:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E390212813
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 08:53:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wN892B5jzDqP1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 16:51:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wNC4219nzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 16:53:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wN6g18JCzDqP1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wN6g5MzJzDqPP
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:50:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wN6f6dqYz9sB8; Fri,  3 May 2019 16:50:02 +1000 (AEST)
+ id 44wN6g3cqXz9sBr; Fri,  3 May 2019 16:50:03 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: c1fe190c06723322f2dfac31d3b982c581e434ef
+X-powerpc-patch-commit: 10d91611f426d4bafd2a83d966c36da811b2f7ad
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190401060312.22670-1-mikey@neuling.org>
-To: Michael Neuling <mikey@neuling.org>
+In-Reply-To: <20190412143053.18567-1-npiggin@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc: Add force enable of DAWR on P9 option
-Message-Id: <44wN6f6dqYz9sB8@ozlabs.org>
-Date: Fri,  3 May 2019 16:50:02 +1000 (AEST)
+Subject: Re: [PATCH v9 1/2] powerpc/64s: reimplement book3s idle code in C
+Message-Id: <44wN6g3cqXz9sBr@ozlabs.org>
+Date: Fri,  3 May 2019 16:50:03 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,49 +39,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org,
- Cameron Kaiser <spectre@floodgap.com>
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-04-01 at 06:03:12 UTC, Michael Neuling wrote:
-> This adds a flag so that the DAWR can be enabled on P9 via:
->   echo Y > /sys/kernel/debug/powerpc/dawr_enable_dangerous
+On Fri, 2019-04-12 at 14:30:52 UTC, Nicholas Piggin wrote:
+> Reimplement Book3S idle code in C, moving POWER7/8/9 implementation
+> speific HV idle code to the powernv platform code.
 > 
-> The DAWR was previously force disabled on POWER9 in:
->   9654153158 powerpc: Disable DAWR in the base POWER9 CPU features
-> Also see Documentation/powerpc/DAWR-POWER9.txt
+> Book3S assembly stubs are kept in common code and used only to save
+> the stack frame and non-volatile GPRs before executing architected
+> idle instructions, and restoring the stack and reloading GPRs then
+> returning to C after waking from idle.
 > 
-> This is a dangerous setting, USE AT YOUR OWN RISK.
+> The complex logic dealing with threads and subcores, locking, SPRs,
+> HMIs, timebase resync, etc., is all done in C which makes it more
+> maintainable.
 > 
-> Some users may not care about a bad user crashing their box
-> (ie. single user/desktop systems) and really want the DAWR.  This
-> allows them to force enable DAWR.
+> This is not a strict translation to C code, there are some
+> significant differences:
 > 
-> This flag can also be used to disable DAWR access. Once this is
-> cleared, all DAWR access should be cleared immediately and your
-> machine once again safe from crashing.
+> - Idle wakeup no longer uses the ->cpu_restore call to reinit SPRs,
+>   but saves and restores them itself.
 > 
-> Userspace may get confused by toggling this. If DAWR is force
-> enabled/disabled between getting the number of breakpoints (via
-> PTRACE_GETHWDBGINFO) and setting the breakpoint, userspace will get an
-> inconsistent view of what's available. Similarly for guests.
+> - The optimisation where EC=ESL=0 idle modes did not have to save GPRs
+>   or change MSR is restored, because it's now simple to do. ESL=1
+>   sleeps that do not lose GPRs can use this optimization too.
 > 
-> For the DAWR to be enabled in a KVM guest, the DAWR needs to be force
-> enabled in the host AND the guest. For this reason, this won't work on
-> POWERVM as it doesn't allow the HCALL to work. Writes of 'Y' to the
-> dawr_enable_dangerous file will fail if the hypervisor doesn't support
-> writing the DAWR.
+> - KVM secondary entry and cede is now more of a call/return style
+>   rather than branchy. nap_state_lost is not required because KVM
+>   always returns via NVGPR restoring path.
 > 
-> To double check the DAWR is working, run this kernel selftest:
->   tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-> Any errors/failures/skips mean something is wrong.
+> - KVM secondary wakeup from offline sequence is moved entirely into
+>   the offline wakeup, which avoids a hwsync in the normal idle wakeup
+>   path.
 > 
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> Performance measured with context switch ping-pong on different
+> threads or cores, is possibly improved a small amount, 1-3% depending
+> on stop state and core vs thread test for shallow states. Deep states
+> it's in the noise compared with other latencies.
+> 
+> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 Applied to powerpc topic/ppc-kvm, thanks.
 
-https://git.kernel.org/powerpc/c/c1fe190c06723322f2dfac31d3b982c5
+https://git.kernel.org/powerpc/c/10d91611f426d4bafd2a83d966c36da8
 
 cheers
