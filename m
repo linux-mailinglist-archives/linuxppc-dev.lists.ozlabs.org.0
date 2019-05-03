@@ -2,53 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C5A13207
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 868E91338A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 20:16:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wcm21b7vzDqs6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 02:19:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wgLt0bKzzDqt0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 04:16:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="ORHT3+Ao"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wckb4M2GzDqnv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 02:18:30 +1000 (AEST)
-Received: from guoren-Inspiron-7460 (23.83.240.247.16clouds.com
- [23.83.240.247])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1DE0020651;
- Fri,  3 May 2019 16:18:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556900308;
- bh=1gc+88gGR8xs/HHG6j+3eKyXyw0MdhLPFZmbxDlan0s=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=ORHT3+AoYShsuuQO5PFoH4MN9lIuD27v03opdUhE7D6MhJ3ZFlrne2bcwdb1S/99e
- JNCnsuMLUbfOQundyleyVhRpdJdwc193k7lyiJTj+1sl9zI38iCZlnHNebbBFtS/8d
- UBobcwP26APlYC3LB4Vq9ec4UDgXUUcThKhfVnBY=
-Date: Sat, 4 May 2019 00:18:08 +0800
-From: Guo Ren <guoren@kernel.org>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH 05/15] csky: switch to generic version of pte allocation
-Message-ID: <20190503161808.GA11596@guoren-Inspiron-7460>
-References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
- <1556810922-20248-6-git-send-email-rppt@linux.ibm.com>
- <20190503160348.GA9526@guoren-Inspiron-7460>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wgKR65NtzDqY4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 04:15:23 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x43IF9Dv008894;
+ Fri, 3 May 2019 13:15:09 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x43IF8rU008889;
+ Fri, 3 May 2019 13:15:08 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 3 May 2019 13:15:08 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/32: Remove memory clobber asm constraint on
+ dcbX() functions
+Message-ID: <20190503181508.GQ8599@gate.crashing.org>
+References: <20180109065759.4E54B6C73D@localhost.localdomain>
+ <e482662f-254c-4ab7-b0a8-966a3159d705@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20190503160348.GA9526@guoren-Inspiron-7460>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e482662f-254c-4ab7-b0a8-966a3159d705@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,116 +53,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Palmer Dabbelt <palmer@sifive.com>, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
- Ley Foon Tan <lftan@altera.com>, Guan Xuetao <gxt@pku.edu.cn>,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
- Paul Burton <paul.burton@mips.com>, Richard Weinberger <richard@nod.at>,
- nios2-dev@lists.rocketboards.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 04, 2019 at 12:03:48AM +0800, Guo Ren wrote:
-> Hi Mike,
-> 
-> Acked-by: Guo Ren <ren_guo@c-sky.com>
-> 
-> On Thu, May 02, 2019 at 06:28:32PM +0300, Mike Rapoport wrote:
-> > The csky implementation pte_alloc_one(), pte_free_kernel() and pte_free()
-> > is identical to the generic except of lack of __GFP_ACCOUNT for the user
-> > PTEs allocation.
-> > 
-> > Switch csky to use generic version of these functions.
-> Ok.
-> 
-> > 
-> > The csky implementation of pte_alloc_one_kernel() is not replaced because
-> > it does not clear the allocated page but rather sets each PTE in it to a
-> > non-zero value.
-> Yes, we must set each PTE to _PAGE_GLOBAL because hardware refill the
-> MMU TLB entry with two PTEs and it use the result of pte0.global | pte1.global.
-                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
-                                              correct: pte0.global & pte1.global
-> If pte0 is valid and pte1 is invalid, we must set _PAGE_GLOBAL in
-> invalid pte entry. Fortunately, there is no performance issue.
-> 
-> > 
-> > The pte_free_kernel() and pte_free() versions on csky are identical to the
-> > generic ones and can be simply dropped.
-> Ok.
-> 
-> Best Regards
->  Guo Ren
-> 
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > ---
-> >  arch/csky/include/asm/pgalloc.h | 30 +++---------------------------
-> >  1 file changed, 3 insertions(+), 27 deletions(-)
-> > 
-> > diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgalloc.h
-> > index d213bb4..98c571670 100644
-> > --- a/arch/csky/include/asm/pgalloc.h
-> > +++ b/arch/csky/include/asm/pgalloc.h
-> > @@ -8,6 +8,9 @@
-> >  #include <linux/mm.h>
-> >  #include <linux/sched.h>
+Hi Christophe,
+
+On Fri, May 03, 2019 at 04:14:13PM +0200, Christophe Leroy wrote:
+> A while ago I proposed the following patch, and didn't get any comment 
+> back on it.
+
+I didn't see it.  Maybe because of holiday :-)
+
+> Do you have any opinion on it ? Is it good and worth it ?
+
+> Le 09/01/2018 à 07:57, Christophe Leroy a écrit :
+> >Instead of just telling GCC that dcbz(), dcbi(), dcbf() and dcbst()
+> >clobber memory, tell it what it clobbers:
+> >* dcbz(), dcbi() and dcbf() clobbers one cacheline as output
+> >* dcbf() and dcbst() clobbers one cacheline as input
+
+You cannot "clobber input".
+
+Seen another way, only dcbi clobbers anything; dcbz zeroes it instead,
+and dcbf and dcbst only change in what caches the data hangs out.
+
+> >--- a/arch/powerpc/include/asm/cache.h
+> >+++ b/arch/powerpc/include/asm/cache.h
+> >@@ -82,22 +82,31 @@ extern void _set_L3CR(unsigned long);
 > >  
-> > +#define __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
-> > +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
-> > +
-> >  static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmd,
-> >  					pte_t *pte)
+> >  static inline void dcbz(void *addr)
 > >  {
-> > @@ -39,33 +42,6 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-> >  	return pte;
+> >-	__asm__ __volatile__ ("dcbz 0, %0" : : "r"(addr) : "memory");
+> >+	__asm__ __volatile__ ("dcbz 0, %1" :
+> >+			      "=m"(*(char (*)[L1_CACHE_BYTES])addr) :
+> >+			      "r"(addr) :);
 > >  }
-> >  
-> > -static inline struct page *pte_alloc_one(struct mm_struct *mm)
-> > -{
-> > -	struct page *pte;
-> > -
-> > -	pte = alloc_pages(GFP_KERNEL | __GFP_ZERO, 0);
-> > -	if (!pte)
-> > -		return NULL;
-> > -
-> > -	if (!pgtable_page_ctor(pte)) {
-> > -		__free_page(pte);
-> > -		return NULL;
-> > -	}
-> > -
-> > -	return pte;
-> > -}
-> > -
-> > -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-> > -{
-> > -	free_pages((unsigned long)pte, PTE_ORDER);
-> > -}
-> > -
-> > -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
-> > -{
-> > -	pgtable_page_dtor(pte);
-> > -	__free_pages(pte, PTE_ORDER);
-> > -}
-> > -
-> >  static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+
+The instruction does *not* work on the memory pointed to by addr.  It
+works on the cache line containing the address addr.
+
+If you want to have addr always aligned, you need to document this, and
+check all callers, etc.
+
+> >  static inline void dcbf(void *addr)
 > >  {
-> >  	free_pages((unsigned long)pgd, PGD_ORDER);
-> > -- 
-> > 2.7.4
-> > 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> >-	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
+> >+	__asm__ __volatile__ ("dcbf 0, %1" :
+> >+			      "=m"(*(char (*)[L1_CACHE_BYTES])addr) :
+> >+			      "r"(addr), "m"(*(char 
+> >(*)[L1_CACHE_BYTES])addr) :
+> >+			     );
+> >  }
+
+Newline damage...  Was that your mailer?
+
+
+Also, you may want a "memory" clobber anyway, to get ordering correct
+for the synchronisation instructions.
+
+I think your changes make things less robust than they were before.
+
+
+[ Btw.  Instead of
+
+	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
+
+you can do
+
+	__asm__ __volatile__ ("dcbf %0" : : "Z"(addr) : "memory");
+
+to save some insns here and there. ]
+
+
+Segher
