@@ -2,32 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F269512893
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20EF12890
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:16:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wNkz3h1VzDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:18:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wNjd29tWzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:16:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKD2MYZzDqPb
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKD4xyQzDqQB
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKC2Pt1z9sP8; Fri,  3 May 2019 16:59:10 +1000 (AEST)
+ id 44wNKC6W6qz9sNy; Fri,  3 May 2019 16:59:11 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 1ba2143606a10f1c2e7308bc7abd940a6381cffd
+X-powerpc-patch-commit: a1ac2a9c4f98482e49305ab5551b7b32f9cac39b
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190327053137.15173-2-alastair@au1.ibm.com>
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+In-Reply-To: <92e8f0bcec682e878796758e1efb88c172c7ffe4.1553778054.git.christophe.leroy@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v4 1/7] ocxl: Split pci.c
-Message-Id: <44wNKC2Pt1z9sP8@ozlabs.org>
-Date: Fri,  3 May 2019 16:59:10 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/book3e: drop BUG_ON() in map_kernel_page()
+Message-Id: <44wNKC6W6qz9sNy@ozlabs.org>
+Date: Fri,  3 May 2019 16:59:11 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,26 +41,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-03-27 at 05:31:30 UTC, "Alastair D'Silva" wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
+On Thu, 2019-03-28 at 13:03:45 UTC, Christophe Leroy wrote:
+> early_alloc_pgtable() never returns NULL as it panics on failure.
 > 
-> In preparation for making core code available for external drivers,
-> move the core code out of pci.c and into core.c
+> This patch drops the three BUG_ON() which check the non nullity
+> of early_alloc_pgtable() returned value.
 > 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> Acked-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/1ba2143606a10f1c2e7308bc7abd940a
+https://git.kernel.org/powerpc/c/a1ac2a9c4f98482e49305ab5551b7b32
 
 cheers
