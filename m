@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5217A12921
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FDE12922
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:55:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wPXl6hwCzDqW1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:54:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wPZ80TfLzDr2p
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:55:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKZ6xkgzDqS6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKb1Vp3zDqTJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKY504cz9sPZ; Fri,  3 May 2019 16:59:29 +1000 (AEST)
+ id 44wNKZ66Ffz9sPc; Fri,  3 May 2019 16:59:30 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: e2b36d591720d81741f37e047a6f0047e8c89369
+X-powerpc-patch-commit: 4c1bd90477c60618eb6dfba2e92d3a287b0c6255
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190502052107.24738-1-npiggin@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20190502060041.794-1-ajd@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Don't trace code that runs with the soft irq
- mask unreconciled
-Message-Id: <44wNKY504cz9sPZ@ozlabs.org>
-Date: Fri,  3 May 2019 16:59:29 +1000 (AEST)
+Subject: Re: [PATCH] MAINTAINERS: Update cxl/ocxl email address
+Message-Id: <44wNKZ66Ffz9sPc@ozlabs.org>
+Date: Fri,  3 May 2019 16:59:30 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,35 +39,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: fbarrat@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-05-02 at 05:21:07 UTC, Nicholas Piggin wrote:
-> "Reconciling" in terms of interrupt handling, is to bring the soft irq
-> mask state in to synch with the hardware, after an interrupt causes
-> MSR[EE] to be cleared (while the soft mask may be enabled, and hard
-> irqs not marked disabled).
+On Thu, 2019-05-02 at 06:00:41 UTC, Andrew Donnellan wrote:
+> Use my @linux.ibm.com email to avoid a layer of redirection.
 > 
-> General kernel code should not be called while unreconciled, because
-> local_irq_disable, etc. manipulations can cause surprising irq traces,
-> and it's fragile because the soft irq code does not really expect to
-> be called in this situation.
-> 
-> When exiting from an interrupt, MSR[EE] is cleared to prevent races,
-> but soft irq state is enabled for the returned-to context, so this is
-> now an unreconciled state. restore_math is called in this state, and
-> that can be ftraced, and the ftrace subsystem disables local irqs.
-> 
-> Mark restore_math and its callees as notrace. Restore a sanity check
-> in the soft irq code that had to be disabled for this case, by commit
-> 4da1f79227ad4 ("powerpc/64: Disable irq restore warning for now").
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/e2b36d591720d81741f37e047a6f0047
+https://git.kernel.org/powerpc/c/4c1bd90477c60618eb6dfba2e92d3a28
 
 cheers
