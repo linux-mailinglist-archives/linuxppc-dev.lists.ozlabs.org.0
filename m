@@ -1,32 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BE5128E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:33:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBCA128EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:35:41 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wP7G51sLzDqbr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:35:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wP4S6BsDzDqZq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:33:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKP2GfLzDqV3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKN5QMYzDqS6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKN5qYbz9sPT; Fri,  3 May 2019 16:59:20 +1000 (AEST)
+ id 44wNKN2r46z9sNf; Fri,  3 May 2019 16:59:20 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 5266e58d6cd90ac85c187d673093ad9cb649e16d
+X-powerpc-patch-commit: b511cdd1c12d1e450baeba5373dd3a8897396e2b
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190415115211.16374-1-laurentiu.tudor@nxp.com>
-To: laurentiu.tudor@nxp.com, linuxppc-dev@lists.ozlabs.org, oss@buserror.net
+In-Reply-To: <20190410064800.82221-1-aik@ozlabs.ru>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc/booke64: set RI in default MSR
-Message-Id: <44wNKN5qYbz9sPT@ozlabs.org>
+Subject: Re: [PATCH kernel] powerpc/powernv/ioda: Handle failures correctly in
+ pnv_pci_ioda_iommu_bypass_supported
+Message-Id: <44wNKN2r46z9sNf@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:20 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -39,25 +40,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-04-15 at 11:52:11 UTC, laurentiu.tudor@nxp.com wrote:
-> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+On Wed, 2019-04-10 at 06:48:00 UTC, Alexey Kardashevskiy wrote:
+> When the return value type was changed from int to bool, few places were
+> left unchanged, this fixes them. We did not hit these failures as
+> the first one is not happening at all and the second one is little more
+> likely to happen if the user switches a 33..58bit DMA capable device
+> between the VFIO and vendor drivers and there are not so many of these.
 > 
-> Set RI in the default kernel's MSR so that the architected way of
-> detecting unrecoverable machine check interrupts has a chance to work.
-> This is inline with the MSR setup of the rest of booke powerpc
-> architectures configured here.
-> 
-> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> Cc: stable@vger.kernel.org
+> Fixes: 2d6ad41b2c21 ("powerpc/powernv: use the generic iommu bypass code", 2019-02-13)
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/5266e58d6cd90ac85c187d673093ad9c
+https://git.kernel.org/powerpc/c/b511cdd1c12d1e450baeba5373dd3a88
 
 cheers
