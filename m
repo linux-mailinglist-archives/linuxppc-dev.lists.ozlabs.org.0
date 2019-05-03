@@ -2,33 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C14A12900
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E203112905
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:43:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wPFF5lS9zDqdg
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:40:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wPJ13X7bzDqNS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:43:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKR24VPzDqSJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKS2bC6zDqQh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKR0HMbz9sPG; Fri,  3 May 2019 16:59:22 +1000 (AEST)
+ id 44wNKS0PfWz9s9y; Fri,  3 May 2019 16:59:23 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 33dda8c32714c1a8f318450af4d1f9f123e2ed24
+X-powerpc-patch-commit: a521c44c3ded9fe184c5de3eed3a442af2d26f00
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190423211116.261111-1-ndesaulniers@google.com>
-To: Nick Desaulniers <ndesaulniers@google.com>, benh@kernel.crashing.org,
- paulus@samba.org
+In-Reply-To: <11addb677de7449523fd0023a9ca43b8898c207a.1556258135.git.christophe.leroy@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: vdso: drop unnecessary cc-ldoption
-Message-Id: <44wNKR0HMbz9sPG@ozlabs.org>
-Date: Fri,  3 May 2019 16:59:22 +1000 (AEST)
+Subject: Re: [PATCH v2 03/17] powerpc/book3e: drop mmu_get_tsize()
+Message-Id: <44wNKS0PfWz9s9y@ozlabs.org>
+Date: Fri,  3 May 2019 16:59:23 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,30 +41,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Andrew Donnellan <andrew.donnellan@au1.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-04-23 at 21:11:14 UTC, Nick Desaulniers wrote:
-> Towards the goal of removing cc-ldoption, it seems that --hash-style=
-> was added to binutils 2.17.50.0.2 in 2006. The minimal required version
-> of binutils for the kernel according to
-> Documentation/process/changes.rst is 2.20.
+On Fri, 2019-04-26 at 05:59:38 UTC, Christophe Leroy wrote:
+> This function is not used anymore, drop it.
 > 
-> Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
-> Cc: clang-built-linux@googlegroups.com
-> Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+> Fixes: b42279f0165c ("powerpc/mm/nohash: MM_SLICE is only used by book3s 64")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Applied to powerpc next, thanks.
+Patches 3-17 applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/33dda8c32714c1a8f318450af4d1f9f1
+https://git.kernel.org/powerpc/c/a521c44c3ded9fe184c5de3eed3a442a
 
 cheers
