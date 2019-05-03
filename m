@@ -2,32 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D48E128FC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2A2128F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:37:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wPBP0QmWzDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:38:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wP8w1GjkzDqcS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:37:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKQ4ZSdzDqV6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKQ4WXlzDqTM
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 44wNKP2y5Wz9sPR; Fri,  3 May 2019 16:59:21 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKP6y15z9sPV; Fri,  3 May 2019 16:59:21 +1000 (AEST)
+ id 44wNKP138Cz9sD4; Fri,  3 May 2019 16:59:21 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: d1720adff3783a2ba7c128e304a385d18962835b
+X-powerpc-patch-commit: 0acb5f64560a052fd66ab37b212a72964847160f
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190416094831.7264-2-anju@linux.vnet.ibm.com>
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+In-Reply-To: <20190416032638.3588-1-cmr@informatik.wtf>
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v4 1/5] powerpc/include: Add data structures and macros
- for IMC trace mode
-Message-Id: <44wNKP6y15z9sPV@ozlabs.org>
+Subject: Re: [PATCH v4] powerpc/xmon: add read-only mode
+Message-Id: <44wNKP138Cz9sD4@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:21 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -40,23 +42,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, anju@linux.vnet.ibm.com
+Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, oohall@gmail.com,
+ andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-04-16 at 09:48:27 UTC, Anju T Sudhakar wrote:
-> Add the macros needed for IMC (In-Memory Collection Counters) trace-mode
-> and data structure to hold the trace-imc record data.
-> Also, add the new type "OPAL_IMC_COUNTERS_TRACE" in 'opal-api.h', since
-> there is a new switch case added in the opal-calls for IMC.
+On Tue, 2019-04-16 at 03:26:38 UTC, "Christopher M. Riedl" wrote:
+> Operations which write to memory and special purpose registers should be
+> restricted on systems with integrity guarantees (such as Secure Boot)
+> and, optionally, to avoid self-destructive behaviors.
 > 
-> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> Add a config option, XMON_DEFAULT_RO_MODE, to set default xmon behavior.
+> The kernel cmdline options xmon=ro and xmon=rw override this default.
+> 
+> The following xmon operations are affected:
+> memops:
+> 	disable memmove
+> 	disable memset
+> 	disable memzcan
+> memex:
+> 	no-op'd mwrite
+> super_regs:
+> 	no-op'd write_spr
+> bpt_cmds:
+> 	disable
+> proc_call:
+> 	disable
+> 
+> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+> Reviewed-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/d1720adff3783a2ba7c128e304a385d1
+https://git.kernel.org/powerpc/c/0acb5f64560a052fd66ab37b212a7296
 
 cheers
