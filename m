@@ -2,32 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFCA1286E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 660C81287D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:11:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wNTm0qzwzDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:06:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wNbY5RBTzDqV9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:11:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK64wLyzDqPW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK947kbzDqPP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNK649xcz9sD4; Fri,  3 May 2019 16:59:06 +1000 (AEST)
+ id 44wNK76clXz9sNl; Fri,  3 May 2019 16:59:07 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 83e367f9ad18d42a1883ee29f20608a2b93e1071
+X-powerpc-patch-commit: 90437bffa5f9b1440ba03e023f4875d1814b9360
 X-Patchwork-Hint: ignore
-In-Reply-To: <1547744514-7276-1-git-send-email-leitao@debian.org>
-To: Breno Leitao <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20190311224752.8337-9-valentin.schneider@arm.com>
+To: Valentin Schneider <valentin.schneider@arm.com>,
+ linux-kernel@vger.kernel.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] Selftests/powerpc: Add a signal fuzzer selftest
-Message-Id: <44wNK649xcz9sD4@ozlabs.org>
-Date: Fri,  3 May 2019 16:59:06 +1000 (AEST)
+Subject: Re: [PATCH 08/14] powerpc: entry: Remove unneeded need_resched() loop
+Message-Id: <44wNK76clXz9sNl@ozlabs.org>
+Date: Fri,  3 May 2019 16:59:07 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,40 +40,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Breno Leitao <leitao@debian.org>, mikey@neuling.org,
- gromero@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-01-17 at 17:01:54 UTC, Breno Leitao wrote:
-> This is a new selftest that raises SIGUSR1 signals and handles it in a set
-> of different ways, trying to create different scenario for testing
-> purpose.
+On Mon, 2019-03-11 at 22:47:46 UTC, Valentin Schneider wrote:
+> Since the enabling and disabling of IRQs within preempt_schedule_irq()
+> is contained in a need_resched() loop, we don't need the outer arch
+> code loop.
 > 
-> This test works raising a signal and calling sigreturn interleaved with
-> TM operations, as starting, suspending and terminating a transaction. The
-> test depends on random numbers, and, based on them, it sets different TM
-> states.
-> 
-> Other than that, the test fills out the user context struct that is passed
-> to the sigreturn system call with random data, in order to make sure that
-> the signal handler syscall can handle different and invalid states
-> properly.
-> 
-> This selftest has command line parameters to control what kind of tests the
-> user wants to run, as for example, if a transaction should be started prior
-> to signal being raised, or, after the signal being raised and before the
-> sigreturn. If no parameter is given, the default is enabling all options.
-> 
-> This test does not check if the user context is being read and set
-> properly by the kernel. Its purpose, at this time, is basically
-> guaranteeing that the kernel does not crash on invalid scenarios.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/83e367f9ad18d42a1883ee29f20608a2
+https://git.kernel.org/powerpc/c/90437bffa5f9b1440ba03e023f4875d1
 
 cheers
