@@ -1,46 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDB01314D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:36:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wbpG0hpFzDqsC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 01:36:38 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD4131D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:05:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wcRb5R3TzDqpv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 02:05:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="HpZWwg5g"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wbmn6jmNzDqVQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 01:35:21 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x43FZBDB027504;
- Fri, 3 May 2019 10:35:11 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x43FZAMT027503;
- Fri, 3 May 2019 10:35:10 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 3 May 2019 10:35:10 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Stewart Smith <stewart@linux.ibm.com>
-Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
- system firmware
-Message-ID: <20190503153510.GO8599@gate.crashing.org>
-References: <20190501034221.18437-1-aik@ozlabs.ru>
- <20190502042702.GH13618@umbus.fritz.box> <87bm0ktn1q.fsf@linux.vnet.ibm.com>
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wcQ24yYKzDqkq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 02:04:10 +1000 (AEST)
+Received: from guoren-Inspiron-7460 (23.83.240.247.16clouds.com
+ [23.83.240.247])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id B79282075C;
+ Fri,  3 May 2019 16:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1556899448;
+ bh=9K26hWqGMesApQFdaAhFuNyta2kJgrhs2hDdmQ00qcY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=HpZWwg5gL0lVYH9xXr2lFjIs4Hr4EFxgLMU0fvIEmuLFdJqilQ6jQYN4Ocb6SStWw
+ iJWfiG66zAQYSvJeB8l3sHAhW93+kPdDD0sZUeypbCGK/KXfyMm98BkvfNuimDaaPM
+ OT2y75fIlpEILXIObpyUg29WsNXovSO+5g+0/f6w=
+Date: Sat, 4 May 2019 00:03:48 +0800
+From: Guo Ren <guoren@kernel.org>
+To: Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH 05/15] csky: switch to generic version of pte allocation
+Message-ID: <20190503160348.GA9526@guoren-Inspiron-7460>
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+ <1556810922-20248-6-git-send-email-rppt@linux.ibm.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87bm0ktn1q.fsf@linux.vnet.ibm.com>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <1556810922-20248-6-git-send-email-rppt@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,64 +59,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ Greentime Hu <green.hu@gmail.com>, nios2-dev@lists.rocketboards.org,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Richard Kuo <rkuo@codeaurora.org>, Paul Burton <paul.burton@mips.com>,
+ linux-alpha@vger.kernel.org, Ley Foon Tan <lftan@altera.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 03, 2019 at 10:10:57AM +1000, Stewart Smith wrote:
-> David Gibson <david@gibson.dropbear.id.au> writes:
-> > On Wed, May 01, 2019 at 01:42:21PM +1000, Alexey Kardashevskiy wrote:
-> >> At the moment, on 256CPU + 256 PCI devices guest, it takes the guest
-> >> about 8.5sec to fetch the entire device tree via the client interface
-> >> as the DT is traversed twice - for strings blob and for struct blob.
-> >> Also, "getprop" is quite slow too as SLOF stores properties in a linked
-> >> list.
-> >> 
-> >> However, since [1] SLOF builds flattened device tree (FDT) for another
-> >> purpose. [2] adds a new "fdt-fetch" client interface for the OS to fetch
-> >> the FDT.
-> >> 
-> >> This tries the new method; if not supported, this falls back to
-> >> the old method.
-> >> 
-> >> There is a change in the FDT layout - the old method produced
-> >> (reserved map, strings, structs), the new one receives only strings and
-> >> structs from the firmware and adds the final reserved map to the end,
-> >> so it is (fw reserved map, strings, structs, reserved map).
-> >> This still produces the same unflattened device tree.
-> >> 
-> >> This merges the reserved map from the firmware into the kernel's reserved
-> >> map. At the moment SLOF generates an empty reserved map so this does not
-> >> change the existing behaviour in regard of reservations.
-> >> 
-> >> This supports only v17 onward as only that version provides dt_struct_size
-> >> which works as "fdt-fetch" only produces v17 blobs.
-> >> 
-> >> If "fdt-fetch" is not available, the old method of fetching the DT is used.
-> >> 
-> >> [1] https://git.qemu.org/?p=SLOF.git;a=commitdiff;h=e6fc84652c9c00
-> >> [2] https://git.qemu.org/?p=SLOF.git;a=commit;h=ecda95906930b80
-> >> 
-> >> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> >
-> > Hrm.  I've gotta say I'm not terribly convinced that it's worth adding
-> > a new interface we'll need to maintain to save 8s on a somewhat
-> > contrived testcase.
+Hi Mike,
+
+Acked-by: Guo Ren <ren_guo@c-sky.com>
+
+On Thu, May 02, 2019 at 06:28:32PM +0300, Mike Rapoport wrote:
+> The csky implementation pte_alloc_one(), pte_free_kernel() and pte_free()
+> is identical to the generic except of lack of __GFP_ACCOUNT for the user
+> PTEs allocation.
 > 
-> 256CPUs aren't that many anymore though. Although I guess that many PCI
-> devices is still a little uncommon.
+> Switch csky to use generic version of these functions.
+Ok.
+
 > 
-> A 4 socket POWER8 or POWER9 can easily be that large, and a small test
-> kernel/userspace will boot in ~2.5-4 seconds. So it's possible that
-> the device tree fetch could be surprisingly non-trivial percentage of boot
-> time at least on some machines.
+> The csky implementation of pte_alloc_one_kernel() is not replaced because
+> it does not clear the allocated page but rather sets each PTE in it to a
+> non-zero value.
+Yes, we must set each PTE to _PAGE_GLOBAL because hardware refill the
+MMU TLB entry with two PTEs and it use the result of pte0.global | pte1.global.
+If pte0 is valid and pte1 is invalid, we must set _PAGE_GLOBAL in
+invalid pte entry. Fortunately, there is no performance issue.
 
-All client interface calls are really heavy, and you need to do a lot of
-them if you have a big device tree.  This takes time, even if the linked
-list stuff does not kill you :-)
+> 
+> The pte_free_kernel() and pte_free() versions on csky are identical to the
+> generic ones and can be simply dropped.
+Ok.
 
+Best Regards
+ Guo Ren
 
-Segher
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/csky/include/asm/pgalloc.h | 30 +++---------------------------
+>  1 file changed, 3 insertions(+), 27 deletions(-)
+> 
+> diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgalloc.h
+> index d213bb4..98c571670 100644
+> --- a/arch/csky/include/asm/pgalloc.h
+> +++ b/arch/csky/include/asm/pgalloc.h
+> @@ -8,6 +8,9 @@
+>  #include <linux/mm.h>
+>  #include <linux/sched.h>
+>  
+> +#define __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
+> +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
+> +
+>  static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmd,
+>  					pte_t *pte)
+>  {
+> @@ -39,33 +42,6 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+>  	return pte;
+>  }
+>  
+> -static inline struct page *pte_alloc_one(struct mm_struct *mm)
+> -{
+> -	struct page *pte;
+> -
+> -	pte = alloc_pages(GFP_KERNEL | __GFP_ZERO, 0);
+> -	if (!pte)
+> -		return NULL;
+> -
+> -	if (!pgtable_page_ctor(pte)) {
+> -		__free_page(pte);
+> -		return NULL;
+> -	}
+> -
+> -	return pte;
+> -}
+> -
+> -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+> -{
+> -	free_pages((unsigned long)pte, PTE_ORDER);
+> -}
+> -
+> -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
+> -{
+> -	pgtable_page_dtor(pte);
+> -	__free_pages(pte, PTE_ORDER);
+> -}
+> -
+>  static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+>  {
+>  	free_pages((unsigned long)pgd, PGD_ORDER);
+> -- 
+> 2.7.4
+> 
