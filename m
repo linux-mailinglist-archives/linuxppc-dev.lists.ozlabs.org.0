@@ -2,55 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4661B129D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABF1129E3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:28:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wQ885qdVzDqKy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:21:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wQJN4bMwzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:28:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=perches.com
- (client-ip=216.40.44.118; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0118.hostedemail.com
- [216.40.44.118])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wPxZ0J8vzDqNS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 18:12:15 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay03.hostedemail.com (Postfix) with ESMTP id 709E1837F27B;
- Fri,  3 May 2019 08:12:11 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::,
- RULES_HIT:41:355:379:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1515:1516:1518:1534:1537:1561:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2559:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3867:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6642:9025:10004:10400:10848:11232:11658:11914:12043:12438:12555:12740:12760:12895:12986:13069:13311:13357:13439:14181:14659:14721:21080:21365:21627:30054:30069:30091,
- 0, RBL:84.16.30.4:@perches.com:.lbl8.mailshell.net-62.14.6.100 64.201.201.201,
- CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
- MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:26,
- LUA_SUMMARY:none
-X-HE-Tag: silk87_12ba163999c4b
-X-Filterd-Recvd-Size: 1189
-Received: from XPS-9350 (unknown [84.16.30.4])
- (Authenticated sender: joe@perches.com)
- by omf17.hostedemail.com (Postfix) with ESMTPA;
- Fri,  3 May 2019 08:12:08 +0000 (UTC)
-Message-ID: <cf6948fb8ab8e395e139a3440f3600a6050c1efa.camel@perches.com>
-Subject: Re: [PATCH] powerpc/powernv/ioda2: Add __printf format/argument
- verification
-From: Joe Perches <joe@perches.com>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>, Benjamin
- Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Date: Fri, 03 May 2019 01:12:05 -0700
-In-Reply-To: <44wNKc0KZFz9sPd@ozlabs.org>
-References: <44wNKc0KZFz9sPd@ozlabs.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.1-1build1 
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wQH62GJxzDq6Q
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 18:27:29 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x438Hhtt106494
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 May 2019 04:27:27 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2s8ganc1m8-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 May 2019 04:27:27 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 3 May 2019 09:27:25 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 May 2019 09:27:22 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x438RLkj30081238
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 May 2019 08:27:21 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 246E811C050;
+ Fri,  3 May 2019 08:27:21 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C857B11C052;
+ Fri,  3 May 2019 08:27:20 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 May 2019 08:27:20 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3848BA01D4;
+ Fri,  3 May 2019 18:27:19 +1000 (AEST)
+Subject: Re: [PATCH v2] powerpc/powernv: Restrict OPAL symbol map to only be
+ readable by root
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20190503075253.22798-1-ajd@linux.ibm.com>
+ <20190503075916.GA14960@kroah.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 3 May 2019 18:27:18 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190503075916.GA14960@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19050308-0020-0000-0000-00000338D3B3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050308-0021-0000-0000-0000218B5F11
+Message-Id: <f584ce91-a49b-ef33-7090-cb0a91b87e82@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-03_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905030054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,21 +97,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
+ Stewart Smith <stewart@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-05-03 at 16:59 +1000, Michael Ellerman wrote:
-> On Thu, 2017-03-30 at 10:19:25 UTC, Joe Perches wrote:
-> > Fix fallout too.
-> > 
-> > Signed-off-by: Joe Perches <joe@perches.com>
+On 3/5/19 5:59 pm, Greg KH wrote:>> -static BIN_ATTR_RO(symbol_map, 0);
+>> +static struct bin_attribute symbol_map_attr = {
+>> +	.attr = {.name = "symbol_map", .mode = 0400},
+>> +	.read = symbol_map_read
+>> +};
 > 
-> Applied to powerpc next, thanks.
+> There's no real need to rename the structure, right?  Why not just keep
+> the bin_attr_symbol_map name?  That would make this patch even smaller.
+
+No real need but it's locally more consistent with the rest of the PPC 
+code. (Though perhaps the other cases should use the BIN_ATTR macro...)
+
+Given this is for stable I'm happy to change that if the smaller patch 
+is more acceptable.
+
 > 
-> https://git.kernel.org/powerpc/c/1e496391a8452101308a23b7395cdd49
+>>   static void opal_export_symmap(void)
+>>   {
+>> @@ -698,10 +701,10 @@ static void opal_export_symmap(void)
+>>   		return;
+>>   
+>>   	/* Setup attributes */
+>> -	bin_attr_symbol_map.private = __va(be64_to_cpu(syms[0]));
+>> -	bin_attr_symbol_map.size = be64_to_cpu(syms[1]);
+>> +	symbol_map_attr.private = __va(be64_to_cpu(syms[0]));
+>> +	symbol_map_attr.size = be64_to_cpu(syms[1]);
+>>   
+>> -	rc = sysfs_create_bin_file(opal_kobj, &bin_attr_symbol_map);
+>> +	rc = sysfs_create_bin_file(opal_kobj, &symbol_map_attr);
+> 
+> Meta-comment, odds are you are racing userspace when you create this
+> sysfs file, why not add it to the device's default attributes so the
+> driver core creates it for you at the correct time?
 
-2+ years later.
+I was not previously aware of default attributes...
 
+Are we actually racing against userspace in a subsys initcall?
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
