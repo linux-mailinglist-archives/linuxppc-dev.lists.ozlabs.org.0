@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E8F128D8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBCA128EE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:35:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wP002KF3zDqYX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:29:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wP7G51sLzDqbr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:35:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKM6RTbzDqTJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNKP2GfLzDqV3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNKM3RTJz9s9y; Fri,  3 May 2019 16:59:19 +1000 (AEST)
+ id 44wNKN5qYbz9sPT; Fri,  3 May 2019 16:59:20 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 7ae3f6e130e8dc6188b59e3b4ebc2f16e9c8d053
+X-powerpc-patch-commit: 5266e58d6cd90ac85c187d673093ad9cb649e16d
 X-Patchwork-Hint: ignore
-In-Reply-To: <20190409044005.26446-1-npiggin@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20190415115211.16374-1-laurentiu.tudor@nxp.com>
+To: laurentiu.tudor@nxp.com, linuxppc-dev@lists.ozlabs.org, oss@buserror.net
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc/watchdog: Use hrtimers for per-CPU heartbeat
-Message-Id: <44wNKM3RTJz9s9y@ozlabs.org>
-Date: Fri,  3 May 2019 16:59:19 +1000 (AEST)
+Subject: Re: [PATCH v2] powerpc/booke64: set RI in default MSR
+Message-Id: <44wNKN5qYbz9sPT@ozlabs.org>
+Date: Fri,  3 May 2019 16:59:20 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,33 +39,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
- Ravikumar Bangoria <ravi.bangoria@in.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-04-09 at 04:40:05 UTC, Nicholas Piggin wrote:
-> Using a jiffies timer creates a dependency on the tick_do_timer_cpu
-> incrementing jiffies. If that CPU has locked up and jiffies is not
-> incrementing, the watchdog heartbeat timer for all CPUs stops and
-> creates false positives and confusing warnings on local CPUs, and
-> also causes the SMP detector to stop, so the root cause is never
-> detected.
+On Mon, 2019-04-15 at 11:52:11 UTC, laurentiu.tudor@nxp.com wrote:
+> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 > 
-> Fix this by using hrtimer based timers for the watchdog heartbeat,
-> like the generic kernel hardlockup detector.
+> Set RI in the default kernel's MSR so that the architected way of
+> detecting unrecoverable machine check interrupts has a chance to work.
+> This is inline with the MSR setup of the rest of booke powerpc
+> architectures configured here.
 > 
-> Cc: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> Reported-by: Ravikumar Bangoria <ravi.bangoria@in.ibm.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> Reported-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> Cc: stable@vger.kernel.org
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/7ae3f6e130e8dc6188b59e3b4ebc2f16
+https://git.kernel.org/powerpc/c/5266e58d6cd90ac85c187d673093ad9c
 
 cheers
