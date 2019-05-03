@@ -2,46 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868E91338A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 20:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB10133B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 20:46:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wgLt0bKzzDqt0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 04:16:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wh1g50NVzDqdW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 04:46:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wgKR65NtzDqY4
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 04:15:23 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x43IF9Dv008894;
- Fri, 3 May 2019 13:15:09 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x43IF8rU008889;
- Fri, 3 May 2019 13:15:08 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Fri, 3 May 2019 13:15:08 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/32: Remove memory clobber asm constraint on
- dcbX() functions
-Message-ID: <20190503181508.GQ8599@gate.crashing.org>
-References: <20180109065759.4E54B6C73D@localhost.localdomain>
- <e482662f-254c-4ab7-b0a8-966a3159d705@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e482662f-254c-4ab7-b0a8-966a3159d705@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wh0355W0zDqWW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 04:45:22 +1000 (AEST)
+Received: by mail-ot1-f68.google.com with SMTP id d10so1093978otp.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 May 2019 11:45:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QFIm1hDHtUjLdOYqNjnkn9Poy1ZSguPT9bbKFukhSS8=;
+ b=Eu+vJ9DYTy2TkOKxxqOGRXLI2pB2MC25ncvKS67zQdvuJvKK69zYWkBCuw3CDpAJwt
+ Ehz92CxSCZYnjqFUapeI7olE+MUC13oHB6hnLmvIO9mVvHPthDAYc3wcRge4OxX5Zh0N
+ p4NWIJV3QeGqPRlxo7EJL3YL9dnqYUeZ8ZGaYR8oxb0XnOb9i8oGvFZbXXTGYmAw32hr
+ NRL8L6+AsC3jqW3+a+rPM9RvOotM50lk6AQ2TEnBhqDynG+9ZHTOxrqCBNahrlXRTp6w
+ h367XKaEvVInrtNmBpEWN6Ybgh9Icovu2ro6DSYwL/dyu9MqtBhhlf6VmRquLGXVoHi5
+ FptQ==
+X-Gm-Message-State: APjAAAW4sVnPZfW66u+LImxNxppVaJSuK7aZWXu/8prvagj8h9bxDn+2
+ U3jzfpQYqQ6PMjCGjthjsC/C53/Z
+X-Google-Smtp-Source: APXvYqwleviq3Abel3rRxm8iiZu/0IUopeB7YlQ3gWQpgsgFkxkPhwmpZFObS1kmUmtFwWWwHQ1vEw==
+X-Received: by 2002:a9d:480b:: with SMTP id c11mr3173964otf.61.1556909119187; 
+ Fri, 03 May 2019 11:45:19 -0700 (PDT)
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com.
+ [209.85.167.182])
+ by smtp.gmail.com with ESMTPSA id l126sm1221102oia.40.2019.05.03.11.45.18
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 03 May 2019 11:45:18 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id v10so5226401oib.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 May 2019 11:45:18 -0700 (PDT)
+X-Received: by 2002:aca:b50b:: with SMTP id e11mr102116oif.51.1556909118233;
+ Fri, 03 May 2019 11:45:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190503131551.GB1236@mwanda>
+In-Reply-To: <20190503131551.GB1236@mwanda>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Fri, 3 May 2019 13:45:07 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTGovYXL8vo7B6d73xu5BzpZBJLV=sGXK9HXrad-3HMeg@mail.gmail.com>
+Message-ID: <CADRPPNTGovYXL8vo7B6d73xu5BzpZBJLV=sGXK9HXrad-3HMeg@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: gpio: Fix an error code in qe_pin_request()
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,79 +71,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ kernel-janitors@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Fri, May 3, 2019 at 8:19 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> There was a missing error code in this path.  It meant that we returned
+> ERR_PTR(0) which is NULL and would result in a NULL dereference in the
+> caller.
 
-On Fri, May 03, 2019 at 04:14:13PM +0200, Christophe Leroy wrote:
-> A while ago I proposed the following patch, and didn't get any comment 
-> back on it.
-
-I didn't see it.  Maybe because of holiday :-)
-
-> Do you have any opinion on it ? Is it good and worth it ?
-
-> Le 09/01/2018 à 07:57, Christophe Leroy a écrit :
-> >Instead of just telling GCC that dcbz(), dcbi(), dcbf() and dcbst()
-> >clobber memory, tell it what it clobbers:
-> >* dcbz(), dcbi() and dcbf() clobbers one cacheline as output
-> >* dcbf() and dcbst() clobbers one cacheline as input
-
-You cannot "clobber input".
-
-Seen another way, only dcbi clobbers anything; dcbz zeroes it instead,
-and dcbf and dcbst only change in what caches the data hangs out.
-
-> >--- a/arch/powerpc/include/asm/cache.h
-> >+++ b/arch/powerpc/include/asm/cache.h
-> >@@ -82,22 +82,31 @@ extern void _set_L3CR(unsigned long);
-> >  
-> >  static inline void dcbz(void *addr)
-> >  {
-> >-	__asm__ __volatile__ ("dcbz 0, %0" : : "r"(addr) : "memory");
-> >+	__asm__ __volatile__ ("dcbz 0, %1" :
-> >+			      "=m"(*(char (*)[L1_CACHE_BYTES])addr) :
-> >+			      "r"(addr) :);
-> >  }
-
-The instruction does *not* work on the memory pointed to by addr.  It
-works on the cache line containing the address addr.
-
-If you want to have addr always aligned, you need to document this, and
-check all callers, etc.
-
-> >  static inline void dcbf(void *addr)
-> >  {
-> >-	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
-> >+	__asm__ __volatile__ ("dcbf 0, %1" :
-> >+			      "=m"(*(char (*)[L1_CACHE_BYTES])addr) :
-> >+			      "r"(addr), "m"(*(char 
-> >(*)[L1_CACHE_BYTES])addr) :
-> >+			     );
-> >  }
-
-Newline damage...  Was that your mailer?
+Thanks Dan.  An early version of this patch has been included in a
+pending pull request to arm-soc.
+https://lkml.org/lkml/2019/5/1/506
 
 
-Also, you may want a "memory" clobber anyway, to get ordering correct
-for the synchronisation instructions.
-
-I think your changes make things less robust than they were before.
-
-
-[ Btw.  Instead of
-
-	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
-
-you can do
-
-	__asm__ __volatile__ ("dcbf %0" : : "Z"(addr) : "memory");
-
-to save some insns here and there. ]
-
-
-Segher
+>
+> Fixes: 1a2d397a6eb5 ("gpio/powerpc: Eliminate duplication of of_get_named_gpio_flags()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/soc/fsl/qe/gpio.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
+> index 819bed0f5667..51b3a47b5a55 100644
+> --- a/drivers/soc/fsl/qe/gpio.c
+> +++ b/drivers/soc/fsl/qe/gpio.c
+> @@ -179,8 +179,10 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
+>         if (err < 0)
+>                 goto err0;
+>         gc = gpio_to_chip(err);
+> -       if (WARN_ON(!gc))
+> +       if (WARN_ON(!gc)) {
+> +               err = -ENODEV;
+>                 goto err0;
+> +       }
+>
+>         if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
+>                 pr_debug("%s: tried to get a non-qe pin\n", __func__);
+> --
+> 2.18.0
+>
