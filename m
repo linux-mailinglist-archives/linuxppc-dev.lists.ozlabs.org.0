@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220C4126E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 06:29:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wK0H1KgYzDqW5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 14:29:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B11D12797
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 08:18:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wMQk4jcqzDqWJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 16:18:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,43 +17,43 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="kSYuTYG+"; dkim-atps=neutral
+ header.b="jkvoYfxS"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wJym4QM4zDqCM
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 14:27:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wMPL407jzDq7F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:17:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
  MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=hirmFxMWxTe8SvSlfv6UKmH6ZLra2U80Aw6D8pbteKA=; b=kSYuTYG+34olIoQ8l3LjWqqda
- lIOJLqMIwpq9+7seT5ZdLRiKdRc390u5YcQ8Fwsam3XEW9MjXMB8STya8NdLgoXH3phgTaihHhUCF
- TeSrl2rB5jaPvdVgZhB++HmmmC9EkXwOlNiOCjXTpb79MogT+it7fnJc6/pslmHpxEQGM=;
+ bh=5vEsn3t0K5FrUDpqgBN9YEaqzn044x2H/vNzN5bOsSA=; b=jkvoYfxSRYUtsrQF/SohdXboz
+ LNRNw18UJAMAdf4Pi8lnV9aYdCMRMVl4UClh3xD0l34qM8EdZin1Nu1FUc7jV66JOaTebvLSZtlfk
+ HQvhnVfItGdyPFE6uwngD70qLFVvtaXDQ+kXCqCrIGGpdhfCBNVZM7fZ4qvxcQtRxcO1I=;
 Received: from [42.29.24.106] (helo=finisterre.ee.mobilebroadband)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hMPnU-0000Lu-Kk; Fri, 03 May 2019 04:27:45 +0000
+ id 1hMRVi-0000TX-AZ; Fri, 03 May 2019 06:17:30 +0000
 Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
- id 9D2FF441D3C; Fri,  3 May 2019 05:27:31 +0100 (BST)
-Date: Fri, 3 May 2019 13:27:31 +0900
+ id D198A441D3C; Fri,  3 May 2019 07:17:25 +0100 (BST)
+Date: Fri, 3 May 2019 15:17:25 +0900
 From: Mark Brown <broonie@kernel.org>
 To: "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [EXT] Re: [PATCH V4] ASoC: fsl_esai: Add pm runtime function
-Message-ID: <20190503042731.GX14916@sirena.org.uk>
-References: <c4cf809a66b8c98de11e43f7e9fa2823cf3c5ba6.1556417687.git.shengjiu.wang@nxp.com>
- <20190502023945.GA19532@sirena.org.uk>
- <VE1PR04MB6479F3EED50613DF8F041713E3340@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH V6 1/3] ASoC: fsl_asrc: Fix the issue about unsupported
+ rate
+Message-ID: <20190503061725.GA5107@sirena.org.uk>
+References: <cover.1555908545.git.shengjiu.wang@nxp.com>
+ <2cea4cb992a445863e88fa7865f55a02a83e031e.1555908545.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="7fXEoLLey27Fs/d6"
+ protocol="application/pgp-signature"; boundary="k+w/mQv8wyuph6w0"
 Content-Disposition: inline
-In-Reply-To: <VE1PR04MB6479F3EED50613DF8F041713E3340@VE1PR04MB6479.eurprd04.prod.outlook.com>
-X-Cookie: -- I have seen the FUN --
+In-Reply-To: <2cea4cb992a445863e88fa7865f55a02a83e031e.1555908545.git.shengjiu.wang@nxp.com>
+X-Cookie: All true wisdom is found on T-shirts.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +78,43 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---7fXEoLLey27Fs/d6
+--k+w/mQv8wyuph6w0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 02, 2019 at 09:13:58AM +0000, S.j. Wang wrote:
+On Mon, Apr 22, 2019 at 04:52:02AM +0000, S.j. Wang wrote:
+> When the output sample rate is [8kHz, 30kHz], the limitation
+> of the supported ratio range is [1/24, 8]. In the driver
+> we use (8kHz, 30kHz) instead of [8kHz, 30kHz].
+> So this patch is to fix this issue and the potential rounding
+> issue with divider.
+>=20
+None of this series applies either, with similar error messages:
 
-> I am checking, but I don't know why this patch failed in your side. I=20
-> Tried to apply this patch on for-5.1, for 5.2,  for-linus  and for-next, =
-all are
-> Successful.  The git is git://git.kernel.org/pub/scm/linux/kernel/git/bro=
-onie/sound.git.
+Applying: ASoC: fsl_asrc: Fix the issue about unsupported rate
+Using index info to reconstruct a base tree...
+error: patch failed: sound/soc/fsl/fsl_asrc.c:282
+error: sound/soc/fsl/fsl_asrc.c: patch does not apply
+error: Did you hand edit your patch?
+It does not apply to blobs recorded in its index.
 
-> I can't reproduce your problem. Is there any my operation wrong?
+(I get the same error message for your PM patch when applying without
+using patchwork as my main workflow does.)
 
-The error message I got was:
-
-Applying: ASoC: fsl_esai: Add pm runtime function
-error: patch failed: sound/soc/fsl/fsl_esai.c:9
-error: sound/soc/fsl/fsl_esai.c: patch does not apply
-Patch failed at 0001 ASoC: fsl_esai: Add pm runtime function
-
-which is the header addition.  I can't spot any obvious issues visually
-looking at the patch, only thing I can think is some kind of whitespace
-damage somewhere.
-
---7fXEoLLey27Fs/d6
+--k+w/mQv8wyuph6w0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzLwzAACgkQJNaLcl1U
-h9AAiQf9HER7t18a/h1Xns+qrJ2Gt/oRnh2FQEPHz/ajt0N1I2kyvwnDMxXjU34Q
-FKJHEqKuZ0uke450rOvpVifBPhnbxhdkqVCKjT4sW0fyznHNxy9PQ0/3L25J0v1J
-pPEBlTC98wytk8rkdrJqwY3gBV6lzaO/2s+dntb+7w9jqadwDz/QvpGBY3rFGCtd
-D2vBoMjd3MhCZRZv2VuVfPuV/xtmdS+/wwhiE9Wo8Q8+55wfgN+7mNaYAkyofhUS
-3l0RLeg4aXFJvltKO0oHlToG+emSt5i06hp0QQfTFuUKYe/d9xVKb7z8Icas0mMf
-LhcnV09lhAjvRs4boOmGzenukdsmxw==
-=jyVv
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzL3PUACgkQJNaLcl1U
+h9AuFwf9GU1mu4UAbguaCvzQD7KN7UOFPnMm2fjMErvpmxgq/cV7aFQEJv6Kc9Z6
+A2/l/TYJ+iNoJ01SPYwRKqw63mJmthjOsikQzaH3VISq6kF09ENT35Z4U1r8zOkb
+6IbPno6mpS6rBk0ckEJ7TLf4dl9zDh4djeaGWVK8MFX+D2eW86vfn0qNSWVCO55O
+p46Qvf2iwJJyc9HVx1AR8hJFAtadOWlmfPYUbUJ0DIJpAzT1aCFtoIGqj2Ef40hl
+YMo9B11fGc9xoae/INeoJIAOInjLKeS/Pm0n4N5FJpPeke/b13n0bDJ7EuHOy+td
+YCXUiBuuUhxXCy372VZHevRq1JK7hw==
+=B7sO
 -----END PGP SIGNATURE-----
 
---7fXEoLLey27Fs/d6--
+--k+w/mQv8wyuph6w0--
