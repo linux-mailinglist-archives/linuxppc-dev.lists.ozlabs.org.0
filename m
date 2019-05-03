@@ -1,93 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EC512A25
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 10:51:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wQq65skzzDqdb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 18:51:46 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2DD12B3E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 12:06:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wSTZ2G6LzDqlj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 20:06:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wQnb71nvzDqbp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 18:50:27 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x438lLuZ002053
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 May 2019 04:50:23 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2s8fyu5e0m-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 May 2019 04:50:23 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 3 May 2019 09:50:21 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 3 May 2019 09:50:19 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x438oIws32112660
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 May 2019 08:50:18 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 77C05A405B;
- Fri,  3 May 2019 08:50:18 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AEDAA4051;
- Fri,  3 May 2019 08:50:18 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  3 May 2019 08:50:18 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5E035A01D4;
- Fri,  3 May 2019 18:50:16 +1000 (AEST)
-Subject: Re: [PATCH v2] powerpc/powernv: Restrict OPAL symbol map to only be
- readable by root
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <20190503075253.22798-1-ajd@linux.ibm.com>
- <20190503075916.GA14960@kroah.com>
- <f584ce91-a49b-ef33-7090-cb0a91b87e82@linux.ibm.com>
- <20190503083529.GA17715@kroah.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 3 May 2019 18:50:15 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.101.70])
+ by lists.ozlabs.org (Postfix) with ESMTP id 44wSS12BpCzDqjZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 20:05:18 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3CB1374;
+ Fri,  3 May 2019 03:05:16 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
+ [10.72.51.249])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CC463F557;
+ Fri,  3 May 2019 03:05:11 -0700 (PDT)
+Date: Fri, 3 May 2019 11:05:09 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCH 04/15] arm64: switch to generic version of pte allocation
+Message-ID: <20190503100508.GB47811@lakrids.cambridge.arm.com>
+References: <1556810922-20248-1-git-send-email-rppt@linux.ibm.com>
+ <1556810922-20248-5-git-send-email-rppt@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190503083529.GA17715@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050308-0020-0000-0000-00000338D59A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050308-0021-0000-0000-0000218B611A
-Message-Id: <91d925e4-a71d-33d6-d882-8af44bcca69a@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-03_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=867 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905030057
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1556810922-20248-5-git-send-email-rppt@linux.ibm.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,21 +48,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- Stewart Smith <stewart@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
+ Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
+ Sam Creasey <sammy@sammy.net>, Arnd Bergmann <arnd@arndb.de>,
+ linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>,
+ linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
+ nios2-dev@lists.rocketboards.org, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
+ Paul Burton <paul.burton@mips.com>, linux-alpha@vger.kernel.org,
+ Ley Foon Tan <lftan@altera.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/5/19 6:35 pm, Greg KH wrote:
->> Are we actually racing against userspace in a subsys initcall?
+Hi,
+
+On Thu, May 02, 2019 at 06:28:31PM +0300, Mike Rapoport wrote:
+> The PTE allocations in arm64 are identical to the generic ones modulo the
+> GFP flags.
 > 
-> You can be, if you subsys is a module :)
+> Using the generic pte_alloc_one() functions ensures that the user page
+> tables are allocated with __GFP_ACCOUNT set.
+> 
+> The arm64 definition of PGALLOC_GFP is removed and replaced with
+> GFP_PGTABLE_USER for p[gum]d_alloc_one() and for KVM memory cache.
+> 
+> The mappings created with create_pgd_mapping() are now using
+> GFP_PGTABLE_KERNEL.
+> 
+> The conversion to the generic version of pte_free_kernel() removes the NULL
+> check for pte.
+> 
+> The pte_free() version on arm64 is identical to the generic one and
+> can be simply dropped.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/arm64/include/asm/pgalloc.h | 43 ++++------------------------------------
+>  arch/arm64/mm/mmu.c              |  2 +-
+>  arch/arm64/mm/pgd.c              |  4 ++--
+>  virt/kvm/arm/mmu.c               |  2 +-
+>  4 files changed, 8 insertions(+), 43 deletions(-)
 
-For various reasons, we don't compile core system firmware interfaces 
-into modules... that could be an interesting exercise. :D
+[...]
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+> diff --git a/arch/arm64/mm/pgd.c b/arch/arm64/mm/pgd.c
+> index 289f911..2ef1a53 100644
+> --- a/arch/arm64/mm/pgd.c
+> +++ b/arch/arm64/mm/pgd.c
+> @@ -31,9 +31,9 @@ static struct kmem_cache *pgd_cache __ro_after_init;
+>  pgd_t *pgd_alloc(struct mm_struct *mm)
+>  {
+>  	if (PGD_SIZE == PAGE_SIZE)
+> -		return (pgd_t *)__get_free_page(PGALLOC_GFP);
+> +		return (pgd_t *)__get_free_page(GFP_PGTABLE_USER);
+>  	else
+> -		return kmem_cache_alloc(pgd_cache, PGALLOC_GFP);
+> +		return kmem_cache_alloc(pgd_cache, GFP_PGTABLE_USER);
+>  }
 
+In efi_virtmap_init() we use pgd_alloc() to allocate a pgd for EFI
+runtime services, which we map with a special kernel page table.
+
+I'm not sure if accounting that is problematic, as it's allocated in a
+kernel thread off the back of an early_initcall.
+
+Just to check, Is that sound, or do we need a pgd_alloc_kernel()?
+
+Thanks,
+Mark.
