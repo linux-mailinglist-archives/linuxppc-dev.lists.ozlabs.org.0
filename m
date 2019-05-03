@@ -1,32 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5DF12857
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:01:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44wNN32S8yzDqWS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:01:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C67821285D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 09:03:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44wNPt2LtjzDqX2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2019 17:03:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK55wFfzDqPP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44wNK61KvvzDqPW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2019 16:59:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 44wNK55DB0z9sB8; Fri,  3 May 2019 16:59:05 +1000 (AEST)
+ id 44wNK60Ghwz9sBb; Fri,  3 May 2019 16:59:05 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: a913e5e8b43be1d3897a141ce61c1ec071cad89c
+X-powerpc-patch-commit: 860b7d2286236170a36f94946d03ca9888d32571
 X-Patchwork-Hint: ignore
-In-Reply-To: <20181127082452.8307-2-anju@linux.vnet.ibm.com>
+In-Reply-To: <20181218062041.25198-1-anju@linux.vnet.ibm.com>
 To: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/perf: Return accordingly on invalid chip-id in
-Message-Id: <44wNK55DB0z9sB8@ozlabs.org>
+Subject: Re: [PATCH v2] powerpc/perf: Fix loop exit condition in
+ nest_imc_event_init
+Message-Id: <44wNK60Ghwz9sBb@ozlabs.org>
 Date: Fri,  3 May 2019 16:59:05 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,19 +46,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2018-11-27 at 08:24:52 UTC, Anju T Sudhakar wrote:
-> Nest hardware counter memory resides in a per-chip reserve-memory.
-> During nest_imc_event_init(), chip-id of the event-cpu is considered to
-> calculate the base memory addresss for that cpu. Return, proper error
-> condition if the chip_id calculated is invalid.
+On Tue, 2018-12-18 at 06:20:41 UTC, Anju T Sudhakar wrote:
+> The data structure (i.e struct imc_mem_info) to hold the memory address
+> information for nest imc units is allocated based on the number of nodes
+> in the system.
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Fixes: 885dcd709ba91 ("powerpc/perf: Add nest IMC PMU support")
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> nest_imc_event_init() traverse this struct array to calculate the memory
+> base address for the event-cpu. If we fail to find a match for the event
+> cpu's chip-id in imc_mem_info struct array, then the do-while loop will
+> iterate until we crash.
+> 
+> Fix this by changing the loop exit condition based on the number of 
+> non zero vbase elements in the array, since the allocation is done for
+> nr_chips + 1.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com> 
+> Fixes: 885dcd709ba91 ( powerpc/perf: Add nest IMC PMU support)
 > Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/a913e5e8b43be1d3897a141ce61c1ec0
+https://git.kernel.org/powerpc/c/860b7d2286236170a36f94946d03ca98
 
 cheers
