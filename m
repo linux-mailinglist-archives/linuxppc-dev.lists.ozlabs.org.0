@@ -1,35 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DEC13BF7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 21:38:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3046313AB6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 16:41:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44xBXS24h1zDqNb
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 00:41:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44xK6G4w07zDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 05:37:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="yrzulXij"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44xBT33TGszDqLr
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 00:38:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44xBT15fzxz9s5c;
- Sun,  5 May 2019 00:38:45 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.1-7 tag
-Date: Sun, 05 May 2019 00:38:41 +1000
-Message-ID: <877eb6xp1q.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44xK2z2kylzDqLS
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 05:35:06 +1000 (AEST)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.1-7 tag
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1556998503;
+ bh=GU4ScgusiOEf/ZF97uHI8n+5Qy72/XWeE3wdUA8cT9c=;
+ h=From:In-Reply-To:References:Date:To:Cc:From;
+ b=yrzulXij+iZCIZA+545EmCcBgFn8MDp01m5rbkVe450WlidB6DUFvreY7jR41O+9k
+ GZ5sI5HC/qsgrtqUrrPQ/4+WG6Nwa2F/SBcvIPzG+WOr285O1eUz3aijPdXFATrlI1
+ VriPk6DHjNYnwCrwxBJ65Usi+ECT4YomFcQ+0Sxc=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <877eb6xp1q.fsf@concordia.ellerman.id.au>
+References: <877eb6xp1q.fsf@concordia.ellerman.id.au>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <877eb6xp1q.fsf@concordia.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.1-7
+X-PR-Tracked-Commit-Id: 12f363511d47f86c49b7766c349989cb33fd61a8
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6203838dec05352bc357625b1e9ba0a10d3bca35
+Message-Id: <155699850379.8395.12786832199940442596.pr-tracker-bot@kernel.org>
+Date: Sat, 04 May 2019 19:35:03 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,61 +56,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+The pull request you sent on Sun, 05 May 2019 00:38:41 +1000:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.1-7
 
-Please pull one more powerpc fix for 5.1:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6203838dec05352bc357625b1e9ba0a10d3bca35
 
-The following changes since commit 7a3a4d763837d3aa654cd1059030950410c04d77:
+Thank you!
 
-  powerpc/mm_iommu: Allow pinning large regions (2019-04-17 21:36:51 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.1-7
-
-for you to fetch changes up to 12f363511d47f86c49b7766c349989cb33fd61a8:
-
-  powerpc/32s: Fix BATs setting with CONFIG_STRICT_KERNEL_RWX (2019-05-02 15:33:46 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.1 #7
-
-One regression fix.
-
-Changes we merged to STRICT_KERNEL_RWX on 32-bit were causing crashes under
-load on some machines depending on memory layout.
-
-Thanks to:
-  Christophe Leroy.
-
-- ------------------------------------------------------------------
-Christophe Leroy (1):
-      powerpc/32s: Fix BATs setting with CONFIG_STRICT_KERNEL_RWX
-
-
- arch/powerpc/mm/ppc_mmu_32.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBAgAGBQJczaPFAAoJEFHr6jzI4aWAEsoP+wbm3WGTTSULdF3PbIGEtVbQ
-CNrw/LpvNsmAn6210U2ag7Fwd6/hIprIy9wgwbgNiB2kDtMNy6srl1eMlC9npsV4
-y43xeJQ0E2+u10eaBNsiwJEYtmNkJMuxCu31zGH/PZ4nTi4hdvaVwUETR725vYli
-LICixZ2yr1eL948D3DzWpGigBmGhq1ajBsdXxn2sHxbeqefnFesdrjPR2e2GIj7E
-cyHb+7vUATLUVc405yYCyHEU3/cly12LPcsreGe/tPWSJxw8I2BU36lCCXgby62w
-E1KlSb4EzFx+lFujK6ICxaflFOtkP+0Xzajq8YU0qrItkGM8DA6yTy4vU99gN1KP
-pgNwbaoMQCNJvzk0cIuMZ0RMGKrkRT4y2jW+MhHALMSkyv4HGKqT/N227PMq4U94
-nVv41w868b8NnTrN9pLfSR+Gyr/Q7sF8zEVv0eIpbSciB/OTcg0yqAp7V2p0cTBG
-pKM/c6glvkrbfEkoRItMpVU0PbckPFjXgTVqI/rvdiAVoEQvi1U4r8Fpu5I28j1d
-wuryRhjnGXgkSjBlXkSK+tASWZHcKwhnD1y9KTHtKuLdxJqjDfyX0Dii+FqU5w42
-aKeU4VrlrCGX2VnLj7ViH99wzkMogP9oZWZ5bhmOva/boxo1kJ9/vQkxaiXrhVjd
-NLBrlVeLtaCjY52+eEJS
-=k/X8
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
