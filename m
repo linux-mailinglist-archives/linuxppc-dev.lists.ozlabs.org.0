@@ -2,58 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A7213855
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 10:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5827C138CE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 12:27:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44x2fD2CyjzDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 18:46:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44x4tx4pRCzDqS5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 20:27:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN>)
+ (client-ip=45.249.212.35; helo=huawei.com; envelope-from=yuehaibing@huawei.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44x2ck0lRvzDqVK
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 18:44:52 +1000 (AEST)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id EAB0F5D52CC2EA261151;
- Sat,  4 May 2019 16:44:44 +0800 (CST)
-Received: from [127.0.0.1] (10.177.23.164) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
- 16:44:39 +0800
-Subject: Re: [PATCH v6 0/1] iommu: enhance IOMMU dma mode build options
-To: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>, John Garry
- <john.garry@huawei.com>, Robin Murphy <robin.murphy@arm.com>, Will Deacon
- <will.deacon@arm.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet
- <corbet@lwn.net>, linux-doc <linux-doc@vger.kernel.org>, Sebastian Ott
- <sebott@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- "Martin Schwidefsky" <schwidefsky@de.ibm.com>, Heiko Carstens
- <heiko.carstens@de.ibm.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>, Tony Luck <tony.luck@intel.com>, Fenghua Yu
- <fenghua.yu@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin"
- <hpa@zytor.com>, David Woodhouse <dwmw2@infradead.org>, iommu
- <iommu@lists.linux-foundation.org>, linux-kernel
- <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, x86 <x86@kernel.org>,
- linux-ia64 <linux-ia64@vger.kernel.org>
-References: <20190418135701.24668-1-thunder.leizhen@huawei.com>
-From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <5CCD50E7.3070505@huawei.com>
-Date: Sat, 4 May 2019 16:44:23 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44x4rj10K7zDqFh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 20:25:23 +1000 (AEST)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 5909689F2E5ECEAAF074;
+ Sat,  4 May 2019 18:25:18 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS406-HUB.china.huawei.com
+ (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
+ 18:25:11 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>,
+ <christophe.leroy@c-s.fr>, <aneesh.kumar@linux.vnet.ibm.com>
+Subject: [PATCH -next] powerpc/book3s64: Make some symbols static
+Date: Sat, 4 May 2019 18:24:27 +0800
+Message-ID: <20190504102427.12332-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20190418135701.24668-1-thunder.leizhen@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.23.164]
+Content-Type: text/plain
+X-Originating-IP: [10.177.31.96]
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,53 +48,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hanjun Guo <guohanjun@huawei.com>
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
-  Can anybody review or comment?
+Fix sparse warnings:
 
+arch/powerpc/mm/book3s64/radix_pgtable.c:326:13: warning: symbol 'radix_init_pgtable' was not declared. Should it be static?
+arch/powerpc/mm/book3s64/hash_native.c:48:1: warning: symbol 'native_tlbie_lock' was not declared. Should it be static?
+arch/powerpc/mm/book3s64/hash_utils.c:988:24: warning: symbol 'init_hash_mm_context' was not declared. Should it be static?
 
-On 2019/4/18 21:57, Zhen Lei wrote:
-> v5 --> v6:
-> 1. give up adding boot option iommu.dma_mode
-> 
-> v4 --> v5:
-> As Hanjun and Thomas Gleixner's suggestion:
-> 1. Keep the old ARCH specific boot options no change.
-> 2. Keep build option CONFIG_IOMMU_DEFAULT_PASSTHROUGH no change.
-> 
-> v4:
-> As Robin Murphy's suggestion:
-> "It's also not necessarily obvious to the user how this interacts with
-> IOMMU_DEFAULT_PASSTHROUGH, so if we really do go down this route, maybe it
-> would be better to refactor the whole lot into a single selection of something
-> like IOMMU_DEFAULT_MODE anyway."
-> 
-> In this version, I tried to normalize the IOMMU dma mode boot options for all
-> ARCHs. When IOMMU is enabled, there are 3 dma modes: paasthrough(bypass),
-> lazy(mapping but defer the IOTLB invalidation), strict. But currently each
-> ARCHs defined their private boot options, different with each other. For
-> example, to enable/disable "passthrough", ARM64 use iommu.passthrough=1/0,
-> X86 use iommu=pt/nopt, PPC/POWERNV use iommu=nobypass.
-> 
-> Zhen Lei (1):
->   iommu: enhance IOMMU dma mode build options
-> 
->  arch/ia64/kernel/pci-dma.c                |  2 +-
->  arch/powerpc/platforms/powernv/pci-ioda.c |  3 ++-
->  arch/s390/pci/pci_dma.c                   |  2 +-
->  arch/x86/kernel/pci-dma.c                 |  7 ++---
->  drivers/iommu/Kconfig                     | 44 ++++++++++++++++++++++++++-----
->  drivers/iommu/amd_iommu_init.c            |  3 ++-
->  drivers/iommu/intel-iommu.c               |  2 +-
->  drivers/iommu/iommu.c                     |  3 ++-
->  8 files changed, 48 insertions(+), 18 deletions(-)
-> 
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ arch/powerpc/mm/book3s64/hash_native.c   | 2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c    | 2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+index aaa28fd..47caecd 100644
+--- a/arch/powerpc/mm/book3s64/hash_native.c
++++ b/arch/powerpc/mm/book3s64/hash_native.c
+@@ -45,7 +45,7 @@
+ #define HPTE_LOCK_BIT (56+3)
+ #endif
+ 
+-DEFINE_RAW_SPINLOCK(native_tlbie_lock);
++static DEFINE_RAW_SPINLOCK(native_tlbie_lock);
+ 
+ static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
+ {
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 919a861..1ff4518 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -985,7 +985,7 @@ void __init hash__early_init_devtree(void)
+ 	htab_scan_page_sizes();
+ }
+ 
+-struct hash_mm_context init_hash_mm_context;
++static struct hash_mm_context init_hash_mm_context;
+ void __init hash__early_init_mmu(void)
+ {
+ #ifndef CONFIG_PPC_64K_PAGES
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index c9bcf42..c929d31 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -323,7 +323,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+ 	return 0;
+ }
+ 
+-void __init radix_init_pgtable(void)
++static void __init radix_init_pgtable(void)
+ {
+ 	unsigned long rts_field;
+ 	struct memblock_region *reg;
 -- 
-Thanks!
-BestRegards
+2.7.4
+
 
