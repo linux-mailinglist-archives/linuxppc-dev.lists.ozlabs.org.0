@@ -2,36 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5827C138CE
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 12:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB72D13924
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 12:30:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44x4tx4pRCzDqS5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 20:27:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44x4yX2QbCzDqM6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 20:30:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com; envelope-from=yuehaibing@huawei.com;
- receiver=<UNKNOWN>)
+ (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44x4rj10K7zDqFh
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 20:25:23 +1000 (AEST)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 5909689F2E5ECEAAF074;
- Sat,  4 May 2019 18:25:18 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
- 18:25:11 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44x4wR5HzLzDqGN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2019 20:28:39 +1000 (AEST)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 102CF6A7CC9AEFD6C2D8;
+ Sat,  4 May 2019 18:28:35 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
+ 18:28:25 +0800
 From: YueHaibing <yuehaibing@huawei.com>
-To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>,
- <christophe.leroy@c-s.fr>, <aneesh.kumar@linux.vnet.ibm.com>
-Subject: [PATCH -next] powerpc/book3s64: Make some symbols static
-Date: Sat, 4 May 2019 18:24:27 +0800
-Message-ID: <20190504102427.12332-1-yuehaibing@huawei.com>
+To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
+ <gregkh@linuxfoundation.org>
+Subject: [PATCH -next] misc: ocxl: Make ocxl_remove static
+Date: Sat, 4 May 2019 18:27:20 +0800
+Message-ID: <20190504102720.42220-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -54,58 +54,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix sparse warnings:
+Fix sparse warning:
 
-arch/powerpc/mm/book3s64/radix_pgtable.c:326:13: warning: symbol 'radix_init_pgtable' was not declared. Should it be static?
-arch/powerpc/mm/book3s64/hash_native.c:48:1: warning: symbol 'native_tlbie_lock' was not declared. Should it be static?
-arch/powerpc/mm/book3s64/hash_utils.c:988:24: warning: symbol 'init_hash_mm_context' was not declared. Should it be static?
+drivers/misc/ocxl/pci.c:44:6: warning:
+ symbol 'ocxl_remove' was not declared. Should it be static?
 
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- arch/powerpc/mm/book3s64/hash_native.c   | 2 +-
- arch/powerpc/mm/book3s64/hash_utils.c    | 2 +-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/misc/ocxl/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-index aaa28fd..47caecd 100644
---- a/arch/powerpc/mm/book3s64/hash_native.c
-+++ b/arch/powerpc/mm/book3s64/hash_native.c
-@@ -45,7 +45,7 @@
- #define HPTE_LOCK_BIT (56+3)
- #endif
- 
--DEFINE_RAW_SPINLOCK(native_tlbie_lock);
-+static DEFINE_RAW_SPINLOCK(native_tlbie_lock);
- 
- static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
- {
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 919a861..1ff4518 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -985,7 +985,7 @@ void __init hash__early_init_devtree(void)
- 	htab_scan_page_sizes();
- }
- 
--struct hash_mm_context init_hash_mm_context;
-+static struct hash_mm_context init_hash_mm_context;
- void __init hash__early_init_mmu(void)
- {
- #ifndef CONFIG_PPC_64K_PAGES
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index c9bcf42..c929d31 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -323,7 +323,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+diff --git a/drivers/misc/ocxl/pci.c b/drivers/misc/ocxl/pci.c
+index f2a3ef4..cb920aa 100644
+--- a/drivers/misc/ocxl/pci.c
++++ b/drivers/misc/ocxl/pci.c
+@@ -41,7 +41,7 @@ static int ocxl_probe(struct pci_dev *dev, const struct pci_device_id *id)
  	return 0;
  }
  
--void __init radix_init_pgtable(void)
-+static void __init radix_init_pgtable(void)
+-void ocxl_remove(struct pci_dev *dev)
++static void ocxl_remove(struct pci_dev *dev)
  {
- 	unsigned long rts_field;
- 	struct memblock_region *reg;
+ 	struct ocxl_fn *fn;
+ 	struct ocxl_afu *afu;
 -- 
 2.7.4
 
