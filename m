@@ -2,49 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DEC13BF7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2019 21:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7E313C73
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 02:56:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44xK6G4w07zDqLq
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 05:37:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44xSB30CxDzDqMf
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 10:56:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="yrzulXij"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44xK2z2kylzDqLS
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 05:35:06 +1000 (AEST)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.1-7 tag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1556998503;
- bh=GU4ScgusiOEf/ZF97uHI8n+5Qy72/XWeE3wdUA8cT9c=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=yrzulXij+iZCIZA+545EmCcBgFn8MDp01m5rbkVe450WlidB6DUFvreY7jR41O+9k
- GZ5sI5HC/qsgrtqUrrPQ/4+WG6Nwa2F/SBcvIPzG+WOr285O1eUz3aijPdXFATrlI1
- VriPk6DHjNYnwCrwxBJ65Usi+ECT4YomFcQ+0Sxc=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <877eb6xp1q.fsf@concordia.ellerman.id.au>
-References: <877eb6xp1q.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <877eb6xp1q.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.1-7
-X-PR-Tracked-Commit-Id: 12f363511d47f86c49b7766c349989cb33fd61a8
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6203838dec05352bc357625b1e9ba0a10d3bca35
-Message-Id: <155699850379.8395.12786832199940442596.pr-tracker-bot@kernel.org>
-Date: Sat, 04 May 2019 19:35:03 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44xR3F0s2TzDqLZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 10:05:44 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 524EB287EA
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 00:05:41 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 4657A2882A; Sun,  5 May 2019 00:05:41 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203515] New: [crypto] alg: skcipher: p8_aes_ctr encryption test
+ failed (wrong result) on test vector 3, cfg="uneven misaligned splits,
+ may sleep"
+Date: Sun, 05 May 2019 00:05:40 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression attachments.created
+Message-ID: <bug-203515-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Mailman-Approved-At: Sun, 05 May 2019 10:55:26 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,21 +73,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 05 May 2019 00:38:41 +1000:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203515
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.1-7
+            Bug ID: 203515
+           Summary: [crypto] alg: skcipher: p8_aes_ctr encryption test
+                    failed (wrong result) on test vector 3, cfg=3D"uneven
+                    misaligned splits, may sleep"
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.1.0-rc7
+          Hardware: All
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-64
+          Assignee: platform_ppc-64@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+        Regression: Yes
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6203838dec05352bc357625b1e9ba0a10d3bca35
+Created attachment 282609
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D282609&action=3Dedit
+dmesg (5.1.0-rc7, Talos II)
 
-Thank you!
+Seems like some POWER8/9 specific encrytion test fails in 5.1.0-rc7. This d=
+id
+not happen in 5.0.x and before.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+[...]
+[    5.246612] crypto_register_alg 'cbc(aes)' =3D 0
+[    5.254268] alg: skcipher: p8_aes_ctr encryption test failed (wrong resu=
+lt)
+on test vector 3, cfg=3D"uneven misaligned splits, may sleep"
+[    5.255266] xhci_hcd 0003:01:00.0: xHCI Host Controller
+[    5.255346] xhci_hcd 0003:01:00.0: new USB bus registered, assigned bus
+number 1
+[    5.255522] xhci_hcd 0003:01:00.0: hcc params 0x0270f06d hci version 0x96
+quirks 0x0000000004000000
+[    5.256008] crypto_register_alg 'ctr(aes)' =3D 0
+[...]
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
