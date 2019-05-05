@@ -2,64 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB1C14216
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 May 2019 21:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2994E142BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 00:18:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44xwmP525vzDqJB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 05:24:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44y0cg4Lv3zDqJN
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 08:18:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44y0bK2RZFzDqJ3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 08:17:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ header.from=informatik.wtf
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44y0bH6m5Bz8t4f
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 08:16:59 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 44y0bH6LDHz9sB8; Mon,  6 May 2019 08:16:59 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
+ (client-ip=198.54.122.46; helo=new-02-2.privateemail.com;
+ envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+X-Greylist: delayed 523 seconds by postgrey-1.36 at bilbo;
+ Mon, 06 May 2019 08:16:59 AEST
+Received: from NEW-02-2.privateemail.com (new-02-2.privateemail.com
+ [198.54.122.46])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44xwl80x07zDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 05:23:32 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 7A9C5285D1
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 May 2019 19:23:30 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 6EA7C28653; Sun,  5 May 2019 19:23:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203515] [crypto] alg: skcipher: p8_aes_ctr encryption test
- failed (wrong result) on test vector 3, cfg="uneven misaligned splits, may
- sleep"
-Date: Sun, 05 May 2019 19:23:29 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-203515-206035-xm7RQXeh4u@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203515-206035@https.bugzilla.kernel.org/>
-References: <bug-203515-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by ozlabs.org (Postfix) with ESMTPS id 44y0bH16mDz9s9N
+ for <linuxppc-dev@ozlabs.org>; Mon,  6 May 2019 08:16:58 +1000 (AEST)
+Received: from MTA-08-1.privateemail.com (unknown [10.20.147.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by NEW-02.privateemail.com (Postfix) with ESMTPS id E3BF5604F4;
+ Sun,  5 May 2019 22:08:14 +0000 (UTC)
+Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
+ by MTA-08.privateemail.com (Postfix) with ESMTP id D031560038;
+ Sun,  5 May 2019 18:08:14 -0400 (EDT)
+Received: from wrwlf0000.attlocal.net (unknown [10.20.151.212])
+ by MTA-08.privateemail.com (Postfix) with ESMTPA id 6C8DE60033;
+ Sun,  5 May 2019 22:08:14 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@informatik.wtf>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/64s: support nospectre_v2 cmdline option
+Date: Sun,  5 May 2019 17:10:48 -0500
+Message-Id: <20190505221048.28212-1-cmr@informatik.wtf>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,17 +68,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203515
+Add support for disabling the kernel implemented spectre v2 mitigation
+(count cache flush on context switch) via the nospectre_v2 cmdline
+option.
 
---- Comment #4 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 282625
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D282625&action=3Dedit
-kernel .config of the final bisect (5.0.0-rc1+, Talos II)
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+---
+reference: https://github.com/linuxppc/issues/issues/236
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+ arch/powerpc/kernel/security.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index b33bafb8fcea..f7c34745cd0f 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
+ bool barrier_nospec_enabled;
+ static bool no_nospec;
+ static bool btb_flush_enabled;
+-#ifdef CONFIG_PPC_FSL_BOOK3E
++#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
+ static bool no_spectrev2;
+ #endif
+ 
+@@ -106,7 +106,7 @@ static __init int barrier_nospec_debugfs_init(void)
+ device_initcall(barrier_nospec_debugfs_init);
+ #endif /* CONFIG_DEBUG_FS */
+ 
+-#ifdef CONFIG_PPC_FSL_BOOK3E
++#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
+ static int __init handle_nospectre_v2(char *p)
+ {
+ 	no_spectrev2 = true;
+@@ -114,6 +114,9 @@ static int __init handle_nospectre_v2(char *p)
+ 	return 0;
+ }
+ early_param("nospectre_v2", handle_nospectre_v2);
++#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
++
++#ifdef CONFIG_PPC_FSL_BOOK3E
+ void setup_spectre_v2(void)
+ {
+ 	if (no_spectrev2)
+@@ -391,6 +394,13 @@ static void toggle_count_cache_flush(bool enable)
+ 
+ void setup_count_cache_flush(void)
+ {
++	if (no_spectrev2) {
++		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED)
++		    || security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
++			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
++		return;
++	}
++
+ 	toggle_count_cache_flush(true);
+ }
+ 
+-- 
+2.21.0
+
