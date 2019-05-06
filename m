@@ -2,61 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2994E142BE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 00:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0A414333
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 02:22:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44y0cg4Lv3zDqJN
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 08:18:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44y3Mn4h2QzDqKq
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 10:22:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44y0bK2RZFzDqJ3
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 08:17:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ricklind@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44y0bH6m5Bz8t4f
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 08:16:59 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 44y0bH6LDHz9sB8; Mon,  6 May 2019 08:16:59 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.122.46; helo=new-02-2.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-X-Greylist: delayed 523 seconds by postgrey-1.36 at bilbo;
- Mon, 06 May 2019 08:16:59 AEST
-Received: from NEW-02-2.privateemail.com (new-02-2.privateemail.com
- [198.54.122.46])
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44y0bH16mDz9s9N
- for <linuxppc-dev@ozlabs.org>; Mon,  6 May 2019 08:16:58 +1000 (AEST)
-Received: from MTA-08-1.privateemail.com (unknown [10.20.147.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id E3BF5604F4;
- Sun,  5 May 2019 22:08:14 +0000 (UTC)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id D031560038;
- Sun,  5 May 2019 18:08:14 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.212])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id 6C8DE60033;
- Sun,  5 May 2019 22:08:14 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64s: support nospectre_v2 cmdline option
-Date: Sun,  5 May 2019 17:10:48 -0500
-Message-Id: <20190505221048.28212-1-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44y3LM1GCqzDqGC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 10:20:52 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x46072Ei121868
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 5 May 2019 20:20:49 -0400
+Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sa5pyft44-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 May 2019 20:20:49 -0400
+Received: from localhost
+ by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ricklind@linux.vnet.ibm.com>;
+ Mon, 6 May 2019 01:20:48 +0100
+Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
+ by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 6 May 2019 01:20:47 +0100
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x460Kj976816172
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 6 May 2019 00:20:45 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 13745BE051;
+ Mon,  6 May 2019 00:20:45 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 61757BE04F;
+ Mon,  6 May 2019 00:20:44 +0000 (GMT)
+Received: from [9.80.199.74] (unknown [9.80.199.74])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  6 May 2019 00:20:44 +0000 (GMT)
+To: Michael Ellerman <michaele@au1.ibm.com>, linuxppc-dev@lists.ozlabs.org
+From: Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Subject: [PATCH] powerpc/book3s/64: check for NULL pointer in pgd_alloc()
+Date: Sun, 5 May 2019 17:20:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19050600-0004-0000-0000-00001509C429
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011055; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01199154; UDB=6.00629086; IPR=6.00980026; 
+ MB=3.00026745; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-06 00:20:48
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050600-0005-0000-0000-00008B89EB10
+Message-Id: <5ae0401c-a84a-1e59-5d9d-70659f5a85de@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-05_20:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=923 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905050216
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,69 +92,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, andrew.donnellan@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for disabling the kernel implemented spectre v2 mitigation
-(count cache flush on context switch) via the nospectre_v2 cmdline
-option.
+When the memset code was added to pgd_alloc(), it failed to consider that kmem_cache_alloc() can return NULL.  It's uncommon, but not impossible under heavy memory contention.
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
-reference: https://github.com/linuxppc/issues/issues/236
+Signed-off-by: Rick Lindsley <ricklind@vnet.linux.ibm.com>
+Fixes: cf266dbcd2a7 ("Zero PGD pages on allocation")
 
- arch/powerpc/kernel/security.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index b33bafb8fcea..f7c34745cd0f 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
- bool barrier_nospec_enabled;
- static bool no_nospec;
- static bool btb_flush_enabled;
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static bool no_spectrev2;
- #endif
- 
-@@ -106,7 +106,7 @@ static __init int barrier_nospec_debugfs_init(void)
- device_initcall(barrier_nospec_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
- 
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static int __init handle_nospectre_v2(char *p)
- {
- 	no_spectrev2 = true;
-@@ -114,6 +114,9 @@ static int __init handle_nospectre_v2(char *p)
- 	return 0;
- }
- early_param("nospectre_v2", handle_nospectre_v2);
-+#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
+--- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+@@ -81,6 +81,10 @@ static inline pgd_t *pgd_alloc(struct mm
+  
+	pgd = kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+			       pgtable_gfp_flags(mm, GFP_KERNEL));
 +
-+#ifdef CONFIG_PPC_FSL_BOOK3E
- void setup_spectre_v2(void)
- {
- 	if (no_spectrev2)
-@@ -391,6 +394,13 @@ static void toggle_count_cache_flush(bool enable)
- 
- void setup_count_cache_flush(void)
- {
-+	if (no_spectrev2) {
-+		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED)
-+		    || security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
-+			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
-+		return;
-+	}
++	if (unlikely(!pgd))
++		return pgd;
 +
- 	toggle_count_cache_flush(true);
- }
- 
--- 
-2.21.0
+	/*
+	 * Don't scan the PGD for pointers, it contains references to PUDs but
+	 * those references are not full pointers and so can't be recognised by
 
