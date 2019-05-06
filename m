@@ -1,76 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB1F145CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 10:12:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E248414593
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 09:49:50 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yFJD1tn5zDqLh
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 17:49:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yFnr5wwRzDqJR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 18:12:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
- envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Slaf58rR"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="EVyjXNAR"; 
  dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yFGl6Gt8zDqBY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 17:48:31 +1000 (AEST)
-Received: by mail-wm1-x343.google.com with SMTP id p21so14472697wmc.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 00:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=lOMmC2TdPGvudZ5zd3K88q7Hkn2nNBdEod9TPs+T1As=;
- b=Slaf58rRFMPspfJPXpmTfLlvwHidotLOMxhyQjova1O4DpsmA/t1EGlinnwrWNjZEa
- WGXX51gARplly5SfcaxFi1xynREwymrx2nkYqsnw8tXplC1Jed+eZEL89EAMgspKPkx4
- VMPvROYT21z9Gfa2hf4YEkbEZMzU64Pnrvx0w/E2NvCgLPuXS/Ce2M5vuYhuVd2j+r4u
- wKFhmjQwd8VN5pi1cR7+4kAfj/k4clFbyCNw4CyQnrW+2UniB1kSivgEVBjU7pyF37Mw
- fisW2RubkyT9oK8pxfLjs06SlLs2nGZsRfxwfbOxUCSoy1gKnwLXV46GP1FupbieOKBi
- gikA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=lOMmC2TdPGvudZ5zd3K88q7Hkn2nNBdEod9TPs+T1As=;
- b=BZdUO+UbwHja+Qd1BlX5ae5yeqWcfYDkk23ErK/ewT1To5E87bur4/VnkuZTdYYqSf
- RLLuaiIucfum+fPYKtWJNy6JNdgnfi9ThlmPgRCR2q7yGCHajROzBPNseo69XrWsA0Ac
- PDkRUbQ87OX2bajQ1fVQNuxjrLfGv/0/4CxJ9ZvTyDDkOAHWrz33uQbj216UQMXX/ioN
- rc1R+twzAQQ6cIJr3pCPp9C9sLXKkQ1tsCwCQ7zrPtqsznSI0UKnvT9+mTirhk2nNeyJ
- sOZCVdjvFYofwUPeyC3WVn7B/ush6D6ERwmgTdLe7cDOwtZHzyt0pi4kUPYI7LjBm3pV
- 4rAA==
-X-Gm-Message-State: APjAAAVBT6UfQvGKh9EEFYanAEdSCjp0wzoyVs7VLOKkTGkGKt1n2+5y
- S2QtbklMlN7/x7YNgsEcK98=
-X-Google-Smtp-Source: APXvYqyxnM3H0RW7VAjyrnVoeQuJS4dJsfRQz2+6D0KPmo/7z1/mSm31TtogRWgjeRvZ41viotGPaw==
-X-Received: by 2002:a1c:4602:: with SMTP id t2mr15129112wma.120.1557128907723; 
- Mon, 06 May 2019 00:48:27 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
- by smtp.gmail.com with ESMTPSA id u11sm16796834wrg.35.2019.05.06.00.48.26
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 06 May 2019 00:48:27 -0700 (PDT)
-Date: Mon, 6 May 2019 09:48:24 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH 00/10] implement DYNAMIC_DEBUG_RELATIVE_POINTERS
-Message-ID: <20190506074824.GA40476@gmail.com>
-References: <20190409212517.7321-1-linux@rasmusvillemoes.dk>
- <1afb0702-3cc5-ba4f-2bdd-604d9da2b846@rasmusvillemoes.dk>
- <20190506070544.GA66463@gmail.com>
- <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yFmR6zsxzDqHf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 18:10:47 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 44yFmH1dz8z9v1Pf;
+ Mon,  6 May 2019 10:10:39 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=EVyjXNAR; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id TO0FP1mGXTrP; Mon,  6 May 2019 10:10:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44yFmH0bjkz9v1Pd;
+ Mon,  6 May 2019 10:10:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557130239; bh=Of2RhhubGl1Te2nzFxMAnUU+f2d0/2ySlpMz5ZHw1cs=;
+ h=From:Subject:To:Cc:Date:From;
+ b=EVyjXNARxDDVmsSgNDq15PUEktCyj18VKtPeAESAkSXR96TV1vVuajC5zPMrHW5QG
+ wU6FT0LeTWOuQONovHidvc6wJdWYBvCwie6VvWFOP0Fs/3/wcWVHWSoOSEciwtvsAO
+ F7URvwxMhQAUuic2dJ23CN9LOTyznf2VLmH52Pnk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 90B5B8B8A4;
+ Mon,  6 May 2019 10:10:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id kmaPqq4R6FZK; Mon,  6 May 2019 10:10:43 +0200 (CEST)
+Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.231.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6627F8B74F;
+ Mon,  6 May 2019 10:10:43 +0200 (CEST)
+Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 54E7F672A7; Mon,  6 May 2019 08:10:43 +0000 (UTC)
+Message-Id: <3a330ee8d98fce60c08c3d26054d2f0f8f53b66a.1557130203.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/mm: fix section mismatch for setup_kup()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon,  6 May 2019 08:10:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,28 +73,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, Arnd Bergmann <arnd@arndb.de>,
- x86@kernel.org, Will Deacon <will.deacon@arm.com>,
- linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Jason Baron <jbaron@akamai.com>, Ingo Molnar <mingo@redhat.com>,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <natechancellor@gmail.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+commit b28c97505eb1 ("powerpc/64: Setup KUP on secondary CPUs")
+moved setup_kup() out of the __init section. As stated in that commit,
+"this is only for 64-bit". But this function is also used on PPC32,
+where the two functions called by setup_kup() are in the __init
+section, so setup_kup() has to either be kept in the __init
+section on PPC32 or marked __ref.
 
-* Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+This patch marks it __ref, it fixes the below build warnings.
 
-> I _am_ bending the C rules a bit with the "extern some_var; asm 
-> volatile(".section some_section\nsome_var: blabla");". I should 
-> probably ask on the gcc list whether this way of defining a local 
-> symbol in inline assembly and referring to it from C is supposed to 
-> work, or it just happens to work by chance.
+  MODPOST vmlinux.o
+WARNING: vmlinux.o(.text+0x169ec): Section mismatch in reference from the function setup_kup() to the function .init.text:setup_kuep()
+The function setup_kup() references
+the function __init setup_kuep().
+This is often because setup_kup lacks a __init
+annotation or the annotation of setup_kuep is wrong.
 
-Doing that would be rather useful I think.
+WARNING: vmlinux.o(.text+0x16a04): Section mismatch in reference from the function setup_kup() to the function .init.text:setup_kuap()
+The function setup_kup() references
+the function __init setup_kuap().
+This is often because setup_kup lacks a __init
+annotation or the annotation of setup_kuap is wrong.
 
-Thanks,
+Fixes: b28c97505eb1 ("powerpc/64: Setup KUP on secondary CPUs")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/mm/init-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Ingo
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index 6ea5607fc564..3bcae9e5e954 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -45,7 +45,7 @@ static int __init parse_nosmap(char *p)
+ }
+ early_param("nosmap", parse_nosmap);
+ 
+-void setup_kup(void)
++void __ref setup_kup(void)
+ {
+ 	setup_kuep(disable_kuep);
+ 	setup_kuap(disable_kuap);
+-- 
+2.13.3
+
