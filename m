@@ -2,84 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8FD15287
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 19:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1761539C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 20:27:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yTsc1gnJzDqMr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 03:16:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yWRk2qhKzDqMh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 04:27:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=sifive.com
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=palmer@sifive.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=sifive.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=sifive.com header.i=@sifive.com header.b="NKrWKCiG"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yTr84z6VzDq9k
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 03:14:46 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x46HCsJn044676
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 6 May 2019 13:14:42 -0400
-Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2saqrh3tmp-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 13:14:42 -0400
-Received: from localhost
- by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <nathanl@linux.ibm.com>;
- Mon, 6 May 2019 18:14:41 +0100
-Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
- by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 6 May 2019 18:14:39 +0100
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x46HEbGs6947260
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 May 2019 17:14:37 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9322D7805F;
- Mon,  6 May 2019 17:14:37 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54ED97805C;
- Mon,  6 May 2019 17:14:37 +0000 (GMT)
-Received: from localhost (unknown [9.85.218.175])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  6 May 2019 17:14:37 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Juliet Kim <julietk@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH]powerpc/mobility: Serialize PRRN and LPM in device tree
- update
-In-Reply-To: <5cc359e9.h9YV36UYX//U5tLh%julietk@linux.vnet.ibm.com>
-References: <5cc359e9.h9YV36UYX//U5tLh%julietk@linux.vnet.ibm.com>
-Date: Mon, 06 May 2019 12:14:36 -0500
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19050617-0012-0000-0000-00001732BBAF
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011061; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000285; SDB=6.01199488; UDB=6.00629289; IPR=6.00980365; 
- MB=3.00026759; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-06 17:14:40
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050617-0013-0000-0000-0000572866FD
-Message-Id: <87sgtrqzcz.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-06_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905060146
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yWQH0BZyzDqJ1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 04:25:56 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id b3so7214656pfd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 11:25:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sifive.com; s=google;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NXCCd9DEwpVv+CkVk+97oddxbHXiAPPbrF6iGBSrYgc=;
+ b=NKrWKCiGbzmza35fOtOMvL+ftXETfh3uUcp/GkaCXcI8/XzVP8qVDBZioaj7yzgwas
+ 2tQRRTKTuRAtOwQhT+kcUBv2qp2jRZVnznAovTkgFRvmAuuaShMFB+Nx1bbVUNa9A7OX
+ 8BLulEh57QbYge20tVCIr34v+fwMGVGOSH1ehzMLel+zcPUV1nVeQpw7cWLe4F7TLSOw
+ ++VBDFOhS3lKU6/bS8dLLIX6A8ANpsIH1DryjqnbCnoWXwVNSYR3C7RBe/CPhV/P7ncT
+ Cg2Mr2IcrlFerHMT/L21aU76jEgkMtiGDQAE6F2Y4uyRJKfpkAmDpf2MCdenO33CvIPF
+ KysQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=NXCCd9DEwpVv+CkVk+97oddxbHXiAPPbrF6iGBSrYgc=;
+ b=BkWAN62hxDRGrI+Y1epZvArC/mmGNpo7GvXSabCoyd1wdUhIdRWajTmtjOhA31NJ97
+ UmqRLN5aYclloNrmnlUcecb2vpvjg++HcHGqZ4f4u0suyUvWDlMml96ORolImzfe8LUw
+ BzrXKu2WWvbMim79l3ZAF9kd6LxUbo3haLeh6+dxgTGC84Rsfhrix9peAvpVQ68EHUbl
+ skalyj9CHSIqD4yJkUTmFcZ864iDsd4pW8qjojuFvm1rWqiM4hV/cKcZjTYWkGAYsAME
+ XjV3qppKwh5FoWVpGUrF46lS67tZ6SQA7qghUUAfRc5yqGXAjHmQAL3VcYvct7LrNmWd
+ jStw==
+X-Gm-Message-State: APjAAAX8zXDD/ABG59Ub9g0dRa+z7QhnjXtGTJUWHqlFuLXBAGjF1118
+ +17JvyDwrbMfo69s5EFBujEZGQ==
+X-Google-Smtp-Source: APXvYqz/rXdpBxODnklgvIEL8bDQcS0bWQdd3xgt2Ribpt+WuSOewfTAdZg7WDT5L829vlRrQKqfdA==
+X-Received: by 2002:a62:121c:: with SMTP id a28mr34935323pfj.58.1557167153191; 
+ Mon, 06 May 2019 11:25:53 -0700 (PDT)
+Received: from localhost ([12.206.222.5])
+ by smtp.gmail.com with ESMTPSA id x66sm15776570pfb.78.2019.05.06.11.25.51
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 06 May 2019 11:25:52 -0700 (PDT)
+Date: Mon, 06 May 2019 11:25:52 -0700 (PDT)
+X-Google-Original-Date: Mon, 06 May 2019 11:25:42 PDT (-0700)
+Subject: Re: [PATCH 13/15] riscv: switch to generic version of pte allocation
+In-Reply-To: <1556810922-20248-14-git-send-email-rppt@linux.ibm.com>
+From: Palmer Dabbelt <palmer@sifive.com>
+To: rppt@linux.ibm.com
+Message-ID: <mhng-c23d2e8b-1dc0-48db-a4cf-d6964ca650c0@palmer-si-x1e>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,47 +78,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mmc@linux.ibm.com, mwb@linux.ibm.com
+Cc: mhocko@suse.com, catalin.marinas@arm.com, linux-mips@vger.kernel.org,
+ guoren@kernel.org, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, deller@gmx.de,
+ x86@kernel.org, linux@armlinux.org.uk, willy@infradead.org, rppt@linux.ibm.com,
+ geert@linux-m68k.org, mattst88@gmail.com, sammy@sammy.net,
+ Arnd Bergmann <arnd@arndb.de>, linux-um@lists.infradead.org, richard@nod.at,
+ linux-m68k@lists.linux-m68k.org, green.hu@gmail.com,
+ nios2-dev@lists.rocketboards.org, gxt@pku.edu.cn,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rkuo@codeaurora.org, paul.burton@mips.com,
+ linux-alpha@vger.kernel.org, lftan@altera.com, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Juliet,
-
-Juliet Kim<julietk@linux.vnet.ibm.com> writes:
-> Fix extending start/stop topology update scope during LPM
-> Commit 65b9fdadfc4d ("powerpc/pseries/mobility: Extend start/stop
-> topology update scope") made the change to the duration that 
-> topology updates are suppressed during LPM to allow the complete 
-> device tree update which leaves the property update notifier
-> unregistered until device tree update completes. This prevents
-> topology update during LPM.  
+On Thu, 02 May 2019 08:28:40 PDT (-0700), rppt@linux.ibm.com wrote:
+> The only difference between the generic and RISC-V implementation of PTE
+> allocation is the usage of __GFP_RETRY_MAYFAIL for both kernel and user
+> PTEs and the absence of __GFP_ACCOUNT for the user PTEs.
 >
-> Instead, use mutex_lock, which serializes LPM and PRRN operation 
-> in pseries_devicetree_update.
+> The conversion to the generic version removes the __GFP_RETRY_MAYFAIL and
+> ensures that GFP_ACCOUNT is used for the user PTE allocations.
 
-I think this is conflating two issues:
+Reviewed-by: Palmer Dabbelt <palmer@sifive.com>
 
-1. Insufficient serialization/ordering of handling PRRNs and
-   LPM. E.g. we could migrate while processing a PRRN from the source
-   system and end up with incorrect contents in the device tree on the
-   destination if the LPM changes the same nodes. The OS is supposed to
-   drain any outstanding PRRNs before proceeding with migration, which
-   is a stronger requirement than simple serialization of device tree
-   updates. If we don't impose this ordering already we should fix that.
+I'm assuming this is going in along with the rest of the patches, so I'm not
+going to add it to my tree.
 
-2. The NUMA topology update processing. Generally speaking,
-   start/stop_topology_update() enable/disable dt_update_callback(),
-   which we use to update CPU-node assignments. Since we now know that
-   doing that is Bad, it's sort of a happy accident that
-   migration_store() was changed to re-register the notifier after
-   updating the device tree, which is too late. So I don't think we
-   should try to "fix" this. Instead we should remove the broken code
-   (dt_update_callback -> dlpar_cpu_readdd and so on).
-
-Do you agree?
-
-
-Thanks,
-Nathan
-
+>
+> The pte_free() and pte_free_kernel() versions are identical to the generic
+> ones and can be simply dropped.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/riscv/include/asm/pgalloc.h | 29 ++---------------------------
+>  1 file changed, 2 insertions(+), 27 deletions(-)
+>
+> diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
+> index 94043cf..48f28bb 100644
+> --- a/arch/riscv/include/asm/pgalloc.h
+> +++ b/arch/riscv/include/asm/pgalloc.h
+> @@ -18,6 +18,8 @@
+>  #include <linux/mm.h>
+>  #include <asm/tlb.h>
+>
+> +#include <asm-generic/pgalloc.h>	/* for pte_{alloc,free}_one */
+> +
+>  static inline void pmd_populate_kernel(struct mm_struct *mm,
+>  	pmd_t *pmd, pte_t *pte)
+>  {
+> @@ -82,33 +84,6 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+>
+>  #endif /* __PAGETABLE_PMD_FOLDED */
+>
+> -static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+> -{
+> -	return (pte_t *)__get_free_page(
+> -		GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
+> -}
+> -
+> -static inline struct page *pte_alloc_one(struct mm_struct *mm)
+> -{
+> -	struct page *pte;
+> -
+> -	pte = alloc_page(GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_ZERO);
+> -	if (likely(pte != NULL))
+> -		pgtable_page_ctor(pte);
+> -	return pte;
+> -}
+> -
+> -static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+> -{
+> -	free_page((unsigned long)pte);
+> -}
+> -
+> -static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
+> -{
+> -	pgtable_page_dtor(pte);
+> -	__free_page(pte);
+> -}
+> -
+>  #define __pte_free_tlb(tlb, pte, buf)   \
+>  do {                                    \
+>  	pgtable_page_dtor(pte);         \
