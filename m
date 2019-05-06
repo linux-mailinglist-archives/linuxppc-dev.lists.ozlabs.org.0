@@ -1,42 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF361490A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 13:35:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBE4148F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 13:31:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yLCp699YzDqMF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 21:31:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yLJG6CnDzDqLd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 21:35:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=michaele@au1.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yLBH6vkCzDqJT
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 21:29:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44yLBG6Z5qz9s9T;
- Mon,  6 May 2019 21:29:58 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com
-Subject: Re: [PATCH v2 03/15] powerpc/mm: convert Book3E 64 to pte_fragment
-In-Reply-To: <0076ad26-9d0e-e408-3521-b8e17669bb04@c-s.fr>
-References: <cover.1556293738.git.christophe.leroy@c-s.fr>
- <c440b242da6de3823c4ef51f35f38405bbd51430.1556293738.git.christophe.leroy@c-s.fr>
- <0076ad26-9d0e-e408-3521-b8e17669bb04@c-s.fr>
-Date: Mon, 06 May 2019 21:29:55 +1000
-Message-ID: <8736lryg5o.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yLGx5gj5zDqHk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 21:33:55 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x46BWtgx036901
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 6 May 2019 07:33:52 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sajd1cb0m-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 07:33:51 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <michaele@au1.ibm.com>;
+ Mon, 6 May 2019 12:33:49 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 6 May 2019 12:33:47 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x46BXkM057082084
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 6 May 2019 11:33:46 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 221F2A405F
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 11:33:46 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C8097A4060
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 11:33:45 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 11:33:45 +0000 (GMT)
+Received: from localhost (unknown [9.102.45.188])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 32C1DA0125;
+ Mon,  6 May 2019 21:33:43 +1000 (AEST)
+From: Michael Ellerman <michaele@au1.ibm.com>
+To: Rick Lindsley <ricklind@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/book3s/64: check for NULL pointer in pgd_alloc()
+In-Reply-To: <5ae0401c-a84a-1e59-5d9d-70659f5a85de@linux.vnet.ibm.com>
+References: <5ae0401c-a84a-1e59-5d9d-70659f5a85de@linux.vnet.ibm.com>
+Date: Mon, 06 May 2019 21:33:41 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19050611-4275-0000-0000-00000331DF5C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050611-4276-0000-0000-00003841461D
+Message-Id: <87zhnzx1ey.fsf@concordia.ellerman.id.au>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-06_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=952 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905060102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,60 +91,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Rick Lindsley <ricklind@linux.vnet.ibm.com> writes:
+> When the memset code was added to pgd_alloc(), it failed to consider
+> that kmem_cache_alloc() can return NULL. It's uncommon, but not
+> impossible under heavy memory contention.
 
-> Le 26/04/2019 =C3=A0 17:58, Christophe Leroy a =C3=A9crit=C2=A0:
->> Book3E 64 is the only subarch not using pte_fragment. In order
->> to allow refactorisation, this patch converts it to pte_fragment.
->>=20
->> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/include/asm/mmu_context.h       |  6 -----
->>   arch/powerpc/include/asm/nohash/64/mmu.h     |  4 +++-
->>   arch/powerpc/include/asm/nohash/64/pgalloc.h | 33 ++++++++++----------=
---------
->>   arch/powerpc/mm/Makefile                     |  4 ++--
->>   arch/powerpc/mm/mmu_context.c                |  2 +-
->>   5 files changed, 18 insertions(+), 31 deletions(-)
->>=20
-> [...]
->
->> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
->> index 3c1bd9fa23cd..138c772d58d1 100644
->> --- a/arch/powerpc/mm/Makefile
->> +++ b/arch/powerpc/mm/Makefile
->> @@ -9,6 +9,7 @@ CFLAGS_REMOVE_slb.o =3D $(CC_FLAGS_FTRACE)
->>=20=20=20
->>   obj-y				:=3D fault.o mem.o pgtable.o mmap.o \
->>   				   init_$(BITS).o pgtable_$(BITS).o \
->> +				   pgtable-frag.o \
->>   				   init-common.o mmu_context.o drmem.o
->>   obj-$(CONFIG_PPC_MMU_NOHASH)	+=3D mmu_context_nohash.o tlb_nohash.o \
->>   				   tlb_nohash_low.o
->> @@ -17,8 +18,7 @@ hash64-$(CONFIG_PPC_NATIVE)	:=3D hash_native_64.o
->>   obj-$(CONFIG_PPC_BOOK3E_64)   +=3D pgtable-book3e.o
->>   obj-$(CONFIG_PPC_BOOK3S_64)	+=3D pgtable-hash64.o hash_utils_64.o slb.=
-o \
->>   				   $(hash64-y) mmu_context_book3s64.o \
->> -				   pgtable-book3s64.o pgtable-frag.o
->> -obj-$(CONFIG_PPC32)		+=3D pgtable-frag.o
->> +				   pgtable-book3s64.o
->
-> Looks like the removal of pgtable-frag.o for CONFIG_PPC_BOOK3S_64 didn't=
-=20
-> survive the merge.
+Can you post an oops log? Just so if someone hits it they can possibly
+recognise it from the back trace etc.
 
-Hmm, I don't remember having problems there but clearly something went
-wrong.
 
-> Will send a patch to fix that.
+> Signed-off-by: Rick Lindsley <ricklind@vnet.linux.ibm.com>
+> Fixes: cf266dbcd2a7 ("Zero PGD pages on allocation")
 
-Thanks.
+I don't have that commit. Did you mean:
+
+Fixes: fc5c2f4a55a2 ("powerpc/mm/hash64: Zero PGD pages on allocation")
+
 
 cheers
+
+> --- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+> @@ -81,6 +81,10 @@ static inline pgd_t *pgd_alloc(struct mm
+>   
+> 	pgd = kmem_cache_alloc(PGT_CACHE(PGD_INDEX_SIZE),
+> 			       pgtable_gfp_flags(mm, GFP_KERNEL));
+> +
+> +	if (unlikely(!pgd))
+> +		return pgd;
+> +
+> 	/*
+> 	 * Don't scan the PGD for pointers, it contains references to PUDs but
+> 	 * those references are not full pointers and so can't be recognised by
+
