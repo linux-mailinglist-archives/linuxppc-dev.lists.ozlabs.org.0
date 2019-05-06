@@ -2,75 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D30614945
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 14:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5095C14959
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 14:08:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yLyb5jpyzDqK9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 22:04:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yM3162N3zDqJ8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 22:08:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="EapVkJMi"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yLxJ0cZWzDqJV
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 22:03:47 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x46C2ds1113554
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 6 May 2019 08:03:45 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sah6trne2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 08:03:44 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
- Mon, 6 May 2019 13:03:41 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 6 May 2019 13:03:40 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x46C3d5d49610786
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 May 2019 12:03:39 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E64AAE064;
- Mon,  6 May 2019 12:03:39 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB460AE04D;
- Mon,  6 May 2019 12:03:38 +0000 (GMT)
-Received: from Sachins-MacBook-Pro.local (unknown [9.109.244.72])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 May 2019 12:03:38 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Mon, 06 May 2019 17:33:33 +0530
-Subject: [PATCH] powerpc/mm: Fix hugetlb page initialization
-X-TM-AS-GCONF: 00
-x-cbid: 19050612-0012-0000-0000-00000318CCAC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050612-0013-0000-0000-000021514581
-Message-Id: <20190506120328.4079.85660.sendpatchset@Sachins-MacBook-Pro.local>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-06_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=870 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905060107
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yM1F5Y7LzDqJV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 22:07:12 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 44yM135dX5z9v0xC;
+ Mon,  6 May 2019 14:07:03 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=EapVkJMi; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tt5LO6VE_nb8; Mon,  6 May 2019 14:07:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44yM134cxBz9v0xB;
+ Mon,  6 May 2019 14:07:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557144423; bh=c5ZokJ1lKbdtrgi8/wN8Olv5ggLeW/AbtTGVRyPqEog=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=EapVkJMiWtezwnyD8SKxF5ZjmhSSNAq24hkBgW0WQTutQto3MDlKzHiiMKAqMC6VN
+ 8tAkjadgV7wgPCpdTTrVoi9xFhKulhJ5RBZuHBm6kQQ0JYok2mgmVrmtraoMR9ISUy
+ nI3lvQUxkei3X6G6a8YPr+IwLxYYH5IdEYgx7TuY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 89DEB8B8B8;
+ Mon,  6 May 2019 14:07:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 3pBBJdip4pNz; Mon,  6 May 2019 14:07:08 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6848D8B8B7;
+ Mon,  6 May 2019 14:07:08 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/mm: Fix hugetlb page initialization
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190506120328.4079.85660.sendpatchset@Sachins-MacBook-Pro.local>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <440f59af-08b0-8788-c95a-c37fc4c8913c@c-s.fr>
+Date: Mon, 6 May 2019 14:07:08 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190506120328.4079.85660.sendpatchset@Sachins-MacBook-Pro.local>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,34 +77,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Michael Ellerman <michael@ellerman.id.au>
+Cc: Michael Ellerman <michael@ellerman.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch fixes a regression by using correct kernel config variable
-for HUGETLB_PAGE_SIZE_VARIABLE.
 
-Without this huge pages are disabled during kernel boot.
-[0.309496] hugetlbfs: disabling because there are no supported hugepage sizes
 
-Fixes: c5710cd20735 ("powerpc/mm: cleanup HPAGE_SHIFT setup")
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+Le 06/05/2019 à 14:03, Sachin Sant a écrit :
+> This patch fixes a regression by using correct kernel config variable
+> for HUGETLB_PAGE_SIZE_VARIABLE.
+> 
+> Without this huge pages are disabled during kernel boot.
+> [0.309496] hugetlbfs: disabling because there are no supported hugepage sizes
+> 
+> Fixes: c5710cd20735 ("powerpc/mm: cleanup HPAGE_SHIFT setup")
+> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
 
----
-diff -Narup a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
---- a/arch/powerpc/mm/hugetlbpage.c	2019-05-06 07:30:11.711092744 -0400
-+++ b/arch/powerpc/mm/hugetlbpage.c	2019-05-06 07:29:32.963433258 -0400
-@@ -640,7 +640,7 @@ static int __init hugetlbpage_init(void)
- 			pgtable_cache_add(PTE_T_ORDER);
- 	}
- 
--	if (IS_ENABLED(HUGETLB_PAGE_SIZE_VARIABLE))
-+	if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
- 		hugetlbpage_init_default();
- 
- 	return 0;
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
+> 
+> ---
+> diff -Narup a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> --- a/arch/powerpc/mm/hugetlbpage.c	2019-05-06 07:30:11.711092744 -0400
+> +++ b/arch/powerpc/mm/hugetlbpage.c	2019-05-06 07:29:32.963433258 -0400
+> @@ -640,7 +640,7 @@ static int __init hugetlbpage_init(void)
+>   			pgtable_cache_add(PTE_T_ORDER);
+>   	}
+>   
+> -	if (IS_ENABLED(HUGETLB_PAGE_SIZE_VARIABLE))
+> +	if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
+>   		hugetlbpage_init_default();
+>   
+>   	return 0;
+> 
