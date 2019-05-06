@@ -1,47 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C215005
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 17:23:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF5B14D64
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 16:52:04 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yQgP4y1szDqLZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 00:52:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yRMX2cgYzDqLP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 01:23:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="oZ3qAJMc"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yQc24gzbzDqGg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 00:49:05 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x46EmgOD026749;
- Mon, 6 May 2019 09:48:42 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x46Emeop026748;
- Mon, 6 May 2019 09:48:40 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 6 May 2019 09:48:40 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH 00/10] implement DYNAMIC_DEBUG_RELATIVE_POINTERS
-Message-ID: <20190506144840.GZ8599@gate.crashing.org>
-References: <20190409212517.7321-1-linux@rasmusvillemoes.dk>
- <1afb0702-3cc5-ba4f-2bdd-604d9da2b846@rasmusvillemoes.dk>
- <20190506070544.GA66463@gmail.com>
- <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
-User-Agent: Mutt/1.4.2.3i
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yQxR3BytzDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 01:04:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+ Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+ List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+ List-Archive; bh=aSPRS/UQTQIlG/Fpji6u6bjSVgCp4Melu+2tov3g5R4=; b=oZ3qAJMc7rff
+ 8toz4zExs6z5wyAinDm8s1z48I7GIiieTjGg8Zc1tALKLOF2/NQdHPmjildifNUL1pbWtGOp+wehO
+ iJR1y1HPJwFOdBeSJ8TNJOSic6z7KKJQn7fkVramliKsoOj7Mk7PLTCwLY6EKsZm1CXOusQ8T/qN3
+ o/9cU=;
+Received: from kd111239184067.au-net.ne.jp ([111.239.184.67]
+ helo=finisterre.ee.mobilebroadband)
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <broonie@sirena.org.uk>)
+ id 1hNf9d-0001uO-9y; Mon, 06 May 2019 15:03:46 +0000
+Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
+ id 88B0244000C; Mon,  6 May 2019 16:03:41 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: S.j. Wang <shengjiu.wang@nxp.com>
+Subject: Applied "ASoC: fsl_esai: Add pm runtime function" to the asoc tree
+In-Reply-To: <20190503194944.30167-1-nicoleotsuka@gmail.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190506150341.88B0244000C@finisterre.ee.mobilebroadband>
+Date: Mon,  6 May 2019 16:03:41 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,28 +60,285 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>,
- Nick Desaulniers <ndesaulniers@google.com>, x86@kernel.org,
- Will Deacon <will.deacon@arm.com>, linux-kernel@vger.kernel.org,
- Nathan Chancellor <natechancellor@gmail.com>, Jason Baron <jbaron@akamai.com>,
- Ingo Molnar <mingo@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com,
+ lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ perex@perex.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 06, 2019 at 09:34:55AM +0200, Rasmus Villemoes wrote:
-> I _am_ bending the C rules a bit with the "extern some_var; asm
-> volatile(".section some_section\nsome_var: blabla");". I should probably
-> ask on the gcc list whether this way of defining a local symbol in
-> inline assembly and referring to it from C is supposed to work, or it
-> just happens to work by chance.
+The patch
 
-It only works by chance.  There is no way GCC can know the asm needs
-that variable.  If you make it (or its address) an input of the asm it
-should work as far as I can see?  (Need exact code to analyse it exactly).
+   ASoC: fsl_esai: Add pm runtime function
 
+has been applied to the asoc tree at
 
-Segher
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From b2d337d8de9fb6dd4f2970ebec0fa2375f7c9cdd Mon Sep 17 00:00:00 2001
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+Date: Fri, 3 May 2019 12:49:44 -0700
+Subject: [PATCH] ASoC: fsl_esai: Add pm runtime function
+
+Add pm runtime support and move clock handling there.
+Close the clocks at suspend to reduce the power consumption.
+
+fsl_esai_suspend is replaced by pm_runtime_force_suspend.
+fsl_esai_resume is replaced by pm_runtime_force_resume.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_esai.c | 141 +++++++++++++++++++++------------------
+ 1 file changed, 77 insertions(+), 64 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index bad0dfed6b68..10d2210c91ef 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -9,6 +9,7 @@
+ #include <linux/module.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_platform.h>
++#include <linux/pm_runtime.h>
+ #include <sound/dmaengine_pcm.h>
+ #include <sound/pcm_params.h>
+ 
+@@ -466,30 +467,6 @@ static int fsl_esai_startup(struct snd_pcm_substream *substream,
+ 			    struct snd_soc_dai *dai)
+ {
+ 	struct fsl_esai *esai_priv = snd_soc_dai_get_drvdata(dai);
+-	int ret;
+-
+-	/*
+-	 * Some platforms might use the same bit to gate all three or two of
+-	 * clocks, so keep all clocks open/close at the same time for safety
+-	 */
+-	ret = clk_prepare_enable(esai_priv->coreclk);
+-	if (ret)
+-		return ret;
+-	if (!IS_ERR(esai_priv->spbaclk)) {
+-		ret = clk_prepare_enable(esai_priv->spbaclk);
+-		if (ret)
+-			goto err_spbaclk;
+-	}
+-	if (!IS_ERR(esai_priv->extalclk)) {
+-		ret = clk_prepare_enable(esai_priv->extalclk);
+-		if (ret)
+-			goto err_extalck;
+-	}
+-	if (!IS_ERR(esai_priv->fsysclk)) {
+-		ret = clk_prepare_enable(esai_priv->fsysclk);
+-		if (ret)
+-			goto err_fsysclk;
+-	}
+ 
+ 	if (!dai->active) {
+ 		/* Set synchronous mode */
+@@ -506,16 +483,6 @@ static int fsl_esai_startup(struct snd_pcm_substream *substream,
+ 
+ 	return 0;
+ 
+-err_fsysclk:
+-	if (!IS_ERR(esai_priv->extalclk))
+-		clk_disable_unprepare(esai_priv->extalclk);
+-err_extalck:
+-	if (!IS_ERR(esai_priv->spbaclk))
+-		clk_disable_unprepare(esai_priv->spbaclk);
+-err_spbaclk:
+-	clk_disable_unprepare(esai_priv->coreclk);
+-
+-	return ret;
+ }
+ 
+ static int fsl_esai_hw_params(struct snd_pcm_substream *substream,
+@@ -576,20 +543,6 @@ static int fsl_esai_hw_params(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
+ 
+-static void fsl_esai_shutdown(struct snd_pcm_substream *substream,
+-			      struct snd_soc_dai *dai)
+-{
+-	struct fsl_esai *esai_priv = snd_soc_dai_get_drvdata(dai);
+-
+-	if (!IS_ERR(esai_priv->fsysclk))
+-		clk_disable_unprepare(esai_priv->fsysclk);
+-	if (!IS_ERR(esai_priv->extalclk))
+-		clk_disable_unprepare(esai_priv->extalclk);
+-	if (!IS_ERR(esai_priv->spbaclk))
+-		clk_disable_unprepare(esai_priv->spbaclk);
+-	clk_disable_unprepare(esai_priv->coreclk);
+-}
+-
+ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 			    struct snd_soc_dai *dai)
+ {
+@@ -658,7 +611,6 @@ static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 
+ static const struct snd_soc_dai_ops fsl_esai_dai_ops = {
+ 	.startup = fsl_esai_startup,
+-	.shutdown = fsl_esai_shutdown,
+ 	.trigger = fsl_esai_trigger,
+ 	.hw_params = fsl_esai_hw_params,
+ 	.set_sysclk = fsl_esai_set_dai_sysclk,
+@@ -947,6 +899,10 @@ static int fsl_esai_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	pm_runtime_enable(&pdev->dev);
++
++	regcache_cache_only(esai_priv->regmap, true);
++
+ 	ret = imx_pcm_dma_init(pdev, IMX_ESAI_DMABUF_SIZE);
+ 	if (ret)
+ 		dev_err(&pdev->dev, "failed to init imx pcm dma: %d\n", ret);
+@@ -954,6 +910,13 @@ static int fsl_esai_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
++static int fsl_esai_remove(struct platform_device *pdev)
++{
++	pm_runtime_disable(&pdev->dev);
++
++	return 0;
++}
++
+ static const struct of_device_id fsl_esai_dt_ids[] = {
+ 	{ .compatible = "fsl,imx35-esai", },
+ 	{ .compatible = "fsl,vf610-esai", },
+@@ -961,22 +924,35 @@ static const struct of_device_id fsl_esai_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, fsl_esai_dt_ids);
+ 
+-#ifdef CONFIG_PM_SLEEP
+-static int fsl_esai_suspend(struct device *dev)
+-{
+-	struct fsl_esai *esai = dev_get_drvdata(dev);
+-
+-	regcache_cache_only(esai->regmap, true);
+-	regcache_mark_dirty(esai->regmap);
+-
+-	return 0;
+-}
+-
+-static int fsl_esai_resume(struct device *dev)
++#ifdef CONFIG_PM
++static int fsl_esai_runtime_resume(struct device *dev)
+ {
+ 	struct fsl_esai *esai = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	/*
++	 * Some platforms might use the same bit to gate all three or two of
++	 * clocks, so keep all clocks open/close at the same time for safety
++	 */
++	ret = clk_prepare_enable(esai->coreclk);
++	if (ret)
++		return ret;
++	if (!IS_ERR(esai->spbaclk)) {
++		ret = clk_prepare_enable(esai->spbaclk);
++		if (ret)
++			goto err_spbaclk;
++	}
++	if (!IS_ERR(esai->extalclk)) {
++		ret = clk_prepare_enable(esai->extalclk);
++		if (ret)
++			goto err_extalclk;
++	}
++	if (!IS_ERR(esai->fsysclk)) {
++		ret = clk_prepare_enable(esai->fsysclk);
++		if (ret)
++			goto err_fsysclk;
++	}
++
+ 	regcache_cache_only(esai->regmap, false);
+ 
+ 	/* FIFO reset for safety */
+@@ -987,22 +963,59 @@ static int fsl_esai_resume(struct device *dev)
+ 
+ 	ret = regcache_sync(esai->regmap);
+ 	if (ret)
+-		return ret;
++		goto err_regcache_sync;
+ 
+ 	/* FIFO reset done */
+ 	regmap_update_bits(esai->regmap, REG_ESAI_TFCR, ESAI_xFCR_xFR, 0);
+ 	regmap_update_bits(esai->regmap, REG_ESAI_RFCR, ESAI_xFCR_xFR, 0);
+ 
++	return 0;
++
++err_regcache_sync:
++	if (!IS_ERR(esai->fsysclk))
++		clk_disable_unprepare(esai->fsysclk);
++err_fsysclk:
++	if (!IS_ERR(esai->extalclk))
++		clk_disable_unprepare(esai->extalclk);
++err_extalclk:
++	if (!IS_ERR(esai->spbaclk))
++		clk_disable_unprepare(esai->spbaclk);
++err_spbaclk:
++	clk_disable_unprepare(esai->coreclk);
++
++	return ret;
++}
++
++static int fsl_esai_runtime_suspend(struct device *dev)
++{
++	struct fsl_esai *esai = dev_get_drvdata(dev);
++
++	regcache_cache_only(esai->regmap, true);
++	regcache_mark_dirty(esai->regmap);
++
++	if (!IS_ERR(esai->fsysclk))
++		clk_disable_unprepare(esai->fsysclk);
++	if (!IS_ERR(esai->extalclk))
++		clk_disable_unprepare(esai->extalclk);
++	if (!IS_ERR(esai->spbaclk))
++		clk_disable_unprepare(esai->spbaclk);
++	clk_disable_unprepare(esai->coreclk);
++
+ 	return 0;
+ }
+-#endif /* CONFIG_PM_SLEEP */
++#endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops fsl_esai_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(fsl_esai_suspend, fsl_esai_resume)
++	SET_RUNTIME_PM_OPS(fsl_esai_runtime_suspend,
++			   fsl_esai_runtime_resume,
++			   NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
+ };
+ 
+ static struct platform_driver fsl_esai_driver = {
+ 	.probe = fsl_esai_probe,
++	.remove = fsl_esai_remove,
+ 	.driver = {
+ 		.name = "fsl-esai-dai",
+ 		.pm = &fsl_esai_pm_ops,
+-- 
+2.20.1
+
