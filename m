@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFBD14555
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 09:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E248414593
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 09:49:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yF0h5Tk2zDqJs
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 17:36:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yFJD1tn5zDqLh
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 17:49:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=rasmusvillemoes.dk
- (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
- envelope-from=linux@rasmusvillemoes.dk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=rasmusvillemoes.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk
- header.b="HfCKA2Gc"; dkim-atps=neutral
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
- [IPv6:2a00:1450:4864:20::243])
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
+ envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Slaf58rR"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yDzB518RzDqJ1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 17:35:01 +1000 (AEST)
-Received: by mail-lj1-x243.google.com with SMTP id 132so2439653ljj.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 00:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rasmusvillemoes.dk; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ok4FiX0qqzxFXNlfPJQBxeAS7MtYAthIHs0pXM/1gsw=;
- b=HfCKA2GcWuIWfyCu6q7Vb4VuU5C85rltY95cYwAzVOuNpcOxt9Vpj8t6IWJzXJpM16
- uc9PlW5f9Go3h/CJ9UsWwq1rdbfbTV7+cveeHt9cUsGuK9G3I7pEgW3Zv9bOFVDQOZbH
- MpdHFdCp7U0R6aqGNC2FBUx6AIBp++6riZnVE=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yFGl6Gt8zDqBY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 17:48:31 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id p21so14472697wmc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2019 00:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=lOMmC2TdPGvudZ5zd3K88q7Hkn2nNBdEod9TPs+T1As=;
+ b=Slaf58rRFMPspfJPXpmTfLlvwHidotLOMxhyQjova1O4DpsmA/t1EGlinnwrWNjZEa
+ WGXX51gARplly5SfcaxFi1xynREwymrx2nkYqsnw8tXplC1Jed+eZEL89EAMgspKPkx4
+ VMPvROYT21z9Gfa2hf4YEkbEZMzU64Pnrvx0w/E2NvCgLPuXS/Ce2M5vuYhuVd2j+r4u
+ wKFhmjQwd8VN5pi1cR7+4kAfj/k4clFbyCNw4CyQnrW+2UniB1kSivgEVBjU7pyF37Mw
+ fisW2RubkyT9oK8pxfLjs06SlLs2nGZsRfxwfbOxUCSoy1gKnwLXV46GP1FupbieOKBi
+ gikA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=ok4FiX0qqzxFXNlfPJQBxeAS7MtYAthIHs0pXM/1gsw=;
- b=WQeVjG2KQCSlpvP6So+MlDibBvFmaKGOf00vQgIG7nGIvZf7CAZim+Y5g6zHdaPLww
- 5nPr7Pn3NoT31RZgV5DulSXIXmwz+OtJw4COFrYzkPXUd85mCsmEPFEaP0J/PA9yXQ8B
- t8ghr+pYNi8Hb0qKm50TUUo8iXuyHT1DaCVgsfjjPPsvayt89c8MWVExzZNb2IObq7Px
- 9B1czrSCSPx2Xy8S0b4y5MUwA7C1K3n9JbrJayF9uXIk4n1fspLFIkDR4sSQ90wKLBx5
- SOXVGMEgKelPm+BAbV08sSerE1bMUZynDrVs6FxdqSVeiZty5k/VT5n8GpRf/ad6MVDK
- uiRA==
-X-Gm-Message-State: APjAAAWn4L1S819E73pnsUN6w4x6jIhXz+aA69CtIGDsrBI7hEyNKXSk
- pmOJlHL6lAvzSQmsyBNMezsfzg==
-X-Google-Smtp-Source: APXvYqyIXcDanMudqDV0cbvEgmg2JswEqVaUi3W8CZa23fGsbc0VYTSqSxQKNyi+uTC2tZHBHGapWQ==
-X-Received: by 2002:a2e:9f07:: with SMTP id u7mr3713010ljk.115.1557128097278; 
- Mon, 06 May 2019 00:34:57 -0700 (PDT)
-Received: from [172.16.11.26] ([81.216.59.226])
- by smtp.gmail.com with ESMTPSA id y25sm2083764ljh.31.2019.05.06.00.34.55
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 May 2019 00:34:56 -0700 (PDT)
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=lOMmC2TdPGvudZ5zd3K88q7Hkn2nNBdEod9TPs+T1As=;
+ b=BZdUO+UbwHja+Qd1BlX5ae5yeqWcfYDkk23ErK/ewT1To5E87bur4/VnkuZTdYYqSf
+ RLLuaiIucfum+fPYKtWJNy6JNdgnfi9ThlmPgRCR2q7yGCHajROzBPNseo69XrWsA0Ac
+ PDkRUbQ87OX2bajQ1fVQNuxjrLfGv/0/4CxJ9ZvTyDDkOAHWrz33uQbj216UQMXX/ioN
+ rc1R+twzAQQ6cIJr3pCPp9C9sLXKkQ1tsCwCQ7zrPtqsznSI0UKnvT9+mTirhk2nNeyJ
+ sOZCVdjvFYofwUPeyC3WVn7B/ush6D6ERwmgTdLe7cDOwtZHzyt0pi4kUPYI7LjBm3pV
+ 4rAA==
+X-Gm-Message-State: APjAAAVBT6UfQvGKh9EEFYanAEdSCjp0wzoyVs7VLOKkTGkGKt1n2+5y
+ S2QtbklMlN7/x7YNgsEcK98=
+X-Google-Smtp-Source: APXvYqyxnM3H0RW7VAjyrnVoeQuJS4dJsfRQz2+6D0KPmo/7z1/mSm31TtogRWgjeRvZ41viotGPaw==
+X-Received: by 2002:a1c:4602:: with SMTP id t2mr15129112wma.120.1557128907723; 
+ Mon, 06 May 2019 00:48:27 -0700 (PDT)
+Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
+ by smtp.gmail.com with ESMTPSA id u11sm16796834wrg.35.2019.05.06.00.48.26
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 06 May 2019 00:48:27 -0700 (PDT)
+Date: Mon, 6 May 2019 09:48:24 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Subject: Re: [PATCH 00/10] implement DYNAMIC_DEBUG_RELATIVE_POINTERS
-To: Ingo Molnar <mingo@kernel.org>
+Message-ID: <20190506074824.GA40476@gmail.com>
 References: <20190409212517.7321-1-linux@rasmusvillemoes.dk>
  <1afb0702-3cc5-ba4f-2bdd-604d9da2b846@rasmusvillemoes.dk>
  <20190506070544.GA66463@gmail.com>
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
-Date: Mon, 6 May 2019 09:34:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
 MIME-Version: 1.0
-In-Reply-To: <20190506070544.GA66463@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <25dfde77-fdad-0b99-75ec-4ba480058970@rasmusvillemoes.dk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,36 +93,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06/05/2019 09.05, Ingo Molnar wrote:
-> 
-> 
-> It's sad to see such nice data footprint savings go the way of the dodo 
-> just because GCC 4.8 is buggy.
-> 
-> The current compatibility cut-off is GCC 4.6:
-> 
->   GNU C                  4.6              gcc --version
-> 
-> Do we know where the GCC bug was fixed, was it in GCC 4.9?
 
-Not sure. The report was from a build on CentOS with gcc 4.8.5, so I
-tried installing the gcc-4.8 package on my Ubuntu machine and could
-reproduce. Then I tried installed gcc-4.9, and after disabling
-CONFIG_RETPOLINE (both CentOS and Ubuntu carry backported retpoline
-support in their 4.8, but apparently not 4.9), I could see that the
-problem was gone. But whether it's gone because it no longer elides an
-asm volatile() on a code path it otherwise emits code for, or because it
-simply doesn't emit the unused static inline() at all I don't know.
+* Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-I thought 0day also tested a range of supported compiler versions, so I
-was rather surprised at getting this report at all. But I suppose the
-arch/config matrix is already pretty huge. Anyway, the bug certainly
-doesn't exist in any of the gcc versions 0day does test.
+> I _am_ bending the C rules a bit with the "extern some_var; asm 
+> volatile(".section some_section\nsome_var: blabla");". I should 
+> probably ask on the gcc list whether this way of defining a local 
+> symbol in inline assembly and referring to it from C is supposed to 
+> work, or it just happens to work by chance.
 
-I _am_ bending the C rules a bit with the "extern some_var; asm
-volatile(".section some_section\nsome_var: blabla");". I should probably
-ask on the gcc list whether this way of defining a local symbol in
-inline assembly and referring to it from C is supposed to work, or it
-just happens to work by chance.
+Doing that would be rather useful I think.
 
-Rasmus
+Thanks,
+
+	Ingo
