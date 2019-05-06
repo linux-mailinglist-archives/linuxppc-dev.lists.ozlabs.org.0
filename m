@@ -1,39 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F7914ADE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 15:23:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3120414AD1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 15:20:53 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yNf932bpzDqKS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 23:20:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yNjk3tpGzDqL8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 23:23:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yNZ41KwgzDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 23:17:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yNfl6rz1zDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 23:21:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 44yNZ20xVWz9s9y;
- Mon,  6 May 2019 23:17:13 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Dmitry V. Levin" <ldv@altlinux.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH linux-next v10 5/7] powerpc: define syscall_get_error()
-In-Reply-To: <20190415234444.GE9384@altlinux.org>
-References: <20190415234307.GA9364@altlinux.org>
- <20190415234444.GE9384@altlinux.org>
-Date: Mon, 06 May 2019 23:17:12 +1000
-Message-ID: <87woj3wwmf.fsf@concordia.ellerman.id.au>
+ header.from=informatik.wtf
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44yNfk5fCPz8t4f
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 23:21:18 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 44yNfj3xptz9sBb; Mon,  6 May 2019 23:21:17 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
+ (client-ip=198.54.122.46; helo=new-02-2.privateemail.com;
+ envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from NEW-02-2.privateemail.com (new-02-2.privateemail.com
+ [198.54.122.46])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 44yNff4rsKz9s7T
+ for <linuxppc-dev@ozlabs.org>; Mon,  6 May 2019 23:21:13 +1000 (AEST)
+Received: from MTA-10.privateemail.com (unknown [10.20.147.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by NEW-02.privateemail.com (Postfix) with ESMTPS id 8C314608E8;
+ Mon,  6 May 2019 13:21:09 +0000 (UTC)
+Received: from MTA-10.privateemail.com (localhost [127.0.0.1])
+ by MTA-10.privateemail.com (Postfix) with ESMTP id 763B26004E;
+ Mon,  6 May 2019 09:21:09 -0400 (EDT)
+Received: from APP-01 (unknown [10.20.147.151])
+ by MTA-10.privateemail.com (Postfix) with ESMTPA id 53AB860038;
+ Mon,  6 May 2019 13:21:09 +0000 (UTC)
+Date: Mon, 6 May 2019 09:21:09 -0400 (EDT)
+From: Christopher M Riedl <cmr@informatik.wtf>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Message-ID: <1109071681.181819.1557148869293@privateemail.com>
+In-Reply-To: <271ab704-e3d2-f04c-4758-2b08c1b3909c@linux.ibm.com>
+References: <20190505221048.28212-1-cmr@informatik.wtf>
+ <271ab704-e3d2-f04c-4758-2b08c1b3909c@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/64s: support nospectre_v2 cmdline option
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Medium
+X-Mailer: Open-Xchange Mailer v7.8.4-Rev55
+X-Originating-Client: open-xchange-appsuite
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,105 +73,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eugene Syromyatnikov <esyr@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
- Elvira Khabirova <lineprinter@altlinux.org>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Dmitry V. Levin" <ldv@altlinux.org> writes:
+> On May 5, 2019 at 9:32 PM Andrew Donnellan <ajd@linux.ibm.com> wrote:
+> 
+> 
+> On 6/5/19 8:10 am, Christopher M. Riedl wrote:
+> > Add support for disabling the kernel implemented spectre v2 mitigation
+> > (count cache flush on context switch) via the nospectre_v2 cmdline
+> > option.
+> > 
+> > Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> > Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> > ---
+> > 
+> >   arch/powerpc/kernel/security.c | 14 ++++++++++++--
+> >   1 file changed, 12 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+> > index b33bafb8fcea..f7c34745cd0f 100644
+> > --- a/arch/powerpc/kernel/security.c
+> > +++ b/arch/powerpc/kernel/security.c
+> > @@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
+> >   bool barrier_nospec_enabled;
+> >   static bool no_nospec;
+> >   static bool btb_flush_enabled;
+> > -#ifdef CONFIG_PPC_FSL_BOOK3E
+> > +#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
+> >   static bool no_spectrev2;
+> >   #endif
+> >   
+> > @@ -106,7 +106,7 @@ static __init int barrier_nospec_debugfs_init(void)
+> >   device_initcall(barrier_nospec_debugfs_init);
+> >   #endif /* CONFIG_DEBUG_FS */
+> >   
+> > -#ifdef CONFIG_PPC_FSL_BOOK3E
+> > +#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
+> >   static int __init handle_nospectre_v2(char *p)
+> >   {
+> >   	no_spectrev2 = true;
+> > @@ -114,6 +114,9 @@ static int __init handle_nospectre_v2(char *p)
+> >   	return 0;
+> >   }
+> >   early_param("nospectre_v2", handle_nospectre_v2);
+> > +#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
+> > +
+> > +#ifdef CONFIG_PPC_FSL_BOOK3E
+> >   void setup_spectre_v2(void)
+> >   {
+> >   	if (no_spectrev2)
+> > @@ -391,6 +394,13 @@ static void toggle_count_cache_flush(bool enable)
+> >   
+> >   void setup_count_cache_flush(void)
+> >   {
+> > +	if (no_spectrev2) {
+> > +		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED)
+> > +		    || security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
+> > +			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
+> 
+> If one of those ftrs is set, what's the impact of not calling 
+> toggle_count_cache_flush()?
+> 
 
-> syscall_get_error() is required to be implemented on this
-> architecture in addition to already implemented syscall_get_nr(),
-> syscall_get_arguments(), syscall_get_return_value(), and
-> syscall_get_arch() functions in order to extend the generic
-> ptrace API with PTRACE_GET_SYSCALL_INFO request.
->
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Elvira Khabirova <lineprinter@altlinux.org>
-> Cc: Eugene Syromyatnikov <esyr@redhat.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Oleg Nesterov <oleg@redhat.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
-> ---
->
-> Michael, this patch is waiting for ACK since early December.
+The patchsite/callsite (kernel/entry_64.S:597) for flush_count_cache
+inside _switch remains a nop.
 
-Sorry, the more I look at our seccomp/ptrace code the more problems I
-find :/
+Disassembly of vmlinux after build:
+c00000000000e260:       00 00 23 f8     std     r1,0(r3)
+c00000000000e264:       00 00 00 60     nop
+c00000000000e268:       00 60 c0 3c     lis     r6,24576
 
-This change looks OK to me, given it will only be called by your new
-ptrace API.
+Disassembly (xmon) after boot/during runtime in qemu:
+c00000000000e260  f8230000	std     r1,0(r3)
+c00000000000e264  4bffdb7d	bl      c00000000000bde0	# flush_count_cache+0x0/0x2420
+c00000000000e268  3cc06000	lis     r6,24576
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Disassembly (xmon) after boot/during runtime in qemu w/ nospectre_v2:
+c00000000000e260  f8230000	std     r1,0(r3)
+c00000000000e264  60000000	nop
+c00000000000e268  3cc06000	lis     r6,24576
 
+toggle_count_cache_flush() well uhh "toggles" the patchsite to either
+contain a branch to the flush procedure or a nop.
 
-> Notes:
->     v10: unchanged
->     v9: unchanged
->     v8: unchanged
->     v7: unchanged
->     v6: unchanged
->     v5: initial revision
->     
->     This change has been tested with
->     tools/testing/selftests/ptrace/get_syscall_info.c and strace,
->     so it's correct from PTRACE_GET_SYSCALL_INFO point of view.
->     
->     This cast doubts on commit v4.3-rc1~86^2~81 that changed
->     syscall_set_return_value() in a way that doesn't quite match
->     syscall_get_error(), but syscall_set_return_value() is out
->     of scope of this series, so I'll just let you know my concerns.
-     
-Yeah I think you're right. My commit made it work for seccomp but only
-on the basis that seccomp calls syscall_set_return_value() and then
-immediately goes out via the syscall exit path. And only the combination
-of those gets things into the same state that syscall_get_error()
-expects.
-
-But with the way the code is currently structured if
-syscall_set_return_value() negated the error value, then the syscall
-exit path would then store the wrong thing in pt_regs->result. So I
-think it needs some more work rather than just reverting 1b1a3702a65c.
-
-But I think fixing that can be orthogonal to this commit going in as the
-code does work as it's currently written, the in-between state that
-syscall_set_return_value() creates via seccomp should not be visible to
-ptrace.
-
-cheers
-
->     See also https://lore.kernel.org/lkml/874lbbt3k6.fsf@concordia.ellerman.id.au/
->     for more details on powerpc syscall_set_return_value() confusion.
->
->  arch/powerpc/include/asm/syscall.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-> index a048fed0722f..bd9663137d57 100644
-> --- a/arch/powerpc/include/asm/syscall.h
-> +++ b/arch/powerpc/include/asm/syscall.h
-> @@ -38,6 +38,16 @@ static inline void syscall_rollback(struct task_struct *task,
->  	regs->gpr[3] = regs->orig_gpr3;
->  }
->  
-> +static inline long syscall_get_error(struct task_struct *task,
-> +				     struct pt_regs *regs)
-> +{
-> +	/*
-> +	 * If the system call failed,
-> +	 * regs->gpr[3] contains a positive ERRORCODE.
-> +	 */
-> +	return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
-> +}
-> +
->  static inline long syscall_get_return_value(struct task_struct *task,
->  					    struct pt_regs *regs)
->  {
+> > +		return;
+> > +	}
+> > +
+> >   	toggle_count_cache_flush(true);
+> >   }
+> >   
+> > 
+> 
 > -- 
-> ldv
+> Andrew Donnellan              OzLabs, ADL Canberra
+> ajd@linux.ibm.com             IBM Australia Limited
+>
