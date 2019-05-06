@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA50154A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 21:51:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B314A15491
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2019 21:47:10 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yYCw0PDczDqKv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 05:47:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yYK00dP2zDqLR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 05:51:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yYBV30GWzDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 05:45:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yYHK1tY1zDqK9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 05:50:05 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id C957828898
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 19:45:50 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id AFF492869F
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2019 19:50:02 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id B98AB288AA; Mon,  6 May 2019 19:45:50 +0000 (UTC)
+ id 9DB452850F; Mon,  6 May 2019 19:50:02 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -33,10 +33,9 @@ X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
  NO_RELAYS autolearn=ham version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203515] [crypto] alg: skcipher: p8_aes_ctr encryption test
- failed (wrong result) on test vector 3, cfg="uneven misaligned splits, may
- sleep"
-Date: Mon, 06 May 2019 19:45:50 +0000
+Subject: [Bug 203517] WARNING: inconsistent lock state. inconsistent
+ {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+Date: Mon, 06 May 2019 19:50:02 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -51,10 +50,10 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-203515-206035-g2T4NnCLS9@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203515-206035@https.bugzilla.kernel.org/>
-References: <bug-203515-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: cf_kernel_version
+Message-ID: <bug-203517-206035-5ljWgRw1GV@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203517-206035@https.bugzilla.kernel.org/>
+References: <bug-203517-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -76,13 +75,18 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203515
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203517
 
---- Comment #6 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Eric Biggers from comment #5)
-> [...] That was almost a month ago though; I'm not sure whether anyone has
-> actually done anything yet.  I'll send a reminder.
-Thanks! Apparently not, the newly released 5.1.0 is still affected.
+Erhard F. (erhard_f@mailbox.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+     Kernel Version|5.1.0-rc7                   |5.1.0-rc1
+
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Newly released 5.1.0 still affected. Narrowed it down to 5.1.0-rc1 being the
+1st version affected. I'll start a bisect and hope this bug is easily
+triggered...
 
 --=20
 You are receiving this mail because:
