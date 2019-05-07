@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FE1164AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 15:37:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CC2164A1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 15:35:22 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44z0wR1VLRzDqJV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 23:35:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44z0zR3ZwYzDq63
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 23:37:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,51 +16,52 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="d39wmqj0"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="NZhAPArn"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44z0rJ3gTMzDqH2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 23:31:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44z0rJ3jcSzDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 23:31:43 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44z0r94DcDz9v1qM;
- Tue,  7 May 2019 15:31:37 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 44z0rB3ns1z9v1qL;
+ Tue,  7 May 2019 15:31:38 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=d39wmqj0; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=NZhAPArn; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 6SlBpy2oosTZ; Tue,  7 May 2019 15:31:37 +0200 (CEST)
+ with ESMTP id k7qaG0dZ0J0U; Tue,  7 May 2019 15:31:38 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44z0r932knz9v1qJ;
- Tue,  7 May 2019 15:31:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557235897; bh=2jDUagApQ1IrQlwQKuFAe7ibrhh9aDCUuLUWK0Iv+t0=;
- h=From:Subject:To:Cc:Date:From;
- b=d39wmqj067RMZmnkH1rpTDfJdGxyQpPJyvYMCzKhRJXPteP2Xco9wsMu9Z34phczF
- CGxF6aJk1RRoJZiyNfH8YCX9jPEAHqsOR2KIuJL81lW/1K1vH5TdCWua18bxA3tWpl
- sj7dERqxGPNm3CSPO4fj0Dig/l+lY8I6WojeaBuA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D19958B8FD;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 44z0rB2ffmz9v1qJ;
  Tue,  7 May 2019 15:31:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557235898; bh=uxZQpxauEnM4aYWFAk/wkXMZ76Y3WDlotHwL8DND8kc=;
+ h=From:Subject:To:Cc:Date:From;
+ b=NZhAPArnVW1kBB8dsyWinS5PUZzBJVcD3YA4vGclaFu9u1jfLwdNMZQNg6RDhsQ7l
+ EpyUprEBYrZ/E4Yn4bWaDKPv+9YHgqwma6cytQt72yx4iQoI+3epnbRzRqH9X1ook6
+ 7UGh4qvKt2PbRh2wArECo5C3iKSNybqQOqVz7LcE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C53DD8B8FF;
+ Tue,  7 May 2019 15:31:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rJ1L7eK6fCNF; Tue,  7 May 2019 15:31:38 +0200 (CEST)
+ with ESMTP id OW1MUf1y11wT; Tue,  7 May 2019 15:31:39 +0200 (CEST)
 Received: from po16846vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ACF828B8F8;
- Tue,  7 May 2019 15:31:38 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 94E208B8F8;
+ Tue,  7 May 2019 15:31:39 +0200 (CEST)
 Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 71C0C66242; Tue,  7 May 2019 13:31:38 +0000 (UTC)
-Message-Id: <4464516c0b6835b42acc65e088b6d7f88fe886f2.1557235811.git.christophe.leroy@c-s.fr>
+ id 78EAC66242; Tue,  7 May 2019 13:31:39 +0000 (UTC)
+Message-Id: <0b460a85319fb89dab2c5d1200ac69a3e1b7c1ef.1557235807.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/ftrace: Enable C Version of recordmcount
+Subject: [PATCH] powerpc: slightly improve cache helpers
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue,  7 May 2019 13:31:38 +0000 (UTC)
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+Date: Tue,  7 May 2019 13:31:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,29 +78,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Selects HAVE_C_RECORDMCOUNT to use the C version of the recordmcount
-intead of the old Perl Version of recordmcount.
+Cache instructions (dcbz, dcbi, dcbf and dcbst) take two registers
+that are summed to obtain the target address. Using '%y0' argument
+gives GCC the opportunity to use both registers instead of only one
+with the second being forced to 0.
 
-This should improve build time. It also seems like the old Perl Version
-misses some calls to _mcount that the C version finds.
-
+Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/cache.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2711aac24621..d87de4f9da61 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -180,6 +180,7 @@ config PPC
- 	select HAVE_ARCH_NVRAM_OPS
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
-+	select HAVE_C_RECORDMCOUNT
- 	select HAVE_CBPF_JIT			if !PPC64
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
+index 40ea5b3781c6..5a22a869a20b 100644
+--- a/arch/powerpc/include/asm/cache.h
++++ b/arch/powerpc/include/asm/cache.h
+@@ -85,22 +85,22 @@ extern void _set_L3CR(unsigned long);
+ 
+ static inline void dcbz(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbz 0, %0" : : "r"(addr) : "memory");
++	__asm__ __volatile__ ("dcbz %y0" : : "m"(*(u8 *)addr) : "memory");
+ }
+ 
+ static inline void dcbi(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbi 0, %0" : : "r"(addr) : "memory");
++	__asm__ __volatile__ ("dcbi %y0" : : "m"(*(u8 *)addr) : "memory");
+ }
+ 
+ static inline void dcbf(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
++	__asm__ __volatile__ ("dcbf %y0" : : "m"(*(u8 *)addr) : "memory");
+ }
+ 
+ static inline void dcbst(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbst 0, %0" : : "r"(addr) : "memory");
++	__asm__ __volatile__ ("dcbst %y0" : : "m"(*(u8 *)addr) : "memory");
+ }
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __KERNEL__ */
 -- 
 2.13.3
 
