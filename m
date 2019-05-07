@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A1F15890
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 06:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88ED15896
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 06:38:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44ymtb0xdyzDqNP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 14:32:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yn1S3hmhzDqc6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 14:38:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44ymqY3x20zDqBt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 14:30:16 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x474MHP8052875
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 May 2019 00:30:14 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sb2179w3t-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44ymqc413LzDqBt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 14:30:20 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x474MEJA101485
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 May 2019 00:30:18 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sb1vqtbsw-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 May 2019 00:30:14 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 May 2019 00:30:17 -0400
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Tue, 7 May 2019 05:30:12 +0100
+ Tue, 7 May 2019 05:30:15 +0100
 Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 7 May 2019 05:30:09 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
+ Tue, 7 May 2019 05:30:11 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
  by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x474U8VD55246950
+ x474UA5641615466
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 May 2019 04:30:08 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 730E911C05E;
- Tue,  7 May 2019 04:30:08 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2D85011C066;
- Tue,  7 May 2019 04:30:08 +0000 (GMT)
+ Tue, 7 May 2019 04:30:11 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39533A405C;
+ Tue,  7 May 2019 04:30:10 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99425A4067;
+ Tue,  7 May 2019 04:30:09 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  7 May 2019 04:30:08 +0000 (GMT)
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 May 2019 04:30:09 +0000 (GMT)
 Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
  (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C0BD3A03B2;
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C4704A03B5;
  Tue,  7 May 2019 14:30:06 +1000 (AEST)
 From: Sam Bobroff <sbobroff@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/6] powerpc/eeh: Initialize EEH address cache earlier
-Date: Tue,  7 May 2019 14:30:04 +1000
+Subject: [PATCH v2 5/6] powerpc/eeh: EEH for pSeries hot plug
+Date: Tue,  7 May 2019 14:30:05 +1000
 X-Mailer: git-send-email 2.19.0.2.gcad72f5712
 In-Reply-To: <cover.1557203383.git.sbobroff@linux.ibm.com>
 References: <cover.1557203383.git.sbobroff@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19050704-4275-0000-0000-000003321AC6
+x-cbid: 19050704-0012-0000-0000-000003190577
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050704-4276-0000-0000-0000384183E3
-Message-Id: <a9e0833d421e0673633efdc2bbd0babbc1cb1f40.1557203383.git.sbobroff@linux.ibm.com>
+x-cbparentid: 19050704-0013-0000-0000-0000215180BA
+Message-Id: <f43783a60e55ff6c373b9f9744cb32ee9512c619.1557203383.git.sbobroff@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-05-07_02:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=29 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1905070028
@@ -97,91 +97,224 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EEH address cache is currently initialized and populated by a
-single function: eeh_addr_cache_build().  While the initial population
-of the cache can only be done once resources are allocated,
-initialization (just setting up a spinlock) could be done much
-earlier.
+On PowerNV and pSeries, devices currently acquire EEH support from
+several different places: Boot-time devices from eeh_probe_devices()
+and eeh_addr_cache_build(), Virtual Function devices from the pcibios
+bus add device hooks and hot plugged devices from pci_hp_add_devices()
+(with other platforms using other methods as well).  Unfortunately,
+pSeries machines currently discover hot plugged devices using
+pci_rescan_bus(), not pci_hp_add_devices(), and so those devices do
+not receive EEH support.
 
-So move the initialization step into a separate function and call it
-from a core_initcall (rather than a subsys initcall).
+Rather than adding another case for pci_rescan_bus(), this change
+widens the scope of the pcibios bus add device hooks so that they can
+handle all devices. As a side effect this also supports devices
+discovered after manually rescanning via /sys/bus/pci/rescan.
 
-This will allow future work to make use of the cache during boot time
-PCI scanning.
+Note that on PowerNV, this change allows the EEH subsystem to become
+enabled after boot as long as it has not been forced off, which was
+not previously possible (it was already possible on pSeries).
 
 Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/include/asm/eeh.h  |  3 +++
- arch/powerpc/kernel/eeh.c       |  2 ++
- arch/powerpc/kernel/eeh_cache.c | 13 +++++++++++--
- 3 files changed, 16 insertions(+), 2 deletions(-)
+v2 - Dropped changes to the PowerNV PHB EEH flag, instead refactor just enough to
+     use the existing flag from multiple places.
+   - Merge the little remaining work from the above change into the patch where
+     it's used.
 
-diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-index 3613a56281f2..12baf1df134c 100644
---- a/arch/powerpc/include/asm/eeh.h
-+++ b/arch/powerpc/include/asm/eeh.h
-@@ -288,6 +288,7 @@ int __init eeh_ops_register(struct eeh_ops *ops);
- int __exit eeh_ops_unregister(const char *name);
- int eeh_check_failure(const volatile void __iomem *token);
- int eeh_dev_check_failure(struct eeh_dev *edev);
-+void eeh_addr_cache_init(void);
- void eeh_addr_cache_build(void);
- void eeh_add_device_early(struct pci_dn *);
- void eeh_add_device_tree_early(struct pci_dn *);
-@@ -348,6 +349,8 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
- 
- #define eeh_dev_check_failure(x) (0)
- 
-+static inline void eeh_addr_cache_init(void) { }
-+
- static inline void eeh_addr_cache_build(void) { }
- 
- static inline void eeh_add_device_early(struct pci_dn *pdn) { }
+ arch/powerpc/kernel/eeh.c                    |  2 +-
+ arch/powerpc/kernel/of_platform.c            |  3 +-
+ arch/powerpc/platforms/powernv/eeh-powernv.c | 39 +++++++++-----
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 54 ++++++++++----------
+ 4 files changed, 56 insertions(+), 42 deletions(-)
+
 diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index b14d89547895..4160514d997c 100644
+index 4160514d997c..1ed80adb40a1 100644
 --- a/arch/powerpc/kernel/eeh.c
 +++ b/arch/powerpc/kernel/eeh.c
-@@ -1213,6 +1213,8 @@ static int eeh_init(void)
- 	list_for_each_entry_safe(hose, tmp, &hose_list, list_node)
- 		eeh_dev_phb_init_dynamic(hose);
+@@ -1285,7 +1285,7 @@ void eeh_add_device_late(struct pci_dev *dev)
+ 	struct pci_dn *pdn;
+ 	struct eeh_dev *edev;
  
-+	eeh_addr_cache_init();
-+
- 	/* Initialize EEH event */
- 	return eeh_event_init();
- }
-diff --git a/arch/powerpc/kernel/eeh_cache.c b/arch/powerpc/kernel/eeh_cache.c
-index 9c68f0837385..f93dd5cf6a39 100644
---- a/arch/powerpc/kernel/eeh_cache.c
-+++ b/arch/powerpc/kernel/eeh_cache.c
-@@ -267,6 +267,17 @@ void eeh_addr_cache_rmv_dev(struct pci_dev *dev)
- 	spin_unlock_irqrestore(&pci_io_addr_cache_root.piar_lock, flags);
- }
+-	if (!dev || !eeh_enabled())
++	if (!dev)
+ 		return;
  
-+/**
-+ * eeh_addr_cache_init - Initialize a cache of I/O addresses
-+ *
-+ * Initialize a cache of pci i/o addresses.  This cache will be used to
-+ * find the pci device that corresponds to a given address.
-+ */
-+void eeh_addr_cache_init(void)
+ 	pr_debug("EEH: Adding device %s\n", pci_name(dev));
+diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+index becaec990140..d5818e9c4069 100644
+--- a/arch/powerpc/kernel/of_platform.c
++++ b/arch/powerpc/kernel/of_platform.c
+@@ -86,7 +86,8 @@ static int of_pci_phb_probe(struct platform_device *dev)
+ 	pcibios_claim_one_bus(phb->bus);
+ 
+ 	/* Finish EEH setup */
+-	eeh_add_device_tree_late(phb->bus);
++	if (!eeh_has_flag(EEH_FORCE_DISABLED))
++		eeh_add_device_tree_late(phb->bus);
+ 
+ 	/* Add probed PCI devices to the device model */
+ 	pci_bus_add_devices(phb->bus);
+diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+index 0e374cdba961..90729d908a54 100644
+--- a/arch/powerpc/platforms/powernv/eeh-powernv.c
++++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+@@ -47,7 +47,7 @@ void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
+ {
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 
+-	if (!pdev->is_virtfn)
++	if (eeh_has_flag(EEH_FORCE_DISABLED))
+ 		return;
+ 
+ 	pr_debug("%s: EEH: Setting up device %s.\n", __func__, pci_name(pdev));
+@@ -226,6 +226,25 @@ static const struct file_operations eeh_tree_state_debugfs_ops = {
+ 
+ #endif /* CONFIG_DEBUG_FS */
+ 
++void pnv_eeh_enable_phbs(void)
 +{
-+	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
++	struct pci_controller *hose;
++	struct pnv_phb *phb;
++
++	list_for_each_entry(hose, &hose_list, list_node) {
++		phb = hose->private_data;
++		/*
++		 * If EEH is enabled, we're going to rely on that.
++		 * Otherwise, we restore to conventional mechanism
++		 * to clear frozen PE during PCI config access.
++		 */
++		if (eeh_enabled())
++			phb->flags |= PNV_PHB_FLAG_EEH;
++		else
++			phb->flags &= ~PNV_PHB_FLAG_EEH;
++	}
 +}
 +
  /**
-  * eeh_addr_cache_build - Build a cache of I/O addresses
+  * pnv_eeh_post_init - EEH platform dependent post initialization
   *
-@@ -282,8 +293,6 @@ void eeh_addr_cache_build(void)
- 	struct eeh_dev *edev;
- 	struct pci_dev *dev = NULL;
+@@ -264,19 +283,11 @@ int pnv_eeh_post_init(void)
+ 	if (!eeh_enabled())
+ 		disable_irq(eeh_event_irq);
  
--	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
++	pnv_eeh_enable_phbs();
++
+ 	list_for_each_entry(hose, &hose_list, list_node) {
+ 		phb = hose->private_data;
+ 
+-		/*
+-		 * If EEH is enabled, we're going to rely on that.
+-		 * Otherwise, we restore to conventional mechanism
+-		 * to clear frozen PE during PCI config access.
+-		 */
+-		if (eeh_enabled())
+-			phb->flags |= PNV_PHB_FLAG_EEH;
+-		else
+-			phb->flags &= ~PNV_PHB_FLAG_EEH;
 -
- 	for_each_pci_dev(dev) {
- 		pdn = pci_get_pdn_by_devfn(dev->bus, dev->devfn);
- 		if (!pdn)
+ 		/* Create debugfs entries */
+ #ifdef CONFIG_DEBUG_FS
+ 		if (phb->has_dbgfs || !phb->dbgfs)
+@@ -487,7 +498,11 @@ static void *pnv_eeh_probe(struct pci_dn *pdn, void *data)
+ 	 * Enable EEH explicitly so that we will do EEH check
+ 	 * while accessing I/O stuff
+ 	 */
+-	eeh_add_flag(EEH_ENABLED);
++	if (!eeh_has_flag(EEH_ENABLED)) {
++		enable_irq(eeh_event_irq);
++		pnv_eeh_enable_phbs();
++		eeh_add_flag(EEH_ENABLED);
++	}
+ 
+ 	/* Save memory bars */
+ 	eeh_save_bars(edev);
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index ae06878fbdea..e68c79164974 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -55,44 +55,44 @@ static int ibm_get_config_addr_info;
+ static int ibm_get_config_addr_info2;
+ static int ibm_configure_pe;
+ 
+-#ifdef CONFIG_PCI_IOV
+ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+ {
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+-	struct pci_dn *physfn_pdn;
+-	struct eeh_dev *edev;
+ 
+-	if (!pdev->is_virtfn)
++	if (eeh_has_flag(EEH_FORCE_DISABLED))
+ 		return;
+ 
+ 	pr_debug("%s: EEH: Setting up device %s.\n", __func__, pci_name(pdev));
++#ifdef CONFIG_PCI_IOV
++	if (pdev->is_virtfn) {
++		struct pci_dn *physfn_pdn;
+ 
+-	pdn->device_id  =  pdev->device;
+-	pdn->vendor_id  =  pdev->vendor;
+-	pdn->class_code =  pdev->class;
+-	/*
+-	 * Last allow unfreeze return code used for retrieval
+-	 * by user space in eeh-sysfs to show the last command
+-	 * completion from platform.
+-	 */
+-	pdn->last_allow_rc =  0;
+-	physfn_pdn      =  pci_get_pdn(pdev->physfn);
+-	pdn->pe_number  =  physfn_pdn->pe_num_map[pdn->vf_index];
+-	edev = pdn_to_eeh_dev(pdn);
+-
+-	/*
+-	 * The following operations will fail if VF's sysfs files
+-	 * aren't created or its resources aren't finalized.
+-	 */
++		pdn->device_id  =  pdev->device;
++		pdn->vendor_id  =  pdev->vendor;
++		pdn->class_code =  pdev->class;
++		/*
++		 * Last allow unfreeze return code used for retrieval
++		 * by user space in eeh-sysfs to show the last command
++		 * completion from platform.
++		 */
++		pdn->last_allow_rc =  0;
++		physfn_pdn      =  pci_get_pdn(pdev->physfn);
++		pdn->pe_number  =  physfn_pdn->pe_num_map[pdn->vf_index];
++	}
++#endif
+ 	eeh_add_device_early(pdn);
+ 	eeh_add_device_late(pdev);
+-	edev->pe_config_addr =  (pdn->busno << 16) | (pdn->devfn << 8);
+-	eeh_rmv_from_parent_pe(edev); /* Remove as it is adding to bus pe */
+-	eeh_add_to_parent_pe(edev);   /* Add as VF PE type */
+-	eeh_sysfs_add_device(pdev);
++#ifdef CONFIG_PCI_IOV
++	if (pdev->is_virtfn) {
++		struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
+ 
+-}
++		edev->pe_config_addr =  (pdn->busno << 16) | (pdn->devfn << 8);
++		eeh_rmv_from_parent_pe(edev); /* Remove as it is adding to bus pe */
++		eeh_add_to_parent_pe(edev);   /* Add as VF PE type */
++	}
+ #endif
++	eeh_sysfs_add_device(pdev);
++}
+ 
+ /*
+  * Buffer for reporting slot-error-detail rtas calls. Its here
+@@ -159,10 +159,8 @@ static int pseries_eeh_init(void)
+ 	/* Set EEH probe mode */
+ 	eeh_add_flag(EEH_PROBE_MODE_DEVTREE | EEH_ENABLE_IO_FOR_LOG);
+ 
+-#ifdef CONFIG_PCI_IOV
+ 	/* Set EEH machine dependent code */
+ 	ppc_md.pcibios_bus_add_device = pseries_pcibios_bus_add_device;
+-#endif
+ 
+ 	return 0;
+ }
 -- 
 2.19.0.2.gcad72f5712
 
