@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8031579F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 04:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 314A3157A7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 04:32:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44yk9P05gmzDqMr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 12:30:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44ykC140PrzDqK9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 12:31:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="DjY3qcA5"; dkim-atps=neutral
+ header.b="n0SFRfDF"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44yk7w5H5WzDqK5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 12:29:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yk9c2p0xzDqNF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 12:30:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
  Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
  List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=aSPRS/UQTQIlG/Fpji6u6bjSVgCp4Melu+2tov3g5R4=; b=DjY3qcA5pL1T
- mdfHfSDzwvw3BrCANnUOvAs6VsvCK/pP3j6IHqgqKB0C/7yDb2O5wD9srqBNXfJZp9rSDQBjAMLQM
- HRXF7W0D/7KIq4CCCI87rLtxy/uW2pRJ9XjE8tunuBmYX4Lj3U69V7ENW4fXZ8wd9WMm8JZad2IRE
- ttC3c=;
+ List-Archive; bh=aSPRS/UQTQIlG/Fpji6u6bjSVgCp4Melu+2tov3g5R4=; b=n0SFRfDFK1Of
+ rgY61rDkvIWmIM8aA9E9eE7sO4Ruh2YWA9xrrgw9Ry4r+8S3P2tgo6N7WISJoOWj2UOoCXTeKF9pI
+ 40V6JiVixRC6iAbH64NX26Sa2vaddbleCMZSSaj1nbRAOgbYu261IgUDO34aiWXHTqopfG/8N/TEA
+ 7heH0=;
 Received: from kd111239185057.au-net.ne.jp ([111.239.185.57]
  helo=finisterre.sirena.org.uk)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hNpqp-0003RP-LM; Tue, 07 May 2019 02:29:04 +0000
+ id 1hNpsN-0003Sv-2h; Tue, 07 May 2019 02:30:39 +0000
 Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
- id 9513A440035; Tue,  7 May 2019 03:28:53 +0100 (BST)
+ id 26DF4440035; Tue,  7 May 2019 03:30:33 +0100 (BST)
 From: Mark Brown <broonie@kernel.org>
 To: S.j. Wang <shengjiu.wang@nxp.com>
 Subject: Applied "ASoC: fsl_esai: Add pm runtime function" to the asoc tree
 In-Reply-To: <20190503194944.30167-1-nicoleotsuka@gmail.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190507022853.9513A440035@finisterre.sirena.org.uk>
-Date: Tue,  7 May 2019 03:28:53 +0100 (BST)
+Message-Id: <20190507023033.26DF4440035@finisterre.sirena.org.uk>
+Date: Tue,  7 May 2019 03:30:33 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
