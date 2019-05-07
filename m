@@ -1,70 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E3416CC3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 23:03:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zBsX0JhGzDqNk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 07:03:28 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEEA16CD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 23:08:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zByy2wlpzDqJR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 07:08:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="aKjnu5T9"; 
- dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zBrB3TW1zDqC3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 07:02:18 +1000 (AEST)
-Received: by mail-oi1-x244.google.com with SMTP id k9so13411437oig.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 May 2019 14:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=45qD73j/kj+Yrs+a6400FKd0OOGHzurHt4ZIRvIFUxk=;
- b=aKjnu5T94oAi5XuoZSUACQovXis8kBeXEPSlrU/jE6KzUHv63+LkHWOXj7Ul4cy8JM
- MRBt+IYV1zghhpx217oRXyTOdRcPV0MIvsTexDSNyRu0T5qaeqJMZ0321j+MJ+4+IoTJ
- QU8EAU7+4r1FjnWqpTmwxXpcynVDN4NStntcJV/9P/ofoUKifRu0ElioByLbR1gFFAlQ
- 07z/LEv+pCWSxpbOTDVZKgk20922wkdOM2JaarMIOir/V4W1xOUgICg30LTtq90lE8CZ
- yb+bQh03ycx2t+cBP5Sl78srNbYWVqZIEwwKcInnZ084J3t8JPZhzuzD80ZjXw3z3MeM
- J0Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=45qD73j/kj+Yrs+a6400FKd0OOGHzurHt4ZIRvIFUxk=;
- b=r2C3LDwg/pKoyOkv+6AwdsXUamvUwDHYcOjSQS0xtJIY5chFLfkF4EIyYJPPUOoPV3
- eMyF/3xORk4DyzN5n9Ek8Viw16OM5AIZLaqWpAzE/FnsMxr/OH4Vl2EgCFjDYIorhxzU
- 7IEIlmzKnLoB56p/tp4frQyCs9zNiexNV6XtJCFQa3nfBcxUwYk8Jbs/B7xWFdAJ+Njh
- 7+W0spg2eXZuZQ6lXjTcYn8Ky4WVD/r/dXJSO27lVkvV5z541pxEWPIAaIMxwo6IxZsB
- fhdMcntayCHN3RwBYTkxCWbfDgGssxfzF4bIH4r3MgNnb0JIlwJ4xLipQdmWy41PE+Yq
- 0yBw==
-X-Gm-Message-State: APjAAAXEBRHrhFlU/PH+8On+x4gOQQrSI0TyhASJNccvtQHvJ26CAMfH
- 6fYrIoQia7ydM6EqpWG0YSPxmQRXU4btasg2g2PLIQ==
-X-Google-Smtp-Source: APXvYqwUggt0ll17lJcUQps1vubYeL9ujvgAmDTqrw0CH57ncRJR/cnHgI+g1CwK4YxQJ6JEBjUqsw5JNCojkigylvQ=
-X-Received: by 2002:aca:220f:: with SMTP id b15mr285608oic.73.1557262935026;
- Tue, 07 May 2019 14:02:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190507183804.5512-1-david@redhat.com>
- <20190507183804.5512-4-david@redhat.com>
-In-Reply-To: <20190507183804.5512-4-david@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 7 May 2019 14:02:03 -0700
-Message-ID: <CAPcyv4jpnKjeP3QEvF3_9CzdZhtFXN2nMU7P-Ee7y06J3bGZ0A@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zBxh6VTgzDq5f
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 07:07:04 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id E4FA5307E052;
+ Tue,  7 May 2019 21:06:58 +0000 (UTC)
+Received: from [10.36.116.95] (ovpn-116-95.ams2.redhat.com [10.36.116.95])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E282E5EDE4;
+ Tue,  7 May 2019 21:06:44 +0000 (UTC)
 Subject: Re: [PATCH v2 3/8] mm/memory_hotplug: arch_remove_memory() and
  __remove_pages() with CONFIG_MEMORY_HOTPLUG
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20190507183804.5512-1-david@redhat.com>
+ <20190507183804.5512-4-david@redhat.com>
+ <CAPcyv4jpnKjeP3QEvF3_9CzdZhtFXN2nMU7P-Ee7y06J3bGZ0A@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <d92537c1-983b-2610-f68e-369a37232acb@redhat.com>
+Date: Tue, 7 May 2019 23:06:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4jpnKjeP3QEvF3_9CzdZhtFXN2nMU7P-Ee7y06J3bGZ0A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.42]); Tue, 07 May 2019 21:07:03 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,323 +138,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 7, 2019 at 11:38 AM David Hildenbrand <david@redhat.com> wrote:
->
-> Let's prepare for better error handling while adding memory by allowing
-> to use arch_remove_memory() and __remove_pages() even if
-> CONFIG_MEMORY_HOTREMOVE is not set. CONFIG_MEMORY_HOTREMOVE effectively
-> covers
-> - Offlining of system ram (memory block devices) - offline_pages()
-> - Unplug of system ram - remove_memory()
-> - Unplug/remap of device memory - devm_memremap()
->
-> This allows e.g. for handling like
->
-> arch_add_memory()
-> rc = do_something();
-> if (rc) {
->         arch_remove_memory();
-> }
->
-> Whereby do_something() will for example be memory block device creation
-> after it has been factored out.
+On 07.05.19 23:02, Dan Williams wrote:
+> On Tue, May 7, 2019 at 11:38 AM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> Let's prepare for better error handling while adding memory by allowing
+>> to use arch_remove_memory() and __remove_pages() even if
+>> CONFIG_MEMORY_HOTREMOVE is not set. CONFIG_MEMORY_HOTREMOVE effectively
+>> covers
+>> - Offlining of system ram (memory block devices) - offline_pages()
+>> - Unplug of system ram - remove_memory()
+>> - Unplug/remap of device memory - devm_memremap()
+>>
+>> This allows e.g. for handling like
+>>
+>> arch_add_memory()
+>> rc = do_something();
+>> if (rc) {
+>>         arch_remove_memory();
+>> }
+>>
+>> Whereby do_something() will for example be memory block device creation
+>> after it has been factored out.
+> 
+> What's left after this?
 
-What's left after this? Can we just get rid of CONFIG_MEMORY_HOTREMOVE
-option completely when CONFIG_MEMORY_HOTPLUG is enabled? It's not
-clear to me why there was ever the option to compile out the remove
-code when the add code is included.
+I tried to describe this above here:
 
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mike Rapoport <rppt@linux.ibm.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Oscar Salvador <osalvador@suse.com>
-> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-> Cc: Andrew Banman <andrew.banman@hpe.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Wei Yang <richardw.yang@linux.intel.com>
-> Cc: Arun KS <arunks@codeaurora.org>
-> Cc: Qian Cai <cai@lca.pw>
-> Cc: Mathieu Malaterre <malat@debian.org>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  arch/ia64/mm/init.c            | 2 --
->  arch/powerpc/mm/mem.c          | 2 --
->  arch/s390/mm/init.c            | 2 --
->  arch/sh/mm/init.c              | 2 --
->  arch/x86/mm/init_32.c          | 2 --
->  arch/x86/mm/init_64.c          | 2 --
->  drivers/base/memory.c          | 2 --
->  include/linux/memory.h         | 2 --
->  include/linux/memory_hotplug.h | 2 --
->  mm/memory_hotplug.c            | 2 --
->  mm/sparse.c                    | 6 ------
->  11 files changed, 26 deletions(-)
->
-> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-> index d28e29103bdb..aae75fd7b810 100644
-> --- a/arch/ia64/mm/init.c
-> +++ b/arch/ia64/mm/init.c
-> @@ -681,7 +681,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return ret;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  void arch_remove_memory(int nid, u64 start, u64 size,
->                         struct vmem_altmap *altmap)
->  {
-> @@ -693,4 +692,3 @@ void arch_remove_memory(int nid, u64 start, u64 size,
->         __remove_pages(zone, start_pfn, nr_pages, altmap);
->  }
->  #endif
-> -#endif
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index a2b78e72452f..ddc69b59575c 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -131,7 +131,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->         return __add_pages(nid, start_pfn, nr_pages, restrictions);
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  void __ref arch_remove_memory(int nid, u64 start, u64 size,
->                              struct vmem_altmap *altmap)
->  {
-> @@ -164,7 +163,6 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
->         resize_hpt_for_hotplug(memblock_phys_mem_size());
->  }
->  #endif
-> -#endif /* CONFIG_MEMORY_HOTPLUG */
->
->  #ifndef CONFIG_NEED_MULTIPLE_NODES
->  void __init mem_topology_setup(void)
-> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-> index 1e0cbae69f12..eafa3c750efc 100644
-> --- a/arch/s390/mm/init.c
-> +++ b/arch/s390/mm/init.c
-> @@ -233,7 +233,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return rc;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  void arch_remove_memory(int nid, u64 start, u64 size,
->                         struct vmem_altmap *altmap)
->  {
-> @@ -245,5 +244,4 @@ void arch_remove_memory(int nid, u64 start, u64 size,
->         __remove_pages(zone, start_pfn, nr_pages, altmap);
->         vmem_remove_mapping(start, size);
->  }
-> -#endif
->  #endif /* CONFIG_MEMORY_HOTPLUG */
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index 5aeb4d7099a1..59c5fe511f25 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -428,7 +428,6 @@ int memory_add_physaddr_to_nid(u64 addr)
->  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
->  #endif
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  void arch_remove_memory(int nid, u64 start, u64 size,
->                         struct vmem_altmap *altmap)
->  {
-> @@ -439,5 +438,4 @@ void arch_remove_memory(int nid, u64 start, u64 size,
->         zone = page_zone(pfn_to_page(start_pfn));
->         __remove_pages(zone, start_pfn, nr_pages, altmap);
->  }
-> -#endif
->  #endif /* CONFIG_MEMORY_HOTPLUG */
-> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-> index 075e568098f2..8d4bf2d97d50 100644
-> --- a/arch/x86/mm/init_32.c
-> +++ b/arch/x86/mm/init_32.c
-> @@ -859,7 +859,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return __add_pages(nid, start_pfn, nr_pages, restrictions);
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  void arch_remove_memory(int nid, u64 start, u64 size,
->                         struct vmem_altmap *altmap)
->  {
-> @@ -871,7 +870,6 @@ void arch_remove_memory(int nid, u64 start, u64 size,
->         __remove_pages(zone, start_pfn, nr_pages, altmap);
->  }
->  #endif
-> -#endif
->
->  int kernel_set_to_readonly __read_mostly;
->
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 20d14254b686..f1b55ddea23f 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1131,7 +1131,6 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
->         remove_pagetable(start, end, false, altmap);
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  static void __meminit
->  kernel_physical_mapping_remove(unsigned long start, unsigned long end)
->  {
-> @@ -1156,7 +1155,6 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
->         __remove_pages(zone, start_pfn, nr_pages, altmap);
->         kernel_physical_mapping_remove(start, start + size);
->  }
-> -#endif
->  #endif /* CONFIG_MEMORY_HOTPLUG */
->
->  static struct kcore_list kcore_vsyscall;
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index f180427e48f4..6e0cb4fda179 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -728,7 +728,6 @@ int hotplug_memory_register(int nid, struct mem_section *section)
->         return ret;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  static void
->  unregister_memory(struct memory_block *memory)
->  {
-> @@ -767,7 +766,6 @@ void unregister_memory_section(struct mem_section *section)
->  out_unlock:
->         mutex_unlock(&mem_sysfs_mutex);
->  }
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->
->  /* return true if the memory block is offlined, otherwise, return false */
->  bool is_memblock_offlined(struct memory_block *mem)
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index e1dc1bb2b787..474c7c60c8f2 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -112,9 +112,7 @@ extern void unregister_memory_notifier(struct notifier_block *nb);
->  extern int register_memory_isolate_notifier(struct notifier_block *nb);
->  extern void unregister_memory_isolate_notifier(struct notifier_block *nb);
->  int hotplug_memory_register(int nid, struct mem_section *section);
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  extern void unregister_memory_section(struct mem_section *);
-> -#endif
->  extern int memory_dev_init(void);
->  extern int memory_notify(unsigned long val, void *v);
->  extern int memory_isolate_notify(unsigned long val, void *v);
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index ae892eef8b82..2d4de313926d 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -123,12 +123,10 @@ static inline bool movable_node_is_enabled(void)
->         return movable_node_enabled;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  extern void arch_remove_memory(int nid, u64 start, u64 size,
->                                struct vmem_altmap *altmap);
->  extern void __remove_pages(struct zone *zone, unsigned long start_pfn,
->                            unsigned long nr_pages, struct vmem_altmap *altmap);
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->
->  /*
->   * Do we want sysfs memblock files created. This will allow userspace to online
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 202febe88b58..7b5439839d67 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -317,7 +317,6 @@ int __ref __add_pages(int nid, unsigned long phys_start_pfn,
->         return err;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  /* find the smallest valid pfn in the range [start_pfn, end_pfn) */
->  static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
->                                      unsigned long start_pfn,
-> @@ -581,7 +580,6 @@ void __remove_pages(struct zone *zone, unsigned long phys_start_pfn,
->
->         set_zone_contiguous(zone);
->  }
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->
->  int set_online_page_callback(online_page_callback_t callback)
->  {
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index fd13166949b5..d1d5e05f5b8d 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -604,7 +604,6 @@ static void __kfree_section_memmap(struct page *memmap,
->
->         vmemmap_free(start, end, altmap);
->  }
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  static void free_map_bootmem(struct page *memmap)
->  {
->         unsigned long start = (unsigned long)memmap;
-> @@ -612,7 +611,6 @@ static void free_map_bootmem(struct page *memmap)
->
->         vmemmap_free(start, end, NULL);
->  }
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->  #else
->  static struct page *__kmalloc_section_memmap(void)
->  {
-> @@ -651,7 +649,6 @@ static void __kfree_section_memmap(struct page *memmap,
->                            get_order(sizeof(struct page) * PAGES_PER_SECTION));
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  static void free_map_bootmem(struct page *memmap)
->  {
->         unsigned long maps_section_nr, removing_section_nr, i;
-> @@ -681,7 +678,6 @@ static void free_map_bootmem(struct page *memmap)
->                         put_page_bootmem(page);
->         }
->  }
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->
->  /**
-> @@ -746,7 +742,6 @@ int __meminit sparse_add_one_section(int nid, unsigned long start_pfn,
->         return ret;
->  }
->
-> -#ifdef CONFIG_MEMORY_HOTREMOVE
->  #ifdef CONFIG_MEMORY_FAILURE
->  static void clear_hwpoisoned_pages(struct page *memmap, int nr_pages)
->  {
-> @@ -823,5 +818,4 @@ void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
->                         PAGES_PER_SECTION - map_offset);
->         free_section_usemap(memmap, usemap, altmap);
->  }
-> -#endif /* CONFIG_MEMORY_HOTREMOVE */
->  #endif /* CONFIG_MEMORY_HOTPLUG */
-> --
-> 2.20.1
->
+- Offlining of system ram (memory block devices) - offline_pages()
+- Unplug of system ram - remove_memory()
+- Unplug/remap of device memory - devm_memremap()
+
+So administrators cannot trigger offlining/removal of memory.
+
+> Can we just get rid of CONFIG_MEMORY_HOTREMOVE
+> option completely when CONFIG_MEMORY_HOTPLUG is enabled? It's not
+> clear to me why there was ever the option to compile out the remove
+> code when the add code is included.
+
+I guess it was a configure option because initially, offlining/unplug
+was extremely unstable. Now it's only slightly unstable :D
+
+I would actually favor getting rid of CONFIG_MEMORY_HOTREMOVE
+completely. After all, unplug always has to be triggered by an admin (HW
+or software).
+
+Opinions?
+
+-- 
+
+Thanks,
+
+David / dhildenb
