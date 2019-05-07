@@ -1,60 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A39AA157EA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 05:12:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA3C157C6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 04:41:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44ykQP4BcYzDqN9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 12:41:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44yl5G1j9SzDqMk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 13:12:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44ykP65rrDzDqFB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 12:40:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 44ykP63MqKz8t9Z
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 12:40:42 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 44ykP63BNKz9sBV; Tue,  7 May 2019 12:40:42 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.122.46; helo=new-02-2.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from NEW-02-2.privateemail.com (new-02-2.privateemail.com
- [198.54.122.46])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=oracle.com
+ (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=daniel.m.jordan@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.b="qPZyJEvF"; 
+ dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 44ykP61JY9z9s9y
- for <linuxppc-dev@ozlabs.org>; Tue,  7 May 2019 12:40:41 +1000 (AEST)
-Received: from MTA-08-1.privateemail.com (unknown [10.20.147.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id DFD416151E;
- Tue,  7 May 2019 02:40:39 +0000 (UTC)
-Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
- by MTA-08.privateemail.com (Postfix) with ESMTP id C37FA60051;
- Mon,  6 May 2019 22:40:39 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.244])
- by MTA-08.privateemail.com (Postfix) with ESMTPA id 4010960048;
- Tue,  7 May 2019 02:40:39 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2] powerpc/64s: support nospectre_v2 cmdline option
-Date: Mon,  6 May 2019 21:43:21 -0500
-Message-Id: <20190507024321.22281-1-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44yl3l5pbDzDqJW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2019 13:10:43 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4738uBG073685;
+ Tue, 7 May 2019 03:10:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Sa+cOJtJx0K5ZUTspQzVWRaHsaM72rSdt2S6cah8KqE=;
+ b=qPZyJEvFwNkpPyu498f2W9cJG3cwo3YzJHpJuUkM4qNXyo0XdOQ9+2nBbN/aGX6t9k1U
+ wHeLMsyAc1cE1N+uTUZnW/Iyw54XcN6jiBEm0jAv/cQLsff/0gr7PXOraCv+40U7PJWD
+ R/9Fkc7FCq8Z9qdqoT6DH83+M46p62s329nBRNiN69nX2PhdQ2dCEdLOHXuJEXE0hF3p
+ GLmiF0TCkWeY+nB04qmMqqK6u9J8x9umk/1yUcK+AKwwac5NjQpKLneDVrp7r8yIEyQW
+ 1GH7C9dCib2+z68OBCyWe+2gDeM+qGNzSX60HntCF330GSmcl5vC0+RL01+Q5LaL4Rk4 Og== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2120.oracle.com with ESMTP id 2s94b0j77m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 07 May 2019 03:10:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x473A5lN185360;
+ Tue, 7 May 2019 03:10:22 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by userp3020.oracle.com with ESMTP id 2s94af7xxr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 07 May 2019 03:10:22 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x473A6JU021461;
+ Tue, 7 May 2019 03:10:07 GMT
+Received: from ca-dmjordan1.us.oracle.com (/10.211.9.48)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 06 May 2019 20:10:06 -0700
+Date: Mon, 6 May 2019 23:09:57 -0400
+From: Daniel Jordan <daniel.m.jordan@oracle.com>
+To: Jason Gunthorpe <jgg@mellanox.com>
+Subject: Re: [PATCH] mm: add account_locked_vm utility function
+Message-ID: <20190507030957.3qp7yflco6ckcj5q@ca-dmjordan1.us.oracle.com>
+References: <20190503201629.20512-1-daniel.m.jordan@oracle.com>
+ <20190503232818.GA5182@mellanox.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190503232818.GA5182@mellanox.com>
+User-Agent: NeoMutt/20180323-268-5a959c
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9249
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905070018
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9249
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905070018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,72 +91,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, ajd@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Alan Tull <atull@kernel.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "linux-fpga@vger.kernel.org" <linux-fpga@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+ Daniel Jordan <daniel.m.jordan@oracle.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Alex Williamson <alex.williamson@redhat.com>, Moritz Fischer <mdf@kernel.org>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Lameter <cl@linux.com>, Wu Hao <hao.wu@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for disabling the kernel implemented spectre v2 mitigation
-(count cache flush on context switch) via the nospectre_v2 cmdline
-option.
+On Fri, May 03, 2019 at 11:28:22PM +0000, Jason Gunthorpe wrote:
+> On Fri, May 03, 2019 at 01:16:30PM -0700, Daniel Jordan wrote:
+> > Andrew, this one patch replaces these six from [1]:
+> > 
+> >     mm-change-locked_vms-type-from-unsigned-long-to-atomic64_t.patch
+> >     vfio-type1-drop-mmap_sem-now-that-locked_vm-is-atomic.patch
+> >     vfio-spapr_tce-drop-mmap_sem-now-that-locked_vm-is-atomic.patch
+> >     fpga-dlf-afu-drop-mmap_sem-now-that-locked_vm-is-atomic.patch
+> >     kvm-book3s-drop-mmap_sem-now-that-locked_vm-is-atomic.patch
+> >     powerpc-mmu-drop-mmap_sem-now-that-locked_vm-is-atomic.patch
+> > 
+> > That series converts locked_vm to an atomic, but on closer inspection causes at
+> > least one accounting race in mremap, and fixing it just for this type
+> > conversion came with too much ugly in the core mm to justify, especially when
+> > the right long-term fix is making these drivers use pinned_vm instead.
+> 
+> Did we ever decide what to do here? Should all these drivers be
+> switched to pinned_vm anyhow?
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
-v1->v2:
-	add call to toggle_count_cache_flush(false)
+Well, there were the concerns about switching in [1].  Alex, is there an
+example of an application or library that would break or be exploitable?  If
+there were particular worries (qemu for vfio type1, for example), perhaps some
+coordinated changes across the kernel and userspace would be possible,
+especially given the amount of effort it's likely going to take to get the
+locked_vm/pinned_vm accounting sorted out.
 
- arch/powerpc/kernel/security.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index b33bafb8fcea..d775da9b9227 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
- bool barrier_nospec_enabled;
- static bool no_nospec;
- static bool btb_flush_enabled;
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static bool no_spectrev2;
- #endif
- 
-@@ -106,7 +106,7 @@ static __init int barrier_nospec_debugfs_init(void)
- device_initcall(barrier_nospec_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
- 
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static int __init handle_nospectre_v2(char *p)
- {
- 	no_spectrev2 = true;
-@@ -114,6 +114,9 @@ static int __init handle_nospectre_v2(char *p)
- 	return 0;
- }
- early_param("nospectre_v2", handle_nospectre_v2);
-+#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
-+
-+#ifdef CONFIG_PPC_FSL_BOOK3E
- void setup_spectre_v2(void)
- {
- 	if (no_spectrev2)
-@@ -391,6 +394,15 @@ static void toggle_count_cache_flush(bool enable)
- 
- void setup_count_cache_flush(void)
- {
-+	if (no_spectrev2) {
-+		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED)
-+		    || security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
-+			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
-+
-+		toggle_count_cache_flush(false);
-+		return;
-+	}
-+
- 	toggle_count_cache_flush(true);
- }
- 
--- 
-2.21.0
-
+[1] https://lore.kernel.org/linux-mm/20190213130330.76ef1987@w520.home/
