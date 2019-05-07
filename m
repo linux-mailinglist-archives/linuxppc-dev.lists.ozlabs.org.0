@@ -1,72 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59A01686D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 18:54:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44z5Lf1lDBzDqMC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 02:54:50 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E37168E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2019 19:15:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44z5ns6DpxzDqJL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 03:14:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="DaJtWWko"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44z5mY71ntzDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 03:13:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44z5mY1tQkz8sjs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 03:13:49 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 44z5mY1hxhz9sBb; Wed,  8 May 2019 03:13:49 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44z5KF1rfRzDqCK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 02:53:36 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44z5K61W3Cz9tyhg;
- Tue,  7 May 2019 18:53:30 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=DaJtWWko; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id OaKjzUDVVKym; Tue,  7 May 2019 18:53:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44z5K60SSPz9tycB;
- Tue,  7 May 2019 18:53:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557248010; bh=WprILXdm/abE/MEzyylSE7b5a084BNrypeqdWUqRY4c=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=DaJtWWkoS3t7AQul3FXtkjh6BnenaYM73Y6WLeliWA/9Qc/6HGyTYOGn3uiEqWgNU
- avZnC5MsawFt2k0j1cV+VNsf3QFyd0Mx1cV5TyD2kJ9JR9Ejkyk5MoTv0epBmxNXRW
- ARaY3YDe2G0lsBYelezWXO/ZeQZ605N8Rzanjoak=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BA77E8B932;
- Tue,  7 May 2019 18:53:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FpuzyaJjCwg8; Tue,  7 May 2019 18:53:31 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B91D8B8CB;
- Tue,  7 May 2019 18:53:31 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: slightly improve cache helpers
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <0b460a85319fb89dab2c5d1200ac69a3e1b7c1ef.1557235807.git.christophe.leroy@c-s.fr>
- <20190507151030.GF8599@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <720e7c77-3f5c-83f3-6013-36b265c1ba73@c-s.fr>
-Date: Tue, 7 May 2019 18:53:30 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by ozlabs.org (Postfix) with ESMTPS id 44z5mX2FRYz9s00
+ for <linuxppc-dev@ozlabs.org>; Wed,  8 May 2019 03:13:47 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x47HDH9P060300
+ for <linuxppc-dev@ozlabs.org>; Tue, 7 May 2019 13:13:44 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sbe6xg29k-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 07 May 2019 13:13:44 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
+ Tue, 7 May 2019 18:13:42 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 May 2019 18:13:41 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x47HDdEQ52559936
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 May 2019 17:13:39 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7030B11C04A;
+ Tue,  7 May 2019 17:13:39 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB27611C05B;
+ Tue,  7 May 2019 17:13:37 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.102.3.43])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  7 May 2019 17:13:37 +0000 (GMT)
+Date: Tue, 7 May 2019 22:43:31 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v2 15/16] powernv/fadump: consider f/w load area
+References: <155541065470.812.7120798773144842076.stgit@hbathini.in.ibm.com>
+ <155541097094.812.18328895014763068053.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190507151030.GF8599@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <155541097094.812.18328895014763068053.stgit@hbathini.in.ibm.com>
+User-Agent: NeoMutt/20180716
+X-TM-AS-GCONF: 00
+x-cbid: 19050717-0008-0000-0000-000002E43CD4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050717-0009-0000-0000-00002250BAED
+Message-Id: <20190507171331.p5wwzc3asvpkltxb@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-07_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905070111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,45 +103,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Reply-To: mahesh@linux.vnet.ibm.com
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 07/05/2019 à 17:10, Segher Boessenkool a écrit :
-> Hi Christophe,
+On 2019-04-16 16:06:13 Tue, Hari Bathini wrote:
+> OPAL loads kernel & initrd at 512MB offset (256MB size), also exported
+> as ibm,opal/dump/fw-load-area. So, if boot memory size of FADump is
+> less than 768MB, kernel memory to be exported as '/proc/vmcore' would
+> be overwritten by f/w while loading kernel & initrd. To avoid such a
+> scenario, enforce a minimum boot memory size of 768MB on OPAL platform.
 > 
-> On Tue, May 07, 2019 at 01:31:39PM +0000, Christophe Leroy wrote:
->> Cache instructions (dcbz, dcbi, dcbf and dcbst) take two registers
->> that are summed to obtain the target address. Using '%y0' argument
->> gives GCC the opportunity to use both registers instead of only one
->> with the second being forced to 0.
+> Also, skip using FADump if a newer F/W version loads kernel & initrd
+> above 768MB.
 > 
-> That's not quite right.  Sorry if I didn't explain it properly.
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/fadump-common.h          |   15 +++++++++++++--
+>  arch/powerpc/kernel/fadump.c                 |    8 ++++++++
+>  arch/powerpc/platforms/powernv/opal-fadump.c |   23 +++++++++++++++++++++++
+>  3 files changed, 44 insertions(+), 2 deletions(-)
 > 
-> "m" allows all memory.  But this instruction only allows reg,reg and
-> 0,reg addressing.  For that you need to use constraint "Z".
+> diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
+> index 1bd3aeb..f59fdc7 100644
+> --- a/arch/powerpc/kernel/fadump-common.h
+> +++ b/arch/powerpc/kernel/fadump-common.h
+> @@ -24,14 +24,25 @@
+>  #define RMA_END		(ppc64_rma_size)
+>  
+>  /*
+> + * With kernel & initrd loaded at 512MB (with 256MB size), enforce a minimum
+> + * boot memory size of 768MB to ensure f/w loading kernel and initrd doesn't
+> + * mess with crash'ed kernel's memory during MPIPL.
+> + */
+> +#define OPAL_MIN_BOOT_MEM	(0x30000000UL)
+> +
+> +/*
+>   * On some Power systems where RMO is 128MB, it still requires minimum of
+>   * 256MB for kernel to boot successfully. When kdump infrastructure is
+>   * configured to save vmcore over network, we run into OOM issue while
+>   * loading modules related to network setup. Hence we need additional 64M
+>   * of memory to avoid OOM issue.
+>   */
+> -#define MIN_BOOT_MEM	(((RMA_END < (0x1UL << 28)) ? (0x1UL << 28) : RMA_END) \
+> -			+ (0x1UL << 26))
+> +#define PSERIES_MIN_BOOT_MEM	(((RMA_END < (0x1UL << 28)) ? (0x1UL << 28) : \
+> +				 RMA_END) + (0x1UL << 26))
+> +
+> +#define MIN_BOOT_MEM	((fw_dump.fadump_platform ==			\
+> +			 FADUMP_PLATFORM_POWERNV) ? OPAL_MIN_BOOT_MEM :	\
+> +			 PSERIES_MIN_BOOT_MEM)
 
-But gcc help 
-(https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html#Machine-Constraints) 
-says it is better to use 'm':
+Can we hide this behind fadump_ops.get_bootmem_min() instead of common code
+doing platform check ?
 
-Z
+>  
+>  /* The upper limit percentage for user specified boot memory size (25%) */
+>  #define MAX_BOOT_MEM_RATIO			4
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index ba26169..3c3adc2 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -582,6 +582,14 @@ int __init fadump_reserve_mem(void)
+>  				ALIGN(fw_dump.boot_memory_size,
+>  							FADUMP_CMA_ALIGNMENT);
+>  #endif
+> +
+> +		if ((fw_dump.fadump_platform == FADUMP_PLATFORM_POWERNV) &&
+> +		    (fw_dump.boot_memory_size < OPAL_MIN_BOOT_MEM)) {
 
-     Memory operand that is an indexed or indirect from a register (it 
-is usually better to use ‘m’ or ‘es’ in asm statements)
+and here too.. fadump_ops.validate_bootmem_size() ? push platform specific
+stuff behind fadump_ops.
 
-That's the reason why I used 'm', I thought it was equivalent.
+Rest looks good.
 
-Christophe
+Thanks,
+-Mahesh.
 
-> 
-> The output modifier "%y0" just makes [reg] (i.e. simple indirect addressing)
-> print as "0,reg" instead of "0(reg)" as it would by default (for just "%0").
-> 
-> 
-> Segher
-> 
