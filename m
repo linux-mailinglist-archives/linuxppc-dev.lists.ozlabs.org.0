@@ -2,96 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7608F17401
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 10:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995BF1753B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 11:37:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zVFn6wGFzDqLK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 18:37:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zWc36pxjzDqHF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 19:37:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zVD8371vzDq9d
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 18:35:34 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 9C383302451A;
- Wed,  8 May 2019 08:35:31 +0000 (UTC)
-Received: from [10.36.117.63] (ovpn-117-63.ams2.redhat.com [10.36.117.63])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B6A1460C67;
- Wed,  8 May 2019 08:35:27 +0000 (UTC)
-Subject: Re: [PATCH v2 4/8] mm/memory_hotplug: Create memory block devices
- after arch_add_memory()
-To: linux-mm@kvack.org
-References: <20190507183804.5512-1-david@redhat.com>
- <20190507183804.5512-5-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <094f6f72-b02f-585f-6ffa-d631c71808d6@redhat.com>
-Date: Wed, 8 May 2019 10:35:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190507183804.5512-5-david@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.49]); Wed, 08 May 2019 08:35:32 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zWZg1KqWzDqGP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 19:36:42 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x489ZNJd111227
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 05:36:38 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sbvm6g1a4-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 05:36:38 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Wed, 8 May 2019 10:36:36 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 8 May 2019 10:36:33 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x489aW7c49938534
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 May 2019 09:36:32 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C19D2A404D;
+ Wed,  8 May 2019 09:36:32 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C05D6A4051;
+ Wed,  8 May 2019 09:36:31 +0000 (GMT)
+Received: from [9.109.244.72] (unknown [9.109.244.72])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  8 May 2019 09:36:31 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.8\))
+Subject: [next-20190507][powerpc] WARN kernel/cgroup/cgroup.c:6008 with LTP
+ ptrace01 test case
+Date: Wed, 8 May 2019 15:06:30 +0530
+To: linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
+X-Mailer: Apple Mail (2.3445.104.8)
+X-TM-AS-GCONF: 00
+x-cbid: 19050809-0012-0000-0000-000003197D23
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050809-0013-0000-0000-00002151FE00
+Message-Id: <A8995C41-9A8F-468C-89B2-AB6E44C7EADC@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-08_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=519 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905080060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,152 +88,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-sh@vger.kernel.org, "mike.travis@hpe.com" <mike.travis@hpe.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@kernel.org>, Mathieu Malaterre <malat@debian.org>,
- Andrew Banman <andrew.banman@hpe.com>, Qian Cai <cai@lca.pw>,
- Arun KS <arunks@codeaurora.org>, akpm@linux-foundation.org,
- Wei Yang <richard.weiyang@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Tejun Heo <tj@kernel.org>, Roman Gushchin <guro@fb.com>,
+ Oleg Nesterov <oleg@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.05.19 20:38, David Hildenbrand wrote:
-> Only memory to be added to the buddy and to be onlined/offlined by
-> user space using memory block devices needs (and should have!) memory
-> block devices.
-> 
-> Factor out creation of memory block devices Create all devices after
-> arch_add_memory() succeeded. We can later drop the want_memblock parameter,
-> because it is now effectively stale.
-> 
-> Only after memory block devices have been added, memory can be onlined
-> by user space. This implies, that memory is not visible to user space at
-> all before arch_add_memory() succeeded.
-> 
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Andrew Banman <andrew.banman@hpe.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Qian Cai <cai@lca.pw>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Arun KS <arunks@codeaurora.org>
-> Cc: Mathieu Malaterre <malat@debian.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/base/memory.c  | 70 ++++++++++++++++++++++++++----------------
->  include/linux/memory.h |  2 +-
->  mm/memory_hotplug.c    | 15 ++++-----
->  3 files changed, 53 insertions(+), 34 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 6e0cb4fda179..862c202a18ca 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -701,44 +701,62 @@ static int add_memory_block(int base_section_nr)
->  	return 0;
->  }
->  
-> +static void unregister_memory(struct memory_block *memory)
-> +{
-> +	BUG_ON(memory->dev.bus != &memory_subsys);
-> +
-> +	/* drop the ref. we got via find_memory_block() */
-> +	put_device(&memory->dev);
-> +	device_unregister(&memory->dev);
-> +}
-> +
->  /*
-> - * need an interface for the VM to add new memory regions,
-> - * but without onlining it.
-> + * Create memory block devices for the given memory area. Start and size
-> + * have to be aligned to memory block granularity. Memory block devices
-> + * will be initialized as offline.
->   */
-> -int hotplug_memory_register(int nid, struct mem_section *section)
-> +int hotplug_memory_register(unsigned long start, unsigned long size)
->  {
-> -	int ret = 0;
-> +	unsigned long block_nr_pages = memory_block_size_bytes() >> PAGE_SHIFT;
-> +	unsigned long start_pfn = PFN_DOWN(start);
-> +	unsigned long end_pfn = start_pfn + (size >> PAGE_SHIFT);
-> +	unsigned long pfn;
->  	struct memory_block *mem;
-> +	int ret = 0;
->  
-> -	mutex_lock(&mem_sysfs_mutex);
-> +	BUG_ON(!IS_ALIGNED(start, memory_block_size_bytes()));
-> +	BUG_ON(!IS_ALIGNED(size, memory_block_size_bytes()));
->  
-> -	mem = find_memory_block(section);
-> -	if (mem) {
-> -		mem->section_count++;
-> -		put_device(&mem->dev);
-> -	} else {
-> -		ret = init_memory_block(&mem, section, MEM_OFFLINE);
-> +	mutex_lock(&mem_sysfs_mutex);
-> +	for (pfn = start_pfn; pfn != end_pfn; pfn += block_nr_pages) {
-> +		mem = find_memory_block(__pfn_to_section(pfn));
-> +		if (mem) {
-> +			WARN_ON_ONCE(false);
-> +			put_device(&mem->dev);
-> +			continue;
-> +		}
-> +		ret = init_memory_block(&mem, __pfn_to_section(pfn),
-> +					MEM_OFFLINE);
->  		if (ret)
-> -			goto out;
-> -		mem->section_count++;
-> +			break;
-> +		mem->section_count = memory_block_size_bytes() /
-> +				     MIN_MEMORY_BLOCK_SIZE;
-> +	}
-> +	if (ret) {
-> +		end_pfn = pfn;
-> +		for (pfn = start_pfn; pfn != end_pfn; pfn += block_nr_pages) {
-> +			mem = find_memory_block(__pfn_to_section(pfn));
-> +			if (!mem)
-> +				continue;
-> +			mem->section_count = 0;
-> +			unregister_memory(mem);
-> +		}
->  	}
-> -
-> -out:
->  	mutex_unlock(&mem_sysfs_mutex);
->  	return ret;
->  }
->  
-> -static void
-> -unregister_memory(struct memory_block *memory)
-> -{
-> -	BUG_ON(memory->dev.bus != &memory_subsys);
-> -
-> -	/* drop the ref. we got via find_memory_block() */
-> -	put_device(&memory->dev);
-> -	device_unregister(&memory->dev);
-> -}
-> -
-> -void unregister_memory_section(struct mem_section *section)
-> +static int remove_memory_section(struct mem_section *section)
->  {
+While running LTP tests(specifically ptrace01) following WARNING is =
+observed
+on POWER8 LPAR running next-20190507 built using 4K page size.
 
-The function change is misplaces in this patch will drop it so this
-patch compiles without the other patches.
+[ 3969.979492] msgrcv04 (433) used greatest stack depth: 9328 bytes left
+[ 3981.452911] madvise06 (515): drop_caches: 3
+[ 4004.575752] WARNING: CPU: 5 PID: 721 at kernel/cgroup/cgroup.c:6008 =
+cgroup_exit+0x2ac/0x2c0
+[ 4004.575781] Modules linked in: overlay rpadlpar_io rpaphp =
+iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack =
+nf_conntrack nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4 xt_tcpudp tun =
+bridge stp llc kvm iptable_filter pseries_rng rng_core vmx_crypto =
+ip_tables x_tables autofs4 [last unloaded: dummy_del_mod]
+[ 4004.575837] CPU: 5 PID: 721 Comm: ptrace01 Tainted: G           O     =
+ 5.1.0-next-20190507-autotest #1
+[ 4004.575846] NIP:  c000000001b3026c LR: c000000001b30054 CTR: =
+c000000001c9f020
+[ 4004.575855] REGS: c000000171fff840 TRAP: 0700   Tainted: G           =
+O       (5.1.0-next-20190507-autotest)
+[ 4004.575863] MSR:  800000010282b033 =
+<SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE,TM[E]>  CR: 44004824  XER: 20000000
+[ 4004.575885] CFAR: c000000001b30078 IRQMASK: 1=20
+[ 4004.575885] GPR00: c000000001b30054 c000000171fffad0 c000000003938700 =
+c00000027b02fa18=20
+[ 4004.575885] GPR04: c00000027b02fa00 0000000000000000 c000000003ae8700 =
+00000000001c180a=20
+[ 4004.575885] GPR08: 0000000000000001 0000000000000001 c000000003ae8700 =
+0000000000000001=20
+[ 4004.575885] GPR12: 0000000000004400 c00000001ec7ea80 c000000003a4d670 =
+0000000000000009=20
+[ 4004.575885] GPR16: 0000000000000000 0000000000040100 00000000418004fc =
+0000000008430000=20
+[ 4004.575885] GPR20: 0000000000000009 0000000000000001 c0000001715e9200 =
+c00000016d8f4d00=20
+[ 4004.575885] GPR24: c000000171fffd90 0000000000000100 c000000168692478 =
+c000000171fffb98=20
+[ 4004.575885] GPR28: c000000168692400 c00000016d8f4d00 c0000000036420d0 =
+c00000027b02fa00=20
+[ 4004.575958] NIP [c000000001b3026c] cgroup_exit+0x2ac/0x2c0
+[ 4004.575966] LR [c000000001b30054] cgroup_exit+0x94/0x2c0
+[ 4004.575972] Call Trace:
+[ 4004.575979] [c000000171fffad0] [c000000001b30054] =
+cgroup_exit+0x94/0x2c0 (unreliable)
+[ 4004.575990] [c000000171fffb30] [c0000000019cea98] =
+do_exit+0x878/0x1ae0
+[ 4004.575999] [c000000171fffc00] [c0000000019cfe4c] =
+do_group_exit+0xac/0x1d0
+[ 4004.576009] [c000000171fffc40] [c0000000019ed00c] =
+get_signal+0x2bc/0x11c0
+[ 4004.576019] [c000000171fffd30] [c000000001867b14] =
+do_notify_resume+0x384/0x900
+[ 4004.576029] [c000000171fffe20] [c00000000183e844] =
+ret_from_except_lite+0x70/0x74
+[ 4004.576037] Instruction dump:
+[ 4004.576043] 314a0001 7d40492d 40c2fff4 3d42001b e92a7288 39290001 =
+f92a7288 4bfffe5c=20
+[ 4004.576056] 3d42001b e92a7258 39290001 f92a7258 <0fe00000> 4bfffe0c =
+4be91e45 60000000=20
+[ 4004.576071] ---[ end trace 82a1a7c19005ebd6 ]=E2=80=94
+
+The WARN_ONCE was added by following commit=20
+96b9c592def5 ("cgroup: get rid of cgroup_freezer_frozen_exit()=E2=80=9D).=20=
 
 
--- 
+Reverting the patch helps avoid the warning.
 
-Thanks,
+Thanks
+-Sachin=
 
-David / dhildenb
