@@ -1,71 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A8D18119
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 22:33:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zp8j0FR4zDqBb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 06:33:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3CF181FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 00:20:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zrWk0jcnzDqQQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 08:20:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="tV5HH5lW"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zp0n2Rm3zDqGk
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 06:26:48 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id i21so10637889pgi.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 13:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:mime-version
- :content-disposition:user-agent;
- bh=OoSAyLqOzoTY4imTMlt5PXtdUH44ZwugWLFtgR1oxSE=;
- b=tV5HH5lWOzHtckicgsfc51J6eNwMvV2tW+XHuF6CYyJUdxBtE1UJVmLFLeV5joiFWN
- uxjlFtB+LxasFatjjPafAohY9evgEv+8ADu5Uyi9FHAhNPbVJmvq0wYRqdBv/7rusYGU
- 0zEUlRzHjo74veCDdg+/RHOBm/cyJ0UQDX3qU/HBqDt50im2NsaSv7bpZouSpC9JoC3B
- acSRkq46X8/LmyKUnDuRtknHutDaPJFhnCs8ENjgWsQGhm2b0/gqysMsJh3rkeKjNQ1f
- sCGzZg8dnfKChXGhp1tPblzEPbWSAKJvYgM+LSIdoYuf/9eYaOoByQ8bGQ2SiT7pwU6x
- qDTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :mime-version:content-disposition:user-agent;
- bh=OoSAyLqOzoTY4imTMlt5PXtdUH44ZwugWLFtgR1oxSE=;
- b=qICDbnHsbVK10G8iDlPKwEtjUntqCwjFwbZXFV6D+e3vsxxraLtPY6W98UwmkUYVLY
- e6qhqbhu763rva1Ao5numuRoRF1ZGT3TxSCL1z8r4PIFFQQ+lznfmUkCPXOQ8PIGI+Om
- ByE393F7u2w0CXYwFnFoP4+7e6CGlwSJVA2LKrm9EnZK2SPbrgwU8HlupSPo85t9nk78
- jM5Yf4cNE/iUacB69Yz6g7qr+BcXvywghT4jaoaxbqXznKiGKM74Oee0zLuwXsFNeDqW
- JDmBqbghwT6xfWZ4ltzDB3Vzs64hKzyP3hTXc5gzTtfhIjUFgVU/5KqRZ39sSfX3ZlsV
- YwKQ==
-X-Gm-Message-State: APjAAAXkwRivhPnyn+nSd+nUMnhMic9ptMApnYWML+Zxr1a61tOxXC2q
- IyZbdR1U5xkJaCDpMmY+vxSWr8So
-X-Google-Smtp-Source: APXvYqwMoiauZe5i8ofLrMADrXvHo3BJVxcQ/isefeiLoACkGMIXY53jBARJIbq4SNGDqLdtRN4n2Q==
-X-Received: by 2002:a63:e602:: with SMTP id g2mr168941pgh.172.1557347204831;
- Wed, 08 May 2019 13:26:44 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id 18sm141094pfp.18.2019.05.08.13.26.43
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 08 May 2019 13:26:43 -0700 (PDT)
-Date: Wed, 8 May 2019 13:26:42 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: stable@vger.kernel.org
-Subject: Build failure in v4.4.y.queue (ppc:allmodconfig)
-Message-ID: <20190508202642.GA28212@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zrVP2JYtzDqJX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 08:19:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="g2qc3HCd"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="K8+AjeS4"; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 44zrVN5l93z8tGc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 08:19:08 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 44zrVN5XHPz9s9y; Thu,  9 May 2019 08:19:08 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=russell.cc
+ (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com;
+ envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.b="g2qc3HCd"; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.b="K8+AjeS4"; dkim-atps=neutral
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
+ [66.111.4.26])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 44zrVK23MRz9s5c
+ for <linuxppc-dev@ozlabs.org>; Thu,  9 May 2019 08:19:04 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 8196022136;
+ Wed,  8 May 2019 18:19:01 -0400 (EDT)
+Received: from imap21 ([10.202.2.71])
+ by compute6.internal (MEProxy); Wed, 08 May 2019 18:19:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ mime-version:message-id:in-reply-to:references:date:from:to:cc
+ :subject:content-type; s=fm1; bh=dUFEvinBY45jVKzXLujBoVg7MttlgbV
+ HhUdhJEq+gBY=; b=g2qc3HCd5gCutymTrBuA0ljFgqdefJlD14r3ZYsKREQfEUa
+ tl0vS9aWufoeyALeLE5wqF02BehbyodmkT2kzmPWaKXw/6X6RZKSTjXq5aa9y+QE
+ ijQ6qlCqeem2NMAtg5Lr+8kCQIV7t9tM9TnEc2c6yW/m2f+hpe/oraFrT6JYcbI9
+ ClGNjYngbcDJKZuP2GDaeqIALlOoDmexEjM0wKIa35mrp/nS5awLnhhwa+gjTMNo
+ ASovDmTqqQnYLf5GZK/1mpPUI6b3clEa6eOaEcUqsRkTSa4EghCLaFfni9Fhd7/d
+ wy+5iTs2aFwmtX4NPCsL9X7ah1K7sR3SisMHxZA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=dUFEvi
+ nBY45jVKzXLujBoVg7MttlgbVHhUdhJEq+gBY=; b=K8+AjeS4oSYRFMp8gdyVMC
+ RQQL9q/75IrqdAXYVumOHWNUrdnJ8ZFxzQ5FwgKcD65spfYqH/T26mSdcWGZEqaC
+ xDadHsVvEoxLfS9uiSRtZ1itaQd7eUSxk+t6dcL8bW07ImsTU4oEYLvFN51kmWmL
+ mxqXfuizm3oZBt+bZN8tva5EVUwzOrMegDmINcS9wRaqpWLiAHEPJ/DvP2Fnzt/p
+ ICohgxeEAI1r1CR3TVvVTruFqSrKjlXTx8eniorGUVHohvaF/lcPJPTeGdRYiCBi
+ NZ2I4mmfnu+5d2q/yMlxZdSlHuV8fWMb5IxPP6v3JOt9SWHmQdtqESGNv23IAZ4g
+ ==
+X-ME-Sender: <xms:1FXTXM8K3ZQT6Lpocd0MP2i8thsRzbGTFpNLmM7JYk5lyS2yRIa5cQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrkeeggddtkecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculddutddmnecujfgurhepofgfggfkjghffffhvffutgesthdtredtreer
+ tdenucfhrhhomhepfdftuhhsshgvlhhlucevuhhrrhgvhidfuceorhhushgtuhhrsehruh
+ hsshgvlhhlrdgttgeqnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhu
+ shhsvghllhdrtggtnecuvehluhhsthgvrhfuihiivgeptd
+X-ME-Proxy: <xmx:1VXTXCSazNHQQclJNlwO1Xpixzq3q-C4rC6-3z7rDkVWXMsZafa9PA>
+ <xmx:1VXTXDXRZkDwKS5IGLCW5eevlYIMaot8DQkzsBI27XI9hmHz0tPPtg>
+ <xmx:1VXTXG1WqtYIUV8KQX4FET0ggto0uUZQZtkp68dPUj0FJ0VnbfM-LQ>
+ <xmx:1VXTXOCOd-NTlNEWOAnh7PDVJiUKJpGWrL1E-ubmUce1hWSl57MTRw>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id D6F1872303; Wed,  8 May 2019 18:19:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.1.6-449-gfb3fc5a-fmstable-20190430v1
+Mime-Version: 1.0
+Message-Id: <36775962-bfab-4dfb-98c5-f35dab1ae988@www.fastmail.com>
+In-Reply-To: <20190508123047.10217-1-mpe@ellerman.id.au>
+References: <20190508123047.10217-1-mpe@ellerman.id.au>
+Date: Wed, 08 May 2019 18:18:56 -0400
+From: "Russell Currey" <ruscur@russell.cc>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc/64s: Use early_mmu_has_feature() in set_kuap()
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,24 +106,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I see multiple instances of:
+On Wed, May 8, 2019, at 10:31 PM, Michael Ellerman wrote:
+> When implementing the KUAP support on Radix we fixed one case where
+> mmu_has_feature() was being called too early in boot via
+> __put_user_size().
+> 
+> However since then some new code in linux-next has created a new path
+> via which we can end up calling mmu_has_feature() too early.
+> 
+> On P9 this leads to crashes early in boot if we have both PPC_KUAP and
+> CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG enabled. Our early boot code
+> calls printk() which calls probe_kernel_read(), that does a
+> __copy_from_user_inatomic() which calls into set_kuap() and that uses
+> mmu_has_feature().
+> 
+> At that point in boot we haven't patched MMU features yet so the debug
+> code in mmu_has_feature() complains, and calls printk(). At that point
+> we recurse, eg:
+> 
+>   ...
+>   dump_stack+0xdc
+>   probe_kernel_read+0x1a4
+>   check_pointer+0x58
+>   ...
+>   printk+0x40
+>   dump_stack_print_info+0xbc
+>   dump_stack+0x8
+>   probe_kernel_read+0x1a4
+>   probe_kernel_read+0x19c
+>   check_pointer+0x58
+>   ...
+>   printk+0x40
+>   cpufeatures_process_feature+0xc8
+>   scan_cpufeatures_subnodes+0x380
+>   of_scan_flat_dt_subnodes+0xb4
+>   dt_cpu_ftrs_scan_callback+0x158
+>   of_scan_flat_dt+0xf0
+>   dt_cpu_ftrs_scan+0x3c
+>   early_init_devtree+0x360
+>   early_setup+0x9c
+> 
+> And so on for infinity, symptom is a dead system.
+> 
+> Even more fun is what happens when using the hash MMU (ie. p8 or p9
+> with Radix disabled), and when we don't have
+> CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG enabled. With the debug disabled
+> we don't check if static keys have been initialised, we just rely on
+> the jump label. But the jump label defaults to true so we just whack
+> the AMR even though Radix is not enabled.
+> 
+> Clearing the AMR is fine, but after we've done the user copy we write
+> (0b11 << 62) into AMR. When using hash that makes all pages with key
+> zero no longer readable or writable. All kernel pages implicitly have
+> key zero, and so all of a sudden the kernel can't read or write any of
+> its memory. Again dead system.
+> 
+> In the medium term we have several options for fixing this.
+> probe_kernel_read() doesn't need to touch AMR at all, it's not doing a
+> user access after all, but it uses __copy_from_user_inatomic() just
+> because it's easy, we could fix that.
+> 
+> It would also be safe to default to not writing to the AMR during
+> early boot, until we've detected features. But it's not clear that
+> flipping all the MMU features to static_key_false won't introduce
+> other bugs.
+> 
+> But for now just switch to early_mmu_has_feature() in set_kuap(), that
+> avoids all the problems with jump labels. It adds the overhead of a
+> global lookup and test, but that's probably trivial compared to the
+> writes to the AMR anyway.
+> 
+> Fixes: 890274c2dc4c ("powerpc/64s: Implement KUAP for Radix MMU")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-arch/powerpc/kernel/exceptions-64s.S:839: Error:
-	attempt to move .org backwards
+Reviewed-by: Russell Currey <ruscur@russell.cc>
 
-in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
-
-This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a store
-forwarding barrier at kernel entry/exit"), which is part of a large patch
-series and can not easily be reverted.
-
-Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ?
-
-Thanks,
-Guenter
+> ---
+>  arch/powerpc/include/asm/book3s/64/kup-radix.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h 
+> b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> index 7679bd0c5af0..f254de956d6a 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> @@ -65,7 +65,7 @@
+>  
+>  static inline void set_kuap(unsigned long value)
+>  {
+> -	if (!mmu_has_feature(MMU_FTR_RADIX_KUAP))
+> +	if (!early_mmu_has_feature(MMU_FTR_RADIX_KUAP))
+>  		return;
+>  
+>  	/*
+> -- 
+> 2.20.1
+> 
+>
