@@ -1,74 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A8D18119
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 22:33:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0EF17EFF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 19:19:23 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zjrT1kQ2zDqDJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 03:19:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zp8j0FR4zDqBb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 06:33:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="MqFiSXb9"; 
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="tV5HH5lW"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zjq12z1fzDq83
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 03:18:04 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 44zjps6jG8z9typg;
- Wed,  8 May 2019 19:17:57 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=MqFiSXb9; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id FLpoFjDUKmry; Wed,  8 May 2019 19:17:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 44zjps5JRmz9typ9;
- Wed,  8 May 2019 19:17:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557335877; bh=MKRqTd55kcmH4RuMf7lscRR+wmVsjwNJCi3x5iDCJ9A=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=MqFiSXb9MqsOQ+bHpePbwO6iRjE3kzoFDjv3i+IkEnEKK+brV+aG/uyHr0ZQxNR1Q
- tCOUVSe1OoTkkUiOgSzktDZ5EsKspeFTi3sEocTifVGHREv8ywV1kVdD/4YMp0opc6
- 4gXVu1IW0LIPk9SsbJGfQt/IzHrQlei20B17+pHY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 69BB18B90B;
- Wed,  8 May 2019 19:17:59 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id r2BSWgysYCEQ; Wed,  8 May 2019 19:17:59 +0200 (CEST)
-Received: from [192.168.232.53] (unknown [192.168.232.53])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F320B8B909;
- Wed,  8 May 2019 19:17:58 +0200 (CEST)
-Subject: Re: IPIC_SERMR vs IPIC_SERMR
-To: "Rodriguez Quesada, Pablo" <Pablo.Rodriguez-Quesada@windriver.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <0CDD4071D6ACF54ABB9CF1A6D90375A809BAF4E4@ALA-MBD.corp.ad.wrs.com>
-From: christophe leroy <christophe.leroy@c-s.fr>
-Message-ID: <173648c3-686f-098f-a910-f81ffc1a660a@c-s.fr>
-Date: Wed, 8 May 2019 19:17:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zp0n2Rm3zDqGk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 06:26:48 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id i21so10637889pgi.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 13:26:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:mime-version
+ :content-disposition:user-agent;
+ bh=OoSAyLqOzoTY4imTMlt5PXtdUH44ZwugWLFtgR1oxSE=;
+ b=tV5HH5lWOzHtckicgsfc51J6eNwMvV2tW+XHuF6CYyJUdxBtE1UJVmLFLeV5joiFWN
+ uxjlFtB+LxasFatjjPafAohY9evgEv+8ADu5Uyi9FHAhNPbVJmvq0wYRqdBv/7rusYGU
+ 0zEUlRzHjo74veCDdg+/RHOBm/cyJ0UQDX3qU/HBqDt50im2NsaSv7bpZouSpC9JoC3B
+ acSRkq46X8/LmyKUnDuRtknHutDaPJFhnCs8ENjgWsQGhm2b0/gqysMsJh3rkeKjNQ1f
+ sCGzZg8dnfKChXGhp1tPblzEPbWSAKJvYgM+LSIdoYuf/9eYaOoByQ8bGQ2SiT7pwU6x
+ qDTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :mime-version:content-disposition:user-agent;
+ bh=OoSAyLqOzoTY4imTMlt5PXtdUH44ZwugWLFtgR1oxSE=;
+ b=qICDbnHsbVK10G8iDlPKwEtjUntqCwjFwbZXFV6D+e3vsxxraLtPY6W98UwmkUYVLY
+ e6qhqbhu763rva1Ao5numuRoRF1ZGT3TxSCL1z8r4PIFFQQ+lznfmUkCPXOQ8PIGI+Om
+ ByE393F7u2w0CXYwFnFoP4+7e6CGlwSJVA2LKrm9EnZK2SPbrgwU8HlupSPo85t9nk78
+ jM5Yf4cNE/iUacB69Yz6g7qr+BcXvywghT4jaoaxbqXznKiGKM74Oee0zLuwXsFNeDqW
+ JDmBqbghwT6xfWZ4ltzDB3Vzs64hKzyP3hTXc5gzTtfhIjUFgVU/5KqRZ39sSfX3ZlsV
+ YwKQ==
+X-Gm-Message-State: APjAAAXkwRivhPnyn+nSd+nUMnhMic9ptMApnYWML+Zxr1a61tOxXC2q
+ IyZbdR1U5xkJaCDpMmY+vxSWr8So
+X-Google-Smtp-Source: APXvYqwMoiauZe5i8ofLrMADrXvHo3BJVxcQ/isefeiLoACkGMIXY53jBARJIbq4SNGDqLdtRN4n2Q==
+X-Received: by 2002:a63:e602:: with SMTP id g2mr168941pgh.172.1557347204831;
+ Wed, 08 May 2019 13:26:44 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id 18sm141094pfp.18.2019.05.08.13.26.43
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 08 May 2019 13:26:43 -0700 (PDT)
+Date: Wed, 8 May 2019 13:26:42 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: stable@vger.kernel.org
+Subject: Build failure in v4.4.y.queue (ppc:allmodconfig)
+Message-ID: <20190508202642.GA28212@roeck-us.net>
 MIME-Version: 1.0
-In-Reply-To: <0CDD4071D6ACF54ABB9CF1A6D90375A809BAF4E4@ALA-MBD.corp.ad.wrs.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
-X-Antivirus: Avast (VPS 190508-2, 08/05/2019), Outbound message
-X-Antivirus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,191 +77,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ramirez Rojas, Luis Daniel \(Daniel\)" <Daniel.RamirezRojas@windriver.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Pablo,
+I see multiple instances of:
 
-Le 07/05/2019 à 23:50, Rodriguez Quesada, Pablo a écrit :
-> Hi, Christophe and everyone from the LinuxPPC community,
-> 
-> Hope you are doing well!
-> 
-> I was working with Daniel, and we were reviewing the ipic source code 
-> and came to these questions:
-> 
-> 1.The first one came up while reviewing the document “Understanding 
-> IPIC” from NXP (*). The document states that:
-> 
-> /System Error Status Register (SERSR) – 0x40: Each bit in the SERSR 
-> register corresponds to a non-maskable error source that generates a 
-> machine check exception (MCP). These bits are cleared by writing the bit 
-> location with a logic 1./
-> 
-> /The interrupting source must be cleared before clearing the interrupts 
-> error status bit./
-> 
-> /System Error Mask Register (SERMR) – 0x44 When a machine check 
-> exception is signaled from one of the peripheral modules, its 
-> corresponding flag bit in this register is set. Any of the interrupting 
-> sources can be individually masked./
+arch/powerpc/kernel/exceptions-64s.S:839: Error:
+	attempt to move .org backwards
 
-I guess the above description is misleading.
+in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
 
-In the MPC8323 Reference Manual, I find it more explicit:
+This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a store
+forwarding barrier at kernel entry/exit"), which is part of a large patch
+series and can not easily be reverted.
 
-8.5.14 System Error Mask Register (SERMR)
-Each implemented bit in SERMR, shown in Figure 8-16, corresponds to an 
-external and an internal mcp source (MCP). The user masks an MCP by 
-clearing and enables an interrupt by setting the corresponding SERMR 
-bit. When a masked MCP occurs, the corresponding SERSR bit is set, 
-regardless of the setting of the corresponding SERMR bit although no MCP 
-request is passed to the core in this case. The SERMR can be read by the 
-user at any time.
+Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ?
 
-> 
-> //
-> 
-> We noticed that you changed the ipic_clear_mcp_status  function by 
-> swapping SERMR to SERSR, but we don’t fully understand why. Could you 
-> please elaborate on why this change is made? This because we had a code 
-> that was working before the patch and we would fully understand why it 
-> stopped working. From our perspective, both SERSR and SERMR are related 
-> to MCEs and honestly don’t know what’s the difference at the hardware 
-> level, and the role of every register on the machine check flow. It is 
-> also weird for us that before your patch the register SERSR wasn’t used 
-> in any part of the Linux kernel.
-
-I suppose you are referring to the patch 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/powerpc/sysdev/ipic.c?h=v5.1&id=6b148a7ce72a7f87c81cbcde48af014abc0516a9
-
-For me the role of a function called ipic_clear_mcp_status() is ... to 
-clear the status, not to manipulate a mask. So it has to deal with the 
-status register (SERSR) and has nothing to do with the mask register 
-(SERMR).
-
-> 
-> 2.In commit 8acb88682cc00a41a677c2455a7c992d you removed 
-> ipic_set_highest_priority(), ipic_enable_mcp() and 
-> ipic_disable_mcp()because it wasn’t used but here we are confused 
-> because ipic_clear_mcp_status() sets all bits with the mask and in the 
-> old disable function the bits from the mask are cleared with a bitwise 
-> AND,changing the other bits from the SERMR register but the mcp_irq.
-
-Probably the parameter of ipic_clear_mcp_status() should not be called 
-'mask'. This parameter identifies the sources to clear. The bits set to 
-1 corresponds to the sources to clear. The bits set to 0 corresponds to 
-the sources we don't want to touch.
-
-ipic_enable_mcp() and ipic_disable_mcp() had a different role, their 
-role was to activate or deactivate interrupts generated by MCP sources 
-iaw the description of SERMR.
-
-> 
-> ipic_clear:
-> 
-> ipic_write 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/ipic_write>(primary_ipic 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/primary_ipic>->regs, 
-> IPIC_SERMR <https://elixir.bootlin.com/linux/v4.1.13/ident/IPIC_SERMR>, 
-> mask);
-> 
-> ipic_disable:
-> 
-> temp <https://elixir.bootlin.com/linux/v4.1.13/ident/temp> = ipic_read 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/ipic_read>(ipic 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/ipic>->regs, IPIC_SERMR 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/IPIC_SERMR>);
-> 
-> temp <https://elixir.bootlin.com/linux/v4.1.13/ident/temp> &= (1 << (31 
-> - mcp_irq));
-> 
-> ipic_write 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/ipic_write>(ipic 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/ipic>->regs, IPIC_SERMR 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/IPIC_SERMR>, temp 
-> <https://elixir.bootlin.com/linux/v4.1.13/ident/temp>);
-> 
->                  Isn’t ipic_clear a set function instead of a clear 
-> function? This bring us confusion
-
-No, ipic_clear() role is to clear the status in accordance with the 
-description of SERSR. In the description you copied, it is explicitely 
-said: "These bits are cleared by writing the bit location with a logic 1".
-
-In the MPC8323 Reference Manual, it is even more explicit:
-
-Each implemented bit in the SERSR, listed in Table 8-22, corresponds to 
-an external and an internal error source (mcp). When an error interrupt 
-signal is received, the interrupt controller sets the corresponding 
-SERSR bit. SERSR bits are cleared by writing ones to them. Unmasked 
-event register bits should be cleared before clearing SERSR bits. 
-Because the user can only clear bits in this register, writing zeros to 
-this register has no effect.
-
-> 
-> Another question is why these functions were created in the first place?
-
-I guess someone wanted to create a full API to the IPIC, but it was 
-never used, or it was used by out-of-tree drivers or was used before the 
-kernel was it GIT.
-
-> 
-> 3.In the NXP document it states that: /These bits are cleared by writing 
-> the bit location with a logic 1. The interrupting source must be cleared 
-> before clearing the interrupts error status bit./
-> 
-> Does this mean that these registers work with negative logic? How is 
-> this managed in the kernel?
-> 
-> The interrupting source is the SERMR register, the SERSR or any other?
-> 
-> 4.What is the real difference between MCP and MCE? What are their uses?
-
-MCE means Machine Check Exception
-
-A machine check exception can be generated for several reasons, not only 
-MCP. For instead a TEA will also generate a MCE.
-
-Iaw MPC8323 Reference Manual:
-
-MCP = Machine-check interrupt
-
-In table 7.7:
-Machine check 00200 Caused by the assertion of the tea signal during a 
-data bus transaction, assertion of mcp, an address or data parity error, 
-or an instruction or data cache parity error. Note that the e300 has 
-SRR1 register values that are different from the G2/G2_LE cores’ when a 
-machine check occurs
-
-In §8.1:
-The machine check exception is caused by the internal mcp signal 
-generated by the IPIC, informing the host processor of error conditions, 
-assertion of the external IRQ0 machine-check request (enabled when 
-SEMSR[SIRQ0] = 1), and other conditions.
-
-
-
-> 
-> I know it is a lot of information but we are very confused about the use 
-> of these registers and we noticed that you are very involved on the PPC 
-> development. So we would like to hear from an expert.
-> 
-> Thank you very much for your time,
-
-You are welcome
-
-Christophe
-
-> 
-> Pablo
-> 
-> (*) https://www.nxp.com/docs/en/application-note/AN3797.pdf
-> 
-
----
-L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
-https://www.avast.com/antivirus
-
+Thanks,
+Guenter
