@@ -1,85 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F400617977
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 14:29:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008E91795D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 14:23:36 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zbH911x1zDqLT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 22:23:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zbQC1LxfzDqK9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 22:29:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=oracle.com
- (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.b="rwrtMH5v"; 
- dkim-atps=neutral
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zbFR0lxxzDqH4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 22:22:02 +1000 (AEST)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
- by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJBEV086953;
- Wed, 8 May 2019 12:20:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=Vy0vJPC+R/qK4BTy9W8k2EK+1DkuBwwYmX4Im7RV/1I=;
- b=rwrtMH5vFY76MnriFuwWJRty7cv6d48ndLvoH9qa0iSpe18cQhaRn84K+EEAZ1el4f/y
- JYXzNPHiRG6Um3c2LeXmrh0vIUgokB68rrApoaQDWIhQiq3xdWk5gSEBW5t2CsNm+NQD
- vMj6o0elaMb6F0MU58KC4FWtRSn89CRe22TBfRL7zCGITD8/HSnJoDvmL6xh8b//HGVN
- 0/+i+9yb5Er16ot7xGaUWYdgVLnSKYTBDh5U+VgaaiAGanyy3YqtlO3+pRPaxxQxAHqK
- Taf9LSC6aD/fmeyve7zi016PT3fCR2HgfwqDVjH/4iBaBbfLBHPj+ptzQwZZXQN8uHEa Qg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by aserp2130.oracle.com with ESMTP id 2s94b63etg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 08 May 2019 12:20:31 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJL8V107697;
- Wed, 8 May 2019 12:20:30 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
- by userp3020.oracle.com with ESMTP id 2s94ag20en-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 08 May 2019 12:20:30 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
- by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x48CKNew007185;
- Wed, 8 May 2019 12:20:24 GMT
-Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 08 May 2019 05:20:22 -0700
-Date: Wed, 8 May 2019 15:20:10 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: Re: [PATCH 09/16] mmc: sdhci-xenon: use new match_string()
- helper/macro
-Message-ID: <20190508122010.GC21059@kadam>
-References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
- <20190508112842.11654-11-alexandru.ardelean@analog.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zbN841c2zDqD4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 22:27:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 44zbN73Xxsz9s9T;
+ Wed,  8 May 2019 22:27:51 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/powernv: Move SCOM access code into powernv
+ platform
+In-Reply-To: <20190508063401.17463-1-ajd@linux.ibm.com>
+References: <20190508063401.17463-1-ajd@linux.ibm.com>
+Date: Wed, 08 May 2019 22:27:47 +1000
+Message-ID: <878svhw2po.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190508112842.11654-11-alexandru.ardelean@analog.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=644
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905080079
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=665 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905080079
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,37 +44,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
- linux-ide@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-clk@vger.kernel.org, devel@driverdev.osuosl.org,
- andriy.shevchenko@linux.intel.com, linux-rockchip@lists.infradead.org,
- linux-mmc@vger.kernel.org, linux-pm@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, linux-gpio@vger.kernel.org,
- linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
- cgroups@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, gregkh@linuxfoundation.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 08, 2019 at 02:28:35PM +0300, Alexandru Ardelean wrote:
-> -static const char * const phy_types[] = {
-> -	"emmc 5.0 phy",
-> -	"emmc 5.1 phy"
-> -};
+Andrew Donnellan <ajd@linux.ibm.com> writes:
+
+> The powernv platform is the only one that directly accesses SCOMs. Move the
+> support code to platforms/powernv, and get rid of the PPC_SCOM Kconfig
+> option, as SCOM support is always selected when compiling for powernv.
+
+This code was used on WSP / A2, back in the past which is why it
+originally lived in sysdev.
+
+> This also means that the Kconfig item for CONFIG_SCOM_DEBUGFS will actually
+> show up in menuconfig, as previously it was the only labelled option in
+> sysdev/Kconfig and wasn't actually in a menu.
+>
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/scom.h                   | 4 ++--
+
+Can't scom.h move into powernv as well?
+
+And do we even need the whole scom_controller abstraction?
+
+If we ever have another platform that needs it we can always bring it
+back.
+
+cheers
+
+>  arch/powerpc/platforms/powernv/Kconfig            | 5 ++++-
+>  arch/powerpc/platforms/powernv/Makefile           | 2 +-
+>  arch/powerpc/{sysdev => platforms/powernv}/scom.c | 0
+>  arch/powerpc/sysdev/Kconfig                       | 7 -------
+>  arch/powerpc/sysdev/Makefile                      | 2 --
+>  6 files changed, 7 insertions(+), 13 deletions(-)
+>  rename arch/powerpc/{sysdev => platforms/powernv}/scom.c (100%)
+>
+> diff --git a/arch/powerpc/include/asm/scom.h b/arch/powerpc/include/asm/scom.h
+> index f5cde45b1161..acc6532a9a9e 100644
+> --- a/arch/powerpc/include/asm/scom.h
+> +++ b/arch/powerpc/include/asm/scom.h
+> @@ -23,7 +23,7 @@
+>  
+>  #ifdef __KERNEL__
+>  #ifndef __ASSEMBLY__
+> -#ifdef CONFIG_PPC_SCOM
+> +#ifdef CONFIG_PPC_POWERNV
+>  
+>  /*
+>   * The SCOM bus is a sideband bus used for accessing various internal
+> @@ -161,7 +161,7 @@ static inline int scom_write(scom_map_t map, u64 reg, u64 value)
+>  }
+>  
+>  
+> -#endif /* CONFIG_PPC_SCOM */
+> +#endif /* CONFIG_PPC_POWERNV */
+>  #endif /* __ASSEMBLY__ */
+>  #endif /* __KERNEL__ */
+>  #endif /* _ASM_POWERPC_SCOM_H */
+> diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+> index 850eee860cf2..938803eab0ad 100644
+> --- a/arch/powerpc/platforms/powernv/Kconfig
+> +++ b/arch/powerpc/platforms/powernv/Kconfig
+> @@ -12,7 +12,6 @@ config PPC_POWERNV
+>  	select EPAPR_BOOT
+>  	select PPC_INDIRECT_PIO
+>  	select PPC_UDBG_16550
+> -	select PPC_SCOM
+>  	select ARCH_RANDOM
+>  	select CPU_FREQ
+>  	select PPC_DOORBELL
+> @@ -47,3 +46,7 @@ config PPC_VAS
+>  	  VAS adapters are found in POWER9 based systems.
+>  
+>  	  If unsure, say N.
+> +
+> +config SCOM_DEBUGFS
+> +	bool "Expose SCOM controllers via debugfs"
+> +	depends on DEBUG_FS
+> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+> index da2e99efbd04..4b1644150135 100644
+> --- a/arch/powerpc/platforms/powernv/Makefile
+> +++ b/arch/powerpc/platforms/powernv/Makefile
+> @@ -4,12 +4,12 @@ obj-y			+= idle.o opal-rtc.o opal-nvram.o opal-lpc.o opal-flash.o
+>  obj-y			+= rng.o opal-elog.o opal-dump.o opal-sysparam.o opal-sensor.o
+>  obj-y			+= opal-msglog.o opal-hmi.o opal-power.o opal-irqchip.o
+>  obj-y			+= opal-kmsg.o opal-powercap.o opal-psr.o opal-sensor-groups.o
+> +obj-y			+= opal-xscom.o scom.o
+>  
+>  obj-$(CONFIG_SMP)	+= smp.o subcore.o subcore-asm.o
+>  obj-$(CONFIG_PCI)	+= pci.o pci-ioda.o npu-dma.o pci-ioda-tce.o
+>  obj-$(CONFIG_CXL_BASE)	+= pci-cxl.o
+>  obj-$(CONFIG_EEH)	+= eeh-powernv.o
+> -obj-$(CONFIG_PPC_SCOM)	+= opal-xscom.o
+>  obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+>  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+>  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+> diff --git a/arch/powerpc/sysdev/scom.c b/arch/powerpc/platforms/powernv/scom.c
+> similarity index 100%
+> rename from arch/powerpc/sysdev/scom.c
+> rename to arch/powerpc/platforms/powernv/scom.c
+> diff --git a/arch/powerpc/sysdev/Kconfig b/arch/powerpc/sysdev/Kconfig
+> index e0dbec780fe9..7808d279ff1d 100644
+> --- a/arch/powerpc/sysdev/Kconfig
+> +++ b/arch/powerpc/sysdev/Kconfig
+> @@ -28,13 +28,6 @@ config PPC_MSI_BITMAP
+>  source "arch/powerpc/sysdev/xics/Kconfig"
+>  source "arch/powerpc/sysdev/xive/Kconfig"
+>  
+> -config PPC_SCOM
+> -	bool
 > -
->  enum xenon_phy_type_enum {
->  	EMMC_5_0_PHY,
->  	EMMC_5_1_PHY,
->  	NR_PHY_TYPES
-
-There is no need for NR_PHY_TYPES now so you could remove that as well.
-
-regards,
-dan carpenter
-
+> -config SCOM_DEBUGFS
+> -	bool "Expose SCOM controllers via debugfs"
+> -	depends on PPC_SCOM && DEBUG_FS
+> -
+>  config GE_FPGA
+>  	bool
+>  
+> diff --git a/arch/powerpc/sysdev/Makefile b/arch/powerpc/sysdev/Makefile
+> index aaf23283ba0c..35d52d1d2fc0 100644
+> --- a/arch/powerpc/sysdev/Makefile
+> +++ b/arch/powerpc/sysdev/Makefile
+> @@ -51,8 +51,6 @@ ifdef CONFIG_SUSPEND
+>  obj-$(CONFIG_PPC_BOOK3S_32)	+= 6xx-suspend.o
+>  endif
+>  
+> -obj-$(CONFIG_PPC_SCOM)		+= scom.o
+> -
+>  obj-$(CONFIG_PPC_EARLY_DEBUG_MEMCONS)	+= udbg_memcons.o
+>  
+>  obj-$(CONFIG_PPC_XICS)		+= xics/
+> -- 
+> 2.20.1
