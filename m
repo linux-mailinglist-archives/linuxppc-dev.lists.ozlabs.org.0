@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD92D172BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 09:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7608F17401
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 10:37:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zT0h4wb0zDqJ3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 17:40:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zVFn6wGFzDqLK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 18:37:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,24 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zSzB5RQDzDqH4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 17:39:18 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zVD8371vzDq9d
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 18:35:34 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 7235C5F73A;
- Wed,  8 May 2019 07:39:15 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id 9C383302451A;
+ Wed,  8 May 2019 08:35:31 +0000 (UTC)
 Received: from [10.36.117.63] (ovpn-117-63.ams2.redhat.com [10.36.117.63])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 930506149F;
- Wed,  8 May 2019 07:39:11 +0000 (UTC)
-Subject: Re: [PATCH v2 5/8] mm/memory_hotplug: Drop MHP_MEMBLOCK_API
-To: Dan Williams <dan.j.williams@intel.com>
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B6A1460C67;
+ Wed,  8 May 2019 08:35:27 +0000 (UTC)
+Subject: Re: [PATCH v2 4/8] mm/memory_hotplug: Create memory block devices
+ after arch_add_memory()
+To: linux-mm@kvack.org
 References: <20190507183804.5512-1-david@redhat.com>
- <20190507183804.5512-6-david@redhat.com>
- <CAPcyv4ge1pSOopfHof4USn=7Skc-UV4Xhd_s=h+M9VXSp_p1XQ@mail.gmail.com>
- <d83fec16-ceff-2f6f-72e1-48996187d5ba@redhat.com>
- <CAPcyv4iRQteuT9yESvbUyhp3KVVgTXDiGAo+TwPCM_4f0CzBgg@mail.gmail.com>
+ <20190507183804.5512-5-david@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -82,18 +80,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <edd762a1-c012-fe05-a72e-2505cd98188a@redhat.com>
-Date: Wed, 8 May 2019 09:39:10 +0200
+Message-ID: <094f6f72-b02f-585f-6ffa-d631c71808d6@redhat.com>
+Date: Wed, 8 May 2019 10:35:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4iRQteuT9yESvbUyhp3KVVgTXDiGAo+TwPCM_4f0CzBgg@mail.gmail.com>
+In-Reply-To: <20190507183804.5512-5-david@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.39]); Wed, 08 May 2019 07:39:16 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.49]); Wed, 08 May 2019 08:35:32 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,114 +103,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>,
- linux-s390 <linux-s390@vger.kernel.org>, Michal Hocko <mhocko@suse.com>,
+Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
  linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Linux-sh <linux-sh@vger.kernel.org>, Mathieu Malaterre <malat@debian.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, Linux MM <linux-mm@kvack.org>,
- Qian Cai <cai@lca.pw>, Arun KS <arunks@codeaurora.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>
+ linux-sh@vger.kernel.org, "mike.travis@hpe.com" <mike.travis@hpe.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ Ingo Molnar <mingo@kernel.org>, Mathieu Malaterre <malat@debian.org>,
+ Andrew Banman <andrew.banman@hpe.com>, Qian Cai <cai@lca.pw>,
+ Arun KS <arunks@codeaurora.org>, akpm@linux-foundation.org,
+ Wei Yang <richard.weiyang@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.05.19 23:25, Dan Williams wrote:
-> On Tue, May 7, 2019 at 2:24 PM David Hildenbrand <david@redhat.com> wrote:
->>
->> On 07.05.19 23:19, Dan Williams wrote:
->>> On Tue, May 7, 2019 at 11:38 AM David Hildenbrand <david@redhat.com> wrote:
->>>>
->>>> No longer needed, the callers of arch_add_memory() can handle this
->>>> manually.
->>>>
->>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>> Cc: David Hildenbrand <david@redhat.com>
->>>> Cc: Michal Hocko <mhocko@suse.com>
->>>> Cc: Oscar Salvador <osalvador@suse.com>
->>>> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
->>>> Cc: Wei Yang <richard.weiyang@gmail.com>
->>>> Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
->>>> Cc: Qian Cai <cai@lca.pw>
->>>> Cc: Arun KS <arunks@codeaurora.org>
->>>> Cc: Mathieu Malaterre <malat@debian.org>
->>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>> ---
->>>>  include/linux/memory_hotplug.h | 8 --------
->>>>  mm/memory_hotplug.c            | 9 +++------
->>>>  2 files changed, 3 insertions(+), 14 deletions(-)
->>>>
->>>> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
->>>> index 2d4de313926d..2f1f87e13baa 100644
->>>> --- a/include/linux/memory_hotplug.h
->>>> +++ b/include/linux/memory_hotplug.h
->>>> @@ -128,14 +128,6 @@ extern void arch_remove_memory(int nid, u64 start, u64 size,
->>>>  extern void __remove_pages(struct zone *zone, unsigned long start_pfn,
->>>>                            unsigned long nr_pages, struct vmem_altmap *altmap);
->>>>
->>>> -/*
->>>> - * Do we want sysfs memblock files created. This will allow userspace to online
->>>> - * and offline memory explicitly. Lack of this bit means that the caller has to
->>>> - * call move_pfn_range_to_zone to finish the initialization.
->>>> - */
->>>> -
->>>> -#define MHP_MEMBLOCK_API               (1<<0)
->>>> -
->>>>  /* reasonably generic interface to expand the physical pages */
->>>>  extern int __add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
->>>>                        struct mhp_restrictions *restrictions);
->>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>>> index e1637c8a0723..107f72952347 100644
->>>> --- a/mm/memory_hotplug.c
->>>> +++ b/mm/memory_hotplug.c
->>>> @@ -250,7 +250,7 @@ void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
->>>>  #endif /* CONFIG_HAVE_BOOTMEM_INFO_NODE */
->>>>
->>>>  static int __meminit __add_section(int nid, unsigned long phys_start_pfn,
->>>> -               struct vmem_altmap *altmap, bool want_memblock)
->>>> +                                  struct vmem_altmap *altmap)
->>>>  {
->>>>         int ret;
->>>>
->>>> @@ -293,8 +293,7 @@ int __ref __add_pages(int nid, unsigned long phys_start_pfn,
->>>>         }
->>>>
->>>>         for (i = start_sec; i <= end_sec; i++) {
->>>> -               err = __add_section(nid, section_nr_to_pfn(i), altmap,
->>>> -                               restrictions->flags & MHP_MEMBLOCK_API);
->>>> +               err = __add_section(nid, section_nr_to_pfn(i), altmap);
->>>>
->>>>                 /*
->>>>                  * EEXIST is finally dealt with by ioresource collision
->>>> @@ -1066,9 +1065,7 @@ static int online_memory_block(struct memory_block *mem, void *arg)
->>>>   */
->>>>  int __ref add_memory_resource(int nid, struct resource *res)
->>>>  {
->>>> -       struct mhp_restrictions restrictions = {
->>>> -               .flags = MHP_MEMBLOCK_API,
->>>> -       };
->>>> +       struct mhp_restrictions restrictions = {};
->>>
->>> With mhp_restrictions.flags no longer needed, can we drop
->>> mhp_restrictions and just go back to a plain @altmap argument?
->>>
->>
->> Oscar wants to use it to configure from where to allocate vmemmaps. That
->> was the original driver behind it.
->>
+On 07.05.19 20:38, David Hildenbrand wrote:
+> Only memory to be added to the buddy and to be onlined/offlined by
+> user space using memory block devices needs (and should have!) memory
+> block devices.
 > 
-> Ah, ok, makes sense.
+> Factor out creation of memory block devices Create all devices after
+> arch_add_memory() succeeded. We can later drop the want_memblock parameter,
+> because it is now effectively stale.
 > 
+> Only after memory block devices have been added, memory can be onlined
+> by user space. This implies, that memory is not visible to user space at
+> all before arch_add_memory() succeeded.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Andrew Banman <andrew.banman@hpe.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Qian Cai <cai@lca.pw>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Arun KS <arunks@codeaurora.org>
+> Cc: Mathieu Malaterre <malat@debian.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  drivers/base/memory.c  | 70 ++++++++++++++++++++++++++----------------
+>  include/linux/memory.h |  2 +-
+>  mm/memory_hotplug.c    | 15 ++++-----
+>  3 files changed, 53 insertions(+), 34 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 6e0cb4fda179..862c202a18ca 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -701,44 +701,62 @@ static int add_memory_block(int base_section_nr)
+>  	return 0;
+>  }
+>  
+> +static void unregister_memory(struct memory_block *memory)
+> +{
+> +	BUG_ON(memory->dev.bus != &memory_subsys);
+> +
+> +	/* drop the ref. we got via find_memory_block() */
+> +	put_device(&memory->dev);
+> +	device_unregister(&memory->dev);
+> +}
+> +
+>  /*
+> - * need an interface for the VM to add new memory regions,
+> - * but without onlining it.
+> + * Create memory block devices for the given memory area. Start and size
+> + * have to be aligned to memory block granularity. Memory block devices
+> + * will be initialized as offline.
+>   */
+> -int hotplug_memory_register(int nid, struct mem_section *section)
+> +int hotplug_memory_register(unsigned long start, unsigned long size)
+>  {
+> -	int ret = 0;
+> +	unsigned long block_nr_pages = memory_block_size_bytes() >> PAGE_SHIFT;
+> +	unsigned long start_pfn = PFN_DOWN(start);
+> +	unsigned long end_pfn = start_pfn + (size >> PAGE_SHIFT);
+> +	unsigned long pfn;
+>  	struct memory_block *mem;
+> +	int ret = 0;
+>  
+> -	mutex_lock(&mem_sysfs_mutex);
+> +	BUG_ON(!IS_ALIGNED(start, memory_block_size_bytes()));
+> +	BUG_ON(!IS_ALIGNED(size, memory_block_size_bytes()));
+>  
+> -	mem = find_memory_block(section);
+> -	if (mem) {
+> -		mem->section_count++;
+> -		put_device(&mem->dev);
+> -	} else {
+> -		ret = init_memory_block(&mem, section, MEM_OFFLINE);
+> +	mutex_lock(&mem_sysfs_mutex);
+> +	for (pfn = start_pfn; pfn != end_pfn; pfn += block_nr_pages) {
+> +		mem = find_memory_block(__pfn_to_section(pfn));
+> +		if (mem) {
+> +			WARN_ON_ONCE(false);
+> +			put_device(&mem->dev);
+> +			continue;
+> +		}
+> +		ret = init_memory_block(&mem, __pfn_to_section(pfn),
+> +					MEM_OFFLINE);
+>  		if (ret)
+> -			goto out;
+> -		mem->section_count++;
+> +			break;
+> +		mem->section_count = memory_block_size_bytes() /
+> +				     MIN_MEMORY_BLOCK_SIZE;
+> +	}
+> +	if (ret) {
+> +		end_pfn = pfn;
+> +		for (pfn = start_pfn; pfn != end_pfn; pfn += block_nr_pages) {
+> +			mem = find_memory_block(__pfn_to_section(pfn));
+> +			if (!mem)
+> +				continue;
+> +			mem->section_count = 0;
+> +			unregister_memory(mem);
+> +		}
+>  	}
+> -
+> -out:
+>  	mutex_unlock(&mem_sysfs_mutex);
+>  	return ret;
+>  }
+>  
+> -static void
+> -unregister_memory(struct memory_block *memory)
+> -{
+> -	BUG_ON(memory->dev.bus != &memory_subsys);
+> -
+> -	/* drop the ref. we got via find_memory_block() */
+> -	put_device(&memory->dev);
+> -	device_unregister(&memory->dev);
+> -}
+> -
+> -void unregister_memory_section(struct mem_section *section)
+> +static int remove_memory_section(struct mem_section *section)
+>  {
 
-However I haven't really thought it through yet, smalles like that could
-as well just be handled by the caller of
-arch_add_memory()/arch_remove_memory() eventually, passing it via
-something like the altmap parameter.
+The function change is misplaces in this patch will drop it so this
+patch compiles without the other patches.
 
-Let's leave it in place for now, we can talk about that once we have new
-patches from Oscar.
 
 -- 
 
