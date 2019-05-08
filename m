@@ -1,78 +1,114 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D4217665
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 13:01:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zYT02YGmzDqMG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 21:01:56 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7089C17CD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 17:09:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zfyS3yC8zDqMV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 01:09:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=analog.com
+ (client-ip=2a01:111:f400:fe51::61d;
+ helo=nam05-dm3-obe.outbound.protection.outlook.com;
+ envelope-from=alexandru.ardelean@analog.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=analog.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=analog.onmicrosoft.com header.i=@analog.onmicrosoft.com
+ header.b="qQfQKlBU"; dkim-atps=neutral
+Received: from NAM05-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam05on061d.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe51::61d])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zYRY597RzDqGn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 21:00:40 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x48AlN7h085740
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 07:00:37 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2sbu8g867b-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 07:00:37 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
- Wed, 8 May 2019 12:00:35 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 May 2019 12:00:33 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x48B0W8J44433426
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 May 2019 11:00:32 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4815752059;
- Wed,  8 May 2019 11:00:32 +0000 (GMT)
-Received: from [9.109.244.72] (unknown [9.109.244.72])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6828252051;
- Wed,  8 May 2019 11:00:31 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.8\))
-Subject: Kernel OOPS followed by a panic on next20190507 with 4K page size
-Date: Wed, 8 May 2019 16:30:30 +0530
-To: linuxppc-dev@lists.ozlabs.org
-X-Mailer: Apple Mail (2.3445.104.8)
-X-TM-AS-GCONF: 00
-x-cbid: 19050811-0012-0000-0000-000003198406
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050811-0013-0000-0000-00002152052E
-Message-Id: <A4247410-7C78-4E52-AB56-1C33A6C27FF3@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-08_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=450 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905080070
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zZ4k0jmhzDqFt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 21:29:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector1-analog-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9mREEcazEV2TFx5JIFnH3pAzE1JX52Mxgf7Nke2hFVA=;
+ b=qQfQKlBUhqrL+3Zq0CNfpq26DFQMQ47XeDeoOQghyt8YnFxihdOyu/uqLTp4Va2PKJok0DnLUK74RKCRbvROk2XuKOdS1aEBpBZ7S2HyRHxL7vRH6SPzukskQpsFHAO8LtN/Vyu7cA1xYW8YkqaoD+LlmFfxVsALjqdbrsDXj/c=
+Received: from MWHPR03CA0030.namprd03.prod.outlook.com (2603:10b6:301:3b::19)
+ by DM5PR03MB3132.namprd03.prod.outlook.com (2603:10b6:4:3c::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1878.20; Wed, 8 May
+ 2019 11:29:15 +0000
+Received: from SN1NAM02FT031.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::207) by MWHPR03CA0030.outlook.office365.com
+ (2603:10b6:301:3b::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1878.20 via Frontend
+ Transport; Wed, 8 May 2019 11:29:14 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.57)
+ smtp.mailfrom=analog.com; lists.freedesktop.org; dkim=none (message not
+ signed) header.d=none;lists.freedesktop.org; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ SN1NAM02FT031.mail.protection.outlook.com (10.152.72.116) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1856.11
+ via Frontend Transport; Wed, 8 May 2019 11:29:13 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com
+ [10.64.69.107])
+ by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x48BTCgt016944
+ (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+ Wed, 8 May 2019 04:29:12 -0700
+Received: from saturn.analog.com (10.50.1.244) by NWD2HUBCAS7.ad.analog.com
+ (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Wed, 8 May 2019
+ 07:29:11 -0400
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+ <linux-ide@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+ <linux-rpi-kernel@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, 
+ <linux-pm@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+ <linux-omap@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+ <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+ <devel@driverdev.osuosl.org>, <linux-usb@vger.kernel.org>,
+ <kvm@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+ <linux-mtd@lists.infradead.org>, <cgroups@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-security-module@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <alsa-devel@alsa-project.org>
+Subject: [PATCH 00/16] treewide: fix match_string() helper when array size
+Date: Wed, 8 May 2019 14:28:25 +0300
+Message-ID: <20190508112842.11654-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57; IPV:NLI; CTRY:US; EFV:NLI;
+ SFV:NSPM;
+ SFS:(10009020)(1496009)(376002)(136003)(346002)(396003)(39860400002)(2980300002)(189003)(199004)(336012)(48376002)(6666004)(16586007)(316002)(426003)(356004)(107886003)(2441003)(50226002)(7696005)(51416003)(54906003)(2906002)(478600001)(110136005)(486006)(47776003)(7636002)(44832011)(106002)(50466002)(2616005)(476003)(8676002)(70206006)(246002)(70586007)(4326008)(2201001)(7416002)(26005)(1076003)(186003)(8936002)(77096007)(5660300002)(36756003)(126002)(53416004)(305945005)(86362001)(14444005)(921003)(83996005)(2101003)(1121003);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:DM5PR03MB3132; H:nwd2mta2.analog.com; FPR:;
+ SPF:Pass; LANG:en; PTR:nwd2mail11.analog.com; MX:1; A:1; 
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c32e2cbb-fe64-4c66-7a5d-08d6d3a86664
+X-Microsoft-Antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328);
+ SRVR:DM5PR03MB3132; 
+X-MS-TrafficTypeDiagnostic: DM5PR03MB3132:
+X-Microsoft-Antispam-PRVS: <DM5PR03MB3132F0B0976A4F2194522684F9320@DM5PR03MB3132.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Forefront-PRVS: 0031A0FFAF
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: j/srRMWDBUltVscxVeW1javD8vK/cachSroUu+/Gbw1dTf/SvbBrFyW07ykT1LHxgf7JFm8qQ93W9eBvUwKDflyO8jAEvFHYdehNb6EHWUlpktuzMPEP4dqtYdoUQPJZJheiLPDUHbBGHPrVF+8TL5mDHJaN5ynPAEYsTTkWak369JERGg4vdXLCAeUTNR0/5p+fpFpKdjOGClAHWrD4fgHBh7O9/Ww1YzfpFB5/ShVxDtLKjt6j5yDaAZJVnp6EeWEY3bKP4Xa20OdzBmuebRIP54BdhQLWgxOFaNRtwz2dquRxZGpNeP4PgyojuMA1RloHq4JkY9VStd6NE4AnfhNTuZyPUNrsaLk3IJ1WIYcn7pLDJzCGmOSiZuodj5CqDCxvmc9nwLsca/AMvRwPw64pvgq4xuPYVpmZdqdwNAA=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2019 11:29:13.4642 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c32e2cbb-fe64-4c66-7a5d-08d6d3a86664
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a; Ip=[137.71.25.57];
+ Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR03MB3132
+X-Mailman-Approved-At: Thu, 09 May 2019 01:00:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,150 +120,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: gregkh@linuxfoundation.org,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>,
+ andriy.shevchenko@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While running LTP tests (specifically futex_wake04) against =
-next-20199597
-build with 4K page size on a POWER8 LPAR following crash is observed.
+The intent of this patch series is to make a case for fixing the
+match_string() string helper.
 
-[ 4233.214876] BUG: Kernel NULL pointer dereference at 0x0000001c
-[ 4233.214898] Faulting instruction address: 0xc000000001d1e58c
-[ 4233.214905] Oops: Kernel access of bad area, sig: 11 [#1]
-[ 4233.214911] LE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[ 4233.214920] Dumping ftrace buffer:
-[ 4233.214928]    (ftrace buffer empty)
-[ 4233.214933] Modules linked in: overlay rpadlpar_io rpaphp =
-iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack =
-nf_conntrack nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4 xt_tcpudp tun =
-bridge stp llc kvm iptable_filter pseries_rng rng_core vmx_crypto =
-ip_tables x_tables autofs4 [last unloaded: dummy_del_mod]
-[ 4233.214973] CPU: 3 PID: 4635 Comm: futex_wake04 Tainted: G        W  =
-O      5.1.0-next-20190507-autotest #1
-[ 4233.214980] NIP:  c000000001d1e58c LR: c000000001d1e54c CTR: =
-0000000000000000
-[ 4233.214987] REGS: c000000004937890 TRAP: 0300   Tainted: G        W  =
-O       (5.1.0-next-20190507-autotest)
-[ 4233.214993] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
-22424822  XER: 00000000
-[ 4233.215005] CFAR: c00000000183e9e0 DAR: 000000000000001c DSISR: =
-40000000 IRQMASK: 0=20
-[ 4233.215005] GPR00: c000000001901a80 c000000004937b20 c000000003938700 =
-0000000000000000=20
-[ 4233.215005] GPR04: 0000000000400cc0 000000000003efff 000000027966e000 =
-c000000003ba8700=20
-[ 4233.215005] GPR08: c000000003ba8700 000000000d601125 c000000003ba8700 =
-0000000080000000=20
-[ 4233.215005] GPR12: 0000000022424822 c00000001ecae280 0000000000000000 =
-0000000000000000=20
-[ 4233.215005] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[ 4233.215005] GPR20: 0000000000000018 c0000000039e2d30 c0000000039e2d28 =
-c0000002762da460=20
-[ 4233.215005] GPR24: 000000000000001c 0000000000000000 0000000000000001 =
-c000000001901a80=20
-[ 4233.215005] GPR28: 0000000000400cc0 0000000000000000 0000000000000000 =
-0000000000400cc0=20
-[ 4233.215065] NIP [c000000001d1e58c] kmem_cache_alloc+0xbc/0x5a0
-[ 4233.215071] LR [c000000001d1e54c] kmem_cache_alloc+0x7c/0x5a0
-[ 4233.215075] Call Trace:
-[ 4233.215081] [c000000004937b20] [c000000001c91150] =
-__pud_alloc+0x160/0x200 (unreliable)
-[ 4233.215090] [c000000004937b80] [c000000001901a80] =
-huge_pte_alloc+0x580/0x950
-[ 4233.215098] [c000000004937c00] [c000000001cf7910] =
-hugetlb_fault+0x9a0/0x1250
-[ 4233.215106] [c000000004937ce0] [c000000001c94a80] =
-handle_mm_fault+0x490/0x4a0
-[ 4233.215114] [c000000004937d20] [c0000000018d529c] =
-__do_page_fault+0x77c/0x1f00
-[ 4233.215121] [c000000004937e00] [c0000000018d6a48] =
-do_page_fault+0x28/0x50
-[ 4233.215129] [c000000004937e20] [c00000000183b0d4] =
-handle_page_fault+0x18/0x38
-[ 4233.215135] Instruction dump:
-[ 4233.215139] 39290001 f92ac1b0 419e009c 3ce20027 3ba00000 e927c1f0 =
-39290001 f927c1f0=20
-[ 4233.215149] 3d420027 e92ac290 39290001 f92ac290 <8359001c> 83390018 =
-60000000 3ce20027=20
-[ 4233.215160] ---[ end trace 82a1a7c19005ebd7 ]---
-[ 4233.218041]=20
-[ 4234.218052] Kernel panic - not syncing: Fatal exception
-[ 4234.218095] Dumping ftrace buffer:
-[ 4234.218126]    (ftrace buffer empty)
-[ 4234.235298] WARNING: CPU: 3 PID: 4635 at drivers/tty/vt/vt.c:4227 =
-do_unblank_screen+0x68/0x3c0
-[ 4234.235336] Modules linked in: overlay rpadlpar_io rpaphp =
-iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack =
-nf_conntrack nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4 xt_tcpudp tun =
-bridge stp llc kvm iptable_filter pseries_rng rng_core vmx_crypto =
-ip_tables x_tables autofs4 [last unloaded: dummy_del_mod]
-[ 4234.235513] CPU: 3 PID: 4635 Comm: futex_wake04 Tainted: G      D W  =
-O      5.1.0-next-20190507-autotest #1
-[ 4234.235548] NIP:  c0000000023d8c38 LR: c0000000023d8ea4 CTR: =
-c000000002a9e690
-[ 4234.235581] REGS: c000000004937320 TRAP: 0700   Tainted: G      D W  =
-O       (5.1.0-next-20190507-autotest)
-[ 4234.235613] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 28422882  =
-XER: 20000009
-[ 4234.235672] CFAR: c0000000023d8ee0 IRQMASK: 3=20
-[ 4234.235672] GPR00: c0000000023d8fbc c0000000049375b0 c000000003938700 =
-0000000000000000=20
-[ 4234.235672] GPR04: 0000000000000003 c000000277aa400e 0000000000001dd7 =
-0000000000000000=20
-[ 4234.235672] GPR08: c000000003d68700 0000000000000003 c000000003d68700 =
-0000000000000020=20
-[ 4234.235672] GPR12: 0000000088422828 c00000001ecae280 0000000000000000 =
-0000000000000000=20
-[ 4234.235672] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000=20
-[ 4234.235672] GPR20: 0000000000000018 c0000000039e2d30 c0000000039e2d28 =
-c0000002762da460=20
-[ 4234.235672] GPR24: 000000000000001c 0000000000000000 c00000000360aff0 =
-c000000003a44e80=20
-[ 4234.235672] GPR28: c000000002e21388 0000000000000000 0000000000000001 =
-c000000003d6c538=20
-[ 4234.235947] NIP [c0000000023d8c38] do_unblank_screen+0x68/0x3c0
-[ 4234.235978] LR [c0000000023d8ea4] do_unblank_screen+0x2d4/0x3c0
-[ 4234.236006] Call Trace:
-[ 4234.236026] [c0000000049375b0] [0000000000000001] 0x1 (unreliable)
-[ 4234.236063] [c000000004937630] [c0000000023d8fbc] =
-unblank_screen+0x2c/0x50
-[ 4234.236099] [c000000004937650] [c0000000019c2aec] panic+0x360/0x774
-[ 4234.236133] [c0000000049376e0] [c000000001874e28] =
-oops_end+0x348/0x350
-[ 4234.236166] [c000000004937760] [c00000000187514c] die+0xdc/0x180
-[ 4234.236203] [c0000000049377a0] [c0000000018d6bd0] =
-bad_page_fault+0x160/0x2b4
-[ 4234.236243] [c000000004937820] [c00000000183b0f0] =
-handle_page_fault+0x34/0x38
-[ 4234.236284] --- interrupt: 300 at kmem_cache_alloc+0xbc/0x5a0
-[ 4234.236284]     LR =3D kmem_cache_alloc+0x7c/0x5a0
-[ 4234.236326] [c000000004937b20] [c000000001c91150] =
-__pud_alloc+0x160/0x200 (unreliable)
-[ 4234.236368] [c000000004937b80] [c000000001901a80] =
-huge_pte_alloc+0x580/0x950
-[ 4234.236407] [c000000004937c00] [c000000001cf7910] =
-hugetlb_fault+0x9a0/0x1250
-[ 4234.236445] [c000000004937ce0] [c000000001c94a80] =
-handle_mm_fault+0x490/0x4a0
-[ 4234.236484] [c000000004937d20] [c0000000018d529c] =
-__do_page_fault+0x77c/0x1f00
-[ 4234.236523] [c000000004937e00] [c0000000018d6a48] =
-do_page_fault+0x28/0x50
-[ 4234.236559] [c000000004937e20] [c00000000183b0d4] =
-handle_page_fault+0x18/0x38
-[ 4234.236590] Instruction dump:
-[ 4234.236613] 39290001 f8010010 f9286310 f821ff81 812a0000 2f890000 =
-3bc00000 419e026c=20
-[ 4234.236665] 3d420043 e92a6340 39290001 f92a6340 <0b1e0000> 3d420043 =
-814a3f88 3d220043=20
-[ 4234.236721] ---[ end trace 82a1a7c19005ebd8 ]---
-[ 4234.236756] Rebooting in 10 seconds..
+The doc-string of the `__sysfs_match_string()` helper mentions that `n`
+(the size of the given array) should be:
+ * @n: number of strings in the array or -1 for NULL terminated arrays
 
-Thanks
--Sachin=
+However, this is not the case.
+The helper stops on the first NULL in the array, regardless of whether -1
+is provided or not.
+
+There are some advantages to allowing this behavior (NULL elements within
+in the array). One example, is to allow reserved registers as NULL in an
+array.
+One example in the series is patch:
+   x86/mtrr: use new match_string() helper + add gaps == minor fix
+which uses a "?" string for values that are reserved/don't care.
+
+Since the change is a bit big, the change was coupled with renaming
+match_string() -> __match_string().
+The new match_string() helper (resulted here) does an ARRAY_SIZE() over the
+array, which is useful when the array is static. 
+
+Also, this way of doing things is a way to go through all the users of this
+helpers and check that nothing goes wrong, and notify them about the change
+to match_string().
+It's a way of grouping changes in a manage-able way.
+
+The first patch is important, the others can be dropped.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+
+Alexandru Ardelean (16):
+  lib: fix match_string() helper when array size is positive
+  treewide: rename match_string() -> __match_string()
+  lib,treewide: add new match_string() helper/macro
+  powerpc/xmon: use new match_string() helper/macro
+  ALSA: oxygen: use new match_string() helper/macro
+  x86/mtrr: use new match_string() helper + add gaps == minor fix
+  device connection: use new match_string() helper/macro
+  cpufreq/intel_pstate: remove NULL entry + use match_string()
+  mmc: sdhci-xenon: use new match_string() helper/macro
+  pinctrl: armada-37xx: use new match_string() helper/macro
+  mm/vmpressure.c: use new match_string() helper/macro
+  rdmacg: use new match_string() helper/macro
+  drm/edid: use new match_string() helper/macro
+  staging: gdm724x: use new match_string() helper/macro
+  video: fbdev: pxafb: use new match_string() helper/macro
+  sched: debug: use new match_string() helper/macro
+
+ arch/powerpc/xmon/xmon.c                         |  2 +-
+ arch/x86/kernel/cpu/mtrr/if.c                    | 10 ++++++----
+ drivers/ata/pata_hpt366.c                        |  2 +-
+ drivers/ata/pata_hpt37x.c                        |  2 +-
+ drivers/base/devcon.c                            |  2 +-
+ drivers/base/property.c                          |  2 +-
+ drivers/clk/bcm/clk-bcm2835.c                    |  4 +---
+ drivers/clk/clk.c                                |  4 ++--
+ drivers/clk/rockchip/clk.c                       |  4 ++--
+ drivers/cpufreq/intel_pstate.c                   |  9 ++++-----
+ drivers/gpio/gpiolib-of.c                        |  2 +-
+ drivers/gpu/drm/drm_edid_load.c                  |  2 +-
+ drivers/gpu/drm/drm_panel_orientation_quirks.c   |  2 +-
+ drivers/gpu/drm/i915/intel_pipe_crc.c            |  2 +-
+ drivers/ide/hpt366.c                             |  2 +-
+ drivers/mfd/omap-usb-host.c                      |  2 +-
+ drivers/mmc/host/sdhci-xenon-phy.c               | 12 ++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c |  2 +-
+ drivers/pci/pcie/aer.c                           |  2 +-
+ drivers/phy/tegra/xusb.c                         |  2 +-
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c      |  4 ++--
+ drivers/pinctrl/pinmux.c                         |  2 +-
+ drivers/power/supply/ab8500_btemp.c              |  2 +-
+ drivers/power/supply/ab8500_charger.c            |  2 +-
+ drivers/power/supply/ab8500_fg.c                 |  2 +-
+ drivers/power/supply/abx500_chargalg.c           |  2 +-
+ drivers/power/supply/charger-manager.c           |  4 ++--
+ drivers/staging/gdm724x/gdm_tty.c                |  3 +--
+ drivers/usb/common/common.c                      |  4 ++--
+ drivers/usb/typec/class.c                        |  8 +++-----
+ drivers/usb/typec/tps6598x.c                     |  2 +-
+ drivers/vfio/vfio.c                              |  4 +---
+ drivers/video/fbdev/pxafb.c                      |  4 ++--
+ fs/ubifs/auth.c                                  |  4 ++--
+ include/linux/string.h                           | 11 ++++++++++-
+ kernel/cgroup/rdma.c                             |  2 +-
+ kernel/sched/debug.c                             |  2 +-
+ kernel/trace/trace.c                             |  2 +-
+ lib/string.c                                     | 13 ++++++++-----
+ mm/mempolicy.c                                   |  2 +-
+ mm/vmpressure.c                                  |  4 ++--
+ security/apparmor/lsm.c                          |  4 ++--
+ security/integrity/ima/ima_main.c                |  2 +-
+ sound/firewire/oxfw/oxfw.c                       |  2 +-
+ sound/pci/oxygen/oxygen_mixer.c                  |  2 +-
+ sound/soc/codecs/max98088.c                      |  2 +-
+ sound/soc/codecs/max98095.c                      |  2 +-
+ sound/soc/soc-dapm.c                             |  2 +-
+ 48 files changed, 88 insertions(+), 82 deletions(-)
+
+-- 
+2.17.1
 
