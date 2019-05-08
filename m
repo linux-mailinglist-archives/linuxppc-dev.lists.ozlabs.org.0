@@ -1,79 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2831B171DB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 08:44:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10513171D4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 08:42:03 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zRj44P34zDqNG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 16:42:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zRlk5LCQzDqDl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 16:44:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN>)
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zR9w2YvxzDqFt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 16:18:28 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x486GVKu052756
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 02:18:26 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sbs1mhqya-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zRXJ638MzDqS0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 16:34:24 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x486XcWx052303
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 02:34:20 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sbq4h75hw-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 02:18:25 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 02:34:20 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
- Wed, 8 May 2019 07:18:22 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Wed, 8 May 2019 07:34:19 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 May 2019 07:18:13 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x486ICnC48693404
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 May 2019 06:18:12 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0FC5252051;
- Wed,  8 May 2019 06:18:12 +0000 (GMT)
-Received: from rapoport-lnx (unknown [9.148.8.112])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id C2D5252057;
- Wed,  8 May 2019 06:18:08 +0000 (GMT)
-Received: by rapoport-lnx (sSMTP sendmail emulation);
- Wed, 08 May 2019 09:18:08 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 14/14] unicore32: switch to generic version of pte
- allocation
-Date: Wed,  8 May 2019 09:17:11 +0300
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1557296232-15361-1-git-send-email-rppt@linux.ibm.com>
-References: <1557296232-15361-1-git-send-email-rppt@linux.ibm.com>
+ Wed, 8 May 2019 07:34:17 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x486YGED58327106
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 06:34:16 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FAC142049
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 06:34:16 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 814B44203F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 06:34:15 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 06:34:15 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (unknown [9.81.222.76])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B69F8A01A2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 16:34:13 +1000 (AEST)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv: Move SCOM access code into powernv platform
+Date: Wed,  8 May 2019 16:34:01 +1000
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19050806-0028-0000-0000-0000036B6E67
+x-cbid: 19050806-0012-0000-0000-000003196D71
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050806-0029-0000-0000-0000242AEA29
-Message-Id: <1557296232-15361-15-git-send-email-rppt@linux.ibm.com>
+x-cbparentid: 19050806-0013-0000-0000-00002151ED8F
+Message-Id: <20190508063401.17463-1-ajd@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-05-08_05:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=758 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905080040
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905080042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,116 +90,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Matt Turner <mattst88@gmail.com>, Sam Creasey <sammy@sammy.net>,
- Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>,
- linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
- nios2-dev@lists.rocketboards.org, Guan Xuetao <gxt@pku.edu.cn>,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
- Paul Burton <paul.burton@mips.com>, linux-alpha@vger.kernel.org,
- Ley Foon Tan <lftan@altera.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace __get_free_page() and alloc_pages() calls with the generic
-__pte_alloc_one_kernel() and __pte_alloc_one().
+The powernv platform is the only one that directly accesses SCOMs. Move the
+support code to platforms/powernv, and get rid of the PPC_SCOM Kconfig
+option, as SCOM support is always selected when compiling for powernv.
 
-There is no functional change for the kernel PTE allocation.
+This also means that the Kconfig item for CONFIG_SCOM_DEBUGFS will actually
+show up in menuconfig, as previously it was the only labelled option in
+sysdev/Kconfig and wasn't actually in a menu.
 
-The difference for the user PTEs, is that the clear_pte_table() is now
-called after pgtable_page_ctor() and the addition of __GFP_ACCOUNT to the
-GFP flags.
-
-The pte_free() and pte_free_kernel() versions are identical to the generic
-ones and can be simply dropped.
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
- arch/unicore32/include/asm/pgalloc.h | 36 ++++++++----------------------------
- 1 file changed, 8 insertions(+), 28 deletions(-)
+ arch/powerpc/include/asm/scom.h                   | 4 ++--
+ arch/powerpc/platforms/powernv/Kconfig            | 5 ++++-
+ arch/powerpc/platforms/powernv/Makefile           | 2 +-
+ arch/powerpc/{sysdev => platforms/powernv}/scom.c | 0
+ arch/powerpc/sysdev/Kconfig                       | 7 -------
+ arch/powerpc/sysdev/Makefile                      | 2 --
+ 6 files changed, 7 insertions(+), 13 deletions(-)
+ rename arch/powerpc/{sysdev => platforms/powernv}/scom.c (100%)
 
-diff --git a/arch/unicore32/include/asm/pgalloc.h b/arch/unicore32/include/asm/pgalloc.h
-index 7cceabe..dd09af6 100644
---- a/arch/unicore32/include/asm/pgalloc.h
-+++ b/arch/unicore32/include/asm/pgalloc.h
-@@ -17,6 +17,10 @@
- #include <asm/cacheflush.h>
- #include <asm/tlbflush.h>
+diff --git a/arch/powerpc/include/asm/scom.h b/arch/powerpc/include/asm/scom.h
+index f5cde45b1161..acc6532a9a9e 100644
+--- a/arch/powerpc/include/asm/scom.h
++++ b/arch/powerpc/include/asm/scom.h
+@@ -23,7 +23,7 @@
  
-+#define __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
-+#define __HAVE_ARCH_PTE_ALLOC_ONE
-+#include <asm-generic/pgalloc.h>
-+
- #define check_pgt_cache()		do { } while (0)
+ #ifdef __KERNEL__
+ #ifndef __ASSEMBLY__
+-#ifdef CONFIG_PPC_SCOM
++#ifdef CONFIG_PPC_POWERNV
  
- #define _PAGE_USER_TABLE	(PMD_TYPE_TABLE | PMD_PRESENT)
-@@ -28,17 +32,14 @@ extern void free_pgd_slow(struct mm_struct *mm, pgd_t *pgd);
- #define pgd_alloc(mm)			get_pgd_slow(mm)
- #define pgd_free(mm, pgd)		free_pgd_slow(mm, pgd)
- 
--#define PGALLOC_GFP	(GFP_KERNEL | __GFP_ZERO)
--
  /*
-  * Allocate one PTE table.
-  */
- static inline pte_t *
- pte_alloc_one_kernel(struct mm_struct *mm)
- {
--	pte_t *pte;
-+	pte_t *pte = __pte_alloc_one_kernel(mm);
- 
--	pte = (pte_t *)__get_free_page(PGALLOC_GFP);
- 	if (pte)
- 		clean_dcache_area(pte, PTRS_PER_PTE * sizeof(pte_t));
- 
-@@ -50,35 +51,14 @@ pte_alloc_one(struct mm_struct *mm)
- {
- 	struct page *pte;
- 
--	pte = alloc_pages(PGALLOC_GFP, 0);
-+	pte = __pte_alloc_one(mm, GFP_PGTABLE_USER);
- 	if (!pte)
- 		return NULL;
--	if (!PageHighMem(pte)) {
--		void *page = page_address(pte);
--		clean_dcache_area(page, PTRS_PER_PTE * sizeof(pte_t));
--	}
--	if (!pgtable_page_ctor(pte)) {
--		__free_page(pte);
--	}
--
-+	if (!PageHighMem(pte))
-+		clean_pte_table(page_address(pte));
- 	return pte;
+  * The SCOM bus is a sideband bus used for accessing various internal
+@@ -161,7 +161,7 @@ static inline int scom_write(scom_map_t map, u64 reg, u64 value)
  }
  
--/*
-- * Free one PTE table.
-- */
--static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
--{
--	if (pte)
--		free_page((unsigned long)pte);
--}
+ 
+-#endif /* CONFIG_PPC_SCOM */
++#endif /* CONFIG_PPC_POWERNV */
+ #endif /* __ASSEMBLY__ */
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_SCOM_H */
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 850eee860cf2..938803eab0ad 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -12,7 +12,6 @@ config PPC_POWERNV
+ 	select EPAPR_BOOT
+ 	select PPC_INDIRECT_PIO
+ 	select PPC_UDBG_16550
+-	select PPC_SCOM
+ 	select ARCH_RANDOM
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+@@ -47,3 +46,7 @@ config PPC_VAS
+ 	  VAS adapters are found in POWER9 based systems.
+ 
+ 	  If unsure, say N.
++
++config SCOM_DEBUGFS
++	bool "Expose SCOM controllers via debugfs"
++	depends on DEBUG_FS
+diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+index da2e99efbd04..4b1644150135 100644
+--- a/arch/powerpc/platforms/powernv/Makefile
++++ b/arch/powerpc/platforms/powernv/Makefile
+@@ -4,12 +4,12 @@ obj-y			+= idle.o opal-rtc.o opal-nvram.o opal-lpc.o opal-flash.o
+ obj-y			+= rng.o opal-elog.o opal-dump.o opal-sysparam.o opal-sensor.o
+ obj-y			+= opal-msglog.o opal-hmi.o opal-power.o opal-irqchip.o
+ obj-y			+= opal-kmsg.o opal-powercap.o opal-psr.o opal-sensor-groups.o
++obj-y			+= opal-xscom.o scom.o
+ 
+ obj-$(CONFIG_SMP)	+= smp.o subcore.o subcore-asm.o
+ obj-$(CONFIG_PCI)	+= pci.o pci-ioda.o npu-dma.o pci-ioda-tce.o
+ obj-$(CONFIG_CXL_BASE)	+= pci-cxl.o
+ obj-$(CONFIG_EEH)	+= eeh-powernv.o
+-obj-$(CONFIG_PPC_SCOM)	+= opal-xscom.o
+ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+ obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+ obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+diff --git a/arch/powerpc/sysdev/scom.c b/arch/powerpc/platforms/powernv/scom.c
+similarity index 100%
+rename from arch/powerpc/sysdev/scom.c
+rename to arch/powerpc/platforms/powernv/scom.c
+diff --git a/arch/powerpc/sysdev/Kconfig b/arch/powerpc/sysdev/Kconfig
+index e0dbec780fe9..7808d279ff1d 100644
+--- a/arch/powerpc/sysdev/Kconfig
++++ b/arch/powerpc/sysdev/Kconfig
+@@ -28,13 +28,6 @@ config PPC_MSI_BITMAP
+ source "arch/powerpc/sysdev/xics/Kconfig"
+ source "arch/powerpc/sysdev/xive/Kconfig"
+ 
+-config PPC_SCOM
+-	bool
 -
--static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
--{
--	pgtable_page_dtor(pte);
--	__free_page(pte);
--}
+-config SCOM_DEBUGFS
+-	bool "Expose SCOM controllers via debugfs"
+-	depends on PPC_SCOM && DEBUG_FS
 -
- static inline void __pmd_populate(pmd_t *pmdp, unsigned long pmdval)
- {
- 	set_pmd(pmdp, __pmd(pmdval));
+ config GE_FPGA
+ 	bool
+ 
+diff --git a/arch/powerpc/sysdev/Makefile b/arch/powerpc/sysdev/Makefile
+index aaf23283ba0c..35d52d1d2fc0 100644
+--- a/arch/powerpc/sysdev/Makefile
++++ b/arch/powerpc/sysdev/Makefile
+@@ -51,8 +51,6 @@ ifdef CONFIG_SUSPEND
+ obj-$(CONFIG_PPC_BOOK3S_32)	+= 6xx-suspend.o
+ endif
+ 
+-obj-$(CONFIG_PPC_SCOM)		+= scom.o
+-
+ obj-$(CONFIG_PPC_EARLY_DEBUG_MEMCONS)	+= udbg_memcons.o
+ 
+ obj-$(CONFIG_PPC_XICS)		+= xics/
 -- 
-2.7.4
+2.20.1
 
