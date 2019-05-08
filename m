@@ -1,74 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CA71715D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 08:20:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC60717040
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 07:00:47 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zPSD6z3lzDqNs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 15:00:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zRD94WHQzDqMv
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 16:20:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="vR7G+WW+"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zPQk01QZzDqKb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 14:59:25 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id p6so9451381pgh.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 May 2019 21:59:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=uv+cr3UWPmACRlIEgtiQra2smdl7Sym7R7Qit7K6ZOI=;
- b=vR7G+WW+PTmaYxKx2JGjnx+TO/SASNtV+ssRlB3l+F0QMJKpix/+cpLJSDrcrxR/c9
- KF3teCnDJJY2t32VOLE2a0gF6hKfj51wdBPOuTugo7saOm+pob3TNc2DFtPPT3fh1FeI
- 87pA0u2rHIHslKyY5k1KWIzKj2oFLfTY0OH54DMXRbpKMb9VVQg+SXlHWCcWtkrh3qXg
- /Nr61iswM325GRSgC7naQPeyLgEYm9L6EcVztp/tfhPrkuWn6IwCUGI/WKmg7xOZo+Ov
- etQETSpFqQFV+5zYDv+CSkndRcXRCF4gjE4aWXKvchEY9yjwh+QWhKQ6Ik6xiagxeO03
- J6+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=uv+cr3UWPmACRlIEgtiQra2smdl7Sym7R7Qit7K6ZOI=;
- b=fjgXzTm0wTxLZJpRhlxCoJA2IVSP4iCRStfrUpNdAAe60GQ6s/NSIMjhv6Je8f81IN
- F9g7hK2hDtrXGdhTxI1rhGs2RlbVGRkyO4ifUMDA/CScok6Z2rgWXydz2kcRu8TU7DvC
- 7pxh9EXIoaoxoixuzSgjQzZ3TWlAKGbu/yHPZCJE4NUYn+tlhuXnp0lk2sl+wTZ1g9nP
- 8trLKsA+INWqF6vCvzHTQrAtpmKZ9mOX3tnkYALbMFiWRiCAF/q33Eh5HmSmHPgx6dTM
- JFeZ6UEYxDd7nrOcoGlxERoOP93sIKyaHHtCuMYzstZnYurXEUPS59kbCFAeMgQUQSyf
- sndg==
-X-Gm-Message-State: APjAAAV1GQpAE6wpHopazJQRnR3FH6zSZOJS3NAuG73Mz8F+R/PieIAX
- orkLJ9wTOuGGvR3frLcYxWM=
-X-Google-Smtp-Source: APXvYqysggG6fawTukJyxPpFmm6P68sY/iFM72uVHKOky45vKDFnfbonXbQljCpqxIE/VfDS3QCX2w==
-X-Received: by 2002:a62:4602:: with SMTP id t2mr46014067pfa.26.1557291562322; 
- Tue, 07 May 2019 21:59:22 -0700 (PDT)
-Received: from localhost ([203.63.161.72])
- by smtp.gmail.com with ESMTPSA id k67sm26046002pfb.44.2019.05.07.21.59.20
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 07 May 2019 21:59:21 -0700 (PDT)
-Date: Wed, 08 May 2019 14:59:07 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/1] Forced-wakeup for stop lite states on Powernv
-To: Abhishek Goel <huntbag@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20190422063231.51043-1-huntbag@linux.vnet.ibm.com>
-In-Reply-To: <20190422063231.51043-1-huntbag@linux.vnet.ibm.com>
-MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1557291178.ow4spjzq5t.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zR8v0TXSzDqK9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 16:17:33 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x486GcS6072893
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 02:17:29 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sbp870cxn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 02:17:29 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
+ Wed, 8 May 2019 07:17:27 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 8 May 2019 07:17:17 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x486HGdZ56426730
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 May 2019 06:17:16 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C1500A405F;
+ Wed,  8 May 2019 06:17:16 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C43EA406B;
+ Wed,  8 May 2019 06:17:13 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.8.112])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed,  8 May 2019 06:17:13 +0000 (GMT)
+Received: by rapoport-lnx (sSMTP sendmail emulation);
+ Wed, 08 May 2019 09:17:12 +0300
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2 00/14] introduce generic pte_{alloc,free}_one[_kernel]
+Date: Wed,  8 May 2019 09:16:57 +0300
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-GCONF: 00
+x-cbid: 19050806-0008-0000-0000-000002E466E7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050806-0009-0000-0000-00002250E6BE
+Message-Id: <1557296232-15361-1-git-send-email-rppt@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-08_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=412 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905080040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,113 +85,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
- dja@axtens.net
+Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@sifive.com>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Matt Turner <mattst88@gmail.com>, Sam Creasey <sammy@sammy.net>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-um@lists.infradead.org, Richard Weinberger <richard@nod.at>,
+ linux-m68k@lists.linux-m68k.org, Greentime Hu <green.hu@gmail.com>,
+ nios2-dev@lists.rocketboards.org, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Richard Kuo <rkuo@codeaurora.org>,
+ Paul Burton <paul.burton@mips.com>, linux-alpha@vger.kernel.org,
+ Ley Foon Tan <lftan@altera.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Abhishek Goel's on April 22, 2019 4:32 pm:
-> Currently, the cpuidle governors determine what idle state a idling CPU
-> should enter into based on heuristics that depend on the idle history on
-> that CPU. Given that no predictive heuristic is perfect, there are cases
-> where the governor predicts a shallow idle state, hoping that the CPU wil=
-l
-> be busy soon. However, if no new workload is scheduled on that CPU in the
-> near future, the CPU will end up in the shallow state.
->=20
-> Motivation
-> ----------
-> In case of POWER, this is problematic, when the predicted state in the
-> aforementioned scenario is a lite stop state, as such lite states will
-> inhibit SMT folding, thereby depriving the other threads in the core from
-> using the core resources.
->=20
-> So we do not want to get stucked in such states for longer duration. To
-> address this, the cpuidle-core can queue timer to correspond with the
-> residency value of the next available state. This timer will forcefully
-> wakeup the cpu. Few such iterations will essentially train the governor t=
-o
-> select a deeper state for that cpu, as the timer here corresponds to the
-> next available cpuidle state residency. Cpu will be kicked out of the lit=
-e
-> state and end up in a non-lite state.
->=20
-> Experiment
-> ----------
-> I performed experiments for three scenarios to collect some data.
->=20
-> case 1 :
-> Without this patch and without tick retained, i.e. in a upstream kernel,
-> It would spend more than even a second to get out of stop0_lite.
->=20
-> case 2 : With tick retained in a upstream kernel -
->=20
-> Generally, we have a sched tick at 4ms(CONF_HZ =3D 250). Ideally I expect=
-ed
-> it to take 8 sched tick to get out of stop0_lite. Experimentally,
-> observation was
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
-> sample          min            max           99percentile
-> 20              4ms            12ms          4ms
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> It would take atleast one sched tick to get out of stop0_lite.
->=20
-> case 2 :  With this patch (not stopping tick, but explicitly queuing a
->           timer)
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> sample          min             max             99percentile
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> 20              144us           192us           144us
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> In this patch, we queue a timer just before entering into a stop0_lite
-> state. The timer fires at (residency of next available state + exit laten=
-cy
-> of next available state * 2). Let's say if next state(stop0) is available
-> which has residency of 20us, it should get out in as low as (20+2*2)*8
-> [Based on the forumla (residency + 2xlatency)*history length] microsecond=
-s
-> =3D 192us. Ideally we would expect 8 iterations, it was observed to get o=
-ut
-> in 6-7 iterations. Even if let's say stop2 is next available state(stop0
-> and stop1 both are unavailable), it would take (100+2*10)*8 =3D 960us to =
-get
-> into stop2.
->=20
-> So, We are able to get out of stop0_lite generally in 150us(with this
-> patch) as compared to 4ms(with tick retained). As stated earlier, we do n=
-ot
-> want to get stuck into stop0_lite as it inhibits SMT folding for other
-> sibling threads, depriving them of core resources. Current patch is using
-> forced-wakeup only for stop0_lite, as it gives performance benefit(primar=
-y
-> reason) along with lowering down power consumption. We may extend this
-> model for other states in future.
+Hi,
 
-I still have to wonder, between our snooze loop and stop0, what does
-stop0_lite buy us.
+Many architectures have similar, if not identical implementation of
+pte_alloc_one_kernel(), pte_alloc_one(), pte_free_kernel() and pte_free().
 
-That said, the problem you're solving here is a generic one that all
-stop states have, I think. Doesn't the same thing apply going from
-stop0 to stop5? You might under estimate the sleep time and lose power
-savings and therefore performance there too. Shouldn't we make it
-generic for all stop states?
+A while ago Anshuman suggested to introduce a common definition of
+GFP_PGTABLE and during the discussion it was suggested to rather
+consolidate the allocators.
 
-Thanks,
-Nick
+These patches introduce generic version of PTE allocation and free and
+enable their use on several architectures.
 
-=
+The conversion introduces some changes for some of the architectures.
+Here's the executive summary and the details are described at each patch.
+
+* Most architectures do not set __GFP_ACCOUNT for the user page tables.
+Switch to the generic functions is "spreading that goodness to all other
+architectures"
+* arm, arm64 and unicore32 used to check if the pte is not NULL before
+freeing its memory in pte_free_kernel(). It's dropped during the
+conversion as it seems superfluous.
+* x86 used to BUG_ON() is pte was not page aligned duirng
+pte_free_kernel(), the generic version simply frees the memory without any
+checks.
+
+This set only performs the straightforward conversion, the architectures
+with different logic in pte_alloc_one() and pte_alloc_one_kernel() are not
+touched, as well as architectures that have custom page table allocators.
+
+v2 changes:
+* rebase on the current upstream
+* fix copy-paste error in the description of pte_free()
+* fix changelog for MIPS to match actual changes
+* drop powerpc changes
+* add Acked/Reviewed tags
+
+[1] https://lore.kernel.org/lkml/1547619692-7946-1-git-send-email-anshuman.khandual@arm.com
+
+Mike Rapoport (14):
+  asm-generic, x86: introduce generic pte_{alloc,free}_one[_kernel]
+  alpha: switch to generic version of pte allocation
+  arm: switch to generic version of pte allocation
+  arm64: switch to generic version of pte allocation
+  csky: switch to generic version of pte allocation
+  hexagon: switch to generic version of pte allocation
+  m68k: sun3: switch to generic version of pte allocation
+  mips: switch to generic version of pte allocation
+  nds32: switch to generic version of pte allocation
+  nios2: switch to generic version of pte allocation
+  parisc: switch to generic version of pte allocation
+  riscv: switch to generic version of pte allocation
+  um: switch to generic version of pte allocation
+  unicore32: switch to generic version of pte allocation
+
+ arch/alpha/include/asm/pgalloc.h     |  40 +------------
+ arch/arm/include/asm/pgalloc.h       |  41 +++++---------
+ arch/arm/mm/mmu.c                    |   2 +-
+ arch/arm64/include/asm/pgalloc.h     |  47 +++------------
+ arch/arm64/mm/mmu.c                  |   2 +-
+ arch/arm64/mm/pgd.c                  |   9 ++-
+ arch/csky/include/asm/pgalloc.h      |  30 +---------
+ arch/hexagon/include/asm/pgalloc.h   |  34 +----------
+ arch/m68k/include/asm/sun3_pgalloc.h |  41 +-------------
+ arch/mips/include/asm/pgalloc.h      |  33 +----------
+ arch/nds32/include/asm/pgalloc.h     |  31 ++--------
+ arch/nios2/include/asm/pgalloc.h     |  37 +-----------
+ arch/parisc/include/asm/pgalloc.h    |  33 +----------
+ arch/riscv/include/asm/pgalloc.h     |  29 +---------
+ arch/um/include/asm/pgalloc.h        |  16 +-----
+ arch/um/kernel/mem.c                 |  22 -------
+ arch/unicore32/include/asm/pgalloc.h |  36 +++---------
+ arch/x86/include/asm/pgalloc.h       |  19 +------
+ arch/x86/mm/pgtable.c                |  33 +++--------
+ include/asm-generic/pgalloc.h        | 107 +++++++++++++++++++++++++++++++++--
+ virt/kvm/arm/mmu.c                   |   2 +-
+ 21 files changed, 178 insertions(+), 466 deletions(-)
+
+-- 
+2.7.4
+
