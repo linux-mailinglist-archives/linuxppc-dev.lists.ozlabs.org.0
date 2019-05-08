@@ -2,46 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4617217BC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 16:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D41D17EDD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 19:08:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zfMN5WRwzDqJ3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 00:42:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zjbY5FKnzDqMG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 03:08:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=richardcochran@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="jQl6hDH3"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zfL14LhtzDqDY
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 00:41:13 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x48Ef0ZK007596;
- Wed, 8 May 2019 09:41:00 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x48Eexn8007593;
- Wed, 8 May 2019 09:40:59 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 8 May 2019 09:40:58 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc: slightly improve cache helpers
-Message-ID: <20190508144058.GI8599@gate.crashing.org>
-References: <0b460a85319fb89dab2c5d1200ac69a3e1b7c1ef.1557235807.git.christophe.leroy@c-s.fr>
- <20190507151030.GF8599@gate.crashing.org>
- <720e7c77-3f5c-83f3-6013-36b265c1ba73@c-s.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zjYn3Qb5zDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 03:06:36 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id y3so10232087plp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 10:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=75HU3h4OsAx80C+4HKmkW9WgCjMZ+3MuLOv2/tSvsf8=;
+ b=jQl6hDH30YowXP4QHSAKi9IE+6WlJEE9nvbFJQjRbUi7SHucchoX5QX0FEPCcs+kkL
+ /jpbzu3fEJoqC4nfdct9P3686RvwnXltHnptuE6rWvUJqv6WrstRah+XYV+aRESaYFn3
+ jFlNYGFTnsq7c6nSR/FxyByvG87taz9YhTSvI6cGnvoO5Qfl5OoZqQTuX8wBXJn+ss9d
+ 0U31LGy5ye/WnB3tucJRtX1bxu/FPDmIq6nqHk2nl515S9PzPdxO9m0clWWhIAvzSPyt
+ mkqzEJ8W17t6yXjMve4NC7Px40RyKcqnY7HOmzaicZhAa/EtdMIsysIHDQJ6aZsARyIL
+ N5EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=75HU3h4OsAx80C+4HKmkW9WgCjMZ+3MuLOv2/tSvsf8=;
+ b=CWm5JOfe+2pKPeAM9UrJeaziKz4jnwYThab9Cs5L3tcNKK9efVK8d99gvpeXwU/TLA
+ fJ3Zvgzbz1YS/lChRAeEQfH3HEUbiE5r+zZNPdwuSBkaseeiCZA9PmjpsWU3keTfQlBI
+ fQCiT8cIBjOf4/VupSMkERKM5uaayVqdG02hEno01zRxGseH7JcVRyHEvZgojH+AfzbJ
+ U2O4bXYPFvxU0rqEaMcRe3IcsSN3MX3A20pPZhdIPqbXt8ncrI9meRIW/3Ryc/r5vdDF
+ WRQy/W9TSL4tAnpbTO3ebD2sGkBAlQxzdGcD766RDtsv//R4tIXbD+xVQLCBAxz8C36o
+ SnHw==
+X-Gm-Message-State: APjAAAV5XrdcKk8S6q+mveLGUHEmosk+cVsmcJtNT0pX4r1tMx04K2YH
+ yxdLbUoUXM7y+0ZFvMYtubc=
+X-Google-Smtp-Source: APXvYqz2ig4LTc8BeA++POHhfq31FLeFbtUnhNuxJeCOWUwYOUw7UcTLduomkOhdm3P5hDWJB/4mKA==
+X-Received: by 2002:a17:902:b489:: with SMTP id
+ y9mr17545441plr.70.1557335193074; 
+ Wed, 08 May 2019 10:06:33 -0700 (PDT)
+Received: from localhost (c-73-222-71-142.hsd1.ca.comcast.net. [73.222.71.142])
+ by smtp.gmail.com with ESMTPSA id o10sm26434215pfh.168.2019.05.08.10.06.31
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 08 May 2019 10:06:32 -0700 (PDT)
+Date: Wed, 8 May 2019 10:06:29 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Po Liu <po.liu@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v1] timer:clock:ptp: add support the dynamic
+ posix clock alarm set for ptp
+Message-ID: <20190508170629.me5smui6n7n62x2l@localhost>
+References: <1557032106-28041-1-git-send-email-Po.Liu@nxp.com>
+ <20190507134952.uqqxmhinv75actbh@localhost>
+ <VI1PR04MB51359553C796D25765720FCC92320@VI1PR04MB5135.eurprd04.prod.outlook.com>
+ <20190508143654.uj7266kcbhf744c3@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <720e7c77-3f5c-83f3-6013-36b265c1ba73@c-s.fr>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <20190508143654.uj7266kcbhf744c3@localhost>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,44 +84,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Roy Zang <roy.zang@nxp.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Mingkai Hu <mingkai.hu@nxp.com>, "Y.b. Lu" <yangbo.lu@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "deepa.kernel@gmail.com" <deepa.kernel@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 07, 2019 at 06:53:30PM +0200, Christophe Leroy wrote:
-> Le 07/05/2019 à 17:10, Segher Boessenkool a écrit :
-> >On Tue, May 07, 2019 at 01:31:39PM +0000, Christophe Leroy wrote:
-> >>Cache instructions (dcbz, dcbi, dcbf and dcbst) take two registers
-> >>that are summed to obtain the target address. Using '%y0' argument
-> >>gives GCC the opportunity to use both registers instead of only one
-> >>with the second being forced to 0.
-> >
-> >That's not quite right.  Sorry if I didn't explain it properly.
-> >
-> >"m" allows all memory.  But this instruction only allows reg,reg and
-> >0,reg addressing.  For that you need to use constraint "Z".
+On Wed, May 08, 2019 at 07:36:54AM -0700, Richard Cochran wrote:
+> No the alarm functionality has been removed.  It will not be coming
+> back, unless there are really strong arguments to support it.
+
+Here is some more background:
+
+    commit 3a06c7ac24f9f24ec059cd77c2dbdf7fbfd0aaaf
+    Author: Thomas Gleixner <tglx@linutronix.de>
+    Date:   Tue May 30 23:15:38 2017 +0200
+
+    posix-clocks: Remove interval timer facility and mmap/fasync callbacks
+    
+    The only user of this facility is ptp_clock, which does not implement any of
+    those functions.
+    
+    Remove them to prevent accidental users. Especially the interval timer
+    interfaces are now more or less impossible to implement because the
+    necessary infrastructure has been confined to the core code. Aside of that
+    it's really complex to make these callbacks implemented according to spec
+    as the alarm timer implementation demonstrates. If at all then a nanosleep
+    callback might be a reasonable extension. For now keep just what ptp_clock
+    needs.
+ 
+> Here is the result of a study of a prototype alarm method.  It shows
+> why the hrtimer method is better.
 > 
-> But gcc help 
-> (https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html#Machine-Constraints) 
-> says it is better to use 'm':
+>    https://sourceforge.net/p/linuxptp/mailman/message/35535965/
 
-It says it *usually* is better to use "m".  What it really should say is
-it is better to use "m" _when that is valid_.  It is not valid for the
-cache block instructions.
+That test was with a PCIe card.  With a SoC that has a PHC as a built
+in peripheral, the hardware solution might outperform hrtimers.
 
-I'll fix up the comment...  "es" is ancient, too, nowadays it is
-equivalent to just "m" (and you need "m<>" to allow pre-modify addressing).
+So you might consider adding clock_nanosleep() for dynamic posix
+clocks.  But your code will have to support multiple users at the same
+time.
 
-> Z
-> 
->     Memory operand that is an indexed or indirect from a register (it 
-> is usually better to use ‘m’ or ‘es’ in asm statements)
-> 
-> That's the reason why I used 'm', I thought it was equivalent.
-
-Yeah, the manual text could be clearer.
-
-
-Segher
+Thanks,
+Richard
