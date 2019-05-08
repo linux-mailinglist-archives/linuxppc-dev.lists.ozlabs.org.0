@@ -1,139 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDAA17D60
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 17:35:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zgXS2jlhzDqQs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 01:35:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008E91795D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 14:23:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zbH911x1zDqLT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 22:23:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=analog.com
- (client-ip=2a01:111:f400:fe48::609;
- helo=nam03-co1-obe.outbound.protection.outlook.com;
- envelope-from=alexandru.ardelean@analog.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=oracle.com
+ (client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=analog.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=analog.onmicrosoft.com header.i=@analog.onmicrosoft.com
- header.b="ST5Z/dIp"; dkim-atps=neutral
-Received: from NAM03-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam03on0609.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe48::609])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.b="rwrtMH5v"; 
+ dkim-atps=neutral
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zZ730VYKzDqFt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 21:31:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5znCPRPKBRTF+JsmgIj6aBz2AD2vefu9H7uU0wxS3Bk=;
- b=ST5Z/dIpKXaTMbKZaXyicKhHdXlzGRr2cvNr4QiUG7GY+t2c8tYrS8HUzZk7zoQX2Sqwe4wEAPF+A8JRA7yBnsNWwHplIEFbWx98uHp1nu1y/AQc7kTAAlpBLD/QdcBgnMXwfvYN222CXVA7LOxKe+AxnGT9uWSdnYuXbWlIovg=
-Received: from BN3PR03CA0101.namprd03.prod.outlook.com (2603:10b6:400:4::19)
- by DM2PR03MB559.namprd03.prod.outlook.com (2a01:111:e400:241d::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1856.12; Wed, 8 May
- 2019 11:31:18 +0000
-Received: from BL2NAM02FT039.eop-nam02.prod.protection.outlook.com
- (104.47.38.57) by BN3PR03CA0101.outlook.office365.com (10.174.66.19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1878.21 via Frontend
- Transport; Wed, 8 May 2019 11:31:17 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.55)
- smtp.mailfrom=analog.com; linuxfoundation.org; dkim=none (message not signed)
- header.d=none;linuxfoundation.org; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- BL2NAM02FT039.mail.protection.outlook.com (10.152.77.152) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1856.11
- via Frontend Transport; Wed, 8 May 2019 11:31:17 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com
- [10.64.69.107])
- by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x48BVHaS024094
- (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
- Wed, 8 May 2019 04:31:17 -0700
-Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
- NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
- 14.03.0415.000; Wed, 8 May 2019 07:31:17 -0400
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "linux-omap@vger.kernel.org"
- <linux-omap@vger.kernel.org>, "linux-gpio@vger.kernel.org"
- <linux-gpio@vger.kernel.org>, "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, "devel@driverdev.osuosl.org"
- <devel@driverdev.osuosl.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "linux-fbdev@vger.kernel.org"
- <linux-fbdev@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>, "linux-rpi-kernel@lists.infradead.org"
- <linux-rpi-kernel@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "alsa-devel@alsa-project.org"
- <alsa-devel@alsa-project.org>, "linux-rockchip@lists.infradead.org"
- <linux-rockchip@lists.infradead.org>, "linux-clk@vger.kernel.org"
- <linux-clk@vger.kernel.org>, "linux-pci@vger.kernel.org"
- <linux-pci@vger.kernel.org>, "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, "linux-mtd@lists.infradead.org"
- <linux-mtd@lists.infradead.org>, "linux-tegra@vger.kernel.org"
- <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 01/16] lib: fix match_string() helper on -1 array size
-Thread-Topic: [PATCH 01/16] lib: fix match_string() helper on -1 array size
-Thread-Index: AQHVBZFHmipnRagpkkSQZ3QUXGEfCKZhWwOA
-Date: Wed, 8 May 2019 11:31:15 +0000
-Message-ID: <c8cfa5dbdfc0b0665d1b48f37ba57c3ec1233197.camel@analog.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zbFR0lxxzDqH4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 22:22:02 +1000 (AEST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJBEV086953;
+ Wed, 8 May 2019 12:20:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Vy0vJPC+R/qK4BTy9W8k2EK+1DkuBwwYmX4Im7RV/1I=;
+ b=rwrtMH5vFY76MnriFuwWJRty7cv6d48ndLvoH9qa0iSpe18cQhaRn84K+EEAZ1el4f/y
+ JYXzNPHiRG6Um3c2LeXmrh0vIUgokB68rrApoaQDWIhQiq3xdWk5gSEBW5t2CsNm+NQD
+ vMj6o0elaMb6F0MU58KC4FWtRSn89CRe22TBfRL7zCGITD8/HSnJoDvmL6xh8b//HGVN
+ 0/+i+9yb5Er16ot7xGaUWYdgVLnSKYTBDh5U+VgaaiAGanyy3YqtlO3+pRPaxxQxAHqK
+ Taf9LSC6aD/fmeyve7zi016PT3fCR2HgfwqDVjH/4iBaBbfLBHPj+ptzQwZZXQN8uHEa Qg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by aserp2130.oracle.com with ESMTP id 2s94b63etg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 08 May 2019 12:20:31 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJL8V107697;
+ Wed, 8 May 2019 12:20:30 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3020.oracle.com with ESMTP id 2s94ag20en-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 08 May 2019 12:20:30 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x48CKNew007185;
+ Wed, 8 May 2019 12:20:24 GMT
+Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Wed, 08 May 2019 05:20:22 -0700
+Date: Wed, 8 May 2019 15:20:10 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: Re: [PATCH 09/16] mmc: sdhci-xenon: use new match_string()
+ helper/macro
+Message-ID: <20190508122010.GC21059@kadam>
 References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
- <20190508112842.11654-2-alexandru.ardelean@analog.com>
-In-Reply-To: <20190508112842.11654-2-alexandru.ardelean@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.50.1.244]
-x-adiroutedonprem: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BE083E2328EDB84B98DBA67ED168014A@analog.com>
-Content-Transfer-Encoding: base64
+ <20190508112842.11654-11-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55; IPV:NLI; CTRY:US; EFV:NLI;
- SFV:NSPM;
- SFS:(10009020)(1496009)(346002)(396003)(136003)(376002)(39860400002)(2980300002)(199004)(189003)(316002)(476003)(118296001)(6116002)(446003)(11346002)(47776003)(86362001)(356004)(336012)(7736002)(54906003)(7696005)(426003)(436003)(23676004)(76176011)(2201001)(50466002)(106002)(8676002)(186003)(305945005)(7636002)(26005)(126002)(102836004)(2501003)(7416002)(110136005)(2486003)(2616005)(6246003)(486006)(229853002)(3846002)(8936002)(4326008)(36756003)(14444005)(14454004)(478600001)(2906002)(246002)(70586007)(70206006)(5660300002)(921003)(1121003);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DM2PR03MB559; H:nwd2mta1.analog.com; FPR:;
- SPF:Pass; LANG:en; PTR:nwd2mail10.analog.com; A:1; MX:1; 
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 02c3a8a0-d0c1-4c80-7ddc-08d6d3a8afc4
-X-Microsoft-Antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328)(7193020);
- SRVR:DM2PR03MB559; 
-X-MS-TrafficTypeDiagnostic: DM2PR03MB559:
-X-Microsoft-Antispam-PRVS: <DM2PR03MB559A4A2108CED3746037F44F9320@DM2PR03MB559.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-Forefront-PRVS: 0031A0FFAF
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: i1sZYo6+MPS+6/7XgMeGmPbqVIlaaoyZKrXQV6LiPzw6/R3K/eQZlAf95MbvTFj8RMJWP0II8lSInFCoIulDFlCx/JsNMygVVJ8q/LRE3z17s0tpdivj0+b/UasOcUpBHIp3OQfHj2kaVyCS2BeUcnIF5LWbo+8vDRMk7TLK+H8tp8dbpETe3ScxHUYDc/wd8D9/9BbnuLxjBKjEY4u7N/823NDi/QpVZP4q5veHEW/X50PKJ719D70vsHOHlWnIvzgNsRQbuw/2iNQHJ6hMflZpi8FSBrssSpTJWXoBQ62jnwr7L3xJJTrS49pFG12Vg/fkREnj1kwJSBIkhC1aiEA+1Nhy/J5FlWq9cKCtZDZjNHFsY8zmnAX59M+MVqQAkGrEfd0btkJOD7ftl06mPopshHrrs1UdWTFfMEXIMS0=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2019 11:31:17.5189 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02c3a8a0-d0c1-4c80-7ddc-08d6d3a8afc4
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a; Ip=[137.71.25.55];
- Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM2PR03MB559
-X-Mailman-Approved-At: Thu, 09 May 2019 01:00:54 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190508112842.11654-11-alexandru.ardelean@analog.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=644
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905080079
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=665 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905080079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -145,36 +91,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
+Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org,
+ alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+ linux-ide@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-clk@vger.kernel.org, devel@driverdev.osuosl.org,
+ andriy.shevchenko@linux.intel.com, linux-rockchip@lists.infradead.org,
+ linux-mmc@vger.kernel.org, linux-pm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, linux-gpio@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, gregkh@linuxfoundation.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gV2VkLCAyMDE5LTA1LTA4IGF0IDE0OjI4ICswMzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3Jv
-dGU6DQo+IFRoZSBkb2N1bWVudGF0aW9uIHRoZSBgX21hdGNoX3N0cmluZygpYCBoZWxwZXIgbWVu
-dGlvbnMgdGhhdCBgbmANCj4gc2hvdWxkIGJlOg0KPiAgKiBAbjogbnVtYmVyIG9mIHN0cmluZ3Mg
-aW4gdGhlIGFycmF5IG9yIC0xIGZvciBOVUxMIHRlcm1pbmF0ZWQgYXJyYXlzDQo+IA0KPiBUaGUg
-YmVoYXZpb3Igb2YgdGhlIGZ1bmN0aW9uIGlzIGRpZmZlcmVudCwgaW4gdGhlIHNlbnNlIHRoYXQg
-aXQgZXhpdHMgb24NCj4gdGhlIGZpcnN0IE5VTEwgZWxlbWVudCBpbiB0aGUgYXJyYXksIHJlZ2Fy
-ZGxlc3Mgb2Ygd2hldGhlciBgbmAgaXMgLTEgb3IgYQ0KPiBwb3NpdGl2ZSBudW1iZXIuDQo+IA0K
-PiBUaGlzIHBhdGNoIGNoYW5nZXMgdGhlIGJlaGF2aW9yLCB0byBleGl0IHRoZSBsb29wIHdoZW4g
-YSBOVUxMIGVsZW1lbnQgaXMNCj4gZm91bmQgYW5kIG4gPT0gLTEuIEVzc2VudGlhbGx5LCB0aGlz
-IGFsaWducyB0aGUgYmVoYXZpb3Igd2l0aCB0aGUNCj4gZG9jLXN0cmluZy4NCj4gDQo+IFRoZXJl
-IGFyZSBjdXJyZW50bHkgbWFueSB1c2VycyBvZiBgbWF0Y2hfc3RyaW5nKClgLCBhbmQgc28sIGlu
-IG9yZGVyIHRvDQo+IGdvDQo+IHRocm91Z2ggdGhlbSwgdGhlIG5leHQgcGF0Y2hlcyBpbiB0aGUg
-c2VyaWVzIHdpbGwgZm9jdXMgb24gZG9pbmcgc29tZQ0KPiBjb3NtZXRpYyBjaGFuZ2VzLCB3aGlj
-aCBhcmUgYWltZWQgYXQgZ3JvdXBpbmcgdGhlIHVzZXJzIG9mDQo+IGBtYXRjaF9zdHJpbmcoKWAu
-DQo+IA0KDQpUaGlzIGlzIHRoZSBkdXBsaWNhdGUgJiBzaG91bGQgYmUgZHJvcHBlZC4NClNvcnJ5
-IGZvciB0aGlzLg0KDQo+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFu
-ZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+IC0tLQ0KPiAgbGliL3N0cmluZy5jIHwgNSArKysr
-LQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiAN
-Cj4gZGlmZiAtLWdpdCBhL2xpYi9zdHJpbmcuYyBiL2xpYi9zdHJpbmcuYw0KPiBpbmRleCAzYWI4
-NjFjMWE4NTcuLjc2ZWRiN2JmNzZjYiAxMDA2NDQNCj4gLS0tIGEvbGliL3N0cmluZy5jDQo+ICsr
-KyBiL2xpYi9zdHJpbmcuYw0KPiBAQCAtNjQ4LDggKzY0OCwxMSBAQCBpbnQgbWF0Y2hfc3RyaW5n
-KGNvbnN0IGNoYXIgKiBjb25zdCAqYXJyYXksIHNpemVfdA0KPiBuLCBjb25zdCBjaGFyICpzdHJp
-bmcpDQo+ICANCj4gIAlmb3IgKGluZGV4ID0gMDsgaW5kZXggPCBuOyBpbmRleCsrKSB7DQo+ICAJ
-CWl0ZW0gPSBhcnJheVtpbmRleF07DQo+IC0JCWlmICghaXRlbSkNCj4gKwkJaWYgKCFpdGVtKSB7
-DQo+ICsJCQlpZiAobiAhPSAoc2l6ZV90KS0xKQ0KPiArCQkJCWNvbnRpbnVlOw0KPiAgCQkJYnJl
-YWs7DQo+ICsJCX0NCj4gIAkJaWYgKCFzdHJjbXAoaXRlbSwgc3RyaW5nKSkNCj4gIAkJCXJldHVy
-biBpbmRleDsNCj4gIAl9DQo=
+On Wed, May 08, 2019 at 02:28:35PM +0300, Alexandru Ardelean wrote:
+> -static const char * const phy_types[] = {
+> -	"emmc 5.0 phy",
+> -	"emmc 5.1 phy"
+> -};
+> -
+>  enum xenon_phy_type_enum {
+>  	EMMC_5_0_PHY,
+>  	EMMC_5_1_PHY,
+>  	NR_PHY_TYPES
+
+There is no need for NR_PHY_TYPES now so you could remove that as well.
+
+regards,
+dan carpenter
+
