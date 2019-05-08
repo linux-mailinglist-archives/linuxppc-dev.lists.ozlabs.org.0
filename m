@@ -2,71 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119CD17B1A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 15:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB9F17BB4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 16:38:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zdJ348znzDqDY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2019 23:54:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zfHJ3T12zDqGS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 00:38:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=richardcochran@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="GgArHWlW"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="GFOAMN4G"; 
  dkim-atps=neutral
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zdCm0G8BzDqGW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2019 23:50:40 +1000 (AEST)
-Received: by mail-oi1-x241.google.com with SMTP id y25so8094073oih.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 06:50:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2EurxZMr2RolSsa7vNYJaos3juIlj/g/eKIBE0b5hok=;
- b=GgArHWlWkQXoHwkDnK52AErLjHNxY5Gtmfi45DghAvzYSBWNm6e7PeK3JgF31tT39u
- Q8JR+JNhhGsG4Y7l9oZGDgiuq1Vd5RwpB/qtfTMetqQ89+0JLpGSnC6dCfhpwx19hpSY
- dW71jKTymLLEW0H/kPBh86F7O8Pl6ugXsxDoo7RkHtzfBaDJhKBBOLKKOiQUz6mX4dfy
- /qJ/gwBQBKlIHCytwcPCDVmTqECvadxzkRYOgECHpEhiJhC26ncnwbpfGzSI5baBNh4g
- EXfGGgHq+v/FJ3xWAj5JIAmNaj4uBs1RsRNGNVmeAZDVHZ7DoyszSVQnNrDKMABq0UGH
- +EKw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zfFB4FNtzDqFm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 00:37:02 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id g9so468582pfo.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 07:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Ftxd/yGo/xg+LooGM3ZD/VdN0H7EkQxNojOlbdPB8hk=;
+ b=GFOAMN4G1WRghAnlNyjXeaqSsonA/53S0DSqWPf54QwuNQDT1NbIYLzp9w3fhZJFtN
+ aiSKheRl2EusqiUpf3wsoy3fr5QmJu1rSfg7kWe0o/uADF8HeDLcbksODBQwBwlmizbz
+ 8XE1Cb7/QP0JCLcxO6ebcvY7JlWjixRPUtMymB2ehb9bUFpAAwJKTN2pvQ0A+dib+RCT
+ SGekeXxhObb5v1F6knvIdK+gQPPbU5Yy/oJwAIO2vXK2hVb78feJqIh2E0lghsfK6QgE
+ jktmdNu03tVA+o+IS/rc4DicflXeoMssjytPTXhMO9HCDWJsir2kCt5jeSX/yqcF5Uj7
+ LG+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2EurxZMr2RolSsa7vNYJaos3juIlj/g/eKIBE0b5hok=;
- b=KEPGkZsoxR5xmN7xk9EiMZpCsWhfqpC6S3m6FhA+46srlWXqgBLDqQRwHnF775uUSk
- FxYbbJ3RqfhJtjk7rAmO3I2tKcZQ6zSkcERUdi8GOZHsKWYRLGoku5zI1jAB6Y36n1Uk
- EW2AapHkDpHUwpVXE4e1ZAWd74xx7+2yEMEsx5g0/fNg6UbEPunHYcogyryiHINOnmAw
- W4ezKYvppcwS50FxlmD6JTx/0sIzLMHqo5lAMNecpa3M8TZSJjjz6uaww0+QugUO1cNt
- kvmU6Q/YvMdtiQ0Y10NMwB/pAJi5TLELJEfn7icX+VeX/zr9CDdpEgoSb1VuZlgzCbXV
- qpjg==
-X-Gm-Message-State: APjAAAVlCut4Ar0BJogGImh1vVcJ1iaUWECFvmjUOWkOc3vjXU1MHyK+
- L0psuHrZJon9USMAiD34puGmeRSVhD41MH7lBmXaVA==
-X-Google-Smtp-Source: APXvYqyeIjtF65mpJyGOqNS4h3BV3LQvlNHfYva0fI5IeZSoAKQb2exqaAUh3L7sY+Pt68OUPCAnfn3ZcLOt3M41mPQ=
-X-Received: by 2002:aca:4208:: with SMTP id p8mr2432775oia.105.1557323437130; 
- Wed, 08 May 2019 06:50:37 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Ftxd/yGo/xg+LooGM3ZD/VdN0H7EkQxNojOlbdPB8hk=;
+ b=ozyeGBkwkJaXbf3gkffjICq5zD1URRaa6pr7/wwiA6GwJbC9hvejPDwqUlnRLMs/st
+ UyPtDkIxA+27lgQthDs86QGQrLtUql9ro/+xcNB7RhP85I7HmV1u2RQ7tsmLmDH/7kDM
+ Dyu4CifvdiG//dHOGHiVvDxGUtQiUrqrSK43uGwiB8NjTbAMqzGZFbokaXi/g4Lu+a6H
+ X0S9eUwQdvuLkYwmCHqkRphATZaKbDoh7wMj3LBGSeWZxMxr6e8CH6gdE1eRcups91Rn
+ wlGeyZ0xwKdub2QrQf7uMAREoxbqgfYXhZdR9p7eqgR/9FhDpSzUKsDvhaROVIXCyaCu
+ PFFw==
+X-Gm-Message-State: APjAAAWF3zvkU1Opw3/AU6X9Dsw5ykPn8qeFAKYytknrWy04DENnpzPw
+ f2ysW2QnhIaiZs9bGIeQPkY=
+X-Google-Smtp-Source: APXvYqwFTky+u99b+yN1sIumvpHzai76th7uvSwoCwE6E1F3oFzkKw34NCWTmOtkhi1n2S8pol/jMQ==
+X-Received: by 2002:a63:465b:: with SMTP id v27mr6811806pgk.38.1557326218322; 
+ Wed, 08 May 2019 07:36:58 -0700 (PDT)
+Received: from localhost (c-73-222-71-142.hsd1.ca.comcast.net. [73.222.71.142])
+ by smtp.gmail.com with ESMTPSA id t26sm10739342pgk.62.2019.05.08.07.36.56
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 08 May 2019 07:36:57 -0700 (PDT)
+Date: Wed, 8 May 2019 07:36:54 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Po Liu <po.liu@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v1] timer:clock:ptp: add support the dynamic
+ posix clock alarm set for ptp
+Message-ID: <20190508143654.uj7266kcbhf744c3@localhost>
+References: <1557032106-28041-1-git-send-email-Po.Liu@nxp.com>
+ <20190507134952.uqqxmhinv75actbh@localhost>
+ <VI1PR04MB51359553C796D25765720FCC92320@VI1PR04MB5135.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-References: <20190507183804.5512-1-david@redhat.com>
- <20190507183804.5512-8-david@redhat.com>
- <CAPcyv4h2PgzQZrD0UU=4Qz_yH2C_hiYQyqV9U7CCkjpmHZ5xjQ@mail.gmail.com>
- <1d369ae4-7183-b455-646a-65bbbe697281@redhat.com>
-In-Reply-To: <1d369ae4-7183-b455-646a-65bbbe697281@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 8 May 2019 06:50:25 -0700
-Message-ID: <CAPcyv4jtS6G_ZqLCdO4gOjS9K2cuX=ywFHemhSb46aQvS8pa8A@mail.gmail.com>
-Subject: Re: [PATCH v2 7/8] mm/memory_hotplug: Make
- unregister_memory_block_under_nodes() never fail
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VI1PR04MB51359553C796D25765720FCC92320@VI1PR04MB5135.eurprd04.prod.outlook.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,48 +82,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, linux-ia64@vger.kernel.org,
- Linux-sh <linux-sh@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Chris Wilson <chris@chris-wilson.co.uk>, Linux MM <linux-mm@kvack.org>,
- Mark Brown <broonie@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>, Oscar Salvador <osalvador@suse.de>
+Cc: Roy Zang <roy.zang@nxp.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Mingkai Hu <mingkai.hu@nxp.com>, "Y.b. Lu" <yangbo.lu@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "deepa.kernel@gmail.com" <deepa.kernel@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 8, 2019 at 12:22 AM David Hildenbrand <david@redhat.com> wrote:
->
->
-> >>  drivers/base/node.c  | 18 +++++-------------
-> >>  include/linux/node.h |  5 ++---
-> >>  2 files changed, 7 insertions(+), 16 deletions(-)
-> >>
-> >> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> >> index 04fdfa99b8bc..9be88fd05147 100644
-> >> --- a/drivers/base/node.c
-> >> +++ b/drivers/base/node.c
-> >> @@ -803,20 +803,14 @@ int register_mem_sect_under_node(struct memory_block *mem_blk, void *arg)
-> >>
-> >>  /*
-> >>   * Unregister memory block device under all nodes that it spans.
-> >> + * Has to be called with mem_sysfs_mutex held (due to unlinked_nodes).
-> >
-> > Given this comment can bitrot relative to the implementation lets
-> > instead add an explicit:
-> >
-> >     lockdep_assert_held(&mem_sysfs_mutex);
->
-> That would require to make the mutex non-static. Is that what you
-> suggest, or any other alternative?
+On Wed, May 08, 2019 at 03:30:01AM +0000, Po Liu wrote:
+> > Sorry, NAK, since we decided some time ago not to support timer_* operations
+> > on dynamic clocks.  You get much better application level timer performance
+> > by synchronizing CLOCK_REALTIME to your PHC and using clock_nanosleep()
+> > with CLOCK_REALTIME or CLOCK_MONOTONIC.
+> 
+> The code intend to get alarm by interrupt of ptp hardware. The code
+> to fix ptp not support to application layer to get the alarm
+> interrupt.  Do you mean the synchronizing at application layer by
+> PHC (using clock_nanosleep()) to the CLOCK_REALTIME source? Then the
+> kernel could using the hrtimer with CLOCK_REALTIME?
 
-If the concern is other code paths taking the lock when they shouldn't
-then you could make a public "lockdep_assert_mem_sysfs_held()" to do
-the same, but I otherwise think the benefit of inline lock validation
-is worth the price of adding a new non-static symbol.
+Yes, or with CLOCK_MONOTONIC.
+
+> > > This won't change the user space system call code. Normally the user
+> > > space set alarm by timer_create() and timer_settime(). Reference code
+> > > are tools/testing/selftests/ptp/testptp.c.
+> > 
+> > That program still has misleading examples.  Sorry about that.  I'll submit a
+> > patch to remove them.
+> 
+> Is there any replace method for an application code to get alarm interrupt by the ptp source?
+
+No the alarm functionality has been removed.  It will not be coming
+back, unless there are really strong arguments to support it.
+
+Here is the result of a study of a prototype alarm method.  It shows
+why the hrtimer method is better.
+
+   https://sourceforge.net/p/linuxptp/mailman/message/35535965/
+
+Thanks,
+Richard
