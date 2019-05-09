@@ -2,48 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168A418A4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 15:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0908B18A57
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 15:10:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450DCq3kc3zDqQb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 23:07:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 450DGM2czhzDqQZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 23:10:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="lmC2wxBO"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450D8z3Y62zDqPP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 23:05:21 +1000 (AEST)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 09 May 2019 06:05:18 -0700
-X-ExtLoop1: 1
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.86])
- by orsmga005.jf.intel.com with ESMTP; 09 May 2019 06:05:13 -0700
-Received: from andy by smile with local (Exim 4.92)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1hOijY-0006lB-3R; Thu, 09 May 2019 16:05:12 +0300
-Date: Thu, 9 May 2019 16:05:12 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
-Message-ID: <20190509130512.GS9224@smile.fi.intel.com>
-References: <20190509121923.8339-1-pmladek@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450DCb3bj4zDqQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 23:07:39 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id p15so1141392pll.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 06:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=AMDSOHuntpXjwkDROmPwR3CtgdKHjORZGQxYxRCtzlU=;
+ b=lmC2wxBOUUxBpARjaZJqsfJzrZMRiR1P3nYQGJS8kJ6P5trMZHbo2STPMZbf4tl/bE
+ dDHY2sVyuBYEF0ALB5HW8JzvmbjsV1krfl5dT/zCQ81Q9ixUMiCD1ZPoG418wrmZwDET
+ aRhq1VjdW020hplpfYZAxl2YeuxKk5e5Kl1RH9eEEt8e7cL8JDo6qJ7+bjTF9/rB5cK0
+ Feqx4lIgWPvr8arTX2zGvBLZFSf5ORhpt/UAsJkbkp4+yXfm6NNwZ5yn02FSS/dQIPR4
+ MvdrffaELUToz2lIp6ProF6siAQo+z1QRuHmHzFXhdPofFSgjIhtCujfEiv/gf9G2iq+
+ H1VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=AMDSOHuntpXjwkDROmPwR3CtgdKHjORZGQxYxRCtzlU=;
+ b=cUibo53PauGLryjnh++sKwmdZ6qoj003V0WaNmy1fcKIJlx68Z6scAOi8ICyP9OWIA
+ Ut/5tYZUSQdDDyhxpdZau/mXun8RIBbruSPOKYIdOmCGTExGP93MzScoGuliBnAR/LCr
+ V9eQy0Q/gaMm2ggp2RHwt7t5Bq6kbgrl/tlP1oSqq6hHI317lDaPLDnKlXZe4zSGCk3a
+ FBFYOuUjIN2SVv3ewOObnv0M+DHMQpELegXelYXZwHKARkWQIEqbWIZwimlt4GoxHV2x
+ UvFZ+PomYoD1dwRgQaAC1VVvnr1TokNZQCgaz0RLqnScIIpw9ZhWdz8sBGwCF+4Jdat5
+ 7LfA==
+X-Gm-Message-State: APjAAAU6JmmLg2+7nR0W0SKaygfWKT3b/zShJgWm7hTBm/1iBx/4A11a
+ wFxdrtdaHE3z6RgMZJx7jW4=
+X-Google-Smtp-Source: APXvYqxY64yiv1YSXv40+phLLmGiWlKDHIHmA3rCiS28kXRO7hdD/3Py8T04aZ70WemoqMOckVi6AQ==
+X-Received: by 2002:a17:902:e091:: with SMTP id
+ cb17mr4891085plb.222.1557407255840; 
+ Thu, 09 May 2019 06:07:35 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ 5sm5158382pfs.17.2019.05.09.06.07.32
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 09 May 2019 06:07:33 -0700 (PDT)
+Subject: Re: Build failure in v4.4.y.queue (ppc:allmodconfig)
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20190508202642.GA28212@roeck-us.net>
+ <20190509065324.GA3864@kroah.com> <20190509114923.696222cb@naga>
+From: Guenter Roeck <linux@roeck-us.net>
+Message-ID: <e8aa590e-a02f-19de-96df-6728ded7aab3@roeck-us.net>
+Date: Thu, 9 May 2019 06:07:31 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190509121923.8339-1-pmladek@suse.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190509114923.696222cb@naga>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,141 +86,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Michal Hocko <mhocko@suse.cz>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Stephen Rothwell <sfr@ozlabs.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
+Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 09, 2019 at 02:19:23PM +0200, Petr Mladek wrote:
-> The commit 3e5903eb9cff70730 ("vsprintf: Prevent crash when dereferencing
-> invalid pointers") broke boot on several architectures. The common
-> pattern is that probe_kernel_read() is not working during early
-> boot because userspace access framework is not ready.
+On 5/9/19 2:49 AM, Michal Suchánek wrote:
+> On Thu, 9 May 2019 08:53:24 +0200
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 > 
-> The check is only the best effort. Let's not rush with it during
-> the early boot.
+>> On Wed, May 08, 2019 at 01:26:42PM -0700, Guenter Roeck wrote:
+>>> I see multiple instances of:
+>>>
+>>> arch/powerpc/kernel/exceptions-64s.S:839: Error:
+>>> 	attempt to move .org backwards
+>>>
+>>> in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
+>>>
+>>> This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a store
+>>> forwarding barrier at kernel entry/exit"), which is part of a large patch
+>>> series and can not easily be reverted.
+>>>
+>>> Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ?
+>>
+>> Michael, I thought this patch series was supposed to fix ppc issues, not
+>> add to them :)
+>>
+>> Any ideas on what to do here?
 > 
-> Details:
-> 
-> 1. Report on Power:
-> 
-> Kernel crashes very early during boot with with CONFIG_PPC_KUAP and
-> CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG
-> 
-> The problem is the combination of some new code called via printk(),
-> check_pointer() which calls probe_kernel_read(). That then calls
-> allow_user_access() (PPC_KUAP) and that uses mmu_has_feature() too early
-> (before we've patched features). With the JUMP_LABEL debug enabled that
-> causes us to call printk() & dump_stack() and we end up recursing and
-> overflowing the stack.
-> 
-> Because it happens so early you don't get any output, just an apparently
-> dead system.
-> 
-> The stack trace (which you don't see) is something like:
-> 
->   ...
->   dump_stack+0xdc
->   probe_kernel_read+0x1a4
->   check_pointer+0x58
->   string+0x3c
->   vsnprintf+0x1bc
->   vscnprintf+0x20
->   printk_safe_log_store+0x7c
->   printk+0x40
->   dump_stack_print_info+0xbc
->   dump_stack+0x8
->   probe_kernel_read+0x1a4
->   probe_kernel_read+0x19c
->   check_pointer+0x58
->   string+0x3c
->   vsnprintf+0x1bc
->   vscnprintf+0x20
->   vprintk_store+0x6c
->   vprintk_emit+0xec
->   vprintk_func+0xd4
->   printk+0x40
->   cpufeatures_process_feature+0xc8
->   scan_cpufeatures_subnodes+0x380
->   of_scan_flat_dt_subnodes+0xb4
->   dt_cpu_ftrs_scan_callback+0x158
->   of_scan_flat_dt+0xf0
->   dt_cpu_ftrs_scan+0x3c
->   early_init_devtree+0x360
->   early_setup+0x9c
-> 
-> 2. Report on s390:
-> 
-> vsnprintf invocations, are broken on s390. For example, the early boot
-> output now looks like this where the first (efault) should be
-> the linux_banner:
-> 
-> [    0.099985] (efault)
-> [    0.099985] setup: Linux is running as a z/VM guest operating system in 64-bit mode
-> [    0.100066] setup: The maximum memory size is 8192MB
-> [    0.100070] cma: Reserved 4 MiB at (efault)
-> [    0.100100] numa: NUMA mode: (efault)
-> 
-> The reason for this, is that the code assumes that
-> probe_kernel_address() works very early. This however is not true on
-> at least s390. Uaccess on KERNEL_DS works only after page tables have
-> been setup on s390, which happens with setup_arch()->paging_init().
-> 
-> Any probe_kernel_address() invocation before that will return -EFAULT.
-> 
+> What exact code do you build?
+>
+$ make ARCH=powerpc CROSS_COMPILE=powerpc64-linux- allmodconfig
+$ powerpc64-linux-gcc --version
+powerpc64-linux-gcc (GCC) 8.3.0
 
-It's seems as a good enough fix.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Though in all cases would be nice to distinguish error pointers as well.
-Something like
-
-if (IS_ERR(ptr))
-	return err_pointer_str(ptr);
-
-in check_pointer_msg().
-
-> Fixes: 3e5903eb9cff70730 ("vsprintf: Prevent crash when dereferencing invalid pointers")
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-> ---
->  lib/vsprintf.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 7b0a6140bfad..8b43a883be6b 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -640,8 +640,13 @@ static const char *check_pointer_msg(const void *ptr)
->  	if (!ptr)
->  		return "(null)";
->  
-> -	if (probe_kernel_address(ptr, byte))
-> -		return "(efault)";
-> +	/* User space address handling is not ready during early boot. */
-> +	if (system_state <= SYSTEM_BOOTING) {
-> +		if ((unsigned long)ptr < PAGE_SIZE)
-> +			return "(efault)";
-> +	} else {
-> +		if (probe_kernel_address(ptr, byte))
-> +			return "(efault)";
->  
->  	return NULL;
->  }
-> -- 
-> 2.16.4
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Guenter
