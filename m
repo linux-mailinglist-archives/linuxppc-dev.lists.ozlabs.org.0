@@ -2,40 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9562F18801
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 11:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0563718826
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 12:07:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4507rR4cvLzDqNj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 19:50:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4508C53whLzDqPP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 20:06:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4507px5S9wzDqMr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 19:49:27 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id ECD89ABD5;
- Thu,  9 May 2019 09:49:24 +0000 (UTC)
-Date: Thu, 9 May 2019 11:49:23 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Build failure in v4.4.y.queue (ppc:allmodconfig)
-Message-ID: <20190509114923.696222cb@naga>
-In-Reply-To: <20190509065324.GA3864@kroah.com>
-References: <20190508202642.GA28212@roeck-us.net>
- <20190509065324.GA3864@kroah.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45089m5BgVzDqMr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 20:05:48 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 35848286C1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 10:05:45 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 247B6288E6; Thu,  9 May 2019 10:05:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203125] Kernel 5.1-rc1 fails to boot on a PowerMac G4 3,6:
+ Caused by (from SRR1=141020): Transfer error ack signal
+Date: Thu, 09 May 2019 10:05:44 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@c-s.fr
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-203125-206035-A0uW2ahLrr@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203125-206035@https.bugzilla.kernel.org/>
+References: <bug-203125-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,40 +71,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 9 May 2019 08:53:24 +0200
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203125
 
-> On Wed, May 08, 2019 at 01:26:42PM -0700, Guenter Roeck wrote:
-> > I see multiple instances of:
-> > 
-> > arch/powerpc/kernel/exceptions-64s.S:839: Error:
-> > 	attempt to move .org backwards
-> > 
-> > in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
-> > 
-> > This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a store
-> > forwarding barrier at kernel entry/exit"), which is part of a large patch
-> > series and can not easily be reverted.
-> > 
-> > Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ?  
-> 
-> Michael, I thought this patch series was supposed to fix ppc issues, not
-> add to them :)
-> 
-> Any ideas on what to do here?
+Christophe Leroy (christophe.leroy@c-s.fr) changed:
 
-What exact code do you build?
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |christophe.leroy@c-s.fr
 
-In my source there the SLB relon handler starts just above this line and
-a lot of out-ouf-line are handlers before. Moving some out-of-line
-handlers below the parts with fixed location should fix the build error.
+--- Comment #5 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Apparently, MSR DR is not sent and DAR has value 0xc0090654, meaning that a
+virt address tries to get accessed while in real mode.
 
-Thanks
-
-Michal
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
