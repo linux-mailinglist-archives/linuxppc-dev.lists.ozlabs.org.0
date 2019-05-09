@@ -2,77 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CED194F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 23:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77ED719528
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 00:20:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450RrW1STxzDqRy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 07:51:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 450STF6p8FzDqRs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 08:20:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
- envelope-from=richard.weiyang@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="NGl7wg2c"; 
- dkim-atps=neutral
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450Rq51xvCzDqQY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 07:50:40 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id n17so3378059edb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 14:50:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=BMlSqCqK74ztHAZfTWbqmYSf5DVD6ofjZO6Gjzp7WWI=;
- b=NGl7wg2cGVpKyD9cpJHljZftn+LLkSh0SgfYuUD7pOjyCs9Ci6mgnsJnI/5YX2u2sA
- N00ub+BHjZPR67iWK7zGrSKdc2FIKgprC22Vnd+8DssY7k0hLeRClyrdM+litkTcYs5z
- wn30Qa8o0THNaD/XsPLrjqCpWhF62kj/AuENHYy+QRCEAH6uviiC55pbVSOOb7LbHdGw
- b43TyiAMIlgHR0fXTDmkpRK1aekheRqQsoO5nwvkE4LFcuDJ1jZjKz5V1h8l0HDavI8L
- LGaLQ402+MxxhMuG/j6qecZBHC9qJ7cHkd3zoNCrkpuydFRs/uCvLnQVkbwD/RSUNA0G
- Zriw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=BMlSqCqK74ztHAZfTWbqmYSf5DVD6ofjZO6Gjzp7WWI=;
- b=CaKQzFlNBwJZabNjuZAy/U3HyKFtJKLPSHEwCQuiyr0jaFxsUVjTr41JJslWodbiYx
- DF8BHAP5hzmSx9yA/HhEBlCI1drtVp9y/qtPHulNROBPfGVxTDSDi8TFhiOsIy6eo3SA
- 9Mj4z5U/J4++7SpoYYxtlTnnU/I6Y5Po3rE26SLbugCl+tHZpDobCQDrBxmz0ybHrPzt
- 0d4jqG+OlgouJZPkZDnqxGUp/+XgiHJbcYnIb3VMY+H/E7vue5qARxOE2kFxZyrm15Vv
- 19CZhTKJHF0oUI96UMi8ZZDxqiU+fAHJtMYM4yhUr1VcNlHKAncMTTeVzMNcbA5MMMir
- 4s0g==
-X-Gm-Message-State: APjAAAVoBBiLbrAsOQIx+3eBfVN8g6SinvPYd2qpDc+mNBWR0ImD7nw8
- KSsiO6f8/3Tj3pJ/+vbneTU=
-X-Google-Smtp-Source: APXvYqymBHLkj8Y+oaiwW9YuwNj6GLPLzc74NUHJXE/g8FqI3LUNlHjOkXv2ihOrqJ30gkhHPU8rNA==
-X-Received: by 2002:a17:906:45c3:: with SMTP id
- z3mr5444210ejq.134.1557438636558; 
- Thu, 09 May 2019 14:50:36 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
- by smtp.gmail.com with ESMTPSA id v35sm890246edc.4.2019.05.09.14.50.35
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 09 May 2019 14:50:35 -0700 (PDT)
-Date: Thu, 9 May 2019 21:50:34 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450SRl4qcrzDqRY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 08:18:58 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 4D7973082137;
+ Thu,  9 May 2019 22:18:55 +0000 (UTC)
+Received: from [10.36.116.110] (ovpn-116-110.ams2.redhat.com [10.36.116.110])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 50ADC5D9C4;
+ Thu,  9 May 2019 22:18:51 +0000 (UTC)
 Subject: Re: [PATCH v2 4/8] mm/memory_hotplug: Create memory block devices
  after arch_add_memory()
-Message-ID: <20190509215034.jl2qejw3pzqtbu5d@master>
+To: Wei Yang <richard.weiyang@gmail.com>
 References: <20190507183804.5512-1-david@redhat.com>
  <20190507183804.5512-5-david@redhat.com>
  <20190509143151.zexjmwu3ikkmye7i@master>
  <28071389-372c-14eb-1209-02464726b4f0@redhat.com>
+ <20190509215034.jl2qejw3pzqtbu5d@master>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <c5cfec90-8837-8d84-29fa-564e4e5923a1@redhat.com>
+Date: Fri, 10 May 2019 00:18:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <28071389-372c-14eb-1209-02464726b4f0@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190509215034.jl2qejw3pzqtbu5d@master>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.42]); Thu, 09 May 2019 22:18:55 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,14 +106,12 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
- Pavel Tatashin <pasha.tatashin@soleen.com>, linux-sh@vger.kernel.org,
- "mike.travis@hpe.com" <mike.travis@hpe.com>,
+Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-sh@vger.kernel.org, "mike.travis@hpe.com" <mike.travis@hpe.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>, Mathieu Malaterre <malat@debian.org>,
- linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
  linux-mm@kvack.org, Andrew Banman <andrew.banman@hpe.com>,
  Qian Cai <cai@lca.pw>, Arun KS <arunks@codeaurora.org>,
  akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
@@ -100,144 +120,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 09, 2019 at 04:58:56PM +0200, David Hildenbrand wrote:
->On 09.05.19 16:31, Wei Yang wrote:
->> On Tue, May 07, 2019 at 08:38:00PM +0200, David Hildenbrand wrote:
->>> Only memory to be added to the buddy and to be onlined/offlined by
->>> user space using memory block devices needs (and should have!) memory
->>> block devices.
+> Looks good to me.
+> 
+>>
+>> (I would actually even prefer "memory_block_devices", because memory
+>> blocks have different meanins)
+>>
+> 
+> Agree with you, this comes to my mind sometime ago :-)
+
+We have memblocks, memory_blocks  ... I guess memory_block_device is
+unique :)
+
+> 
 >>>
->>> Factor out creation of memory block devices Create all devices after
->>> arch_add_memory() succeeded. We can later drop the want_memblock parameter,
->>> because it is now effectively stale.
+>>> [...]
 >>>
->>> Only after memory block devices have been added, memory can be onlined
->>> by user space. This implies, that memory is not visible to user space at
->>> all before arch_add_memory() succeeded.
+>>>> /*
+>>>> @@ -1106,6 +1100,13 @@ int __ref add_memory_resource(int nid, struct resource *res)
+>>>> 	if (ret < 0)
+>>>> 		goto error;
+>>>>
+>>>> +	/* create memory block devices after memory was added */
+>>>> +	ret = hotplug_memory_register(start, size);
+>>>> +	if (ret) {
+>>>> +		arch_remove_memory(nid, start, size, NULL);
 >>>
->>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->>> Cc: David Hildenbrand <david@redhat.com>
->>> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: Ingo Molnar <mingo@kernel.org>
->>> Cc: Andrew Banman <andrew.banman@hpe.com>
->>> Cc: Oscar Salvador <osalvador@suse.de>
->>> Cc: Michal Hocko <mhocko@suse.com>
->>> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
->>> Cc: Qian Cai <cai@lca.pw>
->>> Cc: Wei Yang <richard.weiyang@gmail.com>
->>> Cc: Arun KS <arunks@codeaurora.org>
->>> Cc: Mathieu Malaterre <malat@debian.org>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>> drivers/base/memory.c  | 70 ++++++++++++++++++++++++++----------------
->>> include/linux/memory.h |  2 +-
->>> mm/memory_hotplug.c    | 15 ++++-----
->>> 3 files changed, 53 insertions(+), 34 deletions(-)
+>>> Functionally, it works I think.
 >>>
->>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->>> index 6e0cb4fda179..862c202a18ca 100644
->>> --- a/drivers/base/memory.c
->>> +++ b/drivers/base/memory.c
->>> @@ -701,44 +701,62 @@ static int add_memory_block(int base_section_nr)
->>> 	return 0;
->>> }
+>>> But arch_remove_memory() would remove pages from zone. At this point, we just
+>>> allocate section/mmap for pages, the zones are empty and pages are not
+>>> connected to zone.
 >>>
->>> +static void unregister_memory(struct memory_block *memory)
->>> +{
->>> +	BUG_ON(memory->dev.bus != &memory_subsys);
->>> +
->>> +	/* drop the ref. we got via find_memory_block() */
->>> +	put_device(&memory->dev);
->>> +	device_unregister(&memory->dev);
->>> +}
->>> +
->>> /*
->>> - * need an interface for the VM to add new memory regions,
->>> - * but without onlining it.
->>> + * Create memory block devices for the given memory area. Start and size
->>> + * have to be aligned to memory block granularity. Memory block devices
->>> + * will be initialized as offline.
->>>  */
->>> -int hotplug_memory_register(int nid, struct mem_section *section)
->>> +int hotplug_memory_register(unsigned long start, unsigned long size)
->> 
->> One trivial suggestion about the function name.
->> 
->> For memory_block device, sometimes we use the full name
->> 
->>     find_memory_block
->>     init_memory_block
->>     add_memory_block
->> 
->> But sometimes we use *nick* name
->> 
->>     hotplug_memory_register
->>     register_memory
->>     unregister_memory
->> 
->> This is a little bit confusion.
->> 
->> Can we use one name convention here?
->
->We can just go for
->
->crate_memory_blocks() and free_memory_blocks(). Or do
->you have better suggestions?
-
-s/crate/create/
-
-Looks good to me.
-
->
->(I would actually even prefer "memory_block_devices", because memory
->blocks have different meanins)
->
-
-Agree with you, this comes to my mind sometime ago :-)
-
->> 
->> [...]
->> 
->>> /*
->>> @@ -1106,6 +1100,13 @@ int __ref add_memory_resource(int nid, struct resource *res)
->>> 	if (ret < 0)
->>> 		goto error;
+>>> Function  zone = page_zone(page); always gets zone #0, since pages->flags is 0
+>>> at  this point. This is not exact.
 >>>
->>> +	/* create memory block devices after memory was added */
->>> +	ret = hotplug_memory_register(start, size);
->>> +	if (ret) {
->>> +		arch_remove_memory(nid, start, size, NULL);
->> 
->> Functionally, it works I think.
->> 
->> But arch_remove_memory() would remove pages from zone. At this point, we just
->> allocate section/mmap for pages, the zones are empty and pages are not
->> connected to zone.
->> 
->> Function  zone = page_zone(page); always gets zone #0, since pages->flags is 0
->> at  this point. This is not exact.
->> 
->> Would we add some comment to mention this? Or we need to clean up
->> arch_remove_memory() to take out __remove_zone()?
->
->That is precisely what is on my list next (see cover letter).This is
->already broken when memory that was never onlined is removed again.
->So I am planning to fix that independently.
->
+>>> Would we add some comment to mention this? Or we need to clean up
+>>> arch_remove_memory() to take out __remove_zone()?
+>>
+>> That is precisely what is on my list next (see cover letter).This is
+>> already broken when memory that was never onlined is removed again.
+>> So I am planning to fix that independently.
+>>
+> 
+> Sounds great :-)
 
-Sounds great :-)
+Especially, I suspect a lot of bugs in the area of
 
-Hope you would cc me in the following series.
+1. Remove memory that has never been onlined
+2. Remove memory that has been onlined/offlined a couple of times
+3. Remove memory that has been onlined to different zones.
 
->
->-- 
->
->Thanks,
->
->David / dhildenb
+Will see when refactoring if my intuition is right :)
+
+> 
+> Hope you would cc me in the following series.
+
+
+Sure! Thanks!
+
 
 -- 
-Wei Yang
-Help you, Help me
+
+Thanks,
+
+David / dhildenb
