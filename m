@@ -1,65 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CD518994
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 14:21:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DAC18932
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 13:43:32 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450BLV0gmszDqNV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 21:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 450CB51znPzDqPS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 22:21:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ spf=pass (mailfrom) smtp.mailfrom=suse.com
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=pmladek@suse.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450BKD6JG9zDqDd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 21:42:24 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 37B08251F4
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 11:42:23 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 2BDCE287C0; Thu,  9 May 2019 11:42:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203125] Kernel 5.1-rc1 fails to boot on a PowerMac G4 3,6:
- Caused by (from SRR1=141020): Transfer error ack signal
-Date: Thu, 09 May 2019 11:42:21 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-203125-206035-jgqR85VfRC@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203125-206035@https.bugzilla.kernel.org/>
-References: <bug-203125-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450C8S4ttPzDqKl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 22:19:49 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 3B68EAC38;
+ Thu,  9 May 2019 12:19:46 +0000 (UTC)
+From: Petr Mladek <pmladek@suse.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH] vsprintf: Do not break early boot with probing addresses
+Date: Thu,  9 May 2019 14:19:23 +0200
+Message-Id: <20190509121923.8339-1-pmladek@suse.com>
+X-Mailer: git-send-email 2.16.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,20 +41,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-s390@vger.kernel.org,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Stephen Rothwell <sfr@ozlabs.org>, Petr Mladek <pmladek@suse.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203125
+The commit 3e5903eb9cff70730 ("vsprintf: Prevent crash when dereferencing
+invalid pointers") broke boot on several architectures. The common
+pattern is that probe_kernel_read() is not working during early
+boot because userspace access framework is not ready.
 
---- Comment #9 from Erhard F. (erhard_f@mailbox.org) ---
-@Christophe: Oops, accidentally I trashed your last comment. Sorry! This pa=
-tch
-didn't apply either. There is no book3s32 directory in my linux-stable tree,
-the hash_*.S files are directly in mm/
+The check is only the best effort. Let's not rush with it during
+the early boot.
 
-But does not matter, your code change works!
+Details:
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+1. Report on Power:
+
+Kernel crashes very early during boot with with CONFIG_PPC_KUAP and
+CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG
+
+The problem is the combination of some new code called via printk(),
+check_pointer() which calls probe_kernel_read(). That then calls
+allow_user_access() (PPC_KUAP) and that uses mmu_has_feature() too early
+(before we've patched features). With the JUMP_LABEL debug enabled that
+causes us to call printk() & dump_stack() and we end up recursing and
+overflowing the stack.
+
+Because it happens so early you don't get any output, just an apparently
+dead system.
+
+The stack trace (which you don't see) is something like:
+
+  ...
+  dump_stack+0xdc
+  probe_kernel_read+0x1a4
+  check_pointer+0x58
+  string+0x3c
+  vsnprintf+0x1bc
+  vscnprintf+0x20
+  printk_safe_log_store+0x7c
+  printk+0x40
+  dump_stack_print_info+0xbc
+  dump_stack+0x8
+  probe_kernel_read+0x1a4
+  probe_kernel_read+0x19c
+  check_pointer+0x58
+  string+0x3c
+  vsnprintf+0x1bc
+  vscnprintf+0x20
+  vprintk_store+0x6c
+  vprintk_emit+0xec
+  vprintk_func+0xd4
+  printk+0x40
+  cpufeatures_process_feature+0xc8
+  scan_cpufeatures_subnodes+0x380
+  of_scan_flat_dt_subnodes+0xb4
+  dt_cpu_ftrs_scan_callback+0x158
+  of_scan_flat_dt+0xf0
+  dt_cpu_ftrs_scan+0x3c
+  early_init_devtree+0x360
+  early_setup+0x9c
+
+2. Report on s390:
+
+vsnprintf invocations, are broken on s390. For example, the early boot
+output now looks like this where the first (efault) should be
+the linux_banner:
+
+[    0.099985] (efault)
+[    0.099985] setup: Linux is running as a z/VM guest operating system in 64-bit mode
+[    0.100066] setup: The maximum memory size is 8192MB
+[    0.100070] cma: Reserved 4 MiB at (efault)
+[    0.100100] numa: NUMA mode: (efault)
+
+The reason for this, is that the code assumes that
+probe_kernel_address() works very early. This however is not true on
+at least s390. Uaccess on KERNEL_DS works only after page tables have
+been setup on s390, which happens with setup_arch()->paging_init().
+
+Any probe_kernel_address() invocation before that will return -EFAULT.
+
+Fixes: 3e5903eb9cff70730 ("vsprintf: Prevent crash when dereferencing invalid pointers")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+---
+ lib/vsprintf.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 7b0a6140bfad..8b43a883be6b 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -640,8 +640,13 @@ static const char *check_pointer_msg(const void *ptr)
+ 	if (!ptr)
+ 		return "(null)";
+ 
+-	if (probe_kernel_address(ptr, byte))
+-		return "(efault)";
++	/* User space address handling is not ready during early boot. */
++	if (system_state <= SYSTEM_BOOTING) {
++		if ((unsigned long)ptr < PAGE_SIZE)
++			return "(efault)";
++	} else {
++		if (probe_kernel_address(ptr, byte))
++			return "(efault)";
+ 
+ 	return NULL;
+ }
+-- 
+2.16.4
+
