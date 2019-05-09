@@ -1,45 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4A618BED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 16:36:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450GB02QWjzDqQt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 00:36:24 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC90118C3F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 16:47:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 450GQh10GVzDqQV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 00:47:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450G8V5zQFzDq7w
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 00:35:06 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 504D0ABD4;
- Thu,  9 May 2019 14:35:03 +0000 (UTC)
-Date: Thu, 9 May 2019 16:35:02 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: Build failure in v4.4.y.queue (ppc:allmodconfig)
-Message-ID: <20190509163502.4a9e1f77@kitsune.suse.cz>
-In-Reply-To: <ace9aeac-f632-c004-1528-8c242def0904@roeck-us.net>
-References: <20190508202642.GA28212@roeck-us.net>
- <20190509065324.GA3864@kroah.com> <20190509114923.696222cb@naga>
- <e8aa590e-a02f-19de-96df-6728ded7aab3@roeck-us.net>
- <20190509152649.2e3ef94d@kitsune.suse.cz>
- <ace9aeac-f632-c004-1528-8c242def0904@roeck-us.net>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450GKV1H1qzDqQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 00:42:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 450GKT2bqhz9s00;
+ Fri, 10 May 2019 00:42:53 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: Crashes in linux-next on powerpc with CONFIG_PPC_KUAP and
+ CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG
+In-Reply-To: <20190509092942.ei4myfzt5dczuptj@pathway.suse.cz>
+References: <87k1f2wc04.fsf@concordia.ellerman.id.au>
+ <20190509092942.ei4myfzt5dczuptj@pathway.suse.cz>
+Date: Fri, 10 May 2019 00:42:52 +1000
+Message-ID: <87woizvgcz.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,190 +45,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Stephen Rothwell <sfr@ozlabs.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 9 May 2019 07:06:32 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+Petr Mladek <pmladek@suse.com> writes:
+> On Wed 2019-05-08 00:54:51, Michael Ellerman wrote:
+>> Hi folks,
+>> 
+>> Just an FYI in case anyone else is seeing crashes very early in boot in
+>> linux-next with the above config options.
+>>
+>> The problem is the combination of some new code called via printk(),
+>> check_pointer() which calls probe_kernel_read(). That then calls 
+>> allow_user_access() (PPC_KUAP) and that uses mmu_has_feature() too early
+>> (before we've patched features). With the JUMP_LABEL debug enabled that
+>> causes us to call printk() & dump_stack() and we end up recursing and
+>> overflowing the stack.
+>
+> Sigh, the check_pointer() stuff is in Linus's tree now, see
+> the commit 3e5903eb9cff707301712 ("vsprintf: Prevent crash when
+> dereferencing invalid pointers").
 
-> On 5/9/19 6:26 AM, Michal Such=C3=A1nek wrote:
-> > On Thu, 9 May 2019 06:07:31 -0700
-> > Guenter Roeck <linux@roeck-us.net> wrote:
-> >  =20
-> >> On 5/9/19 2:49 AM, Michal Such=C3=A1nek wrote: =20
-> >>> On Thu, 9 May 2019 08:53:24 +0200
-> >>> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> >>>     =20
-> >>>> On Wed, May 08, 2019 at 01:26:42PM -0700, Guenter Roeck wrote: =20
-> >>>>> I see multiple instances of:
-> >>>>>
-> >>>>> arch/powerpc/kernel/exceptions-64s.S:839: Error:
-> >>>>> 	attempt to move .org backwards
-> >>>>>
-> >>>>> in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
-> >>>>>
-> >>>>> This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a=
- store
-> >>>>> forwarding barrier at kernel entry/exit"), which is part of a large=
- patch
-> >>>>> series and can not easily be reverted.
-> >>>>>
-> >>>>> Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ? =20
-> >>>>
-> >>>> Michael, I thought this patch series was supposed to fix ppc issues,=
- not
-> >>>> add to them :)
-> >>>>
-> >>>> Any ideas on what to do here? =20
-> >>>
-> >>> What exact code do you build?
-> >>>    =20
-> >> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux- allmodconfig
-> >> $ powerpc64-linux-gcc --version
-> >> powerpc64-linux-gcc (GCC) 8.3.0
-> >> =20
-> >=20
-> > Gcc should not see this file. I am asking because I do not see an .org
-> > directive at line 839 of 4.4.179. I probably need some different repo
-> > or extra patches to see the same code as you do.
-> >  =20
-> v4.4.179-143-gc4db218e9451 from
-> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> branch linux-4.4.y
+No worries.
 
-Still don't see it. That branch is at 4.4.179 and c4db218e9451 does not
-exist after fetching from the repo.
+>> Because it happens so early you don't get any output, just an apparently
+>> dead system.
+>> 
+>> The stack trace (which you don't see) is something like:
+>> 
+>>   ...
+>>   dump_stack+0xdc
+>>   probe_kernel_read+0x1a4
+>>   check_pointer+0x58
+>>   string+0x3c
+>>   vsnprintf+0x1bc
+>>   vscnprintf+0x20
+>>   printk_safe_log_store+0x7c
+>>   printk+0x40
+>>   dump_stack_print_info+0xbc
+>>   dump_stack+0x8
+>>   probe_kernel_read+0x1a4
+>>   probe_kernel_read+0x19c
+>>   check_pointer+0x58
+>>   string+0x3c
+>>   vsnprintf+0x1bc
+>>   vscnprintf+0x20
+>>   vprintk_store+0x6c
+>>   vprintk_emit+0xec
+>>   vprintk_func+0xd4
+>>   printk+0x40
+>>   cpufeatures_process_feature+0xc8
+>>   scan_cpufeatures_subnodes+0x380
+>>   of_scan_flat_dt_subnodes+0xb4
+>>   dt_cpu_ftrs_scan_callback+0x158
+>>   of_scan_flat_dt+0xf0
+>>   dt_cpu_ftrs_scan+0x3c
+>>   early_init_devtree+0x360
+>>   early_setup+0x9c
+>> 
+>> 
+>> The simple fix is to use early_mmu_has_feature() in allow_user_access(),
+>> but we'd rather not do that because it penalises all
+>> copy_to/from_users() for the life of the system with the cost of the
+>> runtime check vs the jump label. The irony is probe_kernel_read()
+>> shouldn't be allowing user access at all, because we're reading the
+>> kernel not userspace.
+>
+> I have tried to find a lightweight way for a safe reading of unknown
+> kernel pointer. But I have not succeeded so far. I see only variants
+> with user access. The user access is handled in arch-specific code
+> and I do not see any variant without it.
+>
+> I am not sure on which level it should get fixed.
 
-Anyway, here is a patch (untested):
+I sent a fix in powerpc code (sorry might have forgot to Cc you):
 
-Subject: [PATCH] Move out-of-line exception handlers after relon exception
- handlers.
+  https://patchwork.ozlabs.org/patch/1097015/
 
-The relon exception handlers need to be at specific location and code
-inflation in the common handler code can cause
+I've merged that into the powerpc tree. I think it's too subtle for us
+to have an ordering requirement that deep in the user copy code, it was
+just a matter of time before it caused a problem, you were just unlucky
+it was your patch that did :)
 
-Error: attempt to move .org backwards
+We'll eventually switch it back to using a jump label but make it safe
+to call early in boot before we've detected features.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- arch/powerpc/kernel/exceptions-64s.S | 88 ++++++++++++++--------------
- 1 file changed, 44 insertions(+), 44 deletions(-)
+> Could you please send it to lkml to get a wider audience?
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exc=
-eptions-64s.S
-index 938a30fef031..1d477d21ff09 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -772,50 +772,6 @@ kvmppc_skip_Hinterrupt:
- 	b	.
- #endif
-=20
--/*
-- * Code from here down to __end_handlers is invoked from the
-- * exception prologs above.  Because the prologs assemble the
-- * addresses of these handlers using the LOAD_HANDLER macro,
-- * which uses an ori instruction, these handlers must be in
-- * the first 64k of the kernel image.
-- */
--
--/*** Common interrupt handlers ***/
--
--	STD_EXCEPTION_COMMON(0x100, system_reset, system_reset_exception)
--
--	STD_EXCEPTION_COMMON_ASYNC(0x500, hardware_interrupt, do_IRQ)
--	STD_EXCEPTION_COMMON_ASYNC(0x900, decrementer, timer_interrupt)
--	STD_EXCEPTION_COMMON(0x980, hdecrementer, hdec_interrupt)
--#ifdef CONFIG_PPC_DOORBELL
--	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, doorbell_exception)
--#else
--	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, unknown_exception)
--#endif
--	STD_EXCEPTION_COMMON(0xb00, trap_0b, unknown_exception)
--	STD_EXCEPTION_COMMON(0xd00, single_step, single_step_exception)
--	STD_EXCEPTION_COMMON(0xe00, trap_0e, unknown_exception)
--	STD_EXCEPTION_COMMON(0xe40, emulation_assist, emulation_assist_interrupt)
--	STD_EXCEPTION_COMMON_ASYNC(0xe60, hmi_exception, handle_hmi_exception)
--#ifdef CONFIG_PPC_DOORBELL
--	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, doorbell_exception)
--#else
--	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, unknown_exception)
--#endif
--	STD_EXCEPTION_COMMON_ASYNC(0xf00, performance_monitor, performance_monito=
-r_exception)
--	STD_EXCEPTION_COMMON(0x1300, instruction_breakpoint, instruction_breakpoi=
-nt_exception)
--	STD_EXCEPTION_COMMON(0x1502, denorm, unknown_exception)
--#ifdef CONFIG_ALTIVEC
--	STD_EXCEPTION_COMMON(0x1700, altivec_assist, altivec_assist_exception)
--#else
--	STD_EXCEPTION_COMMON(0x1700, altivec_assist, unknown_exception)
--#endif
--#ifdef CONFIG_CBE_RAS
--	STD_EXCEPTION_COMMON(0x1200, cbe_system_error, cbe_system_error_exception)
--	STD_EXCEPTION_COMMON(0x1600, cbe_maintenance, cbe_maintenance_exception)
--	STD_EXCEPTION_COMMON(0x1800, cbe_thermal, cbe_thermal_exception)
--#endif /* CONFIG_CBE_RAS */
--
- 	/*
- 	 * Relocation-on interrupts: A subset of the interrupts can be delivered
- 	 * with IR=3D1/DR=3D1, if AIL=3D=3D2 and MSR.HV won't be changed by deliv=
-ering
-@@ -969,6 +925,50 @@ system_call_entry:
- ppc64_runlatch_on_trampoline:
- 	b	__ppc64_runlatch_on
-=20
-+/*
-+ * Code from here down to __end_handlers is invoked from the
-+ * exception prologs above.  Because the prologs assemble the
-+ * addresses of these handlers using the LOAD_HANDLER macro,
-+ * which uses an ori instruction, these handlers must be in
-+ * the first 64k of the kernel image.
-+ */
-+
-+/*** Common interrupt handlers ***/
-+
-+	STD_EXCEPTION_COMMON(0x100, system_reset, system_reset_exception)
-+
-+	STD_EXCEPTION_COMMON_ASYNC(0x500, hardware_interrupt, do_IRQ)
-+	STD_EXCEPTION_COMMON_ASYNC(0x900, decrementer, timer_interrupt)
-+	STD_EXCEPTION_COMMON(0x980, hdecrementer, hdec_interrupt)
-+#ifdef CONFIG_PPC_DOORBELL
-+	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, doorbell_exception)
-+#else
-+	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, unknown_exception)
-+#endif
-+	STD_EXCEPTION_COMMON(0xb00, trap_0b, unknown_exception)
-+	STD_EXCEPTION_COMMON(0xd00, single_step, single_step_exception)
-+	STD_EXCEPTION_COMMON(0xe00, trap_0e, unknown_exception)
-+	STD_EXCEPTION_COMMON(0xe40, emulation_assist, emulation_assist_interrupt)
-+	STD_EXCEPTION_COMMON_ASYNC(0xe60, hmi_exception, handle_hmi_exception)
-+#ifdef CONFIG_PPC_DOORBELL
-+	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, doorbell_exception)
-+#else
-+	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, unknown_exception)
-+#endif
-+	STD_EXCEPTION_COMMON_ASYNC(0xf00, performance_monitor, performance_monito=
-r_exception)
-+	STD_EXCEPTION_COMMON(0x1300, instruction_breakpoint, instruction_breakpoi=
-nt_exception)
-+	STD_EXCEPTION_COMMON(0x1502, denorm, unknown_exception)
-+#ifdef CONFIG_ALTIVEC
-+	STD_EXCEPTION_COMMON(0x1700, altivec_assist, altivec_assist_exception)
-+#else
-+	STD_EXCEPTION_COMMON(0x1700, altivec_assist, unknown_exception)
-+#endif
-+#ifdef CONFIG_CBE_RAS
-+	STD_EXCEPTION_COMMON(0x1200, cbe_system_error, cbe_system_error_exception)
-+	STD_EXCEPTION_COMMON(0x1600, cbe_maintenance, cbe_maintenance_exception)
-+	STD_EXCEPTION_COMMON(0x1800, cbe_thermal, cbe_thermal_exception)
-+#endif /* CONFIG_CBE_RAS */
-+
- /*
-  * Here r13 points to the paca, r9 contains the saved CR,
-  * SRR0 and SRR1 are saved in r11 and r12,
---=20
-2.20.1
+I see you also sent a fix, that looks like a safe default to me.
 
+But as I said I'm happy with the powerpc fix, so there's no requirement
+from us that your fix get merged.
+
+cheers
