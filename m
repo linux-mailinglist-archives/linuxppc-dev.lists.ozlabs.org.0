@@ -2,84 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3F918D69
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 17:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC70F18DD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 18:16:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450Hx24tc3zDqPS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 01:55:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 450JNs6VglzDqRj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 02:15:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=oleg@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450HvN1VD3zDqJM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 01:53:51 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x49FpxYj141361
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 May 2019 11:53:49 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2scpj928ge-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 11:53:49 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <zohar@linux.ibm.com>;
- Thu, 9 May 2019 16:53:46 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 May 2019 16:53:40 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x49Frehq58917042
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 May 2019 15:53:40 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE50511C058;
- Thu,  9 May 2019 15:53:39 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E438B11C054;
- Thu,  9 May 2019 15:53:37 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.80.95.107])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 May 2019 15:53:37 +0000 (GMT)
-Subject: Re: [PATCH v10 08/12] ima: Factor xattr_verify() out of
- ima_appraise_measurement()
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- linux-integrity@vger.kernel.org
-Date: Thu, 09 May 2019 11:53:27 -0400
-In-Reply-To: <20190418035120.2354-9-bauerman@linux.ibm.com>
-References: <20190418035120.2354-1-bauerman@linux.ibm.com>
- <20190418035120.2354-9-bauerman@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050915-0008-0000-0000-000002E4F7B6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050915-0009-0000-0000-000022517F01
-Message-Id: <1557417207.10635.67.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-09_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=945 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905090091
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450JMG14XrzDqQb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 02:14:34 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 54AE3307D910;
+ Thu,  9 May 2019 16:14:30 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
+ by smtp.corp.redhat.com (Postfix) with SMTP id 6B4A060BF3;
+ Thu,  9 May 2019 16:14:22 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+ oleg@redhat.com; Thu,  9 May 2019 18:14:29 +0200 (CEST)
+Date: Thu, 9 May 2019 18:14:20 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: "Dmitry V. Levin" <ldv@altlinux.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH linux-next v10 0/7] ptrace: add PTRACE_GET_SYSCALL_INFO
+ request
+Message-ID: <20190509161420.GD24526@redhat.com>
+References: <20190415234307.GA9364@altlinux.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190415234307.GA9364@altlinux.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.48]); Thu, 09 May 2019 16:14:32 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,30 +58,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, James Morris <jmorris@namei.org>,
- David Howells <dhowells@redhat.com>, "AKASHI,
- Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
- keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- Jessica Yu <jeyu@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- David Woodhouse <dwmw2@infradead.org>, "Serge E. Hallyn" <serge@hallyn.com>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>,
+ Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
+ Vincent Chen <deanbo422@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ Helge Deller <deller@gmx.de>, Eugene Syromyatnikov <esyr@redhat.com>,
+ Elvira Khabirova <lineprinter@altlinux.org>, James Hogan <jhogan@kernel.org>,
+ strace-devel@lists.strace.io, Kees Cook <keescook@chromium.org>,
+ Greentime Hu <greentime@andestech.com>, linux-kernel@vger.kernel.org,
+ Andy Lutomirski <luto@kernel.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-mips@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Richard Kuo <rkuo@codeaurora.org>,
+ Paul Burton <paul.burton@mips.com>, linux-hexagon@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
-> Verify xattr signature in a separate function so that the logic in
-> ima_appraise_measurement() remains clear when it gains the ability to also
-> verify an appended module signature.
-> 
-> The code in the switch statement is unchanged except for having to
-> dereference the status and cause variables (since they're now pointers),
-> and fixing the style of a block comment to appease checkpatch.
-> 
-> Suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+On 04/16, Dmitry V. Levin wrote:
+>
+> [Andrew, could you take this patchset into your tree, please?]
 
-Reviewed-by:  Mimi Zohar <zohar@linux.ibm.com>
+Just in case...
+
+I have already acked 6/7.
+
+Other patches look good to me too, just I don't think I can actually review
+these non-x86 changes.
+
+Oleg.
 
