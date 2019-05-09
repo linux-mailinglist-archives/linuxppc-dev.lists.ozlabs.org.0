@@ -1,75 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4A618BED
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 16:36:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BBC18BE0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 16:34:22 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 450G7b5tsbzDqRp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 00:34:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 450GB02QWjzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2019 00:36:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
- envelope-from=richard.weiyang@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qOlNtK75"; 
- dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 450G4v0zVNzDqPy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 00:31:58 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id a8so2241592edx.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 07:31:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=28M3/Gt0muyIKgyfcpD9ysscEUSK1ZnFipvrQH7okoo=;
- b=qOlNtK752XXn4kkfsFMWyY7kRPfrZUsTtqBPdR/hrsY1mJM2tbu2nhsutSmVVSM1WW
- nXRASbDxRAmYKoGMORG1Srq+QfFSesIFDMzjzchm3j4kE/sLGsIywSyqVlu3Yz91d/8r
- FlEQUB4qvWSHM4vKfCBekEvL6H1BeRT6mMgSjN/ZfvQ7xjppTiRrhRzhd0DiONdD3rHG
- 8+F+D+pkIWAxOZxeIGT+39UvOnSIMPWvX3z65R9GJNUd8yqfL58nMe8pY6Q7GvVCzYIM
- 6GCvJUep1xdo/Z8mF1dvC94zMfD6T5hlTY7VkMhVkudMpY654rvkzmeZxmnK6kPTSOvF
- yY0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=28M3/Gt0muyIKgyfcpD9ysscEUSK1ZnFipvrQH7okoo=;
- b=sdBhghvB2jkmhSBaP0/K1Rcr8bpIy8fuGgkZHYZ1yV/RJ0sRw5KABflbTkI3sWHZuJ
- ubx0OAACP06Efz2XgVIWh+xC7nuAhKn1Xn14kR89T0P4wedq25fTl6oqtmaQX2ge/n2I
- PLL+6+ESqMFfwpZXU4AokgHRnH5znNuZttuCccCEQLnYOQ/lW73Zxaxlv7VBC+CzBrDT
- pB7//TaWCdmC4mxYhlkb8L/MNx2jOUpbCPAOzlQCknHsdzpEIQFu/+GgoON8JXDCKHIF
- yqze9USPLe373WKZjedTWF+DpT/NY6mcHvpjJQRLMH2yqk2zx2hKOD0bnj5tNNDmmOxu
- 0yxw==
-X-Gm-Message-State: APjAAAWb4Kz08stCtUQPxgU7I0eWiL3gb8apfPjg4dhLbtXGDrrtFfbt
- t5p8M2k/WKprm9YXDbHlkbo=
-X-Google-Smtp-Source: APXvYqzkJhS5L8NnWGrt01x6w71u7E8s0GHuJykWEj8KfZGhfTtKpBAzu9nFzSqSe/2NArkKjIgUMw==
-X-Received: by 2002:a50:be48:: with SMTP id b8mr4401819edi.284.1557412313899; 
- Thu, 09 May 2019 07:31:53 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
- by smtp.gmail.com with ESMTPSA id d11sm623679eda.45.2019.05.09.07.31.52
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 09 May 2019 07:31:52 -0700 (PDT)
-Date: Thu, 9 May 2019 14:31:51 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v2 4/8] mm/memory_hotplug: Create memory block devices
- after arch_add_memory()
-Message-ID: <20190509143151.zexjmwu3ikkmye7i@master>
-References: <20190507183804.5512-1-david@redhat.com>
- <20190507183804.5512-5-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 450G8V5zQFzDq7w
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2019 00:35:06 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 504D0ABD4;
+ Thu,  9 May 2019 14:35:03 +0000 (UTC)
+Date: Thu, 9 May 2019 16:35:02 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: Build failure in v4.4.y.queue (ppc:allmodconfig)
+Message-ID: <20190509163502.4a9e1f77@kitsune.suse.cz>
+In-Reply-To: <ace9aeac-f632-c004-1528-8c242def0904@roeck-us.net>
+References: <20190508202642.GA28212@roeck-us.net>
+ <20190509065324.GA3864@kroah.com> <20190509114923.696222cb@naga>
+ <e8aa590e-a02f-19de-96df-6728ded7aab3@roeck-us.net>
+ <20190509152649.2e3ef94d@kitsune.suse.cz>
+ <ace9aeac-f632-c004-1528-8c242def0904@roeck-us.net>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190507183804.5512-5-david@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,135 +51,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-sh@vger.kernel.org, "mike.travis@hpe.com" <mike.travis@hpe.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Mathieu Malaterre <malat@debian.org>,
- linux-kernel@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
- linux-mm@kvack.org, Andrew Banman <andrew.banman@hpe.com>,
- Qian Cai <cai@lca.pw>, Arun KS <arunks@codeaurora.org>,
- akpm@linux-foundation.org, Wei Yang <richard.weiyang@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- Oscar Salvador <osalvador@suse.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 07, 2019 at 08:38:00PM +0200, David Hildenbrand wrote:
->Only memory to be added to the buddy and to be onlined/offlined by
->user space using memory block devices needs (and should have!) memory
->block devices.
->
->Factor out creation of memory block devices Create all devices after
->arch_add_memory() succeeded. We can later drop the want_memblock parameter,
->because it is now effectively stale.
->
->Only after memory block devices have been added, memory can be onlined
->by user space. This implies, that memory is not visible to user space at
->all before arch_add_memory() succeeded.
->
->Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->Cc: David Hildenbrand <david@redhat.com>
->Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
->Cc: Andrew Morton <akpm@linux-foundation.org>
->Cc: Ingo Molnar <mingo@kernel.org>
->Cc: Andrew Banman <andrew.banman@hpe.com>
->Cc: Oscar Salvador <osalvador@suse.de>
->Cc: Michal Hocko <mhocko@suse.com>
->Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
->Cc: Qian Cai <cai@lca.pw>
->Cc: Wei Yang <richard.weiyang@gmail.com>
->Cc: Arun KS <arunks@codeaurora.org>
->Cc: Mathieu Malaterre <malat@debian.org>
->Signed-off-by: David Hildenbrand <david@redhat.com>
->---
-> drivers/base/memory.c  | 70 ++++++++++++++++++++++++++----------------
-> include/linux/memory.h |  2 +-
-> mm/memory_hotplug.c    | 15 ++++-----
-> 3 files changed, 53 insertions(+), 34 deletions(-)
->
->diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->index 6e0cb4fda179..862c202a18ca 100644
->--- a/drivers/base/memory.c
->+++ b/drivers/base/memory.c
->@@ -701,44 +701,62 @@ static int add_memory_block(int base_section_nr)
-> 	return 0;
-> }
-> 
->+static void unregister_memory(struct memory_block *memory)
->+{
->+	BUG_ON(memory->dev.bus != &memory_subsys);
->+
->+	/* drop the ref. we got via find_memory_block() */
->+	put_device(&memory->dev);
->+	device_unregister(&memory->dev);
->+}
->+
-> /*
->- * need an interface for the VM to add new memory regions,
->- * but without onlining it.
->+ * Create memory block devices for the given memory area. Start and size
->+ * have to be aligned to memory block granularity. Memory block devices
->+ * will be initialized as offline.
->  */
->-int hotplug_memory_register(int nid, struct mem_section *section)
->+int hotplug_memory_register(unsigned long start, unsigned long size)
+On Thu, 9 May 2019 07:06:32 -0700
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-One trivial suggestion about the function name.
+> On 5/9/19 6:26 AM, Michal Such=C3=A1nek wrote:
+> > On Thu, 9 May 2019 06:07:31 -0700
+> > Guenter Roeck <linux@roeck-us.net> wrote:
+> >  =20
+> >> On 5/9/19 2:49 AM, Michal Such=C3=A1nek wrote: =20
+> >>> On Thu, 9 May 2019 08:53:24 +0200
+> >>> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> >>>     =20
+> >>>> On Wed, May 08, 2019 at 01:26:42PM -0700, Guenter Roeck wrote: =20
+> >>>>> I see multiple instances of:
+> >>>>>
+> >>>>> arch/powerpc/kernel/exceptions-64s.S:839: Error:
+> >>>>> 	attempt to move .org backwards
+> >>>>>
+> >>>>> in v4.4.y.queue (v4.4.179-143-gc4db218e9451).
+> >>>>>
+> >>>>> This is due to commit 9b2d4e06d7f1 ("powerpc/64s: Add support for a=
+ store
+> >>>>> forwarding barrier at kernel entry/exit"), which is part of a large=
+ patch
+> >>>>> series and can not easily be reverted.
+> >>>>>
+> >>>>> Guess I'll stop doing ppc:allmodconfig builds in v4.4.y ? =20
+> >>>>
+> >>>> Michael, I thought this patch series was supposed to fix ppc issues,=
+ not
+> >>>> add to them :)
+> >>>>
+> >>>> Any ideas on what to do here? =20
+> >>>
+> >>> What exact code do you build?
+> >>>    =20
+> >> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64-linux- allmodconfig
+> >> $ powerpc64-linux-gcc --version
+> >> powerpc64-linux-gcc (GCC) 8.3.0
+> >> =20
+> >=20
+> > Gcc should not see this file. I am asking because I do not see an .org
+> > directive at line 839 of 4.4.179. I probably need some different repo
+> > or extra patches to see the same code as you do.
+> >  =20
+> v4.4.179-143-gc4db218e9451 from
+> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> branch linux-4.4.y
 
-For memory_block device, sometimes we use the full name
+Still don't see it. That branch is at 4.4.179 and c4db218e9451 does not
+exist after fetching from the repo.
 
-    find_memory_block
-    init_memory_block
-    add_memory_block
+Anyway, here is a patch (untested):
 
-But sometimes we use *nick* name
+Subject: [PATCH] Move out-of-line exception handlers after relon exception
+ handlers.
 
-    hotplug_memory_register
-    register_memory
-    unregister_memory
+The relon exception handlers need to be at specific location and code
+inflation in the common handler code can cause
 
-This is a little bit confusion.
+Error: attempt to move .org backwards
 
-Can we use one name convention here? 
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ arch/powerpc/kernel/exceptions-64s.S | 88 ++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
-[...]
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exc=
+eptions-64s.S
+index 938a30fef031..1d477d21ff09 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -772,50 +772,6 @@ kvmppc_skip_Hinterrupt:
+ 	b	.
+ #endif
+=20
+-/*
+- * Code from here down to __end_handlers is invoked from the
+- * exception prologs above.  Because the prologs assemble the
+- * addresses of these handlers using the LOAD_HANDLER macro,
+- * which uses an ori instruction, these handlers must be in
+- * the first 64k of the kernel image.
+- */
+-
+-/*** Common interrupt handlers ***/
+-
+-	STD_EXCEPTION_COMMON(0x100, system_reset, system_reset_exception)
+-
+-	STD_EXCEPTION_COMMON_ASYNC(0x500, hardware_interrupt, do_IRQ)
+-	STD_EXCEPTION_COMMON_ASYNC(0x900, decrementer, timer_interrupt)
+-	STD_EXCEPTION_COMMON(0x980, hdecrementer, hdec_interrupt)
+-#ifdef CONFIG_PPC_DOORBELL
+-	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, doorbell_exception)
+-#else
+-	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, unknown_exception)
+-#endif
+-	STD_EXCEPTION_COMMON(0xb00, trap_0b, unknown_exception)
+-	STD_EXCEPTION_COMMON(0xd00, single_step, single_step_exception)
+-	STD_EXCEPTION_COMMON(0xe00, trap_0e, unknown_exception)
+-	STD_EXCEPTION_COMMON(0xe40, emulation_assist, emulation_assist_interrupt)
+-	STD_EXCEPTION_COMMON_ASYNC(0xe60, hmi_exception, handle_hmi_exception)
+-#ifdef CONFIG_PPC_DOORBELL
+-	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, doorbell_exception)
+-#else
+-	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, unknown_exception)
+-#endif
+-	STD_EXCEPTION_COMMON_ASYNC(0xf00, performance_monitor, performance_monito=
+r_exception)
+-	STD_EXCEPTION_COMMON(0x1300, instruction_breakpoint, instruction_breakpoi=
+nt_exception)
+-	STD_EXCEPTION_COMMON(0x1502, denorm, unknown_exception)
+-#ifdef CONFIG_ALTIVEC
+-	STD_EXCEPTION_COMMON(0x1700, altivec_assist, altivec_assist_exception)
+-#else
+-	STD_EXCEPTION_COMMON(0x1700, altivec_assist, unknown_exception)
+-#endif
+-#ifdef CONFIG_CBE_RAS
+-	STD_EXCEPTION_COMMON(0x1200, cbe_system_error, cbe_system_error_exception)
+-	STD_EXCEPTION_COMMON(0x1600, cbe_maintenance, cbe_maintenance_exception)
+-	STD_EXCEPTION_COMMON(0x1800, cbe_thermal, cbe_thermal_exception)
+-#endif /* CONFIG_CBE_RAS */
+-
+ 	/*
+ 	 * Relocation-on interrupts: A subset of the interrupts can be delivered
+ 	 * with IR=3D1/DR=3D1, if AIL=3D=3D2 and MSR.HV won't be changed by deliv=
+ering
+@@ -969,6 +925,50 @@ system_call_entry:
+ ppc64_runlatch_on_trampoline:
+ 	b	__ppc64_runlatch_on
+=20
++/*
++ * Code from here down to __end_handlers is invoked from the
++ * exception prologs above.  Because the prologs assemble the
++ * addresses of these handlers using the LOAD_HANDLER macro,
++ * which uses an ori instruction, these handlers must be in
++ * the first 64k of the kernel image.
++ */
++
++/*** Common interrupt handlers ***/
++
++	STD_EXCEPTION_COMMON(0x100, system_reset, system_reset_exception)
++
++	STD_EXCEPTION_COMMON_ASYNC(0x500, hardware_interrupt, do_IRQ)
++	STD_EXCEPTION_COMMON_ASYNC(0x900, decrementer, timer_interrupt)
++	STD_EXCEPTION_COMMON(0x980, hdecrementer, hdec_interrupt)
++#ifdef CONFIG_PPC_DOORBELL
++	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, doorbell_exception)
++#else
++	STD_EXCEPTION_COMMON_ASYNC(0xa00, doorbell_super, unknown_exception)
++#endif
++	STD_EXCEPTION_COMMON(0xb00, trap_0b, unknown_exception)
++	STD_EXCEPTION_COMMON(0xd00, single_step, single_step_exception)
++	STD_EXCEPTION_COMMON(0xe00, trap_0e, unknown_exception)
++	STD_EXCEPTION_COMMON(0xe40, emulation_assist, emulation_assist_interrupt)
++	STD_EXCEPTION_COMMON_ASYNC(0xe60, hmi_exception, handle_hmi_exception)
++#ifdef CONFIG_PPC_DOORBELL
++	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, doorbell_exception)
++#else
++	STD_EXCEPTION_COMMON_ASYNC(0xe80, h_doorbell, unknown_exception)
++#endif
++	STD_EXCEPTION_COMMON_ASYNC(0xf00, performance_monitor, performance_monito=
+r_exception)
++	STD_EXCEPTION_COMMON(0x1300, instruction_breakpoint, instruction_breakpoi=
+nt_exception)
++	STD_EXCEPTION_COMMON(0x1502, denorm, unknown_exception)
++#ifdef CONFIG_ALTIVEC
++	STD_EXCEPTION_COMMON(0x1700, altivec_assist, altivec_assist_exception)
++#else
++	STD_EXCEPTION_COMMON(0x1700, altivec_assist, unknown_exception)
++#endif
++#ifdef CONFIG_CBE_RAS
++	STD_EXCEPTION_COMMON(0x1200, cbe_system_error, cbe_system_error_exception)
++	STD_EXCEPTION_COMMON(0x1600, cbe_maintenance, cbe_maintenance_exception)
++	STD_EXCEPTION_COMMON(0x1800, cbe_thermal, cbe_thermal_exception)
++#endif /* CONFIG_CBE_RAS */
++
+ /*
+  * Here r13 points to the paca, r9 contains the saved CR,
+  * SRR0 and SRR1 are saved in r11 and r12,
+--=20
+2.20.1
 
-> /*
->@@ -1106,6 +1100,13 @@ int __ref add_memory_resource(int nid, struct resource *res)
-> 	if (ret < 0)
-> 		goto error;
-> 
->+	/* create memory block devices after memory was added */
->+	ret = hotplug_memory_register(start, size);
->+	if (ret) {
->+		arch_remove_memory(nid, start, size, NULL);
-
-Functionally, it works I think.
-
-But arch_remove_memory() would remove pages from zone. At this point, we just
-allocate section/mmap for pages, the zones are empty and pages are not
-connected to zone.
-
-Function  zone = page_zone(page); always gets zone #0, since pages->flags is 0
-at  this point. This is not exact.
-
-Would we add some comment to mention this? Or we need to clean up
-arch_remove_memory() to take out __remove_zone()?
-
-
->+		goto error;
->+	}
->+
-> 	if (new_node) {
-> 		/* If sysfs file of new node can't be created, cpu on the node
-> 		 * can't be hot-added. There is no rollback way now.
->-- 
->2.20.1
-
--- 
-Wei Yang
-Help you, Help me
