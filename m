@@ -2,88 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846C7184AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 06:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AABE8184C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 07:14:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4501C200gMzDqNK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 14:51:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4501jK1z1szDqQk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 15:14:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45019j5rNdzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 14:50:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45019j5Gxvz8wH1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 14:50:17 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45019j4yGvz9s7h; Thu,  9 May 2019 14:50:17 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45019j10w3z9s5c
- for <linuxppc-dev@ozlabs.org>; Thu,  9 May 2019 14:50:16 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x494gUwT047558
- for <linuxppc-dev@ozlabs.org>; Thu, 9 May 2019 00:50:15 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2scbg54963-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4501fT16nqzDqLc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 15:11:44 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x494vLPP088184
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 May 2019 01:11:42 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2scapt709a-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Thu, 09 May 2019 00:50:14 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 01:11:41 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Thu, 9 May 2019 05:50:13 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 9 May 2019 06:11:40 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 May 2019 05:50:10 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x494o8UG47120422
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 May 2019 04:50:09 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D64B25205A;
- Thu,  9 May 2019 04:50:08 +0000 (GMT)
-Received: from [9.204.131.20] (unknown [9.204.131.20])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0DDEA5204E;
- Thu,  9 May 2019 04:50:06 +0000 (GMT)
-Subject: Re: [PATCH v2 15/16] powernv/fadump: consider f/w load area
-To: mahesh@linux.vnet.ibm.com
-References: <155541065470.812.7120798773144842076.stgit@hbathini.in.ibm.com>
- <155541097094.812.18328895014763068053.stgit@hbathini.in.ibm.com>
- <20190507171331.p5wwzc3asvpkltxb@in.ibm.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Thu, 9 May 2019 10:20:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ Thu, 9 May 2019 06:11:38 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x495Bbqh60031190
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 May 2019 05:11:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0BFA04C04E
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 05:11:37 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E1894C05A
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 05:11:36 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 05:11:36 +0000 (GMT)
+Received: from intelligence.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 39448A01A2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 15:11:32 +1000 (AEST)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 1/5] powerpc/powernv: Move SCOM access code into powernv
+ platform
+Date: Thu,  9 May 2019 15:11:15 +1000
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190507171331.p5wwzc3asvpkltxb@in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19050904-0020-0000-0000-0000033AC6C5
+x-cbid: 19050905-0008-0000-0000-000002E4C564
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050904-0021-0000-0000-0000218D6A98
-Message-Id: <9adff2bf-71f8-ecec-ab33-c0983937c2d6@linux.ibm.com>
+x-cbparentid: 19050905-0009-0000-0000-000022514993
+Message-Id: <20190509051119.7694-1-ajd@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-05-09_02:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -91,7 +79,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905090030
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905090032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,85 +91,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Vasant Hegde <hegdevasant@linux.ibm.com>,
- Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The powernv platform is the only one that directly accesses SCOMs. Move the
+support code to platforms/powernv, and get rid of the PPC_SCOM Kconfig
+option, as SCOM support is always selected when compiling for powernv.
 
-On 07/05/19 10:43 PM, Mahesh J Salgaonkar wrote:
-> On 2019-04-16 16:06:13 Tue, Hari Bathini wrote:
->> OPAL loads kernel & initrd at 512MB offset (256MB size), also exported
->> as ibm,opal/dump/fw-load-area. So, if boot memory size of FADump is
->> less than 768MB, kernel memory to be exported as '/proc/vmcore' would
->> be overwritten by f/w while loading kernel & initrd. To avoid such a
->> scenario, enforce a minimum boot memory size of 768MB on OPAL platform.
->>
->> Also, skip using FADump if a newer F/W version loads kernel & initrd
->> above 768MB.
->>
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->> ---
->>   arch/powerpc/kernel/fadump-common.h          |   15 +++++++++++++--
->>   arch/powerpc/kernel/fadump.c                 |    8 ++++++++
->>   arch/powerpc/platforms/powernv/opal-fadump.c |   23 +++++++++++++++++++++++
->>   3 files changed, 44 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
->> index 1bd3aeb..f59fdc7 100644
->> --- a/arch/powerpc/kernel/fadump-common.h
->> +++ b/arch/powerpc/kernel/fadump-common.h
->> @@ -24,14 +24,25 @@
->>   #define RMA_END		(ppc64_rma_size)
->>   
->>   /*
->> + * With kernel & initrd loaded at 512MB (with 256MB size), enforce a minimum
->> + * boot memory size of 768MB to ensure f/w loading kernel and initrd doesn't
->> + * mess with crash'ed kernel's memory during MPIPL.
->> + */
->> +#define OPAL_MIN_BOOT_MEM	(0x30000000UL)
->> +
->> +/*
->>    * On some Power systems where RMO is 128MB, it still requires minimum of
->>    * 256MB for kernel to boot successfully. When kdump infrastructure is
->>    * configured to save vmcore over network, we run into OOM issue while
->>    * loading modules related to network setup. Hence we need additional 64M
->>    * of memory to avoid OOM issue.
->>    */
->> -#define MIN_BOOT_MEM	(((RMA_END < (0x1UL << 28)) ? (0x1UL << 28) : RMA_END) \
->> -			+ (0x1UL << 26))
->> +#define PSERIES_MIN_BOOT_MEM	(((RMA_END < (0x1UL << 28)) ? (0x1UL << 28) : \
->> +				 RMA_END) + (0x1UL << 26))
->> +
->> +#define MIN_BOOT_MEM	((fw_dump.fadump_platform ==			\
->> +			 FADUMP_PLATFORM_POWERNV) ? OPAL_MIN_BOOT_MEM :	\
->> +			 PSERIES_MIN_BOOT_MEM)
-> Can we hide this behind fadump_ops.get_bootmem_min() instead of common code
-> doing platform check ?
->
->>   
->>   /* The upper limit percentage for user specified boot memory size (25%) */
->>   #define MAX_BOOT_MEM_RATIO			4
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index ba26169..3c3adc2 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -582,6 +582,14 @@ int __init fadump_reserve_mem(void)
->>   				ALIGN(fw_dump.boot_memory_size,
->>   							FADUMP_CMA_ALIGNMENT);
->>   #endif
->> +
->> +		if ((fw_dump.fadump_platform == FADUMP_PLATFORM_POWERNV) &&
->> +		    (fw_dump.boot_memory_size < OPAL_MIN_BOOT_MEM)) {
-> and here too.. fadump_ops.validate_bootmem_size() ? push platform specific
-> stuff behind fadump_ops.
+This also means that the Kconfig item for CONFIG_SCOM_DEBUGFS will actually
+show up in menuconfig, as previously it was the only labelled option in
+sysdev/Kconfig and wasn't actually in a menu.
 
-Actually, it would be fine to make this check for both platforms.
-So, fadump_ops.get_bootmem_min() callback can be used at both places, I guess..
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+v1->v2:
+- move scom.h as well (mpe)
+- add all the other patches in this series
+---
+ arch/powerpc/platforms/powernv/Kconfig              |  5 ++++-
+ arch/powerpc/platforms/powernv/Makefile             |  2 +-
+ arch/powerpc/platforms/powernv/opal-xscom.c         |  3 ++-
+ arch/powerpc/{sysdev => platforms/powernv}/scom.c   |  3 ++-
+ .../{include/asm => platforms/powernv}/scom.h       | 13 +++----------
+ arch/powerpc/sysdev/Kconfig                         |  7 -------
+ arch/powerpc/sysdev/Makefile                        |  2 --
+ 7 files changed, 12 insertions(+), 23 deletions(-)
+ rename arch/powerpc/{sysdev => platforms/powernv}/scom.c (99%)
+ rename arch/powerpc/{include/asm => platforms/powernv}/scom.h (95%)
 
-- Hari
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 850eee860cf2..938803eab0ad 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -12,7 +12,6 @@ config PPC_POWERNV
+ 	select EPAPR_BOOT
+ 	select PPC_INDIRECT_PIO
+ 	select PPC_UDBG_16550
+-	select PPC_SCOM
+ 	select ARCH_RANDOM
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+@@ -47,3 +46,7 @@ config PPC_VAS
+ 	  VAS adapters are found in POWER9 based systems.
+ 
+ 	  If unsure, say N.
++
++config SCOM_DEBUGFS
++	bool "Expose SCOM controllers via debugfs"
++	depends on DEBUG_FS
+diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
+index da2e99efbd04..4b1644150135 100644
+--- a/arch/powerpc/platforms/powernv/Makefile
++++ b/arch/powerpc/platforms/powernv/Makefile
+@@ -4,12 +4,12 @@ obj-y			+= idle.o opal-rtc.o opal-nvram.o opal-lpc.o opal-flash.o
+ obj-y			+= rng.o opal-elog.o opal-dump.o opal-sysparam.o opal-sensor.o
+ obj-y			+= opal-msglog.o opal-hmi.o opal-power.o opal-irqchip.o
+ obj-y			+= opal-kmsg.o opal-powercap.o opal-psr.o opal-sensor-groups.o
++obj-y			+= opal-xscom.o scom.o
+ 
+ obj-$(CONFIG_SMP)	+= smp.o subcore.o subcore-asm.o
+ obj-$(CONFIG_PCI)	+= pci.o pci-ioda.o npu-dma.o pci-ioda-tce.o
+ obj-$(CONFIG_CXL_BASE)	+= pci-cxl.o
+ obj-$(CONFIG_EEH)	+= eeh-powernv.o
+-obj-$(CONFIG_PPC_SCOM)	+= opal-xscom.o
+ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
+ obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
+ obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
+diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
+index 22d5e1110dbb..66337d92cb63 100644
+--- a/arch/powerpc/platforms/powernv/opal-xscom.c
++++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+@@ -18,7 +18,8 @@
+ #include <asm/machdep.h>
+ #include <asm/firmware.h>
+ #include <asm/opal.h>
+-#include <asm/scom.h>
++
++#include "scom.h"
+ 
+ /*
+  * We could probably fit that inside the scom_map_t
+diff --git a/arch/powerpc/sysdev/scom.c b/arch/powerpc/platforms/powernv/scom.c
+similarity index 99%
+rename from arch/powerpc/sysdev/scom.c
+rename to arch/powerpc/platforms/powernv/scom.c
+index a707b24a7ddb..50c019d2ef45 100644
+--- a/arch/powerpc/sysdev/scom.c
++++ b/arch/powerpc/platforms/powernv/scom.c
+@@ -23,9 +23,10 @@
+ #include <linux/export.h>
+ #include <asm/debugfs.h>
+ #include <asm/prom.h>
+-#include <asm/scom.h>
+ #include <linux/uaccess.h>
+ 
++#include "scom.h"
++
+ const struct scom_controller *scom_controller;
+ EXPORT_SYMBOL_GPL(scom_controller);
+ 
+diff --git a/arch/powerpc/include/asm/scom.h b/arch/powerpc/platforms/powernv/scom.h
+similarity index 95%
+rename from arch/powerpc/include/asm/scom.h
+rename to arch/powerpc/platforms/powernv/scom.h
+index f5cde45b1161..b14fe0edf95b 100644
+--- a/arch/powerpc/include/asm/scom.h
++++ b/arch/powerpc/platforms/powernv/scom.h
+@@ -18,12 +18,8 @@
+  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  */
+ 
+-#ifndef _ASM_POWERPC_SCOM_H
+-#define _ASM_POWERPC_SCOM_H
+-
+-#ifdef __KERNEL__
+-#ifndef __ASSEMBLY__
+-#ifdef CONFIG_PPC_SCOM
++#ifndef _SCOM_H
++#define _SCOM_H
+ 
+ /*
+  * The SCOM bus is a sideband bus used for accessing various internal
+@@ -161,7 +157,4 @@ static inline int scom_write(scom_map_t map, u64 reg, u64 value)
+ }
+ 
+ 
+-#endif /* CONFIG_PPC_SCOM */
+-#endif /* __ASSEMBLY__ */
+-#endif /* __KERNEL__ */
+-#endif /* _ASM_POWERPC_SCOM_H */
++#endif /* _SCOM_H */
+diff --git a/arch/powerpc/sysdev/Kconfig b/arch/powerpc/sysdev/Kconfig
+index e0dbec780fe9..7808d279ff1d 100644
+--- a/arch/powerpc/sysdev/Kconfig
++++ b/arch/powerpc/sysdev/Kconfig
+@@ -28,13 +28,6 @@ config PPC_MSI_BITMAP
+ source "arch/powerpc/sysdev/xics/Kconfig"
+ source "arch/powerpc/sysdev/xive/Kconfig"
+ 
+-config PPC_SCOM
+-	bool
+-
+-config SCOM_DEBUGFS
+-	bool "Expose SCOM controllers via debugfs"
+-	depends on PPC_SCOM && DEBUG_FS
+-
+ config GE_FPGA
+ 	bool
+ 
+diff --git a/arch/powerpc/sysdev/Makefile b/arch/powerpc/sysdev/Makefile
+index aaf23283ba0c..35d52d1d2fc0 100644
+--- a/arch/powerpc/sysdev/Makefile
++++ b/arch/powerpc/sysdev/Makefile
+@@ -51,8 +51,6 @@ ifdef CONFIG_SUSPEND
+ obj-$(CONFIG_PPC_BOOK3S_32)	+= 6xx-suspend.o
+ endif
+ 
+-obj-$(CONFIG_PPC_SCOM)		+= scom.o
+-
+ obj-$(CONFIG_PPC_EARLY_DEBUG_MEMCONS)	+= udbg_memcons.o
+ 
+ obj-$(CONFIG_PPC_XICS)		+= xics/
+-- 
+2.20.1
 
