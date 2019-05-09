@@ -2,90 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BD41832B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 03:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682D5183C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 04:29:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 44zwQ55nJ8zDqNj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 11:15:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 44zy3m75QZzDqPQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 12:29:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.15.41; helo=eur01-db5-obe.outbound.protection.outlook.com;
+ envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="my3RMvXr"; 
+ dkim-atps=neutral
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr150041.outbound.protection.outlook.com [40.107.15.41])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 44zwNg1tqBzDqJM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 11:14:26 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4917TdS039819
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 May 2019 21:14:22 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sc9byj646-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2019 21:14:22 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Thu, 9 May 2019 02:14:20 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 May 2019 02:14:17 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x491EGef34472158
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 May 2019 01:14:16 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 84E2011C052;
- Thu,  9 May 2019 01:14:16 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E680E11C04C;
- Thu,  9 May 2019 01:14:15 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 May 2019 01:14:15 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AAD13A01A2;
- Thu,  9 May 2019 11:14:12 +1000 (AEST)
-Subject: Re: [PATCH] powerpc/powernv: Move SCOM access code into powernv
- platform
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20190508063401.17463-1-ajd@linux.ibm.com>
- <878svhw2po.fsf@concordia.ellerman.id.au>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 9 May 2019 11:14:06 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 44zy2F445mzDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 12:28:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9Ip7n9AFG3GxUpk63oDi/KbgxeWXp8M1gKT3+VVoXRo=;
+ b=my3RMvXryZAW7jx8El3zec4P+1q9g1S+s3clNaEefQQCnW5Iwi8tXdUadOcZDvKlzFzbnP8mKkKbonNi6z+0jxFILeoFmkMEJGd+kl8QyAD/CZHXwXIy6tni9tX0E0dY2p7cBDYqgXp2SWK78odgkM88g2VKdHvWe4i1hCrrUcQ=
+Received: from VI1PR04MB3247.eurprd04.prod.outlook.com (10.170.232.160) by
+ VI1PR04MB5933.eurprd04.prod.outlook.com (20.178.205.83) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1878.21; Thu, 9 May 2019 02:28:25 +0000
+Received: from VI1PR04MB3247.eurprd04.prod.outlook.com
+ ([fe80::cd99:d9b2:d90a:6c2]) by VI1PR04MB3247.eurprd04.prod.outlook.com
+ ([fe80::cd99:d9b2:d90a:6c2%2]) with mapi id 15.20.1856.012; Thu, 9 May 2019
+ 02:28:25 +0000
+From: Qiang Zhao <qiang.zhao@nxp.com>
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Leo Li
+ <leoyang.li@nxp.com>
+Subject: RE: PATCH v2 1/6] soc/fsl/qe: qe.c: drop useless static qualifier
+Thread-Topic: PATCH v2 1/6] soc/fsl/qe: qe.c: drop useless static qualifier
+Thread-Index: AdUGDoGv18ez4p5gT8mOmzU3wzfrpA==
+Date: Thu, 9 May 2019 02:28:25 +0000
+Message-ID: <VI1PR04MB324703AD3D285BA287A389FD91330@VI1PR04MB3247.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=qiang.zhao@nxp.com; 
+x-originating-ip: [119.31.174.73]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fb953fe4-cd5d-443b-d3d2-08d6d4260397
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR04MB5933; 
+x-ms-traffictypediagnostic: VI1PR04MB5933:
+x-microsoft-antispam-prvs: <VI1PR04MB5933D504A95802B3C44E0AA491330@VI1PR04MB5933.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:103;
+x-forefront-prvs: 003245E729
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(136003)(366004)(396003)(39860400002)(346002)(376002)(13464003)(189003)(199004)(66446008)(64756008)(8676002)(81166006)(81156014)(6636002)(478600001)(66556008)(229853002)(68736007)(26005)(66476007)(2906002)(7736002)(71190400001)(71200400001)(8936002)(14454004)(25786009)(4326008)(486006)(33656002)(186003)(7416002)(76116006)(305945005)(53936002)(54906003)(110136005)(99286004)(74316002)(476003)(9686003)(66066001)(44832011)(6246003)(2501003)(66946007)(316002)(55016002)(73956011)(7696005)(86362001)(14444005)(256004)(6436002)(5660300002)(52536014)(6116002)(53546011)(6506007)(3846002)(102836004);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR04MB5933;
+ H:VI1PR04MB3247.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: fWuZeMUaapwDxIOqF8MZZPABF5s/d1yTlUckU7uG0B4oISamQKRbSSVBUbO080ygdmbgVtEwOwNj12GyKQqQGCSjJZ+1d26ycYHwDiuU55dc4YvshPOhjQFIybTrtiOE4UichT1Ck5S/CCfO5ELitWn/yM0dvNwgCI+d3BFwFgAqrmI1wdT7Kzzp6djBufrCJDy5O825WId09DnT2kMVrRC13OWPOxxsD320JnIXhh0RXIoswL9fXOa2ozVCgHIOCEn5JMWI6ZqpwGij0rYW8E4X3ExlC4gEUzAKrrXu5lX0lrzvza4nTVtteovruXTUrGSJJtSMJMckZpvgZUSAtyr+ZYpPLsHxBkRLjGQbM8ZwcLcOOKKzxU6yzY6ciz2xAXqtr4FbCr0icPJ4QnH9CmcCJHakOMNDAgsivusiBhI=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <878svhw2po.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050901-0012-0000-0000-00000319BB48
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050901-0013-0000-0000-000021523F71
-Message-Id: <df0211b9-7513-deae-f2e1-a697a21883a0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-09_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905090004
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb953fe4-cd5d-443b-d3d2-08d6d4260397
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2019 02:28:25.2720 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5933
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,154 +92,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
+ Rob Herring <robh+dt@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/5/19 10:27 pm, Michael Ellerman wrote:
-> Andrew Donnellan <ajd@linux.ibm.com> writes:
-> 
->> The powernv platform is the only one that directly accesses SCOMs. Move the
->> support code to platforms/powernv, and get rid of the PPC_SCOM Kconfig
->> option, as SCOM support is always selected when compiling for powernv.
-> 
-> This code was used on WSP / A2, back in the past which is why it
-> originally lived in sysdev.
-> 
->> This also means that the Kconfig item for CONFIG_SCOM_DEBUGFS will actually
->> show up in menuconfig, as previously it was the only labelled option in
->> sysdev/Kconfig and wasn't actually in a menu.
->>
->> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/scom.h                   | 4 ++--
-> 
-> Can't scom.h move into powernv as well?
-> 
-
-...looks like it can.
-
-> And do we even need the whole scom_controller abstraction?
-
-Probably not. Looks like there's some completely dead code in there too.
-
-Will send a v2.
-
-
-> 
-> If we ever have another platform that needs it we can always bring it
-> back.
-> 
-> cheers
-> 
->>   arch/powerpc/platforms/powernv/Kconfig            | 5 ++++-
->>   arch/powerpc/platforms/powernv/Makefile           | 2 +-
->>   arch/powerpc/{sysdev => platforms/powernv}/scom.c | 0
->>   arch/powerpc/sysdev/Kconfig                       | 7 -------
->>   arch/powerpc/sysdev/Makefile                      | 2 --
->>   6 files changed, 7 insertions(+), 13 deletions(-)
->>   rename arch/powerpc/{sysdev => platforms/powernv}/scom.c (100%)
->>
->> diff --git a/arch/powerpc/include/asm/scom.h b/arch/powerpc/include/asm/scom.h
->> index f5cde45b1161..acc6532a9a9e 100644
->> --- a/arch/powerpc/include/asm/scom.h
->> +++ b/arch/powerpc/include/asm/scom.h
->> @@ -23,7 +23,7 @@
->>   
->>   #ifdef __KERNEL__
->>   #ifndef __ASSEMBLY__
->> -#ifdef CONFIG_PPC_SCOM
->> +#ifdef CONFIG_PPC_POWERNV
->>   
->>   /*
->>    * The SCOM bus is a sideband bus used for accessing various internal
->> @@ -161,7 +161,7 @@ static inline int scom_write(scom_map_t map, u64 reg, u64 value)
->>   }
->>   
->>   
->> -#endif /* CONFIG_PPC_SCOM */
->> +#endif /* CONFIG_PPC_POWERNV */
->>   #endif /* __ASSEMBLY__ */
->>   #endif /* __KERNEL__ */
->>   #endif /* _ASM_POWERPC_SCOM_H */
->> diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
->> index 850eee860cf2..938803eab0ad 100644
->> --- a/arch/powerpc/platforms/powernv/Kconfig
->> +++ b/arch/powerpc/platforms/powernv/Kconfig
->> @@ -12,7 +12,6 @@ config PPC_POWERNV
->>   	select EPAPR_BOOT
->>   	select PPC_INDIRECT_PIO
->>   	select PPC_UDBG_16550
->> -	select PPC_SCOM
->>   	select ARCH_RANDOM
->>   	select CPU_FREQ
->>   	select PPC_DOORBELL
->> @@ -47,3 +46,7 @@ config PPC_VAS
->>   	  VAS adapters are found in POWER9 based systems.
->>   
->>   	  If unsure, say N.
->> +
->> +config SCOM_DEBUGFS
->> +	bool "Expose SCOM controllers via debugfs"
->> +	depends on DEBUG_FS
->> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
->> index da2e99efbd04..4b1644150135 100644
->> --- a/arch/powerpc/platforms/powernv/Makefile
->> +++ b/arch/powerpc/platforms/powernv/Makefile
->> @@ -4,12 +4,12 @@ obj-y			+= idle.o opal-rtc.o opal-nvram.o opal-lpc.o opal-flash.o
->>   obj-y			+= rng.o opal-elog.o opal-dump.o opal-sysparam.o opal-sensor.o
->>   obj-y			+= opal-msglog.o opal-hmi.o opal-power.o opal-irqchip.o
->>   obj-y			+= opal-kmsg.o opal-powercap.o opal-psr.o opal-sensor-groups.o
->> +obj-y			+= opal-xscom.o scom.o
->>   
->>   obj-$(CONFIG_SMP)	+= smp.o subcore.o subcore-asm.o
->>   obj-$(CONFIG_PCI)	+= pci.o pci-ioda.o npu-dma.o pci-ioda-tce.o
->>   obj-$(CONFIG_CXL_BASE)	+= pci-cxl.o
->>   obj-$(CONFIG_EEH)	+= eeh-powernv.o
->> -obj-$(CONFIG_PPC_SCOM)	+= opal-xscom.o
->>   obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
->>   obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
->>   obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
->> diff --git a/arch/powerpc/sysdev/scom.c b/arch/powerpc/platforms/powernv/scom.c
->> similarity index 100%
->> rename from arch/powerpc/sysdev/scom.c
->> rename to arch/powerpc/platforms/powernv/scom.c
->> diff --git a/arch/powerpc/sysdev/Kconfig b/arch/powerpc/sysdev/Kconfig
->> index e0dbec780fe9..7808d279ff1d 100644
->> --- a/arch/powerpc/sysdev/Kconfig
->> +++ b/arch/powerpc/sysdev/Kconfig
->> @@ -28,13 +28,6 @@ config PPC_MSI_BITMAP
->>   source "arch/powerpc/sysdev/xics/Kconfig"
->>   source "arch/powerpc/sysdev/xive/Kconfig"
->>   
->> -config PPC_SCOM
->> -	bool
->> -
->> -config SCOM_DEBUGFS
->> -	bool "Expose SCOM controllers via debugfs"
->> -	depends on PPC_SCOM && DEBUG_FS
->> -
->>   config GE_FPGA
->>   	bool
->>   
->> diff --git a/arch/powerpc/sysdev/Makefile b/arch/powerpc/sysdev/Makefile
->> index aaf23283ba0c..35d52d1d2fc0 100644
->> --- a/arch/powerpc/sysdev/Makefile
->> +++ b/arch/powerpc/sysdev/Makefile
->> @@ -51,8 +51,6 @@ ifdef CONFIG_SUSPEND
->>   obj-$(CONFIG_PPC_BOOK3S_32)	+= 6xx-suspend.o
->>   endif
->>   
->> -obj-$(CONFIG_PPC_SCOM)		+= scom.o
->> -
->>   obj-$(CONFIG_PPC_EARLY_DEBUG_MEMCONS)	+= udbg_memcons.o
->>   
->>   obj-$(CONFIG_PPC_XICS)		+= xics/
->> -- 
->> 2.20.1
-> 
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+T24gMjAxOS81LzEgMTc6MjksIFJhc211cyBWaWxsZW1vZXMgPHJhc211cy52aWxsZW1vZXNAcHJl
+dmFzLmRrPiB3cm90ZToNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFz
+bXVzIFZpbGxlbW9lcyA8cmFzbXVzLnZpbGxlbW9lc0BwcmV2YXMuZGs+DQo+IFNlbnQ6IDIwMTnl
+ubQ15pyIMeaXpSAxNzoyOQ0KPiBUbzogZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7IFFpYW5n
+IFpoYW8gPHFpYW5nLnpoYW9AbnhwLmNvbT47IExlbyBMaQ0KPiA8bGVveWFuZy5saUBueHAuY29t
+Pg0KPiBDYzogbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc7IGxpbnV4LWFybS1rZXJuZWxA
+bGlzdHMuaW5mcmFkZWFkLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgUm9i
+IEhlcnJpbmcgPHJvYmgrZHRAa2VybmVsLm9yZz47IFNjb3R0IFdvb2QNCj4gPG9zc0BidXNlcnJv
+ci5uZXQ+OyBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGMtcy5mcj47IE1hcmsN
+Cj4gUnV0bGFuZCA8bWFyay5ydXRsYW5kQGFybS5jb20+OyBSYXNtdXMgVmlsbGVtb2VzDQo+IDxS
+YXNtdXMuVmlsbGVtb2VzQHByZXZhcy5zZT4NCj4gU3ViamVjdDogW1BBVENIIHYyIDEvNl0gc29j
+L2ZzbC9xZTogcWUuYzogZHJvcCB1c2VsZXNzIHN0YXRpYyBxdWFsaWZpZXINCj4gDQo+IFRoZSBs
+b2NhbCB2YXJpYWJsZSBzbnVtX2luaXQgaGFzIG5vIHJlYXNvbiB0byBoYXZlIHN0YXRpYyBzdG9y
+YWdlIGR1cmF0aW9uLg0KPiANCj4gUmV2aWV3ZWQtYnk6IENocmlzdG9waGUgTGVyb3kgPGNocmlz
+dG9waGUubGVyb3lAYy1zLmZyPg0KPiBTaWduZWQtb2ZmLWJ5OiBSYXNtdXMgVmlsbGVtb2VzIDxy
+YXNtdXMudmlsbGVtb2VzQHByZXZhcy5kaz4NCg0KUmV2aWV3ZWQtYnk6IFFpYW5nIFpoYW8gPHFp
+YW5nLnpoYW9AbnhwLmNvbT4NCg0KPiAtLS0NCj4gIGRyaXZlcnMvc29jL2ZzbC9xZS9xZS5jIHwg
+MiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+
+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb2MvZnNsL3FlL3FlLmMgYi9kcml2ZXJzL3NvYy9m
+c2wvcWUvcWUuYyBpbmRleA0KPiA2MTJkOWM1NTFiZTUuLjg1NTM3M2RlYjc0NiAxMDA2NDQNCj4g
+LS0tIGEvZHJpdmVycy9zb2MvZnNsL3FlL3FlLmMNCj4gKysrIGIvZHJpdmVycy9zb2MvZnNsL3Fl
+L3FlLmMNCj4gQEAgLTMwNiw3ICszMDYsNyBAQCBzdGF0aWMgdm9pZCBxZV9zbnVtc19pbml0KHZv
+aWQpDQo+ICAgICAgICAgICAgICAgICAweDI4LCAweDI5LCAweDM4LCAweDM5LCAweDQ4LCAweDQ5
+LCAweDU4LCAweDU5LA0KPiAgICAgICAgICAgICAgICAgMHg2OCwgMHg2OSwgMHg3OCwgMHg3OSwg
+MHg4MCwgMHg4MSwNCj4gICAgICAgICB9Ow0KPiAtICAgICAgIHN0YXRpYyBjb25zdCB1OCAqc251
+bV9pbml0Ow0KPiArICAgICAgIGNvbnN0IHU4ICpzbnVtX2luaXQ7DQo+IA0KPiAgICAgICAgIHFl
+X251bV9vZl9zbnVtID0gcWVfZ2V0X251bV9vZl9zbnVtcygpOw0KPiANCj4gLS0NCj4gMi4yMC4x
+DQoNCg0KQmVzdCBSZWdhcmRzDQpRaWFuZyBaaGFvDQo=
