@@ -1,73 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D533186FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 10:47:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04711186D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 10:32:30 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4506632gNjzDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 18:32:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4506Qy1KQCzDqNm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2019 18:47:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com;
- envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="E2kz1FMl"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Fwh2bxOZ"; 
  dkim-atps=neutral
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com
- [IPv6:2a00:1450:4864:20::333])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45064m6Yv6zDqMb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 18:31:20 +1000 (AEST)
-Received: by mail-wm1-x333.google.com with SMTP id 198so2070857wme.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2019 01:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=FzWOYssN0isWIIe9zGhm6nETA9v2GV7Jir7OO9+o9Vw=;
- b=E2kz1FMl83tN2ABjW1mJurOeaAAcQShe1pSdN0kxvumUhNTI+TqC+JXIZb1PePIKJJ
- ysk3UkyIsJU1IyF0QX1bzY9ls8u7jx8KohqfGd2WpkooA64l95qf7m/i1PXKKqW34KQF
- NNcpCM/IAQlJ5s4gyXGZ9cMqAAd7CUf1vozzxU8QOI5PMk0lgpQQKZzWT1hz9HGssOvu
- uKSWLGBKVYuEifUSTdaTScT7ZUK/rBVNeKSLxaCEgLJEzr+DuN5HYR3Wm+13avez/Z+N
- IK5ls6J3TdDfsYGUe0WoryVlVbiG8KYRYsN6OokIHADtlhOTcp6Zf1M8DSc7jpHqbyfy
- gN6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=FzWOYssN0isWIIe9zGhm6nETA9v2GV7Jir7OO9+o9Vw=;
- b=VDmOuSWMbPrYpBa2jX+yioAzagYmMJKkF6BseqxLl7RlYNhhbClBQTEw7lcH/u69ff
- i88kIm55WlcTIGcCqn8Ii1b14SrP6Arog4vo4SDP1dRIXoi2FQQWjLRFUzCcl91ws4ZN
- dnmwNjvzbbuvo/ZPQd/VaL4gK42EFKpDN97G1mUUiPZN2TaCWHc28X+/XQWbHI60onpt
- qicFaj2/Gqu44LqjU4WhEsh4GXIFyoB3Nahb97REFwdDHiINbKhLQ6o3y65Xjxfr3VGw
- j1U3XlAMF4CaVXHTSAGtH6aoHowdBAL7ziJZEXvfz/+q2FPJE2tURSyQO0Nz2v2b4yac
- PLtQ==
-X-Gm-Message-State: APjAAAUluZA7QpfiLC4iKE0XlBBzG0Ko8ehflXdqk+xFYrOnRM2sEWIx
- eyIjme/JmoUHW3XtCLbcp/w=
-X-Google-Smtp-Source: APXvYqwbP80+SsW7YO75fRTZDEwGG81tyowfGAEzJg/Pgbxk1mNQT7/K4RNdohJEwe6Atj6WEY8WAQ==
-X-Received: by 2002:a7b:c309:: with SMTP id k9mr1995617wmj.45.1557390675018;
- Thu, 09 May 2019 01:31:15 -0700 (PDT)
-Received: from gmail.com (2E8B0CD5.catv.pool.telekom.hu. [46.139.12.213])
- by smtp.gmail.com with ESMTPSA id x17sm1474400wru.27.2019.05.09.01.31.13
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 09 May 2019 01:31:14 -0700 (PDT)
-Date: Thu, 9 May 2019 10:31:11 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH] [v2] x86/mpx: fix recursive munmap() corruption
-Message-ID: <20190509083111.GA75918@gmail.com>
-References: <20190419194747.5E1AD6DC@viggo.jf.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4506PG2Pj9zDqLt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2019 18:45:36 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4506P80XSpzB09ZY;
+ Thu,  9 May 2019 10:45:32 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Fwh2bxOZ; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0_FkS9UUJOYj; Thu,  9 May 2019 10:45:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4506P76R0QzB09ZT;
+ Thu,  9 May 2019 10:45:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557391531; bh=w/S7uUqgSN8KA1lhK6c0zs41LA+fZFdzr4wOKuoeeF4=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Fwh2bxOZybQ15+xWv0/09B81w+uKslkudpJP+Q9Kfq8dkXYuSBHsTS0ZXGVzjs9SE
+ 64rHcxGl4MHMOu5i51Nn0x1SvC0ZhqddIYpI4EsR5Iw8/CUn6nRYeLQ7ZYzCipcL0C
+ U3jAVa4BHmq32Q82mdDar/0FvJIHbp2WpSSI/hl0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 035708B90F;
+ Thu,  9 May 2019 10:45:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id tboJ1RkcuLOR; Thu,  9 May 2019 10:45:32 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A96218B90D;
+ Thu,  9 May 2019 10:45:32 +0200 (CEST)
+Subject: Re: [PATCH] powerpc: Fix compile issue with force DAWR
+To: Michael Neuling <mikey@neuling.org>, mpe@ellerman.id.au
+References: <20190508013047.12850-1-mikey@neuling.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <0e2e24dc-4533-4439-3dc1-97ec64fbf49b@c-s.fr>
+Date: Thu, 9 May 2019 10:45:32 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190419194747.5E1AD6DC@viggo.jf.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190508013047.12850-1-mikey@neuling.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,48 +77,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, hjl.tools@gmail.com, mhocko@suse.com,
- rguenther@suse.de, richard@nod.at, gxt@pku.edu.cn, jdike@addtoit.com,
- x86@kernel.org, linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, luto@amacapital.net, linux-mm@kvack.org,
- paulus@samba.org, yang.shi@linux.alibaba.com, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, vbabka@suse.cz, anton.ivanov@cambridgegreys.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-* Dave Hansen <dave.hansen@linux.intel.com> wrote:
 
-> Reported-by: Richard Biener <rguenther@suse.de>
-> Reported-by: H.J. Lu <hjl.tools@gmail.com>
-> Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
-> Cc: Yang Shi <yang.shi@linux.alibaba.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Andy Lutomirski <luto@amacapital.net>
-> Cc: x86@kernel.org
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: stable@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-um@lists.infradead.org
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linux-arch@vger.kernel.org
-> Cc: Guan Xuetao <gxt@pku.edu.cn>
-> Cc: Jeff Dike <jdike@addtoit.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Le 08/05/2019 à 03:30, Michael Neuling a écrit :
+> If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
+> at linking with:
+>    arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined reference to `dawr_force_enable'
+> 
+> This was caused by this recent patch:
+>     commit c1fe190c06723322f2dfac31d3b982c581e434ef
+>     Author: Michael Neuling <mikey@neuling.org>
+>     powerpc: Add force enable of DAWR on P9 option
 
-I've also added your:
+I think you should use the standard commit format, checkpatch will tell you.
 
-  Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> This builds dawr_force_enable in always via a new file.
 
-Because I suppose you intended to sign off on it?
+Do we really need a new file just for that ?
+As far as I understand, it is always compiled in, so can't we use 
+another file like traps.o or setup-common.o or somewhere else ?
 
-Thanks,
+Or just put an ifdef in arch/powerpc/kvm/book3s_hv_rmhandlers.S ?
+Because your fix will put dawr_force_enable on every build even the ones 
+who don't need it at all.
 
-	Ingo
+Christophe
+
+> 
+> Signed-off-by: Michael Neuling <mikey@neuling.org> > ---
+>   arch/powerpc/kernel/Makefile        |  2 +-
+>   arch/powerpc/kernel/dawr.c          | 11 +++++++++++
+>   arch/powerpc/kernel/hw_breakpoint.c |  3 ---
+>   3 files changed, 12 insertions(+), 4 deletions(-)
+>   create mode 100644 arch/powerpc/kernel/dawr.c
+> 
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 0ea6c4aa3a..48a20ef5be 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -49,7 +49,7 @@ obj-y				:= cputable.o ptrace.o syscalls.o \
+>   				   signal.o sysfs.o cacheinfo.o time.o \
+>   				   prom.o traps.o setup-common.o \
+>   				   udbg.o misc.o io.o misc_$(BITS).o \
+> -				   of_platform.o prom_parse.o
+> +				   of_platform.o prom_parse.o dawr.o
+>   obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
+>   				   signal_64.o ptrace32.o \
+>   				   paca.o nvram_64.o firmware.o
+> diff --git a/arch/powerpc/kernel/dawr.c b/arch/powerpc/kernel/dawr.c
+> new file mode 100644
+> index 0000000000..ca343efd23
+> --- /dev/null
+> +++ b/arch/powerpc/kernel/dawr.c
+> @@ -0,0 +1,11 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +//
+> +// DAWR global variables
+> +//
+> +// Copyright 2019, Michael Neuling, IBM Corporation.
+> +
+> +#include <linux/types.h>
+> +#include <linux/export.h>
+> +
+> +bool dawr_force_enable;
+> +EXPORT_SYMBOL_GPL(dawr_force_enable);
+> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+> index da307dd93e..78a17454f4 100644
+> --- a/arch/powerpc/kernel/hw_breakpoint.c
+> +++ b/arch/powerpc/kernel/hw_breakpoint.c
+> @@ -381,9 +381,6 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
+>   	/* TODO */
+>   }
+>   
+> -bool dawr_force_enable;
+> -EXPORT_SYMBOL_GPL(dawr_force_enable);
+> -
+>   static ssize_t dawr_write_file_bool(struct file *file,
+>   				    const char __user *user_buf,
+>   				    size_t count, loff_t *ppos)
+> 
