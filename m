@@ -1,52 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E791B078
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 08:43:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1313A1B105
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:14:23 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452XB41shfzDqFh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:14:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452WVQ0s7zzDqGn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:43:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=46.105.34.195; helo=11.mo4.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 2133 seconds by postgrey-1.36 at bilbo;
- Mon, 13 May 2019 17:12:47 AEST
-Received: from 11.mo4.mail-out.ovh.net (11.mo4.mail-out.ovh.net
- [46.105.34.195])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452X8H2tbwzDqF5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:12:43 +1000 (AEST)
-Received: from player776.ha.ovh.net (unknown [10.109.159.159])
- by mo4.mail-out.ovh.net (Postfix) with ESMTP id 57CEC1EC192
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 08:37:06 +0200 (CEST)
-Received: from kaod.org (lfbn-1-10649-41.w90-89.abo.wanadoo.fr [90.89.235.41])
- (Authenticated sender: clg@kaod.org)
- by player776.ha.ovh.net (Postfix) with ESMTPSA id 695205A45567;
- Mon, 13 May 2019 06:36:59 +0000 (UTC)
-Subject: Re: [PATCH] powerpc: Document xive=off option
-To: Michael Neuling <mikey@neuling.org>, mpe@ellerman.id.au
-References: <20190513053910.19227-1-mikey@neuling.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <db3a3289-1c5f-f744-1314-fb1fc19e8287@kaod.org>
-Date: Mon, 13 May 2019 08:36:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452WSy6RY1zDqBL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 16:42:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="WL8j2isZ"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 452WSy2tP5z9s4Y; Mon, 13 May 2019 16:42:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1557729730; bh=bfjxecMrdmX4OfnJ3FpAf871ZQ2GIHJ1hAkeFqBk1YI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=WL8j2isZzN21WNnf6psha+YqfAlDb9btXeL3ZX/QhF50KzvyC84Y5xGTE4GlMumC/
+ bVyZRfSqyYfncHBMRU15MxWuzdG3ku92gGIIXFEyMLmWeR37u8Icq/000C3E3FI3DN
+ n4hNuZcbr0lC74gdqqFfON+N5H/YgkeD1VYkPYjgxXspNYtVBXvLmEiqgAnLf3XiFd
+ oBC5R5m5PpM5+WcjT0F/SgTkJ50TvtvaA+EsHPZaqtg6pYL/FaB2AxO1TSBXbsTQUn
+ UfJjVKHPcwfpRHnkvACt1zx3bWeuu1NEuyveUaeubY9qvLmedTGBhRnhe0KewLKN1m
+ FelH6kV6zkr8Q==
+Date: Mon, 13 May 2019 16:42:07 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v10 2/2] powerpc/64s: KVM update for reimplement book3s
+ idle code in C
+Message-ID: <20190513064207.GA11679@blackberry>
+References: <20190428114515.32683-1-npiggin@gmail.com>
+ <20190428114515.32683-3-npiggin@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190513053910.19227-1-mikey@neuling.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 1193735380038880153
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrleefgddutdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenuc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190428114515.32683-3-npiggin@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,61 +55,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/13/19 7:39 AM, Michael Neuling wrote:
-> commit 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
-> interrupt controller") added an option to turn off Linux native XIVE
-> usage via the xive=off kernel command line option.
+On Sun, Apr 28, 2019 at 09:45:15PM +1000, Nicholas Piggin wrote:
+> This is the KVM update to the new idle code. A few improvements:
 > 
-> This documents this option.
-> 
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> - Idle sleepers now always return to caller rather than branch out
+>   to KVM first.
+> - This allows optimisations like very fast return to caller when no
+>   state has been lost.
+> - KVM no longer requires nap_state_lost because it controls NVGPR
+>   save/restore itself on the way in and out.
+> - The heavy idle wakeup KVM request check can be moved out of the
+>   normal host idle code and into the not-performance-critical offline
+>   code.
+> - KVM nap code now returns from where it is called, which makes the
+>   flow a bit easier to follow.
 
+One question below...
 
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-
-But,
-
-We should fix the behavior because xive=off does not work on pseries. 
-This is not handled correctly in prom when CAS negotiates with the 
-hypervisor which interrupt mode is to be used. 
-
-I haven't tried this option on PowerNV.
-
-Cheers,
-
-C.
-
-
-> ---
->  Documentation/admin-guide/kernel-parameters.txt | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index c45a19d654..ee410d0ef4 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -5177,6 +5177,15 @@
->  			Format:
->  			<irq>,<irq_mask>,<io>,<full_duplex>,<do_sound>,<lockup_hack>[,<irq2>[,<irq3>[,<irq4>]]]
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> index 58d0f1ba845d..f66191d8f841 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+...
+> @@ -2656,6 +2662,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 >  
-> +	xive=		[PPC]
-> +			By default on POWER9 and above, the kernel will
-> +			natively use the XIVE interrupt controller. This option
-> +			allows the fallback firmware mode to be used:
-> +
-> +			off       Fallback to firmware control of XIVE interrupt
-> +				  controller on both pseries and powernv
-> +				  platforms. Only useful on POWER9 and above.
-> +
->  	xhci-hcd.quirks		[USB,KNL]
->  			A hex value specifying bitmask with supplemental xhci
->  			host controller quirks. Meaning of each bit can be
-> 
+>  	lis	r3, LPCR_PECEDP@h	/* Do wake on privileged doorbell */
+>  
+> +	/* Go back to host stack */
+> +	ld	r1, HSTATE_HOST_R1(r13)
 
+At this point we are in kvmppc_h_cede, which we branched to from
+hcall_try_real_mode, which came from the guest exit path, where we
+have already loaded r1 from HSTATE_HOST_R1(r13).  So if there is a
+path to get here with r1 not already set to HSTATE_HOST_R1(r13), then
+I missed it - please point it out to me.  Otherwise this statement
+seems superfluous.
+
+Paul.
