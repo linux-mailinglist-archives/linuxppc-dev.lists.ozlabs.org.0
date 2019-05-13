@@ -1,61 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA491B21E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 10:55:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452ZQY1XM7zDqHJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 18:55:17 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F04D1B225
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 10:57:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 452ZTS4V39zDqG0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 18:57:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=aculab.com
- (client-ip=146.101.78.151; helo=eu-smtp-delivery-151.mimecast.com;
- envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ACULAB.COM
-X-Greylist: delayed 75 seconds by postgrey-1.36 at bilbo;
- Mon, 13 May 2019 18:54:05 AEST
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="Z9kL3Iw0"; dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452ZP95Cq8zDqB5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 18:54:05 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-193-wJHPV_UlNTueMoK28eZKkA-1; Mon, 13 May 2019 09:52:42 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
- (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon,
- 13 May 2019 09:52:41 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Mon, 13 May 2019 09:52:41 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'christophe leroy' <christophe.leroy@c-s.fr>, Steven Rostedt
- <rostedt@goodmis.org>, Petr Mladek <pmladek@suse.com>
-Subject: RE: [PATCH] vsprintf: Do not break early boot with probing addresses
-Thread-Topic: [PATCH] vsprintf: Do not break early boot with probing addresses
-Thread-Index: AQHVB1bC/iTC8Q7sI0elwkZY5/gFJaZowlxw
-Date: Mon, 13 May 2019 08:52:41 +0000
-Message-ID: <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
-References: <20190510081635.GA4533@jagdpanzerIV>
- <20190510084213.22149-1-pmladek@suse.com>
- <20190510122401.21a598f6@gandalf.local.home>
- <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
-In-Reply-To: <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452ZS91WxszDqB5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 18:56:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=YsWNQAn/oXqj/AAmCsiyvkrAsiJ6jruPNR4u9yvPwDQ=; b=Z9kL3Iw0vUjQQn2xL9rrd+TEG
+ UivW7zGI7nKs6s+saOWgsrnSo+VOowZFiJ3B8AIlWQ3ZuuW6ORWQmW7q4Ae/J4efNP53Nf8V++pHO
+ yJeV/ARJRj20SC+7fOqXNkBBEyFb9oUaeRrhohjVNG2ncC4VsetmBKoO3fYQqV0uuv2wdsO85gvuO
+ bS5lrlhzqlYfBbTIClLxdC1PGYvxWbIafW9xORDDd6jrXXp7Vg2APxbQho5bGx3u1uRPTGqbYVeC3
+ UGNepzW35AtTfwF4XubSUYGbfNLqKs53Po0s64MIKmywMarc4RkHDd6gsGiINbxKcm6HJvGsbGM5A
+ 4S15F4lxQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=hirez.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hQ6kx-0005ao-8Y; Mon, 13 May 2019 08:56:24 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 95CBD2029F877; Mon, 13 May 2019 10:56:20 +0200 (CEST)
+Date: Mon, 13 May 2019 10:56:20 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH 1/2] perf ioctl: Add check for the sample_period value
+Message-ID: <20190513085620.GN2650@hirez.programming.kicks-ass.net>
+References: <20190511024217.4013-1-ravi.bangoria@linux.ibm.com>
+ <20190513074213.GH2623@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-MC-Unique: wJHPV_UlNTueMoK28eZKkA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190513074213.GH2623@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,37 +65,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Sergey
- Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Michal Hocko <mhocko@suse.cz>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>, Stephen
- Rothwell <sfr@ozlabs.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, acme@kernel.org, jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogY2hyaXN0b3BoZSBsZXJveQ0KPiBTZW50OiAxMCBNYXkgMjAxOSAxODozNQ0KPiBMZSAx
-MC8wNS8yMDE5IMOgIDE4OjI0LCBTdGV2ZW4gUm9zdGVkdCBhIMOpY3JpdMKgOg0KPiA+IE9uIEZy
-aSwgMTAgTWF5IDIwMTkgMTA6NDI6MTMgKzAyMDANCj4gPiBQZXRyIE1sYWRlayA8cG1sYWRla0Bz
-dXNlLmNvbT4gd3JvdGU6DQo+ID4NCj4gPj4gICBzdGF0aWMgY29uc3QgY2hhciAqY2hlY2tfcG9p
-bnRlcl9tc2coY29uc3Qgdm9pZCAqcHRyKQ0KPiA+PiAgIHsNCj4gPj4gLQljaGFyIGJ5dGU7DQo+
-ID4+IC0NCj4gPj4gICAJaWYgKCFwdHIpDQo+ID4+ICAgCQlyZXR1cm4gIihudWxsKSI7DQo+ID4+
-DQo+ID4+IC0JaWYgKHByb2JlX2tlcm5lbF9hZGRyZXNzKHB0ciwgYnl0ZSkpDQo+ID4+ICsJaWYg
-KCh1bnNpZ25lZCBsb25nKXB0ciA8IFBBR0VfU0laRSB8fCBJU19FUlJfVkFMVUUocHRyKSkNCj4g
-Pj4gICAJCXJldHVybiAiKGVmYXVsdCkiOw0KDQoiZWZhdWx0IiBsb29rcyBhIGJpdCBsaWtlIGEg
-c3BlbGxsaW5nIG1pc3Rha2UgZm9yICJkZWZhdWx0Ii4NCg0KPiA+IAk8IFBBR0VfU0laRSA/DQo+
-ID4NCj4gPiBkbyB5b3UgbWVhbjogPCBUQVNLX1NJWkUgPw0KPiANCj4gSSBndWVzcyBub3QuDQo+
-IA0KPiBVc3VhbGx5LCA8IFBBR0VfU0laRSBtZWFucyBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Ug
-KHZpYSB0aGUgbWVtYmVyIG9mIGENCj4gc3RydWN0KQ0KDQpNYXliZSB0aGUgY2FsbGVyIHNob3Vs
-ZCBwYXNzIGluIGEgc2hvcnQgYnVmZmVyIHNvIHRoYXQgeW91IGNhbiByZXR1cm4NCiIoZXJyLSVk
-KSIgb3IgIihudWxsKyUjeCkiID8NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBM
-YWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBU
-LCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+On Mon, May 13, 2019 at 09:42:13AM +0200, Peter Zijlstra wrote:
+> On Sat, May 11, 2019 at 08:12:16AM +0530, Ravi Bangoria wrote:
+> > Add a check for sample_period value sent from userspace. Negative
+> > value does not make sense. And in powerpc arch code this could cause
+> > a recursive PMI leading to a hang (reported when running perf-fuzzer).
+> > 
+> > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> > ---
+> >  kernel/events/core.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/kernel/events/core.c b/kernel/events/core.c
+> > index abbd4b3b96c2..e44c90378940 100644
+> > --- a/kernel/events/core.c
+> > +++ b/kernel/events/core.c
+> > @@ -5005,6 +5005,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
+> >  	if (perf_event_check_period(event, value))
+> >  		return -EINVAL;
+> >  
+> > +	if (!event->attr.freq && (value & (1ULL << 63)))
+> > +		return -EINVAL;
+> 
+> Well, perf_event_attr::sample_period is __u64. Would not be the site
+> using it as signed be the one in error?
 
+You forgot to mention commit: 0819b2e30ccb9, so I guess this just makes
+it consistent and is fine.
