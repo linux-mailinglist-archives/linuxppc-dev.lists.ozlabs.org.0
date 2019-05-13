@@ -2,85 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9199B1B3AC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 12:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF76D1B4B9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 13:16:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452c2w5wPkzDqGp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 20:08:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452dYy5SlmzDqHK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 21:16:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (helo)
+ smtp.helo=eur04-db3-obe.outbound.protection.outlook.com
+ (client-ip=40.107.6.130; helo=eur04-db3-obe.outbound.protection.outlook.com;
+ envelope-from=rasmus.villemoes@prevas.se; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=prevas.dk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=prevas.se header.i=@prevas.se header.b="eKYL0sMA"; 
+ dkim-atps=neutral
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (mail-eopbgr60130.outbound.protection.outlook.com [40.107.6.130])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452c1c2zpjzDq9k
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 20:07:15 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4DA2AXJ119460
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 06:07:12 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2sf64e97fx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 06:07:12 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Mon, 13 May 2019 11:07:10 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 13 May 2019 11:07:07 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4DA76Kc48758894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 May 2019 10:07:06 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 666B3A405B;
- Mon, 13 May 2019 10:07:06 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1B01CA4053;
- Mon, 13 May 2019 10:07:05 +0000 (GMT)
-Received: from [9.124.31.49] (unknown [9.124.31.49])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 13 May 2019 10:07:04 +0000 (GMT)
-Subject: Re: [PATCH 1/2] perf ioctl: Add check for the sample_period value
-To: Peter Zijlstra <peterz@infradead.org>
-References: <20190511024217.4013-1-ravi.bangoria@linux.ibm.com>
- <20190513074213.GH2623@hirez.programming.kicks-ass.net>
- <20190513085620.GN2650@hirez.programming.kicks-ass.net>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Mon, 13 May 2019 15:37:04 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190513085620.GN2650@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452dWp6tL0zDqFh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 21:15:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.se; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/kcHpFzImfoNHIcaIfYWaLi2EfOhtgckMgFGWSQYoh4=;
+ b=eKYL0sMAFYqiYQvh7KLk6lccVmsE277AG0CTOLMIkLsPGabM6m5rH3h6TWKzeX5qq3qeBV7EgyOLRDZNfhhS3qCzyW5zY5aQUW2RPAVWwvCLT6LKmoePuCML/ky7drjSib/mXdSxuaNPMNyCTLMLB+AZFCasi2ZckurdUa78vMI=
+Received: from VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM (20.178.126.212) by
+ VI1PR10MB1950.EURPRD10.PROD.OUTLOOK.COM (52.134.27.154) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1878.24; Mon, 13 May 2019 11:14:53 +0000
+Received: from VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::48b8:9cff:182:f3d8]) by VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::48b8:9cff:182:f3d8%2]) with mapi id 15.20.1878.024; Mon, 13 May 2019
+ 11:14:53 +0000
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+To: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Qiang Zhao
+ <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>
+Subject: [PATCH v3 0/6] soc/fsl/qe: cleanups and new DT binding
+Thread-Topic: [PATCH v3 0/6] soc/fsl/qe: cleanups and new DT binding
+Thread-Index: AQHVCX0WBepWBUryR0K8DhsVu6ZcHg==
+Date: Mon, 13 May 2019 11:14:53 +0000
+Message-ID: <20190513111442.25724-1-rasmus.villemoes@prevas.dk>
+References: <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
+In-Reply-To: <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19051310-0012-0000-0000-0000031B1158
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19051310-0013-0000-0000-00002153A35B
-Message-Id: <d2d34084-999d-9be2-511e-82625b80aa40@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-13_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905130072
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: HE1PR0101CA0022.eurprd01.prod.exchangelabs.com
+ (2603:10a6:3:77::32) To VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:e3::20)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Rasmus.Villemoes@prevas.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.20.1
+x-originating-ip: [81.216.59.226]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: db736e27-86cd-4627-fdc9-08d6d79438e3
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);
+ SRVR:VI1PR10MB1950; 
+x-ms-traffictypediagnostic: VI1PR10MB1950:
+x-microsoft-antispam-prvs: <VI1PR10MB1950E6433CE689170FAD58DA8A0F0@VI1PR10MB1950.EURPRD10.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:923;
+x-forefront-prvs: 0036736630
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(346002)(39850400004)(366004)(376002)(136003)(396003)(189003)(199004)(6512007)(66066001)(53936002)(107886003)(52116002)(68736007)(256004)(14444005)(71200400001)(71190400001)(76176011)(6436002)(478600001)(6486002)(1076003)(36756003)(5660300002)(72206003)(74482002)(446003)(81156014)(8676002)(14454004)(99286004)(2501003)(66946007)(66476007)(66556008)(64756008)(66446008)(73956011)(54906003)(11346002)(2616005)(42882007)(476003)(81166006)(44832011)(50226002)(486006)(8936002)(110136005)(8976002)(6116002)(7416002)(316002)(3846002)(2906002)(305945005)(7736002)(186003)(25786009)(102836004)(6506007)(386003)(4326008)(26005);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:VI1PR10MB1950;
+ H:VI1PR10MB2672.EURPRD10.PROD.OUTLOOK.COM; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: prevas.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: jQu9YgVtAYsCkN/Qj4KuvkVoAe31ZHNAN6ekniNKrtEHDR8HJlpMPJz/YgwkCu1ecqNYNyQQnKxGU0cKVK00+zUnQZtU9uxS1JbAuAC8GRCmWeAFjUPt41j4C8Gp9ZNlgUh99vPixRT6017TxAJG9rN9nX1/P0Bbkx15/sS6ekYTEYIZHUzBASCfY2Wo3ACQ53xHhj7ux0tS8tp3v1Cn0KUmWZeG4pggVUekRv0eVlnKBywdSUJXucGpGyFIOQwWQOnVaLf5AwUw6mXXW+vMrX4B4f+o0hC2SVIOs8dx/FzeczETVoqt/8QLNw/vlj+Iiy1RUI3/BrjrZKiIoWUM+mdey7/V89R69/iQlh2juWqE2OCDzn+xydavZzu27XouUNY+OLuHKSFo/4ELsXDk48Xk5LlasnbS+ARPVPU2wMA=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: db736e27-86cd-4627-fdc9-08d6d79438e3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2019 11:14:53.2363 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB1950
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,44 +97,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, acme@kernel.org,
- jolsa@redhat.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
+ Rob Herring <robh+dt@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 5/13/19 2:26 PM, Peter Zijlstra wrote:
-> On Mon, May 13, 2019 at 09:42:13AM +0200, Peter Zijlstra wrote:
->> On Sat, May 11, 2019 at 08:12:16AM +0530, Ravi Bangoria wrote:
->>> Add a check for sample_period value sent from userspace. Negative
->>> value does not make sense. And in powerpc arch code this could cause
->>> a recursive PMI leading to a hang (reported when running perf-fuzzer).
->>>
->>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>> ---
->>>  kernel/events/core.c | 3 +++
->>>  1 file changed, 3 insertions(+)
->>>
->>> diff --git a/kernel/events/core.c b/kernel/events/core.c
->>> index abbd4b3b96c2..e44c90378940 100644
->>> --- a/kernel/events/core.c
->>> +++ b/kernel/events/core.c
->>> @@ -5005,6 +5005,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
->>>  	if (perf_event_check_period(event, value))
->>>  		return -EINVAL;
->>>  
->>> +	if (!event->attr.freq && (value & (1ULL << 63)))
->>> +		return -EINVAL;
->>
->> Well, perf_event_attr::sample_period is __u64. Would not be the site
->> using it as signed be the one in error?
-> 
-> You forgot to mention commit: 0819b2e30ccb9, so I guess this just makes
-> it consistent and is fine.
-> 
-
-Yeah, I was about to reply :)
-
+VGhpcyBzbWFsbCBzZXJpZXMgY29uc2lzdHMgb2Ygc29tZSBzbWFsbCBjbGVhbnVwcyBhbmQgc2lt
+cGxpZmljYXRpb25zDQpvZiB0aGUgUVVJQ0MgZW5naW5lIGRyaXZlciwgYW5kIGludHJvZHVjZXMg
+YSBuZXcgRFQgYmluZGluZyB0aGF0IG1ha2VzDQppdCBtdWNoIGVhc2llciB0byBzdXBwb3J0IG90
+aGVyIHZhcmlhbnRzIG9mIHRoZSBRVUlDQyBlbmdpbmUgSVAgYmxvY2sNCnRoYXQgYXBwZWFycyBp
+biB0aGUgd2lsZDogVGhlcmUncyBubyByZWFzb24gdG8gZXhwZWN0IGluIGdlbmVyYWwgdGhhdA0K
+dGhlIG51bWJlciBvZiB2YWxpZCBTTlVNcyB1bmlxdWVseSBkZXRlcm1pbmVzIHRoZSBzZXQgb2Yg
+c3VjaCwgc28gaXQncw0KYmV0dGVyIHRvIHNpbXBseSBsZXQgdGhlIGRldmljZSB0cmVlIHNwZWNp
+ZnkgdGhlIHZhbHVlcyAoYW5kLA0KaW1wbGljaXRseSB2aWEgdGhlIGFycmF5IGxlbmd0aCwgYWxz
+byB0aGUgY291bnQpLg0KDQpXaGljaCB0cmVlIHNob3VsZCB0aGlzIGdvIHRocm91Z2g/DQoNCnYz
+Og0KLSBNb3ZlIGV4YW1wbGUgZnJvbSBjb21taXQgbG9nIGludG8gYmluZGluZyBkb2N1bWVudCAo
+YWRhcHRpbmcgdG8NCiAgTVBDODM2MCB3aGljaCB0aGUgZXhpc3RpbmcgZXhhbXBsZSBwZXJ0YWlu
+cyB0bykuDQotIEFkZCBtb3JlIHJldmlldyB0YWdzLg0KLSBGaXggbWlub3Igc3R5bGUgaXNzdWUu
+DQoNCnYyOg0KLSBBZGRyZXNzIGNvbW1lbnRzIGZyb20gQ2hyaXN0b3BoZSBMZXJveQ0KLSBBZGQg
+aGlzIFJldmlld2VkLWJ5IHRvIDEvNiBhbmQgMy82DQotIFNwbGl0IERUIGJpbmRpbmcgdXBkYXRl
+IHRvIHNlcGFyYXRlIHBhdGNoIGFzIHBlcg0KICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
+ZGluZ3Mvc3VibWl0dGluZy1wYXRjaGVzLnR4dA0KDQpSYXNtdXMgVmlsbGVtb2VzICg2KToNCiAg
+c29jL2ZzbC9xZTogcWUuYzogZHJvcCB1c2VsZXNzIHN0YXRpYyBxdWFsaWZpZXINCiAgc29jL2Zz
+bC9xZTogcWUuYzogcmVkdWNlIHN0YXRpYyBtZW1vcnkgZm9vdHByaW50IGJ5IDEuN0sNCiAgc29j
+L2ZzbC9xZTogcWUuYzogaW50cm9kdWNlIHFlX2dldF9kZXZpY2Vfbm9kZSBoZWxwZXINCiAgZHQt
+YmluZGluZ3M6IHNvYy9mc2w6IHFlOiBkb2N1bWVudCBuZXcgZnNsLHFlLXNudW1zIGJpbmRpbmcN
+CiAgc29jL2ZzbC9xZTogcWUuYzogc3VwcG9ydCBmc2wscWUtc251bXMgcHJvcGVydHkNCiAgc29j
+L2ZzbC9xZTogcWUuYzogZm9sZCBxZV9nZXRfbnVtX29mX3NudW1zIGludG8gcWVfc251bXNfaW5p
+dA0KDQogLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc29jL2ZzbC9jcG1fcWUvcWUudHh0IHwgIDEz
+ICstDQogZHJpdmVycy9zb2MvZnNsL3FlL3FlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgMTYz
+ICsrKysrKystLS0tLS0tLS0tLQ0KIDIgZmlsZXMgY2hhbmdlZCwgNzcgaW5zZXJ0aW9ucygrKSwg
+OTkgZGVsZXRpb25zKC0pDQoNCi0tIA0KMi4yMC4xDQoNCg==
