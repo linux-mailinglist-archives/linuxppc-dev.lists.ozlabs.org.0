@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0120D1B057
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 08:31:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452WDw41hNzDqJH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:31:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 342AC1B05D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 08:34:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 452WHk33bmzDqGg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:34:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="UHoF5c7I"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="G3n0BpR1"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452WCY53c6zDqGS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 16:30:32 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id n19so6633630pfa.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 May 2019 23:30:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452WGT3RVBzDqCk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 16:33:05 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id l132so6622107pfc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 May 2019 23:33:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=vg1t/c52FQpP93ldkK1e//aTIcq+JlBQvJxdZMKHLzk=;
- b=UHoF5c7IQICbKH4TwEPMXlmH+/pO92mJ4PaNH2lB2yWg8OpUUSTQLWfnyDZqadA14D
- taARq4G7FN3jdnUJi62rwMc14KwroF/TDOx7k2STpCziUYsO5B3jK2OdUVRVDAAKHDAA
- QjA4P1GFs7XnaSK/oIzXGoy2kLtp0lL3CROobN13xz98Qb0T4SR+Qsh7GCWFS01cKTAs
- rWNAAf+U86qPh6rEp8sX4dZT9Fkw7l+74J/2UkMtQrzBgv4FTJBs2gh88w+BHK4Nc0mM
- 5bmHm2LKpdETWIq43pGdMjV/EESC/dnfI7vzrG1rKqRPDbAGs2M5lViS+d7XmiNgmKrg
- VidA==
+ bh=Y5tTbtz1ki1Pa5i++2QevC/qpjuZZalm0EawxEtoeKU=;
+ b=G3n0BpR1j3f7I1n7ypMEVjAxP8+3E+ttCci6i4WX1I7MgrinkbhDOBstrdURPDNTPo
+ VDURST1jMDFh8QSICQm+jDnaao761qvnenH6dWiCht3Hx3KIM6h62amzuCKNIpGHOHKf
+ AHIuJfQlfrTGA0fvv1EPHRFmBoxzD7I5ZxDwfGtDdR5FlemX4iNlJ4L3ZTN5BgcXlyUm
+ URzNodydmKjD9gvbgFcaialJxRZXveWjkiceIaRPMraX8hEvXYyySwg1ou37XAOd298x
+ /fzrmCsNMKSPzVlIl4SIe3Itraq4x5WUx2wjWxtzKmXtcnAP+zOuCGkI4Egl408TrJYv
+ grAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=vg1t/c52FQpP93ldkK1e//aTIcq+JlBQvJxdZMKHLzk=;
- b=q+yYdMv0Uo7tlHbKRrmS5Hz2CqBgAfDTFK1wKnfYPzu27bkvqlnN/ljk/dZdKN3UoS
- Oc7BU6RyP7LhCoivjVzpyy41Bs/Mvqzh81tRgIRwhAFV7GvXD/Db2UoI4SC+DEYnLvxj
- XyI0CXwQ7eH7Im3mu9hpFX6ka7CW3fNLb3/wgDS8mMosUB+jbmeYV6dB4Ju3TTVfRz02
- GaW9AHts2aZspGA45/SJTJu9ES/w8jdwPCOlQw9pFWsNyQpbkdOVY9tezrhDF079H2tB
- ACHyPAvXaB16p+gACaJe7Bp4NiNxKeq5A2POEbo7VJikWtaBvgU+jSxo6kCfQyvK8smj
- SzkQ==
-X-Gm-Message-State: APjAAAW+DfLvKIP/BO0o77qx424b+9B8dabTvFgJY80kGq6jwyDqDmyU
- 0y7KH91E+goarhn5fHrDXhpJAg==
-X-Google-Smtp-Source: APXvYqw3HXixDhdI1MYhqb6+nmILLzOnvDskIOJm3THRYgC6x02qnoipyCRvk4o0xXEuAsOMSzmOQg==
-X-Received: by 2002:a63:7982:: with SMTP id
- u124mr28772673pgc.352.1557729029120; 
- Sun, 12 May 2019 23:30:29 -0700 (PDT)
+ bh=Y5tTbtz1ki1Pa5i++2QevC/qpjuZZalm0EawxEtoeKU=;
+ b=h/ptVwrCRu/scp4zcNVWAzl/hk+FLr9594yrP/JD878Xb3K4dJ/YjMO2wSDevuKb+i
+ KJyv4klTO8c4nbEQSB9fZsnno3EE9Pp0pb6RN5tV+nmIdMn5lC1+OrBXa98t0MpVAfCT
+ j030ksFDY46rgslnQMSDtjSGmi4Vq6jshOymTh+COUH/tsBidfQ2+00oMScyHE7Kuix9
+ ie2EMHI5D3rvMoInBPh83sat7ywhhbE72unM0dNiO+sC4lzSYPQwwaLHsZXEDsOd6gnz
+ /rqnh+VIbOrfHLKxXjHTKwziOaxyX8kow3hDSdrwBSKEg0wT+SpFshGM+4X3l0OyxWJ4
+ bTlQ==
+X-Gm-Message-State: APjAAAUlFTKkhxHpgrlXDsgFqf8iwCpKdX01U4RElWPnaitlGXyFym5V
+ XJJ4WcC770UVxw3ZwvzdVP4mnw==
+X-Google-Smtp-Source: APXvYqwhOODZhwZke6lZg2ttCJjs4shzMIjpgq3WbXGGCkVTsFSh7oXtCDOCCu4dYkRHJEfXZCfKFg==
+X-Received: by 2002:a63:d408:: with SMTP id a8mr28758211pgh.184.1557729182628; 
+ Sun, 12 May 2019 23:33:02 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t5sm22659692pgn.80.2019.05.12.23.30.25
+ by smtp.gmail.com with ESMTPSA id s9sm10632057pfa.31.2019.05.12.23.33.00
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 12 May 2019 23:30:28 -0700 (PDT)
-Subject: Re: [PATCH kernel 1/2] powerpc/pseries/dma: Allow swiotlb
+ Sun, 12 May 2019 23:33:02 -0700 (PDT)
+Subject: Re: [PATCH kernel 2/2] powerpc/pseries/dma: Enable swiotlb
 To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 References: <20190507062559.20295-1-aik@ozlabs.ru>
- <20190507062559.20295-2-aik@ozlabs.ru> <871s162az1.fsf@morokweng.localdomain>
+ <20190507062559.20295-3-aik@ozlabs.ru> <87zhnu0w5t.fsf@morokweng.localdomain>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Openpgp: preference=signencrypt
 Autocrypt: addr=aik@ozlabs.ru; keydata=
@@ -141,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <bf9f80d8-0179-5330-531a-a243d5c358d4@ozlabs.ru>
-Date: Mon, 13 May 2019 16:30:24 +1000
+Message-ID: <d0b86fb6-ba73-9be0-a5e5-a02f42c8e148@ozlabs.ru>
+Date: Mon, 13 May 2019 16:32:58 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <871s162az1.fsf@morokweng.localdomain>
+In-Reply-To: <87zhnu0w5t.fsf@morokweng.localdomain>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -169,126 +168,101 @@ Sender: "Linuxppc-dev"
 
 
 
-On 11/05/2019 08:36, Thiago Jung Bauermann wrote:
+On 11/05/2019 08:41, Thiago Jung Bauermann wrote:
+> 
+> Hello Alexey,
+> 
+> Thanks!
+> 
+> I have similar changes in my "Secure Virtual Machine Enablement"
+> patches, which I am currently preparing for posting again real soon now.
+> 
+> This is the last version:
+> 
+> https://lore.kernel.org/linuxppc-dev/20180824162535.22798-1-bauerman@linux.ibm.com/
 > 
 > Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 > 
->> The commit 8617a5c5bc00 ("powerpc/dma: handle iommu bypass in
->> dma_iommu_ops") merged direct DMA ops into the IOMMU DMA ops allowing
->> SWIOTLB as well but only for mapping; the unmapping and bouncing parts
->> were left unmodified.
+>> So far the pseries platforms has always been using IOMMU making SWIOTLB
+>> unnecessary. Now we want secure guests which means devices can only
+>> access certain areas of guest physical memory; we are going to use
+>> SWIOTLB for this purpose.
 >>
->> This adds missing direct unmapping calls to .unmap_page() and .unmap_sg().
+>> This allows SWIOTLB for pseries. By default there is no change in behavior.
 >>
->> This adds missing sync callbacks and directs them to the direct DMA hooks.
+>> This enables SWIOTLB when the "swiotlb" kernel parameter is set to "force".
 >>
->> Fixes: 8617a5c5bc00 (powerpc/dma: handle iommu bypass in dma_iommu_ops)
+>> With the SWIOTLB enabled, the kernel creates a directly mapped DMA window
+>> (using the usual DDW mechanism) and implements SWIOTLB on top of that.
+>>
 >> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> ---
+>>  arch/powerpc/platforms/pseries/setup.c | 5 +++++
+>>  arch/powerpc/platforms/pseries/Kconfig | 1 +
+>>  2 files changed, 6 insertions(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+>> index e4f0dfd4ae33..30d72b587ac5 100644
+>> --- a/arch/powerpc/platforms/pseries/setup.c
+>> +++ b/arch/powerpc/platforms/pseries/setup.c
+>> @@ -42,6 +42,7 @@
+>>  #include <linux/of.h>
+>>  #include <linux/of_pci.h>
+>>  #include <linux/memblock.h>
+>> +#include <linux/swiotlb.h>
+>>
+>>  #include <asm/mmu.h>
+>>  #include <asm/processor.h>
+>> @@ -71,6 +72,7 @@
+>>  #include <asm/isa-bridge.h>
+>>  #include <asm/security_features.h>
+>>  #include <asm/asm-const.h>
+>> +#include <asm/swiotlb.h>
+>>
+>>  #include "pseries.h"
+>>  #include "../../../../drivers/pci/pci.h"
+>> @@ -797,6 +799,9 @@ static void __init pSeries_setup_arch(void)
+>>  	}
+>>
+>>  	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
+>> +
+>> +	if (swiotlb_force == SWIOTLB_FORCE)
+>> +		ppc_swiotlb_enable = 1;
+>>  }
 > 
-> Nice! Thanks for working on this. I have the patch at the end of this
-> email to get virtio-scsi-pci and virtio-blk-pci working in a secure
-> guest.
+> Yep! I have this here, enabled when booting as a secure guest:
+> 
+> https://lore.kernel.org/linuxppc-dev/20180824162535.22798-6-bauerman@linux.ibm.com/
+> 
+> And also another patch which makes it so that if booting as a secure
+> guest it acts as if the swiotlb kernel parameter was set to force:
+> 
+> https://lore.kernel.org/linuxppc-dev/20180824162535.22798-11-bauerman@linux.ibm.com/
+> 
+>>  static void pseries_panic(char *str)
+>> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+>> index 9c6b3d860518..b9e8b608de01 100644
+>> --- a/arch/powerpc/platforms/pseries/Kconfig
+>> +++ b/arch/powerpc/platforms/pseries/Kconfig
+>> @@ -23,6 +23,7 @@ config PPC_PSERIES
+>>  	select ARCH_RANDOM
+>>  	select PPC_DOORBELL
+>>  	select FORCE_SMP
+>> +	select SWIOTLB
+>>  	default y
+>>
+>>  config PPC_SPLPAR
+> 
+> I put this in a PPC_SVM config option:
+> 
+> https://lore.kernel.org/linuxppc-dev/20180824162535.22798-3-bauerman@linux.ibm.com/
 
-I saw the set_pci_dma_ops(NULL) patch but could not figure out how pass
-NULL there sets the DMA ops to direct.
 
-> 
-> I applied your patch and reverted my patch and unfortunately the guest
-> hangs right after mounting the disk:
-
-Have you applied it on upstream kernel? I cannot see how it affects
-current guests as it is...
+Well, my intention is to make it work regardless SVM, just to see if it
+works and where the problems are if it does not (right now the NVIDIA
+driver does not like SWIOTLB, debugging).
 
 
-> 
-> [    0.185659] virtio-pci 0000:00:04.0: enabling device (0100 -> 0102)
-> [    0.187082] virtio-pci 0000:00:04.0: ibm,query-pe-dma-windows(2026) 2000 8000000 20000000 returned 0
-> [    0.187497] virtio-pci 0000:00:04.0: ibm,create-pe-dma-window(2027) 2000 8000000 20000000 10 20 returned 0 (liobn = 0x80000001 startin
-> g addr = 8000000 0)
-> [    0.226654] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-> [    0.227094] Non-volatile memory driver v1.3
-> [    0.228950] brd: module loaded
-> [    0.230666] loop: module loaded
-> [    0.230773] ipr: IBM Power RAID SCSI Device Driver version: 2.6.4 (March 14, 2017)
-> [    0.233323] scsi host0: Virtio SCSI HBA
-> [    0.235439] scsi 0:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
-> [    0.369009] random: fast init done
-> [    0.370819] sd 0:0:0:0: Attached scsi generic sg0 type 0
-> [    0.371320] sd 0:0:0:0: Power-on or device reset occurred
-> 
-> <snip>
-> 
-> [    0.380378] sd 0:0:0:0: [sda] 31457280 512-byte logical blocks: (16.1 GB/15.0 GiB)
-> [    0.381102] sd 0:0:0:0: [sda] Write Protect is off
-> [    0.381195] sd 0:0:0:0: [sda] Mode Sense: 63 00 00 08
-> [    0.382436] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-> [    0.383630] sd 0:0:0:0: [sda] Optimal transfer size 0 bytes < PAGE_SIZE (65536 bytes)
-> [    0.391562]  sda: sda1 sda2
-> [    0.398101] sd 0:0:0:0: [sda] Attached SCSI disk
-> [    0.398205] md: Waiting for all devices to be available before autodetect
-> [    0.398318] md: If you don't use raid, use raid=noautodetect
-> [    0.398515] md: Autodetecting RAID arrays.
-> [    0.398585] md: autorun ...
-> [    0.398631] md: ... autorun DONE.
-> [    0.403552] EXT4-fs (sda2): mounted filesystem with ordered data mode. Opts: (null)
-> [    0.403700] VFS: Mounted root (ext4 filesystem) readonly on device 8:2.
-> [    0.405258] devtmpfs: mounted
-> [    0.406427] Freeing unused kernel memory: 4224K
-> [    0.406519] This architecture does not have kernel memory protection.
-> [    0.406633] Run /sbin/init as init process
-> 
-> Sorry, I don't have any information on where the guest is stuck. I tried
-> <sysrq>+l, <sysrq>+t and <sysrq>+w but nothing out of the ordinary
-> showed up. Will try something else later.
-> 
-> --
-> Thiago Jung Bauermann
-> IBM Linux Technology Center
-> 
-> 
-> 
-> From 70d2fba809119ae2d35c9ca4269405bb5c28413a Mon Sep 17 00:00:00 2001
-> From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Date: Thu, 24 Jan 2019 22:40:16 -0200
-> Subject: [PATCH 1/1] powerpc/pseries/iommu: Don't use dma_iommu_ops on secure
->  guests
-> 
-> Secure guest memory is inacessible to devices so regular DMA isn't
-> possible.
-> 
-> In that case set devices' dma_map_ops to NULL so that the generic
-> DMA code path will use SWIOTLB and DMA to bounce buffers.
-> 
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/iommu.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 36eb1ddbac69..1636306007eb 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -50,6 +50,7 @@
->  #include <asm/udbg.h>
->  #include <asm/mmzone.h>
->  #include <asm/plpar_wrappers.h>
-> +#include <asm/svm.h>
-> 
->  #include "pseries.h"
-> 
-> @@ -1335,7 +1336,10 @@ void iommu_init_early_pSeries(void)
->  	of_reconfig_notifier_register(&iommu_reconfig_nb);
->  	register_memory_notifier(&iommu_mem_nb);
-> 
-> -	set_pci_dma_ops(&dma_iommu_ops);
-> +	if (is_secure_guest())
-> +		set_pci_dma_ops(NULL);
-> +	else
-> +		set_pci_dma_ops(&dma_iommu_ops);
->  }
-> 
->  static int __init disable_multitce(char *str)
-> 
 
 -- 
 Alexey
