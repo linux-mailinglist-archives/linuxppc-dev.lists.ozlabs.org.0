@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0391E1B180
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:51:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452Y0Q4NKfzDqGQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:51:02 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 562151B1CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 10:22:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 452Yh84MKNzDqKM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 18:22:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,25 +18,26 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452Xyx2gjDzDqDS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:49:44 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452Yfx63pnzDqFG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 18:20:57 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id A29043091753;
- Mon, 13 May 2019 07:49:40 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id 5CCBD307D96D;
+ Mon, 13 May 2019 08:20:53 +0000 (UTC)
 Received: from [10.36.117.84] (ovpn-117-84.ams2.redhat.com [10.36.117.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 28AF060856;
- Mon, 13 May 2019 07:49:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 837341001E8B;
+ Mon, 13 May 2019 08:20:44 +0000 (UTC)
 Subject: Re: [PATCH v2 3/8] mm/memory_hotplug: arch_remove_memory() and
  __remove_pages() with CONFIG_MEMORY_HOTPLUG
+From: David Hildenbrand <david@redhat.com>
 To: Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@suse.com>,
  Oscar Salvador <osalvador@suse.com>
 References: <20190507183804.5512-1-david@redhat.com>
  <20190507183804.5512-4-david@redhat.com>
  <CAPcyv4jpnKjeP3QEvF3_9CzdZhtFXN2nMU7P-Ee7y06J3bGZ0A@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
+ <c027a782-1cef-a076-92a3-3ce36140f3f2@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -82,18 +83,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <c027a782-1cef-a076-92a3-3ce36140f3f2@redhat.com>
-Date: Mon, 13 May 2019 09:48:31 +0200
+Message-ID: <fd061541-4433-d7a2-df73-66f39b61d0c9@redhat.com>
+Date: Mon, 13 May 2019 10:20:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jpnKjeP3QEvF3_9CzdZhtFXN2nMU7P-Ee7y06J3bGZ0A@mail.gmail.com>
+In-Reply-To: <c027a782-1cef-a076-92a3-3ce36140f3f2@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.41]); Mon, 13 May 2019 07:49:41 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.48]); Mon, 13 May 2019 08:20:55 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,37 +138,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.05.19 23:02, Dan Williams wrote:
-> On Tue, May 7, 2019 at 11:38 AM David Hildenbrand <david@redhat.com> wrote:
+On 13.05.19 09:48, David Hildenbrand wrote:
+> On 07.05.19 23:02, Dan Williams wrote:
+>> On Tue, May 7, 2019 at 11:38 AM David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>> Let's prepare for better error handling while adding memory by allowing
+>>> to use arch_remove_memory() and __remove_pages() even if
+>>> CONFIG_MEMORY_HOTREMOVE is not set. CONFIG_MEMORY_HOTREMOVE effectively
+>>> covers
+>>> - Offlining of system ram (memory block devices) - offline_pages()
+>>> - Unplug of system ram - remove_memory()
+>>> - Unplug/remap of device memory - devm_memremap()
+>>>
+>>> This allows e.g. for handling like
+>>>
+>>> arch_add_memory()
+>>> rc = do_something();
+>>> if (rc) {
+>>>         arch_remove_memory();
+>>> }
+>>>
+>>> Whereby do_something() will for example be memory block device creation
+>>> after it has been factored out.
 >>
->> Let's prepare for better error handling while adding memory by allowing
->> to use arch_remove_memory() and __remove_pages() even if
->> CONFIG_MEMORY_HOTREMOVE is not set. CONFIG_MEMORY_HOTREMOVE effectively
->> covers
->> - Offlining of system ram (memory block devices) - offline_pages()
->> - Unplug of system ram - remove_memory()
->> - Unplug/remap of device memory - devm_memremap()
+>> What's left after this? Can we just get rid of CONFIG_MEMORY_HOTREMOVE
+>> option completely when CONFIG_MEMORY_HOTPLUG is enabled? It's not
+>> clear to me why there was ever the option to compile out the remove
+>> code when the add code is included.
 >>
->> This allows e.g. for handling like
->>
->> arch_add_memory()
->> rc = do_something();
->> if (rc) {
->>         arch_remove_memory();
->> }
->>
->> Whereby do_something() will for example be memory block device creation
->> after it has been factored out.
 > 
-> What's left after this? Can we just get rid of CONFIG_MEMORY_HOTREMOVE
-> option completely when CONFIG_MEMORY_HOTPLUG is enabled? It's not
-> clear to me why there was ever the option to compile out the remove
-> code when the add code is included.
+> If there are no other comments, I will go ahead and rip out
+> CONFIG_MEMORY_HOTREMOVE completely, gluing the functionality to
+> CONFIG_MEMORY_HOTPLUG.
 > 
 
-If there are no other comments, I will go ahead and rip out
-CONFIG_MEMORY_HOTREMOVE completely, gluing the functionality to
-CONFIG_MEMORY_HOTPLUG.
+Hmmmm, however this will require CONFIG_MEMORY_HOTPLUG to require
+
+- MEMORY_ISOLATION
+- HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
+
+And depends on
+- MIGRATION
+
+Which would limit the configurations where memory hotplug would be
+available. I guess going with this patch here is ok as a first step.
+
+I just realized, that we'll need arch_remove_memory() for arm64 to make
+this patch here work.
 
 -- 
 
