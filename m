@@ -2,69 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE4E1B393
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 12:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9199B1B3AC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 12:08:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452bwk5n4xzDqHH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 20:03:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452c2w5wPkzDqGp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 20:08:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Iw78WSCj"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452bsf24THzDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 20:00:20 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 452bsS0Bwkz9v1jM;
- Mon, 13 May 2019 12:00:12 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Iw78WSCj; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xVhwNUTxPomi; Mon, 13 May 2019 12:00:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 452bsR67Kjz9v1jV;
- Mon, 13 May 2019 12:00:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557741611; bh=pt848MYhMrnfLmquFYiuTx2kZFGt5w9tP2p2+9ZTMM0=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=Iw78WSCj0WS9rFnTnPZ7/I08F2D2+zQBshdaZta0kPpnmmBrjATS/TP/AAqS3jumv
- RV7DUZZmj/4KHJpWH83ewEtHm4djVZiW/Cg0YPfLtfFi6wUcmAEGX3U3LDW26i9NrM
- ixPko349KkviJB/BU7Y/OhF3TV3Lnwc3z/itUZDQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 756CF8B883;
- Mon, 13 May 2019 12:00:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TZycueQ-iAhg; Mon, 13 May 2019 12:00:16 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BFF3A8B8A4;
- Mon, 13 May 2019 12:00:15 +0200 (CEST)
-Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 5C92C67402; Mon, 13 May 2019 10:00:15 +0000 (UTC)
-Message-Id: <134ce533030ae76a60b88e3e73839681c1958f8c.1557741292.git.christophe.leroy@c-s.fr>
-In-Reply-To: <7496da89e027e563cb8e62dc89548525cf53b57e.1557741292.git.christophe.leroy@c-s.fr>
-References: <7496da89e027e563cb8e62dc89548525cf53b57e.1557741292.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH 2/2] powerpc/lib: only build ldstfp.o when CONFIG_PPC_FPU is
- set
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 13 May 2019 10:00:15 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452c1c2zpjzDq9k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 20:07:15 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4DA2AXJ119460
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 06:07:12 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sf64e97fx-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 06:07:12 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Mon, 13 May 2019 11:07:10 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 13 May 2019 11:07:07 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4DA76Kc48758894
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 May 2019 10:07:06 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 666B3A405B;
+ Mon, 13 May 2019 10:07:06 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B01CA4053;
+ Mon, 13 May 2019 10:07:05 +0000 (GMT)
+Received: from [9.124.31.49] (unknown [9.124.31.49])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 13 May 2019 10:07:04 +0000 (GMT)
+Subject: Re: [PATCH 1/2] perf ioctl: Add check for the sample_period value
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20190511024217.4013-1-ravi.bangoria@linux.ibm.com>
+ <20190513074213.GH2623@hirez.programming.kicks-ass.net>
+ <20190513085620.GN2650@hirez.programming.kicks-ass.net>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date: Mon, 13 May 2019 15:37:04 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190513085620.GN2650@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19051310-0012-0000-0000-0000031B1158
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051310-0013-0000-0000-00002153A35B
+Message-Id: <d2d34084-999d-9be2-511e-82625b80aa40@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-13_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905130072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,54 +92,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, acme@kernel.org,
+ jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The entire code in ldstfp.o is enclosed into #ifdef CONFIG_PPC_FPU,
-so there is no point in building it when this config is not selected.
 
-Fixes: cd64d1697cf0 ("powerpc: mtmsrd not defined")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/lib/Makefile | 3 ++-
- arch/powerpc/lib/ldstfp.S | 4 ----
- 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 17fce3738d48..eebc782d89a5 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -49,7 +49,8 @@ obj64-$(CONFIG_KPROBES_SANITY_TEST)	+= test_emulate_step.o \
- obj-y			+= checksum_$(BITS).o checksum_wrappers.o \
- 			   string_$(BITS).o
- 
--obj-y			+= sstep.o ldstfp.o
-+obj-y			+= sstep.o
-+obj-$(CONFIG_PPC_FPU)	+= ldstfp.o
- obj64-y			+= quad.o
- 
- obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
-diff --git a/arch/powerpc/lib/ldstfp.S b/arch/powerpc/lib/ldstfp.S
-index 32e91994b6b2..e388a3127cb6 100644
---- a/arch/powerpc/lib/ldstfp.S
-+++ b/arch/powerpc/lib/ldstfp.S
-@@ -18,8 +18,6 @@
- #include <asm/asm-compat.h>
- #include <linux/errno.h>
- 
--#ifdef CONFIG_PPC_FPU
--
- #define STKFRM	(PPC_MIN_STKFRM + 16)
- 
- /* Get the contents of frN into *p; N is in r3 and p is in r4. */
-@@ -241,5 +239,3 @@ _GLOBAL(conv_dp_to_sp)
- 	MTMSRD(r6)
- 	isync
- 	blr
--
--#endif	/* CONFIG_PPC_FPU */
--- 
-2.13.3
+On 5/13/19 2:26 PM, Peter Zijlstra wrote:
+> On Mon, May 13, 2019 at 09:42:13AM +0200, Peter Zijlstra wrote:
+>> On Sat, May 11, 2019 at 08:12:16AM +0530, Ravi Bangoria wrote:
+>>> Add a check for sample_period value sent from userspace. Negative
+>>> value does not make sense. And in powerpc arch code this could cause
+>>> a recursive PMI leading to a hang (reported when running perf-fuzzer).
+>>>
+>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+>>> ---
+>>>  kernel/events/core.c | 3 +++
+>>>  1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/kernel/events/core.c b/kernel/events/core.c
+>>> index abbd4b3b96c2..e44c90378940 100644
+>>> --- a/kernel/events/core.c
+>>> +++ b/kernel/events/core.c
+>>> @@ -5005,6 +5005,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
+>>>  	if (perf_event_check_period(event, value))
+>>>  		return -EINVAL;
+>>>  
+>>> +	if (!event->attr.freq && (value & (1ULL << 63)))
+>>> +		return -EINVAL;
+>>
+>> Well, perf_event_attr::sample_period is __u64. Would not be the site
+>> using it as signed be the one in error?
+> 
+> You forgot to mention commit: 0819b2e30ccb9, so I guess this just makes
+> it consistent and is fine.
+> 
+
+Yeah, I was about to reply :)
 
