@@ -2,38 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F761AEA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 02:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C8C1AEA7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 03:00:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452MjV5x46zDqK5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 10:52:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452Mtm28JVzDqKh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 11:00:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=git.icu
- (client-ip=163.172.180.134; helo=git.icu; envelope-from=shawn@git.icu;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=git.icu
-Received: from git.icu (git.icu [163.172.180.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=gondor.apana.org.au
+ (client-ip=5.180.42.13; helo=deadmen.hmeau.com;
+ envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gondor.apana.org.au
+Received: from deadmen.hmeau.com (orcrist.hmeau.com [5.180.42.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452MhB4Sq0zDqCY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 10:51:22 +1000 (AEST)
-Received: from localhost.localdomain (minicloud.parqtec.unicamp.br
- [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id 5583D220850;
- Mon, 13 May 2019 00:51:15 +0000 (UTC)
-From: Shawn Landden <shawn@git.icu>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH RESEND] powerpc: add simd.h implementation specific to PowerPC
-Date: Sun, 12 May 2019 21:51:04 -0300
-Message-Id: <20190513005104.20140-1-shawn@git.icu>
-X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a
-In-Reply-To: <20190512165032.19942-1-shawn@git.icu>
-References: <20190512165032.19942-1-shawn@git.icu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452MsX2G8GzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 10:59:28 +1000 (AEST)
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+ by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+ id 1hPzJ7-0002Xv-Cj; Mon, 13 May 2019 08:59:09 +0800
+Received: from herbert by gondobar with local (Exim 4.89)
+ (envelope-from <herbert@gondor.apana.org.au>)
+ id 1hPzIz-0000Cn-Av; Mon, 13 May 2019 08:59:01 +0800
+Date: Mon, 13 May 2019 08:59:01 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Subject: Re: [PATCH] crypto: vmx - fix copy-paste error in CTR mode
+Message-ID: <20190513005901.tsop4lz26vusr6o4@gondor.apana.org.au>
+References: <20190315020901.16509-1-dja@axtens.net>
+ <20190315022414.GA1671@sol.localdomain>
+ <875zsku5mk.fsf@dja-thinkpad.axtens.net>
+ <20190315043433.GC1671@sol.localdomain>
+ <8736nou2x5.fsf@dja-thinkpad.axtens.net>
+ <20190410070234.GA12406@sol.localdomain>
+ <87imvkwqdh.fsf@dja-thinkpad.axtens.net>
+ <2c8b042f-c7df-cb8b-3fcd-15d6bb274d08@linux.vnet.ibm.com>
+ <8736mmvafj.fsf@concordia.ellerman.id.au>
+ <20190506155315.GA661@sol.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190506155315.GA661@sol.localdomain>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,49 +57,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Landden <shawn@git.icu>, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: leo.barbosa@canonical.com, nayna@linux.ibm.com,
+ Stephan Mueller <smueller@chronox.de>, Nayna <nayna@linux.vnet.ibm.com>,
+ omosnacek@gmail.com, marcelo.cerri@canonical.com, pfsmorigo@gmail.com,
+ linux-crypto@vger.kernel.org, leitao@debian.org,
+ George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is safe to do SIMD in an interrupt on PowerPC.
-Only disable when there is no SIMD available
-(and this is a static branch).
+On Mon, May 06, 2019 at 08:53:17AM -0700, Eric Biggers wrote:
+>
+> Any progress on this?  Someone just reported this again here:
+> https://bugzilla.kernel.org/show_bug.cgi?id=203515
 
-Tested and works with the WireGuard (Zinc) patch I wrote that needs this.
-Also improves performance of the crypto subsystem that checks this.
+Guys if I don't get a fix for this soon I'll have to disable CTR
+in vmx.
 
-Re-sending because this linuxppc-dev didn't seem to accept it.
-
-Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=203571
-Signed-off-by: Shawn Landden <shawn@git.icu>
----
- arch/powerpc/include/asm/simd.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
- create mode 100644 arch/powerpc/include/asm/simd.h
-
-diff --git a/arch/powerpc/include/asm/simd.h b/arch/powerpc/include/asm/simd.h
-new file mode 100644
-index 000000000..b3fecb95a
---- /dev/null
-+++ b/arch/powerpc/include/asm/simd.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+
-+#include <asm/cpu_has_feature.h>
-+
-+/*
-+ * may_use_simd - whether it is allowable at this time to issue SIMD
-+ *                instructions or access the SIMD register file
-+ *
-+ * As documented in Chapter 6.2.1 Machine Status Save/Restore Registers
-+ * of Power ISA (2.07 and 3.0), all registers are saved/restored in an interrupt.
-+ */
-+static inline bool may_use_simd(void)
-+{
-+	return !cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE);
-+}
+Cheers,
 -- 
-2.21.0.1020.gf2820cf01a
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
