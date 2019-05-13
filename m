@@ -2,113 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919211B0AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2A41B110
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:18:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452Wvn22d1zDqHj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:01:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452XGY6sLWzDqJq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:18:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=analog.com
- (client-ip=40.107.77.57; helo=nam02-sn1-obe.outbound.protection.outlook.com;
- envelope-from=alexandru.ardelean@analog.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=analog.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=analog.onmicrosoft.com header.i=@analog.onmicrosoft.com
- header.b="gDL7Mqp4"; dkim-atps=neutral
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-eopbgr770057.outbound.protection.outlook.com [40.107.77.57])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452Wt65fsyzDqCh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:00:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector1-analog-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sYMxlTU42U8IEHuaefeXBUDbrbbRBESKyCojAVqw4Hs=;
- b=gDL7Mqp4cjHd9tnfv2Oc1qnpYT4Fac8j07kqzHoMV4t4fblqqvc/VaI9b3eW64VcLXIB/IIy6eJ2zPrMIPgV3ZayvIayU+ziMWE4G1SNhTClihPWWYWJfxAonZzDgMbLjip70cWFf6cVkIyteBkWBVFGb865vhK+yAGxY5lk4K0=
-Received: from BY5PR03CA0029.namprd03.prod.outlook.com (2603:10b6:a03:1e0::39)
- by CY1PR03MB2265.namprd03.prod.outlook.com (2603:10b6:600:1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1878.21; Mon, 13 May
- 2019 07:00:23 +0000
-Received: from CY1NAM02FT063.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::206) by BY5PR03CA0029.outlook.office365.com
- (2603:10b6:a03:1e0::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1878.21 via Frontend
- Transport; Mon, 13 May 2019 07:00:22 +0000
-Authentication-Results: spf=pass (sender IP is 137.71.25.55)
- smtp.mailfrom=analog.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
- header.from=analog.com;
-Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
- 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
- client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
-Received: from nwd2mta1.analog.com (137.71.25.55) by
- CY1NAM02FT063.mail.protection.outlook.com (10.152.75.161) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1856.11
- via Frontend Transport; Mon, 13 May 2019 07:00:20 +0000
-Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com
- [10.64.69.107])
- by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x4D70JiL017961
- (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
- Mon, 13 May 2019 00:00:19 -0700
-Received: from NWD2MBX7.ad.analog.com ([fe80::190e:f9c1:9a22:9663]) by
- NWD2HUBCAS7.ad.analog.com ([fe80::595b:ced1:cc03:539d%12]) with mapi id
- 14.03.0415.000; Mon, 13 May 2019 03:00:19 -0400
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-To: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 03/16] lib,treewide: add new match_string() helper/macro
-Thread-Topic: [PATCH 03/16] lib,treewide: add new match_string() helper/macro
-Thread-Index: AQHVBZFQXT7pBvOEwE+osXNwuBSvQKZhdwMAgAACFgCAAADdAIAC38WAgABZCYCABDgygA==
-Date: Mon, 13 May 2019 07:00:18 +0000
-Message-ID: <146ba7b61998d1e26cf2312fdaa01525d7c7d8de.camel@analog.com>
-References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
- <20190508112842.11654-5-alexandru.ardelean@analog.com>
- <20190508131128.GL9224@smile.fi.intel.com>
- <20190508131856.GB10138@kroah.com>
- <b2440bc9485456a7a90a488c528997587b22088b.camel@analog.com>
- <4df165bc4247e60aa4952fd55cb0c77e60712767.camel@analog.com>
- <20190510143407.GA9224@smile.fi.intel.com>
-In-Reply-To: <20190510143407.GA9224@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.50.1.244]
-x-adiroutedonprem: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FDDE4955D460DC40AB641BB9139D6ABF@analog.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452XFN2V9GzDq9M
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:17:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.b="NVpCqjJ9"; 
+ dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 452XFN0Jrdz9s4V;
+ Mon, 13 May 2019 17:17:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1557731832;
+ bh=XwGL+RmUIv+mqW7gKRbYorTsln5gd3mZF9jujoLOANY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=NVpCqjJ9vdSW9UN/L1Ei0/9bKw32pfQBCfS3MDo/I0mSc7LIE1uOzaOKqEK0PERIP
+ sMKMAEBmBXBydAIIdPrEcsX0u041lxQ9gqaNpRrTCLAAoo1lcg7wIrZjYj+ZPgC0s6
+ QUiu2YzmT2TBIMEKqdnFiTBxB9kjY8bJInkQbPLym07P/xpLwkMOU/WzjQg5M6GrMH
+ dSkE11b+N2I7LA3XuCZS+ZRub84i1aHxUILNwJ24qwQ5oEuptYbIshCSlRUUV1bZfo
+ Rbep2Jpq1tvzyQ7h4l+eTLwohGW5/8CWcZEAQViJVCude6cCACaABaPMVGfuTQXnuH
+ EIGL/uWy4Pz8A==
+Received: by neuling.org (Postfix, from userid 1000)
+ id 00E4A2A0390; Mon, 13 May 2019 17:17:11 +1000 (AEST)
+From: Michael Neuling <mikey@neuling.org>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc: Fix compile issue with force DAWR
+Date: Mon, 13 May 2019 17:17:03 +1000
+Message-Id: <20190513071703.25243-1-mikey@neuling.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:137.71.25.55; IPV:NLI; CTRY:US; EFV:NLI;
- SFV:NSPM;
- SFS:(10009020)(1496009)(396003)(346002)(39860400002)(136003)(376002)(2980300002)(189003)(199004)(51914003)(426003)(446003)(50466002)(436003)(126002)(2616005)(6246003)(2906002)(11346002)(336012)(8936002)(476003)(2351001)(246002)(186003)(356004)(26005)(316002)(86362001)(23676004)(5660300002)(305945005)(7636002)(5640700003)(70206006)(14444005)(4326008)(229853002)(106002)(2501003)(47776003)(2486003)(76176011)(14454004)(118296001)(54906003)(7736002)(3846002)(6916009)(8676002)(486006)(36756003)(6116002)(70586007)(478600001)(7696005)(102836004)(7416002)(142933001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:CY1PR03MB2265; H:nwd2mta1.analog.com; FPR:;
- SPF:Pass; LANG:en; PTR:nwd2mail10.analog.com; MX:1; A:1; 
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 00d843ba-2114-4365-1750-08d6d770ab01
-X-Microsoft-Antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4709054)(2017052603328)(7193020);
- SRVR:CY1PR03MB2265; 
-X-MS-TrafficTypeDiagnostic: CY1PR03MB2265:
-X-Microsoft-Antispam-PRVS: <CY1PR03MB2265347D2D5A29BD38B4EABBF90F0@CY1PR03MB2265.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-Forefront-PRVS: 0036736630
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: pqGW1MWQ3Zq088ZBBnRq58UtaiOWWrFuHBJi7VQpoJbSlJTml7IN0ZB79LgwW/q3coszuClL9TMb8LD8oKaWG7L67xaWLTLo4Dl5yXSxaYpBmG+Xog6/FxwkOZuU2IjOucWlNzpAFux6Mwb2L0fj7gBrNwwieeRaYqhwSdf06t/SMvTJASTiiAUu2AW4N7x6Xc6ahiqNZGT2RZlVmczozENjmdjvtvndvf2Dx+mGlM4/aQJY0WTqVMlcWs8jrF4ba/XFXGMyWvyAyH4V58N9E72j8+HxTQe7Yc0mkFuxWNDA0N0r9OC/7KnwHUj3pg1+Gx6dW22M8zWeA2xQJm1BF3xnZkV9zf9qWppJGAC5RZM2IO73HRpNW7spE2HNsspgIzH/VtLuyUQIVg7MbQ0TJO0gxLjUaCUyPM4+5bVRGLE=
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2019 07:00:20.8904 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00d843ba-2114-4365-1750-08d6d770ab01
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a; Ip=[137.71.25.55];
- Helo=[nwd2mta1.analog.com]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2265
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,70 +54,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gRnJpLCAyMDE5LTA1LTEwIGF0IDE3OjM0ICswMzAwLCBhbmRyaXkuc2hldmNoZW5rb0BsaW51
-eC5pbnRlbC5jb20gd3JvdGU6DQo+IFtFeHRlcm5hbF0NCj4gDQo+IA0KPiBPbiBGcmksIE1heSAx
-MCwgMjAxOSBhdCAwOToxNToyN0FNICswMDAwLCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0K
-PiA+IE9uIFdlZCwgMjAxOS0wNS0wOCBhdCAxNjoyMiArMDMwMCwgQWxleGFuZHJ1IEFyZGVsZWFu
-IHdyb3RlOg0KPiA+ID4gT24gV2VkLCAyMDE5LTA1LTA4IGF0IDE1OjE4ICswMjAwLCBHcmVnIEtI
-IHdyb3RlOg0KPiA+ID4gPiBPbiBXZWQsIE1heSAwOCwgMjAxOSBhdCAwNDoxMToyOFBNICswMzAw
-LCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+ID4gPiA+ID4gT24gV2VkLCBNYXkgMDgsIDIwMTkg
-YXQgMDI6Mjg6MjlQTSArMDMwMCwgQWxleGFuZHJ1IEFyZGVsZWFuDQo+ID4gPiA+ID4gd3JvdGU6
-DQo+ID4gPiA+ID4gQ2FuIHlvdSBzcGxpdCBpbmNsdWRlL2xpbnV4LyBjaGFuZ2UgZnJvbSB0aGUg
-cmVzdD8NCj4gPiA+ID4gDQo+ID4gPiA+IFRoYXQgd291bGQgYnJlYWsgdGhlIGJ1aWxkLCB3aHkg
-ZG8geW91IHdhbnQgaXQgc3BsaXQgb3V0PyAgVGhpcw0KPiA+ID4gPiBtYWtlcw0KPiA+ID4gPiBz
-ZW5zZSBhbGwgYXMgYSBzaW5nbGUgcGF0Y2ggdG8gbWUuDQo+ID4gPiA+IA0KPiA+ID4gDQo+ID4g
-PiBOb3QgcmVhbGx5Lg0KPiA+ID4gSXQgd291bGQgYmUganVzdCBiZSB0aGUgbmV3IG1hdGNoX3N0
-cmluZygpIGhlbHBlci9tYWNybyBpbiBhIG5ldw0KPiA+ID4gY29tbWl0Lg0KPiA+ID4gQW5kIHRo
-ZSBjb252ZXJzaW9ucyBvZiB0aGUgc2ltcGxlIHVzZXJzIG9mIG1hdGNoX3N0cmluZygpICh0aGUg
-b25lcw0KPiA+ID4gdXNpbmcNCj4gPiA+IEFSUkFZX1NJWkUoKSkgaW4gYW5vdGhlciBjb21taXQu
-DQo+ID4gPiANCj4gPiANCj4gPiBJIHNob3VsZCBoYXZlIGFza2VkIGluIG15IHByZXZpb3VzIHJl
-cGx5Lg0KPiA+IExlYXZlIHRoaXMgYXMtaXMgb3IgcmUtZm9ybXVsYXRlIGluIDIgcGF0Y2hlcyA/
-DQo+IA0KPiBEZXBlbmRzIG9uIG9uIHdoYXQgeW91IHdvdWxkIGxpa2UgdG8gc3BlbmQgeW91ciB0
-aW1lOiBjb2xsZWN0aW5nIEFja3MgZm9yDQo+IGFsbA0KPiBwaWVjZXMgaW4gdHJlZXdpZGUgcGF0
-Y2ggb3Igc2VuZCBuZXcgQVBJIGZpcnN0IGZvbGxvd2VkIHVwIGJ5IHBlciBkcml2ZXINCj4gLw0K
-PiBtb2R1bGUgdXBkYXRlIGluIG5leHQgY3ljbGUuDQoNCkkgYWN0dWFsbHkgd291bGQgaGF2ZSBw
-cmVmZXJyZWQgbmV3IEFQSSBmaXJzdCwgd2l0aCB0aGUgY3VycmVudA0KYG1hdGNoX3N0cmluZygp
-YCAtPiBgX19tYXRjaF9zdHJpbmcoKWAgcmVuYW1lIGZyb20gdGhlIHN0YXJ0LCBidXQgSSB3YXNu
-J3QNCnN1cmUuIEkgYW0gc3RpbGwgbmF2aWdhdGluZyB0aHJvdWdoIGhvdyBmZWVkYmFja3MgYXJl
-IHdvcmtpbmcgaW4gdGhpcw0KcmVhbG0uDQoNCkknbGwgc2VuZCBhIFYyIHdpdGggdGhlIEFQSSBj
-aGFuZ2UtZmlyc3Qvb25seTsgc2hvdWxkIGJlIGEgc21hbGxlciBsaXN0Lg0KVGhlbiBzZWUgYWJv
-dXQgZm9sbG93LXVwcy9jaGFuZ2VzIHBlciBzdWJzeXN0ZW1zLg0KDQo+IA0KPiBJIGFsc28gaGF2
-ZSBubyBzdHJvbmcgcHJlZmVyZW5jZS4NCj4gQW5kIEkgdGhpbmsgaXQncyBnb29kIHRvIGFkZCBI
-ZWlra2kgS3JvZ2VydXMgdG8gQ2MgbGlzdCBmb3IgYm90aCBwYXRjaA0KPiBzZXJpZXMsDQo+IHNp
-bmNlIGhlIGlzIHRoZSBhdXRob3Igb2Ygc3lzZnMgdmFyaWFudCBhbmQgbWF5IGhhdmUgc29tZXRo
-aW5nIHRvIGNvbW1lbnQNCj4gb24NCj4gdGhlIHJlc3QuDQoNClRoYW5rcyBmb3IgdGhlIHJlZmVy
-ZW5jZS4NCg0KPiANCj4gLS0NCj4gV2l0aCBCZXN0IFJlZ2FyZHMsDQo+IEFuZHkgU2hldmNoZW5r
-bw0KPiANCj4gDQo=
+If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
+at linking with:
+  arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined reference to `dawr_force_enable'
+
+This was caused by commit c1fe190c0672 ("powerpc: Add force enable of
+DAWR on P9 option").
+
+This puts more of the dawr infrastructure in a new file.
+
+Signed-off-by: Michael Neuling <mikey@neuling.org>
+--
+v2:
+  Fixes based on Christophe Leroy's comments:
+  - Fix commit message formatting
+  - Move more DAWR code into dawr.c
+---
+ arch/powerpc/Kconfig                     |  5 ++
+ arch/powerpc/include/asm/hw_breakpoint.h | 20 ++++---
+ arch/powerpc/kernel/Makefile             |  1 +
+ arch/powerpc/kernel/dawr.c               | 75 ++++++++++++++++++++++++
+ arch/powerpc/kernel/hw_breakpoint.c      | 56 ------------------
+ arch/powerpc/kvm/Kconfig                 |  1 +
+ 6 files changed, 94 insertions(+), 64 deletions(-)
+ create mode 100644 arch/powerpc/kernel/dawr.c
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2711aac246..f4b19e48cc 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -242,6 +242,7 @@ config PPC
+ 	select SYSCTL_EXCEPTION_TRACE
+ 	select THREAD_INFO_IN_TASK
+ 	select VIRT_TO_BUS			if !PPC64
++	select PPC_DAWR_FORCE_ENABLE		if PPC64 || PERF
+ 	#
+ 	# Please keep this list sorted alphabetically.
+ 	#
+@@ -369,6 +370,10 @@ config PPC_ADV_DEBUG_DAC_RANGE
+ 	depends on PPC_ADV_DEBUG_REGS && 44x
+ 	default y
+ 
++config PPC_DAWR_FORCE_ENABLE
++	bool
++	default y
++
+ config ZONE_DMA
+ 	bool
+ 	default y if PPC_BOOK3E_64
+diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
+index 0fe8c1e46b..ffbc8eab41 100644
+--- a/arch/powerpc/include/asm/hw_breakpoint.h
++++ b/arch/powerpc/include/asm/hw_breakpoint.h
+@@ -47,6 +47,8 @@ struct arch_hw_breakpoint {
+ #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
+ 				 HW_BRK_TYPE_HYP)
+ 
++extern int set_dawr(struct arch_hw_breakpoint *brk);
++
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ #include <linux/kdebug.h>
+ #include <asm/reg.h>
+@@ -90,18 +92,20 @@ static inline void hw_breakpoint_disable(void)
+ extern void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs);
+ int hw_breakpoint_handler(struct die_args *args);
+ 
+-extern int set_dawr(struct arch_hw_breakpoint *brk);
+-extern bool dawr_force_enable;
+-static inline bool dawr_enabled(void)
+-{
+-	return dawr_force_enable;
+-}
+-
+ #else	/* CONFIG_HAVE_HW_BREAKPOINT */
+ static inline void hw_breakpoint_disable(void) { }
+ static inline void thread_change_pc(struct task_struct *tsk,
+ 					struct pt_regs *regs) { }
+-static inline bool dawr_enabled(void) { return false; }
++
+ #endif	/* CONFIG_HAVE_HW_BREAKPOINT */
++
++extern bool dawr_force_enable;
++
++#ifdef CONFIG_PPC_DAWR_FORCE_ENABLE
++extern bool dawr_enabled(void);
++#else
++#define dawr_enabled() true
++#endif
++
+ #endif	/* __KERNEL__ */
+ #endif	/* _PPC_BOOK3S_64_HW_BREAKPOINT_H */
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 0ea6c4aa3a..a9c497c34f 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -56,6 +56,7 @@ obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
+ obj-$(CONFIG_VDSO32)		+= vdso32/
+ obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
+ obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
++obj-$(CONFIG_PPC_DAWR_FORCE_ENABLE)	+= dawr.o
+ obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_ppc970.o cpu_setup_pa6t.o
+ obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_power.o
+ obj-$(CONFIG_PPC_BOOK3S_64)	+= mce.o mce_power.o
+diff --git a/arch/powerpc/kernel/dawr.c b/arch/powerpc/kernel/dawr.c
+new file mode 100644
+index 0000000000..cf1d02fe1e
+--- /dev/null
++++ b/arch/powerpc/kernel/dawr.c
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: GPL-2.0+
++//
++// DAWR infrastructure
++//
++// Copyright 2019, Michael Neuling, IBM Corporation.
++
++#include <linux/types.h>
++#include <linux/export.h>
++#include <linux/fs.h>
++#include <linux/debugfs.h>
++#include <asm/debugfs.h>
++#include <asm/machdep.h>
++#include <asm/hvcall.h>
++
++bool dawr_force_enable;
++EXPORT_SYMBOL_GPL(dawr_force_enable);
++
++extern bool dawr_enabled(void)
++{
++	return dawr_force_enable;
++}
++EXPORT_SYMBOL_GPL(dawr_enabled);
++
++static ssize_t dawr_write_file_bool(struct file *file,
++				    const char __user *user_buf,
++				    size_t count, loff_t *ppos)
++{
++	struct arch_hw_breakpoint null_brk = {0, 0, 0};
++	size_t rc;
++
++	/* Send error to user if they hypervisor won't allow us to write DAWR */
++	if ((!dawr_force_enable) &&
++	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
++	    (set_dawr(&null_brk) != H_SUCCESS))
++		return -1;
++
++	rc = debugfs_write_file_bool(file, user_buf, count, ppos);
++	if (rc)
++		return rc;
++
++	/* If we are clearing, make sure all CPUs have the DAWR cleared */
++	if (!dawr_force_enable)
++		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
++
++	return rc;
++}
++
++static const struct file_operations dawr_enable_fops = {
++	.read =		debugfs_read_file_bool,
++	.write =	dawr_write_file_bool,
++	.open =		simple_open,
++	.llseek =	default_llseek,
++};
++
++static int __init dawr_force_setup(void)
++{
++	dawr_force_enable = false;
++
++	if (cpu_has_feature(CPU_FTR_DAWR)) {
++		/* Don't setup sysfs file for user control on P8 */
++		dawr_force_enable = true;
++		return 0;
++	}
++
++	if (PVR_VER(mfspr(SPRN_PVR)) == PVR_POWER9) {
++		/* Turn DAWR off by default, but allow admin to turn it on */
++		dawr_force_enable = false;
++		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
++					   powerpc_debugfs_root,
++					   &dawr_force_enable,
++					   &dawr_enable_fops);
++	}
++	return 0;
++}
++arch_initcall(dawr_force_setup);
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index da307dd93e..95605a9c9a 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -380,59 +380,3 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
+ {
+ 	/* TODO */
+ }
+-
+-bool dawr_force_enable;
+-EXPORT_SYMBOL_GPL(dawr_force_enable);
+-
+-static ssize_t dawr_write_file_bool(struct file *file,
+-				    const char __user *user_buf,
+-				    size_t count, loff_t *ppos)
+-{
+-	struct arch_hw_breakpoint null_brk = {0, 0, 0};
+-	size_t rc;
+-
+-	/* Send error to user if they hypervisor won't allow us to write DAWR */
+-	if ((!dawr_force_enable) &&
+-	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
+-	    (set_dawr(&null_brk) != H_SUCCESS))
+-		return -1;
+-
+-	rc = debugfs_write_file_bool(file, user_buf, count, ppos);
+-	if (rc)
+-		return rc;
+-
+-	/* If we are clearing, make sure all CPUs have the DAWR cleared */
+-	if (!dawr_force_enable)
+-		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
+-
+-	return rc;
+-}
+-
+-static const struct file_operations dawr_enable_fops = {
+-	.read =		debugfs_read_file_bool,
+-	.write =	dawr_write_file_bool,
+-	.open =		simple_open,
+-	.llseek =	default_llseek,
+-};
+-
+-static int __init dawr_force_setup(void)
+-{
+-	dawr_force_enable = false;
+-
+-	if (cpu_has_feature(CPU_FTR_DAWR)) {
+-		/* Don't setup sysfs file for user control on P8 */
+-		dawr_force_enable = true;
+-		return 0;
+-	}
+-
+-	if (PVR_VER(mfspr(SPRN_PVR)) == PVR_POWER9) {
+-		/* Turn DAWR off by default, but allow admin to turn it on */
+-		dawr_force_enable = false;
+-		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
+-					   powerpc_debugfs_root,
+-					   &dawr_force_enable,
+-					   &dawr_enable_fops);
+-	}
+-	return 0;
+-}
+-arch_initcall(dawr_force_setup);
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index bfdde04e49..9c0d315108 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -39,6 +39,7 @@ config KVM_BOOK3S_32_HANDLER
+ config KVM_BOOK3S_64_HANDLER
+ 	bool
+ 	select KVM_BOOK3S_HANDLER
++	select PPC_DAWR_FORCE_ENABLE
+ 
+ config KVM_BOOK3S_PR_POSSIBLE
+ 	bool
+-- 
+2.21.0
+
