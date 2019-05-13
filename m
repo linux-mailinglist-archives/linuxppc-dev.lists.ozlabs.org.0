@@ -2,47 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2A41B110
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E061B150
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 09:41:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452XGY6sLWzDqJq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:18:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452Xnq4q3czDqGb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 17:41:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=google.com
+ (client-ip=2607:f8b0:4864:20::144; helo=mail-it1-x144.google.com;
+ envelope-from=dvyukov@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.b="SZjZHRBa"; 
+ dkim-atps=neutral
+Received: from mail-it1-x144.google.com (mail-it1-x144.google.com
+ [IPv6:2607:f8b0:4864:20::144])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452XFN2V9GzDq9M
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:17:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.b="NVpCqjJ9"; 
- dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 452XFN0Jrdz9s4V;
- Mon, 13 May 2019 17:17:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1557731832;
- bh=XwGL+RmUIv+mqW7gKRbYorTsln5gd3mZF9jujoLOANY=;
- h=From:To:Cc:Subject:Date:From;
- b=NVpCqjJ9vdSW9UN/L1Ei0/9bKw32pfQBCfS3MDo/I0mSc7LIE1uOzaOKqEK0PERIP
- sMKMAEBmBXBydAIIdPrEcsX0u041lxQ9gqaNpRrTCLAAoo1lcg7wIrZjYj+ZPgC0s6
- QUiu2YzmT2TBIMEKqdnFiTBxB9kjY8bJInkQbPLym07P/xpLwkMOU/WzjQg5M6GrMH
- dSkE11b+N2I7LA3XuCZS+ZRub84i1aHxUILNwJ24qwQ5oEuptYbIshCSlRUUV1bZfo
- Rbep2Jpq1tvzyQ7h4l+eTLwohGW5/8CWcZEAQViJVCude6cCACaABaPMVGfuTQXnuH
- EIGL/uWy4Pz8A==
-Received: by neuling.org (Postfix, from userid 1000)
- id 00E4A2A0390; Mon, 13 May 2019 17:17:11 +1000 (AEST)
-From: Michael Neuling <mikey@neuling.org>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc: Fix compile issue with force DAWR
-Date: Mon, 13 May 2019 17:17:03 +1000
-Message-Id: <20190513071703.25243-1-mikey@neuling.org>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452Xln4jYDzDqDy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 17:39:59 +1000 (AEST)
+Received: by mail-it1-x144.google.com with SMTP id q65so18747585itg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 00:39:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OCBAgYZcl/Mx9I9kBUc9k0z+VS+2s/+/8BKjMe5L/4M=;
+ b=SZjZHRBaI2LN21jyRT5EZkLIQdXHRrkgReZnW+swFod0bdKDie3+g+WGtklY0kC311
+ D1KKaZ2x7uQDR0V2qnPwQzvKPDzqAA94Zpm8YHT/sOwgUG6HPRnEqu85XA+O1k0sypE5
+ bbop+wUKsZ4yMehyLmsJ9459MhRGj3LYgqRz4uO/ypZ8wYUyM8rWxxtLJhVeYmIoNPzJ
+ P0BGjN9KPs18zjGreU5S/Jg8qeugpnE19O6Fjj/RYomOU65m0ow3YaAVxRMZqaRgh++4
+ kfjbw31MpcBw/JJVWa6iRCoFOI7x3lquY0Qvqmfqv/Cd/3KZ+WPUFvwRRIVAPicbMYQz
+ mSPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OCBAgYZcl/Mx9I9kBUc9k0z+VS+2s/+/8BKjMe5L/4M=;
+ b=QB355s5eRw1qJzFFgZYsjUkTolLQ1SXLfRjcTf77fQvPT0CjNcNvfLwIrchDyk5Ny8
+ UFamrJy+xOSP+Glm8Ex+WeIXvvWO7lbjXILLJ97L+LDBAfY9m1J7hSO3WJeSbNqqrCgy
+ RDfHbAAnlfnosvW5UQBsGzeihzW0uSbjOA3wNiCXLG9VSwou2+RVjSmJ2Y+Mv9gz2taG
+ NKLNjSWxkUvLsR32YnT7BI9c+JnZX4aZ3a8NhDq7tjf8/TkQt2Mi+yV79CdVof2l5RtL
+ MQSdhqtaT/tyInMHyBXNk9vEtEvfD5th4HRjgkpDRE1Pznm3tiOwLv5rrTnbJpnP6mRC
+ pFvQ==
+X-Gm-Message-State: APjAAAWjqnSTNtCCNEARQsxN3snOMuYGLvlvF2pK9NW+tdT5oSeV9D1y
+ Q8mK1UykBcJ69aUJRAVSpWapU3rAoIy5eL9viStr1A==
+X-Google-Smtp-Source: APXvYqx3ThZE+Yj0kNbVwe1j3uegPjtZ90tj9AYcwjCq3pZNd6Fh+sqbqj1PKRwpmit1sNvknwuQU89gTtGOhYZrWFU=
+X-Received: by 2002:a05:660c:10f:: with SMTP id
+ w15mr11634340itj.166.1557733196690; 
+ Mon, 13 May 2019 00:39:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190412143538.11780-1-hch@lst.de>
+ <CAK8P3a2bg9YkbNpAb9uZkXLFZ3juCmmbF7cRw+Dm9ZiLFno2OQ@mail.gmail.com>
+ <fd59e6e22594f740eaf86abad76ee04d@mailhost.ics.forth.gr>
+ <CACT4Y+aKGKm9Wbc1owBr51adkbesHP_Z81pBAoZ5HmJ+uZdsaw@mail.gmail.com>
+ <CAK8P3a3xRBZrgv16sSigJhY0vGmb=qF9o=6dC_5DqAJtW3qPGQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a3xRBZrgv16sSigJhY0vGmb=qF9o=6dC_5DqAJtW3qPGQ@mail.gmail.com>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Mon, 13 May 2019 09:39:45 +0200
+Message-ID: <CACT4Y+ad5z6z0Dweh5hGwYcUUebPEtqsznmX9enPvYB20J16aA@mail.gmail.com>
+Subject: Re: [PATCH, RFC] byteorder: sanity check toolchain vs kernel endianess
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,270 +77,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nick Kossifidis <mick@ics.forth.gr>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
-at linking with:
-  arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined reference to `dawr_force_enable'
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Sat, May 11, 2019 at 2:51 AM
+To: Dmitry Vyukov
+Cc: Nick Kossifidis, Christoph Hellwig, Linus Torvalds, Andrew Morton,
+linux-arch, Linux Kernel Mailing List, linuxppc-dev
 
-This was caused by commit c1fe190c0672 ("powerpc: Add force enable of
-DAWR on P9 option").
+> On Fri, May 10, 2019 at 6:53 AM Dmitry Vyukov <dvyukov@google.com> wrote:
+> > >
+> > > I think it's good to have a sanity check in-place for consistency.
+> >
+> >
+> > Hi,
+> >
+> > This broke our cross-builds from x86. I am using:
+> >
+> > $ powerpc64le-linux-gnu-gcc --version
+> > powerpc64le-linux-gnu-gcc (Debian 7.2.0-7) 7.2.0
+> >
+> > and it says that it's little-endian somehow:
+> >
+> > $ powerpc64le-linux-gnu-gcc -dM -E - < /dev/null | grep BYTE_ORDER
+> > #define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
+> >
+> > Is it broke compiler? Or I always hold it wrong? Is there some
+> > additional flag I need to add?
+>
+> It looks like a bug in the kernel Makefiles to me. powerpc32 is always
+> big-endian,
+> powerpc64 used to be big-endian but is now usually little-endian. There are
+> often three separate toolchains that default to the respective user
+> space targets
+> (ppc32be, ppc64be, ppc64le), but generally you should be able to build
+> any of the
+> three kernel configurations with any of those compilers, and have the Makefile
+> pass the correct -m32/-m64/-mbig-endian/-mlittle-endian command line options
+> depending on the kernel configuration. It seems that this is not happening
+> here. I have not checked why, but if this is the problem, it should be
+> easy enough
+> to figure out.
 
-This puts more of the dawr infrastructure in a new file.
 
-Signed-off-by: Michael Neuling <mikey@neuling.org>
---
-v2:
-  Fixes based on Christophe Leroy's comments:
-  - Fix commit message formatting
-  - Move more DAWR code into dawr.c
----
- arch/powerpc/Kconfig                     |  5 ++
- arch/powerpc/include/asm/hw_breakpoint.h | 20 ++++---
- arch/powerpc/kernel/Makefile             |  1 +
- arch/powerpc/kernel/dawr.c               | 75 ++++++++++++++++++++++++
- arch/powerpc/kernel/hw_breakpoint.c      | 56 ------------------
- arch/powerpc/kvm/Kconfig                 |  1 +
- 6 files changed, 94 insertions(+), 64 deletions(-)
- create mode 100644 arch/powerpc/kernel/dawr.c
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 2711aac246..f4b19e48cc 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -242,6 +242,7 @@ config PPC
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select VIRT_TO_BUS			if !PPC64
-+	select PPC_DAWR_FORCE_ENABLE		if PPC64 || PERF
- 	#
- 	# Please keep this list sorted alphabetically.
- 	#
-@@ -369,6 +370,10 @@ config PPC_ADV_DEBUG_DAC_RANGE
- 	depends on PPC_ADV_DEBUG_REGS && 44x
- 	default y
- 
-+config PPC_DAWR_FORCE_ENABLE
-+	bool
-+	default y
-+
- config ZONE_DMA
- 	bool
- 	default y if PPC_BOOK3E_64
-diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index 0fe8c1e46b..ffbc8eab41 100644
---- a/arch/powerpc/include/asm/hw_breakpoint.h
-+++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -47,6 +47,8 @@ struct arch_hw_breakpoint {
- #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
- 				 HW_BRK_TYPE_HYP)
- 
-+extern int set_dawr(struct arch_hw_breakpoint *brk);
-+
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- #include <linux/kdebug.h>
- #include <asm/reg.h>
-@@ -90,18 +92,20 @@ static inline void hw_breakpoint_disable(void)
- extern void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs);
- int hw_breakpoint_handler(struct die_args *args);
- 
--extern int set_dawr(struct arch_hw_breakpoint *brk);
--extern bool dawr_force_enable;
--static inline bool dawr_enabled(void)
--{
--	return dawr_force_enable;
--}
--
- #else	/* CONFIG_HAVE_HW_BREAKPOINT */
- static inline void hw_breakpoint_disable(void) { }
- static inline void thread_change_pc(struct task_struct *tsk,
- 					struct pt_regs *regs) { }
--static inline bool dawr_enabled(void) { return false; }
-+
- #endif	/* CONFIG_HAVE_HW_BREAKPOINT */
-+
-+extern bool dawr_force_enable;
-+
-+#ifdef CONFIG_PPC_DAWR_FORCE_ENABLE
-+extern bool dawr_enabled(void);
-+#else
-+#define dawr_enabled() true
-+#endif
-+
- #endif	/* __KERNEL__ */
- #endif	/* _PPC_BOOK3S_64_HW_BREAKPOINT_H */
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 0ea6c4aa3a..a9c497c34f 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -56,6 +56,7 @@ obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
- obj-$(CONFIG_VDSO32)		+= vdso32/
- obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
- obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
-+obj-$(CONFIG_PPC_DAWR_FORCE_ENABLE)	+= dawr.o
- obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_ppc970.o cpu_setup_pa6t.o
- obj-$(CONFIG_PPC_BOOK3S_64)	+= cpu_setup_power.o
- obj-$(CONFIG_PPC_BOOK3S_64)	+= mce.o mce_power.o
-diff --git a/arch/powerpc/kernel/dawr.c b/arch/powerpc/kernel/dawr.c
-new file mode 100644
-index 0000000000..cf1d02fe1e
---- /dev/null
-+++ b/arch/powerpc/kernel/dawr.c
-@@ -0,0 +1,75 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+//
-+// DAWR infrastructure
-+//
-+// Copyright 2019, Michael Neuling, IBM Corporation.
-+
-+#include <linux/types.h>
-+#include <linux/export.h>
-+#include <linux/fs.h>
-+#include <linux/debugfs.h>
-+#include <asm/debugfs.h>
-+#include <asm/machdep.h>
-+#include <asm/hvcall.h>
-+
-+bool dawr_force_enable;
-+EXPORT_SYMBOL_GPL(dawr_force_enable);
-+
-+extern bool dawr_enabled(void)
-+{
-+	return dawr_force_enable;
-+}
-+EXPORT_SYMBOL_GPL(dawr_enabled);
-+
-+static ssize_t dawr_write_file_bool(struct file *file,
-+				    const char __user *user_buf,
-+				    size_t count, loff_t *ppos)
-+{
-+	struct arch_hw_breakpoint null_brk = {0, 0, 0};
-+	size_t rc;
-+
-+	/* Send error to user if they hypervisor won't allow us to write DAWR */
-+	if ((!dawr_force_enable) &&
-+	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
-+	    (set_dawr(&null_brk) != H_SUCCESS))
-+		return -1;
-+
-+	rc = debugfs_write_file_bool(file, user_buf, count, ppos);
-+	if (rc)
-+		return rc;
-+
-+	/* If we are clearing, make sure all CPUs have the DAWR cleared */
-+	if (!dawr_force_enable)
-+		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-+
-+	return rc;
-+}
-+
-+static const struct file_operations dawr_enable_fops = {
-+	.read =		debugfs_read_file_bool,
-+	.write =	dawr_write_file_bool,
-+	.open =		simple_open,
-+	.llseek =	default_llseek,
-+};
-+
-+static int __init dawr_force_setup(void)
-+{
-+	dawr_force_enable = false;
-+
-+	if (cpu_has_feature(CPU_FTR_DAWR)) {
-+		/* Don't setup sysfs file for user control on P8 */
-+		dawr_force_enable = true;
-+		return 0;
-+	}
-+
-+	if (PVR_VER(mfspr(SPRN_PVR)) == PVR_POWER9) {
-+		/* Turn DAWR off by default, but allow admin to turn it on */
-+		dawr_force_enable = false;
-+		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
-+					   powerpc_debugfs_root,
-+					   &dawr_force_enable,
-+					   &dawr_enable_fops);
-+	}
-+	return 0;
-+}
-+arch_initcall(dawr_force_setup);
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index da307dd93e..95605a9c9a 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -380,59 +380,3 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
- {
- 	/* TODO */
- }
--
--bool dawr_force_enable;
--EXPORT_SYMBOL_GPL(dawr_force_enable);
--
--static ssize_t dawr_write_file_bool(struct file *file,
--				    const char __user *user_buf,
--				    size_t count, loff_t *ppos)
--{
--	struct arch_hw_breakpoint null_brk = {0, 0, 0};
--	size_t rc;
--
--	/* Send error to user if they hypervisor won't allow us to write DAWR */
--	if ((!dawr_force_enable) &&
--	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
--	    (set_dawr(&null_brk) != H_SUCCESS))
--		return -1;
--
--	rc = debugfs_write_file_bool(file, user_buf, count, ppos);
--	if (rc)
--		return rc;
--
--	/* If we are clearing, make sure all CPUs have the DAWR cleared */
--	if (!dawr_force_enable)
--		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
--
--	return rc;
--}
--
--static const struct file_operations dawr_enable_fops = {
--	.read =		debugfs_read_file_bool,
--	.write =	dawr_write_file_bool,
--	.open =		simple_open,
--	.llseek =	default_llseek,
--};
--
--static int __init dawr_force_setup(void)
--{
--	dawr_force_enable = false;
--
--	if (cpu_has_feature(CPU_FTR_DAWR)) {
--		/* Don't setup sysfs file for user control on P8 */
--		dawr_force_enable = true;
--		return 0;
--	}
--
--	if (PVR_VER(mfspr(SPRN_PVR)) == PVR_POWER9) {
--		/* Turn DAWR off by default, but allow admin to turn it on */
--		dawr_force_enable = false;
--		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
--					   powerpc_debugfs_root,
--					   &dawr_force_enable,
--					   &dawr_enable_fops);
--	}
--	return 0;
--}
--arch_initcall(dawr_force_setup);
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index bfdde04e49..9c0d315108 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -39,6 +39,7 @@ config KVM_BOOK3S_32_HANDLER
- config KVM_BOOK3S_64_HANDLER
- 	bool
- 	select KVM_BOOK3S_HANDLER
-+	select PPC_DAWR_FORCE_ENABLE
- 
- config KVM_BOOK3S_PR_POSSIBLE
- 	bool
--- 
-2.21.0
-
+Thanks! This clears a lot.
+This may be a bug in our magic as we try to build kernel files outside
+of make with own flags (required to extract parts of kernel
+interfaces).
+So don't spend time looking for the Makefile bugs yet.
