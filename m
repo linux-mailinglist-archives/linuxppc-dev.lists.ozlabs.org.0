@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C0D1B791
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 15:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29C21B7B6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:04:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452j8S03YvzDq75
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 23:58:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452jHf5MLYzDq75
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 00:04:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.82; helo=conssluserg-03.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="A2NezLU4"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Z82dLbY2"; 
  dkim-atps=neutral
-Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
- [210.131.2.82])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452j630Pp6zDqGk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 23:56:26 +1000 (AEST)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com
- [209.85.217.47]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id x4DDtr5N017776
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 22:55:54 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x4DDtr5N017776
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1557755754;
- bh=GKa0/XhA2V5agnSr1M250vRxQ9JoLrHwFQTBlihVHZw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=A2NezLU4rB7LoX8IMRZd2m4BP0V8uI1kRfoMdC14R5xIeo5PitG+FrU3NdRQpOew4
- 9RqK5eITEAmv+/ekZOiGVA0u+P6qg981h6T0XX2IE8gouF/9FwkHPmGINxhW9RRi59
- 8igcdRh/1CeXnNQnvTZQ4/QaowmQnDTh53o/AWkwePAnoB2U+ffQsC5O9+pvTkc4M7
- x0ztU8EE9u1u2/cfVZUSUgtYAbI1uFcglHX1ulypEwr+I19g0eaVb6iSEzqvyEwZ+g
- yD9veq4FAbafhgsFs1ViB7ZA2PmtdubjqjrVg+H1AD4aC0a8cLyYrcbE6IUjhrq/ox
- 5vxIOpiqNB1Ow==
-X-Nifty-SrcIP: [209.85.217.47]
-Received: by mail-vs1-f47.google.com with SMTP id o5so1764338vsq.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 06:55:54 -0700 (PDT)
-X-Gm-Message-State: APjAAAW+bEhaAXebDBYvvJDOT9aGe8fe3et1IwEeN/2h5ew4qq0y8Ymy
- fI/kZqTwKeYGcea9OubhYCU5N59NsChlTzf5B3Q=
-X-Google-Smtp-Source: APXvYqxIyOecTEYmuZ9dJbhMFII02Kz7kZc+p8l16ixv3t6b/99y+iYBwzuOVT/a/uU4pr8i+3oANjnFqABcTGA/Q6Y=
-X-Received: by 2002:a67:f443:: with SMTP id r3mr13613203vsn.179.1557755753123; 
- Mon, 13 May 2019 06:55:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452jFQ2tnyzDq5y
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 00:02:48 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id s20so10079265ioj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 07:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=2ovg954GffPAR7AevZQCuZIs5rIdETHY6khs2qmdJws=;
+ b=Z82dLbY2oMqKccM8VxLLjFQWefFZRUYoG3r0b4fvIp7LTFzuYQvcH6PSpEWJh7dddu
+ 3WYBZZDTrdmcwCjeoUmefQv9xYzmoMHMliWP/pT7SQ4KCeGTu7i5yLw6MGXecZ26xB7p
+ D3RJWPf7W87xJTAvT5Ny4vWw2JZ+gsTev9SVtec8UyB1fOdZRgGbimLpQTshTUmDJQY7
+ inrrRfcJe53BJW+mX7+o610LQM/3C8tLjsDDKa4Xr1yPWRxfohlj7Ukyp4xhmthHCE4S
+ sUyUq6XgJUtJIEgVJz50gsAGq6ww2Uk+8SfUggZFrykLYtM59gOKvFCt8Ki+rRn4G02x
+ 4Axg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=2ovg954GffPAR7AevZQCuZIs5rIdETHY6khs2qmdJws=;
+ b=tUf4jCLmzAPXJtUo1x2FSUhE1ilGmewCBMF5jReXc0+BupPm3fZ4wREA0QrPoZHPLd
+ l/NM9yGVKr+lHMS7+h9+WTYCi8L9bXWsiwaA2rbKcYftFOD+p1/jZaqa8hSuHEDbbM60
+ XGSrq9tcdNFH4AMR/cVtsXm/PqKuoxMOwwCkI11vKY55knJ6ZCc/xTRbM29B7giBEvOs
+ r+orgOSNwlBCvR8Q+vbVrNQ3Se17ryVCvOioPkgmMOynT8luLv9wzy8uHti0XH3M3E8U
+ qDpiqFiDE4cxwEK4H1M9yMyEMy3+QdXIEquGXs7QVrj3zLdaYQGOrdwxcQv8R55YiA7w
+ 3ABg==
+X-Gm-Message-State: APjAAAV1tLI/cT4IkOElxt+GLbXLeBidyX81CQnpoRZ9scQ0Nh4se/JP
+ fymqmku21Zg6lz3mVWn0PZqiSOAiq/e0HJJU1+k=
+X-Google-Smtp-Source: APXvYqyy6+utGEslOpzbdOEZZWo54czwOEFZnWtiqBBYY1yFGuNo1Lecw7hR2zwYnBYktpFxWDR0147370ewWOixJZg=
+X-Received: by 2002:a6b:ce0e:: with SMTP id p14mr1251571iob.279.1557756165089; 
+ Mon, 13 May 2019 07:02:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190513112254.22534-1-yamada.masahiro@socionext.com>
 In-Reply-To: <20190513112254.22534-1-yamada.masahiro@socionext.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Mon, 13 May 2019 22:55:17 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQjukukcfz9-SyFhqZOZ1v18CJDVA8Zmn5RL92Q=73ZxA@mail.gmail.com>
-Message-ID: <CAK7LNAQjukukcfz9-SyFhqZOZ1v18CJDVA8Zmn5RL92Q=73ZxA@mail.gmail.com>
+From: Oliver <oohall@gmail.com>
+Date: Tue, 14 May 2019 00:02:34 +1000
+Message-ID: <CAOSf1CFqiKK-=aRU0kYPajY8rmjrFVdMi+AA692rXwLrC7S2Lg@mail.gmail.com>
 Subject: Re: [PATCH] powerpc/boot: fix broken way to pass CONFIG options
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Michael Ellerman <mpe@ellerman.id.au>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,13 +76,13 @@ Cc: Rob Herring <robh@kernel.org>,
  "Rodrigo R. Galvao" <rosattig@linux.vnet.ibm.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Nicholas Piggin <npiggin@gmail.com>, Mark Greer <mgreer@animalcreek.com>,
- Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>,
- Paul Mackerras <paulus@samba.org>
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 13, 2019 at 9:33 PM Masahiro Yamada
+On Mon, May 13, 2019 at 9:23 PM Masahiro Yamada
 <yamada.masahiro@socionext.com> wrote:
 >
 > Commit 5e9dcb6188a4 ("powerpc/boot: Expose Kconfig symbols to wrapper")
@@ -115,23 +118,108 @@ On Mon, May 13, 2019 at 9:33 PM Masahiro Yamada
 > options. So, CONFIG_PPC_8xx is never defined here.
 >
 > Just pass $(LINUXINCLUDE) and remove all broken code.
->
+
+I'm not sure how safe this is. The original reason for the
+CONFIG_KERNEL_XZ hack in the makefile was because the kernel headers
+couldn't be included directly. The bootwrapper is compiled with a
+32bit toolchain when the kernel is compiled for 64bit big endian
+because of older systems with broken firmware that can't load 64bit
+ELFs directly. When I added XZ support to the wrapper I did experiment
+with including the kernel headers directly and couldn't make it work
+reliably. I don't remember what the exact reason was, but I think it
+was something to do with the generated headers not always matching
+what you would expect when compiling for 32bit. It's also possible I
+was just being paranoid. Either way it's about time we found a real
+fix...
+
+The stuff in serial.c and ppc_asm.h was added later to work around
+other issues without anyone thinking too hard about it. Oh well.
+
 > I also removed the -traditional flag to make include/linux/kconfig.h
 > work. I do not understand why it needs to imitate the behavior of
 > pre-standard C preprocessors.
->
+
+I'm not sure why it's there either. The boot wrapper was re-written at
+some point so it might just be a hold over from the dawn of time.
+
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
-
-
-I re-read my commit log, and I thought it was needlessly
-too offensive. Sorry about that.
-
-I will reword the commit log and send v2.
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+>
+>  arch/powerpc/boot/.gitignore |  2 --
+>  arch/powerpc/boot/Makefile   | 14 +++-----------
+>  arch/powerpc/boot/serial.c   |  1 -
+>  3 files changed, 3 insertions(+), 14 deletions(-)
+>
+> diff --git a/arch/powerpc/boot/.gitignore b/arch/powerpc/boot/.gitignore
+> index 32034a0cc554..6610665fcf5e 100644
+> --- a/arch/powerpc/boot/.gitignore
+> +++ b/arch/powerpc/boot/.gitignore
+> @@ -44,5 +44,3 @@ fdt_sw.c
+>  fdt_wip.c
+>  libfdt.h
+>  libfdt_internal.h
+> -autoconf.h
+> -
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index 73d1f3562978..b8a82be2af2a 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -20,9 +20,6 @@
+>
+>  all: $(obj)/zImage
+>
+> -compress-$(CONFIG_KERNEL_GZIP) := CONFIG_KERNEL_GZIP
+> -compress-$(CONFIG_KERNEL_XZ)   := CONFIG_KERNEL_XZ
+> -
+>  ifdef CROSS32_COMPILE
+>      BOOTCC := $(CROSS32_COMPILE)gcc
+>      BOOTAR := $(CROSS32_COMPILE)ar
+> @@ -34,7 +31,7 @@ endif
+>  BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>                  -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
+>                  -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+> -                -D$(compress-y)
+> +                $(LINUXINCLUDE)
+>
+>  ifdef CONFIG_PPC64_BOOT_WRAPPER
+>  BOOTCFLAGS     += -m64
+> @@ -51,7 +48,7 @@ BOOTCFLAGS    += -mlittle-endian
+>  BOOTCFLAGS     += $(call cc-option,-mabi=elfv2)
+>  endif
+>
+> -BOOTAFLAGS     := -D__ASSEMBLY__ $(BOOTCFLAGS) -traditional -nostdinc
+> +BOOTAFLAGS     := -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+>
+>  BOOTARFLAGS    := -cr$(KBUILD_ARFLAGS)
+>
+> @@ -202,14 +199,9 @@ $(obj)/empty.c:
+>  $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds : $(obj)/%: $(srctree)/$(src)/%.S
+>         $(Q)cp $< $@
+>
+> -$(srctree)/$(src)/serial.c: $(obj)/autoconf.h
+> -
+> -$(obj)/autoconf.h: $(obj)/%: $(objtree)/include/generated/%
+> -       $(Q)cp $< $@
+> -
+>  clean-files := $(zlib-) $(zlibheader-) $(zliblinuxheader-) \
+>                 $(zlib-decomp-) $(libfdt) $(libfdtheader) \
+> -               autoconf.h empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
+> +               empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
+>
+>  quiet_cmd_bootcc = BOOTCC  $@
+>        cmd_bootcc = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCFLAGS) -c -o $@ $<
+> diff --git a/arch/powerpc/boot/serial.c b/arch/powerpc/boot/serial.c
+> index b0491b8c0199..9457863147f9 100644
+> --- a/arch/powerpc/boot/serial.c
+> +++ b/arch/powerpc/boot/serial.c
+> @@ -18,7 +18,6 @@
+>  #include "stdio.h"
+>  #include "io.h"
+>  #include "ops.h"
+> -#include "autoconf.h"
+>
+>  static int serial_open(void)
+>  {
+> --
+> 2.17.1
+>
