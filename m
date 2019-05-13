@@ -2,51 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637521B7FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E231B949
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 16:57:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452jcj6Q27zDqCp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 00:19:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452kS617vWzDqGF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 00:57:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.74; helo=conuserg-07.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
-Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="signature verification failed" (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="nmqWqKhG"; 
- dkim-atps=neutral
-Received: from conuserg-07.nifty.com (conuserg-07.nifty.com [210.131.2.74])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452jZC0QgzzDqD5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 00:17:22 +1000 (AEST)
-Received: from grover.flets-west.jp (softbank126125154139.bbtec.net
- [126.125.154.139]) (authenticated)
- by conuserg-07.nifty.com with ESMTP id x4DEGES6010361;
- Mon, 13 May 2019 23:16:14 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com x4DEGES6010361
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1557756976;
- bh=LMxxB6MsBZaCFjzGTXXA7vL2DRXZdMqpHQh+wQuX3DM=;
- h=From:To:Cc:Subject:Date:From;
- b=nmqWqKhG79rSVySlhkKLOV7QIXKyDOrbUESlr7MR9J6izTh/F4CMiztHeDXHUvBCu
- HC6OELamJErau14b3nv1kPJ946RTudKO6Tp2Frh14l89jvDvTdxRmMtOpUFoQUa8zj
- s/l97vNwRB5nodJEFFO1bgsSL8GyPE0ZEXbT6ycaeqXf1caa1weoFzlXO1vqdPK/Nb
- exKXywaLF8yx8Y4T328qztaUo2Pb1bHdvThjqiyU41VkmhcTT9jRBwaBRwifyWWFrM
- zZx0OZbZ5Y72BBnP8jg62mP8YkI5TNLDkXn2KK0npzAoyti9sOn1hGb0fBXRHme5Yy
- RwK9fxhzjzR0w==
-X-Nifty-SrcIP: [126.125.154.139]
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/boot: pass CONFIG options in a simpler and more
- robust way
-Date: Mon, 13 May 2019 23:16:04 +0900
-Message-Id: <1557756964-13087-1-git-send-email-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.7.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452kQQ0VBZzDqG0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 00:55:41 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4DEfA3o111283; Mon, 13 May 2019 10:55:35 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sf8k4xcsu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 May 2019 10:55:34 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x4D8ltuM005166;
+ Mon, 13 May 2019 08:59:53 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01dal.us.ibm.com with ESMTP id 2sdp14eyrj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 May 2019 08:59:53 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4DEtVLh9765128
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 May 2019 14:55:31 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6674D7805C;
+ Mon, 13 May 2019 14:55:31 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4AB927805F;
+ Mon, 13 May 2019 14:55:31 +0000 (GMT)
+Received: from localhost (unknown [9.41.179.184])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 13 May 2019 14:55:31 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/8] powerpc/pseries: Use macros for referring to the DTL
+ enable mask
+In-Reply-To: <e0600b1eb8e4c03f9c68db9afdf88b026c37b389.1557502887.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1557502887.git.naveen.n.rao@linux.vnet.ibm.com>
+ <e0600b1eb8e4c03f9c68db9afdf88b026c37b389.1557502887.git.naveen.n.rao@linux.vnet.ibm.com>
+Date: Mon, 13 May 2019 09:55:30 -0500
+Message-ID: <87a7fql7z1.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-13_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=434 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905130103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,127 +84,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mark Greer <mgreer@animalcreek.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>,
- Paul Mackerras <paulus@samba.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mingming Cao <mingming.cao@ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 5e9dcb6188a4 ("powerpc/boot: Expose Kconfig symbols to wrapper")
-was wrong, but commit e41b93a6be57 ("powerpc/boot: Fix build failures
-with -j 1") was also wrong.
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Introduce macros to encode the DTL enable mask fields and use those
+> instead of hardcoding numbers.
 
-The correct dependency is:
+This is a good cleanup on its own.
 
-  $(obj)/serial.o: $(obj)/autoconf.h
-
-However, I do not see the reason why we need to copy autoconf.h to
-arch/power/boot/. Nor do I see consistency in the way of passing
-CONFIG options.
-
-decompress.c references CONFIG_KERNEL_GZIP and CONFIG_KERNEL_XZ, which
-are passed via the command line.
-
-serial.c includes autoconf.h to reference a couple of CONFIG options,
-but this is fragile because we often forget to include "autoconf.h"
-from source files.
-
-In fact, it is already broken.
-
-ppc_asm.h references CONFIG_PPC_8xx, but utils.S is not given any way
-to access CONFIG options. So, CONFIG_PPC_8xx is never defined here.
-
-Pass $(LINUXINCLUDE) to make sure CONFIG options are accessible from
-all .c and .S files in arch/powerpc/boot/.
-
-I also removed the -traditional flag to make include/linux/kconfig.h
-work. This flag makes the preprocessor imitate the behavior of the
-pre-standard C compiler, but I do not understand why it is necessary.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
-Changes in v2:
- - reword commit log
-
- arch/powerpc/boot/.gitignore |  2 --
- arch/powerpc/boot/Makefile   | 14 +++-----------
- arch/powerpc/boot/serial.c   |  1 -
- 3 files changed, 3 insertions(+), 14 deletions(-)
-
-diff --git a/arch/powerpc/boot/.gitignore b/arch/powerpc/boot/.gitignore
-index 32034a0c..6610665 100644
---- a/arch/powerpc/boot/.gitignore
-+++ b/arch/powerpc/boot/.gitignore
-@@ -44,5 +44,3 @@ fdt_sw.c
- fdt_wip.c
- libfdt.h
- libfdt_internal.h
--autoconf.h
--
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 73d1f35..b8a82be 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -20,9 +20,6 @@
- 
- all: $(obj)/zImage
- 
--compress-$(CONFIG_KERNEL_GZIP) := CONFIG_KERNEL_GZIP
--compress-$(CONFIG_KERNEL_XZ)   := CONFIG_KERNEL_XZ
--
- ifdef CROSS32_COMPILE
-     BOOTCC := $(CROSS32_COMPILE)gcc
-     BOOTAR := $(CROSS32_COMPILE)ar
-@@ -34,7 +31,7 @@ endif
- BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
- 		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
--		 -D$(compress-y)
-+		 $(LINUXINCLUDE)
- 
- ifdef CONFIG_PPC64_BOOT_WRAPPER
- BOOTCFLAGS	+= -m64
-@@ -51,7 +48,7 @@ BOOTCFLAGS	+= -mlittle-endian
- BOOTCFLAGS	+= $(call cc-option,-mabi=elfv2)
- endif
- 
--BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -traditional -nostdinc
-+BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
- 
- BOOTARFLAGS	:= -cr$(KBUILD_ARFLAGS)
- 
-@@ -202,14 +199,9 @@ $(obj)/empty.c:
- $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds : $(obj)/%: $(srctree)/$(src)/%.S
- 	$(Q)cp $< $@
- 
--$(srctree)/$(src)/serial.c: $(obj)/autoconf.h
--
--$(obj)/autoconf.h: $(obj)/%: $(objtree)/include/generated/%
--	$(Q)cp $< $@
--
- clean-files := $(zlib-) $(zlibheader-) $(zliblinuxheader-) \
- 		$(zlib-decomp-) $(libfdt) $(libfdtheader) \
--		autoconf.h empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
-+		empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
- 
- quiet_cmd_bootcc = BOOTCC  $@
-       cmd_bootcc = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCFLAGS) -c -o $@ $<
-diff --git a/arch/powerpc/boot/serial.c b/arch/powerpc/boot/serial.c
-index b0491b8..9457863 100644
---- a/arch/powerpc/boot/serial.c
-+++ b/arch/powerpc/boot/serial.c
-@@ -18,7 +18,6 @@
- #include "stdio.h"
- #include "io.h"
- #include "ops.h"
--#include "autoconf.h"
- 
- static int serial_open(void)
- {
--- 
-2.7.4
-
+Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
