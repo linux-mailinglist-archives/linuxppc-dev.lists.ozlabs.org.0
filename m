@@ -2,38 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D582B1B550
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 13:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EF21BC65
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 19:57:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452fP73Kc6zDqHj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 21:54:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452pS10JzkzDqHn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 03:57:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=178.33.104.224; helo=16.mo1.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 21576 seconds by postgrey-1.36 at bilbo;
+ Tue, 14 May 2019 03:55:59 AEST
+Received: from 16.mo1.mail-out.ovh.net (16.mo1.mail-out.ovh.net
+ [178.33.104.224])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452fMq74pTzDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 21:53:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 452fMp6Lnjz9s4V;
- Mon, 13 May 2019 21:53:10 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Shawn Landden <shawn@git.icu>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH RESEND] powerpc: add simd.h implementation specific to
- PowerPC
-In-Reply-To: <20190513005104.20140-1-shawn@git.icu>
-References: <20190512165032.19942-1-shawn@git.icu>
- <20190513005104.20140-1-shawn@git.icu>
-Date: Mon, 13 May 2019 21:53:09 +1000
-Message-ID: <87mujqtvtm.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452pQR1WBFzDqGh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 03:55:53 +1000 (AEST)
+Received: from player729.ha.ovh.net (unknown [10.109.160.5])
+ by mo1.mail-out.ovh.net (Postfix) with ESMTP id 211F216C6B1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 13:56:15 +0200 (CEST)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player729.ha.ovh.net (Postfix) with ESMTPSA id 1EAF25D72366;
+ Mon, 13 May 2019 11:56:07 +0000 (UTC)
+Date: Mon, 13 May 2019 13:56:06 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/powernv/npu: Fix reference leak
+Message-ID: <20190513135606.7d9a0902@bahia.lan>
+In-Reply-To: <20190429123659.00c0622b@bahia.lan>
+References: <155568805354.600470.13376593185688810607.stgit@bahia.lan>
+ <962c1d9e-719c-cb82-cabc-1cf619e1510b@ozlabs.ru>
+ <20190429123659.00c0622b@bahia.lan>
+X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 6583981181895154097
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrleeggdegiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,71 +58,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Landden <shawn@git.icu>, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Shawn Landden <shawn@git.icu> writes:
-> It is safe to do SIMD in an interrupt on PowerPC.
+Michael,
 
-No it's not sorry :)
+Any comments on this patch ? Should I repost with a shorter comment
+as suggested by Alexey ?
 
-> Only disable when there is no SIMD available
-> (and this is a static branch).
->
-> Tested and works with the WireGuard (Zinc) patch I wrote that needs this.
-> Also improves performance of the crypto subsystem that checks this.
->
-> Re-sending because this linuxppc-dev didn't seem to accept it.
+Cheers,
 
-It did but you were probably moderated as a non-subscriber? In future if
-you just wait a while for the moderators to wake up it should come
-through. Though having posted once and been approved I think you might
-not get moderated at all in future (?).
+--
+Greg
 
-> Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=203571
-> Signed-off-by: Shawn Landden <shawn@git.icu>
-> ---
->  arch/powerpc/include/asm/simd.h | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->  create mode 100644 arch/powerpc/include/asm/simd.h
->
-> diff --git a/arch/powerpc/include/asm/simd.h b/arch/powerpc/include/asm/simd.h
-> new file mode 100644
-> index 000000000..b3fecb95a
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/simd.h
-> @@ -0,0 +1,15 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +
-> +#include <asm/cpu_has_feature.h>
-> +
-> +/*
-> + * may_use_simd - whether it is allowable at this time to issue SIMD
-> + *                instructions or access the SIMD register file
-> + *
-> + * As documented in Chapter 6.2.1 Machine Status Save/Restore Registers
-> + * of Power ISA (2.07 and 3.0), all registers are saved/restored in an interrupt.
+On Mon, 29 Apr 2019 12:36:59 +0200
+Greg Kurz <groug@kaod.org> wrote:
 
-I think the confusion here is that the ISA says:
+> On Mon, 29 Apr 2019 16:01:29 +1000
+> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+> 
+> > On 20/04/2019 01:34, Greg Kurz wrote:  
+> > > Since 902bdc57451c, get_pci_dev() calls pci_get_domain_bus_and_slot(). This
+> > > has the effect of incrementing the reference count of the PCI device, as
+> > > explained in drivers/pci/search.c:
+> > > 
+> > >  * Given a PCI domain, bus, and slot/function number, the desired PCI
+> > >  * device is located in the list of PCI devices. If the device is
+> > >  * found, its reference count is increased and this function returns a
+> > >  * pointer to its data structure.  The caller must decrement the
+> > >  * reference count by calling pci_dev_put().  If no device is found,
+> > >  * %NULL is returned.
+> > > 
+> > > Nothing was done to call pci_dev_put() and the reference count of GPU and
+> > > NPU PCI devices rockets up.
+> > > 
+> > > A natural way to fix this would be to teach the callers about the change,
+> > > so that they call pci_dev_put() when done with the pointer. This turns
+> > > out to be quite intrusive, as it affects many paths in npu-dma.c,
+> > > pci-ioda.c and vfio_pci_nvlink2.c.    
+> > 
+> > 
+> > afaict this referencing is only done to protect the current traverser
+> > and what you've done is actually a natural way (and the generic
+> > pci_get_dev_by_id() does exactly the same), although this looks a bit weird.
+> >   
+> 
+> Not exactly the same: pci_get_dev_by_id() always increment the refcount
+> of the returned PCI device. The refcount is only decremented when this
+> device is passed to pci_get_dev_by_id() to continue searching.
+> 
+> That means that the users of the PCI device pointer returned by
+> pci_get_dev_by_id() or its exported variants pci_get_subsys(),
+> pci_get_device() and pci_get_class() do handle the refcount. They
+> all pass the pointer to pci_dev_put() or continue the search,
+> which calls pci_dev_put() internally.
+> 
+> Direct and indirect callers of get_pci_dev() don't care for the
+> refcount at all unless I'm missing something.
+> 
+> >   
+> > > Also, the issue appeared in 4.16 and
+> > > some affected code got moved around since then: it would be problematic
+> > > to backport the fix to stable releases.
+> > > 
+> > > All that code never cared for reference counting anyway. Call pci_dev_put()
+> > > from get_pci_dev() to revert to the previous behavior.    
+> > >> Fixes: 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary pcidev    
+> > from pci_dn")  
+> > > Cc: stable@vger.kernel.org # v4.16
+> > > Signed-off-by: Greg Kurz <groug@kaod.org>
+> > > ---
+> > >  arch/powerpc/platforms/powernv/npu-dma.c |   15 ++++++++++++++-
+> > >  1 file changed, 14 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+> > > index e713ade30087..d8f3647e8fb2 100644
+> > > --- a/arch/powerpc/platforms/powernv/npu-dma.c
+> > > +++ b/arch/powerpc/platforms/powernv/npu-dma.c
+> > > @@ -31,9 +31,22 @@ static DEFINE_SPINLOCK(npu_context_lock);
+> > >  static struct pci_dev *get_pci_dev(struct device_node *dn)
+> > >  {
+> > >  	struct pci_dn *pdn = PCI_DN(dn);
+> > > +	struct pci_dev *pdev;
+> > >  
+> > > -	return pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
+> > > +	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
+> > >  					   pdn->busno, pdn->devfn);
+> > > +
+> > > +	/*
+> > > +	 * pci_get_domain_bus_and_slot() increased the reference count of
+> > > +	 * the PCI device, but callers don't need that actually as the PE
+> > > +	 * already holds a reference to the device.    
+> > 
+> > Imho this would be just enough.
+> > 
+> > Anyway,
+> > 
+> > Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> >   
+> 
+> Thanks !
+> 
+> I now realize that I forgot to add the --cc option for stable on my stgit
+> command line :-\.
+> 
+> Cc'ing now.
+> 
+> > 
+> > How did you find it? :)
+> >   
+> 
+> While reading code to find some inspiration for OpenCAPI passthrough. :)
+> 
+> I saw the following in vfio_pci_ibm_npu2_init():
+> 
+> 	if (!pnv_pci_get_gpu_dev(vdev->pdev))
+> 		return -ENODEV;
+> 
+> and simply followed the function calls.
+> 
+> >   
+> > > Since callers aren't
+> > > +	 * aware of the reference count change, call pci_dev_put() now to
+> > > +	 * avoid leaks.
+> > > +	 */
+> > > +	if (pdev)
+> > > +		pci_dev_put(pdev);
+> > > +
+> > > +	return pdev;
+> > >  }
+> > >  
+> > >  /* Given a NPU device get the associated PCI device. */
+> > >     
+> >   
+> 
 
-  When various interrupts occur, the state of the machine is saved in the
-  Machine Status Save/Restore registers (SRR0 and SRR1).
-
-And you've read that to mean all "the state" of the machine, ie.
-including GPRs, FPRs etc.
-
-But unfortunately it's not that simple. All the hardware does is write
-two 64-bit registers (SRR0 & SRR1) with the information required to be
-able to return to the state the CPU was in prior to the interrupt. That
-includes (obviously) the PC you were executing at, and what state the
-CPU was in (ie. 64/32-bit, MMU on/off, FP on/off etc.). All the saving
-of registers etc. is left up to software. It's the RISC way :)
-
-
-I guess we need to work out why exactly may_use_simd() is returning
-false in your kworker. 
-
-cheers
