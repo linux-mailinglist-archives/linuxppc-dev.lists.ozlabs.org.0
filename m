@@ -2,39 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D7A1B509
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 13:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7961B50C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 13:36:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452dyh3113zDqJX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 21:34:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452f0B073PzDqJt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 21:36:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452dxL71cNzDqDY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 21:33:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452dym3JfgzDqDf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 21:34:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 452dxK1vDjz9s4Y;
- Mon, 13 May 2019 21:33:41 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 452dym04Vvz9s4Y;
+ Mon, 13 May 2019 21:34:55 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dmitry Vyukov <dvyukov@google.com>, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH, RFC] byteorder: sanity check toolchain vs kernel endianess
-In-Reply-To: <CACT4Y+ad5z6z0Dweh5hGwYcUUebPEtqsznmX9enPvYB20J16aA@mail.gmail.com>
-References: <20190412143538.11780-1-hch@lst.de>
- <CAK8P3a2bg9YkbNpAb9uZkXLFZ3juCmmbF7cRw+Dm9ZiLFno2OQ@mail.gmail.com>
- <fd59e6e22594f740eaf86abad76ee04d@mailhost.ics.forth.gr>
- <CACT4Y+aKGKm9Wbc1owBr51adkbesHP_Z81pBAoZ5HmJ+uZdsaw@mail.gmail.com>
- <CAK8P3a3xRBZrgv16sSigJhY0vGmb=qF9o=6dC_5DqAJtW3qPGQ@mail.gmail.com>
- <CACT4Y+ad5z6z0Dweh5hGwYcUUebPEtqsznmX9enPvYB20J16aA@mail.gmail.com>
-Date: Mon, 13 May 2019 21:33:39 +1000
-Message-ID: <87woiutwq4.fsf@concordia.ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/64/ftrace: mprofile-kernel patch out mflr
+In-Reply-To: <1557729790.fw18xf9mdt.naveen@linux.ibm.com>
+References: <20190413015940.31170-1-npiggin@gmail.com>
+ <871s13ujcf.fsf@concordia.ellerman.id.au>
+ <1557729790.fw18xf9mdt.naveen@linux.ibm.com>
+Date: Mon, 13 May 2019 21:34:55 +1000
+Message-ID: <87tvdytwo0.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,67 +46,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nick Kossifidis <mick@ics.forth.gr>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dmitry Vyukov <dvyukov@google.com> writes:
-> From: Arnd Bergmann <arnd@arndb.de>
-> Date: Sat, May 11, 2019 at 2:51 AM
-> To: Dmitry Vyukov
-> Cc: Nick Kossifidis, Christoph Hellwig, Linus Torvalds, Andrew Morton,
-> linux-arch, Linux Kernel Mailing List, linuxppc-dev
+"Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
+> Michael Ellerman wrote:
+>> Nicholas Piggin <npiggin@gmail.com> writes:
+>>> The new mprofile-kernel mcount sequence is
+>>>
+>>>   mflr	r0
+>>>   bl	_mcount
+>>>
+>>> Dynamic ftrace patches the branch instruction with a noop, but leaves
+>>> the mflr. mflr is executed by the branch unit that can only execute one
+>>> per cycle on POWER9 and shared with branches, so it would be nice to
+>>> avoid it where possible.
+>>>
+>>> This patch is a hacky proof of concept to nop out the mflr. Can we do
+>>> this or are there races or other issues with it?
+>> 
+>> There's a race, isn't there?
+>> 
+>> We have a function foo which currently has tracing disabled, so the mflr
+>> and bl are nop'ed out.
+>> 
+>>   CPU 0			CPU 1
+>>   ==================================
+>>   bl foo
+>>   nop (ie. not mflr)
+>>   -> interrupt
+>>   something else	enable tracing for foo
+>>   ...			patch mflr and branch
+>>   <- rfi
+>>   bl _mcount
+>> 
+>> So we end up in _mcount() but with r0 not populated.
 >
->> On Fri, May 10, 2019 at 6:53 AM Dmitry Vyukov <dvyukov@google.com> wrote:
->> > >
->> > > I think it's good to have a sanity check in-place for consistency.
->> >
->> >
->> > Hi,
->> >
->> > This broke our cross-builds from x86. I am using:
->> >
->> > $ powerpc64le-linux-gnu-gcc --version
->> > powerpc64le-linux-gnu-gcc (Debian 7.2.0-7) 7.2.0
->> >
->> > and it says that it's little-endian somehow:
->> >
->> > $ powerpc64le-linux-gnu-gcc -dM -E - < /dev/null | grep BYTE_ORDER
->> > #define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
->> >
->> > Is it broke compiler? Or I always hold it wrong? Is there some
->> > additional flag I need to add?
->>
->> It looks like a bug in the kernel Makefiles to me. powerpc32 is always
->> big-endian,
->> powerpc64 used to be big-endian but is now usually little-endian. There are
->> often three separate toolchains that default to the respective user
->> space targets
->> (ppc32be, ppc64be, ppc64le), but generally you should be able to build
->> any of the
->> three kernel configurations with any of those compilers, and have the Makefile
->> pass the correct -m32/-m64/-mbig-endian/-mlittle-endian command line options
->> depending on the kernel configuration. It seems that this is not happening
->> here. I have not checked why, but if this is the problem, it should be
->> easy enough
->> to figure out.
->
->
-> Thanks! This clears a lot.
-> This may be a bug in our magic as we try to build kernel files outside
-> of make with own flags (required to extract parts of kernel
-> interfaces).
-> So don't spend time looking for the Makefile bugs yet.
+> Good catch! Looks like we need to patch the mflr with a "b +8" similar 
+> to what we do in __ftrace_make_nop().
 
-OK :)
-
-We did have some bugs in the past (~1-2 y/ago) but AFAIK they are all
-fixed now. These days I build most of my kernels with a bi-endian 64-bit
-toolchain, and switching endian without running `make clean` also works.
+Would that actually make it any faster though? Nick?
 
 cheers
