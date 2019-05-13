@@ -2,51 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EF21BC65
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 19:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC8A1B57F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 14:06:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 452pS10JzkzDqHn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 03:57:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 452fg72XjPzDqGx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2019 22:06:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=178.33.104.224; helo=16.mo1.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 21576 seconds by postgrey-1.36 at bilbo;
- Tue, 14 May 2019 03:55:59 AEST
-Received: from 16.mo1.mail-out.ovh.net (16.mo1.mail-out.ovh.net
- [178.33.104.224])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 452pQR1WBFzDqGh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 03:55:53 +1000 (AEST)
-Received: from player729.ha.ovh.net (unknown [10.109.160.5])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id 211F216C6B1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 13:56:15 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player729.ha.ovh.net (Postfix) with ESMTPSA id 1EAF25D72366;
- Mon, 13 May 2019 11:56:07 +0000 (UTC)
-Date: Mon, 13 May 2019 13:56:06 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/powernv/npu: Fix reference leak
-Message-ID: <20190513135606.7d9a0902@bahia.lan>
-In-Reply-To: <20190429123659.00c0622b@bahia.lan>
-References: <155568805354.600470.13376593185688810607.stgit@bahia.lan>
- <962c1d9e-719c-cb82-cabc-1cf619e1510b@ozlabs.ru>
- <20190429123659.00c0622b@bahia.lan>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 452fdR4ZkGzDqFv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 22:04:57 +1000 (AEST)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id 4D9D868AFE; Mon, 13 May 2019 14:04:35 +0200 (CEST)
+Date: Mon, 13 May 2019 14:04:35 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH, RFC] byteorder: sanity check toolchain vs kernel endianess
+Message-ID: <20190513120435.GB22993@lst.de>
+References: <20190412143538.11780-1-hch@lst.de>
+ <CAK8P3a2bg9YkbNpAb9uZkXLFZ3juCmmbF7cRw+Dm9ZiLFno2OQ@mail.gmail.com>
+ <fd59e6e22594f740eaf86abad76ee04d@mailhost.ics.forth.gr>
+ <CACT4Y+aKGKm9Wbc1owBr51adkbesHP_Z81pBAoZ5HmJ+uZdsaw@mail.gmail.com>
+ <CAK8P3a3xRBZrgv16sSigJhY0vGmb=qF9o=6dC_5DqAJtW3qPGQ@mail.gmail.com>
+ <CACT4Y+ad5z6z0Dweh5hGwYcUUebPEtqsznmX9enPvYB20J16aA@mail.gmail.com>
+ <87woiutwq4.fsf@concordia.ellerman.id.au>
+ <CACT4Y+YT52wGuARxe9RqUsMYGNZTwaBowWWUUawyqTBq4G1NDg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 6583981181895154097
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrleeggdegiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACT4Y+YT52wGuARxe9RqUsMYGNZTwaBowWWUUawyqTBq4G1NDg@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,142 +51,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Nick Kossifidis <mick@ics.forth.gr>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael,
+On Mon, May 13, 2019 at 01:50:19PM +0200, Dmitry Vyukov wrote:
+> > We did have some bugs in the past (~1-2 y/ago) but AFAIK they are all
+> > fixed now. These days I build most of my kernels with a bi-endian 64-bit
+> > toolchain, and switching endian without running `make clean` also works.
+> 
+> For the record, yes, it turn out to be a problem in our code (a latent
+> bug). We actually used host (x86) gcc to build as-if ppc code that can
+> run on the host, so it defined neither LE no BE macros. It just
+> happened to work in the past :)
 
-Any comments on this patch ? Should I repost with a shorter comment
-as suggested by Alexey ?
-
-Cheers,
-
---
-Greg
-
-On Mon, 29 Apr 2019 12:36:59 +0200
-Greg Kurz <groug@kaod.org> wrote:
-
-> On Mon, 29 Apr 2019 16:01:29 +1000
-> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
-> 
-> > On 20/04/2019 01:34, Greg Kurz wrote:  
-> > > Since 902bdc57451c, get_pci_dev() calls pci_get_domain_bus_and_slot(). This
-> > > has the effect of incrementing the reference count of the PCI device, as
-> > > explained in drivers/pci/search.c:
-> > > 
-> > >  * Given a PCI domain, bus, and slot/function number, the desired PCI
-> > >  * device is located in the list of PCI devices. If the device is
-> > >  * found, its reference count is increased and this function returns a
-> > >  * pointer to its data structure.  The caller must decrement the
-> > >  * reference count by calling pci_dev_put().  If no device is found,
-> > >  * %NULL is returned.
-> > > 
-> > > Nothing was done to call pci_dev_put() and the reference count of GPU and
-> > > NPU PCI devices rockets up.
-> > > 
-> > > A natural way to fix this would be to teach the callers about the change,
-> > > so that they call pci_dev_put() when done with the pointer. This turns
-> > > out to be quite intrusive, as it affects many paths in npu-dma.c,
-> > > pci-ioda.c and vfio_pci_nvlink2.c.    
-> > 
-> > 
-> > afaict this referencing is only done to protect the current traverser
-> > and what you've done is actually a natural way (and the generic
-> > pci_get_dev_by_id() does exactly the same), although this looks a bit weird.
-> >   
-> 
-> Not exactly the same: pci_get_dev_by_id() always increment the refcount
-> of the returned PCI device. The refcount is only decremented when this
-> device is passed to pci_get_dev_by_id() to continue searching.
-> 
-> That means that the users of the PCI device pointer returned by
-> pci_get_dev_by_id() or its exported variants pci_get_subsys(),
-> pci_get_device() and pci_get_class() do handle the refcount. They
-> all pass the pointer to pci_dev_put() or continue the search,
-> which calls pci_dev_put() internally.
-> 
-> Direct and indirect callers of get_pci_dev() don't care for the
-> refcount at all unless I'm missing something.
-> 
-> >   
-> > > Also, the issue appeared in 4.16 and
-> > > some affected code got moved around since then: it would be problematic
-> > > to backport the fix to stable releases.
-> > > 
-> > > All that code never cared for reference counting anyway. Call pci_dev_put()
-> > > from get_pci_dev() to revert to the previous behavior.    
-> > >> Fixes: 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary pcidev    
-> > from pci_dn")  
-> > > Cc: stable@vger.kernel.org # v4.16
-> > > Signed-off-by: Greg Kurz <groug@kaod.org>
-> > > ---
-> > >  arch/powerpc/platforms/powernv/npu-dma.c |   15 ++++++++++++++-
-> > >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-> > > index e713ade30087..d8f3647e8fb2 100644
-> > > --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> > > +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> > > @@ -31,9 +31,22 @@ static DEFINE_SPINLOCK(npu_context_lock);
-> > >  static struct pci_dev *get_pci_dev(struct device_node *dn)
-> > >  {
-> > >  	struct pci_dn *pdn = PCI_DN(dn);
-> > > +	struct pci_dev *pdev;
-> > >  
-> > > -	return pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
-> > > +	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
-> > >  					   pdn->busno, pdn->devfn);
-> > > +
-> > > +	/*
-> > > +	 * pci_get_domain_bus_and_slot() increased the reference count of
-> > > +	 * the PCI device, but callers don't need that actually as the PE
-> > > +	 * already holds a reference to the device.    
-> > 
-> > Imho this would be just enough.
-> > 
-> > Anyway,
-> > 
-> > Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> >   
-> 
-> Thanks !
-> 
-> I now realize that I forgot to add the --cc option for stable on my stgit
-> command line :-\.
-> 
-> Cc'ing now.
-> 
-> > 
-> > How did you find it? :)
-> >   
-> 
-> While reading code to find some inspiration for OpenCAPI passthrough. :)
-> 
-> I saw the following in vfio_pci_ibm_npu2_init():
-> 
-> 	if (!pnv_pci_get_gpu_dev(vdev->pdev))
-> 		return -ENODEV;
-> 
-> and simply followed the function calls.
-> 
-> >   
-> > > Since callers aren't
-> > > +	 * aware of the reference count change, call pci_dev_put() now to
-> > > +	 * avoid leaks.
-> > > +	 */
-> > > +	if (pdev)
-> > > +		pci_dev_put(pdev);
-> > > +
-> > > +	return pdev;
-> > >  }
-> > >  
-> > >  /* Given a NPU device get the associated PCI device. */
-> > >     
-> >   
-> 
-
+So Nick was right and these checks actually are useful..
