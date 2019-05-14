@@ -1,87 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F9E1CA0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 16:06:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0131C9C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 16:00:10 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453K7q42rrzDqKZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:00:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453KHV3kBwzDqJ2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:06:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453K5T6qdjzDqCY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 23:58:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="kUyhj5B+"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 453K5S6DVzz8tSP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 23:58:04 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 453K5S5ByHz9sML; Tue, 14 May 2019 23:58:04 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="kUyhj5B+"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=none (mailfrom) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 453K5R6J0dz9sBb
- for <linuxppc-dev@ozlabs.org>; Tue, 14 May 2019 23:58:03 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 453K5M2J7bz9vBn7;
- Tue, 14 May 2019 15:57:59 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=kUyhj5B+; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id nMQCvUZIP_ek; Tue, 14 May 2019 15:57:59 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 453K5M135xz9v0Yd;
- Tue, 14 May 2019 15:57:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557842279; bh=/vHdtd/WAOb2tZEuTLD9XTnMy+aemzJPynBwW/70qEk=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=kUyhj5B+mAxSacAKAKUdFqBoxDFhmUR5aVMgA4+apipqIIi9JlXw4C6ME/aHKjONW
- mtSQ3MVAymxLcHz0FEasiRyYHWJOk4+ldN5PEpLRLAehgnMDXCbqAOwTzSvKrua/0o
- /pCSHiJ/rb0PL2Xi/qPV1nIgjPZ+GagMGWOCjSCI=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 908F18B8DD;
- Tue, 14 May 2019 15:58:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mt2OC2OinwrU; Tue, 14 May 2019 15:58:00 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E178D8B8DB;
- Tue, 14 May 2019 15:57:59 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/mm: Fix crashes with hugepages & 4K pages
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20190514134321.25575-1-mpe@ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d46dfb90-ce9d-8099-b718-022436e40b37@c-s.fr>
-Date: Tue, 14 May 2019 15:57:56 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190514134321.25575-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453KCG5TRRzDqDC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 00:03:01 +1000 (AEST)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 14 May 2019 07:02:58 -0700
+X-ExtLoop1: 1
+Received: from unknown (HELO luv-build.sc.intel.com) ([172.25.110.25])
+ by fmsmga005.fm.intel.com with ESMTP; 14 May 2019 07:02:57 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ Borislav Petkov <bp@suse.de>
+Subject: [RFC PATCH v3 07/21] watchdog/hardlockup: Define a generic function
+ to detect hardlockups
+Date: Tue, 14 May 2019 07:02:00 -0700
+Message-Id: <1557842534-4266-8-git-send-email-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
+References: <1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,77 +49,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.vnet.ibm.com, sachinp@linux.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Ricardo Neri <ricardo.neri@intel.com>, Stephane Eranian <eranian@google.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ "Luis R. Rodriguez" <mcgrof@kernel.org>, Andi Kleen <andi.kleen@intel.com>,
+ Don Zickus <dzickus@redhat.com>, "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Babu Moger <Babu.Moger@amd.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Masami Hiramatsu <mhiramat@kernel.org>,
+ Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+ Philippe Ombredanne <pombredanne@nexb.com>,
+ Colin Ian King <colin.king@canonical.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The procedure to detect hardlockups is independent of the underlying
+mechanism that generates the non-maskable interrupt used to drive the
+detector. Thus, it can be put in a separate, generic function. In this
+manner, it can be invoked by various implementations of the NMI watchdog.
 
+For this purpose, move the bulk of watchdog_overflow_callback() to the
+new function inspect_for_hardlockups(). This function can then be called
+from the applicable NMI handlers.
 
-Le 14/05/2019 à 15:43, Michael Ellerman a écrit :
-> The recent commit to cleanup ifdefs in the hugepage initialisation led
-> to crashes when using 4K pages as reported by Sachin:
-> 
->    BUG: Kernel NULL pointer dereference at 0x0000001c
->    Faulting instruction address: 0xc000000001d1e58c
->    Oops: Kernel access of bad area, sig: 11 [#1]
->    LE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
->    ...
->    CPU: 3 PID: 4635 Comm: futex_wake04 Tainted: G        W  O      5.1.0-next-20190507-autotest #1
->    NIP:  c000000001d1e58c LR: c000000001d1e54c CTR: 0000000000000000
->    REGS: c000000004937890 TRAP: 0300
->    MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 22424822  XER: 00000000
->    CFAR: c00000000183e9e0 DAR: 000000000000001c DSISR: 40000000 IRQMASK: 0
->    ...
->    NIP kmem_cache_alloc+0xbc/0x5a0
->    LR  kmem_cache_alloc+0x7c/0x5a0
->    Call Trace:
->      huge_pte_alloc+0x580/0x950
->      hugetlb_fault+0x9a0/0x1250
->      handle_mm_fault+0x490/0x4a0
->      __do_page_fault+0x77c/0x1f00
->      do_page_fault+0x28/0x50
->      handle_page_fault+0x18/0x38
-> 
-> This is caused by us trying to allocate from a NULL kmem cache in
-> __hugepte_alloc(). The kmem cache is NULL because it was never
-> allocated in hugetlbpage_init(), because add_huge_page_size() returned
-> an error.
-> 
-> The reason add_huge_page_size() returned an error is a simple typo, we
-> are calling check_and_get_huge_psize(size) when we should be passing
-> shift instead.
-> 
-> The fact that we're able to trigger this path when the kmem caches are
-> NULL is a separate bug, ie. we should not advertise any hugepage sizes
-> if we haven't setup the required caches for them.
-> 
-> This was only seen with 4K pages, with 64K pages we don't need to
-> allocate any extra kmem caches because the 16M hugepage just occupies
-> a single entry at the PMD level.
-> 
-> Fixes: 723f268f19da ("powerpc/mm: cleanup ifdef mess in add_huge_page_size()")
-> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Andi Kleen <andi.kleen@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Babu Moger <Babu.Moger@amd.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Philippe Ombredanne <pombredanne@nexb.com>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: x86@kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+---
+ include/linux/nmi.h   |  1 +
+ kernel/watchdog_hld.c | 18 +++++++++++-------
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 9003e29cde46..5a8b19749769 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -212,6 +212,7 @@ extern int proc_watchdog_thresh(struct ctl_table *, int ,
+ 				void __user *, size_t *, loff_t *);
+ extern int proc_watchdog_cpumask(struct ctl_table *, int,
+ 				 void __user *, size_t *, loff_t *);
++void inspect_for_hardlockups(struct pt_regs *regs);
+ 
+ #ifdef CONFIG_HAVE_ACPI_APEI_NMI
+ #include <asm/nmi.h>
+diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
+index 247bf0b1582c..b352e507b17f 100644
+--- a/kernel/watchdog_hld.c
++++ b/kernel/watchdog_hld.c
+@@ -106,14 +106,8 @@ static struct perf_event_attr wd_hw_attr = {
+ 	.disabled	= 1,
+ };
+ 
+-/* Callback function for perf event subsystem */
+-static void watchdog_overflow_callback(struct perf_event *event,
+-				       struct perf_sample_data *data,
+-				       struct pt_regs *regs)
++void inspect_for_hardlockups(struct pt_regs *regs)
+ {
+-	/* Ensure the watchdog never gets throttled */
+-	event->hw.interrupts = 0;
+-
+ 	if (__this_cpu_read(watchdog_nmi_touch) == true) {
+ 		__this_cpu_write(watchdog_nmi_touch, false);
+ 		return;
+@@ -163,6 +157,16 @@ static void watchdog_overflow_callback(struct perf_event *event,
+ 	return;
+ }
+ 
++/* Callback function for perf event subsystem */
++static void watchdog_overflow_callback(struct perf_event *event,
++				       struct perf_sample_data *data,
++				       struct pt_regs *regs)
++{
++	/* Ensure the watchdog never gets throttled */
++	event->hw.interrupts = 0;
++	inspect_for_hardlockups(regs);
++}
++
+ static int hardlockup_detector_event_create(void)
+ {
+ 	unsigned int cpu = smp_processor_id();
+-- 
+2.17.1
 
-> ---
->   arch/powerpc/mm/hugetlbpage.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-> index c5c9ff2d7afc..b5d92dc32844 100644
-> --- a/arch/powerpc/mm/hugetlbpage.c
-> +++ b/arch/powerpc/mm/hugetlbpage.c
-> @@ -556,7 +556,7 @@ static int __init add_huge_page_size(unsigned long long size)
->   	if (size <= PAGE_SIZE || !is_power_of_2(size))
->   		return -EINVAL;
->   
-> -	mmu_psize = check_and_get_huge_psize(size);
-> +	mmu_psize = check_and_get_huge_psize(shift);
->   	if (mmu_psize < 0)
->   		return -EINVAL;
->   
-> 
