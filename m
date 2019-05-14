@@ -2,79 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2BA1C097
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 04:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 986A91C0C0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 04:56:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4531m74h15zDqLY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 12:27:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4532Ph1XYfzDqK5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 12:56:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=sergey.senozhatsky.work@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="UDw1+6Hd"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4531kP1bkCzDqJ5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 12:25:32 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id d31so7755263pgl.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 19:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=Zi4wszV1L43AeLT0Z8PIOWy38tTYuSZF/HdHyWxecsY=;
- b=UDw1+6HdTlVp15oFELQcYeP5tV9aX4WE2CTmk/VFT9j/uRDSGzkXgwHKipfBdjUcy6
- iWd5TAVfBECyekH1/M3I65DO8JG6bsdwQiYpZPb+IvL2/NRDrhMlO6vl9tfI1DTC2n8V
- ZQObeHztzolzKrcIN2b/9VCj+OdGEtNRTQMUz8nfylBLkUKYFsgCyTvqrBD8JblWqBMs
- 2ATuHVX+eMGT7vY3UOYNRORuXGhZjogeHrl6sZejHqhzP1ylwRwstzz6oGskofNicyFJ
- dU04R9JVeM7RaJ6I2pxqlhwoRSiRJyHo8rLCRYT0ThJgyxpnMnnsbjh3cJf1XWqOhld0
- Moqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=Zi4wszV1L43AeLT0Z8PIOWy38tTYuSZF/HdHyWxecsY=;
- b=npvva/sVe7tTCwbS6EmrE+HTDFC2Xw+sEfkX46NG5VOoWsQZ1fGZvfxn40KvGB9AyA
- 18MrCAckncynMyKykVl8dEa+c+Y4zNMXwJcX+TzoKJOmJJV0l2b1L4HHSyxFnyp72725
- 6V5PA4NO3esTwZwqlYsonKKomEmiWT6adVIMK0TMcm9b9nJWEiQByuh+KLbU3UIIYbPk
- O4+vs2tNr0eJkf5ZOCJ79UDHVbREttgu995ly5W+C8K6ugkBqzofnUh4uFDj87LfqV8t
- tcLoRcatXfPKeDq/nerWNXDj28UJCCen/wauIkD7Fi9nkhs68FXxDCdPjUQexmUygEur
- 4eIg==
-X-Gm-Message-State: APjAAAXSvT9OBbJyxxwUVPF9EcuyezMsBPGH3iNmd61uqAd/HcdBFHei
- XRtACykwDwmPV5nRw1Zuxsg=
-X-Google-Smtp-Source: APXvYqwA6b0Z8MgrtwzlDdj6bF9A8j85qLr4jxGimHQO5UZWJdPr+G2gpISwBf6oV7oS7hzca+w4yw==
-X-Received: by 2002:a62:6d47:: with SMTP id i68mr37943522pfc.189.1557800730620; 
- Mon, 13 May 2019 19:25:30 -0700 (PDT)
-Received: from localhost ([39.7.55.172])
- by smtp.gmail.com with ESMTPSA id g83sm19072131pfb.158.2019.05.13.19.25.28
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 13 May 2019 19:25:29 -0700 (PDT)
-Date: Tue, 14 May 2019 11:25:26 +0900
-From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
-Message-ID: <20190514022526.GA6683@jagdpanzerIV>
-References: <20190510081635.GA4533@jagdpanzerIV>
- <20190510084213.22149-1-pmladek@suse.com>
- <20190510122401.21a598f6@gandalf.local.home>
- <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
- <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
- <20190513091320.GK9224@smile.fi.intel.com>
- <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
- <20190514020730.GA651@jagdpanzerIV>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4532MQ2ScnzDq6y
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 12:54:09 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4E2kZ9V166352; Mon, 13 May 2019 22:54:01 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sfm55j3kx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 May 2019 22:54:01 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x4DKuVpX024890;
+ Mon, 13 May 2019 20:58:21 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2sdp14jxm2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 May 2019 20:58:21 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4E2rxdV33423552
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 May 2019 02:53:59 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 936F92805C;
+ Tue, 14 May 2019 02:53:59 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BB6028058;
+ Tue, 14 May 2019 02:53:57 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.80.221.111])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 14 May 2019 02:53:57 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [RFC PATCH] mm/nvdimm: Fix kernel crash on devm_mremap_pages_release
+Date: Tue, 14 May 2019 08:23:54 +0530
+Message-Id: <20190514025354.9108-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190514020730.GA651@jagdpanzerIV>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-14_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905140018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,33 +79,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- David Laight <David.Laight@aculab.com>, Stephen Rothwell <sfr@ozlabs.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (05/14/19 11:07), Sergey Senozhatsky wrote:
-> How about this:
-> 
-> 	if ptr < PAGE_SIZE		-> "(null)"
+When we initialize the namespace, if we support altmap, we don't initialize all the
+backing struct page where as while releasing the namespace we look at some of
+these uninitilized struct page. This results in a kernel crash as below.
 
-No, this is totally stupid. Forget about it. Sorry.
+kernel BUG at include/linux/mm.h:1034!
+cpu 0x2: Vector: 700 (Program Check) at [c00000024146b870]
+    pc: c0000000003788f8: devm_memremap_pages_release+0x258/0x3a0
+    lr: c0000000003788f4: devm_memremap_pages_release+0x254/0x3a0
+    sp: c00000024146bb00
+   msr: 800000000282b033
+  current = 0xc000000241382f00
+  paca    = 0xc00000003fffd680   irqmask: 0x03   irq_happened: 0x01
+    pid   = 4114, comm = ndctl
+ c0000000009bf8c0 devm_action_release+0x30/0x50
+ c0000000009c0938 release_nodes+0x268/0x2d0
+ c0000000009b95b4 device_release_driver_internal+0x164/0x230
+ c0000000009b638c unbind_store+0x13c/0x190
+ c0000000009b4f44 drv_attr_store+0x44/0x60
+ c00000000058ccc0 sysfs_kf_write+0x70/0xa0
+ c00000000058b52c kernfs_fop_write+0x1ac/0x290
+ c0000000004a415c __vfs_write+0x3c/0x70
+ c0000000004a85ac vfs_write+0xec/0x200
+ c0000000004a8920 ksys_write+0x80/0x130
+ c00000000000bee4 system_call+0x5c/0x70
 
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ mm/page_alloc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-> 	if IS_ERR_VALUE(ptr)		-> "(fault)"
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 59661106da16..892eabe1ec13 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5740,8 +5740,7 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+ 
+ #ifdef CONFIG_ZONE_DEVICE
+ 	/*
+-	 * Honor reservation requested by the driver for this ZONE_DEVICE
+-	 * memory. We limit the total number of pages to initialize to just
++	 * We limit the total number of pages to initialize to just
+ 	 * those that might contain the memory mapping. We will defer the
+ 	 * ZONE_DEVICE page initialization until after we have released
+ 	 * the hotplug lock.
+@@ -5750,8 +5749,6 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+ 		if (!altmap)
+ 			return;
+ 
+-		if (start_pfn == altmap->base_pfn)
+-			start_pfn += altmap->reserve;
+ 		end_pfn = altmap->base_pfn + vmem_altmap_offset(altmap);
+ 	}
+ #endif
+-- 
+2.21.0
 
-But Steven's "(fault)" is nice.
-
-	-ss
