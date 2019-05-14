@@ -1,40 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2BA1C097
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 04:27:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39E81C095
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 04:25:57 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4531kq10rTzDqHj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 12:25:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4531m74h15zDqLY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 12:27:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=git.icu
- (client-ip=163.172.180.134; helo=git.icu; envelope-from=shawn@git.icu;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=sergey.senozhatsky.work@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=git.icu
-Received: from git.icu (git.icu [163.172.180.134])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="UDw1+6Hd"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4531gv5tPRzDqGk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 12:23:23 +1000 (AEST)
-Received: from localhost.localdomain (minicloud.parqtec.unicamp.br
- [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id 546E32207C1;
- Tue, 14 May 2019 02:23:19 +0000 (UTC)
-From: Shawn Landden <shawn@git.icu>
-To: 
-Subject: [v2 2/2] [PowerPC] Allow use of SIMD in interrupts from kernel code
-Date: Mon, 13 May 2019 23:23:08 -0300
-Message-Id: <20190514022308.32363-2-shawn@git.icu>
-X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a
-In-Reply-To: <20190514022308.32363-1-shawn@git.icu>
-References: <20190513005104.20140-1-shawn@git.icu>
- <20190514022308.32363-1-shawn@git.icu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4531kP1bkCzDqJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 12:25:32 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id d31so7755263pgl.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 19:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Zi4wszV1L43AeLT0Z8PIOWy38tTYuSZF/HdHyWxecsY=;
+ b=UDw1+6HdTlVp15oFELQcYeP5tV9aX4WE2CTmk/VFT9j/uRDSGzkXgwHKipfBdjUcy6
+ iWd5TAVfBECyekH1/M3I65DO8JG6bsdwQiYpZPb+IvL2/NRDrhMlO6vl9tfI1DTC2n8V
+ ZQObeHztzolzKrcIN2b/9VCj+OdGEtNRTQMUz8nfylBLkUKYFsgCyTvqrBD8JblWqBMs
+ 2ATuHVX+eMGT7vY3UOYNRORuXGhZjogeHrl6sZejHqhzP1ylwRwstzz6oGskofNicyFJ
+ dU04R9JVeM7RaJ6I2pxqlhwoRSiRJyHo8rLCRYT0ThJgyxpnMnnsbjh3cJf1XWqOhld0
+ Moqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Zi4wszV1L43AeLT0Z8PIOWy38tTYuSZF/HdHyWxecsY=;
+ b=npvva/sVe7tTCwbS6EmrE+HTDFC2Xw+sEfkX46NG5VOoWsQZ1fGZvfxn40KvGB9AyA
+ 18MrCAckncynMyKykVl8dEa+c+Y4zNMXwJcX+TzoKJOmJJV0l2b1L4HHSyxFnyp72725
+ 6V5PA4NO3esTwZwqlYsonKKomEmiWT6adVIMK0TMcm9b9nJWEiQByuh+KLbU3UIIYbPk
+ O4+vs2tNr0eJkf5ZOCJ79UDHVbREttgu995ly5W+C8K6ugkBqzofnUh4uFDj87LfqV8t
+ tcLoRcatXfPKeDq/nerWNXDj28UJCCen/wauIkD7Fi9nkhs68FXxDCdPjUQexmUygEur
+ 4eIg==
+X-Gm-Message-State: APjAAAXSvT9OBbJyxxwUVPF9EcuyezMsBPGH3iNmd61uqAd/HcdBFHei
+ XRtACykwDwmPV5nRw1Zuxsg=
+X-Google-Smtp-Source: APXvYqwA6b0Z8MgrtwzlDdj6bF9A8j85qLr4jxGimHQO5UZWJdPr+G2gpISwBf6oV7oS7hzca+w4yw==
+X-Received: by 2002:a62:6d47:: with SMTP id i68mr37943522pfc.189.1557800730620; 
+ Mon, 13 May 2019 19:25:30 -0700 (PDT)
+Received: from localhost ([39.7.55.172])
+ by smtp.gmail.com with ESMTPSA id g83sm19072131pfb.158.2019.05.13.19.25.28
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 13 May 2019 19:25:29 -0700 (PDT)
+Date: Tue, 14 May 2019 11:25:26 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
+Message-ID: <20190514022526.GA6683@jagdpanzerIV>
+References: <20190510081635.GA4533@jagdpanzerIV>
+ <20190510084213.22149-1-pmladek@suse.com>
+ <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+ <20190514020730.GA651@jagdpanzerIV>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190514020730.GA651@jagdpanzerIV>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,182 +86,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Landden <shawn@git.icu>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ David Laight <David.Laight@aculab.com>, Stephen Rothwell <sfr@ozlabs.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This second patch is separate because it could be wrong,
-like I am not sure about how kernel thread migration works,
-and it is even allowing simd in preemptible kernel code.
+On (05/14/19 11:07), Sergey Senozhatsky wrote:
+> How about this:
+> 
+> 	if ptr < PAGE_SIZE		-> "(null)"
 
-Signed-off-by: Shawn Landden <shawn@git.icu>
----
- arch/powerpc/include/asm/switch_to.h | 15 ++-----
- arch/powerpc/kernel/process.c        | 60 ++++++++++++++++++++++++++--
- 2 files changed, 59 insertions(+), 16 deletions(-)
+No, this is totally stupid. Forget about it. Sorry.
 
-diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
-index 5b03d8a82..c79f7d24a 100644
---- a/arch/powerpc/include/asm/switch_to.h
-+++ b/arch/powerpc/include/asm/switch_to.h
-@@ -30,10 +30,7 @@ extern void enable_kernel_fp(void);
- extern void flush_fp_to_thread(struct task_struct *);
- extern void giveup_fpu(struct task_struct *);
- extern void save_fpu(struct task_struct *);
--static inline void disable_kernel_fp(void)
--{
--	msr_check_and_clear(MSR_FP);
--}
-+extern void disable_kernel_fp(void);
- #else
- static inline void save_fpu(struct task_struct *t) { }
- static inline void flush_fp_to_thread(struct task_struct *t) { }
-@@ -44,10 +41,7 @@ extern void enable_kernel_altivec(void);
- extern void flush_altivec_to_thread(struct task_struct *);
- extern void giveup_altivec(struct task_struct *);
- extern void save_altivec(struct task_struct *);
--static inline void disable_kernel_altivec(void)
--{
--	msr_check_and_clear(MSR_VEC);
--}
-+extern void disable_kernel_altivec(void);
- #else
- static inline void save_altivec(struct task_struct *t) { }
- static inline void __giveup_altivec(struct task_struct *t) { }
-@@ -56,10 +50,7 @@ static inline void __giveup_altivec(struct task_struct *t) { }
- #ifdef CONFIG_VSX
- extern void enable_kernel_vsx(void);
- extern void flush_vsx_to_thread(struct task_struct *);
--static inline void disable_kernel_vsx(void)
--{
--	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
--}
-+extern void disable_kernel_vsx(void);
- #endif
- 
- #ifdef CONFIG_SPE
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index ef534831f..d15f2cb51 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -170,6 +170,29 @@ void __msr_check_and_clear(unsigned long bits)
- EXPORT_SYMBOL(__msr_check_and_clear);
- 
- #ifdef CONFIG_PPC_FPU
-+/*
-+ * Track whether the kernel is using the FPU state
-+ * currently.
-+ *
-+ * This flag is used:
-+ *
-+ *   - by IRQ context code to potentially use the FPU
-+ *     if it's unused.
-+ *
-+ *   - to debug kernel_fpu/altivec/vsx_begin()/end() correctness
-+ */
-+static DEFINE_PER_CPU(bool, in_kernel_fpu);
-+
-+static bool kernel_fpu_disabled(void)
-+{
-+        return this_cpu_read(in_kernel_fpu);
-+}
-+
-+static bool interrupted_kernel_fpu_idle(void)
-+{
-+        return !kernel_fpu_disabled();
-+}
-+
- static void __giveup_fpu(struct task_struct *tsk)
- {
- 	unsigned long msr;
-@@ -230,7 +253,8 @@ void enable_kernel_fp(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+        WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+        this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_FP);
- 
-@@ -251,6 +275,15 @@ void enable_kernel_fp(void)
- }
- EXPORT_SYMBOL(enable_kernel_fp);
- 
-+void disable_kernel_fp(void)
-+{
-+        WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+        this_cpu_write(in_kernel_fpu, false);
-+
-+        msr_check_and_clear(MSR_FP);
-+}
-+EXPORT_SYMBOL(disable_kernel_fp);
-+
- static int restore_fp(struct task_struct *tsk)
- {
- 	if (tsk->thread.load_fp || tm_active_with_fp(tsk)) {
-@@ -295,7 +328,8 @@ void enable_kernel_altivec(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_VEC);
- 
-@@ -316,6 +350,14 @@ void enable_kernel_altivec(void)
- }
- EXPORT_SYMBOL(enable_kernel_altivec);
- 
-+extern void disable_kernel_altivec(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, false);
-+	msr_check_and_clear(MSR_VEC);
-+}
-+EXPORT_SYMBOL(disable_kernel_altivec);
-+
- /*
-  * Make sure the VMX/Altivec register state in the
-  * the thread_struct is up to date for task tsk.
-@@ -371,7 +413,8 @@ static bool interrupted_user_mode(void)
- bool may_use_simd(void)
- {
- 	return !in_interrupt() ||
--		interrupted_user_mode();
-+		interrupted_user_mode() ||
-+		interrupted_kernel_fpu_idle();
- }
- EXPORT_SYMBOL(may_use_simd);
- 
-@@ -411,7 +454,8 @@ void enable_kernel_vsx(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_FP|MSR_VEC|MSR_VSX);
- 
-@@ -433,6 +477,14 @@ void enable_kernel_vsx(void)
- }
- EXPORT_SYMBOL(enable_kernel_vsx);
- 
-+void disable_kernel_vsx(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, false);
-+	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
-+}
-+EXPORT_SYMBOL(disable_kernel_vsx);
-+
- void flush_vsx_to_thread(struct task_struct *tsk)
- {
- 	if (tsk->thread.regs) {
--- 
-2.21.0.1020.gf2820cf01a
 
+> 	if IS_ERR_VALUE(ptr)		-> "(fault)"
+
+But Steven's "(fault)" is nice.
+
+	-ss
