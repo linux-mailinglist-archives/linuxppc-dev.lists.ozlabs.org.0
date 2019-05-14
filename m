@@ -2,27 +2,27 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8191C394
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D901C399
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:04:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4537t32SYBzDqJ2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:02:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4537vp4QCRzDqHr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:04:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4537qS49bLzDqKM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:00:20 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4537sj2WCrzDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:02:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4537qS0Z2pz9sML;
- Tue, 14 May 2019 17:00:20 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4537sh6nsKz9sMr;
+ Tue, 14 May 2019 17:02:16 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
  Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -31,8 +31,8 @@ Subject: Re: [RESEND PATCH] powerpc/pseries: Fix cpu_hotplug_lock acquisition
  in resize_hpt
 In-Reply-To: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
 References: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
-Date: Tue, 14 May 2019 17:00:19 +1000
-Message-ID: <877eattta4.fsf@concordia.ellerman.id.au>
+Date: Tue, 14 May 2019 17:02:16 +1000
+Message-ID: <874l5xtt6v.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -55,16 +55,21 @@ Sender: "Linuxppc-dev"
 "Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
 > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 >
+> Subject: Re: [RESEND PATCH] powerpc/pseries: Fix cpu_hotplug_lock acquisition in resize_hpt
+
+ps. A "RESEND" implies the patch is unchanged and you're just resending
+it because it was ignored.
+
+In this case it should have just been "PATCH v2", with a note below the "---"
+saying "v2: Rebased onto powerpc/next ..."
+
+cheers
+
 > During a memory hotplug operations involving resizing of the HPT, we
 > invoke a stop_machine() to perform the resizing. In this code path, we
 > end up recursively taking the cpu_hotplug_lock, first in
 > memory_hotplug_begin() and then subsequently in stop_machine(). This
-> causes the system to hang.
-
-This implies we have never tested a memory hotplug that resized the HPT.
-Is that really true? Or did something change?
-
-> With lockdep enabled we get the following
+> causes the system to hang. With lockdep enabled we get the following
 > error message before the hang.
 >
 >   swapper/0/1 is trying to acquire lock:
@@ -72,9 +77,7 @@ Is that really true? Or did something change?
 >
 >   but task is already holding lock:
 >   (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
-
-Do we have the full stack trace?
-
+>
 >   other info that might help us debug this:
 >    Possible unsafe locking scenario:
 >
@@ -146,12 +149,6 @@ Do we have the full stack trace?
 > -/* Must be called in user context */
 > +/*
 > + * Must be called in user context. The caller should hold the
-
-I realise you're just copying that comment, but it seems wrong. "user
-context" means userspace. I think it means "process context" doesn't it?
-
-Also "should" should be "must" :)
-
 > + * cpus_lock.
 > + */
 >  static int pseries_lpar_resize_hpt(unsigned long shift)
@@ -166,5 +163,6 @@ Also "should" should be "must" :)
 > +				     &state, NULL);
 >  
 >  	t2 = ktime_get();
-
-cheers
+>  
+> -- 
+> 1.9.4
