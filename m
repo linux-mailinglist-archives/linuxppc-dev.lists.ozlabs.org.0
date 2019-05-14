@@ -2,38 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD62F1C784
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 13:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695751C801
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 13:52:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453FT82mK6zDqNb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 21:14:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453GJB70gKzDqMd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 21:52:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453FRp26LxzDqJm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 21:13:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 453FRn6GwHz9sNf;
- Tue, 14 May 2019 21:13:41 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH] powerpc/powernv/npu: Fix reference leak
-In-Reply-To: <20190513135606.7d9a0902@bahia.lan>
-References: <155568805354.600470.13376593185688810607.stgit@bahia.lan>
- <962c1d9e-719c-cb82-cabc-1cf619e1510b@ozlabs.ru>
- <20190429123659.00c0622b@bahia.lan> <20190513135606.7d9a0902@bahia.lan>
-Date: Tue, 14 May 2019 21:13:40 +1000
-Message-ID: <87sgths2zf.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453GGm1fbWzDqGQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 21:50:56 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4EBon4B104234
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 07:50:53 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sfvw0gph3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 07:50:52 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Tue, 14 May 2019 12:50:43 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 14 May 2019 12:50:42 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4EBof4w49021066
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 May 2019 11:50:41 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E54704C06D;
+ Tue, 14 May 2019 11:50:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1387D4C050;
+ Tue, 14 May 2019 11:50:40 +0000 (GMT)
+Received: from [9.109.244.72] (unknown [9.109.244.72])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 14 May 2019 11:50:39 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.8\))
+Subject: Re: Kernel OOPS followed by a panic on next20190507 with 4K page size
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <fb4c0e92-ef29-c26e-9e24-602203edd45a@c-s.fr>
+Date: Tue, 14 May 2019 17:20:39 +0530
+Content-Transfer-Encoding: quoted-printable
+References: <A4247410-7C78-4E52-AB56-1C33A6C27FF3@linux.vnet.ibm.com>
+ <0414d06e-1c4e-e9ec-e265-fd9662308df8@linux.ibm.com>
+ <4465D9C6-BE89-4215-9730-21CD40ABEA50@linux.vnet.ibm.com>
+ <fb4c0e92-ef29-c26e-9e24-602203edd45a@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+X-Mailer: Apple Mail (2.3445.104.8)
+X-TM-AS-GCONF: 00
+x-cbid: 19051411-0012-0000-0000-0000031B84CE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051411-0013-0000-0000-000021541C9B
+Message-Id: <E1BC5F49-B412-48DB-A017-80BB3C5F8F79@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-14_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905140087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,147 +92,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-next@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greg Kurz <groug@kaod.org> writes:
-> Michael,
->
-> Any comments on this patch ? Should I repost with a shorter comment
-> as suggested by Alexey ?
 
-No the longer comment seems fine to me.
 
-I'm not a big fan of the patch, it's basically a hack :)
+> On 14-May-2019, at 4:35 PM, Christophe Leroy <christophe.leroy@c-s.fr> =
+wrote:
+>=20
+>=20
+>=20
+> Le 14/05/2019 =C3=A0 10:57, Sachin Sant a =C3=A9crit :
+>>> On 14-May-2019, at 7:00 AM, Aneesh Kumar K.V =
+<aneesh.kumar@linux.ibm.com> wrote:
+>>>=20
+>>> On 5/8/19 4:30 PM, Sachin Sant wrote:
+>>>> While running LTP tests (specifically futex_wake04) against =
+next-20199597
+>>>> build with 4K page size on a POWER8 LPAR following crash is =
+observed.
+>>>> [ 4233.214876] BUG: Kernel NULL pointer dereference at 0x0000001c
+>>>> [ 4233.214898] Faulting instruction address: 0xc000000001d1e58c
+>>>> [ 4233.214905] Oops: Kernel access of bad area, sig: 11 [#1]
+>>>> [ 4233.214911] LE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2048 NUMA =
+pSeries
+>>>> [ 4233.214920] Dumping ftrace buffer:
+>>>> [ 4233.214928]    (ftrace buffer empty)
+>>>> [ 4233.214933] Modules linked in: overlay rpadlpar_io rpaphp =
+iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack =
+nf_conntrack nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4 xt_tcpudp tun =
+bridge stp llc kvm iptable_filter pseries_rng rng_core vmx_crypto =
+ip_tables x_tables autofs4 [last unloaded: dummy_del_mod]
+>>>> [ 4233.214973] CPU: 3 PID: 4635 Comm: futex_wake04 Tainted: G       =
+ W  O      5.1.0-next-20190507-autotest #1
+>>>> [ 4233.214980] NIP:  c000000001d1e58c LR: c000000001d1e54c CTR: =
+0000000000000000
+>>>> [ 4233.214987] REGS: c000000004937890 TRAP: 0300   Tainted: G       =
+ W  O       (5.1.0-next-20190507-autotest)
+>>>> [ 4233.214993] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
+22424822  XER: 00000000
+>>>> [ 4233.215005] CFAR: c00000000183e9e0 DAR: 000000000000001c DSISR: =
+40000000 IRQMASK: 0
+>>>> [ 4233.215005] GPR00: c000000001901a80 c000000004937b20 =
+c000000003938700 0000000000000000
+>>>> [ 4233.215005] GPR04: 0000000000400cc0 000000000003efff =
+000000027966e000 c000000003ba8700
+>>>> [ 4233.215005] GPR08: c000000003ba8700 000000000d601125 =
+c000000003ba8700 0000000080000000
+>>>> [ 4233.215005] GPR12: 0000000022424822 c00000001ecae280 =
+0000000000000000 0000000000000000
+>>>> [ 4233.215005] GPR16: 0000000000000000 0000000000000000 =
+0000000000000000 0000000000000000
+>>>> [ 4233.215005] GPR20: 0000000000000018 c0000000039e2d30 =
+c0000000039e2d28 c0000002762da460
+>>>> [ 4233.215005] GPR24: 000000000000001c 0000000000000000 =
+0000000000000001 c000000001901a80
+>>>> [ 4233.215005] GPR28: 0000000000400cc0 0000000000000000 =
+0000000000000000 0000000000400cc0
+>>>> [ 4233.215065] NIP [c000000001d1e58c] kmem_cache_alloc+0xbc/0x5a0
+>>>> [ 4233.215071] LR [c000000001d1e54c] kmem_cache_alloc+0x7c/0x5a0
+>>>> [ 4233.215075] Call Trace:
+>>>> [ 4233.215081] [c000000004937b20] [c000000001c91150] =
+__pud_alloc+0x160/0x200 (unreliable)
+>>>> [ 4233.215090] [c000000004937b80] [c000000001901a80] =
+huge_pte_alloc+0x580/0x950
+>>>> [ 4233.215098] [c000000004937c00] [c000000001cf7910] =
+hugetlb_fault+0x9a0/0x1250
+>>>> [ 4233.215106] [c000000004937ce0] [c000000001c94a80] =
+handle_mm_fault+0x490/0x4a0
+>>>> [ 4233.215114] [c000000004937d20] [c0000000018d529c] =
+__do_page_fault+0x77c/0x1f00
+>>>> [ 4233.215121] [c000000004937e00] [c0000000018d6a48] =
+do_page_fault+0x28/0x50
+>>>> [ 4233.215129] [c000000004937e20] [c00000000183b0d4] =
+handle_page_fault+0x18/0x38
+>>>> [ 4233.215135] Instruction dump:
+>>>> [ 4233.215139] 39290001 f92ac1b0 419e009c 3ce20027 3ba00000 =
+e927c1f0 39290001 f927c1f0
+>>>> [ 4233.215149] 3d420027 e92ac290 39290001 f92ac290 <8359001c> =
+83390018 60000000 3ce20027
+>>>=20
+>>> I did send a patch to the list to handle page allocation failures in =
+this patch. But i guess what we are finding here is get_current() =
+crashing. Any chance to bisect this?
+>>>=20
+>> Following commit seems to have introduced this problem.
+>> 723f268f19 - powerpc/mm: cleanup ifdef mess in add_huge_page_size()
+>> Reverting this patch allows the test case to execute properly without =
+a crash.
+>=20
+> Oops ...
+>=20
+> Can you check by replacing
+>=20
+> mmu_psize =3D check_and_get_huge_psize(size);
+>=20
+> by
+>=20
+> mmu_psize =3D check_and_get_huge_psize(shift);
+>=20
+> in add_huge_page_size()
 
-But for a backportable fix I guess it is OK.
+Yup this allowed the test to PASS without any crash.
 
-I would be happier though if we eventually fix up the code to do the
-refcounting properly.
+Thanks
+-Sachin
 
-cheers
-
-> On Mon, 29 Apr 2019 12:36:59 +0200
-> Greg Kurz <groug@kaod.org> wrote:
->> On Mon, 29 Apr 2019 16:01:29 +1000
->> Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->> 
->> > On 20/04/2019 01:34, Greg Kurz wrote:  
->> > > Since 902bdc57451c, get_pci_dev() calls pci_get_domain_bus_and_slot(). This
->> > > has the effect of incrementing the reference count of the PCI device, as
->> > > explained in drivers/pci/search.c:
->> > > 
->> > >  * Given a PCI domain, bus, and slot/function number, the desired PCI
->> > >  * device is located in the list of PCI devices. If the device is
->> > >  * found, its reference count is increased and this function returns a
->> > >  * pointer to its data structure.  The caller must decrement the
->> > >  * reference count by calling pci_dev_put().  If no device is found,
->> > >  * %NULL is returned.
->> > > 
->> > > Nothing was done to call pci_dev_put() and the reference count of GPU and
->> > > NPU PCI devices rockets up.
->> > > 
->> > > A natural way to fix this would be to teach the callers about the change,
->> > > so that they call pci_dev_put() when done with the pointer. This turns
->> > > out to be quite intrusive, as it affects many paths in npu-dma.c,
->> > > pci-ioda.c and vfio_pci_nvlink2.c.    
->> > 
->> > 
->> > afaict this referencing is only done to protect the current traverser
->> > and what you've done is actually a natural way (and the generic
->> > pci_get_dev_by_id() does exactly the same), although this looks a bit weird.
->> >   
->> 
->> Not exactly the same: pci_get_dev_by_id() always increment the refcount
->> of the returned PCI device. The refcount is only decremented when this
->> device is passed to pci_get_dev_by_id() to continue searching.
->> 
->> That means that the users of the PCI device pointer returned by
->> pci_get_dev_by_id() or its exported variants pci_get_subsys(),
->> pci_get_device() and pci_get_class() do handle the refcount. They
->> all pass the pointer to pci_dev_put() or continue the search,
->> which calls pci_dev_put() internally.
->> 
->> Direct and indirect callers of get_pci_dev() don't care for the
->> refcount at all unless I'm missing something.
->> 
->> >   
->> > > Also, the issue appeared in 4.16 and
->> > > some affected code got moved around since then: it would be problematic
->> > > to backport the fix to stable releases.
->> > > 
->> > > All that code never cared for reference counting anyway. Call pci_dev_put()
->> > > from get_pci_dev() to revert to the previous behavior.    
->> > >> Fixes: 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary pcidev    
->> > from pci_dn")  
->> > > Cc: stable@vger.kernel.org # v4.16
->> > > Signed-off-by: Greg Kurz <groug@kaod.org>
->> > > ---
->> > >  arch/powerpc/platforms/powernv/npu-dma.c |   15 ++++++++++++++-
->> > >  1 file changed, 14 insertions(+), 1 deletion(-)
->> > > 
->> > > diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
->> > > index e713ade30087..d8f3647e8fb2 100644
->> > > --- a/arch/powerpc/platforms/powernv/npu-dma.c
->> > > +++ b/arch/powerpc/platforms/powernv/npu-dma.c
->> > > @@ -31,9 +31,22 @@ static DEFINE_SPINLOCK(npu_context_lock);
->> > >  static struct pci_dev *get_pci_dev(struct device_node *dn)
->> > >  {
->> > >  	struct pci_dn *pdn = PCI_DN(dn);
->> > > +	struct pci_dev *pdev;
->> > >  
->> > > -	return pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
->> > > +	pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdn->phb->bus),
->> > >  					   pdn->busno, pdn->devfn);
->> > > +
->> > > +	/*
->> > > +	 * pci_get_domain_bus_and_slot() increased the reference count of
->> > > +	 * the PCI device, but callers don't need that actually as the PE
->> > > +	 * already holds a reference to the device.    
->> > 
->> > Imho this would be just enough.
->> > 
->> > Anyway,
->> > 
->> > Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->> >   
->> 
->> Thanks !
->> 
->> I now realize that I forgot to add the --cc option for stable on my stgit
->> command line :-\.
->> 
->> Cc'ing now.
->> 
->> > 
->> > How did you find it? :)
->> >   
->> 
->> While reading code to find some inspiration for OpenCAPI passthrough. :)
->> 
->> I saw the following in vfio_pci_ibm_npu2_init():
->> 
->> 	if (!pnv_pci_get_gpu_dev(vdev->pdev))
->> 		return -ENODEV;
->> 
->> and simply followed the function calls.
->> 
->> >   
->> > > Since callers aren't
->> > > +	 * aware of the reference count change, call pci_dev_put() now to
->> > > +	 * avoid leaks.
->> > > +	 */
->> > > +	if (pdev)
->> > > +		pci_dev_put(pdev);
->> > > +
->> > > +	return pdev;
->> > >  }
->> > >  
->> > >  /* Given a NPU device get the associated PCI device. */
->> > >     
->> >   
->> 
