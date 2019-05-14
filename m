@@ -2,51 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915251C18A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 06:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F360D1C192
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 06:52:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4534w66PHFzDqJg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 14:49:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45350L2HB1zDqGv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 14:52:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4534tQ3XjxzDqGh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 14:47:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.b="PKjr3tAk"; 
+ spf=pass (mailfrom) smtp.mailfrom=infinera.com
+ (client-ip=40.107.72.82; helo=nam05-co1-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=infinera.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=infinera.com header.i=@infinera.com header.b="ZMoyB01O";
  dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 4534tP4W7Bz9sBp;
- Tue, 14 May 2019 14:47:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1557809261;
- bh=VtJj0VOx2h4g4hoSssZkg+Fv5J3it7yXwE9F2jfbRXQ=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=PKjr3tAk0seVlBPi9lGb1QcKoeCg8yR9oDAWmXrwdk9n8/7GpEKkmS5KHbjWcLjo0
- hggpRmeGRqC9zDAj9t/xTPQLqYWUJY/yRScyUC1XRz7uowBvqNdxaCUEXokZ0wV3RZ
- xevBr09EEpwDVRgf+XeLGqygvVVB8i3CGM2ie1Z33O2cpFccVPmJA6+/XVsWC5thFb
- NflNiXwWbo6RwRlfgpEbMYQ7EON+7h85JWonKslC6GQRMDdJPg2eGyb20tMV7st9+Q
- j0Qgxgip5Ywan7nF1kfV4VL9dGN1RvllTPI1mnzlzGElsVy+m9ehZzNgHhIPFfZ0Gs
- bBfUCkJ35eb6g==
-Received: by neuling.org (Postfix, from userid 1000)
- id 916652A2592; Tue, 14 May 2019 14:47:41 +1000 (AEST)
-Message-ID: <4ae1ab46779c5724d129bbeb62859e288ff7dffa.camel@neuling.org>
-Subject: Re: [PATCH v2] powerpc: Fix compile issue with force DAWR
-From: Michael Neuling <mikey@neuling.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, mpe@ellerman.id.au
-Date: Tue, 14 May 2019 14:47:41 +1000
-In-Reply-To: <f1015de7-faf1-ae6d-d1f9-9c904f19c58b@c-s.fr>
-References: <20190513071703.25243-1-mikey@neuling.org>
- <f1015de7-faf1-ae6d-d1f9-9c904f19c58b@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+Received: from NAM05-CO1-obe.outbound.protection.outlook.com
+ (mail-eopbgr720082.outbound.protection.outlook.com [40.107.72.82])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4534z34z46zDq8D
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 14:51:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ahY3PwDdvXvvZ3EwGRlFE5BFyjFOgSVg0fQHVXgQfc4=;
+ b=ZMoyB01O2yYs7tKRHoQDbos461ACh2JQZZ6EJHApFP5EF0cVOmpy5soxX7NePP53R1/4gqai40ieFLp1DJhA2RC8SCd1Uriq+/Fttt4LntvJ+En81Lrp7UiZeX9u+yzQn+Ox3QBeKp02kOs/9YZYUMJJh8H/sGNJEDLIe51Oo7Q=
+Received: from BYAPR10MB3541.namprd10.prod.outlook.com (20.179.62.206) by
+ BYAPR10MB2648.namprd10.prod.outlook.com (52.135.217.23) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1878.22; Tue, 14 May 2019 04:51:36 +0000
+Received: from BYAPR10MB3541.namprd10.prod.outlook.com
+ ([fe80::bda3:184c:7f59:f7ab]) by BYAPR10MB3541.namprd10.prod.outlook.com
+ ([fe80::bda3:184c:7f59:f7ab%7]) with mapi id 15.20.1878.024; Tue, 14 May 2019
+ 04:51:35 +0000
+From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "leoyang.li@nxp.com" <leoyang.li@nxp.com>,
+ "roy.pledge@nxp.com" <roy.pledge@nxp.com>
+Subject: Re: [PATCH v1 4/8] soc/fsl/qbman: Use index when accessing device
+ tree properties
+Thread-Topic: [PATCH v1 4/8] soc/fsl/qbman: Use index when accessing device
+ tree properties
+Thread-Index: AQHVCadY7pF1Pe9lUE2omDuEjFRsAaZqDhiA
+Date: Tue, 14 May 2019 04:51:35 +0000
+Message-ID: <6c97a9105fe35d2afdcd2e481d109521c7acb235.camel@infinera.com>
+References: <1557763756-24118-1-git-send-email-roy.pledge@nxp.com>
+ <1557763756-24118-5-git-send-email-roy.pledge@nxp.com>
+ <1afd837287cebccfc1dd68365870d0f5d1cf27f7.camel@infinera.com>
+ <DB6PR0402MB27278B23001A8965AE493CE3860F0@DB6PR0402MB2727.eurprd04.prod.outlook.com>
+In-Reply-To: <DB6PR0402MB27278B23001A8965AE493CE3860F0@DB6PR0402MB2727.eurprd04.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Joakim.Tjernlund@infinera.com; 
+x-originating-ip: [88.131.87.201]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 686b4a25-3963-426e-adf7-08d6d827d80d
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);
+ SRVR:BYAPR10MB2648; 
+x-ms-traffictypediagnostic: BYAPR10MB2648:
+x-microsoft-antispam-prvs: <BYAPR10MB26482D13BAFCC20A2997174BF4080@BYAPR10MB2648.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0037FD6480
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(136003)(376002)(39860400002)(346002)(396003)(366004)(189003)(199004)(486006)(2201001)(53936002)(66476007)(110136005)(446003)(54906003)(11346002)(14454004)(66066001)(66446008)(118296001)(8676002)(66556008)(2616005)(91956017)(73956011)(76116006)(476003)(66946007)(64756008)(86362001)(5660300002)(6512007)(2906002)(6436002)(36756003)(229853002)(53546011)(71190400001)(102836004)(71200400001)(186003)(5024004)(76176011)(256004)(8936002)(26005)(81166006)(14444005)(7736002)(6246003)(99286004)(316002)(478600001)(305945005)(25786009)(68736007)(4326008)(2501003)(6506007)(6486002)(72206003)(6116002)(3846002)(81156014);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:BYAPR10MB2648;
+ H:BYAPR10MB3541.namprd10.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: infinera.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 4PRavAMl7Zjm13s/FrQqJX8g8RklWNI5dUJIyjva8xPZVYu94PyTLe5txwL+8DTjzrL/jWG7BPQXam2qAsnN0aZ4pzTyqHl9xHuiYYLl6Gb7bNCcKPcUYXA1zqWJ3udoh6YoJuQsIW+sBuwE+k286mmhRzTpSdBAARtKubYS46lLziZqFC3+hjKzdlyydeyT8gz5znlWHNwc/d9LEjAf/dM8a6VapntTeDyNt3aOOYPjfAAG5ihcG79jzQHUIwagiTypDhrUZqQqFGSsAVBF2uWcO+CxtmutVEge5bznGYH56uCvtBc2VOWFqwfUwaRLH6ZYN0l7bVyWufPniGE+GTE8ypnWi56f3zAs2ALhokyzthWz2iM7K7GSSF/1YS5BN9rtcucJcHyOkjFS7/gv1I7Crhn+4zxCIKM0k5DzUtY=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1FCAA9E0AEB788468E4FCE14DAE4DCAD@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 686b4a25-3963-426e-adf7-08d6d827d80d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 May 2019 04:51:35.6904 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB2648
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,404 +102,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "laurentiu.tudor@nxp.com" <laurentiu.tudor@nxp.com>,
+ "madalin.bucur@nxp.com" <madalin.bucur@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-05-13 at 11:08 +0200, Christophe Leroy wrote:
->=20
-> Le 13/05/2019 =C3=A0 09:17, Michael Neuling a =C3=A9crit :
-> > If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
-> > at linking with:
-> >    arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined
-> > reference to `dawr_force_enable'
-> >=20
-> > This was caused by commit c1fe190c0672 ("powerpc: Add force enable of
-> > DAWR on P9 option").
-> >=20
-> > This puts more of the dawr infrastructure in a new file.
->=20
-> I think you are doing a bit more than that. I think you should explain=
-=20
-> that you define a new CONFIG_ option, when it is selected, etc ...
->=20
-> The commit you are referring to is talking about P9. It looks like your=
-=20
-> patch covers a lot more, so it should be mentionned her I guess.
-
-Not really. It looks like I'm doing a lot but I'm really just moving code a=
-round
-to deal with the ugliness of a bunch of config options and dependencies.=
-=20
-
-> > Signed-off-by: Michael Neuling <mikey@neuling.org>
->=20
-> You should add a Fixes: tag, ie:
->=20
-> Fixes: c1fe190c0672 ("powerpc: Add force enable of DAWR on P9 option")
-
-Ok
-
->=20
-> > --
-> > v2:
-> >    Fixes based on Christophe Leroy's comments:
-> >    - Fix commit message formatting
-> >    - Move more DAWR code into dawr.c
-> > ---
-> >   arch/powerpc/Kconfig                     |  5 ++
-> >   arch/powerpc/include/asm/hw_breakpoint.h | 20 ++++---
-> >   arch/powerpc/kernel/Makefile             |  1 +
-> >   arch/powerpc/kernel/dawr.c               | 75 +++++++++++++++++++++++=
-+
-> >   arch/powerpc/kernel/hw_breakpoint.c      | 56 ------------------
-> >   arch/powerpc/kvm/Kconfig                 |  1 +
-> >   6 files changed, 94 insertions(+), 64 deletions(-)
-> >   create mode 100644 arch/powerpc/kernel/dawr.c
-> >=20
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 2711aac246..f4b19e48cc 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -242,6 +242,7 @@ config PPC
-> >   	select SYSCTL_EXCEPTION_TRACE
-> >   	select THREAD_INFO_IN_TASK
-> >   	select VIRT_TO_BUS			if !PPC64
-> > +	select PPC_DAWR_FORCE_ENABLE		if PPC64 || PERF
->=20
-> What's PERF ? Did you mean PERF_EVENTS ?
->=20
-> Then what you mean is:
-> - Selected all the time for PPC64
-> - Selected for PPC32 when PERF is also selected.
->=20
-> Is that what you want ? At first I thought it was linked to P9.
-
-This is wrong.  I think we just want PPC64. PERF is a red herring.
-
-> And ... did you read below statement ?
-
-Clearly not :-)
-
->=20
-> >   	#
-> >   	# Please keep this list sorted alphabetically.
-> >   	#
-> > @@ -369,6 +370,10 @@ config PPC_ADV_DEBUG_DAC_RANGE
-> >   	depends on PPC_ADV_DEBUG_REGS && 44x
-> >   	default y
-> >  =20
-> > +config PPC_DAWR_FORCE_ENABLE
-> > +	bool
-> > +	default y
-> > +
->=20
-> Why defaulting it to y. Then how is it set to n ?
-
-Good point.
-
->=20
-> >   config ZONE_DMA
-> >   	bool
-> >   	default y if PPC_BOOK3E_64
-> > diff --git a/arch/powerpc/include/asm/hw_breakpoint.h
-> > b/arch/powerpc/include/asm/hw_breakpoint.h
-> > index 0fe8c1e46b..ffbc8eab41 100644
-> > --- a/arch/powerpc/include/asm/hw_breakpoint.h
-> > +++ b/arch/powerpc/include/asm/hw_breakpoint.h
-> > @@ -47,6 +47,8 @@ struct arch_hw_breakpoint {
-> >   #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL |
-> > \
-> >   				 HW_BRK_TYPE_HYP)
-> >  =20
-> > +extern int set_dawr(struct arch_hw_breakpoint *brk);
-> > +
-> >   #ifdef CONFIG_HAVE_HW_BREAKPOINT
-> >   #include <linux/kdebug.h>
-> >   #include <asm/reg.h>
-> > @@ -90,18 +92,20 @@ static inline void hw_breakpoint_disable(void)
-> >   extern void thread_change_pc(struct task_struct *tsk, struct pt_regs
-> > *regs);
-> >   int hw_breakpoint_handler(struct die_args *args);
-> >  =20
-> > -extern int set_dawr(struct arch_hw_breakpoint *brk);
-> > -extern bool dawr_force_enable;
-> > -static inline bool dawr_enabled(void)
-> > -{
-> > -	return dawr_force_enable;
-> > -}
-> > -
->=20
-> That's a very simple function, why not keep it here (or in another .h)=
-=20
-> as 'static inline' ?
-
-Sure.
-
-> >   #else	/* CONFIG_HAVE_HW_BREAKPOINT */
-> >   static inline void hw_breakpoint_disable(void) { }
-> >   static inline void thread_change_pc(struct task_struct *tsk,
-> >   					struct pt_regs *regs) { }
-> > -static inline bool dawr_enabled(void) { return false; }
-> > +
-> >   #endif	/* CONFIG_HAVE_HW_BREAKPOINT */
-> > +
-> > +extern bool dawr_force_enable;
-> > +
-> > +#ifdef CONFIG_PPC_DAWR_FORCE_ENABLE
-> > +extern bool dawr_enabled(void);
->=20
-> Functions should not be 'extern'. I'm sure checkpatch --strict will tell=
-=20
-> you.
-
-That's not what's currently being done in this header file.  I'm keeping wi=
-th
-the style of that file.
-
-> > +#else
-> > +#define dawr_enabled() true
->=20
-> true by default ?
-> Previously it was false by default.
-
-Thanks, yeah that's wrong but I need to rethink the config option to make i=
-t
-CONFIG_PPC_DAWR.=20
-
-This patch is far more difficult than it should be due to the mess that
-CONFIG_HAVE_HW_BREAKPOINT and CONFIG_PPC_ADV_DEBUG_REGS creates in ptrace.c=
- and
-process.c. We really need to fix up=20
-https://github.com/linuxppc/issues/issues/128
-
-> And why a #define ? That's better to keep a static inline.
-
-Changed.
-
->=20
-> > +#endif
-> > +
-> >   #endif	/* __KERNEL__ */
-> >   #endif	/* _PPC_BOOK3S_64_HW_BREAKPOINT_H */
-> > diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefil=
-e
-> > index 0ea6c4aa3a..a9c497c34f 100644
-> > --- a/arch/powerpc/kernel/Makefile
-> > +++ b/arch/powerpc/kernel/Makefile
-> > @@ -56,6 +56,7 @@ obj-$(CONFIG_PPC64)		+=3D setup_64.o
-> > sys_ppc32.o \
-> >   obj-$(CONFIG_VDSO32)		+=3D vdso32/
-> >   obj-$(CONFIG_PPC_WATCHDOG)	+=3D watchdog.o
-> >   obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+=3D hw_breakpoint.o
-> > +obj-$(CONFIG_PPC_DAWR_FORCE_ENABLE)	+=3D dawr.o
-> >   obj-$(CONFIG_PPC_BOOK3S_64)	+=3D cpu_setup_ppc970.o cpu_setup_pa6t.o
-> >   obj-$(CONFIG_PPC_BOOK3S_64)	+=3D cpu_setup_power.o
-> >   obj-$(CONFIG_PPC_BOOK3S_64)	+=3D mce.o mce_power.o
-> > diff --git a/arch/powerpc/kernel/dawr.c b/arch/powerpc/kernel/dawr.c
-> > new file mode 100644
-> > index 0000000000..cf1d02fe1e
-> > --- /dev/null
-> > +++ b/arch/powerpc/kernel/dawr.c
-> > @@ -0,0 +1,75 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +//
-> > +// DAWR infrastructure
-> > +//
-> > +// Copyright 2019, Michael Neuling, IBM Corporation.
-> > +
-> > +#include <linux/types.h>
-> > +#include <linux/export.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/debugfs.h>
-> > +#include <asm/debugfs.h>
-> > +#include <asm/machdep.h>
-> > +#include <asm/hvcall.h>
-> > +
-> > +bool dawr_force_enable;
-> > +EXPORT_SYMBOL_GPL(dawr_force_enable);
-> > +
-> > +extern bool dawr_enabled(void)
->=20
-> extern ????
-
-oops
->=20
-> > +{
-> > +	return dawr_force_enable;
-> > +}
-> > +EXPORT_SYMBOL_GPL(dawr_enabled);
->=20
-> Since dawr_force_enable is also exported, I see no point in having such=
-=20
-> a tiny function as an exported function, was better as a 'static inline'.
-
-Yep, changed to static inline.
-
-> > +
-> > +static ssize_t dawr_write_file_bool(struct file *file,
-> > +				    const char __user *user_buf,
-> > +				    size_t count, loff_t *ppos)
-> > +{
-> > +	struct arch_hw_breakpoint null_brk =3D {0, 0, 0};
-> > +	size_t rc;
-> > +
-> > +	/* Send error to user if they hypervisor won't allow us to write DAWR=
- */
-> > +	if ((!dawr_force_enable) &&
-> > +	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
-> > +	    (set_dawr(&null_brk) !=3D H_SUCCESS))
->=20
-> The above is not real clear.
-> set_dabr() returns 0, H_SUCCESS is not used there.
-
-It pseries_set_dawr() will return a hcall number.
-
-This code hasn't changed. I'm just moving it.
-
->=20
-> > +		return -1;
-> > +
-> > +	rc =3D debugfs_write_file_bool(file, user_buf, count, ppos);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> > +	/* If we are clearing, make sure all CPUs have the DAWR cleared */
-> > +	if (!dawr_force_enable)
-> > +		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-> > +
-> > +	return rc;
-> > +}
-> > +
-> > +static const struct file_operations dawr_enable_fops =3D {
-> > +	.read =3D		debugfs_read_file_bool,
-> > +	.write =3D	dawr_write_file_bool,
-> > +	.open =3D		simple_open,
-> > +	.llseek =3D	default_llseek,
-> > +};
-> > +
-> > +static int __init dawr_force_setup(void)
-> > +{
-> > +	dawr_force_enable =3D false;
->=20
-> The above is not needed, the BSS is zeroised at kernel startup.
->=20
-> > +
-> > +	if (cpu_has_feature(CPU_FTR_DAWR)) {
-> > +		/* Don't setup sysfs file for user control on P8 */
-> > +		dawr_force_enable =3D true;
->=20
-> Strange comment, word "don't" doesn't really fit with a 'true'
->=20
-> > +		return 0;
-> > +	}
-> > +
-> > +	if (PVR_VER(mfspr(SPRN_PVR)) =3D=3D PVR_POWER9) {
->=20
-> You could use pvr_version_is(PVR_POWER9) instead of open codiing.
-
-All this code hasn't changed. I'm just moving it.
-
-Feel free to clean it up but lets fix a real problem here.
-
->=20
-> > +		/* Turn DAWR off by default, but allow admin to turn it on */
-> > +		dawr_force_enable =3D false;
-> > +		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
-> > +					   powerpc_debugfs_root,
-> > +					   &dawr_force_enable,
-> > +					   &dawr_enable_fops);
-> > +	}
-> > +	return 0;
-> > +}
-> > +arch_initcall(dawr_force_setup);
->=20
-> Wouldn't it also make sense to move set_dawr() from process.c to here ?
-
-Yep, done.
-
->=20
-> > diff --git a/arch/powerpc/kernel/hw_breakpoint.c
-> > b/arch/powerpc/kernel/hw_breakpoint.c
-> > index da307dd93e..95605a9c9a 100644
-> > --- a/arch/powerpc/kernel/hw_breakpoint.c
-> > +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> > @@ -380,59 +380,3 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
-> >   {
-> >   	/* TODO */
-> >   }
-> > -
-> > -bool dawr_force_enable;
-> > -EXPORT_SYMBOL_GPL(dawr_force_enable);
-> > -
-> > -static ssize_t dawr_write_file_bool(struct file *file,
-> > -				    const char __user *user_buf,
-> > -				    size_t count, loff_t *ppos)
-> > -{
-> > -	struct arch_hw_breakpoint null_brk =3D {0, 0, 0};
-> > -	size_t rc;
-> > -
-> > -	/* Send error to user if they hypervisor won't allow us to write DAWR=
- */
-> > -	if ((!dawr_force_enable) &&
-> > -	    (firmware_has_feature(FW_FEATURE_LPAR)) &&
-> > -	    (set_dawr(&null_brk) !=3D H_SUCCESS))
-> > -		return -1;
-> > -
-> > -	rc =3D debugfs_write_file_bool(file, user_buf, count, ppos);
-> > -	if (rc)
-> > -		return rc;
-> > -
-> > -	/* If we are clearing, make sure all CPUs have the DAWR cleared */
-> > -	if (!dawr_force_enable)
-> > -		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-> > -
-> > -	return rc;
-> > -}
-> > -
-> > -static const struct file_operations dawr_enable_fops =3D {
-> > -	.read =3D		debugfs_read_file_bool,
-> > -	.write =3D	dawr_write_file_bool,
-> > -	.open =3D		simple_open,
-> > -	.llseek =3D	default_llseek,
-> > -};
-> > -
-> > -static int __init dawr_force_setup(void)
-> > -{
-> > -	dawr_force_enable =3D false;
-> > -
-> > -	if (cpu_has_feature(CPU_FTR_DAWR)) {
-> > -		/* Don't setup sysfs file for user control on P8 */
-> > -		dawr_force_enable =3D true;
-> > -		return 0;
-> > -	}
-> > -
-> > -	if (PVR_VER(mfspr(SPRN_PVR)) =3D=3D PVR_POWER9) {
-> > -		/* Turn DAWR off by default, but allow admin to turn it on */
-> > -		dawr_force_enable =3D false;
-> > -		debugfs_create_file_unsafe("dawr_enable_dangerous", 0600,
-> > -					   powerpc_debugfs_root,
-> > -					   &dawr_force_enable,
-> > -					   &dawr_enable_fops);
-> > -	}
-> > -	return 0;
-> > -}
-> > -arch_initcall(dawr_force_setup);
-> > diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-> > index bfdde04e49..9c0d315108 100644
-> > --- a/arch/powerpc/kvm/Kconfig
-> > +++ b/arch/powerpc/kvm/Kconfig
-> > @@ -39,6 +39,7 @@ config KVM_BOOK3S_32_HANDLER
-> >   config KVM_BOOK3S_64_HANDLER
-> >   	bool
-> >   	select KVM_BOOK3S_HANDLER
-> > +	select PPC_DAWR_FORCE_ENABLE
-> >  =20
-> >   config KVM_BOOK3S_PR_POSSIBLE
-> >   	bool
-> >=20
->=20
-> Christophe
->=20
-
+T24gTW9uLCAyMDE5LTA1LTEzIGF0IDE3OjQwICswMDAwLCBSb3kgUGxlZGdlIHdyb3RlOg0KPiBD
+QVVUSU9OOiBUaGlzIGVtYWlsIG9yaWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBvcmdhbml6
+YXRpb24uIERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3Ug
+cmVjb2duaXplIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4gDQo+
+IA0KPiBPbiA1LzEzLzIwMTkgMTI6NDAgUE0sIEpvYWtpbSBUamVybmx1bmQgd3JvdGU6DQo+ID4g
+T24gTW9uLCAyMDE5LTA1LTEzIGF0IDE2OjA5ICswMDAwLCBSb3kgUGxlZGdlIHdyb3RlOg0KPiA+
+ID4gVGhlIGluZGV4IHZhbHVlIHNob3VsZCBiZSBwYXNzZWQgdG8gdGhlIG9mX3BhcnNlX3BoYW5k
+bGUoKQ0KPiA+ID4gZnVuY3Rpb24gdG8gZW5zdXJlIHRoZSBjb3JyZWN0IHByb3BlcnR5IGlzIHJl
+YWQuDQo+ID4gSXMgdGhpcyBhIGJ1ZyBmaXg/IE1heWJlIGZvciBzdGFibGUgdG9vPw0KPiA+IA0K
+PiA+ICBKb2NrZQ0KPiBZZXMgdGhpcyBjb3VsZCBnbyB0byBzdGFibGUuICBJIHdpbGwgaW5jbHVk
+ZSBzdGFibGVAdmdlci5rZXJuZWwub3JnIHdoZW4NCj4gSSBzZW5kIHRoZSBuZXh0IHZlcnNpb24u
+DQoNCkkgdGhpbmsgeW91IG5lZWQgdG8gc2VuZCB0aGlzIHBhdGNoIHNlcGFyYXRlbHkgdGhlbi4g
+VGhlIHdob2xlIHNlcmllcyBjYW5ub3QgZ28gdG8gc3RhYmxlLg0KDQogSm9ja2UNCg0KPiA+ID4g
+U2lnbmVkLW9mZi1ieTogUm95IFBsZWRnZSA8cm95LnBsZWRnZUBueHAuY29tPg0KPiA+ID4gLS0t
+DQo+ID4gPiAgZHJpdmVycy9zb2MvZnNsL3FibWFuL2RwYWFfc3lzLmMgfCAyICstDQo+ID4gPiAg
+MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4gPiANCj4g
+PiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NvYy9mc2wvcWJtYW4vZHBhYV9zeXMuYyBiL2RyaXZl
+cnMvc29jL2ZzbC9xYm1hbi9kcGFhX3N5cy5jDQo+ID4gPiBpbmRleCAzZTBhN2YzLi4wYjkwMWE4
+IDEwMDY0NA0KPiA+ID4gLS0tIGEvZHJpdmVycy9zb2MvZnNsL3FibWFuL2RwYWFfc3lzLmMNCj4g
+PiA+ICsrKyBiL2RyaXZlcnMvc29jL2ZzbC9xYm1hbi9kcGFhX3N5cy5jDQo+ID4gPiBAQCAtNDks
+NyArNDksNyBAQCBpbnQgcWJtYW5faW5pdF9wcml2YXRlX21lbShzdHJ1Y3QgZGV2aWNlICpkZXYs
+IGludCBpZHgsIGRtYV9hZGRyX3QgKmFkZHIsDQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAg
+ICBpZHgsIHJldCk7DQo+ID4gPiAgICAgICAgICAgICAgICAgcmV0dXJuIC1FTk9ERVY7DQo+ID4g
+PiAgICAgICAgIH0NCj4gPiA+IC0gICAgICAgbWVtX25vZGUgPSBvZl9wYXJzZV9waGFuZGxlKGRl
+di0+b2Zfbm9kZSwgIm1lbW9yeS1yZWdpb24iLCAwKTsNCj4gPiA+ICsgICAgICAgbWVtX25vZGUg
+PSBvZl9wYXJzZV9waGFuZGxlKGRldi0+b2Zfbm9kZSwgIm1lbW9yeS1yZWdpb24iLCBpZHgpOw0K
+PiA+ID4gICAgICAgICBpZiAobWVtX25vZGUpIHsNCj4gPiA+ICAgICAgICAgICAgICAgICByZXQg
+PSBvZl9wcm9wZXJ0eV9yZWFkX3U2NChtZW1fbm9kZSwgInNpemUiLCAmc2l6ZTY0KTsNCj4gPiA+
+ICAgICAgICAgICAgICAgICBpZiAocmV0KSB7DQo+ID4gPiAtLQ0KPiA+ID4gMi43LjQNCj4gPiA+
+IA0KDQo=
