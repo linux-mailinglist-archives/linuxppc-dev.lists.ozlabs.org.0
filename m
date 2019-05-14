@@ -1,40 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C391C392
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:01:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4537rP53d2zDq9J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:01:09 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8191C394
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:02:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4537t32SYBzDqJ2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:02:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4537kY4byZzDqJk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 16:56:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4537qS49bLzDqKM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:00:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4537kY0Mcqz9sML;
- Tue, 14 May 2019 16:56:05 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4537qS0Z2pz9sML;
+ Tue, 14 May 2019 17:00:20 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Vitaly Bordug <vitb@kernel.crashing.org>,
- Scott Wood <oss@buserror.net>
-Subject: Re: [PATCH 2/2] powerpc/8xx: Add microcode patch to move SMC
- parameter RAM.
-In-Reply-To: <dd715639629639505ef4edd36d5a1aa4361e6edf.1557487355.git.christophe.leroy@c-s.fr>
-References: <35488171038e3d40e7680b8513dfbd52ff7b6ef2.1557487355.git.christophe.leroy@c-s.fr>
- <dd715639629639505ef4edd36d5a1aa4361e6edf.1557487355.git.christophe.leroy@c-s.fr>
-Date: Tue, 14 May 2019 16:56:04 +1000
-Message-ID: <87a7fptth7.fsf@concordia.ellerman.id.au>
+To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RESEND PATCH] powerpc/pseries: Fix cpu_hotplug_lock acquisition
+ in resize_hpt
+In-Reply-To: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
+Date: Tue, 14 May 2019 17:00:19 +1000
+Message-ID: <877eattta4.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,52 +46,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
+> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+>
+> During a memory hotplug operations involving resizing of the HPT, we
+> invoke a stop_machine() to perform the resizing. In this code path, we
+> end up recursively taking the cpu_hotplug_lock, first in
+> memory_hotplug_begin() and then subsequently in stop_machine(). This
+> causes the system to hang.
 
-> Some SCC functions like the QMC requires an extended parameter RAM.
-> On modern 8xx (ie 866 and 885), SPI area can already be relocated,
-> allowing the use of those functions on SCC2. But SCC3 and SCC4
-> parameter RAM collide with SMC1 and SMC2 parameter RAMs.
+This implies we have never tested a memory hotplug that resized the HPT.
+Is that really true? Or did something change?
+
+> With lockdep enabled we get the following
+> error message before the hang.
 >
-> This patch adds microcode to allow the relocation of both SMC1 and
-> SMC2, and relocate them at offsets 0x1ec0 and 0x1fc0.
-> Those offsets are by default for the CPM1 DSP1 and DSP2, but there
-> is no kernel driver using them at the moment so this area can be
-> reused.
+>   swapper/0/1 is trying to acquire lock:
+>   (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: stop_machine+0x2c/0x60
 >
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>   but task is already holding lock:
+>   (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
+
+Do we have the full stack trace?
+
+>   other info that might help us debug this:
+>    Possible unsafe locking scenario:
+>
+>          CPU0
+>          ----
+>     lock(cpu_hotplug_lock.rw_sem);
+>     lock(cpu_hotplug_lock.rw_sem);
+>
+>    *** DEADLOCK ***
+>
+> Fix this issue by
+>   1) Requiring all the calls to pseries_lpar_resize_hpt() be made
+>      with cpu_hotplug_lock held.
+>
+>   2) In pseries_lpar_resize_hpt() invoke stop_machine_cpuslocked()
+>      as a consequence of 1)
+>
+>   3) To satisfy 1), in hpt_order_set(), call mmu_hash_ops.resize_hpt()
+>      with cpu_hotplug_lock held.
+>
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/platforms/8xx/Kconfig      |   7 ++
->  arch/powerpc/platforms/8xx/micropatch.c | 109 +++++++++++++++++++++++++++++++-
->  2 files changed, 114 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/platforms/8xx/micropatch.c b/arch/powerpc/platforms/8xx/micropatch.c
-> index 33a9042fca80..dc4423daf7d4 100644
-> --- a/arch/powerpc/platforms/8xx/micropatch.c
-> +++ b/arch/powerpc/platforms/8xx/micropatch.c
-> @@ -622,6 +622,86 @@ static uint patch_2f00[] __initdata = {
->  };
->  #endif
+> Rebased this one against powerpc/next instead of linux/master.
+>
+>  arch/powerpc/mm/book3s64/hash_utils.c | 9 ++++++++-
+>  arch/powerpc/platforms/pseries/lpar.c | 8 ++++++--
+>  2 files changed, 14 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 919a861..d07fcafd 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/libfdt.h>
+>  #include <linux/pkeys.h>
+>  #include <linux/hugetlb.h>
+> +#include <linux/cpu.h>
 >  
+>  #include <asm/debugfs.h>
+>  #include <asm/processor.h>
+> @@ -1928,10 +1929,16 @@ static int hpt_order_get(void *data, u64 *val)
+>  
+>  static int hpt_order_set(void *data, u64 val)
+>  {
+> +	int ret;
+> +
+>  	if (!mmu_hash_ops.resize_hpt)
+>  		return -ENODEV;
+>  
+> -	return mmu_hash_ops.resize_hpt(val);
+> +	cpus_read_lock();
+> +	ret = mmu_hash_ops.resize_hpt(val);
+> +	cpus_read_unlock();
+> +
+> +	return ret;
+>  }
+>  
+>  DEFINE_DEBUGFS_ATTRIBUTE(fops_hpt_order, hpt_order_get, hpt_order_set, "%llu\n");
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+> index 1034ef1..2fc9756 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -859,7 +859,10 @@ static int pseries_lpar_resize_hpt_commit(void *data)
+>  	return 0;
+>  }
+>  
+> -/* Must be called in user context */
 > +/*
-> + * SMC relocation patch arrays.
+> + * Must be called in user context. The caller should hold the
+
+I realise you're just copying that comment, but it seems wrong. "user
+context" means userspace. I think it means "process context" doesn't it?
+
+Also "should" should be "must" :)
+
+> + * cpus_lock.
 > + */
-> +
-> +#ifdef CONFIG_SMC_UCODE_PATCH
-> +
-> +static uint patch_2000[] __initdata = {
-> +	0x3fff0000, 0x3ffd0000, 0x3ffb0000, 0x3ff90000,
-> +	0x5fefeff8, 0x5f91eff8, 0x3ff30000, 0x3ff10000,
-> +	0x3a11e710, 0xedf0ccb9, 0xf318ed66, 0x7f0e5fe2,
-
-Do we have any doc on what these values are?
-
-I get that it's microcode but do we have any more detail than that?
-What's the source etc?
+>  static int pseries_lpar_resize_hpt(unsigned long shift)
+>  {
+>  	struct hpt_resize_state state = {
+> @@ -913,7 +916,8 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
+>  
+>  	t1 = ktime_get();
+>  
+> -	rc = stop_machine(pseries_lpar_resize_hpt_commit, &state, NULL);
+> +	rc = stop_machine_cpuslocked(pseries_lpar_resize_hpt_commit,
+> +				     &state, NULL);
+>  
+>  	t2 = ktime_get();
 
 cheers
