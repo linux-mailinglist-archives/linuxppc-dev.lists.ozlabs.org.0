@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A9A1E53D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:41:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6AD1E535
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:40:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453Xgf4Yw0zDqNv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:39:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453Xj86529zDqQr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:41:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,52 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="dEl4sU5q"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="lA4Lmt90"; 
  dkim-atps=neutral
 Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com
  [IPv6:2607:f8b0:4864:20::e43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453MG15mXYzDqHn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 01:35:34 +1000 (AEST)
-Received: by mail-vs1-xe43.google.com with SMTP id j184so1051686vsd.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 08:35:34 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453MSR330JzDqHx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 01:44:39 +1000 (AEST)
+Received: by mail-vs1-xe43.google.com with SMTP id v9so10645100vse.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 08:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=980y18YdjmALl59G6hcP6zEimSkBXdkpnfC5LT9sZPA=;
- b=dEl4sU5qCzg39opWx9sKU946SAsOAgMnj986H5geqhuO5V5aOb14kg8ib3YOfp+xp0
- oCLeBgPlt1A6ExI43I+0UI8Rw4XzWRzfw4HbeuUOpBTW1Gl+J9ykR3AhCrGbFIqDOXqD
- MansgszdcVbH5jBSN+Tminsuduc949LyAim6qqLQxo7OkNuCWi+ir+PEeqAduOCz0Pnd
- IvWiw/3tOSFnIGwKCGg7m5G/KJ6f4Wj0JcL5aIztSzHfAccblQEdORm7MfujPTYM9Ref
- Xu1b2iPuVe+4ij3QVNPJ7GhkP0HQ0NPPYYObP8KQe4yDlfYOdVEK3YOoz0vjfUBsGyJG
- jvDA==
+ :cc; bh=doobemoMELlPZ80bJJg6KvAJfoNs19EYl0poLKxcxQg=;
+ b=lA4Lmt908J3ykek4At0uQA8xN/0lXGKG8XsbNj/GXNpFMm/m0W7omlNLqEccef2ngn
+ UwsjdUpH7Ug/X/hEZq7K7rwBMJ4vnsbCg4cqwqhj+NCeisYdWucYvJc1n7V5WQw3IN8x
+ 4T34wpWr7kfylwXWIsNIf69Ni8yuW7sfMjrIosjqHWo9sUa0Banjd7Rfzrkq7uFQSbGH
+ QWCua/jZARJO2tzSR3cfn8L/0Z16OoA0ZYB+bcibwnmwYl26hd06pJkvSeWkU9N+mVdt
+ uqzMuGPfLINM0v8tAw1p9x+IcQI2GPAdTVMyx4WuLwNF0a4vf6PRsmk2ql/eCNLNkvvM
+ 1VDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=980y18YdjmALl59G6hcP6zEimSkBXdkpnfC5LT9sZPA=;
- b=AMrk61HjC+WCZhskRMaqR93S1v6AUTgtBmPg58cPaPvgEKggIrTAOm+BqRIy1wAlxu
- sxfVuheeSn14IBDa8B7QJrsNRCzPFgq23PbRT5FezWp+sfGKYyiLqq/cOxf3pd0nuAeM
- bPNbKF8IPryYyShHRDUH/M28qaDBBJSCSnVDErKznQke92VyIYQovIz2XJn5DDAcJJYr
- Og7uB3rxBCWlEPUJndZn9Q7/OycrHtBHEbDPb03mrpzv3VAoSXDTk4s7auttvDKThh8K
- GzLsilvl/ETEejaHupQZjqO4MliLhxdGEf3jUxS6rqZ0/xAIsU8F/VB57DbkkCQQjI//
- SIrw==
-X-Gm-Message-State: APjAAAX9RnLnoZ3kfCNo+vey9lBmQ1P/ZCDAaHb3K4CmrLF9J2wOhQkZ
- 000XE6lAfgfxXM+PmeJ7rAziywN5O3ZQL2jeEl0=
-X-Google-Smtp-Source: APXvYqwnvzd+/XMd6bd8zJb3YomBXzkYFkFjrmaLwoHy194H1LYhEzN4vDQ889gGZQZ3AbymJEk1SJG7USPvsrENYNU=
-X-Received: by 2002:a05:6102:c7:: with SMTP id
- u7mr4187174vsp.226.1557848130976; 
- Tue, 14 May 2019 08:35:30 -0700 (PDT)
+ bh=doobemoMELlPZ80bJJg6KvAJfoNs19EYl0poLKxcxQg=;
+ b=J8bDeiWUgvf38mm3u6kBsg5tM9RtjlGCxbajelo5jpfJDkIf/7gKRhDqoP6Hjyl2r0
+ 6pnNRKI0QzqOJAmWk4ew6uZ+uIcF3xw/GWrMSBidZte2Mnn3UpUEFbG1GaCE5hnBpmdC
+ 56bR4DQQ2q2sgzrEoeim7QEQmKmJ9uED9X2Um5ghh8Asm+AGdfMghn6VwpGP0yBJeCTA
+ z7qmpAShOy86hn5f6LAdPp4MWDZ+GNBWFixFj+Wm21MARMfmpCNtxei8+RhRXaGLjw+z
+ 9YAiibLcWZsH+T+dMMw98rP951T2MN7TMsNbMsxEFmUHm97jrCK3EaF3SpG2ringkLL0
+ b49g==
+X-Gm-Message-State: APjAAAVOb2VaVN4qpWKX+UQRxKNIoDR2F86dRMljoxHjE4sKGDhyBEEd
+ LxpM3wXnLdobHTh2HBhIm3AwOPbfDHE4W9PbUSJbH6D+gE8=
+X-Google-Smtp-Source: APXvYqy6RBtSnKwiBZD5aN6lGObeMGGyw/PW5+BaUMATHd9t8UP2ksrUwPFYwObS3gTKQ6tIxELOSpd3LtbShm63Zu8=
+X-Received: by 2002:a67:302:: with SMTP id 2mr16339740vsd.91.1557848676999;
+ Tue, 14 May 2019 08:44:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190513005104.20140-1-shawn@git.icu>
- <20190514022308.32363-1-shawn@git.icu>
- <20190514022308.32363-2-shawn@git.icu>
- <5f31b4964d64aea3fc31165b9cbd0b9d16fd2aa0.camel@russell.cc>
-In-Reply-To: <5f31b4964d64aea3fc31165b9cbd0b9d16fd2aa0.camel@russell.cc>
+ <20190514014412.25373-1-shawn@git.icu>
+ <a9f1e109e0b6de8abfabc62375403754ab22dcfc.camel@kernel.crashing.org>
+In-Reply-To: <a9f1e109e0b6de8abfabc62375403754ab22dcfc.camel@kernel.crashing.org>
 From: Shawn Landden <slandden@gmail.com>
-Date: Tue, 14 May 2019 10:35:19 -0500
-Message-ID: <CA+49okqe0CLOm7VXPiYp-33DjwkQ5TQXLUNrhuHiUQVBxaT2ng@mail.gmail.com>
-Subject: Re: [v2 2/2] [PowerPC] Allow use of SIMD in interrupts from kernel
- code
-To: Russell Currey <ruscur@russell.cc>
+Date: Tue, 14 May 2019 10:44:25 -0500
+Message-ID: <CA+49okqxAGaNEFJWv-P843vZ0yz0f2qvMkimtAHoCLBojrdwBQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] [PowerPC] Add simd.h implementation
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Wed, 15 May 2019 08:38:49 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,43 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 14, 2019 at 2:22 AM Russell Currey <ruscur@russell.cc> wrote:
+On Tue, May 14, 2019 at 12:43 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
 >
-> On Mon, 2019-05-13 at 23:23 -0300, Shawn Landden wrote:
-> > This second patch is separate because it could be wrong,
-> > like I am not sure about how kernel thread migration works,
-> > and it is even allowing simd in preemptible kernel code.
-> >
-> > Signed-off-by: Shawn Landden <shawn@git.icu>
-> > ---
+> On Mon, 2019-05-13 at 22:44 -0300, Shawn Landden wrote:
+> > +
+> > +/*
+> > + * Were we in user mode when we were
+> > + * interrupted?
+> > + *
+> > + * Doing kernel_altivec/vsx_begin/end() is ok if we are running
+> > + * in an interrupt context from user mode - we'll just
+> > + * save the FPU state as required.
+> > + */
+> > +static bool interrupted_user_mode(void)
+> > +{
+> > +       struct pt_regs *regs = get_irq_regs();
+> > +
+> > +       return regs && user_mode(regs);
+> > +}
+> > +
 >
-> Hi Shawn,
+> That's interesting .... it *could* work but we'll have to careful audit
+> the code to make sure thats ok.
 >
-> This patch doesn't build on 64-bit embedded (ppc64e_defconfig):
+> We probably also want to handle the case where the CPU is in the idle
+> loop.
+That is the next patch. It is best to split these up because then git
+bisect works better, and these are higher-risk changes.
 >
-> arch/powerpc/kernel/process.c:194:13: error: 'interrupted_kernel_fpu_idle' defined but not used [-Werror=unused-function]
->  static bool interrupted_kernel_fpu_idle(void)
->              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-Thanks for noticing this. I knew what I needed to do, and this was
-just sloppiness on my end.
+> Do we always save the user state when switching out these days ? If
+> yes, then there's no "live" state to worry about...
 >
-> and otherwise adds two sparse warnings:
+> Cheers,
+> Ben.
 >
-> +arch/powerpc/kernel/process.c:356:13: warning: function 'disable_kernel_altivec' with external linkage has definition
-> +arch/powerpc/kernel/process.c:416:6: warning: symbol 'may_use_simd' was not declared. Should it be static?
-This is the same problem as above.
->
-> There's also some style issues (spaces instead of tabs).
-Yes, I have to be careful using nano on a VPS.
-
-New patch coming in 1 sec.
->
-> Reported by snowpatch (see https://patchwork.ozlabs.org/patch/1099181/)
->
-> - Russell
 >
