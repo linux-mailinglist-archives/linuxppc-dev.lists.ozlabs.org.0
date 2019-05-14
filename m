@@ -1,40 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9ED1C066
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 03:46:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4530sk2QRxzDqJj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 11:46:50 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E8E1C081
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 04:08:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4531M63Td0zDqLT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 12:08:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=git.icu
- (client-ip=163.172.180.134; helo=git.icu; envelope-from=shawn@git.icu;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=sergey.senozhatsky.work@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=git.icu
-Received: from git.icu (git.icu [163.172.180.134])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="gDzV41z7"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4530q1044vzDqGL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 11:44:27 +1000 (AEST)
-Received: from localhost.localdomain (minicloud.parqtec.unicamp.br
- [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id C073A2207C1;
- Tue, 14 May 2019 01:44:23 +0000 (UTC)
-From: Shawn Landden <shawn@git.icu>
-To: 
-Subject: [PATCH 2/2] [PowerPC] Allow use of SIMD in interrupts from kernel code
-Date: Mon, 13 May 2019 22:44:12 -0300
-Message-Id: <20190514014412.25373-2-shawn@git.icu>
-X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a
-In-Reply-To: <20190514014412.25373-1-shawn@git.icu>
-References: <20190513005104.20140-1-shawn@git.icu>
- <20190514014412.25373-1-shawn@git.icu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4531Km1GtyzDqGL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 12:07:37 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id y3so7405577plp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2019 19:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=TUW58sFUl5sYOk3396X1MJdln3VeH0EXozxImmU59vw=;
+ b=gDzV41z701QnCrQ26V0bq4z6xWTHENKXtePpErSx1cTFZAEnR170Cb3GIh6X6MaWvS
+ P86mF/lBRPJUDD0wchUSehkIB5xvrpeuqlBa3x2Vho248Nn/RkVDrf1bXASF+h6UKMN4
+ RJw+91n48gNTDuIgc4nbPEe+W1cxRXTb+DWKeIovw8s8/EnknXE17L/40Sd6A2Ubbr5c
+ mWCcTIy0CdYWj6taw53+CmqUKawbwZcEhJArjMmEt6X9vDDg49TOvQtWuiBMVFdi+mON
+ IPNk5ELNC1d9yajDGEoP1a7uD/eSigryhXScvyM69k3K7CMtduUWmvSmvMIQ6zmk60J0
+ pPcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=TUW58sFUl5sYOk3396X1MJdln3VeH0EXozxImmU59vw=;
+ b=Fheu7zeQaAA7YjA0GHunStcc/vqV+lBsKJs+GgpMUesDQ6lc+JSdL3lk2IvGBCbdhU
+ QcU77DLVsupAnFv6d++B5YeW19ylDXj6dVveJqe0U/mMYCDuFxOkkd+jZWKprk4E8BK5
+ 9oLmKhVMYdzjFfJyu0a0RiL7kX0ElcdM7XwNhfEYSg05a15cA04EjT/UqG1JMpyh3IxU
+ wt/2CHmpfHKNmcCM/EkxxJ5xY4mkPDoO3di/PMabivb9r+dGLNvoc357YvKfUIaHdL9w
+ Ikvs2v3myZnykcAIicey1oU5BY+DlXsIifJai6uQLHipuU7D8NzXaOsYNH2poJUlWWAg
+ Qg4Q==
+X-Gm-Message-State: APjAAAW3jMQs8Pz9y0cw3kjPVtSOOLgCTS+YDhl7U1lfV1XWRqzNkrfh
+ lK7v+Vghq7/i5oGt11aE3R0=
+X-Google-Smtp-Source: APXvYqyCY0Kzi1kXb0vmv87aGVQQILnCJJ8qRJqL49F8s8Dds7JPB7O9ESBZIffOVdyOAeqexsF5/w==
+X-Received: by 2002:a17:902:108a:: with SMTP id
+ c10mr35439629pla.48.1557799654316; 
+ Mon, 13 May 2019 19:07:34 -0700 (PDT)
+Received: from localhost ([39.7.55.172])
+ by smtp.gmail.com with ESMTPSA id v64sm19993908pfv.106.2019.05.13.19.07.32
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 13 May 2019 19:07:33 -0700 (PDT)
+Date: Tue, 14 May 2019 11:07:30 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
+Message-ID: <20190514020730.GA651@jagdpanzerIV>
+References: <20190510081635.GA4533@jagdpanzerIV>
+ <20190510084213.22149-1-pmladek@suse.com>
+ <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,167 +86,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Landden <shawn@git.icu>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ David Laight <David.Laight@aculab.com>, Stephen Rothwell <sfr@ozlabs.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This second patch is separate because it could be wrong,
-like I am not sure about how kernel thread migration works,
-and it is even allowing simd in preemptible kernel code.
+On (05/13/19 14:42), Petr Mladek wrote:
+> > The "(null)" is good enough by itself and already an established
+> > practice..
+> 
+> (efault) made more sense with the probe_kernel_read() that
+> checked wide range of addresses. Well, I still think that
+> it makes sense to distinguish a pure NULL. And it still
+> used also for IS_ERR_VALUE().
 
-Signed-off-by: Shawn Landden <shawn@git.icu>
----
- arch/powerpc/include/asm/simd.h      |  8 +++++
- arch/powerpc/include/asm/switch_to.h | 10 ++----
- arch/powerpc/kernel/process.c        | 50 ++++++++++++++++++++++++++--
- 3 files changed, 57 insertions(+), 11 deletions(-)
+Wouldn't anything within first PAGE_SIZE bytes be reported as
+a NULL deref?
 
-diff --git a/arch/powerpc/include/asm/simd.h b/arch/powerpc/include/asm/simd.h
-index 2c02ad531..7b582b07e 100644
---- a/arch/powerpc/include/asm/simd.h
-+++ b/arch/powerpc/include/asm/simd.h
-@@ -7,7 +7,15 @@
-  * It's always ok in process context (ie "not interrupt")
-  * but it is sometimes ok even from an irq.
-  */
-+#ifdef CONFIG_ALTIVEC
-+extern bool irq_simd_usable(void);
- static __must_check inline bool may_use_simd(void)
- {
- 	return irq_simd_usable();
- }
-+#else
-+static inline bool may_use_simd(void)
-+{
-+	return false;
-+}
-+#endif
-diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
-index 5b03d8a82..537998997 100644
---- a/arch/powerpc/include/asm/switch_to.h
-+++ b/arch/powerpc/include/asm/switch_to.h
-@@ -44,10 +44,7 @@ extern void enable_kernel_altivec(void);
- extern void flush_altivec_to_thread(struct task_struct *);
- extern void giveup_altivec(struct task_struct *);
- extern void save_altivec(struct task_struct *);
--static inline void disable_kernel_altivec(void)
--{
--	msr_check_and_clear(MSR_VEC);
--}
-+extern void disable_kernel_altivec(void);
- #else
- static inline void save_altivec(struct task_struct *t) { }
- static inline void __giveup_altivec(struct task_struct *t) { }
-@@ -56,10 +53,7 @@ static inline void __giveup_altivec(struct task_struct *t) { }
- #ifdef CONFIG_VSX
- extern void enable_kernel_vsx(void);
- extern void flush_vsx_to_thread(struct task_struct *);
--static inline void disable_kernel_vsx(void)
--{
--	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
--}
-+extern void disable_kernel_vsx(void);
- #endif
- 
- #ifdef CONFIG_SPE
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index e436d708a..41a0ab500 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -267,6 +267,29 @@ static int restore_fp(struct task_struct *tsk) { return 0; }
- #ifdef CONFIG_ALTIVEC
- #define loadvec(thr) ((thr).load_vec)
- 
-+/*
-+ * Track whether the kernel is using the SIMD state
-+ * currently.
-+ *
-+ * This flag is used:
-+ *
-+ *   - by IRQ context code to potentially use the FPU
-+ *     if it's unused.
-+ *
-+ *   - to debug kernel_altivec/vsx_begin()/end() correctness
-+ */
-+static DEFINE_PER_CPU(bool, in_kernel_simd);
-+
-+static bool kernel_simd_disabled(void)
-+{
-+	return this_cpu_read(in_kernel_simd);
-+}
-+
-+static bool interrupted_kernel_simd_idle(void)
-+{
-+	return !kernel_simd_disabled();
-+}
-+
- static void __giveup_altivec(struct task_struct *tsk)
- {
- 	unsigned long msr;
-@@ -295,7 +318,9 @@ void enable_kernel_altivec(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_simd));
-+	this_cpu_write(in_kernel_simd, true);
- 
- 	cpumsr = msr_check_and_set(MSR_VEC);
- 
-@@ -316,6 +341,14 @@ void enable_kernel_altivec(void)
- }
- EXPORT_SYMBOL(enable_kernel_altivec);
- 
-+extern void disable_kernel_altivec(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_simd));
-+	this_cpu_write(in_kernel_simd, false);
-+	msr_check_and_clear(MSR_VEC);
-+}
-+EXPORT_SYMBOL(disable_kernel_altivec);
-+
- /*
-  * Make sure the VMX/Altivec register state in the
-  * the thread_struct is up to date for task tsk.
-@@ -371,7 +404,8 @@ static bool interrupted_user_mode(void)
- bool irq_simd_usable(void)
- {
- 	return !in_interrupt() ||
--		interrupted_user_mode();
-+		interrupted_user_mode() ||
-+		interrupted_kernel_simd_idle();
- }
- EXPORT_SYMBOL(irq_simd_usable);
- 
-@@ -411,7 +445,9 @@ void enable_kernel_vsx(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_simd));
-+	this_cpu_write(in_kernel_simd, true);
- 
- 	cpumsr = msr_check_and_set(MSR_FP|MSR_VEC|MSR_VSX);
- 
-@@ -433,6 +469,14 @@ void enable_kernel_vsx(void)
- }
- EXPORT_SYMBOL(enable_kernel_vsx);
- 
-+void disable_kernel_vsx(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_simd));
-+	this_cpu_write(in_kernel_simd, false);
-+	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
-+}
-+EXPORT_SYMBOL(disable_kernel_vsx);
-+
- void flush_vsx_to_thread(struct task_struct *tsk)
- {
- 	if (tsk->thread.regs) {
--- 
-2.21.0.1020.gf2820cf01a
+       char *p = (char *)(PAGE_SIZE - 2);
+       *p = 'a';
 
+gives
+
+ kernel: BUG: kernel NULL pointer dereference, address = 0000000000000ffe
+ kernel: #PF: supervisor-privileged write access from kernel code
+ kernel: #PF: error_code(0x0002) - not-present page
+
+
+And I like Steven's "(fault)" idea.
+How about this:
+
+	if ptr < PAGE_SIZE		-> "(null)"
+	if IS_ERR_VALUE(ptr)		-> "(fault)"
+
+	-ss
