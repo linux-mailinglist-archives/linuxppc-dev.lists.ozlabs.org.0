@@ -2,86 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C731C3C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42991C4F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 10:30:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4538LK5XMzzDqLH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:23:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4539pw07LBzDqM4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 18:30:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=aculab.com
+ (client-ip=207.82.80.151; helo=eu-smtp-delivery-151.mimecast.com;
+ envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="prVvBfyG"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="c8g+mmmo"; dkim-atps=neutral
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
- [66.111.4.26])
+ dmarc=none (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4538Jr4ZhszDqJV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:22:19 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id D1F7E24811;
- Tue, 14 May 2019 03:22:16 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Tue, 14 May 2019 03:22:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- C2tqMHY/rN4zDLt1czzdTIeaoMoR2rT5PtdfzubldGA=; b=prVvBfyGcd5GXDJH
- ST1vEc/pMaLvGr96oUKgZ56ZkCVXBgfoLRa36Rf4B1xId/AkqbA8RhbsFQYGDHek
- PdQ9FPqSDzXSHBXQd9nfOdwTKJjWjxFCSPDdB6NQ7q+/89qXvqCAnl4UxytdHpEl
- jDyVjxZoJMqdHPfamQdTOKQfgfjGGQO/NgTudorghDbvnEDExlBfwZVbWONR189y
- ApvNvCyuA1jD62RKq53oEpiERUgABjueiFCAA7rla8WK0dUHulHA8IhWzPQy6ta2
- SS69AlAgSyobrt8sOFu1u4kqErPD6flankVuqUJ56xVjX06FRyEA9p3XzWO3l2Qq
- +qekiQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=C2tqMHY/rN4zDLt1czzdTIeaoMoR2rT5Ptdfzubld
- GA=; b=c8g+mmmoEBY7vdyPGYc7BWxZ/OtFk/ncH6Zqp/KAWXcqKZ4JI/9ZSwgnJ
- hxbu2W1vluJYp4FAKNzKdd32t4p54NtPxepWzpvenpS1lg45GTj0Hbo6QqW0iJQS
- bsAagSKsyMNE5Ft4b1QaPZR3AdB2PgVDL326PrUY9LVMK864j6TN2Ai7EW5oHwMt
- jxctPd8p23FdTGYdkin4PMj1M2Qb43W42McSDPFbh9YhMv3A3XNuRiaJfPWPeZsO
- Lmr5B5MaAtt3Zh0CXez7ACOHHcuKmopWrZigUi6Jt2FWPcdDfm/17/Dt7Vl+4IqF
- OTYKPg3iKJEb0rSLfORXIJeeCiBeA==
-X-ME-Sender: <xms:qGzaXIXhYYgBSPpSYNwWBL5BC4-3A-H2zzeNzpHAqLPDry3ZeISO2g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddrleehgdduudelucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- gfrhhlucfvnfffucdlvddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
- reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
- hsvghllhdrtggtqeenucffohhmrghinhepohiilhgrsghsrdhorhhgnecukfhppeduvddv
- rdelledrkedvrddutdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruh
- hsshgvlhhlrdgttgenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:qGzaXCd7snQuwkyLGhvDTl1bHf64owzwusmyKTBm_NfSlSL_b29Q_w>
- <xmx:qGzaXHKdL9-XjJP634PiBdZgX0nxs15blnLh3GybSZFxKfmQcOZLXQ>
- <xmx:qGzaXEMSWin6s-HFtLkoZjpQpVMvZn7kNAggOZi6MSVF3tsaYJELlg>
- <xmx:qGzaXNAw6qogSt0EpxlHH-SJWOPrZ9gEzmnLQG0MVxX41wlQGZ6bag>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id D51C680060;
- Tue, 14 May 2019 03:22:14 -0400 (EDT)
-Message-ID: <5f31b4964d64aea3fc31165b9cbd0b9d16fd2aa0.camel@russell.cc>
-Subject: Re: [v2 2/2] [PowerPC] Allow use of SIMD in interrupts from kernel
- code
-From: Russell Currey <ruscur@russell.cc>
-To: Shawn Landden <shawn@git.icu>
-Date: Tue, 14 May 2019 17:22:12 +1000
-In-Reply-To: <20190514022308.32363-2-shawn@git.icu>
-References: <20190513005104.20140-1-shawn@git.icu>
- <20190514022308.32363-1-shawn@git.icu>
- <20190514022308.32363-2-shawn@git.icu>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.2 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4539nB40XTzDq6N
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 18:28:27 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-28-QSu0seGsPgOZSvrndg-J7w-1; Tue, 14 May 2019 09:28:22 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b::d117) by AcuMS.aculab.com
+ (fd9f:af1c:a25b::d117) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Tue,
+ 14 May 2019 09:28:22 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Tue, 14 May 2019 09:28:22 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Sergey Senozhatsky' <sergey.senozhatsky.work@gmail.com>, Petr Mladek
+ <pmladek@suse.com>
+Subject: RE: [PATCH] vsprintf: Do not break early boot with probing addresses
+Thread-Topic: [PATCH] vsprintf: Do not break early boot with probing addresses
+Thread-Index: AQHVB1bC/iTC8Q7sI0elwkZY5/gFJaZowlxwgAEika2AAGmPsA==
+Date: Tue, 14 May 2019 08:28:21 +0000
+Message-ID: <45348cf615fe40d383c1a25688d4a88f@AcuMS.aculab.com>
+References: <20190510081635.GA4533@jagdpanzerIV>
+ <20190510084213.22149-1-pmladek@suse.com>
+ <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+ <20190514020730.GA651@jagdpanzerIV>
+In-Reply-To: <20190514020730.GA651@jagdpanzerIV>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MC-Unique: QSu0seGsPgOZSvrndg-J7w-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,35 +69,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>, Stephen
+ Rothwell <sfr@ozlabs.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-05-13 at 23:23 -0300, Shawn Landden wrote:
-> This second patch is separate because it could be wrong,
-> like I am not sure about how kernel thread migration works,
-> and it is even allowing simd in preemptible kernel code.
-> 
-> Signed-off-by: Shawn Landden <shawn@git.icu>
-> ---
+> And I like Steven's "(fault)" idea.
+> How about this:
+>=20
+> =09if ptr < PAGE_SIZE=09=09-> "(null)"
+> =09if IS_ERR_VALUE(ptr)=09=09-> "(fault)"
+>=20
+> =09-ss
 
-Hi Shawn,
+Or:
+=09if (ptr < PAGE_SIZE)
+=09=09return ptr ? "(null+)" : "(null)";
+=09if IS_ERR_VALUE(ptr)
+=09=09return "(errno)"
 
-This patch doesn't build on 64-bit embedded (ppc64e_defconfig):
+=09David
 
-arch/powerpc/kernel/process.c:194:13: error: 'interrupted_kernel_fpu_idle' defined but not used [-Werror=unused-function]
- static bool interrupted_kernel_fpu_idle(void)
-             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-and otherwise adds two sparse warnings:
-
-+arch/powerpc/kernel/process.c:356:13: warning: function 'disable_kernel_altivec' with external linkage has definition
-+arch/powerpc/kernel/process.c:416:6: warning: symbol 'may_use_simd' was not declared. Should it be static?
-
-There's also some style issues (spaces instead of tabs).
-
-Reported by snowpatch (see https://patchwork.ozlabs.org/patch/1099181/)
-
-- Russell
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
