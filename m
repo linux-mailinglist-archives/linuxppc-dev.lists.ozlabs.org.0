@@ -2,93 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB0E1CB06
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 16:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6AD1E535
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:40:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453LPG3rJbzDqMg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 00:56:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453Xgf4Yw0zDqNv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:39:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::e43; helo=mail-vs1-xe43.google.com;
+ envelope-from=slandden@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dEl4sU5q"; 
+ dkim-atps=neutral
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com
+ [IPv6:2607:f8b0:4864:20::e43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453LM55gr4zDq7k
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 00:54:57 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 453LM50Nznz8tPq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 00:54:57 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 453LM464V6z9sN6; Wed, 15 May 2019 00:54:56 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 453LM42Q5vz9s4V
- for <linuxppc-dev@ozlabs.org>; Wed, 15 May 2019 00:54:56 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4EEqESe002301
- for <linuxppc-dev@ozlabs.org>; Tue, 14 May 2019 10:54:54 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sfwu3p6bt-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 14 May 2019 10:54:53 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 14 May 2019 15:54:51 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 14 May 2019 15:54:50 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4EEsnSU27590900
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 May 2019 14:54:49 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFB694203F;
- Tue, 14 May 2019 14:54:49 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C62AE42041;
- Tue, 14 May 2019 14:54:48 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.102.2.154])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 14 May 2019 14:54:48 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH] powerpc/mm: Fix crashes with hugepages & 4K pages
-In-Reply-To: <20190514134321.25575-1-mpe@ellerman.id.au>
-References: <20190514134321.25575-1-mpe@ellerman.id.au>
-Date: Tue, 14 May 2019 20:24:47 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453MG15mXYzDqHn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 01:35:34 +1000 (AEST)
+Received: by mail-vs1-xe43.google.com with SMTP id j184so1051686vsd.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 08:35:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=980y18YdjmALl59G6hcP6zEimSkBXdkpnfC5LT9sZPA=;
+ b=dEl4sU5qCzg39opWx9sKU946SAsOAgMnj986H5geqhuO5V5aOb14kg8ib3YOfp+xp0
+ oCLeBgPlt1A6ExI43I+0UI8Rw4XzWRzfw4HbeuUOpBTW1Gl+J9ykR3AhCrGbFIqDOXqD
+ MansgszdcVbH5jBSN+Tminsuduc949LyAim6qqLQxo7OkNuCWi+ir+PEeqAduOCz0Pnd
+ IvWiw/3tOSFnIGwKCGg7m5G/KJ6f4Wj0JcL5aIztSzHfAccblQEdORm7MfujPTYM9Ref
+ Xu1b2iPuVe+4ij3QVNPJ7GhkP0HQ0NPPYYObP8KQe4yDlfYOdVEK3YOoz0vjfUBsGyJG
+ jvDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=980y18YdjmALl59G6hcP6zEimSkBXdkpnfC5LT9sZPA=;
+ b=AMrk61HjC+WCZhskRMaqR93S1v6AUTgtBmPg58cPaPvgEKggIrTAOm+BqRIy1wAlxu
+ sxfVuheeSn14IBDa8B7QJrsNRCzPFgq23PbRT5FezWp+sfGKYyiLqq/cOxf3pd0nuAeM
+ bPNbKF8IPryYyShHRDUH/M28qaDBBJSCSnVDErKznQke92VyIYQovIz2XJn5DDAcJJYr
+ Og7uB3rxBCWlEPUJndZn9Q7/OycrHtBHEbDPb03mrpzv3VAoSXDTk4s7auttvDKThh8K
+ GzLsilvl/ETEejaHupQZjqO4MliLhxdGEf3jUxS6rqZ0/xAIsU8F/VB57DbkkCQQjI//
+ SIrw==
+X-Gm-Message-State: APjAAAX9RnLnoZ3kfCNo+vey9lBmQ1P/ZCDAaHb3K4CmrLF9J2wOhQkZ
+ 000XE6lAfgfxXM+PmeJ7rAziywN5O3ZQL2jeEl0=
+X-Google-Smtp-Source: APXvYqwnvzd+/XMd6bd8zJb3YomBXzkYFkFjrmaLwoHy194H1LYhEzN4vDQ889gGZQZ3AbymJEk1SJG7USPvsrENYNU=
+X-Received: by 2002:a05:6102:c7:: with SMTP id
+ u7mr4187174vsp.226.1557848130976; 
+ Tue, 14 May 2019 08:35:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19051414-0012-0000-0000-0000031B95F2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19051414-0013-0000-0000-000021542EC4
-Message-Id: <87imudw0g8.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-14_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905140106
+References: <20190513005104.20140-1-shawn@git.icu>
+ <20190514022308.32363-1-shawn@git.icu>
+ <20190514022308.32363-2-shawn@git.icu>
+ <5f31b4964d64aea3fc31165b9cbd0b9d16fd2aa0.camel@russell.cc>
+In-Reply-To: <5f31b4964d64aea3fc31165b9cbd0b9d16fd2aa0.camel@russell.cc>
+From: Shawn Landden <slandden@gmail.com>
+Date: Tue, 14 May 2019 10:35:19 -0500
+Message-ID: <CA+49okqe0CLOm7VXPiYp-33DjwkQ5TQXLUNrhuHiUQVBxaT2ng@mail.gmail.com>
+Subject: Re: [v2 2/2] [PowerPC] Allow use of SIMD in interrupts from kernel
+ code
+To: Russell Currey <ruscur@russell.cc>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 15 May 2019 08:38:49 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,78 +78,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.vnet.ibm.com, sachinp@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On Tue, May 14, 2019 at 2:22 AM Russell Currey <ruscur@russell.cc> wrote:
+>
+> On Mon, 2019-05-13 at 23:23 -0300, Shawn Landden wrote:
+> > This second patch is separate because it could be wrong,
+> > like I am not sure about how kernel thread migration works,
+> > and it is even allowing simd in preemptible kernel code.
+> >
+> > Signed-off-by: Shawn Landden <shawn@git.icu>
+> > ---
+>
+> Hi Shawn,
+>
+> This patch doesn't build on 64-bit embedded (ppc64e_defconfig):
+>
+> arch/powerpc/kernel/process.c:194:13: error: 'interrupted_kernel_fpu_idle' defined but not used [-Werror=unused-function]
+>  static bool interrupted_kernel_fpu_idle(void)
+>              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+Thanks for noticing this. I knew what I needed to do, and this was
+just sloppiness on my end.
+>
+> and otherwise adds two sparse warnings:
+>
+> +arch/powerpc/kernel/process.c:356:13: warning: function 'disable_kernel_altivec' with external linkage has definition
+> +arch/powerpc/kernel/process.c:416:6: warning: symbol 'may_use_simd' was not declared. Should it be static?
+This is the same problem as above.
+>
+> There's also some style issues (spaces instead of tabs).
+Yes, I have to be careful using nano on a VPS.
 
-> The recent commit to cleanup ifdefs in the hugepage initialisation led
-> to crashes when using 4K pages as reported by Sachin:
+New patch coming in 1 sec.
 >
->   BUG: Kernel NULL pointer dereference at 0x0000001c
->   Faulting instruction address: 0xc000000001d1e58c
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   LE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
->   ...
->   CPU: 3 PID: 4635 Comm: futex_wake04 Tainted: G        W  O      5.1.0-next-20190507-autotest #1
->   NIP:  c000000001d1e58c LR: c000000001d1e54c CTR: 0000000000000000
->   REGS: c000000004937890 TRAP: 0300
->   MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 22424822  XER: 00000000
->   CFAR: c00000000183e9e0 DAR: 000000000000001c DSISR: 40000000 IRQMASK: 0
->   ...
->   NIP kmem_cache_alloc+0xbc/0x5a0
->   LR  kmem_cache_alloc+0x7c/0x5a0
->   Call Trace:
->     huge_pte_alloc+0x580/0x950
->     hugetlb_fault+0x9a0/0x1250
->     handle_mm_fault+0x490/0x4a0
->     __do_page_fault+0x77c/0x1f00
->     do_page_fault+0x28/0x50
->     handle_page_fault+0x18/0x38
+> Reported by snowpatch (see https://patchwork.ozlabs.org/patch/1099181/)
 >
-> This is caused by us trying to allocate from a NULL kmem cache in
-> __hugepte_alloc(). The kmem cache is NULL because it was never
-> allocated in hugetlbpage_init(), because add_huge_page_size() returned
-> an error.
+> - Russell
 >
-> The reason add_huge_page_size() returned an error is a simple typo, we
-> are calling check_and_get_huge_psize(size) when we should be passing
-> shift instead.
->
-> The fact that we're able to trigger this path when the kmem caches are
-> NULL is a separate bug, ie. we should not advertise any hugepage sizes
-> if we haven't setup the required caches for them.
->
-> This was only seen with 4K pages, with 64K pages we don't need to
-> allocate any extra kmem caches because the 16M hugepage just occupies
-> a single entry at the PMD level.
->
-
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
-> Fixes: 723f268f19da ("powerpc/mm: cleanup ifdef mess in add_huge_page_size()")
-> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/mm/hugetlbpage.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-> index c5c9ff2d7afc..b5d92dc32844 100644
-> --- a/arch/powerpc/mm/hugetlbpage.c
-> +++ b/arch/powerpc/mm/hugetlbpage.c
-> @@ -556,7 +556,7 @@ static int __init add_huge_page_size(unsigned long long size)
->  	if (size <= PAGE_SIZE || !is_power_of_2(size))
->  		return -EINVAL;
->  
-> -	mmu_psize = check_and_get_huge_psize(size);
-> +	mmu_psize = check_and_get_huge_psize(shift);
->  	if (mmu_psize < 0)
->  		return -EINVAL;
->  
-> -- 
-> 2.20.1
-
