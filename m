@@ -2,39 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D901C399
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595FA1C39D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 09:06:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4537vp4QCRzDqHr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:04:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4537yf43WvzDqJs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2019 17:06:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4537sj2WCrzDqJc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:02:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4537sh6nsKz9sMr;
- Tue, 14 May 2019 17:02:16 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [RESEND PATCH] powerpc/pseries: Fix cpu_hotplug_lock acquisition
- in resize_hpt
-In-Reply-To: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1557480294-808-1-git-send-email-ego@linux.vnet.ibm.com>
-Date: Tue, 14 May 2019 17:02:16 +1000
-Message-ID: <874l5xtt6v.fsf@concordia.ellerman.id.au>
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="NX57qEPQ"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4537x84jPPzDq6K
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 17:05:16 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A4B9D2086A;
+ Tue, 14 May 2019 07:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1557817514;
+ bh=8hs7Xcl5TFH1iWCZIg0nQD01cSQmtLRwbxKGpKk8ND0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=NX57qEPQuFUFp7hNAvrfVcBhFpGsf8JlJhizpUha0i5KaC1bAqC8ToOZckdblC3hN
+ rKs1jGfaR8L6AHCOkKtDkaF+ryhbRFsC+uXkMMS2ChdU2m6tVCZ5gb33rFgJngL2TT
+ dsxAwrXT16gYge7Fm4awe6FtTuKu3IFuNMhGQpkM=
+Date: Tue, 14 May 2019 09:05:11 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [Bug 203597] New: kernel 4.9.175 fails to boot on a PowerMac G4
+ 3,6 at early stage
+Message-ID: <20190514070511.GA14854@kroah.com>
+References: <bug-203597-206035@https.bugzilla.kernel.org/>
+ <e1a6f0c2-c93a-05bd-0623-ccffa733c5a7@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e1a6f0c2-c93a-05bd-0623-ccffa733c5a7@c-s.fr>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,123 +60,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: erhard_f@mailbox.org, linuxppc-dev@lists.ozlabs.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
->
-> Subject: Re: [RESEND PATCH] powerpc/pseries: Fix cpu_hotplug_lock acquisition in resize_hpt
+On Tue, May 14, 2019 at 06:56:03AM +0200, Christophe Leroy wrote:
+> Hi Greg,
+> 
+> Could you please apply b45ba4a51cde29b2939365ef0c07ad34c8321789 to 4.9 since
+> 51c3c62b58b357e8d35e4cc32f7b4ec907426fe3 was applied allthought marked for
+> #4.13+
 
-ps. A "RESEND" implies the patch is unchanged and you're just resending
-it because it was ignored.
+It does not apply there (nor to the 4.4.y queue, which will need it as
+well), so can you provide a working backport so that I can queue it up?
 
-In this case it should have just been "PATCH v2", with a note below the "---"
-saying "v2: Rebased onto powerpc/next ..."
+thanks,
 
-cheers
-
-> During a memory hotplug operations involving resizing of the HPT, we
-> invoke a stop_machine() to perform the resizing. In this code path, we
-> end up recursively taking the cpu_hotplug_lock, first in
-> memory_hotplug_begin() and then subsequently in stop_machine(). This
-> causes the system to hang. With lockdep enabled we get the following
-> error message before the hang.
->
->   swapper/0/1 is trying to acquire lock:
->   (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: stop_machine+0x2c/0x60
->
->   but task is already holding lock:
->   (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
->
->   other info that might help us debug this:
->    Possible unsafe locking scenario:
->
->          CPU0
->          ----
->     lock(cpu_hotplug_lock.rw_sem);
->     lock(cpu_hotplug_lock.rw_sem);
->
->    *** DEADLOCK ***
->
-> Fix this issue by
->   1) Requiring all the calls to pseries_lpar_resize_hpt() be made
->      with cpu_hotplug_lock held.
->
->   2) In pseries_lpar_resize_hpt() invoke stop_machine_cpuslocked()
->      as a consequence of 1)
->
->   3) To satisfy 1), in hpt_order_set(), call mmu_hash_ops.resize_hpt()
->      with cpu_hotplug_lock held.
->
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> ---
->
-> Rebased this one against powerpc/next instead of linux/master.
->
->  arch/powerpc/mm/book3s64/hash_utils.c | 9 ++++++++-
->  arch/powerpc/platforms/pseries/lpar.c | 8 ++++++--
->  2 files changed, 14 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-> index 919a861..d07fcafd 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -38,6 +38,7 @@
->  #include <linux/libfdt.h>
->  #include <linux/pkeys.h>
->  #include <linux/hugetlb.h>
-> +#include <linux/cpu.h>
->  
->  #include <asm/debugfs.h>
->  #include <asm/processor.h>
-> @@ -1928,10 +1929,16 @@ static int hpt_order_get(void *data, u64 *val)
->  
->  static int hpt_order_set(void *data, u64 val)
->  {
-> +	int ret;
-> +
->  	if (!mmu_hash_ops.resize_hpt)
->  		return -ENODEV;
->  
-> -	return mmu_hash_ops.resize_hpt(val);
-> +	cpus_read_lock();
-> +	ret = mmu_hash_ops.resize_hpt(val);
-> +	cpus_read_unlock();
-> +
-> +	return ret;
->  }
->  
->  DEFINE_DEBUGFS_ATTRIBUTE(fops_hpt_order, hpt_order_get, hpt_order_set, "%llu\n");
-> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-> index 1034ef1..2fc9756 100644
-> --- a/arch/powerpc/platforms/pseries/lpar.c
-> +++ b/arch/powerpc/platforms/pseries/lpar.c
-> @@ -859,7 +859,10 @@ static int pseries_lpar_resize_hpt_commit(void *data)
->  	return 0;
->  }
->  
-> -/* Must be called in user context */
-> +/*
-> + * Must be called in user context. The caller should hold the
-> + * cpus_lock.
-> + */
->  static int pseries_lpar_resize_hpt(unsigned long shift)
->  {
->  	struct hpt_resize_state state = {
-> @@ -913,7 +916,8 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
->  
->  	t1 = ktime_get();
->  
-> -	rc = stop_machine(pseries_lpar_resize_hpt_commit, &state, NULL);
-> +	rc = stop_machine_cpuslocked(pseries_lpar_resize_hpt_commit,
-> +				     &state, NULL);
->  
->  	t2 = ktime_get();
->  
-> -- 
-> 1.9.4
+greg k-h
