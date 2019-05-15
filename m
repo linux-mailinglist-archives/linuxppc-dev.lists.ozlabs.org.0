@@ -2,67 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1A11E839
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42661E83A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:23:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453kwW3Wh6zDqQH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 16:21:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453ky70KgSzDqQM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 16:23:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=sergey.senozhatsky.work@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="BU1cJkg5"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="o375KU68"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453kv258SzzDqP5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 16:20:30 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 453ktt3LDPz9vDbS;
- Wed, 15 May 2019 08:20:22 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=BU1cJkg5; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 95-jRXc61RUu; Wed, 15 May 2019 08:20:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 453ktt2Brtz9vDbR;
- Wed, 15 May 2019 08:20:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557901222; bh=pbPsZWHgsG18WLzIgAsalkAzc3NcABdvO82mAnSRanI=;
- h=From:Subject:To:Cc:Date:From;
- b=BU1cJkg5nRmsWyhdQYUxNb+jq1ORO3+xcCtJoNkPnL93K6khYka3V2AzbTA9wU1gl
- tcr8GLdCk0Vg91WWlDKBGxVhkRbBVOLzJ7F0BV8Ipd6wXaVxJtY566aG5WqHBrb+9e
- LYukW5Mle0KWlljVxpk+yOoI9DpjL0/VvQuQIxA8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 30D358B77A;
- Wed, 15 May 2019 08:20:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TLvEQgxFveHK; Wed, 15 May 2019 08:20:23 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 067538B756;
- Wed, 15 May 2019 08:20:23 +0200 (CEST)
-Received: by po16846vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id CF744682A6; Wed, 15 May 2019 06:20:22 +0000 (UTC)
-Message-Id: <df502ffe07caa38c46b0144fc824fff447f4105b.1557901092.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH] powerpc/mm: Implement STRICT_MODULE_RWX
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Russell Currey <ruscur@russell.cc>
-Date: Wed, 15 May 2019 06:20:22 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453kw003bKzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 16:21:19 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id g9so807558plm.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 23:21:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=vpr9qeWej7/xdaLzfL7kzDfFrVNMEMZWeQ2yDGuvcWA=;
+ b=o375KU68c6cq1L9rhDvFqMLy/36KzkumU5eyglTJpzMIPwAslM+THguYtGV24yszrB
+ AfYo9WtSVI4YPeApa2se9off1OySDBkrKN7buQLJmfCNI/aUK7RfjMnE/bGxwyACd7HW
+ g43h4W/w7cF1ebM7p3GlKDoMC/No0MM/60V7FFaBW4jE3VheGcBQfsSDliKPbh80RMYI
+ dOTUBqDXrX4eE2LtTtSOQAHYRUCrNB5AZxKgRYAE1MmJfuYWQBqZx6l5sqSUhtrZ1gg1
+ 924TKUokkcN8xRTqUfEE68pHktdBzMgi/pqoWUNqh/12ErYeobF1s95PpggCN9DKAtsk
+ f1rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=vpr9qeWej7/xdaLzfL7kzDfFrVNMEMZWeQ2yDGuvcWA=;
+ b=SV7YnE+9hFOeHULGXoayIiRxePZVi8TpcuFxXC7Gv2oVK9kMhJF11adMdXnhDAsLRr
+ w9mJ9h4AVKxspkvlYS91e3wJ6Xbqo2IsStoegFf5I/RTrg9WI+zE4oIKkObYEBPH9qSV
+ FEpr6J1izXqhP4ZB8p0Eywh2GS4BffCWtFBYrzn0zkmsAg5Fvulj8oBmEAAT9sjG/OGb
+ G2vXRCdGHVJMaUpycMRYQPVQLFqM/JWdo3zYKWyyQDDcNhQ1bpqzxJ/rojA5zM+wZzqj
+ gs3cdqfcmzl2ddmlJd2ayK+Lqei9KV9tO0rhlIKk8RlODWrWHHzuENVsxGF/BhSBgBCD
+ FUCg==
+X-Gm-Message-State: APjAAAUE2oBh6yX9xRglkgG02IB7gYklKyFA8tyPIlEZTLmF2+fvZAcX
+ N5+G+Lrvvm+GL36Ac+zXhTw=
+X-Google-Smtp-Source: APXvYqzRJKRDGGgSFBUw3D9wrq2bEKNWyL8HrksRCPNPrE+2T1MlywAkkHnSpqiXENFfwknkCI68dQ==
+X-Received: by 2002:a17:902:6bc8:: with SMTP id
+ m8mr41177371plt.227.1557901275995; 
+ Tue, 14 May 2019 23:21:15 -0700 (PDT)
+Received: from localhost ([110.70.52.120])
+ by smtp.gmail.com with ESMTPSA id f4sm1300687pfn.118.2019.05.14.23.21.14
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 14 May 2019 23:21:14 -0700 (PDT)
+Date: Wed, 15 May 2019 15:21:11 +0900
+From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
+Message-ID: <20190515062111.GA30030@jagdpanzerIV>
+References: <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+ <20190514020730.GA651@jagdpanzerIV>
+ <45348cf615fe40d383c1a25688d4a88f@AcuMS.aculab.com>
+ <CAMuHMdXaMObq9h2Sb49PW1-HUysPeaWXB7wJmKFz=xLmSoUDZg@mail.gmail.com>
+ <20190514143751.48e81e05@oasis.local.home>
+ <CAMuHMdUhy3uB+G23uXh__F2Y_Jsam5uS1Q5jJC95kWAOEM8WRA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUhy3uB+G23uXh__F2Y_Jsam5uS1Q5jJC95kWAOEM8WRA@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,204 +89,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Petr Mladek <pmladek@suse.com>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ David Laight <David.Laight@aculab.com>, Stephen Rothwell <sfr@ozlabs.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Strict module RWX is just like strict kernel RWX, but for modules - so
-loadable modules aren't marked both writable and executable at the same
-time.  This is handled by the generic code in kernel/module.c, and
-simply requires the architecture to implement the set_memory() set of
-functions, declared with ARCH_HAS_SET_MEMORY.
+On (05/14/19 21:13), Geert Uytterhoeven wrote:
+> I would immediately understand there's a missing IS_ERR() check in a
+> function that can return  -EINVAL, without having to add a new printk()
+> to find out what kind of bogus value has been received, and without
+> having to reboot, and trying to reproduce...
 
-There's nothing other than these functions required to turn
-ARCH_HAS_STRICT_MODULE_RWX on, so turn that on too.
+But chances are that missing IS_ERR() will crash the kernel sooner
+or later (in general case), if not in sprintf() then somewhere else.
 
-With STRICT_MODULE_RWX enabled, there are as many W+X pages at runtime
-as there are with CONFIG_MODULES=n (none), so in Russel's testing it works
-well on both Hash and Radix book3s64.
-
-There's a TODO in the code for also applying the page permission changes
-to the backing pages in the linear mapping: this is pretty simple for
-Radix and (seemingly) a lot harder for Hash, so I've left it for now
-since there's still a notable security benefit for the patch as-is.
-
-Technically can be enabled without STRICT_KERNEL_RWX, but
-that doesn't gets you a whole lot, so we should leave it off by default
-until we can get STRICT_KERNEL_RWX to the point where it's enabled by
-default.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- Generic implementation based on Russel's patch ("powerpc/mm/book3s64: Implement STRICT_MODULE_RWX")
- Untested
-
- arch/powerpc/Kconfig                  |  2 +
- arch/powerpc/include/asm/set_memory.h | 32 +++++++++++++
- arch/powerpc/mm/Makefile              |  2 +-
- arch/powerpc/mm/pageattr.c            | 85 +++++++++++++++++++++++++++++++++++
- 4 files changed, 120 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/set_memory.h
- create mode 100644 arch/powerpc/mm/pageattr.c
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index d7996cfaceca..1f1423e3d818 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -131,7 +131,9 @@ config PPC
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC64
-+	select ARCH_HAS_SET_MEMORY
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
-+	select ARCH_HAS_STRICT_MODULE_RWX	if PPC_BOOK3S_64 || PPC32
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-new file mode 100644
-index 000000000000..4b9683f3b3dd
---- /dev/null
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef _ASM_POWERPC_SET_MEMORY_H
-+#define _ASM_POWERPC_SET_MEMORY_H
-+
-+#define SET_MEMORY_RO	1
-+#define SET_MEMORY_RW	2
-+#define SET_MEMORY_NX	3
-+#define SET_MEMORY_X	4
-+
-+int change_memory(unsigned long addr, int numpages, int action);
-+
-+static inline int set_memory_ro(unsigned long addr, int numpages)
-+{
-+	return change_memory(addr, numpages, SET_MEMORY_RO);
-+}
-+
-+static inline int set_memory_rw(unsigned long addr, int numpages)
-+{
-+	return change_memory(addr, numpages, SET_MEMORY_RW);
-+}
-+
-+static inline int set_memory_nx(unsigned long addr, int numpages)
-+{
-+	return change_memory(addr, numpages, SET_MEMORY_NX);
-+}
-+
-+static inline int set_memory_x(unsigned long addr, int numpages)
-+{
-+	return change_memory(addr, numpages, SET_MEMORY_X);
-+}
-+
-+#endif
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 0f499db315d6..b683d1c311b3 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -7,7 +7,7 @@ ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
- 
- obj-y				:= fault.o mem.o pgtable.o mmap.o \
- 				   init_$(BITS).o pgtable_$(BITS).o \
--				   pgtable-frag.o \
-+				   pgtable-frag.o pageattr.o \
- 				   init-common.o mmu_context.o drmem.o
- obj-$(CONFIG_PPC_MMU_NOHASH)	+= nohash/
- obj-$(CONFIG_PPC_BOOK3S_32)	+= book3s32/
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-new file mode 100644
-index 000000000000..3e8f2c203a00
---- /dev/null
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+/*
-+ * Page attribute and set_memory routines
-+ *
-+ * Derived from the arm64 implementation.
-+ *
-+ * Author: Russell Currey <ruscur@russell.cc>
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ *
-+ */
-+
-+#include <linux/mm.h>
-+#include <linux/set_memory.h>
-+#include <linux/vmalloc.h>
-+
-+#include <asm/mmu.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+
-+static int change_page_ro(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
-+{
-+	set_pte_at(&init_mm, addr, ptep, pte_wrprotect(READ_ONCE(*ptep)));
-+	return 0;
-+}
-+
-+static int change_page_rw(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
-+{
-+	set_pte_at(&init_mm, addr, ptep, pte_mkwrite(READ_ONCE(*ptep)));
-+	return 0;
-+}
-+
-+static int change_page_nx(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
-+{
-+	set_pte_at(&init_mm, addr, ptep, pte_exprotect(READ_ONCE(*ptep)));
-+	return 0;
-+}
-+
-+static int change_page_x(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
-+{
-+	set_pte_at(&init_mm, addr, ptep, pte_mkexec(READ_ONCE(*ptep)));
-+	return 0;
-+}
-+
-+int change_memory(unsigned long addr, int numpages, int action)
-+{
-+	unsigned long size = numpages * PAGE_SIZE;
-+	unsigned long start = ALIGN_DOWN(addr, PAGE_SIZE);
-+	unsigned long end = start + size;
-+	struct vm_struct *area;
-+	int ret;
-+
-+	if (!numpages)
-+		return 0;
-+
-+	// only operate on VM areas for now
-+	area = find_vm_area((void *)addr);
-+	if (!area || end > (unsigned long)area->addr + area->size ||
-+	    !(area->flags & VM_ALLOC))
-+		return -EINVAL;
-+
-+	// TODO: also apply change to the backing pages in the linear mapping
-+
-+	switch (action) {
-+	case SET_MEMORY_RO:
-+		ret = apply_to_page_range(&init_mm, start, size, change_page_ro, NULL);
-+		break;
-+	case SET_MEMORY_RW:
-+		ret = apply_to_page_range(&init_mm, start, size, change_page_rw, NULL);
-+		break;
-+	case SET_MEMORY_NX:
-+		ret = apply_to_page_range(&init_mm, start, size, change_page_nx, NULL);
-+		break;
-+	case SET_MEMORY_X:
-+		ret = apply_to_page_range(&init_mm, start, size, change_page_x, NULL);
-+		break;
-+	default:
-+		WARN_ON(true);
-+		return -EINVAL;
-+	}
-+
-+	flush_tlb_kernel_range(start, end);
-+	return ret;
-+}
--- 
-2.13.3
-
+	-ss
