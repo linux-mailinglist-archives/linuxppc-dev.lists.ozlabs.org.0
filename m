@@ -1,54 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFFC1F4BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:46:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0622B1F4AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:44:11 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453vPh2pMczDqTP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:44:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453vSF0GyKzDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:46:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.217.67; helo=mail-vs1-f67.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-vs1-f67.google.com (mail-vs1-f67.google.com
- [209.85.217.67])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="rsqC9yrY"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453v4n14DJzDqTn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:29:28 +1000 (AEST)
-Received: by mail-vs1-f67.google.com with SMTP id c24so1559682vsp.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 05:29:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=cgdsZEIH2W5eTMf3uaLx4q/hdk2jHzw6fNgJE2/Ss+k=;
- b=hfxDFeKa5q297tQAquLjP2YnXBtlasohWXoLLEiTKBDYbO9/hi/wvAuO41KX/R77+B
- hDolqEnTzw5TjGOiHnOP1DmWo7A0ehBU6dxJRULpwwCX4l7lHb6+d1RjXc2/CcDNhLh4
- LBJS/t1vrIW40kJo4+UW0fTnNfZFE5Fu9dg9J+wzSn/CTXV7hCqfE/YMLSsykik5Z2Pv
- JeVGWDKIFxr+vjdEFaIwroNdUJspXSQDVrQK6ocXZqI8nt84pOxaaK0mWkB9bzADk4lW
- XAffl7R4zMqTMzgJ1P5prGHIoFXA9F1IQuDkD5muWG1MhBx0qGJRglWCstwBf+/By+cW
- OUvA==
-X-Gm-Message-State: APjAAAWWi/UGh1tzHfhdSOCNCuc1Xui5kGiETqdzIizTTfNBlNrhG2/K
- SZX9uQuJaPWXfJINUtJ2Fce617K1b0dtPDdCc8I=
-X-Google-Smtp-Source: APXvYqzDAJzfhabDwTYAYFXSOnY37iC0IXZoLvq4QwE8CVpdlrcgi5gg8xMkv97L4kuyL6Wc28Zhp7a2DMatRjdZeGY=
-X-Received: by 2002:a67:8e03:: with SMTP id q3mr20471095vsd.152.1557923365973; 
- Wed, 15 May 2019 05:29:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453vD06MqjzDqXR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:35:44 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 453vCw0wY9z9v07b;
+ Wed, 15 May 2019 14:35:40 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=rsqC9yrY; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id RtIn3Axkd-Ld; Wed, 15 May 2019 14:35:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 453vCv6fg6z9v07Y;
+ Wed, 15 May 2019 14:35:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557923739; bh=/GdjFATaS1UOIQzQ8sKieXWhI3vCPWGoYpxxEpdcrnU=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=rsqC9yrYPBMpJ5pM8DIy1XAhTeOQnA9pRBs8Cz6bscwAoIWyo5+QCGacntC3SJPBc
+ D17NDN/jTH7NuGGQEsgUqto4i6UhlU7EpFmqpB5zK9DFYCT3dJKaMlB3CjEHeg3U+Q
+ yA/ke3rxoVkHXrEps/nrhMEDngrDN5aPDo1GEd50=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 415D78B905;
+ Wed, 15 May 2019 14:35:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Mavw7iuCReRH; Wed, 15 May 2019 14:35:40 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1B9A38B904;
+ Wed, 15 May 2019 14:35:40 +0200 (CEST)
+Subject: Re: [PATCH stable 4.9] powerpc/lib: fix book3s/32 boot failure due to
+ code patching
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <629c2acb1fcd09c2d2e3352370c3d9853372cf39.1557902321.git.christophe.leroy@c-s.fr>
+ <20190515082931.GA28349@kroah.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <9e58348f-da2d-34bc-d016-7817b3566e01@c-s.fr>
+Date: Wed, 15 May 2019 14:35:36 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190515100400.3450-1-christian@brauner.io>
-In-Reply-To: <20190515100400.3450-1-christian@brauner.io>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 15 May 2019 14:29:14 +0200
-Message-ID: <CAMuHMdUKJOP2H4cVy0Na5hjn2-HUbfvE_zbctS4L9d-h9Oru4Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pid: add pidfd_open()
-To: Christian Brauner <christian@brauner.io>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190515082931.GA28349@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,71 +79,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- David Howells <dhowells@redhat.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>, elena.reshetova@intel.com,
- Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Parisc List <linux-parisc@vger.kernel.org>, cyphar@cyphar.com,
- Linux API <linux-api@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andy Lutomirski <luto@amacapital.net>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>
+Cc: erhard_f@mailbox.org, Michael Neuling <mikey@neuling.org>,
+ linux-kernel@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2019 at 12:04 PM Christian Brauner <christian@brauner.io> wrote:
-> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
-> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
-> process that is created via traditional fork()/clone() calls that is only
-> referenced by a PID:
->
-> int pidfd = pidfd_open(1234, 0);
-> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
->
-> With the introduction of pidfds through CLONE_PIDFD it is possible to
-> created pidfds at process creation time.
-> However, a lot of processes get created with traditional PID-based calls
-> such as fork() or clone() (without CLONE_PIDFD). For these processes a
-> caller can currently not create a pollable pidfd. This is a huge problem
-> for Android's low memory killer (LMK) and service managers such as systemd.
-> Both are examples of tools that want to make use of pidfds to get reliable
-> notification of process exit for non-parents (pidfd polling) and race-free
-> signal sending (pidfd_send_signal()). They intend to switch to this API for
-> process supervision/management as soon as possible. Having no way to get
-> pollable pidfds from PID-only processes is one of the biggest blockers for
-> them in adopting this api. With pidfd_open() making it possible to retrieve
-> pidfd for PID-based processes we enable them to adopt this api.
->
-> In line with Arnd's recent changes to consolidate syscall numbers across
-> architectures, I have added the pidfd_open() syscall to all architectures
-> at the same time.
->
-> Signed-off-by: Christian Brauner <christian@brauner.io>
 
->  arch/m68k/kernel/syscalls/syscall.tbl       |  1 +
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Le 15/05/2019 à 10:29, Greg KH a écrit :
+> On Wed, May 15, 2019 at 06:40:47AM +0000, Christophe Leroy wrote:
+>> [Backport of upstream commit b45ba4a51cde29b2939365ef0c07ad34c8321789]
+>>
+>> On powerpc32, patch_instruction() is called by apply_feature_fixups()
+>> which is called from early_init()
+>>
+>> There is the following note in front of early_init():
+>>   * Note that the kernel may be running at an address which is different
+>>   * from the address that it was linked at, so we must use RELOC/PTRRELOC
+>>   * to access static data (including strings).  -- paulus
+>>
+>> Therefore init_mem_is_free must be accessed with PTRRELOC()
+>>
+>> Fixes: 1c38a84d4586 ("powerpc: Avoid code patching freed init sections")
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=203597
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>
+>> ---
+>> Can't apply the upstream commit as such due to several other unrelated stuff
+>> like for instance STRICT_KERNEL_RWX which are missing.
+>> So instead, using same approach as for commit 252eb55816a6f69ef9464cad303cdb3326cdc61d
+> 
+> Now queued up, thanks.
+> 
 
-Gr{oetje,eeting}s,
+Should go to 4.4 as well since the commit it fixes is now queued for 4.4 
+([PATCH 4.4 056/266] powerpc: Avoid code patching freed init sections)
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Christophe
