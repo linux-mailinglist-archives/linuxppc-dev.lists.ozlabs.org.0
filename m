@@ -2,51 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017571EC08
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 12:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431621EBF1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 12:17:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453rGC4F2KzDqTd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 20:22:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453r836BNRzDqTM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 20:17:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=188.165.48.29; helo=11.mo1.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 11.mo1.mail-out.ovh.net (11.mo1.mail-out.ovh.net
- [188.165.48.29])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="pOXJuJ6f"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453rDs4cFnzDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 20:21:14 +1000 (AEST)
-Received: from player761.ha.ovh.net (unknown [10.109.143.249])
- by mo1.mail-out.ovh.net (Postfix) with ESMTP id DCBFD1780BF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 12:13:35 +0200 (CEST)
-Received: from kaod.org (lfbn-1-10649-41.w90-89.abo.wanadoo.fr [90.89.235.41])
- (Authenticated sender: clg@kaod.org)
- by player761.ha.ovh.net (Postfix) with ESMTPSA id 2F9C65CA0640;
- Wed, 15 May 2019 10:13:26 +0000 (UTC)
-Subject: Re: [PATCH] powerpc/pseries: Fix xive=off command line
-To: Greg Kurz <groug@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@ozlabs.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-References: <155791470178.432724.8008395673479905061.stgit@bahia.lan>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <f627ac6d-1237-a980-b6a3-13f571d6d9c3@kaod.org>
-Date: Wed, 15 May 2019 12:13:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453r6k3DMqzDq6k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 20:15:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 453r6d14rDz9vFWj;
+ Wed, 15 May 2019 12:15:53 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=pOXJuJ6f; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tZ509AuH5A3i; Wed, 15 May 2019 12:15:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 453r6c743Pz9vFWg;
+ Wed, 15 May 2019 12:15:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557915353; bh=JkNnvjOMfRqSomesQfismzw3D9jaw2fW9EhhxsiuWEk=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=pOXJuJ6fH9xG7wOjc3fYIYZzxR4hS2UbChGGNJqJK3jSpn3ae6fO/nUXgVpyBOwIz
+ liwTJqgqlG8++3P430Ke7mdiNrrJAu9inbct85J+ki/SMwdKdA6ZLJcyhrPBESktby
+ s3Mh+bF33Gbn4ZCB4Y4546JhtATVFVb/s2ifqz/o=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2948F8B8FD;
+ Wed, 15 May 2019 12:15:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 67sh6mxxdHxt; Wed, 15 May 2019 12:15:54 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F3288B8F7;
+ Wed, 15 May 2019 12:15:54 +0200 (CEST)
+Subject: Re: Latest Git kernel: Section mismatch in reference from the
+ variable start_here_multiplatform to the function .init.text:.early_setup()
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
+References: <d8d0bf05-2c22-0ade-6361-4841e521597c@xenosoft.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <dbfbd2e0-eca8-8ecc-793b-a6f1471ce2ee@c-s.fr>
+Date: Wed, 15 May 2019 12:15:49 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <155791470178.432724.8008395673479905061.stgit@bahia.lan>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <d8d0bf05-2c22-0ade-6361-4841e521597c@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 16595201680402844598
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrleekgddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,201 +80,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pavrampu@in.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/15/19 12:05 PM, Greg Kurz wrote:
-> On POWER9, if the hypervisor supports XIVE exploitation mode, the guest OS
-> will unconditionally requests for the XIVE interrupt mode even if XIVE was
-> deactivated with the kernel command line xive=off. Later on, when the spapr
-> XIVE init code handles xive=off, it disables XIVE and tries to fall back on
-> the legacy mode XICS.
-> 
-> This discrepency causes a kernel panic because the hypervisor is configured
-> to provide the XIVE interrupt mode to the guest :
-> 
-> [    0.008837] kernel BUG at arch/powerpc/sysdev/xics/xics-common.c:135!
-> [    0.008877] Oops: Exception in kernel mode, sig: 5 [#1]
-> [    0.008908] LE SMP NR_CPUS=1024 NUMA pSeries
-> [    0.008939] Modules linked in:
-> [    0.008964] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.0.13-200.fc29.ppc64le #1
-> [    0.009018] NIP:  c000000001029ab8 LR: c000000001029aac CTR: c0000000018e0000
-> [    0.009065] REGS: c0000007f96d7900 TRAP: 0700   Tainted: G        W          (5.0.13-200.fc29.ppc64le)
-> [    0.009119] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000222  XER: 20040000
-> [    0.009168] CFAR: c0000000001b1e28 IRQMASK: 0
-> [    0.009168] GPR00: c000000001029aac c0000007f96d7b90 c0000000015e8600 0000000000000000
-> [    0.009168] GPR04: 0000000000000001 0000000000000000 0000000000000061 646f6d61696e0d0a
-> [    0.009168] GPR08: 00000007fd8f0000 0000000000000001 c0000000014c44c0 c0000007f96d76cf
-> [    0.009168] GPR12: 0000000000000000 c0000000018e0000 0000000000000001 0000000000000000
-> [    0.009168] GPR16: 0000000000000000 0000000000000001 c0000007f96d7c08 c0000000016903d0
-> [    0.009168] GPR20: c0000007fffe04e8 ffffffffffffffea c000000001620164 c00000000161fe58
-> [    0.009168] GPR24: c000000000ea6c88 c0000000011151a8 00000000006000c0 c0000007f96d7c34
-> [    0.009168] GPR28: 0000000000000000 c0000000014b286c c000000001115180 c00000000161dc70
-> [    0.009558] NIP [c000000001029ab8] xics_smp_probe+0x38/0x98
-> [    0.009590] LR [c000000001029aac] xics_smp_probe+0x2c/0x98
-> [    0.009622] Call Trace:
-> [    0.009639] [c0000007f96d7b90] [c000000001029aac] xics_smp_probe+0x2c/0x98 (unreliable)
-> [    0.009687] [c0000007f96d7bb0] [c000000001033404] pSeries_smp_probe+0x40/0xa0
-> [    0.009734] [c0000007f96d7bd0] [c0000000010212a4] smp_prepare_cpus+0x62c/0x6ec
-> [    0.009782] [c0000007f96d7cf0] [c0000000010141b8] kernel_init_freeable+0x148/0x448
-> [    0.009829] [c0000007f96d7db0] [c000000000010ba4] kernel_init+0x2c/0x148
-> [    0.009870] [c0000007f96d7e20] [c00000000000bdd4] ret_from_kernel_thread+0x5c/0x68
-> [    0.009916] Instruction dump:
-> [    0.009940] 7c0802a6 60000000 7c0802a6 38800002 f8010010 f821ffe1 3c62001c e863b9a0
-> [    0.009988] 4b1882d1 60000000 7c690034 5529d97e <0b090000> 3d22001c e929b998 3ce2ff8f
-> 
-> Look for xive=off during prom_init and don't ask for XIVE in this case. One
-> exception though: if the host only supports XIVE, we still want to boot so
-> we ignore xive=off.
-> 
-> Similarly, have the spapr XIVE init code to looking at the interrupt mode
-> negociated during CAS, and ignore xive=off if the hypervisor only supports
-> XIVE.
-> 
-> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
-> Cc: stable@vger.kernel.org # v4.20
-> Reported-by: Pavithra R. Prakash <pavrampu@in.ibm.com>
-> Signed-off-by: Greg Kurz <groug@kaod.org>
+Hi,
 
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-> ---
-> eac1e731b59e is a v4.16 commit actually but this patch only applies
-> cleanly to v4.20 and newer. If needed I can send a backport for
-> older versions.
-> ---
->  arch/powerpc/kernel/prom_init.c  |   16 +++++++++++-
->  arch/powerpc/sysdev/xive/spapr.c |   52 +++++++++++++++++++++++++++++++++++++-
->  2 files changed, 66 insertions(+), 2 deletions(-)
+Le 15/05/2019 à 12:09, Christian Zigotzky a écrit :
+> Hi All,
 > 
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index 523bb99d7676..c8f7eb845927 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -172,6 +172,7 @@ static unsigned long __prombss prom_tce_alloc_end;
->  
->  #ifdef CONFIG_PPC_PSERIES
->  static bool __prombss prom_radix_disable;
-> +static bool __prombss prom_xive_disable;
->  #endif
->  
->  struct platform_support {
-> @@ -808,6 +809,12 @@ static void __init early_cmdline_parse(void)
->  	}
->  	if (prom_radix_disable)
->  		prom_debug("Radix disabled from cmdline\n");
-> +
-> +	opt = prom_strstr(prom_cmd_line, "xive=off");
-> +	if (opt) {
-> +		prom_xive_disable = true;
-> +		prom_debug("XIVE disabled from cmdline\n");
-> +	}
->  #endif /* CONFIG_PPC_PSERIES */
->  }
->  
-> @@ -1216,10 +1223,17 @@ static void __init prom_parse_xive_model(u8 val,
->  	switch (val) {
->  	case OV5_FEAT(OV5_XIVE_EITHER): /* Either Available */
->  		prom_debug("XIVE - either mode supported\n");
-> -		support->xive = true;
-> +		support->xive = !prom_xive_disable;
->  		break;
->  	case OV5_FEAT(OV5_XIVE_EXPLOIT): /* Only Exploitation mode */
->  		prom_debug("XIVE - exploitation mode supported\n");
-> +		if (prom_xive_disable) {
-> +			/*
-> +			 * If we __have__ to do XIVE, we're better off ignoring
-> +			 * the command line rather than not booting.
-> +			 */
-> +			prom_printf("WARNING: Ignoring cmdline option xive=off\n");
-> +		}
->  		support->xive = true;
->  		break;
->  	case OV5_FEAT(OV5_XIVE_LEGACY): /* Only Legacy mode */
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index 575db3b06a6b..2e2d1b8f810f 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -20,6 +20,7 @@
->  #include <linux/cpumask.h>
->  #include <linux/mm.h>
->  #include <linux/delay.h>
-> +#include <linux/libfdt.h>
->  
->  #include <asm/prom.h>
->  #include <asm/io.h>
-> @@ -663,6 +664,55 @@ static bool xive_get_max_prio(u8 *max_prio)
->  	return true;
->  }
->  
-> +static const u8 *get_vec5_feature(unsigned int index)
-> +{
-> +	unsigned long root, chosen;
-> +	int size;
-> +	const u8 *vec5;
-> +
-> +	root = of_get_flat_dt_root();
-> +	chosen = of_get_flat_dt_subnode_by_name(root, "chosen");
-> +	if (chosen == -FDT_ERR_NOTFOUND)
-> +		return NULL;
-> +
-> +	vec5 = of_get_flat_dt_prop(chosen, "ibm,architecture-vec-5", &size);
-> +	if (!vec5)
-> +		return NULL;
-> +
-> +	if (size <= index)
-> +		return NULL;
-> +
-> +	return vec5 + index;
-> +}
-> +
-> +static bool xive_spapr_disabled(void)
-> +{
-> +	const u8 *vec5_xive;
-> +
-> +	vec5_xive = get_vec5_feature(OV5_INDX(OV5_XIVE_SUPPORT));
-> +	if (vec5_xive) {
-> +		u8 val;
-> +
-> +		val = *vec5_xive & OV5_FEAT(OV5_XIVE_SUPPORT);
-> +		switch (val) {
-> +		case OV5_FEAT(OV5_XIVE_EITHER):
-> +		case OV5_FEAT(OV5_XIVE_LEGACY):
-> +			break;
-> +		case OV5_FEAT(OV5_XIVE_EXPLOIT):
-> +			/* Hypervisor only supports XIVE */
-> +			if (xive_cmdline_disabled)
-> +				pr_warn("WARNING: Ignoring cmdline option xive=off\n");
-> +			return false;
-> +		default:
-> +			pr_warn("%s: Unknown xive support option: 0x%x\n",
-> +				__func__, val);
-> +			break;
-> +		}
-> +	}
-> +
-> +	return xive_cmdline_disabled;
-> +}
-> +
->  bool __init xive_spapr_init(void)
->  {
->  	struct device_node *np;
-> @@ -675,7 +725,7 @@ bool __init xive_spapr_init(void)
->  	const __be32 *reg;
->  	int i;
->  
-> -	if (xive_cmdline_disabled)
-> +	if (xive_spapr_disabled())
->  		return false;
->  
->  	pr_devel("%s()\n", __func__);
+> I got the following error messages with the latest Git kernel today:
 > 
+> GEN     .version
+>    CHK     include/generated/compile.h
+>    LD      vmlinux.o
+>    MODPOST vmlinux.o
+> WARNING: vmlinux.o(.text+0x302a): Section mismatch in reference from the 
+> variable start_here_multiplatform to the function .init.text:.early_setup()
+> The function start_here_multiplatform() references
+> the function __init .early_setup().
+> This is often because start_here_multiplatform lacks a __init
+> annotation or the annotation of .early_setup is wrong.
+> 
+>    MODINFO modules.builtin.modinfo
+>    KSYM    .tmp_kallsyms1.o
+>    KSYM    .tmp_kallsyms2.o
+>    LD      vmlinux
+>    SORTEX  vmlinux
+>    SYSMAP  System.map
+>    CHKHEAD vmlinux
+> 
+> What does it mean?
 
+I proposed a patch for it at https://patchwork.ozlabs.org/patch/1097845/
+
+Christophe
+
+> 
+> Please find attached the kernel config.
+> 
+> Thanks,
+> Christian
+> 
