@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517F71F398
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:16:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739761F344
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:12:43 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453tjM6sfszDqV8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:12:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453tnz5pNkzDqVP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:16:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
+ (client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com;
  envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="rUlu/Uzq"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rEZd9BQC"; 
  dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453tfQ3GxHzDqSL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:10:05 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id r4so2385764wro.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 05:10:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453tfb5gBwzDqTC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:10:15 +1000 (AEST)
+Received: by mail-wm1-x344.google.com with SMTP id o189so2415394wmb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 05:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=sender:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=04vE/yZS+t9ASvM0Tt3OFkOsi4P5+QK49E2+acvjvQQ=;
- b=rUlu/UzqF/esvoHFPYwpMh1FUQbOvqo/ap9EWcHUkZXAodrJoa4A/WsClM0UxEhqPd
- 89uXP2igvjKzeI4J1Hkd3WYqDFy7q33uPxc2HUONPi+7AqmIu+A4ZEBys8tyXcAiAc2U
- fgoDY1VGYNRUFKDU7TJNTJnC8UK9AifnCu8v+6RzQhrID9QsM+xFxw79b3qv01iR+u4j
- ojzpdLQ8ZQf96P2uTac/x15aah6vPsvTGMzU0T/Lzktpgz6WLN0byC4GIaoettlYuPCo
- 9E3yRcMBK3+M83PdDgC1RDjydxwsPWcaYqYT04iCsYv6JIcZhmFFAMW6BKad48eiXbD7
- nqEA==
+ bh=CFKFwgLozVIM6dscXeJBqjWNwAotJvVX+KZD7JqTJhw=;
+ b=rEZd9BQCMnveEHnW1EzvyB1mf4vdRdsj1KDivixg8uQO3ZRtnIPm9n7ribcAB6WmAG
+ rYiqArIQw4TWQrCbePoK51atfLhI8UASv873PwpBgqGeraXUomT8Q9OVMKqgS7zhUtW+
+ e6Um4yftwThM428E24xFoAy485veY5Sz6ep54y79hQmhvXUa6eqATSFqIkOP6TGCzmOj
+ rUwVPTteu1AsINuyrk5rKeuqH/sqc0lcyoon80pHmoRcsaKJzA2ElDkRnpVtpDu/jfrG
+ q4yz7DVm+2lRxc5346NALN5LG+Lg99spJProW6l2dzcESBAqDycAnG1Z/OD7wigZC6Vm
+ QQHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
  :mime-version:content-transfer-encoding;
- bh=04vE/yZS+t9ASvM0Tt3OFkOsi4P5+QK49E2+acvjvQQ=;
- b=D35J9pnjdVFNQWKOBUlhyvEYz9uGJS0J8L+HHfQuebUmrR7XMdXXkcJwTGtGVDOmjJ
- Xhz/e3+bqEwIs9uxVT0gj4f9HgymKolvPyqzKKSUKus9UHz9dQM8vya/22oQl5aE0jHX
- tVyluU46czl/RibxUMOuqkuLP6GdV/BMMnQfPRNUMHEQmJbk1ew4AML92TtBv4sW0+Nl
- QFgVpw1bGb3ysnz5td5hL3vkFshvM/VnoHkpxYTDDhaMPzAw/xt2E4lyZtEPk8esilKQ
- 8egtZoOd1QH6+IHfCcASvDHbyT+uZomzGQ0lPRpE57PRF92wddQLSDrfYd20PIAr3dYh
- Ta+g==
-X-Gm-Message-State: APjAAAXASXjp4/7gYKvaiULTpgtpiloePmSIKep2IBpHg0pdZUxCMXe7
- sQqeoV8Ydmm2CVUK+krLJF4=
-X-Google-Smtp-Source: APXvYqwqRM2hZ1TYTAPN1pkRiFuk5jR7rSwKxqfJthKIZ+ilEP+0VrWCBasqLIcAE6IScwdALAL4Ug==
-X-Received: by 2002:a5d:4b0b:: with SMTP id v11mr24672581wrq.317.1557922201948; 
- Wed, 15 May 2019 05:10:01 -0700 (PDT)
+ bh=CFKFwgLozVIM6dscXeJBqjWNwAotJvVX+KZD7JqTJhw=;
+ b=kTzKtJOTU/wH8Q05f8R/7RcQFjJ9p4xPo3U7xrAOQq69cEu39IaTonTHmMEvFN+KhL
+ 98y8JTX+8cMePYObANb8IRs/gLTgBxKwJaCga98I2PqLJ1jUWv6jlhecHj45ApzlpZRi
+ /u8qe22Eu19UGrW+S5Kzgs6Cc0TzmUAQ4mhwhEfGRTWhRRks3KOeA6iaDz4TUTLwFZXB
+ WRf3HNoQWzqJyF6IKUTFovtoTDFgnTBxZeNbeDEukwSfzRZI94Ioyb8NvjF2kXAOrUy+
+ CKngdUH4F7WNA6fw+OXXKGglrolQnt+Rz7H4si7AwPrrJZsvs1vz2jOX6ASko1ZfyoEG
+ WteA==
+X-Gm-Message-State: APjAAAXAW7H3gkagxDRW3nlmmeV2/sI4+5YpDI6VmG1F3r7NUgQnm5I0
+ cSpcfkIqr8Z3PFwYm573NX8=
+X-Google-Smtp-Source: APXvYqyeRa0AATRlHj/RBPnO2Noo/rUCYItU5+6CIHDBuomet4LfUmlnkJB5oFmYAn07J0K50gSbdQ==
+X-Received: by 2002:a1c:5f02:: with SMTP id t2mr22591116wmb.19.1557922212170; 
+ Wed, 15 May 2019 05:10:12 -0700 (PDT)
 Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net.
  [78.225.224.134])
- by smtp.gmail.com with ESMTPSA id b18sm2126219wrx.75.2019.05.15.05.10.01
+ by smtp.gmail.com with ESMTPSA id v1sm1847403wrd.47.2019.05.15.05.10.11
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 15 May 2019 05:10:01 -0700 (PDT)
+ Wed, 15 May 2019 05:10:11 -0700 (PDT)
 Received: by macbookpro.malat.net (Postfix, from userid 1000)
- id 15A9A1146D7B; Wed, 15 May 2019 14:09:50 +0200 (CEST)
+ id 7FB421146D7B; Wed, 15 May 2019 14:10:10 +0200 (CEST)
 From: Mathieu Malaterre <malat@debian.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: silence a -Wcast-function-type warning in
- dawr_write_file_bool
-Date: Wed, 15 May 2019 14:09:42 +0200
-Message-Id: <20190515120942.3812-1-malat@debian.org>
+Subject: [PATCH] powerpc: Include <asm/pte-walk.h> header file to fix a warning
+Date: Wed, 15 May 2019 14:10:08 +0200
+Message-Id: <20190515121008.3992-1-malat@debian.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,47 +79,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Mathieu Malaterre <malat@debian.org>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit c1fe190c0672 ("powerpc: Add force enable of DAWR on P9
-option") the following piece of code was added:
+Make sure to include <asm/pte-walk.h> to provide the following prototype:
+__find_linux_pte.
 
-   smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
+Remove the following warning treated as error (W=1):
 
-Since GCC 8 this trigger the following warning about incompatible
-function types:
+  arch/powerpc/mm/pgtable.c:316:8: error: no previous prototype for '__find_linux_pte' [-Werror=missing-prototypes]
 
-  arch/powerpc/kernel/hw_breakpoint.c:408:21: error: cast between incompatible function types from 'int (*)(struct arch_hw_breakpoint *)' to 'void (*)(void *)' [-Werror=cast-function-type]
-
-Cast the function to an intermediate (void*) to make the compiler loose
-knowledge about actual type.
-
-Fixes: c1fe190c0672 ("powerpc: Add force enable of DAWR on P9 option")
-Cc: Michael Neuling <mikey@neuling.org>
+Fixes: 0caed4de502c ("powerpc/mm: move __find_linux_pte() out of hugetlbpage.c")
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 Signed-off-by: Mathieu Malaterre <malat@debian.org>
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/pgtable.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index f70fb89dbf60..baeb4c58de3b 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -405,7 +405,8 @@ static ssize_t dawr_write_file_bool(struct file *file,
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index db4a6253df92..2aa042193ace 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -31,6 +31,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/tlb.h>
+ #include <asm/hugetlb.h>
++#include <asm/pte-walk.h>
  
- 	/* If we are clearing, make sure all CPUs have the DAWR cleared */
- 	if (!dawr_force_enable)
--		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-+		smp_call_function((smp_call_func_t)(void *)set_dawr,
-+				  &null_brk, 0);
- 
- 	return rc;
- }
+ static inline int is_exec_fault(void)
+ {
 -- 
 2.20.1
 
