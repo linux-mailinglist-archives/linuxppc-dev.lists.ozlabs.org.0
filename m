@@ -2,57 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E331F544
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 15:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6626A1F585
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 15:23:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453w7C6cRYzDqXG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 23:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453wGr6xTmzDqXJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 23:23:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+738fd1ce08e215645d94+5743+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="rYCXmxJt"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="JlgbVq8Q"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453w570ZsWzDqQJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 23:14:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=qShoqLt0JmHyoHgAq3sjRJ0pBZKTFY+W/Ie1+Gslfcs=; b=rYCXmxJt7WIVkj4UyET3hLn4H
- OmfbIB7jIAwSa9Jv4QvcOVmdEuLtr4hR6GYVoIViMZ7bWW94ldFI3s2GeCcXaveKviEIC88Yi5364
- 90FxvdcJw6lodstcqCiNE2IioHmGFIGm1uVuP+hLxOXY/UrQHLUWMASdv6psi37jJPfIip/Wxz3Xc
- BTzsy2JNdKHNbhpUAFNeSMPGbiElM4NDeYb8AH1+3ZiU8nrOih5wfVNc1BQUc3TgRe7/4oBj52ZV3
- FJPXQm7UWb0JuyMa2ZJNdmKpwTqgwGQEB9yNibzD05AHHDBxIA4D78Dc377GEBv4O6nuBOghgN5kd
- Y8Kp+Ki5Q==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
- Hat Linux)) id 1hQtk1-0000z1-RR; Wed, 15 May 2019 13:14:41 +0000
-Date: Wed, 15 May 2019 06:14:41 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Mathieu Malaterre <malat@debian.org>
-Subject: Re: [PATCH] powerpc: silence a -Wcast-function-type warning in
- dawr_write_file_bool
-Message-ID: <20190515131441.GA3072@infradead.org>
-References: <20190515120942.3812-1-malat@debian.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453wDh1DnbzDqQl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 23:21:21 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id u17so1366155pfn.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 06:21:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9TwqGxcqAmiiOZF0fMbRhR1jD/62UPXQ1qlKx2sBgIw=;
+ b=JlgbVq8Qjwpw9WAr3pAylhX1iQ/iYC2g7mT8uRosYuCwHSDM/yTMreG9tYBQVcVNyQ
+ BC3/VjABCkHEHMUbtmJ1XRRTjFNlVYrx7pJY+4wKAQ2h1XQhtIWWQjes9+TUvLQY8GpZ
+ 0BHAGQH2GBe2dBQhPXIAuMQwphBBnD9R55zyuQcMkNaeHWS/m7jNtzmuAXPn0TPRyl1Z
+ QtI3c2LEu81tkSQDEm6AJtJ/McHtOdQG8QyM9WvshOaHLKxHkdoyJ+r6XLKyi3M4W+eT
+ 6TcQq4blbNWTweaNiEeY0T+M83F934W5jcywJmVxHQcdxOlFCYLapC0SZlg61V7F44tT
+ ZsVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9TwqGxcqAmiiOZF0fMbRhR1jD/62UPXQ1qlKx2sBgIw=;
+ b=Xl7g+igp18Vx0PY69WyPPie4RT5Wpohve3jW96RqlTadKaiNfRqUCe3UwDsxB61hRy
+ xnDnx5OBgGlUIppX3EOcMOe/IGKfamThVDa5eAQ9bjHTtP+RuYgtmhu77waYSywVNfBk
+ AdvrnTmxbXsxbDDx6fCgC1E6/+JTBvDsK5+pJWdP3mVezXcpmghyvH3MDVAMTBDH/Isx
+ n5+2Fw0GnZJVKb6UBd7u3r8HHgCOd74nVQfVsUAuFfP18AMyq7ym7j09sdadXo61OPyZ
+ W7YKAjSWFMbyCfOTyc9H09R3I6OSZj0T6UH79iqYPh89S2t0wdP/NUdtDty8DBF5Ez9/
+ T2Fw==
+X-Gm-Message-State: APjAAAXcV7zZK1GfThHBN0+ysze8xKbcjMX8q17qX6MKKHqleO1eu2yD
+ L0Btje8oiNME794I3cMojXMc+rIC
+X-Google-Smtp-Source: APXvYqxAXcfJTxXroa2Tygf/+OEh2WGaMRVJDDPwfEwlvrlt/aw5en3n2OvDBvWLLEnZ8lG6AVBaFg==
+X-Received: by 2002:a63:8bc9:: with SMTP id
+ j192mr43412507pge.212.1557926476914; 
+ Wed, 15 May 2019 06:21:16 -0700 (PDT)
+Received: from bobo.local0.net (115-64-240-98.tpgi.com.au. [115.64.240.98])
+ by smtp.gmail.com with ESMTPSA id a19sm2784459pgm.46.2019.05.15.06.21.14
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 15 May 2019 06:21:16 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 1/5] mm: large system hash use vmalloc for size >
+ MAX_ORDER when !hashdist
+Date: Wed, 15 May 2019 23:19:40 +1000
+Message-Id: <20190515131944.12489-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190515120942.3812-1-malat@debian.org>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,47 +79,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, linuxppc-dev@lists.ozlabs.org,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2019 at 02:09:42PM +0200, Mathieu Malaterre wrote:
-> In commit c1fe190c0672 ("powerpc: Add force enable of DAWR on P9
-> option") the following piece of code was added:
-> 
->    smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-> 
-> Since GCC 8 this trigger the following warning about incompatible
-> function types:
+The kernel currently clamps large system hashes to MAX_ORDER when
+hashdist is not set, which is rather arbitrary.
 
-And the warning is there for a reason, and should not be hidden
-behind a cast.  This should instead be fixed by something like this:
+vmalloc space is limited on 32-bit machines, but this shouldn't
+result in much more used because of small physical memory.
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index da307dd93ee3..a26b67a1be83 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -384,6 +384,12 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
- bool dawr_force_enable;
- EXPORT_SYMBOL_GPL(dawr_force_enable);
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ mm/page_alloc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 59661106da16..1683d54d6405 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7978,7 +7978,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 			else
+ 				table = memblock_alloc_raw(size,
+ 							   SMP_CACHE_BYTES);
+-		} else if (hashdist) {
++		} else if (get_order(size) >= MAX_ORDER || hashdist) {
+ 			table = __vmalloc(size, gfp_flags, PAGE_KERNEL);
+ 		} else {
+ 			/*
+@@ -7986,10 +7986,8 @@ void *__init alloc_large_system_hash(const char *tablename,
+ 			 * some pages at the end of hash table which
+ 			 * alloc_pages_exact() automatically does
+ 			 */
+-			if (get_order(size) < MAX_ORDER) {
+-				table = alloc_pages_exact(size, gfp_flags);
+-				kmemleak_alloc(table, size, 1, gfp_flags);
+-			}
++			table = alloc_pages_exact(size, gfp_flags);
++			kmemleak_alloc(table, size, 1, gfp_flags);
+ 		}
+ 	} while (!table && size > PAGE_SIZE && --log2qty);
  
-+
-+static void set_dawr_cb(void *info)
-+{
-+	set_dawr(info);
-+}
-+
- static ssize_t dawr_write_file_bool(struct file *file,
- 				    const char __user *user_buf,
- 				    size_t count, loff_t *ppos)
-@@ -403,7 +409,7 @@ static ssize_t dawr_write_file_bool(struct file *file,
- 
- 	/* If we are clearing, make sure all CPUs have the DAWR cleared */
- 	if (!dawr_force_enable)
--		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-+		smp_call_function(set_dawr_cb, &null_brk, 0);
- 
- 	return rc;
- }
+-- 
+2.20.1
+
