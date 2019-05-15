@@ -1,53 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA711EA90
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 11:01:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB99F1EA23
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 10:30:55 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453nnT16DDzDqTX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 18:30:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453pT93shXzDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 19:01:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="SdigXGYp"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (mailfrom) smtp.mailfrom=aculab.com
+ (client-ip=146.101.78.151; helo=eu-smtp-delivery-151.mimecast.com;
+ envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453nm06nn5zDq9R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 18:29:36 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 43E7720843;
- Wed, 15 May 2019 08:29:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557908973;
- bh=cb6Z72ERql0xdgtLEheM3Mr6tP+8TTkYRDEjF92YdbM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=SdigXGYpCHahSil4CZYyy/NiXojNHYkhugo43zeFTqjlrDGXb1oFyhTfCwi/uoHhq
- 1O+0Z8NwBTRc07OTs3Ya+ehdtc6bQJiPl6GgiBEbpVUYO61xxkovBN++Wra2EE8d3A
- N6fYSRwKLhMwU1A0EEfRgvm2nD05P96Ok4Xgcpfk=
-Date: Wed, 15 May 2019 10:29:31 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH stable 4.9] powerpc/lib: fix book3s/32 boot failure due
- to code patching
-Message-ID: <20190515082931.GA28349@kroah.com>
-References: <629c2acb1fcd09c2d2e3352370c3d9853372cf39.1557902321.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453pRh089VzDqSF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 19:00:29 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-151-LzCPBcH1MgOVKjpg1pcjcg-1; Wed, 15 May 2019 10:00:24 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 15 May 2019 10:00:23 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 15 May 2019 10:00:23 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Petr Mladek' <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>
+Subject: RE: [PATCH] vsprintf: Do not break early boot with probing addresses
+Thread-Topic: [PATCH] vsprintf: Do not break early boot with probing addresses
+Thread-Index: AQHVB1bC/iTC8Q7sI0elwkZY5/gFJaZowlxwgAEika2AAGmPsIABhHoSgAAVWGA=
+Date: Wed, 15 May 2019 09:00:23 +0000
+Message-ID: <0a816ea272a0405f89d8ca7178604531@AcuMS.aculab.com>
+References: <20190510084213.22149-1-pmladek@suse.com>
+ <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+ <20190514020730.GA651@jagdpanzerIV>
+ <45348cf615fe40d383c1a25688d4a88f@AcuMS.aculab.com>
+ <CAMuHMdXaMObq9h2Sb49PW1-HUysPeaWXB7wJmKFz=xLmSoUDZg@mail.gmail.com>
+ <20190514143751.48e81e05@oasis.local.home>
+ <20190515073542.y6ru2nfagtcrpdl7@pathway.suse.cz>
+In-Reply-To: <20190515073542.y6ru2nfagtcrpdl7@pathway.suse.cz>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <629c2acb1fcd09c2d2e3352370c3d9853372cf39.1557902321.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+X-MC-Unique: LzCPBcH1MgOVKjpg1pcjcg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,36 +71,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: erhard_f@mailbox.org, Michael Neuling <mikey@neuling.org>,
- linux-kernel@vger.kernel.org,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Stephen Rothwell <sfr@ozlabs.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2019 at 06:40:47AM +0000, Christophe Leroy wrote:
-> [Backport of upstream commit b45ba4a51cde29b2939365ef0c07ad34c8321789]
-> 
-> On powerpc32, patch_instruction() is called by apply_feature_fixups()
-> which is called from early_init()
-> 
-> There is the following note in front of early_init():
->  * Note that the kernel may be running at an address which is different
->  * from the address that it was linked at, so we must use RELOC/PTRRELOC
->  * to access static data (including strings).  -- paulus
-> 
-> Therefore init_mem_is_free must be accessed with PTRRELOC()
-> 
-> Fixes: 1c38a84d4586 ("powerpc: Avoid code patching freed init sections")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=203597
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> ---
-> Can't apply the upstream commit as such due to several other unrelated stuff
-> like for instance STRICT_KERNEL_RWX which are missing.
-> So instead, using same approach as for commit 252eb55816a6f69ef9464cad303cdb3326cdc61d
+From: Petr Mladek
+> Sent: 15 May 2019 08:36
+> On Tue 2019-05-14 14:37:51, Steven Rostedt wrote:
+> >
+> > [ Purple is a nice shade on the bike shed. ;-) ]
+> >
+> > On Tue, 14 May 2019 11:02:17 +0200
+> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >
+> > > On Tue, May 14, 2019 at 10:29 AM David Laight <David.Laight@aculab.co=
+m> wrote:
+> > > > > And I like Steven's "(fault)" idea.
+> > > > > How about this:
+> > > > >
+> > > > >       if ptr < PAGE_SIZE              -> "(null)"
+> > > > >       if IS_ERR_VALUE(ptr)            -> "(fault)"
+> > > > >
+> > > > >       -ss
+> > > >
+> > > > Or:
+> > > >         if (ptr < PAGE_SIZE)
+> > > >                 return ptr ? "(null+)" : "(null)";
+> >
+> > Hmm, that is useful.
+> >
+> > > >         if IS_ERR_VALUE(ptr)
+> > > >                 return "(errno)"
+> >
+> > I still prefer "(fault)" as is pretty much all I would expect from a
+> > pointer dereference, even if it is just bad parsing of, say, a parsing
+> > an MAC address. "fault" is generic enough. "errno" will be confusing,
+> > because that's normally a variable not a output.
+> >
+> > >
+> > > Do we care about the value? "(-E%u)"?
+> >
+> > That too could be confusing. What would (-E22) be considered by a user
+> > doing an sprintf() on some string. I know that would confuse me, or I
+> > would think that it was what the %pX displayed, and wonder why it
+> > displayed it that way. Whereas "(fault)" is quite obvious for any %p
+> > use case.
+>=20
+> This discussion clearly shows that it is hard to make anyone happy.
+>=20
+> I considered switching to "(fault)" because there seems to be more
+> people in favor of this.
+>=20
+> But there is used also "(einval)" when an unsupported pointer
+> modifier is passed. The idea is to show error codes that people
+> are familiar with.
+>=20
+> It might have been better to use the uppercase "(EFAULT)" and
+> "(EINVAL)" to make it more obvious. But I wanted to follow
+> the existing style with the lowercase "(null)".
 
-Now queued up, thanks.
+Printing 'fault' when the code was (trying to) validate the
+address was ok.
+When the only check is for an -errno value it seems wrong as
+most invalid addresses will actually fault (and panic).
 
-greg k-h
+The reason modern printf generate "(null)" is that it is far too
+easy for a diagnostic print to fail to test a pointer.
+It also makes it easier when 'throwing in' printf while debugging
+to add a single trace that will work regardless of whether a
+call had succeeded or not.
+
+With the Linux kernel putting errno values into pointers it
+seems likely that most invalid pointers in printf will actaully
+be error values.
+Printing the value will be helpful during debugging - as a
+trace can be put after a call and show the parameters and result.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
