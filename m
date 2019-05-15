@@ -2,71 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D931E8A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0197E1E8AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 08:55:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453lfH3xKNzDqQ5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 16:54:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453lgm493SzDqVC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 16:55:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.160.194; helo=mail-qt1-f194.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="U7/Xnsfn"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qt1-f194.google.com (mail-qt1-f194.google.com
+ [209.85.160.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453lRG2wn4zDqSg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 16:44:58 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 453lR94ksXz9vDbb;
- Wed, 15 May 2019 08:44:53 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=U7/Xnsfn; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cDrn7JUJAzaL; Wed, 15 May 2019 08:44:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 453lR93ZqGz9vDbZ;
- Wed, 15 May 2019 08:44:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1557902693; bh=grBuY5owxUGP4FNaEiDCJS+hfjwHv093FTB3bCsWADA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=U7/XnsfnUZL6wj//NWeenDQU2xzlndXW5H9rNSjYYIlXy4xUVi7uDGaoyxZRyZcMn
- +KoFChEUzjIWoGmWw5ggZglbMqsQEF5EAzKcslHXCNyYldZMvQIJJTxl6YFQdT3Cer
- buEuD0lVwX57p8FD0I5gyOIKH3hDAEwSBq9VMUjo=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A42F8B7DF;
- Wed, 15 May 2019 08:44:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qxYpZ6wfXh55; Wed, 15 May 2019 08:44:54 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B4DE8B7DD;
- Wed, 15 May 2019 08:44:54 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc/mm: Implement STRICT_MODULE_RWX
-To: Christoph Hellwig <hch@infradead.org>
-References: <df502ffe07caa38c46b0144fc824fff447f4105b.1557901092.git.christophe.leroy@c-s.fr>
- <20190515064205.GB15778@infradead.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <04044ae8-1cd8-108b-f436-76c606cb3aea@c-s.fr>
-Date: Wed, 15 May 2019 08:44:50 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453lcx4xVKzDqCY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 16:53:21 +1000 (AEST)
+Received: by mail-qt1-f194.google.com with SMTP id m32so2107124qtf.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2019 23:53:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=R4MU58D5iAxx8dZmBy7pxRNzyYT0opcEi8NKuCcjlcM=;
+ b=gmgSt3yAFzZ7iP5irUPF+rBc5v68ENl9OExfnmJwoZRRrOPlHtNYHTpBMsniyot2Mw
+ XznGNIl8J+oYaaGO78pbkEcbN8xQfvvzs+0Ey6LA+bWax/amRvPFLPC6XZO5HFwtbkzu
+ ufXOaX94rz30RzGU8a6y+2UZpbloMuxJ/xNDFaVu5dJL3N+WOP7ksUrp/Dzq6zl7w8lT
+ O2/S/39P2bqvDjew9FwPMSmXkxkM/5eYtQHvP/+/B/Kz03Pqb7Z9DM+DHi9ZiRJuzx7P
+ ozhtI4IpQhr0OG+j6cVwgTJTmZNsnS5qYNqD6FmCXaGDe+JrjMEZF6dy8tkM3kF+qNH8
+ MQnA==
+X-Gm-Message-State: APjAAAWazE1KGilwI7TKdrzoxjfyOeRXbcTMuLAHRblOA7qORo5x4lw3
+ XCh45k2PdcRgC7RlWwhDt7ScnSjXpldQ4F7F0GU=
+X-Google-Smtp-Source: APXvYqy6lq7ldPMqvDA0jFj1FyDcQoLbsSggEPflcVw3ETtRuzRL5VVqc75BtYm29kQBzy5UWOObnG+TCbdkh5zktGA=
+X-Received: by 2002:a05:6214:10c8:: with SMTP id
+ r8mr32745217qvs.161.1557903198321; 
+ Tue, 14 May 2019 23:53:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190515064205.GB15778@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20190412143538.11780-1-hch@lst.de>
+ <CAK8P3a2bg9YkbNpAb9uZkXLFZ3juCmmbF7cRw+Dm9ZiLFno2OQ@mail.gmail.com>
+ <fd59e6e22594f740eaf86abad76ee04d@mailhost.ics.forth.gr>
+ <CACT4Y+aKGKm9Wbc1owBr51adkbesHP_Z81pBAoZ5HmJ+uZdsaw@mail.gmail.com>
+ <CAK8P3a3xRBZrgv16sSigJhY0vGmb=qF9o=6dC_5DqAJtW3qPGQ@mail.gmail.com>
+ <CACT4Y+ad5z6z0Dweh5hGwYcUUebPEtqsznmX9enPvYB20J16aA@mail.gmail.com>
+ <87woiutwq4.fsf@concordia.ellerman.id.au>
+ <CACT4Y+YT52wGuARxe9RqUsMYGNZTwaBowWWUUawyqTBq4G1NDg@mail.gmail.com>
+ <20190513120435.GB22993@lst.de>
+In-Reply-To: <20190513120435.GB22993@lst.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 15 May 2019 08:53:02 +0200
+Message-ID: <CAK8P3a2EF5ujv8S-PzYYBtNLEda+a_Wc6xhMign32QFnW4q1Ew@mail.gmail.com>
+Subject: Re: [PATCH, RFC] byteorder: sanity check toolchain vs kernel endianess
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,20 +69,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Nick Kossifidis <mick@ics.forth.gr>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, May 13, 2019 at 2:04 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Mon, May 13, 2019 at 01:50:19PM +0200, Dmitry Vyukov wrote:
+> > > We did have some bugs in the past (~1-2 y/ago) but AFAIK they are all
+> > > fixed now. These days I build most of my kernels with a bi-endian 64-bit
+> > > toolchain, and switching endian without running `make clean` also works.
+> >
+> > For the record, yes, it turn out to be a problem in our code (a latent
+> > bug). We actually used host (x86) gcc to build as-if ppc code that can
+> > run on the host, so it defined neither LE no BE macros. It just
+> > happened to work in the past :)
+>
+> So Nick was right and these checks actually are useful..
 
+Yes, definitely. I wonder if we should also bring back the word size check
+from include/asm-generic/bitsperlong.h, which was disabled right
+after I originally added that.
 
-Le 15/05/2019 à 08:42, Christoph Hellwig a écrit :
->> +static int change_page_ro(pte_t *ptep, pgtable_t token, unsigned long addr, void *data)
-> 
-> There are a couple way too long lines like this in the patch.
-> 
-
-powerpc arch accepts 90 chars per line, see arch/powerpc/tools/checkpatch.pl
-
-Christophe
+      Arnd
