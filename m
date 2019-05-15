@@ -2,76 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365711EC2A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 12:35:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FEB1EBC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 12:06:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453rXh5fgXzDqVd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 20:35:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453qvk56pfzDqVF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 20:06:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="V2IoDNXo"; 
- dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453qsn6R0kzDqS6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 20:04:40 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id m4so3293095edd.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 03:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=ge9TRjktRVrVnqZ1iKeaxbfy+4/gA1DaXxLhSva2Pzo=;
- b=V2IoDNXoO/tu4YP46eZWZIx8mjzPhScOJUiediP/JD8yu9tDCuMkDzTLMczg+YzL1i
- 8h2maTsgCDWSFCTCfU7iElO2lDQNz25OK2rLpUjDuXn/InO53AUIxsKPAWZBZHQBnkrY
- AylmGI44jvziO7CBVaOiSNrjQugCrPeFW/qMRQoUVqpO2tl+/0kLGYKgu+87muoF6SIN
- MFzNwXd7/30/fH3HAQmJ/WwjziGXeplBLLVcWSfq2WKVF3S/Ioic1nkUHLKFgoQ6jJCX
- K0CUmtSRSotosjbWq4lR1Rb3W3WdkgrHbqgOTbcxCjBqn46ScWwnVsssoWObRRQFq4Fq
- owXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=ge9TRjktRVrVnqZ1iKeaxbfy+4/gA1DaXxLhSva2Pzo=;
- b=ezCB7N85kmAHaoEbDv0tShu3tAV6ZPsbqlHp4xj1DFcY/LpbQCGCS9/lGSFxmGYyns
- 4jLP2o95au4bmYctwlRJz7JXiMkpjSsbW1M0y5VqViwX7Gp6aEvFFz/aEK5hA2HnaRnV
- xkRCAAq6RIe1vZGwnQjSW1F6ZakbzIJwRxYigEOz2vLFT9PoGmQZqViBKR1LDiz2r0eU
- sFHJVx5yimBn+OzYxJVplIyWHzoxtq1J6U+xIcM/X5SLSCYiwW6ePMV/+K78E5nuydjf
- LT8nZI1WkvN8mdfu6bJoLAmHSFVAm4LcCwrFZlvR84lQcI5CmRbhQTbUkJcp/rJBhy4q
- JQYg==
-X-Gm-Message-State: APjAAAVZWJSLvlbphLV/f5XV0gZ5mBqnsCv8dM5OupncPK2X+yzRvYrD
- sYSh5bQqnIoa5kcOgmi+YSrooA==
-X-Google-Smtp-Source: APXvYqzYgU+hAC+Brc4ebmK6tMsQUeItKnvEVlDVIv4My6oi+2rwZ3pVrIyeOkkPgIu/faKmW7m32w==
-X-Received: by 2002:a17:906:4f8e:: with SMTP id
- o14mr31438316eju.168.1557914677041; 
- Wed, 15 May 2019 03:04:37 -0700 (PDT)
-Received: from localhost.localdomain
- ([2a02:8109:9cc0:6dac:cd8f:f6e9:1b84:bbb1])
- by smtp.gmail.com with ESMTPSA id i33sm642763ede.47.2019.05.15.03.04.34
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 15 May 2019 03:04:36 -0700 (PDT)
-From: Christian Brauner <christian@brauner.io>
-To: jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
- torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, arnd@arndb.de,
- dhowells@redhat.com
-Subject: [PATCH 2/2] tests: add pidfd_open() tests
-Date: Wed, 15 May 2019 12:04:00 +0200
-Message-Id: <20190515100400.3450-2-christian@brauner.io>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190515100400.3450-1-christian@brauner.io>
-References: <20190515100400.3450-1-christian@brauner.io>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453qtN5brnzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 20:05:13 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4F9vsi0013073
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 06:05:09 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sgfu82ttc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 06:05:09 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <groug@kaod.org>;
+ Wed, 15 May 2019 11:05:07 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 15 May 2019 11:05:03 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4FA52XK48234672
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 15 May 2019 10:05:02 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73DE0A405D;
+ Wed, 15 May 2019 10:05:02 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27EF1A4040;
+ Wed, 15 May 2019 10:05:02 +0000 (GMT)
+Received: from bahia.lan (unknown [9.145.156.103])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 15 May 2019 10:05:02 +0000 (GMT)
+Subject: [PATCH] powerpc/pseries: Fix xive=off command line
+From: Greg Kurz <groug@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@ozlabs.org>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Date: Wed, 15 May 2019 12:05:01 +0200
+User-Agent: StGit/unknown-version
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 15 May 2019 20:32:45 +1000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19051510-4275-0000-0000-00000334FAC1
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051510-4276-0000-0000-000038447E0B
+Message-Id: <155791470178.432724.8008395673479905061.stgit@bahia.lan>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-15_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1034 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905150065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,376 +87,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, elena.reshetova@intel.com,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Christian Brauner <christian@brauner.io>,
- "Michael Kerrisk \(man-pages\)" <mtk.manpages@gmail.com>,
- linux-xtensa@linux-xtensa.org, keescook@chromium.org,
- linux-m68k@lists.linux-m68k.org, luto@kernel.org, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, cyphar@cyphar.com, luto@amacapital.net,
- ebiederm@xmission.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: pavrampu@in.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ =?utf-8?q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds testing for the new pidfd_open() syscalls. Specifically, we test:
-- that no invalid flags can be passed to pidfd_open()
-- that no invalid pid can be passed to pidfd_open()
-- that a pidfd can be retrieved with pidfd_open()
-- that the retrieved pidfd references the correct pid
+On POWER9, if the hypervisor supports XIVE exploitation mode, the guest OS
+will unconditionally requests for the XIVE interrupt mode even if XIVE was
+deactivated with the kernel command line xive=off. Later on, when the spapr
+XIVE init code handles xive=off, it disables XIVE and tries to fall back on
+the legacy mode XICS.
 
-Signed-off-by: Christian Brauner <christian@brauner.io>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
-Cc: Andy Lutomirsky <luto@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-api@vger.kernel.org
+This discrepency causes a kernel panic because the hypervisor is configured
+to provide the XIVE interrupt mode to the guest :
+
+[    0.008837] kernel BUG at arch/powerpc/sysdev/xics/xics-common.c:135!
+[    0.008877] Oops: Exception in kernel mode, sig: 5 [#1]
+[    0.008908] LE SMP NR_CPUS=1024 NUMA pSeries
+[    0.008939] Modules linked in:
+[    0.008964] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.0.13-200.fc29.ppc64le #1
+[    0.009018] NIP:  c000000001029ab8 LR: c000000001029aac CTR: c0000000018e0000
+[    0.009065] REGS: c0000007f96d7900 TRAP: 0700   Tainted: G        W          (5.0.13-200.fc29.ppc64le)
+[    0.009119] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000222  XER: 20040000
+[    0.009168] CFAR: c0000000001b1e28 IRQMASK: 0
+[    0.009168] GPR00: c000000001029aac c0000007f96d7b90 c0000000015e8600 0000000000000000
+[    0.009168] GPR04: 0000000000000001 0000000000000000 0000000000000061 646f6d61696e0d0a
+[    0.009168] GPR08: 00000007fd8f0000 0000000000000001 c0000000014c44c0 c0000007f96d76cf
+[    0.009168] GPR12: 0000000000000000 c0000000018e0000 0000000000000001 0000000000000000
+[    0.009168] GPR16: 0000000000000000 0000000000000001 c0000007f96d7c08 c0000000016903d0
+[    0.009168] GPR20: c0000007fffe04e8 ffffffffffffffea c000000001620164 c00000000161fe58
+[    0.009168] GPR24: c000000000ea6c88 c0000000011151a8 00000000006000c0 c0000007f96d7c34
+[    0.009168] GPR28: 0000000000000000 c0000000014b286c c000000001115180 c00000000161dc70
+[    0.009558] NIP [c000000001029ab8] xics_smp_probe+0x38/0x98
+[    0.009590] LR [c000000001029aac] xics_smp_probe+0x2c/0x98
+[    0.009622] Call Trace:
+[    0.009639] [c0000007f96d7b90] [c000000001029aac] xics_smp_probe+0x2c/0x98 (unreliable)
+[    0.009687] [c0000007f96d7bb0] [c000000001033404] pSeries_smp_probe+0x40/0xa0
+[    0.009734] [c0000007f96d7bd0] [c0000000010212a4] smp_prepare_cpus+0x62c/0x6ec
+[    0.009782] [c0000007f96d7cf0] [c0000000010141b8] kernel_init_freeable+0x148/0x448
+[    0.009829] [c0000007f96d7db0] [c000000000010ba4] kernel_init+0x2c/0x148
+[    0.009870] [c0000007f96d7e20] [c00000000000bdd4] ret_from_kernel_thread+0x5c/0x68
+[    0.009916] Instruction dump:
+[    0.009940] 7c0802a6 60000000 7c0802a6 38800002 f8010010 f821ffe1 3c62001c e863b9a0
+[    0.009988] 4b1882d1 60000000 7c690034 5529d97e <0b090000> 3d22001c e929b998 3ce2ff8f
+
+Look for xive=off during prom_init and don't ask for XIVE in this case. One
+exception though: if the host only supports XIVE, we still want to boot so
+we ignore xive=off.
+
+Similarly, have the spapr XIVE init code to looking at the interrupt mode
+negociated during CAS, and ignore xive=off if the hypervisor only supports
+XIVE.
+
+Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
+Cc: stable@vger.kernel.org # v4.20
+Reported-by: Pavithra R. Prakash <pavrampu@in.ibm.com>
+Signed-off-by: Greg Kurz <groug@kaod.org>
 ---
- tools/testing/selftests/pidfd/Makefile        |   2 +-
- tools/testing/selftests/pidfd/pidfd.h         |  57 ++++++
- .../testing/selftests/pidfd/pidfd_open_test.c | 170 ++++++++++++++++++
- tools/testing/selftests/pidfd/pidfd_test.c    |  41 +----
- 4 files changed, 229 insertions(+), 41 deletions(-)
- create mode 100644 tools/testing/selftests/pidfd/pidfd.h
- create mode 100644 tools/testing/selftests/pidfd/pidfd_open_test.c
+eac1e731b59e is a v4.16 commit actually but this patch only applies
+cleanly to v4.20 and newer. If needed I can send a backport for
+older versions.
+---
+ arch/powerpc/kernel/prom_init.c  |   16 +++++++++++-
+ arch/powerpc/sysdev/xive/spapr.c |   52 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 66 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/pidfd/Makefile b/tools/testing/selftests/pidfd/Makefile
-index deaf8073bc06..b36c0be70848 100644
---- a/tools/testing/selftests/pidfd/Makefile
-+++ b/tools/testing/selftests/pidfd/Makefile
-@@ -1,6 +1,6 @@
- CFLAGS += -g -I../../../../usr/include/
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 523bb99d7676..c8f7eb845927 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -172,6 +172,7 @@ static unsigned long __prombss prom_tce_alloc_end;
  
--TEST_GEN_PROGS := pidfd_test
-+TEST_GEN_PROGS := pidfd_test pidfd_open_test
+ #ifdef CONFIG_PPC_PSERIES
+ static bool __prombss prom_radix_disable;
++static bool __prombss prom_xive_disable;
+ #endif
  
- include ../lib.mk
- 
-diff --git a/tools/testing/selftests/pidfd/pidfd.h b/tools/testing/selftests/pidfd/pidfd.h
-new file mode 100644
-index 000000000000..8452e910463f
---- /dev/null
-+++ b/tools/testing/selftests/pidfd/pidfd.h
-@@ -0,0 +1,57 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
+ struct platform_support {
+@@ -808,6 +809,12 @@ static void __init early_cmdline_parse(void)
+ 	}
+ 	if (prom_radix_disable)
+ 		prom_debug("Radix disabled from cmdline\n");
 +
-+#ifndef __PIDFD_H
-+#define __PIDFD_H
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sched.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <syscall.h>
-+#include <sys/mount.h>
-+
-+#include "../kselftest.h"
-+
-+/*
-+ * The kernel reserves 300 pids via RESERVED_PIDS in kernel/pid.c
-+ * That means, when it wraps around any pid < 300 will be skipped.
-+ * So we need to use a pid > 300 in order to test recycling.
-+ */
-+#define PID_RECYCLE 1000
-+
-+/*
-+ * Define a few custom error codes for the child process to clearly indicate
-+ * what is happening. This way we can tell the difference between a system
-+ * error, a test error, etc.
-+ */
-+#define PIDFD_PASS 0
-+#define PIDFD_FAIL 1
-+#define PIDFD_ERROR 2
-+#define PIDFD_SKIP 3
-+#define PIDFD_XFAIL 4
-+
-+int wait_for_pid(pid_t pid)
-+{
-+	int status, ret;
-+
-+again:
-+	ret = waitpid(pid, &status, 0);
-+	if (ret == -1) {
-+		if (errno == EINTR)
-+			goto again;
-+
-+		return -1;
++	opt = prom_strstr(prom_cmd_line, "xive=off");
++	if (opt) {
++		prom_xive_disable = true;
++		prom_debug("XIVE disabled from cmdline\n");
 +	}
-+
-+	if (!WIFEXITED(status))
-+		return -1;
-+
-+	return WEXITSTATUS(status);
-+}
-+
-+
-+#endif /* __PIDFD_H */
-diff --git a/tools/testing/selftests/pidfd/pidfd_open_test.c b/tools/testing/selftests/pidfd/pidfd_open_test.c
-new file mode 100644
-index 000000000000..9b073c1ac618
---- /dev/null
-+++ b/tools/testing/selftests/pidfd/pidfd_open_test.c
-@@ -0,0 +1,170 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <limits.h>
-+#include <linux/types.h>
-+#include <linux/wait.h>
-+#include <sched.h>
-+#include <signal.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <syscall.h>
-+#include <sys/mount.h>
-+#include <sys/prctl.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include "pidfd.h"
-+#include "../kselftest.h"
-+
-+static inline int sys_pidfd_open(pid_t pid, unsigned int flags)
-+{
-+	return syscall(__NR_pidfd_open, pid, flags);
-+}
-+
-+static int safe_int(const char *numstr, int *converted)
-+{
-+	char *err = NULL;
-+	long sli;
-+
-+	errno = 0;
-+	sli = strtol(numstr, &err, 0);
-+	if (errno == ERANGE && (sli == LONG_MAX || sli == LONG_MIN))
-+		return -ERANGE;
-+
-+	if (errno != 0 && sli == 0)
-+		return -EINVAL;
-+
-+	if (err == numstr || *err != '\0')
-+		return -EINVAL;
-+
-+	if (sli > INT_MAX || sli < INT_MIN)
-+		return -ERANGE;
-+
-+	*converted = (int)sli;
-+	return 0;
-+}
-+
-+static int char_left_gc(const char *buffer, size_t len)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < len; i++) {
-+		if (buffer[i] == ' ' ||
-+		    buffer[i] == '\t')
-+			continue;
-+
-+		return i;
-+	}
-+
-+	return 0;
-+}
-+
-+static int char_right_gc(const char *buffer, size_t len)
-+{
-+	int i;
-+
-+	for (i = len - 1; i >= 0; i--) {
-+		if (buffer[i] == ' '  ||
-+		    buffer[i] == '\t' ||
-+		    buffer[i] == '\n' ||
-+		    buffer[i] == '\0')
-+			continue;
-+
-+		return i + 1;
-+	}
-+
-+	return 0;
-+}
-+
-+static char *trim_whitespace_in_place(char *buffer)
-+{
-+	buffer += char_left_gc(buffer, strlen(buffer));
-+	buffer[char_right_gc(buffer, strlen(buffer))] = '\0';
-+	return buffer;
-+}
-+
-+static pid_t get_pid_from_fdinfo_file(int pidfd, const char *key, size_t keylen)
-+{
-+	int ret;
-+	char path[512];
-+	FILE *f;
-+	size_t n = 0;
-+	pid_t result = -1;
-+	char *line = NULL;
-+
-+	snprintf(path, sizeof(path), "/proc/self/fdinfo/%d", pidfd);
-+
-+	f = fopen(path, "re");
-+	if (!f)
-+		return -1;
-+
-+	while (getline(&line, &n, f) != -1) {
-+		char *numstr;
-+
-+		if (strncmp(line, key, keylen))
-+			continue;
-+
-+		numstr = trim_whitespace_in_place(line + 4);
-+		ret = safe_int(numstr, &result);
-+		if (ret < 0)
-+			goto out;
-+
-+		break;
-+	}
-+
-+out:
-+	free(line);
-+	fclose(f);
-+	return result;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int pidfd = -1, ret = 1;
-+	pid_t pid;
-+
-+	pidfd = sys_pidfd_open(-1, 0);
-+	if (pidfd >= 0) {
-+		ksft_print_msg(
-+			"%s - succeeded to open pidfd for invalid pid -1\n",
-+			strerror(errno));
-+		goto on_error;
-+	}
-+	ksft_test_result_pass("do not allow invalid pid test: passed\n");
-+	ksft_inc_pass_cnt();
-+
-+	pidfd = sys_pidfd_open(getpid(), 1);
-+	if (pidfd >= 0) {
-+		ksft_print_msg(
-+			"%s - succeeded to open pidfd with invalid flag value specified\n",
-+			strerror(errno));
-+		goto on_error;
-+	}
-+	ksft_test_result_pass("do not allow invalid flag test: passed\n");
-+	ksft_inc_pass_cnt();
-+
-+	pidfd = sys_pidfd_open(getpid(), 0);
-+	if (pidfd < 0) {
-+		ksft_print_msg("%s - failed to open pidfd\n", strerror(errno));
-+		goto on_error;
-+	}
-+	ksft_test_result_pass("open a new pidfd test: passed\n");
-+	ksft_inc_pass_cnt();
-+
-+	pid = get_pid_from_fdinfo_file(pidfd, "Pid:", sizeof("Pid:") - 1);
-+	ksft_print_msg("pidfd %d refers to process with pid %d\n", pidfd, pid);
-+
-+	ret = 0;
-+
-+on_error:
-+	if (pidfd >= 0)
-+		close(pidfd);
-+
-+	return !ret ? ksft_exit_pass() : ksft_exit_fail();
-+}
-diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
-index d59378a93782..f01de87249c9 100644
---- a/tools/testing/selftests/pidfd/pidfd_test.c
-+++ b/tools/testing/selftests/pidfd/pidfd_test.c
-@@ -14,6 +14,7 @@
- #include <sys/wait.h>
- #include <unistd.h>
- 
-+#include "pidfd.h"
- #include "../kselftest.h"
- 
- static inline int sys_pidfd_send_signal(int pidfd, int sig, siginfo_t *info,
-@@ -62,28 +63,6 @@ static int test_pidfd_send_signal_simple_success(void)
- 	return 0;
+ #endif /* CONFIG_PPC_PSERIES */
  }
  
--static int wait_for_pid(pid_t pid)
--{
--	int status, ret;
--
--again:
--	ret = waitpid(pid, &status, 0);
--	if (ret == -1) {
--		if (errno == EINTR)
--			goto again;
--
--		return -1;
--	}
--
--	if (ret != pid)
--		goto again;
--
--	if (!WIFEXITED(status))
--		return -1;
--
--	return WEXITSTATUS(status);
--}
--
- static int test_pidfd_send_signal_exited_fail(void)
- {
- 	int pidfd, ret, saved_errno;
-@@ -128,13 +107,6 @@ static int test_pidfd_send_signal_exited_fail(void)
- 	return 0;
+@@ -1216,10 +1223,17 @@ static void __init prom_parse_xive_model(u8 val,
+ 	switch (val) {
+ 	case OV5_FEAT(OV5_XIVE_EITHER): /* Either Available */
+ 		prom_debug("XIVE - either mode supported\n");
+-		support->xive = true;
++		support->xive = !prom_xive_disable;
+ 		break;
+ 	case OV5_FEAT(OV5_XIVE_EXPLOIT): /* Only Exploitation mode */
+ 		prom_debug("XIVE - exploitation mode supported\n");
++		if (prom_xive_disable) {
++			/*
++			 * If we __have__ to do XIVE, we're better off ignoring
++			 * the command line rather than not booting.
++			 */
++			prom_printf("WARNING: Ignoring cmdline option xive=off\n");
++		}
+ 		support->xive = true;
+ 		break;
+ 	case OV5_FEAT(OV5_XIVE_LEGACY): /* Only Legacy mode */
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 575db3b06a6b..2e2d1b8f810f 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -20,6 +20,7 @@
+ #include <linux/cpumask.h>
+ #include <linux/mm.h>
+ #include <linux/delay.h>
++#include <linux/libfdt.h>
+ 
+ #include <asm/prom.h>
+ #include <asm/io.h>
+@@ -663,6 +664,55 @@ static bool xive_get_max_prio(u8 *max_prio)
+ 	return true;
  }
  
--/*
-- * The kernel reserves 300 pids via RESERVED_PIDS in kernel/pid.c
-- * That means, when it wraps around any pid < 300 will be skipped.
-- * So we need to use a pid > 300 in order to test recycling.
-- */
--#define PID_RECYCLE 1000
--
- /*
-  * Maximum number of cycles we allow. This is equivalent to PID_MAX_DEFAULT.
-  * If users set a higher limit or we have cycled PIDFD_MAX_DEFAULT number of
-@@ -143,17 +115,6 @@ static int test_pidfd_send_signal_exited_fail(void)
-  */
- #define PIDFD_MAX_DEFAULT 0x8000
- 
--/*
-- * Define a few custom error codes for the child process to clearly indicate
-- * what is happening. This way we can tell the difference between a system
-- * error, a test error, etc.
-- */
--#define PIDFD_PASS 0
--#define PIDFD_FAIL 1
--#define PIDFD_ERROR 2
--#define PIDFD_SKIP 3
--#define PIDFD_XFAIL 4
--
- static int test_pidfd_send_signal_recycled_pid_fail(void)
++static const u8 *get_vec5_feature(unsigned int index)
++{
++	unsigned long root, chosen;
++	int size;
++	const u8 *vec5;
++
++	root = of_get_flat_dt_root();
++	chosen = of_get_flat_dt_subnode_by_name(root, "chosen");
++	if (chosen == -FDT_ERR_NOTFOUND)
++		return NULL;
++
++	vec5 = of_get_flat_dt_prop(chosen, "ibm,architecture-vec-5", &size);
++	if (!vec5)
++		return NULL;
++
++	if (size <= index)
++		return NULL;
++
++	return vec5 + index;
++}
++
++static bool xive_spapr_disabled(void)
++{
++	const u8 *vec5_xive;
++
++	vec5_xive = get_vec5_feature(OV5_INDX(OV5_XIVE_SUPPORT));
++	if (vec5_xive) {
++		u8 val;
++
++		val = *vec5_xive & OV5_FEAT(OV5_XIVE_SUPPORT);
++		switch (val) {
++		case OV5_FEAT(OV5_XIVE_EITHER):
++		case OV5_FEAT(OV5_XIVE_LEGACY):
++			break;
++		case OV5_FEAT(OV5_XIVE_EXPLOIT):
++			/* Hypervisor only supports XIVE */
++			if (xive_cmdline_disabled)
++				pr_warn("WARNING: Ignoring cmdline option xive=off\n");
++			return false;
++		default:
++			pr_warn("%s: Unknown xive support option: 0x%x\n",
++				__func__, val);
++			break;
++		}
++	}
++
++	return xive_cmdline_disabled;
++}
++
+ bool __init xive_spapr_init(void)
  {
- 	int i, ret;
--- 
-2.21.0
+ 	struct device_node *np;
+@@ -675,7 +725,7 @@ bool __init xive_spapr_init(void)
+ 	const __be32 *reg;
+ 	int i;
+ 
+-	if (xive_cmdline_disabled)
++	if (xive_spapr_disabled())
+ 		return false;
+ 
+ 	pr_devel("%s()\n", __func__);
 
