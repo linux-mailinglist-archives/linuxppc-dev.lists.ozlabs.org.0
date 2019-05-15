@@ -1,76 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B09BD1FAF5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 21:32:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23E11F5FC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 15:53:49 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453wy32QBWzDqLf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 23:53:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4544T51Qs3zDqWk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 05:32:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=opteya.com
+ (client-ip=2001:bc8:3541:100::1; helo=ou.quest-ce.net;
+ envelope-from=ydroneaud@opteya.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="C9Zc5r+f"; 
- dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=opteya.com
+Received: from ou.quest-ce.net (unknown [IPv6:2001:bc8:3541:100::1])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453ww65Zs9zDqSH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 23:52:06 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id s17so2794765wru.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 06:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=nytq/On43q8XPsmcb/kSTUQUu6ygGympqGdBDgeJzfY=;
- b=C9Zc5r+fI+/FO7h8AYtoREtVY8FaEZvGe/awFqM/h2Sjhl2yPheAI5gJllXqLo/9g8
- EYfqpBRqmVDz62X80O9XaD8idB4VEQAx4zIxi5CbJUJguCTDzSvAUYq+ESEsH0nOerRZ
- U0mcrPGx7YzHOQIXjyMWkPXtuTZe125hPDKlCLP7vR03oXTXpQl1K8ApJ+vIY2YSnluA
- njBDBytCi+CK1XjhQX0db0niLdYzN4A7f6gmN5h44c5LuMzbr+UOS8fHbNxW8+EbESEP
- B9DiP5TNWjH+vWzLQyGUopvXFZ11R94g09DYr6gkU3KEMiHMdhlHgXKOhop3LVLnXHNT
- KmlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :in-reply-to:references:mime-version:content-transfer-encoding;
- bh=nytq/On43q8XPsmcb/kSTUQUu6ygGympqGdBDgeJzfY=;
- b=lf706SFQ+kW05c7KbBdZYwNi/LGtsIJoFUhahVogkenfljJmR3/8NpDqWSJYuV/0LW
- rEiLhlFp/jEArRn8VhdjVAZhJVqwQ8l/7Ji781mlH3UFbsMBKLm3LH0o/n/kxGOcCFSs
- E+oA+B8qbWwcfttxiMOp52IkduDKstyQC5Vruj/YvM0lLkPWlMxFx1zxBcJzJeX/dKQf
- 30ZLuxM12EW0F7L6CzkNMFGrUy/ubSadxPWklF1z9ns2dl/C179EIAtis5/M9wIEhrJP
- mGbb32X5tfrc60nAPz+RD34WynmmYHSrO3kTZRZXH7b4YqiID4QnASjPFxvQnljIzyc9
- ADFg==
-X-Gm-Message-State: APjAAAXNhCVNQ9TjwBlMG8AWexvRaGQpYBQHM2Gj6o9yFIKeLpDZQE94
- a8iX6ENu9edgVoxFRtPzlpY=
-X-Google-Smtp-Source: APXvYqxn8yBAWfFqMrTjax6PBoUXe7fjtfc1XiH6muJ6fS3SzOZiH/DzI+lzz7JVSfykkQBkJ5jBHA==
-X-Received: by 2002:adf:e850:: with SMTP id d16mr10513190wrn.269.1557928321334; 
- Wed, 15 May 2019 06:52:01 -0700 (PDT)
-Received: from macbookpro.malat.net ([2a01:e34:ee1e:860:6f23:82e6:aa2d:bbd1])
- by smtp.gmail.com with ESMTPSA id
- x187sm2256456wmb.33.2019.05.15.06.51.59
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 15 May 2019 06:52:00 -0700 (PDT)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
- id 1FBCB1146D7B; Wed, 15 May 2019 15:51:49 +0200 (CEST)
-From: Mathieu Malaterre <malat@debian.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc: silence a -Wcast-function-type warning in
- dawr_write_file_bool
-Date: Wed, 15 May 2019 15:51:46 +0200
-Message-Id: <20190515135146.5866-1-malat@debian.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190515120942.3812-1-malat@debian.org>
-References: <20190515120942.3812-1-malat@debian.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4544PP4LpWzDqWF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 05:29:29 +1000 (AEST)
+Received: from [2a01:e35:39f2:1220:2452:dd6c:fe2f:be2c] (helo=opteyam2)
+ by ou.quest-ce.net with esmtpsa (TLS1.1:RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.80) (envelope-from <ydroneaud@opteya.com>)
+ id 1hQuSD-0003J6-UX; Wed, 15 May 2019 16:00:22 +0200
+Message-ID: <4c5ae46657e1931a832def5645db61eb0bf1accd.camel@opteya.com>
+From: Yann Droneaud <ydroneaud@opteya.com>
+To: Christian Brauner <christian@brauner.io>, jannh@google.com,
+ oleg@redhat.com,  viro@zeniv.linux.org.uk, torvalds@linux-foundation.org, 
+ linux-kernel@vger.kernel.org, arnd@arndb.de, dhowells@redhat.com
+Date: Wed, 15 May 2019 16:00:20 +0200
+In-Reply-To: <20190515100400.3450-1-christian@brauner.io>
+References: <20190515100400.3450-1-christian@brauner.io>
+Organization: OPTEYA
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a01:e35:39f2:1220:2452:dd6c:fe2f:be2c
+X-SA-Exim-Mail-From: ydroneaud@opteya.com
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on ou.quest-ce.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham version=3.3.2
+Subject: Re: [PATCH 1/2] pid: add pidfd_open()
+X-SA-Exim-Version: 4.2.1 (built Mon, 26 Dec 2011 16:24:06 +0000)
+X-SA-Exim-Scanned: Yes (on ou.quest-ce.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,61 +57,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Mathieu Malaterre <malat@debian.org>,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, elena.reshetova@intel.com,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, keescook@chromium.org,
+ linux-m68k@lists.linux-m68k.org, luto@kernel.org, tglx@linutronix.de,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, cyphar@cyphar.com, luto@amacapital.net,
+ ebiederm@xmission.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit c1fe190c0672 ("powerpc: Add force enable of DAWR on P9
-option") the following piece of code was added:
+Hi,
 
-   smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
+Le mercredi 15 mai 2019 à 12:03 +0200, Christian Brauner a écrit :
+> 
+> diff --git a/kernel/pid.c b/kernel/pid.c
+> index 20881598bdfa..237d18d6ecb8 100644
+> --- a/kernel/pid.c
+> +++ b/kernel/pid.c
+> @@ -451,6 +452,53 @@ struct pid *find_ge_pid(int nr, struct
+> pid_namespace *ns)
+>  	return idr_get_next(&ns->idr, &nr);
+>  }
+>  
+> +/**
+> + * pidfd_open() - Open new pid file descriptor.
+> + *
+> + * @pid:   pid for which to retrieve a pidfd
+> + * @flags: flags to pass
+> + *
+> + * This creates a new pid file descriptor with the O_CLOEXEC flag set for
+> + * the process identified by @pid. Currently, the process identified by
+> + * @pid must be a thread-group leader. This restriction currently exists
+> + * for all aspects of pidfds including pidfd creation (CLONE_PIDFD cannot
+> + * be used with CLONE_THREAD) and pidfd polling (only supports thread group
+> + * leaders).
+> + *
 
-Since GCC 8 this triggers the following warning about incompatible
-function types:
+Would it be possible to create file descriptor with "restricted"
+operation ?
 
-  arch/powerpc/kernel/hw_breakpoint.c:408:21: error: cast between incompatible function types from 'int (*)(struct arch_hw_breakpoint *)' to 'void (*)(void *)' [-Werror=cast-function-type]
+- O_RDONLY: waiting for process completion allowed (for example)
+- O_WRONLY: sending process signal allowed
 
-Since the warning is there for a reason, and should not be hidden behind
-a cast, provide an intermediate callback function to avoid the warning.
+For example, a process could send over a Unix socket a process a pidfd,
+allowing this to only wait for completion, but not sending signal ?
 
-Fixes: c1fe190c0672 ("powerpc: Add force enable of DAWR on P9 option")
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Cc: Michael Neuling <mikey@neuling.org>
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
-v2: do not hide warning using a hack
+I see the permission check is not done in pidfd_open(), so what prevent
+a user from sending a signal to another user owned process ?
 
- arch/powerpc/kernel/hw_breakpoint.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+If it's in pidfd_send_signal(), then, passing the socket through
+SCM_RIGHT won't be useful if the target process is not owned by the
+same user, or root.
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index f70fb89dbf60..969092d84a2f 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -386,6 +386,11 @@ void hw_breakpoint_pmu_read(struct perf_event *bp)
- bool dawr_force_enable;
- EXPORT_SYMBOL_GPL(dawr_force_enable);
- 
-+static void set_dawr_cb(void *info)
-+{
-+	set_dawr(info);
-+}
-+
- static ssize_t dawr_write_file_bool(struct file *file,
- 				    const char __user *user_buf,
- 				    size_t count, loff_t *ppos)
-@@ -405,7 +410,7 @@ static ssize_t dawr_write_file_bool(struct file *file,
- 
- 	/* If we are clearing, make sure all CPUs have the DAWR cleared */
- 	if (!dawr_force_enable)
--		smp_call_function((smp_call_func_t)set_dawr, &null_brk, 0);
-+		smp_call_function(set_dawr_cb, &null_brk, 0);
- 
- 	return rc;
- }
+> + * Return: On success, a cloexec pidfd is returned.
+> + *         On error, a negative errno number will be returned.
+> + */
+> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
+> +{
+> +	int fd, ret;
+> +	struct pid *p;
+> +	struct task_struct *tsk;
+> +
+> +	if (flags)
+> +		return -EINVAL;
+> +
+> +	if (pid <= 0)
+> +		return -EINVAL;
+> +
+> +	p = find_get_pid(pid);
+> +	if (!p)
+> +		return -ESRCH;
+> +
+> +	rcu_read_lock();
+> +	tsk = pid_task(p, PIDTYPE_PID);
+> +	if (!tsk)
+> +		ret = -ESRCH;
+> +	else if (unlikely(!thread_group_leader(tsk)))
+> +		ret = -EINVAL;
+> +	else
+> +		ret = 0;
+> +	rcu_read_unlock();
+> +
+> +	fd = ret ?: pidfd_create(p);
+> +	put_pid(p);
+> +	return fd;
+> +}
+> +
+>  void __init pid_idr_init(void)
+>  {
+>  	/* Verify no one has done anything silly: */
+
+Regards.
+
 -- 
-2.20.1
+Yann Droneaud
+OPTEYA
+
 
