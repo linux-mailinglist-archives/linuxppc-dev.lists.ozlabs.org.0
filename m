@@ -2,72 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517F71F398
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935AC1F445
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 14:22:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453tnz5pNkzDqVP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453twz139bzDqNm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 22:22:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="rEZd9BQC"; 
- dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453tfb5gBwzDqTC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:10:15 +1000 (AEST)
-Received: by mail-wm1-x344.google.com with SMTP id o189so2415394wmb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 05:10:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=CFKFwgLozVIM6dscXeJBqjWNwAotJvVX+KZD7JqTJhw=;
- b=rEZd9BQCMnveEHnW1EzvyB1mf4vdRdsj1KDivixg8uQO3ZRtnIPm9n7ribcAB6WmAG
- rYiqArIQw4TWQrCbePoK51atfLhI8UASv873PwpBgqGeraXUomT8Q9OVMKqgS7zhUtW+
- e6Um4yftwThM428E24xFoAy485veY5Sz6ep54y79hQmhvXUa6eqATSFqIkOP6TGCzmOj
- rUwVPTteu1AsINuyrk5rKeuqH/sqc0lcyoon80pHmoRcsaKJzA2ElDkRnpVtpDu/jfrG
- q4yz7DVm+2lRxc5346NALN5LG+Lg99spJProW6l2dzcESBAqDycAnG1Z/OD7wigZC6Vm
- QQHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :mime-version:content-transfer-encoding;
- bh=CFKFwgLozVIM6dscXeJBqjWNwAotJvVX+KZD7JqTJhw=;
- b=kTzKtJOTU/wH8Q05f8R/7RcQFjJ9p4xPo3U7xrAOQq69cEu39IaTonTHmMEvFN+KhL
- 98y8JTX+8cMePYObANb8IRs/gLTgBxKwJaCga98I2PqLJ1jUWv6jlhecHj45ApzlpZRi
- /u8qe22Eu19UGrW+S5Kzgs6Cc0TzmUAQ4mhwhEfGRTWhRRks3KOeA6iaDz4TUTLwFZXB
- WRf3HNoQWzqJyF6IKUTFovtoTDFgnTBxZeNbeDEukwSfzRZI94Ioyb8NvjF2kXAOrUy+
- CKngdUH4F7WNA6fw+OXXKGglrolQnt+Rz7H4si7AwPrrJZsvs1vz2jOX6ASko1ZfyoEG
- WteA==
-X-Gm-Message-State: APjAAAXAW7H3gkagxDRW3nlmmeV2/sI4+5YpDI6VmG1F3r7NUgQnm5I0
- cSpcfkIqr8Z3PFwYm573NX8=
-X-Google-Smtp-Source: APXvYqyeRa0AATRlHj/RBPnO2Noo/rUCYItU5+6CIHDBuomet4LfUmlnkJB5oFmYAn07J0K50gSbdQ==
-X-Received: by 2002:a1c:5f02:: with SMTP id t2mr22591116wmb.19.1557922212170; 
- Wed, 15 May 2019 05:10:12 -0700 (PDT)
-Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net.
- [78.225.224.134])
- by smtp.gmail.com with ESMTPSA id v1sm1847403wrd.47.2019.05.15.05.10.11
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 15 May 2019 05:10:11 -0700 (PDT)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
- id 7FB421146D7B; Wed, 15 May 2019 14:10:10 +0200 (CEST)
-From: Mathieu Malaterre <malat@debian.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Include <asm/pte-walk.h> header file to fix a warning
-Date: Wed, 15 May 2019 14:10:08 +0200
-Message-Id: <20190515121008.3992-1-malat@debian.org>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453tts5xq0zDqNm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:20:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 453ttq4bFsz9s00;
+ Wed, 15 May 2019 22:20:51 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/64/ftrace: mprofile-kernel patch out mflr
+In-Reply-To: <1557821918.xbleq18bk2.naveen@linux.ibm.com>
+References: <20190413015940.31170-1-npiggin@gmail.com>
+ <871s13ujcf.fsf@concordia.ellerman.id.au>
+ <1557729790.fw18xf9mdt.naveen@linux.ibm.com>
+ <87tvdytwo0.fsf@concordia.ellerman.id.au>
+ <1557821918.xbleq18bk2.naveen@linux.ibm.com>
+Date: Wed, 15 May 2019 22:20:47 +1000
+Message-ID: <87k1ersycg.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,38 +48,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make sure to include <asm/pte-walk.h> to provide the following prototype:
-__find_linux_pte.
+"Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
+> Michael Ellerman wrote:
+>> "Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
+>>> Michael Ellerman wrote:
+>>>> Nicholas Piggin <npiggin@gmail.com> writes:
+>>>>> The new mprofile-kernel mcount sequence is
+>>>>>
+>>>>>   mflr	r0
+>>>>>   bl	_mcount
+>>>>>
+>>>>> Dynamic ftrace patches the branch instruction with a noop, but leaves
+>>>>> the mflr. mflr is executed by the branch unit that can only execute one
+>>>>> per cycle on POWER9 and shared with branches, so it would be nice to
+>>>>> avoid it where possible.
+>>>>>
+>>>>> This patch is a hacky proof of concept to nop out the mflr. Can we do
+>>>>> this or are there races or other issues with it?
+>>>> 
+>>>> There's a race, isn't there?
+>>>> 
+>>>> We have a function foo which currently has tracing disabled, so the mflr
+>>>> and bl are nop'ed out.
+>>>> 
+>>>>   CPU 0			CPU 1
+>>>>   ==================================
+>>>>   bl foo
+>>>>   nop (ie. not mflr)
+>>>>   -> interrupt
+>>>>   something else	enable tracing for foo
+>>>>   ...			patch mflr and branch
+>>>>   <- rfi
+>>>>   bl _mcount
+>>>> 
+>>>> So we end up in _mcount() but with r0 not populated.
+>>>
+>>> Good catch! Looks like we need to patch the mflr with a "b +8" similar 
+>>> to what we do in __ftrace_make_nop().
+>> 
+>> Would that actually make it any faster though? Nick?
+>
+> Ok, how about doing this as a 2-step process?
+> 1. patch 'mflr r0' with a 'b +8'
+>    synchronize_rcu_tasks()
+> 2. convert 'b +8' to a 'nop'
 
-Remove the following warning treated as error (W=1):
+I think that would work, if I understand synchronize_rcu_tasks().
 
-  arch/powerpc/mm/pgtable.c:316:8: error: no previous prototype for '__find_linux_pte' [-Werror=missing-prototypes]
+I worry that it will make the enable/disable expensive. But could be
+worth trying.
 
-Fixes: 0caed4de502c ("powerpc/mm: move __find_linux_pte() out of hugetlbpage.c")
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
- arch/powerpc/mm/pgtable.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index db4a6253df92..2aa042193ace 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -31,6 +31,7 @@
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
- #include <asm/hugetlb.h>
-+#include <asm/pte-walk.h>
- 
- static inline int is_exec_fault(void)
- {
--- 
-2.20.1
-
+cheers
