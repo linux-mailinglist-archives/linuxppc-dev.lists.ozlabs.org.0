@@ -1,51 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140E21E92E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 09:37:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7268F1E943
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 09:41:51 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453mhr6X6wzDqT9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 17:41:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453mbs2WpvzDqQl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 17:37:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.com
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=pmladek@suse.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453mZM6dYNzDqQM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 17:36:11 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1007C1A00A1;
- Wed, 15 May 2019 09:36:08 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 40EAB1A00D9;
- Wed, 15 May 2019 09:35:59 +0200 (CEST)
-Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 3EDBE4030C;
- Wed, 15 May 2019 15:35:48 +0800 (SGT)
-From: Xiaowei Bao <xiaowei.bao@nxp.com>
-To: bhelgaas@google.com, robh+dt@kernel.org, mark.rutland@arm.com,
- shawnguo@kernel.org, leoyang.li@nxp.com, kishon@ti.com,
- lorenzo.pieralisi@arm.com, arnd@arndb.de, gregkh@linuxfoundation.org,
- minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com,
- kstewart@linuxfoundation.org, pombredanne@nexb.com,
- shawn.lin@rock-chips.com, linux-pci@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] PCI: layerscape: Add LS1028a support
-Date: Wed, 15 May 2019 15:27:47 +0800
-Message-Id: <20190515072747.39941-3-xiaowei.bao@nxp.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <20190515072747.39941-1-xiaowei.bao@nxp.com>
-References: <20190515072747.39941-1-xiaowei.bao@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453mYz12YVzDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 17:35:48 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 8E79AABE9;
+ Wed, 15 May 2019 07:35:44 +0000 (UTC)
+Date: Wed, 15 May 2019 09:35:42 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] vsprintf: Do not break early boot with probing addresses
+Message-ID: <20190515073542.y6ru2nfagtcrpdl7@pathway.suse.cz>
+References: <20190510084213.22149-1-pmladek@suse.com>
+ <20190510122401.21a598f6@gandalf.local.home>
+ <daf4dfd1-7f4f-8b92-6866-437c3a2be28b@c-s.fr>
+ <096d6c9c17b3484484d9d9d3f3aa3a7c@AcuMS.aculab.com>
+ <20190513091320.GK9224@smile.fi.intel.com>
+ <20190513124220.wty2qbnz4wo52h3x@pathway.suse.cz>
+ <20190514020730.GA651@jagdpanzerIV>
+ <45348cf615fe40d383c1a25688d4a88f@AcuMS.aculab.com>
+ <CAMuHMdXaMObq9h2Sb49PW1-HUysPeaWXB7wJmKFz=xLmSoUDZg@mail.gmail.com>
+ <20190514143751.48e81e05@oasis.local.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190514143751.48e81e05@oasis.local.home>
+User-Agent: NeoMutt/20170912 (1.9.0)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,45 +55,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Xiaowei Bao <xiaowei.bao@nxp.com>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Michal Hocko <mhocko@suse.cz>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ David Laight <David.Laight@aculab.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Stephen Rothwell <sfr@ozlabs.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>, "Tobin C . Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for the LS1028a PCIe controller.
+On Tue 2019-05-14 14:37:51, Steven Rostedt wrote:
+> 
+> [ Purple is a nice shade on the bike shed. ;-) ]
+> 
+> On Tue, 14 May 2019 11:02:17 +0200
+> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> 
+> > On Tue, May 14, 2019 at 10:29 AM David Laight <David.Laight@aculab.com> wrote:
+> > > > And I like Steven's "(fault)" idea.
+> > > > How about this:
+> > > >
+> > > >       if ptr < PAGE_SIZE              -> "(null)"
+> > > >       if IS_ERR_VALUE(ptr)            -> "(fault)"
+> > > >
+> > > >       -ss  
+> > >
+> > > Or:
+> > >         if (ptr < PAGE_SIZE)
+> > >                 return ptr ? "(null+)" : "(null)";
+> 
+> Hmm, that is useful.
+> 
+> > >         if IS_ERR_VALUE(ptr)
+> > >                 return "(errno)"  
+> 
+> I still prefer "(fault)" as is pretty much all I would expect from a
+> pointer dereference, even if it is just bad parsing of, say, a parsing
+> an MAC address. "fault" is generic enough. "errno" will be confusing,
+> because that's normally a variable not a output.
+> 
+> > 
+> > Do we care about the value? "(-E%u)"?
+> 
+> That too could be confusing. What would (-E22) be considered by a user
+> doing an sprintf() on some string. I know that would confuse me, or I
+> would think that it was what the %pX displayed, and wonder why it
+> displayed it that way. Whereas "(fault)" is quite obvious for any %p
+> use case.
 
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
----
- drivers/pci/controller/dwc/pci-layerscape.c |    9 +++++++++
- 1 files changed, 9 insertions(+), 0 deletions(-)
+This discussion clearly shows that it is hard to make anyone happy.
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index 3a5fa26..8c556e1 100644
---- a/drivers/pci/controller/dwc/pci-layerscape.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -236,6 +236,14 @@ static int ls_pcie_msi_host_init(struct pcie_port *pp)
- 	.dw_pcie_ops = &dw_ls_pcie_ops,
- };
- 
-+static const struct ls_pcie_drvdata ls1028a_drvdata = {
-+	.lut_offset = 0x80000,
-+	.ltssm_shift = 0,
-+	.lut_dbg = 0x407fc,
-+	.ops = &ls_pcie_host_ops,
-+	.dw_pcie_ops = &dw_ls_pcie_ops,
-+};
-+
- static const struct ls_pcie_drvdata ls1046_drvdata = {
- 	.lut_offset = 0x80000,
- 	.ltssm_shift = 24,
-@@ -263,6 +271,7 @@ static int ls_pcie_msi_host_init(struct pcie_port *pp)
- static const struct of_device_id ls_pcie_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-pcie", .data = &ls1046_drvdata },
- 	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021_drvdata },
-+	{ .compatible = "fsl,ls1028a-pcie", .data = &ls1028a_drvdata },
- 	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043_drvdata },
- 	{ .compatible = "fsl,ls1046a-pcie", .data = &ls1046_drvdata },
- 	{ .compatible = "fsl,ls2080a-pcie", .data = &ls2080_drvdata },
--- 
-1.7.1
+I considered switching to "(fault)" because there seems to be more
+people in favor of this.
 
+But there is used also "(einval)" when an unsupported pointer
+modifier is passed. The idea is to show error codes that people
+are familiar with.
+
+It might have been better to use the uppercase "(EFAULT)" and
+"(EINVAL)" to make it more obvious. But I wanted to follow
+the existing style with the lowercase "(null)".
+
+As of now, I think that we should keep it as is unless there is
+some wider agreement on a change.
+
+Best Regards,
+Petr
