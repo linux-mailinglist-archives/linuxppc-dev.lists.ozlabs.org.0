@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D201E6B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 03:39:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640931E6B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 03:38:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 453cd62N6lzDqP2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 11:38:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 453cfW69T7zDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2019 11:39:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,18 +17,18 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=git.icu
 Received: from git.icu (git.icu [163.172.180.134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 453cbp3ZNmzDqNJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 11:36:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 453ccc060LzDqNd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 11:37:36 +1000 (AEST)
 Received: from localhost.localdomain (minicloud.parqtec.unicamp.br
- [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id BA1892206D1;
- Wed, 15 May 2019 01:36:45 +0000 (UTC)
+ [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id 993B82206D1;
+ Wed, 15 May 2019 01:37:31 +0000 (UTC)
 From: Shawn Landden <shawn@git.icu>
 To: 
-Subject: [PATCH 1/2] [PowerPC] Add simd.h implementation
-Date: Tue, 14 May 2019 22:36:30 -0300
-Message-Id: <20190515013631.2099-1-shawn@git.icu>
+Subject: [v4 PATCH 1/2] [PowerPC] Add simd.h implementation
+Date: Tue, 14 May 2019 22:37:24 -0300
+Message-Id: <20190515013725.2198-1-shawn@git.icu>
 X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a
 In-Reply-To: <20190513005104.20140-1-shawn@git.icu>
 References: <20190513005104.20140-1-shawn@git.icu>
