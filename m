@@ -2,39 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C572420A15
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 16:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BDA20A45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 16:56:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454Z6W0GH0zDqfB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 00:48:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454ZHS08LBzDqcM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 00:56:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.212; helo=mx1.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx1.mailbox.org (mx1.mailbox.org [80.241.60.212])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454Z5529VszDqcK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 00:47:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 454Z542nCVz9s7h;
- Fri, 17 May 2019 00:47:04 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
- paulus@samba.org
-Subject: Re: [RFC PATCH 3/3] powerpc/mm/hugetlb: Don't enable HugeTLB if we
- don't have a page table cache
-In-Reply-To: <20190514145041.7836-3-aneesh.kumar@linux.ibm.com>
-References: <20190514145041.7836-1-aneesh.kumar@linux.ibm.com>
- <20190514145041.7836-3-aneesh.kumar@linux.ibm.com>
-Date: Fri, 17 May 2019 00:47:00 +1000
-Message-ID: <87imuaihi3.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454ZFN0mcVzDqGQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 00:54:12 +1000 (AEST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:1:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx1.mailbox.org (Postfix) with ESMTPS id D2A514E9C7;
+ Thu, 16 May 2019 16:54:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de
+ [80.241.56.116]) (amavisd-new, port 10030)
+ with ESMTP id sn3AhIsEBiJY; Thu, 16 May 2019 16:54:00 +0200 (CEST)
+Date: Fri, 17 May 2019 00:53:41 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH 1/2] pid: add pidfd_open()
+Message-ID: <20190516145341.xx7bpyakezvpqujj@yavin>
+References: <20190515100400.3450-1-christian@brauner.io>
+ <CAKOZuesPF+ftwqsNDMBy1LpwJgWTNuQm9-E=C90sSTBYEEsDww@mail.gmail.com>
+ <20190516130813.i66ujfzftbgpqhnh@brauner.io>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="rl3rpkoiju4ooj2k"
+Content-Disposition: inline
+In-Reply-To: <20190516130813.i66ujfzftbgpqhnh@brauner.io>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,67 +55,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux@vger.kernel.org, Linux API <linux-api@vger.kernel.org>,
+ elena.reshetova@intel.com, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Daniel Colascione <dancol@google.com>,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linux-m68k@lists.linux-m68k.org, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-mips@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> This makes sure we don't enable HugeTLB if the cache is not configured.
-> I am still not sure about this. IMHO hugetlb support should be a hardware
-> support derivative and any cache allocation failure should be handled as I did
-> in the earlier patch. But then if we were not able to create hugetlb page table
-> cache, we can as well declare hugetlb support disabled thereby avoiding calling
-> into allocation routines.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/mm/hugetlbpage.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-> index ee16a3fb788a..4bf8bc659cc7 100644
-> --- a/arch/powerpc/mm/hugetlbpage.c
-> +++ b/arch/powerpc/mm/hugetlbpage.c
-> @@ -602,6 +602,7 @@ __setup("hugepagesz=", hugepage_setup_sz);
->  static int __init hugetlbpage_init(void)
->  {
->  	int psize;
-> +	bool configured = false;
 
-Where's my reverse Christmas tree! :)
+--rl3rpkoiju4ooj2k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->  	if (hugetlb_disabled) {
->  		pr_info("HugeTLB support is disabled!\n");
-> @@ -651,10 +652,16 @@ static int __init hugetlbpage_init(void)
->  			pgtable_cache_add(pdshift - shift);
->  		else if (IS_ENABLED(CONFIG_PPC_FSL_BOOK3E) || IS_ENABLED(CONFIG_PPC_8xx))
->  			pgtable_cache_add(PTE_T_ORDER);
-> +
-> +		if (!configured)
-> +			configured = true;
+On 2019-05-16, Christian Brauner <christian@brauner.io> wrote:
+> On Wed, May 15, 2019 at 10:45:06AM -0700, Daniel Colascione wrote:
+> > On Wed, May 15, 2019 at 3:04 AM Christian Brauner <christian@brauner.io=
+> wrote:
+> > > +       if (pid <=3D 0)
+> > > +               return -EINVAL;
+> >=20
+> > WDYT of defining pid =3D=3D 0 to mean "open myself"?
+>=20
+> I'm torn. It be a nice shortcut of course but pid being 0 is usually an
+> indicator for child processes. So unless the getpid() before
+> pidfd_open() is an issue I'd say let's leave it as is. If you really
+> want the shortcut might -1 be better?
 
-I'd just not worry about the if.
+I'd suggest not using negative numbers, and instead reserving them for
+PIDTYPE_TGID if we ever want to have that in the future. IMHO, doing
 
->  	}
->  
-> -	if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
-> -		hugetlbpage_init_default();
-> +	if (configured) {
-> +		if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
-> +			hugetlbpage_init_default();
-> +	} else
-> +		pr_info("Disabling HugeTLB");
+  pfd =3D pidfd_open(getpid(), 0);
 
-We're not actually doing anything to disable it in the
-CONFIG_HUGETLB_PAGE_SIZE_VARIABLE=n case, but I guess the print is still
-correct because we didn't enable a size in the for loop above?
+is not the end of the world.
 
-Can we make it a bit more explicit? Maybe like:
 
-  "Disabling HugeTLB, no usable page sizes found."
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
-??
+--rl3rpkoiju4ooj2k
+Content-Type: application/pgp-signature; name="signature.asc"
 
-cheers
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb6Gz4/mhjNy+aiz1Snvnv3Dem58FAlzdeXUACgkQSnvnv3De
+m58cOhAArH3Suh66uovI36Cs+UiaKF7pQq8Uj5fLxF9TEp/xA0aglqcZbJKrUIKr
+DIaXBIm1GOitsaCBH/+k2puVlhgNpCPaskXKCWTACjS5l6z7NBQ3o4ZDgmy9sS6/
+MgIMUnFpdpX+4qRBZPsvsfknvtBO9eI8cVfZIzo4NZnUzs5zRU6qToEKWCjQNscK
+RzO+BsCNNkQXXlHBkNrdX4ue058LJyEAYop8gqPAMorepNpbcydpkRq1YWGbd4iS
+3F5ZTCHdstprw5ZmFcLUaedwf4O1X9B+eulR82Y2PHSVoOHgidE3KcdouxMEXQlh
+8KOVL1cpD2h+AdGu9znbvhKLP87kDoSbTSznKZ3dlFdk6YQQbOMvofXAay/zXRnJ
+6GXTZ6r8KDhtoJTNdYRoBQUf+pgzLKLwPdnkzLfu3CFPMy6YpaBMFFt7DwTNG6Du
+Q1nI8HIBPe0Sf7VNyv5qaixRR5rfKnqv80FPdQZD0MGsXTU7z7Iv9rZ7/g+/4ZdH
+yLhuLIARtcqLd2LSNmHQFuBbuDxODQbtqS/89FmshKn+WHowS3/406NNYsvvdwTY
+NGeva57n7Ke7NmdsO1uVsxPmTUHaxp55Vx0BTIQN4+in7mlYdf6I4qD0cVE1TGJQ
+3AF3dH8bQrznZvmJUjXZY8dWRD4StRbAp822rBOY4+QyhbySjoY=
+=SYyW
+-----END PGP SIGNATURE-----
+
+--rl3rpkoiju4ooj2k--
