@@ -2,54 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E59204DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 13:41:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDECF2059C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 13:52:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454TzL3v1VzDqbG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 21:41:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454VCl1RFKzDqbs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 21:52:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="zySpQXc7"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454Tx251P5zDqZS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 21:39:50 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3FC192168B;
- Thu, 16 May 2019 11:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558006789;
- bh=usTzdBEGevdojQvxpyvI9EUSyB4z1uIxU5u4YtGaaLU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=zySpQXc7WAMPyrjfDF/Zysa8iTPrpp7+iNjRvdq2PLrVwpueOKrbEmoc8TL3zINqI
- w4Nh6EAtD4gkLiDLKHlHTGK20NWr+fY/tbo/yU6Hr/D2Lr5HESzwmhsKFvr6tW8sz/
- hz/sDX88NMPNi1dkX4ah3UNVJv8Uitr1ZckMNDIw=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 12/34] KVM: PPC: Book3S: Protect memslots while
- validating user address
-Date: Thu, 16 May 2019 07:39:09 -0400
-Message-Id: <20190516113932.8348-12-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190516113932.8348-1-sashal@kernel.org>
-References: <20190516113932.8348-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454VB25JqBzDqSw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 21:51:05 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4GBjWH4154689
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 07:51:02 -0400
+Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sh4vrxbrn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 07:51:02 -0400
+Received: from localhost
+ by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Thu, 16 May 2019 12:51:02 +0100
+Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
+ by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 16 May 2019 12:51:00 +0100
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4GBoxjn25559190
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 May 2019 11:50:59 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BCF52805A;
+ Thu, 16 May 2019 11:50:59 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9009B28060;
+ Thu, 16 May 2019 11:50:57 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.74.53])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 16 May 2019 11:50:57 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/mm/hash: Improve address limit checks
+Date: Thu, 16 May 2019 17:20:54 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19051611-0052-0000-0000-000003C02434
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011105; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01204120; UDB=6.00632097; IPR=6.00985051; 
+ MB=3.00026917; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-16 11:51:01
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051611-0053-0000-0000-000060EAE2FF
+Message-Id: <20190516115054.15220-1-aneesh.kumar@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-16_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=954 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905160079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,83 +89,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Different parts of the code do the limit check by ignoring the top nibble
+of EA. ie. we do checks like
 
-[ Upstream commit 345077c8e172c255ea0707214303ccd099e5656b ]
+	if ((ea & EA_MASK)  >= H_PGTABLE_RANGE)
+	   	error
 
-Guest physical to user address translation uses KVM memslots and reading
-these requires holding the kvm->srcu lock. However recently introduced
-kvmppc_tce_validate() broke the rule (see the lockdep warning below).
+This patch makes sure we don't insert SLB entries for addresses whose top nibble
+doesn't match the ignored bits.
 
-This moves srcu_read_lock(&vcpu->kvm->srcu) earlier to protect
-kvmppc_tce_validate() as well.
+With an address like 0x4000000008000000, we can result in wrong slb entries like
 
-=============================
-WARNING: suspicious RCU usage
-5.1.0-rc2-le_nv2_aikATfstn1-p1 #380 Not tainted
------------------------------
-include/linux/kvm_host.h:605 suspicious rcu_dereference_check() usage!
+13 4000000008000000 400ea1b217000510   1T ESID=   400000 VSID=   ea1b217000 LLP:110
 
-other info that might help us debug this:
+without this patch we will map that EA with LINEAR_MAP_REGION_ID and further
+those addr limit check will return false.
 
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by qemu-system-ppc/8020:
- #0: 0000000094972fe9 (&vcpu->mutex){+.+.}, at: kvm_vcpu_ioctl+0xdc/0x850 [kvm]
-
-stack backtrace:
-CPU: 44 PID: 8020 Comm: qemu-system-ppc Not tainted 5.1.0-rc2-le_nv2_aikATfstn1-p1 #380
-Call Trace:
-[c000003fece8f740] [c000000000bcc134] dump_stack+0xe8/0x164 (unreliable)
-[c000003fece8f790] [c000000000181be0] lockdep_rcu_suspicious+0x130/0x170
-[c000003fece8f810] [c0000000000d5f50] kvmppc_tce_to_ua+0x280/0x290
-[c000003fece8f870] [c00800001a7e2c78] kvmppc_tce_validate+0x80/0x1b0 [kvm]
-[c000003fece8f8e0] [c00800001a7e3fac] kvmppc_h_put_tce+0x94/0x3e4 [kvm]
-[c000003fece8f9a0] [c00800001a8baac4] kvmppc_pseries_do_hcall+0x30c/0xce0 [kvm_hv]
-[c000003fece8fa10] [c00800001a8bd89c] kvmppc_vcpu_run_hv+0x694/0xec0 [kvm_hv]
-[c000003fece8fae0] [c00800001a7d95dc] kvmppc_vcpu_run+0x34/0x48 [kvm]
-[c000003fece8fb00] [c00800001a7d56bc] kvm_arch_vcpu_ioctl_run+0x2f4/0x400 [kvm]
-[c000003fece8fb90] [c00800001a7c3618] kvm_vcpu_ioctl+0x460/0x850 [kvm]
-[c000003fece8fd00] [c00000000041c4f4] do_vfs_ioctl+0xe4/0x930
-[c000003fece8fdb0] [c00000000041ce04] ksys_ioctl+0xc4/0x110
-[c000003fece8fe00] [c00000000041ce78] sys_ioctl+0x28/0x80
-[c000003fece8fe20] [c00000000000b5a4] system_call+0x5c/0x70
-
-Fixes: 42de7b9e2167 ("KVM: PPC: Validate TCEs against preregistered memory page sizes", 2018-09-10)
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_64_vio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 532ab79734c7a..d43e8fe6d4241 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -543,14 +543,14 @@ long kvmppc_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
- 	if (ret != H_SUCCESS)
- 		return ret;
- 
-+	idx = srcu_read_lock(&vcpu->kvm->srcu);
+diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
+index 5486087e64ea..1060fadb4a56 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash.h
++++ b/arch/powerpc/include/asm/book3s/64/hash.h
+@@ -29,10 +29,8 @@
+ #define H_PGTABLE_EADDR_SIZE	(H_PTE_INDEX_SIZE + H_PMD_INDEX_SIZE + \
+ 				 H_PUD_INDEX_SIZE + H_PGD_INDEX_SIZE + PAGE_SHIFT)
+ #define H_PGTABLE_RANGE		(ASM_CONST(1) << H_PGTABLE_EADDR_SIZE)
+-/*
+- * Top 2 bits are ignored in page table walk.
+- */
+-#define EA_MASK			(~(0xcUL << 60))
 +
- 	ret = kvmppc_tce_validate(stt, tce);
- 	if (ret != H_SUCCESS)
--		return ret;
-+		goto unlock_exit;
++#define EA_MASK			(~PAGE_OFFSET)
  
- 	dir = iommu_tce_direction(tce);
+ /*
+  * We store the slot details in the second half of page table.
+@@ -93,6 +91,7 @@
+ #define VMALLOC_REGION_ID	NON_LINEAR_REGION_ID(H_VMALLOC_START)
+ #define IO_REGION_ID		NON_LINEAR_REGION_ID(H_KERN_IO_START)
+ #define VMEMMAP_REGION_ID	NON_LINEAR_REGION_ID(H_VMEMMAP_START)
++#define INVALID_REGION_ID	(VMEMMAP_REGION_ID + 1)
  
--	idx = srcu_read_lock(&vcpu->kvm->srcu);
--
- 	if ((dir != DMA_NONE) && kvmppc_tce_to_ua(vcpu->kvm, tce, &ua, NULL)) {
- 		ret = H_PARAMETER;
- 		goto unlock_exit;
+ /*
+  * Defines the address of the vmemap area, in its own region on
+@@ -119,6 +118,9 @@ static inline int get_region_id(unsigned long ea)
+ 	if (id == 0)
+ 		return USER_REGION_ID;
+ 
++	if (id != (PAGE_OFFSET >> 60))
++		return INVALID_REGION_ID;
++
+ 	if (ea < H_KERN_VIRT_START)
+ 		return LINEAR_MAP_REGION_ID;
+ 
 -- 
-2.20.1
+2.21.0
 
