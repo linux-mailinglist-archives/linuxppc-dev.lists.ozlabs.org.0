@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7F820D03
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D2220CEB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:27:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454cN13MH7zDqkb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 02:30:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454cJw6SK7zDqhl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 02:27:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,16 +19,16 @@ Received: from shadbolt.e.decadent.org.uk (shadbolt.e.decadent.org.uk
  [88.96.1.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454cGF5RgjzDqfG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:25:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454cG12qKyzDqfD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:24:57 +1000 (AEST)
 Received: from [167.98.27.226] (helo=deadeye)
  by shadbolt.decadent.org.uk with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <ben@decadent.org.uk>)
- id 1hRImD-0006yp-5s; Thu, 16 May 2019 16:58:37 +0100
+ id 1hRImD-0006yn-6T; Thu, 16 May 2019 16:58:37 +0100
 Received: from ben by deadeye with local (Exim 4.92)
  (envelope-from <ben@decadent.org.uk>)
- id 1hRImC-0001N3-J7; Thu, 16 May 2019 16:58:36 +0100
+ id 1hRImC-0001My-Ht; Thu, 16 May 2019 16:58:36 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
@@ -36,11 +36,11 @@ MIME-Version: 1.0
 From: Ben Hutchings <ben@decadent.org.uk>
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Date: Thu, 16 May 2019 16:55:32 +0100
-Message-ID: <lsq.1558022132.38146636@decadent.org.uk>
+Message-ID: <lsq.1558022132.722723753@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
 X-Patchwork-Hint: ignore
-Subject: [PATCH 3.16 09/86] jump_label: Allow jump labels to be used in
- assembly
+Subject: [PATCH 3.16 08/86] jump_label: Allow asm/jump_label.h to be
+ included in assembly
 In-Reply-To: <lsq.1558022132.52852998@decadent.org.uk>
 X-SA-Exim-Connect-IP: 167.98.27.226
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -58,14 +58,14 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Denis Kirjanov <kda@linux-powerpc.org>, heiko.carstens@de.ibm.com,
- paulus@samba.org, Ingo Molnar <mingo@kernel.org>, linux@arm.linux.org.uk,
- mgorman@suse.de, catalin.marinas@arm.com,
- "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>, liuj97@gmail.com,
- will.deacon@arm.com, rostedt@goodmis.org, jbaron@akamai.com,
- Anton Blanchard <anton@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- mmarek@suse.cz, Linus Torvalds <torvalds@linux-foundation.org>,
- ralf@linux-mips.org, schwidefsky@de.ibm.com, akpm@linux-foundation.org,
+ Denis Kirjanov <kda@linux-powerpc.org>, will.deacon@arm.com, paulus@samba.org,
+ Ingo Molnar <mingo@kernel.org>, linux@arm.linux.org.uk, mgorman@suse.de,
+ catalin.marinas@arm.com, "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+ liuj97@gmail.com, heiko.carstens@de.ibm.com, rostedt@goodmis.org,
+ jbaron@akamai.com, Anton Blanchard <anton@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, mmarek@suse.cz,
+ Linus Torvalds <torvalds@linux-foundation.org>, ralf@linux-mips.org,
+ schwidefsky@de.ibm.com, akpm@linux-foundation.org,
  linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -77,14 +77,16 @@ Sender: "Linuxppc-dev"
 
 From: Anton Blanchard <anton@samba.org>
 
-commit c0ccf6f99e3a43b87980c9df7da48427885206d0 upstream.
+commit 55dd0df781e58ec23d218376ea4a676e7362a98c upstream.
 
-To use jump labels in assembly we need the HAVE_JUMP_LABEL
-define, so we select a fallback version if the toolchain does
-not support them.
+Wrap asm/jump_label.h for all archs with #ifndef __ASSEMBLY__.
+Since these are kernel only headers, we don't need #ifdef
+__KERNEL__ so can simplify things a bit.
 
-Modify linux/jump_label.h so it can be included by assembly
-files. We also need to add -DCC_HAVE_ASM_GOTO to KBUILD_AFLAGS.
+If an architecture wants to use jump labels in assembly, it
+will still need to define a macro to create the __jump_table
+entries (see ARCH_STATIC_BRANCH in the powerpc asm/jump_label.h
+for an example).
 
 Signed-off-by: Anton Blanchard <anton@samba.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
@@ -109,74 +111,172 @@ Cc: ralf@linux-mips.org
 Cc: rostedt@goodmis.org
 Cc: schwidefsky@de.ibm.com
 Cc: will.deacon@arm.com
-Link: http://lkml.kernel.org/r/1428551492-21977-2-git-send-email-anton@samba.org
+Link: http://lkml.kernel.org/r/1428551492-21977-1-git-send-email-anton@samba.org
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- Makefile                   |  1 +
- include/linux/jump_label.h | 21 +++++++++++++++++----
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ arch/arm/include/asm/jump_label.h   | 5 ++---
+ arch/arm64/include/asm/jump_label.h | 8 ++++----
+ arch/mips/include/asm/jump_label.h  | 7 +++----
+ arch/s390/include/asm/jump_label.h  | 3 +++
+ arch/sparc/include/asm/jump_label.h | 5 ++---
+ arch/x86/include/asm/jump_label.h   | 5 ++---
+ 6 files changed, 16 insertions(+), 17 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -761,6 +761,7 @@ KBUILD_ARFLAGS := $(call ar-option,D)
- # check for 'asm goto'
- ifeq ($(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-goto.sh $(CC)), y)
- 	KBUILD_CFLAGS += -DCC_HAVE_ASM_GOTO
-+	KBUILD_AFLAGS += -DCC_HAVE_ASM_GOTO
- endif
+--- a/arch/arm/include/asm/jump_label.h
++++ b/arch/arm/include/asm/jump_label.h
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_ARM_JUMP_LABEL_H
+ #define _ASM_ARM_JUMP_LABEL_H
  
- include $(srctree)/scripts/Makefile.extrawarn
---- a/include/linux/jump_label.h
-+++ b/include/linux/jump_label.h
-@@ -45,6 +45,12 @@
-  * same as using STATIC_KEY_INIT_FALSE.
+-#ifdef __KERNEL__
++#ifndef __ASSEMBLY__
+ 
+ #include <linux/types.h>
+ 
+@@ -27,8 +27,6 @@ l_yes:
+ 	return true;
+ }
+ 
+-#endif /* __KERNEL__ */
+-
+ typedef u32 jump_label_t;
+ 
+ struct jump_entry {
+@@ -37,4 +35,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif
+--- a/arch/arm64/include/asm/jump_label.h
++++ b/arch/arm64/include/asm/jump_label.h
+@@ -18,11 +18,12 @@
   */
- 
-+#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL)
-+# define HAVE_JUMP_LABEL
-+#endif
+ #ifndef __ASM_JUMP_LABEL_H
+ #define __ASM_JUMP_LABEL_H
 +
 +#ifndef __ASSEMBLY__
 +
  #include <linux/types.h>
- #include <linux/compiler.h>
- #include <linux/bug.h>
-@@ -55,7 +61,7 @@ extern bool static_key_initialized;
- 				    "%s used before call to jump_label_init", \
- 				    __func__)
+ #include <asm/insn.h>
  
--#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL)
-+#ifdef HAVE_JUMP_LABEL
+-#ifdef __KERNEL__
+-
+ #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
  
- struct static_key {
- 	atomic_t enabled;
-@@ -66,13 +72,18 @@ struct static_key {
- #endif
- };
- 
--# include <asm/jump_label.h>
--# define HAVE_JUMP_LABEL
- #else
- struct static_key {
- 	atomic_t enabled;
- };
--#endif	/* CC_HAVE_ASM_GOTO && CONFIG_JUMP_LABEL */
-+#endif	/* HAVE_JUMP_LABEL */
-+#endif /* __ASSEMBLY__ */
-+
-+#ifdef HAVE_JUMP_LABEL
-+#include <asm/jump_label.h>
-+#endif
-+
-+#ifndef __ASSEMBLY__
- 
- enum jump_label_type {
- 	JUMP_LABEL_DISABLE = 0,
-@@ -223,3 +234,5 @@ static inline void static_key_disable(st
+ static __always_inline bool arch_static_branch(struct static_key *key)
+@@ -39,8 +40,6 @@ l_yes:
+ 	return true;
  }
  
- #endif	/* _LINUX_JUMP_LABEL_H */
+-#endif /* __KERNEL__ */
+-
+ typedef u64 jump_label_t;
+ 
+ struct jump_entry {
+@@ -49,4 +48,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif	/* __ASM_JUMP_LABEL_H */
+--- a/arch/mips/include/asm/jump_label.h
++++ b/arch/mips/include/asm/jump_label.h
+@@ -8,9 +8,9 @@
+ #ifndef _ASM_MIPS_JUMP_LABEL_H
+ #define _ASM_MIPS_JUMP_LABEL_H
+ 
+-#include <linux/types.h>
++#ifndef __ASSEMBLY__
+ 
+-#ifdef __KERNEL__
++#include <linux/types.h>
+ 
+ #define JUMP_LABEL_NOP_SIZE 4
+ 
+@@ -39,8 +39,6 @@ l_yes:
+ 	return true;
+ }
+ 
+-#endif /* __KERNEL__ */
+-
+ #ifdef CONFIG_64BIT
+ typedef u64 jump_label_t;
+ #else
+@@ -53,4 +51,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif /* _ASM_MIPS_JUMP_LABEL_H */
+--- a/arch/s390/include/asm/jump_label.h
++++ b/arch/s390/include/asm/jump_label.h
+@@ -1,6 +1,8 @@
+ #ifndef _ASM_S390_JUMP_LABEL_H
+ #define _ASM_S390_JUMP_LABEL_H
+ 
++#ifndef __ASSEMBLY__
 +
-+#endif /* __ASSEMBLY__ */
+ #include <linux/types.h>
+ 
+ #define JUMP_LABEL_NOP_SIZE 6
+@@ -39,4 +41,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif
+--- a/arch/sparc/include/asm/jump_label.h
++++ b/arch/sparc/include/asm/jump_label.h
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_SPARC_JUMP_LABEL_H
+ #define _ASM_SPARC_JUMP_LABEL_H
+ 
+-#ifdef __KERNEL__
++#ifndef __ASSEMBLY__
+ 
+ #include <linux/types.h>
+ 
+@@ -22,8 +22,6 @@ l_yes:
+ 	return true;
+ }
+ 
+-#endif /* __KERNEL__ */
+-
+ typedef u32 jump_label_t;
+ 
+ struct jump_entry {
+@@ -32,4 +30,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif
+--- a/arch/x86/include/asm/jump_label.h
++++ b/arch/x86/include/asm/jump_label.h
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_X86_JUMP_LABEL_H
+ #define _ASM_X86_JUMP_LABEL_H
+ 
+-#ifdef __KERNEL__
++#ifndef __ASSEMBLY__
+ 
+ #include <linux/stringify.h>
+ #include <linux/types.h>
+@@ -30,8 +30,6 @@ l_yes:
+ 	return true;
+ }
+ 
+-#endif /* __KERNEL__ */
+-
+ #ifdef CONFIG_X86_64
+ typedef u64 jump_label_t;
+ #else
+@@ -44,4 +42,5 @@ struct jump_entry {
+ 	jump_label_t key;
+ };
+ 
++#endif  /* __ASSEMBLY__ */
+ #endif
 
