@@ -1,66 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F9920E61
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 20:05:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423B120BBA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 17:58:08 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454bg13JHXzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 01:58:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454fVN6sc5zDqYq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 04:05:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linaro.org
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=ard.biesheuvel@linaro.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="ExDa/iFL"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="QvubYhE2"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454bdh5PCnzDqZb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 01:56:52 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id e19so3015515iob.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 08:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=FYaKPlO96uZTQi618/iwgzsbGXwkeXmM9oGuFHBHd2k=;
- b=ExDa/iFLZrFChicqshxw+f92N+zb05wP6fRKaLegDaRMO9skb2l2hFbpdjTGzJhv1R
- lqgW9MXqTmMI71BRcpOo9+E0/CUdM1yrziK6e3lh1ckx44zk90suojqtWrzN/+vFnNzH
- m9S9JoComMQzcl6JC4gnpCDBUI5xgsi/UdsQRpe8UB8e+eEsdpj73lkwl9AclqWTbZJb
- hgp2H+J/g+K7cFx3dhZhvxrjzw70fdKpGOcD4vNNUAfuvu9MDXUyRXaom2sF6KscwqWt
- NyLMWFgl2z3bJ3pmtsUuLE/DyK7ZIgd13buJf81SOY2G+yFZBFK00YanOHXyxC5JJmv5
- xn3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=FYaKPlO96uZTQi618/iwgzsbGXwkeXmM9oGuFHBHd2k=;
- b=YYfkUqyu780r3qxzDiC3pJ2cMekr3RdyfZDop2u6mY7tdRhrJCgGOpzHEzSuW2sAuH
- 2Qyod+z1AAOZuwEJ4Y9teY5LEDxnZhByV+owE0fVJU8fm5tAXGnwQKes6C+EIo1KP1HE
- 4k9V8yuoVc2oiVxIhjIqwuQCEmZ9NwAIzXx8QOpQmgfbXCFG9Vza8emcZuR1ZgxhlIx8
- ZRy9UOo6EcOz7OTj+HAQHmANmp4CCy7kV7bx8ROL0w8n2S8GiS4YiYJLSM+qZqeXI17W
- /S6e/UDyx9UnrbIuanpqAVg9vazHwdG1V2TAKN86sSN5LeZ0ENmLF25DjLc2MdIMo42T
- VAgA==
-X-Gm-Message-State: APjAAAUsv64+aQqAkjUvxq6JFLWJSAD6SFFho7LScjrr09lzQu3K5pL/
- EcyHwtw2AU+23PB/RRJobZ23JlETWlVf5DUHFC70Gg==
-X-Google-Smtp-Source: APXvYqzgovPqpKle9HVyyP/AipW4P9e4B6xyQEPMGf+mF9Py0TGlYHc6IsC3kpaU1tm8WV4MHsW3nJ+lqL10btNERBo=
-X-Received: by 2002:a5d:93da:: with SMTP id j26mr28021286ioo.170.1558022209453; 
- Thu, 16 May 2019 08:56:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190516154002.26246-1-dja@axtens.net>
-In-Reply-To: <20190516154002.26246-1-dja@axtens.net>
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date: Thu, 16 May 2019 17:56:37 +0200
-Message-ID: <CAKv+Gu_eCZMGCKiFSeGvT7-AV-c+vVhH51ZDqHk=bgzYW3B2jw@mail.gmail.com>
-Subject: Re: [PATCH] crypto: vmx - ghash: do nosimd fallback manually
-To: Daniel Axtens <dja@axtens.net>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454fRM5DZQzDq8X
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 04:03:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+ Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+ List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+ List-Archive; bh=8bZja2xkVqlKe9Ee36ywIzxXtmLn67PxOoUS8NcSf8U=; b=QvubYhE2Lk8n
+ SagD9Sc5z3FsyW4VJjfM5XnXOGeOgDXnpgHFGTsX/dSvZ6/nzECisUCScJ/bH5xY4cW3SVlWZSQMl
+ BfHSND6EUoWYSC6KDeXTSUHhyRyb3ZEJO8n/2ICrP/Vk7Li+bu+XrELoSSdIXDqYsDBwEMkpVq9g2
+ F6qLg=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=debutante.sirena.org.uk)
+ by heliosphere.sirena.org.uk with esmtpa (Exim 4.89)
+ (envelope-from <broonie@sirena.org.uk>)
+ id 1hRKiZ-00085Q-U6; Thu, 16 May 2019 18:02:59 +0000
+Received: by debutante.sirena.org.uk (Postfix, from userid 1000)
+ id 768C1112929E; Thu, 16 May 2019 19:02:59 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: S.j. Wang <shengjiu.wang@nxp.com>
+Subject: Applied "ASoC: fsl_asrc: replace the process_option table with
+ function" to the asoc tree
+In-Reply-To: <7d683186c3de9314e361fd4ead42f9691968e65c.1557901312.git.shengjiu.wang@nxp.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190516180259.768C1112929E@debutante.sirena.org.uk>
+Date: Thu, 16 May 2019 19:02:59 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,341 +60,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: leo.barbosa@canonical.com, Herbert Xu <herbert@gondor.apana.org.au>,
- Stephan Mueller <smueller@chronox.de>, Nayna Jain <nayna@linux.ibm.com>,
- omosnacek@gmail.com, Eric Biggers <ebiggers@kernel.org>, leitao@debian.org,
- pfsmorigo@gmail.com, "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
- <linux-crypto@vger.kernel.org>, marcelo.cerri@canonical.com,
- gcwilson@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 May 2019 at 17:40, Daniel Axtens <dja@axtens.net> wrote:
->
-> VMX ghash was using a fallback that did not support interleaving simd
-> and nosimd operations, leading to failures in the extended test suite.
->
-> If I understood correctly, Eric's suggestion was to use the same
-> data format that the generic code uses, allowing us to call into it
-> with the same contexts. I wasn't able to get that to work - I think
-> there's a very different key structure and data layout being used.
->
+The patch
 
-The SIMD ghash code uses a 'reflected' version of the key, to work
-around bit and byte order peculiarities in the way GHASH uses
-GF(2^128). So storing a fallback version of the key (as you are doing
-here) is the only feasible approach. (This is described in the Intel
-whitepaper that all these implementations [in both OpenSSL and Linux]
-are based on [0])
+   ASoC: fsl_asrc: replace the process_option table with function
 
-Eric'c suggestion was about sharing the desc not the ctx, since the
-desc is what records the ghash state, and so you cannot use two
-different ones at the same time without running into inconsistencies
-(which is what the bug report was about)
+has been applied to the asoc tree at
 
-In summary, I think your approach is the only feasible one.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
 
-[0] http://software.intel.com/en-us/articles/carry-less-multiplication-and-its-usage-for-computing-the-gcm-mode/
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> So instead steal the arm64 approach and perform the fallback
-> operations directly if required.
->
-> Reported-by: Eric Biggers <ebiggers@google.com>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Provided that it passes Eric's extended test suite,
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
->
-> ---
->
-> Tested on BE and LE in qemu-tcg, so more testing would be lovely.
-> ---
->  drivers/crypto/vmx/ghash.c | 211 +++++++++++++++----------------------
->  1 file changed, 86 insertions(+), 125 deletions(-)
->
-> diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
-> index b5a6883bb09e..14807ac2e3b9 100644
-> --- a/drivers/crypto/vmx/ghash.c
-> +++ b/drivers/crypto/vmx/ghash.c
-> @@ -1,22 +1,14 @@
-> +// SPDX-License-Identifier: GPL-2.0
->  /**
->   * GHASH routines supporting VMX instructions on the Power 8
->   *
-> - * Copyright (C) 2015 International Business Machines Inc.
-> - *
-> - * This program is free software; you can redistribute it and/or modify
-> - * it under the terms of the GNU General Public License as published by
-> - * the Free Software Foundation; version 2 only.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - *
-> - * You should have received a copy of the GNU General Public License
-> - * along with this program; if not, write to the Free Software
-> - * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-> + * Copyright (C) 2015, 2019 International Business Machines Inc.
->   *
->   * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
-> + *
-> + * Extended by Daniel Axtens <dja@axtens.net> to replace the fallback
-> + * mechanism. The new approach is based on arm64 code, which is:
-> + *   Copyright (C) 2014 - 2018 Linaro Ltd. <ard.biesheuvel@linaro.org>
->   */
->
->  #include <linux/types.h>
-> @@ -38,70 +30,25 @@ void gcm_ghash_p8(u64 Xi[2], const u128 htable[16],
->                   const u8 *in, size_t len);
->
->  struct p8_ghash_ctx {
-> +       /* key used by vector asm */
->         u128 htable[16];
-> -       struct crypto_shash *fallback;
-> +       /* key used by software fallback */
-> +       be128 key;
->  };
->
->  struct p8_ghash_desc_ctx {
->         u64 shash[2];
->         u8 buffer[GHASH_DIGEST_SIZE];
->         int bytes;
-> -       struct shash_desc fallback_desc;
->  };
->
-> -static int p8_ghash_init_tfm(struct crypto_tfm *tfm)
-> -{
-> -       const char *alg = "ghash-generic";
-> -       struct crypto_shash *fallback;
-> -       struct crypto_shash *shash_tfm = __crypto_shash_cast(tfm);
-> -       struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
-> -
-> -       fallback = crypto_alloc_shash(alg, 0, CRYPTO_ALG_NEED_FALLBACK);
-> -       if (IS_ERR(fallback)) {
-> -               printk(KERN_ERR
-> -                      "Failed to allocate transformation for '%s': %ld\n",
-> -                      alg, PTR_ERR(fallback));
-> -               return PTR_ERR(fallback);
-> -       }
-> -
-> -       crypto_shash_set_flags(fallback,
-> -                              crypto_shash_get_flags((struct crypto_shash
-> -                                                      *) tfm));
-> -
-> -       /* Check if the descsize defined in the algorithm is still enough. */
-> -       if (shash_tfm->descsize < sizeof(struct p8_ghash_desc_ctx)
-> -           + crypto_shash_descsize(fallback)) {
-> -               printk(KERN_ERR
-> -                      "Desc size of the fallback implementation (%s) does not match the expected value: %lu vs %u\n",
-> -                      alg,
-> -                      shash_tfm->descsize - sizeof(struct p8_ghash_desc_ctx),
-> -                      crypto_shash_descsize(fallback));
-> -               return -EINVAL;
-> -       }
-> -       ctx->fallback = fallback;
-> -
-> -       return 0;
-> -}
-> -
-> -static void p8_ghash_exit_tfm(struct crypto_tfm *tfm)
-> -{
-> -       struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
-> -
-> -       if (ctx->fallback) {
-> -               crypto_free_shash(ctx->fallback);
-> -               ctx->fallback = NULL;
-> -       }
-> -}
-> -
->  static int p8_ghash_init(struct shash_desc *desc)
->  {
-> -       struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
->         struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
->
->         dctx->bytes = 0;
->         memset(dctx->shash, 0, GHASH_DIGEST_SIZE);
-> -       dctx->fallback_desc.tfm = ctx->fallback;
-> -       return crypto_shash_init(&dctx->fallback_desc);
-> +       return 0;
->  }
->
->  static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
-> @@ -119,7 +66,51 @@ static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
->         disable_kernel_vsx();
->         pagefault_enable();
->         preempt_enable();
-> -       return crypto_shash_setkey(ctx->fallback, key, keylen);
-> +
-> +       memcpy(&ctx->key, key, GHASH_BLOCK_SIZE);
-> +
-> +       return 0;
-> +}
-> +
-> +static inline void __ghash_block(struct p8_ghash_ctx *ctx,
-> +                                struct p8_ghash_desc_ctx *dctx)
-> +{
-> +       if (crypto_simd_usable()) {
-> +               preempt_disable();
-> +               pagefault_disable();
-> +               enable_kernel_vsx();
-> +               gcm_ghash_p8(dctx->shash, ctx->htable,
-> +                               dctx->buffer, GHASH_DIGEST_SIZE);
-> +               disable_kernel_vsx();
-> +               pagefault_enable();
-> +               preempt_enable();
-> +       } else {
-> +               crypto_xor((u8 *)dctx->shash, dctx->buffer, GHASH_BLOCK_SIZE);
-> +               gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-> +       }
-> +}
-> +
-> +static inline void __ghash_blocks(struct p8_ghash_ctx *ctx,
-> +                                 struct p8_ghash_desc_ctx *dctx,
-> +                                 const u8 *src, unsigned int srclen)
-> +{
-> +       if (crypto_simd_usable()) {
-> +               preempt_disable();
-> +               pagefault_disable();
-> +               enable_kernel_vsx();
-> +               gcm_ghash_p8(dctx->shash, ctx->htable,
-> +                               src, srclen);
-> +               disable_kernel_vsx();
-> +               pagefault_enable();
-> +               preempt_enable();
-> +       } else {
-> +               while (srclen >= GHASH_BLOCK_SIZE) {
-> +                       crypto_xor((u8 *)dctx->shash, src, GHASH_BLOCK_SIZE);
-> +                       gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-> +                       srclen -= GHASH_BLOCK_SIZE;
-> +                       src += GHASH_BLOCK_SIZE;
-> +               }
-> +       }
->  }
->
->  static int p8_ghash_update(struct shash_desc *desc,
-> @@ -129,49 +120,33 @@ static int p8_ghash_update(struct shash_desc *desc,
->         struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
->         struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
->
-> -       if (!crypto_simd_usable()) {
-> -               return crypto_shash_update(&dctx->fallback_desc, src,
-> -                                          srclen);
-> -       } else {
-> -               if (dctx->bytes) {
-> -                       if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
-> -                               memcpy(dctx->buffer + dctx->bytes, src,
-> -                                      srclen);
-> -                               dctx->bytes += srclen;
-> -                               return 0;
-> -                       }
-> +       if (dctx->bytes) {
-> +               if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
->                         memcpy(dctx->buffer + dctx->bytes, src,
-> -                              GHASH_DIGEST_SIZE - dctx->bytes);
-> -                       preempt_disable();
-> -                       pagefault_disable();
-> -                       enable_kernel_vsx();
-> -                       gcm_ghash_p8(dctx->shash, ctx->htable,
-> -                                    dctx->buffer, GHASH_DIGEST_SIZE);
-> -                       disable_kernel_vsx();
-> -                       pagefault_enable();
-> -                       preempt_enable();
-> -                       src += GHASH_DIGEST_SIZE - dctx->bytes;
-> -                       srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
-> -                       dctx->bytes = 0;
-> -               }
-> -               len = srclen & ~(GHASH_DIGEST_SIZE - 1);
-> -               if (len) {
-> -                       preempt_disable();
-> -                       pagefault_disable();
-> -                       enable_kernel_vsx();
-> -                       gcm_ghash_p8(dctx->shash, ctx->htable, src, len);
-> -                       disable_kernel_vsx();
-> -                       pagefault_enable();
-> -                       preempt_enable();
-> -                       src += len;
-> -                       srclen -= len;
-> -               }
-> -               if (srclen) {
-> -                       memcpy(dctx->buffer, src, srclen);
-> -                       dctx->bytes = srclen;
-> +                               srclen);
-> +                       dctx->bytes += srclen;
-> +                       return 0;
->                 }
-> -               return 0;
-> +               memcpy(dctx->buffer + dctx->bytes, src,
-> +                       GHASH_DIGEST_SIZE - dctx->bytes);
-> +
-> +               __ghash_block(ctx, dctx);
-> +
-> +               src += GHASH_DIGEST_SIZE - dctx->bytes;
-> +               srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
-> +               dctx->bytes = 0;
-> +       }
-> +       len = srclen & ~(GHASH_DIGEST_SIZE - 1);
-> +       if (len) {
-> +               __ghash_blocks(ctx, dctx, src, len);
-> +               src += len;
-> +               srclen -= len;
->         }
-> +       if (srclen) {
-> +               memcpy(dctx->buffer, src, srclen);
-> +               dctx->bytes = srclen;
-> +       }
-> +       return 0;
->  }
->
->  static int p8_ghash_final(struct shash_desc *desc, u8 *out)
-> @@ -180,25 +155,14 @@ static int p8_ghash_final(struct shash_desc *desc, u8 *out)
->         struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
->         struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
->
-> -       if (!crypto_simd_usable()) {
-> -               return crypto_shash_final(&dctx->fallback_desc, out);
-> -       } else {
-> -               if (dctx->bytes) {
-> -                       for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
-> -                               dctx->buffer[i] = 0;
-> -                       preempt_disable();
-> -                       pagefault_disable();
-> -                       enable_kernel_vsx();
-> -                       gcm_ghash_p8(dctx->shash, ctx->htable,
-> -                                    dctx->buffer, GHASH_DIGEST_SIZE);
-> -                       disable_kernel_vsx();
-> -                       pagefault_enable();
-> -                       preempt_enable();
-> -                       dctx->bytes = 0;
-> -               }
-> -               memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
-> -               return 0;
-> +       if (dctx->bytes) {
-> +               for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
-> +                       dctx->buffer[i] = 0;
-> +               __ghash_block(ctx, dctx);
-> +               dctx->bytes = 0;
->         }
-> +       memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
-> +       return 0;
->  }
->
->  struct shash_alg p8_ghash_alg = {
-> @@ -213,11 +177,8 @@ struct shash_alg p8_ghash_alg = {
->                  .cra_name = "ghash",
->                  .cra_driver_name = "p8_ghash",
->                  .cra_priority = 1000,
-> -                .cra_flags = CRYPTO_ALG_NEED_FALLBACK,
->                  .cra_blocksize = GHASH_BLOCK_SIZE,
->                  .cra_ctxsize = sizeof(struct p8_ghash_ctx),
->                  .cra_module = THIS_MODULE,
-> -                .cra_init = p8_ghash_init_tfm,
-> -                .cra_exit = p8_ghash_exit_tfm,
->         },
->  };
-> --
-> 2.19.1
->
+Thanks,
+Mark
+
+From 4aecaa0a82b3142fb2f2862b3f25ecc96dc06d8c Mon Sep 17 00:00:00 2001
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+Date: Wed, 15 May 2019 06:42:22 +0000
+Subject: [PATCH] ASoC: fsl_asrc: replace the process_option table with
+ function
+
+When we want to support more sample rate, for example 12kHz/24kHz
+we need update the process_option table, if we want to support more
+sample rate next time, the table need to be updated again. which
+is not flexible.
+
+We got a function fsl_asrc_sel_proc to replace the table, which can
+give the pre-processing and post-processing options according to
+the sample rate.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_asrc.c | 71 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 51 insertions(+), 20 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 0b937924d2e4..71793d3dc75c 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -26,24 +26,6 @@
+ #define pair_dbg(fmt, ...) \
+ 	dev_dbg(&asrc_priv->pdev->dev, "Pair %c: " fmt, 'A' + index, ##__VA_ARGS__)
+ 
+-/* Sample rates are aligned with that defined in pcm.h file */
+-static const u8 process_option[][12][2] = {
+-	/* 8kHz 11.025kHz 16kHz 22.05kHz 32kHz 44.1kHz 48kHz   64kHz   88.2kHz 96kHz   176kHz  192kHz */
+-	{{0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0},},	/* 5512Hz */
+-	{{0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0},},	/* 8kHz */
+-	{{0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0},},	/* 11025Hz */
+-	{{1, 2}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0},},	/* 16kHz */
+-	{{1, 2}, {1, 2}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0},},	/* 22050Hz */
+-	{{1, 2}, {2, 1}, {2, 1}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0}, {0, 0},},	/* 32kHz */
+-	{{2, 2}, {2, 2}, {2, 1}, {2, 1}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0},},	/* 44.1kHz */
+-	{{2, 2}, {2, 2}, {2, 1}, {2, 1}, {0, 2}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0}, {0, 0},},	/* 48kHz */
+-	{{2, 2}, {2, 2}, {2, 2}, {2, 1}, {1, 2}, {0, 2}, {0, 2}, {0, 1}, {0, 1}, {0, 1}, {0, 1}, {0, 0},},	/* 64kHz */
+-	{{2, 2}, {2, 2}, {2, 2}, {2, 2}, {1, 2}, {1, 2}, {1, 2}, {1, 1}, {1, 1}, {1, 1}, {1, 1}, {1, 1},},	/* 88.2kHz */
+-	{{2, 2}, {2, 2}, {2, 2}, {2, 2}, {1, 2}, {1, 2}, {1, 2}, {1, 1}, {1, 1}, {1, 1}, {1, 1}, {1, 1},},	/* 96kHz */
+-	{{2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 1}, {2, 1}, {2, 1}, {2, 1}, {2, 1},},	/* 176kHz */
+-	{{2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 1}, {2, 1}, {2, 1}, {2, 1}, {2, 1},},	/* 192kHz */
+-};
+-
+ /* Corresponding to process_option */
+ static int supported_input_rate[] = {
+ 	5512, 8000, 11025, 16000, 22050, 32000, 44100, 48000, 64000, 88200,
+@@ -79,6 +61,52 @@ static unsigned char output_clk_map_imx53[] = {
+ 
+ static unsigned char *clk_map[2];
+ 
++/**
++ * Select the pre-processing and post-processing options
++ * Make sure to exclude following unsupported cases before
++ * calling this function:
++ * 1) inrate > 8.125 * outrate
++ * 2) inrate > 16.125 * outrate
++ *
++ * inrate: input sample rate
++ * outrate: output sample rate
++ * pre_proc: return value for pre-processing option
++ * post_proc: return value for post-processing option
++ */
++static void fsl_asrc_sel_proc(int inrate, int outrate,
++			     int *pre_proc, int *post_proc)
++{
++	bool post_proc_cond2;
++	bool post_proc_cond0;
++
++	/* select pre_proc between [0, 2] */
++	if (inrate * 8 > 33 * outrate)
++		*pre_proc = 2;
++	else if (inrate * 8 > 15 * outrate) {
++		if (inrate > 152000)
++			*pre_proc = 2;
++		else
++			*pre_proc = 1;
++	} else if (inrate < 76000)
++		*pre_proc = 0;
++	else if (inrate > 152000)
++		*pre_proc = 2;
++	else
++		*pre_proc = 1;
++
++	/* Condition for selection of post-processing */
++	post_proc_cond2 = (inrate * 15 > outrate * 16 && outrate < 56000) ||
++			  (inrate > 56000 && outrate < 56000);
++	post_proc_cond0 = inrate * 23 < outrate * 8;
++
++	if (post_proc_cond2)
++		*post_proc = 2;
++	else if (post_proc_cond0)
++		*post_proc = 0;
++	else
++		*post_proc = 1;
++}
++
+ /**
+  * Request ASRC pair
+  *
+@@ -239,6 +267,7 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+ 	u32 inrate, outrate, indiv, outdiv;
+ 	u32 clk_index[2], div[2];
+ 	int in, out, channels;
++	int pre_proc, post_proc;
+ 	struct clk *clk;
+ 	bool ideal;
+ 
+@@ -377,11 +406,13 @@ static int fsl_asrc_config_pair(struct fsl_asrc_pair *pair)
+ 			   ASRCTR_IDRi_MASK(index) | ASRCTR_USRi_MASK(index),
+ 			   ASRCTR_IDR(index) | ASRCTR_USR(index));
+ 
++	fsl_asrc_sel_proc(inrate, outrate, &pre_proc, &post_proc);
++
+ 	/* Apply configurations for pre- and post-processing */
+ 	regmap_update_bits(asrc_priv->regmap, REG_ASRCFG,
+ 			   ASRCFG_PREMODi_MASK(index) |	ASRCFG_POSTMODi_MASK(index),
+-			   ASRCFG_PREMOD(index, process_option[in][out][0]) |
+-			   ASRCFG_POSTMOD(index, process_option[in][out][1]));
++			   ASRCFG_PREMOD(index, pre_proc) |
++			   ASRCFG_POSTMOD(index, post_proc));
+ 
+ 	return fsl_asrc_set_ideal_ratio(pair, inrate, outrate);
+ }
+-- 
+2.20.1
+
