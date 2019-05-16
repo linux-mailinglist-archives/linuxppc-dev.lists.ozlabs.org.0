@@ -2,92 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2616D20137
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 10:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B925F207C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 15:14:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454Pbj1gCYzDqZp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:24:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454X281kNDzDqdh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 23:14:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::a44; helo=mail-vk1-xa44.google.com;
+ envelope-from=slandden@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="e8VWDUkI"; 
+ dkim-atps=neutral
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com
+ [IPv6:2607:f8b0:4864:20::a44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454PZM4kvXzDqZP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 18:23:22 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4G8NDN6036445
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 04:23:18 -0400
-Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sh3egjaae-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 04:23:13 -0400
-Received: from localhost
- by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
- Thu, 16 May 2019 09:22:45 +0100
-Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
- by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 16 May 2019 09:22:42 +0100
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4G8MffA15860102
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 May 2019 08:22:41 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7016FBE053;
- Thu, 16 May 2019 08:22:41 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2731EBE054;
- Thu, 16 May 2019 08:22:41 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.124.35.248])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 16 May 2019 08:22:41 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 2046C2E3894; Thu, 16 May 2019 13:52:38 +0530 (IST)
-Date: Thu, 16 May 2019 13:52:38 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/1] Forced-wakeup for stop lite states on Powernv
-References: <20190422063231.51043-1-huntbag@linux.vnet.ibm.com>
- <1557291178.ow4spjzq5t.astroid@bobo.none>
- <b2fcf69a-aecd-ea81-b497-737642354736@linux.vnet.ibm.com>
- <1557981860.eltms77ctp.astroid@bobo.none>
- <20190516053659.GA20396@in.ibm.com>
- <1557986956.6pmjz10b9z.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454TBy1bm1zDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 21:06:50 +1000 (AEST)
+Received: by mail-vk1-xa44.google.com with SMTP id u131so897809vke.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 04:06:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=wxUIMIPXF7//ia3ngSwnb56b2D+TWwTqhbugwySOISc=;
+ b=e8VWDUkIzlERuOe1qLIZyvVHXCa1nTabnsbZXjuO/LgqU5WVW70+N6zoNX7kGFLUgB
+ wfKTZ0xRft1/3pxfIecYvQLj0+0vMXQj5LzhIInymXoVKu1Xu3b4Y8yxO04y1vSs7HUa
+ 23NiTneWHnX9XfdrQegnEuDoQIWzwgzW+xmqOgkBn27Mvrst9zoCqA6rBslFM+ciphR3
+ VAJqhC9oUAoeHikeHqvez+i7o2pND6aIGRElyPSOcvABTl+mbX1Jg+LlffihK0PWDbUG
+ yyVoKOyw3uRoqUn06y0VwK1AkMiJ6zRRB+W2HS9x3l6rXlBvxJuP3RhmJefHpltV3Kt5
+ dETQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=wxUIMIPXF7//ia3ngSwnb56b2D+TWwTqhbugwySOISc=;
+ b=sFABO8WJpGDFFMitHX0wr4VIdIqP51SH3PvB6zDFk3hzIw+VLFjZh03icxlrwog6dW
+ lr70h4lPOV4F9F3zaRHwQYRmh9DDksn2tiSrLJ8k/wtdYEMO6Pxwf31y4hvaZ0w+skdR
+ 8AMZWWsMKgiNKoCXze0FcKFoPfK974P7HBd0TAYYv7L4iaF3S+/cZmjz4HZzYJBIrS6r
+ axxSdN3PHqDxM8DWTWrNrZbmLsCeLpjzY7G30YyJWzEx69yDvhYGnEJvLzww2+rUPIjn
+ zYhBHW1T/6+zBlBoERFN4myveGWVQetVOqWBZpdBdWFd9hmbSC48flWlLDAHqlDF3/oH
+ RL/A==
+X-Gm-Message-State: APjAAAWfYRUf+JW6tQyKC7U9hviKxmGOSvPV4V/vm0XhR2i6l/6eMI2S
+ yryB2LU5jy3L9rBrW2GLCfM1jjMsz2vUapy0A+Q=
+X-Google-Smtp-Source: APXvYqww04mm39VSuOOg+y5lrt6tFqNKj1EzdXcpDVS5elPBBi2kwgNENTKOSbQFrZAUTD6euQXwqfjnW8/xXjx09dc=
+X-Received: by 2002:a1f:62c7:: with SMTP id w190mr21786531vkb.72.1558004806462; 
+ Thu, 16 May 2019 04:06:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1557986956.6pmjz10b9z.astroid@bobo.none>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-x-cbid: 19051608-0036-0000-0000-00000ABC3AF4
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011104; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000285; SDB=6.01204051; UDB=6.00632055; IPR=6.00984981; 
- MB=3.00026913; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-16 08:22:45
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19051608-0037-0000-0000-00004BD0A5B6
-Message-Id: <20190516082238.GB20396@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-16_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905160057
+References: <d8d0bf05-2c22-0ade-6361-4841e521597c@xenosoft.de>
+ <dbfbd2e0-eca8-8ecc-793b-a6f1471ce2ee@c-s.fr>
+In-Reply-To: <dbfbd2e0-eca8-8ecc-793b-a6f1471ce2ee@c-s.fr>
+From: Shawn Landden <slandden@gmail.com>
+Date: Thu, 16 May 2019 06:06:34 -0500
+Message-ID: <CA+49okoBAVxNDfL46fXQJ8GOTq7O3kLkru9jdbScEJr4+mbkrQ@mail.gmail.com>
+Subject: Re: Latest Git kernel: Section mismatch in reference from the
+ variable start_here_multiplatform to the function .init.text:.early_setup()
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: multipart/alternative; boundary="0000000000000c33270588ff430b"
+X-Mailman-Approved-At: Thu, 16 May 2019 23:11:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,107 +75,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: ego@linux.vnet.ibm.com, linux-pm@vger.kernel.org, daniel.lezcano@linaro.org,
- rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
- Abhishek <huntbag@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- dja@axtens.net
+Cc: Christian Zigotzky <info@xenosoft.de>, linuxppc-dev@lists.ozlabs.org,
+ Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nicholas,
+--0000000000000c33270588ff430b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 16, 2019 at 04:13:17PM +1000, Nicholas Piggin wrote:
+Hi
 
-> 
-> > The motivation behind this patch was a HPC customer issue where they
-> > were observing some CPUs in the core getting stuck at stop0_lite
-> > state, thereby lowering the performance on the other CPUs of the core
-> > which were running the application.
-> > 
-> > Disabling stop0_lite via sysfs didn't help since we would fallback to
-> > snooze and it would make matters worse.
-> 
-> snooze has the timeout though, so it should kick into stop0 properly
-> (and if it doesn't that's another issue that should be fixed in this
-> series).
+El mi=C3=A9., 15 may. 2019 5:17, Christophe Leroy <christophe.leroy@c-s.fr>
+escribi=C3=B3:
+
+> Hi,
 >
-> I'm not questioning the patch for stop0_lite, to be clear. I think
-> the logic is sound. I just raise one urelated issue that happens to
-> be for stop0_lite as well (should we even enable it on P9?), and one
-> peripheral issue (should we make a similar fix for deeper stop states?)
+> Le 15/05/2019 =C3=A0 12:09, Christian Zigotzky a =C3=A9crit :
+> > Hi All,
+> >
+> > I got the following error messages with the latest Git kernel today:
+> >
+> > GEN     .version
+> >    CHK     include/generated/compile.h
+> >    LD      vmlinux.o
+> >    MODPOST vmlinux.o
+> > WARNING: vmlinux.o(.text+0x302a): Section mismatch in reference from th=
+e
+> > variable start_here_multiplatform to the function
+> .init.text:.early_setup()
+> > The function start_here_multiplatform() references
+> > the function __init .early_setup().
+> > This is often because start_here_multiplatform lacks a __init
+> > annotation or the annotation of .early_setup is wrong.
+> >
+> >    MODINFO modules.builtin.modinfo
+> >    KSYM    .tmp_kallsyms1.o
+> >    KSYM    .tmp_kallsyms2.o
+> >    LD      vmlinux
+> >    SORTEX  vmlinux
+> >    SYSMAP  System.map
+> >    CHKHEAD vmlinux
+> >
+> > What does it mean?
 >
+The best first thing to do with these type of errors is to Google them. If
+you see there are patches just assume somebody else is working on it. That
+saves everybody time, because these things tend to get duplicate reports.
 
-I think it makes sense to generalize this from the point of view of
-CPUs remaining in shallower idle states for long durations on tickless
-kernels.
-
-> > 
-> >> 
-> >> We should always have fewer states unless proven otherwise.
-> > 
-> > I agree.
-> > 
-> >> 
-> >> That said, we enable it today so I don't want to argue this point
-> >> here, because it is a different issue from your patch.
-> >> 
-> >> > When it is in stop0 or deeper, 
-> >> > it free up both
-> >> > space and time slice of core.
-> >> > In stop0_lite, cpu doesn't free up the core resources and thus inhibits 
-> >> > thread
-> >> > folding. When a cpu goes to stop0, it will free up the core resources 
-> >> > thus increasing
-> >> > the single thread performance of other sibling thread.
-> >> > Hence, we do not want to get stuck in stop0_lite for long duration, and 
-> >> > want to quickly
-> >> > move onto the next state.
-> >> > If we get stuck in any other state we would possibly be losing on to 
-> >> > power saving,
-> >> > but will still be able to gain the performance benefits for other 
-> >> > sibling threads.
-> >> 
-> >> That's true, but stop0 -> deeper stop is also a benefit (for
-> >> performance if we have some power/thermal constraints, and/or for power
-> >> usage).
-> >> 
-> >> Sure it may not be so noticable as the SMT switch, but I just wonder
-> >> if the infrastructure should be there for the same reason.
-> >> 
-> >> I was testing interrupt frequency on some tickless workloads configs,
-> >> and without too much trouble you can get CPUs to sleep with no
-> >> interrupts for many minutes. Hours even. We wouldn't want the CPU to
-> >> stay in stop0 for that long.
-> > 
-> > If it stays in stop0 or even stop2 for that long, we would want to
-> > "promote" it to a deeper state, such as say STOP5 which allows the
-> > other cores to run at higher frequencies.
-> 
-> So we would want this same logic for all but the deepest runtime
-> stop state?
-
-Yes. We can, in steps, promote individual threads of the core to
-eventually request a deeper state such as stop4/5. On a completely
-idle tickless system, eventually we should see the core go to the
-deeper idle state.
-
-> 
-> >> Just thinking about the patch itself, I wonder do you need a full
-> >> kernel timer, or could we just set the decrementer? Is there much 
-> >> performance cost here?
-> >>
-> > 
-> > Good point. A decrementer would do actually.
-> 
-> That would be good if it does, might save a few cycles.
-> 
-> Thanks,
-> Nick
+>
+> I proposed a patch for it at https://patchwork.ozlabs.org/patch/1097845/
+>
+> Christophe
+>
+> >
+> > Please find attached the kernel config.
+> >
+> > Thanks,
+> > Christian
+> >
 >
 
---
-Thanks and Regards
-gautham.
+--0000000000000c33270588ff430b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"auto"><div>Hi<br><br><div class=3D"gmail_quote"><div dir=3D"ltr=
+" class=3D"gmail_attr">El mi=C3=A9., 15 may. 2019 5:17, Christophe Leroy &l=
+t;<a href=3D"mailto:christophe.leroy@c-s.fr">christophe.leroy@c-s.fr</a>&gt=
+; escribi=C3=B3:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">Hi,<br>
+<br>
+Le 15/05/2019 =C3=A0 12:09, Christian Zigotzky a =C3=A9crit=C2=A0:<br>
+&gt; Hi All,<br>
+&gt; <br>
+&gt; I got the following error messages with the latest Git kernel today:<b=
+r>
+&gt; <br>
+&gt; GEN=C2=A0=C2=A0=C2=A0=C2=A0 .version<br>
+&gt;=C2=A0 =C2=A0 CHK=C2=A0=C2=A0=C2=A0=C2=A0 include/generated/compile.h<b=
+r>
+&gt;=C2=A0 =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux.o<br>
+&gt;=C2=A0 =C2=A0 MODPOST vmlinux.o<br>
+&gt; WARNING: vmlinux.o(.text+0x302a): Section mismatch in reference from t=
+he <br>
+&gt; variable start_here_multiplatform to the function .init.text:.early_se=
+tup()<br>
+&gt; The function start_here_multiplatform() references<br>
+&gt; the function __init .early_setup().<br>
+&gt; This is often because start_here_multiplatform lacks a __init<br>
+&gt; annotation or the annotation of .early_setup is wrong.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 MODINFO modules.builtin.modinfo<br>
+&gt;=C2=A0 =C2=A0 KSYM=C2=A0=C2=A0=C2=A0 .tmp_kallsyms1.o<br>
+&gt;=C2=A0 =C2=A0 KSYM=C2=A0=C2=A0=C2=A0 .tmp_kallsyms2.o<br>
+&gt;=C2=A0 =C2=A0 LD=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmlinux<br>
+&gt;=C2=A0 =C2=A0 SORTEX=C2=A0 vmlinux<br>
+&gt;=C2=A0 =C2=A0 SYSMAP=C2=A0 System.map<br>
+&gt;=C2=A0 =C2=A0 CHKHEAD vmlinux<br>
+&gt; <br>
+&gt; What does it mean?<br></blockquote></div></div><div dir=3D"auto">The b=
+est first thing to do with these type of errors is to Google them. If you s=
+ee there are patches just assume somebody else is working on it. That saves=
+ everybody time, because these things tend to get duplicate reports.</div><=
+div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+I proposed a patch for it at <a href=3D"https://patchwork.ozlabs.org/patch/=
+1097845/" rel=3D"noreferrer noreferrer" target=3D"_blank">https://patchwork=
+.ozlabs.org/patch/1097845/</a><br>
+<br>
+Christophe<br>
+<br>
+&gt; <br>
+&gt; Please find attached the kernel config.<br>
+&gt; <br>
+&gt; Thanks,<br>
+&gt; Christian<br>
+&gt; <br>
+</blockquote></div></div></div>
+
+--0000000000000c33270588ff430b--
