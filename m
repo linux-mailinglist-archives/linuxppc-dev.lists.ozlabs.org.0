@@ -2,55 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AE21FDC0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 04:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF741FDC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 04:38:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454Fn21XS6zDqXf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 12:32:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454FwP2LSdzDqY6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 12:38:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Mxuvneyk"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454Flh6TMJzDqX6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 12:30:56 +1000 (AEST)
-Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net
- [24.5.143.220])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id ACA6720843;
- Thu, 16 May 2019 02:30:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557973853;
- bh=wM9TNClsZacWcRgk7xTDNK0BYza1+wzkgKUWbX29yrM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=MxuvneykuaKmPMU593+C93QcL9NYo0U3hIQ3jPbZUw9YVhW3okQwsdkSF23jGw6Vs
- E47HWjp4V2AI4tkf9BtC9jDKrM3vOeIuB5S4G1NQveQFaD7L9HQKfCIvLEr7cqAVpo
- Sa9VmLheapfklWiIY0Pu9I17VSa/syzd6uR1jgC8=
-Date: Wed, 15 May 2019 19:30:52 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] crypto: talitos - fix skcipher failure due to wrong
- output IV
-Message-ID: <20190516023050.GA23200@sol.localdomain>
-References: <a5b0d31d8fc9fc9bc2b69baa5330466090825a39.1557923113.git.christophe.leroy@c-s.fr>
- <VI1PR0402MB34858D80A15D4B55F64570E398090@VI1PR0402MB3485.eurprd04.prod.outlook.com>
- <29db3f20-f931-efc6-02a8-fe160ab8b484@c-s.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <29db3f20-f931-efc6-02a8-fe160ab8b484@c-s.fr>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454Fv65tRyzDqX7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 12:37:21 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4G2bHBm025493
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:37:17 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sgv2hppk6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:37:17 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <tyreld@linux.ibm.com>;
+ Thu, 16 May 2019 03:37:11 +0100
+Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 16 May 2019 03:37:10 +0100
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4G2b9W112976256
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 May 2019 02:37:09 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0636C2805A;
+ Thu, 16 May 2019 02:37:09 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 634CE28058;
+ Thu, 16 May 2019 02:37:08 +0000 (GMT)
+Received: from ltcalpine2-lp11.aus.stglabs.ibm.com (unknown [9.40.195.194])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 16 May 2019 02:37:08 +0000 (GMT)
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 1/3] powerpc/pseries: Simplify cpu readd to use drc_index
+Date: Wed, 15 May 2019 21:37:04 -0500
+X-Mailer: git-send-email 2.18.1
+X-TM-AS-GCONF: 00
+x-cbid: 19051602-0060-0000-0000-00000340F1F5
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011103; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01203939; UDB=6.00631989; IPR=6.00984869; 
+ MB=3.00026909; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-16 02:37:11
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051602-0061-0000-0000-0000495D8275
+Message-Id: <20190516023706.50118-1-tyreld@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-16_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905160017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,65 +87,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
- Horia Geanta <horia.geanta@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: nathanl@linux.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.vnet.ibm.com>, mingming.cao@ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2019 at 08:49:48PM +0200, Christophe Leroy wrote:
-> 
-> 
-> Le 15/05/2019 à 16:05, Horia Geanta a écrit :
-> > On 5/15/2019 3:29 PM, Christophe Leroy wrote:
-> > > Selftests report the following:
-> > > 
-> > > [    2.984845] alg: skcipher: cbc-aes-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
-> > > [    2.995377] 00000000: 3d af ba 42 9d 9e b4 30 b4 22 da 80 2c 9f ac 41
-> > > [    3.032673] alg: skcipher: cbc-des-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
-> > > [    3.043185] 00000000: fe dc ba 98 76 54 32 10
-> > > [    3.063238] alg: skcipher: cbc-3des-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
-> > > [    3.073818] 00000000: 7d 33 88 93 0f 93 b2 42
-> > > 
-> > > This above dumps show that the actual output IV is indeed the input IV.
-> > > This is due to the IV not being copied back into the request.
-> > > 
-> > > This patch fixes that.
-> > > 
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> > Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
-> 
-> It's missing a Fixes: tag and a Cc: to stable.
-> 
-> I'll resend tomorrow.
-> 
-> > 
-> > While here, could you please check ecb mode (which by definition does not have
-> > an IV) is behaving correctly?
-> > Looking in driver_algs[] list of crypto algorithms supported by talitos,
-> > ecb(aes,des,3des) are declared with ivsize != 0.
-> 
-> According to /proc/crypto, test are passed for ecb.
-> 
+The current dlpar_cpu_readd() takes in a cpu_id and uses that to look up
+the cpus device_node so that we can get at the ibm,my-drc-index
+property. The only user of cpu readd is an OF notifier call back. This
+call back already has a reference to the device_node and therefore can
+retrieve the drc_index from the device_node.
 
-Did you try enabling CONFIG_CRYPTO_MANAGER_EXTRA_TESTS?  There is now a check
-that the driver's ivsize matches the generic implementation's:
+This patch simplifies dlpar_cpu_readd() to take a drc_index directly and
+does away with an uneccsary device_node lookup.
 
-        if (ivsize != crypto_skcipher_ivsize(generic_tfm)) {
-                pr_err("alg: skcipher: ivsize for %s (%u) doesn't match generic impl (%u)\n",
-                       driver, ivsize, crypto_skcipher_ivsize(generic_tfm));
-                err = -EINVAL;
-                goto out;
-        }
+Signed-off-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/asm/topology.h          |  2 +-
+ arch/powerpc/mm/numa.c                       |  6 +++---
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 10 +---------
+ 3 files changed, 5 insertions(+), 13 deletions(-)
 
-For ECB that means the ivsize must be 0.
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index f85e2b01c3df..c906d9ec9013 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -133,7 +133,7 @@ static inline void shared_proc_topology_init(void) {}
+ #define topology_core_cpumask(cpu)	(per_cpu(cpu_core_map, cpu))
+ #define topology_core_id(cpu)		(cpu_to_core_id(cpu))
+ 
+-int dlpar_cpu_readd(int cpu);
++int dlpar_cpu_readd(u32 drc_index);
+ #endif
+ #endif
+ 
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 57e64273cb33..40c0b6da12c2 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1479,9 +1479,9 @@ static int dt_update_callback(struct notifier_block *nb,
+ 	case OF_RECONFIG_UPDATE_PROPERTY:
+ 		if (of_node_is_type(update->dn, "cpu") &&
+ 		    !of_prop_cmp(update->prop->name, "ibm,associativity")) {
+-			u32 core_id;
+-			of_property_read_u32(update->dn, "reg", &core_id);
+-			rc = dlpar_cpu_readd(core_id);
++			u32 drc_index;
++			of_property_read_u32(update->dn, "ibm,my-drc-index", &drc_index);
++			rc = dlpar_cpu_readd(drc_index);
+ 			rc = NOTIFY_OK;
+ 		}
+ 		break;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 97feb6e79f1a..2dfa9416ce54 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -802,18 +802,10 @@ static int dlpar_cpu_add_by_count(u32 cpus_to_add)
+ 	return rc;
+ }
+ 
+-int dlpar_cpu_readd(int cpu)
++int dlpar_cpu_readd(u32 drc_index)
+ {
+-	struct device_node *dn;
+-	struct device *dev;
+-	u32 drc_index;
+ 	int rc;
+ 
+-	dev = get_cpu_device(cpu);
+-	dn = dev->of_node;
+-
+-	rc = of_property_read_u32(dn, "ibm,my-drc-index", &drc_index);
+-
+ 	rc = dlpar_cpu_remove_by_index(drc_index);
+ 	if (!rc)
+ 		rc = dlpar_cpu_add(drc_index);
+-- 
+2.18.1
 
-AFAICS the talitos driver even accesses the IV for ECB, which is wrong; and the
-only reason this isn't crashing the self-tests already is that they are confused
-by the declared ivsize being nonzero so they don't pass NULL as they should.
-
-- Eric
