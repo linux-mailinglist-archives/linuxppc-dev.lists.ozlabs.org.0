@@ -2,75 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5629D1FEE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 07:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23511FF58
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 08:09:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454LC163CrzDqY5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 15:51:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454LcK2BcSzDqbG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 16:09:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="JYIckbev"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="hWqus6eQ"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454L9T1jgVzDqY0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 15:50:02 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id t187so962802pgb.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 22:50:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454LZy1rWpzDqYM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 16:08:39 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id c13so1020409pgt.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 23:08:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
  :message-id:content-transfer-encoding;
- bh=Dyg1zcWLdB0rJ2eOWiXMVKHKbznsTA80CqNcMVjxx48=;
- b=JYIckbevxXZ0jorC0VU/34+m6FHtwdTxdJ5vrdOdt30qdXYDSPLyDgHFLt3KnEzJ7C
- kVfjGVcjqNQuPN9L6Bu4MoJCRFdMGZH/Y37iVF/FAj5ZTIKZknXV+kjF4G+JYsFwzQHF
- FBq7kyUEJjAT0IA5kGR3KaDJcn6MsyUSeUeGhSz5YVscTANwXz/sN9YWhV+SNlNtHiIm
- D139YreknMEFVZFa/PrwLFKUiaKn2YyCfFtD/1W+tQ0tuXZKQmL3juolury3oMewOCjy
- ehLRMG6HhRHYJEb5HtXe1x8fPtng9bZ5NtJu8RXmB6VWOxVm0rqOkME+OdLAI/qQRzoY
- 6rRA==
+ bh=Z9ZzyHo3v9SXNFTMM4Jkk740EFM8Wz+M7SaxNQ/vRWk=;
+ b=hWqus6eQ96t7EgVQdGXCt4mhLJ90ayTUH+UeuPl43p/BY2+KZeM6MeNmUGC3CHR8cx
+ zxAG7Jj2fYCsHHXL4OMd47hgbKDEeulBSI7OI2y7AuNDZ5gtBJLheuzqWw/koyIbj3fT
+ gNxw0Q60rxixdFhYVB1TapOUseQl1uGz03F3WJSwzNjBgCYxpn67pTbkgbUTXhdsZ9rI
+ mPgM7Vtzol3hEAB7skDJIlc7n7JIX7gose6kzSFVag8kwW4cutgSVILZUqHQUOWcpVQh
+ olFhgv/tFtl/T5Ic3LjqdAeJC14XIB4Q3rFbYKX+GQ6ra/UsXyd/vjTv/7HUD+srSakh
+ VVZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=Dyg1zcWLdB0rJ2eOWiXMVKHKbznsTA80CqNcMVjxx48=;
- b=E9v9IeKRtdl+/dwlHDNQD2zGowW++ypeMUQgWOv4CuE2WWj27BORYbQmQbG+7yJMK9
- 6lVxVeXDlO+OdVToxV0Jzk17cqd54ABirKT30vNJvVX4aPynmEc+lFS3W8tw+YBx3UKs
- 4gg106T4bxr3jJLHitVujvw4Mx/noaAoJOY+WAd8cGZ2ET4Vpm+J6fDljQ/oyFOZAHvL
- 8PABRdXGGdVrpJxkgpd4FW/JKMtXLQx05m9m31/7tCCPaRgT0WRt9YouncSzqeeZy2Uu
- 0/k3dtKjlevDDYc/YdGyVXH19sEgTniWB/+xZF8JDHNAkTC4/m2JJI1TyJhrgzcw8Sf0
- HFGw==
-X-Gm-Message-State: APjAAAXx5dNiaVNqy6AxJs1/xcg2PYlJyOBxYXPAQn+huIRxGT2F5Xjb
- xdkCyWhIX5JJHrFAtnozcHOqVPZP
-X-Google-Smtp-Source: APXvYqx23rFg6f4u4ZLrm6G51b+N4p6QDarseXNSbetE3LYPZRS3MBp47AF71A7/UiaJ2QYYb93RhA==
-X-Received: by 2002:a63:90c7:: with SMTP id a190mr49682180pge.23.1557985800645; 
- Wed, 15 May 2019 22:50:00 -0700 (PDT)
+ bh=Z9ZzyHo3v9SXNFTMM4Jkk740EFM8Wz+M7SaxNQ/vRWk=;
+ b=qcnPvF5kpdBT3ln5vJ4YfUBf5tKc3/g6OAfysNq5qbyjiV6tzBntVDVp+5I0ggByw2
+ AqfpVC3KNUF9evH7ShxH2LUrRR2IGcSH7Wx0H6XehKVZUCscGu88KkZdS77ZmhdowXvJ
+ 57EoqxzR36MXQgxmum7F/VNxN4svcGRmyTr6yHc4CYZS3yadDZll8ZfAPbLy85yr8vAc
+ 6EVlxYIR9F/1d5G5pb3dj7NcIuXdEC7PxvyDuZZDDLEy7SwEl52aaI3GZh/H/rbxsFmo
+ pHPR1pbtmtKgGlWqW80HIvaMuu+dKsE1Vz+Gg+6ETILL7EKvtCVVeTwoNo9xQOglq9ne
+ dKZA==
+X-Gm-Message-State: APjAAAXVE3b5QHo2h/HcpUV5z5bOIJUIrukPWFTtWlHwjtWIOD9SRefT
+ 5fmOoXKGQgk4kW/ZY89bCvA=
+X-Google-Smtp-Source: APXvYqx/A23yanSsjADy4m8u6+Dq5EHkcwn4175403fspqnKSmtmRzQCAOF8Gr2CTk5JT7pePSrsRQ==
+X-Received: by 2002:a63:1316:: with SMTP id i22mr48334865pgl.274.1557986916224; 
+ Wed, 15 May 2019 23:08:36 -0700 (PDT)
 Received: from localhost (193-116-124-212.tpgi.com.au. [193.116.124.212])
- by smtp.gmail.com with ESMTPSA id c23sm8322335pfp.0.2019.05.15.22.49.59
+ by smtp.gmail.com with ESMTPSA id h16sm9162075pfj.114.2019.05.15.23.08.34
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 15 May 2019 22:49:59 -0700 (PDT)
-Date: Thu, 16 May 2019 15:49:51 +1000
+ Wed, 15 May 2019 23:08:35 -0700 (PDT)
+Date: Thu, 16 May 2019 16:08:26 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/64/ftrace: mprofile-kernel patch out mflr
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-References: <20190413015940.31170-1-npiggin@gmail.com>
- <871s13ujcf.fsf@concordia.ellerman.id.au>
- <1557729790.fw18xf9mdt.naveen@linux.ibm.com>
- <87tvdytwo0.fsf@concordia.ellerman.id.au>
- <1557821918.xbleq18bk2.naveen@linux.ibm.com>
-In-Reply-To: <1557821918.xbleq18bk2.naveen@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/64s: Make boot look nice(r)
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20190516020437.11783-1-npiggin@gmail.com>
+ <d65ae686-c117-ae1c-1d48-498fdd1ea0eb@c-s.fr>
+In-Reply-To: <d65ae686-c117-ae1c-1d48-498fdd1ea0eb@c-s.fr>
 MIME-Version: 1.0
 User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1557985279.4o349j5g2i.astroid@bobo.none>
+Message-Id: <1557986563.56odablyi5.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,57 +84,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao's on May 14, 2019 6:32 pm:
-> Michael Ellerman wrote:
->> "Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
->>> Michael Ellerman wrote:
->>>> Nicholas Piggin <npiggin@gmail.com> writes:
->>>>> The new mprofile-kernel mcount sequence is
->>>>>
->>>>>   mflr	r0
->>>>>   bl	_mcount
->>>>>
->>>>> Dynamic ftrace patches the branch instruction with a noop, but leaves
->>>>> the mflr. mflr is executed by the branch unit that can only execute o=
-ne
->>>>> per cycle on POWER9 and shared with branches, so it would be nice to
->>>>> avoid it where possible.
->>>>>
->>>>> This patch is a hacky proof of concept to nop out the mflr. Can we do
->>>>> this or are there races or other issues with it?
->>>>=20
->>>> There's a race, isn't there?
->>>>=20
->>>> We have a function foo which currently has tracing disabled, so the mf=
-lr
->>>> and bl are nop'ed out.
->>>>=20
->>>>   CPU 0			CPU 1
->>>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>   bl foo
->>>>   nop (ie. not mflr)
->>>>   -> interrupt
->>>>   something else	enable tracing for foo
->>>>   ...			patch mflr and branch
->>>>   <- rfi
->>>>   bl _mcount
->>>>=20
->>>> So we end up in _mcount() but with r0 not populated.
->>>
->>> Good catch! Looks like we need to patch the mflr with a "b +8" similar=20
->>> to what we do in __ftrace_make_nop().
->>=20
->> Would that actually make it any faster though? Nick?
+Christophe Leroy's on May 16, 2019 2:47 pm:
 >=20
-> Ok, how about doing this as a 2-step process?
-> 1. patch 'mflr r0' with a 'b +8'
->    synchronize_rcu_tasks()
-> 2. convert 'b +8' to a 'nop'
+>=20
+> Le 16/05/2019 =C3=A0 04:04, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Radix boot looks like this:
+>>=20
+>>   -----------------------------------------------------
+>>   phys_mem_size     =3D 0x200000000
+>>   dcache_bsize      =3D 0x80
+>>   icache_bsize      =3D 0x80
+>>   cpu_features      =3D 0x0000c06f8f5fb1a7
+>>     possible        =3D 0x0000fbffcf5fb1a7
+>>     always          =3D 0x00000003800081a1
+>>   cpu_user_features =3D 0xdc0065c2 0xaee00000
+>>   mmu_features      =3D 0xbc006041
+>>   firmware_features =3D 0x0000000010000000
+>>   hash-mmu: ppc64_pft_size    =3D 0x0
+>>   hash-mmu: kernel vmalloc start   =3D 0xc008000000000000
+>>   hash-mmu: kernel IO start        =3D 0xc00a000000000000
+>>   hash-mmu: kernel vmemmap start   =3D 0xc00c000000000000
+>>   -----------------------------------------------------
+>>=20
+>> Fix:
+>>=20
+>>   -----------------------------------------------------
+>>   phys_mem_size     =3D 0x200000000
+>>   dcache_bsize      =3D 0x80
+>>   icache_bsize      =3D 0x80
+>>   cpu_features      =3D 0x0000c06f8f5fb1a7
+>>     possible        =3D 0x0000fbffcf5fb1a7
+>>     always          =3D 0x00000003800081a1
+>>   cpu_user_features =3D 0xdc0065c2 0xaee00000
+>>   mmu_features      =3D 0xbc006041
+>>   firmware_features =3D 0x0000000010000000
+>>   vmalloc start     =3D 0xc008000000000000
+>>   IO start          =3D 0xc00a000000000000
+>>   vmemmap start     =3D 0xc00c000000000000
+>>   -----------------------------------------------------
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>=20
+> I fear your change defeats most of the purpose of commit=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commi=
+t/?h=3Dnext-20190515&id=3De4dccf9092ab48a6f902003b9558c0e45d0e849a
 
-Good idea. Well the mflr r0 is harmless, so you can leave that in.
-You just need to ensure it's not removed before the bl is. So nop
-the bl _mcount, then synchronize_rcu_tasks(), then nop the mflr?
+I think it's still a significant improvement without introducing
+the regression :)
+
+> As far as I understand, the main issue is the "hash-mmu:" prefix ?
+> That's due to the following define in top of book3s64/hash_utils.c:
+>=20
+> #define pr_fmt(fmt) "hash-mmu: " fmt
+>=20
+> Could we simply undef it just before print_system_hash_info() ?
+
+Little bit fragile I think.
+
+> Or move print_system_hash_info() in another book3s64 specific file which=20
+> doesn't set pr_fmt ?
+
+print_system_info() would be okay for me and allow getting rid of
+that PPC64 config. Although it also needs to go in a file without
+pr_fmt I guess that's not so hard.
 
 Thanks,
 Nick
