@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D2220CEB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EA320CF4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:28:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454cJw6SK7zDqhl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 02:27:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454cLY2gFXzDqkd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 02:28:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,28 +19,27 @@ Received: from shadbolt.e.decadent.org.uk (shadbolt.e.decadent.org.uk
  [88.96.1.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454cG12qKyzDqfD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:24:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454cGB3wSTzDqfF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:25:06 +1000 (AEST)
 Received: from [167.98.27.226] (helo=deadeye)
  by shadbolt.decadent.org.uk with esmtps
  (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
  (envelope-from <ben@decadent.org.uk>)
- id 1hRImD-0006yn-6T; Thu, 16 May 2019 16:58:37 +0100
+ id 1hRImJ-0006zW-P7; Thu, 16 May 2019 16:58:43 +0100
 Received: from ben by deadeye with local (Exim 4.92)
  (envelope-from <ben@decadent.org.uk>)
- id 1hRImC-0001My-Ht; Thu, 16 May 2019 16:58:36 +0100
+ id 1hRImF-0001Sj-2I; Thu, 16 May 2019 16:58:39 +0100
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From: Ben Hutchings <ben@decadent.org.uk>
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 16 May 2019 16:55:32 +0100
-Message-ID: <lsq.1558022132.722723753@decadent.org.uk>
+Date: Thu, 16 May 2019 16:55:33 +0100
+Message-ID: <lsq.1558022133.486480847@decadent.org.uk>
 X-Mailer: LinuxStableQueue (scripts by bwh)
 X-Patchwork-Hint: ignore
-Subject: [PATCH 3.16 08/86] jump_label: Allow asm/jump_label.h to be
- included in assembly
+Subject: [PATCH 3.16 79/86] cpu/speculation: Add 'mitigations=' cmdline option
 In-Reply-To: <lsq.1558022132.52852998@decadent.org.uk>
 X-SA-Exim-Connect-IP: 167.98.27.226
 X-SA-Exim-Mail-From: ben@decadent.org.uk
@@ -57,16 +56,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Denis Kirjanov <kda@linux-powerpc.org>, will.deacon@arm.com, paulus@samba.org,
- Ingo Molnar <mingo@kernel.org>, linux@arm.linux.org.uk, mgorman@suse.de,
- catalin.marinas@arm.com, "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
- liuj97@gmail.com, heiko.carstens@de.ibm.com, rostedt@goodmis.org,
- jbaron@akamai.com, Anton Blanchard <anton@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, mmarek@suse.cz,
- Linus Torvalds <torvalds@linux-foundation.org>, ralf@linux-mips.org,
- schwidefsky@de.ibm.com, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Denis Kirjanov <kda@linux-powerpc.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ "H . Peter Anvin" <hpa@zytor.com>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Steven Price <steven.price@arm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Waiman Long <longman@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ Jon Masters <jcm@redhat.com>, Will Deacon <will.deacon@arm.com>,
+ Jiri Kosina <jikos@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Phil Auld <pauld@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Tyler Hicks <tyhicks@canonical.com>,
+ Jiri Kosina <jkosina@suse.cz>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -75,208 +80,144 @@ Sender: "Linuxppc-dev"
 
 ------------------
 
-From: Anton Blanchard <anton@samba.org>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-commit 55dd0df781e58ec23d218376ea4a676e7362a98c upstream.
+commit 98af8452945c55652de68536afdde3b520fec429 upstream.
 
-Wrap asm/jump_label.h for all archs with #ifndef __ASSEMBLY__.
-Since these are kernel only headers, we don't need #ifdef
-__KERNEL__ so can simplify things a bit.
+Keeping track of the number of mitigations for all the CPU speculation
+bugs has become overwhelming for many users.  It's getting more and more
+complicated to decide which mitigations are needed for a given
+architecture.  Complicating matters is the fact that each arch tends to
+have its own custom way to mitigate the same vulnerability.
 
-If an architecture wants to use jump labels in assembly, it
-will still need to define a macro to create the __jump_table
-entries (see ARCH_STATIC_BRANCH in the powerpc asm/jump_label.h
-for an example).
+Most users fall into a few basic categories:
 
-Signed-off-by: Anton Blanchard <anton@samba.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+a) they want all mitigations off;
+
+b) they want all reasonable mitigations on, with SMT enabled even if
+   it's vulnerable; or
+
+c) they want all reasonable mitigations on, with SMT disabled if
+   vulnerable.
+
+Define a set of curated, arch-independent options, each of which is an
+aggregation of existing options:
+
+- mitigations=off: Disable all mitigations.
+
+- mitigations=auto: [default] Enable all the default mitigations, but
+  leave SMT enabled, even if it's vulnerable.
+
+- mitigations=auto,nosmt: Enable all the default mitigations, disabling
+  SMT if needed by a mitigation.
+
+Currently, these options are placeholders which don't actually do
+anything.  They will be fleshed out in upcoming patches.
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Jiri Kosina <jkosina@suse.cz> (on x86)
+Reviewed-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H . Peter Anvin" <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: benh@kernel.crashing.org
-Cc: catalin.marinas@arm.com
-Cc: davem@davemloft.net
-Cc: heiko.carstens@de.ibm.com
-Cc: jbaron@akamai.com
-Cc: linux@arm.linux.org.uk
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Jon Masters <jcm@redhat.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
-Cc: liuj97@gmail.com
-Cc: mgorman@suse.de
-Cc: mmarek@suse.cz
-Cc: mpe@ellerman.id.au
-Cc: paulus@samba.org
-Cc: ralf@linux-mips.org
-Cc: rostedt@goodmis.org
-Cc: schwidefsky@de.ibm.com
-Cc: will.deacon@arm.com
-Link: http://lkml.kernel.org/r/1428551492-21977-1-git-send-email-anton@samba.org
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: linux-s390@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tyler Hicks <tyhicks@canonical.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Phil Auld <pauld@redhat.com>
+Link: https://lkml.kernel.org/r/b07a8ef9b7c5055c3a4637c87d07c296d5016fe0.1555085500.git.jpoimboe@redhat.com
+[bwh: Backported to 3.16:
+ - Drop the auto,nosmt option which we can't support
+ - Adjust filename]
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
- arch/arm/include/asm/jump_label.h   | 5 ++---
- arch/arm64/include/asm/jump_label.h | 8 ++++----
- arch/mips/include/asm/jump_label.h  | 7 +++----
- arch/s390/include/asm/jump_label.h  | 3 +++
- arch/sparc/include/asm/jump_label.h | 5 ++---
- arch/x86/include/asm/jump_label.h   | 5 ++---
- 6 files changed, 16 insertions(+), 17 deletions(-)
-
---- a/arch/arm/include/asm/jump_label.h
-+++ b/arch/arm/include/asm/jump_label.h
-@@ -1,7 +1,7 @@
- #ifndef _ASM_ARM_JUMP_LABEL_H
- #define _ASM_ARM_JUMP_LABEL_H
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -1906,6 +1906,25 @@ bytes respectively. Such letter suffixes
+ 			in the "bleeding edge" mini2440 support kernel at
+ 			http://repo.or.cz/w/linux-2.6/mini2440.git
  
--#ifdef __KERNEL__
-+#ifndef __ASSEMBLY__
- 
- #include <linux/types.h>
- 
-@@ -27,8 +27,6 @@ l_yes:
- 	return true;
- }
- 
--#endif /* __KERNEL__ */
--
- typedef u32 jump_label_t;
- 
- struct jump_entry {
-@@ -37,4 +35,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif
---- a/arch/arm64/include/asm/jump_label.h
-+++ b/arch/arm64/include/asm/jump_label.h
-@@ -18,11 +18,12 @@
-  */
- #ifndef __ASM_JUMP_LABEL_H
- #define __ASM_JUMP_LABEL_H
++	mitigations=
++			Control optional mitigations for CPU vulnerabilities.
++			This is a set of curated, arch-independent options, each
++			of which is an aggregation of existing arch-specific
++			options.
 +
-+#ifndef __ASSEMBLY__
++			off
++				Disable all optional CPU mitigations.  This
++				improves system performance, but it may also
++				expose users to several CPU vulnerabilities.
 +
- #include <linux/types.h>
- #include <asm/insn.h>
- 
--#ifdef __KERNEL__
--
- #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
- 
- static __always_inline bool arch_static_branch(struct static_key *key)
-@@ -39,8 +40,6 @@ l_yes:
- 	return true;
- }
- 
--#endif /* __KERNEL__ */
--
- typedef u64 jump_label_t;
- 
- struct jump_entry {
-@@ -49,4 +48,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif	/* __ASM_JUMP_LABEL_H */
---- a/arch/mips/include/asm/jump_label.h
-+++ b/arch/mips/include/asm/jump_label.h
-@@ -8,9 +8,9 @@
- #ifndef _ASM_MIPS_JUMP_LABEL_H
- #define _ASM_MIPS_JUMP_LABEL_H
- 
--#include <linux/types.h>
-+#ifndef __ASSEMBLY__
- 
--#ifdef __KERNEL__
-+#include <linux/types.h>
- 
- #define JUMP_LABEL_NOP_SIZE 4
- 
-@@ -39,8 +39,6 @@ l_yes:
- 	return true;
- }
- 
--#endif /* __KERNEL__ */
--
- #ifdef CONFIG_64BIT
- typedef u64 jump_label_t;
- #else
-@@ -53,4 +51,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif /* _ASM_MIPS_JUMP_LABEL_H */
---- a/arch/s390/include/asm/jump_label.h
-+++ b/arch/s390/include/asm/jump_label.h
-@@ -1,6 +1,8 @@
- #ifndef _ASM_S390_JUMP_LABEL_H
- #define _ASM_S390_JUMP_LABEL_H
- 
-+#ifndef __ASSEMBLY__
++			auto (default)
++				Mitigate all CPU vulnerabilities, but leave SMT
++				enabled, even if it's vulnerable.  This is for
++				users who don't want to be surprised by SMT
++				getting disabled across kernel upgrades, or who
++				have other ways of avoiding SMT-based attacks.
++				This is the default behavior.
 +
- #include <linux/types.h>
+ 	mminit_loglevel=
+ 			[KNL] When CONFIG_DEBUG_MEMORY_INIT is set, this
+ 			parameter allows control of the logging verbosity for
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -277,4 +277,21 @@ void arch_cpu_idle_enter(void);
+ void arch_cpu_idle_exit(void);
+ void arch_cpu_idle_dead(void);
  
- #define JUMP_LABEL_NOP_SIZE 6
-@@ -39,4 +41,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif
---- a/arch/sparc/include/asm/jump_label.h
-+++ b/arch/sparc/include/asm/jump_label.h
-@@ -1,7 +1,7 @@
- #ifndef _ASM_SPARC_JUMP_LABEL_H
- #define _ASM_SPARC_JUMP_LABEL_H
- 
--#ifdef __KERNEL__
-+#ifndef __ASSEMBLY__
- 
- #include <linux/types.h>
- 
-@@ -22,8 +22,6 @@ l_yes:
- 	return true;
++/*
++ * These are used for a global "mitigations=" cmdline option for toggling
++ * optional CPU mitigations.
++ */
++enum cpu_mitigations {
++	CPU_MITIGATIONS_OFF,
++	CPU_MITIGATIONS_AUTO,
++};
++
++extern enum cpu_mitigations cpu_mitigations;
++
++/* mitigations=off */
++static inline bool cpu_mitigations_off(void)
++{
++	return cpu_mitigations == CPU_MITIGATIONS_OFF;
++}
++
+ #endif /* _LINUX_CPU_H_ */
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -795,3 +795,16 @@ void init_cpu_online(const struct cpumas
+ {
+ 	cpumask_copy(to_cpumask(cpu_online_bits), src);
  }
- 
--#endif /* __KERNEL__ */
--
- typedef u32 jump_label_t;
- 
- struct jump_entry {
-@@ -32,4 +30,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif
---- a/arch/x86/include/asm/jump_label.h
-+++ b/arch/x86/include/asm/jump_label.h
-@@ -1,7 +1,7 @@
- #ifndef _ASM_X86_JUMP_LABEL_H
- #define _ASM_X86_JUMP_LABEL_H
- 
--#ifdef __KERNEL__
-+#ifndef __ASSEMBLY__
- 
- #include <linux/stringify.h>
- #include <linux/types.h>
-@@ -30,8 +30,6 @@ l_yes:
- 	return true;
- }
- 
--#endif /* __KERNEL__ */
--
- #ifdef CONFIG_X86_64
- typedef u64 jump_label_t;
- #else
-@@ -44,4 +42,5 @@ struct jump_entry {
- 	jump_label_t key;
- };
- 
-+#endif  /* __ASSEMBLY__ */
- #endif
++
++enum cpu_mitigations cpu_mitigations = CPU_MITIGATIONS_AUTO;
++
++static int __init mitigations_parse_cmdline(char *arg)
++{
++	if (!strcmp(arg, "off"))
++		cpu_mitigations = CPU_MITIGATIONS_OFF;
++	else if (!strcmp(arg, "auto"))
++		cpu_mitigations = CPU_MITIGATIONS_AUTO;
++
++	return 0;
++}
++early_param("mitigations", mitigations_parse_cmdline);
 
