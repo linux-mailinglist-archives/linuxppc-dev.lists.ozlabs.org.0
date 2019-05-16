@@ -2,74 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348AA2084D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 15:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BD52085A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 15:38:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454XV40jGQzDqJ2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 23:35:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454XZK5cQtzDqDP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 23:38:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="NYTHLKBb"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454XRK6YvyzDq8M
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 23:32:44 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 454XRB1clVz9v6X8;
- Thu, 16 May 2019 15:32:38 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=NYTHLKBb; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id YJ2fH7KAqsev; Thu, 16 May 2019 15:32:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 454XRB0P2lz9v6Ws;
- Thu, 16 May 2019 15:32:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558013558; bh=nnbDu0Oncip1B1EfAee0nXXH/Y+D1kJM8P3yAxFONt8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=NYTHLKBbYT+1AyjfBvVrBs+aVvT0yZrGdfDLlEw5m4ZSeWGjsy+j5C8Rusba+uXOC
- 09reBIj2aW5astgucBs6dszCpYVWDkiKv45TJDO8zpM3srgNKS6m2t+8G0AO9TDr7d
- IHd0d8/WPeVC1xcTGhPFZEP3SMAbOwY5Zqi5GKIY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 743F98B831;
- Thu, 16 May 2019 15:32:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MI1hq9bTdmn3; Thu, 16 May 2019 15:32:39 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D33418B82A;
- Thu, 16 May 2019 15:32:38 +0200 (CEST)
-Subject: Re: [PATCH] crypto: talitos - fix skcipher failure due to wrong
- output IV
-To: Eric Biggers <ebiggers@kernel.org>
-References: <a5b0d31d8fc9fc9bc2b69baa5330466090825a39.1557923113.git.christophe.leroy@c-s.fr>
- <VI1PR0402MB34858D80A15D4B55F64570E398090@VI1PR0402MB3485.eurprd04.prod.outlook.com>
- <29db3f20-f931-efc6-02a8-fe160ab8b484@c-s.fr>
- <20190516023050.GA23200@sol.localdomain>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <593f51b1-8c51-1994-623d-f5a591891d8a@c-s.fr>
-Date: Thu, 16 May 2019 15:32:38 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454XXC65h4zDq9D
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 23:36:58 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4GDYAKe108100
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 09:36:55 -0400
+Received: from e16.ny.us.ibm.com (e16.ny.us.ibm.com [129.33.205.206])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sh8hrsbvk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 09:36:52 -0400
+Received: from localhost
+ by e16.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Thu, 16 May 2019 14:36:49 +0100
+Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
+ by e16.ny.us.ibm.com (146.89.104.203) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 16 May 2019 14:36:46 +0100
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4GDajBf22610056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 May 2019 13:36:45 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BB74124053;
+ Thu, 16 May 2019 13:36:45 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5DD30124055;
+ Thu, 16 May 2019 13:36:44 +0000 (GMT)
+Received: from [9.85.74.53] (unknown [9.85.74.53])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 16 May 2019 13:36:44 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/book3s/mm: Clear MMU_FTR_HPTE_TABLE when radix is
+ enabled.
+To: Nicholas Piggin <npiggin@gmail.com>, mpe@ellerman.id.au, paulus@samba.org
+References: <20190514060205.20887-1-aneesh.kumar@linux.ibm.com>
+ <1557982690.pk1t7llmyy.astroid@bobo.none>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Date: Thu, 16 May 2019 19:06:43 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190516023050.GA23200@sol.localdomain>
+In-Reply-To: <1557982690.pk1t7llmyy.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19051613-0072-0000-0000-0000042E6DF2
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011105; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01204156; UDB=6.00632118; IPR=6.00985086; 
+ MB=3.00026918; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-16 13:36:48
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051613-0073-0000-0000-00004C3EA8B0
+Message-Id: <df83cf16-669c-ae90-88c9-333700e38dcd@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-16_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=896 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905160091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,88 +96,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
- Horia Geanta <horia.geanta@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 16/05/2019 à 04:30, Eric Biggers a écrit :
-> On Wed, May 15, 2019 at 08:49:48PM +0200, Christophe Leroy wrote:
+On 5/16/19 10:34 AM, Nicholas Piggin wrote:
+> Aneesh Kumar K.V's on May 14, 2019 4:02 pm:
+>> Avoids confusion when printing Oops message like below
 >>
+>>   Faulting instruction address: 0xc00000000008bdb4
+>>   Oops: Kernel access of bad area, sig: 11 [#1]
+>>   LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
 >>
->> Le 15/05/2019 à 16:05, Horia Geanta a écrit :
->>> On 5/15/2019 3:29 PM, Christophe Leroy wrote:
->>>> Selftests report the following:
->>>>
->>>> [    2.984845] alg: skcipher: cbc-aes-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
->>>> [    2.995377] 00000000: 3d af ba 42 9d 9e b4 30 b4 22 da 80 2c 9f ac 41
->>>> [    3.032673] alg: skcipher: cbc-des-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
->>>> [    3.043185] 00000000: fe dc ba 98 76 54 32 10
->>>> [    3.063238] alg: skcipher: cbc-3des-talitos encryption test failed (wrong output IV) on test vector 0, cfg="in-place"
->>>> [    3.073818] 00000000: 7d 33 88 93 0f 93 b2 42
->>>>
->>>> This above dumps show that the actual output IV is indeed the input IV.
->>>> This is due to the IV not being copied back into the request.
->>>>
->>>> This patch fixes that.
->>>>
->>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>> Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
->>
->> It's missing a Fixes: tag and a Cc: to stable.
->>
->> I'll resend tomorrow.
->>
->>>
->>> While here, could you please check ecb mode (which by definition does not have
->>> an IV) is behaving correctly?
->>> Looking in driver_algs[] list of crypto algorithms supported by talitos,
->>> ecb(aes,des,3des) are declared with ivsize != 0.
->>
->> According to /proc/crypto, test are passed for ecb.
->>
+>> Either ibm,pa-features or ibm,powerpc-cpu-features can be used to enable the
+>> MMU features. We don't clear related MMU feature bits there. We use the kernel
+>> commandline to determine what translation mode we want to use and clear the
+>> HPTE or radix bit accordingly. On LPAR we do have to renable HASH bit if the
+>> hypervisor can't do radix.
 > 
-> Did you try enabling CONFIG_CRYPTO_MANAGER_EXTRA_TESTS?  There is now a check
-> that the driver's ivsize matches the generic implementation's:
-> 
->          if (ivsize != crypto_skcipher_ivsize(generic_tfm)) {
->                  pr_err("alg: skcipher: ivsize for %s (%u) doesn't match generic impl (%u)\n",
->                         driver, ivsize, crypto_skcipher_ivsize(generic_tfm));
->                  err = -EINVAL;
->                  goto out;
->          }
-> 
-> For ECB that means the ivsize must be 0.
-> 
-> AFAICS the talitos driver even accesses the IV for ECB, which is wrong; and the
-> only reason this isn't crashing the self-tests already is that they are confused
-> by the declared ivsize being nonzero so they don't pass NULL as they should.
+> Well we have the HPTE feature: the CPU supports hash MMU mode. It's
+> just the the kernel is booted in radix mode.
 > 
 
-Ok, thanks. I'll try and run EXTRA TESTS as soon as I get the current 
-test all fixed.
+We are not using mmu_features to indicate the capability of the hardware 
+right? ie, mmu_features is an indication of current running config. We 
+set MMU_FTR_TYPE_RADIX if the kernel is running in radix translation 
+mode and on similar lines we should set MMU_FTR_HPTE_TABLE if the kernel 
+is running in only hash translation mode. Whether the hardware support 
+these translation mode is different from which mode is currently used.
 
-For the time being, I'm having a problem that I'm a bit lost with:
 
-AEAD decryption fails at the moment for out-of-line tests, and the 
-reason is that the ICV (used to do the SW compare with the expected one) 
-is generated after the decrypted data.
-It works perfectly when src == dst, because the src has space for it, 
-but when the dst is different, the dst length is smaller so the ICV is 
-generated outside the sg list, and the comparison fails because the 
-comparison is done with the last bytes of the last segment of dst sg 
-list (which corresponds to the end of decrypted data in that case).
 
-What I'm having hard time with it that it seems that when the sg list 
-has several elements, it uses an out of line area for generating the ICV 
-but not when the sg list has only one element. I'm really wondering why.
+> Could make a difference for KVM, if it will support an HPT guest or
+> not.
+> 
 
-Thanks
-Christophe
+kvm should not depend on MMU_FTR_HPTE_TABLE to identify whether the 
+hardware supports hash page table translation. I don't think we do that.
+
+
+> That's all highly theoretical and we have other inconsistencies
+> already in this stuff, I'd just like to try make things a bit better
+> in the long term.
+> 
+
+
+-aneesh
+
