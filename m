@@ -1,69 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57E720B6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 17:41:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454bHs3DwRzDqg9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 01:41:29 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7F820D03
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:30:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 454cN13MH7zDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 02:30:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="WUKK3v4m"; 
- dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=decadent.org.uk
+ (client-ip=88.96.1.126; helo=shadbolt.e.decadent.org.uk;
+ envelope-from=ben@decadent.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=decadent.org.uk
+Received: from shadbolt.e.decadent.org.uk (shadbolt.e.decadent.org.uk
+ [88.96.1.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454bGM5cpDzDqYq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 01:40:10 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id h17so1767089pgv.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 08:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=9f6fH4IrINcZqgRS/0x3NP8I07wOU2Zg7QfAKQPxCaM=;
- b=WUKK3v4mZ+HTIk5/Zi0TNhYwJmRvsS4Yg7mL/h86/DNJ7/pqGIer7dqvNQFnrlKlvp
- 8SKZQYdZU/4md0nqA8uv/nvBioweZ3dXRZe1BgirSeEeCP5d8nIEkWksEdkJ5zbiKgtW
- 9iY7f5/u7jsYHz0MXDUeIYKuyhFqOs+ouOypI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=9f6fH4IrINcZqgRS/0x3NP8I07wOU2Zg7QfAKQPxCaM=;
- b=PzMr1PV3b8bFWaJQJwV2SnxOeVx67LdHkbPDsqWOu1dvdhS4RlxvfTTTEL/ANYoGBu
- qtnp+NpIXaaZBtMm1BmjKBDqIycZpQCyrsEdCUWVKZgfOv4n/V4jZQoLLy9ytkD/Duxo
- Zd28La0yNS2CkaK7CWxAfR34raiirjaVVe+lVNu4DR1m5APUm+tw+UzGZoalcJDlJHAS
- +/Oaf+KDwOPBiyBb4ird9EWjE+9USYGI8xk6BI1npZC8A8vAwRVVN+AeBCemXSpC0Nvi
- yVeXp8idqgYfGabLUSXoud2V93NhByXX0Mw1oSU001NqFMam3wKbQBoVeam7v9a8NO3x
- s7Rg==
-X-Gm-Message-State: APjAAAUjtw3dDwhYTlTyBkY3iapyVQPQFFzZVJIoUipgwbnaKUhuT0uE
- fTqlpgVJkdBVIBQ0nVM5M58O7w==
-X-Google-Smtp-Source: APXvYqzIGbRhJ1ZUHW9o7BlCAnsGTjrKCu+vzJoDWX3GH4kE4/h/hbWscX+gMkqQKqCaENu3J+6cGQ==
-X-Received: by 2002:a65:6688:: with SMTP id b8mr50499274pgw.81.1558021206872; 
- Thu, 16 May 2019 08:40:06 -0700 (PDT)
-Received: from localhost (dip-220-235-49-186.wa.westnet.com.au.
- [220.235.49.186])
- by smtp.gmail.com with ESMTPSA id 132sm6311312pga.79.2019.05.16.08.40.05
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 16 May 2019 08:40:06 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: mpe@ellerman.id.au, ebiggers@kernel.org, linux-crypto@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH] crypto: vmx - ghash: do nosimd fallback manually
-Date: Fri, 17 May 2019 01:40:02 +1000
-Message-Id: <20190516154002.26246-1-dja@axtens.net>
-X-Mailer: git-send-email 2.19.1
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454cGF5RgjzDqfG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:25:09 +1000 (AEST)
+Received: from [167.98.27.226] (helo=deadeye)
+ by shadbolt.decadent.org.uk with esmtps
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <ben@decadent.org.uk>)
+ id 1hRImD-0006yp-5s; Thu, 16 May 2019 16:58:37 +0100
+Received: from ben by deadeye with local (Exim 4.92)
+ (envelope-from <ben@decadent.org.uk>)
+ id 1hRImC-0001N3-J7; Thu, 16 May 2019 16:58:36 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From: Ben Hutchings <ben@decadent.org.uk>
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 16 May 2019 16:55:32 +0100
+Message-ID: <lsq.1558022132.38146636@decadent.org.uk>
+X-Mailer: LinuxStableQueue (scripts by bwh)
+X-Patchwork-Hint: ignore
+Subject: [PATCH 3.16 09/86] jump_label: Allow jump labels to be used in
+ assembly
+In-Reply-To: <lsq.1558022132.52852998@decadent.org.uk>
+X-SA-Exim-Connect-IP: 167.98.27.226
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,315 +57,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: leo.barbosa@canonical.com, Stephan Mueller <smueller@chronox.de>,
- nayna@linux.ibm.com, omosnacek@gmail.com, leitao@debian.org,
- pfsmorigo@gmail.com, marcelo.cerri@canonical.com, gcwilson@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Denis Kirjanov <kda@linux-powerpc.org>, heiko.carstens@de.ibm.com,
+ paulus@samba.org, Ingo Molnar <mingo@kernel.org>, linux@arm.linux.org.uk,
+ mgorman@suse.de, catalin.marinas@arm.com,
+ "Paul E. McKenney" <paulmck@linux.vnet.ibm.com>, liuj97@gmail.com,
+ will.deacon@arm.com, rostedt@goodmis.org, jbaron@akamai.com,
+ Anton Blanchard <anton@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ mmarek@suse.cz, Linus Torvalds <torvalds@linux-foundation.org>,
+ ralf@linux-mips.org, schwidefsky@de.ibm.com, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VMX ghash was using a fallback that did not support interleaving simd
-and nosimd operations, leading to failures in the extended test suite.
+3.16.68-rc1 review patch.  If anyone has any objections, please let me know.
 
-If I understood correctly, Eric's suggestion was to use the same
-data format that the generic code uses, allowing us to call into it
-with the same contexts. I wasn't able to get that to work - I think
-there's a very different key structure and data layout being used.
+------------------
 
-So instead steal the arm64 approach and perform the fallback
-operations directly if required.
+From: Anton Blanchard <anton@samba.org>
 
-Reported-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
+commit c0ccf6f99e3a43b87980c9df7da48427885206d0 upstream.
 
+To use jump labels in assembly we need the HAVE_JUMP_LABEL
+define, so we select a fallback version if the toolchain does
+not support them.
+
+Modify linux/jump_label.h so it can be included by assembly
+files. We also need to add -DCC_HAVE_ASM_GOTO to KBUILD_AFLAGS.
+
+Signed-off-by: Anton Blanchard <anton@samba.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: benh@kernel.crashing.org
+Cc: catalin.marinas@arm.com
+Cc: davem@davemloft.net
+Cc: heiko.carstens@de.ibm.com
+Cc: jbaron@akamai.com
+Cc: linux@arm.linux.org.uk
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: liuj97@gmail.com
+Cc: mgorman@suse.de
+Cc: mmarek@suse.cz
+Cc: mpe@ellerman.id.au
+Cc: paulus@samba.org
+Cc: ralf@linux-mips.org
+Cc: rostedt@goodmis.org
+Cc: schwidefsky@de.ibm.com
+Cc: will.deacon@arm.com
+Link: http://lkml.kernel.org/r/1428551492-21977-2-git-send-email-anton@samba.org
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
+ Makefile                   |  1 +
+ include/linux/jump_label.h | 21 +++++++++++++++++----
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-Tested on BE and LE in qemu-tcg, so more testing would be lovely.
----
- drivers/crypto/vmx/ghash.c | 211 +++++++++++++++----------------------
- 1 file changed, 86 insertions(+), 125 deletions(-)
-
-diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
-index b5a6883bb09e..14807ac2e3b9 100644
---- a/drivers/crypto/vmx/ghash.c
-+++ b/drivers/crypto/vmx/ghash.c
-@@ -1,22 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
- /**
-  * GHASH routines supporting VMX instructions on the Power 8
-  *
-- * Copyright (C) 2015 International Business Machines Inc.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; version 2 only.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ * Copyright (C) 2015, 2019 International Business Machines Inc.
-  *
-  * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
-+ *
-+ * Extended by Daniel Axtens <dja@axtens.net> to replace the fallback
-+ * mechanism. The new approach is based on arm64 code, which is:
-+ *   Copyright (C) 2014 - 2018 Linaro Ltd. <ard.biesheuvel@linaro.org>
+--- a/Makefile
++++ b/Makefile
+@@ -761,6 +761,7 @@ KBUILD_ARFLAGS := $(call ar-option,D)
+ # check for 'asm goto'
+ ifeq ($(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-goto.sh $(CC)), y)
+ 	KBUILD_CFLAGS += -DCC_HAVE_ASM_GOTO
++	KBUILD_AFLAGS += -DCC_HAVE_ASM_GOTO
+ endif
+ 
+ include $(srctree)/scripts/Makefile.extrawarn
+--- a/include/linux/jump_label.h
++++ b/include/linux/jump_label.h
+@@ -45,6 +45,12 @@
+  * same as using STATIC_KEY_INIT_FALSE.
   */
  
++#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL)
++# define HAVE_JUMP_LABEL
++#endif
++
++#ifndef __ASSEMBLY__
++
  #include <linux/types.h>
-@@ -38,70 +30,25 @@ void gcm_ghash_p8(u64 Xi[2], const u128 htable[16],
- 		  const u8 *in, size_t len);
+ #include <linux/compiler.h>
+ #include <linux/bug.h>
+@@ -55,7 +61,7 @@ extern bool static_key_initialized;
+ 				    "%s used before call to jump_label_init", \
+ 				    __func__)
  
- struct p8_ghash_ctx {
-+	/* key used by vector asm */
- 	u128 htable[16];
--	struct crypto_shash *fallback;
-+	/* key used by software fallback */
-+	be128 key;
+-#if defined(CC_HAVE_ASM_GOTO) && defined(CONFIG_JUMP_LABEL)
++#ifdef HAVE_JUMP_LABEL
+ 
+ struct static_key {
+ 	atomic_t enabled;
+@@ -66,13 +72,18 @@ struct static_key {
+ #endif
  };
  
- struct p8_ghash_desc_ctx {
- 	u64 shash[2];
- 	u8 buffer[GHASH_DIGEST_SIZE];
- 	int bytes;
--	struct shash_desc fallback_desc;
+-# include <asm/jump_label.h>
+-# define HAVE_JUMP_LABEL
+ #else
+ struct static_key {
+ 	atomic_t enabled;
  };
+-#endif	/* CC_HAVE_ASM_GOTO && CONFIG_JUMP_LABEL */
++#endif	/* HAVE_JUMP_LABEL */
++#endif /* __ASSEMBLY__ */
++
++#ifdef HAVE_JUMP_LABEL
++#include <asm/jump_label.h>
++#endif
++
++#ifndef __ASSEMBLY__
  
--static int p8_ghash_init_tfm(struct crypto_tfm *tfm)
--{
--	const char *alg = "ghash-generic";
--	struct crypto_shash *fallback;
--	struct crypto_shash *shash_tfm = __crypto_shash_cast(tfm);
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	fallback = crypto_alloc_shash(alg, 0, CRYPTO_ALG_NEED_FALLBACK);
--	if (IS_ERR(fallback)) {
--		printk(KERN_ERR
--		       "Failed to allocate transformation for '%s': %ld\n",
--		       alg, PTR_ERR(fallback));
--		return PTR_ERR(fallback);
--	}
--
--	crypto_shash_set_flags(fallback,
--			       crypto_shash_get_flags((struct crypto_shash
--						       *) tfm));
--
--	/* Check if the descsize defined in the algorithm is still enough. */
--	if (shash_tfm->descsize < sizeof(struct p8_ghash_desc_ctx)
--	    + crypto_shash_descsize(fallback)) {
--		printk(KERN_ERR
--		       "Desc size of the fallback implementation (%s) does not match the expected value: %lu vs %u\n",
--		       alg,
--		       shash_tfm->descsize - sizeof(struct p8_ghash_desc_ctx),
--		       crypto_shash_descsize(fallback));
--		return -EINVAL;
--	}
--	ctx->fallback = fallback;
--
--	return 0;
--}
--
--static void p8_ghash_exit_tfm(struct crypto_tfm *tfm)
--{
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	if (ctx->fallback) {
--		crypto_free_shash(ctx->fallback);
--		ctx->fallback = NULL;
--	}
--}
--
- static int p8_ghash_init(struct shash_desc *desc)
- {
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
- 	dctx->bytes = 0;
- 	memset(dctx->shash, 0, GHASH_DIGEST_SIZE);
--	dctx->fallback_desc.tfm = ctx->fallback;
--	return crypto_shash_init(&dctx->fallback_desc);
-+	return 0;
+ enum jump_label_type {
+ 	JUMP_LABEL_DISABLE = 0,
+@@ -223,3 +234,5 @@ static inline void static_key_disable(st
  }
  
- static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
-@@ -119,7 +66,51 @@ static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
- 	disable_kernel_vsx();
- 	pagefault_enable();
- 	preempt_enable();
--	return crypto_shash_setkey(ctx->fallback, key, keylen);
+ #endif	/* _LINUX_JUMP_LABEL_H */
 +
-+	memcpy(&ctx->key, key, GHASH_BLOCK_SIZE);
-+
-+	return 0;
-+}
-+
-+static inline void __ghash_block(struct p8_ghash_ctx *ctx,
-+				 struct p8_ghash_desc_ctx *dctx)
-+{
-+	if (crypto_simd_usable()) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_vsx();
-+		gcm_ghash_p8(dctx->shash, ctx->htable,
-+				dctx->buffer, GHASH_DIGEST_SIZE);
-+		disable_kernel_vsx();
-+		pagefault_enable();
-+		preempt_enable();
-+	} else {
-+		crypto_xor((u8 *)dctx->shash, dctx->buffer, GHASH_BLOCK_SIZE);
-+		gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-+	}
-+}
-+
-+static inline void __ghash_blocks(struct p8_ghash_ctx *ctx,
-+				  struct p8_ghash_desc_ctx *dctx,
-+				  const u8 *src, unsigned int srclen)
-+{
-+	if (crypto_simd_usable()) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_vsx();
-+		gcm_ghash_p8(dctx->shash, ctx->htable,
-+				src, srclen);
-+		disable_kernel_vsx();
-+		pagefault_enable();
-+		preempt_enable();
-+	} else {
-+		while (srclen >= GHASH_BLOCK_SIZE) {
-+			crypto_xor((u8 *)dctx->shash, src, GHASH_BLOCK_SIZE);
-+			gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-+			srclen -= GHASH_BLOCK_SIZE;
-+			src += GHASH_BLOCK_SIZE;
-+		}
-+	}
- }
- 
- static int p8_ghash_update(struct shash_desc *desc,
-@@ -129,49 +120,33 @@ static int p8_ghash_update(struct shash_desc *desc,
- 	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
--	if (!crypto_simd_usable()) {
--		return crypto_shash_update(&dctx->fallback_desc, src,
--					   srclen);
--	} else {
--		if (dctx->bytes) {
--			if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
--				memcpy(dctx->buffer + dctx->bytes, src,
--				       srclen);
--				dctx->bytes += srclen;
--				return 0;
--			}
-+	if (dctx->bytes) {
-+		if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
- 			memcpy(dctx->buffer + dctx->bytes, src,
--			       GHASH_DIGEST_SIZE - dctx->bytes);
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_vsx();
--			gcm_ghash_p8(dctx->shash, ctx->htable,
--				     dctx->buffer, GHASH_DIGEST_SIZE);
--			disable_kernel_vsx();
--			pagefault_enable();
--			preempt_enable();
--			src += GHASH_DIGEST_SIZE - dctx->bytes;
--			srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
--			dctx->bytes = 0;
--		}
--		len = srclen & ~(GHASH_DIGEST_SIZE - 1);
--		if (len) {
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_vsx();
--			gcm_ghash_p8(dctx->shash, ctx->htable, src, len);
--			disable_kernel_vsx();
--			pagefault_enable();
--			preempt_enable();
--			src += len;
--			srclen -= len;
--		}
--		if (srclen) {
--			memcpy(dctx->buffer, src, srclen);
--			dctx->bytes = srclen;
-+				srclen);
-+			dctx->bytes += srclen;
-+			return 0;
- 		}
--		return 0;
-+		memcpy(dctx->buffer + dctx->bytes, src,
-+			GHASH_DIGEST_SIZE - dctx->bytes);
-+
-+		__ghash_block(ctx, dctx);
-+
-+		src += GHASH_DIGEST_SIZE - dctx->bytes;
-+		srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
-+		dctx->bytes = 0;
-+	}
-+	len = srclen & ~(GHASH_DIGEST_SIZE - 1);
-+	if (len) {
-+		__ghash_blocks(ctx, dctx, src, len);
-+		src += len;
-+		srclen -= len;
- 	}
-+	if (srclen) {
-+		memcpy(dctx->buffer, src, srclen);
-+		dctx->bytes = srclen;
-+	}
-+	return 0;
- }
- 
- static int p8_ghash_final(struct shash_desc *desc, u8 *out)
-@@ -180,25 +155,14 @@ static int p8_ghash_final(struct shash_desc *desc, u8 *out)
- 	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
--	if (!crypto_simd_usable()) {
--		return crypto_shash_final(&dctx->fallback_desc, out);
--	} else {
--		if (dctx->bytes) {
--			for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
--				dctx->buffer[i] = 0;
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_vsx();
--			gcm_ghash_p8(dctx->shash, ctx->htable,
--				     dctx->buffer, GHASH_DIGEST_SIZE);
--			disable_kernel_vsx();
--			pagefault_enable();
--			preempt_enable();
--			dctx->bytes = 0;
--		}
--		memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
--		return 0;
-+	if (dctx->bytes) {
-+		for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
-+			dctx->buffer[i] = 0;
-+		__ghash_block(ctx, dctx);
-+		dctx->bytes = 0;
- 	}
-+	memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
-+	return 0;
- }
- 
- struct shash_alg p8_ghash_alg = {
-@@ -213,11 +177,8 @@ struct shash_alg p8_ghash_alg = {
- 		 .cra_name = "ghash",
- 		 .cra_driver_name = "p8_ghash",
- 		 .cra_priority = 1000,
--		 .cra_flags = CRYPTO_ALG_NEED_FALLBACK,
- 		 .cra_blocksize = GHASH_BLOCK_SIZE,
- 		 .cra_ctxsize = sizeof(struct p8_ghash_ctx),
- 		 .cra_module = THIS_MODULE,
--		 .cra_init = p8_ghash_init_tfm,
--		 .cra_exit = p8_ghash_exit_tfm,
- 	},
- };
--- 
-2.19.1
++#endif /* __ASSEMBLY__ */
 
