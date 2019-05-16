@@ -1,57 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2616D20137
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 10:24:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBED1FFF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 09:06:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454MsK61gJzDqfZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 17:06:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454Pbj1gCYzDqZp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 18:24:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.217.68; helo=mail-vs1-f68.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-vs1-f68.google.com (mail-vs1-f68.google.com
- [209.85.217.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454Mqt0jZPzDqWZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 17:04:57 +1000 (AEST)
-Received: by mail-vs1-f68.google.com with SMTP id q64so1645331vsd.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 00:04:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=q015/QHSXrok6Bw3iqMxHNHZLCbCNdwdW05xVaqSbFA=;
- b=NZCS20joMVSqRJc10IQAdpYtc5ZT55nOmrlSpKK1djTz+yRvOgXp7YaOW130hDB1wt
- m6S6S7xeP+ttKsSnQYDC0Uq24LJw3DfsdhYzkwSPTux+V0m4b+DAkzeW5YgCLCobvmkP
- LPuMfXnC1ALo5aRaOhVEdi8MsFkwOTP6T3uc5mzZ5f229o3//EiXyfjJtWdU/W9t2eli
- +zvAmk4hTZ6gZQklX+so5Xo7URp+LFjfh2oOuPqiApVVV3NaONp/Ifsnn4Dk590k3Opx
- Nsf0QW970L+nAPOmnJ4zkflFCypimh+WVfuhABJmj6uUplSKOV3svCk1usGeH214OV3X
- TxTQ==
-X-Gm-Message-State: APjAAAXrbvrt9XyI+NuSnBnVjdSum5roLDvYdjNIee7A750NC6tx0Nze
- HG+gPeXOo4VCmz+HmMJXsHI6YlJHiEc/aAATviM=
-X-Google-Smtp-Source: APXvYqw6dkP3FpbWRddQ96QVJAiiTPvgI18vgQaVewrbrBgFk7NwzmrgB/94Q+BFkCvWo9DPpaDiVAnXWQvZ+5swDfg=
-X-Received: by 2002:a67:f303:: with SMTP id p3mr11428563vsf.166.1557990294356; 
- Thu, 16 May 2019 00:04:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454PZM4kvXzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 18:23:22 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4G8NDN6036445
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 04:23:18 -0400
+Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sh3egjaae-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 04:23:13 -0400
+Received: from localhost
+ by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
+ Thu, 16 May 2019 09:22:45 +0100
+Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
+ by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 16 May 2019 09:22:42 +0100
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4G8MffA15860102
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 May 2019 08:22:41 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7016FBE053;
+ Thu, 16 May 2019 08:22:41 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2731EBE054;
+ Thu, 16 May 2019 08:22:41 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.35.248])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 16 May 2019 08:22:41 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 2046C2E3894; Thu, 16 May 2019 13:52:38 +0530 (IST)
+Date: Thu, 16 May 2019 13:52:38 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 0/1] Forced-wakeup for stop lite states on Powernv
+References: <20190422063231.51043-1-huntbag@linux.vnet.ibm.com>
+ <1557291178.ow4spjzq5t.astroid@bobo.none>
+ <b2fcf69a-aecd-ea81-b497-737642354736@linux.vnet.ibm.com>
+ <1557981860.eltms77ctp.astroid@bobo.none>
+ <20190516053659.GA20396@in.ibm.com>
+ <1557986956.6pmjz10b9z.astroid@bobo.none>
 MIME-Version: 1.0
-References: <20190515090722.696531131@linuxfoundation.org>
- <20190515090731.364702401@linuxfoundation.org>
-In-Reply-To: <20190515090731.364702401@linuxfoundation.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 May 2019 09:04:41 +0200
-Message-ID: <CAMuHMdVFaQLbH7F=Ard5MzUzG1FTfwLH=7xz=LpA3YaZyj2+Zg@mail.gmail.com>
-Subject: Re: [PATCH 4.4 247/266] cpu/speculation: Add mitigations= cmdline
- option
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ben Hutchings <ben@decadent.org.uk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1557986956.6pmjz10b9z.astroid@bobo.none>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+x-cbid: 19051608-0036-0000-0000-00000ABC3AF4
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011104; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01204051; UDB=6.00632055; IPR=6.00984981; 
+ MB=3.00026913; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-16 08:22:45
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051608-0037-0000-0000-00004BD0A5B6
+Message-Id: <20190516082238.GB20396@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-16_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905160057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,141 +99,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- "H . Peter Anvin" <hpa@zytor.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390 <linux-s390@vger.kernel.org>, Steven Price <steven.price@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Waiman Long <longman@redhat.com>,
- Linux-Arch <linux-arch@vger.kernel.org>, Will Deacon <will.deacon@arm.com>,
- Jiri Kosina <jikos@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Jon Masters <jcm@redhat.com>, Phil Auld <pauld@redhat.com>,
- Jiri Kosina <jkosina@suse.cz>, Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Tyler Hicks <tyhicks@canonical.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: ego@linux.vnet.ibm.com, linux-pm@vger.kernel.org, daniel.lezcano@linaro.org,
+ rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+ Abhishek <huntbag@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Greg, Ben,
+Hi Nicholas,
 
-On Wed, May 15, 2019 at 1:12 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> From: Josh Poimboeuf <jpoimboe@redhat.com>
+On Thu, May 16, 2019 at 04:13:17PM +1000, Nicholas Piggin wrote:
+
+> 
+> > The motivation behind this patch was a HPC customer issue where they
+> > were observing some CPUs in the core getting stuck at stop0_lite
+> > state, thereby lowering the performance on the other CPUs of the core
+> > which were running the application.
+> > 
+> > Disabling stop0_lite via sysfs didn't help since we would fallback to
+> > snooze and it would make matters worse.
+> 
+> snooze has the timeout though, so it should kick into stop0 properly
+> (and if it doesn't that's another issue that should be fixed in this
+> series).
 >
-> commit 98af8452945c55652de68536afdde3b520fec429 upstream.
+> I'm not questioning the patch for stop0_lite, to be clear. I think
+> the logic is sound. I just raise one urelated issue that happens to
+> be for stop0_lite as well (should we even enable it on P9?), and one
+> peripheral issue (should we make a similar fix for deeper stop states?)
 >
-> Keeping track of the number of mitigations for all the CPU speculation
-> bugs has become overwhelming for many users.  It's getting more and more
-> complicated to decide which mitigations are needed for a given
-> architecture.  Complicating matters is the fact that each arch tends to
-> have its own custom way to mitigate the same vulnerability.
+
+I think it makes sense to generalize this from the point of view of
+CPUs remaining in shallower idle states for long durations on tickless
+kernels.
+
+> > 
+> >> 
+> >> We should always have fewer states unless proven otherwise.
+> > 
+> > I agree.
+> > 
+> >> 
+> >> That said, we enable it today so I don't want to argue this point
+> >> here, because it is a different issue from your patch.
+> >> 
+> >> > When it is in stop0 or deeper, 
+> >> > it free up both
+> >> > space and time slice of core.
+> >> > In stop0_lite, cpu doesn't free up the core resources and thus inhibits 
+> >> > thread
+> >> > folding. When a cpu goes to stop0, it will free up the core resources 
+> >> > thus increasing
+> >> > the single thread performance of other sibling thread.
+> >> > Hence, we do not want to get stuck in stop0_lite for long duration, and 
+> >> > want to quickly
+> >> > move onto the next state.
+> >> > If we get stuck in any other state we would possibly be losing on to 
+> >> > power saving,
+> >> > but will still be able to gain the performance benefits for other 
+> >> > sibling threads.
+> >> 
+> >> That's true, but stop0 -> deeper stop is also a benefit (for
+> >> performance if we have some power/thermal constraints, and/or for power
+> >> usage).
+> >> 
+> >> Sure it may not be so noticable as the SMT switch, but I just wonder
+> >> if the infrastructure should be there for the same reason.
+> >> 
+> >> I was testing interrupt frequency on some tickless workloads configs,
+> >> and without too much trouble you can get CPUs to sleep with no
+> >> interrupts for many minutes. Hours even. We wouldn't want the CPU to
+> >> stay in stop0 for that long.
+> > 
+> > If it stays in stop0 or even stop2 for that long, we would want to
+> > "promote" it to a deeper state, such as say STOP5 which allows the
+> > other cores to run at higher frequencies.
+> 
+> So we would want this same logic for all but the deepest runtime
+> stop state?
+
+Yes. We can, in steps, promote individual threads of the core to
+eventually request a deeper state such as stop4/5. On a completely
+idle tickless system, eventually we should see the core go to the
+deeper idle state.
+
+> 
+> >> Just thinking about the patch itself, I wonder do you need a full
+> >> kernel timer, or could we just set the decrementer? Is there much 
+> >> performance cost here?
+> >>
+> > 
+> > Good point. A decrementer would do actually.
+> 
+> That would be good if it does, might save a few cycles.
+> 
+> Thanks,
+> Nick
 >
-> Most users fall into a few basic categories:
->
-> a) they want all mitigations off;
->
-> b) they want all reasonable mitigations on, with SMT enabled even if
->    it's vulnerable; or
->
-> c) they want all reasonable mitigations on, with SMT disabled if
->    vulnerable.
->
-> Define a set of curated, arch-independent options, each of which is an
-> aggregation of existing options:
->
-> - mitigations=off: Disable all mitigations.
->
-> - mitigations=auto: [default] Enable all the default mitigations, but
->   leave SMT enabled, even if it's vulnerable.
->
-> - mitigations=auto,nosmt: Enable all the default mitigations, disabling
->   SMT if needed by a mitigation.
->
-> Currently, these options are placeholders which don't actually do
-> anything.  They will be fleshed out in upcoming patches.
->
-> Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-> [bwh: Backported to 4.4:
->  - Drop the auto,nosmt option which we can't support
+--
+Thanks and Regards
+gautham.
 
-This doesn't really stand out. I.e. I completely missed it, and started
-wondering why "auto,nosmt" was not documented in
-kernel-parameters.txt below...
-
-> --- a/Documentation/kernel-parameters.txt
-> +++ b/Documentation/kernel-parameters.txt
-> @@ -2173,6 +2173,25 @@ bytes respectively. Such letter suffixes
->                         in the "bleeding edge" mini2440 support kernel at
->                         http://repo.or.cz/w/linux-2.6/mini2440.git
->
-> +       mitigations=
-> +                       Control optional mitigations for CPU vulnerabilities.
-> +                       This is a set of curated, arch-independent options, each
-> +                       of which is an aggregation of existing arch-specific
-> +                       options.
-> +
-> +                       off
-> +                               Disable all optional CPU mitigations.  This
-> +                               improves system performance, but it may also
-> +                               expose users to several CPU vulnerabilities.
-> +
-> +                       auto (default)
-> +                               Mitigate all CPU vulnerabilities, but leave SMT
-> +                               enabled, even if it's vulnerable.  This is for
-> +                               users who don't want to be surprised by SMT
-> +                               getting disabled across kernel upgrades, or who
-> +                               have other ways of avoiding SMT-based attacks.
-> +                               This is the default behavior.
-> +
->         mminit_loglevel=
->                         [KNL] When CONFIG_DEBUG_MEMORY_INIT is set, this
->                         parameter allows control of the logging verbosity for
-
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -842,3 +842,16 @@ void init_cpu_online(const struct cpumas
->  {
->         cpumask_copy(to_cpumask(cpu_online_bits), src);
->  }
-> +
-> +enum cpu_mitigations cpu_mitigations = CPU_MITIGATIONS_AUTO;
-> +
-> +static int __init mitigations_parse_cmdline(char *arg)
-> +{
-> +       if (!strcmp(arg, "off"))
-> +               cpu_mitigations = CPU_MITIGATIONS_OFF;
-> +       else if (!strcmp(arg, "auto"))
-> +               cpu_mitigations = CPU_MITIGATIONS_AUTO;
-
-Perhaps
-
-    else
-            pr_crit("mitigations=%s is not supported\n", arg);
-
-?
-
-Actually that makes sense on mainline, too.
-Cooking a patch...
-
-> +
-> +       return 0;
-> +}
-> +early_param("mitigations", mitigations_parse_cmdline);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
