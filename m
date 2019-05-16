@@ -2,49 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C0F209A3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 16:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C572420A15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 16:48:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454YhS2sjTzDqcM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 00:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454Z6W0GH0zDqfB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 00:48:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=oleg@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454YfG1HhKzDqc6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 00:27:18 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 7E7E388E5D;
- Thu, 16 May 2019 14:27:11 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
- by smtp.corp.redhat.com (Postfix) with SMTP id 144FC341E2;
- Thu, 16 May 2019 14:27:01 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
- oleg@redhat.com; Thu, 16 May 2019 16:27:10 +0200 (CEST)
-Date: Thu, 16 May 2019 16:27:00 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v1 1/2] pid: add pidfd_open()
-Message-ID: <20190516142659.GB22564@redhat.com>
-References: <20190516135944.7205-1-christian@brauner.io>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454Z5529VszDqcK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 00:47:05 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 454Z542nCVz9s7h;
+ Fri, 17 May 2019 00:47:04 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
+ paulus@samba.org
+Subject: Re: [RFC PATCH 3/3] powerpc/mm/hugetlb: Don't enable HugeTLB if we
+ don't have a page table cache
+In-Reply-To: <20190514145041.7836-3-aneesh.kumar@linux.ibm.com>
+References: <20190514145041.7836-1-aneesh.kumar@linux.ibm.com>
+ <20190514145041.7836-3-aneesh.kumar@linux.ibm.com>
+Date: Fri, 17 May 2019 00:47:00 +1000
+Message-ID: <87imuaihi3.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190516135944.7205-1-christian@brauner.io>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.25]); Thu, 16 May 2019 14:27:14 +0000 (UTC)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,86 +46,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, dhowells@redhat.com, joel@joelfernandes.org,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-api@vger.kernel.org, elena.reshetova@intel.com,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, dancol@google.com,
- Geert Uytterhoeven <geert@linux-m68k.org>, serge@hallyn.com,
- linux-xtensa@linux-xtensa.org, keescook@chromium.org, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
- luto@kernel.org, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, cyphar@cyphar.com, torvalds@linux-foundation.org,
- linux-kernel@vger.kernel.org, luto@amacapital.net, ebiederm@xmission.com,
- linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/16, Christian Brauner wrote:
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> This makes sure we don't enable HugeTLB if the cache is not configured.
+> I am still not sure about this. IMHO hugetlb support should be a hardware
+> support derivative and any cache allocation failure should be handled as I did
+> in the earlier patch. But then if we were not able to create hugetlb page table
+> cache, we can as well declare hugetlb support disabled thereby avoiding calling
+> into allocation routines.
 >
-> With the introduction of pidfds through CLONE_PIDFD it is possible to
-> created pidfds at process creation time.
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/hugetlbpage.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> index ee16a3fb788a..4bf8bc659cc7 100644
+> --- a/arch/powerpc/mm/hugetlbpage.c
+> +++ b/arch/powerpc/mm/hugetlbpage.c
+> @@ -602,6 +602,7 @@ __setup("hugepagesz=", hugepage_setup_sz);
+>  static int __init hugetlbpage_init(void)
+>  {
+>  	int psize;
+> +	bool configured = false;
 
-Now I am wondering why do we need CLONE_PIDFD, you can just do
+Where's my reverse Christmas tree! :)
 
-	pid = fork();
-	pidfd_open(pid);
-
-> +SYSCALL_DEFINE2(pidfd_open, pid_t, pid, unsigned int, flags)
-> +{
-> +	int fd, ret;
-> +	struct pid *p;
-> +	struct task_struct *tsk;
+>  	if (hugetlb_disabled) {
+>  		pr_info("HugeTLB support is disabled!\n");
+> @@ -651,10 +652,16 @@ static int __init hugetlbpage_init(void)
+>  			pgtable_cache_add(pdshift - shift);
+>  		else if (IS_ENABLED(CONFIG_PPC_FSL_BOOK3E) || IS_ENABLED(CONFIG_PPC_8xx))
+>  			pgtable_cache_add(PTE_T_ORDER);
 > +
-> +	if (flags)
-> +		return -EINVAL;
-> +
-> +	if (pid <= 0)
-> +		return -EINVAL;
-> +
-> +	p = find_get_pid(pid);
-> +	if (!p)
-> +		return -ESRCH;
-> +
-> +	ret = 0;
-> +	rcu_read_lock();
-> +	/*
-> +	 * If this returns non-NULL the pid was used as a thread-group
-> +	 * leader. Note, we race with exec here: If it changes the
-> +	 * thread-group leader we might return the old leader.
-> +	 */
-> +	tsk = pid_task(p, PIDTYPE_TGID);
-> +	if (!tsk)
-> +		ret = -ESRCH;
-> +	rcu_read_unlock();
-> +
-> +	fd = ret ?: pidfd_create(p);
-> +	put_pid(p);
-> +	return fd;
-> +}
+> +		if (!configured)
+> +			configured = true;
 
-Looks correct, feel free to add Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+I'd just not worry about the if.
 
-But why do we need task_struct *tsk?
+>  	}
+>  
+> -	if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
+> -		hugetlbpage_init_default();
+> +	if (configured) {
+> +		if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
+> +			hugetlbpage_init_default();
+> +	} else
+> +		pr_info("Disabling HugeTLB");
 
-	rcu_read_lock();
-	if (!pid_task(PIDTYPE_TGID))
-		ret = -ESRCH;
-	rcu_read_unlock();
+We're not actually doing anything to disable it in the
+CONFIG_HUGETLB_PAGE_SIZE_VARIABLE=n case, but I guess the print is still
+correct because we didn't enable a size in the for loop above?
 
-and in fact we do not even need rcu_read_lock(), we could do
+Can we make it a bit more explicit? Maybe like:
 
-	// shut up rcu_dereference_check()
-	rcu_lock_acquire(&rcu_lock_map);
-	if (!pid_task(PIDTYPE_TGID))
-		ret = -ESRCH;
-	rcu_lock_release(&rcu_lock_map);
+  "Disabling HugeTLB, no usable page sizes found."
 
-Well... I won't insist, but the comment about the race with exec looks a bit
-confusing to me. It is true, but we do not care at all, we are not going to
-use the task_struct returned by pid_task().
+??
 
-Oleg.
-
+cheers
