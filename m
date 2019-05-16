@@ -2,76 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73841FE95
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 06:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36741FE97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 06:48:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454Jkr40TRzDqYL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 14:45:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454Jp60QVXzDqd1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2019 14:48:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="ice1oxVa"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="n+YVsJwF"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454JjR1WtLzDqXW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 14:44:11 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id g9so952785plm.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2019 21:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=Z8I+0I8sDIflCFpPAoQhP1EyICzZb7WVM/1nhULuHrw=;
- b=ice1oxVas7vFf3d2tYQZSlDBcuCF7tL8hTp/6ZJutDXf4Y1lL9GM3KPkawoQMJrgHN
- DgDF1Yx/9iIbZFwygagysDH+DVXegWla+SfA7aE9ahsyLqwvA51ie1EjDSN1rVrZEiE5
- IoqsiTBwmuQi8QJ+rLKWd/8fTtUJxjS86cdnl+LclxcHP3Tf0shKwlWiKlrnJeUUc/jf
- /y1NqGFqvi4j3sqbdtS8sBMYJ72JIchsv/uLOnfpNm9yZwt0nvx6BhbOOeR+klc9+ZL+
- vVdGlKphv6+Ul8m/IYhv8H3LGLOkSnwK0+m4SK1nelbMviiQ4+coohhtYN5m1RQbpKNI
- yVDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=Z8I+0I8sDIflCFpPAoQhP1EyICzZb7WVM/1nhULuHrw=;
- b=ld4t7uW7eTExlnfhwF/tUpLlmogC+05JmI54uDHYiBO4H58aUvHaQRIVvXEKzGwdAw
- F7kYdkjjJgbGeFD28hAeaN54BBjASUYCThPnjFh1ao88t+jcctdrZaJl89hVfg2kNKg1
- G1sw2oa1Bd3RvfsOnQPGksYvf8rrd/lspPq7L8oqJaLnuHzsSh7W/8FmRcaT6JTMGo09
- Q3We5pZjG+xdeI0TTFAHenE6qa16Jj7eFxY2hBSWUP47GV44/dxSLc1wgeTpOjvSPyGm
- /i2Yu8herV9Ebh5qZgasgzJJtOhuaEuGCJPlhP4FihAz+d0i6oeHEWMXiAJd7Uqsrml/
- uovg==
-X-Gm-Message-State: APjAAAX6vcewUgg5xjnY6dRr3+1rFnpaoyGKWomqAUXuwS+6ZDiT/aoM
- uueSOEZ+udJTRjdhVneW7VE=
-X-Google-Smtp-Source: APXvYqx9WKdQ7HquXm2F81zvZWPeGeiOGJd5yj0YB2YHMdOUbkJGfib0x+v+Iya/gR2nZE1/CLG0pg==
-X-Received: by 2002:a17:902:b18c:: with SMTP id
- s12mr29278558plr.181.1557981847545; 
- Wed, 15 May 2019 21:44:07 -0700 (PDT)
-Received: from localhost (193-116-124-212.tpgi.com.au. [193.116.124.212])
- by smtp.gmail.com with ESMTPSA id w189sm4595667pfw.147.2019.05.15.21.44.05
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 15 May 2019 21:44:06 -0700 (PDT)
-Date: Thu, 16 May 2019 14:43:58 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v10 2/2] powerpc/64s: KVM update for reimplement book3s
- idle code in C
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20190428114515.32683-1-npiggin@gmail.com>
- <20190428114515.32683-3-npiggin@gmail.com>
- <20190513064207.GA11679@blackberry>
-In-Reply-To: <20190513064207.GA11679@blackberry>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454Jmt04sRzDqXW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 14:47:08 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 454Jmj3gS9z9vBnJ;
+ Thu, 16 May 2019 06:47:01 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=n+YVsJwF; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id YwJhsuGVOdRK; Thu, 16 May 2019 06:47:01 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 454Jmj2Qy7z9vBnH;
+ Thu, 16 May 2019 06:47:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1557982021; bh=qDZRFp8I367+tTugkVOB68KlPMzfOq8sVaaTd5Xh6o8=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=n+YVsJwFV8c/CLl/0rdkrcTS+I6up0Snl/58n1hSMBnA0AmBgRINzYvW0DHMO+LUo
+ xVCLYc8K7q1iMhmqDFiorZD6ECUdFc/r5I0SAUxCGzDiSmosl+B4nG8GwJlitbU5zh
+ GDE6Zo+SfnGfDNuuXLn43GnmrhKD4iC+Qu/x77EI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F7E98B7F8;
+ Thu, 16 May 2019 06:47:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id N_O8DI_gBYQV; Thu, 16 May 2019 06:47:02 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 599308B74F;
+ Thu, 16 May 2019 06:47:01 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/64s: Make boot look nice(r)
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190516020437.11783-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d65ae686-c117-ae1c-1d48-498fdd1ea0eb@c-s.fr>
+Date: Thu, 16 May 2019 06:47:01 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1557981765.4aikls5u00.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190516020437.11783-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,53 +77,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Mackerras's on May 13, 2019 4:42 pm:
-> On Sun, Apr 28, 2019 at 09:45:15PM +1000, Nicholas Piggin wrote:
->> This is the KVM update to the new idle code. A few improvements:
->>=20
->> - Idle sleepers now always return to caller rather than branch out
->>   to KVM first.
->> - This allows optimisations like very fast return to caller when no
->>   state has been lost.
->> - KVM no longer requires nap_state_lost because it controls NVGPR
->>   save/restore itself on the way in and out.
->> - The heavy idle wakeup KVM request check can be moved out of the
->>   normal host idle code and into the not-performance-critical offline
->>   code.
->> - KVM nap code now returns from where it is called, which makes the
->>   flow a bit easier to follow.
->=20
-> One question below...
->=20
->> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/=
-book3s_hv_rmhandlers.S
->> index 58d0f1ba845d..f66191d8f841 100644
->> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> ...
->> @@ -2656,6 +2662,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
->> =20
->>  	lis	r3, LPCR_PECEDP@h	/* Do wake on privileged doorbell */
->> =20
->> +	/* Go back to host stack */
->> +	ld	r1, HSTATE_HOST_R1(r13)
->=20
-> At this point we are in kvmppc_h_cede, which we branched to from
-> hcall_try_real_mode, which came from the guest exit path, where we
-> have already loaded r1 from HSTATE_HOST_R1(r13).  So if there is a
-> path to get here with r1 not already set to HSTATE_HOST_R1(r13), then
-> I missed it - please point it out to me.  Otherwise this statement
-> seems superfluous.
 
-I'm not sure why I put that there. I think you're right it could
-be removed.
 
-Thanks,
-Nick
-=
+Le 16/05/2019 à 04:04, Nicholas Piggin a écrit :
+> Radix boot looks like this:
+> 
+>   -----------------------------------------------------
+>   phys_mem_size     = 0x200000000
+>   dcache_bsize      = 0x80
+>   icache_bsize      = 0x80
+>   cpu_features      = 0x0000c06f8f5fb1a7
+>     possible        = 0x0000fbffcf5fb1a7
+>     always          = 0x00000003800081a1
+>   cpu_user_features = 0xdc0065c2 0xaee00000
+>   mmu_features      = 0xbc006041
+>   firmware_features = 0x0000000010000000
+>   hash-mmu: ppc64_pft_size    = 0x0
+>   hash-mmu: kernel vmalloc start   = 0xc008000000000000
+>   hash-mmu: kernel IO start        = 0xc00a000000000000
+>   hash-mmu: kernel vmemmap start   = 0xc00c000000000000
+>   -----------------------------------------------------
+> 
+> Fix:
+> 
+>   -----------------------------------------------------
+>   phys_mem_size     = 0x200000000
+>   dcache_bsize      = 0x80
+>   icache_bsize      = 0x80
+>   cpu_features      = 0x0000c06f8f5fb1a7
+>     possible        = 0x0000fbffcf5fb1a7
+>     always          = 0x00000003800081a1
+>   cpu_user_features = 0xdc0065c2 0xaee00000
+>   mmu_features      = 0xbc006041
+>   firmware_features = 0x0000000010000000
+>   vmalloc start     = 0xc008000000000000
+>   IO start          = 0xc00a000000000000
+>   vmemmap start     = 0xc00c000000000000
+>   -----------------------------------------------------
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+I fear your change defeats most of the purpose of commit 
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20190515&id=e4dccf9092ab48a6f902003b9558c0e45d0e849a
+
+As far as I understand, the main issue is the "hash-mmu:" prefix ?
+That's due to the following define in top of book3s64/hash_utils.c:
+
+#define pr_fmt(fmt) "hash-mmu: " fmt
+
+Could we simply undef it just before print_system_hash_info() ?
+Or move print_system_hash_info() in another book3s64 specific file which 
+doesn't set pr_fmt ?
+
+Christophe
+
+> ---
+>   arch/powerpc/kernel/setup-common.c    | 8 +++++++-
+>   arch/powerpc/mm/book3s64/hash_utils.c | 3 ---
+>   2 files changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+> index aad9f5df6ab6..f2da8c809c85 100644
+> --- a/arch/powerpc/kernel/setup-common.c
+> +++ b/arch/powerpc/kernel/setup-common.c
+> @@ -810,9 +810,15 @@ static __init void print_system_info(void)
+>   	pr_info("mmu_features      = 0x%08x\n", cur_cpu_spec->mmu_features);
+>   #ifdef CONFIG_PPC64
+>   	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
+> +#ifdef CONFIG_PPC_BOOK3S
+> +	pr_info("vmalloc start     = 0x%lx\n", KERN_VIRT_START);
+> +	pr_info("IO start          = 0x%lx\n", KERN_IO_START);
+> +	pr_info("vmemmap start     = 0x%lx\n", (unsigned long)vmemmap);
+> +#endif
+>   #endif
+>   
+> -	print_system_hash_info();
+> +	if (!early_radix_enabled())
+> +		print_system_hash_info();
+>   
+>   	if (PHYSICAL_START > 0)
+>   		pr_info("physical_start    = 0x%llx\n",
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 919a861a8ec0..8b307b796b83 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -1954,7 +1954,4 @@ void __init print_system_hash_info(void)
+>   
+>   	if (htab_hash_mask)
+>   		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
+> -	pr_info("kernel vmalloc start   = 0x%lx\n", KERN_VIRT_START);
+> -	pr_info("kernel IO start        = 0x%lx\n", KERN_IO_START);
+> -	pr_info("kernel vmemmap start   = 0x%lx\n", (unsigned long)vmemmap);
+>   }
+> 
