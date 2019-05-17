@@ -1,45 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2522129B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 05:42:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454vHR2b6wzDqSd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 13:42:11 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309D6212B2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 06:01:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 454vjr3qkczDqSy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 14:01:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454vBs3ml0zDqNB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 13:38:13 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 76CAE1A01E5;
- Fri, 17 May 2019 05:38:10 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 969F71A01E6;
- Fri, 17 May 2019 05:38:04 +0200 (CEST)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5E33D402C8;
- Fri, 17 May 2019 11:37:57 +0800 (SGT)
-From: Ran Wang <ran.wang_1@nxp.com>
-To: Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH V2 3/3] soc: fsl: add RCPM driver
-Date: Fri, 17 May 2019 11:39:46 +0800
-Message-Id: <20190517033946.30763-3-ran.wang_1@nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190517033946.30763-1-ran.wang_1@nxp.com>
-References: <20190517033946.30763-1-ran.wang_1@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454vhD0QrSzDqP1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 14:00:11 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4H3wiHp002893; Fri, 17 May 2019 00:00:02 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2shkau4fxj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 May 2019 00:00:02 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x4GM3TXj011449;
+ Thu, 16 May 2019 22:04:28 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 2sdp157t47-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 May 2019 22:04:28 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4H400S223789614
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 May 2019 04:00:00 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0798AC060;
+ Fri, 17 May 2019 04:00:00 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6FBE0AC059;
+ Fri, 17 May 2019 03:59:59 +0000 (GMT)
+Received: from [9.199.59.156] (unknown [9.199.59.156])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 17 May 2019 03:59:59 +0000 (GMT)
+Subject: Re: [RFC PATCH 3/3] powerpc/mm/hugetlb: Don't enable HugeTLB if we
+ don't have a page table cache
+To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com, paulus@samba.org
+References: <20190514145041.7836-1-aneesh.kumar@linux.ibm.com>
+ <20190514145041.7836-3-aneesh.kumar@linux.ibm.com>
+ <87imuaihi3.fsf@concordia.ellerman.id.au>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <04403623-d4ae-1d91-d3f4-16bd09e94d34@linux.ibm.com>
+Date: Fri, 17 May 2019 09:29:58 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <87imuaihi3.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-17_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905170024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,189 +87,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Len Brown <len.brown@intel.com>, devicetree@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Pavel Machek <pavel@ucw.cz>, Ran Wang <ran.wang_1@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The NXP's QorIQ Processors based on ARM Core have RCPM module
-(Run Control and Power Management), which performs all device-level
-tasks associated with power management such as wakeup source control.
+On 5/16/19 8:17 PM, Michael Ellerman wrote:
+> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+>> This makes sure we don't enable HugeTLB if the cache is not configured.
+>> I am still not sure about this. IMHO hugetlb support should be a hardware
+>> support derivative and any cache allocation failure should be handled as I did
+>> in the earlier patch. But then if we were not able to create hugetlb page table
+>> cache, we can as well declare hugetlb support disabled thereby avoiding calling
+>> into allocation routines.
+>>
+>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> ---
+>>   arch/powerpc/mm/hugetlbpage.c | 11 +++++++++--
+>>   1 file changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+>> index ee16a3fb788a..4bf8bc659cc7 100644
+>> --- a/arch/powerpc/mm/hugetlbpage.c
+>> +++ b/arch/powerpc/mm/hugetlbpage.c
+>> @@ -602,6 +602,7 @@ __setup("hugepagesz=", hugepage_setup_sz);
+>>   static int __init hugetlbpage_init(void)
+>>   {
+>>   	int psize;
+>> +	bool configured = false;
+> 
+> Where's my reverse Christmas tree! :)
 
-This driver depends on PM wakeup source framework which help to
-collect wake information.
+Will fix that :)
 
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
----
-Change in v2:
-	- Rebase Kconfig and Makefile update to latest mainline.
+> 
+>>   	if (hugetlb_disabled) {
+>>   		pr_info("HugeTLB support is disabled!\n");
+>> @@ -651,10 +652,16 @@ static int __init hugetlbpage_init(void)
+>>   			pgtable_cache_add(pdshift - shift);
+>>   		else if (IS_ENABLED(CONFIG_PPC_FSL_BOOK3E) || IS_ENABLED(CONFIG_PPC_8xx))
+>>   			pgtable_cache_add(PTE_T_ORDER);
+>> +
+>> +		if (!configured)
+>> +			configured = true;
+> 
+> I'd just not worry about the if.
+> 
+>>   	}
+>>   
+>> -	if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
+>> -		hugetlbpage_init_default();
+>> +	if (configured) {
+>> +		if (IS_ENABLED(CONFIG_HUGETLB_PAGE_SIZE_VARIABLE))
+>> +			hugetlbpage_init_default();
+>> +	} else
+>> +		pr_info("Disabling HugeTLB");
+> 
+> We're not actually doing anything to disable it in the
+> CONFIG_HUGETLB_PAGE_SIZE_VARIABLE=n case, but I guess the print is still
+> correct because we didn't enable a size in the for loop above?
+> 
+> Can we make it a bit more explicit? Maybe like:
+> 
+>    "Disabling HugeTLB, no usable page sizes found."
+> 
 
- drivers/soc/fsl/Kconfig  |    8 +++
- drivers/soc/fsl/Makefile |    1 +
- drivers/soc/fsl/rcpm.c   |  124 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 133 insertions(+), 0 deletions(-)
- create mode 100644 drivers/soc/fsl/rcpm.c
+That would confuse when they find in the dmesg
 
-diff --git a/drivers/soc/fsl/Kconfig b/drivers/soc/fsl/Kconfig
-index 61f8e14..8e84e40 100644
---- a/drivers/soc/fsl/Kconfig
-+++ b/drivers/soc/fsl/Kconfig
-@@ -29,4 +29,12 @@ config FSL_MC_DPIO
- 	  other DPAA2 objects. This driver does not expose the DPIO
- 	  objects individually, but groups them under a service layer
- 	  API.
-+
-+config FSL_RCPM
-+	bool "Freescale RCPM support"
-+	depends on PM_SLEEP
-+	help
-+	  The NXP's QorIQ Processors based on ARM Core have RCPM module
-+	  (Run Control and Power Management), which performs all device-level
-+	  tasks associated with power management, such as wakeup source control.
- endmenu
-diff --git a/drivers/soc/fsl/Makefile b/drivers/soc/fsl/Makefile
-index 803ef1b..c1be6ee 100644
---- a/drivers/soc/fsl/Makefile
-+++ b/drivers/soc/fsl/Makefile
-@@ -7,3 +7,4 @@ obj-$(CONFIG_QUICC_ENGINE)		+= qe/
- obj-$(CONFIG_CPM)			+= qe/
- obj-$(CONFIG_FSL_GUTS)			+= guts.o
- obj-$(CONFIG_FSL_MC_DPIO) 		+= dpio/
-+obj-$(CONFIG_FSL_RCPM)		+= rcpm.o
-diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
-new file mode 100644
-index 0000000..b817319
---- /dev/null
-+++ b/drivers/soc/fsl/rcpm.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// rcpm.c - Freescale QorIQ RCPM driver
-+//
-+// Copyright 2019 NXP
-+//
-+// Author: Ran Wang <ran.wang_1@nxp.com>,
-+
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
-+#include <linux/suspend.h>
-+#include <linux/kernel.h>
-+
-+#define RCPM_WAKEUP_CELL_MAX_SIZE	7
-+
-+struct rcpm {
-+	unsigned int wakeup_cells;
-+	void __iomem *ippdexpcr_base;
-+	bool	little_endian;
-+};
-+
-+static int rcpm_pm_prepare(struct device *dev)
-+{
-+	struct device_node *np = dev->of_node;
-+	struct wakeup_source *ws;
-+	struct rcpm *rcpm;
-+	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1], tmp;
-+	int i, ret;
-+
-+	rcpm = dev_get_drvdata(dev);
-+	if (!rcpm)
-+		return -EINVAL;
-+
-+	/* Begin with first registered wakeup source */
-+	ws = wakeup_source_get_next(NULL);
-+	while (ws) {
-+		ret = device_property_read_u32_array(ws->attached_dev,
-+				"fsl,rcpm-wakeup", value, rcpm->wakeup_cells + 1);
-+
-+		/*  Wakeup source should refer to current rcpm device */
-+		if (ret || (np->phandle != value[0])) {
-+			dev_info(dev, "%s doesn't refer to this rcpm\n",
-+					ws->name);
-+			ws = wakeup_source_get_next(ws);
-+			continue;
-+		}
-+
-+		for (i = 0; i < rcpm->wakeup_cells; i++) {
-+			/* We can only OR related bits */
-+			if (value[i + 1]) {
-+				if (rcpm->little_endian) {
-+					tmp = ioread32(rcpm->ippdexpcr_base + i * 4);
-+					tmp |= value[i + 1];
-+					iowrite32(tmp, rcpm->ippdexpcr_base + i * 4);
-+				} else {
-+					tmp = ioread32be(rcpm->ippdexpcr_base + i * 4);
-+					tmp |= value[i + 1];
-+					iowrite32be(tmp, rcpm->ippdexpcr_base + i * 4);
-+				}
-+			}
-+		}
-+		ws = wakeup_source_get_next(ws);
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops rcpm_pm_ops = {
-+	.prepare =  rcpm_pm_prepare,
-+};
-+
-+static int rcpm_probe(struct platform_device *pdev)
-+{
-+	struct device	*dev = &pdev->dev;
-+	struct resource *r;
-+	struct rcpm		*rcpm;
-+	int ret;
-+
-+	rcpm = devm_kzalloc(dev, sizeof(*rcpm), GFP_KERNEL);
-+	if (!rcpm)
-+		return -ENOMEM;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!r)
-+		return -ENODEV;
-+
-+	rcpm->ippdexpcr_base = devm_ioremap_resource(&pdev->dev, r);
-+	if (IS_ERR(rcpm->ippdexpcr_base)) {
-+		ret =  PTR_ERR(rcpm->ippdexpcr_base);
-+		return ret;
-+	}
-+
-+	rcpm->little_endian = device_property_read_bool(
-+			&pdev->dev, "little-endian");
-+
-+	ret = device_property_read_u32(&pdev->dev,
-+			"fsl,#rcpm-wakeup-cells", &rcpm->wakeup_cells);
-+	if (ret)
-+		return ret;
-+
-+	dev_set_drvdata(&pdev->dev, rcpm);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id rcpm_of_match[] = {
-+	{ .compatible = "fsl,qoriq-rcpm-2.1+", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, rcpm_of_match);
-+
-+static struct platform_driver rcpm_driver = {
-+	.driver = {
-+		.name = "rcpm",
-+		.of_match_table = rcpm_of_match,
-+		.pm	= &rcpm_pm_ops,
-+	},
-+	.probe = rcpm_probe,
-+};
-+
-+module_platform_driver(rcpm_driver);
--- 
-1.7.1
+[    0.000000] hash-mmu: Page sizes from device-tree: 
 
+[    0.000000] hash-mmu: base_shift=12: shift=12, sllp=0x0000, 
+avpnm=0x00000000, tlbiel=1, penc=0 
+
+[    0.000000] hash-mmu: base_shift=12: shift=16, sllp=0x0000, 
+avpnm=0x00000000, tlbiel=1, penc=7 
+
+[    0.000000] hash-mmu: base_shift=12: shift=24, sllp=0x0000, 
+avpnm=0x00000000, tlbiel=1, penc=56 
+
+[    0.000000] hash-mmu: base_shift=16: shift=16, sllp=0x0110, 
+avpnm=0x00000000, tlbiel=1, penc=1 
+
+[    0.000000] hash-mmu: base_shift=16: shift=24, sllp=0x0110, 
+avpnm=0x00000000, tlbiel=1, penc=8 
+
+[    0.000000] hash-mmu: base_shift=24: shift=24, sllp=0x0100, 
+avpnm=0x00000001, tlbiel=0, penc=0 
+
+[    0.000000] hash-mmu: base_shift=34: shift=34, sllp=0x0120, 
+avpnm=0x000007ff, tlbiel=0, penc=3
+
+-aneesh
