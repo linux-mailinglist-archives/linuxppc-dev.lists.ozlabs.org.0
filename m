@@ -1,95 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEE521272
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 05:19:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EBA21265
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 05:10:54 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454tbH4GWmzDqRD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 13:10:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454tnn2hnFzDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 13:19:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.5.65; helo=eur03-ve1-obe.outbound.protection.outlook.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="D+8wIcsJ"; 
- dkim-atps=neutral
-Received: from EUR03-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr50065.outbound.protection.outlook.com [40.107.5.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454tYl5PlSzDqQS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 13:09:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u0FuCMMzpP/ODHlbwv4mvoBdANto4iRezsdTzITLA1M=;
- b=D+8wIcsJgbRuzBifCHU2ddmWnteXWLpoG0ybWKwGdV26T62Qgsmj5Vcp2lET6MIAW+h5XGmay/lzmjNtZgW/Wq3JELu6jMQx8DpO+cD9ix5BatpwnuvAhrQc421Fl8ZmECnjepBWiH0cmpueY7HzkbdYF2l92TBmxLNbXc0KEP8=
-Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
- VE1PR04MB6462.eurprd04.prod.outlook.com (20.179.233.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1900.17; Fri, 17 May 2019 03:09:22 +0000
-Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
- ([fe80::a5b5:13f5:f89c:9a30]) by VE1PR04MB6479.eurprd04.prod.outlook.com
- ([fe80::a5b5:13f5:f89c:9a30%7]) with mapi id 15.20.1900.010; Fri, 17 May 2019
- 03:09:22 +0000
-From: "S.j. Wang" <shengjiu.wang@nxp.com>
-To: "timur@kernel.org" <timur@kernel.org>, "nicoleotsuka@gmail.com"
- <nicoleotsuka@gmail.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "alsa-devel@alsa-project.org"
- <alsa-devel@alsa-project.org>
-Subject: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
-Thread-Topic: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
-Thread-Index: AQHVDF3seZkwEu4He0GObjqY7EqttQ==
-Date: Fri, 17 May 2019 03:09:22 +0000
-Message-ID: <20190517030903.25731-1-shengjiu.wang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: git-send-email 2.21.0
-x-clientproxiedby: HK2PR03CA0052.apcprd03.prod.outlook.com
- (2603:1096:202:17::22) To VE1PR04MB6479.eurprd04.prod.outlook.com
- (2603:10a6:803:11e::16)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=shengjiu.wang@nxp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [119.31.174.66]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d02c888d-3473-45fe-839a-08d6da750f23
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
- SRVR:VE1PR04MB6462; 
-x-ms-traffictypediagnostic: VE1PR04MB6462:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <VE1PR04MB6462A0508F4A258D203150ACE30B0@VE1PR04MB6462.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:132;
-x-forefront-prvs: 0040126723
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(376002)(396003)(366004)(346002)(136003)(39860400002)(199004)(189003)(71200400001)(110136005)(71190400001)(2501003)(52116002)(50226002)(81166006)(8936002)(102836004)(8676002)(54906003)(316002)(6506007)(386003)(81156014)(6512007)(6306002)(305945005)(7736002)(6116002)(99286004)(3846002)(6436002)(4326008)(25786009)(186003)(5660300002)(66476007)(2201001)(36756003)(53936002)(86362001)(68736007)(66446008)(66556008)(64756008)(66946007)(73956011)(14454004)(486006)(2616005)(476003)(14444005)(256004)(478600001)(26005)(66066001)(6486002)(2906002)(1076003);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6462;
- H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: yXPrYiIHXB7h/ihjvVjo49a3Sur5qGkFD4mFCZpPhJamuEUCj3eYLvH+35mZqi7Ke121MpEGOxnrRBIKCB6i1cOIW0xAkUjcdRKtBPGcMuin87icz40H358rBm1TMCLqwWXUpq3zcaftOAsTEvQZIVHl3dtXxcXxuNgZJzKy4zFMOxefRV4eDqtd7nT4JIKXOecDkaZKUfG2zO2OpAGsFq8c9NME2OEulNoTgk946fSY5QnGAbIx6b2cLcwqva+6siK2rAgSI8TLu1ZIlnMH0wRGgzQlhlZK6rYNxjkQONTBr9hls5pvagKdTU4QKWchIQz+c/eRE5fTckux96m22Hz6aPWrPtSsyaRcvEydflNac2DxbaK5XO+rZxF9xUjpxPh0j4Id6waTDtJ6XffuNtwHbHaZfbetSn9g68kqkt0=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <CD952D0B5BE728489F6FFD2DDF2D3DA2@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454tmH5sYLzDqQV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 13:18:39 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4H3HAaM130766
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 23:18:35 -0400
+Received: from e17.ny.us.ibm.com (e17.ny.us.ibm.com [129.33.205.207])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2shh78f6dn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 23:18:35 -0400
+Received: from localhost
+ by e17.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Fri, 17 May 2019 04:18:35 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e17.ny.us.ibm.com (146.89.104.204) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 17 May 2019 04:18:32 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4H3IVkl34537632
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 May 2019 03:18:32 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3C40AE067;
+ Fri, 17 May 2019 03:18:31 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0849DAE066;
+ Fri, 17 May 2019 03:18:31 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.176.7])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 17 May 2019 03:18:30 +0000 (GMT)
+References: <20190516020437.11783-1-npiggin@gmail.com>
+ <d65ae686-c117-ae1c-1d48-498fdd1ea0eb@c-s.fr>
+ <1557986563.56odablyi5.astroid@bobo.none>
+User-agent: mu4e 1.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s: Make boot look nice(r)
+In-reply-to: <1557986563.56odablyi5.astroid@bobo.none>
+Date: Fri, 17 May 2019 00:18:26 -0300
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d02c888d-3473-45fe-839a-08d6da750f23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2019 03:09:22.2356 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6462
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 19051703-0040-0000-0000-000004F0CDFF
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011108; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000285; SDB=6.01204426; UDB=6.00632282; IPR=6.00985360; 
+ MB=3.00026924; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-17 03:18:34
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051703-0041-0000-0000-000008FCDE1E
+Message-Id: <87pnohzs3h.fsf@morokweng.localdomain>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-17_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905170019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,277 +94,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is chip errata ERR008000, the reference doc is
-(https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf),
 
-The issue is "While using ESAI transmit or receive and
-an underrun/overrun happens, channel swap may occur.
-The only recovery mechanism is to reset the ESAI."
+Hello,
 
-In this commit add a tasklet to handle reset of ESAI
-after xrun happens
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_esai.c | 166 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 166 insertions(+)
+> Christophe Leroy's on May 16, 2019 2:47 pm:
+>>=20
+>>=20
+>> Le 16/05/2019 =C3=A0 04:04, Nicholas Piggin a =C3=A9crit:
+>>> Radix boot looks like this:
+>>>=20
+>>>   -----------------------------------------------------
+>>>   phys_mem_size     =3D 0x200000000
+>>>   dcache_bsize      =3D 0x80
+>>>   icache_bsize      =3D 0x80
+>>>   cpu_features      =3D 0x0000c06f8f5fb1a7
+>>>     possible        =3D 0x0000fbffcf5fb1a7
+>>>     always          =3D 0x00000003800081a1
+>>>   cpu_user_features =3D 0xdc0065c2 0xaee00000
+>>>   mmu_features      =3D 0xbc006041
+>>>   firmware_features =3D 0x0000000010000000
+>>>   hash-mmu: ppc64_pft_size    =3D 0x0
+>>>   hash-mmu: kernel vmalloc start   =3D 0xc008000000000000
+>>>   hash-mmu: kernel IO start        =3D 0xc00a000000000000
+>>>   hash-mmu: kernel vmemmap start   =3D 0xc00c000000000000
+>>>   -----------------------------------------------------
+>>>=20
+>>> Fix:
+>>>=20
+>>>   -----------------------------------------------------
+>>>   phys_mem_size     =3D 0x200000000
+>>>   dcache_bsize      =3D 0x80
+>>>   icache_bsize      =3D 0x80
+>>>   cpu_features      =3D 0x0000c06f8f5fb1a7
+>>>     possible        =3D 0x0000fbffcf5fb1a7
+>>>     always          =3D 0x00000003800081a1
+>>>   cpu_user_features =3D 0xdc0065c2 0xaee00000
+>>>   mmu_features      =3D 0xbc006041
+>>>   firmware_features =3D 0x0000000010000000
+>>>   vmalloc start     =3D 0xc008000000000000
+>>>   IO start          =3D 0xc00a000000000000
+>>>   vmemmap start     =3D 0xc00c000000000000
+>>>   -----------------------------------------------------
+>>>=20
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>=20
+>> I fear your change defeats most of the purpose of commit=20
+>> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/comm=
+it/?h=3Dnext-20190515&id=3De4dccf9092ab48a6f902003b9558c0e45d0e849a
+>
+> I think it's still a significant improvement without introducing
+> the regression :)
+>
+>> As far as I understand, the main issue is the "hash-mmu:" prefix ?
+>> That's due to the following define in top of book3s64/hash_utils.c:
+>>=20
+>> #define pr_fmt(fmt) "hash-mmu: " fmt
+>>=20
+>> Could we simply undef it just before print_system_hash_info() ?
+>
+> Little bit fragile I think.
+>
+>> Or move print_system_hash_info() in another book3s64 specific file which=
+=20
+>> doesn't set pr_fmt ?
+>
+> print_system_info() would be okay for me and allow getting rid of
+> that PPC64 config. Although it also needs to go in a file without
+> pr_fmt I guess that's not so hard.
 
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index 10d2210c91ef..149972894c95 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -52,17 +52,20 @@ struct fsl_esai {
- 	struct clk *extalclk;
- 	struct clk *fsysclk;
- 	struct clk *spbaclk;
-+	struct tasklet_struct task;
- 	u32 fifo_depth;
- 	u32 slot_width;
- 	u32 slots;
- 	u32 tx_mask;
- 	u32 rx_mask;
-+	u32 tx_channels;
- 	u32 hck_rate[2];
- 	u32 sck_rate[2];
- 	bool hck_dir[2];
- 	bool sck_div[2];
- 	bool slave_mode;
- 	bool synchronous;
-+	bool reset_at_xrun;
- 	char name[32];
- };
-=20
-@@ -71,8 +74,14 @@ static irqreturn_t esai_isr(int irq, void *devid)
- 	struct fsl_esai *esai_priv =3D (struct fsl_esai *)devid;
- 	struct platform_device *pdev =3D esai_priv->pdev;
- 	u32 esr;
-+	u32 saisr;
-=20
- 	regmap_read(esai_priv->regmap, REG_ESAI_ESR, &esr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_SAISR, &saisr);
-+
-+	if ((saisr & (ESAI_SAISR_TUE | ESAI_SAISR_ROE))
-+		&& esai_priv->reset_at_xrun)
-+		tasklet_schedule(&esai_priv->task);
-=20
- 	if (esr & ESAI_ESR_TINIT_MASK)
- 		dev_dbg(&pdev->dev, "isr: Transmission Initialized\n");
-@@ -552,6 +561,9 @@ static int fsl_esai_trigger(struct snd_pcm_substream *s=
-ubstream, int cmd,
- 	u32 pins =3D DIV_ROUND_UP(channels, esai_priv->slots);
- 	u32 mask;
-=20
-+	if (tx)
-+		esai_priv->tx_channels =3D channels;
-+
- 	switch (cmd) {
- 	case SNDRV_PCM_TRIGGER_START:
- 	case SNDRV_PCM_TRIGGER_RESUME:
-@@ -585,10 +597,16 @@ static int fsl_esai_trigger(struct snd_pcm_substream =
-*substream, int cmd,
- 		regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
- 				   ESAI_xSMA_xS_MASK, ESAI_xSMA_xS(mask));
-=20
-+		regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-+				   ESAI_xCR_xEIE_MASK, ESAI_xCR_xEIE);
-+
- 		break;
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+		regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-+				   ESAI_xCR_xEIE_MASK, 0);
-+
- 		regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
- 				   tx ? ESAI_xCR_TE_MASK : ESAI_xCR_RE_MASK, 0);
- 		regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
-@@ -618,6 +636,145 @@ static const struct snd_soc_dai_ops fsl_esai_dai_ops =
-=3D {
- 	.set_tdm_slot =3D fsl_esai_set_dai_tdm_slot,
- };
-=20
-+static void fsl_esai_reset(unsigned long arg)
-+{
-+	struct fsl_esai *esai_priv =3D (struct fsl_esai *)arg;
-+	u32 saisr;
-+	u32 tsma, tsmb, rsma, rsmb, tcr, rcr, tfcr, rfcr;
-+	int i;
-+
-+	/*
-+	 * stop the tx & rx
-+	 */
-+	regmap_read(esai_priv->regmap, REG_ESAI_TSMA, &tsma);
-+	regmap_read(esai_priv->regmap, REG_ESAI_TSMB, &tsmb);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RSMA, &rsma);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RSMB, &rsmb);
-+
-+	regmap_read(esai_priv->regmap, REG_ESAI_TCR, &tcr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RCR, &rcr);
-+
-+	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+				ESAI_xCR_xEIE_MASK | ESAI_xCR_TE_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+				ESAI_xCR_xEIE_MASK | ESAI_xCR_RE_MASK, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TSMA,
-+				ESAI_xSMA_xS_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TSMB,
-+				ESAI_xSMB_xS_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RSMA,
-+				ESAI_xSMA_xS_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RSMB,
-+				ESAI_xSMB_xS_MASK, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TFCR,
-+				ESAI_xFCR_xFR | ESAI_xFCR_xFEN, ESAI_xFCR_xFR);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TFCR,
-+				ESAI_xFCR_xFR, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RFCR,
-+				ESAI_xFCR_xFR | ESAI_xFCR_xFEN, ESAI_xFCR_xFR);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RFCR,
-+				ESAI_xFCR_xFR, 0);
-+
-+	/*
-+	 * reset the esai, and restore the registers
-+	 */
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_ECR,
-+				ESAI_ECR_ESAIEN_MASK | ESAI_ECR_ERST_MASK,
-+				ESAI_ECR_ESAIEN | ESAI_ECR_ERST);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_ECR,
-+				ESAI_ECR_ESAIEN_MASK | ESAI_ECR_ERST_MASK,
-+				ESAI_ECR_ESAIEN);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+				ESAI_xCR_xPR_MASK,
-+				ESAI_xCR_xPR);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+				ESAI_xCR_xPR_MASK,
-+				ESAI_xCR_xPR);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PRRC,
-+				ESAI_PRRC_PDC_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PCRC,
-+				ESAI_PCRC_PC_MASK, 0);
-+
-+	/*
-+	 * Add fifo reset here, because the regcache_sync will
-+	 * write one more data to ETDR.
-+	 * Which will cause channel shift.
-+	 */
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TFCR,
-+				ESAI_xFCR_xFR_MASK, ESAI_xFCR_xFR);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RFCR,
-+				ESAI_xFCR_xFR_MASK, ESAI_xFCR_xFR);
-+
-+	regcache_mark_dirty(esai_priv->regmap);
-+	regcache_sync(esai_priv->regmap);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TFCR,
-+				ESAI_xFCR_xFR_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RFCR,
-+				ESAI_xFCR_xFR_MASK, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+				ESAI_xCR_xPR_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+				ESAI_xCR_xPR_MASK, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PRRC,
-+				ESAI_PRRC_PDC_MASK,
-+				ESAI_PRRC_PDC(ESAI_GPIO));
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PCRC,
-+				ESAI_PCRC_PC_MASK,
-+				ESAI_PCRC_PC(ESAI_GPIO));
-+
-+	regmap_read(esai_priv->regmap, REG_ESAI_SAISR, &saisr);
-+
-+	/*
-+	 * restart tx / rx, if they already enabled
-+	 */
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TFCR,
-+				ESAI_xFCR_xFEN_MASK, tfcr & ESAI_xFCR_xFEN);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RFCR,
-+				ESAI_xFCR_xFEN_MASK, rfcr & ESAI_xFCR_xFEN);
-+
-+	/* Write initial words reqiured by ESAI as normal procedure */
-+	for (i =3D 0; i < esai_priv->tx_channels; i++)
-+		regmap_write(esai_priv->regmap, REG_ESAI_ETDR, 0x0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+				ESAI_xCR_TE_MASK,
-+				ESAI_xCR_TE_MASK & tcr);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+				ESAI_xCR_RE_MASK,
-+				ESAI_xCR_RE_MASK & rcr);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TSMB,
-+				ESAI_xSMB_xS_MASK,
-+				ESAI_xSMB_xS_MASK & tsmb);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TSMA,
-+				ESAI_xSMA_xS_MASK,
-+				ESAI_xSMA_xS_MASK & tsma);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RSMB,
-+				ESAI_xSMB_xS_MASK,
-+				ESAI_xSMB_xS_MASK & rsmb);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RSMA,
-+				ESAI_xSMA_xS_MASK,
-+				ESAI_xSMA_xS_MASK & rsma);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+			   ESAI_xCR_xEIE_MASK, ESAI_xCR_xEIE & tcr);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+			   ESAI_xCR_xEIE_MASK, ESAI_xCR_xEIE & rcr);
-+}
-+
- static int fsl_esai_dai_probe(struct snd_soc_dai *dai)
- {
- 	struct fsl_esai *esai_priv =3D snd_soc_dai_get_drvdata(dai);
-@@ -787,6 +944,10 @@ static int fsl_esai_probe(struct platform_device *pdev=
-)
- 	esai_priv->pdev =3D pdev;
- 	snprintf(esai_priv->name, sizeof(esai_priv->name), "%pOFn", np);
-=20
-+	if (of_device_is_compatible(np, "fsl,vf610-esai") ||
-+	    of_device_is_compatible(np, "fsl,imx35-esai"))
-+		esai_priv->reset_at_xrun =3D true;
-+
- 	/* Get the addresses and IRQ */
- 	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	regs =3D devm_ioremap_resource(&pdev->dev, res);
-@@ -899,6 +1060,8 @@ static int fsl_esai_probe(struct platform_device *pdev=
-)
- 		return ret;
- 	}
-=20
-+	tasklet_init(&esai_priv->task, fsl_esai_reset, (unsigned long)esai_priv);
-+
- 	pm_runtime_enable(&pdev->dev);
-=20
- 	regcache_cache_only(esai_priv->regmap, true);
-@@ -912,7 +1075,10 @@ static int fsl_esai_probe(struct platform_device *pde=
-v)
-=20
- static int fsl_esai_remove(struct platform_device *pdev)
- {
-+	struct fsl_esai *esai_priv =3D platform_get_drvdata(pdev);
-+
- 	pm_runtime_disable(&pdev->dev);
-+	tasklet_kill(&esai_priv->task);
-=20
- 	return 0;
- }
+Or it could use printk(KERN_INFO "...") instead of pr_info(), which I
+think makes sense if the pr_fmt prefix is undesired.
+
 --=20
-2.21.0
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
