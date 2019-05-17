@@ -2,59 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59488218FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 15:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A03E21933
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 15:32:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4558082JmzzDqSR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 23:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4558N56KvMzDqT3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 23:32:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4557wr2bY4zDqRs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 23:11:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4558Kq1GZczDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 23:30:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4557wr1HD4z8tPq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 23:11:56 +1000 (AEST)
+ header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 4557wr0sqfz9s9y; Fri, 17 May 2019 23:11:56 +1000 (AEST)
+ id 4558Kp32L4z9s3l; Fri, 17 May 2019 23:30:06 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.122.46; helo=new-02-2.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from NEW-02-2.privateemail.com (new-02-2.privateemail.com
- [198.54.122.46])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4557wq2yG1z9s9N
- for <linuxppc-dev@ozlabs.org>; Fri, 17 May 2019 23:11:53 +1000 (AEST)
-Received: from MTA-09.privateemail.com (unknown [10.20.147.19])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id A1B0F6008E;
- Fri, 17 May 2019 13:11:50 +0000 (UTC)
-Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
- by MTA-09.privateemail.com (Postfix) with ESMTP id 8CF2060041;
- Fri, 17 May 2019 09:11:50 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.203])
- by MTA-09.privateemail.com (Postfix) with ESMTPA id 096BC60043;
- Fri, 17 May 2019 13:11:49 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4558Kp22lnz9s9N; Fri, 17 May 2019 23:30:06 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v4] powerpc/64s: support nospectre_v2 cmdline option
-Date: Fri, 17 May 2019 08:14:01 -0500
-Message-Id: <20190517131400.20503-1-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.21.0
+Subject: [PATCH v2] powerpc/mm/hash: Fix get_region_id() for invalid addresses
+Date: Fri, 17 May 2019 23:29:58 +1000
+Message-Id: <20190517132958.22299-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,77 +41,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>,
- Andrew Donnellan <ajd@linux.ibm.com>
+Cc: aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for disabling the kernel implemented spectre v2 mitigation
-(count cache flush on context switch) via the nospectre_v2 and
-mitigations=off cmdline options.
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Accesses by userspace to random addresses outside the user or kernel
+address range will generate an SLB fault. When we handle that fault we
+classify the effective address into several classes, eg. user, kernel
+linear, kernel virtual etc.
+
+For addresses that are completely outside of any valid range, we
+should not insert an SLB entry at all, and instead immediately an
+exception.
+
+In the past this was handled in two ways. Firstly we would check the
+top nibble of the address (using REGION_ID(ea)) and that would tell us
+if the address was user (0), kernel linear (c), kernel virtual (d), or
+vmemmap (f). If the address didn't match any of these it was invalid.
+
+Then for each type of address we would do a secondary check. For the
+user region we check against H_PGTABLE_RANGE, for kernel linear we
+would mask the top nibble of the address and then check the address
+against MAX_PHYSMEM_BITS.
+
+As part of commit 0034d395f89d ("powerpc/mm/hash64: Map all the kernel
+regions in the same 0xc range") we replaced REGION_ID() with
+get_region_id() and changed the masking of the top nibble to only mask
+the top two bits, which introduced a bug.
+
+Addresses less than (4 << 60) are still handled correctly, they are
+either less than (1 << 60) in which case they are subject to the
+H_PGTABLE_RANGE check, or they are correctly checked against
+MAX_PHYSMEM_BITS.
+
+However addresses from (4 << 60) to ((0xc << 60) - 1), are incorrectly
+treated as kernel linear addresses in get_region_id(). Then the top
+two bits are cleared by EA_MASK in slb_allocate_kernel() and the
+address is checked against MAX_PHYSMEM_BITS, which it passes due to
+the masking. The end result is we incorrectly insert SLB entries for
+those addresses.
+
+That is not actually catastrophic, having inserted the SLB entry we
+will then go on to take a page fault for the address and at that point
+we detect the problem and report it as a bad fault.
+
+Still we should not be inserting those entries, or treating them as
+kernel linear addresses in the first place. So fix get_region_id() to
+detect addresses in that range and return an invalid region id, which
+we cause use to not insert an SLB entry and directly report an
+exception.
+
+Fixes: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the same 0xc range")
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+[mpe: Drop change to EA_MASK for now, rewrite change log]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
-v3->v4:
-	add support for new mitigations=off cmdline option
+ arch/powerpc/include/asm/book3s/64/hash.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- arch/powerpc/kernel/security.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+v2: Drop change to EA_MASK for now, rewrite change log.
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index e1c9cf079503..88ae6a9bdf74 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
- bool barrier_nospec_enabled;
- static bool no_nospec;
- static bool btb_flush_enabled;
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static bool no_spectrev2;
- #endif
+diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
+index 5486087e64ea..2781ebf6add4 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash.h
++++ b/arch/powerpc/include/asm/book3s/64/hash.h
+@@ -93,6 +93,7 @@
+ #define VMALLOC_REGION_ID	NON_LINEAR_REGION_ID(H_VMALLOC_START)
+ #define IO_REGION_ID		NON_LINEAR_REGION_ID(H_KERN_IO_START)
+ #define VMEMMAP_REGION_ID	NON_LINEAR_REGION_ID(H_VMEMMAP_START)
++#define INVALID_REGION_ID	(VMEMMAP_REGION_ID + 1)
  
-@@ -114,7 +114,7 @@ static __init int security_feature_debugfs_init(void)
- device_initcall(security_feature_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
+ /*
+  * Defines the address of the vmemap area, in its own region on
+@@ -119,6 +120,9 @@ static inline int get_region_id(unsigned long ea)
+ 	if (id == 0)
+ 		return USER_REGION_ID;
  
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static int __init handle_nospectre_v2(char *p)
- {
- 	no_spectrev2 = true;
-@@ -122,6 +122,9 @@ static int __init handle_nospectre_v2(char *p)
- 	return 0;
- }
- early_param("nospectre_v2", handle_nospectre_v2);
-+#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
++	if (id != (PAGE_OFFSET >> 60))
++		return INVALID_REGION_ID;
 +
-+#ifdef CONFIG_PPC_FSL_BOOK3E
- void setup_spectre_v2(void)
- {
- 	if (no_spectrev2 || cpu_mitigations_off())
-@@ -399,7 +402,17 @@ static void toggle_count_cache_flush(bool enable)
+ 	if (ea < H_KERN_VIRT_START)
+ 		return LINEAR_MAP_REGION_ID;
  
- void setup_count_cache_flush(void)
- {
--	toggle_count_cache_flush(true);
-+	bool enable = true;
-+
-+	if (no_spectrev2 || cpu_mitigations_off()) {
-+		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED)
-+		    || security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
-+			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
-+
-+		enable = false;
-+	}
-+
-+	toggle_count_cache_flush(enable);
- }
- 
- #ifdef CONFIG_DEBUG_FS
 -- 
-2.21.0
+2.20.1
 
