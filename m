@@ -2,64 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C21E21305
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 06:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1111721357
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 07:09:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 454wGc56MvzDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 14:26:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 454xCl4LbtzDqSh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 15:09:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="MjmYEj/7"; 
- dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com
- [210.131.2.91])
+ spf=pass (mailfrom) smtp.mailfrom=gondor.apana.org.au
+ (client-ip=128.1.224.119; helo=deadmen.hmeau.com;
+ envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gondor.apana.org.au
+X-Greylist: delayed 1555 seconds by postgrey-1.36 at bilbo;
+ Fri, 17 May 2019 15:08:02 AEST
+Received: from deadmen.hmeau.com (unknown [128.1.224.119])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 454wDj1yFfzDqQM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 14:24:52 +1000 (AEST)
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com
- [209.85.217.50]) (authenticated)
- by conssluserg-06.nifty.com with ESMTP id x4H4OWoc020561
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 13:24:33 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x4H4OWoc020561
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1558067073;
- bh=XSdURHr+DFj73XgjlE8DVqoSorih7QO9jSg+HW1D8TM=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=MjmYEj/7xZIYGboJToCEBgv5PN/8CD6sDWZgip2cIfkO7e3Ii9sfP5C3OkJ+w+bmf
- nV6cmWzKaBSSjsZhyrn4bys5Y4Q6I+OEw7Kw5shBSlS1idFvlydMF1XAeStprazHXe
- YEbmOvO03hshhgHZXMzPoXOKrUM23BsqSOjE9eL/rkptHR8OUhQKwyp/IklD0+/Dl9
- owyazsPp24tpqnpga80RjHHMgFR00FgPaqDWKyOVGScKcv6zoiLl/Anuo6IiuxTxjf
- qbtJQzYFIsrlK27Oe+MJKRLUUuHhjaC4kJm7cNQh1CbYjHyDzVm4085SMLX6fx2uBd
- H18+0yFykqaGg==
-X-Nifty-SrcIP: [209.85.217.50]
-Received: by mail-vs1-f50.google.com with SMTP id x184so2751633vsb.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2019 21:24:32 -0700 (PDT)
-X-Gm-Message-State: APjAAAUrCriz8tiBkZbkyJUcU1didB39+LloKWymKF4KJom/53fa/Lg5
- e2UdrEhF2FWDqRSD2kGz0Ssud8XoKVUfvQtCmvA=
-X-Google-Smtp-Source: APXvYqwRom2nfToM4jL1gKybhnXBZPLM/8GRypEcR2drcSxkNBd5y+Id9rfE+eiIpAnAfm5gkg5AbPeOHdYPagE+d9M=
-X-Received: by 2002:a67:ad0f:: with SMTP id t15mr7896301vsl.179.1558067071748; 
- Thu, 16 May 2019 21:24:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 454xBV36jszDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 15:08:02 +1000 (AEST)
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+ by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+ id 1hRUgn-0007Sr-JW; Fri, 17 May 2019 12:41:49 +0800
+Received: from herbert by gondobar with local (Exim 4.89)
+ (envelope-from <herbert@gondor.apana.org.au>)
+ id 1hRUgd-0006YT-Cg; Fri, 17 May 2019 12:41:39 +0800
+Date: Fri, 17 May 2019 12:41:39 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH] crypto: vmx - ghash: do nosimd fallback manually
+Message-ID: <20190517044139.vx4wxzflmjpcjw6f@gondor.apana.org.au>
+References: <20190516154002.26246-1-dja@axtens.net>
+ <87bm02hsl4.fsf@concordia.ellerman.id.au>
+ <87tvdtzzsj.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-References: <20190423034959.13525-1-yamada.masahiro@socionext.com>
- <20190423034959.13525-5-yamada.masahiro@socionext.com>
- <aa73f81d-5d5a-a1d2-5239-3e8eb1278ec4@redhat.com>
-In-Reply-To: <aa73f81d-5d5a-a1d2-5239-3e8eb1278ec4@redhat.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 17 May 2019 13:23:55 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAST5y9Khg0BBz6W0mekPpuLPwWa9nPvvVENidWhHZ-avw@mail.gmail.com>
-Message-ID: <CAK7LNAST5y9Khg0BBz6W0mekPpuLPwWa9nPvvVENidWhHZ-avw@mail.gmail.com>
-Subject: Re: [RESEND PATCH v3 04/11] s390/cpacf: mark scpacf_query() as
- __always_inline
-To: Laura Abbott <labbott@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tvdtzzsj.fsf@dja-thinkpad.axtens.net>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,64 +52,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-s390 <linux-s390@vger.kernel.org>, Mathieu Malaterre <malat@debian.org>,
- X86 ML <x86@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mips@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, linux-mtd <linux-mtd@lists.infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: leo.barbosa@canonical.com, Stephan Mueller <smueller@chronox.de>,
+ nayna@linux.ibm.com, omosnacek@gmail.com, ebiggers@kernel.org,
+ leitao@debian.org, pfsmorigo@gmail.com, linux-crypto@vger.kernel.org,
+ marcelo.cerri@canonical.com, gcwilson@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 17, 2019 at 8:01 AM Laura Abbott <labbott@redhat.com> wrote:
+On Fri, May 17, 2019 at 10:32:12AM +1000, Daniel Axtens wrote:
 >
-> On 4/22/19 8:49 PM, Masahiro Yamada wrote:
-> > This prepares to move CONFIG_OPTIMIZE_INLINING from x86 to a common
-> > place. We need to eliminate potential issues beforehand.
-> >
-> > If it is enabled for s390, the following error is reported:
-> >
-> > In file included from arch/s390/crypto/des_s390.c:19:
-> > ./arch/s390/include/asm/cpacf.h: In function 'cpacf_query':
-> > ./arch/s390/include/asm/cpacf.h:170:2: warning: asm operand 3 probably doesn't match constraints
-> >    asm volatile(
-> >    ^~~
-> > ./arch/s390/include/asm/cpacf.h:170:2: error: impossible constraint in 'asm'
-> >
->
-> This also seems to still be broken, again with gcc 9.1.1
->
-> BUILDSTDERR: In file included from arch/s390/crypto/prng.c:29:
-> BUILDSTDERR: ./arch/s390/include/asm/cpacf.h: In function 'cpacf_query_func':
-> BUILDSTDERR: ./arch/s390/include/asm/cpacf.h:170:2: warning: asm operand 3 probably doesn't match constraints
-> BUILDSTDERR:   170 |  asm volatile(
-> BUILDSTDERR:       |  ^~~
-> BUILDSTDERR: ./arch/s390/include/asm/cpacf.h:170:2: error: impossible constraint in 'asm'
->
-> I realized we're still carrying a patch to add -fno-section-anchors
-> but it's a similar failure to powerpc.
+> Yes, I think that's the right fixes tag. Not quite sure how I managed to
+> miss that! Herbert, I assume this will go via your tree: do you want me
+> to send a v2 with the tag or are you OK to just add that in when you
+> merge it?
 
+I can add this when applying the patch.
 
-Christophe had already pointed out potential issues for "i" constraint,
-and I have fixups in hand:
-
-See
-https://lkml.org/lkml/2019/5/3/459
-
-
-My plan was to send it after all of my base patches
-were merged.
-
-This s390 cparf.h is included in the TODO list.
-
-Will fix soon.
-
-Thanks.
-
+Cheers,
 -- 
-Best Regards
-Masahiro Yamada
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
