@@ -2,78 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166DB21611
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 11:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 577D021631
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 11:23:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4552fW4RXFzDqTh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 19:14:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4552sK6cY3zDqSs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 19:23:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Nu7BuclZ"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NLJ9EacG"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4552dB3vClzDq9m
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 19:13:02 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id f97so3073684plb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:13:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4552qp5l9lzDqD7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 19:22:14 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id d21so3100108plr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 02:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
- :message-id:content-transfer-encoding;
- bh=YBX3Ctf16/wbm4bS5USM6KccxnHVIrfjTiW7ZoQCbNI=;
- b=Nu7BuclZ81lu2fN5QpWHsZfmDyRmfHGUjMqjhxOJ0IV4dYZAatPzq/oKDvOJCaHYcx
- 2wiaLp5/Daq4f7xSESP6pbfZ8axfMHVBa3IA97eMevPG6beaq/L4U2CcPGbFau1LtY0a
- 9VOTB6NJsm85Pj/o6tz3GMCysAR5wU962vrOfFI5zY/DHy/5rkG9Z+2gY+qFJP6m43om
- bNn98WAuVytX+HP4fbhn60NM+PZ0W+K5ybRwG6YLRs6yA24LjbwItdQ3C74g1Z7CotQn
- AnQViPhUqxWFRS8K2qNQFOtNNqBEZc8KLXOgfLFWxNY4fNgry9IbAYkdhw2jq7ugKA00
- fRdA==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=rLyzi5dHdAIdr6R4wT+pyq/RFSV+rDnfA5Z7CJgbHOw=;
+ b=NLJ9EacG3EGaFiGUa9CvaBG/TcZcQp8w2UeZoFY+DWMJFl1z9chBtKq/ZvYZPaZdw3
+ 2Rhfnwy1GAvk+lKEGrw2ZeTZV5F2XByalLFznA+CvKKIW9VPL5bH+GqreT17AUCSsYCz
+ v9sVIhC9bdzCBQg8g2PfwsQchbjZnM0CXjhQiyogOt/bzt/VoTLWeyoWcvTlsbD7sJ0C
+ nR59UgcBJ4JvQ9HcZwwYTKsWolE4JWdeAdov+lKuS7zfkRGOp3BRIn6fpQVOFIwKsRJM
+ Qy0OPSBTCvoMpbmbgD1VMkxfJy6lgwGNYRagnS2NV4+TU2q7VvJesFXd4yexhir3RpGs
+ ozwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=YBX3Ctf16/wbm4bS5USM6KccxnHVIrfjTiW7ZoQCbNI=;
- b=KNDl0+09BfK0OSiBVlGrglHM2Ay9+FyDbLfwWJMbVYIDL2g1PVQiii9gZAL8ZjrsV6
- 8+3RsHeb2TGvpkQo9xoneDrQrhRoY7/9Z7IHyokSfrn2eqmmV5F+IjQsaXr95w1nz8eI
- WBDz0rKxTGKfKW1Vl8eRVOI91R5ol1v0AbXRTfkidtzoiUfJHf+OLZCPXDmut5xnr/Kk
- C/a1tow/gG8uJj71tZdEz4BadTmKNIB5kKAqbhhwFRPr5HGdRrsr5am9+PlNPByFn7AN
- FOSWkhlcv1Pu3Z3knE5EELTh2fHVz/MZul9W0HXLg1650kPrdJdR094tFhlrkl1PYtRH
- eZMA==
-X-Gm-Message-State: APjAAAXtQKiNOhD/SAxDThg4Bx+jIdAuKcA/u9kMZcS/CwF1wnv+d4SL
- 7SfknM9hDXAMEnD+LOWtvFvZzCIMPXM=
-X-Google-Smtp-Source: APXvYqySxMlW6Iwm3XD7qrIGnUEK4L88NESsGA4b6hjX/pckBuzT22A8d5nyIS3pmIrz2F1aeFEwdA==
-X-Received: by 2002:a17:902:714e:: with SMTP id
- u14mr49494224plm.218.1558084379267; 
- Fri, 17 May 2019 02:12:59 -0700 (PDT)
+ bh=rLyzi5dHdAIdr6R4wT+pyq/RFSV+rDnfA5Z7CJgbHOw=;
+ b=JPDOo2gsrXSf8ufr2+fqbPwdqK/tS49hoPw718lY7W8PuBzcqbwxLBDyaCqlAKAqIh
+ RgWe0DIdgVBfLz1TmVQuBwqdt/XIvt+exyFGS+cpFCX+8R1z+x0DUHwozIVvnW5DchIW
+ cFwjzdJMn0DQToLQzr5dQ6kYy9EabYuaklXEzv4b7Lgvp/+jVxrSJBbJXLXQNnpq/KSl
+ kjYDt6Vvh0HvUUr+XFQ08dlwff6IOhDpcNnvRAFgtLSTGvfJ4WPwp+PRTITOgI2twkO5
+ chPMOIYaLjU52rMvOBTcxa5p5diiPPYVpO/GVVuiZqtJlBW5ScN7avSMFkI5zIJ7gJTV
+ 3hlQ==
+X-Gm-Message-State: APjAAAW0s/IdKQnXK9AFAdnrZxtHp+8Upc7ew39e2co7CtvQtXS0UfWJ
+ MxqGnrBpEldl1AwoUkybwPc=
+X-Google-Smtp-Source: APXvYqwumLyiAc9ahPOxa79cA4GXA2roWuX7PT4TkZlXiSLQbjZjxeaK7+Luf/1YkX4nkmKh13kdfA==
+X-Received: by 2002:a17:902:a503:: with SMTP id
+ s3mr54798441plq.16.1558084929471; 
+ Fri, 17 May 2019 02:22:09 -0700 (PDT)
 Received: from localhost (61-68-212-131.tpgi.com.au. [61.68.212.131])
- by smtp.gmail.com with ESMTPSA id c2sm12941261pfa.18.2019.05.17.02.12.57
+ by smtp.gmail.com with ESMTPSA id v64sm10321056pfv.106.2019.05.17.02.22.07
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 17 May 2019 02:12:58 -0700 (PDT)
-Date: Fri, 17 May 2019 19:12:45 +1000
+ Fri, 17 May 2019 02:22:08 -0700 (PDT)
+Date: Fri, 17 May 2019 19:21:54 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/64/ftrace: mprofile-kernel patch out mflr
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-References: <20190413015940.31170-1-npiggin@gmail.com>
- <871s13ujcf.fsf@concordia.ellerman.id.au>
- <1557729790.fw18xf9mdt.naveen@linux.ibm.com>
- <87tvdytwo0.fsf@concordia.ellerman.id.au>
- <1557821918.xbleq18bk2.naveen@linux.ibm.com>
- <1557985279.4o349j5g2i.astroid@bobo.none>
- <1557989161.cjlaryiij4.naveen@linux.ibm.com>
-In-Reply-To: <1557989161.cjlaryiij4.naveen@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/book3s/mm: Clear MMU_FTR_HPTE_TABLE when radix is
+ enabled.
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
+ paulus@samba.org
+References: <20190514060205.20887-1-aneesh.kumar@linux.ibm.com>
+ <1557982690.pk1t7llmyy.astroid@bobo.none>
+ <df83cf16-669c-ae90-88c9-333700e38dcd@linux.ibm.com>
+In-Reply-To: <df83cf16-669c-ae90-88c9-333700e38dcd@linux.ibm.com>
 MIME-Version: 1.0
 User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1558084179.fz93ts375u.astroid@bobo.none>
+Message-Id: <1558084576.9an48zl8ss.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,91 +84,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao's on May 17, 2019 4:22 am:
-> Nicholas Piggin wrote:
->> Naveen N. Rao's on May 14, 2019 6:32 pm:
->>> Michael Ellerman wrote:
->>>> "Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
->>>>> Michael Ellerman wrote:
->>>>>> Nicholas Piggin <npiggin@gmail.com> writes:
->>>>>>> The new mprofile-kernel mcount sequence is
->>>>>>>
->>>>>>>   mflr	r0
->>>>>>>   bl	_mcount
->>>>>>>
->>>>>>> Dynamic ftrace patches the branch instruction with a noop, but leav=
-es
->>>>>>> the mflr. mflr is executed by the branch unit that can only execute=
- one
->>>>>>> per cycle on POWER9 and shared with branches, so it would be nice t=
-o
->>>>>>> avoid it where possible.
->>>>>>>
->>>>>>> This patch is a hacky proof of concept to nop out the mflr. Can we =
-do
->>>>>>> this or are there races or other issues with it?
->>>>>>=20
->>>>>> There's a race, isn't there?
->>>>>>=20
->>>>>> We have a function foo which currently has tracing disabled, so the =
-mflr
->>>>>> and bl are nop'ed out.
->>>>>>=20
->>>>>>   CPU 0			CPU 1
->>>>>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>>>   bl foo
->>>>>>   nop (ie. not mflr)
->>>>>>   -> interrupt
->>>>>>   something else	enable tracing for foo
->>>>>>   ...			patch mflr and branch
->>>>>>   <- rfi
->>>>>>   bl _mcount
->>>>>>=20
->>>>>> So we end up in _mcount() but with r0 not populated.
->>>>>
->>>>> Good catch! Looks like we need to patch the mflr with a "b +8" simila=
-r=20
->>>>> to what we do in __ftrace_make_nop().
->>>>=20
->>>> Would that actually make it any faster though? Nick?
->>>=20
->>> Ok, how about doing this as a 2-step process?
->>> 1. patch 'mflr r0' with a 'b +8'
->>>    synchronize_rcu_tasks()
->>> 2. convert 'b +8' to a 'nop'
+Aneesh Kumar K.V's on May 16, 2019 11:36 pm:
+> On 5/16/19 10:34 AM, Nicholas Piggin wrote:
+>> Aneesh Kumar K.V's on May 14, 2019 4:02 pm:
+>>> Avoids confusion when printing Oops message like below
+>>>
+>>>   Faulting instruction address: 0xc00000000008bdb4
+>>>   Oops: Kernel access of bad area, sig: 11 [#1]
+>>>   LE PAGE_SIZE=3D64K MMU=3DRadix MMU=3DHash SMP NR_CPUS=3D2048 NUMA Pow=
+erNV
+>>>
+>>> Either ibm,pa-features or ibm,powerpc-cpu-features can be used to enabl=
+e the
+>>> MMU features. We don't clear related MMU feature bits there. We use the=
+ kernel
+>>> commandline to determine what translation mode we want to use and clear=
+ the
+>>> HPTE or radix bit accordingly. On LPAR we do have to renable HASH bit i=
+f the
+>>> hypervisor can't do radix.
 >>=20
->> Good idea. Well the mflr r0 is harmless, so you can leave that in.
->> You just need to ensure it's not removed before the bl is. So nop
->> the bl _mcount, then synchronize_rcu_tasks(), then nop the mflr?
+>> Well we have the HPTE feature: the CPU supports hash MMU mode. It's
+>> just the the kernel is booted in radix mode.
+>>=20
 >=20
-> The problem actually seems to be when we try to patch in the branch to=20
-> _mcount(), rather than when we are patching in the nop instructions=20
-> (i.e., the race is when we try to enable the function tracer, rather=20
-> than while disabling it).
+> We are not using mmu_features to indicate the capability of the hardware=20
+> right? ie, mmu_features is an indication of current running config.
+
+It's kind of both.
+
+> We=20
+> set MMU_FTR_TYPE_RADIX if the kernel is running in radix translation=20
+> mode and on similar lines we should set MMU_FTR_HPTE_TABLE if the kernel=20
+> is running in only hash translation mode. Whether the hardware support=20
+> these translation mode is different from which mode is currently used.
+
+I don't see why that logic follows. We have MMU_FTR_TYPE_RADIX to
+determine if we are running in radix or HPT mode, why do we need
+another bit for the same thing?
+
+>> Could make a difference for KVM, if it will support an HPT guest or
+>> not.
+>>=20
 >=20
-> When we disable ftrace, we only need to ensure we patch out the branch=20
-> to _mcount() before patching out the preceding 'mflr r0'. I don't think=20
-> we need a synchronize_rcu_tasks() in that case.
+> kvm should not depend on MMU_FTR_HPTE_TABLE to identify whether the=20
+> hardware supports hash page table translation.
 
-That's probably right.
+Why not though?
 
-> While enabling ftrace, we will first need to patch the preceding 'mflr=20
-> r0' (which would now be a 'nop') with 'b +8', then use=20
-> synchronize_rcu_tasks() and finally patch in 'bl _mcount()' followed by=20
-> 'mflr r0'.
->=20
-> I think that's what you meant, just that my reference to patching 'mflr=20
-> r0' with a 'b +8' should have called out that the mflr would have been=20
-> nop'ed out.
+> I don't think we do that.
 
-I meant that we don't need the b +8 anywhere, because the mflr r0
-is harmless. Enabling ftrace just needs to patch in 'mflr r0', and
-then synchronize_rcu_tasks(), and then patch in 'bl _mcount'. I think?
+It doesn't, but the point is the bit is kind of useful now (in
+theory if you wanted to do something like that), but if you just
+make it an inverse of the current mode bit we already have, then
+it's useless.
+
+Point is, just use the existing radix MMU selection bit that we
+use everywhere else to fix the problem. If that finishes off the
+only 64-bit users of the bit and you want to get rid of that as
+well I'm fine with that too.
 
 Thanks,
 Nick
