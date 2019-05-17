@@ -2,34 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A03E21933
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 15:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAA8219BB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 16:22:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4558N56KvMzDqT3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2019 23:32:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4559V80k55zDqVD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2019 00:22:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4558Kq1GZczDqNx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 23:30:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 4558Kp32L4z9s3l; Fri, 17 May 2019 23:30:06 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4558Kp22lnz9s9N; Fri, 17 May 2019 23:30:06 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2] powerpc/mm/hash: Fix get_region_id() for invalid addresses
-Date: Fri, 17 May 2019 23:29:58 +1000
-Message-Id: <20190517132958.22299-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4559Sg0DkTzDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2019 00:21:06 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4HEEAia112602
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 10:21:02 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2shxe78mmc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2019 10:21:01 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Fri, 17 May 2019 15:20:58 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 17 May 2019 15:20:56 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4HEKsJ454853690
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 May 2019 14:20:54 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1E1B11C064;
+ Fri, 17 May 2019 14:20:54 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6542611C054;
+ Fri, 17 May 2019 14:20:54 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.146.126])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 17 May 2019 14:20:54 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, andrew.donnellan@au1.ibm.com,
+ alastair@au1.ibm.com
+Subject: [PATCH] ocxl: Fix potential memory leak on context creation
+Date: Fri, 17 May 2019 16:20:54 +0200
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19051714-0016-0000-0000-0000027CCA41
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051714-0017-0000-0000-000032D9A77C
+Message-Id: <20190517142054.13933-1-fbarrat@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-17_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=719 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905170089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,91 +86,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com
+Cc: clombard@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+If we couldn't fully init a context, we were leaking memory.
 
-Accesses by userspace to random addresses outside the user or kernel
-address range will generate an SLB fault. When we handle that fault we
-classify the effective address into several classes, eg. user, kernel
-linear, kernel virtual etc.
-
-For addresses that are completely outside of any valid range, we
-should not insert an SLB entry at all, and instead immediately an
-exception.
-
-In the past this was handled in two ways. Firstly we would check the
-top nibble of the address (using REGION_ID(ea)) and that would tell us
-if the address was user (0), kernel linear (c), kernel virtual (d), or
-vmemmap (f). If the address didn't match any of these it was invalid.
-
-Then for each type of address we would do a secondary check. For the
-user region we check against H_PGTABLE_RANGE, for kernel linear we
-would mask the top nibble of the address and then check the address
-against MAX_PHYSMEM_BITS.
-
-As part of commit 0034d395f89d ("powerpc/mm/hash64: Map all the kernel
-regions in the same 0xc range") we replaced REGION_ID() with
-get_region_id() and changed the masking of the top nibble to only mask
-the top two bits, which introduced a bug.
-
-Addresses less than (4 << 60) are still handled correctly, they are
-either less than (1 << 60) in which case they are subject to the
-H_PGTABLE_RANGE check, or they are correctly checked against
-MAX_PHYSMEM_BITS.
-
-However addresses from (4 << 60) to ((0xc << 60) - 1), are incorrectly
-treated as kernel linear addresses in get_region_id(). Then the top
-two bits are cleared by EA_MASK in slb_allocate_kernel() and the
-address is checked against MAX_PHYSMEM_BITS, which it passes due to
-the masking. The end result is we incorrectly insert SLB entries for
-those addresses.
-
-That is not actually catastrophic, having inserted the SLB entry we
-will then go on to take a page fault for the address and at that point
-we detect the problem and report it as a bad fault.
-
-Still we should not be inserting those entries, or treating them as
-kernel linear addresses in the first place. So fix get_region_id() to
-detect addresses in that range and return an invalid region id, which
-we cause use to not insert an SLB entry and directly report an
-exception.
-
-Fixes: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the same 0xc range")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-[mpe: Drop change to EA_MASK for now, rewrite change log]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Fixes: b9721d275cc2 ("ocxl: Allow external drivers to use OpenCAPI contexts")
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/hash.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/misc/ocxl/context.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v2: Drop change to EA_MASK for now, rewrite change log.
-
-diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-index 5486087e64ea..2781ebf6add4 100644
---- a/arch/powerpc/include/asm/book3s/64/hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash.h
-@@ -93,6 +93,7 @@
- #define VMALLOC_REGION_ID	NON_LINEAR_REGION_ID(H_VMALLOC_START)
- #define IO_REGION_ID		NON_LINEAR_REGION_ID(H_KERN_IO_START)
- #define VMEMMAP_REGION_ID	NON_LINEAR_REGION_ID(H_VMEMMAP_START)
-+#define INVALID_REGION_ID	(VMEMMAP_REGION_ID + 1)
- 
- /*
-  * Defines the address of the vmemap area, in its own region on
-@@ -119,6 +120,9 @@ static inline int get_region_id(unsigned long ea)
- 	if (id == 0)
- 		return USER_REGION_ID;
- 
-+	if (id != (PAGE_OFFSET >> 60))
-+		return INVALID_REGION_ID;
-+
- 	if (ea < H_KERN_VIRT_START)
- 		return LINEAR_MAP_REGION_ID;
- 
+diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+index bab9c9364184..ab93156aa83e 100644
+--- a/drivers/misc/ocxl/context.c
++++ b/drivers/misc/ocxl/context.c
+@@ -22,6 +22,7 @@ int ocxl_context_alloc(struct ocxl_context **context, struct ocxl_afu *afu,
+ 			afu->pasid_base + afu->pasid_max, GFP_KERNEL);
+ 	if (pasid < 0) {
+ 		mutex_unlock(&afu->contexts_lock);
++		kfree(*context);
+ 		return pasid;
+ 	}
+ 	afu->pasid_count++;
 -- 
-2.20.1
+2.21.0
 
