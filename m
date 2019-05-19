@@ -2,64 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E680D228AC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 22:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE45F22945
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 23:42:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456Y9n0bcMzDqHH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 06:13:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456b9X6kXNzDqJc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 07:42:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ spf=none (mailfrom) smtp.mailfrom=ucw.cz
+ (client-ip=195.113.26.193; helo=atrey.karlin.mff.cuni.cz;
+ envelope-from=pavel@ucw.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=denx.de
+Received: from atrey.karlin.mff.cuni.cz (atrey.karlin.mff.cuni.cz
+ [195.113.26.193])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456Y8K4b0rzDqGC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 06:11:45 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id EFC8D285B3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 20:11:42 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id E351C285CC; Sun, 19 May 2019 20:11:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203597] kernel 4.9.175 fails to boot on a PowerMac G4 3,6 at
- early stage
-Date: Sun, 19 May 2019 20:11:41 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-203597-206035-k1QHd8Drbo@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203597-206035@https.bugzilla.kernel.org/>
-References: <bug-203597-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456b8F0xR7zDqHF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 07:41:49 +1000 (AEST)
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+ id A5A4180378; Sun, 19 May 2019 23:34:47 +0200 (CEST)
+Date: Sun, 19 May 2019 23:34:57 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Ran Wang <ran.wang_1@nxp.com>
+Subject: Re: [PATCH V2 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Message-ID: <20190519213457.GG31403@amd>
+References: <20190517033946.30763-1-ran.wang_1@nxp.com>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature"; boundary="sLx0z+5FKKtIVDwd"
+Content-Disposition: inline
+In-Reply-To: <20190517033946.30763-1-ran.wang_1@nxp.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,27 +47,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pm@vger.kernel.org, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+ Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203597
 
-Erhard F. (erhard_f@mailbox.org) changed:
+--sLx0z+5FKKtIVDwd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-         Resolution|---                         |CODE_FIX
 
---- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Christophe Leroy from comment #2)
-> You are missing following commit:
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/
-> ?id=3Db45ba4a51cd
-Your fix landed in 4.9.177 and I can confirm my G4 boots fine now. Thanks!
+> --- a/include/linux/pm_wakeup.h
+
+> @@ -70,6 +71,7 @@ struct wakeup_source {
+>  	unsigned long		wakeup_count;
+>  	bool			active:1;
+>  	bool			autosleep_enabled:1;
+> +	struct device	*attached_dev;
+>  };
+> =20
+>  #ifdef CONFIG_PM_SLEEP
+
+You might want to format this similary to the rest...
+									Pavel
 
 --=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--sLx0z+5FKKtIVDwd
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlzhzAEACgkQMOfwapXb+vJFYwCfWepB4p66NbXEV3e8W5ZictQ/
+Es8AmgKZXmLs30UjIBYDFKic2DbgBegF
+=KZ5b
+-----END PGP SIGNATURE-----
+
+--sLx0z+5FKKtIVDwd--
