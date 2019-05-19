@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3929A2289A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 21:45:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456XZ15k7LzDqCx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 05:45:29 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E680D228AC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 22:13:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 456Y9n0bcMzDqHH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 06:13:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,41 +19,41 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456XNg3cNFzDqGp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 05:37:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456Y8K4b0rzDqGC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 06:11:45 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 260CB285CD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 19:37:21 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id EFC8D285B3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 20:11:42 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 1A838285BA; Sun, 19 May 2019 19:37:21 +0000 (UTC)
+ id E351C285CC; Sun, 19 May 2019 20:11:42 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
+ NO_RELAYS autolearn=unavailable version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203647] Locking API testsuite fails "mixed read-lock/lock-write
- ABBA" rlock on kernels >=4.14.x
-Date: Sun, 19 May 2019 19:37:20 +0000
+Subject: [Bug 203597] kernel 4.9.175 fails to boot on a PowerMac G4 3,6 at
+ early stage
+Date: Sun, 19 May 2019 20:11:41 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
+X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-203647-206035-nri2iy5euK@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203647-206035@https.bugzilla.kernel.org/>
-References: <bug-203647-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-203597-206035-k1QHd8Drbo@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203597-206035@https.bugzilla.kernel.org/>
+References: <bug-203597-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -75,12 +75,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203647
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203597
 
---- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 282841
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D282841&action=3Dedit
-kernel .config (5.1.3, G5 11,2)
+Erhard F. (erhard_f@mailbox.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |CODE_FIX
+
+--- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
+(In reply to Christophe Leroy from comment #2)
+> You are missing following commit:
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/
+> ?id=3Db45ba4a51cd
+Your fix landed in 4.9.177 and I can confirm my G4 boots fine now. Thanks!
 
 --=20
 You are receiving this mail because:
