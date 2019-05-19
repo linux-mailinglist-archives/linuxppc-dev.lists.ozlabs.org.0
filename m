@@ -1,41 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780C822405
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2019 18:07:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 455qmr0Z6XzDqVv
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 02:07:24 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB0022657
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 10:57:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 456G9x6Q0HzDqLv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 18:57:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=git.icu
- (client-ip=163.172.180.134; helo=git.icu; envelope-from=shawn@git.icu;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=git.icu
-Received: from git.icu (git.icu [163.172.180.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 455qk020cwzDqPT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 02:04:56 +1000 (AEST)
-Received: from localhost.localdomain (minicloud.parqtec.unicamp.br
- [143.106.167.126]) by git.icu (Postfix) with ESMTPSA id 7925C2209A3;
- Sat, 18 May 2019 16:04:51 +0000 (UTC)
-From: Shawn Landden <shawn@git.icu>
-To: 
-Subject: [RESEND v4 PATCH 2/2] [PowerPC] Allow use of SIMD in interrupts from
- kernel code
-Date: Sat, 18 May 2019 13:04:41 -0300
-Message-Id: <20190518160441.25008-2-shawn@git.icu>
-X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a
-In-Reply-To: <20190518160441.25008-1-shawn@git.icu>
-References: <20190515013725.2198-1-shawn@git.icu>
- <20190518160441.25008-1-shawn@git.icu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456G8S0fqPzDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 18:55:50 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4J8pH2M075577
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 04:55:43 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sjyg10d0f-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 04:55:43 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Sun, 19 May 2019 09:55:42 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sun, 19 May 2019 09:55:38 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4J8tbea57933866
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 19 May 2019 08:55:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CA26E42042;
+ Sun, 19 May 2019 08:55:37 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 774024203F;
+ Sun, 19 May 2019 08:55:36 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.50.203])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 19 May 2019 08:55:36 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: Re: [PATCH] mm/nvdimm: Pick the right alignment default when creating
+ dax devices
+In-Reply-To: <de5cbe7d-bd47-6793-1f1a-2274c5c59eb5@linux.ibm.com>
+References: <20190514025449.9416-1-aneesh.kumar@linux.ibm.com>
+ <875zq9m8zx.fsf@vajain21.in.ibm.com>
+ <de5cbe7d-bd47-6793-1f1a-2274c5c59eb5@linux.ibm.com>
+Date: Sun, 19 May 2019 14:25:33 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19051908-4275-0000-0000-000003365BFF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19051908-4276-0000-0000-00003845EA00
+Message-Id: <87sgtaddru.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-19_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=997 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905190066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,248 +90,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Shawn Landden <shawn@git.icu>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This even allows simd in preemptible kernel code,
-as does x86, although this is rarely safe (could be used with
-kthread_create_on_cpu). All callers are disabling preemption.
 
-v4: fix build without CONFIG_AVX
-    change commit message
-Signed-off-by: Shawn Landden <shawn@git.icu>
----
- arch/powerpc/include/asm/switch_to.h |  15 +---
- arch/powerpc/kernel/process.c        | 117 +++++++++++++++++++--------
- 2 files changed, 88 insertions(+), 44 deletions(-)
+Hi Dan,
 
-diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
-index 5b03d8a82..c79f7d24a 100644
---- a/arch/powerpc/include/asm/switch_to.h
-+++ b/arch/powerpc/include/asm/switch_to.h
-@@ -30,10 +30,7 @@ extern void enable_kernel_fp(void);
- extern void flush_fp_to_thread(struct task_struct *);
- extern void giveup_fpu(struct task_struct *);
- extern void save_fpu(struct task_struct *);
--static inline void disable_kernel_fp(void)
--{
--	msr_check_and_clear(MSR_FP);
--}
-+extern void disable_kernel_fp(void);
- #else
- static inline void save_fpu(struct task_struct *t) { }
- static inline void flush_fp_to_thread(struct task_struct *t) { }
-@@ -44,10 +41,7 @@ extern void enable_kernel_altivec(void);
- extern void flush_altivec_to_thread(struct task_struct *);
- extern void giveup_altivec(struct task_struct *);
- extern void save_altivec(struct task_struct *);
--static inline void disable_kernel_altivec(void)
--{
--	msr_check_and_clear(MSR_VEC);
--}
-+extern void disable_kernel_altivec(void);
- #else
- static inline void save_altivec(struct task_struct *t) { }
- static inline void __giveup_altivec(struct task_struct *t) { }
-@@ -56,10 +50,7 @@ static inline void __giveup_altivec(struct task_struct *t) { }
- #ifdef CONFIG_VSX
- extern void enable_kernel_vsx(void);
- extern void flush_vsx_to_thread(struct task_struct *);
--static inline void disable_kernel_vsx(void)
--{
--	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
--}
-+extern void disable_kernel_vsx(void);
- #endif
- 
- #ifdef CONFIG_SPE
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index ef534831f..0136fd132 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -170,6 +170,29 @@ void __msr_check_and_clear(unsigned long bits)
- EXPORT_SYMBOL(__msr_check_and_clear);
- 
- #ifdef CONFIG_PPC_FPU
-+/*
-+ * Track whether the kernel is using the FPU state
-+ * currently.
-+ *
-+ * This flag is used:
-+ *
-+ *   - by IRQ context code to potentially use the FPU
-+ *     if it's unused.
-+ *
-+ *   - to debug kernel_fpu/altivec/vsx_begin()/end() correctness
-+ */
-+static DEFINE_PER_CPU(bool, in_kernel_fpu);
-+
-+static bool kernel_fpu_disabled(void)
-+{
-+	return this_cpu_read(in_kernel_fpu);
-+}
-+
-+static bool interrupted_kernel_fpu_idle(void)
-+{
-+	return !kernel_fpu_disabled();
-+}
-+
- static void __giveup_fpu(struct task_struct *tsk)
- {
- 	unsigned long msr;
-@@ -230,7 +253,8 @@ void enable_kernel_fp(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_FP);
- 
-@@ -251,6 +275,15 @@ void enable_kernel_fp(void)
- }
- EXPORT_SYMBOL(enable_kernel_fp);
- 
-+void disable_kernel_fp(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, false);
-+
-+	msr_check_and_clear(MSR_FP);
-+}
-+EXPORT_SYMBOL(disable_kernel_fp);
-+
- static int restore_fp(struct task_struct *tsk)
- {
- 	if (tsk->thread.load_fp || tm_active_with_fp(tsk)) {
-@@ -260,6 +293,37 @@ static int restore_fp(struct task_struct *tsk)
- 	}
- 	return 0;
- }
-+
-+/*
-+ * Were we in user mode when we were
-+ * interrupted?
-+ *
-+ * Doing kernel_altivec/vsx_begin/end() is ok if we are running
-+ * in an interrupt context from user mode - we'll just
-+ * save the FPU state as required.
-+ */
-+static bool interrupted_user_mode(void)
-+{
-+        struct pt_regs *regs = get_irq_regs();
-+
-+        return regs && user_mode(regs);
-+}
-+
-+/*
-+ * Can we use FPU in kernel mode with the
-+ * whole "kernel_fpu/altivec/vsx_begin/end()" sequence?
-+ *
-+ * It's always ok in process context (ie "not interrupt")
-+ * but it is sometimes ok even from an irq.
-+ */
-+bool may_use_simd(void)
-+{
-+        return !in_interrupt() ||
-+                interrupted_user_mode() ||
-+                interrupted_kernel_fpu_idle();
-+}
-+EXPORT_SYMBOL(may_use_simd);
-+
- #else
- static int restore_fp(struct task_struct *tsk) { return 0; }
- #endif /* CONFIG_PPC_FPU */
-@@ -295,7 +359,8 @@ void enable_kernel_altivec(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_VEC);
- 
-@@ -316,6 +381,14 @@ void enable_kernel_altivec(void)
- }
- EXPORT_SYMBOL(enable_kernel_altivec);
- 
-+extern void disable_kernel_altivec(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, false);
-+	msr_check_and_clear(MSR_VEC);
-+}
-+EXPORT_SYMBOL(disable_kernel_altivec);
-+
- /*
-  * Make sure the VMX/Altivec register state in the
-  * the thread_struct is up to date for task tsk.
-@@ -346,35 +419,6 @@ static int restore_altivec(struct task_struct *tsk)
- 	return 0;
- }
- 
--/*
-- * Were we in user mode when we were
-- * interrupted?
-- *
-- * Doing kernel_altivec/vsx_begin/end() is ok if we are running
-- * in an interrupt context from user mode - we'll just
-- * save the FPU state as required.
-- */
--static bool interrupted_user_mode(void)
--{
--	struct pt_regs *regs = get_irq_regs();
--
--	return regs && user_mode(regs);
--}
--
--/*
-- * Can we use FPU in kernel mode with the
-- * whole "kernel_fpu/altivec/vsx_begin/end()" sequence?
-- *
-- * It's always ok in process context (ie "not interrupt")
-- * but it is sometimes ok even from an irq.
-- */
--bool may_use_simd(void)
--{
--	return !in_interrupt() ||
--		interrupted_user_mode();
--}
--EXPORT_SYMBOL(may_use_simd);
--
- #else
- #define loadvec(thr) 0
- static inline int restore_altivec(struct task_struct *tsk) { return 0; }
-@@ -411,7 +455,8 @@ void enable_kernel_vsx(void)
- {
- 	unsigned long cpumsr;
- 
--	WARN_ON(preemptible());
-+	WARN_ON_ONCE(this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, true);
- 
- 	cpumsr = msr_check_and_set(MSR_FP|MSR_VEC|MSR_VSX);
- 
-@@ -433,6 +478,14 @@ void enable_kernel_vsx(void)
- }
- EXPORT_SYMBOL(enable_kernel_vsx);
- 
-+void disable_kernel_vsx(void)
-+{
-+	WARN_ON_ONCE(!this_cpu_read(in_kernel_fpu));
-+	this_cpu_write(in_kernel_fpu, false);
-+	msr_check_and_clear(MSR_FP|MSR_VEC|MSR_VSX);
-+}
-+EXPORT_SYMBOL(disable_kernel_vsx);
-+
- void flush_vsx_to_thread(struct task_struct *tsk)
- {
- 	if (tsk->thread.regs) {
--- 
-2.21.0.1020.gf2820cf01a
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+
+> On 5/17/19 8:19 PM, Vaibhav Jain wrote:
+>> Hi Aneesh,
+>> 
+
+....
+
+>>
+>>> +	/*
+>>> +	 * Check whether the we support the alignment. For Dax if the
+>>> +	 * superblock alignment is not matching, we won't initialize
+>>> +	 * the device.
+>>> +	 */
+>>> +	if (!nd_supported_alignment(align) &&
+>>> +	    memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN)) {
+>> Suggestion to change this check to:
+>> 
+>> if (memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN) &&
+>>     !nd_supported_alignment(align))
+>> 
+>> It would look  a bit more natural i.e. "If the device has dax signature and alignment is
+>> not supported".
+>> 
+>
+> I guess that should be !memcmp()? . I will send an updated patch with 
+> the hash failure details in the commit message.
+>
+
+We need clarification on what the expected failure behaviour should be.
+The nd_pmem_probe doesn't really have a failure behaviour in this
+regard. For example.
+
+I created a dax device with 16M alignment
+
+{                                          
+  "dev":"namespace0.0",
+  "mode":"devdax",                         
+  "map":"dev",                             
+  "size":"9.98 GiB (10.72 GB)",
+  "uuid":"ba62ef22-ebdf-4779-96f5-e6135383ed22",
+  "raw_uuid":"7b2492f9-7160-4ee9-9c3d-2f547d9ef3ee",
+  "daxregion":{                            
+    "id":0,                                
+    "size":"9.98 GiB (10.72 GB)",
+    "align":16777216,
+    "devices":[                            
+      {                                    
+        "chardev":"dax0.0",
+        "size":"9.98 GiB (10.72 GB)"
+      }                                    
+    ]                                      
+  },                                       
+  "align":16777216,                        
+  "numa_node":0,                           
+  "supported_alignments":[
+    65536,                                 
+    16777216                               
+  ]                                        
+}      
+
+Now what we want is to fail the initialization of the device when we
+boot a kernel that doesn't support 16M page size. But with the
+nd_pmem_probe failure behaviour we now end up with
+
+[
+  {
+    "dev":"namespace0.0",
+    "mode":"fsdax",
+    "map":"mem",
+    "size":10737418240,
+    "uuid":"7b2492f9-7160-4ee9-9c3d-2f547d9ef3ee",
+    "blockdev":"pmem0"
+  }
+]
+
+So it did fallthrough the
+
+	/* if we find a valid info-block we'll come back as that personality */
+	if (nd_btt_probe(dev, ndns) == 0 || nd_pfn_probe(dev, ndns) == 0
+			|| nd_dax_probe(dev, ndns) == 0)
+		return -ENXIO;
+
+	/* ...otherwise we're just a raw pmem device */
+	return pmem_attach_disk(dev, ndns);
+
+
+Is it ok if i update the code such that we don't do that default
+pmem_atach_disk if we have a label area?
+
+-aneesh
 
