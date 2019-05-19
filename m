@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1DF22898
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 21:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3929A2289A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 May 2019 21:45:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456XXJ3QlhzDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 05:44:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456XZ15k7LzDqCx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 05:45:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,23 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456XN01NybzDqHV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 05:36:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456XNg3cNFzDqGp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 05:37:23 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id CE823285C9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 19:36:45 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 260CB285CD
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 May 2019 19:37:21 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id C3479285C4; Sun, 19 May 2019 19:36:45 +0000 (UTC)
+ id 1A838285BA; Sun, 19 May 2019 19:37:21 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
+ NO_RELAYS autolearn=ham version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 203647] Locking API testsuite fails "mixed read-lock/lock-write
  ABBA" rlock on kernels >=4.14.x
-Date: Sun, 19 May 2019 19:36:45 +0000
+Date: Sun, 19 May 2019 19:37:20 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -51,7 +51,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-203647-206035-7QF4hdNsTO@https.bugzilla.kernel.org/>
+Message-ID: <bug-203647-206035-nri2iy5euK@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-203647-206035@https.bugzilla.kernel.org/>
 References: <bug-203647-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,10 +77,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D203647
 
---- Comment #4 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 282839
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D282839&action=3Dedit
-dmesg (4.9.177, G5 11,2)
+--- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 282841
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D282841&action=3Dedit
+kernel .config (5.1.3, G5 11,2)
 
 --=20
 You are receiving this mail because:
