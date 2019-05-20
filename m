@@ -1,91 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6969B2303A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:24:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D962300A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:19:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456td154fGzDqLp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:19:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456tkX6wm0zDqKw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:24:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.1.86; helo=eur02-he1-obe.outbound.protection.outlook.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="AAZiQse/"; 
- dkim-atps=neutral
-Received: from EUR02-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr10086.outbound.protection.outlook.com [40.107.1.86])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=anju@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456tbj0w2NzDq9b
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:18:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wjq3w45GRiFI2//a7t647tCKQUdF8+Ggx6O/vEK4e64=;
- b=AAZiQse/9fx1IdhbxGlYWJ2xnUx3C4b3lKPUTLS3pHBeoZI3NREuShxXWZqsfW9T7kNct6zPqXAPHw3chSsVPGd/n7Ic4qEVWDaLYVtmrMhipHWsc+IbHiuXWzGErMbogezjWGwaRVvga1IBixjFjL/Bu1E9jznqexUHp6Mh+mY=
-Received: from AM5PR0402MB2865.eurprd04.prod.outlook.com (10.175.44.16) by
- AM5PR0402MB2833.eurprd04.prod.outlook.com (10.175.41.140) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1900.16; Mon, 20 May 2019 09:17:59 +0000
-Received: from AM5PR0402MB2865.eurprd04.prod.outlook.com
- ([fe80::d8ed:b418:4ee9:a51]) by AM5PR0402MB2865.eurprd04.prod.outlook.com
- ([fe80::d8ed:b418:4ee9:a51%9]) with mapi id 15.20.1900.020; Mon, 20 May 2019
- 09:17:59 +0000
-From: Ran Wang <ran.wang_1@nxp.com>
-To: Pavel Machek <pavel@denx.de>
-Subject: RE: [PATCH V2 3/3] soc: fsl: add RCPM driver
-Thread-Topic: [PATCH V2 3/3] soc: fsl: add RCPM driver
-Thread-Index: AQHVDGHzIQrvIPzRX0ytn5pxhdLuLqZy/bMAgACX+4CAACV3gIAAANBwgAACRYCAAAHg8A==
-Date: Mon, 20 May 2019 09:17:59 +0000
-Message-ID: <AM5PR0402MB2865E28B2E2296CB878ACEA2F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
-References: <20190517033946.30763-1-ran.wang_1@nxp.com>
- <20190517033946.30763-3-ran.wang_1@nxp.com> <20190519213844.GH31403@amd>
- <AM5PR0402MB2865EC5E1EF12C6C1D3C5566F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
- <20190520085647.GA9748@amd>
- <AM5PR0402MB2865F4574B19761848B001F9F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
- <20190520090748.GB9748@amd>
-In-Reply-To: <20190520090748.GB9748@amd>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ran.wang_1@nxp.com; 
-x-originating-ip: [92.121.36.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b0451e86-49ec-44c6-b934-08d6dd040d87
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
- SRVR:AM5PR0402MB2833; 
-x-ms-traffictypediagnostic: AM5PR0402MB2833:
-x-microsoft-antispam-prvs: <AM5PR0402MB283301A6038AA2B3C9115EDFF1060@AM5PR0402MB2833.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 004395A01C
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(39860400002)(366004)(346002)(376002)(136003)(396003)(189003)(199004)(7696005)(2906002)(99286004)(86362001)(6246003)(14454004)(74316002)(53546011)(229853002)(6506007)(11346002)(9686003)(68736007)(446003)(476003)(55016002)(6116002)(3846002)(305945005)(102836004)(76176011)(486006)(53936002)(6916009)(6436002)(7736002)(66476007)(66556008)(64756008)(66446008)(5660300002)(66066001)(33656002)(66946007)(73956011)(8936002)(7416002)(316002)(25786009)(186003)(76116006)(54906003)(71190400001)(26005)(478600001)(81166006)(4326008)(8676002)(71200400001)(256004)(81156014)(52536014);
- DIR:OUT; SFP:1101; SCL:1; SRVR:AM5PR0402MB2833;
- H:AM5PR0402MB2865.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: /ImH+jFa5VWy3XrIpi+JhjHUOysWf7NmzT8XE2im6LtT3xp4u6FcHv9ZtYjXfnKaIks2K4mNNmtdR4PTYOTOY/gvOjvn6fO9cTKxd9eWdyc+hBtomrxrahv6fwXIaJ81f2BM2YFY290fT/+UW77feNt8GNYfVXu/j14+1UpENd9LjquMTspSrlVF4usRimpKrEdAt/YMg4fU1vt1gTs7wE+bBfFzcKSJtX8W16JvE2cwe1SicBo3a7mIFqpT2u1VTx1UvYgToqpNrH1k+Fk/UWZpQGi2o6/+PJ8Rka58LM5Bkas3Mu03HH3sLT4t80K5JTA3L2PfoIewHsyUVuEcMU/pCFpxoCfrp+hWb/e6e0m4ZqXLZQlcbrWQMkchxCHM16+Y3/y79LZbGopZbMAa6qMRYqJX3HQQzg7jbj0dSg4=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456tj95m8bzDqCh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:22:53 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4K9MFYI177456
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 05:22:50 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2skrdtb5f5-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 05:22:49 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
+ Mon, 20 May 2019 10:22:48 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 20 May 2019 10:22:45 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4K9Mi5s43253892
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 May 2019 09:22:44 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7416A405D;
+ Mon, 20 May 2019 09:22:44 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFD03A4040;
+ Mon, 20 May 2019 09:22:43 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.35.72])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 20 May 2019 09:22:43 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/perf: Use cpumask_last() to determine the
+To: mpe@ellerman.id.au
+References: <20190520090501.20415-1-anju@linux.vnet.ibm.com>
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Date: Mon, 20 May 2019 14:52:42 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0451e86-49ec-44c6-b934-08d6dd040d87
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2019 09:17:59.4418 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0402MB2833
+In-Reply-To: <20190520090501.20415-1-anju@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19052009-0016-0000-0000-0000027D899A
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052009-0017-0000-0000-000032DA6CEE
+Message-Id: <0d7d9aba-052d-5adc-bf6f-86b51a38c55a@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-20_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905200068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,69 +90,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: aravinda@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, ego@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Pavel,
+Hi,
 
-On Monday, May 20, 2019 17:08 Pavel Machek wrote:
-> > > Hi!
-> > >
-> > > > > > +static int rcpm_pm_prepare(struct device *dev) {
-> > > > > > +	struct device_node *np =3D dev->of_node;
-> > > > > > +	struct wakeup_source *ws;
-> > > > > > +	struct rcpm *rcpm;
-> > > > > > +	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1], tmp;
-> > > > > > +	int i, ret;
-> > > > > > +
-> > > > > > +	rcpm =3D dev_get_drvdata(dev);
-> > > > > > +	if (!rcpm)
-> > > > > > +		return -EINVAL;
-> > > > > > +
-> > > > > > +	/* Begin with first registered wakeup source */
-> > > > > > +	ws =3D wakeup_source_get_next(NULL);
-> > > > > > +	while (ws) {
-> > > > >
-> > > > > while (ws =3D wakeup_source_get_next(NULL)) ?
-> > > >
-> > > > Actually, we only pass NULL to wakeup_source_get_next() at very
-> > > > first call to get 1st wakeup source. Then in the while loop, we
-> > > > will fetch next source but not 1st, that's different. I am afraid
-> > > > your suggestion is not quite correct.
-> > >
-> > > Sorry, I seen your next version before seeing this explanation.
-> > >
-> > > You are right, but the current code is "interesting". What about
-> > >
-> > >     ws =3D NULL;
-> > >     while (ws =3D wakeup_source_get_next(NULL)) ...
-> > >
-> > > then?
-> >
-> > Did you mean:
-> >      ws =3D NULL;
-> >      while (ws =3D wakeup_source_get_next(ws)) ...
-> >
-> >    Yes, that will be the same to my original logic, do you recommend
-> > to change to this? :)
->=20
-> Yes please. It will be less confusing to the reader.
+Somehow the subject of this patch didn't appear completely here.
 
-OK, if no other comment, I will work out v4, fix this and extra ','
-=20
-> Thanks (and sorry for cross-talk),
+The Subject of this patch is as follows,
 
-That's OK, thanks for your time.
+`Subject [PATCH] powerpc/perf: Use cpumask_last() to determine the 
+designated cpu for nest/core units.`
 
-Regards,
-Ran
+Thanks,
+
+Anju
+
+
+On 5/20/19 2:35 PM, Anju T Sudhakar wrote:
+> Nest and core imc(In-memory Collection counters) assigns a particular
+> cpu as the designated target for counter data collection.
+> During system boot, the first online cpu in a chip gets assigned as
+> the designated cpu for that chip(for nest-imc) and the first online cpu
+> in a core gets assigned as the designated cpu for that core(for core-imc).
+>
+> If the designated cpu goes offline, the next online cpu from the same
+> chip(for nest-imc)/core(for core-imc) is assigned as the next target,
+> and the event context is migrated to the target cpu.
+> Currently, cpumask_any_but() function is used to find the target cpu.
+> Though this function is expected to return a `random` cpu, this always
+> returns the next online cpu.
+>
+> If all cpus in a chip/core is offlined in a sequential manner, starting
+> from the first cpu, the event migration has to happen for all the cpus
+> which goes offline. Since the migration process involves a grace period,
+> the total time taken to offline all the cpus will be significantly high.
+>
+
