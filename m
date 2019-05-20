@@ -1,44 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67C1236C7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 15:15:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456zsM20mnzDqCw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 23:15:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A272379E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 15:18:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 456zxD5jBMzDqK6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 23:18:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=cz5i=tu=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.85.222.194; helo=mail-qk1-f194.google.com;
+ envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com
+ [209.85.222.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456zq84zLjzDqBN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 23:13:24 +1000 (AEST)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F1E9020815;
- Mon, 20 May 2019 13:13:21 +0000 (UTC)
-Date: Mon, 20 May 2019 09:13:20 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [RFC PATCH 2/4] x86/ftrace: Fix use of flags in
- ftrace_replace_code()
-Message-ID: <20190520091320.01cdcfb7@gandalf.local.home>
-In-Reply-To: <e1429923d9eda92a3cf5ee9e33c7eacce539781d.1558115654.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1558115654.git.naveen.n.rao@linux.vnet.ibm.com>
- <e1429923d9eda92a3cf5ee9e33c7eacce539781d.1558115654.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456zvN4DN3zDqD5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 23:17:04 +1000 (AEST)
+Received: by mail-qk1-f194.google.com with SMTP id a132so8701643qkb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 06:17:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=bZcyqtPfiR8OnSe7X+YvU6P3WmrTts8Lp+0qyg4aj2M=;
+ b=bm2RForvRCp3lByqzd0b7uMmFtRh8dnQ0aS0BvqUFyizNYd4bjC0BzUwN6bwX9XcaY
+ NFcasdDN+kaAJIo08QR5vs22v0p2s2u4dGe8WTwuHSia2WObiiq86sxBQ8Sr3YK60a1Y
+ GAcpIpsQaK7eNirh5Dg/CMmgL1zP5A/0znqkx+Offiq5mXj3Sgf3PXArqEEi+Zp6uEE0
+ v2GJA+HWWPfw6lwYze2xFjeutrA9X4lqZ+n+zPQxPRoShgCfFEQEazuPmWiTWP/M+OrS
+ 0F9RE1ru/Gn/B2DnfMTLSOzmobmqR6gejy78LZGzlPTJz4kusNTyoierdDq1Wdxa95Xw
+ FICw==
+X-Gm-Message-State: APjAAAVO3os2uq1Zf7B0yartFDlXdKsEWV11wuEf2Lt2qEcy0Bw+8RLq
+ vqCTl0STrQifIBNWicbcT4tkYg==
+X-Google-Smtp-Source: APXvYqw0FqLkxwDq3if4j/PtdUGJI5ox1BH3UIwaju3gNcXX5ayK/jpLunGqH+2wq+Rcle7lAXdfbA==
+X-Received: by 2002:a37:4c02:: with SMTP id z2mr46791719qka.1.1558358222050;
+ Mon, 20 May 2019 06:17:02 -0700 (PDT)
+Received: from redhat.com (pool-173-76-105-71.bstnma.fios.verizon.net.
+ [173.76.105.71])
+ by smtp.gmail.com with ESMTPSA id d16sm11577917qtd.73.2019.05.20.06.16.59
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Mon, 20 May 2019 06:17:00 -0700 (PDT)
+Date: Mon, 20 May 2019 09:16:57 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Subject: Re: [RFC PATCH] virtio_ring: Use DMA API if guest memory is encrypted
+Message-ID: <20190520090939-mutt-send-email-mst@kernel.org>
+References: <87zhrj8kcp.fsf@morokweng.localdomain>
+ <87womn8inf.fsf@morokweng.localdomain>
+ <20190129134750-mutt-send-email-mst@kernel.org>
+ <877eefxvyb.fsf@morokweng.localdomain>
+ <20190204144048-mutt-send-email-mst@kernel.org>
+ <87ef71seve.fsf@morokweng.localdomain>
+ <20190320171027-mutt-send-email-mst@kernel.org>
+ <87tvfvbwpb.fsf@morokweng.localdomain>
+ <20190323165456-mutt-send-email-mst@kernel.org>
+ <87a7go71hz.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a7go71hz.fsf@morokweng.localdomain>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,55 +75,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Mike Anderson <andmike@linux.ibm.com>,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+ Jason Wang <jasowang@redhat.com>, Alexey Kardashevskiy <aik@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 18 May 2019 00:32:46 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
-
-> In commit a0572f687fb3c ("ftrace: Allow ftrace_replace_code() to be
-> schedulable), the generic ftrace_replace_code() function was modified to
-> accept a flags argument in place of a single 'enable' flag. However, the
-> x86 version of this function was not updated. Fix the same.
-> 
-> Fixes: a0572f687fb3c ("ftrace: Allow ftrace_replace_code() to be schedulable")
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
-> I haven't yet tested this patch on x86, but this looked wrong so sending 
-> this as a RFC.
-
-This code has been through a bit of updates, and I need to go through
-and clean it up. I'll have to take a look and convert "int" to "bool"
-so that "enable" is not confusing.
-
-Thanks, I think I'll try to do a clean up first, and then this patch
-shouldn't "look wrong" after that.
-
--- Steve
-
-> 
-> - Naveen
+On Wed, Apr 17, 2019 at 06:42:00PM -0300, Thiago Jung Bauermann wrote:
+> I rephrased it in terms of address translation. What do you think of
+> this version? The flag name is slightly different too:
 > 
 > 
->  arch/x86/kernel/ftrace.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 0caf8122d680..0c01b344ba16 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -554,8 +554,9 @@ static void run_sync(void)
->  		local_irq_disable();
->  }
->  
-> -void ftrace_replace_code(int enable)
-> +void ftrace_replace_code(int mod_flags)
->  {
-> +	int enable = mod_flags & FTRACE_MODIFY_ENABLE_FL;
->  	struct ftrace_rec_iter *iter;
->  	struct dyn_ftrace *rec;
->  	const char *report = "adding breakpoints";
+> VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION This feature has the same
+>     meaning as VIRTIO_F_ACCESS_PLATFORM both when set and when not set,
+>     with the exception that address translation is guaranteed to be
+>     unnecessary when accessing memory addresses supplied to the device
+>     by the driver. Which is to say, the device will always use physical
+>     addresses matching addresses used by the driver (typically meaning
+>     physical addresses used by the CPU) and not translated further. This
+>     flag should be set by the guest if offered, but to allow for
+>     backward-compatibility device implementations allow for it to be
+>     left unset by the guest. It is an error to set both this flag and
+>     VIRTIO_F_ACCESS_PLATFORM.
 
+
+OK so VIRTIO_F_ACCESS_PLATFORM is designed to allow unpriveledged
+drivers. This is why devices fail when it's not negotiated.
+
+This confuses me.
+If driver is unpriveledged then what happens with this flag?
+It can supply any address it wants. Will that corrupt kernel
+memory?
+
+-- 
+MST
