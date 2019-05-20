@@ -2,58 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A18E22BE8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 08:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B667322C38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 08:40:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456pRj6Pc5zDqLV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 16:10:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456q5F1TrWzDqJR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 16:40:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+dfc7240828d5493a4f00+5748+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="T9FAw6UW"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456pDr6CjgzDqJL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 16:01:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=jCHCj8thrsJTzY11GNQdV/BpGObDl9t7BMLGP0aHNVc=; b=T9FAw6UW04yQbfxvJRwdeLH167
- OINqToo6YaiQ9NZoZdqOILwIkZBoiOfUaZsYhCDJ5qUA+f4BodFXBfNiRDm8u5UE7DIoL/+u2qUgR
- n0bocAsnZFpk3a4oszqZjMKxXxtyjtmvZ0+2bTNXzccBSyY+CrnmiASGkoCyxWxWgE8DdEjCftuhV
- DtRwSJMEoV3gT2TQ8S1SKJmmEoBtCMdO61y8WL1jTM+CoKuKRoHcWqW8Gu1bRer7j99fPjtpBnpRx
- M8zeDgU14LAilwFj5wjCM3HeD94lPM9fjbnBfPl7VkFVpt/50eyWJ8m/iwBge7iw4zuhOiO+RcHP4
- ksBxqSiQ==;
-Received: from 089144206147.atnat0015.highway.bob.at ([89.144.206.147]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hSbMS-0001gK-2x; Mon, 20 May 2019 06:01:24 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Oleg Nesterov <oleg@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5/5] asm-generic: remove ptrace.h
-Date: Mon, 20 May 2019 08:00:18 +0200
-Message-Id: <20190520060018.25569-6-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190520060018.25569-1-hch@lst.de>
-References: <20190520060018.25569-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456q2g6WBczDqCM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 16:37:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="KlUgt4Mg"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 456q2g491qz9sBK; Mon, 20 May 2019 16:37:47 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 456q2g3Df9z9s6w; Mon, 20 May 2019 16:37:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1558334267; bh=PNedFHkkuQzcJ3wxJ8NC9BpfSFJPvCUXblZ49yZlqsc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KlUgt4MgHd3B8BHlYvJ2B1gzSvJM5w7HGDLClWT9F190UJn1IloBUPOZdMcPw9+1i
+ zduKxRZi2RjwJM5k936+UYMn7/H+DusJij3vatSXygoObqaymBjdmfqet6hUoVGRni
+ 7spLAe9pxOhQj8ZCrAFBHEhlcKXgQ6vNiyOdQ5WvU+PZgketpJNY7Bl36mHEarVHQz
+ 0ph0ZY8SU5KVxWkNzq3kncx1aJ7PS4TIrq4HHi5MDl974BZpb4cUdphDLRRrA4OTgK
+ C3038eCuD+OaBnDfRpgoamTfRdVbPfpd62pS9MSobzdz/Tdzw10THIWNKXoROlcAuy
+ fFhBGDEaNpFZw==
+Date: Mon, 20 May 2019 16:17:00 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Claudio Carvalho <cclaudio@linux.ibm.com>
+Subject: Re: [RFC PATCH v2 08/10] KVM: PPC: Ultravisor: Return to UV for
+ hcalls from SVM
+Message-ID: <20190520061700.GC21382@blackberry>
+References: <20190518142524.28528-1-cclaudio@linux.ibm.com>
+ <20190518142524.28528-9-cclaudio@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190518142524.28528-9-cclaudio@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,132 +58,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No one is using this header anymore.
+On Sat, May 18, 2019 at 11:25:22AM -0300, Claudio Carvalho wrote:
+> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> 
+> All hcalls from a secure VM go to the ultravisor from where they are
+> reflected into the HV. When we (HV) complete processing such hcalls,
+> we should return to the UV rather than to the guest kernel.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
----
- MAINTAINERS                    |  1 -
- arch/mips/include/asm/ptrace.h |  5 ---
- include/asm-generic/ptrace.h   | 74 ----------------------------------
- 3 files changed, 80 deletions(-)
- delete mode 100644 include/asm-generic/ptrace.h
+This paragraph in the patch description, and the comment in
+book3s_hv_rmhandlers.S, are confusing and possibly misleading in
+focussing on returns from hcalls, when the change is needed for any
+sort of entry to the guest from the hypervisor, whether it is a return
+from an hcall, a return from a hypervisor interrupt, or the first time
+that a guest vCPU is run.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5cfbea4ce575..f3392488ffaf 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12769,7 +12769,6 @@ F:	include/linux/regset.h
- F:	include/linux/tracehook.h
- F:	include/uapi/linux/ptrace.h
- F:	include/uapi/linux/ptrace.h
--F:	include/asm-generic/ptrace.h
- F:	kernel/ptrace.c
- F:	arch/*/ptrace*.c
- F:	arch/*/*/ptrace*.c
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index b6578611dddb..1e76774b36dd 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -56,11 +56,6 @@ static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
- 	return regs->regs[31];
- }
- 
--/*
-- * Don't use asm-generic/ptrace.h it defines FP accessors that don't make
-- * sense on MIPS.  We rather want an error if they get invoked.
-- */
--
- static inline void instruction_pointer_set(struct pt_regs *regs,
-                                            unsigned long val)
- {
-diff --git a/include/asm-generic/ptrace.h b/include/asm-generic/ptrace.h
-deleted file mode 100644
-index 82e674f6b337..000000000000
---- a/include/asm-generic/ptrace.h
-+++ /dev/null
-@@ -1,74 +0,0 @@
--/*
-- * Common low level (register) ptrace helpers
-- *
-- * Copyright 2004-2011 Analog Devices Inc.
-- *
-- * Licensed under the GPL-2 or later.
-- */
--
--#ifndef __ASM_GENERIC_PTRACE_H__
--#define __ASM_GENERIC_PTRACE_H__
--
--#ifndef __ASSEMBLY__
--
--/* Helpers for working with the instruction pointer */
--#ifndef GET_IP
--#define GET_IP(regs) ((regs)->pc)
--#endif
--#ifndef SET_IP
--#define SET_IP(regs, val) (GET_IP(regs) = (val))
--#endif
--
--static inline unsigned long instruction_pointer(struct pt_regs *regs)
--{
--	return GET_IP(regs);
--}
--static inline void instruction_pointer_set(struct pt_regs *regs,
--                                           unsigned long val)
--{
--	SET_IP(regs, val);
--}
--
--#ifndef profile_pc
--#define profile_pc(regs) instruction_pointer(regs)
--#endif
--
--/* Helpers for working with the user stack pointer */
--#ifndef GET_USP
--#define GET_USP(regs) ((regs)->usp)
--#endif
--#ifndef SET_USP
--#define SET_USP(regs, val) (GET_USP(regs) = (val))
--#endif
--
--static inline unsigned long user_stack_pointer(struct pt_regs *regs)
--{
--	return GET_USP(regs);
--}
--static inline void user_stack_pointer_set(struct pt_regs *regs,
--                                          unsigned long val)
--{
--	SET_USP(regs, val);
--}
--
--/* Helpers for working with the frame pointer */
--#ifndef GET_FP
--#define GET_FP(regs) ((regs)->fp)
--#endif
--#ifndef SET_FP
--#define SET_FP(regs, val) (GET_FP(regs) = (val))
--#endif
--
--static inline unsigned long frame_pointer(struct pt_regs *regs)
--{
--	return GET_FP(regs);
--}
--static inline void frame_pointer_set(struct pt_regs *regs,
--                                     unsigned long val)
--{
--	SET_FP(regs, val);
--}
--
--#endif /* __ASSEMBLY__ */
--
--#endif
--- 
-2.20.1
+This paragraph needs to explain that to enter a secure guest, we have
+to go through the ultravisor, therefore we do a ucall when we are
+entering a secure guest.
 
+[snip]
+
+> +/*
+> + * The hcall we just completed was from Ultravisor. Use UV_RETURN
+> + * ultra call to return to the Ultravisor. Results from the hcall
+> + * are already in the appropriate registers (r3:12), except for
+> + * R6,7 which we used as temporary registers above. Restore them,
+> + * and set R0 to the ucall number (UV_RETURN).
+> + */
+
+This needs to say something like "We are entering a secure guest, so
+we have to invoke the ultravisor to do that.  If we are returning from
+a hcall, the results are already ...".
+
+> +ret_to_ultra:
+> +	lwz	r6, VCPU_CR(r4)
+> +	mtcr	r6
+> +	LOAD_REG_IMMEDIATE(r0, UV_RETURN)
+> +	ld	r7, VCPU_GPR(R7)(r4)
+> +	ld	r6, VCPU_GPR(R6)(r4)
+> +	ld	r4, VCPU_GPR(R4)(r4)
+> +	sc	2
+>  
+>  /*
+>   * Enter the guest on a P9 or later system where we have exactly
+> -- 
+> 2.20.1
+
+Paul.
