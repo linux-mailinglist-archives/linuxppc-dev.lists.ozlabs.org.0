@@ -1,59 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A28A2397E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 16:12:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB3C23969
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 16:09:27 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45713n0dMmzDqBb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 00:09:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45716n59F1zDqDc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 00:12:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.167.67; helo=mail-lf1-f67.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-lf1-f67.google.com (mail-lf1-f67.google.com
+ [209.85.167.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4570tS69zZzDq9C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:01:17 +1000 (AEST)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id C5264D5D5FC9A1680A67;
- Mon, 20 May 2019 22:01:12 +0800 (CST)
-Received: from HGHY1l002753561.china.huawei.com (10.177.23.164) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 20 May 2019 22:01:06 +0800
-From: Zhen Lei <thunder.leizhen@huawei.com>
-To: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>, John Garry
- <john.garry@huawei.com>, Robin Murphy <robin.murphy@arm.com>, Will Deacon
- <will.deacon@arm.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet
- <corbet@lwn.net>, linux-doc <linux-doc@vger.kernel.org>, Sebastian Ott
- <sebott@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- "Martin Schwidefsky" <schwidefsky@de.ibm.com>, Heiko Carstens
- <heiko.carstens@de.ibm.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>, Tony Luck <tony.luck@intel.com>, Fenghua Yu
- <fenghua.yu@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin"
- <hpa@zytor.com>, David Woodhouse <dwmw2@infradead.org>, iommu
- <iommu@lists.linux-foundation.org>, linux-kernel
- <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, x86 <x86@kernel.org>,
- linux-ia64 <linux-ia64@vger.kernel.org>
-Subject: [PATCH v7 1/1] iommu: enhance IOMMU dma mode build options
-Date: Mon, 20 May 2019 21:59:47 +0800
-Message-ID: <20190520135947.14960-2-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.19.2.windows.1
-In-Reply-To: <20190520135947.14960-1-thunder.leizhen@huawei.com>
-References: <20190520135947.14960-1-thunder.leizhen@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4570tc3wKvzDq9C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:01:27 +1000 (AEST)
+Received: by mail-lf1-f67.google.com with SMTP id n22so10374338lfe.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 07:01:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=k5M5HG3kl0pUgSauCfNvkeVzL85t6u8JUUHdn9mhx04=;
+ b=mOPqaKIiItRLin9cAfg5WxDBIOE9pM4mKW1J41QNs6EewunTVAVloHf3Yct0ebbJGH
+ MjLLcbtCcpmR9Sfh7+LFlqqeFi/XiBStBZtkMjvubjO8Qbbnw7EofCbONyo8hFIiYMlr
+ fUCFzMuA6h65P0uRnEpFdfmSAZzNbxsYd7i+ktkwwMgjsJx21EUhIGpNIHTlcwmkwzfk
+ 3lROQcar5lv15JwieVfE3HCFlxm26Buk4owx0Auz+9mYJGhz+qOOL7CvlV/+PGfkytnb
+ 0mRHmq28IEZbygGkl71F+Bj6pf6v179cSq2L/dML5J0aDuY5AshH50RbdlaoSK330y5W
+ WlXg==
+X-Gm-Message-State: APjAAAUosZindNPZjGtpfsDcVCojyxJnFPupESPCVyll/4DHJ/i2VCKg
+ pJeO0C9zRcQEyLus/Ne+PsQvB8xPn//JRYtRzLg=
+X-Google-Smtp-Source: APXvYqzBXH0Bn12gU+O/WKysSzgvfoDb4ZQdIiC8js/Lv4/NzbFVAIlWC//CHbjkYuLxxyAwqyeGdyzFagcgQl6QGI8=
+X-Received: by 2002:a19:a887:: with SMTP id r129mr1920861lfe.16.1558360883054; 
+ Mon, 20 May 2019 07:01:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.177.23.164]
-X-CFilter-Loop: Reflected
+References: <20190520134605.29116-1-christian@brauner.io>
+In-Reply-To: <20190520134605.29116-1-christian@brauner.io>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 20 May 2019 16:00:44 +0200
+Message-ID: <CAMuHMdVfy-fWVGzd8orLHbC=pOmUH-ocvhjj2DCZdEQRxctYQA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] pid: add pidfd_open()
+To: Christian Brauner <christian@brauner.io>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,189 +60,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hanjun Guo <guohanjun@huawei.com>, Zhen Lei <thunder.leizhen@huawei.com>
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ David Howells <dhowells@redhat.com>, Joel Fernandes <joel@joelfernandes.org>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>, elena.reshetova@intel.com,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Daniel Colascione <dancol@google.com>,
+ linux-mips@vger.kernel.org, Android Kernel Team <kernel-team@android.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, surenb@google.com,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, cyphar@cyphar.com,
+ Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andy Lutomirski <luto@amacapital.net>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-First, add build option IOMMU_DEFAULT_{LAZY|STRICT}, so that we have the
-opportunity to set {lazy|strict} mode as default at build time. Then put
-the three config options in an choice, make people can only choose one of
-the three at a time.
+On Mon, May 20, 2019 at 3:46 PM Christian Brauner <christian@brauner.io> wrote:
+> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
+> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
+> process that is created via traditional fork()/clone() calls that is only
+> referenced by a PID:
+>
+> int pidfd = pidfd_open(1234, 0);
+> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
+>
+> With the introduction of pidfds through CLONE_PIDFD it is possible to
+> created pidfds at process creation time.
+> However, a lot of processes get created with traditional PID-based calls
+> such as fork() or clone() (without CLONE_PIDFD). For these processes a
+> caller can currently not create a pollable pidfd. This is a problem for
+> Android's low memory killer (LMK) and service managers such as systemd.
+> Both are examples of tools that want to make use of pidfds to get reliable
+> notification of process exit for non-parents (pidfd polling) and race-free
+> signal sending (pidfd_send_signal()). They intend to switch to this API for
+> process supervision/management as soon as possible. Having no way to get
+> pollable pidfds from PID-only processes is one of the biggest blockers for
+> them in adopting this api. With pidfd_open() making it possible to retrieve
+> pidfds for PID-based processes we enable them to adopt this api.
+>
+> In line with Arnd's recent changes to consolidate syscall numbers across
+> architectures, I have added the pidfd_open() syscall to all architectures
+> at the same time.
+>
+> Signed-off-by: Christian Brauner <christian@brauner.io>
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
-The default IOMMU dma modes on each ARCHs have no change.
+>  arch/m68k/kernel/syscalls/syscall.tbl       |  1 +
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- arch/ia64/kernel/pci-dma.c                |  2 +-
- arch/powerpc/platforms/powernv/pci-ioda.c |  3 ++-
- arch/s390/pci/pci_dma.c                   |  2 +-
- arch/x86/kernel/pci-dma.c                 |  7 ++---
- drivers/iommu/Kconfig                     | 44 ++++++++++++++++++++++++++-----
- drivers/iommu/amd_iommu_init.c            |  3 ++-
- drivers/iommu/intel-iommu.c               |  2 +-
- drivers/iommu/iommu.c                     |  3 ++-
- 8 files changed, 48 insertions(+), 18 deletions(-)
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-diff --git a/arch/ia64/kernel/pci-dma.c b/arch/ia64/kernel/pci-dma.c
-index fe988c49f01ce6a..655511dbf3c3b34 100644
---- a/arch/ia64/kernel/pci-dma.c
-+++ b/arch/ia64/kernel/pci-dma.c
-@@ -22,7 +22,7 @@
- int force_iommu __read_mostly;
- #endif
+Gr{oetje,eeting}s,
 
--int iommu_pass_through;
-+int iommu_pass_through = IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
+                        Geert
 
- static int __init pci_iommu_init(void)
- {
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 3ead4c237ed0ec9..383e082a9bb985c 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -85,7 +85,8 @@ void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
- 	va_end(args);
- }
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
--static bool pnv_iommu_bypass_disabled __read_mostly;
-+static bool pnv_iommu_bypass_disabled __read_mostly =
-+			!IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
- static bool pci_reset_phbs __read_mostly;
-
- static int __init iommu_setup(char *str)
-diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
-index 9e52d1527f71495..784ad1e0acecfb1 100644
---- a/arch/s390/pci/pci_dma.c
-+++ b/arch/s390/pci/pci_dma.c
-@@ -17,7 +17,7 @@
-
- static struct kmem_cache *dma_region_table_cache;
- static struct kmem_cache *dma_page_table_cache;
--static int s390_iommu_strict;
-+static int s390_iommu_strict = IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
-
- static int zpci_refresh_global(struct zpci_dev *zdev)
- {
-diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
-index d460998ae828514..fb2bab42a0a3173 100644
---- a/arch/x86/kernel/pci-dma.c
-+++ b/arch/x86/kernel/pci-dma.c
-@@ -43,11 +43,8 @@
-  * It is also possible to disable by default in kernel config, and enable with
-  * iommu=nopt at boot time.
-  */
--#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
--int iommu_pass_through __read_mostly = 1;
--#else
--int iommu_pass_through __read_mostly;
--#endif
-+int iommu_pass_through __read_mostly =
-+			IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
-
- extern struct iommu_table_entry __iommu_table[], __iommu_table_end[];
-
-diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index 6f07f3b21816c64..8a1f1793cde76b4 100644
---- a/drivers/iommu/Kconfig
-+++ b/drivers/iommu/Kconfig
-@@ -74,17 +74,47 @@ config IOMMU_DEBUGFS
- 	  debug/iommu directory, and then populate a subdirectory with
- 	  entries as required.
-
--config IOMMU_DEFAULT_PASSTHROUGH
--	bool "IOMMU passthrough by default"
-+choice
-+	prompt "IOMMU default DMA mode"
- 	depends on IOMMU_API
--        help
--	  Enable passthrough by default, removing the need to pass in
--	  iommu.passthrough=on or iommu=pt through command line. If this
--	  is enabled, you can still disable with iommu.passthrough=off
--	  or iommu=nopt depending on the architecture.
-+	default IOMMU_DEFAULT_PASSTHROUGH if (PPC_POWERNV && PCI)
-+	default IOMMU_DEFAULT_LAZY if (AMD_IOMMU || INTEL_IOMMU || S390_IOMMU)
-+	default IOMMU_DEFAULT_STRICT
-+	help
-+	  This option allows IOMMU DMA mode to be chose at build time, to
-+	  override the default DMA mode of each ARCHs, removing the need to
-+	  pass in kernel parameters through command line. You can still use
-+	  ARCHs specific boot options to override this option again.
-+
-+config IOMMU_DEFAULT_PASSTHROUGH
-+	bool "passthrough"
-+	help
-+	  In this mode, the DMA access through IOMMU without any addresses
-+	  translation. That means, the wrong or illegal DMA access can not
-+	  be caught, no error information will be reported.
-
- 	  If unsure, say N here.
-
-+config IOMMU_DEFAULT_LAZY
-+	bool "lazy"
-+	help
-+	  Support lazy mode, where for every IOMMU DMA unmap operation, the
-+	  flush operation of IOTLB and the free operation of IOVA are deferred.
-+	  They are only guaranteed to be done before the related IOVA will be
-+	  reused.
-+
-+config IOMMU_DEFAULT_STRICT
-+	bool "strict"
-+	help
-+	  For every IOMMU DMA unmap operation, the flush operation of IOTLB and
-+	  the free operation of IOVA are guaranteed to be done in the unmap
-+	  function.
-+
-+	  This mode is safer than the two above, but it maybe slower in some
-+	  high performace scenarios.
-+
-+endchoice
-+
- config OF_IOMMU
-        def_bool y
-        depends on OF && IOMMU_API
-diff --git a/drivers/iommu/amd_iommu_init.c b/drivers/iommu/amd_iommu_init.c
-index ff40ba758cf365e..16c02b08adb4cb2 100644
---- a/drivers/iommu/amd_iommu_init.c
-+++ b/drivers/iommu/amd_iommu_init.c
-@@ -166,7 +166,8 @@ struct ivmd_header {
- 					   to handle */
- LIST_HEAD(amd_iommu_unity_map);		/* a list of required unity mappings
- 					   we find in ACPI */
--bool amd_iommu_unmap_flush;		/* if true, flush on every unmap */
-+bool amd_iommu_unmap_flush = IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
-+					/* if true, flush on every unmap */
-
- LIST_HEAD(amd_iommu_list);		/* list of all AMD IOMMUs in the
- 					   system */
-diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
-index 28cb713d728ceef..0c3cc716210f35a 100644
---- a/drivers/iommu/intel-iommu.c
-+++ b/drivers/iommu/intel-iommu.c
-@@ -362,7 +362,7 @@ static int domain_detach_iommu(struct dmar_domain *domain,
-
- static int dmar_map_gfx = 1;
- static int dmar_forcedac;
--static int intel_iommu_strict;
-+static int intel_iommu_strict = IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
- static int intel_iommu_superpage = 1;
- static int intel_iommu_sm;
- static int iommu_identity_mapping;
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 109de67d5d727c2..0ec5952ac60e2a3 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -43,7 +43,8 @@
- #else
- static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_DMA;
- #endif
--static bool iommu_dma_strict __read_mostly = true;
-+static bool iommu_dma_strict __read_mostly =
-+			IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
-
- struct iommu_group {
- 	struct kobject kobj;
---
-1.8.3
-
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
