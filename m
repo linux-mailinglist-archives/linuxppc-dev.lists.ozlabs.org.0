@@ -2,46 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B61F23043
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9216523059
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:29:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456tn946QFzDqDp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:26:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456tsC0C1LzDqKT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:29:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ucw.cz
- (client-ip=195.113.26.193; helo=atrey.karlin.mff.cuni.cz;
- envelope-from=pavel@ucw.cz; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.222.196; helo=mail-qk1-f196.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=denx.de
-Received: from atrey.karlin.mff.cuni.cz (atrey.karlin.mff.cuni.cz
- [195.113.26.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com
+ [209.85.222.196])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456tlf4tJQzDq9V
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:25:02 +1000 (AEST)
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
- id C27EA80450; Mon, 20 May 2019 11:24:49 +0200 (CEST)
-Date: Mon, 20 May 2019 11:24:59 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Ran Wang <ran.wang_1@nxp.com>
-Subject: Re: [PATCH V2 3/3] soc: fsl: add RCPM driver
-Message-ID: <20190520092459.GC9748@amd>
-References: <20190517033946.30763-1-ran.wang_1@nxp.com>
- <20190517033946.30763-3-ran.wang_1@nxp.com>
- <20190519213844.GH31403@amd>
- <AM5PR0402MB2865EC5E1EF12C6C1D3C5566F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
- <20190520085647.GA9748@amd>
- <AM5PR0402MB2865F4574B19761848B001F9F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
- <20190520090748.GB9748@amd>
- <AM5PR0402MB2865E28B2E2296CB878ACEA2F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456tqs35QlzDq9V
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:28:40 +1000 (AEST)
+Received: by mail-qk1-f196.google.com with SMTP id q197so8358445qke.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 02:28:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=W+kdZnR5O8JiU3Pf1A/YdEoIBjaqE0FCtwtKzSb3tcg=;
+ b=GBz2Abw4eBS2GLm6s6L0NxxtCmaKWKb+C1oLYvghQNaF1xgbSmMMsaoGkbgfiUR2I8
+ 2lWht0FVCr1UwEPN12Xt5Tgt1kEexApq8VBOAOuG7shQdYksFhWjVwraNN9p42RDIclG
+ kU3+C8CsmNUoRKScbKOHsPYQD3Nl3OMcEwyH8rTtVqFguoYVxHWVZdJQgA9DreRDUks9
+ A2fl8t7h9VBsfEobRzQ6Kd7hKNhghDU4NFA6WvydBvpyasO3wf1ryJGprwGFIZzGoc+v
+ UCpTv/5G4p6QuGLV7zo8hA6PXAfH9K0QR6GJGb24uXBDdkWengSu/ebp0gYCwvyllGO/
+ cTeg==
+X-Gm-Message-State: APjAAAVYE9EKNuXfYalJEYm7FUQEza0Wnw7HhojYRFu/oUvSmSoaXWY2
+ HGBnCb86WKiNMGWY2+h7zWpLV72Z1vWYlR2FMfo=
+X-Google-Smtp-Source: APXvYqzng8ZEkla+MZbzTUYbwhgNGW+KYBn7MR1JRscH3T5Z56wO65FYLg4J4qPz+H5lfMoc/JUf9DqLsjfY2F/VnDs=
+X-Received: by 2002:a37:a8ce:: with SMTP id
+ r197mr28099585qke.269.1558344518379; 
+ Mon, 20 May 2019 02:28:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature"; boundary="0lnxQi9hkpPO77W3"
-Content-Disposition: inline
-In-Reply-To: <AM5PR0402MB2865E28B2E2296CB878ACEA2F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <20190520025437.13825-1-yamada.masahiro@socionext.com>
+In-Reply-To: <20190520025437.13825-1-yamada.masahiro@socionext.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 20 May 2019 11:28:20 +0200
+Message-ID: <CAK8P3a2nth2sNPT46_e8G=s=D-J8LtsrA4kO2esu804_pWVs-Q@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: do not check name uniqueness of builtin modules
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,72 +61,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Pavel Machek <pavel@denx.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Michael Schmitz <schmitzmic@gmail.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Kees Cook <keescook@chromium.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>, Rusty Russell <rusty@rustcorp.com.au>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Lucas De Marchi <lucas.de.marchi@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Jessica Yu <jeyu@kernel.org>,
+ Sam Ravnborg <sam@ravnborg.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, May 20, 2019 at 4:57 AM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> I just thought it was a good idea to scan builtin.modules in the name
+> uniqueness checking, but Stephen reported a false positive.
+>
+> ppc64_defconfig produces:
+>
+>   warning: same basename if the following are built as modules:
+>     arch/powerpc/platforms/powermac/nvram.ko
+>     drivers/char/nvram.ko
+>
+> ..., which is a false positive because the former is never built as
+> a module as you see in arch/powerpc/platforms/powermac/Makefile:
+>
+>   # CONFIG_NVRAM is an arch. independent tristate symbol, for pmac32 we really
+>   # need this to be a bool.  Cheat here and pretend CONFIG_NVRAM=m is really
+>   # CONFIG_NVRAM=y
+>   obj-$(CONFIG_NVRAM:m=y)         += nvram.o
+>
+> Since we cannot predict how tricky Makefiles are written in wild,
+> builtin.modules may potentially contain false positives. I do not
+> think it is a big deal as far as kmod is concerned, but false positive
+> warnings in the kernel build makes people upset. It is better to not
+> do it.
+>
+> Even without checking builtin.modules, we have enough (and more solid)
+> test coverage with allmodconfig.
+>
+> While I touched this part, I replaced the sed code with neater one
+> provided by Stephen.
+>
+> Link: https://lkml.org/lkml/2019/5/19/120
+> Link: https://lkml.org/lkml/2019/5/19/123
+> Fixes: 3a48a91901c5 ("kbuild: check uniqueness of module names")
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
---0lnxQi9hkpPO77W3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looks good to me
 
-Hi!
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-> > > > You are right, but the current code is "interesting". What about
-> > > >
-> > > >     ws =3D NULL;
-> > > >     while (ws =3D wakeup_source_get_next(NULL)) ...
-> > > >
-> > > > then?
-> > >
-> > > Did you mean:
-> > >      ws =3D NULL;
-> > >      while (ws =3D wakeup_source_get_next(ws)) ...
-> > >
-> > >    Yes, that will be the same to my original logic, do you recommend
-> > > to change to this? :)
-> >=20
-> > Yes please. It will be less confusing to the reader.
->=20
-> OK, if no other comment, I will work out v4, fix this and extra ','
-> =20
-> > Thanks (and sorry for cross-talk),
->=20
-> That's OK, thanks for your time.
-
-You can add
-
-Acked-by: Pavel Machek <pavel@ucw.cz>
-
-to that version.
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---0lnxQi9hkpPO77W3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAlzicmsACgkQMOfwapXb+vI/kACfXfr5zSF0QsKLaIDUnn6ldYdL
-9rUAn1IvhOf/+HglBb9Ro5uZKDJsTOI+
-=fAL6
------END PGP SIGNATURE-----
-
---0lnxQi9hkpPO77W3--
+> ---
+>
+>  scripts/modules-check.sh | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/scripts/modules-check.sh b/scripts/modules-check.sh
+> index 2f659530e1ec..39e8cb36ba19 100755
+> --- a/scripts/modules-check.sh
+> +++ b/scripts/modules-check.sh
+> @@ -6,10 +6,10 @@ set -e
+>  # Check uniqueness of module names
+>  check_same_name_modules()
+>  {
+> -       for m in $(sed 's:.*/::' modules.order modules.builtin | sort | uniq -d)
+> +       for m in $(sed 's:.*/::' modules.order | sort | uniq -d)
+>         do
+> -               echo "warning: same basename if the following are built as modules:" >&2
+> -               sed "/\/$m/!d;s:^kernel/:  :" modules.order modules.builtin >&2
+> +               echo "warning: same module names found:" >&2
+> +               sed -n "/\/$m/s:^kernel/:  :p" modules.order >&2
+>         done
+>  }
+>
+> --
+> 2.17.1
+>
