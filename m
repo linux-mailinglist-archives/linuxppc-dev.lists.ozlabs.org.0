@@ -2,88 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665D722E51
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 10:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C207522F8E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 10:58:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456sM55blRzDqFL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 18:22:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456t8f5JffzDqKt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 18:58:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=ucw.cz
+ (client-ip=195.113.26.193; helo=atrey.karlin.mff.cuni.cz;
+ envelope-from=pavel@ucw.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=denx.de
+Received: from atrey.karlin.mff.cuni.cz (atrey.karlin.mff.cuni.cz
+ [195.113.26.193])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456sKZ0rNLzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 18:20:49 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4K8HPGR008486
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 04:20:46 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2skn57rjju-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 04:20:46 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Mon, 20 May 2019 09:20:42 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 May 2019 09:20:39 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4K8KcNM41615518
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 May 2019 08:20:38 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ADC194C044;
- Mon, 20 May 2019 08:20:38 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F1874C050;
- Mon, 20 May 2019 08:20:37 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.55])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 20 May 2019 08:20:37 +0000 (GMT)
-Date: Mon, 20 May 2019 13:50:35 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: PROBLEM: Power9: kernel oops on memory hotunplug from ppc64le
- guest
-References: <16a7a635-c592-27e2-75b4-d02071833278@linux.vnet.ibm.com>
- <20190518141434.GA22939@in.ibm.com>
- <878sv1993k.fsf@concordia.ellerman.id.au>
- <20190520042533.GB22939@in.ibm.com>
- <1558327521.633yjtl8ki.astroid@bobo.none>
- <20190520055622.GC22939@in.ibm.com>
- <1558335484.9inx69a7ea.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456t7J1xxSzDqGb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 18:56:54 +1000 (AEST)
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+ id 197348021D; Mon, 20 May 2019 10:56:38 +0200 (CEST)
+Date: Mon, 20 May 2019 10:56:47 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Ran Wang <ran.wang_1@nxp.com>
+Subject: Re: [PATCH V2 3/3] soc: fsl: add RCPM driver
+Message-ID: <20190520085647.GA9748@amd>
+References: <20190517033946.30763-1-ran.wang_1@nxp.com>
+ <20190517033946.30763-3-ran.wang_1@nxp.com>
+ <20190519213844.GH31403@amd>
+ <AM5PR0402MB2865EC5E1EF12C6C1D3C5566F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature"; boundary="nFreZHaLTZJo0R7j"
 Content-Disposition: inline
-In-Reply-To: <1558335484.9inx69a7ea.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19052008-0016-0000-0000-0000027D850F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052008-0017-0000-0000-000032DA6802
-Message-Id: <20190520082035.GD22939@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-20_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905200060
+In-Reply-To: <AM5PR0402MB2865EC5E1EF12C6C1D3C5566F1060@AM5PR0402MB2865.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,64 +49,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: bharata@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linux-next@vger.kernel.org, aneesh.kumar@linux.ibm.com,
- srikanth <sraithal@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Pavel Machek <pavel@denx.de>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 20, 2019 at 05:00:21PM +1000, Nicholas Piggin wrote:
-> Bharata B Rao's on May 20, 2019 3:56 pm:
-> > On Mon, May 20, 2019 at 02:48:35PM +1000, Nicholas Piggin wrote:
-> >> >> > git bisect points to
-> >> >> >
-> >> >> > commit 4231aba000f5a4583dd9f67057aadb68c3eca99d
-> >> >> > Author: Nicholas Piggin <npiggin@gmail.com>
-> >> >> > Date:   Fri Jul 27 21:48:17 2018 +1000
-> >> >> >
-> >> >> >     powerpc/64s: Fix page table fragment refcount race vs speculative references
-> >> >> >
-> >> >> >     The page table fragment allocator uses the main page refcount racily
-> >> >> >     with respect to speculative references. A customer observed a BUG due
-> >> >> >     to page table page refcount underflow in the fragment allocator. This
-> >> >> >     can be caused by the fragment allocator set_page_count stomping on a
-> >> >> >     speculative reference, and then the speculative failure handler
-> >> >> >     decrements the new reference, and the underflow eventually pops when
-> >> >> >     the page tables are freed.
-> >> >> >
-> >> >> >     Fix this by using a dedicated field in the struct page for the page
-> >> >> >     table fragment allocator.
-> >> >> >
-> >> >> >     Fixes: 5c1f6ee9a31c ("powerpc: Reduce PTE table memory wastage")
-> >> >> >     Cc: stable@vger.kernel.org # v3.10+
-> >> >> 
-> >> >> That's the commit that added the BUG_ON(), so prior to that you won't
-> >> >> see the crash.
-> >> > 
-> >> > Right, but the commit says it fixes page table page refcount underflow by
-> >> > introducing a new field &page->pt_frag_refcount. Now we are hitting the underflow
-> >> > for this pt_frag_refcount.
-> >> 
-> >> The fixed underflow is caused by a bug (race on page count) that got 
-> >> fixed by that patch. You are hitting a different underflow here. It's
-> >> not certain my patch caused it, I'm just trying to reproduce now.
-> > 
-> > Ok.
-> 
-> Can't reproduce I'm afraid, tried adding and removing 8GB memory from a
-> 4GB guest (via host adding / removing memory device), and it just works.
 
-Boot, add 8G, reboot, remove 8G is the sequence to reproduce.
+--nFreZHaLTZJo0R7j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> It's likely to be an edge case like an off by one or rounding error
-> that just happens to trigger in your config. Might be easiest if you
-> could test with a debug patch.
+Hi!
 
-Sure, I will continue debugging.
+> > > +static int rcpm_pm_prepare(struct device *dev) {
+> > > +	struct device_node *np =3D dev->of_node;
+> > > +	struct wakeup_source *ws;
+> > > +	struct rcpm *rcpm;
+> > > +	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1], tmp;
+> > > +	int i, ret;
+> > > +
+> > > +	rcpm =3D dev_get_drvdata(dev);
+> > > +	if (!rcpm)
+> > > +		return -EINVAL;
+> > > +
+> > > +	/* Begin with first registered wakeup source */
+> > > +	ws =3D wakeup_source_get_next(NULL);
+> > > +	while (ws) {
+> >=20
+> > while (ws =3D wakeup_source_get_next(NULL)) ?
+>=20
+> Actually, we only pass NULL to wakeup_source_get_next() at very first
+> call to get 1st wakeup source. Then in the while loop, we will fetch
+> next source but not 1st, that's different. I am afraid your suggestion
+> is not quite correct.
 
-Regards,
-Bharata.
+Sorry, I seen your next version before seeing this explanation.
 
+You are right, but the current code is "interesting". What about
+
+    ws =3D NULL;
+    while (ws =3D wakeup_source_get_next(NULL)) ...
+
+then?
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--nFreZHaLTZJo0R7j
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlzia88ACgkQMOfwapXb+vLCHQCdEiZVnts+sVGDltC60TnL3F9y
+ltIAn0M2k/oHNFq1zm74JskvAw6PG/L7
+=/fdT
+-----END PGP SIGNATURE-----
+
+--nFreZHaLTZJo0R7j--
