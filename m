@@ -2,49 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6762823DD0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 18:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA3123FF1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 20:07:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4574by04MczDqKr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 02:49:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4576LV1RTPzDqNG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 04:07:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=rere.qmqm.pl
+ (client-ip=91.227.64.183; helo=rere.qmqm.pl;
+ envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="SmQKeZic"; 
+ dmarc=none (p=none dis=none) header.from=rere.qmqm.pl
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.b="ZDYqeYDG";
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+X-Greylist: delayed 596 seconds by postgrey-1.36 at bilbo;
+ Tue, 21 May 2019 04:06:17 AEST
+Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4574Zn4FC7zDqBg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 02:48:01 +1000 (AEST)
-Received: from ebiggers-linuxstation.mtv.corp.google.com (unknown
- [104.132.1.77])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 40F94214DA;
- Mon, 20 May 2019 16:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558370879;
- bh=Yf+g9vOAw+X4k2U7oH5BvDUno0r4HEDvWSu3dcvz51c=;
- h=From:To:Cc:Subject:Date:From;
- b=SmQKeZicVRyYIsGrcWFhIi/RJTPpZFz9GLddrCrZqh4GQYosr2+3qeK0DVIkcHCFL
- 9lAO8KdBH5mdjfRiEpfxWV+51VvdNm6jd+9zGVq8e2wEsDwKgE3G0qE72NY8/UzkZj
- yZlQrtD2RT/etzbJRBUrgnaQ14cTtAexc0fiRrng=
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH] crypto: testmgr - fix length truncation with large page size
-Date: Mon, 20 May 2019 09:47:19 -0700
-Message-Id: <20190520164719.160956-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4576K55gwBzDqCs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 04:06:17 +1000 (AEST)
+Received: from remote.user (localhost [127.0.0.1])
+ by rere.qmqm.pl (Postfix) with ESMTPSA id 45763m0MdZz9t;
+ Mon, 20 May 2019 19:54:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+ t=1558374886; bh=hXE7AHhk3hVcTSSePlYKB9Bnza+wPxYvgvUVa4FLAsI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ZDYqeYDGoE2mL3x/+uC0/QalyZqGXXaVmCUQpPqRVyY4+7M0TsipHp97zwKXyKVIy
+ GbYocBIkcKAONIMVifes8muu0oUVHPBtqkfkhX2a6oQ+DzJ+mN7UgB8hLy0Kdq5zKp
+ MRJwLUWypLRdkoa61oo2R0OB9FI4eoR42+MLq5KOOAhj3bHYYBxJSWALmKUUqLAKqb
+ jvdTEp1YKmsGAaw2IbVWqtQvUCTUO5qMndwhtXTVeHRnaz5tRIXIGufEBAXC17fZIF
+ YKdv3eoHpCgLsvYhzvEbUFoO8tE2KTbKffBb+hTWdrOdIQVVjcOqjCKEpcfcskAERk
+ 5COH+wX22iT7g==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.100.3 at mail
+Date: Mon, 20 May 2019 19:55:55 +0200
+From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH] misc: remove redundant 'default n' from Kconfig-s
+Message-ID: <20190520175555.GA5429@qmqm.qmqm.pl>
+References: <CGME20190520141047eucas1p2c6006d1ecfc3eb287b6b33d131f66180@eucas1p2.samsung.com>
+ <1ab818ae-4d9f-d17a-f11f-7caaa5bf98bc@samsung.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ab818ae-4d9f-d17a-f11f-7caaa5bf98bc@samsung.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,61 +63,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Eric Piel <eric.piel@tremplin-utc.net>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Frank Haverkamp <haver@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Eric Biggers <ebiggers@google.com>
+On Mon, May 20, 2019 at 04:10:46PM +0200, Bartlomiej Zolnierkiewicz wrote:
+> 'default n' is the default value for any bool or tristate Kconfig
+> setting so there is no need to write it explicitly.
+> 
+> Also since commit f467c5640c29 ("kconfig: only write '# CONFIG_FOO
+> is not set' for visible symbols") the Kconfig behavior is the same
+> regardless of 'default n' being present or not:
+> 
+>     ...
+>     One side effect of (and the main motivation for) this change is making
+>     the following two definitions behave exactly the same:
+>     
+>         config FOO
+>                 bool
+>     
+>         config FOO
+>                 bool
+>                 default n
+>     
+>     With this change, neither of these will generate a
+>     '# CONFIG_FOO is not set' line (assuming FOO isn't selected/implied).
+>     That might make it clearer to people that a bare 'default n' is
+>     redundant.
+>     ...
+> 
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+[...]
+>  drivers/misc/cb710/Kconfig        |    1 -
 
-On PowerPC with CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y, there is sometimes
-a crash in generate_random_aead_testvec().  The problem is that the
-generated test vectors use data lengths of up to about 2 * PAGE_SIZE,
-which is 128 KiB on PowerPC; however, the data length fields in the test
-vectors are 'unsigned short', so the lengths get truncated.  Fix this by
-changing the relevant fields to 'unsigned int'.
-
-Fixes: 40153b10d91c ("crypto: testmgr - fuzz AEADs against their generic implementation")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- crypto/testmgr.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 9a13c634b2077..fb2afdd544e00 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -43,7 +43,7 @@ struct hash_testvec {
- 	const char *key;
- 	const char *plaintext;
- 	const char *digest;
--	unsigned short psize;
-+	unsigned int psize;
- 	unsigned short ksize;
- 	int setkey_error;
- 	int digest_error;
-@@ -74,7 +74,7 @@ struct cipher_testvec {
- 	const char *ctext;
- 	unsigned char wk; /* weak key flag */
- 	unsigned short klen;
--	unsigned short len;
-+	unsigned int len;
- 	bool fips_skip;
- 	bool generates_iv;
- 	int setkey_error;
-@@ -110,9 +110,9 @@ struct aead_testvec {
- 	unsigned char novrfy;
- 	unsigned char wk;
- 	unsigned char klen;
--	unsigned short plen;
--	unsigned short clen;
--	unsigned short alen;
-+	unsigned int plen;
-+	unsigned int clen;
-+	unsigned int alen;
- 	int setkey_error;
- 	int setauthsize_error;
- 	int crypt_error;
--- 
-2.21.0.1020.gf2820cf01a-goog
-
+Acked-by: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
