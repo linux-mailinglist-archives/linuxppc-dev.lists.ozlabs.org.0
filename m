@@ -1,87 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C3422BBF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 08:02:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5605A22B82
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 07:57:58 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456p8g2ZnczDqHW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 15:57:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456pGS72sGzDqJR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 16:02:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+dfc7240828d5493a4f00+5748+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456p7B47MvzDqHF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 15:56:38 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4K5r7dt113842
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 01:56:36 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2skncujgf3-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 01:56:35 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Mon, 20 May 2019 06:56:33 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 May 2019 06:56:30 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4K5uTST24838354
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 May 2019 05:56:29 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C65D4A404D;
- Mon, 20 May 2019 05:56:29 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5FDF4A4057;
- Mon, 20 May 2019 05:56:28 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.124.35.55])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 20 May 2019 05:56:28 +0000 (GMT)
-Date: Mon, 20 May 2019 11:26:22 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: PROBLEM: Power9: kernel oops on memory hotunplug from ppc64le
- guest
-References: <16a7a635-c592-27e2-75b4-d02071833278@linux.vnet.ibm.com>
- <20190518141434.GA22939@in.ibm.com>
- <878sv1993k.fsf@concordia.ellerman.id.au>
- <20190520042533.GB22939@in.ibm.com>
- <1558327521.633yjtl8ki.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456pDZ1MR4zDqBN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 16:01:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=TtG/YNZz0y8mj8A1er4STirT5s0O9RpqqEC1rxfxJiw=; b=N28ceEQUAuU1xApEDffUynFzT
+ NQ7r5r90qOpUH2HTUExB3tPdnqSPlGVpwivhL8itUmf97FMJaB8XZ2cmFtxzOCEHPNUooKfq7cA9e
+ 7tGLtWr/T/66PN6agyLUtVAQzhW7PcSFuJXr8DezcIfADw9m9qy0U8ANLkROi1EmdXGFy6Xn1NizG
+ 3Lu0ms/lCozg4q41X4FOBQYj496+6iy1note8PX5sNKPGJ+6DVsYqWBT29+tgo+UiZQ4r26RRZh9B
+ kG6HWOVGgsRx10sxmQ7WEzY4qhWUV9Zg3LTKhxPsYZs5lEmkuh6BCnV30SqFAyKihTpLMMpJL5yO8
+ tO7LpeWyA==;
+Received: from 089144206147.atnat0015.highway.bob.at ([89.144.206.147]
+ helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hSbME-0001St-Ko; Mon, 20 May 2019 06:01:11 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Oleg Nesterov <oleg@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: remove asm-generic/ptrace.h v2
+Date: Mon, 20 May 2019 08:00:13 +0200
+Message-Id: <20190520060018.25569-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1558327521.633yjtl8ki.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19052005-0020-0000-0000-0000033E71BD
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052005-0021-0000-0000-0000219145CD
-Message-Id: <20190520055622.GC22939@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-20_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905200043
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,62 +60,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
- aneesh.kumar@linux.ibm.com, bharata@linux.vnet.ibm.com,
- srikanth <sraithal@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 20, 2019 at 02:48:35PM +1000, Nicholas Piggin wrote:
-> >> > git bisect points to
-> >> >
-> >> > commit 4231aba000f5a4583dd9f67057aadb68c3eca99d
-> >> > Author: Nicholas Piggin <npiggin@gmail.com>
-> >> > Date:   Fri Jul 27 21:48:17 2018 +1000
-> >> >
-> >> >     powerpc/64s: Fix page table fragment refcount race vs speculative references
-> >> >
-> >> >     The page table fragment allocator uses the main page refcount racily
-> >> >     with respect to speculative references. A customer observed a BUG due
-> >> >     to page table page refcount underflow in the fragment allocator. This
-> >> >     can be caused by the fragment allocator set_page_count stomping on a
-> >> >     speculative reference, and then the speculative failure handler
-> >> >     decrements the new reference, and the underflow eventually pops when
-> >> >     the page tables are freed.
-> >> >
-> >> >     Fix this by using a dedicated field in the struct page for the page
-> >> >     table fragment allocator.
-> >> >
-> >> >     Fixes: 5c1f6ee9a31c ("powerpc: Reduce PTE table memory wastage")
-> >> >     Cc: stable@vger.kernel.org # v3.10+
-> >> 
-> >> That's the commit that added the BUG_ON(), so prior to that you won't
-> >> see the crash.
-> > 
-> > Right, but the commit says it fixes page table page refcount underflow by
-> > introducing a new field &page->pt_frag_refcount. Now we are hitting the underflow
-> > for this pt_frag_refcount.
-> 
-> The fixed underflow is caused by a bug (race on page count) that got 
-> fixed by that patch. You are hitting a different underflow here. It's
-> not certain my patch caused it, I'm just trying to reproduce now.
+Hi all,
 
-Ok.
+asm-generic/ptrace.h is a little weird in that it doesn't actually
+implement any functionality, but it provided multiple layers of macros
+that just implement trivial inline functions.  We implement those
+directly in the few architectures and be off with a much simpler
+design.
 
-> 
-> > 
-> > BTW, if I go below this commit, I don't hit the pagecount
-> > 
-> > VM_BUG_ON_PAGE(page_ref_count(page) == 0, page);
-> > 
-> > which is in pte_fragment_free() path.
-> 
-> Do you have CONFIG_DEBUG_VM=y?
-
-Yes.
-
-Regards,
-Bharata.
-
+Changes since v1:
+ - add a missing empty line between functions
