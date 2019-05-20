@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CDB2313F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 12:22:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5FD23134
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 12:21:22 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456w0b6bJqzDqK6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 20:21:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456w2H6GxTzDqJY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 20:22:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456vzF1Q0jzDqHR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 20:20:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456w063f7SzDqLD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 20:20:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 456vzF0KK5z9s3l; Mon, 20 May 2019 20:20:09 +1000 (AEST)
+ id 456w060jGdz9s55; Mon, 20 May 2019 20:20:54 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 456vzD6FsYz9sBb; Mon, 20 May 2019 20:20:08 +1000 (AEST)
+ id 456w0601snz9s9N; Mon, 20 May 2019 20:20:53 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
 Subject: [PATCH v2] selftests/powerpc: Add a test of bad (out-of-range)
  accesses
-Date: Mon, 20 May 2019 20:20:05 +1000
-Message-Id: <20190520102005.11611-1-mpe@ellerman.id.au>
+Date: Mon, 20 May 2019 20:20:51 +1000
+Message-Id: <20190520102051.12103-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,7 +42,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npigging@ozlabs.org
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
