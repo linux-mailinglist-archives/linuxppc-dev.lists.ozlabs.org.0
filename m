@@ -1,45 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D70230C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:53:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456vNX6TLGzDqNX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:53:32 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5FD23134
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 12:21:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 456w0b6bJqzDqK6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 20:21:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456vKl3wRRzDqHk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:51:06 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CCE68200285;
- Mon, 20 May 2019 11:51:03 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CE5202001BF;
- Mon, 20 May 2019 11:50:57 +0200 (CEST)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 7829D402E7;
- Mon, 20 May 2019 17:50:50 +0800 (SGT)
-From: Ran Wang <ran.wang_1@nxp.com>
-To: Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Pavel Machek <pavel@ucw.cz>
-Subject: [PATCH v4 3/3] soc: fsl: add RCPM driver
-Date: Mon, 20 May 2019 17:52:38 +0800
-Message-Id: <20190520095238.29210-3-ran.wang_1@nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190520095238.29210-1-ran.wang_1@nxp.com>
-References: <20190520095238.29210-1-ran.wang_1@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456vzF1Q0jzDqHR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 20:20:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 456vzF0KK5z9s3l; Mon, 20 May 2019 20:20:09 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 456vzD6FsYz9sBb; Mon, 20 May 2019 20:20:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2] selftests/powerpc: Add a test of bad (out-of-range)
+ accesses
+Date: Mon, 20 May 2019 20:20:05 +1000
+Message-Id: <20190520102005.11611-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,196 +42,240 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Len Brown <len.brown@intel.com>, devicetree@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: npigging@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The NXP's QorIQ Processors based on ARM Core have RCPM module
-(Run Control and Power Management), which performs all device-level
-tasks associated with power management such as wakeup source control.
+Userspace isn't allowed to access certain address ranges, make sure we
+actually test that to at least some degree.
 
-This driver depends on PM wakeup source framework which help to
-collect wake information.
+This would have caught the recent bug where the SLB fault handler was
+incorrectly called on an out-of-range access when using the Radix MMU.
+It also would have caught the bug we had in get_region_id() where we
+were inserting SLB entries for bad addresses.
 
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Change in v4:
-	- Remove extra ',' in author line of rcpm.c
-	- Update usage of wakeup_source_get_next() to be less confusing to the
-	  reader, code logic remain the same.
+v2: Incorporate changes from Nick's version. Check the faulted address,
+    and make sure we get BNDERR for things that are completely out of
+    bounds.
 
-Change in v3:
-	- Some whitespace ajdustment.
+ tools/testing/selftests/powerpc/mm/.gitignore |   3 +-
+ tools/testing/selftests/powerpc/mm/Makefile   |   4 +-
+ .../selftests/powerpc/mm/bad_accesses.c       | 167 ++++++++++++++++++
+ 3 files changed, 172 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/mm/bad_accesses.c
 
-Change in v2:
-	- Rebase Kconfig and Makefile update to latest mainline.
-
- drivers/soc/fsl/Kconfig  |    8 +++
- drivers/soc/fsl/Makefile |    1 +
- drivers/soc/fsl/rcpm.c   |  122 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 131 insertions(+), 0 deletions(-)
- create mode 100644 drivers/soc/fsl/rcpm.c
-
-diff --git a/drivers/soc/fsl/Kconfig b/drivers/soc/fsl/Kconfig
-index 61f8e14..8e84e40 100644
---- a/drivers/soc/fsl/Kconfig
-+++ b/drivers/soc/fsl/Kconfig
-@@ -29,4 +29,12 @@ config FSL_MC_DPIO
- 	  other DPAA2 objects. This driver does not expose the DPIO
- 	  objects individually, but groups them under a service layer
- 	  API.
-+
-+config FSL_RCPM
-+	bool "Freescale RCPM support"
-+	depends on PM_SLEEP
-+	help
-+	  The NXP's QorIQ Processors based on ARM Core have RCPM module
-+	  (Run Control and Power Management), which performs all device-level
-+	  tasks associated with power management, such as wakeup source control.
- endmenu
-diff --git a/drivers/soc/fsl/Makefile b/drivers/soc/fsl/Makefile
-index 803ef1b..c1be6ee 100644
---- a/drivers/soc/fsl/Makefile
-+++ b/drivers/soc/fsl/Makefile
-@@ -7,3 +7,4 @@ obj-$(CONFIG_QUICC_ENGINE)		+= qe/
- obj-$(CONFIG_CPM)			+= qe/
- obj-$(CONFIG_FSL_GUTS)			+= guts.o
- obj-$(CONFIG_FSL_MC_DPIO) 		+= dpio/
-+obj-$(CONFIG_FSL_RCPM)		+= rcpm.o
-diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+diff --git a/tools/testing/selftests/powerpc/mm/.gitignore b/tools/testing/selftests/powerpc/mm/.gitignore
+index ba919308fe30..c189170ba041 100644
+--- a/tools/testing/selftests/powerpc/mm/.gitignore
++++ b/tools/testing/selftests/powerpc/mm/.gitignore
+@@ -3,4 +3,5 @@ subpage_prot
+ tempfile
+ prot_sao
+ segv_errors
+-wild_bctr
+\ No newline at end of file
++wild_bctr
++bad_accesses
+\ No newline at end of file
+diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
+index 43d68420e363..f9667f980241 100644
+--- a/tools/testing/selftests/powerpc/mm/Makefile
++++ b/tools/testing/selftests/powerpc/mm/Makefile
+@@ -2,7 +2,8 @@
+ noarg:
+ 	$(MAKE) -C ../
+ 
+-TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors wild_bctr
++TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors \
++		  wild_bctr bad_accesses
+ TEST_GEN_FILES := tempfile
+ 
+ top_srcdir = ../../../../..
+@@ -13,6 +14,7 @@ $(TEST_GEN_PROGS): ../harness.c
+ $(OUTPUT)/prot_sao: ../utils.c
+ 
+ $(OUTPUT)/wild_bctr: CFLAGS += -m64
++$(OUTPUT)/bad_accesses: CFLAGS += -m64
+ 
+ $(OUTPUT)/tempfile:
+ 	dd if=/dev/zero of=$@ bs=64k count=1
+diff --git a/tools/testing/selftests/powerpc/mm/bad_accesses.c b/tools/testing/selftests/powerpc/mm/bad_accesses.c
 new file mode 100644
-index 0000000..ff27adc
+index 000000000000..f18b2b91b263
 --- /dev/null
-+++ b/drivers/soc/fsl/rcpm.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/tools/testing/selftests/powerpc/mm/bad_accesses.c
+@@ -0,0 +1,167 @@
++// SPDX-License-Identifier: GPL-2.0+
 +//
-+// rcpm.c - Freescale QorIQ RCPM driver
++// Copyright 2019, Michael Ellerman, IBM Corp.
 +//
-+// Copyright 2019 NXP
-+//
-+// Author: Ran Wang <ran.wang_1@nxp.com>
++// Test that out-of-bounds reads/writes behave as expected.
 +
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/of_address.h>
-+#include <linux/slab.h>
-+#include <linux/suspend.h>
-+#include <linux/kernel.h>
++#include <setjmp.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <unistd.h>
 +
-+#define RCPM_WAKEUP_CELL_MAX_SIZE	7
++#include "utils.h"
 +
-+struct rcpm {
-+	unsigned int	wakeup_cells;
-+	void __iomem	*ippdexpcr_base;
-+	bool		little_endian;
-+};
 +
-+static int rcpm_pm_prepare(struct device *dev)
++// 64-bit kernel is always here
++#define PAGE_OFFSET	(0xcul << 60)
++
++static unsigned long kernel_virt_end;
++
++static volatile int fault_code;
++static volatile unsigned long fault_addr;
++static jmp_buf setjmp_env;
++
++static void segv_handler(int n, siginfo_t *info, void *ctxt_v)
 +{
-+	struct device_node	*np = dev->of_node;
-+	struct wakeup_source	*ws;
-+	struct rcpm		*rcpm;
-+	u32 value[RCPM_WAKEUP_CELL_MAX_SIZE + 1], tmp;
-+	int i, ret;
++	fault_code = info->si_code;
++	fault_addr = (unsigned long)info->si_addr;
++	siglongjmp(setjmp_env, 1);
++}
 +
-+	rcpm = dev_get_drvdata(dev);
-+	if (!rcpm)
-+		return -EINVAL;
++int bad_access(char *p, bool write)
++{
++	char x;
 +
-+	/* Begin with first registered wakeup source */
-+	ws = NULL;
-+	while (wakeup_source_get_next(ws)) {
-+		ret = device_property_read_u32_array(ws->attached_dev,
-+				"fsl,rcpm-wakeup", value, rcpm->wakeup_cells + 1);
++	fault_code = 0;
++	fault_addr = 0;
 +
-+		/*  Wakeup source should refer to current rcpm device */
-+		if (ret || (np->phandle != value[0])) {
-+			dev_info(dev, "%s doesn't refer to this rcpm\n",
-+					ws->name);
-+			continue;
++	if (sigsetjmp(setjmp_env, 1) == 0) {
++		if (write)
++			*p = 1;
++		else
++			x = *p;
++
++		printf("Bad - no SEGV! (%c)\n", x);
++		return 1;
++	}
++
++	// If we see MAPERR that means we took a page fault rather than an SLB
++	// miss. We only expect to take page faults for addresses within the
++	// valid kernel range.
++	FAIL_IF(fault_code == SEGV_MAPERR && \
++		(fault_addr < PAGE_OFFSET || fault_addr >= kernel_virt_end));
++
++	FAIL_IF(fault_code != SEGV_MAPERR && fault_code != SEGV_BNDERR);
++
++	return 0;
++}
++
++static int using_hash_mmu(bool *using_hash)
++{
++	char line[128];
++	FILE *f;
++	int rc;
++
++	f = fopen("/proc/cpuinfo", "r");
++	FAIL_IF(!f);
++
++	rc = 0;
++	while (fgets(line, sizeof(line), f) != NULL) {
++		if (strcmp(line, "MMU		: Hash\n") == 0) {
++			*using_hash = true;
++			goto out;
 +		}
 +
-+		for (i = 0; i < rcpm->wakeup_cells; i++) {
-+			/* We can only OR related bits */
-+			if (value[i + 1]) {
-+				if (rcpm->little_endian) {
-+					tmp = ioread32(rcpm->ippdexpcr_base + i * 4);
-+					tmp |= value[i + 1];
-+					iowrite32(tmp, rcpm->ippdexpcr_base + i * 4);
-+				} else {
-+					tmp = ioread32be(rcpm->ippdexpcr_base + i * 4);
-+					tmp |= value[i + 1];
-+					iowrite32be(tmp, rcpm->ippdexpcr_base + i * 4);
-+				}
-+			}
++		if (strcmp(line, "MMU		: Radix\n") == 0) {
++			*using_hash = false;
++			goto out;
++		}
++	}
++
++	rc = -1;
++out:
++	fclose(f);
++	return rc;
++}
++
++static int test(void)
++{
++	unsigned long i, j, addr, region_shift, page_shift, page_size;
++	struct sigaction sig;
++	bool hash_mmu;
++
++	sig = (struct sigaction) {
++		.sa_sigaction = segv_handler,
++		.sa_flags = SA_SIGINFO,
++	};
++
++	FAIL_IF(sigaction(SIGSEGV, &sig, NULL) != 0);
++
++	FAIL_IF(using_hash_mmu(&hash_mmu));
++
++	page_size = sysconf(_SC_PAGESIZE);
++	if (page_size == (64 * 1024))
++		page_shift = 16;
++	else
++		page_shift = 12;
++
++	if (page_size == (64 * 1024) || !hash_mmu) {
++		region_shift = 52;
++
++		// We have 7 512T regions (4 kernel linear, vmalloc, io, vmemmap)
++		kernel_virt_end = PAGE_OFFSET + (7 * (512ul << 40));
++	} else if (page_size == (4 * 1024) && hash_mmu) {
++		region_shift = 46;
++
++		// We have 7 64T regions (4 kernel linear, vmalloc, io, vmemmap)
++		kernel_virt_end = PAGE_OFFSET + (7 * (64ul << 40));
++	} else
++		FAIL_IF(true);
++
++	printf("Using %s MMU, PAGE_SIZE = %dKB start address 0x%016lx\n",
++	       hash_mmu ? "hash" : "radix",
++	       (1 << page_shift) >> 10,
++	       1ul << region_shift);
++
++	// This generates access patterns like:
++	//   0x0010000000000000
++	//   0x0010000000010000
++	//   0x0010000000020000
++	//   ...
++	//   0x0014000000000000
++	//   0x0018000000000000
++	//   0x0020000000000000
++	//   0x0020000000010000
++	//   0x0020000000020000
++	//   ...
++	//   0xf400000000000000
++	//   0xf800000000000000
++
++	for (i = 1; i <= ((0xful << 60) >> region_shift); i++) {
++		for (j = page_shift - 1; j < 60; j++) {
++			unsigned long base, delta;
++
++			base  = i << region_shift;
++			delta = 1ul << j;
++
++			if (delta >= base)
++				break;
++
++			addr = (base | delta) & ~((1 << page_shift) - 1);
++
++			FAIL_IF(bad_access((char *)addr, false));
++			FAIL_IF(bad_access((char *)addr, true));
 +		}
 +	}
 +
 +	return 0;
 +}
 +
-+static const struct dev_pm_ops rcpm_pm_ops = {
-+	.prepare =  rcpm_pm_prepare,
-+};
-+
-+static int rcpm_probe(struct platform_device *pdev)
++int main(void)
 +{
-+	struct device	*dev = &pdev->dev;
-+	struct resource *r;
-+	struct rcpm	*rcpm;
-+	int ret;
-+
-+	rcpm = devm_kzalloc(dev, sizeof(*rcpm), GFP_KERNEL);
-+	if (!rcpm)
-+		return -ENOMEM;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!r)
-+		return -ENODEV;
-+
-+	rcpm->ippdexpcr_base = devm_ioremap_resource(&pdev->dev, r);
-+	if (IS_ERR(rcpm->ippdexpcr_base)) {
-+		ret =  PTR_ERR(rcpm->ippdexpcr_base);
-+		return ret;
-+	}
-+
-+	rcpm->little_endian = device_property_read_bool(
-+			&pdev->dev, "little-endian");
-+
-+	ret = device_property_read_u32(&pdev->dev,
-+			"fsl,#rcpm-wakeup-cells", &rcpm->wakeup_cells);
-+	if (ret)
-+		return ret;
-+
-+	dev_set_drvdata(&pdev->dev, rcpm);
-+
-+	return 0;
++	return test_harness(test, "bad_accesses");
 +}
-+
-+static const struct of_device_id rcpm_of_match[] = {
-+	{ .compatible = "fsl,qoriq-rcpm-2.1+", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, rcpm_of_match);
-+
-+static struct platform_driver rcpm_driver = {
-+	.driver = {
-+		.name = "rcpm",
-+		.of_match_table = rcpm_of_match,
-+		.pm	= &rcpm_pm_ops,
-+	},
-+	.probe = rcpm_probe,
-+};
-+
-+module_platform_driver(rcpm_driver);
 -- 
-1.7.1
+2.20.1
 
