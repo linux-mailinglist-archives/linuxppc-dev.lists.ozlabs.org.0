@@ -2,51 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E4623094
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DFA230C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 11:54:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 456v7424TPzDqBN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:41:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 456vPs3j44zDqPN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2019 19:54:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="kRUu+TQs"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 456v5Q5Nd0zDqHb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:40:25 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5FA3920675;
- Mon, 20 May 2019 09:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558345222;
- bh=KlsviQfKrQui86twPZxBf/IfvPh7qAn/XGim2VH7goY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=kRUu+TQsj8X8DYHPnUWAnW9UfPuTekrHZCS+FwPGmiXfiNR6UEgfjm6nJ7tM1/Wte
- ogYjtWT1+MLAYyC4w6gZW+gKMVQinsQhzVwvbjg3FdQlFNxTPFaEMZW+UQHc6bAPCH
- qM6nm1h++frHWcQYWEFSQPe7HpSMxEwAYA+wLzmo=
-Date: Mon, 20 May 2019 11:40:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH] kbuild: do not check name uniqueness of builtin modules
-Message-ID: <20190520094020.GC15326@kroah.com>
-References: <20190520025437.13825-1-yamada.masahiro@socionext.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190520025437.13825-1-yamada.masahiro@socionext.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 456vKl3r6SzDqF0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2019 19:51:04 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 483F120028A;
+ Mon, 20 May 2019 11:51:01 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4968320018B;
+ Mon, 20 May 2019 11:50:55 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id E68B6402A2;
+ Mon, 20 May 2019 17:50:47 +0800 (SGT)
+From: Ran Wang <ran.wang_1@nxp.com>
+To: Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Pavel Machek <pavel@ucw.cz>
+Subject: [PATCH v4 1/3] PM: wakeup: Add routine to help fetch wakeup source
+ object.
+Date: Mon, 20 May 2019 17:52:36 +0800
+Message-Id: <20190520095238.29210-1-ran.wang_1@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,53 +50,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Schmitz <schmitzmic@gmail.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Rusty Russell <rusty@rustcorp.com.au>,
- Lucas De Marchi <lucas.demarchi@intel.com>, linux-kernel@vger.kernel.org,
- Lucas De Marchi <lucas.de.marchi@gmail.com>, Jessica Yu <jeyu@kernel.org>,
- Sam Ravnborg <sam@ravnborg.org>
+Cc: Len Brown <len.brown@intel.com>, devicetree@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 20, 2019 at 11:54:37AM +0900, Masahiro Yamada wrote:
-> I just thought it was a good idea to scan builtin.modules in the name
-> uniqueness checking, but Stephen reported a false positive.
-> 
-> ppc64_defconfig produces:
-> 
->   warning: same basename if the following are built as modules:
->     arch/powerpc/platforms/powermac/nvram.ko
->     drivers/char/nvram.ko
-> 
-> ..., which is a false positive because the former is never built as
-> a module as you see in arch/powerpc/platforms/powermac/Makefile:
-> 
->   # CONFIG_NVRAM is an arch. independent tristate symbol, for pmac32 we really
->   # need this to be a bool.  Cheat here and pretend CONFIG_NVRAM=m is really
->   # CONFIG_NVRAM=y
->   obj-$(CONFIG_NVRAM:m=y)         += nvram.o
-> 
-> Since we cannot predict how tricky Makefiles are written in wild,
-> builtin.modules may potentially contain false positives. I do not
-> think it is a big deal as far as kmod is concerned, but false positive
-> warnings in the kernel build makes people upset. It is better to not
-> do it.
-> 
-> Even without checking builtin.modules, we have enough (and more solid)
-> test coverage with allmodconfig.
-> 
-> While I touched this part, I replaced the sed code with neater one
-> provided by Stephen.
-> 
-> Link: https://lkml.org/lkml/2019/5/19/120
-> Link: https://lkml.org/lkml/2019/5/19/123
-> Fixes: 3a48a91901c5 ("kbuild: check uniqueness of module names")
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
+Some user might want to go through all registered wakeup sources
+and doing things accordingly. For example, SoC PM driver might need to
+do HW programming to prevent powering down specific IP which wakeup
+source depending on. And is user's responsibility to identify if this
+wakeup source he is interested in.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+---
+Change in v4:
+	- None.
+
+Change in v3:
+	- Adjust indentation of *attached_dev;.
+
+Change in v2:
+	- None.
+
+ drivers/base/power/wakeup.c |   18 ++++++++++++++++++
+ include/linux/pm_wakeup.h   |    3 +++
+ 2 files changed, 21 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
+index 5b2b6a0..6904485 100644
+--- a/drivers/base/power/wakeup.c
++++ b/drivers/base/power/wakeup.c
+@@ -14,6 +14,7 @@
+ #include <linux/suspend.h>
+ #include <linux/seq_file.h>
+ #include <linux/debugfs.h>
++#include <linux/of_device.h>
+ #include <linux/pm_wakeirq.h>
+ #include <trace/events/power.h>
+ 
+@@ -226,6 +227,22 @@ void wakeup_source_unregister(struct wakeup_source *ws)
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(wakeup_source_unregister);
++/**
++ * wakeup_source_get_next - Get next wakeup source from the list
++ * @ws: Previous wakeup source object, null means caller want first one.
++ */
++struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws)
++{
++	struct list_head *ws_head = &wakeup_sources;
++
++	if (ws)
++		return list_next_or_null_rcu(ws_head, &ws->entry,
++				struct wakeup_source, entry);
++	else
++		return list_entry_rcu(ws_head->next,
++				struct wakeup_source, entry);
++}
++EXPORT_SYMBOL_GPL(wakeup_source_get_next);
+ 
+ /**
+  * device_wakeup_attach - Attach a wakeup source object to a device object.
+@@ -242,6 +259,7 @@ static int device_wakeup_attach(struct device *dev, struct wakeup_source *ws)
+ 		return -EEXIST;
+ 	}
+ 	dev->power.wakeup = ws;
++	ws->attached_dev = dev;
+ 	if (dev->power.wakeirq)
+ 		device_wakeup_attach_irq(dev, dev->power.wakeirq);
+ 	spin_unlock_irq(&dev->power.lock);
+diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
+index 0ff134d..913b2fb 100644
+--- a/include/linux/pm_wakeup.h
++++ b/include/linux/pm_wakeup.h
+@@ -50,6 +50,7 @@
+  * @wakeup_count: Number of times the wakeup source might abort suspend.
+  * @active: Status of the wakeup source.
+  * @has_timeout: The wakeup source has been activated with a timeout.
++ * @attached_dev: The device it attached to
+  */
+ struct wakeup_source {
+ 	const char 		*name;
+@@ -70,6 +71,7 @@ struct wakeup_source {
+ 	unsigned long		wakeup_count;
+ 	bool			active:1;
+ 	bool			autosleep_enabled:1;
++	struct device		*attached_dev;
+ };
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -101,6 +103,7 @@ static inline void device_set_wakeup_path(struct device *dev)
+ extern void wakeup_source_remove(struct wakeup_source *ws);
+ extern struct wakeup_source *wakeup_source_register(const char *name);
+ extern void wakeup_source_unregister(struct wakeup_source *ws);
++extern struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws);
+ extern int device_wakeup_enable(struct device *dev);
+ extern int device_wakeup_disable(struct device *dev);
+ extern void device_set_wakeup_capable(struct device *dev, bool capable);
+-- 
+1.7.1
+
