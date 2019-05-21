@@ -1,117 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B873252B7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 16:51:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457dxp4bbBzDqNw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 00:51:26 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E302535F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:03:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 457fCq4jtSzDqN2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 01:03:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=hpe.com
- (client-ip=148.163.147.86; helo=mx0a-002e3701.pphosted.com;
- envelope-from=elliott@hpe.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=hpe.com
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com
- [148.163.147.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457dwB35m8zDqHr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 00:49:57 +1000 (AEST)
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
- by mx0b-002e3701.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4LEehgS008034; Tue, 21 May 2019 14:49:51 GMT
-Received: from g2t2352.austin.hpe.com (g2t2352.austin.hpe.com [15.233.44.25])
- by mx0b-002e3701.pphosted.com with ESMTP id 2smjsyge3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2019 14:49:51 +0000
-Received: from G2W6311.americas.hpqcorp.net (g2w6311.austin.hp.com
- [16.197.64.53])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by g2t2352.austin.hpe.com (Postfix) with ESMTPS id 444C5CA;
- Tue, 21 May 2019 14:49:50 +0000 (UTC)
-Received: from G9W8672.americas.hpqcorp.net (16.220.49.31) by
- G2W6311.americas.hpqcorp.net (16.197.64.53) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Tue, 21 May 2019 14:49:49 +0000
-Received: from G9W9210.americas.hpqcorp.net (2002:10dc:429b::10dc:429b) by
- G9W8672.americas.hpqcorp.net (2002:10dc:311f::10dc:311f) with Microsoft SMTP
- Server (TLS) id 15.0.1367.3; Tue, 21 May 2019 14:49:49 +0000
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (15.241.52.12) by
- G9W9210.americas.hpqcorp.net (16.220.66.155) with Microsoft SMTP
- Server (TLS)
- id 15.0.1367.3 via Frontend Transport; Tue, 21 May 2019 14:49:49 +0000
-Received: from AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM (10.169.7.147) by
- AT5PR8401MB0692.NAMPRD84.PROD.OUTLOOK.COM (10.169.7.144) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.15; Tue, 21 May 2019 14:49:47 +0000
-Received: from AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2884:44eb:25bf:b376]) by AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2884:44eb:25bf:b376%12]) with mapi id 15.20.1922.016; Tue, 21 May
- 2019 14:49:47 +0000
-From: "Elliott, Robert (Servers)" <elliott@hpe.com>
-To: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>, Dan Williams
- <dan.j.williams@intel.com>
-Subject: RE: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-Thread-Topic: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-Thread-Index: AQHVCgChFb7/EbTm2EmzJ0DwQTd3laZp/p0AgAAB4ICAAAH7AIAACYkAgAsy44CAACJ3AIAAUp6Q
-Date: Tue, 21 May 2019 14:49:47 +0000
-Message-ID: <AT5PR8401MB1169DEEAA95D4E4EA9C61285AB070@AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
- <f99c4f11-a43d-c2d3-ab4f-b7072d090351@linux.ibm.com>
- <CAPcyv4gOr8SFbdtBbWhMOU-wdYuMCQ4Jn2SznGRsv6Vku97Xnw@mail.gmail.com>
- <02d1d14d-650b-da38-0828-1af330f594d5@linux.ibm.com>
- <CAPcyv4jcSgg0wxY9FAM4ke9JzVc9Pu3qe6dviS3seNgHfG2oNw@mail.gmail.com>
- <87mujgcf0h.fsf@linux.ibm.com>
-In-Reply-To: <87mujgcf0h.fsf@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [2601:2c3:877f:e23c:fdc1:1746:34b1:a6c]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8bde30a5-0cc3-4142-e927-08d6ddfb920f
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
- SRVR:AT5PR8401MB0692; 
-x-ms-traffictypediagnostic: AT5PR8401MB0692:
-x-microsoft-antispam-prvs: <AT5PR8401MB06927E80F27B0859F1AB8DD6AB070@AT5PR8401MB0692.NAMPRD84.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:1148;
-x-forefront-prvs: 0044C17179
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10019020)(396003)(136003)(346002)(376002)(366004)(39860400002)(199004)(13464003)(189003)(7736002)(6246003)(9686003)(6116002)(54906003)(2906002)(8676002)(110136005)(53936002)(99286004)(316002)(33656002)(476003)(305945005)(4326008)(7696005)(71200400001)(81166006)(76176011)(71190400001)(81156014)(68736007)(8936002)(6506007)(25786009)(102836004)(6436002)(53546011)(229853002)(55016002)(256004)(74316002)(66556008)(64756008)(52536014)(66446008)(5660300002)(66476007)(4744005)(186003)(46003)(486006)(76116006)(73956011)(66946007)(478600001)(86362001)(14454004)(446003)(11346002);
- DIR:OUT; SFP:1102; SCL:1; SRVR:AT5PR8401MB0692;
- H:AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: hpe.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: I6AvVHDPGKk7QMDyM6WBco+hI7j4gcsJhjY/RP65hwAnce/6EqoPnFr7NycudNWW9ykAfbvGBsXqofG9GOEdKXuVxkoghOugxPy3ZmPs5XmWsFNH7/nwWq/0P2CHf8xZIF6O1hM3qoOND1KbBukFQS0Jzsnga2R2c9sH0HvnWvjhsGh05GHPHbbWAety5ebD9Xi8jEgDd92n9XwaCsfvZ0OLzkVrA0qnk5HC5Vuq7M3iGWs8aU+8SIks3fqvKF5q+1jhyh3xExrwC1bYJK0HBcMkTqxOvXjfb020DqdHivYUcH/4t+FPx3qZME+wQa8ldQL3PLfJ2sjTToks2adNkqS2Zh+H6BNFmssdOAtDAY9TiTW5L++2MZo2liV1FRVPqLhFrT3BeLpjTFOGyJdqn5mjKy32ZsYQ9ijVLw74JM0=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457f8t3rJjzDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 01:00:59 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hT6FK-0007FT-IR; Tue, 21 May 2019 15:00:06 +0000
+Date: Tue, 21 May 2019 16:00:06 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH 1/2] open: add close_range()
+Message-ID: <20190521150006.GJ17978@ZenIV.linux.org.uk>
+References: <20190521113448.20654-1-christian@brauner.io>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bde30a5-0cc3-4142-e927-08d6ddfb920f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2019 14:49:47.4838 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: elliott@hpe.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT5PR8401MB0692
-X-OriginatorOrg: hpe.com
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-21_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=855 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905210092
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190521113448.20654-1-christian@brauner.io>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,35 +45,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
+ dhowells@redhat.com, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
+ torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
+ jannh@google.com, linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
+ ldv@altlinux.org, linux-arm-kernel@lists.infradead.org, fweimer@redhat.com,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, May 21, 2019 at 01:34:47PM +0200, Christian Brauner wrote:
 
+> This adds the close_range() syscall. It allows to efficiently close a range
+> of file descriptors up to all file descriptors of a calling task.
+> 
+> The syscall came up in a recent discussion around the new mount API and
+> making new file descriptor types cloexec by default. During this
+> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
+> syscall in this manner has been requested by various people over time.
+> 
+> First, it helps to close all file descriptors of an exec()ing task. This
+> can be done safely via (quoting Al's example from [1] verbatim):
+> 
+>         /* that exec is sensitive */
+>         unshare(CLONE_FILES);
+>         /* we don't want anything past stderr here */
+>         close_range(3, ~0U);
+>         execve(....);
+> 
+> The code snippet above is one way of working around the problem that file
+> descriptors are not cloexec by default. This is aggravated by the fact that
+> we can't just switch them over without massively regressing userspace. For
+> a whole class of programs having an in-kernel method of closing all file
+> descriptors is very helpful (e.g. demons, service managers, programming
+> language standard libraries, container managers etc.).
+> (Please note, unshare(CLONE_FILES) should only be needed if the calling
+>  task is multi-threaded and shares the file descriptor table with another
+>  thread in which case two threads could race with one thread allocating
+>  file descriptors and the other one closing them via close_range(). For the
+>  general case close_range() before the execve() is sufficient.)
+> 
+> Second, it allows userspace to avoid implementing closing all file
+> descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
+> file descriptor. From looking at various large(ish) userspace code bases
+> this or similar patterns are very common in:
+> - service managers (cf. [4])
+> - libcs (cf. [6])
+> - container runtimes (cf. [5])
+> - programming language runtimes/standard libraries
+>   - Python (cf. [2])
+>   - Rust (cf. [7], [8])
+> As Dmitry pointed out there's even a long-standing glibc bug about missing
+> kernel support for this task (cf. [3]).
+> In addition, the syscall will also work for tasks that do not have procfs
+> mounted and on kernels that do not have procfs support compiled in. In such
+> situations the only way to make sure that all file descriptors are closed
+> is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
+> OPEN_MAX trickery (cf. comment [8] on Rust).
+> 
+> The performance is striking. For good measure, comparing the following
+> simple close_all_fds() userspace implementation that is essentially just
+> glibc's version in [6]:
+> 
+> static int close_all_fds(void)
+> {
+>         DIR *dir;
+>         struct dirent *direntp;
+> 
+>         dir = opendir("/proc/self/fd");
+>         if (!dir)
+>                 return -1;
+> 
+>         while ((direntp = readdir(dir))) {
+>                 int fd;
+>                 if (strcmp(direntp->d_name, ".") == 0)
+>                         continue;
+>                 if (strcmp(direntp->d_name, "..") == 0)
+>                         continue;
+>                 fd = atoi(direntp->d_name);
+>                 if (fd == 0 || fd == 1 || fd == 2)
+>                         continue;
+>                 close(fd);
+>         }
+> 
+>         closedir(dir); /* cannot fail */
+>         return 0;
+> }
+> 
+> to close_range() yields:
+> 1. closing 4 open files:
+>    - close_all_fds(): ~280 us
+>    - close_range():    ~24 us
+> 
+> 2. closing 1000 open files:
+>    - close_all_fds(): ~5000 us
+>    - close_range():   ~800 us
+> 
+> close_range() is designed to allow for some flexibility. Specifically, it
+> does not simply always close all open file descriptors of a task. Instead,
+> callers can specify an upper bound.
+> This is e.g. useful for scenarios where specific file descriptors are
+> created with well-known numbers that are supposed to be excluded from
+> getting closed.
+> For extra paranoia close_range() comes with a flags argument. This can e.g.
+> be used to implement extension. Once can imagine userspace wanting to stop
+> at the first error instead of ignoring errors under certain circumstances.
+> There might be other valid ideas in the future. In any case, a flag
+> argument doesn't hurt and keeps us on the safe side.
+> 
+> >From an implementation side this is kept rather dumb. It saw some input
+> from David and Jann but all nonsense is obviously my own!
+> - Errors to close file descriptors are currently ignored. (Could be changed
+>   by setting a flag in the future if needed.)
+> - __close_range() is a rather simplistic wrapper around __close_fd().
+>   My reasoning behind this is based on the nature of how __close_fd() needs
+>   to release an fd. But maybe I misunderstood specifics:
+>   We take the files_lock and rcu-dereference the fdtable of the calling
+>   task, we find the entry in the fdtable, get the file and need to release
+>   files_lock before calling filp_close().
+>   In the meantime the fdtable might have been altered so we can't just
+>   retake the spinlock and keep the old rcu-reference of the fdtable
+>   around. Instead we need to grab a fresh reference to the fdtable.
+>   If my reasoning is correct then there's really no point in fancyfying
+>   __close_range(): We just need to rcu-dereference the fdtable of the
+>   calling task once to cap the max_fd value correctly and then go on
+>   calling __close_fd() in a loop.
 
-> -----Original Message-----
-> From: Linux-nvdimm <linux-nvdimm-bounces@lists.01.org> On Behalf Of
-> Aneesh Kumar K.V
-> Sent: Tuesday, May 21, 2019 4:51 AM
-> Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of
-> opencoding
->=20
-...
-> @@ -36,6 +36,9 @@ struct nd_pfn_sb {
->  	__le32 end_trunc;
->  	/* minor-version-2 record the base alignment of the mapping */
->  	__le32 align;
-> +	/* minor-version-3 record the page size and struct page size
-> */
-> +	__le32 page_size;
-> +	__le32 page_struct_size;
->  	u8 padding[4000];
->  	__le64 checksum;
->  };
+> +/**
+> + * __close_range() - Close all file descriptors in a given range.
+> + *
+> + * @fd:     starting file descriptor to close
+> + * @max_fd: last file descriptor to close
+> + *
+> + * This closes a range of file descriptors. All file descriptors
+> + * from @fd up to and including @max_fd are closed.
+> + */
+> +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> +{
+> +	unsigned int cur_max;
+> +
+> +	if (fd > max_fd)
+> +		return -EINVAL;
+> +
+> +	rcu_read_lock();
+> +	cur_max = files_fdtable(files)->max_fds;
+> +	rcu_read_unlock();
+> +
+> +	/* cap to last valid index into fdtable */
+> +	if (max_fd >= cur_max)
+> +		max_fd = cur_max - 1;
+> +
+> +	while (fd <= max_fd)
+> +		__close_fd(files, fd++);
+> +
+> +	return 0;
+> +}
 
-You might need to reduce the padding size to offset the extra added
-fields.
+Umm...  That's going to be very painful if you dup2() something to MAX_INT and
+then run that; roughly 2G iterations of bouncing ->file_lock up and down,
+without anything that would yield CPU in process.
+
+If anything, I would suggest something like
+
+	fd = *start_fd;
+	grab the lock
+        fdt = files_fdtable(files);
+more:
+	look for the next eviction candidate in ->open_fds, starting at fd
+	if there's none up to max_fd
+		drop the lock
+		return NULL
+	*start_fd = fd + 1;
+	if the fscker is really opened and not just reserved
+		rcu_assign_pointer(fdt->fd[fd], NULL);
+		__put_unused_fd(files, fd);
+		drop the lock
+		return the file we'd got
+	if (unlikely(need_resched()))
+		drop lock
+		cond_resched();
+		grab lock
+		fdt = files_fdtable(files);
+	goto more;
+
+with the main loop being basically
+	while ((file = pick_next(files, &start_fd, max_fd)) != NULL)
+		filp_close(file, files);
 
 
