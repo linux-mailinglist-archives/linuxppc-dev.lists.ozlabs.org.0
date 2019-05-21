@@ -1,41 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F802492E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 09:43:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457SS45mgvzDqMb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:43:32 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467DB2494D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 09:49:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 457SZM5V3TzDqMx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:48:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="atFNJxGK"; 
+ dkim-atps=neutral
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457SQt2DjPzDqFS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 17:42:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 457SQs0PKRz9s55;
- Tue, 21 May 2019 17:42:29 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/mm: mark more tlb functions as __always_inline
-In-Reply-To: <CAK7LNAQNp+wsvNK84oYcGwR24=Kf=_N8WJdyZ2aUL9T3qDsVsA@mail.gmail.com>
-References: <20190521061659.6073-1-yamada.masahiro@socionext.com>
- <16d967dd-9f8f-4e9e-97fd-3f9761e5d97c@c-s.fr>
- <CAK7LNAQNp+wsvNK84oYcGwR24=Kf=_N8WJdyZ2aUL9T3qDsVsA@mail.gmail.com>
-Date: Tue, 21 May 2019 17:42:27 +1000
-Message-ID: <87y3306yos.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457SY463cSzDqFS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 17:47:50 +1000 (AEST)
+Received: by mail-oi1-x243.google.com with SMTP id w9so10245607oic.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:47:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=VnNxGfo8OcqUG0djFgBhBET2kQpbkm/tIE8oQa/BNZw=;
+ b=atFNJxGKx5nr0wfgMSn6a0RTyfq2Fh7KOKEYPxov5zlzNFhhIYe1dDNUgjJWatnVu3
+ TQY7uuBSU/kDC6jobnCJYnj/QC+XChDwidnJlVmLT+MQmUmFq1bEEchLhCjWuzgKwyju
+ A+qqR0Oh6V+JS6PRPujGPjIyVyL+OoUBTYAMMcVVJFycuEmeOjMY+4s6bfyLPECB8sfq
+ LACDTc/1TBb3ba22twzTF60fVdcTjQgaSNGrXT7IOZ01fPet6WWPb3T1jtZ9Y1dHCtQL
+ JAXyMeMqcCl+bNQjZkMKAndf7SfNg7p/q7JyueeAO1zPLX2PEzfzLbMoYqMvaB232JBG
+ 1OFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=VnNxGfo8OcqUG0djFgBhBET2kQpbkm/tIE8oQa/BNZw=;
+ b=a8PqsYtbDXLwRhyznW163uxdmBTVfJ6IXdZDD4WqZbvADd6Js9wlQ5btQLEYX0pobc
+ u2WBTUyi0XiSzy49w4F07x8x32DZ/tMNm9PVmZQTrHyvjMqkWuMtokiVopLbp8pa2Ftz
+ zxxUPTDD89nTxIOAz7elbsw6UHmJA5mESnNX5VjkLVA1jJyszt2kuNwNxCPaGgdHxhdq
+ Kdxa9824z+xwCnQVzRAOyxAZBYPY/j4jS+TKMRJJeEvH8KM/S4iVQECJaRK6hkS4lOOh
+ G1kJkhel/5uk6ndUNACesrYdemQOVJfvVde6gKP93qxJQbVYrZ76oaFtSUNvPtAcF7yi
+ wRpQ==
+X-Gm-Message-State: APjAAAWWw01w52saLzIVOIgV4fhId5LGlyOYSlHku/7IPgONftFoBkjR
+ CjKufL5y2jo3xrEIWPrJ53Qvw8Ug6ykn1MEgWp7pdA==
+X-Google-Smtp-Source: APXvYqyMSmQsHlkHNQttDiH4AI9D7Vum2+q5m/RkOEYGvfvIfr5P741zQF/NrlP+XEOoZIXxeRZzuwTUqFQl8EEQY58=
+X-Received: by 2002:aca:6087:: with SMTP id u129mr453263oib.70.1558424867222; 
+ Tue, 21 May 2019 00:47:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
+ <f99c4f11-a43d-c2d3-ab4f-b7072d090351@linux.ibm.com>
+ <CAPcyv4gOr8SFbdtBbWhMOU-wdYuMCQ4Jn2SznGRsv6Vku97Xnw@mail.gmail.com>
+ <02d1d14d-650b-da38-0828-1af330f594d5@linux.ibm.com>
+In-Reply-To: <02d1d14d-650b-da38-0828-1af330f594d5@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 21 May 2019 00:47:33 -0700
+Message-ID: <CAPcyv4jcSgg0wxY9FAM4ke9JzVc9Pu3qe6dviS3seNgHfG2oNw@mail.gmail.com>
+Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,90 +78,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-> On Tue, May 21, 2019 at 3:54 PM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
->> Le 21/05/2019 =C3=A0 08:16, Masahiro Yamada a =C3=A9crit :
->> > With CONFIG_OPTIMIZE_INLINING enabled, Laura Abbott reported error
->> > with gcc 9.1.1:
->> >
->> >    arch/powerpc/mm/book3s64/radix_tlb.c: In function '_tlbiel_pid':
->> >    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: warning: asm operand 3 =
-probably doesn't match constraints
->> >      104 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
->> >          |  ^~~
->> >    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: error: impossible const=
-raint in 'asm'
->> >
->> > Fixing _tlbiel_pid() is enough to address the warning above, but I
->> > inlined more functions to fix all potential issues.
->> >
->> > To meet the 'i' (immediate) constraint for the asm operands, functions
->> > propagating propagated 'ric' must be always inlined.
->> >
->> > Fixes: 9012d011660e ("compiler: allow all arches to enable CONFIG_OPTI=
-MIZE_INLINING")
->> > Reported-by: Laura Abbott <labbott@redhat.com>
->> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
->> > ---
->> >
->> >   arch/powerpc/mm/book3s64/hash_native.c |  8 +++--
->> >   arch/powerpc/mm/book3s64/radix_tlb.c   | 44 +++++++++++++++---------=
---
->> >   2 files changed, 30 insertions(+), 22 deletions(-)
->> >
->> > diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/=
-book3s64/hash_native.c
->> > index aaa28fd918fe..bc2c35c0d2b1 100644
->> > --- a/arch/powerpc/mm/book3s64/hash_native.c
->> > +++ b/arch/powerpc/mm/book3s64/hash_native.c
->> > @@ -60,9 +60,11 @@ static inline void tlbiel_hash_set_isa206(unsigned =
-int set, unsigned int is)
->> >    * tlbiel instruction for hash, set invalidation
->> >    * i.e., r=3D1 and is=3D01 or is=3D10 or is=3D11
->> >    */
->> > -static inline void tlbiel_hash_set_isa300(unsigned int set, unsigned =
-int is,
->> > -                                     unsigned int pid,
->> > -                                     unsigned int ric, unsigned int p=
-rs)
->> > +static __always_inline void tlbiel_hash_set_isa300(unsigned int set,
->> > +                                                unsigned int is,
->> > +                                                unsigned int pid,
->> > +                                                unsigned int ric,
->> > +                                                unsigned int prs)
->>
->> Please don't split the line more than it is.
->>
->> powerpc accepts lines up to 90 chars, see arch/powerpc/tools/checkpatch.=
-pl
+On Mon, May 13, 2019 at 9:46 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> Ugh, I did not know this. Horrible.
+> On 5/14/19 9:42 AM, Dan Williams wrote:
+> > On Mon, May 13, 2019 at 9:05 PM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> On 5/14/19 9:28 AM, Dan Williams wrote:
+> >>> On Mon, May 13, 2019 at 7:56 PM Aneesh Kumar K.V
+> >>> <aneesh.kumar@linux.ibm.com> wrote:
+> >>>>
+> >>>> The nfpn related change is needed to fix the kernel message
+> >>>>
+> >>>> "number of pfns truncated from 2617344 to 163584"
+> >>>>
+> >>>> The change makes sure the nfpns stored in the superblock is right value.
+> >>>>
+> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >>>> ---
+> >>>>    drivers/nvdimm/pfn_devs.c    | 6 +++---
+> >>>>    drivers/nvdimm/region_devs.c | 8 ++++----
+> >>>>    2 files changed, 7 insertions(+), 7 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> >>>> index 347cab166376..6751ff0296ef 100644
+> >>>> --- a/drivers/nvdimm/pfn_devs.c
+> >>>> +++ b/drivers/nvdimm/pfn_devs.c
+> >>>> @@ -777,8 +777,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >>>>                    * when populating the vmemmap. This *should* be equal to
+> >>>>                    * PMD_SIZE for most architectures.
+> >>>>                    */
+> >>>> -               offset = ALIGN(start + reserve + 64 * npfns,
+> >>>> -                               max(nd_pfn->align, PMD_SIZE)) - start;
+> >>>> +               offset = ALIGN(start + reserve + sizeof(struct page) * npfns,
+> >>>> +                              max(nd_pfn->align, PMD_SIZE)) - start;
+> >>>
+> >>> No, I think we need to record the page-size into the superblock format
+> >>> otherwise this breaks in debug builds where the struct-page size is
+> >>> extended.
+> >>>
+> >>>>           } else if (nd_pfn->mode == PFN_MODE_RAM)
+> >>>>                   offset = ALIGN(start + reserve, nd_pfn->align) - start;
+> >>>>           else
+> >>>> @@ -790,7 +790,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >>>>                   return -ENXIO;
+> >>>>           }
+> >>>>
+> >>>> -       npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
+> >>>> +       npfns = (size - offset - start_pad - end_trunc) / PAGE_SIZE;
+> >>>
+> >>> Similar comment, if the page size is variable then the superblock
+> >>> needs to explicitly account for it.
+> >>>
+> >>
+> >> PAGE_SIZE is not really variable. What we can run into is the issue you
+> >> mentioned above. The size of struct page can change which means the
+> >> reserved space for keeping vmemmap in device may not be sufficient for
+> >> certain kernel builds.
+> >>
+> >> I was planning to add another patch that fails namespace init if we
+> >> don't have enough space to keep the struct page.
+> >>
+> >> Why do you suggest we need to have PAGE_SIZE as part of pfn superblock?
+> >
+> > So that the kernel has a chance to identify cases where the superblock
+> > it is handling was created on a system with different PAGE_SIZE
+> > assumptions.
+> >
 >
-> The Linux coding style should be global in the kernel tree.
-> No subsystem should adopts its own coding style.
+> The reason to do that is we don't have enough space to keep struct page
+> backing the total number of pfns? If so, what i suggested above should
+> handle that.
+>
+> or are you finding any other reason why we should fail a namespace init
+> with a different PAGE_SIZE value?
 
-Well that ship sailed long ago.
+I want the kernel to be able to start understand cross-architecture
+and cross-configuration geometries. Which to me means incrementing the
+info-block version and recording PAGE_SIZE and sizeof(struct page) in
+the info-block directly.
 
-But we don't have our own coding style, we just don't enforce 80 columns
-rigidly, there are cases where a slightly longer line (up to ~90) is
-preferable to a split line.
+> My another patch handle the details w.r.t devdax alignment for which
+> devdax got created with PAGE_SIZE 4K but we are now trying to load that
+> in a kernel with PAGE_SIZE 64k.
 
-In a case like this with a long attribute and function name I think this
-is probably the least worst option:
-
-static __always_inline
-void tlbiel_hash_set_isa300(unsigned int set, unsigned int is, unsigned int=
- pid,
-			    unsigned int ric, unsigned int prs)
-{
-	...
-
-cheers
+Sure, but what about the reverse? These info-block format assumptions
+are as fundamental as the byte-order of the info-block, it needs to be
+cross-arch compatible and the x86 assumptions need to be fully lifted.
