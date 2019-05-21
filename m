@@ -1,58 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89E3248F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 09:30:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55713248ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 09:26:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457S483NV1zDqLr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:26:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457S8X2T8zzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:30:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=perches.com
- (client-ip=216.40.44.96; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.80; helo=conssluserg-01.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0096.hostedemail.com
- [216.40.44.96])
+ dmarc=none (p=none dis=none) header.from=socionext.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="QHRkxn0F"; 
+ dkim-atps=neutral
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
+ [210.131.2.80])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457S2l34nGzDqKy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 17:25:02 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay03.hostedemail.com (Postfix) with ESMTP id C7C8C837F24C;
- Tue, 21 May 2019 07:24:56 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::::,
- RULES_HIT:41:355:379:421:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1533:1534:1536:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3867:4321:5007:6120:6642:7901:10004:10400:10848:11658:11914:12043:12048:12196:12740:12760:12895:13069:13311:13357:13439:14181:14659:21080:21627:30054:30091,
- 0,
- RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,
- CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
- MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:29,
- LUA_SUMMARY:none
-X-HE-Tag: rail78_481f05a1cd332
-X-Filterd-Recvd-Size: 1175
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
- (Authenticated sender: joe@perches.com)
- by omf12.hostedemail.com (Postfix) with ESMTPA;
- Tue, 21 May 2019 07:24:55 +0000 (UTC)
-Message-ID: <a18a87a4ef54168148f0d278601782f5f6442830.camel@perches.com>
-Subject: Re: [PATCH] powerpc/mm: mark more tlb functions as __always_inline
-From: Joe Perches <joe@perches.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Masahiro Yamada
- <yamada.masahiro@socionext.com>, linuxppc-dev@lists.ozlabs.org, Michael
- Ellerman <mpe@ellerman.id.au>
-Date: Tue, 21 May 2019 00:24:54 -0700
-In-Reply-To: <16d967dd-9f8f-4e9e-97fd-3f9761e5d97c@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457S7G0RlzzDqKX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 17:28:56 +1000 (AEST)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com
+ [209.85.222.43]) (authenticated)
+ by conssluserg-01.nifty.com with ESMTP id x4L7SZJO029855
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 16:28:36 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x4L7SZJO029855
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1558423716;
+ bh=0IneFBogau5aTVTnVikpfnfxhfGGg+m93gGHEDBBT2M=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=QHRkxn0FpgpJZytlIwzPKDd3Ewp7E96EMiaXKx04L5m20+rs2i+/xzPh9P4Bn3AGP
+ dSAH2Tp/Y0B5hFIftuFoSYre1GsGB+N02T2RlttHQjOfgVts9R3tRy7I9CnIebiN6r
+ d2Y7jufk26xmCn9rAW1di/3tO5jVXS61BrO8xrCpXS0txhn4+g6PNHUFEwi4oGaBTW
+ 6a5mO8qI7MlnjDOhC1XaXJEn22JFnIZprf4eGjbDI3iWMTAf4E4fQS5D/x4AxhkfP1
+ nsveLUyoPyTqHlgLtgb+LOx+dRwKwVtCmewTYD/yfeUtRAmK/AH7TpfrEMk02KS7jS
+ 50hvs4K3ITXaA==
+X-Nifty-SrcIP: [209.85.222.43]
+Received: by mail-ua1-f43.google.com with SMTP id 94so6271198uam.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:28:35 -0700 (PDT)
+X-Gm-Message-State: APjAAAWx9qsk6izZkxWCBM8ecAzeOZrHQ+52VgkD016HAsY4KkgVV14t
+ xei9stN2O206A2tXrt9j1U7dqp9+xYAlhV6fGhs=
+X-Google-Smtp-Source: APXvYqznP8e8GHshxPJUqQetjFmjBhvHA7Y6dMmw1D+/xm5qDgis9mpan+zseql9QUlQ9+O+cjn+NxLo59SYDBiSIYI=
+X-Received: by 2002:a9f:24a3:: with SMTP id 32mr15884042uar.109.1558423714533; 
+ Tue, 21 May 2019 00:28:34 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190521061659.6073-1-yamada.masahiro@socionext.com>
  <16d967dd-9f8f-4e9e-97fd-3f9761e5d97c@c-s.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.1-1build1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <16d967dd-9f8f-4e9e-97fd-3f9761e5d97c@c-s.fr>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Tue, 21 May 2019 16:27:58 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQNp+wsvNK84oYcGwR24=Kf=_N8WJdyZ2aUL9T3qDsVsA@mail.gmail.com>
+Message-ID: <CAK7LNAQNp+wsvNK84oYcGwR24=Kf=_N8WJdyZ2aUL9T3qDsVsA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/mm: mark more tlb functions as __always_inline
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,14 +70,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-05-21 at 08:53 +0200, Christophe Leroy wrote:
-> powerpc accepts lines up to 90 chars, see arch/powerpc/tools/checkpatch.pl
+On Tue, May 21, 2019 at 3:54 PM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
+>
+>
+>
+> Le 21/05/2019 =C3=A0 08:16, Masahiro Yamada a =C3=A9crit :
+> > With CONFIG_OPTIMIZE_INLINING enabled, Laura Abbott reported error
+> > with gcc 9.1.1:
+> >
+> >    arch/powerpc/mm/book3s64/radix_tlb.c: In function '_tlbiel_pid':
+> >    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: warning: asm operand 3 p=
+robably doesn't match constraints
+> >      104 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+> >          |  ^~~
+> >    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: error: impossible constr=
+aint in 'asm'
+> >
+> > Fixing _tlbiel_pid() is enough to address the warning above, but I
+> > inlined more functions to fix all potential issues.
+> >
+> > To meet the 'i' (immediate) constraint for the asm operands, functions
+> > propagating propagated 'ric' must be always inlined.
+> >
+> > Fixes: 9012d011660e ("compiler: allow all arches to enable CONFIG_OPTIM=
+IZE_INLINING")
+> > Reported-by: Laura Abbott <labbott@redhat.com>
+> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > ---
+> >
+> >   arch/powerpc/mm/book3s64/hash_native.c |  8 +++--
+> >   arch/powerpc/mm/book3s64/radix_tlb.c   | 44 +++++++++++++++----------=
+-
+> >   2 files changed, 30 insertions(+), 22 deletions(-)
+> >
+> > diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/b=
+ook3s64/hash_native.c
+> > index aaa28fd918fe..bc2c35c0d2b1 100644
+> > --- a/arch/powerpc/mm/book3s64/hash_native.c
+> > +++ b/arch/powerpc/mm/book3s64/hash_native.c
+> > @@ -60,9 +60,11 @@ static inline void tlbiel_hash_set_isa206(unsigned i=
+nt set, unsigned int is)
+> >    * tlbiel instruction for hash, set invalidation
+> >    * i.e., r=3D1 and is=3D01 or is=3D10 or is=3D11
+> >    */
+> > -static inline void tlbiel_hash_set_isa300(unsigned int set, unsigned i=
+nt is,
+> > -                                     unsigned int pid,
+> > -                                     unsigned int ric, unsigned int pr=
+s)
+> > +static __always_inline void tlbiel_hash_set_isa300(unsigned int set,
+> > +                                                unsigned int is,
+> > +                                                unsigned int pid,
+> > +                                                unsigned int ric,
+> > +                                                unsigned int prs)
+>
+> Please don't split the line more than it is.
+>
+> powerpc accepts lines up to 90 chars, see arch/powerpc/tools/checkpatch.p=
+l
 
-arch/powerpc/tools/checkpatch.sh
+Ugh, I did not know this. Horrible.
+
+The Linux coding style should be global in the kernel tree.
+No subsystem should adopts its own coding style.
 
 
+--=20
+Best Regards
+Masahiro Yamada
