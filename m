@@ -2,38 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC5624780
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 07:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F5024783
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 07:25:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457PFZ6df2zDqGg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:19:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457PPJ6yl9zDqHF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:25:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=maddy@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457P9G6myHzDqFH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 15:15:30 +1000 (AEST)
-Received: by newverein.lst.de (Postfix, from userid 2407)
- id 71C1968B05; Tue, 21 May 2019 07:15:07 +0200 (CEST)
-Date: Tue, 21 May 2019 07:15:07 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [PATCH 11/12] powerpc/pseries/svm: Force SWIOTLB for secure guests
-Message-ID: <20190521051507.GD29120@lst.de>
-References: <20190521044912.1375-1-bauerman@linux.ibm.com>
- <20190521044912.1375-12-bauerman@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457PMw1nwSzDqBd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 15:24:43 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4L5NAXf068893
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 01:24:41 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2smauh0r0n-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 01:24:40 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.vnet.ibm.com>;
+ Tue, 21 May 2019 06:24:39 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 21 May 2019 06:24:36 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4L5OZoV57278488
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:24:35 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 81E69A405B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:24:35 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1F74BA4060
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:24:35 +0000 (GMT)
+Received: from [9.126.30.226] (unknown [9.126.30.226])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:24:34 +0000 (GMT)
+Subject: Re: [RFC PATCH v2 07/10] KVM: PPC: Ultravisor: Restrict LDBAR access
+To: linuxppc-dev@lists.ozlabs.org
+References: <20190518142524.28528-1-cclaudio@linux.ibm.com>
+ <20190518142524.28528-8-cclaudio@linux.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Date: Tue, 21 May 2019 10:54:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190521044912.1375-12-bauerman@linux.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20190518142524.28528-8-cclaudio@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19052105-0020-0000-0000-0000033ED00B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052105-0021-0000-0000-00002191AB8D
+Message-Id: <600cdf4c-7195-ab32-5fe4-13b71845d222@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-20_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905210035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,51 +91,282 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/arch/powerpc/include/asm/mem_encrypt.h b/arch/powerpc/include/asm/mem_encrypt.h
-> new file mode 100644
-> index 000000000000..45d5e4d0e6e0
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/mem_encrypt.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +/*
-> + * SVM helper functions
-> + *
-> + * Copyright 2019 IBM Corporation
-> + */
-> +
-> +#ifndef _ASM_POWERPC_MEM_ENCRYPT_H
-> +#define _ASM_POWERPC_MEM_ENCRYPT_H
-> +
-> +#define sme_me_mask	0ULL
-> +
-> +static inline bool sme_active(void) { return false; }
-> +static inline bool sev_active(void) { return false; }
-> +
-> +int set_memory_encrypted(unsigned long addr, int numpages);
-> +int set_memory_decrypted(unsigned long addr, int numpages);
-> +
-> +#endif /* _ASM_POWERPC_MEM_ENCRYPT_H */
 
-S/390 seems to be adding a stub header just like this.  Can you please
-clean up the Kconfig and generic headers bits for memory encryption so
-that we don't need all this boilerplate code?
+On 18/05/19 7:55 PM, Claudio Carvalho wrote:
+> From: Ram Pai <linuxram@us.ibm.com> When the ultravisor firmware is 
+> available, it takes control over the LDBAR register. In this case, 
+> thread-imc updates and save/restore operations on the LDBAR register 
+> are handled by ultravisor.
+we should remove the core and thread imc nodes in the skiboot
+if the ultravisor is enabled. We dont need imc-pmu.c file changes, imc-pmu.c
+inits only if we have the corresponding nodes. I will post a skiboot patch.
 
->  config PPC_SVM
->  	bool "Secure virtual machine (SVM) support for POWER"
->  	depends on PPC_PSERIES
-> +	select SWIOTLB
-> +	select ARCH_HAS_MEM_ENCRYPT
->  	default n
+Maddy
 
-n is the default default, no need to explictly specify it.
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> [Restrict LDBAR access in assembly code and some in C, update the commit
+>   message]
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> ---
+>   arch/powerpc/kvm/book3s_hv.c                 |  4 +-
+>   arch/powerpc/kvm/book3s_hv_rmhandlers.S      |  2 +
+>   arch/powerpc/perf/imc-pmu.c                  | 64 ++++++++++++--------
+>   arch/powerpc/platforms/powernv/idle.c        |  6 +-
+>   arch/powerpc/platforms/powernv/subcore-asm.S |  4 ++
+>   5 files changed, 52 insertions(+), 28 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 0fab0a201027..81f35f955d16 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -75,6 +75,7 @@
+>   #include <asm/xics.h>
+>   #include <asm/xive.h>
+>   #include <asm/hw_breakpoint.h>
+> +#include <asm/firmware.h>
+>
+>   #include "book3s.h"
+>
+> @@ -3117,7 +3118,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+>   			subcore_size = MAX_SMT_THREADS / split;
+>   			split_info.rpr = mfspr(SPRN_RPR);
+>   			split_info.pmmar = mfspr(SPRN_PMMAR);
+> -			split_info.ldbar = mfspr(SPRN_LDBAR);
+> +			if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
+> +				split_info.ldbar = mfspr(SPRN_LDBAR);
+>   			split_info.subcore_size = subcore_size;
+>   		} else {
+>   			split_info.subcore_size = 1;
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> index dd014308f065..938cfa5dceed 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -375,8 +375,10 @@ BEGIN_FTR_SECTION
+>   	mtspr	SPRN_RPR, r0
+>   	ld	r0, KVM_SPLIT_PMMAR(r6)
+>   	mtspr	SPRN_PMMAR, r0
+> +BEGIN_FW_FTR_SECTION_NESTED(70)
+>   	ld	r0, KVM_SPLIT_LDBAR(r6)
+>   	mtspr	SPRN_LDBAR, r0
+> +END_FW_FTR_SECTION_NESTED(FW_FEATURE_ULTRAVISOR, 0, 70)
+>   	isync
+>   FTR_SECTION_ELSE
+>   	/* On P9 we use the split_info for coordinating LPCR changes */
+> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+> index 31fa753e2eb2..39c84de74da9 100644
+> --- a/arch/powerpc/perf/imc-pmu.c
+> +++ b/arch/powerpc/perf/imc-pmu.c
+> @@ -17,6 +17,7 @@
+>   #include <asm/cputhreads.h>
+>   #include <asm/smp.h>
+>   #include <linux/string.h>
+> +#include <asm/firmware.h>
+>
+>   /* Nest IMC data structures and variables */
+>
+> @@ -816,6 +817,17 @@ static int core_imc_event_init(struct perf_event *event)
+>   	return 0;
+>   }
+>
+> +static void thread_imc_ldbar_disable(void *dummy)
+> +{
+> +	/*
+> +	 * By Zeroing LDBAR, we disable thread-imc updates. When the ultravisor
+> +	 * firmware is available, it is responsible for handling thread-imc
+> +	 * updates, though
+> +	 */
+> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
+> +		mtspr(SPRN_LDBAR, 0);
+> +}
+> +
+>   /*
+>    * Allocates a page of memory for each of the online cpus, and load
+>    * LDBAR with 0.
+> @@ -856,7 +868,7 @@ static int thread_imc_mem_alloc(int cpu_id, int size)
+>   		per_cpu(thread_imc_mem, cpu_id) = local_mem;
+>   	}
+>
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>   	return 0;
+>   }
+>
+> @@ -867,7 +879,7 @@ static int ppc_thread_imc_cpu_online(unsigned int cpu)
+>
+>   static int ppc_thread_imc_cpu_offline(unsigned int cpu)
+>   {
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>   	return 0;
+>   }
+>
+> @@ -1010,7 +1022,6 @@ static int thread_imc_event_add(struct perf_event *event, int flags)
+>   {
+>   	int core_id;
+>   	struct imc_pmu_ref *ref;
+> -	u64 ldbar_value, *local_mem = per_cpu(thread_imc_mem, smp_processor_id());
+>
+>   	if (flags & PERF_EF_START)
+>   		imc_event_start(event, flags);
+> @@ -1019,8 +1030,14 @@ static int thread_imc_event_add(struct perf_event *event, int flags)
+>   		return -EINVAL;
+>
+>   	core_id = smp_processor_id() / threads_per_core;
+> -	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | THREAD_IMC_ENABLE;
+> -	mtspr(SPRN_LDBAR, ldbar_value);
+> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR)) {
+> +		u64 ldbar_value, *local_mem;
+> +
+> +		local_mem = per_cpu(thread_imc_mem, smp_processor_id());
+> +		ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) |
+> +				THREAD_IMC_ENABLE;
+> +		mtspr(SPRN_LDBAR, ldbar_value);
+> +	}
+>
+>   	/*
+>   	 * imc pmus are enabled only when it is used.
+> @@ -1053,7 +1070,7 @@ static void thread_imc_event_del(struct perf_event *event, int flags)
+>   	int core_id;
+>   	struct imc_pmu_ref *ref;
+>
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>
+>   	core_id = smp_processor_id() / threads_per_core;
+>   	ref = &core_imc_refc[core_id];
+> @@ -1109,7 +1126,7 @@ static int trace_imc_mem_alloc(int cpu_id, int size)
+>   	trace_imc_refc[core_id].id = core_id;
+>   	mutex_init(&trace_imc_refc[core_id].lock);
+>
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>   	return 0;
+>   }
+>
+> @@ -1120,7 +1137,7 @@ static int ppc_trace_imc_cpu_online(unsigned int cpu)
+>
+>   static int ppc_trace_imc_cpu_offline(unsigned int cpu)
+>   {
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>   	return 0;
+>   }
+>
+> @@ -1207,11 +1224,6 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+>   {
+>   	int core_id = smp_processor_id() / threads_per_core;
+>   	struct imc_pmu_ref *ref = NULL;
+> -	u64 local_mem, ldbar_value;
+> -
+> -	/* Set trace-imc bit in ldbar and load ldbar with per-thread memory address */
+> -	local_mem = get_trace_imc_event_base_addr();
+> -	ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) | TRACE_IMC_ENABLE;
+>
+>   	if (core_imc_refc)
+>   		ref = &core_imc_refc[core_id];
+> @@ -1222,14 +1234,25 @@ static int trace_imc_event_add(struct perf_event *event, int flags)
+>   		if (!ref)
+>   			return -EINVAL;
+>   	}
+> -	mtspr(SPRN_LDBAR, ldbar_value);
+> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR)) {
+> +		u64 local_mem, ldbar_value;
+> +
+> +		/*
+> +		 * Set trace-imc bit in ldbar and load ldbar with per-thread
+> +		 * memory address
+> +		 */
+> +		local_mem = get_trace_imc_event_base_addr();
+> +		ldbar_value = ((u64)local_mem & THREAD_IMC_LDBAR_MASK) |
+> +				TRACE_IMC_ENABLE;
+> +		mtspr(SPRN_LDBAR, ldbar_value);
+> +	}
+>   	mutex_lock(&ref->lock);
+>   	if (ref->refc == 0) {
+>   		if (opal_imc_counters_start(OPAL_IMC_COUNTERS_TRACE,
+>   				get_hard_smp_processor_id(smp_processor_id()))) {
+>   			mutex_unlock(&ref->lock);
+>   			pr_err("trace-imc: Unable to start the counters for core %d\n", core_id);
+> -			mtspr(SPRN_LDBAR, 0);
+> +			thread_imc_ldbar_disable(NULL);
+>   			return -EINVAL;
+>   		}
+>   	}
+> @@ -1270,7 +1293,7 @@ static void trace_imc_event_del(struct perf_event *event, int flags)
+>   		if (!ref)
+>   			return;
+>   	}
+> -	mtspr(SPRN_LDBAR, 0);
+> +	thread_imc_ldbar_disable(NULL);
+>   	mutex_lock(&ref->lock);
+>   	ref->refc--;
+>   	if (ref->refc == 0) {
+> @@ -1413,15 +1436,6 @@ static void cleanup_all_core_imc_memory(void)
+>   	kfree(core_imc_refc);
+>   }
+>
+> -static void thread_imc_ldbar_disable(void *dummy)
+> -{
+> -	/*
+> -	 * By Zeroing LDBAR, we disable thread-imc
+> -	 * updates.
+> -	 */
+> -	mtspr(SPRN_LDBAR, 0);
+> -}
+> -
+>   void thread_imc_disable(void)
+>   {
+>   	on_each_cpu(thread_imc_ldbar_disable, NULL, 1);
+> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+> index c9133f7908ca..fd62435e3267 100644
+> --- a/arch/powerpc/platforms/powernv/idle.c
+> +++ b/arch/powerpc/platforms/powernv/idle.c
+> @@ -679,7 +679,8 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+>   		sprs.ptcr	= mfspr(SPRN_PTCR);
+>   		sprs.rpr	= mfspr(SPRN_RPR);
+>   		sprs.tscr	= mfspr(SPRN_TSCR);
+> -		sprs.ldbar	= mfspr(SPRN_LDBAR);
+> +		if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
+> +			sprs.ldbar	= mfspr(SPRN_LDBAR);
+>
+>   		sprs_saved = true;
+>
+> @@ -762,7 +763,8 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+>   	mtspr(SPRN_PTCR,	sprs.ptcr);
+>   	mtspr(SPRN_RPR,		sprs.rpr);
+>   	mtspr(SPRN_TSCR,	sprs.tscr);
+> -	mtspr(SPRN_LDBAR,	sprs.ldbar);
+> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
+> +		mtspr(SPRN_LDBAR,	sprs.ldbar);
+>
+>   	if (pls >= pnv_first_tb_loss_level) {
+>   		/* TB loss */
+> diff --git a/arch/powerpc/platforms/powernv/subcore-asm.S b/arch/powerpc/platforms/powernv/subcore-asm.S
+> index 39bb24aa8f34..e4383fa5e150 100644
+> --- a/arch/powerpc/platforms/powernv/subcore-asm.S
+> +++ b/arch/powerpc/platforms/powernv/subcore-asm.S
+> @@ -44,7 +44,9 @@ _GLOBAL(split_core_secondary_loop)
+>
+>   real_mode:
+>   	/* Grab values from unsplit SPRs */
+> +BEGIN_FW_FTR_SECTION
+>   	mfspr	r6,  SPRN_LDBAR
+> +END_FW_FTR_SECTION_IFCLR(FW_FEATURE_ULTRAVISOR)
+>   	mfspr	r7,  SPRN_PMMAR
+>   	mfspr	r8,  SPRN_PMCR
+>   	mfspr	r9,  SPRN_RPR
+> @@ -77,7 +79,9 @@ real_mode:
+>   	mtspr	SPRN_HDEC, r4
+>
+>   	/* Restore SPR values now we are split */
+> +BEGIN_FW_FTR_SECTION
+>   	mtspr	SPRN_LDBAR, r6
+> +END_FW_FTR_SECTION_IFCLR(FW_FEATURE_ULTRAVISOR)
+>   	mtspr	SPRN_PMMAR, r7
+>   	mtspr	SPRN_PMCR, r8
+>   	mtspr	SPRN_RPR, r9
+
