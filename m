@@ -1,74 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6CF2564E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 19:04:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5DF25637
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 18:55:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457hhf07YZzDqNb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 02:55:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457hvH2z7NzDqNS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 03:04:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::443; helo=mail-wr1-x443.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="DVrrdj/u"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="TwIU4X1E"; 
  dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457hgD5N4pzDqGt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 02:54:00 +1000 (AEST)
-Received: by mail-wr1-x443.google.com with SMTP id s17so19454966wru.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 09:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=RjB7EuozO9SbpuWjY+CIL5jhjOJH/kZTishJT3qd1so=;
- b=DVrrdj/uSypBpQeJ7w1A/QlA+FyxTxrTjqgIjCbG0reYil1YwuJTymbPcq5VHJqvVz
- +ycMes6cu/p9bim38A9JdNpiuhKR9vQv7DKRlOjTKaH0aqGgcMNm9LyZRCsl86xL9T/2
- v52uCPRsGaEw7QZ8JAwWz7Kq/Yj8TlXF4sm4C/8FN/Sr2m4ymsOhSa0mlT/aKrxO9iLl
- j1mrN/7F1XvRVqFUi9infQrf5nFqVWvyb3hSIPgiuXrpPOdfJR8Np8CmTFbMGebX0RJF
- ggWVReABajaL93O9n4VuSlBrHfB9XuQYf2S00X4VsMQ9qcMjAtgT2YCUTAII0Ql7QzsL
- 6EMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=RjB7EuozO9SbpuWjY+CIL5jhjOJH/kZTishJT3qd1so=;
- b=uE1i6xxXRV+xstqzxJ0uATnzLjXof7HKK5ltOuwiXf0OGywRRjzHHauRhdkpI0vqVw
- lIoj7V7JXyo43/hoXlqImjKeBeH223o2pCgd6prYSVQKq/f2Ko86QPWTPaBD/AqjQ3BP
- NRC0mlIlzGlDxFNbY9roDJLv1UPyNBUfD6iUaOAfB27GY7Cd5uGld5XKRRyHnIT3LKx2
- YRN5UWQcxuFr3B07Y0p12+Vc6P8Je8CuQEY9gAAIoZ+UEHBb3hd++CfD2mwNm8TARqQd
- L9g+zM8t+AiX0GtR4BUiNGa61rjzrg7z0WFPkKjO3CIxoHMf8KtSeHpfVjhoM6DgRs43
- TyGw==
-X-Gm-Message-State: APjAAAWtog8AK4n6sIF846Snij8dFrkx9SoXlsAKQlX4ohI/nQ3f/eTB
- 1RflMYfWOUCVWuE99pSDFRdN9w==
-X-Google-Smtp-Source: APXvYqzvE8cesTA8vFkWKOJDTA1w0C5Fkm0j+9nhaMupM7B34j2tZxI4AHBlMWgH0cSYuDDVbKye1A==
-X-Received: by 2002:a5d:4d46:: with SMTP id a6mr13850707wru.142.1558457632993; 
- Tue, 21 May 2019 09:53:52 -0700 (PDT)
-Received: from brauner.io ([212.91.227.56])
- by smtp.gmail.com with ESMTPSA id t194sm6090599wmt.3.2019.05.21.09.53.51
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 21 May 2019 09:53:52 -0700 (PDT)
-Date: Tue, 21 May 2019 18:53:50 +0200
-From: Christian Brauner <christian@brauner.io>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH 1/2] open: add close_range()
-Message-ID: <20190521165349.lduphxylwnfgael4@brauner.io>
-References: <20190521113448.20654-1-christian@brauner.io>
- <20190521150006.GJ17978@ZenIV.linux.org.uk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457hsw13RszDqHh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 03:03:16 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 457hsq2K97z9v1md;
+ Tue, 21 May 2019 19:03:11 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=TwIU4X1E; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ht6wT-JpdewX; Tue, 21 May 2019 19:03:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 457hsq1DvVz9v1fC;
+ Tue, 21 May 2019 19:03:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1558458191; bh=WyoOVBNOaUUAWtZap3NeTeqendx/9Gg/KJ/yGF7HZmw=;
+ h=Subject:To:References:From:Cc:Date:In-Reply-To:From;
+ b=TwIU4X1E2cMqNRljjw9GCCrBJnbaAUsgLyPKbGzC7fu++0G3yQGWKdrNQ6wbKhpge
+ btlhX8AN2FFUprbdQ/KsnG/0WBeRUyeuva3wX4jPFeyPuisYKks9E3kMSkSKFmUIiz
+ XmQLMdrxbO79ZUdvoR5TYWv0au7i5tx7+A9nSwEc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D89A88B814;
+ Tue, 21 May 2019 19:03:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id AVguc-EZopHx; Tue, 21 May 2019 19:03:12 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6420F8B811;
+ Tue, 21 May 2019 19:03:12 +0200 (CEST)
+Subject: Re: [PATCH v2 2/5] powerpc: Fix vDSO clock_getres()
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20190416161434.32691-1-vincenzo.frascino@arm.com>
+ <20190416161434.32691-3-vincenzo.frascino@arm.com>
+ <5f59aad9-f6d2-5622-b183-4506f13eedbd@c-s.fr>
+ <6df7b0de-931b-618f-08c4-915451eb72e4@arm.com>
+ <a8833fb2-0242-da57-a48b-fd8af641273d@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <67b7a4b9-63f8-37da-ec74-41be6b2be67f@c-s.fr>
+Date: Tue, 21 May 2019 19:03:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190521150006.GJ17978@ZenIV.linux.org.uk>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <a8833fb2-0242-da57-a48b-fd8af641273d@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,203 +82,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
- ldv@altlinux.org, linux-arm-kernel@lists.infradead.org, fweimer@redhat.com,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 21, 2019 at 04:00:06PM +0100, Al Viro wrote:
-> On Tue, May 21, 2019 at 01:34:47PM +0200, Christian Brauner wrote:
-> 
-> > This adds the close_range() syscall. It allows to efficiently close a range
-> > of file descriptors up to all file descriptors of a calling task.
-> > 
-> > The syscall came up in a recent discussion around the new mount API and
-> > making new file descriptor types cloexec by default. During this
-> > discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> > syscall in this manner has been requested by various people over time.
-> > 
-> > First, it helps to close all file descriptors of an exec()ing task. This
-> > can be done safely via (quoting Al's example from [1] verbatim):
-> > 
-> >         /* that exec is sensitive */
-> >         unshare(CLONE_FILES);
-> >         /* we don't want anything past stderr here */
-> >         close_range(3, ~0U);
-> >         execve(....);
-> > 
-> > The code snippet above is one way of working around the problem that file
-> > descriptors are not cloexec by default. This is aggravated by the fact that
-> > we can't just switch them over without massively regressing userspace. For
-> > a whole class of programs having an in-kernel method of closing all file
-> > descriptors is very helpful (e.g. demons, service managers, programming
-> > language standard libraries, container managers etc.).
-> > (Please note, unshare(CLONE_FILES) should only be needed if the calling
-> >  task is multi-threaded and shares the file descriptor table with another
-> >  thread in which case two threads could race with one thread allocating
-> >  file descriptors and the other one closing them via close_range(). For the
-> >  general case close_range() before the execve() is sufficient.)
-> > 
-> > Second, it allows userspace to avoid implementing closing all file
-> > descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
-> > file descriptor. From looking at various large(ish) userspace code bases
-> > this or similar patterns are very common in:
-> > - service managers (cf. [4])
-> > - libcs (cf. [6])
-> > - container runtimes (cf. [5])
-> > - programming language runtimes/standard libraries
-> >   - Python (cf. [2])
-> >   - Rust (cf. [7], [8])
-> > As Dmitry pointed out there's even a long-standing glibc bug about missing
-> > kernel support for this task (cf. [3]).
-> > In addition, the syscall will also work for tasks that do not have procfs
-> > mounted and on kernels that do not have procfs support compiled in. In such
-> > situations the only way to make sure that all file descriptors are closed
-> > is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
-> > OPEN_MAX trickery (cf. comment [8] on Rust).
-> > 
-> > The performance is striking. For good measure, comparing the following
-> > simple close_all_fds() userspace implementation that is essentially just
-> > glibc's version in [6]:
-> > 
-> > static int close_all_fds(void)
-> > {
-> >         DIR *dir;
-> >         struct dirent *direntp;
-> > 
-> >         dir = opendir("/proc/self/fd");
-> >         if (!dir)
-> >                 return -1;
-> > 
-> >         while ((direntp = readdir(dir))) {
-> >                 int fd;
-> >                 if (strcmp(direntp->d_name, ".") == 0)
-> >                         continue;
-> >                 if (strcmp(direntp->d_name, "..") == 0)
-> >                         continue;
-> >                 fd = atoi(direntp->d_name);
-> >                 if (fd == 0 || fd == 1 || fd == 2)
-> >                         continue;
-> >                 close(fd);
-> >         }
-> > 
-> >         closedir(dir); /* cannot fail */
-> >         return 0;
-> > }
-> > 
-> > to close_range() yields:
-> > 1. closing 4 open files:
-> >    - close_all_fds(): ~280 us
-> >    - close_range():    ~24 us
-> > 
-> > 2. closing 1000 open files:
-> >    - close_all_fds(): ~5000 us
-> >    - close_range():   ~800 us
-> > 
-> > close_range() is designed to allow for some flexibility. Specifically, it
-> > does not simply always close all open file descriptors of a task. Instead,
-> > callers can specify an upper bound.
-> > This is e.g. useful for scenarios where specific file descriptors are
-> > created with well-known numbers that are supposed to be excluded from
-> > getting closed.
-> > For extra paranoia close_range() comes with a flags argument. This can e.g.
-> > be used to implement extension. Once can imagine userspace wanting to stop
-> > at the first error instead of ignoring errors under certain circumstances.
-> > There might be other valid ideas in the future. In any case, a flag
-> > argument doesn't hurt and keeps us on the safe side.
-> > 
-> > >From an implementation side this is kept rather dumb. It saw some input
-> > from David and Jann but all nonsense is obviously my own!
-> > - Errors to close file descriptors are currently ignored. (Could be changed
-> >   by setting a flag in the future if needed.)
-> > - __close_range() is a rather simplistic wrapper around __close_fd().
-> >   My reasoning behind this is based on the nature of how __close_fd() needs
-> >   to release an fd. But maybe I misunderstood specifics:
-> >   We take the files_lock and rcu-dereference the fdtable of the calling
-> >   task, we find the entry in the fdtable, get the file and need to release
-> >   files_lock before calling filp_close().
-> >   In the meantime the fdtable might have been altered so we can't just
-> >   retake the spinlock and keep the old rcu-reference of the fdtable
-> >   around. Instead we need to grab a fresh reference to the fdtable.
-> >   If my reasoning is correct then there's really no point in fancyfying
-> >   __close_range(): We just need to rcu-dereference the fdtable of the
-> >   calling task once to cap the max_fd value correctly and then go on
-> >   calling __close_fd() in a loop.
-> 
-> > +/**
-> > + * __close_range() - Close all file descriptors in a given range.
-> > + *
-> > + * @fd:     starting file descriptor to close
-> > + * @max_fd: last file descriptor to close
-> > + *
-> > + * This closes a range of file descriptors. All file descriptors
-> > + * from @fd up to and including @max_fd are closed.
-> > + */
-> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> > +{
-> > +	unsigned int cur_max;
-> > +
-> > +	if (fd > max_fd)
-> > +		return -EINVAL;
-> > +
-> > +	rcu_read_lock();
-> > +	cur_max = files_fdtable(files)->max_fds;
-> > +	rcu_read_unlock();
-> > +
-> > +	/* cap to last valid index into fdtable */
-> > +	if (max_fd >= cur_max)
-> > +		max_fd = cur_max - 1;
-> > +
-> > +	while (fd <= max_fd)
-> > +		__close_fd(files, fd++);
-> > +
-> > +	return 0;
-> > +}
-> 
-> Umm...  That's going to be very painful if you dup2() something to MAX_INT and
-> then run that; roughly 2G iterations of bouncing ->file_lock up and down,
-> without anything that would yield CPU in process.
-> 
-> If anything, I would suggest something like
-> 
-> 	fd = *start_fd;
-> 	grab the lock
->         fdt = files_fdtable(files);
-> more:
-> 	look for the next eviction candidate in ->open_fds, starting at fd
-> 	if there's none up to max_fd
-> 		drop the lock
-> 		return NULL
-> 	*start_fd = fd + 1;
-> 	if the fscker is really opened and not just reserved
-> 		rcu_assign_pointer(fdt->fd[fd], NULL);
-> 		__put_unused_fd(files, fd);
-> 		drop the lock
-> 		return the file we'd got
-> 	if (unlikely(need_resched()))
-> 		drop lock
-> 		cond_resched();
-> 		grab lock
-> 		fdt = files_fdtable(files);
-> 	goto more;
-> 
-> with the main loop being basically
-> 	while ((file = pick_next(files, &start_fd, max_fd)) != NULL)
-> 		filp_close(file, files);
 
-That's obviously much more clever than what I had.
-I honestly have never thought about using open_fds before this. Seemed
-extremely localized to file.c
-Thanks for the pointers!
 
-Christian
+Le 21/05/2019 à 18:46, Christophe Leroy a écrit :
+> 
+> 
+> Le 21/05/2019 à 18:08, Vincenzo Frascino a écrit :
+>> Hi Christophe,
+>>
+>> I did not see this patch in 5.2-rc1 and I was wondering if there is 
+>> anything I
+>> can do to help with upstraming it.
+> 
+> As far as I can see you series still has status 'new' in patchwork so I 
+> guess Michael didn't have time to look at it 
+> (https://patchwork.ozlabs.org/patch/1086410/)
+
+Maybe you should also provide a Fixes: tag. What about:
+
+Fixes: a7f290dad32e ("[PATCH] powerpc: Merge vdso's and add vdso support 
+to 32 bits kernel")
+Cc: stable@vger.kernel.org
+
+Christophe
+
+> 
+>>
+>> Please let me know.
+> 
+> 
+> You series involves several arches, how do you plan to handle it ? Do 
+> you expect each arch maintainer to take each patch independentely, or do 
+> you expect acks from arch maintainers in order to merge the entire 
+> series in a given tree (which one ?)
+> 
+> Christophe
+> 
+> 
+>>
+>> Thanks,
+>> Vincenzo
+>>
+>> On 23/04/2019 17:33, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 16/04/2019 à 18:14, Vincenzo Frascino a écrit :
+>>>> clock_getres in the vDSO library has to preserve the same behaviour
+>>>> of posix_get_hrtimer_res().
+>>>>
+>>>> In particular, posix_get_hrtimer_res() does:
+>>>>       sec = 0;
+>>>>       ns = hrtimer_resolution;
+>>>> and hrtimer_resolution depends on the enablement of the high
+>>>> resolution timers that can happen either at compile or at run time.
+>>>>
+>>>> Fix the powerpc vdso implementation of clock_getres keeping a copy of
+>>>> hrtimer_resolution in vdso data and using that directly.
+>>>>
+>>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>>> Cc: Paul Mackerras <paulus@samba.org>
+>>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+>>>
+>>> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>
+>>>> ---
+>>>>    arch/powerpc/include/asm/vdso_datapage.h  | 2 ++
+>>>>    arch/powerpc/kernel/asm-offsets.c         | 2 +-
+>>>>    arch/powerpc/kernel/time.c                | 1 +
+>>>>    arch/powerpc/kernel/vdso32/gettimeofday.S | 7 +++++--
+>>>>    arch/powerpc/kernel/vdso64/gettimeofday.S | 7 +++++--
+>>>>    5 files changed, 14 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/include/asm/vdso_datapage.h 
+>>>> b/arch/powerpc/include/asm/vdso_datapage.h
+>>>> index bbc06bd72b1f..4333b9a473dc 100644
+>>>> --- a/arch/powerpc/include/asm/vdso_datapage.h
+>>>> +++ b/arch/powerpc/include/asm/vdso_datapage.h
+>>>> @@ -86,6 +86,7 @@ struct vdso_data {
+>>>>        __s32 wtom_clock_nsec;            /* Wall to monotonic clock 
+>>>> nsec */
+>>>>        __s64 wtom_clock_sec;            /* Wall to monotonic clock 
+>>>> sec */
+>>>>        struct timespec stamp_xtime;        /* xtime as at 
+>>>> tb_orig_stamp */
+>>>> +    __u32 hrtimer_res;            /* hrtimer resolution */
+>>>>           __u32 syscall_map_64[SYSCALL_MAP_SIZE]; /* map of 
+>>>> syscalls  */
+>>>>           __u32 syscall_map_32[SYSCALL_MAP_SIZE]; /* map of syscalls */
+>>>>    };
+>>>> @@ -107,6 +108,7 @@ struct vdso_data {
+>>>>        __s32 wtom_clock_nsec;
+>>>>        struct timespec stamp_xtime;    /* xtime as at tb_orig_stamp */
+>>>>        __u32 stamp_sec_fraction;    /* fractional seconds of 
+>>>> stamp_xtime */
+>>>> +    __u32 hrtimer_res;        /* hrtimer resolution */
+>>>>           __u32 syscall_map_32[SYSCALL_MAP_SIZE]; /* map of syscalls */
+>>>>        __u32 dcache_block_size;    /* L1 d-cache block size     */
+>>>>        __u32 icache_block_size;    /* L1 i-cache block size     */
+>>>> diff --git a/arch/powerpc/kernel/asm-offsets.c 
+>>>> b/arch/powerpc/kernel/asm-offsets.c
+>>>> index 86a61e5f8285..52e4b98a8492 100644
+>>>> --- a/arch/powerpc/kernel/asm-offsets.c
+>>>> +++ b/arch/powerpc/kernel/asm-offsets.c
+>>>> @@ -383,6 +383,7 @@ int main(void)
+>>>>        OFFSET(WTOM_CLOCK_NSEC, vdso_data, wtom_clock_nsec);
+>>>>        OFFSET(STAMP_XTIME, vdso_data, stamp_xtime);
+>>>>        OFFSET(STAMP_SEC_FRAC, vdso_data, stamp_sec_fraction);
+>>>> +    OFFSET(CLOCK_REALTIME_RES, vdso_data, hrtimer_res);
+>>>>        OFFSET(CFG_ICACHE_BLOCKSZ, vdso_data, icache_block_size);
+>>>>        OFFSET(CFG_DCACHE_BLOCKSZ, vdso_data, dcache_block_size);
+>>>>        OFFSET(CFG_ICACHE_LOGBLOCKSZ, vdso_data, icache_log_block_size);
+>>>> @@ -413,7 +414,6 @@ int main(void)
+>>>>        DEFINE(CLOCK_REALTIME_COARSE, CLOCK_REALTIME_COARSE);
+>>>>        DEFINE(CLOCK_MONOTONIC_COARSE, CLOCK_MONOTONIC_COARSE);
+>>>>        DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
+>>>> -    DEFINE(CLOCK_REALTIME_RES, MONOTONIC_RES_NSEC);
+>>>>    #ifdef CONFIG_BUG
+>>>>        DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
+>>>> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+>>>> index bc0503ef9c9c..62c04a6746d8 100644
+>>>> --- a/arch/powerpc/kernel/time.c
+>>>> +++ b/arch/powerpc/kernel/time.c
+>>>> @@ -955,6 +955,7 @@ void update_vsyscall(struct timekeeper *tk)
+>>>>        vdso_data->wtom_clock_nsec = tk->wall_to_monotonic.tv_nsec;
+>>>>        vdso_data->stamp_xtime = xt;
+>>>>        vdso_data->stamp_sec_fraction = frac_sec;
+>>>> +    vdso_data->hrtimer_res = hrtimer_resolution;
+>>>>        smp_wmb();
+>>>>        ++(vdso_data->tb_update_count);
+>>>>    }
+>>>> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S 
+>>>> b/arch/powerpc/kernel/vdso32/gettimeofday.S
+>>>> index afd516b572f8..2b5f9e83c610 100644
+>>>> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
+>>>> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+>>>> @@ -160,12 +160,15 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
+>>>>        cror    cr0*4+eq,cr0*4+eq,cr1*4+eq
+>>>>        bne    cr0,99f
+>>>> +    mflr    r12
+>>>> +  .cfi_register lr,r12
+>>>> +    bl    __get_datapage@local
+>>>> +    lwz    r5,CLOCK_REALTIME_RES(r3)
+>>>> +    mtlr    r12
+>>>>        li    r3,0
+>>>>        cmpli    cr0,r4,0
+>>>>        crclr    cr0*4+so
+>>>>        beqlr
+>>>> -    lis    r5,CLOCK_REALTIME_RES@h
+>>>> -    ori    r5,r5,CLOCK_REALTIME_RES@l
+>>>>        stw    r3,TSPC32_TV_SEC(r4)
+>>>>        stw    r5,TSPC32_TV_NSEC(r4)
+>>>>        blr
+>>>> diff --git a/arch/powerpc/kernel/vdso64/gettimeofday.S 
+>>>> b/arch/powerpc/kernel/vdso64/gettimeofday.S
+>>>> index 1f324c28705b..f07730f73d5e 100644
+>>>> --- a/arch/powerpc/kernel/vdso64/gettimeofday.S
+>>>> +++ b/arch/powerpc/kernel/vdso64/gettimeofday.S
+>>>> @@ -190,12 +190,15 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
+>>>>        cror    cr0*4+eq,cr0*4+eq,cr1*4+eq
+>>>>        bne    cr0,99f
+>>>> +    mflr    r12
+>>>> +  .cfi_register lr,r12
+>>>> +    bl    V_LOCAL_FUNC(__get_datapage)
+>>>> +    lwz    r5,CLOCK_REALTIME_RES(r3)
+>>>> +    mtlr    r12
+>>>>        li    r3,0
+>>>>        cmpldi    cr0,r4,0
+>>>>        crclr    cr0*4+so
+>>>>        beqlr
+>>>> -    lis    r5,CLOCK_REALTIME_RES@h
+>>>> -    ori    r5,r5,CLOCK_REALTIME_RES@l
+>>>>        std    r3,TSPC64_TV_SEC(r4)
+>>>>        std    r5,TSPC64_TV_NSEC(r4)
+>>>>        blr
+>>>>
+>>
