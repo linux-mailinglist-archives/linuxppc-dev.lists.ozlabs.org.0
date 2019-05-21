@@ -1,38 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC4D24751
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 07:09:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457P2H1Y23zDqRB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:09:27 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2D12475F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 07:12:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 457P6421YfzDqNb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:12:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457P141PpLzDqGm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 15:08:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=maddy@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 457P134ZZfz9s3Z;
- Tue, 21 May 2019 15:08:23 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] crypto: vmx - convert to skcipher API
-In-Reply-To: <20190520164448.160430-1-ebiggers@kernel.org>
-References: <20190520164448.160430-1-ebiggers@kernel.org>
-Date: Tue, 21 May 2019 15:08:23 +1000
-Message-ID: <871s0s8ke0.fsf@concordia.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457P4n67XrzDqBZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 15:11:36 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4L56ebl098054
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 01:11:33 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sm6pwywxt-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 01:11:33 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.vnet.ibm.com>;
+ Tue, 21 May 2019 06:11:31 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 21 May 2019 06:11:30 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4L5BTsS48431218
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:11:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 798E5A405C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:11:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 258B8A405B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:11:29 +0000 (GMT)
+Received: from [9.126.30.226] (unknown [9.126.30.226])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 05:11:28 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/powernv: Return for invalid IMC domain
+To: linuxppc-dev@lists.ozlabs.org
+References: <20190520085753.19670-1-anju@linux.vnet.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Date: Tue, 21 May 2019 10:41:28 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190520085753.19670-1-anju@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19052105-0020-0000-0000-0000033ECF3F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052105-0021-0000-0000-00002191AAAF
+Message-Id: <5cb603d0-e07e-af3b-185c-77b17db2ab49@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-20_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905210033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,873 +90,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Breno =?utf-8?Q?Leit=C3=A3o?= <leitao@debian.org>,
- linuxppc-dev@lists.ozlabs.org, Nayna Jain <nayna@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Eric Biggers <ebiggers@kernel.org> writes:
-> From: Eric Biggers <ebiggers@google.com>
+
+On 20/05/19 2:27 PM, Anju T Sudhakar wrote:
+> Currently init_imc_pmu() can be failed either because
+> an IMC unit with invalid domain(i.e an IMC node not
+> supported by the kernel) is attempted a pmu-registration
+> or something went wrong while registering a valid IMC unit.
+> In both the cases kernel provides a 'Registration failed'
+> error message.
 >
-> Convert the VMX implementations of AES-CBC, AES-CTR, and AES-XTS from
-> the deprecated "blkcipher" API to the "skcipher" API.
+> Example:
+> Log message, when trace-imc node is not supported by the kernel, and the
+> skiboot supports trace-imc node.
 >
-> As part of this, I moved the skcipher_request for the fallback algorithm
-> off the stack and into the request context of the parent algorithm.
+> So for kernel, trace-imc node is now an unknown domain.
 >
-> I tested this in a PowerPC VM with CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y.
+> [    1.731870] nest_phb5_imc performance monitor hardware support registered
+> [    1.731944] nest_powerbus0_imc performance monitor hardware support registered
+> [    1.734458] thread_imc performance monitor hardware support registered
+> [    1.734460] IMC Unknown Device type
+> [    1.734462] IMC PMU (null) Register failed
+> [    1.734558] nest_xlink0_imc performance monitor hardware support registered
+> [    1.734614] nest_xlink1_imc performance monitor hardware support registered
+> [    1.734670] nest_xlink2_imc performance monitor hardware support registered
+> [    1.747043] Initialise system trusted keyrings
+> [    1.747054] Key type blacklist registered
+>
+>
+> To avoid ambiguity on the error message, return for invalid domain
+> before attempting a pmu registration.
 
-I booted it a few times on a Power9 bare metal machine with
-panic_on_fail=1 and fuzz_iterations=400, no issues.
+Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
 
-cheers
-
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> Fixes: 8f95faaac56c1 (`powerpc/powernv: Detect and create IMC device`)
+> Reported-by: Pavaman Subramaniyam <pavsubra@in.ibm.com>
+> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 > ---
->  drivers/crypto/vmx/aes_cbc.c   | 183 ++++++++++++---------------------
->  drivers/crypto/vmx/aes_ctr.c   | 165 +++++++++++++----------------
->  drivers/crypto/vmx/aes_xts.c   | 175 ++++++++++++++-----------------
->  drivers/crypto/vmx/aesp8-ppc.h |   2 -
->  drivers/crypto/vmx/vmx.c       |  72 +++++++------
->  5 files changed, 252 insertions(+), 345 deletions(-)
+>   arch/powerpc/platforms/powernv/opal-imc.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 >
-> diff --git a/drivers/crypto/vmx/aes_cbc.c b/drivers/crypto/vmx/aes_cbc.c
-> index dae8af3c46dce..92e75a05d6a9e 100644
-> --- a/drivers/crypto/vmx/aes_cbc.c
-> +++ b/drivers/crypto/vmx/aes_cbc.c
-> @@ -7,64 +7,52 @@
->   * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
->   */
->  
-> -#include <linux/types.h>
-> -#include <linux/err.h>
-> -#include <linux/crypto.h>
-> -#include <linux/delay.h>
->  #include <asm/simd.h>
->  #include <asm/switch_to.h>
->  #include <crypto/aes.h>
->  #include <crypto/internal/simd.h>
-> -#include <crypto/scatterwalk.h>
-> -#include <crypto/skcipher.h>
-> +#include <crypto/internal/skcipher.h>
->  
->  #include "aesp8-ppc.h"
->  
->  struct p8_aes_cbc_ctx {
-> -	struct crypto_sync_skcipher *fallback;
-> +	struct crypto_skcipher *fallback;
->  	struct aes_key enc_key;
->  	struct aes_key dec_key;
->  };
->  
-> -static int p8_aes_cbc_init(struct crypto_tfm *tfm)
-> +static int p8_aes_cbc_init(struct crypto_skcipher *tfm)
->  {
-> -	const char *alg = crypto_tfm_alg_name(tfm);
-> -	struct crypto_sync_skcipher *fallback;
-> -	struct p8_aes_cbc_ctx *ctx = crypto_tfm_ctx(tfm);
-> -
-> -	fallback = crypto_alloc_sync_skcipher(alg, 0,
-> -					      CRYPTO_ALG_NEED_FALLBACK);
-> +	struct p8_aes_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct crypto_skcipher *fallback;
->  
-> +	fallback = crypto_alloc_skcipher("cbc(aes)", 0,
-> +					 CRYPTO_ALG_NEED_FALLBACK |
-> +					 CRYPTO_ALG_ASYNC);
->  	if (IS_ERR(fallback)) {
-> -		printk(KERN_ERR
-> -		       "Failed to allocate transformation for '%s': %ld\n",
-> -		       alg, PTR_ERR(fallback));
-> +		pr_err("Failed to allocate cbc(aes) fallback: %ld\n",
-> +		       PTR_ERR(fallback));
->  		return PTR_ERR(fallback);
->  	}
->  
-> -	crypto_sync_skcipher_set_flags(
-> -		fallback,
-> -		crypto_skcipher_get_flags((struct crypto_skcipher *)tfm));
-> +	crypto_skcipher_set_reqsize(tfm, sizeof(struct skcipher_request) +
-> +				    crypto_skcipher_reqsize(fallback));
->  	ctx->fallback = fallback;
-> -
->  	return 0;
->  }
->  
-> -static void p8_aes_cbc_exit(struct crypto_tfm *tfm)
-> +static void p8_aes_cbc_exit(struct crypto_skcipher *tfm)
->  {
-> -	struct p8_aes_cbc_ctx *ctx = crypto_tfm_ctx(tfm);
-> +	struct p8_aes_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
->  
-> -	if (ctx->fallback) {
-> -		crypto_free_sync_skcipher(ctx->fallback);
-> -		ctx->fallback = NULL;
-> -	}
-> +	crypto_free_skcipher(ctx->fallback);
->  }
->  
-> -static int p8_aes_cbc_setkey(struct crypto_tfm *tfm, const u8 *key,
-> +static int p8_aes_cbc_setkey(struct crypto_skcipher *tfm, const u8 *key,
->  			     unsigned int keylen)
->  {
-> +	struct p8_aes_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
->  	int ret;
-> -	struct p8_aes_cbc_ctx *ctx = crypto_tfm_ctx(tfm);
->  
->  	preempt_disable();
->  	pagefault_disable();
-> @@ -75,108 +63,71 @@ static int p8_aes_cbc_setkey(struct crypto_tfm *tfm, const u8 *key,
->  	pagefault_enable();
->  	preempt_enable();
->  
-> -	ret |= crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
-> +	ret |= crypto_skcipher_setkey(ctx->fallback, key, keylen);
->  
->  	return ret ? -EINVAL : 0;
->  }
->  
-> -static int p8_aes_cbc_encrypt(struct blkcipher_desc *desc,
-> -			      struct scatterlist *dst,
-> -			      struct scatterlist *src, unsigned int nbytes)
-> +static int p8_aes_cbc_crypt(struct skcipher_request *req, int enc)
->  {
-> +	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
-> +	const struct p8_aes_cbc_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct skcipher_walk walk;
-> +	unsigned int nbytes;
->  	int ret;
-> -	struct blkcipher_walk walk;
-> -	struct p8_aes_cbc_ctx *ctx =
-> -		crypto_tfm_ctx(crypto_blkcipher_tfm(desc->tfm));
->  
->  	if (!crypto_simd_usable()) {
-> -		SYNC_SKCIPHER_REQUEST_ON_STACK(req, ctx->fallback);
-> -		skcipher_request_set_sync_tfm(req, ctx->fallback);
-> -		skcipher_request_set_callback(req, desc->flags, NULL, NULL);
-> -		skcipher_request_set_crypt(req, src, dst, nbytes, desc->info);
-> -		ret = crypto_skcipher_encrypt(req);
-> -		skcipher_request_zero(req);
-> -	} else {
-> -		blkcipher_walk_init(&walk, dst, src, nbytes);
-> -		ret = blkcipher_walk_virt(desc, &walk);
-> -		while ((nbytes = walk.nbytes)) {
-> -			preempt_disable();
-> -			pagefault_disable();
-> -			enable_kernel_vsx();
-> -			aes_p8_cbc_encrypt(walk.src.virt.addr,
-> -					   walk.dst.virt.addr,
-> -					   nbytes & AES_BLOCK_MASK,
-> -					   &ctx->enc_key, walk.iv, 1);
-> -			disable_kernel_vsx();
-> -			pagefault_enable();
-> -			preempt_enable();
-> -
-> -			nbytes &= AES_BLOCK_SIZE - 1;
-> -			ret = blkcipher_walk_done(desc, &walk, nbytes);
-> -		}
-> +		struct skcipher_request *subreq = skcipher_request_ctx(req);
+> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+> index 58a0794..4e8b0e1 100644
+
+> --- a/arch/powerpc/platforms/powernv/opal-imc.c
+> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
+> @@ -161,6 +161,10 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
+>   	struct imc_pmu *pmu_ptr;
+>   	u32 offset;
+>
+> +	/* Return for unknown domain */
+> +	if (domain < 0)
+> +		return -EINVAL;
 > +
-> +		*subreq = *req;
-> +		skcipher_request_set_tfm(subreq, ctx->fallback);
-> +		return enc ? crypto_skcipher_encrypt(subreq) :
-> +			     crypto_skcipher_decrypt(subreq);
->  	}
->  
-> +	ret = skcipher_walk_virt(&walk, req, false);
-> +	while ((nbytes = walk.nbytes) != 0) {
-> +		preempt_disable();
-> +		pagefault_disable();
-> +		enable_kernel_vsx();
-> +		aes_p8_cbc_encrypt(walk.src.virt.addr,
-> +				   walk.dst.virt.addr,
-> +				   round_down(nbytes, AES_BLOCK_SIZE),
-> +				   enc ? &ctx->enc_key : &ctx->dec_key,
-> +				   walk.iv, enc);
-> +		disable_kernel_vsx();
-> +		pagefault_enable();
-> +		preempt_enable();
-> +
-> +		ret = skcipher_walk_done(&walk, nbytes % AES_BLOCK_SIZE);
-> +	}
->  	return ret;
->  }
->  
-> -static int p8_aes_cbc_decrypt(struct blkcipher_desc *desc,
-> -			      struct scatterlist *dst,
-> -			      struct scatterlist *src, unsigned int nbytes)
-> +static int p8_aes_cbc_encrypt(struct skcipher_request *req)
->  {
-> -	int ret;
-> -	struct blkcipher_walk walk;
-> -	struct p8_aes_cbc_ctx *ctx =
-> -		crypto_tfm_ctx(crypto_blkcipher_tfm(desc->tfm));
-> -
-> -	if (!crypto_simd_usable()) {
-> -		SYNC_SKCIPHER_REQUEST_ON_STACK(req, ctx->fallback);
-> -		skcipher_request_set_sync_tfm(req, ctx->fallback);
-> -		skcipher_request_set_callback(req, desc->flags, NULL, NULL);
-> -		skcipher_request_set_crypt(req, src, dst, nbytes, desc->info);
-> -		ret = crypto_skcipher_decrypt(req);
-> -		skcipher_request_zero(req);
-> -	} else {
-> -		blkcipher_walk_init(&walk, dst, src, nbytes);
-> -		ret = blkcipher_walk_virt(desc, &walk);
-> -		while ((nbytes = walk.nbytes)) {
-> -			preempt_disable();
-> -			pagefault_disable();
-> -			enable_kernel_vsx();
-> -			aes_p8_cbc_encrypt(walk.src.virt.addr,
-> -					   walk.dst.virt.addr,
-> -					   nbytes & AES_BLOCK_MASK,
-> -					   &ctx->dec_key, walk.iv, 0);
-> -			disable_kernel_vsx();
-> -			pagefault_enable();
-> -			preempt_enable();
-> -
-> -			nbytes &= AES_BLOCK_SIZE - 1;
-> -			ret = blkcipher_walk_done(desc, &walk, nbytes);
-> -		}
-> -	}
-> -
-> -	return ret;
-> +	return p8_aes_cbc_crypt(req, 1);
->  }
->  
-> +static int p8_aes_cbc_decrypt(struct skcipher_request *req)
-> +{
-> +	return p8_aes_cbc_crypt(req, 0);
-> +}
->  
-> -struct crypto_alg p8_aes_cbc_alg = {
-> -	.cra_name = "cbc(aes)",
-> -	.cra_driver_name = "p8_aes_cbc",
-> -	.cra_module = THIS_MODULE,
-> -	.cra_priority = 2000,
-> -	.cra_type = &crypto_blkcipher_type,
-> -	.cra_flags = CRYPTO_ALG_TYPE_BLKCIPHER | CRYPTO_ALG_NEED_FALLBACK,
-> -	.cra_alignmask = 0,
-> -	.cra_blocksize = AES_BLOCK_SIZE,
-> -	.cra_ctxsize = sizeof(struct p8_aes_cbc_ctx),
-> -	.cra_init = p8_aes_cbc_init,
-> -	.cra_exit = p8_aes_cbc_exit,
-> -	.cra_blkcipher = {
-> -			  .ivsize = AES_BLOCK_SIZE,
-> -			  .min_keysize = AES_MIN_KEY_SIZE,
-> -			  .max_keysize = AES_MAX_KEY_SIZE,
-> -			  .setkey = p8_aes_cbc_setkey,
-> -			  .encrypt = p8_aes_cbc_encrypt,
-> -			  .decrypt = p8_aes_cbc_decrypt,
-> -	},
-> +struct skcipher_alg p8_aes_cbc_alg = {
-> +	.base.cra_name = "cbc(aes)",
-> +	.base.cra_driver_name = "p8_aes_cbc",
-> +	.base.cra_module = THIS_MODULE,
-> +	.base.cra_priority = 2000,
-> +	.base.cra_flags = CRYPTO_ALG_NEED_FALLBACK,
-> +	.base.cra_blocksize = AES_BLOCK_SIZE,
-> +	.base.cra_ctxsize = sizeof(struct p8_aes_cbc_ctx),
-> +	.setkey = p8_aes_cbc_setkey,
-> +	.encrypt = p8_aes_cbc_encrypt,
-> +	.decrypt = p8_aes_cbc_decrypt,
-> +	.init = p8_aes_cbc_init,
-> +	.exit = p8_aes_cbc_exit,
-> +	.min_keysize = AES_MIN_KEY_SIZE,
-> +	.max_keysize = AES_MAX_KEY_SIZE,
-> +	.ivsize = AES_BLOCK_SIZE,
->  };
-> diff --git a/drivers/crypto/vmx/aes_ctr.c b/drivers/crypto/vmx/aes_ctr.c
-> index dc31101178446..c4d2809a5d9ee 100644
-> --- a/drivers/crypto/vmx/aes_ctr.c
-> +++ b/drivers/crypto/vmx/aes_ctr.c
-> @@ -7,62 +7,51 @@
->   * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
->   */
->  
-> -#include <linux/types.h>
-> -#include <linux/err.h>
-> -#include <linux/crypto.h>
-> -#include <linux/delay.h>
->  #include <asm/simd.h>
->  #include <asm/switch_to.h>
->  #include <crypto/aes.h>
->  #include <crypto/internal/simd.h>
-> -#include <crypto/scatterwalk.h>
-> -#include <crypto/skcipher.h>
-> +#include <crypto/internal/skcipher.h>
->  
->  #include "aesp8-ppc.h"
->  
->  struct p8_aes_ctr_ctx {
-> -	struct crypto_sync_skcipher *fallback;
-> +	struct crypto_skcipher *fallback;
->  	struct aes_key enc_key;
->  };
->  
-> -static int p8_aes_ctr_init(struct crypto_tfm *tfm)
-> +static int p8_aes_ctr_init(struct crypto_skcipher *tfm)
->  {
-> -	const char *alg = crypto_tfm_alg_name(tfm);
-> -	struct crypto_sync_skcipher *fallback;
-> -	struct p8_aes_ctr_ctx *ctx = crypto_tfm_ctx(tfm);
-> +	struct p8_aes_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct crypto_skcipher *fallback;
->  
-> -	fallback = crypto_alloc_sync_skcipher(alg, 0,
-> -					      CRYPTO_ALG_NEED_FALLBACK);
-> +	fallback = crypto_alloc_skcipher("ctr(aes)", 0,
-> +					 CRYPTO_ALG_NEED_FALLBACK |
-> +					 CRYPTO_ALG_ASYNC);
->  	if (IS_ERR(fallback)) {
-> -		printk(KERN_ERR
-> -		       "Failed to allocate transformation for '%s': %ld\n",
-> -		       alg, PTR_ERR(fallback));
-> +		pr_err("Failed to allocate ctr(aes) fallback: %ld\n",
-> +		       PTR_ERR(fallback));
->  		return PTR_ERR(fallback);
->  	}
->  
-> -	crypto_sync_skcipher_set_flags(
-> -		fallback,
-> -		crypto_skcipher_get_flags((struct crypto_skcipher *)tfm));
-> +	crypto_skcipher_set_reqsize(tfm, sizeof(struct skcipher_request) +
-> +				    crypto_skcipher_reqsize(fallback));
->  	ctx->fallback = fallback;
-> -
->  	return 0;
->  }
->  
-> -static void p8_aes_ctr_exit(struct crypto_tfm *tfm)
-> +static void p8_aes_ctr_exit(struct crypto_skcipher *tfm)
->  {
-> -	struct p8_aes_ctr_ctx *ctx = crypto_tfm_ctx(tfm);
-> +	struct p8_aes_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
->  
-> -	if (ctx->fallback) {
-> -		crypto_free_sync_skcipher(ctx->fallback);
-> -		ctx->fallback = NULL;
-> -	}
-> +	crypto_free_skcipher(ctx->fallback);
->  }
->  
-> -static int p8_aes_ctr_setkey(struct crypto_tfm *tfm, const u8 *key,
-> +static int p8_aes_ctr_setkey(struct crypto_skcipher *tfm, const u8 *key,
->  			     unsigned int keylen)
->  {
-> +	struct p8_aes_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
->  	int ret;
-> -	struct p8_aes_ctr_ctx *ctx = crypto_tfm_ctx(tfm);
->  
->  	preempt_disable();
->  	pagefault_disable();
-> @@ -72,13 +61,13 @@ static int p8_aes_ctr_setkey(struct crypto_tfm *tfm, const u8 *key,
->  	pagefault_enable();
->  	preempt_enable();
->  
-> -	ret |= crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
-> +	ret |= crypto_skcipher_setkey(ctx->fallback, key, keylen);
->  
->  	return ret ? -EINVAL : 0;
->  }
->  
-> -static void p8_aes_ctr_final(struct p8_aes_ctr_ctx *ctx,
-> -			     struct blkcipher_walk *walk)
-> +static void p8_aes_ctr_final(const struct p8_aes_ctr_ctx *ctx,
-> +			     struct skcipher_walk *walk)
->  {
->  	u8 *ctrblk = walk->iv;
->  	u8 keystream[AES_BLOCK_SIZE];
-> @@ -98,77 +87,63 @@ static void p8_aes_ctr_final(struct p8_aes_ctr_ctx *ctx,
->  	crypto_inc(ctrblk, AES_BLOCK_SIZE);
->  }
->  
-> -static int p8_aes_ctr_crypt(struct blkcipher_desc *desc,
-> -			    struct scatterlist *dst,
-> -			    struct scatterlist *src, unsigned int nbytes)
-> +static int p8_aes_ctr_crypt(struct skcipher_request *req)
->  {
-> +	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
-> +	const struct p8_aes_ctr_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct skcipher_walk walk;
-> +	unsigned int nbytes;
->  	int ret;
-> -	u64 inc;
-> -	struct blkcipher_walk walk;
-> -	struct p8_aes_ctr_ctx *ctx =
-> -		crypto_tfm_ctx(crypto_blkcipher_tfm(desc->tfm));
->  
->  	if (!crypto_simd_usable()) {
-> -		SYNC_SKCIPHER_REQUEST_ON_STACK(req, ctx->fallback);
-> -		skcipher_request_set_sync_tfm(req, ctx->fallback);
-> -		skcipher_request_set_callback(req, desc->flags, NULL, NULL);
-> -		skcipher_request_set_crypt(req, src, dst, nbytes, desc->info);
-> -		ret = crypto_skcipher_encrypt(req);
-> -		skcipher_request_zero(req);
-> -	} else {
-> -		blkcipher_walk_init(&walk, dst, src, nbytes);
-> -		ret = blkcipher_walk_virt_block(desc, &walk, AES_BLOCK_SIZE);
-> -		while ((nbytes = walk.nbytes) >= AES_BLOCK_SIZE) {
-> -			preempt_disable();
-> -			pagefault_disable();
-> -			enable_kernel_vsx();
-> -			aes_p8_ctr32_encrypt_blocks(walk.src.virt.addr,
-> -						    walk.dst.virt.addr,
-> -						    (nbytes &
-> -						     AES_BLOCK_MASK) /
-> -						    AES_BLOCK_SIZE,
-> -						    &ctx->enc_key,
-> -						    walk.iv);
-> -			disable_kernel_vsx();
-> -			pagefault_enable();
-> -			preempt_enable();
-> -
-> -			/* We need to update IV mostly for last bytes/round */
-> -			inc = (nbytes & AES_BLOCK_MASK) / AES_BLOCK_SIZE;
-> -			if (inc > 0)
-> -				while (inc--)
-> -					crypto_inc(walk.iv, AES_BLOCK_SIZE);
-> -
-> -			nbytes &= AES_BLOCK_SIZE - 1;
-> -			ret = blkcipher_walk_done(desc, &walk, nbytes);
-> -		}
-> -		if (walk.nbytes) {
-> -			p8_aes_ctr_final(ctx, &walk);
-> -			ret = blkcipher_walk_done(desc, &walk, 0);
-> -		}
-> +		struct skcipher_request *subreq = skcipher_request_ctx(req);
-> +
-> +		*subreq = *req;
-> +		skcipher_request_set_tfm(subreq, ctx->fallback);
-> +		return crypto_skcipher_encrypt(subreq);
->  	}
->  
-> +	ret = skcipher_walk_virt(&walk, req, false);
-> +	while ((nbytes = walk.nbytes) >= AES_BLOCK_SIZE) {
-> +		preempt_disable();
-> +		pagefault_disable();
-> +		enable_kernel_vsx();
-> +		aes_p8_ctr32_encrypt_blocks(walk.src.virt.addr,
-> +					    walk.dst.virt.addr,
-> +					    nbytes / AES_BLOCK_SIZE,
-> +					    &ctx->enc_key, walk.iv);
-> +		disable_kernel_vsx();
-> +		pagefault_enable();
-> +		preempt_enable();
-> +
-> +		do {
-> +			crypto_inc(walk.iv, AES_BLOCK_SIZE);
-> +		} while ((nbytes -= AES_BLOCK_SIZE) >= AES_BLOCK_SIZE);
-> +
-> +		ret = skcipher_walk_done(&walk, nbytes);
-> +	}
-> +	if (nbytes) {
-> +		p8_aes_ctr_final(ctx, &walk);
-> +		ret = skcipher_walk_done(&walk, 0);
-> +	}
->  	return ret;
->  }
->  
-> -struct crypto_alg p8_aes_ctr_alg = {
-> -	.cra_name = "ctr(aes)",
-> -	.cra_driver_name = "p8_aes_ctr",
-> -	.cra_module = THIS_MODULE,
-> -	.cra_priority = 2000,
-> -	.cra_type = &crypto_blkcipher_type,
-> -	.cra_flags = CRYPTO_ALG_TYPE_BLKCIPHER | CRYPTO_ALG_NEED_FALLBACK,
-> -	.cra_alignmask = 0,
-> -	.cra_blocksize = 1,
-> -	.cra_ctxsize = sizeof(struct p8_aes_ctr_ctx),
-> -	.cra_init = p8_aes_ctr_init,
-> -	.cra_exit = p8_aes_ctr_exit,
-> -	.cra_blkcipher = {
-> -			  .ivsize = AES_BLOCK_SIZE,
-> -			  .min_keysize = AES_MIN_KEY_SIZE,
-> -			  .max_keysize = AES_MAX_KEY_SIZE,
-> -			  .setkey = p8_aes_ctr_setkey,
-> -			  .encrypt = p8_aes_ctr_crypt,
-> -			  .decrypt = p8_aes_ctr_crypt,
-> -	},
-> +struct skcipher_alg p8_aes_ctr_alg = {
-> +	.base.cra_name = "ctr(aes)",
-> +	.base.cra_driver_name = "p8_aes_ctr",
-> +	.base.cra_module = THIS_MODULE,
-> +	.base.cra_priority = 2000,
-> +	.base.cra_flags = CRYPTO_ALG_NEED_FALLBACK,
-> +	.base.cra_blocksize = 1,
-> +	.base.cra_ctxsize = sizeof(struct p8_aes_ctr_ctx),
-> +	.setkey = p8_aes_ctr_setkey,
-> +	.encrypt = p8_aes_ctr_crypt,
-> +	.decrypt = p8_aes_ctr_crypt,
-> +	.init = p8_aes_ctr_init,
-> +	.exit = p8_aes_ctr_exit,
-> +	.min_keysize = AES_MIN_KEY_SIZE,
-> +	.max_keysize = AES_MAX_KEY_SIZE,
-> +	.ivsize = AES_BLOCK_SIZE,
-> +	.chunksize = AES_BLOCK_SIZE,
->  };
-> diff --git a/drivers/crypto/vmx/aes_xts.c b/drivers/crypto/vmx/aes_xts.c
-> index aee1339f134ec..965d8e03321cd 100644
-> --- a/drivers/crypto/vmx/aes_xts.c
-> +++ b/drivers/crypto/vmx/aes_xts.c
-> @@ -7,67 +7,56 @@
->   * Author: Leonidas S. Barbosa <leosilva@linux.vnet.ibm.com>
->   */
->  
-> -#include <linux/types.h>
-> -#include <linux/err.h>
-> -#include <linux/crypto.h>
-> -#include <linux/delay.h>
->  #include <asm/simd.h>
->  #include <asm/switch_to.h>
->  #include <crypto/aes.h>
->  #include <crypto/internal/simd.h>
-> -#include <crypto/scatterwalk.h>
-> +#include <crypto/internal/skcipher.h>
->  #include <crypto/xts.h>
-> -#include <crypto/skcipher.h>
->  
->  #include "aesp8-ppc.h"
->  
->  struct p8_aes_xts_ctx {
-> -	struct crypto_sync_skcipher *fallback;
-> +	struct crypto_skcipher *fallback;
->  	struct aes_key enc_key;
->  	struct aes_key dec_key;
->  	struct aes_key tweak_key;
->  };
->  
-> -static int p8_aes_xts_init(struct crypto_tfm *tfm)
-> +static int p8_aes_xts_init(struct crypto_skcipher *tfm)
->  {
-> -	const char *alg = crypto_tfm_alg_name(tfm);
-> -	struct crypto_sync_skcipher *fallback;
-> -	struct p8_aes_xts_ctx *ctx = crypto_tfm_ctx(tfm);
-> +	struct p8_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct crypto_skcipher *fallback;
->  
-> -	fallback = crypto_alloc_sync_skcipher(alg, 0,
-> -					      CRYPTO_ALG_NEED_FALLBACK);
-> +	fallback = crypto_alloc_skcipher("xts(aes)", 0,
-> +					 CRYPTO_ALG_NEED_FALLBACK |
-> +					 CRYPTO_ALG_ASYNC);
->  	if (IS_ERR(fallback)) {
-> -		printk(KERN_ERR
-> -			"Failed to allocate transformation for '%s': %ld\n",
-> -			alg, PTR_ERR(fallback));
-> +		pr_err("Failed to allocate xts(aes) fallback: %ld\n",
-> +		       PTR_ERR(fallback));
->  		return PTR_ERR(fallback);
->  	}
->  
-> -	crypto_sync_skcipher_set_flags(
-> -		fallback,
-> -		crypto_skcipher_get_flags((struct crypto_skcipher *)tfm));
-> +	crypto_skcipher_set_reqsize(tfm, sizeof(struct skcipher_request) +
-> +				    crypto_skcipher_reqsize(fallback));
->  	ctx->fallback = fallback;
-> -
->  	return 0;
->  }
->  
-> -static void p8_aes_xts_exit(struct crypto_tfm *tfm)
-> +static void p8_aes_xts_exit(struct crypto_skcipher *tfm)
->  {
-> -	struct p8_aes_xts_ctx *ctx = crypto_tfm_ctx(tfm);
-> +	struct p8_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
->  
-> -	if (ctx->fallback) {
-> -		crypto_free_sync_skcipher(ctx->fallback);
-> -		ctx->fallback = NULL;
-> -	}
-> +	crypto_free_skcipher(ctx->fallback);
->  }
->  
-> -static int p8_aes_xts_setkey(struct crypto_tfm *tfm, const u8 *key,
-> +static int p8_aes_xts_setkey(struct crypto_skcipher *tfm, const u8 *key,
->  			     unsigned int keylen)
->  {
-> +	struct p8_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
->  	int ret;
-> -	struct p8_aes_xts_ctx *ctx = crypto_tfm_ctx(tfm);
->  
-> -	ret = xts_check_key(tfm, key, keylen);
-> +	ret = xts_verify_key(tfm, key, keylen);
->  	if (ret)
->  		return ret;
->  
-> @@ -81,100 +70,90 @@ static int p8_aes_xts_setkey(struct crypto_tfm *tfm, const u8 *key,
->  	pagefault_enable();
->  	preempt_enable();
->  
-> -	ret |= crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
-> +	ret |= crypto_skcipher_setkey(ctx->fallback, key, keylen);
->  
->  	return ret ? -EINVAL : 0;
->  }
->  
-> -static int p8_aes_xts_crypt(struct blkcipher_desc *desc,
-> -			    struct scatterlist *dst,
-> -			    struct scatterlist *src,
-> -			    unsigned int nbytes, int enc)
-> +static int p8_aes_xts_crypt(struct skcipher_request *req, int enc)
->  {
-> -	int ret;
-> +	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
-> +	const struct p8_aes_xts_ctx *ctx = crypto_skcipher_ctx(tfm);
-> +	struct skcipher_walk walk;
-> +	unsigned int nbytes;
->  	u8 tweak[AES_BLOCK_SIZE];
-> -	u8 *iv;
-> -	struct blkcipher_walk walk;
-> -	struct p8_aes_xts_ctx *ctx =
-> -		crypto_tfm_ctx(crypto_blkcipher_tfm(desc->tfm));
-> +	int ret;
->  
->  	if (!crypto_simd_usable()) {
-> -		SYNC_SKCIPHER_REQUEST_ON_STACK(req, ctx->fallback);
-> -		skcipher_request_set_sync_tfm(req, ctx->fallback);
-> -		skcipher_request_set_callback(req, desc->flags, NULL, NULL);
-> -		skcipher_request_set_crypt(req, src, dst, nbytes, desc->info);
-> -		ret = enc? crypto_skcipher_encrypt(req) : crypto_skcipher_decrypt(req);
-> -		skcipher_request_zero(req);
-> -	} else {
-> -		blkcipher_walk_init(&walk, dst, src, nbytes);
-> +		struct skcipher_request *subreq = skcipher_request_ctx(req);
-> +
-> +		*subreq = *req;
-> +		skcipher_request_set_tfm(subreq, ctx->fallback);
-> +		return enc ? crypto_skcipher_encrypt(subreq) :
-> +			     crypto_skcipher_decrypt(subreq);
-> +	}
-> +
-> +	ret = skcipher_walk_virt(&walk, req, false);
-> +	if (ret)
-> +		return ret;
-> +
-> +	preempt_disable();
-> +	pagefault_disable();
-> +	enable_kernel_vsx();
->  
-> -		ret = blkcipher_walk_virt(desc, &walk);
-> +	aes_p8_encrypt(walk.iv, tweak, &ctx->tweak_key);
-> +
-> +	disable_kernel_vsx();
-> +	pagefault_enable();
-> +	preempt_enable();
->  
-> +	while ((nbytes = walk.nbytes) != 0) {
->  		preempt_disable();
->  		pagefault_disable();
->  		enable_kernel_vsx();
-> -
-> -		iv = walk.iv;
-> -		memset(tweak, 0, AES_BLOCK_SIZE);
-> -		aes_p8_encrypt(iv, tweak, &ctx->tweak_key);
-> -
-> +		if (enc)
-> +			aes_p8_xts_encrypt(walk.src.virt.addr,
-> +					   walk.dst.virt.addr,
-> +					   round_down(nbytes, AES_BLOCK_SIZE),
-> +					   &ctx->enc_key, NULL, tweak);
-> +		else
-> +			aes_p8_xts_decrypt(walk.src.virt.addr,
-> +					   walk.dst.virt.addr,
-> +					   round_down(nbytes, AES_BLOCK_SIZE),
-> +					   &ctx->dec_key, NULL, tweak);
->  		disable_kernel_vsx();
->  		pagefault_enable();
->  		preempt_enable();
->  
-> -		while ((nbytes = walk.nbytes)) {
-> -			preempt_disable();
-> -			pagefault_disable();
-> -			enable_kernel_vsx();
-> -			if (enc)
-> -				aes_p8_xts_encrypt(walk.src.virt.addr, walk.dst.virt.addr,
-> -						nbytes & AES_BLOCK_MASK, &ctx->enc_key, NULL, tweak);
-> -			else
-> -				aes_p8_xts_decrypt(walk.src.virt.addr, walk.dst.virt.addr,
-> -						nbytes & AES_BLOCK_MASK, &ctx->dec_key, NULL, tweak);
-> -			disable_kernel_vsx();
-> -			pagefault_enable();
-> -			preempt_enable();
-> -
-> -			nbytes &= AES_BLOCK_SIZE - 1;
-> -			ret = blkcipher_walk_done(desc, &walk, nbytes);
-> -		}
-> +		ret = skcipher_walk_done(&walk, nbytes % AES_BLOCK_SIZE);
->  	}
->  	return ret;
->  }
->  
-> -static int p8_aes_xts_encrypt(struct blkcipher_desc *desc,
-> -			      struct scatterlist *dst,
-> -			      struct scatterlist *src, unsigned int nbytes)
-> +static int p8_aes_xts_encrypt(struct skcipher_request *req)
->  {
-> -	return p8_aes_xts_crypt(desc, dst, src, nbytes, 1);
-> +	return p8_aes_xts_crypt(req, 1);
->  }
->  
-> -static int p8_aes_xts_decrypt(struct blkcipher_desc *desc,
-> -			      struct scatterlist *dst,
-> -			      struct scatterlist *src, unsigned int nbytes)
-> +static int p8_aes_xts_decrypt(struct skcipher_request *req)
->  {
-> -	return p8_aes_xts_crypt(desc, dst, src, nbytes, 0);
-> +	return p8_aes_xts_crypt(req, 0);
->  }
->  
-> -struct crypto_alg p8_aes_xts_alg = {
-> -	.cra_name = "xts(aes)",
-> -	.cra_driver_name = "p8_aes_xts",
-> -	.cra_module = THIS_MODULE,
-> -	.cra_priority = 2000,
-> -	.cra_type = &crypto_blkcipher_type,
-> -	.cra_flags = CRYPTO_ALG_TYPE_BLKCIPHER | CRYPTO_ALG_NEED_FALLBACK,
-> -	.cra_alignmask = 0,
-> -	.cra_blocksize = AES_BLOCK_SIZE,
-> -	.cra_ctxsize = sizeof(struct p8_aes_xts_ctx),
-> -	.cra_init = p8_aes_xts_init,
-> -	.cra_exit = p8_aes_xts_exit,
-> -	.cra_blkcipher = {
-> -			.ivsize = AES_BLOCK_SIZE,
-> -			.min_keysize = 2 * AES_MIN_KEY_SIZE,
-> -			.max_keysize = 2 * AES_MAX_KEY_SIZE,
-> -			.setkey	 = p8_aes_xts_setkey,
-> -			.encrypt = p8_aes_xts_encrypt,
-> -			.decrypt = p8_aes_xts_decrypt,
-> -	}
-> +struct skcipher_alg p8_aes_xts_alg = {
-> +	.base.cra_name = "xts(aes)",
-> +	.base.cra_driver_name = "p8_aes_xts",
-> +	.base.cra_module = THIS_MODULE,
-> +	.base.cra_priority = 2000,
-> +	.base.cra_flags = CRYPTO_ALG_NEED_FALLBACK,
-> +	.base.cra_blocksize = AES_BLOCK_SIZE,
-> +	.base.cra_ctxsize = sizeof(struct p8_aes_xts_ctx),
-> +	.setkey = p8_aes_xts_setkey,
-> +	.encrypt = p8_aes_xts_encrypt,
-> +	.decrypt = p8_aes_xts_decrypt,
-> +	.init = p8_aes_xts_init,
-> +	.exit = p8_aes_xts_exit,
-> +	.min_keysize = 2 * AES_MIN_KEY_SIZE,
-> +	.max_keysize = 2 * AES_MAX_KEY_SIZE,
-> +	.ivsize = AES_BLOCK_SIZE,
->  };
-> diff --git a/drivers/crypto/vmx/aesp8-ppc.h b/drivers/crypto/vmx/aesp8-ppc.h
-> index 349646b73754f..01774a4d26a25 100644
-> --- a/drivers/crypto/vmx/aesp8-ppc.h
-> +++ b/drivers/crypto/vmx/aesp8-ppc.h
-> @@ -2,8 +2,6 @@
->  #include <linux/types.h>
->  #include <crypto/aes.h>
->  
-> -#define AES_BLOCK_MASK  (~(AES_BLOCK_SIZE-1))
-> -
->  struct aes_key {
->  	u8 key[AES_MAX_KEYLENGTH];
->  	int rounds;
-> diff --git a/drivers/crypto/vmx/vmx.c b/drivers/crypto/vmx/vmx.c
-> index abd89c2bcec4d..eff03fdf964f2 100644
-> --- a/drivers/crypto/vmx/vmx.c
-> +++ b/drivers/crypto/vmx/vmx.c
-> @@ -15,54 +15,58 @@
->  #include <linux/crypto.h>
->  #include <asm/cputable.h>
->  #include <crypto/internal/hash.h>
-> +#include <crypto/internal/skcipher.h>
->  
->  extern struct shash_alg p8_ghash_alg;
->  extern struct crypto_alg p8_aes_alg;
-> -extern struct crypto_alg p8_aes_cbc_alg;
-> -extern struct crypto_alg p8_aes_ctr_alg;
-> -extern struct crypto_alg p8_aes_xts_alg;
-> -static struct crypto_alg *algs[] = {
-> -	&p8_aes_alg,
-> -	&p8_aes_cbc_alg,
-> -	&p8_aes_ctr_alg,
-> -	&p8_aes_xts_alg,
-> -	NULL,
-> -};
-> +extern struct skcipher_alg p8_aes_cbc_alg;
-> +extern struct skcipher_alg p8_aes_ctr_alg;
-> +extern struct skcipher_alg p8_aes_xts_alg;
->  
->  static int __init p8_init(void)
->  {
-> -	int ret = 0;
-> -	struct crypto_alg **alg_it;
-> +	int ret;
->  
-> -	for (alg_it = algs; *alg_it; alg_it++) {
-> -		ret = crypto_register_alg(*alg_it);
-> -		printk(KERN_INFO "crypto_register_alg '%s' = %d\n",
-> -		       (*alg_it)->cra_name, ret);
-> -		if (ret) {
-> -			for (alg_it--; alg_it >= algs; alg_it--)
-> -				crypto_unregister_alg(*alg_it);
-> -			break;
-> -		}
-> -	}
-> +	ret = crypto_register_shash(&p8_ghash_alg);
->  	if (ret)
-> -		return ret;
-> +		goto err;
->  
-> -	ret = crypto_register_shash(&p8_ghash_alg);
-> -	if (ret) {
-> -		for (alg_it = algs; *alg_it; alg_it++)
-> -			crypto_unregister_alg(*alg_it);
-> -	}
-> +	ret = crypto_register_alg(&p8_aes_alg);
-> +	if (ret)
-> +		goto err_unregister_ghash;
-> +
-> +	ret = crypto_register_skcipher(&p8_aes_cbc_alg);
-> +	if (ret)
-> +		goto err_unregister_aes;
-> +
-> +	ret = crypto_register_skcipher(&p8_aes_ctr_alg);
-> +	if (ret)
-> +		goto err_unregister_aes_cbc;
-> +
-> +	ret = crypto_register_skcipher(&p8_aes_xts_alg);
-> +	if (ret)
-> +		goto err_unregister_aes_ctr;
-> +
-> +	return 0;
-> +
-> +err_unregister_aes_ctr:
-> +	crypto_unregister_skcipher(&p8_aes_ctr_alg);
-> +err_unregister_aes_cbc:
-> +	crypto_unregister_skcipher(&p8_aes_cbc_alg);
-> +err_unregister_aes:
-> +	crypto_unregister_alg(&p8_aes_alg);
-> +err_unregister_ghash:
-> +	crypto_unregister_shash(&p8_ghash_alg);
-> +err:
->  	return ret;
->  }
->  
->  static void __exit p8_exit(void)
->  {
-> -	struct crypto_alg **alg_it;
-> -
-> -	for (alg_it = algs; *alg_it; alg_it++) {
-> -		printk(KERN_INFO "Removing '%s'\n", (*alg_it)->cra_name);
-> -		crypto_unregister_alg(*alg_it);
-> -	}
-> +	crypto_unregister_skcipher(&p8_aes_xts_alg);
-> +	crypto_unregister_skcipher(&p8_aes_ctr_alg);
-> +	crypto_unregister_skcipher(&p8_aes_cbc_alg);
-> +	crypto_unregister_alg(&p8_aes_alg);
->  	crypto_unregister_shash(&p8_ghash_alg);
->  }
->  
-> -- 
-> 2.21.0.1020.gf2820cf01a-goog
+>   	/* memory for pmu */
+>   	pmu_ptr = kzalloc(sizeof(*pmu_ptr), GFP_KERNEL);
+>   	if (!pmu_ptr)
+
