@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ECB25003
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD392501B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 15:25:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457bxn17r4zDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 23:21:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457c2m1Yx4zDqHf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 23:25:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
+ (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
  envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=brauner.io
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="Qzja+tqW"; 
+ secure) header.d=brauner.io header.i=@brauner.io header.b="BUu5zjdt"; 
  dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457bv74xRHzDqB4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 23:18:59 +1000 (AEST)
-Received: by mail-wm1-x343.google.com with SMTP id 198so2968039wme.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 06:18:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457c0L4Kj1zDqJK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 23:23:30 +1000 (AEST)
+Received: by mail-wr1-x444.google.com with SMTP id w8so18620463wrl.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 06:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=m/t4nh9Qn5eHvWriEo2lAzUTm+cejgZEB4hMcOrCq4Y=;
- b=Qzja+tqWdJKwhlDJv7ZeHS1krNqDAM++eYcwAp+RKkbv8p1KDPWxxZhzOpavU0EOHV
- kYWbjNPEjkxc3aEKZdrk9785qJNa6FxJtfkDGm1FLt3j0bk9/8YvawePnukWGCyjpFii
- 0DMW2p0x+5xPdVsJRuiSOe+/dtlaOGa52u2fWdq9QaNK4Tve8leR5ZqhEKAiqjWW0X06
- oTZk1e1uxbJPDBZIKsNtQKeWDeRpwtxnoV5XKv/I6zW+K9rGYAZZ7B8YjZBRwD4kYhWa
- WgDiIxwS5iY9PCvzQxN+w34XvRhk0st2I0ChEGvAZh7Cr4yOtxIXjdk5keUvD29dcq/r
- WLUA==
+ bh=zPeZPlO76ltnQqvYGINFToUvBJmXqM645QmEt4Hw6Rc=;
+ b=BUu5zjdtN4tz3uDq/7UpOx4K4hUQVJBWS+eEuFLdpi6Rmwdp0HavCUwLV8syhoRhBs
+ uutuEJthT54zEPxESFMYXggKMqpF+e9kjCS2KXB6a8V8DjwFSU/ukGJ+bjlCRLwN7Itn
+ NioFIdnrRyEyEXF9J8PaDiZ1BKte4njCTV4UqMcQIxHCp36wZKBXLuGaTuzR077IIyGB
+ sh/VNZyNC9dytmpNSG0A/cuTGl76M/BtkEN2Bj2PP9spj3uzju6GRwQbZsYefL3l1zFQ
+ DUpnJfPzQ1HZROA8RvSmOKB1jZ+QySIxvLrPIvBwJ5t1t+aSsSSgiGJe52BZXhX2b2t5
+ /pjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=m/t4nh9Qn5eHvWriEo2lAzUTm+cejgZEB4hMcOrCq4Y=;
- b=iyAnk9Kyt6nytqPJEXI9IFd4jmoT3Bjfr61qhbl6bQpPS6nXYjvPRZvW5pZ4p3H2Rs
- m5jDEtu/WMYRJM/LyEKH9A1hG3bH9XG6cKyN3RtBhF1/Uu4Ov/Gt1Cd+1uCtsPKTC5+6
- 1PYjnZMBE/xbGgr6P5q1RsvKudF697vzzqhXPCKAEnye1Okb+MgRYwQhNn4amlKRWtqj
- XPU+JdzWQk+Yaq+nKaX0hRBwhjN/0eBRfDqikiNWSzZGlN6Q5s3KWznN5VRmIekEcRmd
- OPvxqVfSn/W+7qv7sOwMTQIAe2LJpQpjh7+aJvNu16yLyXqmVVMb81Jp4oPsy+etBHYH
- Xl+w==
-X-Gm-Message-State: APjAAAUMXNAHZVHLIFUkeNHxbsiNQ/d1ZAAS0hRsXKnvDuT+X6q10yv3
- pJHPjyKNzaN3Lvdi4CiHYRj2qQ==
-X-Google-Smtp-Source: APXvYqyfKPZSJeUKKvR/WsITTIjBfoMQuzQ5Xtre6YfbYN0C4pHfHkECFwZ8Y50hJAsIDs/Jg3fbyg==
-X-Received: by 2002:a1c:9c8c:: with SMTP id f134mr3258598wme.95.1558444734225; 
- Tue, 21 May 2019 06:18:54 -0700 (PDT)
+ bh=zPeZPlO76ltnQqvYGINFToUvBJmXqM645QmEt4Hw6Rc=;
+ b=TE6+jwOnRU/6Vu44ZnnNOr/gSIjnr0NSvcGYkLiVh8ep0aQ62favTaz004zmp+myhR
+ YiOfB53tU77/0hVeo9INvq6J85Xge3fxlv26kCIM4lEY7dtIHeVXBT3J8l+elhYuzm9R
+ bb/FClP066Pw8nXp9NgAc21XRhpqiYPiXrQgED/8+eay8jWMQxLmocJHxQRW6Yh/Blet
+ dsTwjsDDc1QRqpZpdjNE34ZhXz2NpTE9HbzOL/xwwPAM8g+/BwI9xEAHJFkBtSTzJTJg
+ p29QAX0kgL8thSzMvjRT64V0TKRElIcJonSxEJOf0UfuFzz2o25Bnct7U+O0cH6x3N5b
+ OJgg==
+X-Gm-Message-State: APjAAAUzJg8ml5FO4uFZeJkhTZfu5VafwEWPlH8lSmfOdRstT27CA5hY
+ VnwGLspz6z/7WsKSu93iphTWCA==
+X-Google-Smtp-Source: APXvYqx9Vd+T8JFd9e9hzlyFLebVljF2D14aArNe6wO+D4nzJaWpMCXvLevCthzGrMSyj5JSdNW7NA==
+X-Received: by 2002:adf:e344:: with SMTP id n4mr26865746wrj.192.1558445005993; 
+ Tue, 21 May 2019 06:23:25 -0700 (PDT)
 Received: from brauner.io (p548C9938.dip0.t-ipconnect.de. [84.140.153.56])
- by smtp.gmail.com with ESMTPSA id n4sm2071899wmk.24.2019.05.21.06.18.52
+ by smtp.gmail.com with ESMTPSA id a15sm5483898wrw.49.2019.05.21.06.23.23
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 21 May 2019 06:18:53 -0700 (PDT)
-Date: Tue, 21 May 2019 15:18:50 +0200
+ Tue, 21 May 2019 06:23:24 -0700 (PDT)
+Date: Tue, 21 May 2019 15:23:23 +0200
 From: Christian Brauner <christian@brauner.io>
 To: Florian Weimer <fweimer@redhat.com>
 Subject: Re: [PATCH 1/2] open: add close_range()
-Message-ID: <20190521131849.2mguu5sszhbxhvgu@brauner.io>
+Message-ID: <20190521132252.y5wt7d7o4bdjns4e@brauner.io>
 References: <20190521113448.20654-1-christian@brauner.io>
  <87tvdoau12.fsf@oldenburg2.str.redhat.com>
  <20190521130438.q3u4wvve7p6md6cm@brauner.io>
@@ -112,6 +112,16 @@ On Tue, May 21, 2019 at 03:10:11PM +0200, Florian Weimer wrote:
 > 
 > The highest open descriptor isn't istering for fdwalk because nextfd
 > would just fail.
+
+Sure. I was thinking about other usecases. For example, sometimes in
+userspace you want to do the following:
+save_fd = dup(fd, <well-known-number-at-the-end-of-the-range);
+close_range(3, (save_fd - 1));
+
+Which brings me to another point. So even if we don't do close_range() I
+would like libc to maybe give us something like close_range() for such
+scenarios.
+
 > 
 > > But then I wonder if nextfd() needs to be a syscall and isn't just
 > > either:
@@ -121,12 +131,6 @@ On Tue, May 21, 2019 at 03:10:11PM +0200, Florian Weimer wrote:
 > 
 > I think the fcntl route is a bit iffy because you might need it to get
 > the *first* valid descriptor.
-
-Oh, how would that be difficult? Maybe I'm missing context.
-Couldn't you just do
-
-fcntl(0, F_GET_NEXT)
-
 > 
 > >> to userspace, so that we can use that to implement both fdwalk and
 > >> closefrom.  But maybe fdwalk is just too obscure, given the existence of
@@ -136,12 +140,6 @@ fcntl(0, F_GET_NEXT)
 > 
 > Agreed.  Just wanted to bring it up for completeness.  I certainly don't
 > want to derail the implementation of close_range.
-
-No, that's perfectly fine. I mean, you clearly need this and are one of
-the major stakeholders. For example, Rust (probably also Python) will
-call down into libc and not use the syscall directly. They kinda do this
-with getfdtable<sm> rn already.
-So what you say makes sense for libc has some relevance for the other
-tools as well.
-
-Christian
+> 
+> Thanks,
+> Florian
