@@ -2,71 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4C8251CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 16:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D359B2523D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 16:34:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457dGr3XWWzDqPN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 00:21:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457dYf2M5BzDqQ6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 00:33:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=brauner.io
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="X8JFkZaR"; 
+ dmarc=none (p=none dis=none) header.from=brauner.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="R7tC9jV5"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457cGD2RQdzDqJW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 23:35:32 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 457cG727tyz9v1nk;
- Tue, 21 May 2019 15:35:27 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=X8JFkZaR; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iOHAg-09oyuN; Tue, 21 May 2019 15:35:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 457cG70sqtz9v1nh;
- Tue, 21 May 2019 15:35:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558445727; bh=XoYcNDgG9thqPcHt2Ww/YmYYOWyHSVGlf0rWpnQtXlk=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=X8JFkZaRfoTRqwcGstExSi/f4XIJsRo1gjLSMDLaKlpnYhLctLd7eC1E8iaJ9Ef1h
- VLpXMypqCGU0HnsrKqsyPsZ0+XqIKa4/6VWSMHBtjayXJAq994TZNDggdaw9yhjTAb
- 2e1M1c7I4L8KFWQL3k/CqhbwpfcZuljv2ZbwWSnQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 42C398B80C;
- Tue, 21 May 2019 15:35:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LYbLXYWi8WHJ; Tue, 21 May 2019 15:35:28 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D61B8B803;
- Tue, 21 May 2019 15:35:27 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc/mm: mark more tlb functions as __always_inline
-To: Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <f49c9bce-c77d-709d-8920-e16c64963ad1@c-s.fr>
-Date: Tue, 21 May 2019 15:35:26 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457dXB6W3XzDqHh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 00:32:42 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id g21so480295plq.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 07:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=CyEpPRrV9RS3Zg004GbU3opzLF2psDEeRox6G2Dzgi4=;
+ b=R7tC9jV5a+mxQO62x+PWvbdzprD7UnwlstIi1E921IR8MQwvIjqpWXEjFq96wgtFnG
+ fTY3nrMJ7vCArpwoCVItDxzdQ40Qirw2JBMtmG9CODfWHtTXbOzlgqZAKYfvraG5V/E/
+ frjGG7jnSr228cVlsj/AYjMiDaehudskW3T4AmnYaTekKHbr2YRWH9MAzfQSuPvXNkig
+ nGR3hP9fBOFFBpPON8OQVuBm2SSMmqqE80W+7bGmI4VUShRRrCVcCUx8VLhizIP/+v8d
+ eMhf2YFuLCOUzRqivSwvxO5aWPP4xWsn3q69TEqczL5TXIDQcUFBiSLNtQvcQ37Ukm91
+ n7lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=CyEpPRrV9RS3Zg004GbU3opzLF2psDEeRox6G2Dzgi4=;
+ b=jEfyZ/ZWZBKz1N9l4nMKRKasJijGtVypSDcX2MLJT5kv7XWbpLhazKPq0j7JSQugG4
+ kTX0mt1eat7RCkpEsQ8AJ+sml+f4b3ZlvsmoyuQbi/dW01ZYIeKilSXSwZObb6pk7ykI
+ kBwsnq3EAjjKASqR8zr9XJo+KBKDBNcq/uIhwHYENsRwfuXWr+lwpm0d6r9cH00QC1OU
+ wnhsXw1LoIFmoJCcSJQvE2Tt9fHRowqJ8mZKQ+/lNf/jVw3Xf+Xf2k8Ilnpog9umzJzZ
+ 8h9EYK8j3L5iWelT0jdCg89W7dXVbzSWIIHkF+bvV0v9vMxBiMMg+AZrnAzRoUkD+Xzf
+ s+RQ==
+X-Gm-Message-State: APjAAAWYLWhIiQvJ4Eupyk5TiwaMr/J/IyjBmZucf+VEVlsFSJJJ1+Bt
+ K5P6BHrH7L9nMdCHb8sDlVOzbA==
+X-Google-Smtp-Source: APXvYqzfSnHKDaWx/UeH1zZV9VxL0yBVD2SxGAqwuR5ORrqMhe2WMo1TCAFF94hkLIeOM4eQM6MVkw==
+X-Received: by 2002:a17:902:ba88:: with SMTP id
+ k8mr9263163pls.16.1558449159148; 
+ Tue, 21 May 2019 07:32:39 -0700 (PDT)
+Received: from brauner.io ([208.54.39.182])
+ by smtp.gmail.com with ESMTPSA id q5sm25819914pfb.51.2019.05.21.07.32.25
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 21 May 2019 07:32:38 -0700 (PDT)
+Date: Tue, 21 May 2019 16:32:22 +0200
+From: Christian Brauner <christian@brauner.io>
+To: jannh@google.com, oleg@redhat.com, viro@zeniv.linux.org.uk,
+ torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, arnd@arndb.de
+Subject: Re: [PATCH v3 1/2] pid: add pidfd_open()
+Message-ID: <20190521143220.crb2zyvdov3fl4g7@brauner.io>
+References: <20190520155630.21684-1-christian@brauner.io>
 MIME-Version: 1.0
-In-Reply-To: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190520155630.21684-1-christian@brauner.io>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,166 +81,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, dhowells@redhat.com, joel@joelfernandes.org,
+ linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+ elena.reshetova@intel.com, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, dancol@google.com, kernel-team@android.com,
+ serge@hallyn.com, linux-xtensa@linux-xtensa.org, keescook@chromium.org,
+ linux-m68k@lists.linux-m68k.org, luto@kernel.org, tglx@linutronix.de,
+ surenb@google.com, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, cyphar@cyphar.com,
+ luto@amacapital.net, ebiederm@xmission.com, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, May 20, 2019 at 05:56:29PM +0200, Christian Brauner wrote:
+> This adds the pidfd_open() syscall. It allows a caller to retrieve pollable
+> pidfds for a process which did not get created via CLONE_PIDFD, i.e. for a
+> process that is created via traditional fork()/clone() calls that is only
+> referenced by a PID:
+> 
+> int pidfd = pidfd_open(1234, 0);
+> ret = pidfd_send_signal(pidfd, SIGSTOP, NULL, 0);
+> 
+> With the introduction of pidfds through CLONE_PIDFD it is possible to
+> created pidfds at process creation time.
+> However, a lot of processes get created with traditional PID-based calls
+> such as fork() or clone() (without CLONE_PIDFD). For these processes a
+> caller can currently not create a pollable pidfd. This is a problem for
+> Android's low memory killer (LMK) and service managers such as systemd.
+> Both are examples of tools that want to make use of pidfds to get reliable
+> notification of process exit for non-parents (pidfd polling) and race-free
+> signal sending (pidfd_send_signal()). They intend to switch to this API for
+> process supervision/management as soon as possible. Having no way to get
+> pollable pidfds from PID-only processes is one of the biggest blockers for
+> them in adopting this api. With pidfd_open() making it possible to retrieve
+> pidfds for PID-based processes we enable them to adopt this api.
+> 
+> In line with Arnd's recent changes to consolidate syscall numbers across
+> architectures, I have added the pidfd_open() syscall to all architectures
+> at the same time.
+> 
+> Signed-off-by: Christian Brauner <christian@brauner.io>
+> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
+This now also carries a Reviewed-by from David.
 
-Le 21/05/2019 à 15:13, Masahiro Yamada a écrit :
-> With CONFIG_OPTIMIZE_INLINING enabled, Laura Abbott reported error
-> with gcc 9.1.1:
-> 
->    arch/powerpc/mm/book3s64/radix_tlb.c: In function '_tlbiel_pid':
->    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: warning: asm operand 3 probably doesn't match constraints
->      104 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
->          |  ^~~
->    arch/powerpc/mm/book3s64/radix_tlb.c:104:2: error: impossible constraint in 'asm'
-> 
-> Fixing _tlbiel_pid() is enough to address the warning above, but I
-> inlined more functions to fix all potential issues.
-> 
-> To meet the "i" (immediate) constraint for the asm operands, functions
-> propagating "ric" must be always inlined.
-> 
-> Fixes: 9012d011660e ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
-> Reported-by: Laura Abbott <labbott@redhat.com>
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Jann Horn <jannh@google.com>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Andy Lutomirsky <luto@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Aleksa Sarai <cyphar@cyphar.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: linux-api@vger.kernel.org
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+I've moved pidfd_open() into my for-next branch together with Joel's
+pidfd polling changes. Everything is based on v5.2-rc1.
 
-> ---
-> 
-> Changes in v2:
->    - Do not split lines
-> 
->   arch/powerpc/mm/book3s64/hash_native.c |  2 +-
->   arch/powerpc/mm/book3s64/radix_tlb.c   | 32 ++++++++++++++++----------------
->   2 files changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-> index aaa28fd..c854151 100644
-> --- a/arch/powerpc/mm/book3s64/hash_native.c
-> +++ b/arch/powerpc/mm/book3s64/hash_native.c
-> @@ -60,7 +60,7 @@ static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
->    * tlbiel instruction for hash, set invalidation
->    * i.e., r=1 and is=01 or is=10 or is=11
->    */
-> -static inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
-> +static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
->   					unsigned int pid,
->   					unsigned int ric, unsigned int prs)
->   {
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-> index 4d84136..4d3dc10 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -29,7 +29,7 @@
->    * tlbiel instruction for radix, set invalidation
->    * i.e., r=1 and is=01 or is=10 or is=11
->    */
-> -static inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
-> +static __always_inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
->   					unsigned int pid,
->   					unsigned int ric, unsigned int prs)
->   {
-> @@ -150,8 +150,8 @@ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
->   	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
->   }
->   
-> -static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
-> -				unsigned long ric)
-> +static __always_inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
-> +						unsigned long ric)
->   {
->   	unsigned long rb,rs,prs,r;
->   
-> @@ -167,8 +167,8 @@ static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
->   }
->   
->   
-> -static inline void __tlbiel_va(unsigned long va, unsigned long pid,
-> -			       unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbiel_va(unsigned long va, unsigned long pid,
-> +					unsigned long ap, unsigned long ric)
->   {
->   	unsigned long rb,rs,prs,r;
->   
-> @@ -183,8 +183,8 @@ static inline void __tlbiel_va(unsigned long va, unsigned long pid,
->   	trace_tlbie(0, 1, rb, rs, ric, prs, r);
->   }
->   
-> -static inline void __tlbie_va(unsigned long va, unsigned long pid,
-> -			      unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
-> +				       unsigned long ap, unsigned long ric)
->   {
->   	unsigned long rb,rs,prs,r;
->   
-> @@ -199,8 +199,8 @@ static inline void __tlbie_va(unsigned long va, unsigned long pid,
->   	trace_tlbie(0, 0, rb, rs, ric, prs, r);
->   }
->   
-> -static inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> -			      unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> +					    unsigned long ap, unsigned long ric)
->   {
->   	unsigned long rb,rs,prs,r;
->   
-> @@ -239,7 +239,7 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
->   /*
->    * We use 128 set in radix mode and 256 set in hpt mode.
->    */
-> -static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
-> +static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
->   {
->   	int set;
->   
-> @@ -341,7 +341,7 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
->   	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->   }
->   
-> -static inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
-> +static __always_inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
->   {
->   	int set;
->   
-> @@ -381,8 +381,8 @@ static inline void __tlbiel_va_range(unsigned long start, unsigned long end,
->   		__tlbiel_va(addr, pid, ap, RIC_FLUSH_TLB);
->   }
->   
-> -static inline void _tlbiel_va(unsigned long va, unsigned long pid,
-> -			      unsigned long psize, unsigned long ric)
-> +static __always_inline void _tlbiel_va(unsigned long va, unsigned long pid,
-> +				       unsigned long psize, unsigned long ric)
->   {
->   	unsigned long ap = mmu_get_ap(psize);
->   
-> @@ -413,8 +413,8 @@ static inline void __tlbie_va_range(unsigned long start, unsigned long end,
->   		__tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
->   }
->   
-> -static inline void _tlbie_va(unsigned long va, unsigned long pid,
-> -			      unsigned long psize, unsigned long ric)
-> +static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
-> +				      unsigned long psize, unsigned long ric)
->   {
->   	unsigned long ap = mmu_get_ap(psize);
->   
-> @@ -424,7 +424,7 @@ static inline void _tlbie_va(unsigned long va, unsigned long pid,
->   	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->   }
->   
-> -static inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> +static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
->   			      unsigned long psize, unsigned long ric)
->   {
->   	unsigned long ap = mmu_get_ap(psize);
-> 
+The chosen syscall number for now is 434. David is going to send out
+another pile of mount api related syscalls. I'll coordinate with him
+accordingly prior to the 5.3 merge window.
+
+Thanks!
+Christian
