@@ -1,39 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F9D24E31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 13:41:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0D324E0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 13:39:55 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457Yhk3QMNzDqMm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 21:39:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457Ykc5rbmzDqMT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 21:41:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457YgF0G6KzDqLG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 21:38:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457YhZ3901zDqMt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 21:39:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 457YgD4n4Pz9s55;
- Tue, 21 May 2019 21:38:32 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
- paulus@samba.org
-Subject: Re: [PATCH] powerpc/mm/hash: Improve address limit checks
-In-Reply-To: <455jHY5Y1zz9sBp@ozlabs.org>
-References: <455jHY5Y1zz9sBp@ozlabs.org>
-Date: Tue, 21 May 2019 21:38:30 +1000
-Message-ID: <87v9y46nrd.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Received: by ozlabs.org (Postfix)
+ id 457YhZ0t26z9s9T; Tue, 21 May 2019 21:39:42 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 457YhY6vFMz9sB8; Tue, 21 May 2019 21:39:41 +1000 (AEST)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: c179976cf4cbd2e65f29741d5bc07ccf8747a532
+X-Patchwork-Hint: ignore
+In-Reply-To: <20190517132958.22299-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH v2] powerpc/mm/hash: Fix get_region_id() for invalid
+ addresses
+Message-Id: <457YhY6vFMz9sB8@ozlabs.org>
+Date: Tue, 21 May 2019 21:39:41 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,38 +43,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <patch-notifications@ellerman.id.au> writes:
-> On Thu, 2019-05-16 at 11:50:54 UTC, "Aneesh Kumar K.V" wrote:
->> Different parts of the code do the limit check by ignoring the top nibble
->> of EA. ie. we do checks like
->> 
->> 	if ((ea & EA_MASK)  >= H_PGTABLE_RANGE)
->> 	   	error
->> 
->> This patch makes sure we don't insert SLB entries for addresses whose top nibble
->> doesn't match the ignored bits.
->> 
->> With an address like 0x4000000008000000, we can result in wrong slb entries like
->> 
->> 13 4000000008000000 400ea1b217000510   1T ESID=   400000 VSID=   ea1b217000 LLP:110
->> 
->> without this patch we will map that EA with LINEAR_MAP_REGION_ID and further
->> those addr limit check will return false.
->> 
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->
-> Applied to powerpc fixes, thanks.
->
-> https://git.kernel.org/powerpc/c/c179976cf4cbd2e65f29741d5bc07ccf
+On Fri, 2019-05-17 at 13:29:58 UTC, Michael Ellerman wrote:
+> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> 
+> Accesses by userspace to random addresses outside the user or kernel
+> address range will generate an SLB fault. When we handle that fault we
+> classify the effective address into several classes, eg. user, kernel
+> linear, kernel virtual etc.
+> 
+> For addresses that are completely outside of any valid range, we
+> should not insert an SLB entry at all, and instead immediately an
+> exception.
+> 
+> In the past this was handled in two ways. Firstly we would check the
+> top nibble of the address (using REGION_ID(ea)) and that would tell us
+> if the address was user (0), kernel linear (c), kernel virtual (d), or
+> vmemmap (f). If the address didn't match any of these it was invalid.
+> 
+> Then for each type of address we would do a secondary check. For the
+> user region we check against H_PGTABLE_RANGE, for kernel linear we
+> would mask the top nibble of the address and then check the address
+> against MAX_PHYSMEM_BITS.
+> 
+> As part of commit 0034d395f89d ("powerpc/mm/hash64: Map all the kernel
+> regions in the same 0xc range") we replaced REGION_ID() with
+> get_region_id() and changed the masking of the top nibble to only mask
+> the top two bits, which introduced a bug.
+> 
+> Addresses less than (4 << 60) are still handled correctly, they are
+> either less than (1 << 60) in which case they are subject to the
+> H_PGTABLE_RANGE check, or they are correctly checked against
+> MAX_PHYSMEM_BITS.
+> 
+> However addresses from (4 << 60) to ((0xc << 60) - 1), are incorrectly
+> treated as kernel linear addresses in get_region_id(). Then the top
+> two bits are cleared by EA_MASK in slb_allocate_kernel() and the
+> address is checked against MAX_PHYSMEM_BITS, which it passes due to
+> the masking. The end result is we incorrectly insert SLB entries for
+> those addresses.
+> 
+> That is not actually catastrophic, having inserted the SLB entry we
+> will then go on to take a page fault for the address and at that point
+> we detect the problem and report it as a bad fault.
+> 
+> Still we should not be inserting those entries, or treating them as
+> kernel linear addresses in the first place. So fix get_region_id() to
+> detect addresses in that range and return an invalid region id, which
+> we cause use to not insert an SLB entry and directly report an
+> exception.
+> 
+> Fixes: 0034d395f89d ("powerpc/mm/hash64: Map all the kernel regions in the same 0xc range")
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> [mpe: Drop change to EA_MASK for now, rewrite change log]
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Actually this patch was superseeded. This should have been a reply to:
+Applied to powerpc fixes.
 
-  https://lore.kernel.org/linuxppc-dev/20190517132958.22299-1-mpe@ellerman.id.au/
+https://git.kernel.org/powerpc/c/c179976cf4cbd2e65f29741d5bc07ccf
 
 cheers
