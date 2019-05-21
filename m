@@ -1,39 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C09A2538E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:11:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E302535F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 17:03:38 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457fCq4jtSzDqN2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 01:03:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457fPF0cc5zDqLh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 01:11:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
- (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
- envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=linuxram@us.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457f8t3rJjzDqJl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 01:00:59 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hT6FK-0007FT-IR; Tue, 21 May 2019 15:00:06 +0000
-Date: Tue, 21 May 2019 16:00:06 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH 1/2] open: add close_range()
-Message-ID: <20190521150006.GJ17978@ZenIV.linux.org.uk>
-References: <20190521113448.20654-1-christian@brauner.io>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457fM80XKlzDq83
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 01:09:52 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4LEvVYA127538
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 11:09:49 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2smjn3b8f0-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 11:09:49 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Tue, 21 May 2019 16:09:47 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 21 May 2019 16:09:42 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4LF9fb857606362
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 May 2019 15:09:41 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A194A52051;
+ Tue, 21 May 2019 15:09:40 +0000 (GMT)
+Received: from ram.ibm.com (unknown [9.85.154.252])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 9D4715204F;
+ Tue, 21 May 2019 15:09:37 +0000 (GMT)
+Date: Tue, 21 May 2019 08:09:35 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+References: <20190521044912.1375-1-bauerman@linux.ibm.com>
+ <20190521044912.1375-3-bauerman@linux.ibm.com>
+ <20190521051326.GC29120@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190521113448.20654-1-christian@brauner.io>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190521051326.GC29120@lst.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19052115-0016-0000-0000-0000027E06E9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052115-0017-0000-0000-000032DAF3D4
+Message-Id: <20190521150935.GB8402@ram.ibm.com>
+Subject: Re: Re: [RFC PATCH 02/12] powerpc: Add support for adding an ESM blob
+ to the zImage wrapper
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-21_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905210094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,197 +88,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
- ldv@altlinux.org, linux-arm-kernel@lists.infradead.org, fweimer@redhat.com,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 21, 2019 at 01:34:47PM +0200, Christian Brauner wrote:
+On Tue, May 21, 2019 at 07:13:26AM +0200, Christoph Hellwig wrote:
+> On Tue, May 21, 2019 at 01:49:02AM -0300, Thiago Jung Bauermann wrote:
+> > From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > 
+> > For secure VMs, the signing tool will create a ticket called the "ESM blob"
+> > for the Enter Secure Mode ultravisor call with the signatures of the kernel
+> > and initrd among other things.
+> > 
+> > This adds support to the wrapper script for adding that blob via the "-e"
+> > option to the zImage.pseries.
+> > 
+> > It also adds code to the zImage wrapper itself to retrieve and if necessary
+> > relocate the blob, and pass its address to Linux via the device-tree, to be
+> > later consumed by prom_init.
+> 
+> Where does the "BLOB" come from?  How is it licensed and how can we
+> satisfy the GPL with it?
 
-> This adds the close_range() syscall. It allows to efficiently close a range
-> of file descriptors up to all file descriptors of a calling task.
-> 
-> The syscall came up in a recent discussion around the new mount API and
-> making new file descriptor types cloexec by default. During this
-> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> syscall in this manner has been requested by various people over time.
-> 
-> First, it helps to close all file descriptors of an exec()ing task. This
-> can be done safely via (quoting Al's example from [1] verbatim):
-> 
->         /* that exec is sensitive */
->         unshare(CLONE_FILES);
->         /* we don't want anything past stderr here */
->         close_range(3, ~0U);
->         execve(....);
-> 
-> The code snippet above is one way of working around the problem that file
-> descriptors are not cloexec by default. This is aggravated by the fact that
-> we can't just switch them over without massively regressing userspace. For
-> a whole class of programs having an in-kernel method of closing all file
-> descriptors is very helpful (e.g. demons, service managers, programming
-> language standard libraries, container managers etc.).
-> (Please note, unshare(CLONE_FILES) should only be needed if the calling
->  task is multi-threaded and shares the file descriptor table with another
->  thread in which case two threads could race with one thread allocating
->  file descriptors and the other one closing them via close_range(). For the
->  general case close_range() before the execve() is sufficient.)
-> 
-> Second, it allows userspace to avoid implementing closing all file
-> descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
-> file descriptor. From looking at various large(ish) userspace code bases
-> this or similar patterns are very common in:
-> - service managers (cf. [4])
-> - libcs (cf. [6])
-> - container runtimes (cf. [5])
-> - programming language runtimes/standard libraries
->   - Python (cf. [2])
->   - Rust (cf. [7], [8])
-> As Dmitry pointed out there's even a long-standing glibc bug about missing
-> kernel support for this task (cf. [3]).
-> In addition, the syscall will also work for tasks that do not have procfs
-> mounted and on kernels that do not have procfs support compiled in. In such
-> situations the only way to make sure that all file descriptors are closed
-> is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
-> OPEN_MAX trickery (cf. comment [8] on Rust).
-> 
-> The performance is striking. For good measure, comparing the following
-> simple close_all_fds() userspace implementation that is essentially just
-> glibc's version in [6]:
-> 
-> static int close_all_fds(void)
-> {
->         DIR *dir;
->         struct dirent *direntp;
-> 
->         dir = opendir("/proc/self/fd");
->         if (!dir)
->                 return -1;
-> 
->         while ((direntp = readdir(dir))) {
->                 int fd;
->                 if (strcmp(direntp->d_name, ".") == 0)
->                         continue;
->                 if (strcmp(direntp->d_name, "..") == 0)
->                         continue;
->                 fd = atoi(direntp->d_name);
->                 if (fd == 0 || fd == 1 || fd == 2)
->                         continue;
->                 close(fd);
->         }
-> 
->         closedir(dir); /* cannot fail */
->         return 0;
-> }
-> 
-> to close_range() yields:
-> 1. closing 4 open files:
->    - close_all_fds(): ~280 us
->    - close_range():    ~24 us
-> 
-> 2. closing 1000 open files:
->    - close_all_fds(): ~5000 us
->    - close_range():   ~800 us
-> 
-> close_range() is designed to allow for some flexibility. Specifically, it
-> does not simply always close all open file descriptors of a task. Instead,
-> callers can specify an upper bound.
-> This is e.g. useful for scenarios where specific file descriptors are
-> created with well-known numbers that are supposed to be excluded from
-> getting closed.
-> For extra paranoia close_range() comes with a flags argument. This can e.g.
-> be used to implement extension. Once can imagine userspace wanting to stop
-> at the first error instead of ignoring errors under certain circumstances.
-> There might be other valid ideas in the future. In any case, a flag
-> argument doesn't hurt and keeps us on the safe side.
-> 
-> >From an implementation side this is kept rather dumb. It saw some input
-> from David and Jann but all nonsense is obviously my own!
-> - Errors to close file descriptors are currently ignored. (Could be changed
->   by setting a flag in the future if needed.)
-> - __close_range() is a rather simplistic wrapper around __close_fd().
->   My reasoning behind this is based on the nature of how __close_fd() needs
->   to release an fd. But maybe I misunderstood specifics:
->   We take the files_lock and rcu-dereference the fdtable of the calling
->   task, we find the entry in the fdtable, get the file and need to release
->   files_lock before calling filp_close().
->   In the meantime the fdtable might have been altered so we can't just
->   retake the spinlock and keep the old rcu-reference of the fdtable
->   around. Instead we need to grab a fresh reference to the fdtable.
->   If my reasoning is correct then there's really no point in fancyfying
->   __close_range(): We just need to rcu-dereference the fdtable of the
->   calling task once to cap the max_fd value correctly and then go on
->   calling __close_fd() in a loop.
+The "BLOB" is not a piece of code. Its just a piece of data that gets
+generated by our build tools. This data contains the
+signed hash of the kernel, initrd, and kernel command line parameters.
+Also it contains any information that the creator the the BLOB wants to
+be made available to anyone needing it, inside the
+secure-virtual-machine. All of this is integrity-protected and encrypted
+to safegaurd it when at rest and at runtime.
+ 
+Bottomline -- Blob is data, and hence no licensing implication. And due
+to some reason, even data needs to have licensing statement, we can
+make it available to have no conflicts with GPL.
 
-> +/**
-> + * __close_range() - Close all file descriptors in a given range.
-> + *
-> + * @fd:     starting file descriptor to close
-> + * @max_fd: last file descriptor to close
-> + *
-> + * This closes a range of file descriptors. All file descriptors
-> + * from @fd up to and including @max_fd are closed.
-> + */
-> +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> +{
-> +	unsigned int cur_max;
-> +
-> +	if (fd > max_fd)
-> +		return -EINVAL;
-> +
-> +	rcu_read_lock();
-> +	cur_max = files_fdtable(files)->max_fds;
-> +	rcu_read_unlock();
-> +
-> +	/* cap to last valid index into fdtable */
-> +	if (max_fd >= cur_max)
-> +		max_fd = cur_max - 1;
-> +
-> +	while (fd <= max_fd)
-> +		__close_fd(files, fd++);
-> +
-> +	return 0;
-> +}
 
-Umm...  That's going to be very painful if you dup2() something to MAX_INT and
-then run that; roughly 2G iterations of bouncing ->file_lock up and down,
-without anything that would yield CPU in process.
-
-If anything, I would suggest something like
-
-	fd = *start_fd;
-	grab the lock
-        fdt = files_fdtable(files);
-more:
-	look for the next eviction candidate in ->open_fds, starting at fd
-	if there's none up to max_fd
-		drop the lock
-		return NULL
-	*start_fd = fd + 1;
-	if the fscker is really opened and not just reserved
-		rcu_assign_pointer(fdt->fd[fd], NULL);
-		__put_unused_fd(files, fd);
-		drop the lock
-		return the file we'd got
-	if (unlikely(need_resched()))
-		drop lock
-		cond_resched();
-		grab lock
-		fdt = files_fdtable(files);
-	goto more;
-
-with the main loop being basically
-	while ((file = pick_next(files, &start_fd, max_fd)) != NULL)
-		filp_close(file, files);
-
+-- 
+Ram Pai
 
