@@ -1,40 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713D824AF5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 10:57:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457V5h6vWZzDqND
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 18:57:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FB024B04
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 10:59:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 457V7p43fyzDqM0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 18:59:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=canonical.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=colin.king@canonical.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=canonical.com
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457V4H5D9FzDqL7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 18:56:29 +1000 (AEST)
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
- by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
- (Exim 4.76) (envelope-from <colin.king@canonical.com>)
- id 1hT0ZM-0000vb-P9; Tue, 21 May 2019 08:56:24 +0000
-From: Colin King <colin.king@canonical.com>
-To: Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
-Subject: [PATCH][next] soc: fsl: fix spelling mistake "Firmaware" -> "Firmware"
-Date: Tue, 21 May 2019 09:56:24 +0100
-Message-Id: <20190521085624.13665-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457V6G4FtmzDqDx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 18:58:13 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 20C502899D
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 08:58:11 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 11F29289B1; Tue, 21 May 2019 08:58:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203517] WARNING: inconsistent lock state. inconsistent
+ {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+Date: Tue, 21 May 2019 08:58:10 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: File System
+X-Bugzilla-Component: btrfs
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: dsterba@suse.com
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status cc resolution
+Message-ID: <bug-203517-206035-G7gXKIGODr@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203517-206035@https.bugzilla.kernel.org/>
+References: <bug-203517-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,33 +71,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Colin Ian King <colin.king@canonical.com>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203517
 
-There is a spelling mistake in a pr_err message. Fix it.
+David Sterba (dsterba@suse.com) changed:
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/soc/fsl/dpaa2-console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+                 CC|                            |dsterba@suse.com
+         Resolution|---                         |CODE_FIX
 
-diff --git a/drivers/soc/fsl/dpaa2-console.c b/drivers/soc/fsl/dpaa2-console.c
-index 9168d8ddc932..27243f706f37 100644
---- a/drivers/soc/fsl/dpaa2-console.c
-+++ b/drivers/soc/fsl/dpaa2-console.c
-@@ -73,7 +73,7 @@ static u64 get_mc_fw_base_address(void)
- 
- 	mcfbaregs = ioremap(mc_base_addr.start, resource_size(&mc_base_addr));
- 	if (!mcfbaregs) {
--		pr_err("could not map MC Firmaware Base registers\n");
-+		pr_err("could not map MC Firmware Base registers\n");
- 		return 0;
- 	}
- 
--- 
-2.20.1
+--- Comment #8 from David Sterba (dsterba@suse.com) ---
+https://patchwork.kernel.org/patch/10948813/ fixes the problem and is sched=
+uled
+for 5.2 and for stable.
 
+Thanks for the bisecting efforts!
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
