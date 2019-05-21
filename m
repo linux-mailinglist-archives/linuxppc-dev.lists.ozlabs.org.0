@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D18724718
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 06:55:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991C224716
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 06:54:10 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 457Nhb7583zDqJH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 14:54:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 457NkR6RW6zDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2019 14:55:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,60 +19,60 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 457Ndj0sF8zDqHR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 14:51:36 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 457Nds3BJyzDqKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 14:51:45 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4L4l7th070772
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:51:34 -0400
-Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sma1g1333-1
+ x4L4lUJX104665
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:51:43 -0400
+Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sm9c12baa-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:51:34 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2019 00:51:43 -0400
 Received: from localhost
- by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Tue, 21 May 2019 05:51:33 +0100
-Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
- by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
+ Tue, 21 May 2019 05:51:42 +0100
+Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
+ by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized
  Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 21 May 2019 05:51:29 +0100
+ Tue, 21 May 2019 05:51:38 +0100
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4L4pR1Q60817558
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4L4pbe161604030
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2019 04:51:27 GMT
+ Tue, 21 May 2019 04:51:37 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8BD76C6055;
- Tue, 21 May 2019 04:51:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 517B4C605B;
+ Tue, 21 May 2019 04:51:37 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D99B4C6062;
- Tue, 21 May 2019 04:51:09 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C2743C6055;
+ Tue, 21 May 2019 04:51:28 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.80.203.157])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 21 May 2019 04:51:09 +0000 (GMT)
+ Tue, 21 May 2019 04:51:27 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 01/12] powerpc/pseries: Introduce option to build secure
- virtual machines
-Date: Tue, 21 May 2019 01:49:01 -0300
+Subject: [RFC PATCH 02/12] powerpc: Add support for adding an ESM blob to the
+ zImage wrapper
+Date: Tue, 21 May 2019 01:49:02 -0300
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190521044912.1375-1-bauerman@linux.ibm.com>
 References: <20190521044912.1375-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19052104-0004-0000-0000-000015120A26
+x-cbid: 19052104-0020-0000-0000-00000EEE0A65
 X-IBM-SpamModules-Scores: 
 X-IBM-SpamModules-Versions: BY=3.00011134; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01206342; UDB=6.00633450; IPR=6.00987310; 
- MB=3.00026980; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-21 04:51:31
+ PH=3.00000004; SC=3.00000286; SDB=6.01206343; UDB=6.00633450; IPR=6.00987310; 
+ MB=3.00026980; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-21 04:51:41
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052104-0005-0000-0000-00008BBE4BA3
-Message-Id: <20190521044912.1375-2-bauerman@linux.ibm.com>
+x-cbparentid: 19052104-0021-0000-0000-000065E84CFC
+Message-Id: <20190521044912.1375-3-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-05-20_09:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -101,62 +101,191 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce CONFIG_PPC_SVM to control support for secure guests and include
-Ultravisor-related helpers when it is selected
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
+For secure VMs, the signing tool will create a ticket called the "ESM blob"
+for the Enter Secure Mode ultravisor call with the signatures of the kernel
+and initrd among other things.
+
+This adds support to the wrapper script for adding that blob via the "-e"
+option to the zImage.pseries.
+
+It also adds code to the zImage wrapper itself to retrieve and if necessary
+relocate the blob, and pass its address to Linux via the device-tree, to be
+later consumed by prom_init.
+
+Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+[ Minor adjustments to some comments. ]
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/include/asm/ultravisor.h  |  2 +-
- arch/powerpc/kernel/Makefile           |  4 +++-
- arch/powerpc/platforms/pseries/Kconfig | 12 ++++++++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ arch/powerpc/boot/main.c       | 41 ++++++++++++++++++++++++++++++++++
+ arch/powerpc/boot/ops.h        |  2 ++
+ arch/powerpc/boot/wrapper      | 24 +++++++++++++++++---
+ arch/powerpc/boot/zImage.lds.S |  8 +++++++
+ 4 files changed, 72 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-index 4ffec7a36acd..09e0a615d96f 100644
---- a/arch/powerpc/include/asm/ultravisor.h
-+++ b/arch/powerpc/include/asm/ultravisor.h
-@@ -28,7 +28,7 @@ extern int early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
-  * This call supports up to 6 arguments and 4 return arguments. Use
-  * UCALL_BUFSIZE to size the return argument buffer.
-  */
--#if defined(CONFIG_PPC_UV)
-+#if defined(CONFIG_PPC_UV) || defined(CONFIG_PPC_SVM)
- long ucall(unsigned long opcode, unsigned long *retbuf, ...);
- #else
- static long ucall(unsigned long opcode, unsigned long *retbuf, ...)
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 43ff4546e469..1e9b721634c8 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -154,7 +154,9 @@ endif
+diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
+index 78aaf4ffd7ab..ca612efd3e81 100644
+--- a/arch/powerpc/boot/main.c
++++ b/arch/powerpc/boot/main.c
+@@ -150,6 +150,46 @@ static struct addr_range prep_initrd(struct addr_range vmlinux, void *chosen,
+ 	return (struct addr_range){(void *)initrd_addr, initrd_size};
+ }
  
- obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
- obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
--obj-$(CONFIG_PPC_UV)		+= ultravisor.o ucall.o
-+ifneq ($(CONFIG_PPC_UV)$(CONFIG_PPC_SVM),)
-+obj-y				+= ultravisor.o ucall.o
-+endif
++#ifdef __powerpc64__
++static void prep_esm_blob(struct addr_range vmlinux, void *chosen)
++{
++	unsigned long esm_blob_addr, esm_blob_size;
++
++	/* Do we have an ESM (Enter Secure Mode) blob? */
++	if (_esm_blob_end <= _esm_blob_start)
++		return;
++
++	printf("Attached ESM blob at 0x%p-0x%p\n\r",
++	       _esm_blob_start, _esm_blob_end);
++	esm_blob_addr = (unsigned long)_esm_blob_start;
++	esm_blob_size = _esm_blob_end - _esm_blob_start;
++
++	/*
++	 * If the ESM blob is too low it will be clobbered when the
++	 * kernel relocates to its final location.  In this case,
++	 * allocate a safer place and move it.
++	 */
++	if (esm_blob_addr < vmlinux.size) {
++		void *old_addr = (void *)esm_blob_addr;
++
++		printf("Allocating 0x%lx bytes for esm_blob ...\n\r",
++		       esm_blob_size);
++		esm_blob_addr = (unsigned long)malloc(esm_blob_size);
++		if (!esm_blob_addr)
++			fatal("Can't allocate memory for ESM blob !\n\r");
++		printf("Relocating ESM blob 0x%lx <- 0x%p (0x%lx bytes)\n\r",
++		       esm_blob_addr, old_addr, esm_blob_size);
++		memmove((void *)esm_blob_addr, old_addr, esm_blob_size);
++	}
++
++	/* Tell the kernel ESM blob address via device tree. */
++	setprop_val(chosen, "linux,esm-blob-start", (u32)(esm_blob_addr));
++	setprop_val(chosen, "linux,esm-blob-end", (u32)(esm_blob_addr + esm_blob_size));
++}
++#else
++static inline void prep_esm_blob(struct addr_range vmlinux, void *chosen) { }
++#endif
++
+ /* A buffer that may be edited by tools operating on a zImage binary so as to
+  * edit the command line passed to vmlinux (by setting /chosen/bootargs).
+  * The buffer is put in it's own section so that tools may locate it easier.
+@@ -218,6 +258,7 @@ void start(void)
+ 	vmlinux = prep_kernel();
+ 	initrd = prep_initrd(vmlinux, chosen,
+ 			     loader_info.initrd_addr, loader_info.initrd_size);
++	prep_esm_blob(vmlinux, chosen);
+ 	prep_cmdline(chosen);
  
- # Disable GCOV, KCOV & sanitizers in odd or sensitive code
- GCOV_PROFILE_prom_init.o := n
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 9c6b3d860518..82c16aa4f1ce 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -144,3 +144,15 @@ config PAPR_SCM
- 	tristate "Support for the PAPR Storage Class Memory interface"
- 	help
- 	  Enable access to hypervisor provided storage class memory.
+ 	printf("Finalizing device tree...");
+diff --git a/arch/powerpc/boot/ops.h b/arch/powerpc/boot/ops.h
+index cd043726ed88..e0606766480f 100644
+--- a/arch/powerpc/boot/ops.h
++++ b/arch/powerpc/boot/ops.h
+@@ -251,6 +251,8 @@ extern char _initrd_start[];
+ extern char _initrd_end[];
+ extern char _dtb_start[];
+ extern char _dtb_end[];
++extern char _esm_blob_start[];
++extern char _esm_blob_end[];
+ 
+ static inline __attribute__((const))
+ int __ilog2_u32(u32 n)
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index f9141eaec6ff..36b2ad6cd5b7 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -14,6 +14,7 @@
+ # -i initrd	specify initrd file
+ # -d devtree	specify device-tree blob
+ # -s tree.dts	specify device-tree source file (needs dtc installed)
++# -e esm_blob   specify ESM blob for secure images
+ # -c		cache $kernel.strip.gz (use if present & newer, else make)
+ # -C prefix	specify command prefix for cross-building tools
+ #		(strip, objcopy, ld)
+@@ -38,6 +39,7 @@ platform=of
+ initrd=
+ dtb=
+ dts=
++esm_blob=
+ cacheit=
+ binary=
+ compression=.gz
+@@ -60,9 +62,9 @@ tmpdir=.
+ 
+ usage() {
+     echo 'Usage: wrapper [-o output] [-p platform] [-i initrd]' >&2
+-    echo '       [-d devtree] [-s tree.dts] [-c] [-C cross-prefix]' >&2
+-    echo '       [-D datadir] [-W workingdir] [-Z (gz|xz|none)]' >&2
+-    echo '       [--no-compression] [vmlinux]' >&2
++    echo '       [-d devtree] [-s tree.dts] [-e esm_blob]' >&2
++    echo '       [-c] [-C cross-prefix] [-D datadir] [-W workingdir]' >&2
++    echo '       [-Z (gz|xz|none)] [--no-compression] [vmlinux]' >&2
+     exit 1
+ }
+ 
+@@ -105,6 +107,11 @@ while [ "$#" -gt 0 ]; do
+ 	[ "$#" -gt 0 ] || usage
+ 	dtb="$1"
+ 	;;
++    -e)
++	shift
++	[ "$#" -gt 0 ] || usage
++	esm_blob="$1"
++	;;
+     -s)
+ 	shift
+ 	[ "$#" -gt 0 ] || usage
+@@ -211,9 +218,16 @@ objflags=-S
+ tmp=$tmpdir/zImage.$$.o
+ ksection=.kernel:vmlinux.strip
+ isection=.kernel:initrd
++esection=.kernel:esm_blob
+ link_address='0x400000'
+ make_space=y
+ 
 +
-+config PPC_SVM
-+	bool "Secure virtual machine (SVM) support for POWER"
-+	depends on PPC_PSERIES
-+	default n
-+	help
-+	 Support secure guests on POWER. There are certain POWER platforms which
-+	 support secure guests using the Protected Execution Facility, with the
-+	 help of an Ultravisor executing below the hypervisor layer. This
-+	 enables the support for those guests.
++if [ -n "$esm_blob" -a "$platform" != "pseries" ]; then
++    echo "ESM blob not support on non-pseries platforms" >&2
++    exit 1
++fi
 +
-+	 If unsure, say "N".
+ case "$platform" in
+ of)
+     platformo="$object/of.o $object/epapr.o"
+@@ -463,6 +477,10 @@ if [ -n "$dtb" ]; then
+     fi
+ fi
+ 
++if [ -n "$esm_blob" ]; then
++    addsec $tmp "$esm_blob" $esection
++fi
++
+ if [ "$platform" != "miboot" ]; then
+     if [ -n "$link_address" ] ; then
+         text_start="-Ttext $link_address"
+diff --git a/arch/powerpc/boot/zImage.lds.S b/arch/powerpc/boot/zImage.lds.S
+index 4ac1e36edfe7..a21f3a76e06f 100644
+--- a/arch/powerpc/boot/zImage.lds.S
++++ b/arch/powerpc/boot/zImage.lds.S
+@@ -68,6 +68,14 @@ SECTIONS
+     _initrd_end =  .;
+   }
+ 
++  . = ALIGN(4096);
++  .kernel:esm_blob :
++  {
++    _esm_blob_start =  .;
++    *(.kernel:esm_blob)
++    _esm_blob_end =  .;
++  }
++
+ #ifdef CONFIG_PPC64_BOOT_WRAPPER
+   . = ALIGN(256);
+   .got :
 
