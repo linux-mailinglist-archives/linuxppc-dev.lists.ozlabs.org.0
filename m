@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6354626774
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 17:56:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458HL86tqVzDqQL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 01:56:16 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4935A267BE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 18:11:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 458Hgp3hbyzDqQL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 02:11:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
+ dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="RYzExnyo"; 
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="qVKEKI0j"; 
  dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458HH73zzrzDqMN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:53:38 +1000 (AEST)
-Received: by mail-wr1-x441.google.com with SMTP id b18so2861649wrq.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 08:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=yF9i8CBoIre9ittu6TL9sPlugb9HPbhX86BuS4x2hi8=;
- b=RYzExnyoOv3w5Fb8VLaJHKEDYxs4aenFqlTgzrIoyILRfHlvMh2wGo5lxkZtzBmSIr
- kOGCfp5ne9EqBjqB6SzVHfmT6akW35gkdJVszwCJfKB8OV9YsU+yLxNBGrh9EpI2AGJh
- UC9CvWQkTTUhhU+Qs7HlgDA9/qRwQSTqEeE1QaaLxOvM3rcT5L1U8BZ/5wc1ZG5x0i7E
- oVzw1tA9/4XF6mpiT+HTIGS38DpLhBMAGWhCo8hqTjqdKKGpJ7IGV/2j7ZITikN0fESr
- Plage1J7mGBtdyltzXMUFjtQKVS37nFTFKuGUm5GPSBVyEtAs/0A2m/IvTHzNtOz+P81
- l4yw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458HfB1NBKzDq9W
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 02:10:05 +1000 (AEST)
+Received: by mail-qk1-x741.google.com with SMTP id p18so1853389qkk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 09:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HUUEDLWsi2MHHuyozS2c80A815aR1j2jtUYcHsaUwqw=;
+ b=qVKEKI0jwdFX7l25/Vs53mFELv4NnklG6enWTsqv3YrfJ4DYmflKWe2oZdCW88LP4q
+ 9tBP+zieRZ8hjlthpUlBmuk2LQuZBSEhNi7xBM3OcIzq6c4nAjodP36q61MzVCci/oFN
+ nhqLm0/usBT+OxNRTKV3RizsSBhEPdVwg/p8ujcd1gnmq9Nc+/RoDP6aaQX7i6gew09c
+ Ka3KcUr7V/0pcL2k82suNNlQg+h7l8EDMfSoTXm6sxjiP9UV0GvhEVcHs/EWQnFpa8zL
+ K70jOjS4cSXjht+BxM5SxefaKElso42VN9rIlRQg6f2LDPgzH8zdi5BG/05EuD3/+bab
+ wpoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=yF9i8CBoIre9ittu6TL9sPlugb9HPbhX86BuS4x2hi8=;
- b=VCLCss+C14HWyFZuCmLgDKy6fjgmkVdZtS6WOMCiHuDUAsmsmI7WH+Bx6qkGnGxArd
- ubAzIoDSfs1nogT8Jp8TirpLjS5rpyIfqz2gNnoGpZWxtvjVp8TigiRJJ0fiS0CTNedh
- qblLRwYFfHgJk/1LvIBx3RdT4VveqIHQoZd6XF2F9V1VhZBExbFHdw4ObWPQjhPNdv5Q
- lPeNiqRX7FZEEHWfpDVxa0jzXgz8MrDSQbEa3ii+6C5m1Hb4O3KHi/AVEJFDS+3yaxh1
- 3ym5M72duC4CmHvNMKpXnpW+Tnv8Rj75S8fXWfQQghKHRCd6Ud2zjN9x/3pGVfRAttqR
- Y2TQ==
-X-Gm-Message-State: APjAAAVrI90W4VmlojVSfzyvCxT2sFjSHSAwGVF5qlpWdgkeJ2Px4+1D
- roLgTOBJzMFY+IyMz+wUxG66hg==
-X-Google-Smtp-Source: APXvYqxptX7r7Y8CjJpjVCMVuUuAEbDzgoOyVNwuGDnMbTihy60ncTFvjTKE97l9juX0zFfMwBxjdQ==
-X-Received: by 2002:adf:ce89:: with SMTP id r9mr6992995wrn.300.1558540415392; 
- Wed, 22 May 2019 08:53:35 -0700 (PDT)
-Received: from localhost.localdomain ([185.197.132.10])
- by smtp.gmail.com with ESMTPSA id t12sm15677263wro.2.2019.05.22.08.53.33
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HUUEDLWsi2MHHuyozS2c80A815aR1j2jtUYcHsaUwqw=;
+ b=oPJjHz8OSSLNzjFSH0tCRRX1KGv7NKLBBHl/SXjNzpXdAiDarFmru29eO+4I2w1DKa
+ BjG28159IpGarAa6usHFBzHBK0txVuQqi9olYLXYWJlxjzy5D+Xvay605PV3k5wjWQ2V
+ FzM1OvyFoDu1/T1YyzxJ0rl+BYPvZ3b4wgUtpHvlL+Ggb056RJFZyqUhhGM1mgaGGoai
+ P/3B5Nj6EJgZrwK0DgQ3/NvKl+PhV/o9BzVM5Nf67dc84170B5IHkewxBCCV9Oj0GuBx
+ EeucmmSQLJqwTgvHCl+ekiy0Jwh+ReqXku6S/xab6d/oeLPFHagNR4zy+nyNNytd7YUz
+ 3AKQ==
+X-Gm-Message-State: APjAAAWGOYK8MuzmymuDKJro3d+Rx0rJr+SgDRrlfbYtpFX0nXDl4cfo
+ BfqZjbRnnMBSknX9bDJMd5dJbg==
+X-Google-Smtp-Source: APXvYqz+KTVZkkrXq4HFkHrw6rYCj9TIrV16qTi2Kq+lg5ApDMamEoVdtLJqtAhJ41fYwlPosq2W2A==
+X-Received: by 2002:a05:620a:1670:: with SMTP id
+ d16mr2448898qko.288.1558541402697; 
+ Wed, 22 May 2019 09:10:02 -0700 (PDT)
+Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id j5sm11446226qtb.30.2019.05.22.09.10.01
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 22 May 2019 08:53:34 -0700 (PDT)
-From: Christian Brauner <christian@brauner.io>
-To: viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
- torvalds@linux-foundation.org, fweimer@redhat.com
-Subject: [PATCH v1 2/2] tests: add close_range() tests
-Date: Wed, 22 May 2019 17:52:59 +0200
-Message-Id: <20190522155259.11174-2-christian@brauner.io>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190522155259.11174-1-christian@brauner.io>
-References: <20190522155259.11174-1-christian@brauner.io>
+ Wed, 22 May 2019 09:10:02 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: benh@kernel.crashing.org,
+	paulus@samba.org,
+	mpe@ellerman.id.au
+Subject: [PATCH] powerpc/powernv: fix a W=1 compilation warning
+Date: Wed, 22 May 2019 12:09:29 -0400
+Message-Id: <1558541369-8263-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,212 +80,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, ldv@altlinux.org,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- Christian Brauner <christian@brauner.io>, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- oleg@redhat.com, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds basic tests for the new close_range() syscall.
-- test that no invalid flags can be passed
-- test that a range of file descriptors is correctly closed
-- test that a range of file descriptors is correctly closed if there there
-  are already closed file descriptors in the range
-- test that max_fd is correctly capped to the current fdtable maximum
+The commit b575c731fe58 ("powerpc/powernv/npu: Add set/unset window
+helpers") called pnv_npu_set_window() in a void function
+pnv_npu_dma_set_32(), but the return code from pnv_npu_set_window() has
+no use there as all the error logging happen in pnv_npu_set_window(),
+so just remove the unused variable to avoid a compilation warning,
 
-Signed-off-by: Christian Brauner <christian@brauner.io>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Dmitry V. Levin <ldv@altlinux.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: linux-api@vger.kernel.org
----
-v1: unchanged
----
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/core/.gitignore       |   1 +
- tools/testing/selftests/core/Makefile         |   6 +
- .../testing/selftests/core/close_range_test.c | 128 ++++++++++++++++++
- 4 files changed, 136 insertions(+)
- create mode 100644 tools/testing/selftests/core/.gitignore
- create mode 100644 tools/testing/selftests/core/Makefile
- create mode 100644 tools/testing/selftests/core/close_range_test.c
+arch/powerpc/platforms/powernv/npu-dma.c: In function
+'pnv_npu_dma_set_32':
+arch/powerpc/platforms/powernv/npu-dma.c:198:10: warning: variable ‘rc’
+set but not used [-Wunused-but-set-variable]
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 9781ca79794a..06e57fabbff9 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -4,6 +4,7 @@ TARGETS += bpf
- TARGETS += breakpoints
- TARGETS += capabilities
- TARGETS += cgroup
-+TARGETS += core
- TARGETS += cpufreq
- TARGETS += cpu-hotplug
- TARGETS += drivers/dma-buf
-diff --git a/tools/testing/selftests/core/.gitignore b/tools/testing/selftests/core/.gitignore
-new file mode 100644
-index 000000000000..6e6712ce5817
---- /dev/null
-+++ b/tools/testing/selftests/core/.gitignore
-@@ -0,0 +1 @@
-+close_range_test
-diff --git a/tools/testing/selftests/core/Makefile b/tools/testing/selftests/core/Makefile
-new file mode 100644
-index 000000000000..de3ae68aa345
---- /dev/null
-+++ b/tools/testing/selftests/core/Makefile
-@@ -0,0 +1,6 @@
-+CFLAGS += -g -I../../../../usr/include/ -I../../../../include
-+
-+TEST_GEN_PROGS := close_range_test
-+
-+include ../lib.mk
-+
-diff --git a/tools/testing/selftests/core/close_range_test.c b/tools/testing/selftests/core/close_range_test.c
-new file mode 100644
-index 000000000000..ab10cd205ab9
---- /dev/null
-+++ b/tools/testing/selftests/core/close_range_test.c
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <linux/kernel.h>
-+#include <limits.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest.h"
-+
-+static inline int sys_close_range(unsigned int fd, unsigned int max_fd,
-+				  unsigned int flags)
-+{
-+	return syscall(__NR_close_range, fd, max_fd, flags);
-+}
-+
-+#ifndef ARRAY_SIZE
-+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-+#endif
-+
-+int main(int argc, char **argv)
-+{
-+	const char *test_name = "close_range";
-+	int i, ret;
-+	int open_fds[100];
-+	int fd_max, fd_mid, fd_min;
-+
-+	ksft_set_plan(7);
-+
-+	for (i = 0; i < ARRAY_SIZE(open_fds); i++) {
-+		int fd;
-+
-+		fd = open("/dev/null", O_RDONLY | O_CLOEXEC);
-+		if (fd < 0) {
-+			if (errno == ENOENT)
-+				ksft_exit_skip(
-+					"%s test: skipping test since /dev/null does not exist\n",
-+					test_name);
-+
-+			ksft_exit_fail_msg(
-+				"%s test: %s - failed to open /dev/null\n",
-+				strerror(errno), test_name);
-+		}
-+
-+		open_fds[i] = fd;
-+	}
-+
-+	fd_min = open_fds[0];
-+	fd_max = open_fds[99];
-+
-+	ret = sys_close_range(fd_min, fd_max, 1);
-+	if (!ret)
-+		ksft_exit_fail_msg(
-+			"%s test: managed to pass invalid flag value\n",
-+			test_name);
-+	ksft_test_result_pass("do not allow invalid flag values for close_range()\n");
-+
-+	fd_mid = open_fds[50];
-+	ret = sys_close_range(fd_min, fd_mid, 0);
-+	if (ret < 0)
-+		ksft_exit_fail_msg(
-+			"%s test: Failed to close range of file descriptors from 4 to 50\n",
-+			test_name);
-+	ksft_test_result_pass("close_range() from %d to %d\n", fd_min, fd_mid);
-+
-+	for (i = 0; i <= 50; i++) {
-+		ret = fcntl(open_fds[i], F_GETFL);
-+		if (ret >= 0)
-+			ksft_exit_fail_msg(
-+				"%s test: Failed to close range of file descriptors from 4 to 50\n",
-+				test_name);
-+	}
-+	ksft_test_result_pass("fcntl() verify closed range from %d to %d\n", fd_min, fd_mid);
-+
-+	/* create a couple of gaps */
-+	close(57);
-+	close(78);
-+	close(81);
-+	close(82);
-+	close(84);
-+	close(90);
-+
-+	fd_mid = open_fds[51];
-+	/* Choose slightly lower limit and leave some fds for a later test */
-+	fd_max = open_fds[92];
-+	ret = sys_close_range(fd_mid, fd_max, 0);
-+	if (ret < 0)
-+		ksft_exit_fail_msg(
-+			"%s test: Failed to close range of file descriptors from 51 to 100\n",
-+			test_name);
-+	ksft_test_result_pass("close_range() from %d to %d\n", fd_mid, fd_max);
-+
-+	for (i = 51; i <= 92; i++) {
-+		ret = fcntl(open_fds[i], F_GETFL);
-+		if (ret >= 0)
-+			ksft_exit_fail_msg(
-+				"%s test: Failed to close range of file descriptors from 51 to 100\n",
-+				test_name);
-+	}
-+	ksft_test_result_pass("fcntl() verify closed range from %d to %d\n", fd_mid, fd_max);
-+
-+	fd_mid = open_fds[93];
-+	fd_max = open_fds[99];
-+	/* test that the kernel caps and still closes all fds */
-+	ret = sys_close_range(fd_mid, UINT_MAX, 0);
-+	if (ret < 0)
-+		ksft_exit_fail_msg(
-+			"%s test: Failed to close range of file descriptors from 51 to 100\n",
-+			test_name);
-+	ksft_test_result_pass("close_range() from %d to %d\n", fd_mid, fd_max);
-+
-+	for (i = 93; i < 100; i++) {
-+		ret = fcntl(open_fds[i], F_GETFL);
-+		if (ret >= 0)
-+			ksft_exit_fail_msg(
-+				"%s test: Failed to close range of file descriptors from 51 to 100\n",
-+				test_name);
-+	}
-+	ksft_test_result_pass("fcntl() verify closed range from %d to %d\n", fd_mid, fd_max);
-+
-+	return ksft_exit_pass();
-+}
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+ arch/powerpc/platforms/powernv/npu-dma.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+index 495550432f3d..035208ed591f 100644
+--- a/arch/powerpc/platforms/powernv/npu-dma.c
++++ b/arch/powerpc/platforms/powernv/npu-dma.c
+@@ -195,7 +195,6 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
+ {
+ 	struct pci_dev *gpdev;
+ 	struct pnv_ioda_pe *gpe;
+-	int64_t rc;
+ 
+ 	/*
+ 	 * Find the assoicated PCI devices and get the dma window
+@@ -208,8 +207,8 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
+ 	if (!gpe)
+ 		return;
+ 
+-	rc = pnv_npu_set_window(&npe->table_group, 0,
+-			gpe->table_group.tables[0]);
++	pnv_npu_set_window(&npe->table_group, 0,
++			   gpe->table_group.tables[0]);
+ 
+ 	/*
+ 	 * NVLink devices use the same TCE table configuration as
 -- 
-2.21.0
+1.8.3.1
 
