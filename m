@@ -1,71 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D6E25DF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 08:15:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4582S92x4ZzDqNR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 16:15:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B4C25DFB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 08:22:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4582c25FfgzDqMw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 16:22:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="n4OnPrIc"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4582Qt3Hq8zDqL5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 16:14:29 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4582Qk4wbHz9v18H;
- Wed, 22 May 2019 08:14:22 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=n4OnPrIc; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ioT7aL_UIT9e; Wed, 22 May 2019 08:14:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4582Qk3m3Rz9v18G;
- Wed, 22 May 2019 08:14:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558505662; bh=6v1Wdv9UYlL4pgLUgMfY1zDB/A1ydGbiigUUi0tft6U=;
- h=Subject:To:References:From:Cc:Date:In-Reply-To:From;
- b=n4OnPrIc6H4nxXDgN5rHq/XTh9+9mKudN6nqaYxIt2WAYGp7102mrW8tuNO2D5laQ
- t9LjXOk4Voiq4BXNgh5a9/lfMewOiL5xbTSUXLoXV7olYLqZZ+uEB4hzXWuB2NqKaT
- ioXWMSqmezaTDssRUV2KUTzIbglvoaJlc0qrtpQw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 71DF48B819;
- Wed, 22 May 2019 08:14:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SPN2oTc9nQAy; Wed, 22 May 2019 08:14:23 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 561368B75B;
- Wed, 22 May 2019 08:14:23 +0200 (CEST)
-Subject: Re: [BISECTED] kexec regression on PowerBook G4
-To: Aaro Koskinen <aaro.koskinen@iki.fi>
-References: <20190521221859.GC3621@darkstar.musicnaut.iki.fi>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <90f3557b-400b-60b5-9ff8-d5605adeee79@c-s.fr>
-Date: Wed, 22 May 2019 08:14:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4582Zd6HXQzDq7h
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 16:21:13 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4M6GxHr093716
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 02:21:11 -0400
+Received: from e17.ny.us.ibm.com (e17.ny.us.ibm.com [129.33.205.207])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sn0kv8ytc-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 02:21:11 -0400
+Received: from localhost
+ by e17.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Wed, 22 May 2019 07:21:10 +0100
+Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
+ by e17.ny.us.ibm.com (146.89.104.204) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 22 May 2019 07:21:07 +0100
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4M6L6eh35193030
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 May 2019 06:21:06 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23E37112066;
+ Wed, 22 May 2019 06:21:06 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A7CA3112063;
+ Wed, 22 May 2019 06:21:04 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.31.87])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 22 May 2019 06:21:04 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [RFC PATCH 1/3] mm/nvdimm: Add PFN_MIN_VERSION support
+Date: Wed, 22 May 2019 11:50:55 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190521221859.GC3621@darkstar.musicnaut.iki.fi>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19052206-0040-0000-0000-000004F2D313
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011141; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01206843; UDB=6.00633755; IPR=6.00987819; 
+ MB=3.00026997; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-22 06:21:08
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052206-0041-0000-0000-000008FEE6E3
+Message-Id: <20190522062057.26581-1-aneesh.kumar@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-22_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905220046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,54 +89,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Aero,
+This allows us to make changes in a backward incompatible way. I have
+kept the PFN_MIN_VERSION in this patch '0' because we are not introducing
+any incompatible changes in this patch. We also may want to backport this
+to older kernels.
 
-Le 22/05/2019 à 00:18, Aaro Koskinen a écrit :
-> Hi,
-> 
-> I was trying to upgrade from v5.0 -> v5.1 on PowerBook G4, but when trying
-> to kexec a kernel the system gets stuck (no errors seen on the console).
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ drivers/nvdimm/pfn.h      |  9 ++++++++-
+ drivers/nvdimm/pfn_devs.c |  4 ++++
+ drivers/nvdimm/pmem.c     | 26 ++++++++++++++++++++++----
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
-Do you mean you are trying to kexec a v5.1 kernel from a v5.0 kernel, or 
-do you have a working v5.1 kernel, but kexec doesn't work with it ?
+diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
+index dde9853453d3..1b10ae5773b6 100644
+--- a/drivers/nvdimm/pfn.h
++++ b/drivers/nvdimm/pfn.h
+@@ -20,6 +20,12 @@
+ #define PFN_SIG_LEN 16
+ #define PFN_SIG "NVDIMM_PFN_INFO\0"
+ #define DAX_SIG "NVDIMM_DAX_INFO\0"
++/*
++ * increment this when we are making changes such that older
++ * kernel should fail to initialize that namespace.
++ */
++
++#define PFN_MIN_VERSION 0
+ 
+ struct nd_pfn_sb {
+ 	u8 signature[PFN_SIG_LEN];
+@@ -36,7 +42,8 @@ struct nd_pfn_sb {
+ 	__le32 end_trunc;
+ 	/* minor-version-2 record the base alignment of the mapping */
+ 	__le32 align;
+-	u8 padding[4000];
++	__le16 min_verison;
++	u8 padding[3998];
+ 	__le64 checksum;
+ };
+ 
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 01f40672507f..3250de70a7b3 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -439,6 +439,9 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+ 	if (nvdimm_read_bytes(ndns, SZ_4K, pfn_sb, sizeof(*pfn_sb), 0))
+ 		return -ENXIO;
+ 
++	if (le16_to_cpu(pfn_sb->min_version > PFN_MIN_VERSION))
++		return -EOPNOTSUPP;
++
+ 	if (memcmp(pfn_sb->signature, sig, PFN_SIG_LEN) != 0)
+ 		return -ENODEV;
+ 
+@@ -769,6 +772,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 	memcpy(pfn_sb->parent_uuid, nd_dev_to_uuid(&ndns->dev), 16);
+ 	pfn_sb->version_major = cpu_to_le16(1);
+ 	pfn_sb->version_minor = cpu_to_le16(2);
++	pfn_sb->min_version = cpu_to_le16(PFN_MIN_VERSION);
+ 	pfn_sb->start_pad = cpu_to_le32(start_pad);
+ 	pfn_sb->end_trunc = cpu_to_le32(end_trunc);
+ 	pfn_sb->align = cpu_to_le32(nd_pfn->align);
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 845c5b430cdd..406427c064d9 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -490,6 +490,7 @@ static int pmem_attach_disk(struct device *dev,
+ 
+ static int nd_pmem_probe(struct device *dev)
+ {
++	int ret;
+ 	struct nd_namespace_common *ndns;
+ 
+ 	ndns = nvdimm_namespace_common_probe(dev);
+@@ -505,12 +506,29 @@ static int nd_pmem_probe(struct device *dev)
+ 	if (is_nd_pfn(dev))
+ 		return pmem_attach_disk(dev, ndns);
+ 
+-	/* if we find a valid info-block we'll come back as that personality */
+-	if (nd_btt_probe(dev, ndns) == 0 || nd_pfn_probe(dev, ndns) == 0
+-			|| nd_dax_probe(dev, ndns) == 0)
++	ret = nd_btt_probe(dev, ndns);
++	if (ret == 0)
+ 		return -ENXIO;
++	else if (ret == -EOPNOTSUPP)
++		return ret;
+ 
+-	/* ...otherwise we're just a raw pmem device */
++	ret = nd_pfn_probe(dev, ndns);
++	if (ret == 0)
++		return -ENXIO;
++	else if (ret == -EOPNOTSUPP)
++		return ret;
++
++	ret = nd_dax_probe(dev, ndns);
++	if (ret == 0)
++		return -ENXIO;
++	else if (ret == -EOPNOTSUPP)
++		return ret;
++	/*
++	 * We have two failure conditions here, there is no
++	 * info reserver block or we found a valid info reserve block
++	 * but failed to initialize the pfn superblock.
++	 * Don't create a raw pmem disk for the second case.
++	 */
+ 	return pmem_attach_disk(dev, ndns);
+ }
+ 
+-- 
+2.21.0
 
-> 
-> Bisected to: 93c4a162b014 ("powerpc/6xx: Store PGDIR physical address
-> in a SPRG"). This commit doesn't revert cleanly anymore but I tested
-> that the one before works OK.
-
-Not sure that's the problem. There was a problem with that commit, but 
-it was fixed by 4622a2d43101 ("powerpc/6xx: fix setup and use of 
-SPRN_SPRG_PGDIR for hash32").
-You probably hit some commit between those two during bisect, that's 
-likely the reason why you ended here.
-
-Can you restart your bisect from 4622a2d43101 ?
-
-If you have CONFIG_SMP, maybe you should also consider taking 
-397d2300b08c ("powerpc/32s: fix flush_hash_pages() on SMP"). Stable 
-5.1.4 includes it.
-
-> 
-> With current Linus HEAD (9c7db5004280), it gets a bit further but still
-> doesn't work: now I get an error on the console after kexec "Starting
-> new kernel! ... Bye!":
-> 
-> 	kernel tried to execute exec-protected page (...) - exploit attempt?
-
-Interesting.
-
-Do you have CONFIG_STRICT_KERNEL_RWX=y in your .config ? If so, can you 
-retry without it ?
-
-Thanks
-Christophe
-
-> 
-> A.
-> 
