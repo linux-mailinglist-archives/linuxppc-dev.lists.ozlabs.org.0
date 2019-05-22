@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE1727075
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 22:04:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCE02701B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 22:01:46 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458NnM6vc2zDqQn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 06:01:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458NrN757xzDqSF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 06:04:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,36 +16,36 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="zPFmZIMw"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="x8kl/r+2"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458N4Q1B1LzDqNJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 05:29:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458N5P1vFQzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 05:30:33 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F1B8521850;
- Wed, 22 May 2019 19:29:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3DE7C20879;
+ Wed, 22 May 2019 19:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558553377;
- bh=jTk8G+Q+GLWvNV0z7q6+p+k9hBrnRSbAsU7uv/DR7fI=;
+ s=default; t=1558553430;
+ bh=NiqXvwojC1D7C1RXV3saA1gnnXcxvKec8v+zqiUIXuc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=zPFmZIMwei3sdOZ+CGQG3wpROiAlxIPY/BOt1jq0FX0PTllro1DXvgYzXvWQxKaT3
- 9/fj6A1Jds5HrAqVRrxmi70XNUMwUtlKULp2t2Tr2DzdBPnVjYB2n7iH2NU9o57H/f
- hw7kOfr//jOm3qmSHTaILrtpKez6dWG3havfesQU=
+ b=x8kl/r+26qoKyDAd78VGQDc7PsiJbXpZ1017EPZs61i0DRThntmP9awA3vCsF0Z1D
+ 2B5rEPWZOKSUqp5nLcyNJB6yR/NY+DrW74627gxELTBVn0DANJ8A+lOVE8c+zL1PjE
+ asS4ENKCEryADt3GGlx1UtunnvtXWVi9fNC919Rw=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 037/167] ASoC: fsl_sai: Update is_slave_mode with
- correct value
-Date: Wed, 22 May 2019 15:26:32 -0400
-Message-Id: <20190522192842.25858-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 008/114] powerpc/boot: Fix missing check of
+ lseek() return value
+Date: Wed, 22 May 2019 15:28:31 -0400
+Message-Id: <20190522193017.26567-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522192842.25858-1-sashal@kernel.org>
-References: <20190522192842.25858-1-sashal@kernel.org>
+In-Reply-To: <20190522193017.26567-1-sashal@kernel.org>
+References: <20190522193017.26567-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,54 +61,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolin Chen <nicoleotsuka@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Mark Brown <broonie@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>,
+Cc: Sasha Levin <sashal@kernel.org>, Bo YU <tsu.yubo@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Daniel Baluta <daniel.baluta@nxp.com>
+From: Bo YU <tsu.yubo@gmail.com>
 
-[ Upstream commit ddb351145a967ee791a0fb0156852ec2fcb746ba ]
+[ Upstream commit 5d085ec04a000fefb5182d3b03ee46ca96d8389b ]
 
-is_slave_mode defaults to false because sai structure
-that contains it is kzalloc'ed.
+This is detected by Coverity scan: CID: 1440481
 
-Anyhow, if we decide to set the following configuration
-SAI slave -> SAI master, is_slave_mode will remain set on true
-although SAI being master it should be set to false.
-
-Fix this by updating is_slave_mode for each call of
-fsl_sai_set_dai_fmt.
-
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Bo YU <tsu.yubo@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_sai.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/boot/addnote.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 18e5ce81527d2..c1c733b573a7f 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -274,12 +274,14 @@ static int fsl_sai_set_dai_fmt_tr(struct snd_soc_dai *cpu_dai,
- 	case SND_SOC_DAIFMT_CBS_CFS:
- 		val_cr2 |= FSL_SAI_CR2_BCD_MSTR;
- 		val_cr4 |= FSL_SAI_CR4_FSD_MSTR;
-+		sai->is_slave_mode = false;
- 		break;
- 	case SND_SOC_DAIFMT_CBM_CFM:
- 		sai->is_slave_mode = true;
- 		break;
- 	case SND_SOC_DAIFMT_CBS_CFM:
- 		val_cr2 |= FSL_SAI_CR2_BCD_MSTR;
-+		sai->is_slave_mode = false;
- 		break;
- 	case SND_SOC_DAIFMT_CBM_CFS:
- 		val_cr4 |= FSL_SAI_CR4_FSD_MSTR;
+diff --git a/arch/powerpc/boot/addnote.c b/arch/powerpc/boot/addnote.c
+index 9d9f6f334d3cc..3da3e2b1b51bc 100644
+--- a/arch/powerpc/boot/addnote.c
++++ b/arch/powerpc/boot/addnote.c
+@@ -223,7 +223,11 @@ main(int ac, char **av)
+ 	PUT_16(E_PHNUM, np + 2);
+ 
+ 	/* write back */
+-	lseek(fd, (long) 0, SEEK_SET);
++	i = lseek(fd, (long) 0, SEEK_SET);
++	if (i < 0) {
++		perror("lseek");
++		exit(1);
++	}
+ 	i = write(fd, buf, n);
+ 	if (i < 0) {
+ 		perror("write");
 -- 
 2.20.1
 
