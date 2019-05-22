@@ -1,45 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB1A26695
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 17:04:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458GBf4d6PzDqR2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 01:04:42 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 065852676F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 17:54:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 458HJc1f6vzDqNj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 01:54:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=brauner.io
+ (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
+ envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 458G9N3JPTzDqHL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:03:35 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 576EF80D;
- Wed, 22 May 2019 08:03:34 -0700 (PDT)
-Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B8143F718;
- Wed, 22 May 2019 08:03:32 -0700 (PDT)
-Subject: Re: [PATCH v3 3/3] kselftest: Extend vDSO selftest to clock_getres
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-arch@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20190522110722.28094-1-vincenzo.frascino@arm.com>
- <20190522110722.28094-4-vincenzo.frascino@arm.com>
- <3a6d9b99-0026-6743-9e73-4880f3cd6b1c@c-s.fr>
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <c0b5b233-9b06-1627-6b72-773ac4b5d69e@arm.com>
-Date: Wed, 22 May 2019 16:03:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ dmarc=none (p=none dis=none) header.from=brauner.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="O+XO3Uig"; 
+ dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458HH72vlfzDqMF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:53:38 +1000 (AEST)
+Received: by mail-wr1-x442.google.com with SMTP id w13so2870760wru.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 08:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=S8UeXBVh2enxi8b2UKrEtBDsgoiSzVSjxdpker/xUYY=;
+ b=O+XO3UigSWsqbs5j6sZsXPe731G/OhyVatPo1YQD4bYT9tFYPlESgQl4q3Yyk9sIli
+ vE8+RWWHveXi8xi9xYgFGmw6bkbIPsH6IxMqY0gPV7G9VHnqTj/OCHYFHk5J7H6YA0xJ
+ 3IdslwoYIGDHDDDF6+zY0IAQV3JzNTutImE2IEgMBbpGwXNMfViETYV0tRfUbacaGj9U
+ OiP8ctD0B1QMEk68Xeh0lvYJw1FSkJrJ2cyzH1gipDUp+/V/5q2ySrzHTOdguwgPCXjX
+ oC0aPgxfoGHqJO/4nqWVLvegG6cQlTZ/bWYdqOsmhhf8XBLe+LRwA3J1yIAPT2B2fe5F
+ tnVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=S8UeXBVh2enxi8b2UKrEtBDsgoiSzVSjxdpker/xUYY=;
+ b=ViQgWGwb/PQjfMJfwvR2LvA9ixIkFUBxa1P2nqHridblPGcl9iwgs9ibbMHHi2oAZk
+ qD0IrTxWG4U5Uo88jkD6ei3JAr3re4DCcCBXDmRWqZr5dyyt/GyRUgXKcXi9TpCDaj0N
+ LefWbxZzerw8MrtGWUSM2l11QHJpQyuMbqpia1P4X7OncFzk0sVTQXhVxNaQ10aZSAUx
+ d8qkigygvY/9XNKeSx2VXTjpF0GrbYFgI26cq0GNlE78obBHhIxSoDfs3jPFtU3cnFaV
+ BRwhpX/cmp5BAvvnB7Xjz3iikR7Q7ze+YlHsEsfDIC6L5TwicWJoiGETQCfqumUjkx0+
+ dncg==
+X-Gm-Message-State: APjAAAUeo3RDpMqXAM+HXni4Y+KGFfLJULSLGKnkTTFfpoiE7V9qWaru
+ ZwLgljfL0/YKA2ALxTg2iDpjLw==
+X-Google-Smtp-Source: APXvYqwK7WfL4+CYT1pk5nuCfg3hR6cOpQFBnTvkGuiCvFKRl0oxIMIm9MRZBxnP507MX79iKHD6Pg==
+X-Received: by 2002:a5d:4d92:: with SMTP id b18mr54858534wru.212.1558540413515; 
+ Wed, 22 May 2019 08:53:33 -0700 (PDT)
+Received: from localhost.localdomain ([185.197.132.10])
+ by smtp.gmail.com with ESMTPSA id t12sm15677263wro.2.2019.05.22.08.53.31
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 22 May 2019 08:53:32 -0700 (PDT)
+From: Christian Brauner <christian@brauner.io>
+To: viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+ torvalds@linux-foundation.org, fweimer@redhat.com
+Subject: [PATCH v1 1/2] open: add close_range()
+Date: Wed, 22 May 2019 17:52:58 +0200
+Message-Id: <20190522155259.11174-1-christian@brauner.io>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <3a6d9b99-0026-6743-9e73-4880f3cd6b1c@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,235 +78,520 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, ldv@altlinux.org,
+ dhowells@redhat.com, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
+ Christian Brauner <christian@brauner.io>, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
+ jannh@google.com, linux-m68k@lists.linux-m68k.org, tglx@linutronix.de,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ oleg@redhat.com, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+This adds the close_range() syscall. It allows to efficiently close a range
+of file descriptors up to all file descriptors of a calling task.
 
-thank you for your review.
+The syscall came up in a recent discussion around the new mount API and
+making new file descriptor types cloexec by default. During this
+discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
+syscall in this manner has been requested by various people over time.
 
-On 22/05/2019 12:50, Christophe Leroy wrote:
-> 
-> 
-> Le 22/05/2019 à 13:07, Vincenzo Frascino a écrit :
->> The current version of the multiarch vDSO selftest verifies only
->> gettimeofday.
->>
->> Extend the vDSO selftest to clock_getres, to verify that the
->> syscall and the vDSO library function return the same information.
->>
->> The extension has been used to verify the hrtimer_resoltion fix.
->>
->> Cc: Shuah Khan <shuah@kernel.org>
->> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
->> ---
->>
->> Note: This patch is independent from the others in this series, hence it
->> can be merged singularly by the kselftest maintainers.
->>
->>   tools/testing/selftests/vDSO/Makefile         |   2 +
->>   .../selftests/vDSO/vdso_clock_getres.c        | 137 ++++++++++++++++++
->>   2 files changed, 139 insertions(+)
->>   create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
->>
->> diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
->> index 9e03d61f52fd..d5c5bfdf1ac1 100644
->> --- a/tools/testing/selftests/vDSO/Makefile
->> +++ b/tools/testing/selftests/vDSO/Makefile
->> @@ -5,6 +5,7 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
->>   ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
->>   
->>   TEST_GEN_PROGS := $(OUTPUT)/vdso_test
->> +TEST_GEN_PROGS += $(OUTPUT)/vdso_clock_getres
->>   ifeq ($(ARCH),x86)
->>   TEST_GEN_PROGS += $(OUTPUT)/vdso_standalone_test_x86
->>   endif
->> @@ -18,6 +19,7 @@ endif
->>   
->>   all: $(TEST_GEN_PROGS)
->>   $(OUTPUT)/vdso_test: parse_vdso.c vdso_test.c
->> +$(OUTPUT)/vdso_clock_getres: vdso_clock_getres.c
->>   $(OUTPUT)/vdso_standalone_test_x86: vdso_standalone_test_x86.c parse_vdso.c
->>   	$(CC) $(CFLAGS) $(CFLAGS_vdso_standalone_test_x86) \
->>   		vdso_standalone_test_x86.c parse_vdso.c \
->> diff --git a/tools/testing/selftests/vDSO/vdso_clock_getres.c b/tools/testing/selftests/vDSO/vdso_clock_getres.c
->> new file mode 100644
->> index 000000000000..341a9bc34ffc
->> --- /dev/null
->> +++ b/tools/testing/selftests/vDSO/vdso_clock_getres.c
->> @@ -0,0 +1,137 @@
->> +// SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
->> +/*
->> + * vdso_clock_getres.c: Sample code to test clock_getres.
->> + * Copyright (c) 2019 Arm Ltd.
->> + *
->> + * Compile with:
->> + * gcc -std=gnu99 vdso_clock_getres.c
->> + *
->> + * Tested on ARM, ARM64, MIPS32, x86 (32-bit and 64-bit),
->> + * Power (32-bit and 64-bit), S390x (32-bit and 64-bit).
->> + * Might work on other architectures.
->> + */
->> +
->> +#define _GNU_SOURCE
->> +#include <elf.h>
->> +#include <err.h>
->> +#include <fcntl.h>
->> +#include <stdint.h>
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <time.h>
->> +#include <sys/auxv.h>
->> +#include <sys/mman.h>
->> +#include <sys/time.h>
->> +#include <unistd.h>
->> +#include <sys/syscall.h>
->> +
->> +#include "../kselftest.h"
->> +
->> +static long syscall_clock_getres(clockid_t _clkid, struct timespec *_ts)
->> +{
->> +	long ret;
->> +
->> +	ret = syscall(SYS_clock_getres, _clkid, _ts);
->> +
->> +	return ret;
->> +}
->> +
->> +const char *vdso_clock_name[12] = {
->> +	"CLOCK_REALTIME",
->> +	"CLOCK_MONOTONIC",
->> +	"CLOCK_PROCESS_CPUTIME_ID",
->> +	"CLOCK_THREAD_CPUTIME_ID",
->> +	"CLOCK_MONOTONIC_RAW",
->> +	"CLOCK_REALTIME_COARSE",
->> +	"CLOCK_MONOTONIC_COARSE",
->> +	"CLOCK_BOOTTIME",
->> +	"CLOCK_REALTIME_ALARM",
->> +	"CLOCK_BOOTTIME_ALARM",
->> +	"CLOCK_SGI_CYCLE",
->> +	"CLOCK_TAI",
->> +};
->> +
->> +/*
->> + * This function calls clock_getres in vdso and by system call
->> + * with different values for clock_id.
->> + *
->> + * Example of output:
->> + *
->> + * clock_id: CLOCK_REALTIME [PASS]
->> + * clock_id: CLOCK_BOOTTIME [PASS]
->> + * clock_id: CLOCK_TAI [PASS]
->> + * clock_id: CLOCK_REALTIME_COARSE [PASS]
->> + * clock_id: CLOCK_MONOTONIC [PASS]
->> + * clock_id: CLOCK_MONOTONIC_RAW [PASS]
->> + * clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->> + */
->> +static inline int vdso_test_clock(unsigned int clock_id)
->> +{
->> +	struct timespec x, y;
->> +
->> +	printf("clock_id: %s", vdso_clock_name[clock_id]);
->> +	clock_getres(clock_id, &x);
->> +	syscall_clock_getres(clock_id, &y);
->> +
->> +	if ((x.tv_sec != y.tv_sec) || (x.tv_sec != y.tv_sec)) {
->> +		printf(" [FAIL]\n");
->> +		return KSFT_FAIL;
->> +	}
->> +
->> +	printf(" [PASS]\n");
->> +	return 0;
->> +}
->> +
->> +int main(int argc, char **argv)
->> +{
->> +	int ret;
->> +
->> +#if _POSIX_TIMERS > 0
->> +
->> +#ifdef CLOCK_REALTIME
-> 
-> Why do you need that #ifdef and all the ones below ?
-> 
-> CLOCK_REALTIME (and others) is defined in include/uapi/linux/time.h, so 
-> it should be there when you build the test, shouldn't it ?
-> 
+First, it helps to close all file descriptors of an exec()ing task. This
+can be done safely via (quoting Al's example from [1] verbatim):
 
-In implementing this test I tried to follow what the man page for
-clock_gettime(2) defines in terms of availability of the timers. Since I do not
-know how old are the userspace headers, I think it is a good idea checking that
-the clocks are defined before trying to use them.
+        /* that exec is sensitive */
+        unshare(CLONE_FILES);
+        /* we don't want anything past stderr here */
+        close_range(3, ~0U);
+        execve(....);
 
->> +	ret = vdso_test_clock(CLOCK_REALTIME);
->> +	if (ret)
->> +		goto out;
-> 
-> Why that goto ? Nothing is done at out, so a 'return ret' would be 
-> better I think.
-> 
+The code snippet above is one way of working around the problem that file
+descriptors are not cloexec by default. This is aggravated by the fact that
+we can't just switch them over without massively regressing userspace. For
+a whole class of programs having an in-kernel method of closing all file
+descriptors is very helpful (e.g. demons, service managers, programming
+language standard libraries, container managers etc.).
+(Please note, unshare(CLONE_FILES) should only be needed if the calling
+ task is multi-threaded and shares the file descriptor table with another
+ thread in which case two threads could race with one thread allocating
+ file descriptors and the other one closing them via close_range(). For the
+ general case close_range() before the execve() is sufficient.)
 
-Agree, thanks for pointing this out. Will fix in v4.
+Second, it allows userspace to avoid implementing closing all file
+descriptors by parsing through /proc/<pid>/fd/* and calling close() on each
+file descriptor. From looking at various large(ish) userspace code bases
+this or similar patterns are very common in:
+- service managers (cf. [4])
+- libcs (cf. [6])
+- container runtimes (cf. [5])
+- programming language runtimes/standard libraries
+  - Python (cf. [2])
+  - Rust (cf. [7], [8])
+As Dmitry pointed out there's even a long-standing glibc bug about missing
+kernel support for this task (cf. [3]).
+In addition, the syscall will also work for tasks that do not have procfs
+mounted and on kernels that do not have procfs support compiled in. In such
+situations the only way to make sure that all file descriptors are closed
+is to call close() on each file descriptor up to UINT_MAX or RLIMIT_NOFILE,
+OPEN_MAX trickery (cf. comment [8] on Rust).
 
-> And do we really want to stop at first failure ? Wouldn't it be better 
-> to run all the tests regardless ?
-> 
+The performance is striking. For good measure, comparing the following
+simple close_all_fds() userspace implementation that is essentially just
+glibc's version in [6]:
 
-The test is supposed to fail if one of the sub-tests fails, hence once the first
-fails doesn't seem convenient to run the others, because we already know the
-result.
+static int close_all_fds(void)
+{
+        int dir_fd;
+        DIR *dir;
+        struct dirent *direntp;
 
-> Christophe
-> 
->> +#endif
->> +
->> +#ifdef CLOCK_BOOTTIME
->> +	ret = vdso_test_clock(CLOCK_BOOTTIME);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#ifdef CLOCK_TAI
->> +	ret = vdso_test_clock(CLOCK_TAI);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#ifdef CLOCK_REALTIME_COARSE
->> +	ret = vdso_test_clock(CLOCK_REALTIME_COARSE);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#ifdef CLOCK_MONOTONIC
->> +	ret = vdso_test_clock(CLOCK_MONOTONIC);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#ifdef CLOCK_MONOTONIC_RAW
->> +	ret = vdso_test_clock(CLOCK_MONOTONIC_RAW);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#ifdef CLOCK_MONOTONIC_COARSE
->> +	ret = vdso_test_clock(CLOCK_MONOTONIC_COARSE);
->> +	if (ret)
->> +		goto out;
->> +#endif
->> +
->> +#endif
->> +
->> +out:
->> +	return ret;
->> +}
->>
+        dir = opendir("/proc/self/fd");
+        if (!dir)
+                return -1;
+        dir_fd = dirfd(dir);
+        while ((direntp = readdir(dir))) {
+                int fd;
+                if (strcmp(direntp->d_name, ".") == 0)
+                        continue;
+                if (strcmp(direntp->d_name, "..") == 0)
+                        continue;
+                fd = atoi(direntp->d_name);
+                if (fd == dir_fd || fd == 0 || fd == 1 || fd == 2)
+                        continue;
+                close(fd);
+        }
+        closedir(dir);
+        return 0;
+}
 
+to close_range() yields:
+1. closing 4 open files:
+   - close_all_fds(): ~280 us
+   - close_range():    ~24 us
+
+2. closing 1000 open files:
+   - close_all_fds(): ~5000 us
+   - close_range():   ~800 us
+
+close_range() is designed to allow for some flexibility. Specifically, it
+does not simply always close all open file descriptors of a task. Instead,
+callers can specify an upper bound.
+This is e.g. useful for scenarios where specific file descriptors are
+created with well-known numbers that are supposed to be excluded from
+getting closed.
+For extra paranoia close_range() comes with a flags argument. This can e.g.
+be used to implement extension. Once can imagine userspace wanting to stop
+at the first error instead of ignoring errors under certain circumstances.
+There might be other valid ideas in the future. In any case, a flag
+argument doesn't hurt and keeps us on the safe side.
+
+From an implementation side this is kept rather dumb. It saw some input
+from David and Jann but all nonsense is obviously my own!
+- Errors to close file descriptors are currently ignored. (Could be changed
+  by setting a flag in the future if needed.)
+- __close_range() is a rather simplistic wrapper around __close_fd().
+  My reasoning behind this is based on the nature of how __close_fd() needs
+  to release an fd. But maybe I misunderstood specifics:
+  We take the files_lock and rcu-dereference the fdtable of the calling
+  task, we find the entry in the fdtable, get the file and need to release
+  files_lock before calling filp_close().
+  In the meantime the fdtable might have been altered so we can't just
+  retake the spinlock and keep the old rcu-reference of the fdtable
+  around. Instead we need to grab a fresh reference to the fdtable.
+  If my reasoning is correct then there's really no point in fancyfying
+  __close_range(): We just need to rcu-dereference the fdtable of the
+  calling task once to cap the max_fd value correctly and then go on
+  calling __close_fd() in a loop.
+
+/* References */
+[1]: https://lore.kernel.org/lkml/20190516165021.GD17978@ZenIV.linux.org.uk/
+[2]: https://github.com/python/cpython/blob/9e4f2f3a6b8ee995c365e86d976937c141d867f8/Modules/_posixsubprocess.c#L220
+[3]: https://sourceware.org/bugzilla/show_bug.cgi?id=10353#c7
+[4]: https://github.com/systemd/systemd/blob/5238e9575906297608ff802a27e2ff9effa3b338/src/basic/fd-util.c#L217
+[5]: https://github.com/lxc/lxc/blob/ddf4b77e11a4d08f09b7b9cd13e593f8c047edc5/src/lxc/start.c#L236
+[6]: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/grantpt.c;h=2030e07fa6e652aac32c775b8c6e005844c3c4eb;hb=HEAD#l17
+     Note that this is an internal implementation that is not exported.
+     Currently, libc seems to not provide an exported version of this
+     because of missing kernel support to do this.
+[7]: https://github.com/rust-lang/rust/issues/12148
+[8]: https://github.com/rust-lang/rust/blob/5f47c0613ed4eb46fca3633c1297364c09e5e451/src/libstd/sys/unix/process2.rs#L303-L308
+     Rust's solution is slightly different but is equally unperformant.
+     Rust calls getdtablesize() which is a glibc library function that
+     simply returns the current RLIMIT_NOFILE or OPEN_MAX values. Rust then
+     goes on to call close() on each fd. That's obviously overkill for most
+     tasks. Rarely, tasks - especially non-demons - hit RLIMIT_NOFILE or
+     OPEN_MAX.
+     Let's be nice and assume an unprivileged user with RLIMIT_NOFILE set
+     to 1024. Even in this case, there's a very high chance that in the
+     common case Rust is calling the close() syscall 1021 times pointlessly
+     if the task just has 0, 1, and 2 open.
+
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Christian Brauner <christian@brauner.io>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Dmitry V. Levin <ldv@altlinux.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: linux-api@vger.kernel.org
+---
+v1:
+- Linus Torvalds <torvalds@linux-foundation.org>:
+  - add cond_resched() to yield cpu when closing a lot of file descriptors
+- Al Viro <viro@zeniv.linux.org.uk>:
+  - add cond_resched() to yield cpu when closing a lot of file descriptors
+---
+ arch/alpha/kernel/syscalls/syscall.tbl      |  1 +
+ arch/arm/tools/syscall.tbl                  |  1 +
+ arch/arm64/include/asm/unistd32.h           |  2 +
+ arch/ia64/kernel/syscalls/syscall.tbl       |  1 +
+ arch/m68k/kernel/syscalls/syscall.tbl       |  1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl |  1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl   |  1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl   |  1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl   |  1 +
+ arch/parisc/kernel/syscalls/syscall.tbl     |  1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl    |  1 +
+ arch/s390/kernel/syscalls/syscall.tbl       |  1 +
+ arch/sh/kernel/syscalls/syscall.tbl         |  1 +
+ arch/sparc/kernel/syscalls/syscall.tbl      |  1 +
+ arch/x86/entry/syscalls/syscall_32.tbl      |  1 +
+ arch/x86/entry/syscalls/syscall_64.tbl      |  1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl     |  1 +
+ fs/file.c                                   | 63 ++++++++++++++++++---
+ fs/open.c                                   | 20 +++++++
+ include/linux/fdtable.h                     |  2 +
+ include/linux/syscalls.h                    |  2 +
+ include/uapi/asm-generic/unistd.h           |  4 +-
+ 22 files changed, 100 insertions(+), 9 deletions(-)
+
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index 9e7704e44f6d..b55d93af8096 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -473,3 +473,4 @@
+ 541	common	fsconfig			sys_fsconfig
+ 542	common	fsmount				sys_fsmount
+ 543	common	fspick				sys_fspick
++545	common	close_range			sys_close_range
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index aaf479a9e92d..0125c97c75dd 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -447,3 +447,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
+index c39e90600bb3..9a3270d29b42 100644
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -886,6 +886,8 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
+ __SYSCALL(__NR_fsmount, sys_fsmount)
+ #define __NR_fspick 433
+ __SYSCALL(__NR_fspick, sys_fspick)
++#define __NR_close_range 435
++__SYSCALL(__NR_close_range, sys_close_range)
+ 
+ /*
+  * Please add new compat syscalls above this comment and update
+diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
+index e01df3f2f80d..1a90b464e96f 100644
+--- a/arch/ia64/kernel/syscalls/syscall.tbl
++++ b/arch/ia64/kernel/syscalls/syscall.tbl
+@@ -354,3 +354,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index 7e3d0734b2f3..2dee2050f9ef 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -433,3 +433,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 26339e417695..923ef69e5a76 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -439,3 +439,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index 0e2dd68ade57..967ed9de51cd 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -372,3 +372,4 @@
+ 431	n32	fsconfig			sys_fsconfig
+ 432	n32	fsmount				sys_fsmount
+ 433	n32	fspick				sys_fspick
++435	n32	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index 5eebfa0d155c..71de731102b1 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -348,3 +348,4 @@
+ 431	n64	fsconfig			sys_fsconfig
+ 432	n64	fsmount				sys_fsmount
+ 433	n64	fspick				sys_fspick
++435	n64	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 3cc1374e02d0..5a325ab29f88 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -421,3 +421,4 @@
+ 431	o32	fsconfig			sys_fsconfig
+ 432	o32	fsmount				sys_fsmount
+ 433	o32	fspick				sys_fspick
++435	o32	close_range			sys_close_range
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index c9e377d59232..dcc0a0879139 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -430,3 +430,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 103655d84b4b..ba2c1f078cbd 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -515,3 +515,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index e822b2964a83..d7c9043d2902 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -436,3 +436,4 @@
+ 431  common	fsconfig		sys_fsconfig			sys_fsconfig
+ 432  common	fsmount			sys_fsmount			sys_fsmount
+ 433  common	fspick			sys_fspick			sys_fspick
++435  common	close_range		sys_close_range			sys_close_range
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index 016a727d4357..9b5e6bf0ce32 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -436,3 +436,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index e047480b1605..8c674a1e0072 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -479,3 +479,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index ad968b7bac72..7f7a89a96707 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -438,3 +438,4 @@
+ 431	i386	fsconfig		sys_fsconfig			__ia32_sys_fsconfig
+ 432	i386	fsmount			sys_fsmount			__ia32_sys_fsmount
+ 433	i386	fspick			sys_fspick			__ia32_sys_fspick
++435	i386	close_range		sys_close_range			__ia32_sys_close_range
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index b4e6f9e6204a..0f7d47ae921c 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -355,6 +355,7 @@
+ 431	common	fsconfig		__x64_sys_fsconfig
+ 432	common	fsmount			__x64_sys_fsmount
+ 433	common	fspick			__x64_sys_fspick
++435	common	close_range		__x64_sys_close_range
+ 
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index 5fa0ee1c8e00..b489532265d0 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -404,3 +404,4 @@
+ 431	common	fsconfig			sys_fsconfig
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
++435	common	close_range			sys_close_range
+diff --git a/fs/file.c b/fs/file.c
+index 3da91a112bab..54945efa046e 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -615,12 +615,9 @@ void fd_install(unsigned int fd, struct file *file)
+ 
+ EXPORT_SYMBOL(fd_install);
+ 
+-/*
+- * The same warnings as for __alloc_fd()/__fd_install() apply here...
+- */
+-int __close_fd(struct files_struct *files, unsigned fd)
++static struct file *pick_file(struct files_struct *files, unsigned fd)
+ {
+-	struct file *file;
++	struct file *file = NULL;
+ 	struct fdtable *fdt;
+ 
+ 	spin_lock(&files->file_lock);
+@@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
+ 		goto out_unlock;
+ 	rcu_assign_pointer(fdt->fd[fd], NULL);
+ 	__put_unused_fd(files, fd);
+-	spin_unlock(&files->file_lock);
+-	return filp_close(file, files);
+ 
+ out_unlock:
+ 	spin_unlock(&files->file_lock);
+-	return -EBADF;
++	return file;
++}
++
++/*
++ * The same warnings as for __alloc_fd()/__fd_install() apply here...
++ */
++int __close_fd(struct files_struct *files, unsigned fd)
++{
++	struct file *file;
++
++	file = pick_file(files, fd);
++	if (!file)
++		return -EBADF;
++
++	return filp_close(file, files);
+ }
+ EXPORT_SYMBOL(__close_fd); /* for ksys_close() */
+ 
++/**
++ * __close_range() - Close all file descriptors in a given range.
++ *
++ * @fd:     starting file descriptor to close
++ * @max_fd: last file descriptor to close
++ *
++ * This closes a range of file descriptors. All file descriptors
++ * from @fd up to and including @max_fd are closed.
++ */
++int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
++{
++	unsigned int cur_max;
++
++	if (fd > max_fd)
++		return -EINVAL;
++
++	rcu_read_lock();
++	cur_max = files_fdtable(files)->max_fds;
++	rcu_read_unlock();
++
++	/* cap to last valid index into fdtable */
++	if (max_fd >= cur_max)
++		max_fd = cur_max - 1;
++
++	while (fd <= max_fd) {
++		struct file *file;
++
++		file = pick_file(files, fd++);
++		if (!file)
++			continue;
++
++		filp_close(file, files);
++		cond_resched();
++	}
++
++	return 0;
++}
++
+ /*
+  * variant of __close_fd that gets a ref on the file for later fput
+  */
+diff --git a/fs/open.c b/fs/open.c
+index 9c7d724a6f67..c7baaee7aa47 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1174,6 +1174,26 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
+ 	return retval;
+ }
+ 
++/**
++ * close_range() - Close all file descriptors in a given range.
++ *
++ * @fd:     starting file descriptor to close
++ * @max_fd: last file descriptor to close
++ * @flags:  reserved for future extensions
++ *
++ * This closes a range of file descriptors. All file descriptors
++ * from @fd up to and including @max_fd are closed.
++ * Currently, errors to close a given file descriptor are ignored.
++ */
++SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
++		unsigned int, flags)
++{
++	if (flags)
++		return -EINVAL;
++
++	return __close_range(current->files, fd, max_fd);
++}
++
+ /*
+  * This routine simulates a hangup on the tty, to arrange that users
+  * are given clean terminals at login time.
+diff --git a/include/linux/fdtable.h b/include/linux/fdtable.h
+index f07c55ea0c22..fcd07181a365 100644
+--- a/include/linux/fdtable.h
++++ b/include/linux/fdtable.h
+@@ -121,6 +121,8 @@ extern void __fd_install(struct files_struct *files,
+ 		      unsigned int fd, struct file *file);
+ extern int __close_fd(struct files_struct *files,
+ 		      unsigned int fd);
++extern int __close_range(struct files_struct *files, unsigned int fd,
++			 unsigned int max_fd);
+ extern int __close_fd_get_file(unsigned int fd, struct file **res);
+ 
+ extern struct kmem_cache *files_cachep;
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index e2870fe1be5b..c0189e223255 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -441,6 +441,8 @@ asmlinkage long sys_fchown(unsigned int fd, uid_t user, gid_t group);
+ asmlinkage long sys_openat(int dfd, const char __user *filename, int flags,
+ 			   umode_t mode);
+ asmlinkage long sys_close(unsigned int fd);
++asmlinkage long sys_close_range(unsigned int fd, unsigned int max_fd,
++				unsigned int flags);
+ asmlinkage long sys_vhangup(void);
+ 
+ /* fs/pipe.c */
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index a87904daf103..3f36c8745d24 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -844,9 +844,11 @@ __SYSCALL(__NR_fsconfig, sys_fsconfig)
+ __SYSCALL(__NR_fsmount, sys_fsmount)
+ #define __NR_fspick 433
+ __SYSCALL(__NR_fspick, sys_fspick)
++#define __NR_close_range 435
++__SYSCALL(__NR_close_range, sys_close_range)
+ 
+ #undef __NR_syscalls
+-#define __NR_syscalls 434
++#define __NR_syscalls 436
+ 
+ /*
+  * 32 bit systems traditionally used different
 -- 
-Regards,
-Vincenzo
+2.21.0
+
