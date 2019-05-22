@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C0326662
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 16:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB1A26695
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 17:04:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458G1R4n6tzDqPj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 00:56:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458GBf4d6PzDqR2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 01:04:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,14 +16,14 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=arm.com
 Received: from foss.arm.com (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 458Fzw08ZyzDqMN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 00:55:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 458G9N3JPTzDqHL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:03:35 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A86980D;
- Wed, 22 May 2019 07:55:20 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 576EF80D;
+ Wed, 22 May 2019 08:03:34 -0700 (PDT)
 Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E7403F718;
- Wed, 22 May 2019 07:55:17 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B8143F718;
+ Wed, 22 May 2019 08:03:32 -0700 (PDT)
 Subject: Re: [PATCH v3 3/3] kselftest: Extend vDSO selftest to clock_getres
 To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-arch@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
@@ -32,8 +32,8 @@ References: <20190522110722.28094-1-vincenzo.frascino@arm.com>
  <20190522110722.28094-4-vincenzo.frascino@arm.com>
  <3a6d9b99-0026-6743-9e73-4880f3cd6b1c@c-s.fr>
 From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <84a39582-7acb-fa00-682f-dc126fdfa266@arm.com>
-Date: Wed, 22 May 2019 15:55:16 +0100
+Message-ID: <c0b5b233-9b06-1627-6b72-773ac4b5d69e@arm.com>
+Date: Wed, 22 May 2019 16:03:30 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
@@ -211,10 +211,10 @@ On 22/05/2019 12:50, Christophe Leroy wrote:
 > it should be there when you build the test, shouldn't it ?
 > 
 
-In implementing this test I followed what the man page for clock_gettime(2)
-defines in terms of availability of the timers. Since I do not know how old are
-the userspace headers, I think it is a good idea checking that the clocks are
-defined before trying to use them.
+In implementing this test I tried to follow what the man page for
+clock_gettime(2) defines in terms of availability of the timers. Since I do not
+know how old are the userspace headers, I think it is a good idea checking that
+the clocks are defined before trying to use them.
 
 >> +	ret = vdso_test_clock(CLOCK_REALTIME);
 >> +	if (ret)
@@ -222,17 +222,16 @@ defined before trying to use them.
 > 
 > Why that goto ? Nothing is done at out, so a 'return ret' would be 
 > better I think.
->
+> 
 
 Agree, thanks for pointing this out. Will fix in v4.
-
 
 > And do we really want to stop at first failure ? Wouldn't it be better 
 > to run all the tests regardless ?
 > 
 
 The test is supposed to fail if one of the sub-tests fails, hence once the first
-fails doesn't seem convenient running the others, because we already know the
+fails doesn't seem convenient to run the others, because we already know the
 result.
 
 > Christophe
