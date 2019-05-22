@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210D126EB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 21:52:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A5E26E5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 21:49:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458NWQ1sBJzDqPN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 05:49:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458NZC55jKzDqGG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 05:52:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="PaDm4vuq"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="sT54AqJE"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458N1X10zlzDqLx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 05:27:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458N1v01CTzDqMN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 05:27:31 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2179920675;
- Wed, 22 May 2019 19:27:09 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E175F204FD;
+ Wed, 22 May 2019 19:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558553229;
- bh=KLUJ4LmcZdnFyiRN7XeY/pnBybtlHDKSj5RDFgQM75c=;
+ s=default; t=1558553248;
+ bh=PkZmfk0OqJyY0Cf/BSA2N55nGF6Y2FVS3Bi5FZ5MtjQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PaDm4vuqfddz2z9ntih+dnbE/JV0Dmt/UrN/sP6lWPmwizoZy5IpMu7EhmxSQd2c2
- 0/max5BTL+O3PGxQRpJSrgrzBUJA8XxwqTTr73pVltCtF+8riFVkJJoCGogfizg2wU
- hLVQIdAycjdBNjhsBH43WY500D857BUcK7Osnng4=
+ b=sT54AqJEi6g2UFDp97nWui21h9MuJT+Rns7+BAozMw9wkaKAyc0ktcymDqfDjmBGn
+ 5pvxEuG/+y+a249wdYAPNKbK+OFchJ/ta0BCM3GP2SgtFovlJgZp8xchycwjc3vZQa
+ f0NT0ree+fq6CHPp1MiADI6DUwDMdrRsGMldlygc=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 024/244] powerpc/perf: Fix loop exit condition in
- nest_imc_event_init
-Date: Wed, 22 May 2019 15:22:50 -0400
-Message-Id: <20190522192630.24917-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 033/244] powerpc/watchdog: Use hrtimers for
+ per-CPU heartbeat
+Date: Wed, 22 May 2019 15:22:59 -0400
+Message-Id: <20190522192630.24917-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190522192630.24917-1-sashal@kernel.org>
 References: <20190522192630.24917-1-sashal@kernel.org>
@@ -62,67 +62,204 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Dan Carpenter <dan.carpenter@oracle.com>
+ "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Ravikumar Bangoria <ravi.bangoria@in.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 860b7d2286236170a36f94946d03ca9888d32571 ]
+[ Upstream commit 7ae3f6e130e8dc6188b59e3b4ebc2f16e9c8d053 ]
 
-The data structure (i.e struct imc_mem_info) to hold the memory address
-information for nest imc units is allocated based on the number of nodes
-in the system.
+Using a jiffies timer creates a dependency on the tick_do_timer_cpu
+incrementing jiffies. If that CPU has locked up and jiffies is not
+incrementing, the watchdog heartbeat timer for all CPUs stops and
+creates false positives and confusing warnings on local CPUs, and
+also causes the SMP detector to stop, so the root cause is never
+detected.
 
-nest_imc_event_init() traverse this struct array to calculate the memory
-base address for the event-cpu. If we fail to find a match for the event
-cpu's chip-id in imc_mem_info struct array, then the do-while loop will
-iterate until we crash.
+Fix this by using hrtimer based timers for the watchdog heartbeat,
+like the generic kernel hardlockup detector.
 
-Fix this by changing the loop exit condition based on the number of
-non zero vbase elements in the array, since the allocation is done for
-nr_chips + 1.
-
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Fixes: 885dcd709ba91 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Reported-by: Ravikumar Bangoria <ravi.bangoria@in.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Reported-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c               | 2 +-
- arch/powerpc/platforms/powernv/opal-imc.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/watchdog.c | 81 +++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 41 deletions(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 3cebfdf362116..5553226770748 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -508,7 +508,7 @@ static int nest_imc_event_init(struct perf_event *event)
- 			break;
- 		}
- 		pcni++;
--	} while (pcni);
-+	} while (pcni->vbase != 0);
+diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+index 3c6ab22a0c4e3..af3c15a1d41eb 100644
+--- a/arch/powerpc/kernel/watchdog.c
++++ b/arch/powerpc/kernel/watchdog.c
+@@ -77,7 +77,7 @@ static u64 wd_smp_panic_timeout_tb __read_mostly; /* panic other CPUs */
  
- 	if (!flag)
- 		return -ENODEV;
-diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-index 58a07948c76e7..3d27f02695e41 100644
---- a/arch/powerpc/platforms/powernv/opal-imc.c
-+++ b/arch/powerpc/platforms/powernv/opal-imc.c
-@@ -127,7 +127,7 @@ static int imc_get_mem_addr_nest(struct device_node *node,
- 								nr_chips))
- 		goto error;
+ static u64 wd_timer_period_ms __read_mostly;  /* interval between heartbeat */
  
--	pmu_ptr->mem_info = kcalloc(nr_chips, sizeof(*pmu_ptr->mem_info),
-+	pmu_ptr->mem_info = kcalloc(nr_chips + 1, sizeof(*pmu_ptr->mem_info),
- 				    GFP_KERNEL);
- 	if (!pmu_ptr->mem_info)
- 		goto error;
+-static DEFINE_PER_CPU(struct timer_list, wd_timer);
++static DEFINE_PER_CPU(struct hrtimer, wd_hrtimer);
+ static DEFINE_PER_CPU(u64, wd_timer_tb);
+ 
+ /* SMP checker bits */
+@@ -293,21 +293,21 @@ void soft_nmi_interrupt(struct pt_regs *regs)
+ 	nmi_exit();
+ }
+ 
+-static void wd_timer_reset(unsigned int cpu, struct timer_list *t)
+-{
+-	t->expires = jiffies + msecs_to_jiffies(wd_timer_period_ms);
+-	if (wd_timer_period_ms > 1000)
+-		t->expires = __round_jiffies_up(t->expires, cpu);
+-	add_timer_on(t, cpu);
+-}
+-
+-static void wd_timer_fn(struct timer_list *t)
++static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
+ {
+ 	int cpu = smp_processor_id();
+ 
++	if (!(watchdog_enabled & NMI_WATCHDOG_ENABLED))
++		return HRTIMER_NORESTART;
++
++	if (!cpumask_test_cpu(cpu, &watchdog_cpumask))
++		return HRTIMER_NORESTART;
++
+ 	watchdog_timer_interrupt(cpu);
+ 
+-	wd_timer_reset(cpu, t);
++	hrtimer_forward_now(hrtimer, ms_to_ktime(wd_timer_period_ms));
++
++	return HRTIMER_RESTART;
+ }
+ 
+ void arch_touch_nmi_watchdog(void)
+@@ -323,37 +323,22 @@ void arch_touch_nmi_watchdog(void)
+ }
+ EXPORT_SYMBOL(arch_touch_nmi_watchdog);
+ 
+-static void start_watchdog_timer_on(unsigned int cpu)
+-{
+-	struct timer_list *t = per_cpu_ptr(&wd_timer, cpu);
+-
+-	per_cpu(wd_timer_tb, cpu) = get_tb();
+-
+-	timer_setup(t, wd_timer_fn, TIMER_PINNED);
+-	wd_timer_reset(cpu, t);
+-}
+-
+-static void stop_watchdog_timer_on(unsigned int cpu)
+-{
+-	struct timer_list *t = per_cpu_ptr(&wd_timer, cpu);
+-
+-	del_timer_sync(t);
+-}
+-
+-static int start_wd_on_cpu(unsigned int cpu)
++static void start_watchdog(void *arg)
+ {
++	struct hrtimer *hrtimer = this_cpu_ptr(&wd_hrtimer);
++	int cpu = smp_processor_id();
+ 	unsigned long flags;
+ 
+ 	if (cpumask_test_cpu(cpu, &wd_cpus_enabled)) {
+ 		WARN_ON(1);
+-		return 0;
++		return;
+ 	}
+ 
+ 	if (!(watchdog_enabled & NMI_WATCHDOG_ENABLED))
+-		return 0;
++		return;
+ 
+ 	if (!cpumask_test_cpu(cpu, &watchdog_cpumask))
+-		return 0;
++		return;
+ 
+ 	wd_smp_lock(&flags);
+ 	cpumask_set_cpu(cpu, &wd_cpus_enabled);
+@@ -363,27 +348,40 @@ static int start_wd_on_cpu(unsigned int cpu)
+ 	}
+ 	wd_smp_unlock(&flags);
+ 
+-	start_watchdog_timer_on(cpu);
++	*this_cpu_ptr(&wd_timer_tb) = get_tb();
+ 
+-	return 0;
++	hrtimer_init(hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	hrtimer->function = watchdog_timer_fn;
++	hrtimer_start(hrtimer, ms_to_ktime(wd_timer_period_ms),
++		      HRTIMER_MODE_REL_PINNED);
+ }
+ 
+-static int stop_wd_on_cpu(unsigned int cpu)
++static int start_watchdog_on_cpu(unsigned int cpu)
+ {
++	return smp_call_function_single(cpu, start_watchdog, NULL, true);
++}
++
++static void stop_watchdog(void *arg)
++{
++	struct hrtimer *hrtimer = this_cpu_ptr(&wd_hrtimer);
++	int cpu = smp_processor_id();
+ 	unsigned long flags;
+ 
+ 	if (!cpumask_test_cpu(cpu, &wd_cpus_enabled))
+-		return 0; /* Can happen in CPU unplug case */
++		return; /* Can happen in CPU unplug case */
+ 
+-	stop_watchdog_timer_on(cpu);
++	hrtimer_cancel(hrtimer);
+ 
+ 	wd_smp_lock(&flags);
+ 	cpumask_clear_cpu(cpu, &wd_cpus_enabled);
+ 	wd_smp_unlock(&flags);
+ 
+ 	wd_smp_clear_cpu_pending(cpu, get_tb());
++}
+ 
+-	return 0;
++static int stop_watchdog_on_cpu(unsigned int cpu)
++{
++	return smp_call_function_single(cpu, stop_watchdog, NULL, true);
+ }
+ 
+ static void watchdog_calc_timeouts(void)
+@@ -402,7 +400,7 @@ void watchdog_nmi_stop(void)
+ 	int cpu;
+ 
+ 	for_each_cpu(cpu, &wd_cpus_enabled)
+-		stop_wd_on_cpu(cpu);
++		stop_watchdog_on_cpu(cpu);
+ }
+ 
+ void watchdog_nmi_start(void)
+@@ -411,7 +409,7 @@ void watchdog_nmi_start(void)
+ 
+ 	watchdog_calc_timeouts();
+ 	for_each_cpu_and(cpu, cpu_online_mask, &watchdog_cpumask)
+-		start_wd_on_cpu(cpu);
++		start_watchdog_on_cpu(cpu);
+ }
+ 
+ /*
+@@ -423,7 +421,8 @@ int __init watchdog_nmi_probe(void)
+ 
+ 	err = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
+ 					"powerpc/watchdog:online",
+-					start_wd_on_cpu, stop_wd_on_cpu);
++					start_watchdog_on_cpu,
++					stop_watchdog_on_cpu);
+ 	if (err < 0) {
+ 		pr_warn("could not be initialized");
+ 		return err;
 -- 
 2.20.1
 
