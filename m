@@ -2,73 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4935A267BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 18:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB71268C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2019 18:59:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458Hgp3hbyzDqQL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 02:11:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458JlK5VXdzDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 02:59:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=oleg@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="qVKEKI0j"; 
- dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458HfB1NBKzDq9W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 02:10:05 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id p18so1853389qkk.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 09:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=HUUEDLWsi2MHHuyozS2c80A815aR1j2jtUYcHsaUwqw=;
- b=qVKEKI0jwdFX7l25/Vs53mFELv4NnklG6enWTsqv3YrfJ4DYmflKWe2oZdCW88LP4q
- 9tBP+zieRZ8hjlthpUlBmuk2LQuZBSEhNi7xBM3OcIzq6c4nAjodP36q61MzVCci/oFN
- nhqLm0/usBT+OxNRTKV3RizsSBhEPdVwg/p8ujcd1gnmq9Nc+/RoDP6aaQX7i6gew09c
- Ka3KcUr7V/0pcL2k82suNNlQg+h7l8EDMfSoTXm6sxjiP9UV0GvhEVcHs/EWQnFpa8zL
- K70jOjS4cSXjht+BxM5SxefaKElso42VN9rIlRQg6f2LDPgzH8zdi5BG/05EuD3/+bab
- wpoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=HUUEDLWsi2MHHuyozS2c80A815aR1j2jtUYcHsaUwqw=;
- b=oPJjHz8OSSLNzjFSH0tCRRX1KGv7NKLBBHl/SXjNzpXdAiDarFmru29eO+4I2w1DKa
- BjG28159IpGarAa6usHFBzHBK0txVuQqi9olYLXYWJlxjzy5D+Xvay605PV3k5wjWQ2V
- FzM1OvyFoDu1/T1YyzxJ0rl+BYPvZ3b4wgUtpHvlL+Ggb056RJFZyqUhhGM1mgaGGoai
- P/3B5Nj6EJgZrwK0DgQ3/NvKl+PhV/o9BzVM5Nf67dc84170B5IHkewxBCCV9Oj0GuBx
- EeucmmSQLJqwTgvHCl+ekiy0Jwh+ReqXku6S/xab6d/oeLPFHagNR4zy+nyNNytd7YUz
- 3AKQ==
-X-Gm-Message-State: APjAAAWGOYK8MuzmymuDKJro3d+Rx0rJr+SgDRrlfbYtpFX0nXDl4cfo
- BfqZjbRnnMBSknX9bDJMd5dJbg==
-X-Google-Smtp-Source: APXvYqz+KTVZkkrXq4HFkHrw6rYCj9TIrV16qTi2Kq+lg5ApDMamEoVdtLJqtAhJ41fYwlPosq2W2A==
-X-Received: by 2002:a05:620a:1670:: with SMTP id
- d16mr2448898qko.288.1558541402697; 
- Wed, 22 May 2019 09:10:02 -0700 (PDT)
-Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id j5sm11446226qtb.30.2019.05.22.09.10.01
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 22 May 2019 09:10:02 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: benh@kernel.crashing.org,
-	paulus@samba.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc/powernv: fix a W=1 compilation warning
-Date: Wed, 22 May 2019 12:09:29 -0400
-Message-Id: <1558541369-8263-1-git-send-email-cai@lca.pw>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458Jjq4P57zDqKy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 02:58:21 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 494B93053878;
+ Wed, 22 May 2019 16:57:52 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.43.17.159])
+ by smtp.corp.redhat.com (Postfix) with SMTP id 69B5560BE5;
+ Wed, 22 May 2019 16:57:40 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+ oleg@redhat.com; Wed, 22 May 2019 18:57:50 +0200 (CEST)
+Date: Wed, 22 May 2019 18:57:37 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v1 1/2] open: add close_range()
+Message-ID: <20190522165737.GC4915@redhat.com>
+References: <20190522155259.11174-1-christian@brauner.io>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190522155259.11174-1-christian@brauner.io>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.41]); Wed, 22 May 2019 16:58:18 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,51 +56,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, ldv@altlinux.org,
+ dhowells@redhat.com, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
+ torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
+ jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
+ tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, fweimer@redhat.com,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit b575c731fe58 ("powerpc/powernv/npu: Add set/unset window
-helpers") called pnv_npu_set_window() in a void function
-pnv_npu_dma_set_32(), but the return code from pnv_npu_set_window() has
-no use there as all the error logging happen in pnv_npu_set_window(),
-so just remove the unused variable to avoid a compilation warning,
+On 05/22, Christian Brauner wrote:
+>
+> +static struct file *pick_file(struct files_struct *files, unsigned fd)
+>  {
+> -	struct file *file;
+> +	struct file *file = NULL;
+>  	struct fdtable *fdt;
+>  
+>  	spin_lock(&files->file_lock);
+> @@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
+>  		goto out_unlock;
+>  	rcu_assign_pointer(fdt->fd[fd], NULL);
+>  	__put_unused_fd(files, fd);
+> -	spin_unlock(&files->file_lock);
+> -	return filp_close(file, files);
+>  
+>  out_unlock:
+>  	spin_unlock(&files->file_lock);
+> -	return -EBADF;
+> +	return file;
 
-arch/powerpc/platforms/powernv/npu-dma.c: In function
-'pnv_npu_dma_set_32':
-arch/powerpc/platforms/powernv/npu-dma.c:198:10: warning: variable ‘rc’
-set but not used [-Wunused-but-set-variable]
+...
 
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- arch/powerpc/platforms/powernv/npu-dma.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
+> +{
+> +	unsigned int cur_max;
+> +
+> +	if (fd > max_fd)
+> +		return -EINVAL;
+> +
+> +	rcu_read_lock();
+> +	cur_max = files_fdtable(files)->max_fds;
+> +	rcu_read_unlock();
+> +
+> +	/* cap to last valid index into fdtable */
+> +	if (max_fd >= cur_max)
+> +		max_fd = cur_max - 1;
+> +
+> +	while (fd <= max_fd) {
+> +		struct file *file;
+> +
+> +		file = pick_file(files, fd++);
 
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index 495550432f3d..035208ed591f 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -195,7 +195,6 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
- {
- 	struct pci_dev *gpdev;
- 	struct pnv_ioda_pe *gpe;
--	int64_t rc;
- 
- 	/*
- 	 * Find the assoicated PCI devices and get the dma window
-@@ -208,8 +207,8 @@ static void pnv_npu_dma_set_32(struct pnv_ioda_pe *npe)
- 	if (!gpe)
- 		return;
- 
--	rc = pnv_npu_set_window(&npe->table_group, 0,
--			gpe->table_group.tables[0]);
-+	pnv_npu_set_window(&npe->table_group, 0,
-+			   gpe->table_group.tables[0]);
- 
- 	/*
- 	 * NVLink devices use the same TCE table configuration as
--- 
-1.8.3.1
+Well, how about something like
+
+	static unsigned int find_next_opened_fd(struct fdtable *fdt, unsigned start)
+	{
+		unsigned int maxfd = fdt->max_fds;
+		unsigned int maxbit = maxfd / BITS_PER_LONG;
+		unsigned int bitbit = start / BITS_PER_LONG;
+
+		bitbit = find_next_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+		if (bitbit > maxfd)
+			return maxfd;
+		if (bitbit > start)
+			start = bitbit;
+		return find_next_bit(fdt->open_fds, maxfd, start);
+	}
+
+	unsigned close_next_fd(struct files_struct *files, unsigned start, unsigned maxfd)
+	{
+		unsigned fd;
+		struct file *file;
+		struct fdtable *fdt;
+	
+		spin_lock(&files->file_lock);
+		fdt = files_fdtable(files);
+		fd = find_next_opened_fd(fdt, start);
+		if (fd >= fdt->max_fds || fd > maxfd) {
+			fd = -1;
+			goto out;
+		}
+
+		file = fdt->fd[fd];
+		rcu_assign_pointer(fdt->fd[fd], NULL);
+		__put_unused_fd(files, fd);
+	out:
+		spin_unlock(&files->file_lock);
+
+		if (fd == -1u)
+			return fd;
+
+		filp_close(file, files);
+		return fd + 1;
+	}
+
+?
+
+Then close_range() can do
+
+	while (fd < max_fd)
+		fd = close_next_fd(fd, maxfd);
+
+Oleg.
 
