@@ -1,57 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2672F2782F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 10:40:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D6A277FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 10:31:34 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458jQX06sbzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 18:31:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458jcN2tzzzDqXf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 18:40:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ (client-ip=209.85.167.179; helo=mail-oi1-f179.google.com;
  envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com
+ [209.85.167.179])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458jP21Y9FzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 18:30:13 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id c3so4671374otr.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:30:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458jb03WqTzDqXd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 18:38:52 +1000 (AEST)
+Received: by mail-oi1-f179.google.com with SMTP id u64so3772898oib.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 01:38:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=xaWhmq4/+ADRHouZPf7h52jcGd5azTK7yXXNVf0Uwio=;
- b=LbMwUBlT6IqwM4AL/9IGjaviv7LjjHEuIT0JZvNCp9l2P0BDtNRHSaAC1AE7wGrHxy
- k/+oNu6s2svyEro1d+N3aKTbZnIVyFn5rk61WyE4MeBf9y3VsHuTgG0GfJBRcBpPYgrj
- 457e/Xeo8NbuHUayI6UMb8VI7v+fS+urwns/jD8cf9dMCEBT50i9OcbI/lFmD+kbSEZN
- 0nLxLqAy+V5zsuqrFNkkTqjTXLtvFLiId+pG6sISqDCYw7IdjMHUiQSnVBfCMQP6y1zM
- pVt9IsApOkOuZmYn2TsppgYMISwoe168+RykJolmGm3AKU139Bf8kQZR1jJv8pXXePkr
- 6Zuw==
-X-Gm-Message-State: APjAAAVWQnjx+frFHCW8/wO0rtVJiXoUGf4Pj5WHrLxaiOjQDFJQAUBx
- mnvDEkdsk3K6S/K0Z29uRiqFfWtK+EXXG1z+ycg=
-X-Google-Smtp-Source: APXvYqzkaH3G6KXTtNxfipodYrKxmCru98eYajIonskwXlbryMsab1GlAjpyz3YzVAjj/PLxqdCdW5CpdFKm/zPS7L8=
-X-Received: by 2002:a9d:27c7:: with SMTP id c65mr56426156otb.335.1558600211347; 
- Thu, 23 May 2019 01:30:11 -0700 (PDT)
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=dUFm9jdzzVx0N+4mMHaBq5XrorgpIgaFDkBxxlWv3Y0=;
+ b=MG8RvjeeA6qZf2p+7piJEqSP/MXnSTipLmScWZJ7mY8u4yU/B5YGxKTzLiHaQEZXPW
+ Sit0JiPdVhmJxO76WKJijmw2PNF3ZqQsxAAWIzcetB85h2Ym7mzVrCYRBNyZJieyDk2z
+ 8NoVHSUgD4xL/Efb7QPwoch52jovCYEUMFMxLn7eoCSYjH31RTQv51eiGZ9izzjzNv5z
+ 6M/4D293/HEGw/paAZmX/XU6TimJ/An7fs1oqpSu4d/zNPZo01nmPBCk6slzwFLCd1/I
+ BF3L2nw6UVbt4NlEmSNU2OD5XFAEf+PPv8Em5kpMHF+UkL7swpCigcZ7sjISzlQuvcvn
+ bfBA==
+X-Gm-Message-State: APjAAAVVFWYrsXKC7gJpMVzi8gQcqeSOz8XDkfO+baEse99liTR5WCG4
+ 51Ojk0hkr0LegsjpMOsZVGcmHB4KnVj9u45eLtQNuSAi
+X-Google-Smtp-Source: APXvYqzXg2DfrKAitcMXn89BEh5CPP6pH3V0r5j3IrqYPUAopNy3+vpgM/jRM55c63R65eC1caILziHebAOy/YlJ6vk=
+X-Received: by 2002:aca:ed44:: with SMTP id l65mr2101687oih.107.1558600729616; 
+ Thu, 23 May 2019 01:38:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
- <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
- <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
- <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
-In-Reply-To: <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
 From: Mathieu Malaterre <malat@debian.org>
-Date: Thu, 23 May 2019 10:29:59 +0200
-Message-ID: <CA+7wUsxOxvtsp511c63HK-=Wm22qyEtDcg=p4rfRD+n55UQmiQ@mail.gmail.com>
-Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: multipart/mixed; boundary="000000000000f1e690058989e310"
+Date: Thu, 23 May 2019 10:38:38 +0200
+Message-ID: <CA+7wUsw_jkgWfknXbpK7_yfy=S5Y0jvQe1KP3kM-LT8fFnUF5g@mail.gmail.com>
+Subject: kmemleak: 1157 new suspected memory leaks (see
+ /sys/kernel/debug/kmemleak)
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,238 +58,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000f1e690058989e310
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi there,
 
-On Thu, May 23, 2019 at 8:39 AM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
-> Salut Mathieu,
->
-> Le 23/05/2019 =C3=A0 08:24, Mathieu Malaterre a =C3=A9crit :
-> > Salut Christophe,
-> >
-> > On Wed, May 22, 2019 at 2:20 PM Christophe Leroy
-> > <christophe.leroy@c-s.fr> wrote:
-> >>
-> >>
-> >>
-> >> Le 22/05/2019 =C3=A0 14:15, Mathieu Malaterre a =C3=A9crit :
-> >>> Hi all,
-> >>>
-> >>> I have not boot my G4 in a while, today using master here is what I s=
-ee:
-> >>>
-> >>> done
-> >>> Setting btext !
-> >>> W=3D640 H=3D488 LB=3D768 addr=3D0x9c008000
-> >>> copying OF device tree...
-> >>> starting device tree allocs at 01401000
-> >>> otloc_up(00100000, 0013d948)
-> >>>     trying: 0x01401000
-> >>>     trying: 0x01501000
-> >>>    -=E2=80=BA 01501000
-> >>>     alloc_bottom : 01601000
-> >>>     alloc_top    : 20000000
-> >>>     alloc_top_hi : 20000000
-> >>>     nmo_top      : 20000000
-> >>>     ram_top      : 20000000
-> >>> Building dt strings...
-> >>> Building dt structure...
-> >>> reserved memory map:
-> >>>     00d40000 - 006c1000
-> >>> Device tree strings 0x01502000 -> 0x00000007
-> >>> Device tree struct 0x01503000 -> 0x00000007
-> >>> Quiescing Open Firmware ...
-> >>> Booting Linux via __start() @ 0x001400000
-> >>> ->dt_headr_start=3D0x01501000
-> >>>
-> >>> Any suggestions before I start a bisect ?
-> >>>
-> >>
-> >> Have you tried without CONFIG_PPC_KUEP and CONFIG_PPC_KUAP ?
-> >
-> > Using locally:
-> >
-> > diff --git a/arch/powerpc/configs/g4_defconfig
-> > b/arch/powerpc/configs/g4_defconfig
-> > index 14d0376f637d..916bce8ce9c3 100644
-> > --- a/arch/powerpc/configs/g4_defconfig
-> > +++ b/arch/powerpc/configs/g4_defconfig
-> > @@ -32,6 +32,8 @@ CONFIG_USERFAULTFD=3Dy
-> >   # CONFIG_COMPAT_BRK is not set
-> >   CONFIG_PROFILING=3Dy
-> >   CONFIG_G4_CPU=3Dy
-> > +# CONFIG_PPC_KUEP is not set
-> > +# CONFIG_PPC_KUAP is not set
-> >   CONFIG_PANIC_TIMEOUT=3D0
-> >   # CONFIG_PPC_CHRP is not set
-> >   CONFIG_CPU_FREQ=3Dy
-> >
-> >
-> > Leads to almost the same error (some values have changed):
->
-> Ok.
->
-> When you say you are using 'master', what do you mean ? Can you give the
-> commit Id ?
->
-> Does it boots with Kernel 5.1.4 ?
+Is there a way to dump more context (somewhere in of tree
+flattening?). I cannot make sense of the following:
 
-I was able to boot v5.1:
+kmemleak: 1157 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
 
-$ dmesg | head
-[    0.000000] printk: bootconsole [udbg0] enabled
-[    0.000000] Total memory =3D 512MB; using 1024kB for hash table (at (ptr=
-val))
-[    0.000000] Linux version 5.1.0+ (malat@debian.org) (gcc version
-8.3.0 (Debian 8.3.0-7)) #8 Thu May 23 06:26:38 UTC 2019
+Where:
 
-Commit id is:
-
-e93c9c99a629 (tag: v5.1) Linux 5.1
-
-> Did you try latest powerpc/merge branch ?
-
-Will try that next.
-
-> Can you send your full .config ?
-
-Config is attached.
-
-Thanks,
-
-> Christophe
->
-> >
-> > done
-> > Setting btext !
-> > W=3D640 H=3D488 LB=3D768 addr=3D0x9c008000
-> > copying OF device tree...
-> > starting device tree allocs at 01300000
-> > alloc_up(00100000, 0013d948)
-> >    trying: 0x01300000
-> >    trying: 0x01400000
-> >   -=E2=80=BA 01400000
-> >    alloc_bottom : 01500000
-> >    alloc_top    : 20000000
-> >    alloc_top_hi : 20000000
-> >    nmo_top      : 20000000
-> >    ram_top      : 20000000
-> > Building dt strings...
-> > Building dt structure...
-> > reserved memory map:
-> >    00c40000 - 006c0000
-> > Device tree strings 0x01401000 -> 0x00000007
-> > Device tree struct 0x01402000 -> 0x00000007
-> > Quiescing Open Firmware ...
-> > Booting Linux via __start() @ 0x001400000
-> > ->dt_headr_start=3D0x01400000
-> >
-> > Thanks anyway,
-> >
-
---000000000000f1e690058989e310
-Content-Type: application/octet-stream; name=g4_defconfig
-Content-Disposition: attachment; filename=g4_defconfig
-Content-Transfer-Encoding: base64
-Content-ID: <f_jw0e8utt0>
-X-Attachment-Id: f_jw0e8utt0
-
-IyBDT05GSUdfTE9DQUxWRVJTSU9OX0FVVE8gaXMgbm90IHNldApDT05GSUdfU1lTVklQQz15CkNP
-TkZJR19QT1NJWF9NUVVFVUU9eQpDT05GSUdfTk9fSFpfSURMRT15CkNPTkZJR19ISUdIX1JFU19U
-SU1FUlM9eQpDT05GSUdfUFJFRU1QVF9WT0xVTlRBUlk9eQpDT05GSUdfTE9HX0JVRl9TSElGVD0x
-OApDT05GSUdfTUVNQ0c9eQpDT05GSUdfTUVNQ0dfU1dBUD15CiMgQ09ORklHX01FTUNHX1NXQVBf
-RU5BQkxFRCBpcyBub3Qgc2V0CkNPTkZJR19CTEtfQ0dST1VQPXkKQ09ORklHX0NGU19CQU5EV0lE
-VEg9eQpDT05GSUdfQ0dST1VQX1BJRFM9eQpDT05GSUdfQ0dST1VQX0ZSRUVaRVI9eQpDT05GSUdf
-Q0dST1VQX0RFVklDRT15CkNPTkZJR19DR1JPVVBfQ1BVQUNDVD15CkNPTkZJR19DR1JPVVBfUEVS
-Rj15CkNPTkZJR19DR1JPVVBfQlBGPXkKQ09ORklHX05BTUVTUEFDRVM9eQpDT05GSUdfVVNFUl9O
-Uz15CkNPTkZJR19TQ0hFRF9BVVRPR1JPVVA9eQpDT05GSUdfQkxLX0RFVl9JTklUUkQ9eQojIENP
-TkZJR19SRF9CWklQMiBpcyBub3Qgc2V0CiMgQ09ORklHX1JEX0xaTUEgaXMgbm90IHNldAojIENP
-TkZJR19SRF9YWiBpcyBub3Qgc2V0CiMgQ09ORklHX1JEX0xaTyBpcyBub3Qgc2V0CiMgQ09ORklH
-X1JEX0xaNCBpcyBub3Qgc2V0CkNPTkZJR19MRF9ERUFEX0NPREVfREFUQV9FTElNSU5BVElPTj15
-CkNPTkZJR19FWFBFUlQ9eQpDT05GSUdfQlBGX1NZU0NBTEw9eQpDT05GSUdfVVNFUkZBVUxURkQ9
-eQojIENPTkZJR19DT01QQVRfQlJLIGlzIG5vdCBzZXQKQ09ORklHX1BST0ZJTElORz15CkNPTkZJ
-R19HNF9DUFU9eQojIENPTkZJR19QUENfS1VFUCBpcyBub3Qgc2V0CiMgQ09ORklHX1BQQ19LVUFQ
-IGlzIG5vdCBzZXQKQ09ORklHX1BBTklDX1RJTUVPVVQ9MAojIENPTkZJR19QUENfQ0hSUCBpcyBu
-b3Qgc2V0CkNPTkZJR19DUFVfRlJFUT15CkNPTkZJR19DUFVfRlJFUV9TVEFUPXkKQ09ORklHX0NQ
-VV9GUkVRX1BNQUM9eQpDT05GSUdfVEFVPXkKQ09ORklHX0hJR0hNRU09eQpDT05GSUdfS0VYRUM9
-eQpDT05GSUdfSElCRVJOQVRJT049eQpDT05GSUdfUE1fREVCVUc9eQpDT05GSUdfUE1fQURWQU5D
-RURfREVCVUc9eQpDT05GSUdfT1BST0ZJTEU9bQpDT05GSUdfS1BST0JFUz15CkNPTkZJR19NT0RV
-TEVTPXkKQ09ORklHX01PRFVMRV9VTkxPQUQ9eQpDT05GSUdfTU9EVkVSU0lPTlM9eQpDT05GSUdf
-UEFSVElUSU9OX0FEVkFOQ0VEPXkKIyBDT05GSUdfTVFfSU9TQ0hFRF9LWUJFUiBpcyBub3Qgc2V0
-CkNPTkZJR19CSU5GTVRfTUlTQz15CkNPTkZJR19ORVQ9eQpDT05GSUdfUEFDS0VUPXkKQ09ORklH
-X1VOSVg9eQpDT05GSUdfSU5FVD15CiMgQ09ORklHX0lORVRfRElBRyBpcyBub3Qgc2V0CiMgQ09O
-RklHX0lQVjYgaXMgbm90IHNldApDT05GSUdfTkVURklMVEVSPXkKQ09ORklHX05FVEZJTFRFUl9Y
-VEFCTEVTPXkKQ09ORklHX05FVF9TQ0hFRD15CkNPTkZJR19DR1JPVVBfTkVUX1BSSU89eQpDT05G
-SUdfQ0dST1VQX05FVF9DTEFTU0lEPXkKQ09ORklHX0NGRzgwMjExPW0KQ09ORklHX01BQzgwMjEx
-PW0KQ09ORklHX1BDSV9NU0k9eQpDT05GSUdfREVWVE1QRlM9eQpDT05GSUdfREVCVUdfRFJJVkVS
-PXkKQ09ORklHX0NPTk5FQ1RPUj15CiMgQ09ORklHX1NDU0lfUFJPQ19GUyBpcyBub3Qgc2V0CkNP
-TkZJR19CTEtfREVWX1NEPW0KQ09ORklHX0JMS19ERVZfU1I9bQpDT05GSUdfQkxLX0RFVl9TUl9W
-RU5ET1I9eQpDT05GSUdfQ0hSX0RFVl9TRz1tCkNPTkZJR19TQ1NJX0NPTlNUQU5UUz15CkNPTkZJ
-R19TQ1NJX0xPR0dJTkc9eQpDT05GSUdfU0NTSV9TQ0FOX0FTWU5DPXkKQ09ORklHX0FUQT15CkNP
-TkZJR19QQVRBX01BQ0lPPXkKQ09ORklHX01EPXkKQ09ORklHX0ZJUkVXSVJFPW0KQ09ORklHX0ZJ
-UkVXSVJFX09IQ0k9bQpDT05GSUdfQURCPXkKQ09ORklHX0FEQl9QTVU9eQpDT05GSUdfQURCX1BN
-VV9MRUQ9eQpDT05GSUdfSU5QVVRfQURCSElEPXkKQ09ORklHX05FVERFVklDRVM9eQojIENPTkZJ
-R19ORVRfVkVORE9SX0FSQyBpcyBub3Qgc2V0CiMgQ09ORklHX05FVF9WRU5ET1JfU0VFUSBpcyBu
-b3Qgc2V0CkNPTkZJR19TVU5HRU09bQojIENPTkZJR19VU0JfTkVUX0RSSVZFUlMgaXMgbm90IHNl
-dApDT05GSUdfQjQzPW0KQ09ORklHX0I0M19ERUJVRz15CiMgQ09ORklHX1JUTF9DQVJEUyBpcyBu
-b3Qgc2V0CiMgQ09ORklHX1dMQU5fVkVORE9SX1RJIGlzIG5vdCBzZXQKQ09ORklHX1dBTj15CkNP
-TkZJR19JU0ROPXkKQ09ORklHX0lOUFVUX01PVVNFREVWPXkKQ09ORklHX0lOUFVUX0VWREVWPW0K
-IyBDT05GSUdfS0VZQk9BUkRfQVRLQkQgaXMgbm90IHNldAojIENPTkZJR19NT1VTRV9QUzIgaXMg
-bm90IHNldApDT05GSUdfSU5QVVRfTUlTQz15CkNPTkZJR19JTlBVVF9VSU5QVVQ9bQojIENPTkZJ
-R19TRVJJTyBpcyBub3Qgc2V0CiMgQ09ORklHX0xFR0FDWV9QVFlTIGlzIG5vdCBzZXQKQ09ORklH
-X1NFUklBTF84MjUwPXkKIyBDT05GSUdfU0VSSUFMXzgyNTBfREVQUkVDQVRFRF9PUFRJT05TIGlz
-IG5vdCBzZXQKQ09ORklHX1NFUklBTF84MjUwX0NPTlNPTEU9eQpDT05GSUdfU0VSSUFMXzgyNTBf
-TlJfVUFSVFM9MzIKQ09ORklHX1NFUklBTF9QTUFDWklMT0c9eQpDT05GSUdfU0VSSUFMX1BNQUNa
-SUxPR19DT05TT0xFPXkKIyBDT05GSUdfSFdfUkFORE9NIGlzIG5vdCBzZXQKQ09ORklHX0kyQ19D
-SEFSREVWPW0KQ09ORklHX1NQST15CkNPTkZJR19XQVRDSERPRz15CkNPTkZJR19XQVRDSERPR19D
-T1JFPXkKQ09ORklHX1dBVENIRE9HX1NZU0ZTPXkKQ09ORklHX0FHUD15CkNPTkZJR19BR1BfVU5J
-Tk9SVEg9eQpDT05GSUdfRFJNPW0KQ09ORklHX0RSTV9ERUJVR19TRUxGVEVTVD1tCkNPTkZJR19E
-Uk1fTE9BRF9FRElEX0ZJUk1XQVJFPXkKQ09ORklHX0RSTV9SQURFT049bQpDT05GSUdfRkI9eQpD
-T05GSUdfRklSTVdBUkVfRURJRD15CkNPTkZJR19GQl9PRj15CkNPTkZJR19GQl9SQURFT049bQpD
-T05GSUdfRkJfUkFERU9OX0RFQlVHPXkKIyBDT05GSUdfTENEX0NMQVNTX0RFVklDRSBpcyBub3Qg
-c2V0CiMgQ09ORklHX0JBQ0tMSUdIVF9HRU5FUklDIGlzIG5vdCBzZXQKQ09ORklHX0ZSQU1FQlVG
-RkVSX0NPTlNPTEU9eQpDT05GSUdfRlJBTUVCVUZGRVJfQ09OU09MRV9ST1RBVElPTj15CkNPTkZJ
-R19TT1VORD1tCkNPTkZJR19TTkQ9bQpDT05GSUdfU05EX0RZTkFNSUNfTUlOT1JTPXkKQ09ORklH
-X1NORF9ERUJVRz15CkNPTkZJR19TTkRfSERBX1BSRUFMTE9DX1NJWkU9MjA0OApDT05GSUdfU05E
-X1BPV0VSTUFDPW0KQ09ORklHX1NORF9BT0E9bQpDT05GSUdfU05EX0FPQV9GQUJSSUNfTEFZT1VU
-PW0KQ09ORklHX1NORF9BT0FfVE9PTklFPW0KQ09ORklHX0hJRFJBVz15CkNPTkZJR19ISURfQVBQ
-TEU9eQpDT05GSUdfSElEX1BJRD15CkNPTkZJR19VU0JfSElEREVWPXkKQ09ORklHX1VTQj1tCkNP
-TkZJR19VU0JfQU5OT1VOQ0VfTkVXX0RFVklDRVM9eQpDT05GSUdfVVNCX0RZTkFNSUNfTUlOT1JT
-PXkKQ09ORklHX1VTQl9FSENJX0hDRD1tCkNPTkZJR19VU0JfRUhDSV9ST09UX0hVQl9UVD15CkNP
-TkZJR19VU0JfT0hDSV9IQ0Q9bQpDT05GSUdfVVNCX09IQ0lfSENEX1BQQ19PRl9CRT15CkNPTkZJ
-R19VU0JfT0hDSV9IQ0RfUFBDX09GX0xFPXkKQ09ORklHX1VTQl9TVE9SQUdFPW0KQ09ORklHX01N
-Qz15CkNPTkZJR19SVENfQ0xBU1M9eQpDT05GSUdfUlRDX0RFQlVHPXkKQ09ORklHX1JUQ19EUlZf
-R0VORVJJQz15CkNPTkZJR19ETUFERVZJQ0VTPXkKQ09ORklHX1BNX0RFVkZSRVE9eQpDT05GSUdf
-TUVNT1JZPXkKQ09ORklHX0dFTkVSSUNfUEhZPXkKQ09ORklHX0VYVDRfRlM9bQpDT05GSUdfRVhU
-NF9GU19QT1NJWF9BQ0w9eQpDT05GSUdfRVhUNF9GU19TRUNVUklUWT15CkNPTkZJR19FWFBPUlRG
-U19CTE9DS19PUFM9eQpDT05GSUdfRkFOT1RJRlk9eQpDT05GSUdfUVVPVEE9eQpDT05GSUdfUVVP
-VEFfTkVUTElOS19JTlRFUkZBQ0U9eQpDT05GSUdfQVVUT0ZTNF9GUz1tCkNPTkZJR19GVVNFX0ZT
-PW0KQ09ORklHX1BST0NfS0NPUkU9eQpDT05GSUdfVE1QRlM9eQpDT05GSUdfVE1QRlNfUE9TSVhf
-QUNMPXkKQ09ORklHX05MU19ERUZBVUxUPSJ1dGY4IgojIENPTkZJR19DUllQVE9fTUFOQUdFUl9E
-SVNBQkxFX1RFU1RTIGlzIG5vdCBzZXQKQ09ORklHX0NSWVBUT19NQU5BR0VSX0VYVFJBX1RFU1RT
-PXkKIyBDT05GSUdfQ1JZUFRPX0VDSEFJTklWIGlzIG5vdCBzZXQKQ09ORklHX0NSWVBUT19NRDVf
-UFBDPW0KQ09ORklHX0NSWVBUT19TSEExX1BQQz1tCkNPTkZJR19DUkMzMl9TRUxGVEVTVD15CkNP
-TkZJR19SQU5ET00zMl9TRUxGVEVTVD15CkNPTkZJR19JUlFfUE9MTD15CkNPTkZJR19TVFJJTkdf
-U0VMRlRFU1Q9eQpDT05GSUdfUFJJTlRLX1RJTUU9eQpDT05GSUdfRFlOQU1JQ19ERUJVRz15CkNP
-TkZJR19ERUJVR19JTkZPPXkKQ09ORklHX1NUUklQX0FTTV9TWU1TPXkKQ09ORklHX0hFQURFUlNf
-Q0hFQ0s9eQpDT05GSUdfT1BUSU1JWkVfSU5MSU5JTkc9eQpDT05GSUdfREVCVUdfU0VDVElPTl9N
-SVNNQVRDSD15CkNPTkZJR19NQUdJQ19TWVNSUT15CkNPTkZJR19NQUdJQ19TWVNSUV9ERUZBVUxU
-X0VOQUJMRT0weDAxYjYKQ09ORklHX1BBR0VfRVhURU5TSU9OPXkKQ09ORklHX0RFQlVHX0tNRU1M
-RUFLPXkKQ09ORklHX0RFQlVHX0tNRU1MRUFLX0VBUkxZX0xPR19TSVpFPTQwMDAKQ09ORklHX0RF
-QlVHX0tNRU1MRUFLX1RFU1Q9bQpDT05GSUdfREVCVUdfTUVNT1JZX0lOSVQ9eQpDT05GSUdfREVC
-VUdfU1RBQ0tPVkVSRkxPVz15CkNPTkZJR19LQVNBTj15CkNPTkZJR19TT0ZUTE9DS1VQX0RFVEVD
-VE9SPXkKQ09ORklHX1NDSEVEU1RBVFM9eQpDT05GSUdfU0NIRURfU1RBQ0tfRU5EX0NIRUNLPXkK
-Q09ORklHX0ZUUkFDRV9TWVNDQUxMUz15CkNPTkZJR19UUkFDRVJfU05BUFNIT1Q9eQpDT05GSUdf
-U1RBQ0tfVFJBQ0VSPXkKQ09ORklHX0JMS19ERVZfSU9fVFJBQ0U9eQpDT05GSUdfQVRPTUlDNjRf
-U0VMRlRFU1Q9eQpDT05GSUdfQlVHX09OX0RBVEFfQ09SUlVQVElPTj15CkNPTkZJR19VQlNBTj15
-CkNPTkZJR19URVNUX1VCU0FOPW0KQ09ORklHX0lPX1NUUklDVF9ERVZNRU09eQpDT05GSUdfWE1P
-Tj15CkNPTkZJR19CT09UWF9URVhUPXkKQ09ORklHX1BQQ19FQVJMWV9ERUJVRz15Cg==
---000000000000f1e690058989e310--
+# head -40 /sys/kernel/debug/kmemleak
+unreferenced object 0xdf44d180 (size 8):
+  comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
+  hex dump (first 8 bytes):
+    62 61 73 65 00 00 00 00                          base....
+  backtrace:
+    [<0ca59825>] kstrdup+0x4c/0xb8
+    [<c8a79377>] kobject_set_name_vargs+0x34/0xc8
+    [<661b4c86>] kobject_add+0x78/0x120
+    [<c1416f27>] __of_attach_node_sysfs+0xa0/0x14c
+    [<2a143d10>] of_core_init+0x90/0x114
+    [<a353d0e1>] driver_init+0x30/0x48
+    [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
+    [<dc60f815>] kernel_init+0x20/0x110
+    [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
+unreferenced object 0xdf44d178 (size 8):
+  comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
+  hex dump (first 8 bytes):
+    6d 6f 64 65 6c 00 97 c8                          model...
+  backtrace:
+    [<0ca59825>] kstrdup+0x4c/0xb8
+    [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
+    [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
+    [<2a143d10>] of_core_init+0x90/0x114
+    [<a353d0e1>] driver_init+0x30/0x48
+    [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
+    [<dc60f815>] kernel_init+0x20/0x110
+    [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
+unreferenced object 0xdf4021e0 (size 16):
+  comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
+  hex dump (first 16 bytes):
+    63 6f 6d 70 61 74 69 62 6c 65 00 01 00 00 00 00  compatible......
+  backtrace:
+    [<0ca59825>] kstrdup+0x4c/0xb8
+    [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
+    [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
+    [<2a143d10>] of_core_init+0x90/0x114
+    [<a353d0e1>] driver_init+0x30/0x48
+    [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
+    [<dc60f815>] kernel_init+0x20/0x110
+    [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
