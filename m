@@ -2,77 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E9427A06
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A43427A15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:13:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458lYJ6FQszDqjQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 20:07:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458lh96FRCzDqc5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 20:13:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="sHCaIKEV"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ib+KgVqL"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458lX61GkpzDqbh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:06:30 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458lX13N2Hz9v2C7;
- Thu, 23 May 2019 12:06:25 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=sHCaIKEV; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id IHmgRpOMqNDR; Thu, 23 May 2019 12:06:25 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458lX128n9z9v2C5;
- Thu, 23 May 2019 12:06:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558605985; bh=piPL88MQTeJPHU0kv9VSj1lrWKo3xFh5bm5O/4FnNS8=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=sHCaIKEVh6lsuUBH4SElIThGdctclAT1+57mAKK5IefBVM8DAcp9x1c/Nw6DB3O34
- H5EOfK1NhPY/imx8aAysgH060OW1Ls2w1z0v3oGJJtZKwWquawdqcBmNhe7cCGSJM/
- t7Wcyz7vwaEw08f3oRw8jMclvmbfJCj+ham96vWA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 290368B85C;
- Thu, 23 May 2019 12:06:26 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 37_L5Cb609GL; Thu, 23 May 2019 12:06:26 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D65888B858;
- Thu, 23 May 2019 12:06:25 +0200 (CEST)
-Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Mathieu Malaterre <malat@debian.org>
-References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
- <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
- <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
- <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
- <CA+7wUsxOxvtsp511c63HK-=Wm22qyEtDcg=p4rfRD+n55UQmiQ@mail.gmail.com>
- <CA+7wUszcau+OBj+ZTr007_vuTJsOmT0izZ64_W98x1=MPLU6aA@mail.gmail.com>
- <9e5ef44d-259a-1f1a-bd6a-98abdae85da0@c-s.fr>
- <ba3a1c25-72ce-cfb4-67ac-df07584f57f5@c-s.fr>
-Message-ID: <158e1855-62ef-baf6-4fff-f28131a7e095@c-s.fr>
-Date: Thu, 23 May 2019 10:05:57 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458lfr016HzDqWY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:12:19 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id f12so2548390plt.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 03:12:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=U26hfEnzujUkh3KTuHOe5UmmcDFgXF3e4TaLMOxdmfM=;
+ b=Ib+KgVqLDpT8MvHzygIpqSSllS0TetYaVrP7XgrFpZ4tAShr0RURzzglj6REWk93xQ
+ WFFRiSJWx59+AH7KQcksdZE8FgH+kZ4UVcuDsg2fotamDs7PGww2jKz9UEuHZR4Ksluv
+ BOuS0Q8pCI9SVeiK7/cYpZjkjBdon2Ib5kZ+pHSwkWt0y3CT9dSzcH2kXMpaKwjh90RK
+ FG72cyNM327E21YkXcnhGrF3rgDAXbxiawmFFgR4JG3D0Qb8/Oc+O/0XxvPYKZkxu/9l
+ VcXp5xzH2rgeygra1FJvVKVIVPaEJNrZMrr7BEDNsPl+9ZZaPDHjsFKtOn/guPNa5maa
+ vuvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=U26hfEnzujUkh3KTuHOe5UmmcDFgXF3e4TaLMOxdmfM=;
+ b=KOObEURPCwrQnwBjuf2Zsuk2TAwtujvj0lciBIUUUV2PgZxuzaPZrXINPOMN8LDSBx
+ oL522jn8J+WAZSX+tynHVpFZaNjtKPxer+Gj448zheEkeZ0BlVqUVHf2WrIwFfk4nL6f
+ u147jr/Cs5dYMPffzW+tPPLxtau2H/y2I2WFGSamdVFhMZXeiPfVSIe0ttRioWuHcTM6
+ gmG93V9TSV3NNJrp1B/qcNqIbqhxKPPYM7EM7kWqLSiNHCHOIldTEB6qO6nTt1ahUS3u
+ kS8jLYoBiLdyu0baeWhBx31FDNB79leXjoEYzRtTCB0kkrkfpdlB7ucb9tTyPFT69I6b
+ Kvug==
+X-Gm-Message-State: APjAAAU93+lE9yanpWhcTRM+26LYY0M8mal+9yW2utRbWH4WlwCBrfI4
+ 77ywpO54Ab3bhVRNOVLv+b4=
+X-Google-Smtp-Source: APXvYqySDuPT7a7gghksq1od9CJZ2r1xxtVRGBUJt3XvoOYsZJiD4Eloj5sq2wLjCZ4i0lkxTdmMPQ==
+X-Received: by 2002:a17:902:7044:: with SMTP id
+ h4mr14867003plt.219.1558606335864; 
+ Thu, 23 May 2019 03:12:15 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id c185sm32062477pfc.64.2019.05.23.03.12.15
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 23 May 2019 03:12:15 -0700 (PDT)
+Date: Thu, 23 May 2019 03:10:56 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: "broonie@kernel.org" <broonie@kernel.org>,
+ "S.j. Wang" <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
+Message-ID: <20190523101055.GA28470@Asurada-Nvidia.nvidia.com>
+References: <VE1PR04MB647934199C3AA60759BED888E3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <ba3a1c25-72ce-cfb4-67ac-df07584f57f5@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VE1PR04MB647934199C3AA60759BED888E3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,61 +82,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Daniel Axtens <dja@axtens.net>
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Shengjiu,
 
+On Thu, May 23, 2019 at 09:53:42AM +0000, S.j. Wang wrote:
+> > > +     /*
+> > > +      * Add fifo reset here, because the regcache_sync will
+> > > +      * write one more data to ETDR.
+> > > +      * Which will cause channel shift.
+> > 
+> > Sounds like a bug to me...should fix it first by marking the data registers as
+> > volatile.
+> > 
+> The ETDR is a writable register, it is not volatile. Even we change it to
+> Volatile, I don't think we can't avoid this issue. for the regcache_sync
+> Just to write this register, it is correct behavior.
 
-On 05/23/2019 09:59 AM, Christophe Leroy wrote:
-> 
-> 
-> On 05/23/2019 09:45 AM, Christophe Leroy wrote:
->>
->>
->> Le 23/05/2019 à 10:53, Mathieu Malaterre a écrit :
->>>> Commit id is:
->>>>
->>>> e93c9c99a629 (tag: v5.1) Linux 5.1
->>>>
->>>>> Did you try latest powerpc/merge branch ?
->>>>
->>>> Will try that next.
->>>
->>> I confirm powerpc/merge does not boot for me (same config). Commit id:
->>>
->>> a27eaa62326d (powerpc/merge) Automatic merge of branches 'master',
->>> 'next' and 'fixes' into merge
->>
->> I see in the config you sent me that you have selected CONFIG_KASAN, 
->> which is a big new stuff.
->>
->> Can you try without it ?
-> 
-> While building with your config, I get a huge amount of:
-> 
-> ppc-linux-ld: warning: orphan section `.data..LASAN0' from 
-> `lib/xarray.o' being placed in section `.data..LASAN0'.
->    SORTEX  vmlinux
-> 
-> 
-> 
-> I see you have also selected CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y
-> 
-> I guess nobody have never tried both this and CONFIG_KASAN together on 
-> ppc32. I'll give it a try.
+Is that so? Quoting the comments of regcache_sync():
+"* regcache_sync - Sync the register cache with the hardware.
+ *
+ * @map: map to configure.
+ *
+ * Any registers that should not be synced should be marked as
+ * volatile."
 
+If regcache_sync() does sync volatile registers too as you said,
+I don't mind having this FIFO reset WAR for now, though I think
+this mismatch between the comments and the actual behavior then
+should get people's attention.
 
-And you also have CONFIG_FTRACE.
-
-In a recent patch implementing KASAN on PPC64, Daniel says that KASAN 
-and FTRACE don't go together well 
-(https://patchwork.ozlabs.org/patch/1103826/)
-
-If you find out that it works without KASAN, can you then try with KASAN 
-but without FTRACE ?
-
-Christophe
-
+Thank you
