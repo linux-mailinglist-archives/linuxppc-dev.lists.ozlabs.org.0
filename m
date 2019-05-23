@@ -1,84 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE08127207
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 00:05:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458RWg3hbbzDqSl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:05:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF8E2742E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 03:58:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 458Xj507c2zDqRh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 11:58:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="f+KA8NLB"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458RVJ27p4zDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 08:03:51 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4MLvagF028081
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 18:03:49 -0400
-Received: from e31.co.us.ibm.com (e31.co.us.ibm.com [32.97.110.149])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sndwet7dw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 18:03:48 -0400
-Received: from localhost
- by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Wed, 22 May 2019 23:03:48 +0100
-Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
- by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 May 2019 23:03:46 +0100
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4MM3inC33423744
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 May 2019 22:03:45 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA690BE079;
- Wed, 22 May 2019 22:03:44 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E3D59BE07A;
- Wed, 22 May 2019 22:03:42 +0000 (GMT)
-Received: from morokweng.localdomain.com (unknown [9.80.216.227])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 22 May 2019 22:03:42 +0000 (GMT)
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458Xgk1FvbzDqQX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 11:57:19 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id go2so1944948plb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 18:57:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KBz4SPboR1t+ROthTDIJtlbAEsKh+bVnmWyrNYyeyfM=;
+ b=f+KA8NLBP9hAdcMbs6K9uzmnFmldENkfQNbdZhqmN6Bkr+2bHoaeYP+mFdbZMSZGaX
+ mkkI4ZVu63Xno+nmh0dAY5giGkySl8KfN7HrRT3YzETBCMAn2dkYolapWgN/bLVkv6F4
+ XodQ7Fl+MuVVTC0fjcberzqn8iegAevozxIg4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KBz4SPboR1t+ROthTDIJtlbAEsKh+bVnmWyrNYyeyfM=;
+ b=dYo2iPyjlmAxbYOS/YLuQM+MVL6EhcixtbUyDcn7XonsDlhc38dw1eKTOoRiIwEi8p
+ unFA0OafHmSEBZM0hcgvzao4wTAP8MrApBCA4+S9g4sgnMLJJXw/SvWIKashMcok7wi5
+ XHgOUmgcjUCjJD+BBO4iIkBPkBQCfhx6OUAp/qnSTYuSSTU1Y5BZe9exsvCbOc7oluXD
+ N/nIkzRek2VSEJ57rRMygSkTd55YJyEotuYfWurLzNNpO+eePupufqGTx/C0NQsgd7Rh
+ jC9S6wp1bRw9BdRT4uSguiyWn4V+cJgJnnWwN4wkE3HUe92H9uW56q8Ufqmfyskj+dgT
+ 5JWQ==
+X-Gm-Message-State: APjAAAX2es4L9koEfqy2OaSKw0TW0ckrDeqO1txiy9LhlVypPOv/pdLD
+ 81n5iEhMccYS+IQJg+xc72tiQjUVApg=
+X-Google-Smtp-Source: APXvYqzlwCnTHo91dA97n7nMhnqCuilMZNisdppat7tvEIftdSNv0m7L6RbU9JZiWxJzEtwTB+1VYg==
+X-Received: by 2002:a17:902:2924:: with SMTP id
+ g33mr68009406plb.57.1558576635771; 
+ Wed, 22 May 2019 18:57:15 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id u134sm37551279pfc.61.2019.05.22.18.57.14
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 22 May 2019 18:57:15 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Fix loading of kernel + initramfs with
- kexec_file_load()
-Date: Wed, 22 May 2019 19:01:58 -0300
-X-Mailer: git-send-email 2.21.0
+Subject: [PATCH] powerpc: pseries/hvconsole: fix stack overread
+Date: Thu, 23 May 2019 11:57:08 +1000
+Message-Id: <20190523015708.20395-1-dja@axtens.net>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19052222-8235-0000-0000-00000E9CE3BB
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011145; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01207156; UDB=6.00633942; IPR=6.00988131; 
- MB=3.00027009; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-22 22:03:48
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052222-8236-0000-0000-000045ADF716
-Message-Id: <20190522220158.18479-1-bauerman@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-22_13:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905220152
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,70 +75,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, AKASHI Takahiro <takahiro.akashi@linaro.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit b6664ba42f14 ("s390, kexec_file: drop arch_kexec_mem_walk()")
-changed kexec_add_buffer() to skip searching for a memory location if
-kexec_buf.mem is already set, and use the address that is there.
+While developing kasan for 64-bit book3s, I hit the following stack
+over-read.
 
-In powerpc code we reuse a kexec_buf variable for loading both the kernel
-and the initramfs by resetting some of the fields between those uses, but
-not mem. This causes kexec_add_buffer() to try to load the kernel at the
-same address where initramfs will be loaded, which is naturally rejected:
+It occurs because the hypercall to put characters onto the terminal
+takes 2 longs (128 bits/16 bytes) of characters at a time, and so
+hvc_put_chars would unconditionally copy 16 bytes from the argument
+buffer, regardless of supplied length. However, sometimes
+hvc_put_chars is called with less than 16 characters, leading to the
+error.
 
-  # kexec -s -l --initrd initramfs vmlinuz
-  kexec_file_load failed: Invalid argument
+Use memcpy to copy the correct length.
 
-Setting the mem field before every call to kexec_add_buffer() fixes this
-regression.
+==================================================================
+BUG: KASAN: stack-out-of-bounds in hvc_put_chars+0x44/0xc0
+Read of size 8 at addr c00000000169fac0 by task swapper/0
 
-Fixes: b6664ba42f14 ("s390, kexec_file: drop arch_kexec_mem_walk()")
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+CPU: 0 PID: 0 Comm: swapper Not tainted 5.1.0-rc2-00065-g7e26a58cb076 #43
+Call Trace:
+[c00000000169f770] [c000000000e83900] dump_stack+0xc4/0x114 (unreliable)
+[c00000000169f7c0] [c0000000003f3034] print_address_description+0xd0/0x3cc
+[c00000000169f850] [c0000000003f2c0c] kasan_report+0x20c/0x224
+[c00000000169f920] [c0000000003f4808] __asan_load8+0x198/0x330
+[c00000000169f9c0] [c0000000000d7264] hvc_put_chars+0x44/0xc0
+[c00000000169fa40] [c00000000089b998] hvterm_raw_put_chars+0x78/0xb0
+[c00000000169fa80] [c00000000089bff0] udbg_hvc_putc+0x110/0x1a0
+[c00000000169fb30] [c000000000036610] udbg_write+0xa0/0x1a0
+[c00000000169fb80] [c0000000001b9cd4] console_unlock+0x694/0x810
+[c00000000169fc80] [c0000000001bc5ec] vprintk_emit+0x24c/0x310
+[c00000000169fcf0] [c0000000001bde04] vprintk_func+0xd4/0x250
+[c00000000169fd40] [c0000000001bd088] printk+0x38/0x4c
+[c00000000169fd60] [c0000000012ec4a0] kasan_init+0x330/0x350
+[c00000000169fde0] [c0000000012dc304] setup_arch+0x4b4/0x504
+[c00000000169fe70] [c0000000012d3e50] start_kernel+0x10c/0x868
+[c00000000169ff90] [c00000000000b360] start_here_common+0x1c/0x53c
+
+Memory state around the buggy address:
+ c00000000169f980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ c00000000169fa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>c00000000169fa80: 00 00 00 00 f1 f1 f1 f1 01 f2 f2 f2 00 00 00 00
+                                           ^
+ c00000000169fb00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ c00000000169fb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+CC: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
- arch/powerpc/kernel/kexec_elf_64.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/hvconsole.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/kexec_elf_64.c b/arch/powerpc/kernel/kexec_elf_64.c
-index ba4f18a43ee8..52a29fc73730 100644
---- a/arch/powerpc/kernel/kexec_elf_64.c
-+++ b/arch/powerpc/kernel/kexec_elf_64.c
-@@ -547,6 +547,7 @@ static int elf_exec_load(struct kimage *image, struct elfhdr *ehdr,
- 		kbuf.memsz = phdr->p_memsz;
- 		kbuf.buf_align = phdr->p_align;
- 		kbuf.buf_min = phdr->p_paddr + base;
-+		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 		ret = kexec_add_buffer(&kbuf);
- 		if (ret)
- 			goto out;
-@@ -581,7 +582,8 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	struct kexec_buf kbuf = { .image = image, .buf_min = 0,
- 				  .buf_max = ppc64_rma_size };
- 	struct kexec_buf pbuf = { .image = image, .buf_min = 0,
--				  .buf_max = ppc64_rma_size, .top_down = true };
-+				  .buf_max = ppc64_rma_size, .top_down = true,
-+				  .mem = KEXEC_BUF_MEM_UNKNOWN };
+diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
+index 74da18de853a..c39907b635eb 100644
+--- a/arch/powerpc/platforms/pseries/hvconsole.c
++++ b/arch/powerpc/platforms/pseries/hvconsole.c
+@@ -67,9 +67,10 @@ EXPORT_SYMBOL(hvc_get_chars);
+  */
+ int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
+ {
+-	unsigned long *lbuf = (unsigned long *) buf;
++	unsigned long lbuf[2];
+ 	long ret;
  
- 	ret = build_elf_exec_info(kernel_buf, kernel_len, &ehdr, &elf_info);
- 	if (ret)
-@@ -606,6 +608,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 		kbuf.bufsz = kbuf.memsz = initrd_len;
- 		kbuf.buf_align = PAGE_SIZE;
- 		kbuf.top_down = false;
-+		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 		ret = kexec_add_buffer(&kbuf);
- 		if (ret)
- 			goto out;
-@@ -638,6 +641,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	kbuf.bufsz = kbuf.memsz = fdt_size;
- 	kbuf.buf_align = PAGE_SIZE;
- 	kbuf.top_down = true;
-+	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
- 	ret = kexec_add_buffer(&kbuf);
- 	if (ret)
- 		goto out;
++	memcpy(lbuf, buf, count);
+ 
+ 	/* hcall will ret H_PARAMETER if 'count' exceeds firmware max.*/
+ 	if (count > MAX_VIO_PUT_CHARS)
+-- 
+2.19.1
 
