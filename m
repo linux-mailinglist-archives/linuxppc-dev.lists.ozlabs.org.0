@@ -2,85 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567682804A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD212808C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 17:07:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458swR6Vj2zDqWK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 00:54:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458tCl57gDzDqTP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 01:07:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458stq3TyhzDq9m
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 00:53:06 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4NEmeRi132181
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 10:53:03 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2snuwx64yf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 10:53:03 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Thu, 23 May 2019 15:53:01 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 23 May 2019 15:52:57 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4NEquCT49021118
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 May 2019 14:52:56 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6940B11C052;
- Thu, 23 May 2019 14:52:56 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 201B711C04A;
- Thu, 23 May 2019 14:52:56 +0000 (GMT)
-Received: from bali.lab.toulouse-stg.fr.ibm.com (unknown [9.101.4.17])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 May 2019 14:52:56 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/powernv: Show checkstop reason for NPU2 HMIs
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- ajd@linux.ibm.com, arbab@linux.ibm.com, aik@ozlabs.ru
-References: <20190523122804.4801-1-fbarrat@linux.ibm.com>
- <87blztqo7u.fsf@concordia.ellerman.id.au>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 23 May 2019 16:52:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+ by lists.ozlabs.org (Postfix) with ESMTP id 458t6w6jfszDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 01:03:34 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF3AA15AB;
+ Thu, 23 May 2019 08:03:31 -0700 (PDT)
+Received: from e110467-lin.cambridge.arm.com (e110467-lin.cambridge.arm.com
+ [10.1.196.75])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7E2B83F690;
+ Thu, 23 May 2019 08:03:29 -0700 (PDT)
+From: Robin Murphy <robin.murphy@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH v3 3/4] mm: introduce ARCH_HAS_PTE_DEVMAP
+Date: Thu, 23 May 2019 16:03:15 +0100
+Message-Id: <87554aa78478a02a63f2c4cf60a847279ae3eb3b.1558547956.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.21.0.dirty
+In-Reply-To: <cover.1558547956.git.robin.murphy@arm.com>
+References: <cover.1558547956.git.robin.murphy@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <87blztqo7u.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19052314-0008-0000-0000-000002E9B0CE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052314-0009-0000-0000-000022567006
-Message-Id: <5cf24147-006c-264f-462e-65961c4db0c6@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-23_12:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905230101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,123 +46,211 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clombard@linux.ibm.com, groug@kaod.org
+Cc: Ira Weiny <ira.weiny@intel.com>, anshuman.khandual@arm.com,
+ catalin.marinas@arm.com, x86@kernel.org, will.deacon@arm.com,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+ARCH_HAS_ZONE_DEVICE is somewhat meaningless in itself, and combined
+with the long-out-of-date comment can lead to the impression than an
+architecture may just enable it (since __add_pages() now "comprehends
+device memory" for itself) and expect things to work.
 
+In practice, however, ZONE_DEVICE users have little chance of
+functioning correctly without __HAVE_ARCH_PTE_DEVMAP, so let's clean
+that up the same way as ARCH_HAS_PTE_SPECIAL and make it the proper
+dependency so the real situation is clearer.
 
-Le 23/05/2019 à 15:45, Michael Ellerman a écrit :
-> Frederic Barrat <fbarrat@linux.ibm.com> writes:
-> 
->> If the kernel is notified of an HMI caused by the NPU2, it's currently
->> not being recognized and it logs the default message:
->>
->>      Unknown Malfunction Alert of type 3
->>
->> The NPU on Power 9 has 3 Fault Isolation Registers, so that's a lot of
->> possible causes, but we should at least log that it's an NPU problem
->> and report which FIR and which bit were raised if opal gave us the
->> information.
->>
->> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->> ---
->>
->> Could be merged independently from (the opal-api.h change is already
->> in the skiboot tree), but works better with, the matching skiboot
->> change:
->> http://patchwork.ozlabs.org/patch/1104076/
-> 
-> Well it *must* work with or without the skiboot change, because old/new
-> kernels will run on old/new skiboots.
-> 
-> It looks like it will work fine, we just won't get any extra information
-> in xstop_reason, right?
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Acked-by: Oliver O'Halloran <oohall@gmail.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ arch/powerpc/Kconfig                         | 2 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 1 -
+ arch/x86/Kconfig                             | 2 +-
+ arch/x86/include/asm/pgtable.h               | 4 ++--
+ arch/x86/include/asm/pgtable_types.h         | 1 -
+ include/linux/mm.h                           | 4 ++--
+ include/linux/pfn_t.h                        | 4 ++--
+ mm/Kconfig                                   | 5 ++---
+ mm/gup.c                                     | 2 +-
+ 9 files changed, 11 insertions(+), 14 deletions(-)
 
-
-Yes, that's understood, and it was tested. On an old skiboot, we're now 
-printing that we got an NPU checkstop (instead of the "unknown 
-malfunction alert"), we just won't have the extra FIR info. That's what 
-I meant by "works better with the skiboot patch".
-
-   Fred
-
-
-
-> cheers
-> 
->> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
->> index e1577cfa7186..2492fe248e1e 100644
->> --- a/arch/powerpc/include/asm/opal-api.h
->> +++ b/arch/powerpc/include/asm/opal-api.h
->> @@ -568,6 +568,7 @@ enum OpalHMI_XstopType {
->>   	CHECKSTOP_TYPE_UNKNOWN	=	0,
->>   	CHECKSTOP_TYPE_CORE	=	1,
->>   	CHECKSTOP_TYPE_NX	=	2,
->> +	CHECKSTOP_TYPE_NPU	=	3
->>   };
->>   
->>   enum OpalHMI_CoreXstopReason {
->> diff --git a/arch/powerpc/platforms/powernv/opal-hmi.c b/arch/powerpc/platforms/powernv/opal-hmi.c
->> index 586ec71a4e17..de12a240b477 100644
->> --- a/arch/powerpc/platforms/powernv/opal-hmi.c
->> +++ b/arch/powerpc/platforms/powernv/opal-hmi.c
->> @@ -149,6 +149,43 @@ static void print_nx_checkstop_reason(const char *level,
->>   					xstop_reason[i].description);
->>   }
->>   
->> +static void print_npu_checkstop_reason(const char *level,
->> +					struct OpalHMIEvent *hmi_evt)
->> +{
->> +	uint8_t reason, reason_count, i;
->> +
->> +	/*
->> +	 * We may not have a checkstop reason on some combination of
->> +	 * hardware and/or skiboot version
->> +	 */
->> +	if (!hmi_evt->u.xstop_error.xstop_reason) {
->> +		printk("%s	NPU checkstop on chip %x\n", level,
->> +			be32_to_cpu(hmi_evt->u.xstop_error.u.chip_id));
->> +		return;
->> +	}
->> +
->> +	/*
->> +	 * NPU2 has 3 FIRs. Reason encoded on a byte as:
->> +	 *   2 bits for the FIR number
->> +	 *   6 bits for the bit number
->> +	 * It may be possible to find several reasons.
->> +	 *
->> +	 * We don't display a specific message per FIR bit as there
->> +	 * are too many and most are meaningless without the workbook
->> +	 * and/or hw team help anyway.
->> +	 */
->> +	reason_count = sizeof(hmi_evt->u.xstop_error.xstop_reason) /
->> +		sizeof(reason);
->> +	for (i = 0; i < reason_count; i++) {
->> +		reason = (hmi_evt->u.xstop_error.xstop_reason >> (8 * i)) & 0xFF;
->> +		if (reason)
->> +			printk("%s	NPU checkstop on chip %x: FIR%d bit %d is set\n",
->> +				level,
->> +				be32_to_cpu(hmi_evt->u.xstop_error.u.chip_id),
->> +				reason >> 6, reason & 0x3F);
->> +	}
->> +}
->> +
->>   static void print_checkstop_reason(const char *level,
->>   					struct OpalHMIEvent *hmi_evt)
->>   {
->> @@ -160,6 +197,9 @@ static void print_checkstop_reason(const char *level,
->>   	case CHECKSTOP_TYPE_NX:
->>   		print_nx_checkstop_reason(level, hmi_evt);
->>   		break;
->> +	case CHECKSTOP_TYPE_NPU:
->> +		print_npu_checkstop_reason(level, hmi_evt);
->> +		break;
->>   	default:
->>   		printk("%s	Unknown Malfunction Alert of type %d\n",
->>   		       level, type);
->> -- 
->> 2.21.0
-> 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..1120ff8ac715 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -128,6 +128,7 @@ config PPC
+ 	select ARCH_HAS_MMIOWB			if PPC64
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select ARCH_HAS_PMEM_API                if PPC64
++	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC64
+@@ -135,7 +136,6 @@ config PPC
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+-	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 7dede2e34b70..c6c2bdfb369b 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -90,7 +90,6 @@
+ #define _PAGE_SOFT_DIRTY	_RPAGE_SW3 /* software: software dirty tracking */
+ #define _PAGE_SPECIAL		_RPAGE_SW2 /* software: special page */
+ #define _PAGE_DEVMAP		_RPAGE_SW1 /* software: ZONE_DEVICE page */
+-#define __HAVE_ARCH_PTE_DEVMAP
+ 
+ /*
+  * Drivers request for cache inhibited pte mapping using _PAGE_NO_CACHE
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2bbbd4d1ba31..57c4e80bd368 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -69,6 +69,7 @@ config X86
+ 	select ARCH_HAS_KCOV			if X86_64
+ 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_PMEM_API		if X86_64
++	select ARCH_HAS_PTE_DEVMAP		if X86_64
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_REFCOUNT
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE	if X86_64
+@@ -79,7 +80,6 @@ config X86
+ 	select ARCH_HAS_STRICT_MODULE_RWX
+ 	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+-	select ARCH_HAS_ZONE_DEVICE		if X86_64
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 5e0509b41986..0bc530c4eb13 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -271,7 +271,7 @@ static inline int has_transparent_hugepage(void)
+ 	return boot_cpu_has(X86_FEATURE_PSE);
+ }
+ 
+-#ifdef __HAVE_ARCH_PTE_DEVMAP
++#ifdef CONFIG_ARCH_HAS_PTE_DEVMAP
+ static inline int pmd_devmap(pmd_t pmd)
+ {
+ 	return !!(pmd_val(pmd) & _PAGE_DEVMAP);
+@@ -732,7 +732,7 @@ static inline int pte_present(pte_t a)
+ 	return pte_flags(a) & (_PAGE_PRESENT | _PAGE_PROTNONE);
+ }
+ 
+-#ifdef __HAVE_ARCH_PTE_DEVMAP
++#ifdef CONFIG_ARCH_HAS_PTE_DEVMAP
+ static inline int pte_devmap(pte_t a)
+ {
+ 	return (pte_flags(a) & _PAGE_DEVMAP) == _PAGE_DEVMAP;
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index d6ff0bbdb394..b5e49e6bac63 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -103,7 +103,6 @@
+ #if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
+ #define _PAGE_NX	(_AT(pteval_t, 1) << _PAGE_BIT_NX)
+ #define _PAGE_DEVMAP	(_AT(u64, 1) << _PAGE_BIT_DEVMAP)
+-#define __HAVE_ARCH_PTE_DEVMAP
+ #else
+ #define _PAGE_NX	(_AT(pteval_t, 0))
+ #define _PAGE_DEVMAP	(_AT(pteval_t, 0))
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 9cd613a7f67b..f61c016de005 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -536,7 +536,7 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ struct mmu_gather;
+ struct inode;
+ 
+-#if !defined(__HAVE_ARCH_PTE_DEVMAP) || !defined(CONFIG_TRANSPARENT_HUGEPAGE)
++#if !defined(CONFIG_ARCH_HAS_PTE_DEVMAP) || !defined(CONFIG_TRANSPARENT_HUGEPAGE)
+ static inline int pmd_devmap(pmd_t pmd)
+ {
+ 	return 0;
+@@ -1754,7 +1754,7 @@ static inline void sync_mm_rss(struct mm_struct *mm)
+ }
+ #endif
+ 
+-#ifndef __HAVE_ARCH_PTE_DEVMAP
++#ifndef CONFIG_ARCH_HAS_PTE_DEVMAP
+ static inline int pte_devmap(pte_t pte)
+ {
+ 	return 0;
+diff --git a/include/linux/pfn_t.h b/include/linux/pfn_t.h
+index 7bb77850c65a..de8bc66b10a4 100644
+--- a/include/linux/pfn_t.h
++++ b/include/linux/pfn_t.h
+@@ -104,7 +104,7 @@ static inline pud_t pfn_t_pud(pfn_t pfn, pgprot_t pgprot)
+ #endif
+ #endif
+ 
+-#ifdef __HAVE_ARCH_PTE_DEVMAP
++#ifdef CONFIG_ARCH_HAS_PTE_DEVMAP
+ static inline bool pfn_t_devmap(pfn_t pfn)
+ {
+ 	const u64 flags = PFN_DEV|PFN_MAP;
+@@ -122,7 +122,7 @@ pmd_t pmd_mkdevmap(pmd_t pmd);
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+ pud_t pud_mkdevmap(pud_t pud);
+ #endif
+-#endif /* __HAVE_ARCH_PTE_DEVMAP */
++#endif /* CONFIG_ARCH_HAS_PTE_DEVMAP */
+ 
+ #ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
+ static inline bool pfn_t_special(pfn_t pfn)
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ee8d1f311858..3aeef0442d03 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -647,8 +647,7 @@ config IDLE_PAGE_TRACKING
+ 	  See Documentation/admin-guide/mm/idle_page_tracking.rst for
+ 	  more details.
+ 
+-# arch_add_memory() comprehends device memory
+-config ARCH_HAS_ZONE_DEVICE
++config ARCH_HAS_PTE_DEVMAP
+ 	bool
+ 
+ config ZONE_DEVICE
+@@ -656,7 +655,7 @@ config ZONE_DEVICE
+ 	depends on MEMORY_HOTPLUG
+ 	depends on MEMORY_HOTREMOVE
+ 	depends on SPARSEMEM_VMEMMAP
+-	depends on ARCH_HAS_ZONE_DEVICE
++	depends on ARCH_HAS_PTE_DEVMAP
+ 	select XARRAY_MULTI
+ 
+ 	help
+diff --git a/mm/gup.c b/mm/gup.c
+index 2c08248d4fa2..777010ca3bf0 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1799,7 +1799,7 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+ }
+ #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
+ 
+-#if defined(__HAVE_ARCH_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
++#if defined(CONFIG_ARCH_HAS_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+ static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+ 		unsigned long end, struct page **pages, int *nr)
+ {
+-- 
+2.21.0.dirty
 
