@@ -1,73 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B13275F4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:17:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458fS94GZrzDqVB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:17:45 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F66F275F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:19:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 458fVC4p49zDqX1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:19:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="AAAP5YCZ"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="CVE170U4"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458fPJ4FpDzDqSw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:15:16 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458fPC2ydfz9v1Qb;
- Thu, 23 May 2019 08:15:11 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=AAAP5YCZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id A52yZXVVQ62A; Thu, 23 May 2019 08:15:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458fPC0ZHTz9v1QZ;
- Thu, 23 May 2019 08:15:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558592111; bh=Jlz88m5HjbbbihdN5bCiI9iVmTNf3S1GrBwNBWdxKZo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=AAAP5YCZVxU55zVJGbMrfNo7GQ0r4p/FeYi1G9k9dBxeEsX40ms/cZwrhGR9/bMHO
- Au/I+OZ/j5nG5CRtitFiLqOMWg7Y8aHkn5ndxZLUs/36oZ89wwbaVVcenw74OsOsYW
- iNqQ5eJZIZC7Ap91KTyUVitfh7jNQwoN8IIA0JWU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EF2438B77D;
- Thu, 23 May 2019 08:15:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id kPF6yfx94bkP; Thu, 23 May 2019 08:15:11 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 69A7D8B75A;
- Thu, 23 May 2019 08:15:11 +0200 (CEST)
-Subject: Re: [RFC PATCH 4/7] powerpc: KASAN for 64bit Book3E
-To: Daniel Axtens <dja@axtens.net>, aneesh.kumar@linux.ibm.com,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458fT04ndkzDqCb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:18:28 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id z26so2648383pfg.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 23:18:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=R2DcKDY8hNYt3eHiRg3vn/4L/iz0wQN/kPiNKVfWds4=;
+ b=CVE170U4xMbO/w7cA7KC0/euQNYTd1c7+lLxedTjKkmfVv1znbxH93xNe25Yb35ypD
+ 3HMQB9HAtslOZa4CUGEHzLB6+SyhIJRaNa0AaVZT45JaCsHoP1aMjJQeoQ4OkGCWV5+X
+ 0JASCniFEqJl4I8I4GUn+oCOPB6ZjqnjfBu5o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=R2DcKDY8hNYt3eHiRg3vn/4L/iz0wQN/kPiNKVfWds4=;
+ b=R06QDxoILHHkx93ZYc4+D46PZsc/VQXXAZ+KDAFF6hCKTzlvZkZlgTM3qjuqWFGBB+
+ wdv9PqSj9NDGC+tQriIvJWGd27llxUQC876sZb+RNb7oWxuZfxcuG8eAt+jXIUS5P6sd
+ 8YwCntYqFZeyMd7xXNYeJt2lx8F+lPPWTsBfePbkDHcBKMzvdyUurQnMWVO/qFZ+Xy5d
+ zZ/UT+jKNlJxLv9oJ6/SghMv1DGdUzRRdCb9eBh5isGwQJttDITvrfTtSUuh1hSBzZxY
+ gfJ61IAZGK/C0p83WnIZjA616vGPteHRnx9c8DTZlUJNg8ZJO7NsfY+t9EIoiisB1vlL
+ OQ9A==
+X-Gm-Message-State: APjAAAU05rQfrf6u/kJt4G+khnqGvOKq93twieCs5lfgyzBzyN/19dOo
+ Ji+0T+V2OcD8b8GiWqijUsVWrg==
+X-Google-Smtp-Source: APXvYqxs3SYhudtRDiSCa4bTmgHLpb6SLa1gLx4fD2NK+/73BnnhCrhMqbKZ0v37NeiIa2sJvnvVMQ==
+X-Received: by 2002:a65:5647:: with SMTP id m7mr94371900pgs.348.1558592305053; 
+ Wed, 22 May 2019 23:18:25 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id 4sm9920517pfj.111.2019.05.22.23.18.23
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 22 May 2019 23:18:24 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, aneesh.kumar@linux.ibm.com,
  bsingharora@gmail.com
+Subject: Re: [RFC PATCH 0/7] powerpc: KASAN for 64-bit 3s radix
+In-Reply-To: <584b6b5b-7051-e2de-ca4e-a686c5491aad@c-s.fr>
 References: <20190523052120.18459-1-dja@axtens.net>
- <20190523052120.18459-5-dja@axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <8046c75a-6b05-3c6a-2520-3b9b48d3cdc8@c-s.fr>
-Date: Thu, 23 May 2019 08:15:11 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ <584b6b5b-7051-e2de-ca4e-a686c5491aad@c-s.fr>
+Date: Thu, 23 May 2019 16:18:20 +1000
+Message-ID: <87k1ehzob7.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <20190523052120.18459-5-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,277 +78,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
- kasan-dev@googlegroups.com
+Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
 
+> Hi Daniel,
+>
+> Le 23/05/2019 =C3=A0 07:21, Daniel Axtens a =C3=A9crit=C2=A0:
+>> Building on the work of Christophe, Aneesh and Balbir, I've ported
+>> KASAN to Book3S radix.
+>>=20
+>> It builds on top Christophe's work on 32bit, and includes my work for
+>> 64-bit Book3E (3S doesn't really depend on 3E, but it was handy to
+>> have around when developing and debugging).
+>>=20
+>> This provides full inline instrumentation on radix, but does require
+>> that you be able to specify the amount of memory on the system at
+>> compile time. More details in patch 7.
+>>=20
+>> Regards,
+>> Daniel
+>>=20
+>> Daniel Axtens (7):
+>>    kasan: do not open-code addr_has_shadow
+>>    kasan: allow architectures to manage the memory-to-shadow mapping
+>>    kasan: allow architectures to provide an outline readiness check
+>>    powerpc: KASAN for 64bit Book3E
+>
+> I see you are still hacking the core part of KASAN.
+>
+> Did you have a look at my RFC patch=20
+> (https://patchwork.ozlabs.org/patch/1068260/) which demonstrate that=20
+> full KASAN can be implemented on book3E/64 without those hacks ?
 
-Le 23/05/2019 à 07:21, Daniel Axtens a écrit :
-> Wire up KASAN. Only outline instrumentation is supported.
-> 
-> The KASAN shadow area is mapped into vmemmap space:
-> 0x8000 0400 0000 0000 to 0x8000 0600 0000 0000.
-> To do this we require that vmemmap be disabled. (This is the default
-> in the kernel config that QorIQ provides for the machine in their
-> SDK anyway - they use flat memory.)
-> 
-> Only the kernel linear mapping (0xc000...) is checked. The vmalloc and
-> ioremap areas (also in 0x800...) are all mapped to the zero page. As
-> with the Book3S hash series, this requires overriding the memory <->
-> shadow mapping.
-> 
-> Also, as with both previous 64-bit series, early instrumentation is not
-> supported.  It would allow us to drop the check_return_arch_not_ready()
-> hook in the KASAN core, but it's tricky to get it set up early enough:
-> we need it setup before the first call to instrumented code like printk().
-> Perhaps in the future.
-> 
-> Only KASAN_MINIMAL works.
+I haven't gone back and looked at the book3e patches as I've just been
+working on the 3s stuff. I will have a look at that for the next version
+for sure. I just wanted to get the 3s stuff out into the world sooner
+rather than later! I don't think 3s uses those hacks so we can probably
+drop them entirely.
 
-See https://patchwork.ozlabs.org/patch/1068260/ for a full implementation
+Regards,
+Daniel
 
-Christophe
-
-> 
-> Tested on e6500. KVM, kexec and xmon have not been tested.
-> 
-> The test_kasan module fires warnings as expected, except for the
-> following tests:
-> 
->   - Expected/by design:
-> kasan test: memcg_accounted_kmem_cache allocate memcg accounted object
-> 
->   - Due to only supporting KASAN_MINIMAL:
-> kasan test: kasan_stack_oob out-of-bounds on stack
-> kasan test: kasan_global_oob out-of-bounds global variable
-> kasan test: kasan_alloca_oob_left out-of-bounds to left on alloca
-> kasan test: kasan_alloca_oob_right out-of-bounds to right on alloca
-> kasan test: use_after_scope_test use-after-scope on int
-> kasan test: use_after_scope_test use-after-scope on array
-> 
-> Thanks to those who have done the heavy lifting over the past several
-> years:
->   - Christophe's 32 bit series: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-February/185379.html
->   - Aneesh's Book3S hash series: https://lwn.net/Articles/655642/
->   - Balbir's Book3S radix series: https://patchwork.ozlabs.org/patch/795211/
-> 
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
-> Cc: Balbir Singh <bsingharora@gmail.com>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> [- Removed EXPORT_SYMBOL of the static key
->   - Fixed most checkpatch problems
->   - Replaced kasan_zero_page[] by kasan_early_shadow_page[]
->   - Reduced casting mess by using intermediate locals
->   - Fixed build failure on pmac32_defconfig]
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->   arch/powerpc/Kconfig                         |  1 +
->   arch/powerpc/Kconfig.debug                   |  2 +-
->   arch/powerpc/include/asm/kasan.h             | 71 ++++++++++++++++++++
->   arch/powerpc/mm/kasan/Makefile               |  1 +
->   arch/powerpc/mm/kasan/kasan_init_book3e_64.c | 50 ++++++++++++++
->   arch/powerpc/mm/nohash/Makefile              |  5 ++
->   6 files changed, 129 insertions(+), 1 deletion(-)
->   create mode 100644 arch/powerpc/mm/kasan/kasan_init_book3e_64.c
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 6a66a2da5b1a..4e266b019dd7 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -170,6 +170,7 @@ config PPC
->   	select HAVE_ARCH_AUDITSYSCALL
->   	select HAVE_ARCH_JUMP_LABEL
->   	select HAVE_ARCH_KASAN			if PPC32
-> +	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64 && !SPARSEMEM_VMEMMAP
->   	select HAVE_ARCH_KGDB
->   	select HAVE_ARCH_MMAP_RND_BITS
->   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-> index c59920920ddc..23a37facc854 100644
-> --- a/arch/powerpc/Kconfig.debug
-> +++ b/arch/powerpc/Kconfig.debug
-> @@ -396,5 +396,5 @@ config PPC_FAST_ENDIAN_SWITCH
->   
->   config KASAN_SHADOW_OFFSET
->   	hex
-> -	depends on KASAN
-> +	depends on KASAN && PPC32
->   	default 0xe0000000
-> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-> index 296e51c2f066..ae410f0e060d 100644
-> --- a/arch/powerpc/include/asm/kasan.h
-> +++ b/arch/powerpc/include/asm/kasan.h
-> @@ -21,12 +21,15 @@
->   #define KASAN_SHADOW_START	(KASAN_SHADOW_OFFSET + \
->   				 (PAGE_OFFSET >> KASAN_SHADOW_SCALE_SHIFT))
->   
-> +#ifdef CONFIG_PPC32
->   #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
->   
->   #define KASAN_SHADOW_END	0UL
->   
->   #define KASAN_SHADOW_SIZE	(KASAN_SHADOW_END - KASAN_SHADOW_START)
->   
-> +#endif /* CONFIG_PPC32 */
-> +
->   #ifdef CONFIG_KASAN
->   void kasan_early_init(void);
->   void kasan_mmu_init(void);
-> @@ -36,5 +39,73 @@ static inline void kasan_init(void) { }
->   static inline void kasan_mmu_init(void) { }
->   #endif
->   
-> +#ifdef CONFIG_PPC_BOOK3E_64
-> +#include <asm/pgtable.h>
-> +#include <linux/jump_label.h>
-> +
-> +/*
-> + * We don't put this in Kconfig as we only support KASAN_MINIMAL, and
-> + * that will be disabled if the symbol is available in Kconfig
-> + */
-> +#define KASAN_SHADOW_OFFSET	ASM_CONST(0x6800040000000000)
-> +
-> +#define KASAN_SHADOW_SIZE	(KERN_VIRT_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
-> +
-> +extern struct static_key_false powerpc_kasan_enabled_key;
-> +extern unsigned char kasan_early_shadow_page[];
-> +
-> +static inline bool kasan_arch_is_ready_book3e(void)
-> +{
-> +	if (static_branch_likely(&powerpc_kasan_enabled_key))
-> +		return true;
-> +	return false;
-> +}
-> +#define kasan_arch_is_ready kasan_arch_is_ready_book3e
-> +
-> +static inline void *kasan_mem_to_shadow_book3e(const void *ptr)
-> +{
-> +	unsigned long addr = (unsigned long)ptr;
-> +
-> +	if (addr >= KERN_VIRT_START && addr < KERN_VIRT_START + KERN_VIRT_SIZE)
-> +		return kasan_early_shadow_page;
-> +
-> +	return (void *)(addr >> KASAN_SHADOW_SCALE_SHIFT) + KASAN_SHADOW_OFFSET;
-> +}
-> +#define kasan_mem_to_shadow kasan_mem_to_shadow_book3e
-> +
-> +static inline void *kasan_shadow_to_mem_book3e(const void *shadow_addr)
-> +{
-> +	/*
-> +	 * We map the entire non-linear virtual mapping onto the zero page so if
-> +	 * we are asked to map the zero page back just pick the beginning of that
-> +	 * area.
-> +	 */
-> +	if (shadow_addr >= (void *)kasan_early_shadow_page &&
-> +	    shadow_addr < (void *)(kasan_early_shadow_page + PAGE_SIZE))
-> +		return (void *)KERN_VIRT_START;
-> +
-> +	return (void *)(((unsigned long)shadow_addr - KASAN_SHADOW_OFFSET) <<
-> +			KASAN_SHADOW_SCALE_SHIFT);
-> +}
-> +#define kasan_shadow_to_mem kasan_shadow_to_mem_book3e
-> +
-> +static inline bool kasan_addr_has_shadow_book3e(const void *ptr)
-> +{
-> +	unsigned long addr = (unsigned long)ptr;
-> +
-> +	/*
-> +	 * We want to specifically assert that the addresses in the 0x8000...
-> +	 * region have a shadow, otherwise they are considered by the kasan
-> +	 * core to be wild pointers
-> +	 */
-> +	if (addr >= KERN_VIRT_START && addr < (KERN_VIRT_START + KERN_VIRT_SIZE))
-> +		return true;
-> +
-> +	return (ptr >= kasan_shadow_to_mem((void *)KASAN_SHADOW_START));
-> +}
-> +#define kasan_addr_has_shadow kasan_addr_has_shadow_book3e
-> +
-> +#endif /* CONFIG_PPC_BOOK3E_64 */
-> +
->   #endif /* __ASSEMBLY */
->   #endif
-> diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
-> index 6577897673dd..f8f164ad8ade 100644
-> --- a/arch/powerpc/mm/kasan/Makefile
-> +++ b/arch/powerpc/mm/kasan/Makefile
-> @@ -3,3 +3,4 @@
->   KASAN_SANITIZE := n
->   
->   obj-$(CONFIG_PPC32)           += kasan_init_32.o
-> +obj-$(CONFIG_PPC_BOOK3E_64)   += kasan_init_book3e_64.o
-> diff --git a/arch/powerpc/mm/kasan/kasan_init_book3e_64.c b/arch/powerpc/mm/kasan/kasan_init_book3e_64.c
-> new file mode 100644
-> index 000000000000..f116c211d83c
-> --- /dev/null
-> +++ b/arch/powerpc/mm/kasan/kasan_init_book3e_64.c
-> @@ -0,0 +1,50 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#define DISABLE_BRANCH_PROFILING
-> +
-> +#include <linux/kasan.h>
-> +#include <linux/printk.h>
-> +#include <linux/memblock.h>
-> +#include <linux/sched/task.h>
-> +#include <asm/pgalloc.h>
-> +
-> +DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
-> +
-> +static void __init kasan_init_region(struct memblock_region *reg)
-> +{
-> +	void *start = __va(reg->base);
-> +	void *end = __va(reg->base + reg->size);
-> +	unsigned long k_start, k_end, k_cur;
-> +
-> +	if (start >= end)
-> +		return;
-> +
-> +	k_start = (unsigned long)kasan_mem_to_shadow(start);
-> +	k_end = (unsigned long)kasan_mem_to_shadow(end);
-> +
-> +	for (k_cur = k_start; k_cur < k_end; k_cur += PAGE_SIZE) {
-> +		void *va = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> +
-> +		map_kernel_page(k_cur, __pa(va), PAGE_KERNEL);
-> +	}
-> +	flush_tlb_kernel_range(k_start, k_end);
-> +}
-> +
-> +void __init kasan_init(void)
-> +{
-> +	struct memblock_region *reg;
-> +
-> +	for_each_memblock(memory, reg)
-> +		kasan_init_region(reg);
-> +
-> +	/* map the zero page RO */
-> +	map_kernel_page((unsigned long)kasan_early_shadow_page,
-> +			__pa(kasan_early_shadow_page), PAGE_KERNEL_RO);
-> +
-> +	/* Turn on checking */
-> +	static_branch_inc(&powerpc_kasan_enabled_key);
-> +
-> +	/* Enable error messages */
-> +	init_task.kasan_depth = 0;
-> +	pr_info("KASAN init done (64-bit Book3E)\n");
-> +}
-> diff --git a/arch/powerpc/mm/nohash/Makefile b/arch/powerpc/mm/nohash/Makefile
-> index 33b6f6f29d3f..310149f217d7 100644
-> --- a/arch/powerpc/mm/nohash/Makefile
-> +++ b/arch/powerpc/mm/nohash/Makefile
-> @@ -16,3 +16,8 @@ endif
->   # This is necessary for booting with kcov enabled on book3e machines
->   KCOV_INSTRUMENT_tlb.o := n
->   KCOV_INSTRUMENT_fsl_booke.o := n
-> +
-> +ifdef CONFIG_KASAN
-> +CFLAGS_fsl_booke_mmu.o		+= -DDISABLE_BRANCH_PROFILING
-> +CFLAGS_tlb.o			+= -DDISABLE_BRANCH_PROFILING
-> +endif
-> 
+>
+> Christophe
+>
+>>    kasan: allow arches to provide their own early shadow setup
+>>    kasan: allow arches to hook into global registration
+>>    powerpc: Book3S 64-bit "heavyweight" KASAN support
+>>=20
+>>   arch/powerpc/Kconfig                         |   2 +
+>>   arch/powerpc/Kconfig.debug                   |  17 ++-
+>>   arch/powerpc/Makefile                        |   7 ++
+>>   arch/powerpc/include/asm/kasan.h             | 116 +++++++++++++++++++
+>>   arch/powerpc/kernel/prom.c                   |  40 +++++++
+>>   arch/powerpc/mm/kasan/Makefile               |   2 +
+>>   arch/powerpc/mm/kasan/kasan_init_book3e_64.c |  50 ++++++++
+>>   arch/powerpc/mm/kasan/kasan_init_book3s_64.c |  67 +++++++++++
+>>   arch/powerpc/mm/nohash/Makefile              |   5 +
+>>   include/linux/kasan.h                        |  13 +++
+>>   mm/kasan/generic.c                           |   9 +-
+>>   mm/kasan/generic_report.c                    |   2 +-
+>>   mm/kasan/init.c                              |  10 ++
+>>   mm/kasan/kasan.h                             |   6 +-
+>>   mm/kasan/report.c                            |   6 +-
+>>   mm/kasan/tags.c                              |   3 +-
+>>   16 files changed, 345 insertions(+), 10 deletions(-)
+>>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_book3e_64.c
+>>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_book3s_64.c
+>>=20
