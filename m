@@ -1,76 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4057A27B53
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 13:05:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1193727A7C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:26:43 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458lzN33XYzDqdD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 20:26:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458mrM2MmNzDqdq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 21:05:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.8.41; helo=eur04-vi1-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="hS4Slwo3"; 
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="ipB3oOSm"; 
  dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com
+ (mail-eopbgr80041.outbound.protection.outlook.com [40.107.8.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458ly05Nq3zDqX0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:25:28 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id q15so5200963wmj.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 03:25:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=jhXKgTFg9TGyapt/Wg0K0EHXXYsIVuNn8IRint8KwaY=;
- b=hS4Slwo3RwY1NewVpLWNl2+kR4blGJ/6yaEYtj7DsYTFV147VMXN4gUbn3wgwf5Wxx
- rvn5sSr0yAN3RWEOyb7cGkMlcsGyvJtvcOB2LvmU8egwtW8DsswH3UivToQL+mEZ74KW
- h+7Omca6Qfc8iGh/gi2UIizPRlgBtn20xP9sk3CgwzB6KDL/mnlgj9R/T5d0MAPLjG34
- o/EPZ/9izbLqwIVYLKuA8Ie8YUbi3Y8izlvmcTftUCeRI9bQ5cLaWZWSTL9pXhi2F0lW
- iBN+DR1qawy45dymIxfjZxaGMIjdsYZqVQtIl/Jl1OjXADQwjFU5UXvm+vMgbocHA+i9
- 3dQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :mime-version:content-transfer-encoding;
- bh=jhXKgTFg9TGyapt/Wg0K0EHXXYsIVuNn8IRint8KwaY=;
- b=GhD62sGRtNtIYGIh0yWq9gdqY/8d1chL/S1XENYDDCSnGWgTijqDnLkxPFGfgDFW+D
- oWeX/bRc5tzJzkpP/Mz/yj7EeDq2hntwZIXQriwKw1uYmIY6H8m8d4w1ykAJcTQI5KrF
- 0mjSF5uXL7CZ0BNe25Uzyz8PLlT1Z+BqEN7kFYAvg4x9BOzie4Q58ikZSaXGbKv531dy
- lJIV6plEZHg4B0YM0Y8/oTow/+sr/tpIEIcg7r6y7M2TrIQPFvkArJmhdt3AMmRh63eb
- ZFPRgwU0TWOoa/VUQWp1eAXPMPTS+A/HkQ62ErujtlqjyA86HzaUAAgDxUp1H4UmLdVW
- wjcQ==
-X-Gm-Message-State: APjAAAWVdNZSP69/WprmE5hj8GxnSr6eBym7SiIkIwp073KWLRAbA9lY
- y+jCYG2r3iMSmbJ9IkrqoRc=
-X-Google-Smtp-Source: APXvYqy6AZ8N3abqshqgIWcdkAkzE2sYArWIM4dCqSpWjtdBCh4+BA62g62qbgTWHlJU1efLcQhTWg==
-X-Received: by 2002:a05:600c:230a:: with SMTP id
- 10mr10567550wmo.13.1558607124467; 
- Thu, 23 May 2019 03:25:24 -0700 (PDT)
-Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net.
- [78.225.224.134])
- by smtp.gmail.com with ESMTPSA id s11sm51472858wrb.71.2019.05.23.03.25.23
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 23 May 2019 03:25:23 -0700 (PDT)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
- id AC4D21146DCB; Thu, 23 May 2019 12:25:22 +0200 (CEST)
-From: Mathieu Malaterre <malat@debian.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] =?UTF-8?q?powerpc:=20Remove=20variable=20=E2=80=98path?=
- =?UTF-8?q?=E2=80=99=20since=20not=20used?=
-Date: Thu, 23 May 2019 12:25:20 +0200
-Message-Id: <20190523102520.20585-1-malat@debian.org>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458mpl3JhDzDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 21:04:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gWFXIUND1yhi6KvykPjcq7iJOBttnw+ZltAshOO+LFk=;
+ b=ipB3oOSmZOXUwY+wouOPYgARl8OvunfdGvSLFxlkorpvISiwOqmhZj5yRB6nl8XVpR0AhPKAiAfPoxq5S8mbodJ7LW+e93T7xQsxs/IOAQUAgzPmlEtFtuKGPdWHUuX5Mjq6lN7CNJJxmASwoQYBizvfDhrreEIVwdFzs1c7c2M=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
+ VE1PR04MB6383.eurprd04.prod.outlook.com (20.179.232.14) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.16; Thu, 23 May 2019 11:04:03 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::a5b5:13f5:f89c:9a30]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::a5b5:13f5:f89c:9a30%7]) with mapi id 15.20.1922.016; Thu, 23 May 2019
+ 11:04:03 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Nicolin Chen <nicoleotsuka@gmail.com>, "broonie@kernel.org"
+ <broonie@kernel.org>
+Subject: Re: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
+Thread-Topic: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
+Thread-Index: AdURVzqGXKVFB9wWT1W2rJfIdiMqrw==
+Date: Thu, 23 May 2019 11:04:03 +0000
+Message-ID: <VE1PR04MB6479FF8E1B55E9BE67E7B0ECE3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 975836e6-1c92-43ec-e790-08d6df6e5e21
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
+ SRVR:VE1PR04MB6383; 
+x-ms-traffictypediagnostic: VE1PR04MB6383:
+x-microsoft-antispam-prvs: <VE1PR04MB6383C7DF382309171A4AE1F8E3010@VE1PR04MB6383.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 00462943DE
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(39860400002)(376002)(396003)(136003)(346002)(366004)(199004)(189003)(7736002)(14454004)(73956011)(66476007)(66556008)(476003)(9686003)(305945005)(33656002)(478600001)(229853002)(26005)(74316002)(55016002)(66946007)(52536014)(5660300002)(64756008)(8936002)(256004)(186003)(81156014)(81166006)(8676002)(71200400001)(71190400001)(66446008)(76116006)(68736007)(6436002)(486006)(86362001)(2906002)(53936002)(3846002)(6116002)(6246003)(4326008)(316002)(2501003)(25786009)(6506007)(99286004)(7696005)(54906003)(66066001)(102836004)(110136005);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6383;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: Z3UtjRWDhxyGSOeUEUjfz5HObGKR4du1nIVJx8IQ6wnvA1KMZCJG+CLT2mYV4Z3vTCRJNzxf9Yl6sX3zaSJPdrOIS+YtmIGcO98766jauftVLFYeR2AOWsQ2c5B5qID4e0OlgwUixoa5E05iR1r0dkirp338KmJBn+q3al9rDGEAmEOTh+RzJzzXyo0bqXjY31JyDRnLOrA2rQtJi1CCz7jUH8+rTKqLEMBt5rrjnbWjg11k2CogxyZZM44/nYkbkoVT4IveJJjxzbXxoSpiTlwb+EmN3jLUtOURXUx0wXPHSVmrp0AU5knKw/rklX4+j+4zQtll+N9yXsQ6EWE1UTNImxkV4focrVBALhmMiGF8fCaUPD2wuIvbAePKNy+eCYHENaYMCMOA22ufNeTeibfotxY/AyLaGdPZgKn4sFk=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 975836e6-1c92-43ec-e790-08d6df6e5e21
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 May 2019 11:04:03.7101 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: shengjiu.wang@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6383
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,65 +92,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit eab00a208eb6 ("powerpc: Move `path` variable inside
-DEBUG_PROM") DEBUG_PROM sentinels were added to silence a warning
-(treated as error with W=1):
+Hi
 
-  arch/powerpc/kernel/prom_init.c:1388:8: error: variable ‘path’ set but not used [-Werror=unused-but-set-variable]
+> On Thu, May 23, 2019 at 09:53:42AM +0000, S.j. Wang wrote:
+> > > > +     /*
+> > > > +      * Add fifo reset here, because the regcache_sync will
+> > > > +      * write one more data to ETDR.
+> > > > +      * Which will cause channel shift.
+> > >
+> > > Sounds like a bug to me...should fix it first by marking the data
+> > > registers as volatile.
+> > >
+> > The ETDR is a writable register, it is not volatile. Even we change it
+> > to Volatile, I don't think we can't avoid this issue. for the
+> > regcache_sync Just to write this register, it is correct behavior.
+>=20
+> Is that so? Quoting the comments of regcache_sync():
+> "* regcache_sync - Sync the register cache with the hardware.
+>  *
+>  * @map: map to configure.
+>  *
+>  * Any registers that should not be synced should be marked as
+>  * volatile."
+>=20
+> If regcache_sync() does sync volatile registers too as you said, I don't =
+mind
+> having this FIFO reset WAR for now, though I think this mismatch between
+> the comments and the actual behavior then should get people's attention.
+>=20
+> Thank you
 
-Rework the original patch and simplify the code, by removing the
-variable ‘path’ completely. Fix line over 90 characters.
+ETDR is not volatile,  if we mark it is volatile, is it correct?
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
----
- arch/powerpc/kernel/prom_init.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 7edb23861162..f6df4ddebb82 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -1566,9 +1566,6 @@ static void __init reserve_mem(u64 base, u64 size)
- static void __init prom_init_mem(void)
- {
- 	phandle node;
--#ifdef DEBUG_PROM
--	char *path;
--#endif
- 	char type[64];
- 	unsigned int plen;
- 	cell_t *p, *endp;
-@@ -1590,9 +1587,6 @@ static void __init prom_init_mem(void)
- 	prom_debug("root_size_cells: %x\n", rsc);
- 
- 	prom_debug("scanning memory:\n");
--#ifdef DEBUG_PROM
--	path = prom_scratch;
--#endif
- 
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = 0;
-@@ -1617,9 +1611,10 @@ static void __init prom_init_mem(void)
- 		endp = p + (plen / sizeof(cell_t));
- 
- #ifdef DEBUG_PROM
--		memset(path, 0, sizeof(prom_scratch));
--		call_prom("package-to-path", 3, 1, node, path, sizeof(prom_scratch) - 1);
--		prom_debug("  node %s :\n", path);
-+		memset(prom_scratch, 0, sizeof(prom_scratch));
-+		call_prom("package-to-path", 3, 1, node, prom_scratch,
-+			  sizeof(prom_scratch) - 1);
-+		prom_debug("  node %s :\n", prom_scratch);
- #endif /* DEBUG_PROM */
- 
- 		while ((endp - p) >= (rac + rsc)) {
--- 
-2.20.1
+Bets regards
+Wang shengjiu
 
