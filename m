@@ -1,71 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1AD275FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:26:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F66F275F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:19:34 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458fVC4p49zDqX1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:19:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458fdv20KPzDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:26:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.167.172; helo=mail-oi1-f172.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="CVE170U4"; 
- dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com
+ [209.85.167.172])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458fT04ndkzDqCb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:18:28 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id z26so2648383pfg.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 23:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=R2DcKDY8hNYt3eHiRg3vn/4L/iz0wQN/kPiNKVfWds4=;
- b=CVE170U4xMbO/w7cA7KC0/euQNYTd1c7+lLxedTjKkmfVv1znbxH93xNe25Yb35ypD
- 3HMQB9HAtslOZa4CUGEHzLB6+SyhIJRaNa0AaVZT45JaCsHoP1aMjJQeoQ4OkGCWV5+X
- 0JASCniFEqJl4I8I4GUn+oCOPB6ZjqnjfBu5o=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458fcZ1KcKzDqT9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:25:00 +1000 (AEST)
+Received: by mail-oi1-f172.google.com with SMTP id y124so3538615oiy.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 23:24:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=R2DcKDY8hNYt3eHiRg3vn/4L/iz0wQN/kPiNKVfWds4=;
- b=R06QDxoILHHkx93ZYc4+D46PZsc/VQXXAZ+KDAFF6hCKTzlvZkZlgTM3qjuqWFGBB+
- wdv9PqSj9NDGC+tQriIvJWGd27llxUQC876sZb+RNb7oWxuZfxcuG8eAt+jXIUS5P6sd
- 8YwCntYqFZeyMd7xXNYeJt2lx8F+lPPWTsBfePbkDHcBKMzvdyUurQnMWVO/qFZ+Xy5d
- zZ/UT+jKNlJxLv9oJ6/SghMv1DGdUzRRdCb9eBh5isGwQJttDITvrfTtSUuh1hSBzZxY
- gfJ61IAZGK/C0p83WnIZjA616vGPteHRnx9c8DTZlUJNg8ZJO7NsfY+t9EIoiisB1vlL
- OQ9A==
-X-Gm-Message-State: APjAAAU05rQfrf6u/kJt4G+khnqGvOKq93twieCs5lfgyzBzyN/19dOo
- Ji+0T+V2OcD8b8GiWqijUsVWrg==
-X-Google-Smtp-Source: APXvYqxs3SYhudtRDiSCa4bTmgHLpb6SLa1gLx4fD2NK+/73BnnhCrhMqbKZ0v37NeiIa2sJvnvVMQ==
-X-Received: by 2002:a65:5647:: with SMTP id m7mr94371900pgs.348.1558592305053; 
- Wed, 22 May 2019 23:18:25 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id 4sm9920517pfj.111.2019.05.22.23.18.23
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 22 May 2019 23:18:24 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, aneesh.kumar@linux.ibm.com,
- bsingharora@gmail.com
-Subject: Re: [RFC PATCH 0/7] powerpc: KASAN for 64-bit 3s radix
-In-Reply-To: <584b6b5b-7051-e2de-ca4e-a686c5491aad@c-s.fr>
-References: <20190523052120.18459-1-dja@axtens.net>
- <584b6b5b-7051-e2de-ca4e-a686c5491aad@c-s.fr>
-Date: Thu, 23 May 2019 16:18:20 +1000
-Message-ID: <87k1ehzob7.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=JIn/q7zKQFf8gmi5v9papJxAFnDUINxghtnsJDZsC44=;
+ b=YwciHI11Za4CAqLfgvto4dwmA/1KXjluRTWUFzFl23WhhPrysk5rIFLDDG31Yaeu5/
+ u4m7LEGuLINYj2cMAUKHwddKZCHYM+X1cfjFwNIvrxzZ13yZi5gx0PsqsA7suaGjI7Fv
+ P2BmHz+0cia2FCW5vfNr5o9YaRJapU+VTmAdVhK0E5RDbGK4uO2oZTAMsnor5Kc5Rbm1
+ hT+6Sc7dmsSRNVwC6EL3R1ze0QwwaDn+8Sntk4zkS5cRsUZbVrhCnCSBW2e5nwQpBiw9
+ 8TewfRedCuLSIE3O/E4H+wd7VHPPH+cJSCwa6Nc8yEyqdVs1xp2VaUTXC8X8U1ApVfo4
+ sh3w==
+X-Gm-Message-State: APjAAAUeFRcxg9S4Dq0mXhcxuc8sEisD91O5Z/MsD/sTjMgL5acDRTo+
+ DWkQcOKg75scFdfaw6FnQNcgnxUbB/jVUSMzbeY=
+X-Google-Smtp-Source: APXvYqwVAdmBowoAqjhfyadGdVsK09BtL/fjQoc2Z+MFbgWAfp3g+5XZMKYifCIliX/UPYFpFZRaId8BLlSJGw7i67U=
+X-Received: by 2002:aca:ed44:: with SMTP id l65mr1794925oih.107.1558592697027; 
+ Wed, 22 May 2019 23:24:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
+ <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
+In-Reply-To: <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
+From: Mathieu Malaterre <malat@debian.org>
+Date: Thu, 23 May 2019 08:24:45 +0200
+Message-ID: <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
+Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,75 +62,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
+Salut Christophe,
 
-> Hi Daniel,
+On Wed, May 22, 2019 at 2:20 PM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
 >
-> Le 23/05/2019 =C3=A0 07:21, Daniel Axtens a =C3=A9crit=C2=A0:
->> Building on the work of Christophe, Aneesh and Balbir, I've ported
->> KASAN to Book3S radix.
->>=20
->> It builds on top Christophe's work on 32bit, and includes my work for
->> 64-bit Book3E (3S doesn't really depend on 3E, but it was handy to
->> have around when developing and debugging).
->>=20
->> This provides full inline instrumentation on radix, but does require
->> that you be able to specify the amount of memory on the system at
->> compile time. More details in patch 7.
->>=20
->> Regards,
->> Daniel
->>=20
->> Daniel Axtens (7):
->>    kasan: do not open-code addr_has_shadow
->>    kasan: allow architectures to manage the memory-to-shadow mapping
->>    kasan: allow architectures to provide an outline readiness check
->>    powerpc: KASAN for 64bit Book3E
 >
-> I see you are still hacking the core part of KASAN.
 >
-> Did you have a look at my RFC patch=20
-> (https://patchwork.ozlabs.org/patch/1068260/) which demonstrate that=20
-> full KASAN can be implemented on book3E/64 without those hacks ?
+> Le 22/05/2019 =C3=A0 14:15, Mathieu Malaterre a =C3=A9crit :
+> > Hi all,
+> >
+> > I have not boot my G4 in a while, today using master here is what I see=
+:
+> >
+> > done
+> > Setting btext !
+> > W=3D640 H=3D488 LB=3D768 addr=3D0x9c008000
+> > copying OF device tree...
+> > starting device tree allocs at 01401000
+> > otloc_up(00100000, 0013d948)
+> >    trying: 0x01401000
+> >    trying: 0x01501000
+> >   -=E2=80=BA 01501000
+> >    alloc_bottom : 01601000
+> >    alloc_top    : 20000000
+> >    alloc_top_hi : 20000000
+> >    nmo_top      : 20000000
+> >    ram_top      : 20000000
+> > Building dt strings...
+> > Building dt structure...
+> > reserved memory map:
+> >    00d40000 - 006c1000
+> > Device tree strings 0x01502000 -> 0x00000007
+> > Device tree struct 0x01503000 -> 0x00000007
+> > Quiescing Open Firmware ...
+> > Booting Linux via __start() @ 0x001400000
+> > ->dt_headr_start=3D0x01501000
+> >
+> > Any suggestions before I start a bisect ?
+> >
+>
+> Have you tried without CONFIG_PPC_KUEP and CONFIG_PPC_KUAP ?
 
-I haven't gone back and looked at the book3e patches as I've just been
-working on the 3s stuff. I will have a look at that for the next version
-for sure. I just wanted to get the 3s stuff out into the world sooner
-rather than later! I don't think 3s uses those hacks so we can probably
-drop them entirely.
+Using locally:
 
-Regards,
-Daniel
+diff --git a/arch/powerpc/configs/g4_defconfig
+b/arch/powerpc/configs/g4_defconfig
+index 14d0376f637d..916bce8ce9c3 100644
+--- a/arch/powerpc/configs/g4_defconfig
++++ b/arch/powerpc/configs/g4_defconfig
+@@ -32,6 +32,8 @@ CONFIG_USERFAULTFD=3Dy
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_PROFILING=3Dy
+ CONFIG_G4_CPU=3Dy
++# CONFIG_PPC_KUEP is not set
++# CONFIG_PPC_KUAP is not set
+ CONFIG_PANIC_TIMEOUT=3D0
+ # CONFIG_PPC_CHRP is not set
+ CONFIG_CPU_FREQ=3Dy
 
->
-> Christophe
->
->>    kasan: allow arches to provide their own early shadow setup
->>    kasan: allow arches to hook into global registration
->>    powerpc: Book3S 64-bit "heavyweight" KASAN support
->>=20
->>   arch/powerpc/Kconfig                         |   2 +
->>   arch/powerpc/Kconfig.debug                   |  17 ++-
->>   arch/powerpc/Makefile                        |   7 ++
->>   arch/powerpc/include/asm/kasan.h             | 116 +++++++++++++++++++
->>   arch/powerpc/kernel/prom.c                   |  40 +++++++
->>   arch/powerpc/mm/kasan/Makefile               |   2 +
->>   arch/powerpc/mm/kasan/kasan_init_book3e_64.c |  50 ++++++++
->>   arch/powerpc/mm/kasan/kasan_init_book3s_64.c |  67 +++++++++++
->>   arch/powerpc/mm/nohash/Makefile              |   5 +
->>   include/linux/kasan.h                        |  13 +++
->>   mm/kasan/generic.c                           |   9 +-
->>   mm/kasan/generic_report.c                    |   2 +-
->>   mm/kasan/init.c                              |  10 ++
->>   mm/kasan/kasan.h                             |   6 +-
->>   mm/kasan/report.c                            |   6 +-
->>   mm/kasan/tags.c                              |   3 +-
->>   16 files changed, 345 insertions(+), 10 deletions(-)
->>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_book3e_64.c
->>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_book3s_64.c
->>=20
+
+Leads to almost the same error (some values have changed):
+
+done
+Setting btext !
+W=3D640 H=3D488 LB=3D768 addr=3D0x9c008000
+copying OF device tree...
+starting device tree allocs at 01300000
+alloc_up(00100000, 0013d948)
+  trying: 0x01300000
+  trying: 0x01400000
+ -=E2=80=BA 01400000
+  alloc_bottom : 01500000
+  alloc_top    : 20000000
+  alloc_top_hi : 20000000
+  nmo_top      : 20000000
+  ram_top      : 20000000
+Building dt strings...
+Building dt structure...
+reserved memory map:
+  00c40000 - 006c0000
+Device tree strings 0x01401000 -> 0x00000007
+Device tree struct 0x01402000 -> 0x00000007
+Quiescing Open Firmware ...
+Booting Linux via __start() @ 0x001400000
+->dt_headr_start=3D0x01400000
+
+Thanks anyway,
