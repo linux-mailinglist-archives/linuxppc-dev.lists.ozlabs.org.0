@@ -1,66 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8D127573
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 07:26:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD72756F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 07:25:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458dHp2MKpzDqT9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 15:25:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458dKD5G9hzDqWk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 15:26:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="dzYgAfVp"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="KPTskSP0"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458dCQ6jvpzDqRp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 15:21:38 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id c13so2500143pgt.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 22:21:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458dCV640tzDqS7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 15:21:42 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id p15so2186646pll.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 22:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=fjOaqB0oVkfbrEJKn0VoWTH231yfH85u91Z/PupfDqE=;
- b=dzYgAfVpI6NBVe4NRhIfDlvQkpAu9OpBAdYdpDoJE1/yh/CnI21iFpJOibS6Q5VMld
- RZ6Z9cFn7l6wWr4rx6nD5ZSr8YO8uRNNTe9uz601DDXlsBrf/zqANNAASekFyd8HDBTJ
- zXtOz++YRGWZkAQU/fYet8VER8EYUFalwulBA=
+ bh=iF1wg4kH+vQXTxBoxOOgIwNClHkp+K2oqjDeg/wjey4=;
+ b=KPTskSP04rxClxAGtkwwp36ZubY/Ibio1rJ2f3BJUF9qbQWHlR3/0Fp48FrysYntii
+ XGm++WIZqg4lX34YaX9T7kTWmkwtNes0egeiyBcgTvtSNo3yM/EPkr4nVIza3MrOYvMp
+ oN2xqPan3KFAFlyDazRGl9tuoffZWPiUvQKwg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=fjOaqB0oVkfbrEJKn0VoWTH231yfH85u91Z/PupfDqE=;
- b=hl8zWaSK9dlGUnU9cnC5n33DR2uQf8ibZldE+7ZeIqBhxL53g7GphcS4FXAeIEnLM7
- LW/hSYZwOjXNEziaDUl/AN+vPM895jEWGer4BK9ne6oC3W6jHPAtBtNQ9FZv21aoa4hB
- /zLgQhy1vKungzlHffbHsqiB1qsA5wDUtui8fEzQqBaFySOOIa3QKrGQlsajxv5bNro0
- 0YCaCcHVf871NbpzbN5xn86xbvgnGhAvuj9SK///76qT8MZfAHiasuRsLHj0vdjZPRTV
- Ro/9kM+nn4/zzwlBxvZ7dsIM4jj+hlfROS94dm1yRA22LbjNk4jpu/7JCNsZfNHX/xjy
- f6EQ==
-X-Gm-Message-State: APjAAAWaNySQymDoI9gqyWWWfVnTapMKCMnFzR/u2WZtMFPqJj7LcGiS
- y1BqHDU3JdyL2kDnHiwKpRXy7g==
-X-Google-Smtp-Source: APXvYqxpM/Ts06IBhHNvKLp/eqyl352rLjhe/eO/T8Z4cP4fQO5UmvbeaD0+YB+pnjykBwt0sC7iUw==
-X-Received: by 2002:a63:f44f:: with SMTP id p15mr94759765pgk.65.1558588896307; 
- Wed, 22 May 2019 22:21:36 -0700 (PDT)
+ bh=iF1wg4kH+vQXTxBoxOOgIwNClHkp+K2oqjDeg/wjey4=;
+ b=a3r0P8M58jXwm5pQv6rmIda/1dogADU3oRcZIlzWGLtapefWf7LEANvbvy/MXfqwKy
+ hUMC1oyrn0dZB5UqdKMWopAolPd4LJ+br/Sw35NZIongDBlzTZ4VjDx6eaYS+imlCj8l
+ WOlswbqL2lQskl+yxrZT5PPqQvZUwOs25QgL9JoytbUrNaHUQe08EQNh2z6I75EwubiM
+ 06cdKS/oFOZhhT0XWGmQqxLA9G43z6Rc/tTtZhvJj+cFDhDlVAW9s44MaGw7twoI1R8e
+ 4XEV40IFDqXcqo2cThbXGNkS7i5vclIt3arjeagTsRnT2TnDeIBLssd2Ol2DNCXd/RmJ
+ OZag==
+X-Gm-Message-State: APjAAAW4vtTRCEXekbMyzkVz2GrxY+4zRfQ5iKTDAnGLKItU3ugPlrwr
+ j5lwzELbUwT6vK4OFlXjKgZBDw==
+X-Google-Smtp-Source: APXvYqwdwbCujLIL9zO3dOAh3PjmQFf2gGQpfCHj6uuvkyjmuCVGcbcuPaJUWmZNFnnvqde3VxMtWw==
+X-Received: by 2002:a17:902:aa91:: with SMTP id
+ d17mr91896703plr.251.1558588900471; 
+ Wed, 22 May 2019 22:21:40 -0700 (PDT)
 Received: from localhost (ppp167-251-205.static.internode.on.net.
  [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id k3sm11861396pgo.81.2019.05.22.22.21.34
+ by smtp.gmail.com with ESMTPSA id v1sm27799306pgb.85.2019.05.22.22.21.39
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 22 May 2019 22:21:35 -0700 (PDT)
+ Wed, 22 May 2019 22:21:39 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: aneesh.kumar@linux.ibm.com, christophe.leroy@c-s.fr, bsingharora@gmail.com
-Subject: [RFC PATCH 2/7] kasan: allow architectures to manage the
- memory-to-shadow mapping
-Date: Thu, 23 May 2019 15:21:15 +1000
-Message-Id: <20190523052120.18459-3-dja@axtens.net>
+Subject: [RFC PATCH 3/7] kasan: allow architectures to provide an outline
+ readiness check
+Date: Thu, 23 May 2019 15:21:16 +1000
+Message-Id: <20190523052120.18459-4-dja@axtens.net>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190523052120.18459-1-dja@axtens.net>
 References: <20190523052120.18459-1-dja@axtens.net>
@@ -77,150 +78,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
+ kasan-dev@googlegroups.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, shadow addresses are always addr >> shift + offset.
-However, for powerpc, the virtual address space is fragmented in
-ways that make this simple scheme impractical.
+In powerpc (as I understand it), we spend a lot of time in boot
+running in real mode before MMU paging is initialised. During
+this time we call a lot of generic code, including printk(). If
+we try to access the shadow region during this time, things fail.
 
-Allow architectures to override:
- - kasan_shadow_to_mem
- - kasan_mem_to_shadow
- - addr_has_shadow
+My attempts to move early init before the first printk have not
+been successful. (Both previous RFCs for ppc64 - by 2 different
+people - have needed this trick too!)
 
-Rename addr_has_shadow to kasan_addr_has_shadow as if it is
-overridden it will be available in more places, increasing the
-risk of collisions.
+So, allow architectures to define a kasan_arch_is_ready()
+hook that bails out of check_memory_region_inline() unless the
+arch has done all of the init.
 
-If architectures do not #define their own versions, the generic
-code will continue to run as usual.
-
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Link: https://lore.kernel.org/patchwork/patch/592820/ # ppc64 hash series
+Link: https://patchwork.ozlabs.org/patch/795211/      # ppc radix series
+Originally-by: Balbir Singh <bsingharora@gmail.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
 Signed-off-by: Daniel Axtens <dja@axtens.net>
+[check_return_arch_not_ready() ==> static inline kasan_arch_is_ready()]
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- include/linux/kasan.h     | 2 ++
- mm/kasan/generic.c        | 2 +-
- mm/kasan/generic_report.c | 2 +-
- mm/kasan/kasan.h          | 6 +++++-
- mm/kasan/report.c         | 6 +++---
- mm/kasan/tags.c           | 2 +-
- 6 files changed, 13 insertions(+), 7 deletions(-)
+ include/linux/kasan.h | 4 ++++
+ mm/kasan/generic.c    | 3 +++
+ 2 files changed, 7 insertions(+)
 
 diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index b40ea104dd36..f6261840f94c 100644
+index f6261840f94c..a630d53f1a36 100644
 --- a/include/linux/kasan.h
 +++ b/include/linux/kasan.h
-@@ -23,11 +23,13 @@ extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
- int kasan_populate_early_shadow(const void *shadow_start,
- 				const void *shadow_end);
+@@ -14,6 +14,10 @@ struct task_struct;
+ #include <asm/kasan.h>
+ #include <asm/pgtable.h>
  
-+#ifndef kasan_mem_to_shadow
- static inline void *kasan_mem_to_shadow(const void *addr)
- {
- 	return (void *)((unsigned long)addr >> KASAN_SHADOW_SCALE_SHIFT)
- 		+ KASAN_SHADOW_OFFSET;
- }
++#ifndef kasan_arch_is_ready
++static inline bool kasan_arch_is_ready(void)	{ return true; }
 +#endif
- 
- /* Enable reporting bugs after kasan_disable_current() */
- extern void kasan_enable_current(void);
++
+ extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
+ extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE];
+ extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
 diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-index 9e5c989dab8c..a5b28e3ceacb 100644
+index a5b28e3ceacb..0336f31bbae3 100644
 --- a/mm/kasan/generic.c
 +++ b/mm/kasan/generic.c
-@@ -173,7 +173,7 @@ static __always_inline void check_memory_region_inline(unsigned long addr,
+@@ -170,6 +170,9 @@ static __always_inline void check_memory_region_inline(unsigned long addr,
+ 						size_t size, bool write,
+ 						unsigned long ret_ip)
+ {
++	if (!kasan_arch_is_ready())
++		return;
++
  	if (unlikely(size == 0))
  		return;
  
--	if (unlikely(!addr_has_shadow((void *)addr))) {
-+	if (unlikely(!kasan_addr_has_shadow((void *)addr))) {
- 		kasan_report(addr, size, write, ret_ip);
- 		return;
- 	}
-diff --git a/mm/kasan/generic_report.c b/mm/kasan/generic_report.c
-index 36c645939bc9..6caafd61fc3a 100644
---- a/mm/kasan/generic_report.c
-+++ b/mm/kasan/generic_report.c
-@@ -107,7 +107,7 @@ static const char *get_wild_bug_type(struct kasan_access_info *info)
- 
- const char *get_bug_type(struct kasan_access_info *info)
- {
--	if (addr_has_shadow(info->access_addr))
-+	if (kasan_addr_has_shadow(info->access_addr))
- 		return get_shadow_bug_type(info);
- 	return get_wild_bug_type(info);
- }
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 3ce956efa0cb..8fcbe4027929 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -110,16 +110,20 @@ struct kasan_alloc_meta *get_alloc_info(struct kmem_cache *cache,
- struct kasan_free_meta *get_free_info(struct kmem_cache *cache,
- 					const void *object);
- 
-+#ifndef kasan_shadow_to_mem
- static inline const void *kasan_shadow_to_mem(const void *shadow_addr)
- {
- 	return (void *)(((unsigned long)shadow_addr - KASAN_SHADOW_OFFSET)
- 		<< KASAN_SHADOW_SCALE_SHIFT);
- }
-+#endif
- 
--static inline bool addr_has_shadow(const void *addr)
-+#ifndef kasan_addr_has_shadow
-+static inline bool kasan_addr_has_shadow(const void *addr)
- {
- 	return (addr >= kasan_shadow_to_mem((void *)KASAN_SHADOW_START));
- }
-+#endif
- 
- void kasan_poison_shadow(const void *address, size_t size, u8 value);
- 
-diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index 03a443579386..a713b64c232b 100644
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -298,7 +298,7 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
- 	untagged_addr = reset_tag(tagged_addr);
- 
- 	info.access_addr = tagged_addr;
--	if (addr_has_shadow(untagged_addr))
-+	if (kasan_addr_has_shadow(untagged_addr))
- 		info.first_bad_addr = find_first_bad_addr(tagged_addr, size);
- 	else
- 		info.first_bad_addr = untagged_addr;
-@@ -309,11 +309,11 @@ void __kasan_report(unsigned long addr, size_t size, bool is_write, unsigned lon
- 	start_report(&flags);
- 
- 	print_error_description(&info);
--	if (addr_has_shadow(untagged_addr))
-+	if (kasan_addr_has_shadow(untagged_addr))
- 		print_tags(get_tag(tagged_addr), info.first_bad_addr);
- 	pr_err("\n");
- 
--	if (addr_has_shadow(untagged_addr)) {
-+	if (kasan_addr_has_shadow(untagged_addr)) {
- 		print_address_description(untagged_addr);
- 		pr_err("\n");
- 		print_shadow_for_address(info.first_bad_addr);
-diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
-index 87ebee0a6aea..661c23dd5340 100644
---- a/mm/kasan/tags.c
-+++ b/mm/kasan/tags.c
-@@ -109,7 +109,7 @@ void check_memory_region(unsigned long addr, size_t size, bool write,
- 		return;
- 
- 	untagged_addr = reset_tag((const void *)addr);
--	if (unlikely(!addr_has_shadow(untagged_addr))) {
-+	if (unlikely(!kasan_addr_has_shadow(untagged_addr))) {
- 		kasan_report(addr, size, write, ret_ip);
- 		return;
- 	}
 -- 
 2.19.1
 
