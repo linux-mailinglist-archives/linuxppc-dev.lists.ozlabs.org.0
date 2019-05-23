@@ -2,77 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FEF27A3C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1193727A7C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:26:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458lrq6ZQTzDqf8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 20:20:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458lzN33XYzDqdD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 20:26:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Ztt6HmrN"; 
+ dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="hS4Slwo3"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458lqC0GMGzDqDr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:19:35 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458lq62vp2z9v2Mq;
- Thu, 23 May 2019 12:19:30 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Ztt6HmrN; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ygTTjGEG3vBX; Thu, 23 May 2019 12:19:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458lq61Zbmz9v2Mp;
- Thu, 23 May 2019 12:19:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558606770; bh=1LQ+y1Mys68MhcPnUTI8vxp4rWEm8EoTFQ3umQHk1YU=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=Ztt6HmrN1FFB7VErb3p/4TYE1QerQQ2YqK5eSmIIKlFD5hCehdipRI+51krcf+SJx
- bjcnL6ZdIEtgFBgYilWD70vrO1hqEyTqePzd141GVOpeXNwnhnKlJx8anQ2ru95lx7
- BOqPj/fayarclooFajfPOKsqKWklGtNNaNaZGfis=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 697A38B85C;
- Thu, 23 May 2019 12:19:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DtooQodochog; Thu, 23 May 2019 12:19:31 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DF1D68B858;
- Thu, 23 May 2019 12:19:30 +0200 (CEST)
-Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Mathieu Malaterre <malat@debian.org>
-References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
- <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
- <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
- <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
- <CA+7wUsxOxvtsp511c63HK-=Wm22qyEtDcg=p4rfRD+n55UQmiQ@mail.gmail.com>
- <CA+7wUszcau+OBj+ZTr007_vuTJsOmT0izZ64_W98x1=MPLU6aA@mail.gmail.com>
- <9e5ef44d-259a-1f1a-bd6a-98abdae85da0@c-s.fr>
- <ba3a1c25-72ce-cfb4-67ac-df07584f57f5@c-s.fr>
- <158e1855-62ef-baf6-4fff-f28131a7e095@c-s.fr>
-Message-ID: <70ff4c17-11eb-66ad-a788-9abc8d329c29@c-s.fr>
-Date: Thu, 23 May 2019 10:18:57 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458ly05Nq3zDqX0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:25:28 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id q15so5200963wmj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 03:25:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=jhXKgTFg9TGyapt/Wg0K0EHXXYsIVuNn8IRint8KwaY=;
+ b=hS4Slwo3RwY1NewVpLWNl2+kR4blGJ/6yaEYtj7DsYTFV147VMXN4gUbn3wgwf5Wxx
+ rvn5sSr0yAN3RWEOyb7cGkMlcsGyvJtvcOB2LvmU8egwtW8DsswH3UivToQL+mEZ74KW
+ h+7Omca6Qfc8iGh/gi2UIizPRlgBtn20xP9sk3CgwzB6KDL/mnlgj9R/T5d0MAPLjG34
+ o/EPZ/9izbLqwIVYLKuA8Ie8YUbi3Y8izlvmcTftUCeRI9bQ5cLaWZWSTL9pXhi2F0lW
+ iBN+DR1qawy45dymIxfjZxaGMIjdsYZqVQtIl/Jl1OjXADQwjFU5UXvm+vMgbocHA+i9
+ 3dQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=jhXKgTFg9TGyapt/Wg0K0EHXXYsIVuNn8IRint8KwaY=;
+ b=GhD62sGRtNtIYGIh0yWq9gdqY/8d1chL/S1XENYDDCSnGWgTijqDnLkxPFGfgDFW+D
+ oWeX/bRc5tzJzkpP/Mz/yj7EeDq2hntwZIXQriwKw1uYmIY6H8m8d4w1ykAJcTQI5KrF
+ 0mjSF5uXL7CZ0BNe25Uzyz8PLlT1Z+BqEN7kFYAvg4x9BOzie4Q58ikZSaXGbKv531dy
+ lJIV6plEZHg4B0YM0Y8/oTow/+sr/tpIEIcg7r6y7M2TrIQPFvkArJmhdt3AMmRh63eb
+ ZFPRgwU0TWOoa/VUQWp1eAXPMPTS+A/HkQ62ErujtlqjyA86HzaUAAgDxUp1H4UmLdVW
+ wjcQ==
+X-Gm-Message-State: APjAAAWVdNZSP69/WprmE5hj8GxnSr6eBym7SiIkIwp073KWLRAbA9lY
+ y+jCYG2r3iMSmbJ9IkrqoRc=
+X-Google-Smtp-Source: APXvYqy6AZ8N3abqshqgIWcdkAkzE2sYArWIM4dCqSpWjtdBCh4+BA62g62qbgTWHlJU1efLcQhTWg==
+X-Received: by 2002:a05:600c:230a:: with SMTP id
+ 10mr10567550wmo.13.1558607124467; 
+ Thu, 23 May 2019 03:25:24 -0700 (PDT)
+Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net.
+ [78.225.224.134])
+ by smtp.gmail.com with ESMTPSA id s11sm51472858wrb.71.2019.05.23.03.25.23
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 23 May 2019 03:25:23 -0700 (PDT)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+ id AC4D21146DCB; Thu, 23 May 2019 12:25:22 +0200 (CEST)
+From: Mathieu Malaterre <malat@debian.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] =?UTF-8?q?powerpc:=20Remove=20variable=20=E2=80=98path?=
+ =?UTF-8?q?=E2=80=99=20since=20not=20used?=
+Date: Thu, 23 May 2019 12:25:20 +0200
+Message-Id: <20190523102520.20585-1-malat@debian.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <158e1855-62ef-baf6-4fff-f28131a7e095@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,125 +82,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Daniel Axtens <dja@axtens.net>
+Cc: Mathieu Malaterre <malat@debian.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In commit eab00a208eb6 ("powerpc: Move `path` variable inside
+DEBUG_PROM") DEBUG_PROM sentinels were added to silence a warning
+(treated as error with W=1):
 
+  arch/powerpc/kernel/prom_init.c:1388:8: error: variable ‘path’ set but not used [-Werror=unused-but-set-variable]
 
-On 05/23/2019 10:05 AM, Christophe Leroy wrote:
-> 
-> 
-> On 05/23/2019 09:59 AM, Christophe Leroy wrote:
->>
->>
->> On 05/23/2019 09:45 AM, Christophe Leroy wrote:
->>>
->>>
->>> Le 23/05/2019 à 10:53, Mathieu Malaterre a écrit :
->>>>> Commit id is:
->>>>>
->>>>> e93c9c99a629 (tag: v5.1) Linux 5.1
->>>>>
->>>>>> Did you try latest powerpc/merge branch ?
->>>>>
->>>>> Will try that next.
->>>>
->>>> I confirm powerpc/merge does not boot for me (same config). Commit id:
->>>>
->>>> a27eaa62326d (powerpc/merge) Automatic merge of branches 'master',
->>>> 'next' and 'fixes' into merge
->>>
->>> I see in the config you sent me that you have selected CONFIG_KASAN, 
->>> which is a big new stuff.
->>>
->>> Can you try without it ?
->>
->> While building with your config, I get a huge amount of:
->>
->> ppc-linux-ld: warning: orphan section `.data..LASAN0' from 
->> `lib/xarray.o' being placed in section `.data..LASAN0'.
->>    SORTEX  vmlinux
->>
->>
->>
->> I see you have also selected CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y
->>
->> I guess nobody have never tried both this and CONFIG_KASAN together on 
->> ppc32. I'll give it a try.
-> 
-> 
-> And you also have CONFIG_FTRACE.
-> 
-> In a recent patch implementing KASAN on PPC64, Daniel says that KASAN 
-> and FTRACE don't go together well 
-> (https://patchwork.ozlabs.org/patch/1103826/)
-> 
-> If you find out that it works without KASAN, can you then try with KASAN 
-> but without FTRACE ?
-> 
+Rework the original patch and simplify the code, by removing the
+variable ‘path’ completely. Fix line over 90 characters.
 
-I tried your config in Qemu, looks I'm getting a recursive Oops:
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/powerpc/kernel/prom_init.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-#50 0xc0066af0 in do_exit (code=0xb) at kernel/exit.c:787
-#51 0xc0013984 in oops_end (flags=<optimized out>, regs=<optimized out>, 
-signr=0xb) at arch/powerpc/kernel/traps.c:253
-#52 0xc001c30c in handle_page_fault () at arch/powerpc/kernel/entry_32.S:637
-#53 0x20302e30 in ?? ()
-#54 0xc001cb60 in btext_drawchar (c=0x0) at arch/powerpc/kernel/btext.c:522
-#55 0xc00167cc in udbg_write (s=0xc113ae22 <text+2> "   0.000000] CPU: 0 
-PID: 0 Comm: swapper Not tainted 5.1.0+ #1647\n0\n", n=0x37) at 
-arch/powerpc/kernel/udbg.c:114
-#56 0xc00d43f0 in call_console_drivers (ext_text=<optimized out>, 
-text=<optimized out>, len=<optimized out>, ext_len=<optimized out>) at 
-kernel/printk/printk.c:1780
-#57 console_unlock () at kernel/printk/printk.c:2462
-#58 0xc00d6630 in console_flush_on_panic () at kernel/printk/printk.c:2552
-#59 0xc00618a0 in panic (fmt=0xc10f459f <buf+31> "!") at kernel/panic.c:280
-#60 0xc0066af0 in do_exit (code=0xb) at kernel/exit.c:787
-#61 0xc0013984 in oops_end (flags=<optimized out>, regs=<optimized out>, 
-signr=0xb) at arch/powerpc/kernel/traps.c:253
-#62 0xc001c30c in handle_page_fault () at arch/powerpc/kernel/entry_32.S:637
-#63 0x20302e30 in ?? ()
-#64 0xc001cb60 in btext_drawchar (c=0x0) at arch/powerpc/kernel/btext.c:522
-#65 0xc00167cc in udbg_write (s=0xc113ae22 <text+2> "   0.000000] CPU: 0 
-PID: 0 Comm: swapper Not tainted 5.1.0+ #1647\n0\n", n=0x45) at 
-arch/powerpc/kernel/udbg.c:114
-#66 0xc00d43f0 in call_console_drivers (ext_text=<optimized out>, 
-text=<optimized out>, len=<optimized out>, ext_len=<optimized out>) at 
-kernel/printk/printk.c:1780
-#67 console_unlock () at kernel/printk/printk.c:2462
-#68 0xc00d6630 in console_flush_on_panic () at kernel/printk/printk.c:2552
-#69 0xc00618a0 in panic (fmt=0xc10f459f <buf+31> "!") at kernel/panic.c:280
-#70 0xc0066af0 in do_exit (code=0xb) at kernel/exit.c:787
-#71 0xc0013984 in oops_end (flags=<optimized out>, regs=<optimized out>, 
-signr=0xb) at arch/powerpc/kernel/traps.c:253
-#72 0xc001c30c in handle_page_fault () at arch/powerpc/kernel/entry_32.S:637
-#73 0x20302e30 in ?? ()
-#74 0xc001cb60 in btext_drawchar (c=0x0) at arch/powerpc/kernel/btext.c:522
-#75 0xc00167cc in udbg_write (s=0xc113ae22 <text+2> "   0.000000] CPU: 0 
-PID: 0 Comm: swapper Not tainted 5.1.0+ #1647\n0\n", n=0x32) at 
-arch/powerpc/kernel/udbg.c:114
-#76 0xc00d43f0 in call_console_drivers (ext_text=<optimized out>, 
-text=<optimized out>, len=<optimized out>, ext_len=<optimized out>) at 
-kernel/printk/printk.c:1780
-#77 console_unlock () at kernel/printk/printk.c:2462
-#78 0xc00d68d8 in vprintk_emit (facility=<optimized out>, 
-level=<optimized out>, dict=0x0, dictlen=0x0, fmt=0xc085e4c0 
-"\001\066printk: %sconsole [%s%d] enabled\n",
-     args=0xc10cff30) at kernel/printk/printk.c:1985
-#79 0xc00d69d8 in vprintk_default (fmt=<optimized out>, args=<optimized 
-out>) at kernel/printk/printk.c:2012
-#80 0xc00d7a40 in vprintk_func (fmt=<optimized out>, args=<optimized 
-out>) at kernel/printk/printk_safe.c:398
-#81 0xc00d2638 in printk (fmt=<optimized out>) at 
-kernel/printk/printk.c:2045
-#82 0xc00d4ef8 in register_console (newcon=0xc0cb9a20 <udbg_console>) at 
-kernel/printk/printk.c:2777
-#83 0xc0b79ed0 in machine_init (dt_ptr=<optimized out>) at 
-arch/powerpc/kernel/setup_32.c:83
-#84 0xc000347c in start_here () at arch/powerpc/kernel/head_32.S:901
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 7edb23861162..f6df4ddebb82 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -1566,9 +1566,6 @@ static void __init reserve_mem(u64 base, u64 size)
+ static void __init prom_init_mem(void)
+ {
+ 	phandle node;
+-#ifdef DEBUG_PROM
+-	char *path;
+-#endif
+ 	char type[64];
+ 	unsigned int plen;
+ 	cell_t *p, *endp;
+@@ -1590,9 +1587,6 @@ static void __init prom_init_mem(void)
+ 	prom_debug("root_size_cells: %x\n", rsc);
+ 
+ 	prom_debug("scanning memory:\n");
+-#ifdef DEBUG_PROM
+-	path = prom_scratch;
+-#endif
+ 
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		type[0] = 0;
+@@ -1617,9 +1611,10 @@ static void __init prom_init_mem(void)
+ 		endp = p + (plen / sizeof(cell_t));
+ 
+ #ifdef DEBUG_PROM
+-		memset(path, 0, sizeof(prom_scratch));
+-		call_prom("package-to-path", 3, 1, node, path, sizeof(prom_scratch) - 1);
+-		prom_debug("  node %s :\n", path);
++		memset(prom_scratch, 0, sizeof(prom_scratch));
++		call_prom("package-to-path", 3, 1, node, prom_scratch,
++			  sizeof(prom_scratch) - 1);
++		prom_debug("  node %s :\n", prom_scratch);
+ #endif /* DEBUG_PROM */
+ 
+ 		while ((endp - p) >= (rac + rsc)) {
+-- 
+2.20.1
 
-Christophe
