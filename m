@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C7B27601
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4CE27621
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 08:40:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458fnJ1pNrzDqWJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:32:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458fyf3SrqzDqSK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 16:40:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,56 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="aOw7NxVc"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="USGfGSCA"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458flz68DPzDqTZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:31:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458fx73t1tzDqQM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 16:39:23 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458flt2tznz9txk2;
- Thu, 23 May 2019 08:31:22 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 458fx33Vjjz9v2C1;
+ Thu, 23 May 2019 08:39:19 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=aOw7NxVc; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=USGfGSCA; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yb1S7UvGIIko; Thu, 23 May 2019 08:31:22 +0200 (CEST)
+ with ESMTP id bYM2dNkrzPBn; Thu, 23 May 2019 08:39:19 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458flt1HD7z9v22s;
- Thu, 23 May 2019 08:31:22 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 458fx32Kd9z9v2C0;
+ Thu, 23 May 2019 08:39:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558593082; bh=iBoSTQJduiJdnBswQSZH7SOr2FcQubFRQAMzBT72zbE=;
+ t=1558593559; bh=9jzQmEVIjqlPKEAJBBHeVqFQYPh/4gj9Mr2pZLdrleE=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=aOw7NxVcoF4Qezmkd4YGMcpuIYwYKEIkep4paM7eZyD4v7CTA7scVmJ6/nkNd9LNU
- yHjmXjKB6C9XTTAepjO65y2k1YhblaB8ttxc9X9qTGSmSCPkZNBfMjheS/MrugkaBj
- wlW+HBcspcSSjwjbsBALG0a1fMNR4yrJMYYPRAHE=
+ b=USGfGSCA7+UxSmG8E9WEYacH/IYVaipHxXLsZCyXO18bhEetatwTCkvm0WR8yE1cO
+ eU4K2estZeiQ3O2prGpwsz4LFOhPOmoCyzjphLw2VVj/vghCpy8V65sGC+LW3pjGZD
+ GqtAhJ49sE4/wNcn2kR2BKP7dYrfOyzcB6IuBnE0=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D8838B77D;
- Thu, 23 May 2019 08:31:23 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 44A258B77D;
+ Thu, 23 May 2019 08:39:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id x9aLulBf7QaB; Thu, 23 May 2019 08:31:23 +0200 (CEST)
+ with ESMTP id jBZfk5QpypMo; Thu, 23 May 2019 08:39:20 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B5C9B8B75A;
- Thu, 23 May 2019 08:31:22 +0200 (CEST)
-Subject: Re: [RFC PATCH 6/7] kasan: allow arches to hook into global
- registration
-To: Daniel Axtens <dja@axtens.net>, aneesh.kumar@linux.ibm.com,
- bsingharora@gmail.com
-References: <20190523052120.18459-1-dja@axtens.net>
- <20190523052120.18459-7-dja@axtens.net>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 093528B75A;
+ Thu, 23 May 2019 08:39:19 +0200 (CEST)
+Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
+To: Mathieu Malaterre <malat@debian.org>
+References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
+ <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
+ <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b7f23406-c1dc-de50-d477-86cdf8f0d471@c-s.fr>
-Date: Thu, 23 May 2019 08:31:22 +0200
+Message-ID: <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
+Date: Thu, 23 May 2019 08:39:19 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190523052120.18459-7-dja@axtens.net>
+In-Reply-To: <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -80,76 +79,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Salut Mathieu,
 
+Le 23/05/2019 à 08:24, Mathieu Malaterre a écrit :
+> Salut Christophe,
+> 
+> On Wed, May 22, 2019 at 2:20 PM Christophe Leroy
+> <christophe.leroy@c-s.fr> wrote:
+>>
+>>
+>>
+>> Le 22/05/2019 à 14:15, Mathieu Malaterre a écrit :
+>>> Hi all,
+>>>
+>>> I have not boot my G4 in a while, today using master here is what I see:
+>>>
+>>> done
+>>> Setting btext !
+>>> W=640 H=488 LB=768 addr=0x9c008000
+>>> copying OF device tree...
+>>> starting device tree allocs at 01401000
+>>> otloc_up(00100000, 0013d948)
+>>>     trying: 0x01401000
+>>>     trying: 0x01501000
+>>>    -› 01501000
+>>>     alloc_bottom : 01601000
+>>>     alloc_top    : 20000000
+>>>     alloc_top_hi : 20000000
+>>>     nmo_top      : 20000000
+>>>     ram_top      : 20000000
+>>> Building dt strings...
+>>> Building dt structure...
+>>> reserved memory map:
+>>>     00d40000 - 006c1000
+>>> Device tree strings 0x01502000 -> 0x00000007
+>>> Device tree struct 0x01503000 -> 0x00000007
+>>> Quiescing Open Firmware ...
+>>> Booting Linux via __start() @ 0x001400000
+>>> ->dt_headr_start=0x01501000
+>>>
+>>> Any suggestions before I start a bisect ?
+>>>
+>>
+>> Have you tried without CONFIG_PPC_KUEP and CONFIG_PPC_KUAP ?
+> 
+> Using locally:
+> 
+> diff --git a/arch/powerpc/configs/g4_defconfig
+> b/arch/powerpc/configs/g4_defconfig
+> index 14d0376f637d..916bce8ce9c3 100644
+> --- a/arch/powerpc/configs/g4_defconfig
+> +++ b/arch/powerpc/configs/g4_defconfig
+> @@ -32,6 +32,8 @@ CONFIG_USERFAULTFD=y
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_PROFILING=y
+>   CONFIG_G4_CPU=y
+> +# CONFIG_PPC_KUEP is not set
+> +# CONFIG_PPC_KUAP is not set
+>   CONFIG_PANIC_TIMEOUT=0
+>   # CONFIG_PPC_CHRP is not set
+>   CONFIG_CPU_FREQ=y
+> 
+> 
+> Leads to almost the same error (some values have changed):
 
-Le 23/05/2019 à 07:21, Daniel Axtens a écrit :
-> Not all arches have a specific space carved out for modules -
-> some, such as powerpc, just use regular vmalloc space. Therefore,
-> globals in these modules cannot be backed by real shadow memory.
+Ok.
 
-Can you explain in more details the reason why ?
+When you say you are using 'master', what do you mean ? Can you give the 
+commit Id ?
 
-PPC32 also uses regular vmalloc space, and it has been possible to 
-manage globals on it, by simply implementing a module_alloc() function.
+Does it boots with Kernel 5.1.4 ?
 
-See 
-https://elixir.bootlin.com/linux/v5.2-rc1/source/arch/powerpc/mm/kasan/kasan_init_32.c#L135
+Did you try latest powerpc/merge branch ?
 
-It is also possible to easily define a different area for modules, by 
-replacing the call to vmalloc_exec() by a call to __vmalloc_node_range() 
-as done by vmalloc_exec(), but with different bounds than 
-VMALLOC_START/VMALLOC_END
-
-See https://elixir.bootlin.com/linux/v5.2-rc1/source/mm/vmalloc.c#L2633
-
-Today in PPC64 (unlike PPC32), there is already a split between VMALLOC 
-space and IOREMAP space. I'm sure it would be easy to split it once more 
-for modules.
+Can you send your full .config ?
 
 Christophe
 
 > 
-> In order to allow arches to perform this check, add a hook.
+> done
+> Setting btext !
+> W=640 H=488 LB=768 addr=0x9c008000
+> copying OF device tree...
+> starting device tree allocs at 01300000
+> alloc_up(00100000, 0013d948)
+>    trying: 0x01300000
+>    trying: 0x01400000
+>   -› 01400000
+>    alloc_bottom : 01500000
+>    alloc_top    : 20000000
+>    alloc_top_hi : 20000000
+>    nmo_top      : 20000000
+>    ram_top      : 20000000
+> Building dt strings...
+> Building dt structure...
+> reserved memory map:
+>    00c40000 - 006c0000
+> Device tree strings 0x01401000 -> 0x00000007
+> Device tree struct 0x01402000 -> 0x00000007
+> Quiescing Open Firmware ...
+> Booting Linux via __start() @ 0x001400000
+> ->dt_headr_start=0x01400000
 > 
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
->   include/linux/kasan.h | 5 +++++
->   mm/kasan/generic.c    | 3 +++
->   2 files changed, 8 insertions(+)
-> 
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index dfee2b42d799..4752749e4797 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -18,6 +18,11 @@ struct task_struct;
->   static inline bool kasan_arch_is_ready(void)	{ return true; }
->   #endif
->   
-> +#ifndef kasan_arch_can_register_global
-> +static inline bool kasan_arch_can_register_global(const void * addr)	{ return true; }
-> +#endif
-> +
-> +
->   #ifndef ARCH_HAS_KASAN_EARLY_SHADOW
->   extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
->   extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE];
-> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-> index 0336f31bbae3..935b06f659a0 100644
-> --- a/mm/kasan/generic.c
-> +++ b/mm/kasan/generic.c
-> @@ -208,6 +208,9 @@ static void register_global(struct kasan_global *global)
->   {
->   	size_t aligned_size = round_up(global->size, KASAN_SHADOW_SCALE_SIZE);
->   
-> +	if (!kasan_arch_can_register_global(global->beg))
-> +		return;
-> +
->   	kasan_unpoison_shadow(global->beg, global->size);
->   
->   	kasan_poison_shadow(global->beg + aligned_size,
+> Thanks anyway,
 > 
