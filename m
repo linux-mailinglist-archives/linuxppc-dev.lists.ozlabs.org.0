@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8519927BCF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 13:31:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC8527BC5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 13:30:39 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458nP83cb4zDqhK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 21:30:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458nQd0hvWzDqVC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 21:31:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Jfhvi61p"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="e14TSiAK"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458nMs2bhxzDq7h
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 21:29:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458nPF0DCRzDqc5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 21:30:41 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 15FF621871;
- Thu, 23 May 2019 11:29:26 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4461A21873;
+ Thu, 23 May 2019 11:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558610966;
- bh=LRQ74B2rYPwMQlOWa99wSe0znTiX8FTGrc5uKOZNdto=;
+ s=default; t=1558611038;
+ bh=iqSuTD7PVtjRi6mKaicsjbueODzhC9YF2RHYYjQezXc=;
  h=Subject:To:Cc:From:Date:From;
- b=Jfhvi61p9TrhJ4eor1tqhz4eNdHL8/8DwZdDkS393WkKmGU2/SyiSKfiDe8Pxqpss
- QkoQumh8yyZpqw4BICELpWlcZnBJYI8GLXMUrgxuBqlgw7X75/Vk24i1m7kI0R0VBO
- 60XPoMTwLFKqQ3kMzHBUbw7ZzWpvLKWK1FZM9Lek=
+ b=e14TSiAKol5YPgz8qbyTOmVxUN3dibzJXd4G3qeAjfnKXBnrSE3MoThjgBKbLlZJo
+ n4fz46EE9gLdx1syZk2fNgzco+76pslVL6sLaaODPd0kfwWSARnmt4wCIcYBeU3YY6
+ 1M1RSvi0BDe5UCBQuANwP4zP0DwiHNTT5qFeqzH8=
 Subject: Patch "x86/mpx,
  mm/core: Fix recursive munmap() corruption" has been added to the
- 5.0-stable tree
+ 5.1-stable tree
 To: 20190419194747.5E1AD6DC@viggo.jf.intel.com, akpm@linux-foundation.org,
  anton.ivanov@cambridgegreys.com, benh@kernel.crashing.org, bp@alien8.de,
  dave.hansen@linux.intel.com, gregkh@linuxfoundation.org, gxt@pku.edu.cn,
@@ -49,8 +49,8 @@ To: 20190419194747.5E1AD6DC@viggo.jf.intel.com, akpm@linux-foundation.org,
  tglx@linutronix.de, torvalds@linux-foundation.org, vbabka@suse.cz,
  yang.shi@linux.alibaba.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 May 2019 13:26:17 +0200
-Message-ID: <155861077763253@kroah.com>
+Date: Thu, 23 May 2019 13:26:35 +0200
+Message-ID: <155861079524166@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -77,12 +77,12 @@ This is a note to let you know that I've just added the patch titled
 
     x86/mpx, mm/core: Fix recursive munmap() corruption
 
-to the 5.0-stable tree which can be found at:
+to the 5.1-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      x86-mpx-mm-core-fix-recursive-munmap-corruption.patch
-and it can be found in the queue-5.0 subdirectory.
+and it can be found in the queue-5.1 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -404,7 +404,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -2736,9 +2736,17 @@ int __do_munmap(struct mm_struct *mm, un
+@@ -2735,9 +2735,17 @@ int __do_munmap(struct mm_struct *mm, un
  		return -EINVAL;
  
  	len = PAGE_ALIGN(len);
@@ -422,7 +422,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	/* Find the first overlapping VMA */
  	vma = find_vma(mm, start);
  	if (!vma)
-@@ -2747,7 +2755,6 @@ int __do_munmap(struct mm_struct *mm, un
+@@ -2746,7 +2754,6 @@ int __do_munmap(struct mm_struct *mm, un
  	/* we have  start < vma->vm_end  */
  
  	/* if it doesn't overlap, we have nothing.. */
@@ -430,7 +430,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (vma->vm_start >= end)
  		return 0;
  
-@@ -2817,12 +2824,6 @@ int __do_munmap(struct mm_struct *mm, un
+@@ -2816,12 +2823,6 @@ int __do_munmap(struct mm_struct *mm, un
  	/* Detach vmas from rbtree */
  	detach_vmas_to_be_unmapped(mm, vma, prev, end);
  
@@ -447,4 +447,4 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from dave.hansen@linux.intel.com are
 
-queue-5.0/x86-mpx-mm-core-fix-recursive-munmap-corruption.patch
+queue-5.1/x86-mpx-mm-core-fix-recursive-munmap-corruption.patch
