@@ -2,75 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3751B279A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 11:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4765E279C0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 11:55:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458l5D3zQMzDqbg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 19:46:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458lGr3LD6zDqfX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 19:55:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.14.82; helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="v8i1Fz8G"; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="YizduH/4"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140082.outbound.protection.outlook.com [40.107.14.82])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458l3m57xjzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 19:45:22 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458l3d4hnbz9v2Bn;
- Thu, 23 May 2019 11:45:17 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=v8i1Fz8G; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id j_P0PahczTj5; Thu, 23 May 2019 11:45:17 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458l3d39mbz9v2Bm;
- Thu, 23 May 2019 11:45:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558604717; bh=mr2FWbpCrI+YzKcbqtky92TVYEjQr1IyQKaTUfkwljY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=v8i1Fz8GSevDijZHONOdtHVF6MMG21MboiOnMNhesyXr4jsTFhd7TiQ/4NOr7cFps
- tAXKNc+960sxLeik8oyJ/DMnPFhfNNjWJlHqElEO+JmiTOgbBjkRpMNibhghnprkY0
- uRjMkWbwJWr6Ymu5B1giLt+cWoBdnI5EICfTtlss=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 99CDC8B85A;
- Thu, 23 May 2019 11:45:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6U365yUrwiUt; Thu, 23 May 2019 11:45:18 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2AC408B858;
- Thu, 23 May 2019 11:45:18 +0200 (CEST)
-Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
-To: Mathieu Malaterre <malat@debian.org>
-References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
- <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
- <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
- <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
- <CA+7wUsxOxvtsp511c63HK-=Wm22qyEtDcg=p4rfRD+n55UQmiQ@mail.gmail.com>
- <CA+7wUszcau+OBj+ZTr007_vuTJsOmT0izZ64_W98x1=MPLU6aA@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <9e5ef44d-259a-1f1a-bd6a-98abdae85da0@c-s.fr>
-Date: Thu, 23 May 2019 11:45:17 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458lFX6HKfzDqW2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 19:53:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7/gJyh9U9QUhiBGH17yaDRDpDoZi1M9kFk9wSCZZuTs=;
+ b=YizduH/4e0ucsOoc4AmBS7YVyq/VewABmlXTOQOaW7lvl5pXe8IbNrgnMQC+rTiTQ6BxiDKK7+X20Joct+ikRSmmVQG27Ftcn1VoVIEDYeZ4BCMQZWYo6SRvkR0yKV/pQgw1B6VRiP9VVywIDT4fWr3u4nkjIZ5CbZmLLHj8bnA=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
+ VE1PR04MB6509.eurprd04.prod.outlook.com (20.179.233.159) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1900.17; Thu, 23 May 2019 09:53:42 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::a5b5:13f5:f89c:9a30]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::a5b5:13f5:f89c:9a30%7]) with mapi id 15.20.1922.016; Thu, 23 May 2019
+ 09:53:42 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
+Thread-Topic: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
+Thread-Index: AdURTPrTY9TUCA67Tpmftem6u8zciw==
+Date: Thu, 23 May 2019 09:53:42 +0000
+Message-ID: <VE1PR04MB647934199C3AA60759BED888E3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 05ec2f23-0094-4fbb-840e-08d6df648a4e
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
+ SRVR:VE1PR04MB6509; 
+x-ms-traffictypediagnostic: VE1PR04MB6509:
+x-microsoft-antispam-prvs: <VE1PR04MB6509F50EB45686EE7F2ABB86E3010@VE1PR04MB6509.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 00462943DE
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(346002)(366004)(396003)(376002)(136003)(39860400002)(189003)(199004)(33656002)(8676002)(81156014)(68736007)(14454004)(256004)(52536014)(6116002)(3846002)(1411001)(6916009)(54906003)(6436002)(316002)(99286004)(53936002)(81166006)(2906002)(7736002)(66476007)(229853002)(6506007)(8936002)(478600001)(66556008)(7696005)(6246003)(66446008)(64756008)(305945005)(55016002)(102836004)(86362001)(186003)(9686003)(4326008)(76116006)(66946007)(5660300002)(25786009)(73956011)(486006)(71200400001)(71190400001)(4744005)(74316002)(26005)(476003)(66066001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6509;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: dFFutxu6B3E6s1FFu5vXEndpXoLGmV5tfMInI7BwDXUIizLJBNKnfMirImG2Q0qUIJ6VSJRyNdGEp/5noyhhgcjjS7OUeWiTvvyLk2ULRmX3eZQ5wmSfRvBTDmVkDn4DJe1PRxYonHeMBiIG4EZM62s1TrcOFgjXHI280PA830fNnx9KUwLhbBC/LYKeKuNiu8pFMyfdQaK71htZZySxMahIg97F5YQ9/Vtz8aA+D7c4KUSzI4LvviVUmjcXxHg7/c71T0F+fK+pEFr5XaDOoBMXUocsBRyBUK5l25dqSRC7+m22K1lw8aoPQOaWzgZim/zYI4VRyq5qF9mPgIaHxn6HECMTV8K7RM4qVy/vmz2881f/Rca7TAwTJI3yjXTOQEvWnL67MfJiq1dwSl/gP1+DwLifL6k2BLpkPi7z5DA=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <CA+7wUszcau+OBj+ZTr007_vuTJsOmT0izZ64_W98x1=MPLU6aA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05ec2f23-0094-4fbb-840e-08d6df648a4e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 May 2019 09:53:42.8529 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6509
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,152 +90,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi
 
+> > +     /*
+> > +      * Add fifo reset here, because the regcache_sync will
+> > +      * write one more data to ETDR.
+> > +      * Which will cause channel shift.
+>=20
+> Sounds like a bug to me...should fix it first by marking the data registe=
+rs as
+> volatile.
+>=20
 
-Le 23/05/2019 à 10:53, Mathieu Malaterre a écrit :
-> On Thu, May 23, 2019 at 10:29 AM Mathieu Malaterre <malat@debian.org> wrote:
->>
->> On Thu, May 23, 2019 at 8:39 AM Christophe Leroy
->> <christophe.leroy@c-s.fr> wrote:
->>>
->>> Salut Mathieu,
->>>
->>> Le 23/05/2019 à 08:24, Mathieu Malaterre a écrit :
->>>> Salut Christophe,
->>>>
->>>> On Wed, May 22, 2019 at 2:20 PM Christophe Leroy
->>>> <christophe.leroy@c-s.fr> wrote:
->>>>>
->>>>>
->>>>>
->>>>> Le 22/05/2019 à 14:15, Mathieu Malaterre a écrit :
->>>>>> Hi all,
->>>>>>
->>>>>> I have not boot my G4 in a while, today using master here is what I see:
->>>>>>
->>>>>> done
->>>>>> Setting btext !
->>>>>> W=640 H=488 LB=768 addr=0x9c008000
->>>>>> copying OF device tree...
->>>>>> starting device tree allocs at 01401000
->>>>>> otloc_up(00100000, 0013d948)
->>>>>>      trying: 0x01401000
->>>>>>      trying: 0x01501000
->>>>>>     -› 01501000
->>>>>>      alloc_bottom : 01601000
->>>>>>      alloc_top    : 20000000
->>>>>>      alloc_top_hi : 20000000
->>>>>>      nmo_top      : 20000000
->>>>>>      ram_top      : 20000000
->>>>>> Building dt strings...
->>>>>> Building dt structure...
->>>>>> reserved memory map:
->>>>>>      00d40000 - 006c1000
->>>>>> Device tree strings 0x01502000 -> 0x00000007
->>>>>> Device tree struct 0x01503000 -> 0x00000007
->>>>>> Quiescing Open Firmware ...
->>>>>> Booting Linux via __start() @ 0x001400000
->>>>>> ->dt_headr_start=0x01501000
->>>>>>
->>>>>> Any suggestions before I start a bisect ?
->>>>>>
->>>>>
->>>>> Have you tried without CONFIG_PPC_KUEP and CONFIG_PPC_KUAP ?
->>>>
->>>> Using locally:
->>>>
->>>> diff --git a/arch/powerpc/configs/g4_defconfig
->>>> b/arch/powerpc/configs/g4_defconfig
->>>> index 14d0376f637d..916bce8ce9c3 100644
->>>> --- a/arch/powerpc/configs/g4_defconfig
->>>> +++ b/arch/powerpc/configs/g4_defconfig
->>>> @@ -32,6 +32,8 @@ CONFIG_USERFAULTFD=y
->>>>    # CONFIG_COMPAT_BRK is not set
->>>>    CONFIG_PROFILING=y
->>>>    CONFIG_G4_CPU=y
->>>> +# CONFIG_PPC_KUEP is not set
->>>> +# CONFIG_PPC_KUAP is not set
->>>>    CONFIG_PANIC_TIMEOUT=0
->>>>    # CONFIG_PPC_CHRP is not set
->>>>    CONFIG_CPU_FREQ=y
->>>>
->>>>
->>>> Leads to almost the same error (some values have changed):
->>>
->>> Ok.
->>>
->>> When you say you are using 'master', what do you mean ? Can you give the
->>> commit Id ?
->>>
->>> Does it boots with Kernel 5.1.4 ?
->>
->> I was able to boot v5.1:
->>
->> $ dmesg | head
->> [    0.000000] printk: bootconsole [udbg0] enabled
->> [    0.000000] Total memory = 512MB; using 1024kB for hash table (at (ptrval))
->> [    0.000000] Linux version 5.1.0+ (malat@debian.org) (gcc version
->> 8.3.0 (Debian 8.3.0-7)) #8 Thu May 23 06:26:38 UTC 2019
->>
->> Commit id is:
->>
->> e93c9c99a629 (tag: v5.1) Linux 5.1
->>
->>> Did you try latest powerpc/merge branch ?
->>
->> Will try that next.
-> 
-> I confirm powerpc/merge does not boot for me (same config). Commit id:
-> 
-> a27eaa62326d (powerpc/merge) Automatic merge of branches 'master',
-> 'next' and 'fixes' into merge
+The ETDR is a writable register, it is not volatile. Even we change it to
+Volatile, I don't think we can't avoid this issue. for the regcache_sync
+Just to write this register, it is correct behavior.
 
-I see in the config you sent me that you have selected CONFIG_KASAN, 
-which is a big new stuff.
-
-Can you try without it ?
-
-Christophe
-
-> 
-> 
->>> Can you send your full .config ?
->>
->> Config is attached.
->>
->> Thanks,
->>
->>> Christophe
->>>
->>>>
->>>> done
->>>> Setting btext !
->>>> W=640 H=488 LB=768 addr=0x9c008000
->>>> copying OF device tree...
->>>> starting device tree allocs at 01300000
->>>> alloc_up(00100000, 0013d948)
->>>>     trying: 0x01300000
->>>>     trying: 0x01400000
->>>>    -› 01400000
->>>>     alloc_bottom : 01500000
->>>>     alloc_top    : 20000000
->>>>     alloc_top_hi : 20000000
->>>>     nmo_top      : 20000000
->>>>     ram_top      : 20000000
->>>> Building dt strings...
->>>> Building dt structure...
->>>> reserved memory map:
->>>>     00c40000 - 006c0000
->>>> Device tree strings 0x01401000 -> 0x00000007
->>>> Device tree struct 0x01402000 -> 0x00000007
->>>> Quiescing Open Firmware ...
->>>> Booting Linux via __start() @ 0x001400000
->>>> ->dt_headr_start=0x01400000
->>>>
->>>> Thanks anyway,
->>>>
+Best regards
+Wang shengjiu
