@@ -1,73 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2619274C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 05:24:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAB327468
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 04:33:58 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458YTv5xqVzDqRc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 12:33:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458Zc72kVmzDqSw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 13:24:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=dyoung@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="fs3cKvK0"; 
- dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458YSS1pMbzDqQN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 12:32:39 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id z19so2131368qtz.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2019 19:32:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=w1BRoEDPELMK0Gyp9/s2p/rcYNsdRckdJGf7yGafkuk=;
- b=fs3cKvK0NKboTT76WS2fOatBli8xun3JE9RHPbc8Y7ra9i2bA9b+aNHPVgi2NOuEh9
- Sd5ZMaa4Iqwn3Y0zFXXwS/t9vhQ7qx3cqzUWZd6BtEVHeKeT/2YC8ACuc89T9bhYBlBN
- tAwI7GH7qRt/ANpVMLvKLfRpD27QtExgoc+e0V3JY4w5S1QSuTnhvAFsxpzZ6+ZmVE4J
- BUBbKREis/mvL9qmSOyoE+eKFb9VFUnaT2QHpkA9LuxeAYAX2w8eNE5f+G+deolb8+tt
- Hlbd1wFXYtOudAn3gYWzSAfpsEbdY+YIY9zLQx04JTViMMr+MJjbn2lIZC+kUWlObBTD
- Yvkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=w1BRoEDPELMK0Gyp9/s2p/rcYNsdRckdJGf7yGafkuk=;
- b=OrMljvags0ANqYpQzikbrvHa4THmnjblywsP6BX4tYvF6Eoaq5hDYgaVAFbA9r6XmG
- LdoOWSI2U+G8zibBplRzs1yuF2+Le5RPZsAhuUPxb4qwb+1+6BcM2B59HzcwKUhys5qR
- hYZLiUXiWCYlHHEp+i987rc6oMC2sur6X+dPsplYkX5sQjpWL/7mW4/Lx4G9U6axTEyg
- +Q+VDhsqNAQAAfDp+kwwZxPyFtzVI1AywmU1yr8J/JV+LCi6HAMM0vG+pZI1su24TKjc
- fWdqDHHs3PrplLRGJCw/Ig/fgIKkoJNGqIRyjTGV5RqI1DnVGy82XOY/VPcOy1PL931G
- L1Kg==
-X-Gm-Message-State: APjAAAXYhLBGI9pRt3xNimMHSE89tb2y9s4J1Ih1mMmSISLDoKQKdg7W
- JQYurR9LBmauYP8BuDb8P5TFiw==
-X-Google-Smtp-Source: APXvYqwXTOyP/ZR1b0OccJMZC/QtNGYrA/lcBr6HbpCaQNFLZZ1gWevztbjKZgn+0FbHLGRp5kaoRQ==
-X-Received: by 2002:a0c:9228:: with SMTP id a37mr15950616qva.221.1558578756618; 
- Wed, 22 May 2019 19:32:36 -0700 (PDT)
-Received: from ovpn-121-0.rdu2.redhat.com
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id q66sm12891044qke.66.2019.05.22.19.32.35
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 22 May 2019 19:32:35 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: benh@kernel.crashing.org,
-	paulus@samba.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc/powernv: fix variable "c" set but not used
-Date: Wed, 22 May 2019 22:31:41 -0400
-Message-Id: <20190523023141.2973-1-cai@lca.pw>
-X-Mailer: git-send-email 2.20.1 (Apple Git-117)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458ZZp5fftzDqRF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 13:23:12 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 017E5C057F2F;
+ Thu, 23 May 2019 03:23:10 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-185.pek2.redhat.com
+ [10.72.12.185])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AED218687;
+ Thu, 23 May 2019 03:23:06 +0000 (UTC)
+Date: Thu, 23 May 2019 11:23:02 +0800
+From: Dave Young <dyoung@redhat.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Subject: Re: [PATCH] powerpc: Fix loading of kernel + initramfs with
+ kexec_file_load()
+Message-ID: <20190523032302.GD8174@dhcp-128-65.nay.redhat.com>
+References: <20190522220158.18479-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190522220158.18479-1-bauerman@linux.ibm.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.32]); Thu, 23 May 2019 03:23:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,44 +56,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>, AKASHI Takahiro <takahiro.akashi@linaro.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit 58629c0dc349 ("powerpc/powernv/npu: Fault user page into the
-hypervisor's pagetable") introduced a variable "c" to be used in
-__get_user() and __get_user_nocheck() which need to stay as macros for
-performance reasons, and "c" is not actually used in
-pnv_npu2_handle_fault(),
+On 05/22/19 at 07:01pm, Thiago Jung Bauermann wrote:
+> Commit b6664ba42f14 ("s390, kexec_file: drop arch_kexec_mem_walk()")
+> changed kexec_add_buffer() to skip searching for a memory location if
+> kexec_buf.mem is already set, and use the address that is there.
+> 
+> In powerpc code we reuse a kexec_buf variable for loading both the kernel
+> and the initramfs by resetting some of the fields between those uses, but
+> not mem. This causes kexec_add_buffer() to try to load the kernel at the
+> same address where initramfs will be loaded, which is naturally rejected:
+> 
+>   # kexec -s -l --initrd initramfs vmlinuz
+>   kexec_file_load failed: Invalid argument
+> 
+> Setting the mem field before every call to kexec_add_buffer() fixes this
+> regression.
+> 
+> Fixes: b6664ba42f14 ("s390, kexec_file: drop arch_kexec_mem_walk()")
+> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/kexec_elf_64.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/kexec_elf_64.c b/arch/powerpc/kernel/kexec_elf_64.c
+> index ba4f18a43ee8..52a29fc73730 100644
+> --- a/arch/powerpc/kernel/kexec_elf_64.c
+> +++ b/arch/powerpc/kernel/kexec_elf_64.c
+> @@ -547,6 +547,7 @@ static int elf_exec_load(struct kimage *image, struct elfhdr *ehdr,
+>  		kbuf.memsz = phdr->p_memsz;
+>  		kbuf.buf_align = phdr->p_align;
+>  		kbuf.buf_min = phdr->p_paddr + base;
+> +		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>  		ret = kexec_add_buffer(&kbuf);
+>  		if (ret)
+>  			goto out;
+> @@ -581,7 +582,8 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+>  				  .buf_max = ppc64_rma_size };
+>  	struct kexec_buf pbuf = { .image = image, .buf_min = 0,
+> -				  .buf_max = ppc64_rma_size, .top_down = true };
+> +				  .buf_max = ppc64_rma_size, .top_down = true,
+> +				  .mem = KEXEC_BUF_MEM_UNKNOWN };
+>  
+>  	ret = build_elf_exec_info(kernel_buf, kernel_len, &ehdr, &elf_info);
+>  	if (ret)
+> @@ -606,6 +608,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  		kbuf.bufsz = kbuf.memsz = initrd_len;
+>  		kbuf.buf_align = PAGE_SIZE;
+>  		kbuf.top_down = false;
+> +		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>  		ret = kexec_add_buffer(&kbuf);
+>  		if (ret)
+>  			goto out;
+> @@ -638,6 +641,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	kbuf.bufsz = kbuf.memsz = fdt_size;
+>  	kbuf.buf_align = PAGE_SIZE;
+>  	kbuf.top_down = true;
+> +	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+>  	ret = kexec_add_buffer(&kbuf);
+>  	if (ret)
+>  		goto out;
+> 
+> 
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
 
-arch/powerpc/platforms/powernv/npu-dma.c: In function 'pnv_npu2_handle_fault':
-arch/powerpc/platforms/powernv/npu-dma.c:1122:7: warning: variable 'c'
-set but not used [-Wunused-but-set-variable]
+Reviewed-by: Dave Young <dyoung@redhat.com>
 
-Fixed it by appending the __maybe_unused attribute, so compilers would
-ignore it.
-
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- arch/powerpc/platforms/powernv/npu-dma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index 495550432f3d..5bbe59573ee6 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -1119,7 +1119,8 @@ int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
- 	int i, is_write;
- 	struct page *page[1];
- 	const char __user *u;
--	char c;
-+	/* To silence a -Wunused-but-set-variable warning. */
-+	char c __maybe_unused;
- 
- 	/* mmap_sem should be held so the struct_mm must be present */
- 	struct mm_struct *mm = context->mm;
--- 
-2.20.1 (Apple Git-117)
-
+Thanks
+Dave
