@@ -2,74 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2216627C38
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 13:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BECC27C67
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 14:03:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458ntc3JV0zDqdc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 21:52:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458p7H6N22zDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 22:03:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="S/Ixtxvc"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="mYh3up+P"; 
  dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458nsC3K0xzDqdT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 21:51:26 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id e24so8835694edq.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 04:51:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=DxrwlFYynfpKWcnso1ASEMJy1QePVih8VzbqwCBkVwk=;
- b=S/Ixtxvc2rCTBfYbzQGiR2W1gdfRhjumXOGgdu6z5ZJn93UKfws6k6ee18PWPXzlDD
- 34VNSUVl1F53yAPBVRFXImrLpe7sp1R3RWU6ueWOjvI6M8sU1iNP4im0skwaqTuQRUI3
- sJIA+/8okDM6QZIbI5rbYpsc3IcvP6Y2vT3m/sqm3D8RJWvk/pCqLrz+0Bww9JTf0nJB
- iYoTll8Maxv4hlDHAWHuPjFK29juGO9XVC/XtHjE4Ia93dBRDXi9FTYBwym4yIuDO3bU
- KpK6X02jkldIOkbi8+Z06PuUo/TGQJMyBrB/dAr/0sdCeNd8eYTqTlNcvQeNZ+q4dvvT
- hkvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=DxrwlFYynfpKWcnso1ASEMJy1QePVih8VzbqwCBkVwk=;
- b=Pyd/cDdQs/j6FlV+TZ/csAAVWxgTuv+OzUT/g3O+uVlYExEbBuqMkrh+YP4rvyYLHT
- Kr3XqrvJoBaCH+YWprh6D93ubJgwBaqG6zla4U6mrxw36eVwmZed4Q8TgoGNeYeaNdtl
- +CGHO5wnTT3HHwYmfGuueg0FEXWhlAohPCa+450jvxtcehArPEh5/sFxaR3kcd/VPga3
- Yz+nDFt/VTQvv9jyDdttbG15NywY7sC0tir7veoMlxE7yeGSTkBOpiEanoLR2rj7qxos
- W/65vsspm00fXwd9W/vhGzU2BiYF2qfY8VhpcmssgSknI0OeXY6aQelJgNZFLkiD6QCf
- nMZw==
-X-Gm-Message-State: APjAAAXtbHR40PqZD0Mg3PZNYK2x5fazBfZpUvkvYH4+lAuMBhiqBPP/
- tPFyBcs5HFn0KjLvbOK6wO/4fg==
-X-Google-Smtp-Source: APXvYqx7/y/DNnexBZOnXkDyT0N3tMuirzQAMafDXHp1AgKt73Se0dTImjP3o0mVoffNMpPelxEu9Q==
-X-Received: by 2002:a50:84a1:: with SMTP id 30mr95678372edq.105.1558612282526; 
- Thu, 23 May 2019 04:51:22 -0700 (PDT)
-Received: from brauner.io (178-197-142-46.pool.kielnet.net. [46.142.197.178])
- by smtp.gmail.com with ESMTPSA id
- h23sm4406908ejc.34.2019.05.23.04.51.21
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 23 May 2019 04:51:22 -0700 (PDT)
-Date: Thu, 23 May 2019 13:51:20 +0200
-From: Christian Brauner <christian@brauner.io>
-To: Oleg Nesterov <oleg@redhat.com>
-Subject: Re: [PATCH v1 1/2] open: add close_range()
-Message-ID: <20190523115118.pmscbd6kaqy37dym@brauner.io>
-References: <20190522155259.11174-1-christian@brauner.io>
- <20190522165737.GC4915@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458p5d5hGDzDqRj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 22:02:12 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 458p5V4Lx7z9v2NT;
+ Thu, 23 May 2019 14:02:06 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=mYh3up+P; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id t0X21tqOHZa6; Thu, 23 May 2019 14:02:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 458p5V2pLmz9v2NS;
+ Thu, 23 May 2019 14:02:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1558612926; bh=dxjR5/OUEbuHjryrELjiCz2BmB568YPeDBsdsR3B27c=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=mYh3up+PAV5q1CkXEn+MOv/nsPx6DdMICOFeThJ9qrLIPZA+jhtbkBC+HHc9/cL0A
+ hZ2n1Zjj7fl/dhUGlc8qA57UwniCg+wLUPsvmBPHhgH6vGW6sFn8oCHfLDVYRlxTco
+ ll+LSYtlKlkVUYiJJDsANgkM8wdmay41mIKPj+do=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C6A68B860;
+ Thu, 23 May 2019 14:02:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id r1aNl5ZvA7nM; Thu, 23 May 2019 14:02:07 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 895C78B858;
+ Thu, 23 May 2019 14:02:06 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/power: Expose pfn_is_nosave prototype
+To: Mathieu Malaterre <malat@debian.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20190523114736.30268-1-malat@debian.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <11ffdbd5-60a9-b1fa-aa83-9d3c60e3d462@c-s.fr>
+Date: Thu, 23 May 2019 14:02:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190522165737.GC4915@redhat.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190523114736.30268-1-malat@debian.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,180 +77,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, ldv@altlinux.org,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
- tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, fweimer@redhat.com,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Len Brown <len.brown@intel.com>, linux-pm@vger.kernel.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 22, 2019 at 06:57:37PM +0200, Oleg Nesterov wrote:
-> On 05/22, Christian Brauner wrote:
-> >
-> > +static struct file *pick_file(struct files_struct *files, unsigned fd)
-> >  {
-> > -	struct file *file;
-> > +	struct file *file = NULL;
-> >  	struct fdtable *fdt;
-> >  
-> >  	spin_lock(&files->file_lock);
-> > @@ -632,15 +629,65 @@ int __close_fd(struct files_struct *files, unsigned fd)
-> >  		goto out_unlock;
-> >  	rcu_assign_pointer(fdt->fd[fd], NULL);
-> >  	__put_unused_fd(files, fd);
-> > -	spin_unlock(&files->file_lock);
-> > -	return filp_close(file, files);
-> >  
-> >  out_unlock:
-> >  	spin_unlock(&files->file_lock);
-> > -	return -EBADF;
-> > +	return file;
+
+
+Le 23/05/2019 à 13:47, Mathieu Malaterre a écrit :
+> The declaration for pfn_is_nosave is only available in
+> kernel/power/power.h. Since this function can be override in arch,
+> expose it globally. Having a prototype will make sure to avoid warning
+> (sometime treated as error with W=1) such as:
 > 
-> ...
+>    arch/powerpc/kernel/suspend.c:18:5: error: no previous prototype for 'pfn_is_nosave' [-Werror=missing-prototypes]
 > 
-> > +int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-> > +{
-> > +	unsigned int cur_max;
-> > +
-> > +	if (fd > max_fd)
-> > +		return -EINVAL;
-> > +
-> > +	rcu_read_lock();
-> > +	cur_max = files_fdtable(files)->max_fds;
-> > +	rcu_read_unlock();
-> > +
-> > +	/* cap to last valid index into fdtable */
-> > +	if (max_fd >= cur_max)
-> > +		max_fd = cur_max - 1;
-> > +
-> > +	while (fd <= max_fd) {
-> > +		struct file *file;
-> > +
-> > +		file = pick_file(files, fd++);
-> 
-> Well, how about something like
-> 
-> 	static unsigned int find_next_opened_fd(struct fdtable *fdt, unsigned start)
-> 	{
-> 		unsigned int maxfd = fdt->max_fds;
-> 		unsigned int maxbit = maxfd / BITS_PER_LONG;
-> 		unsigned int bitbit = start / BITS_PER_LONG;
-> 
-> 		bitbit = find_next_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
-> 		if (bitbit > maxfd)
-> 			return maxfd;
-> 		if (bitbit > start)
-> 			start = bitbit;
-> 		return find_next_bit(fdt->open_fds, maxfd, start);
-> 	}
+> This moves the declaration into a globally visible header file and add
+> missing include to avoid a warning in powerpc.
+
+Then you should also drop it from kernel/power/power.h and 
+arch/s390/kernel/entry.h
+
+Christophe
 
 > 
-> 	unsigned close_next_fd(struct files_struct *files, unsigned start, unsigned maxfd)
-> 	{
-> 		unsigned fd;
-> 		struct file *file;
-> 		struct fdtable *fdt;
-> 	
-> 		spin_lock(&files->file_lock);
-> 		fdt = files_fdtable(files);
-> 		fd = find_next_opened_fd(fdt, start);
-> 		if (fd >= fdt->max_fds || fd > maxfd) {
-> 			fd = -1;
-> 			goto out;
-> 		}
+> Signed-off-by: Mathieu Malaterre <malat@debian.org>
+> ---
+>   arch/powerpc/kernel/suspend.c | 1 +
+>   include/linux/suspend.h       | 1 +
+>   2 files changed, 2 insertions(+)
 > 
-> 		file = fdt->fd[fd];
-> 		rcu_assign_pointer(fdt->fd[fd], NULL);
-> 		__put_unused_fd(files, fd);
-> 	out:
-> 		spin_unlock(&files->file_lock);
+> diff --git a/arch/powerpc/kernel/suspend.c b/arch/powerpc/kernel/suspend.c
+> index a531154cc0f3..9e1b6b894245 100644
+> --- a/arch/powerpc/kernel/suspend.c
+> +++ b/arch/powerpc/kernel/suspend.c
+> @@ -8,6 +8,7 @@
+>    */
+>   
+>   #include <linux/mm.h>
+> +#include <linux/suspend.h>
+>   #include <asm/page.h>
+>   #include <asm/sections.h>
+>   
+> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+> index 3f529ad9a9d2..2660bbdf5230 100644
+> --- a/include/linux/suspend.h
+> +++ b/include/linux/suspend.h
+> @@ -395,6 +395,7 @@ extern bool system_entering_hibernation(void);
+>   extern bool hibernation_available(void);
+>   asmlinkage int swsusp_save(void);
+>   extern struct pbe *restore_pblist;
+> +int pfn_is_nosave(unsigned long pfn);
+>   #else /* CONFIG_HIBERNATION */
+>   static inline void register_nosave_region(unsigned long b, unsigned long e) {}
+>   static inline void register_nosave_region_late(unsigned long b, unsigned long e) {}
 > 
-> 		if (fd == -1u)
-> 			return fd;
-> 
-> 		filp_close(file, files);
-> 		return fd + 1;
-> 	}
-
-Thanks, Oleg!
-
-I kept it dumb and was about to reply that your solution introduces more
-code when it seemed we wanted to keep this very simple for now.
-But then I saw that find_next_opened_fd() already exists as
-find_next_fd(). So it's actually not bad compared to what I sent in v1.
-So - with some small tweaks (need to test it and all now) - how do we
-feel about?:
-
-/**
- * __close_next_open_fd() - Close the nearest open fd.
- *
- * @curfd: lowest file descriptor to consider
- * @maxfd: highest file descriptor to consider
- *
- * This function will close the nearest open fd, i.e. it will either
- * close @curfd if it is open or the closest open file descriptor
- * c greater than @curfd that
- * is smaller or equal to maxfd.
- * If the function found a file descriptor to close it will return 0 and
- * place the file descriptor it closed in @curfd. If it did not find a
- * file descriptor to close it will return -EBADF.
- */
-static int __close_next_open_fd(struct files_struct *files, unsigned *curfd, unsigned maxfd)
-{
-        struct file *file = NULL;
-	unsigned fd;
-	struct fdtable *fdt;
-
-	spin_lock(&files->file_lock);
-	fdt = files_fdtable(files);
-	fd = find_next_fd(fdt, *curfd);
-	if (fd >= fdt->max_fds || fd > maxfd)
-		goto out_unlock;
-
-	file = fdt->fd[fd];
-	rcu_assign_pointer(fdt->fd[fd], NULL);
-	__put_unused_fd(files, fd);
-
-out_unlock:
-	spin_unlock(&files->file_lock);
-
-	if (!file)
-		return -EBADF;
-
-	*curfd = fd;
-	filp_close(file, files);
-	return 0;
-}
-
-int __close_range(struct files_struct *files, unsigned fd, unsigned max_fd)
-{
-	if (fd > max_fd)
-		return -EINVAL;
-
-	while (fd <= max_fd) {
-		if (__close_next_fd(files, &fd, maxfd))
-			break;
-
-		cond_resched();
-		fd++;
-	}
-
-	return 0;
-}
-
-SYSCALL_DEFINE3(close_range, unsigned int, fd, unsigned int, max_fd,
-		unsigned int, flags)
-{
-	if (flags)
-		return -EINVAL;
-
-	return __close_range(current->files, fd, max_fd);
-}
