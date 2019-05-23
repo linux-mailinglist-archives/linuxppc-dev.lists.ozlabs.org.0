@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059A9276A6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 09:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC1D5276E8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 09:28:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 458gT74P0MzDqXf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 17:03:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 458h1W2jy0zDqXC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2019 17:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,56 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jnQhvOhi"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="dDhplhtn"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 458gPw2ry9zDqXs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 17:00:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 458h04332qzDqWm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 17:27:00 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 458gPr10Z2z9v1Px;
- Thu, 23 May 2019 09:00:48 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 458gzy1zmFz9v23W;
+ Thu, 23 May 2019 09:26:54 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jnQhvOhi; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=dDhplhtn; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ZgPyeXb_h0lj; Thu, 23 May 2019 09:00:48 +0200 (CEST)
+ with ESMTP id r_mYKpjo8VNy; Thu, 23 May 2019 09:26:54 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 458gPq70rCz9v1Py;
- Thu, 23 May 2019 09:00:47 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 458gzy033Rz9v23V;
+ Thu, 23 May 2019 09:26:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1558594848; bh=SUPlvML+tdx1yeEzk+b+73oi/1jwsm7iSUeW9uFAnME=;
+ t=1558596414; bh=y0ndvATBuFeBuD1aCpeFBhYVI+2u7k6MGm7Va98zHq8=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=jnQhvOhiUB08k1W4VZVgqaHp3zR+5g6/5YQZAcS/+o5M5np7VNTGhKaEgJhnT0KG3
- rgJiaSIg8mjdh2nGQk+3oA78ZDMIxX1gXI2JOpMtME95WJPpLcbpdfyuT8V9f9fwv1
- vHcou2OEK1MwvAWTVx5gALiOEoShSsdaaw5Uf3+w=
+ b=dDhplhtnXkzFY/ATEefKFa2nsAnGJkFilJI74ov27kmHlMUaYVqU2Yxn1PJggw1Vj
+ FkFqdInH5+TEbZ+tQDPPc0vCpF9mximrMFysWuEUbDnaXQ7f06B4xd7JakVWPonEGa
+ wdcYmuMjpWQyeXrTcfQbk+m6N0tQz5rFZ/nS/qV4=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E99318B75A;
- Thu, 23 May 2019 09:00:48 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 032218B77D;
+ Thu, 23 May 2019 09:26:55 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eVuKMmI_EIz3; Thu, 23 May 2019 09:00:48 +0200 (CEST)
+ with ESMTP id mYH4J9Ejz9ZD; Thu, 23 May 2019 09:26:54 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 824F78B77D;
- Thu, 23 May 2019 09:00:48 +0200 (CEST)
-Subject: Re: [PATCH v3 14/16] powerpc/32: implement fast entry for syscalls on
- BOOKE
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <cover.1556627571.git.christophe.leroy@c-s.fr>
- <3e254178a157e7eaeef48f983880f71f97d1f296.1556627571.git.christophe.leroy@c-s.fr>
- <20190523061427.GA19655@blackberry>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E6578B75A;
+ Thu, 23 May 2019 09:26:54 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/powernv: fix variable "c" set but not used
+To: Qian Cai <cai@lca.pw>, benh@kernel.crashing.org, paulus@samba.org,
+ mpe@ellerman.id.au
+References: <20190523023141.2973-1-cai@lca.pw>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <98bf5745-88ae-7f17-fcb9-7d06ba5b9e49@c-s.fr>
-Date: Thu, 23 May 2019 09:00:48 +0200
+Message-ID: <d0512822-ca22-75ec-3dd9-1024001632f5@c-s.fr>
+Date: Thu, 23 May 2019 09:26:53 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190523061427.GA19655@blackberry>
+In-Reply-To: <20190523023141.2973-1-cai@lca.pw>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -80,76 +78,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 23/05/2019 à 08:14, Paul Mackerras a écrit :
-> On Tue, Apr 30, 2019 at 12:39:03PM +0000, Christophe Leroy wrote:
->> This patch implements a fast entry for syscalls.
->>
->> Syscalls don't have to preserve non volatile registers except LR.
->>
->> This patch then implement a fast entry for syscalls, where
->> volatile registers get clobbered.
->>
->> As this entry is dedicated to syscall it always sets MSR_EE
->> and warns in case MSR_EE was previously off
->>
->> It also assumes that the call is always from user, system calls are
->> unexpected from kernel.
+Le 23/05/2019 à 04:31, Qian Cai a écrit :
+> The commit 58629c0dc349 ("powerpc/powernv/npu: Fault user page into the
+> hypervisor's pagetable") introduced a variable "c" to be used in
+> __get_user() and __get_user_nocheck() which need to stay as macros for
+> performance reasons, and "c" is not actually used in
+> pnv_npu2_handle_fault(),
 > 
-> This is now upstream as commit 1a4b739bbb4f.  On the e500mc test
-> config that I use, I'm getting this build failure:
+> arch/powerpc/platforms/powernv/npu-dma.c: In function 'pnv_npu2_handle_fault':
+> arch/powerpc/platforms/powernv/npu-dma.c:1122:7: warning: variable 'c'
+> set but not used [-Wunused-but-set-variable]
+> 
+> Fixed it by appending the __maybe_unused attribute, so compilers would
+> ignore it.
 
-Is that a standard defconfig ? If not, can you provide your .config ?
+You are not fixing the problem, you are just hiding it.
+
+If the result of __get_user() is unneeded, it means __get_user() is not 
+the good function to use.
+
+Should use fault_in_pages_readable() instead.
+
+A similar warning was fixed in commit 9f9eae5ce717 ("powerpc/kvm: Prefer 
+fault_in_pages_readable function")
+
+See 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/powerpc?id=9f9eae5ce
 
 > 
-> arch/powerpc/kernel/head_fsl_booke.o: In function `SystemCall':
-> arch/powerpc/kernel/head_fsl_booke.S:416: undefined reference to `kvmppc_handler_BOOKE_INTERRUPT_SYSCALL_SPRN_SRR1'
-> Makefile:1052: recipe for target 'vmlinux' failed
-> 
->> +.macro SYSCALL_ENTRY trapno intno
->> +	mfspr	r10, SPRN_SPRG_THREAD
->> +#ifdef CONFIG_KVM_BOOKE_HV
->> +BEGIN_FTR_SECTION
->> +	mtspr	SPRN_SPRG_WSCRATCH0, r10
->> +	stw	r11, THREAD_NORMSAVE(0)(r10)
->> +	stw	r13, THREAD_NORMSAVE(2)(r10)
->> +	mfcr	r13			/* save CR in r13 for now	   */
->> +	mfspr	r11, SPRN_SRR1
->> +	mtocrf	0x80, r11	/* check MSR[GS] without clobbering reg */
->> +	bf	3, 1975f
->> +	b	kvmppc_handler_BOOKE_INTERRUPT_\intno\()_SPRN_SRR1
-> 
-> It seems to me that the "_SPRN_SRR1" on the end of this line
-> isn't meant to be there...  However, it still fails to link with that
-> removed.
+> Signed-off-by: Qian Cai <cai@lca.pw>
 
-This SYSCALL_ENTRY macro is a slimmed version of NORMAL_EXCEPTION_PROLOG()
+You should add a Fixes: tag
 
-In NORMAL_EXCEPTION_PROLOG(), we have:
-	DO_KVM	BOOKE_INTERRUPT_##intno SPRN_SRR1;	
-
-The _SPRN_SRR1 comes from there
-
-
-Then in /arch/powerpc/include/asm/kvm_booke_hv_asm.h:
-
-.macro DO_KVM intno srr1
-#ifdef CONFIG_KVM_BOOKE_HV
-BEGIN_FTR_SECTION
-	mtocrf	0x80, r11	/* check MSR[GS] without clobbering reg */
-	bf	3, 1975f
-	b	kvmppc_handler_\intno\()_\srr1
-1975:
-END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
-#endif
-.endm
-
+58629c0dc349 ("powerpc/powernv/npu: Fault user page into the 
+hypervisor's pagetable")
 
 Christophe
+
+> ---
+>   arch/powerpc/platforms/powernv/npu-dma.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
+> index 495550432f3d..5bbe59573ee6 100644
+> --- a/arch/powerpc/platforms/powernv/npu-dma.c
+> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
+> @@ -1119,7 +1119,8 @@ int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
+>   	int i, is_write;
+>   	struct page *page[1];
+>   	const char __user *u;
+> -	char c;
+> +	/* To silence a -Wunused-but-set-variable warning. */
+> +	char c __maybe_unused;
+>   
+>   	/* mmap_sem should be held so the struct_mm must be present */
+>   	struct mm_struct *mm = context->mm;
+> 
