@@ -2,62 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F39C291D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 09:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0824291D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 09:37:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 459J7H4NcczDqhn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 17:35:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 459J9c51s4zDqfF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 17:37:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=neutral (mailfrom) smtp.mailfrom=iki.fi
+ (client-ip=62.142.5.110; helo=emh04.mail.saunalahti.fi;
+ envelope-from=aaro.koskinen@iki.fi; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=fail (p=none dis=none) header.from=iki.fi
+Received: from emh04.mail.saunalahti.fi (emh04.mail.saunalahti.fi
+ [62.142.5.110])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 459J6345DHzDqZF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 17:34:18 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id j49so7803095otc.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 00:34:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=7Z+3LPVkvEfoWX5i7ie3Y/Hp/ghZqvzHw4rW94WsKAY=;
- b=Lt3PTIdkJMrMcybvxV1NmpWlK3GLLXdT6xJi2jU0uIBx6avHGC1hDPOHXFPoEv4DxY
- 5+KRah43OyOo+W3DlwTKsM4uO35Ve+Pn+4EO/bkOEezyg/8Dv4Kp5hM4kVpLCHYvhIm6
- /ZzKIbTDuK5vlp9SWjvvpjMKIrh96dYnt0uNkRNEIz2N7Kh+ANyVi04k4m0QYER+K8Gn
- HKNVQ2kGKH55DPbSCP6eVXq/SZKxck9dH1vlTXXYV4SGaWnAtKu2vAJUq/n8ivFdRmyV
- 5Qti5+Pn3yVp0V3POq2GosX++TkhoQr4UNe4c/YqStLRWlwlQG1sU4L4fpQChbXW9B2U
- GegA==
-X-Gm-Message-State: APjAAAV8OLn6qTVP9fT7/9IwnJqr7Qer5okg5cJq9lfSQbiU4Bjk6rQE
- 16IntLoY6a33nMuUCf7FoEHHgL52WN8+nlTAeKo=
-X-Google-Smtp-Source: APXvYqw2euQJPf4yIOBJa8+4dq7W2oL8Y7TXiAnGqDO7Ne0A79hBDXlcEbOW1HJCMDGAlB+GsdrbGblBfrJeVmlQstY=
-X-Received: by 2002:a9d:27c7:: with SMTP id c65mr60260474otb.335.1558683256356; 
- Fri, 24 May 2019 00:34:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <CA+7wUszwugJeS_x_ExaHPUb8p23D7Zo2f2qqXfLQwr8EiLsk2g@mail.gmail.com>
- <33ab57c7-294a-6ae4-d678-1490ce5b97f1@c-s.fr>
- <CA+7wUsywReRnB1ASdbVrNRkWyPkSKhruBKo57kX--1qmU8hv7A@mail.gmail.com>
- <9b6e027e-0fa0-e088-d9a3-47b005cbc356@c-s.fr>
- <CA+7wUsxOxvtsp511c63HK-=Wm22qyEtDcg=p4rfRD+n55UQmiQ@mail.gmail.com>
- <CA+7wUszcau+OBj+ZTr007_vuTJsOmT0izZ64_W98x1=MPLU6aA@mail.gmail.com>
- <9e5ef44d-259a-1f1a-bd6a-98abdae85da0@c-s.fr>
- <CA+7wUsxoCrqw5MH+8QrT4kVVC0AcwdgUu3Zuy+-GGU=bU1_ezg@mail.gmail.com>
- <225acfb1-2eed-ed7b-fd82-732a3f8b746a@c-s.fr>
-In-Reply-To: <225acfb1-2eed-ed7b-fd82-732a3f8b746a@c-s.fr>
-From: Mathieu Malaterre <malat@debian.org>
-Date: Fri, 24 May 2019 09:34:05 +0200
-Message-ID: <CA+7wUsyKXpifPbURqhi3dssCYf_D8WfsZ2A4rL5RuaZOVBpZ_Q@mail.gmail.com>
-Subject: Re: Failure to boot G4: dt_headr_start=0x01501000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 459J8T294LzDqZF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 17:36:21 +1000 (AEST)
+Received: from darkstar.musicnaut.iki.fi (85-76-86-221-nat.elisa-mobile.fi
+ [85.76.86.221])
+ by emh04.mail.saunalahti.fi (Postfix) with ESMTP id E5CB1300C5;
+ Fri, 24 May 2019 10:36:15 +0300 (EEST)
+Date: Fri, 24 May 2019 10:36:15 +0300
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [BISECTED] kexec regression on PowerBook G4
+Message-ID: <20190524073615.GD5234@darkstar.musicnaut.iki.fi>
+References: <a8f8a0d7-1737-4c83-4587-8d4dc87c3ecb@c-s.fr>
+ <20190522201310.GB456@darkstar.musicnaut.iki.fi>
+ <20190522223335.Horde.JIF8kbX8AwL8wErArEvEcg1@messagerie.si.c-s.fr>
+ <20190522211724.GC456@darkstar.musicnaut.iki.fi>
+ <a3619327-14ba-ff34-913f-cf3384284c9a@c-s.fr>
+ <20190523172717.GA5234@darkstar.musicnaut.iki.fi>
+ <dc24cfa0-cefa-3245-a9aa-5493b094ffac@c-s.fr>
+ <20190523222344.GC5234@darkstar.musicnaut.iki.fi>
+ <334b0aca-3731-5754-bd26-af147991345d@c-s.fr>
+ <ed5f9739-7661-b32a-cb8f-157b516baafa@c-s.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ed5f9739-7661-b32a-cb8f-157b516baafa@c-s.fr>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,92 +57,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 23, 2019 at 8:12 PM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
->
->
-> On 05/23/2019 10:16 AM, Mathieu Malaterre wrote:
-> > On Thu, May 23, 2019 at 11:45 AM Christophe Leroy
-> > <christophe.leroy@c-s.fr> wrote:
-> >>
-> >>
-> >>
-> >> Le 23/05/2019 =C3=A0 10:53, Mathieu Malaterre a =C3=A9crit :
-> >>>
-> >>> I confirm powerpc/merge does not boot for me (same config). Commit id=
-:
-> >>>
-> >>> a27eaa62326d (powerpc/merge) Automatic merge of branches 'master',
-> >>> 'next' and 'fixes' into merge
-> >>
-> >> I see in the config you sent me that you have selected CONFIG_KASAN,
-> >> which is a big new stuff.
-> >>
-> >> Can you try without it ?
+Hi,
+
+On Fri, May 24, 2019 at 08:08:36AM +0200, Christophe Leroy wrote:
+> >Le 24/05/2019 à 00:23, Aaro Koskinen a écrit :
+> >>Unfortunately still no luck... The crash is pretty much the same with
+> >>both
+> >>changes.
 > >
-> > With same config but CONFIG_KASAN=3Dn (on top of a27eaa62326d), I can
-> > reproduce the boot failure (no change).
+> >Right. In fact change_page_attr() does nothing because this part of RAM is
+> >mapped by DBATs so v_block_mapped() returns not NULL.
 > >
-> > Time for bisect ?
+> >So, we have to set an IBAT for this area. I'll try and send you a new
+> >patch for that before noon (CET).
 > >
->
-> I found the issue. In order to be able to support KASAN, the setup of
-> segments have moved earlier in the boot. Your problem is a side effect
-> of this change.
-> Function setup_disp_bat() is supposed to setup BAT3 for btext data.
-> But setup_disp_bat() rely on someone setting in disp_BAT the values to
-> be loaded into BATs. This is done by btext_prepare_BAT() which is called
-> by bootx_init().
-> The problem is that bootx_init() is never called, so setup_disp_bat()
-> does nothing and the access to btext data is possible because the
-> bootloader has set an entry for it in the hash table.
->
-> But by setting up the segment earlier, we break the bootloader hash
-> table, which shouldn't be an issue if the BATs had been set properly as
-> expected.
->
-> The problematic commit is 215b823707ce ("powerpc/32s: set up an early
-> static hash table for KASAN)"
->
-> Here is a dirty fix that works for me when CONFIG_KASAN is NOT set.
-> Of course, the real fix has to be to setup the BATs properly, but I
-> won't have time to look at that before June. Maybe you can ?
->
-> diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.=
-S
-> index 755fab9641d6..fba16970c028 100644
-> --- a/arch/powerpc/kernel/head_32.S
-> +++ b/arch/powerpc/kernel/head_32.S
-> @@ -162,7 +162,6 @@ __after_mmu_off:
->         bl      flush_tlbs
->
->         bl      initial_bats
-> -       bl      load_segment_registers
->   #ifdef CONFIG_KASAN
->         bl      early_hash_table
->   #endif
-> @@ -920,6 +919,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
->         RFI
->   /* Load up the kernel context */
->   2:    bl      load_up_mmu
-> +       bl      load_segment_registers
->
->   #ifdef CONFIG_BDI_SWITCH
->         /* Add helper information for the Abatron bdiGDB debugger.
+> 
+> patch sent out. In the patch I have also added a printk to print the buffer
+> address, so if the problem still occurs, we'll know if the problem is really
+> at the address of the buffer or if we are wrong from the beginning.
 
-With above patch I can boot powerpc/merge just fine. Thanks Christophe !
+Reboot code buffer at ef0c3000
+Bye!
+BUG: Unable to handle kernel instruction fetch
+Faulting instruction address: 0xef0c3000
 
-$ dmesg | head
-[    0.000000] printk: bootconsole [udbg0] enabled
-[    0.000000] Total memory =3D 512MB; using 1024kB for hash table
-[    0.000000] Linux version 5.1.0+ (malat@debian.org) (gcc version
-8.3.0 (Debian 8.3.0-7)) #12 Thu May 23 11:56:33 UTC 2019
-
-
-> Christophe
+A.
