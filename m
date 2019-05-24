@@ -1,61 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A44298F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 15:31:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4E029829
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 14:38:47 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 459QsH6Sw6zDqWL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 22:38:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 459S2Y6yL4zDqVb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 23:31:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 459Qqn0BrbzDqRS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 22:37:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 459Qqm4zcPz8tFN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 22:37:24 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 459Qqm4Vf1z9s7h; Fri, 24 May 2019 22:37:24 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.127.52; helo=new-02-3.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from NEW-02-3.privateemail.com (new-02-3.privateemail.com
- [198.54.127.52])
+Authentication-Results: lists.ozlabs.org;
+ spf=neutral (mailfrom) smtp.mailfrom=iki.fi
+ (client-ip=62.142.5.107; helo=emh01.mail.saunalahti.fi;
+ envelope-from=aaro.koskinen@iki.fi; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=iki.fi
+Received: from emh01.mail.saunalahti.fi (emh01.mail.saunalahti.fi
+ [62.142.5.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 459Qql2lncz9s1c
- for <linuxppc-dev@ozlabs.org>; Fri, 24 May 2019 22:37:20 +1000 (AEST)
-Received: from MTA-06-1.privateemail.com (unknown [10.20.147.16])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id 8557C6036A;
- Fri, 24 May 2019 12:37:16 +0000 (UTC)
-Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id 6E1036003D;
- Fri, 24 May 2019 08:37:16 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.201])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id B1D0D60045;
- Fri, 24 May 2019 12:37:15 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org,
-	kernel-hardening@lists.openwall.com
-Subject: [RFC PATCH v2] powerpc/xmon: restrict when kernel is locked down
-Date: Fri, 24 May 2019 07:38:18 -0500
-Message-Id: <20190524123816.1773-1-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 459Rzc71LTzDqQx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 23:29:13 +1000 (AEST)
+Received: from darkstar.musicnaut.iki.fi (85-76-86-221-nat.elisa-mobile.fi
+ [85.76.86.221])
+ by emh01.mail.saunalahti.fi (Postfix) with ESMTP id 07F4A20080;
+ Fri, 24 May 2019 16:29:08 +0300 (EEST)
+Date: Fri, 24 May 2019 16:29:07 +0300
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [BISECTED] kexec regression on PowerBook G4
+Message-ID: <20190524132907.GE5234@darkstar.musicnaut.iki.fi>
+References: <20190522223335.Horde.JIF8kbX8AwL8wErArEvEcg1@messagerie.si.c-s.fr>
+ <20190522211724.GC456@darkstar.musicnaut.iki.fi>
+ <a3619327-14ba-ff34-913f-cf3384284c9a@c-s.fr>
+ <20190523172717.GA5234@darkstar.musicnaut.iki.fi>
+ <dc24cfa0-cefa-3245-a9aa-5493b094ffac@c-s.fr>
+ <20190523222344.GC5234@darkstar.musicnaut.iki.fi>
+ <334b0aca-3731-5754-bd26-af147991345d@c-s.fr>
+ <ed5f9739-7661-b32a-cb8f-157b516baafa@c-s.fr>
+ <20190524073615.GD5234@darkstar.musicnaut.iki.fi>
+ <969271d1-0943-42e6-8992-77b20e305e48@c-s.fr>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <969271d1-0943-42e6-8992-77b20e305e48@c-s.fr>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,180 +57,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, ajd@linux.ibm.com,
- mjg59@google.com, dja@axtens.net
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xmon should be either fully or partially disabled depending on the
-kernel lockdown state.
+Hi,
 
-Put xmon into read-only mode for lockdown=integrity and completely
-disable xmon when lockdown=confidentiality. Xmon checks the lockdown
-state and takes appropriate action:
+On Fri, May 24, 2019 at 09:40:30AM +0200, Christophe Leroy wrote:
+> Le 24/05/2019 à 09:36, Aaro Koskinen a écrit :
+> >On Fri, May 24, 2019 at 08:08:36AM +0200, Christophe Leroy wrote:
+> >>>Le 24/05/2019 à 00:23, Aaro Koskinen a écrit :
+> >>>>Unfortunately still no luck... The crash is pretty much the same with
+> >>>>both
+> >>>>changes.
+> >>>
+> >>>Right. In fact change_page_attr() does nothing because this part of RAM is
+> >>>mapped by DBATs so v_block_mapped() returns not NULL.
+> >>>
+> >>>So, we have to set an IBAT for this area. I'll try and send you a new
+> >>>patch for that before noon (CET).
+> >>>
+> >>
+> >>patch sent out. In the patch I have also added a printk to print the buffer
+> >>address, so if the problem still occurs, we'll know if the problem is really
+> >>at the address of the buffer or if we are wrong from the beginning.
+> >
+> >Reboot code buffer at ef0c3000
+> >Bye!
+> >BUG: Unable to handle kernel instruction fetch
+> >Faulting instruction address: 0xef0c3000
+> >
+> 
+> Oops, I forgot to call update_bats() after setibat().
+> 
+> Can you add it and retry ?
 
- (1) during xmon_setup to prevent early xmon'ing
+Thanks, that was it, now it finally works!
 
- (2) when triggered via sysrq
-
- (3) when toggled via debugfs
-
- (4) when triggered via a previously enabled breakpoint
-
-The following lockdown state transitions are handled:
-
- (1) lockdown=none -> lockdown=integrity
-     clear all breakpoints, set xmon read-only mode
-
- (2) lockdown=none -> lockdown=confidentiality
-     clear all breakpoints, prevent re-entry into xmon
-
- (3) lockdown=integrity -> lockdown=confidentiality
-     prevent re-entry into xmon
-
-Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
-
-Applies on top of this series:
-	https://patchwork.kernel.org/cover/10884631/
-
-I've done some limited testing of the scenarios mentioned in the commit
-message on a single CPU QEMU config.
-
-v1->v2:
-	Fix subject line
-	Submit to linuxppc-dev and kernel-hardening
-
- arch/powerpc/xmon/xmon.c | 56 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 3e7be19aa208..8c4a5a0c28f0 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -191,6 +191,9 @@ static void dump_tlb_44x(void);
- static void dump_tlb_book3e(void);
- #endif
- 
-+static void clear_all_bpt(void);
-+static void xmon_init(int);
-+
- #ifdef CONFIG_PPC64
- #define REG		"%.16lx"
- #else
-@@ -291,6 +294,39 @@ Commands:\n\
-   zh	halt\n"
- ;
- 
-+#ifdef CONFIG_LOCK_DOWN_KERNEL
-+static bool xmon_check_lockdown(void)
-+{
-+	static bool lockdown = false;
-+
-+	if (!lockdown) {
-+		lockdown = kernel_is_locked_down("Using xmon",
-+						 LOCKDOWN_CONFIDENTIALITY);
-+		if (lockdown) {
-+			printf("xmon: Disabled by strict kernel lockdown\n");
-+			xmon_on = 0;
-+			xmon_init(0);
-+		}
-+	}
-+
-+	if (!xmon_is_ro) {
-+		xmon_is_ro = kernel_is_locked_down("Using xmon write-access",
-+						   LOCKDOWN_INTEGRITY);
-+		if (xmon_is_ro) {
-+			printf("xmon: Read-only due to kernel lockdown\n");
-+			clear_all_bpt();
-+		}
-+	}
-+
-+	return lockdown;
-+}
-+#else
-+inline static bool xmon_check_lockdown(void)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_LOCK_DOWN_KERNEL */
-+
- static struct pt_regs *xmon_regs;
- 
- static inline void sync(void)
-@@ -708,6 +744,9 @@ static int xmon_bpt(struct pt_regs *regs)
- 	struct bpt *bp;
- 	unsigned long offset;
- 
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 
-@@ -739,6 +778,9 @@ static int xmon_sstep(struct pt_regs *regs)
- 
- static int xmon_break_match(struct pt_regs *regs)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 	if (dabr.enabled == 0)
-@@ -749,6 +791,9 @@ static int xmon_break_match(struct pt_regs *regs)
- 
- static int xmon_iabr_match(struct pt_regs *regs)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 	if (iabr == NULL)
-@@ -3742,6 +3787,9 @@ static void xmon_init(int enable)
- #ifdef CONFIG_MAGIC_SYSRQ
- static void sysrq_handle_xmon(int key)
- {
-+	if (xmon_check_lockdown())
-+		return;
-+
- 	/* ensure xmon is enabled */
- 	xmon_init(1);
- 	debugger(get_irq_regs());
-@@ -3763,7 +3811,6 @@ static int __init setup_xmon_sysrq(void)
- device_initcall(setup_xmon_sysrq);
- #endif /* CONFIG_MAGIC_SYSRQ */
- 
--#ifdef CONFIG_DEBUG_FS
- static void clear_all_bpt(void)
- {
- 	int i;
-@@ -3785,8 +3832,12 @@ static void clear_all_bpt(void)
- 	printf("xmon: All breakpoints cleared\n");
- }
- 
-+#ifdef CONFIG_DEBUG_FS
- static int xmon_dbgfs_set(void *data, u64 val)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	xmon_on = !!val;
- 	xmon_init(xmon_on);
- 
-@@ -3845,6 +3896,9 @@ early_param("xmon", early_parse_xmon);
- 
- void __init xmon_setup(void)
- {
-+	if (xmon_check_lockdown())
-+		return;
-+
- 	if (xmon_on)
- 		xmon_init(1);
- 	if (xmon_early)
--- 
-2.21.0
-
+A.
