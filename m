@@ -1,75 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249C629659
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 12:52:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D52529641
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 12:45:47 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 459NLw5hnrzDqV3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 20:45:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 459NVc4yfSzDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 20:52:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="X1PxbDFg"; 
- dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=anju@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 459NKb3nG8zDqS0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 20:44:35 +1000 (AEST)
-Received: by mail-wm1-x344.google.com with SMTP id 15so8703200wmg.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 03:44:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=0jy20rK00X/Jpvye1eiZdw+BT0nVJunFQCUMU0sD3iQ=;
- b=X1PxbDFgBqLM2NhmlrzxN/Z4MQHhxPSqs6aIHaPvF6iBAMLHzmH4nUvsmk//1HfYtC
- M7+RiqIUBnxnUqtQ25FtAlI9TYUuDf8FA0WWWY/sJW0s+MvmNdXDzLauptvrWs2cUaqj
- xB+/SW80bPKdsBGtHWxc3y8FmFHI5GngHXc59KD+O5Lr2DZmG38IJpvxIEkC6uuIeR/7
- wWJu9Qn8qPhvMRywg+V6bnzPeOFiQ/IORcoYGzLsMY7vtwENi1rb4BA++E0rVIYk3rnv
- Y0vPlbwObLKxWrwWEwMTrgKOWFImoQkdIM62Bc2RaeWmlzzqiOrhfp4C5RF5aK4p4H/c
- 49DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :in-reply-to:references:mime-version:content-transfer-encoding;
- bh=0jy20rK00X/Jpvye1eiZdw+BT0nVJunFQCUMU0sD3iQ=;
- b=VYN8IPR1dM/E3Q4vQd4J9sVwOm2rOma12cbH1dov/N2pLR4eorS320taXUVm9lopFe
- DioYbA23x6Ggdqcg4q9HFkgxLszlqRZKwdy/0amCB7IQo/0UQCAEiiUwpu0tYt9iql66
- S8hKGU5TkpfX8f0SBIFD2vpf61dm2k9Cwdks2vORZjgLR8JBukE/uaJjBiQeP7FbiJ17
- 9zB5DgjjrCSTxkiOE1+6fmPWx3b6xAk2z+hKcuEuzFJvw8t9HOMjtPg4C9Q3B+GoBdBm
- 5pRG3pnbrMtKADCPkeK5tDsHgfrio4kSQ8u9Rm74vJQaLi4TQauyeUMdSRTogb1H12oH
- BDEA==
-X-Gm-Message-State: APjAAAV/6ryF+939fNBzwNBvdanWzlLaEHu7Aj2X+GCFS6Ho/pSh6kh5
- lqAKxVgbXdnyVEadKJ7GEXU=
-X-Google-Smtp-Source: APXvYqyeytuN8l7DauI//G/eM6aGcU8yhn6PWpRVKMHeZ4rs7BNDg9Pkie2MVw5YsStjKFsnchTflQ==
-X-Received: by 2002:a1c:6c0a:: with SMTP id h10mr16235945wmc.135.1558694666632; 
- Fri, 24 May 2019 03:44:26 -0700 (PDT)
-Received: from macbookpro.malat.net ([2a01:e34:ee1e:860:6f23:82e6:aa2d:bbd1])
- by smtp.gmail.com with ESMTPSA id
- o6sm4589463wrh.55.2019.05.24.03.44.25
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 24 May 2019 03:44:25 -0700 (PDT)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
- id 9E40B11415E7; Fri, 24 May 2019 12:44:24 +0200 (CEST)
-From: Mathieu Malaterre <malat@debian.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/power: Expose pfn_is_nosave prototype
-Date: Fri, 24 May 2019 12:44:18 +0200
-Message-Id: <20190524104418.17194-1-malat@debian.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 459NTK0zJlzDqJ1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 20:51:15 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4OAmaKw021899
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 06:51:13 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2spdy6urue-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 06:51:13 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
+ Fri, 24 May 2019 11:51:11 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 24 May 2019 11:51:10 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4OAp9hq23330824
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 May 2019 10:51:09 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1408A405F;
+ Fri, 24 May 2019 10:51:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF25DA4064;
+ Fri, 24 May 2019 10:51:07 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.124.35.72])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 May 2019 10:51:07 +0000 (GMT)
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 1/2] tools/perf: Add arch neutral function to choose event for
+ perf kvm record
+Date: Fri, 24 May 2019 16:21:06 +0530
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190523114736.30268-1-malat@debian.org>
-References: <20190523114736.30268-1-malat@debian.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19052410-0012-0000-0000-0000031EF871
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052410-0013-0000-0000-00002157B52B
+Message-Id: <20190524105107.324-1-anju@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-24_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905240074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,87 +86,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-s390@vger.kernel.org,
- Len Brown <len.brown@intel.com>, Mathieu Malaterre <malat@debian.org>,
- linux-pm@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Pavel Machek <pavel@ucw.cz>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: anju@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, maddy@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The declaration for pfn_is_nosave is only available in
-kernel/power/power.h. Since this function can be override in arch,
-expose it globally. Having a prototype will make sure to avoid warning
-(sometime treated as error with W=1) such as:
+'perf kvm record' uses 'cycles'(if the user did not specify any event) as
+the default event to profile the guest.
+This will not provide any proper samples from the guest incase of
+powerpc architecture, since in powerpc the PMUs are controlled by
+the guest rather than the host.
 
-  arch/powerpc/kernel/suspend.c:18:5: error: no previous prototype for 'pfn_is_nosave' [-Werror=missing-prototypes]
+Patch adds a function to pick an arch specific event for 'perf kvm record',
+instead of selecting 'cycles' as a default event for all architectures.
 
-This moves the declaration into a globally visible header file and add
-missing include to avoid a warning on powerpc. Also remove the
-duplicated prototypes since not required anymore.
+For powerpc this function checks for any user specified event, and if there
+isn't any it returns invalid instead of proceeding with 'cycles' event.
 
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 ---
-v2: As suggestion by christophe remove duplicates prototypes
+ tools/perf/arch/powerpc/util/kvm-stat.c | 37 +++++++++++++++++++++++++
+ tools/perf/builtin-kvm.c                | 12 +++++++-
+ tools/perf/util/kvm-stat.h              |  2 +-
+ 3 files changed, 49 insertions(+), 2 deletions(-)
 
- arch/powerpc/kernel/suspend.c | 1 +
- arch/s390/kernel/entry.h      | 1 -
- include/linux/suspend.h       | 1 +
- kernel/power/power.h          | 2 --
- 4 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kernel/suspend.c b/arch/powerpc/kernel/suspend.c
-index a531154cc0f3..9e1b6b894245 100644
---- a/arch/powerpc/kernel/suspend.c
-+++ b/arch/powerpc/kernel/suspend.c
+diff --git a/tools/perf/arch/powerpc/util/kvm-stat.c b/tools/perf/arch/powerpc/util/kvm-stat.c
+index f9db341c47b6..66f8fe500945 100644
+--- a/tools/perf/arch/powerpc/util/kvm-stat.c
++++ b/tools/perf/arch/powerpc/util/kvm-stat.c
 @@ -8,6 +8,7 @@
-  */
  
- #include <linux/mm.h>
-+#include <linux/suspend.h>
- #include <asm/page.h>
- #include <asm/sections.h>
+ #include "book3s_hv_exits.h"
+ #include "book3s_hcalls.h"
++#include <subcmd/parse-options.h>
  
-diff --git a/arch/s390/kernel/entry.h b/arch/s390/kernel/entry.h
-index 20420c2b8a14..b2956d49b6ad 100644
---- a/arch/s390/kernel/entry.h
-+++ b/arch/s390/kernel/entry.h
-@@ -63,7 +63,6 @@ void __init startup_init(void);
- void die(struct pt_regs *regs, const char *str);
- int setup_profiling_timer(unsigned int multiplier);
- void __init time_init(void);
--int pfn_is_nosave(unsigned long);
- void s390_early_resume(void);
- unsigned long prepare_ftrace_return(unsigned long parent, unsigned long sp, unsigned long ip);
+ #define NR_TPS 4
  
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index 6b3ea9ea6a9e..e8b8a7bede90 100644
---- a/include/linux/suspend.h
-+++ b/include/linux/suspend.h
-@@ -395,6 +395,7 @@ extern bool system_entering_hibernation(void);
- extern bool hibernation_available(void);
- asmlinkage int swsusp_save(void);
- extern struct pbe *restore_pblist;
-+int pfn_is_nosave(unsigned long pfn);
- #else /* CONFIG_HIBERNATION */
- static inline void register_nosave_region(unsigned long b, unsigned long e) {}
- static inline void register_nosave_region_late(unsigned long b, unsigned long e) {}
-diff --git a/kernel/power/power.h b/kernel/power/power.h
-index 9e58bdc8a562..44bee462ff57 100644
---- a/kernel/power/power.h
-+++ b/kernel/power/power.h
-@@ -75,8 +75,6 @@ static inline void hibernate_reserved_size_init(void) {}
- static inline void hibernate_image_size_init(void) {}
- #endif /* !CONFIG_HIBERNATION */
+@@ -172,3 +173,39 @@ int cpu_isa_init(struct perf_kvm_stat *kvm, const char *cpuid __maybe_unused)
  
--extern int pfn_is_nosave(unsigned long);
+ 	return ret;
+ }
++
++/*
++ * Incase of powerpc architecture, pmu registers are programmable
++ * by guest kernel. So monitoring guest via host may not provide
++ * valid samples. It is better to fail the "perf kvm record"
++ * with default "cycles" event to monitor guest in powerpc.
++ *
++ * Function to parse the arguments and return appropriate values.
++ */
++int kvm_add_default_arch_event(int *argc, const char **argv)
++{
++	const char **tmp;
++	bool event = false;
++	int i, j = *argc;
++
++	const struct option event_options[] = {
++		OPT_BOOLEAN('e', "event", &event, NULL),
++		OPT_END()
++	};
++
++	tmp = calloc(j + 1, sizeof(char *));
++	if (!tmp)
++		return -EINVAL;
++
++	for (i = 0; i < j; i++)
++		tmp[i] = argv[i];
++
++	parse_options(j, tmp, event_options, NULL, 0);
++	if (!event) {
++		free(tmp);
++		return -EINVAL;
++	}
++
++	free(tmp);
++	return 0;
++}
+diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
+index dbb6f737a3e2..fe33b3ec55c9 100644
+--- a/tools/perf/builtin-kvm.c
++++ b/tools/perf/builtin-kvm.c
+@@ -1510,11 +1510,21 @@ static int kvm_cmd_stat(const char *file_name, int argc, const char **argv)
+ }
+ #endif /* HAVE_KVM_STAT_SUPPORT */
+ 
++int __weak kvm_add_default_arch_event(int *argc __maybe_unused,
++					const char **argv __maybe_unused)
++{
++	return 0;
++}
++
+ static int __cmd_record(const char *file_name, int argc, const char **argv)
+ {
+-	int rec_argc, i = 0, j;
++	int rec_argc, i = 0, j, ret;
+ 	const char **rec_argv;
+ 
++	ret = kvm_add_default_arch_event(&argc, argv);
++	if (ret)
++		return -EINVAL;
++
+ 	rec_argc = argc + 2;
+ 	rec_argv = calloc(rec_argc + 1, sizeof(char *));
+ 	rec_argv[i++] = strdup("record");
+diff --git a/tools/perf/util/kvm-stat.h b/tools/perf/util/kvm-stat.h
+index 1403dec189b4..da38b56c46cb 100644
+--- a/tools/perf/util/kvm-stat.h
++++ b/tools/perf/util/kvm-stat.h
+@@ -144,5 +144,5 @@ extern const int decode_str_len;
+ extern const char *kvm_exit_reason;
+ extern const char *kvm_entry_trace;
+ extern const char *kvm_exit_trace;
 -
- #define power_attr(_name) \
- static struct kobj_attribute _name##_attr = {	\
- 	.attr	= {				\
++extern int kvm_add_default_arch_event(int *argc, const char **argv);
+ #endif /* __PERF_KVM_STAT_H */
 -- 
-2.20.1
+2.17.2
 
