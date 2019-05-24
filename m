@@ -2,61 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2733028F49
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 04:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3341E28F7A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 05:12:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4599sj2pyGzDqd0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 12:53:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 459BJG5XsvzDqWW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 13:12:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
+ envelope-from=kernelfans@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="a7Sc0Zml"; 
+ dkim-atps=neutral
+Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
+ [IPv6:2607:f8b0:4864:20::142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4599rX5ghCzDqQj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 12:52:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4599rX20Qsz8x8b
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 12:52:12 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4599rX1PBPz9sDn; Fri, 24 May 2019 12:52:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.127.52; helo=new-02-3.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-X-Greylist: delayed 455 seconds by postgrey-1.36 at bilbo;
- Fri, 24 May 2019 12:52:11 AEST
-Received: from NEW-02-3.privateemail.com (new-02-3.privateemail.com
- [198.54.127.52])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4599rW2KTPz9s6w
- for <linuxppc-dev@ozlabs.org>; Fri, 24 May 2019 12:52:10 +1000 (AEST)
-Received: from MTA-06-1.privateemail.com (unknown [10.20.147.16])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id C0843600DC;
- Fri, 24 May 2019 02:44:29 +0000 (UTC)
-Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id AF08160045;
- Thu, 23 May 2019 22:44:29 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.245])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id 0AD7E60039;
- Fri, 24 May 2019 02:44:28 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v5] powerpc/64s: support nospectre_v2 cmdline option
-Date: Thu, 23 May 2019 21:46:48 -0500
-Message-Id: <20190524024647.381-1-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 459BGn5gTfzDqW7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 13:11:29 +1000 (AEST)
+Received: by mail-it1-x142.google.com with SMTP id m140so11695341itg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 20:11:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=E7hznSwoqjG8X1odMBGc2satoFe87v1Y0P/9fKHS9SY=;
+ b=a7Sc0ZmlEG6jC7OpcrRVUkNXq0SBb3Dc/hNdk5Vi6ayUDLd0Dm8M0wWvJFgwttZZ4M
+ aninTKfSUZDRjfNGqPsMzWLja++EezX/hO4fX5nJBzfyFI6kNO7dvjypaoVQz4ys7+R5
+ 9IVPBxW1C4i6BRZ4f3bqLocvJh1c9QUTPILj4gipCVXMgVTUpT9LBYkMiRDL2TaalXNe
+ rQ6wJugIty6JwVWYs5nF97JpvrTENcxT3PWNqVTqRhEna4JwxQokvn2SUzkeP09LHMDC
+ DgccA6RcG2CmDNt2DoIHjZymnDK30hw9WxWvnBoApiNxfRbL6LLAu65RJr1Ih71O/P5e
+ SodQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=E7hznSwoqjG8X1odMBGc2satoFe87v1Y0P/9fKHS9SY=;
+ b=KxDAZ83DQhWxwdJ9MWR0Pk0EvfW6gqdoxf6F/U2ihBXParLBAgDyBiXihw59UCEqYs
+ VOCouX/sigypg9nN+NmWvRdjyWS+jx2s2tq4rCGXZKZB50Ej1BzxicgNt9/kQmnChD3K
+ 1gvtSFrbfj+tBPmAJlfUIy1GlXizZ3w8qWGxH1UkOgs9cqcouz6Aln87xiMrGiIxaxsn
+ eHskKB7Xw1NHPLqmFCKv2ipEWGAANvEoCvFfLPenO90XnjOf0RQq0JcvWB0FGndC/Z5U
+ zzLJi6gvn0jbEm7ZRDaGO4xiyW2f6d8rVKn/mZRK/aycA/7zdgW9TKXe8EsYmjHuooWh
+ wCjQ==
+X-Gm-Message-State: APjAAAW4ITIDdxEjFgtV1/cO5gDz2V3vCasfLyGvJrmlwoWySAmMJVtu
+ HQsE9GkGpmAag9NYjhQJ3bv6ourgJRzkBFBInA==
+X-Google-Smtp-Source: APXvYqz4ssg3ircx9GKZ/bOQFSdzkDIVdQtquf3WB1GzGhZLWMOO7FDaVjBjQGy32wO2lRBtVYsHwdCKMGdQi1fBKFw=
+X-Received: by 2002:a24:1dce:: with SMTP id 197mr16766439itj.16.1558667486023; 
+ Thu, 23 May 2019 20:11:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com>
+ <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com>
+ <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+ <CAFgQCTtQm7SuBRfXik6B065Aa+uQ=Mx6i+Y1q+NJU1GEiUgH4g@mail.gmail.com>
+In-Reply-To: <CAFgQCTtQm7SuBRfXik6B065Aa+uQ=Mx6i+Y1q+NJU1GEiUgH4g@mail.gmail.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Fri, 24 May 2019 11:11:13 +0800
+Message-ID: <CAFgQCTuAEbST8ZdSJmPDTPbqkL3uZ8j6U-vTWT879wARDhUwTw@mail.gmail.com>
+Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
+ more indicant
+To: Matthias Brugger <mbrugger@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,76 +76,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>,
- Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Julien Thierry <julien.thierry@arm.com>, Yangtao Li <tiny.windzz@gmail.com>,
+ Palmer Dabbelt <palmer@sifive.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Stefan Agner <stefan@agner.ch>, linux-mips@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Logan Gunthorpe <logang@deltatee.com>,
+ linux-s390@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Dave Young <dyoung@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Will Deacon <will.deacon@arm.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>,
+ Tony Luck <tony.luck@intel.com>, Baoquan He <bhe@redhat.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Robin Murphy <robin.murphy@arm.com>, LKML <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+ Paul Burton <paul.burton@mips.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Greg Hackmann <ghackmann@android.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for disabling the kernel implemented spectre v2 mitigation
-(count cache flush on context switch) via the nospectre_v2 and
-mitigations=off cmdline options.
+Matthias, ping? Any suggestions?
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
----
-v4->v5:
-	Fix checkpatch complaint
- arch/powerpc/kernel/security.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+Thanks,
+Pingfan
 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index e1c9cf079503..7cfcb294b11c 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -28,7 +28,7 @@ static enum count_cache_flush_type count_cache_flush_type = COUNT_CACHE_FLUSH_NO
- bool barrier_nospec_enabled;
- static bool no_nospec;
- static bool btb_flush_enabled;
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static bool no_spectrev2;
- #endif
- 
-@@ -114,7 +114,7 @@ static __init int security_feature_debugfs_init(void)
- device_initcall(security_feature_debugfs_init);
- #endif /* CONFIG_DEBUG_FS */
- 
--#ifdef CONFIG_PPC_FSL_BOOK3E
-+#if defined(CONFIG_PPC_FSL_BOOK3E) || defined(CONFIG_PPC_BOOK3S_64)
- static int __init handle_nospectre_v2(char *p)
- {
- 	no_spectrev2 = true;
-@@ -122,6 +122,9 @@ static int __init handle_nospectre_v2(char *p)
- 	return 0;
- }
- early_param("nospectre_v2", handle_nospectre_v2);
-+#endif /* CONFIG_PPC_FSL_BOOK3E || CONFIG_PPC_BOOK3S_64 */
-+
-+#ifdef CONFIG_PPC_FSL_BOOK3E
- void setup_spectre_v2(void)
- {
- 	if (no_spectrev2 || cpu_mitigations_off())
-@@ -399,7 +402,17 @@ static void toggle_count_cache_flush(bool enable)
- 
- void setup_count_cache_flush(void)
- {
--	toggle_count_cache_flush(true);
-+	bool enable = true;
-+
-+	if (no_spectrev2 || cpu_mitigations_off()) {
-+		if (security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED) ||
-+		    security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED))
-+			pr_warn("Spectre v2 mitigations not under software control, can't disable\n");
-+
-+		enable = false;
-+	}
-+
-+	toggle_count_cache_flush(enable);
- }
- 
- #ifdef CONFIG_DEBUG_FS
--- 
-2.21.0
 
+On Thu, May 2, 2019 at 2:22 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>
+> On Thu, Apr 25, 2019 at 4:20 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+> >
+> > On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
+> > >
+> > >
+> > [...]
+> > > > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
+> > > >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
+> > > >               return -EINVAL;
+> > > >       }
+> > > > +     if (*crash_size == 0)
+> > > > +             return -EINVAL;
+> > >
+> > > This covers the case where I pass an argument like "crashkernel=0M" ?
+> > > Can't we fix that by using kstrtoull() in memparse and check if the return value
+> > > is < 0? In that case we could return without updating the retptr and we will be
+> > > fine.
+> After a series of work, I suddenly realized that it can not be done
+> like this way. "0M" causes kstrtoull() to return -EINVAL, but this is
+> caused by "M", not "0". If passing "0" to kstrtoull(), it will return
+> 0 on success.
+>
+> > >
+> > It seems that kstrtoull() treats 0M as invalid parameter, while
+> > simple_strtoull() does not.
+> >
+> My careless going through the code. And I tested with a valid value
+> "256M" using kstrtoull(), it also returned -EINVAL.
+>
+> So I think there is no way to distinguish 0 from a positive value
+> inside this basic math function.
+> Do I miss anything?
+>
+> Thanks and regards,
+> Pingfan
