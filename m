@@ -1,75 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A12828EBB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 03:18:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DD228D74
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 00:53:27 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4594Y02R2MzDqWB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 08:53:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4597mj4XCtzDqZy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 11:18:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="HAsZi7nZ"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4594Wd4rg5zDqQK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 08:52:13 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id a3so3889760pgb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2019 15:52:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=6sNQBO0ShsOiyXm56ZAi0h5L7rJJmlpKkNelQHUJj+w=;
- b=HAsZi7nZ8gveH237kWeKnke3dDxr+y2gwyQ7UKnpPqhx9d5PwmMZdVn7AXJnbNNKxS
- ePDFO1IpN8iZHALaZ59urWJKkwTEjRYeKIbeaa5XlK6YazplFpVh3yQoNM2SreXoytPY
- btxUuPLWLnazqWiEtgybRKS/JgvW7Ksg6tagpdJUc2j9vKOTSJ7wYNlwfPPVjGSV974J
- 8KoWA9zxDazLNvw1zkaTwiMaMQcUGxh/ANi8nkvxE5Fa1teN6vQn88J0xnGyo/nrpr4m
- imIzmRVIX8eS7v6OXmI02YsKDallHF64R30gSIuSWrHTWujRe7yWJmNXLOOIOAJsBNSa
- npYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=6sNQBO0ShsOiyXm56ZAi0h5L7rJJmlpKkNelQHUJj+w=;
- b=m8C6gnluFL9UcEHAMekQ5KL6mRiXUEgWxvRI4T0bPvYG6QDPDXhTjVeECqwm5fZlvS
- byAw9vgM1sHK9VSFvxnA2DuLkt9jqXpbdj7oFiko+C6Y0s2hyeEbqyo5ZpRtyRPfjZGl
- oXagz6PpDEW1mx9W3iCtnwOLYPM8m33oDeY8MMmkxSeaTIyyNhgd0yyigZOx/4MVlail
- oZxSw+kqCitf7tBEcgTnmPDS0kf4QxLA1NnWR9IJr+r3QQ4mnFmDXk2vJKASj4hwT4K4
- UInUknEZTAcUoja4lMm37dsPMownWrau04M3LKhN4JdFUVvzPdxNFB+MasysR2E8xRqs
- BeHA==
-X-Gm-Message-State: APjAAAXHVeBuGXMtrJuCRZPWvXICTcb2ULWYF19/iIRFsA+/kBBjejta
- 3ghOzXkFx3fxZSkKDKL9q6g=
-X-Google-Smtp-Source: APXvYqyuBQiscdYr7VRVcYBJKBnh5BshxJM8AvZKv6cszmjJhESCIjuXtoiy1ZJAGyWPkAkAtziQ5w==
-X-Received: by 2002:a62:2506:: with SMTP id l6mr107019907pfl.250.1558651929550; 
- Thu, 23 May 2019 15:52:09 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id x17sm341603pgh.47.2019.05.23.15.52.09
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 23 May 2019 15:52:09 -0700 (PDT)
-Date: Thu, 23 May 2019 15:50:52 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: "broonie@kernel.org" <broonie@kernel.org>,
- "S.j. Wang" <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_esai: fix the channel swap issue after xrun
-Message-ID: <20190523225052.GA29562@Asurada-Nvidia.nvidia.com>
-References: <VE1PR04MB6479FF8E1B55E9BE67E7B0ECE3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VE1PR04MB6479FF8E1B55E9BE67E7B0ECE3010@VE1PR04MB6479.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4597kJ6ZpYzDqZj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 11:16:40 +1000 (AEST)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 23 May 2019 18:16:35 -0700
+X-ExtLoop1: 1
+Received: from unknown (HELO luv-build.sc.intel.com) ([172.25.110.25])
+ by fmsmga008.fm.intel.com with ESMTP; 23 May 2019 18:16:35 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ Borislav Petkov <bp@suse.de>
+Subject: [RFC PATCH v4 07/21] watchdog/hardlockup: Define a generic function
+ to detect hardlockups
+Date: Thu, 23 May 2019 18:16:09 -0700
+Message-Id: <1558660583-28561-8-git-send-email-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558660583-28561-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
+References: <1558660583-28561-1-git-send-email-ricardo.neri-calderon@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +49,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Ricardo Neri <ricardo.neri@intel.com>, Stephane Eranian <eranian@google.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ "Luis R. Rodriguez" <mcgrof@kernel.org>, Andi Kleen <andi.kleen@intel.com>,
+ Don Zickus <dzickus@redhat.com>, "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Babu Moger <Babu.Moger@amd.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Tony Luck <tony.luck@intel.com>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+ Philippe Ombredanne <pombredanne@nexb.com>,
+ Colin Ian King <colin.king@canonical.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 23, 2019 at 11:04:03AM +0000, S.j. Wang wrote:
-> > On Thu, May 23, 2019 at 09:53:42AM +0000, S.j. Wang wrote:
-> > > > > +     /*
-> > > > > +      * Add fifo reset here, because the regcache_sync will
-> > > > > +      * write one more data to ETDR.
-> > > > > +      * Which will cause channel shift.
-> > > >
-> > > > Sounds like a bug to me...should fix it first by marking the data
-> > > > registers as volatile.
-> > > >
-> > > The ETDR is a writable register, it is not volatile. Even we change it
-> > > to Volatile, I don't think we can't avoid this issue. for the
-> > > regcache_sync Just to write this register, it is correct behavior.
-> > 
-> > Is that so? Quoting the comments of regcache_sync():
-> > "* regcache_sync - Sync the register cache with the hardware.
-> >  *
-> >  * @map: map to configure.
-> >  *
-> >  * Any registers that should not be synced should be marked as
-> >  * volatile."
-> > 
-> > If regcache_sync() does sync volatile registers too as you said, I don't mind
-> > having this FIFO reset WAR for now, though I think this mismatch between
-> > the comments and the actual behavior then should get people's attention.
-> > 
-> > Thank you
-> 
-> ETDR is not volatile,  if we mark it is volatile, is it correct?
+The procedure to detect hardlockups is independent of the underlying
+mechanism that generates the non-maskable interrupt used to drive the
+detector. Thus, it can be put in a separate, generic function. In this
+manner, it can be invoked by various implementations of the NMI watchdog.
 
-Well, you have a point -- it might not be ideally true, but it sounds
-like a correct fix to me according to this comments.
+For this purpose, move the bulk of watchdog_overflow_callback() to the
+new function inspect_for_hardlockups(). This function can then be called
+from the applicable NMI handlers.
 
-We can wait for Mark's comments or just send a patch to the mail list 
-for review.
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Andi Kleen <andi.kleen@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Don Zickus <dzickus@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Babu Moger <Babu.Moger@amd.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Philippe Ombredanne <pombredanne@nexb.com>
+Cc: Colin Ian King <colin.king@canonical.com>
+Cc: "Luis R. Rodriguez" <mcgrof@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: x86@kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+---
+ include/linux/nmi.h   |  1 +
+ kernel/watchdog_hld.c | 18 +++++++++++-------
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-Thanks you
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 9003e29cde46..5a8b19749769 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -212,6 +212,7 @@ extern int proc_watchdog_thresh(struct ctl_table *, int ,
+ 				void __user *, size_t *, loff_t *);
+ extern int proc_watchdog_cpumask(struct ctl_table *, int,
+ 				 void __user *, size_t *, loff_t *);
++void inspect_for_hardlockups(struct pt_regs *regs);
+ 
+ #ifdef CONFIG_HAVE_ACPI_APEI_NMI
+ #include <asm/nmi.h>
+diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
+index 247bf0b1582c..b352e507b17f 100644
+--- a/kernel/watchdog_hld.c
++++ b/kernel/watchdog_hld.c
+@@ -106,14 +106,8 @@ static struct perf_event_attr wd_hw_attr = {
+ 	.disabled	= 1,
+ };
+ 
+-/* Callback function for perf event subsystem */
+-static void watchdog_overflow_callback(struct perf_event *event,
+-				       struct perf_sample_data *data,
+-				       struct pt_regs *regs)
++void inspect_for_hardlockups(struct pt_regs *regs)
+ {
+-	/* Ensure the watchdog never gets throttled */
+-	event->hw.interrupts = 0;
+-
+ 	if (__this_cpu_read(watchdog_nmi_touch) == true) {
+ 		__this_cpu_write(watchdog_nmi_touch, false);
+ 		return;
+@@ -163,6 +157,16 @@ static void watchdog_overflow_callback(struct perf_event *event,
+ 	return;
+ }
+ 
++/* Callback function for perf event subsystem */
++static void watchdog_overflow_callback(struct perf_event *event,
++				       struct perf_sample_data *data,
++				       struct pt_regs *regs)
++{
++	/* Ensure the watchdog never gets throttled */
++	event->hw.interrupts = 0;
++	inspect_for_hardlockups(regs);
++}
++
+ static int hardlockup_detector_event_create(void)
+ {
+ 	unsigned int cpu = smp_processor_id();
+-- 
+2.17.1
+
