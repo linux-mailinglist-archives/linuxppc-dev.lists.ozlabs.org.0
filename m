@@ -1,60 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7897329049
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 07:11:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED43E28F99
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 05:29:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 459BgM0spBzDqWT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 13:29:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 459Dx76qwXzDqch
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2019 15:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 459BfB60gYzDqVr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 13:28:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 459Bf95mkSz8tHG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 13:28:17 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 459Bf95b9bz9s6w; Fri, 24 May 2019 13:28:17 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.127.52; helo=new-02-3.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from NEW-02-3.privateemail.com (new-02-3.privateemail.com
- [198.54.127.52])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 459Bf91Gc2z9s00
- for <linuxppc-dev@ozlabs.org>; Fri, 24 May 2019 13:28:15 +1000 (AEST)
-Received: from MTA-09.privateemail.com (unknown [10.20.147.19])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id A161F60173;
- Fri, 24 May 2019 03:28:12 +0000 (UTC)
-Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
- by MTA-09.privateemail.com (Postfix) with ESMTP id 8690A60041;
- Thu, 23 May 2019 23:28:12 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.200])
- by MTA-09.privateemail.com (Postfix) with ESMTPA id 0527E60043;
- Fri, 24 May 2019 03:28:11 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [RFC] powerpc/xmon: restrict when kernel is locked down
-Date: Thu, 23 May 2019 22:30:19 -0500
-Message-Id: <20190524033018.9153-1-cmr@informatik.wtf>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 459Dvl3ZsnzDqc4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 15:10:10 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4O575jW011940
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 01:10:06 -0400
+Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sp79hpj2p-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 01:10:05 -0400
+Received: from localhost
+ by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
+ Fri, 24 May 2019 06:10:05 +0100
+Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
+ by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 24 May 2019 06:10:03 +0100
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4O5A1xQ22282570
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 05:10:02 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D7A3136071
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 05:10:01 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 55D9D136069
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 05:10:01 +0000 (GMT)
+Received: from birb.localdomain (unknown [9.185.142.81])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2019 05:10:01 +0000 (GMT)
+Received: by birb.localdomain (Postfix, from userid 1000)
+ id A28364EC63D; Fri, 24 May 2019 15:09:57 +1000 (AEST)
+From: Stewart Smith <stewart@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv: Update firmware archaeology around
+ OPAL_HANDLE_HMI
+Date: Fri, 24 May 2019 15:09:56 +1000
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+X-TM-AS-GCONF: 00
+x-cbid: 19052405-0036-0000-0000-00000AC22640
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011152; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01207761; UDB=6.00634315; IPR=6.00988749; 
+ MB=3.00027027; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-24 05:10:04
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052405-0037-0000-0000-00004BEC1503
+Message-Id: <20190524050956.14114-1-stewart@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-24_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=800 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905240034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,173 +92,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, ajd@linux.ibm.com
+Cc: Stewart Smith <stewart@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xmon should be either fully or partially disabled depending on the
-kernel lockdown state.
+The first machines to ship with OPAL firmware all got firmware updates
+that have the new call, but just in case someone is foolish enough to
+believe the first 4 months of firmware is the best, we keep this code
+around.
 
-Put xmon into read-only mode for lockdown=integrity and completely
-disable xmon when lockdown=confidentiality. Xmon checks the lockdown
-state and takes appropriate action:
+Comment is updated to not refer to late 2014 as recent or the future.
 
- (1) during xmon_setup to prevent early xmon'ing
-
- (2) when triggered via sysrq
-
- (3) when toggled via debugfs
-
- (4) when triggered via a previously enabled breakpoint
-
-The following lockdown state transitions are handled:
-
- (1) lockdown=none -> lockdown=integrity
-     clear all breakpoints, set xmon read-only mode
-
- (2) lockdown=none -> lockdown=confidentiality
-     clear all breakpoints, prevent re-entry into xmon
-
- (3) lockdown=integrity -> lockdown=confidentiality
-     prevent re-entry into xmon
-
-Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+Signed-off-by: Stewart Smith <stewart@linux.ibm.com>
 ---
-Applies on top of this series:
-https://patchwork.kernel.org/patch/10870173/
+ arch/powerpc/platforms/powernv/opal.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-I've done some limited testing using a single CPU QEMU config.
-
- arch/powerpc/xmon/xmon.c | 56 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 3e7be19aa208..8c4a5a0c28f0 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -191,6 +191,9 @@ static void dump_tlb_44x(void);
- static void dump_tlb_book3e(void);
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index f2b063b027f0..89b6ddc3ed38 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -206,16 +206,18 @@ static int __init opal_register_exception_handlers(void)
+ 	glue = 0x7000;
+ 
+ 	/*
+-	 * Check if we are running on newer firmware that exports
+-	 * OPAL_HANDLE_HMI token. If yes, then don't ask OPAL to patch
+-	 * the HMI interrupt and we catch it directly in Linux.
++	 * Only ancient OPAL firmware requires this.
++	 * Specifically, firmware from FW810.00 (released June 2014)
++	 * through FW810.20 (Released October 2014).
+ 	 *
+-	 * For older firmware (i.e currently released POWER8 System Firmware
+-	 * as of today <= SV810_087), we fallback to old behavior and let OPAL
+-	 * patch the HMI vector and handle it inside OPAL firmware.
++	 * Check if we are running on newer (post Oct 2014) firmware that
++	 * exports the OPAL_HANDLE_HMI token. If yes, then don't ask OPAL to
++	 * patch the HMI interrupt and we catch it directly in Linux.
+ 	 *
+-	 * For newer firmware (in development/yet to be released) we will
+-	 * start catching/handling HMI directly in Linux.
++	 * For older firmware (i.e < FW810.20), we fallback to old behavior and
++	 * let OPAL patch the HMI vector and handle it inside OPAL firmware.
++	 *
++	 * For newer firmware we catch/handle the HMI directly in Linux.
+ 	 */
+ 	if (!opal_check_token(OPAL_HANDLE_HMI)) {
+ 		pr_info("Old firmware detected, OPAL handles HMIs.\n");
+@@ -225,6 +227,11 @@ static int __init opal_register_exception_handlers(void)
+ 		glue += 128;
+ 	}
+ 
++	/*
++	 * Only applicable to ancient firmware, all modern
++	 * (post March 2015/skiboot 5.0) firmware will just return
++	 * OPAL_UNSUPPORTED.
++	 */
+ 	opal_register_exception_handler(OPAL_SOFTPATCH_HANDLER, 0, glue);
  #endif
  
-+static void clear_all_bpt(void);
-+static void xmon_init(int);
-+
- #ifdef CONFIG_PPC64
- #define REG		"%.16lx"
- #else
-@@ -291,6 +294,39 @@ Commands:\n\
-   zh	halt\n"
- ;
- 
-+#ifdef CONFIG_LOCK_DOWN_KERNEL
-+static bool xmon_check_lockdown(void)
-+{
-+	static bool lockdown = false;
-+
-+	if (!lockdown) {
-+		lockdown = kernel_is_locked_down("Using xmon",
-+						 LOCKDOWN_CONFIDENTIALITY);
-+		if (lockdown) {
-+			printf("xmon: Disabled by strict kernel lockdown\n");
-+			xmon_on = 0;
-+			xmon_init(0);
-+		}
-+	}
-+
-+	if (!xmon_is_ro) {
-+		xmon_is_ro = kernel_is_locked_down("Using xmon write-access",
-+						   LOCKDOWN_INTEGRITY);
-+		if (xmon_is_ro) {
-+			printf("xmon: Read-only due to kernel lockdown\n");
-+			clear_all_bpt();
-+		}
-+	}
-+
-+	return lockdown;
-+}
-+#else
-+inline static bool xmon_check_lockdown(void)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_LOCK_DOWN_KERNEL */
-+
- static struct pt_regs *xmon_regs;
- 
- static inline void sync(void)
-@@ -708,6 +744,9 @@ static int xmon_bpt(struct pt_regs *regs)
- 	struct bpt *bp;
- 	unsigned long offset;
- 
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 
-@@ -739,6 +778,9 @@ static int xmon_sstep(struct pt_regs *regs)
- 
- static int xmon_break_match(struct pt_regs *regs)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 	if (dabr.enabled == 0)
-@@ -749,6 +791,9 @@ static int xmon_break_match(struct pt_regs *regs)
- 
- static int xmon_iabr_match(struct pt_regs *regs)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
- 	if (iabr == NULL)
-@@ -3742,6 +3787,9 @@ static void xmon_init(int enable)
- #ifdef CONFIG_MAGIC_SYSRQ
- static void sysrq_handle_xmon(int key)
- {
-+	if (xmon_check_lockdown())
-+		return;
-+
- 	/* ensure xmon is enabled */
- 	xmon_init(1);
- 	debugger(get_irq_regs());
-@@ -3763,7 +3811,6 @@ static int __init setup_xmon_sysrq(void)
- device_initcall(setup_xmon_sysrq);
- #endif /* CONFIG_MAGIC_SYSRQ */
- 
--#ifdef CONFIG_DEBUG_FS
- static void clear_all_bpt(void)
- {
- 	int i;
-@@ -3785,8 +3832,12 @@ static void clear_all_bpt(void)
- 	printf("xmon: All breakpoints cleared\n");
- }
- 
-+#ifdef CONFIG_DEBUG_FS
- static int xmon_dbgfs_set(void *data, u64 val)
- {
-+	if (xmon_check_lockdown())
-+		return 0;
-+
- 	xmon_on = !!val;
- 	xmon_init(xmon_on);
- 
-@@ -3845,6 +3896,9 @@ early_param("xmon", early_parse_xmon);
- 
- void __init xmon_setup(void)
- {
-+	if (xmon_check_lockdown())
-+		return;
-+
- 	if (xmon_on)
- 		xmon_init(1);
- 	if (xmon_early)
 -- 
 2.21.0
 
