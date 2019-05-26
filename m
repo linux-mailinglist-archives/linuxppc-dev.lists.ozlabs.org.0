@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9333F2A728
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2019 23:52:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45BH5s4xmfzDqSR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2019 07:52:33 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5CA2A888
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2019 07:30:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45BTGF1Z4qzDqQJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2019 15:30:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux-foundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="yeCoL/9Y"; 
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=blackgod016574@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="VFapM4S6"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45BH4Y0k3fzDqMw
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2019 07:51:22 +1000 (AEST)
-Received: from localhost.localdomain (c-73-223-200-170.hsd1.ca.comcast.net
- [73.223.200.170])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7150B20717;
- Sat, 25 May 2019 21:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558821080;
- bh=9GojVzJw4LUT0FwL1uJ2uxQz/GR22xKEGuM8E5lF4U4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=yeCoL/9YBkEk1sCDuZGtqcOLLhjEc3XPpvmQxhmXpl1ivii7ueziKdgVyPiry9ByA
- ADOT2OgdVR0DYv4LRRgW5QSfW6vt2A05lzKc6kYMl7/+P1G4g6y87rsbUW7KSF+/pj
- wELWVZx/6l9yaDm7Gysp2a6pdP0M1R6mJkI2X3yI=
-Date: Sat, 25 May 2019 14:51:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Daniel Jordan <daniel.m.jordan@oracle.com>
-Subject: Re: [PATCH v2] mm: add account_locked_vm utility function
-Message-Id: <20190525145118.bfda2d75a14db05a001e49ad@linux-foundation.org>
-In-Reply-To: <20190524175045.26897-1-daniel.m.jordan@oracle.com>
-References: <de375582-2c35-8e8a-4737-c816052a8e58@ozlabs.ru>
- <20190524175045.26897-1-daniel.m.jordan@oracle.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45BPY04fzJzDqFJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2019 12:42:55 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id r22so4685779pfh.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2019 19:42:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+ :user-agent; bh=RkwkVNo4DaOAeSezSEZu1BPpQiUJsVlAu63Y3Q0J0as=;
+ b=VFapM4S61GN+qB2G5Awgz4EuZ7yRQpW5xmyqY4EJy7hgZoOhboT6a+qHK2PqxWCkPL
+ 15ScBNmaZczxsVO7e/1c/O8157kJf7c92iQ/OqMSa8nhIBDY83MpZ0Ki8V9hsjWm3Y7v
+ npbBYYyr5TXyszywUTBOjvyfEZAwVoXy3f2SEyfm4e8a2jbCEfu/qHiw7wRFnEpTEaYq
+ zgiOTzbBMglOZpVMB8HECsv1kJLFGama3c33LH/ik4ZF0HfUzSX4cSAoETRuSnYqwFQb
+ nUcwvSC1VuaB12z/gvbu/rG/UavbB2tDo/xCdpDmsfvScfii2ye+BDlVO4Ayx0qGOW4N
+ uLng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+ :content-disposition:user-agent;
+ bh=RkwkVNo4DaOAeSezSEZu1BPpQiUJsVlAu63Y3Q0J0as=;
+ b=C6rHiqK++3jnVS164NQSQgISaD3v1rRv1AenpHwA4Wo+8f756Ut/u8r+nwoH7ej0as
+ zsa0UNHJE6x4gBZnVHDtaYHx6+7WUmkEMPYRKqxT6YFpKtwjH+KWw9hNBDaOFSt4Bbfm
+ Ex50WA083PfhxnKluSfkWBpQuEqMSwmAOrD7jM16EtKmk9N/0qNLEEyLxmpOvTOBgg0D
+ R0Eij1dOBEFK4H7exhzwrgzL4UA2bgQfvfcHwXlmjZIGyrtv0fVGaHROJaygz2KVA8Sf
+ nc679B6m6CXQnK3j15oG8/RuqVYUYfsiDm1vogZqfwXjCoj8uWdKzT2NSE3eMKoORiej
+ kvsA==
+X-Gm-Message-State: APjAAAXQ5I8MHKCRhz+KbGuoVWZEA4vfUjf2Y6YEX1liojA79wmgZDRQ
+ XdCRgXahW0H/xrFHgvM5JHw=
+X-Google-Smtp-Source: APXvYqzhU0q+xAJJr+wkGRKHfJ7wM4m07WOVr8SelRqPTAl8YrGIJfpYwR3QkiLJFS/jJUK2djjF0A==
+X-Received: by 2002:a17:90a:35c8:: with SMTP id
+ r66mr20779605pjb.17.1558838571495; 
+ Sat, 25 May 2019 19:42:51 -0700 (PDT)
+Received: from zhanggen-UX430UQ ([66.42.35.75])
+ by smtp.gmail.com with ESMTPSA id x16sm6526480pff.30.2019.05.25.19.42.46
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 25 May 2019 19:42:51 -0700 (PDT)
+Date: Sun, 26 May 2019 10:42:40 +0800
+From: Gen Zhang <blackgod016574@gmail.com>
+To: benh@kernel.crashing.org, paulus@samba.org
+Subject: [PATCH] dlpar: Fix a missing-check bug in dlpar_parse_cc_property()
+Message-ID: <20190526024240.GA14546@zhanggen-UX430UQ>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Mailman-Approved-At: Sun, 26 May 2019 15:29:28 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +78,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Davidlohr Bueso <dave@stgolabs.net>,
- kvm@vger.kernel.org, Alan Tull <atull@kernel.org>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, linux-fpga@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, linux-mm@kvack.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, Moritz Fischer <mdf@kernel.org>,
- Steve Sistare <steven.sistare@oracle.com>, Christoph Lameter <cl@linux.com>,
- linuxppc-dev@lists.ozlabs.org, Wu Hao <hao.wu@intel.com>
+Cc: nfont@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 24 May 2019 13:50:45 -0400 Daniel Jordan <daniel.m.jordan@oracle.com> wrote:
+In dlpar_parse_cc_property(), 'prop->name' is allocated by kstrdup().
+kstrdup() may return NULL, so it should be checked and handle error.
+And prop should be freed if 'prop->name' is NULL.
 
-> locked_vm accounting is done roughly the same way in five places, so
-> unify them in a helper.  Standardize the debug prints, which vary
-> slightly, but include the helper's caller to disambiguate between
-> callsites.
-> 
-> Error codes stay the same, so user-visible behavior does too.  The one
-> exception is that the -EPERM case in tce_account_locked_vm is removed
-> because Alexey has never seen it triggered.
-> 
-> ...
->
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1564,6 +1564,25 @@ long get_user_pages_unlocked(unsigned long start, unsigned long nr_pages,
->  int get_user_pages_fast(unsigned long start, int nr_pages,
->  			unsigned int gup_flags, struct page **pages);
->  
-> +int __account_locked_vm(struct mm_struct *mm, unsigned long pages, bool inc,
-> +			struct task_struct *task, bool bypass_rlim);
-> +
-> +static inline int account_locked_vm(struct mm_struct *mm, unsigned long pages,
-> +				    bool inc)
-> +{
-> +	int ret;
-> +
-> +	if (pages == 0 || !mm)
-> +		return 0;
-> +
-> +	down_write(&mm->mmap_sem);
-> +	ret = __account_locked_vm(mm, pages, inc, current,
-> +				  capable(CAP_IPC_LOCK));
-> +	up_write(&mm->mmap_sem);
-> +
-> +	return ret;
-> +}
-
-That's quite a mouthful for an inlined function.  How about uninlining
-the whole thing and fiddling drivers/vfio/vfio_iommu_type1.c to suit. 
-I wonder why it does down_write_killable and whether it really needs
-to...
-
+Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+---
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 1795804..c852024 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -61,6 +61,10 @@ static struct property *dlpar_parse_cc_property(struct cc_workarea *ccwa)
+ 
+ 	name = (char *)ccwa + be32_to_cpu(ccwa->name_offset);
+ 	prop->name = kstrdup(name, GFP_KERNEL);
++	if (!prop->name) {
++		dlpar_free_cc_property(prop);
++		return NULL;
++	}
+ 
+ 	prop->length = be32_to_cpu(ccwa->prop_length);
+ 	value = (char *)ccwa + be32_to_cpu(ccwa->prop_offset);
+---
