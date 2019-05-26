@@ -2,67 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7157F2AB20
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2019 18:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A23782ADB8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 06:38:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Blk73yCbzDqLf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 02:22:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45C43H1HS6zDqMv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 14:38:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
- envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=port70.net
+ (client-ip=81.7.13.123; helo=port70.net; envelope-from=nsz@port70.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="H9kOov7C"; 
- dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Blhq4SlmzDqK5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2019 02:20:56 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id l26so10340238lfh.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2019 09:20:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=01nMFHopGBCZI/oY5AFsKMqNsMt7+AjmjgP0ZjkgZD0=;
- b=H9kOov7CMbdB+pTxe0jciE/0X9oGCvFwZWDK1QndljD3nCAkXWhPqQrhRAkQi59WA+
- d1eMVPPgA648vZfajLaltDW4PpoUB4pt83MyTL8K46y+UiuRDyXY5HNuTOJif87Lqecv
- kL+pn979wtoM5zsiZjVxsKyorZ5fDMvXc5EYdLwfb29E7UMtLbbi6SY6+B9EjVK9V9N9
- jppYbzw6fnq8W4DKmTORjKAQGOTgjdVW0TITDNwUDfmzZIQ2GHdOG9eZLBAnZ2U1JIpK
- oZea98ME0YjW6/g1Ch8EirFC6vsAF2YeXFVxSa5XzAQMHPBzbwOOEGdLWTiIgXY9fDAt
- gF9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=01nMFHopGBCZI/oY5AFsKMqNsMt7+AjmjgP0ZjkgZD0=;
- b=RcwfnARkMtjtXAPOk3gu7lS9EGloSxBgY0naN9H7ejEThV3IQN0qzrAXomAWRuzsQD
- W+TP6tj1n6kDMb6sG0ZtNPsWxqvf1cZhiqafyxEouNYbUG7DpPPIhdTGk2P1ZYPlpYkY
- jYGdLJMplzv/GZcrIkZQ+K1Ts2fkUytLeJlQt4OD5Ur6bxJ8RGy3QQZfByR2Rpkb+2fX
- uKv7ilRxwJWy+rVcr+OKo/zhhxGRR63W10NGixEiEm8Eo0RmpTi9mQXDSoQ15vFM0hCJ
- rmtECIKb01do5Vfu6rUri6PpcIvVdfyOXzUWeHe8qLV+rdVeUunFr1smQaSrZgGHJcf3
- XdsA==
-X-Gm-Message-State: APjAAAXHcgCdydnFx5zWesZ34N7YhFHoe8DglC+NYFhm6QNnTHwLHMQ+
- OaFwBxacYxdT9cpWD8L8BnBJkwYrPgr3oODtD1I=
-X-Google-Smtp-Source: APXvYqwxMEk0IUeAy9UBTsg3h8S+c0X1iydUjhxKYRUIOzNVGYIXzMI1MwgnfY73XGd4ekjkgDqWVxxMzKH40Taah+c=
-X-Received: by 2002:ac2:4213:: with SMTP id y19mr4505084lfh.66.1558887650127; 
- Sun, 26 May 2019 09:20:50 -0700 (PDT)
+ dmarc=none (p=none dis=none) header.from=port70.net
+Received: from port70.net (port70.net [81.7.13.123])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45BzNf71BwzDqJY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2019 11:07:45 +1000 (AEST)
+Received: by port70.net (Postfix, from userid 1002)
+ id 64F7EABEC0BA; Sun, 26 May 2019 22:20:42 +0200 (CEST)
+Date: Sun, 26 May 2019 22:20:42 +0200
+From: Szabolcs Nagy <nsz@port70.net>
+To: Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2 1/2] open: add close_range()
+Message-ID: <20190526202041.GO16415@port70.net>
+References: <20190523154747.15162-1-christian@brauner.io>
+ <20190523154747.15162-2-christian@brauner.io>
 MIME-Version: 1.0
-References: <20190524234933.5133-1-joel@joelfernandes.org>
- <20190524234933.5133-5-joel@joelfernandes.org>
-In-Reply-To: <20190524234933.5133-5-joel@joelfernandes.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 26 May 2019 18:20:39 +0200
-Message-ID: <CANiq72noLXGXo7iarC1vCYX3X5L4fXq1DASK9gMtD_25-VEuHA@mail.gmail.com>
-Subject: Re: [PATCH RFC 4/5] rculist: Remove hlist_for_each_entry_rcu_notrace
- since no users
-To: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190523154747.15162-2-christian@brauner.io>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Mon, 27 May 2019 14:37:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,29 +44,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, kvm-ppc@vger.kernel.org,
- Josh Triplett <josh@joshtriplett.org>, Ingo Molnar <mingo@redhat.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
+ dhowells@redhat.com, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
+ torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
+ jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
+ tglx@linutronix.de, ldv@altlinux.org, linux-arm-kernel@lists.infradead.org,
+ fweimer@redhat.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 25, 2019 at 1:50 AM Joel Fernandes (Google)
-<joel@joelfernandes.org> wrote:
->
-> The series removes all users of the API and with this patch, the API
-> itself.
->
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> ---
->  .clang-format           |  1 -
+* Christian Brauner <christian@brauner.io> [2019-05-23 17:47:46 +0200]:
+> This adds the close_range() syscall. It allows to efficiently close a range
+> of file descriptors up to all file descriptors of a calling task.
+> 
+> The syscall came up in a recent discussion around the new mount API and
+> making new file descriptor types cloexec by default. During this
+> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
+> syscall in this manner has been requested by various people over time.
+> 
+> First, it helps to close all file descriptors of an exec()ing task. This
+> can be done safely via (quoting Al's example from [1] verbatim):
+> 
+>         /* that exec is sensitive */
+>         unshare(CLONE_FILES);
+>         /* we don't want anything past stderr here */
+>         close_range(3, ~0U);
+>         execve(....);
 
-Ack for clang-format, and thanks for removing it there too! :-)
+this does not work in a hosted c implementation unless the libc
+guarantees not to use libc internal fds (e.g. in execve).
+(the libc cannot easily abstract fds, so the syscall abi layer
+fd semantics is necessarily visible to user code.)
 
-Cheers,
-Miguel
+i think this is a new constraint for userspace runtimes.
+(not entirely unreasonable though)
+
+> The code snippet above is one way of working around the problem that file
+> descriptors are not cloexec by default. This is aggravated by the fact that
+> we can't just switch them over without massively regressing userspace. For
+> a whole class of programs having an in-kernel method of closing all file
+> descriptors is very helpful (e.g. demons, service managers, programming
+> language standard libraries, container managers etc.).
+
+was cloexec_range(a,b) considered?
+
+> (Please note, unshare(CLONE_FILES) should only be needed if the calling
+>  task is multi-threaded and shares the file descriptor table with another
+>  thread in which case two threads could race with one thread allocating
+>  file descriptors and the other one closing them via close_range(). For the
+>  general case close_range() before the execve() is sufficient.)
+
+assuming there is no unblocked signal handler that may open fds.
+
+a syscall that tramples on fds not owned by the caller is ugly
+(not generally safe to use and may break things if it gets used),
+i don't have a better solution for fd leaks or missing cloexec,
+but i think it needs more analysis how it can be used.
