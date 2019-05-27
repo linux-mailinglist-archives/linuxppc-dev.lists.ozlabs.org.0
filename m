@@ -1,38 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23782ADB8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 06:38:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45C43H1HS6zDqMv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 14:38:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C6D2AE55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 07:58:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45C5r62VdxzDqPW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2019 15:58:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=port70.net
- (client-ip=81.7.13.123; helo=port70.net; envelope-from=nsz@port70.net;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linaro.org
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=bjorn.andersson@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=port70.net
-Received: from port70.net (port70.net [81.7.13.123])
- by lists.ozlabs.org (Postfix) with ESMTP id 45BzNf71BwzDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2019 11:07:45 +1000 (AEST)
-Received: by port70.net (Postfix, from userid 1002)
- id 64F7EABEC0BA; Sun, 26 May 2019 22:20:42 +0200 (CEST)
-Date: Sun, 26 May 2019 22:20:42 +0200
-From: Szabolcs Nagy <nsz@port70.net>
-To: Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2 1/2] open: add close_range()
-Message-ID: <20190526202041.GO16415@port70.net>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-2-christian@brauner.io>
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="tuK8ZJtV"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45C5pt3p40zDqJV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2019 15:57:22 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id v9so2070649pgr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2019 22:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=JyuJRgpS/Z7CTA8H0O+hxtzN/dPpz0TyAwIDE7XTsoE=;
+ b=tuK8ZJtVIXwdPqsWdCte9y3TqlJG9qgELDQ3Qtp6LQKM8RKkyKpCzZkxEj0Rc2WkDL
+ 2Zsfou7/kcXjVBVVKZbyd1vpgHoltIgN/xtEWFYBHpnAG3V6zkWDiy1iTyxASIA9CENQ
+ mA7+QcLY3xq9OCa85rUrfTnUC93wNgN7pb/iWF9gDRmtjp/EREjqEwTpSmkigkxsMWFW
+ Dch1i+eR2PB3g/qfC+a+rSADliGMCp1rcVIDlZ1nUQhX3IA1oVSLv+0kdbMvq+wLMVEH
+ EiFnt8NM5d7BexcLwQ+IFWTjLJXCKlKrLgcaDZCIFCHPhnltSPGoP4cbGO158bKGJAU7
+ /huA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=JyuJRgpS/Z7CTA8H0O+hxtzN/dPpz0TyAwIDE7XTsoE=;
+ b=K0/PZHl8wlbvPTKzVnIl7c4Qgp8f+nqVFQO8zl8bj2xC1XrQv5HOfx0LOFnuWHIczt
+ JVrUActY8JL2flSiXRrPLuddyMLddXRYNfgQ5demS7HCj2ePwWzCCmcP9/WmQ+PwyZX2
+ VQoqxs0yyrC7th9hlcR7Ej9kBaH7/Xf5DWqXuOLYzloMassDolZMnTPAN3iG42M2LR+p
+ BQfgnNQCakwwGfME9dYQ5Q7IL0GXmjKQiiWW7bBeJ0QEIgrmFRx8l+ivcNA+L5upyL1w
+ X0VP9FvG4epE4cRT9DoDqDvFLx53RWaxeSJboZ6ZrZ8rZb7P2oNKHqLN9+BypnuDrjgo
+ UOUA==
+X-Gm-Message-State: APjAAAVfuUyETVcwFkJ22Ehsv4Yd5q8Qvj780jmXucnFxBaieCgpP5GW
+ +KuqKR6lXbKBbjrxAP4L0v1EQQ==
+X-Google-Smtp-Source: APXvYqyFsSMergPg5Nna/kdDGDiTnNFmQX2Z9Q80x2Bevc9+pSNViT0695L4158UfsAXYGHWblpzzg==
+X-Received: by 2002:a63:e603:: with SMTP id g3mr14837549pgh.167.1558936638925; 
+ Sun, 26 May 2019 22:57:18 -0700 (PDT)
+Received: from minitux (104-188-17-28.lightspeed.sndgca.sbcglobal.net.
+ [104.188.17.28])
+ by smtp.gmail.com with ESMTPSA id t18sm8297274pgm.69.2019.05.26.22.57.16
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Sun, 26 May 2019 22:57:17 -0700 (PDT)
+Date: Sun, 26 May 2019 22:57:15 -0700
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+To: "Enrico Weigelt, metux IT consult" <info@metux.net>
+Subject: Re: [PATCH v2 20/45] drivers: tty: serial: msm_serial: use devm_*
+ functions
+Message-ID: <20190527055715.GW31438@minitux>
+References: <1552602855-26086-1-git-send-email-info@metux.net>
+ <1552602855-26086-21-git-send-email-info@metux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190523154747.15162-2-christian@brauner.io>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Mon, 27 May 2019 14:37:04 +1000
+In-Reply-To: <1552602855-26086-21-git-send-email-info@metux.net>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,65 +82,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
- tglx@linutronix.de, ldv@altlinux.org, linux-arm-kernel@lists.infradead.org,
- fweimer@redhat.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-msm@vger.kernel.org, yamada.masahiro@socionext.com,
+ macro@linux-mips.org, jacmet@sunsite.dk, festevam@gmail.com,
+ stefan.wahren@i2se.com, f.fainelli@gmail.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-imx@nxp.com,
+ linux-serial@vger.kernel.org, u.kleine-koenig@pengutronix.de,
+ andy.gross@linaro.org, tklauser@distanz.ch, david.brown@linaro.org,
+ rjui@broadcom.com, s.hauer@pengutronix.de, slemieux.tyco@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, vz@mleia.com, matthias.bgg@gmail.com,
+ andriy.shevchenko@linux.intel.com, baohua@kernel.org, sbranden@broadcom.com,
+ eric@anholt.net, richard.genoud@gmail.com, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, shawnguo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Christian Brauner <christian@brauner.io> [2019-05-23 17:47:46 +0200]:
-> This adds the close_range() syscall. It allows to efficiently close a range
-> of file descriptors up to all file descriptors of a calling task.
+On Thu 14 Mar 15:33 PDT 2019, Enrico Weigelt, metux IT consult wrote:
+
+> Use the safer devm versions of memory mapping functions.
 > 
-> The syscall came up in a recent discussion around the new mount API and
-> making new file descriptor types cloexec by default. During this
-> discussion, Al suggested the close_range() syscall (cf. [1]). Note, a
-> syscall in this manner has been requested by various people over time.
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
+
+As pointed out by others, this resource does not follow the life cycle
+of the port->dev, so I don't think this improves the code.
+
+Regards,
+Bjorn
+
+> ---
+>  drivers/tty/serial/msm_serial.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 > 
-> First, it helps to close all file descriptors of an exec()ing task. This
-> can be done safely via (quoting Al's example from [1] verbatim):
+> diff --git a/drivers/tty/serial/msm_serial.c b/drivers/tty/serial/msm_serial.c
+> index 1090960..e8e0c87 100644
+> --- a/drivers/tty/serial/msm_serial.c
+> +++ b/drivers/tty/serial/msm_serial.c
+> @@ -1324,8 +1324,8 @@ static void msm_release_port(struct uart_port *port)
+>  		return;
+>  	size = resource_size(uart_resource);
+>  
+> -	release_mem_region(port->mapbase, size);
+> -	iounmap(port->membase);
+> +	devm_release_mem_region(port->dev, port->mapbase, size);
+> +	devm_iounmap(port->dev, port->membase);
+>  	port->membase = NULL;
+>  }
+>  
+> @@ -1342,10 +1342,13 @@ static int msm_request_port(struct uart_port *port)
+>  
+>  	size = resource_size(uart_resource);
+>  
+> -	if (!request_mem_region(port->mapbase, size, "msm_serial"))
+> +	if (!devm_request_mem_region(port->dev,
+> +				     port->mapbase,
+> +				     size,
+> +				     "msm_serial"))
+>  		return -EBUSY;
+>  
+> -	port->membase = ioremap(port->mapbase, size);
+> +	port->membase = ioremap(port->dev, port->mapbase, size);
+>  	if (!port->membase) {
+>  		ret = -EBUSY;
+>  		goto fail_release_port;
+> @@ -1354,7 +1357,7 @@ static int msm_request_port(struct uart_port *port)
+>  	return 0;
+>  
+>  fail_release_port:
+> -	release_mem_region(port->mapbase, size);
+> +	devm_release_mem_region(port->dev, port->mapbase, size);
+>  	return ret;
+>  }
+>  
+> -- 
+> 1.9.1
 > 
->         /* that exec is sensitive */
->         unshare(CLONE_FILES);
->         /* we don't want anything past stderr here */
->         close_range(3, ~0U);
->         execve(....);
-
-this does not work in a hosted c implementation unless the libc
-guarantees not to use libc internal fds (e.g. in execve).
-(the libc cannot easily abstract fds, so the syscall abi layer
-fd semantics is necessarily visible to user code.)
-
-i think this is a new constraint for userspace runtimes.
-(not entirely unreasonable though)
-
-> The code snippet above is one way of working around the problem that file
-> descriptors are not cloexec by default. This is aggravated by the fact that
-> we can't just switch them over without massively regressing userspace. For
-> a whole class of programs having an in-kernel method of closing all file
-> descriptors is very helpful (e.g. demons, service managers, programming
-> language standard libraries, container managers etc.).
-
-was cloexec_range(a,b) considered?
-
-> (Please note, unshare(CLONE_FILES) should only be needed if the calling
->  task is multi-threaded and shares the file descriptor table with another
->  thread in which case two threads could race with one thread allocating
->  file descriptors and the other one closing them via close_range(). For the
->  general case close_range() before the execve() is sufficient.)
-
-assuming there is no unblocked signal handler that may open fds.
-
-a syscall that tramples on fds not owned by the caller is ugly
-(not generally safe to use and may break things if it gets used),
-i don't have a better solution for fd leaks or missing cloexec,
-but i think it needs more analysis how it can be used.
