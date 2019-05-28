@@ -1,85 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F312BE29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 06:22:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45CgfM73WzzDqLR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:22:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5B92BE64
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 06:45:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Ch902cq6zDqP6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:45:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=russell.cc
- (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com;
- envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.b="CkaVy05q"; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.b="XILWvQa7"; dkim-atps=neutral
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com
- [64.147.123.21])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Cgcx4z4szDqJg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 14:20:49 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id BB96B69C;
- Tue, 28 May 2019 00:20:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Tue, 28 May 2019 00:20:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- +QbJWGmfxyU7YzhqvNrv/9g6RQdfUiHFjpHPLSroHEU=; b=CkaVy05q5eQjv478
- th+h0QXcBk6C3sGRdxrxARG6jcU6B+blSMzRAQPh5OkrJC6YrSVuyf7rV4EG/6kd
- n7oN/lCg3NLHCn/rLdiGOm95PEH+TsPzrS3LaaOHGVZMUpb9Y2YThSTeKZ5nWkgD
- RXqPQ6oWt8RESPX8qrnUGVpxVPo7xoX3sgE7YGGyfErYIhuTGuI5wJAvueG3QXkn
- bfEKjoQLvYrQD/T1AR8SZtuVNeGQiMlOJeqQuSuCL+ETPEITWYXhSHnObOvXN27+
- FLBQzgnzTcTaaFTECYm308/1trM2Y1W0GlGbBIrT3vyUr50KVEG1PG60F3BZlBqF
- VnGcPA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=+QbJWGmfxyU7YzhqvNrv/9g6RQdfUiHFjpHPLSroH
- EU=; b=XILWvQa73i20nIaEgypLLA8hoOtzeJ0Hog9WhknVRfylAz23var2+iHA6
- sVdZFd1HiqD1u9YmNLAjbRfs/g/aOGTQDUJIbNQDZe0Rte2ZNUzX/rCvOXzS9VeV
- MnnBjo5M0O2FJZRRYbFh9/sq4xgFhGFhuWNW4i8K29C5uvn4Kck6Td8IVM7FhhVB
- Piiws+uF0M0g5ViuXW2WHfFjB073plBeGWt7NOlMSt+YnTpBKnGm4+Mu3hByOnaX
- RgR/yHVRGn/HLW303vfkOVgP1ngzjZXGBo2hACgS1NL01O8y16qhaRf5C1B/R5QD
- gemRf7J9sRuiFOQ93OPWOxw9DY8RQ==
-X-ME-Sender: <xms:HLfsXNHifz5en5r9TCvVsyJrEXtOqYMghyAQCG-kgY3CPiPJP5AnMg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduuddruddvgedgkeehucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- gfrhhlucfvnfffucdludehmdenucfjughrpefkuffhvfffjghftggfggfgsehtjeertddt
- reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
- hsvghllhdrtggtqeenucfkphepuddvvddrleelrdekvddruddtnecurfgrrhgrmhepmhgr
- ihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggtnecuvehluhhsthgvrhfuih
- iivgeptd
-X-ME-Proxy: <xmx:HLfsXL8LfLRseeklVe4GcTZI8fwROuHD36Vg0S2qzQfWkj4nmiKl0Q>
- <xmx:HLfsXPKRRHON3cyXaWK1Ep8ZEL184LORSMWS8gVXyp6poEcBF0YQLg>
- <xmx:HLfsXGaY50oXDXrZZPaQpaNXe8m57I9ZVwdpgqcm4D0aV6DVa507vg>
- <xmx:HbfsXKJ3p_hyA-mRrPUetON6JDrk32NxTXONZE4ummqCEU8arbxqrw>
-Received: from crackle.ozlabs.ibm.com (unknown [122.99.82.10])
- by mail.messagingengine.com (Postfix) with ESMTPA id E30048005A;
- Tue, 28 May 2019 00:20:41 -0400 (EDT)
-Message-ID: <e71300940ea33af8e655af8117cd68084cd6567d.camel@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ch7q0M68zDqJW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 14:44:06 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4S4gBwe118600
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 00:44:03 -0400
+Received: from e31.co.us.ibm.com (e31.co.us.ibm.com [32.97.110.149])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2srwjts3ws-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 00:44:03 -0400
+Received: from localhost
+ by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
+ Tue, 28 May 2019 05:44:02 +0100
+Received: from b03cxnp08027.gho.boulder.ibm.com (9.17.130.19)
+ by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 28 May 2019 05:43:59 +0100
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4S4hwG722216976
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 May 2019 04:43:58 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2294B6A04D;
+ Tue, 28 May 2019 04:43:58 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDDBE6A047;
+ Tue, 28 May 2019 04:43:57 +0000 (GMT)
+Received: from birb.localdomain (unknown [9.185.142.109])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 28 May 2019 04:43:57 +0000 (GMT)
+Received: by birb.localdomain (Postfix, from userid 1000)
+ id 8DD814EC63D; Tue, 28 May 2019 14:43:55 +1000 (AEST)
+From: Stewart Smith <stewart@linux.ibm.com>
+To: Oliver <oohall@gmail.com>
 Subject: Re: [TRIVIAL] [PATCH] powerpc/powernv-eeh: Consisely desribe what
  this file does
-From: Russell Currey <ruscur@russell.cc>
-To: Stewart Smith <stewart@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Tue, 28 May 2019 14:20:39 +1000
-In-Reply-To: <20190528032925.8836-1-stewart@linux.ibm.com>
+In-Reply-To: <CAOSf1CHj0p8vgc710hFyT771T52zc0mm3UDu=MV1x39m1Ux3cg@mail.gmail.com>
 References: <20190528032925.8836-1-stewart@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.2 
+ <CAOSf1CHj0p8vgc710hFyT771T52zc0mm3UDu=MV1x39m1Ux3cg@mail.gmail.com>
+Date: Tue, 28 May 2019 14:43:55 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19052804-8235-0000-0000-00000E9F3F49
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011174; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01209627; UDB=6.00635458; IPR=6.00990656; 
+ MB=3.00027081; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-28 04:44:01
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052804-8236-0000-0000-000045C01E82
+Message-Id: <87a7f7fat0.fsf@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-28_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=851 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905280032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,21 +94,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sbobroff@linux.ibm.com, oohall@gmail.com, paulus@samba.org
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-05-28 at 13:29 +1000, Stewart Smith wrote:
-> If the previous comment made sense, continue debugging or call your
-> doctor immediately.
-> 
-> Signed-off-by: Stewart Smith <stewart@linux.ibm.com>
+Oliver <oohall@gmail.com> writes:
 
-This reply intends to implement the ack dependent EEH patch on powernv
-platform.  Actually, the reply was created in order to fully ack
-support.
+> On Tue, May 28, 2019 at 1:29 PM Stewart Smith <stewart@linux.ibm.com> wrote:
+>>
+>> If the previous comment made sense, continue debugging or call your
+>> doctor immediately.
+>>
+>> Signed-off-by: Stewart Smith <stewart@linux.ibm.com>
+>> ---
+>>  arch/powerpc/platforms/powernv/eeh-powernv.c | 4 +---
+>>  1 file changed, 1 insertion(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+>> index f38078976c5d..bea6708be065 100644
+>> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+>> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+>> @@ -1,7 +1,5 @@
+>>  /*
+>> - * The file intends to implement the platform dependent EEH operations on
+>> - * powernv platform. Actually, the powernv was created in order to fully
+>> - * hypervisor support.
+>> + * PowerNV Platform dependent EEH operations
+>>   *
+>>   * Copyright Benjamin Herrenschmidt & Gavin Shan, IBM Corporation 2013.
+>
+> Stewart, Thanks for fixing it up. Since you're at it, Please replace
+> the maintainer to yourself.
 
-Fully-ack-supported-by: Russell Currey <ruscur@russell.cc>
+This message intends to implement the middle raising operations on the
+finger platform. Actually, the EEH was created in order to fully
+phalange extension.
 
+:)
+
+-- 
+Stewart Smith
+OPAL Architect, IBM.
 
