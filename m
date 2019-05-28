@@ -1,39 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535B12BE96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 07:23:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Cj0p5K20zDq5n
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 15:23:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6302BEAC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 07:36:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45CjJZ51J6zDqNT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 15:36:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Chyj0NpTzDqL5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 15:21:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45Chyh0C8Tz9s9T;
- Tue, 28 May 2019 15:21:15 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mathieu Malaterre <malat@debian.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: kmemleak: 1157 new suspected memory leaks (see
- /sys/kernel/debug/kmemleak)
-In-Reply-To: <CA+7wUsw_jkgWfknXbpK7_yfy=S5Y0jvQe1KP3kM-LT8fFnUF5g@mail.gmail.com>
-References: <CA+7wUsw_jkgWfknXbpK7_yfy=S5Y0jvQe1KP3kM-LT8fFnUF5g@mail.gmail.com>
-Date: Tue, 28 May 2019 15:21:14 +1000
-Message-ID: <87tvdfp31x.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45CjH74qhlzDqJg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 15:35:31 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4S5TJ4D094819; Tue, 28 May 2019 01:35:24 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2srt2m8fq4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2019 01:35:24 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x4S5TWFB096488;
+ Tue, 28 May 2019 01:35:23 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2srt2m8fpf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2019 01:35:23 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x4RNXJUr009924;
+ Mon, 27 May 2019 23:40:11 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01dal.us.ibm.com with ESMTP id 2spwb8p27q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2019 23:40:11 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4S5ZLoR21299668
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 May 2019 05:35:21 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 846986A057;
+ Tue, 28 May 2019 05:35:21 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFB396A058;
+ Tue, 28 May 2019 05:35:19 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.31.115])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 28 May 2019 05:35:19 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/mm: Move some of the boot time info print to generic
+ file
+Date: Tue, 28 May 2019 11:05:13 +0530
+Message-Id: <20190528053513.1966-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-28_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905280038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,103 +88,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mathieu Malaterre <malat@debian.org> writes:
-> Hi there,
->
-> Is there a way to dump more context (somewhere in of tree
-> flattening?). I cannot make sense of the following:
+With radix translation enabled we find in dmesg
 
-Hmm. Not that I know of.
+ hash-mmu: ppc64_pft_size    = 0x0
+ hash-mmu: kernel vmalloc start   = 0xc008000000000000
+ hash-mmu: kernel IO start        = 0xc00a000000000000
+ hash-mmu: kernel vmemmap start   = 0xc00c000000000000
 
-Those don't look related to OF flattening/unflattening. That's just
-sysfs setup based on the unflattened device tree.
+This is because these pr_info calls are in hash_utils.c which has
 
-The allocations are happening in safe_name() AFAICS.
+ #define pr_fmt(fmt) "hash-mmu: " fmt
 
-int __of_add_property_sysfs(struct device_node *np, struct property *pp)
-{
-	...
-	pp->attr.attr.name = safe_name(&np->kobj, pp->name);
+The information printed in generic and hence move that to generic file
 
-And the free is in __of_sysfs_remove_bin_file():
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/kernel/setup-common.c    | 4 ++++
+ arch/powerpc/mm/book3s64/hash_utils.c | 5 -----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-void __of_sysfs_remove_bin_file(struct device_node *np, struct property *prop)
-{
-	if (!IS_ENABLED(CONFIG_SYSFS))
-		return;
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index aad9f5df6ab6..a73a91f2c21f 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -810,6 +810,10 @@ static __init void print_system_info(void)
+ 	pr_info("mmu_features      = 0x%08x\n", cur_cpu_spec->mmu_features);
+ #ifdef CONFIG_PPC64
+ 	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
++	pr_info("ppc64_pft_size    = 0x%llx\n", ppc64_pft_size);
++	pr_info("kernel vmalloc start   = 0x%lx\n", KERN_VIRT_START);
++	pr_info("kernel IO start        = 0x%lx\n", KERN_IO_START);
++	pr_info("kernel vmemmap start   = 0x%lx\n", (unsigned long)vmemmap);
+ #endif
+ 
+ 	print_system_hash_info();
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 919a861a8ec0..2f677914bfd2 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1950,11 +1950,6 @@ machine_device_initcall(pseries, hash64_debugfs);
+ 
+ void __init print_system_hash_info(void)
+ {
+-	pr_info("ppc64_pft_size    = 0x%llx\n", ppc64_pft_size);
+-
+ 	if (htab_hash_mask)
+ 		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
+-	pr_info("kernel vmalloc start   = 0x%lx\n", KERN_VIRT_START);
+-	pr_info("kernel IO start        = 0x%lx\n", KERN_IO_START);
+-	pr_info("kernel vmemmap start   = 0x%lx\n", (unsigned long)vmemmap);
+ }
+-- 
+2.21.0
 
-	sysfs_remove_bin_file(&np->kobj, &prop->attr);
-	kfree(prop->attr.attr.name);
-
-
-There is this check which could be failing leading to us not calling the
-free at all:
-
-void __of_remove_property_sysfs(struct device_node *np, struct property *prop)
-{
-	/* at early boot, bail here and defer setup to of_init() */
-	if (of_kset && of_node_is_attached(np))
-		__of_sysfs_remove_bin_file(np, prop);
-}
-
-
-So maybe stick a printk() in there to see if you're hitting that
-condition, eg something like:
-
-	if (of_kset && of_node_is_attached(np))
-		__of_sysfs_remove_bin_file(np, prop);
-	else
-		printk("%s: leaking prop %s on node %pOF\n", __func__, prop->attr.attr.name, np);
-
-
-cheers
-
-> kmemleak: 1157 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->
-> Where:
->
-> # head -40 /sys/kernel/debug/kmemleak
-> unreferenced object 0xdf44d180 (size 8):
->   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
->   hex dump (first 8 bytes):
->     62 61 73 65 00 00 00 00                          base....
->   backtrace:
->     [<0ca59825>] kstrdup+0x4c/0xb8
->     [<c8a79377>] kobject_set_name_vargs+0x34/0xc8
->     [<661b4c86>] kobject_add+0x78/0x120
->     [<c1416f27>] __of_attach_node_sysfs+0xa0/0x14c
->     [<2a143d10>] of_core_init+0x90/0x114
->     [<a353d0e1>] driver_init+0x30/0x48
->     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
->     [<dc60f815>] kernel_init+0x20/0x110
->     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
-> unreferenced object 0xdf44d178 (size 8):
->   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
->   hex dump (first 8 bytes):
->     6d 6f 64 65 6c 00 97 c8                          model...
->   backtrace:
->     [<0ca59825>] kstrdup+0x4c/0xb8
->     [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
->     [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
->     [<2a143d10>] of_core_init+0x90/0x114
->     [<a353d0e1>] driver_init+0x30/0x48
->     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
->     [<dc60f815>] kernel_init+0x20/0x110
->     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
-> unreferenced object 0xdf4021e0 (size 16):
->   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
->   hex dump (first 16 bytes):
->     63 6f 6d 70 61 74 69 62 6c 65 00 01 00 00 00 00  compatible......
->   backtrace:
->     [<0ca59825>] kstrdup+0x4c/0xb8
->     [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
->     [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
->     [<2a143d10>] of_core_init+0x90/0x114
->     [<a353d0e1>] driver_init+0x30/0x48
->     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
->     [<dc60f815>] kernel_init+0x20/0x110
->     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
