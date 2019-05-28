@@ -1,88 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284D62BE6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 06:53:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5B92BE64
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 06:45:11 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Ch902cq6zDqP6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:45:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ChM45JDfzDqMb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:53:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::143; helo=mail-it1-x143.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Num6bmFJ"; 
+ dkim-atps=neutral
+Received: from mail-it1-x143.google.com (mail-it1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Ch7q0M68zDqJW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 14:44:06 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4S4gBwe118600
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 00:44:03 -0400
-Received: from e31.co.us.ibm.com (e31.co.us.ibm.com [32.97.110.149])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2srwjts3ws-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 00:44:03 -0400
-Received: from localhost
- by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
- Tue, 28 May 2019 05:44:02 +0100
-Received: from b03cxnp08027.gho.boulder.ibm.com (9.17.130.19)
- by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 28 May 2019 05:43:59 +0100
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4S4hwG722216976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 May 2019 04:43:58 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2294B6A04D;
- Tue, 28 May 2019 04:43:58 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDDBE6A047;
- Tue, 28 May 2019 04:43:57 +0000 (GMT)
-Received: from birb.localdomain (unknown [9.185.142.109])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 28 May 2019 04:43:57 +0000 (GMT)
-Received: by birb.localdomain (Postfix, from userid 1000)
- id 8DD814EC63D; Tue, 28 May 2019 14:43:55 +1000 (AEST)
-From: Stewart Smith <stewart@linux.ibm.com>
-To: Oliver <oohall@gmail.com>
-Subject: Re: [TRIVIAL] [PATCH] powerpc/powernv-eeh: Consisely desribe what
- this file does
-In-Reply-To: <CAOSf1CHj0p8vgc710hFyT771T52zc0mm3UDu=MV1x39m1Ux3cg@mail.gmail.com>
-References: <20190528032925.8836-1-stewart@linux.ibm.com>
- <CAOSf1CHj0p8vgc710hFyT771T52zc0mm3UDu=MV1x39m1Ux3cg@mail.gmail.com>
-Date: Tue, 28 May 2019 14:43:55 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ChKs4t91zDqGg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 14:52:49 +1000 (AEST)
+Received: by mail-it1-x143.google.com with SMTP id m141so2166921ita.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2019 21:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=wx8LK+FLca8yAW2nEFxWKA0g/8vW4SdgqbZC24puim4=;
+ b=Num6bmFJNBol+Kw9ZWhsOFk3l1a6j5lmv9mdFK/gp1Q+kuAErZkGs6tqYGoAjiYdZA
+ 6MYKsXRWCItoQI/4bW5JoSCuqVREty/c1E5yE5Hagq2y6VX9t/EwxuXHVATT2SFb1c8l
+ LvHVuuZindy/bG3VCwtjN9kTQyE8kVpYXEDKbZseeM+8M4MvPhEZJS9RACjMMtBeOJ2/
+ NgCzY5BrWv1Uwm33KeWad5xUrwTg/D8+q49095U/M68UNY327ufVLmBSjKw3SWeFRbZL
+ HimVw8yhPOVWio6YuUOnj/duE0HnWe3w0kCAKu4oP5BXAoRoFKhJ/1gaywlz7wtmf8b+
+ iVTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=wx8LK+FLca8yAW2nEFxWKA0g/8vW4SdgqbZC24puim4=;
+ b=lZT2EEPRSa30xnrUmr40dk4j6N0/6e1qx+QP6T5rphQxiwhZ/oA3awZXEDwHkRp1+R
+ dPetZKFgWbqVYd18wuc1g12PP+gYFx72it4YseZl6Y+puDtpNA8FKinpVxA/u2fWQkNi
+ 9xJtuXnhctKovst1Uiy+KurtKanJNxkw4fiAxmi7KPdCyJ8rmuZ8bnQvqvnZTsreTYKP
+ TJ5iKOUf/s/lCYRHhspGg+u70SjfRrNyflR+H+AkrTFzuWDuo3JorB7rdN4KurZL4I6/
+ F7xJI9XHMnv4JSYNtWeSqHI0XqWgDkHmOXUXct3EvktjeF4djaCaKRiax1NiruWueeq5
+ FIHg==
+X-Gm-Message-State: APjAAAWeNKmLwZc7qiDqMD6whqS+Q7iPXA0SrcWYs1pX2TwJWo4VAzgg
+ OXNsM1tEilcHYv9IUFMjlM3YVLfHz7DDacXYKjk=
+X-Google-Smtp-Source: APXvYqyxyjnf3N3ZuvxwWhdhVBd1O4QLo5brN6e/Y+/Q3kvimE1dHdiSAECEYrRRH1DbQs8Xyg0nj2Nwt2AP+nSbWOg=
+X-Received: by 2002:a24:d145:: with SMTP id w66mr1686745itg.71.1559019167176; 
+ Mon, 27 May 2019 21:52:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19052804-8235-0000-0000-00000E9F3F49
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011174; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01209627; UDB=6.00635458; IPR=6.00990656; 
- MB=3.00027081; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-28 04:44:01
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052804-8236-0000-0000-000045C01E82
-Message-Id: <87a7f7fat0.fsf@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-28_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=851 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905280032
+References: <20190527225521.5884-1-shawn@anastas.io>
+ <CAOSf1CFFyz0YNqdpd5r44MaBV449yoK3WOMBZ1mpgZ=judNfDQ@mail.gmail.com>
+ <476555b7-b462-d844-57ea-7ca1c6113d9b@anastas.io>
+In-Reply-To: <476555b7-b462-d844-57ea-7ca1c6113d9b@anastas.io>
+From: Oliver <oohall@gmail.com>
+Date: Tue, 28 May 2019 14:52:35 +1000
+Message-ID: <CAOSf1CG9LcxPy9cOk0FeNq=pvMCPKVKYU7=tdrMSO+RiqTWr5A@mail.gmail.com>
+Subject: Re: [RESEND PATCH 0/3] Allow custom PCI resource alignment on pseries
+To: Shawn Anastasio <shawn@anastas.io>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,47 +74,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rppt@linux.ibm.com,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Paul Mackerras <paulus@samba.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, xyjxie@linux.vnet.ibm.com,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Oliver <oohall@gmail.com> writes:
-
-> On Tue, May 28, 2019 at 1:29 PM Stewart Smith <stewart@linux.ibm.com> wrote:
->>
->> If the previous comment made sense, continue debugging or call your
->> doctor immediately.
->>
->> Signed-off-by: Stewart Smith <stewart@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/powernv/eeh-powernv.c | 4 +---
->>  1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
->> index f38078976c5d..bea6708be065 100644
->> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
->> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
->> @@ -1,7 +1,5 @@
->>  /*
->> - * The file intends to implement the platform dependent EEH operations on
->> - * powernv platform. Actually, the powernv was created in order to fully
->> - * hypervisor support.
->> + * PowerNV Platform dependent EEH operations
->>   *
->>   * Copyright Benjamin Herrenschmidt & Gavin Shan, IBM Corporation 2013.
+On Tue, May 28, 2019 at 2:09 PM Shawn Anastasio <shawn@anastas.io> wrote:
 >
-> Stewart, Thanks for fixing it up. Since you're at it, Please replace
-> the maintainer to yourself.
+>
+>
+> On 5/27/19 11:01 PM, Oliver wrote:
+> > On Tue, May 28, 2019 at 8:56 AM Shawn Anastasio <shawn@anastas.io> wrote:
+> >>
+> >> Hello all,
+> >>
+> >> This patch set implements support for user-specified PCI resource
+> >> alignment on the pseries platform for hotplugged PCI devices.
+> >> Currently on pseries, PCI resource alignments specified with the
+> >> pci=resource_alignment commandline argument are ignored, since
+> >> the firmware is in charge of managing the PCI resources. In the
+> >> case of hotplugged devices, though, the kernel is in charge of
+> >> configuring the resources and should obey alignment requirements.
+> >
+> > Are you using hotplug to work around SLOF (the OF we use under qemu)
+> > not aligning BARs to 64K? It looks like there is a commit in SLOF to
+> > fix that (https://git.qemu.org/?p=SLOF.git;a=commit;f=board-qemu/slof/pci-phb.fs;h=1903174472f8800caf50c959b304501b4c01153c).
+> >
+>
+> No, my application actually requires PCI hotplug at run-time.
+>
+> >> The current behavior of ignoring the alignment for hotplugged devices
+> >> results in sub-page BARs landing between page boundaries and
+> >> becoming un-mappable from userspace via the VFIO framework.
+> >> This issue was observed on a pseries KVM guest with hotplugged
+> >> ivshmem devices.
+> >
+> >> With these changes, users can specify an appropriate
+> >> pci=resource_alignment argument on boot for devices they wish to use
+> >> with VFIO.
+> >>
+> >> In the future, this could be extended to provide page-aligned
+> >> resources by default for hotplugged devices, similar to what is done
+> >> on powernv by commit 382746376993 ("powerpc/powernv: Override
+> >> pcibios_default_alignment() to force PCI devices to be page aligned").
+> >
+> > Can we make aligning the BARs to PAGE_SIZE the default behaviour? The
+> > BAR assignment process is complex enough as-is so I'd rather we didn't
+> > add another platform hack into the mix.
+>
+> Absolutely. This will still require the existing changes so that the
+> custom alignment isn't flat-out ignored on pseries, but I can set
+> it to default to PAGE_SIZE as well, similar to how it's done on PowerNV.
+> I've just pushed a v3 to fix a typo and I'll incorporate this change
+> in v4.
 
-This message intends to implement the middle raising operations on the
-finger platform. Actually, the EEH was created in order to fully
-phalange extension.
+I was thinking we could get rid of the ppcmd callback and do it in
+kernel/pci-common.c. PowerNV is the only platform that implements the
+callback and the pseries implementation is going to be identical so I
+don't think there's much of point in keeping the callback.
 
-:)
-
--- 
-Stewart Smith
-OPAL Architect, IBM.
-
+> >> Feedback is appreciated.
+> >>
+> >> Thanks,
+> >> Shawn
+> >>
+> >> Shawn Anastasio (3):
+> >>    PCI: Introduce pcibios_ignore_alignment_request
+> >>    powerpc/64: Enable pcibios_after_init hook on ppc64
+> >>    powerpc/pseries: Allow user-specified PCI resource alignment after
+> >>      init
+> >>
+> >>   arch/powerpc/include/asm/machdep.h     |  6 ++++--
+> >>   arch/powerpc/kernel/pci-common.c       |  9 +++++++++
+> >>   arch/powerpc/kernel/pci_64.c           |  4 ++++
+> >>   arch/powerpc/platforms/pseries/setup.c | 22 ++++++++++++++++++++++
+> >>   drivers/pci/pci.c                      |  9 +++++++--
+> >>   5 files changed, 46 insertions(+), 4 deletions(-)
+> >>
+> >> --
+> >> 2.20.1
+> >>
