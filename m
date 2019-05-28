@@ -2,86 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA4A2C2FB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 406672C338
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:29:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45CpFV6zjKzDqMk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:19:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45CpSZ3pTVzDqN7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:29:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.0.65; helo=eur02-am5-obe.outbound.protection.outlook.com;
- envelope-from=horia.geanta@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="FJV+vbNn"; 
- dkim-atps=neutral
-Received: from EUR02-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr00065.outbound.protection.outlook.com [40.107.0.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45CpCs5mgvzDqL2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:17:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AWj5naSzV0ySCY1ZNrovPMjNnQtCqGhYnXGehj0aWog=;
- b=FJV+vbNnNMhJZJmUnGDbo8Kf7dY5d1wX0nBDeOkRsGlftG7UdrnCBn6bkrun7sJ+h5TwRKwLyWHL6xClLAZV827pXKTIkxN5GOEiZa2C3PLR+gOqChPsCZr2zBqMW9mC+6G62MYazs23NUNTsyfGALSDNcBqkxzqXWZXvrnumkA=
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com (52.134.3.153) by
- VI1PR0402MB3885.eurprd04.prod.outlook.com (52.134.17.19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.16; Tue, 28 May 2019 09:17:52 +0000
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::ccaf:f4a1:704a:e745]) by VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::ccaf:f4a1:704a:e745%4]) with mapi id 15.20.1922.021; Tue, 28 May 2019
- 09:17:52 +0000
-From: Horia Geanta <horia.geanta@nxp.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v1 00/15] Fixing selftests failure on Talitos driver
-Thread-Topic: [PATCH v1 00/15] Fixing selftests failure on Talitos driver
-Thread-Index: AQHVD9neuB3rF5DbdU6FGGdK8ciL0Q==
-Date: Tue, 28 May 2019 09:17:52 +0000
-Message-ID: <VI1PR0402MB34850975FDD8F5F1CE366A9C981E0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
-References: <cover.1558445259.git.christophe.leroy@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=horia.geanta@nxp.com; 
-x-originating-ip: [212.146.100.6]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b6462515-2c1f-44c4-b3cd-08d6e34d5cd4
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VI1PR0402MB3885; 
-x-ms-traffictypediagnostic: VI1PR0402MB3885:
-x-microsoft-antispam-prvs: <VI1PR0402MB3885CA9DEAB69658D6DE6EE9981E0@VI1PR0402MB3885.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-forefront-prvs: 00514A2FE6
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(396003)(39860400002)(346002)(376002)(366004)(136003)(189003)(199004)(68736007)(486006)(476003)(4326008)(186003)(446003)(53936002)(6246003)(9686003)(5660300002)(55016002)(66066001)(76176011)(478600001)(4744005)(316002)(74316002)(26005)(66946007)(76116006)(73956011)(52536014)(25786009)(66446008)(66476007)(66556008)(64756008)(6506007)(14444005)(14454004)(99286004)(8676002)(81156014)(256004)(81166006)(110136005)(6116002)(3846002)(54906003)(33656002)(71190400001)(53546011)(44832011)(71200400001)(7696005)(305945005)(7736002)(102836004)(2906002)(6436002)(8936002)(229853002)(86362001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0402MB3885;
- H:VI1PR0402MB3485.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: dRJv2WAxvIzDvLYch559MunUOf5sxswNfkQ6O4ceognW7o5TCBPliiPn3i/0jvJ5VoYTGyDDy1MTqumAjBwEx7FOKaautF4t2bsy+BIZI2Y+ghEywTcK/IRf+Zw7zUrFOSJisrqyaIey8eJzh3IIb0pjv2NLD6qDh/DgRTllCW8YuGgZM3AW1a/ENj53/vTLShbS/WAWg4O3tbcI1GrJNmJy80W1nW+fWcWidYCvYkr+XeZcgQ92vVtSWywSidPIfa9BKUn7+Uo5IGEXeyRCfm65mof4vfcijT+omLQFJ0BZnMURy32FE4+KZjSxYBs5sChvvU593IEMPjYlJyIIHNvMDR+TGjM2cQRcZmmeums0uNQ5u0+Vl2ovb1EBLNEbOiO2srX55paaVlrinQgy4WFat6lqrlM+d/VN08p6cko=
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45CpRP14gpzDq8F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:27:53 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 77336AE44;
+ Tue, 28 May 2019 09:27:49 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 056F51E3F53; Tue, 28 May 2019 11:27:49 +0200 (CEST)
+Date: Tue, 28 May 2019 11:27:48 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v2] mm: Move MAP_SYNC to asm-generic/mman-common.h
+Message-ID: <20190528092748.GE9607@quack2.suse.cz>
+References: <20190528091120.13322-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6462515-2c1f-44c4-b3cd-08d6e34d5cd4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2019 09:17:52.7205 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: horia.geanta@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3885
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190528091120.13322-1-aneesh.kumar@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,32 +48,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: jack@suse.cz, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/21/2019 4:34 PM, Christophe Leroy wrote:=0A=
-> Several test failures have popped up following recent changes to crypto=
-=0A=
-> selftests.=0A=
-> =0A=
-> This series fixes (most of) them.=0A=
-> =0A=
-> The last three patches are trivial cleanups.=0A=
-> =0A=
-Thanks Christophe.=0A=
-=0A=
-For the series:=0A=
-Reviewed-by: Horia Geant=E3 <horia.geanta@nxp.com>=0A=
-=0A=
-Have you validated the changes also on SEC 2.x+?=0A=
-Asking since IIRC you mentioned having only HW with SEC 1 and changes in pa=
-tch=0A=
-"crypto: talitos - fix AEAD processing." look quite complex.=0A=
-=0A=
-Thanks,=0A=
-Horia=0A=
-=0A=
+On Tue 28-05-19 14:41:20, Aneesh Kumar K.V wrote:
+> This enables support for synchronous DAX fault on powerpc
+> 
+> The generic changes are added as part of
+> commit b6fb293f2497 ("mm: Define MAP_SYNC and VM_SYNC flags")
+> 
+> Without this, mmap returns EOPNOTSUPP for MAP_SYNC with MAP_SHARED_VALIDATE
+> 
+> Instead of adding MAP_SYNC with same value to
+> arch/powerpc/include/uapi/asm/mman.h, I am moving the #define to
+> asm-generic/mman-common.h. Two architectures using mman-common.h directly are
+> sparc and powerpc. We should be able to consloidate more #defines to
+> mman-common.h. That can be done as a separate patch.
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+Looks good to me FWIW (I don't have much experience with mmap flags and
+their peculirarities). So feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+> Changes from V1:
+> * Move #define to mman-common.h instead of powerpc specific mman.h change
+> 
+> 
+>  include/uapi/asm-generic/mman-common.h | 3 ++-
+>  include/uapi/asm-generic/mman.h        | 1 -
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
+> index abd238d0f7a4..bea0278f65ab 100644
+> --- a/include/uapi/asm-generic/mman-common.h
+> +++ b/include/uapi/asm-generic/mman-common.h
+> @@ -25,7 +25,8 @@
+>  # define MAP_UNINITIALIZED 0x0		/* Don't support this flag */
+>  #endif
+>  
+> -/* 0x0100 - 0x80000 flags are defined in asm-generic/mman.h */
+> +/* 0x0100 - 0x40000 flags are defined in asm-generic/mman.h */
+> +#define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
+>  #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
+>  
+>  /*
+> diff --git a/include/uapi/asm-generic/mman.h b/include/uapi/asm-generic/mman.h
+> index 653687d9771b..2dffcbf705b3 100644
+> --- a/include/uapi/asm-generic/mman.h
+> +++ b/include/uapi/asm-generic/mman.h
+> @@ -13,7 +13,6 @@
+>  #define MAP_NONBLOCK	0x10000		/* do not block on IO */
+>  #define MAP_STACK	0x20000		/* give out an address that is best suited for process/thread stacks */
+>  #define MAP_HUGETLB	0x40000		/* create a huge page mapping */
+> -#define MAP_SYNC	0x80000		/* perform synchronous page faults for the mapping */
+>  
+>  /* Bits [26:31] are reserved, see mman-common.h for MAP_HUGETLB usage */
+>  
+> -- 
+> 2.21.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
