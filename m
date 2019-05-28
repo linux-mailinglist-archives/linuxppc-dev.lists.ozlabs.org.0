@@ -2,75 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A802C3C6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657E32C450
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 12:34:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Cq7r0YWczDqP4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:59:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Cqw304gNzDqNt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 20:34:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="cpeK2skt"; 
- dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=nefkom.net
+ (client-ip=2001:a60:0:28:0:1:25:1; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+X-Greylist: delayed 453 seconds by postgrey-1.36 at bilbo;
+ Tue, 28 May 2019 20:33:05 AEST
+Received: from mail-out.m-online.net (mail-out.m-online.net
+ [IPv6:2001:a60:0:28:0:1:25:1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Cq6C5dFnzDqKP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:58:10 +1000 (AEST)
-Received: by mail-ot1-x341.google.com with SMTP id t24so17152256otl.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 02:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
- b=cpeK2sktn7NMSf704YRsePZcwMV5rEfvSYWLdkbE0oo7SEPsGyf2Sg/RoHTcSoQfPd
- wKUtklR660LzAKMlYxgcivpoPmw+LSf5RppXvWNS6o1G0soFTMAvZUcbgBxvK2BECrI0
- Rle3mXgyvD783k6/0SbYAStUQCihPJGyFt818iQ5hLWys0KtqDqC6rX9cnEeWCbwKNG0
- tdk47Ttoh8A9F1CCaGanOIYDEl/ZdHErWc8Wv5KldYhEb6ofWf7dsBtFYzjTibWrsdhA
- MZ+zwyNHz+uR8reJwzBhLz8RLg8uhrkcEzyfZuKsJUXFqTqSWw3bOPqffMHHTUaHwhxW
- 1OcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
- b=ILeYYKMRHk5pxg+FeJ8IRcx3RgzKT1+3sws2oepqy/vcc4lN61oqVj/C0RkDqCYGJZ
- A1eCbR4sqcnuUc8l7VHLjgou+uF236537ksVDkmTyde952Vt/IT81Os1J65myXKZqrxI
- i4jE+lXsbbjvz8/aXZf3pVwDXpGjGb2eZ0xjQw9UfW2F1ha33GTVPuuiYG8uT4UAJYsp
- VIpAhn2vrhQNfQ+l8K+swQ4EGoMy/KzjXDBEvbyHpCfH5Z9Lx7bCbJex/IdHGKaTz1yV
- 9wSGgX9VhqfuOUwLCVEgmTNMPSDv6DAZMtwVWk3M4IPif0AfbJ4ju5Dk9l2tDOgRPWpU
- 7suA==
-X-Gm-Message-State: APjAAAW0rzUPhHHTwkUrskiLg2XoFOCeqVdIvrL3nXvgCNkQrRbGqfQn
- DYI3vL/AvaOvHV9mlAPh0L6c4g==
-X-Google-Smtp-Source: APXvYqwNLIyMiw7dADjTCxSmg48ETPJlltLpV+f/5L0odOCbBrMF/Z9t2SkD+zCcao739KqAxW23xA==
-X-Received: by 2002:a05:6830:214f:: with SMTP id
- r15mr4126904otd.143.1559037489020; 
- Tue, 28 May 2019 02:58:09 -0700 (PDT)
-Received: from brauner.io ([172.56.7.242])
- by smtp.gmail.com with ESMTPSA id n187sm2440013oif.25.2019.05.28.02.57.59
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 28 May 2019 02:58:08 -0700 (PDT)
-Date: Tue, 28 May 2019 11:57:56 +0200
-From: Christian Brauner <christian@brauner.io>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 2/2] tests: add close_range() tests
-Message-ID: <20190528095754.peumcgjysw2nq24y@brauner.io>
-References: <20190523154747.15162-1-christian@brauner.io>
- <20190523154747.15162-3-christian@brauner.io>
- <8736kzqpdm.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45CqtT67CRzDqBl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 20:33:05 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 45CqjM1bQhz1rZ07;
+ Tue, 28 May 2019 12:25:11 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 45CqjL64ZDz1qqkH;
+ Tue, 28 May 2019 12:25:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id ipmAkLzaT_pN; Tue, 28 May 2019 12:25:09 +0200 (CEST)
+X-Auth-Info: 2hslSmEGTPLoyKNKYOOmViG/Dyfm+220WIVpGrKlHlvIBaw9uFUuecR4QmL82tBJ
+Received: from hawking (charybdis-ext.suse.de [195.135.221.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Tue, 28 May 2019 12:25:09 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Cyril Hrubis <chrubis@suse.cz>
+Subject: Re: [PATCH] [RFC] Remove bdflush syscall stub
+References: <20190528101012.11402-1-chrubis@suse.cz>
+X-Yow: I'm working under the direct orders of WAYNE NEWTON to deport
+ consenting adults!
+Date: Tue, 28 May 2019 12:25:09 +0200
+In-Reply-To: <20190528101012.11402-1-chrubis@suse.cz> (Cyril Hrubis's message
+ of "Tue, 28 May 2019 12:10:12 +0200")
+Message-ID: <mvmr28idgfu.fsf@linux-m68k.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8736kzqpdm.fsf@concordia.ellerman.id.au>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,89 +64,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
- dhowells@redhat.com, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
- torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
- jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
- tglx@linutronix.de, ldv@altlinux.org, linux-arm-kernel@lists.infradead.org,
- fweimer@redhat.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+ linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, lkml <linux-kernel@vger.kernel.org>,
+ linux-mips@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 28, 2019 at 12:33:41PM +1000, Michael Ellerman wrote:
-> Christian Brauner <christian@brauner.io> writes:
-> > This adds basic tests for the new close_range() syscall.
-> > - test that no invalid flags can be passed
-> > - test that a range of file descriptors is correctly closed
-> > - test that a range of file descriptors is correctly closed if there there
-> >   are already closed file descriptors in the range
-> > - test that max_fd is correctly capped to the current fdtable maximum
-> >
-> > Signed-off-by: Christian Brauner <christian@brauner.io>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Jann Horn <jannh@google.com>
-> > Cc: David Howells <dhowells@redhat.com>
-> > Cc: Dmitry V. Levin <ldv@altlinux.org>
-> > Cc: Oleg Nesterov <oleg@redhat.com>
-> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > Cc: Florian Weimer <fweimer@redhat.com>
-> > Cc: linux-api@vger.kernel.org
-> > ---
-> > v1: unchanged
-> > v2:
-> > - Christian Brauner <christian@brauner.io>:
-> >   - verify that close_range() correctly closes a single file descriptor
-> > ---
-> >  tools/testing/selftests/Makefile              |   1 +
-> >  tools/testing/selftests/core/.gitignore       |   1 +
-> >  tools/testing/selftests/core/Makefile         |   6 +
-> >  .../testing/selftests/core/close_range_test.c | 142 ++++++++++++++++++
-> >  4 files changed, 150 insertions(+)
-> >  create mode 100644 tools/testing/selftests/core/.gitignore
-> >  create mode 100644 tools/testing/selftests/core/Makefile
-> >  create mode 100644 tools/testing/selftests/core/close_range_test.c
-> >
-> > diff --git a/tools/testing/selftests/core/.gitignore b/tools/testing/selftests/core/.gitignore
-> > new file mode 100644
-> > index 000000000000..6e6712ce5817
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/core/.gitignore
-> > @@ -0,0 +1 @@
-> > +close_range_test
-> > diff --git a/tools/testing/selftests/core/Makefile b/tools/testing/selftests/core/Makefile
-> > new file mode 100644
-> > index 000000000000..de3ae68aa345
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/core/Makefile
-> > @@ -0,0 +1,6 @@
-> > +CFLAGS += -g -I../../../../usr/include/ -I../../../../include
-> 
-> Your second -I pulls the unexported kernel headers in, userspace
-> programs shouldn't include unexported kernel headers.
-> 
-> It breaks the build on powerpc with eg:
-> 
->   powerpc64le-linux-gnu-gcc -g -I../../../../usr/include/ -I../../../../include    close_range_test.c  -o /output/kselftest/core/close_range_test
->   In file included from /usr/powerpc64le-linux-gnu/include/bits/fcntl-linux.h:346,
->                    from /usr/powerpc64le-linux-gnu/include/bits/fcntl.h:62,
->                    from /usr/powerpc64le-linux-gnu/include/fcntl.h:35,
->                    from close_range_test.c:5:
->   ../../../../include/linux/falloc.h:13:2: error: unknown type name '__s16'
->     __s16  l_type;
->     ^~~~~
-> 
-> 
-> Did you do that on purpose or just copy it from one of the other
-> Makefiles? :)
+On Mai 28 2019, Cyril Hrubis <chrubis@suse.cz> wrote:
 
-I originally did that on purpose because checkpatch was yammering on
-about me not having used ARRAY_SIZE(). But that include can go, you are
-right.
+> I've tested the patch on i386. Before the patch calling bdflush() with
+> attempt to tune a variable returned 0 and after the patch the syscall
+> fails with EINVAL.
 
-Christian
+Should be ENOSYS, doesn't it?
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
