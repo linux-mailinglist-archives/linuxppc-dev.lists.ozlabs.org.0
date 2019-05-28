@@ -2,38 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D41F2C599
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 13:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACEA2C5FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 13:58:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45CsPy4lk1zDqLj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 21:41:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45CsnQ2D9QzDqRN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 21:58:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45CsNQ4ZX4zDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 21:40:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45CsNQ1V3qz9s5c;
- Tue, 28 May 2019 21:40:38 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mathieu Malaterre <malat@debian.org>
-Subject: Re: [PATCH v2] powerpc/32: sstep: Move variable `rc` within
- CONFIG_PPC64 sentinels
-In-Reply-To: <20190312212318.17822-1-malat@debian.org>
-References: <20190312202008.29681-1-malat@debian.org>
- <20190312212318.17822-1-malat@debian.org>
-Date: Tue, 28 May 2019 21:40:34 +1000
-Message-ID: <87d0k2q025.fsf@concordia.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.101.70])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45Cslw1rZ0zDqJg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 21:57:30 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7D02341;
+ Tue, 28 May 2019 04:57:27 -0700 (PDT)
+Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B38783F59C;
+ Tue, 28 May 2019 04:57:25 -0700 (PDT)
+Subject: Re: [PATCH v4 3/3] kselftest: Extend vDSO selftest to clock_getres
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20190523112116.19233-1-vincenzo.frascino@arm.com>
+ <20190523112116.19233-4-vincenzo.frascino@arm.com>
+ <87lfyrp0d2.fsf@concordia.ellerman.id.au>
+From: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Message-ID: <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
+Date: Tue, 28 May 2019 12:57:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <87lfyrp0d2.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,71 +52,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mathieu Malaterre <malat@debian.org> writes:
+Hi Michael,
 
-> Fix warnings treated as errors with W=1:
->
->   arch/powerpc/lib/sstep.c:1172:31: error: variable 'rc' set but not used [-Werror=unused-but-set-variable]
->
-> Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Mathieu Malaterre <malat@debian.org>
-> ---
-> v2: as suggested prefer CONFIG_PPC64 sentinel instead of unused keyword
+thank you for your reply.
 
-I'd rather avoid adding more ifdefs if we can.
+On 28/05/2019 07:19, Michael Ellerman wrote:
+> Vincenzo Frascino <vincenzo.frascino@arm.com> writes:
+> 
+>> The current version of the multiarch vDSO selftest verifies only
+>> gettimeofday.
+>>
+>> Extend the vDSO selftest to clock_getres, to verify that the
+>> syscall and the vDSO library function return the same information.
+>>
+>> The extension has been used to verify the hrtimer_resoltion fix.
+> 
+> This is passing for me even without patch 1 applied, shouldn't it fail
+> without the fix? What am I missing?
+> 
 
-I think this works?
+This is correct, because during the refactoring process I missed an "n" :)
 
-cheers
+if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_sec·!=·y.tv_sec))
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 3d33fb509ef4..600b036ddfda 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1169,7 +1169,7 @@ static nokprobe_inline int trap_compare(long v1, long v2)
- int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		  unsigned int instr)
- {
--	unsigned int opcode, ra, rb, rc, rd, spr, u;
-+	unsigned int opcode, ra, rb, rd, spr, u;
- 	unsigned long int imm;
- 	unsigned long int val, val2;
- 	unsigned int mb, me, sh;
-@@ -1292,7 +1292,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 	rd = (instr >> 21) & 0x1f;
- 	ra = (instr >> 16) & 0x1f;
- 	rb = (instr >> 11) & 0x1f;
--	rc = (instr >> 6) & 0x1f;
- 
- 	switch (opcode) {
- #ifdef __powerpc64__
-@@ -1307,10 +1306,14 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		return 1;
- 
- #ifdef __powerpc64__
--	case 4:
-+	case 4: {
-+		unsigned int rc;
-+
- 		if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 			return -1;
- 
-+		rc = (instr >> 6) & 0x1f;
-+
- 		switch (instr & 0x3f) {
- 		case 48:	/* maddhd */
- 			asm volatile(PPC_MADDHD(%0, %1, %2, %3) :
-@@ -1336,6 +1339,7 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		 * primary opcode which do not have emulation support yet.
- 		 */
- 		return -1;
-+	}
- #endif
- 
- 	case 7:		/* mulli */
+Should be:
+
+if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_nsec·!=·y.tv_nsec))
+
+My mistake, I am going to fix the test and re-post v5 of this set.
+
+Without my patch if you pass "highres=off" to the kernel (as a command line
+parameter) it leads to a broken implementation of clock_getres since the value
+of CLOCK_REALTIME_RES does not change at runtime.
+
+Expected result (with highres=off):
+
+# uname -r
+5.2.0-rc2
+# ./vdso_clock_getres
+clock_id: CLOCK_REALTIME [FAIL]
+clock_id: CLOCK_BOOTTIME [PASS]
+clock_id: CLOCK_TAI [PASS]
+clock_id: CLOCK_REALTIME_COARSE [PASS]
+clock_id: CLOCK_MONOTONIC [FAIL]
+clock_id: CLOCK_MONOTONIC_RAW [PASS]
+clock_id: CLOCK_MONOTONIC_COARSE [PASS]
+
+The reason of this behavior is that the only clocks supported by getres on
+powerpc are CLOCK_REALTIME and CLOCK_MONOTONIC, the rest on the clocks use
+always syscalls.
+
+> # uname -r
+> 5.2.0-rc2-gcc-8.2.0
+> 
+> # ./vdso_clock_getres
+> clock_id: CLOCK_REALTIME [PASS]
+> clock_id: CLOCK_BOOTTIME [PASS]
+> clock_id: CLOCK_TAI [PASS]
+> clock_id: CLOCK_REALTIME_COARSE [PASS]
+> clock_id: CLOCK_MONOTONIC [PASS]
+> clock_id: CLOCK_MONOTONIC_RAW [PASS]
+> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
+> 
+> cheers
+> 
+>> Cc: Shuah Khan <shuah@kernel.org>
+>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+>> ---
+>>
+>> Note: This patch is independent from the others in this series, hence it
+>> can be merged singularly by the kselftest maintainers.
+>>
+>>  tools/testing/selftests/vDSO/Makefile         |   2 +
+>>  .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
+>>  2 files changed, 126 insertions(+)
+>>  create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
+
+-- 
+Regards,
+Vincenzo
