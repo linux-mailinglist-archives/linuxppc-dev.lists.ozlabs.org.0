@@ -1,41 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A802C3C6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:59:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4837D2C390
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:52:30 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Cpzb5CbwzDqJP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:52:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Cq7r0YWczDqP4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:59:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=brauner.io
+ (client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=brauner.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="cpeK2skt"; 
+ dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45CpxV5l66zDqPv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:50:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45CpxV1vzJz9s4V;
- Tue, 28 May 2019 19:50:38 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 1/2] perf ioctl: Add check for the sample_period value
-In-Reply-To: <d2d34084-999d-9be2-511e-82625b80aa40@linux.ibm.com>
-References: <20190511024217.4013-1-ravi.bangoria@linux.ibm.com>
- <20190513074213.GH2623@hirez.programming.kicks-ass.net>
- <20190513085620.GN2650@hirez.programming.kicks-ass.net>
- <d2d34084-999d-9be2-511e-82625b80aa40@linux.ibm.com>
-Date: Tue, 28 May 2019 19:50:37 +1000
-Message-ID: <87h89eq55e.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Cq6C5dFnzDqKP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:58:10 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id t24so17152256otl.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 02:58:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
+ b=cpeK2sktn7NMSf704YRsePZcwMV5rEfvSYWLdkbE0oo7SEPsGyf2Sg/RoHTcSoQfPd
+ wKUtklR660LzAKMlYxgcivpoPmw+LSf5RppXvWNS6o1G0soFTMAvZUcbgBxvK2BECrI0
+ Rle3mXgyvD783k6/0SbYAStUQCihPJGyFt818iQ5hLWys0KtqDqC6rX9cnEeWCbwKNG0
+ tdk47Ttoh8A9F1CCaGanOIYDEl/ZdHErWc8Wv5KldYhEb6ofWf7dsBtFYzjTibWrsdhA
+ MZ+zwyNHz+uR8reJwzBhLz8RLg8uhrkcEzyfZuKsJUXFqTqSWw3bOPqffMHHTUaHwhxW
+ 1OcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=n8mEOfFlOrFfQ5ADoq5IltTLDgmtoxRa6B+153SpHAE=;
+ b=ILeYYKMRHk5pxg+FeJ8IRcx3RgzKT1+3sws2oepqy/vcc4lN61oqVj/C0RkDqCYGJZ
+ A1eCbR4sqcnuUc8l7VHLjgou+uF236537ksVDkmTyde952Vt/IT81Os1J65myXKZqrxI
+ i4jE+lXsbbjvz8/aXZf3pVwDXpGjGb2eZ0xjQw9UfW2F1ha33GTVPuuiYG8uT4UAJYsp
+ VIpAhn2vrhQNfQ+l8K+swQ4EGoMy/KzjXDBEvbyHpCfH5Z9Lx7bCbJex/IdHGKaTz1yV
+ 9wSGgX9VhqfuOUwLCVEgmTNMPSDv6DAZMtwVWk3M4IPif0AfbJ4ju5Dk9l2tDOgRPWpU
+ 7suA==
+X-Gm-Message-State: APjAAAW0rzUPhHHTwkUrskiLg2XoFOCeqVdIvrL3nXvgCNkQrRbGqfQn
+ DYI3vL/AvaOvHV9mlAPh0L6c4g==
+X-Google-Smtp-Source: APXvYqwNLIyMiw7dADjTCxSmg48ETPJlltLpV+f/5L0odOCbBrMF/Z9t2SkD+zCcao739KqAxW23xA==
+X-Received: by 2002:a05:6830:214f:: with SMTP id
+ r15mr4126904otd.143.1559037489020; 
+ Tue, 28 May 2019 02:58:09 -0700 (PDT)
+Received: from brauner.io ([172.56.7.242])
+ by smtp.gmail.com with ESMTPSA id n187sm2440013oif.25.2019.05.28.02.57.59
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 28 May 2019 02:58:08 -0700 (PDT)
+Date: Tue, 28 May 2019 11:57:56 +0200
+From: Christian Brauner <christian@brauner.io>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 2/2] tests: add close_range() tests
+Message-ID: <20190528095754.peumcgjysw2nq24y@brauner.io>
+References: <20190523154747.15162-1-christian@brauner.io>
+ <20190523154747.15162-3-christian@brauner.io>
+ <8736kzqpdm.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8736kzqpdm.fsf@concordia.ellerman.id.au>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,47 +82,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- jolsa@redhat.com, linux-kernel@vger.kernel.org, acme@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, oleg@redhat.com,
+ dhowells@redhat.com, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, shuah@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, miklos@szeredi.hu, x86@kernel.org,
+ torvalds@linux-foundation.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, tkjos@android.com, arnd@arndb.de,
+ jannh@google.com, linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk,
+ tglx@linutronix.de, ldv@altlinux.org, linux-arm-kernel@lists.infradead.org,
+ fweimer@redhat.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
-> On 5/13/19 2:26 PM, Peter Zijlstra wrote:
->> On Mon, May 13, 2019 at 09:42:13AM +0200, Peter Zijlstra wrote:
->>> On Sat, May 11, 2019 at 08:12:16AM +0530, Ravi Bangoria wrote:
->>>> Add a check for sample_period value sent from userspace. Negative
->>>> value does not make sense. And in powerpc arch code this could cause
->>>> a recursive PMI leading to a hang (reported when running perf-fuzzer).
->>>>
->>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>>> ---
->>>>  kernel/events/core.c | 3 +++
->>>>  1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/kernel/events/core.c b/kernel/events/core.c
->>>> index abbd4b3b96c2..e44c90378940 100644
->>>> --- a/kernel/events/core.c
->>>> +++ b/kernel/events/core.c
->>>> @@ -5005,6 +5005,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
->>>>  	if (perf_event_check_period(event, value))
->>>>  		return -EINVAL;
->>>>  
->>>> +	if (!event->attr.freq && (value & (1ULL << 63)))
->>>> +		return -EINVAL;
->>>
->>> Well, perf_event_attr::sample_period is __u64. Would not be the site
->>> using it as signed be the one in error?
->> 
->> You forgot to mention commit: 0819b2e30ccb9, so I guess this just makes
->> it consistent and is fine.
->> 
->
-> Yeah, I was about to reply :)
+On Tue, May 28, 2019 at 12:33:41PM +1000, Michael Ellerman wrote:
+> Christian Brauner <christian@brauner.io> writes:
+> > This adds basic tests for the new close_range() syscall.
+> > - test that no invalid flags can be passed
+> > - test that a range of file descriptors is correctly closed
+> > - test that a range of file descriptors is correctly closed if there there
+> >   are already closed file descriptors in the range
+> > - test that max_fd is correctly capped to the current fdtable maximum
+> >
+> > Signed-off-by: Christian Brauner <christian@brauner.io>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Jann Horn <jannh@google.com>
+> > Cc: David Howells <dhowells@redhat.com>
+> > Cc: Dmitry V. Levin <ldv@altlinux.org>
+> > Cc: Oleg Nesterov <oleg@redhat.com>
+> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> > Cc: Florian Weimer <fweimer@redhat.com>
+> > Cc: linux-api@vger.kernel.org
+> > ---
+> > v1: unchanged
+> > v2:
+> > - Christian Brauner <christian@brauner.io>:
+> >   - verify that close_range() correctly closes a single file descriptor
+> > ---
+> >  tools/testing/selftests/Makefile              |   1 +
+> >  tools/testing/selftests/core/.gitignore       |   1 +
+> >  tools/testing/selftests/core/Makefile         |   6 +
+> >  .../testing/selftests/core/close_range_test.c | 142 ++++++++++++++++++
+> >  4 files changed, 150 insertions(+)
+> >  create mode 100644 tools/testing/selftests/core/.gitignore
+> >  create mode 100644 tools/testing/selftests/core/Makefile
+> >  create mode 100644 tools/testing/selftests/core/close_range_test.c
+> >
+> > diff --git a/tools/testing/selftests/core/.gitignore b/tools/testing/selftests/core/.gitignore
+> > new file mode 100644
+> > index 000000000000..6e6712ce5817
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/core/.gitignore
+> > @@ -0,0 +1 @@
+> > +close_range_test
+> > diff --git a/tools/testing/selftests/core/Makefile b/tools/testing/selftests/core/Makefile
+> > new file mode 100644
+> > index 000000000000..de3ae68aa345
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/core/Makefile
+> > @@ -0,0 +1,6 @@
+> > +CFLAGS += -g -I../../../../usr/include/ -I../../../../include
+> 
+> Your second -I pulls the unexported kernel headers in, userspace
+> programs shouldn't include unexported kernel headers.
+> 
+> It breaks the build on powerpc with eg:
+> 
+>   powerpc64le-linux-gnu-gcc -g -I../../../../usr/include/ -I../../../../include    close_range_test.c  -o /output/kselftest/core/close_range_test
+>   In file included from /usr/powerpc64le-linux-gnu/include/bits/fcntl-linux.h:346,
+>                    from /usr/powerpc64le-linux-gnu/include/bits/fcntl.h:62,
+>                    from /usr/powerpc64le-linux-gnu/include/fcntl.h:35,
+>                    from close_range_test.c:5:
+>   ../../../../include/linux/falloc.h:13:2: error: unknown type name '__s16'
+>     __s16  l_type;
+>     ^~~~~
+> 
+> 
+> Did you do that on purpose or just copy it from one of the other
+> Makefiles? :)
 
-I've taken patch 2. You should probably do a v2 of patch 1 with an
-updated change log that explains things fully?
+I originally did that on purpose because checkpatch was yammering on
+about me not having used ARRAY_SIZE(). But that include can go, you are
+right.
 
-cheers
+Christian
