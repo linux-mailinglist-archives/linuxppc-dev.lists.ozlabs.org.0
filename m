@@ -1,42 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695F42C386
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:51:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406672C338
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 11:29:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45CpSZ3pTVzDqN7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:29:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Cpxx3bM5zDqNK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 19:51:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=kernellwp@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Q7xG41YY"; 
+ dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45CpRP14gpzDq8F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:27:53 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 77336AE44;
- Tue, 28 May 2019 09:27:49 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 056F51E3F53; Tue, 28 May 2019 11:27:49 +0200 (CEST)
-Date: Tue, 28 May 2019 11:27:48 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v2] mm: Move MAP_SYNC to asm-generic/mman-common.h
-Message-ID: <20190528092748.GE9607@quack2.suse.cz>
-References: <20190528091120.13322-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45CpwR3Pf3zDqJT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 19:49:39 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id i2so17134019otr.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 02:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=KRi+/C+vm5cztpsXfUVeLkDOVPLB4aZqwygYNrBno1g=;
+ b=Q7xG41YYF2ZmuxUb2X+ltjAzjeK7pLMfwEBHv5e2w+/MmZh8X55fZsTHT9XwciLR/E
+ HuUQGjJdVYrVQVkKmY8LlYkvwBKwRNYDjTDClmfRqzoL4jelnRiuxN9nY1CE8DeXQjbm
+ uW/8GSxTyhDXHpg7QNQnWu+TRA69AeqJj3mOkdLzAnVLLY34nt8Mg9u+dSa/lGR0mmQ4
+ JccPa4WCrMn9BC8uWe+Ufn2UXLgq+ojI+X2vf7wEFZnM/T4hy5jvbyFK5zDSmHkFTTfN
+ pCgwp28ud4+Ut+QR/L2fuLRGXw+t5nbiVMf95C2wK8bIYx/jRFcU5iAPGuqOXpmI0DZs
+ PNfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=KRi+/C+vm5cztpsXfUVeLkDOVPLB4aZqwygYNrBno1g=;
+ b=I9C1zVHvJwnxaDZqU1NxFE0jKDbpJzcYkL8sTZ+SLs2IRcHtxrHh5ya4uKgsF2oF6d
+ D/A9tpPrzZ9x2zaN0X38HdgysLMKs10O6iHMjCXlRCD6xUPtiPPwljXG7uyNj8ynHXjA
+ YzP4zXMLp2QJaiT7KEfbUFR6ABOUJuV9mkWz7i6SYBzBppDnsRrm0+dTPLsucxZw1Yvc
+ np04DD3PLhd1TEW1OPHPBWJGSqTFKOe6maPwOiQ1kgynjrEJ6Unypr3fmRxBm7yIGoji
+ lFxUEfQqMxlLf9fDOLOgvgvA3pKZauqfTbnORiGOgYHcMhX6KPuexAAv0j+QGWzjwjpw
+ jKGw==
+X-Gm-Message-State: APjAAAUCeF7VpQus6Kwk8V0QemehrgI6NCiV7bcocaXUFZgjv0ExELsw
+ e3xbsv/ZNZLRzKrUjdsdmNsmfpDnSsuzCNlHWcM=
+X-Google-Smtp-Source: APXvYqycJLHbMUrxyQVmE6fOyNT7aMXGE36q+p+fIGphy4C5ccLTEuNFk0FznlB9kOMyYpFlF5BuYnw4Rhffeot+1ZY=
+X-Received: by 2002:a9d:5a11:: with SMTP id v17mr17618810oth.254.1559036975223; 
+ Tue, 28 May 2019 02:49:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190528091120.13322-1-aneesh.kumar@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20180130013919.GA19959@hori1.linux.bs1.fc.nec.co.jp>
+ <1517284444-18149-1-git-send-email-n-horiguchi@ah.jp.nec.com>
+ <87inbbjx2w.fsf@e105922-lin.cambridge.arm.com>
+ <20180207011455.GA15214@hori1.linux.bs1.fc.nec.co.jp>
+ <87fu6bfytm.fsf@e105922-lin.cambridge.arm.com>
+ <20180208121749.0ac09af2b5a143106f339f55@linux-foundation.org>
+ <87wozhvc49.fsf@concordia.ellerman.id.au>
+ <e673f38a-9e5f-21f6-421b-b3cb4ff02e91@oracle.com>
+In-Reply-To: <e673f38a-9e5f-21f6-421b-b3cb4ff02e91@oracle.com>
+From: Wanpeng Li <kernellwp@gmail.com>
+Date: Tue, 28 May 2019 17:49:28 +0800
+Message-ID: <CANRm+CxAgWVv5aVzQ0wdP_A7QQgqfy7nN_SxyaactG7Mnqfr2A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: hwpoison: disable memory error handling on 1GB
+ hugepage
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,73 +80,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: kvm <kvm@vger.kernel.org>, Punit Agrawal <punit.agrawal@arm.com>,
+ Xiao Guangrong <xiaoguangrong@tencent.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ yongkaiwu@tencent.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ lidongchen@tencent.com,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 28-05-19 14:41:20, Aneesh Kumar K.V wrote:
-> This enables support for synchronous DAX fault on powerpc
-> 
-> The generic changes are added as part of
-> commit b6fb293f2497 ("mm: Define MAP_SYNC and VM_SYNC flags")
-> 
-> Without this, mmap returns EOPNOTSUPP for MAP_SYNC with MAP_SHARED_VALIDATE
-> 
-> Instead of adding MAP_SYNC with same value to
-> arch/powerpc/include/uapi/asm/mman.h, I am moving the #define to
-> asm-generic/mman-common.h. Two architectures using mman-common.h directly are
-> sparc and powerpc. We should be able to consloidate more #defines to
-> mman-common.h. That can be done as a separate patch.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc Paolo,
+Hi all,
+On Wed, 14 Feb 2018 at 06:34, Mike Kravetz <mike.kravetz@oracle.com> wrote:
+>
+> On 02/12/2018 06:48 PM, Michael Ellerman wrote:
+> > Andrew Morton <akpm@linux-foundation.org> writes:
+> >
+> >> On Thu, 08 Feb 2018 12:30:45 +0000 Punit Agrawal <punit.agrawal@arm.com> wrote:
+> >>
+> >>>>
+> >>>> So I don't think that the above test result means that errors are properly
+> >>>> handled, and the proposed patch should help for arm64.
+> >>>
+> >>> Although, the deviation of pud_huge() avoids a kernel crash the code
+> >>> would be easier to maintain and reason about if arm64 helpers are
+> >>> consistent with expectations by core code.
+> >>>
+> >>> I'll look to update the arm64 helpers once this patch gets merged. But
+> >>> it would be helpful if there was a clear expression of semantics for
+> >>> pud_huge() for various cases. Is there any version that can be used as
+> >>> reference?
+> >>
+> >> Is that an ack or tested-by?
+> >>
+> >> Mike keeps plaintively asking the powerpc developers to take a look,
+> >> but they remain steadfastly in hiding.
+> >
+> > Cc'ing linuxppc-dev is always a good idea :)
+> >
+>
+> Thanks Michael,
+>
+> I was mostly concerned about use cases for soft/hard offline of huge pages
+> larger than PMD_SIZE on powerpc.  I know that powerpc supports PGD_SIZE
+> huge pages, and soft/hard offline support was specifically added for this.
+> See, 94310cbcaa3c "mm/madvise: enable (soft|hard) offline of HugeTLB pages
+> at PGD level"
+>
+> This patch will disable that functionality.  So, at a minimum this is a
+> 'heads up'.  If there are actual use cases that depend on this, then more
+> work/discussions will need to happen.  From the e-mail thread on PGD_SIZE
+> support, I can not tell if there is a real use case or this is just a
+> 'nice to have'.
 
-Looks good to me FWIW (I don't have much experience with mmap flags and
-their peculirarities). So feel free to add:
+1GB hugetlbfs pages are used by DPDK and VMs in cloud deployment, we
+encounter gup_pud_range() panic several times in product environment.
+Is there any plan to reenable and fix arch codes?
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+In addition, https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kvm/mmu.c#n3213
+The memory in guest can be 1GB/2MB/4K, though the host-backed memory
+are 1GB hugetlbfs pages, after above PUD panic is fixed,
+try_to_unmap() which is called in MCA recovery path will mark the PUD
+hwpoison entry. The guest will vmexit and retry endlessly when
+accessing any memory in the guest which is backed by this 1GB poisoned
+hugetlbfs page. We have a plan to split this 1GB hugetblfs page by 2MB
+hugetlbfs pages/4KB pages, maybe file remap to a virtual address range
+which is 2MB/4KB page granularity, also split the KVM MMU 1GB SPTE
+into 2MB/4KB and mark the offensive SPTE w/ a hwpoison flag, a sigbus
+will be delivered to VM at page fault next time for the offensive
+SPTE. Is this proposal acceptable?
 
-								Honza
-
-> ---
-> Changes from V1:
-> * Move #define to mman-common.h instead of powerpc specific mman.h change
-> 
-> 
->  include/uapi/asm-generic/mman-common.h | 3 ++-
->  include/uapi/asm-generic/mman.h        | 1 -
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-> index abd238d0f7a4..bea0278f65ab 100644
-> --- a/include/uapi/asm-generic/mman-common.h
-> +++ b/include/uapi/asm-generic/mman-common.h
-> @@ -25,7 +25,8 @@
->  # define MAP_UNINITIALIZED 0x0		/* Don't support this flag */
->  #endif
->  
-> -/* 0x0100 - 0x80000 flags are defined in asm-generic/mman.h */
-> +/* 0x0100 - 0x40000 flags are defined in asm-generic/mman.h */
-> +#define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
->  #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
->  
->  /*
-> diff --git a/include/uapi/asm-generic/mman.h b/include/uapi/asm-generic/mman.h
-> index 653687d9771b..2dffcbf705b3 100644
-> --- a/include/uapi/asm-generic/mman.h
-> +++ b/include/uapi/asm-generic/mman.h
-> @@ -13,7 +13,6 @@
->  #define MAP_NONBLOCK	0x10000		/* do not block on IO */
->  #define MAP_STACK	0x20000		/* give out an address that is best suited for process/thread stacks */
->  #define MAP_HUGETLB	0x40000		/* create a huge page mapping */
-> -#define MAP_SYNC	0x80000		/* perform synchronous page faults for the mapping */
->  
->  /* Bits [26:31] are reserved, see mman-common.h for MAP_HUGETLB usage */
->  
-> -- 
-> 2.21.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Regards,
+Wanpeng Li
