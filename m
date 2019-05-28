@@ -1,57 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715022CF51
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 21:16:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508482CF50
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 21:15:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45D3TP3qVnzDqSM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 05:15:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45D3Vl0CmKzDqPl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 05:16:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.195; helo=mail-oi1-f195.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
- [209.85.167.195])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45D3S36QMbzDqJC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 05:14:27 +1000 (AEST)
-Received: by mail-oi1-f195.google.com with SMTP id r136so15189071oie.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 12:14:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ra9C7HBCeZmGUzDNrbbPmc9jzFSW6/j7KdigjwIDgtk=;
- b=en3HSOurye6WGzlBlQAJHLAH169qJrabJ7mrVykzi0cdwFHQTSkmFR+4QKDvgjQwhI
- RPQHNBSMtn+q2o1KSDN75Cu/8Bm63J5l+V4sxbraLIwQNkSfDpYazdZZNrUzERTM0/UJ
- cML3pdzk/PYHDejOcBR7qb7DT8o7ZXOe/N7+n6IkHaKZA6Kt0K7FhBBTKzenumnc9OD0
- dQRMklw+e+J3SwW0oXgI7Jog4aaSd31lpTU2GAeXfw+JW6idPdHZTIJlj5U9/woILYsH
- QumTyt9VRjaBbqMMqlSFl/w2VCX2dJlPUedplX/KWRGvC7Paf30xH0IOr3v7ROMuNMPd
- WSNw==
-X-Gm-Message-State: APjAAAUGbO4hoJWdIjayG8BNjlSifjvxVAxzSORKyPfCAxlAqKbilzEJ
- uKAAEXf29bPxAAo8XtEAM5rMULwDztvjSSnblqI=
-X-Google-Smtp-Source: APXvYqxY+/21+ikceKigDf2vCF64dsCjXjFUqXRAl27uAc3y6ESe7rc52NSU58+qog2Ywl8f//zJBMwMby4akZ8iCak=
-X-Received: by 2002:aca:cd85:: with SMTP id d127mr3813365oig.96.1559070864332; 
- Tue, 28 May 2019 12:14:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45D3ST23tmzDqQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 05:14:48 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4SJDnSt071715
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 15:14:46 -0400
+Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ssahn124c-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 15:14:46 -0400
+Received: from localhost
+ by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Tue, 28 May 2019 20:14:45 +0100
+Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
+ by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 28 May 2019 20:14:40 +0100
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4SJEdot23396840
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 May 2019 19:14:39 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EDD90BE056;
+ Tue, 28 May 2019 19:14:38 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C0680BE04F;
+ Tue, 28 May 2019 19:14:34 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.218.160])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue, 28 May 2019 19:14:34 +0000 (GMT)
+References: <20190418035120.2354-1-bauerman@linux.ibm.com>
+ <20190418035120.2354-13-bauerman@linux.ibm.com>
+ <1559052560.4090.14.camel@linux.ibm.com>
+User-agent: mu4e 1.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH v10 12/12] ima: Store the measurement again when
+ appraising a modsig
+In-reply-to: <1559052560.4090.14.camel@linux.ibm.com>
+Date: Tue, 28 May 2019 16:14:30 -0300
 MIME-Version: 1.0
-References: <CA+7wUsw_jkgWfknXbpK7_yfy=S5Y0jvQe1KP3kM-LT8fFnUF5g@mail.gmail.com>
- <87tvdfp31x.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87tvdfp31x.fsf@concordia.ellerman.id.au>
-From: Mathieu Malaterre <malat@debian.org>
-Date: Tue, 28 May 2019 21:14:12 +0200
-Message-ID: <CA+7wUszCdg_xRRh_DX=wAoWnpZTyc7dG=RsiEUCYJN=p_yBX6A@mail.gmail.com>
-Subject: Re: kmemleak: 1157 new suspected memory leaks (see
- /sys/kernel/debug/kmemleak)
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19052819-0020-0000-0000-00000EF149D0
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011176; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01209917; UDB=6.00635633; IPR=6.00990946; 
+ MB=3.00027089; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-28 19:14:44
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052819-0021-0000-0000-000066010AC1
+Message-Id: <871s0i75nt.fsf@morokweng.localdomain>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-28_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=899 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905280120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,129 +94,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-doc@vger.kernel.org,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
+ linux-kernel@vger.kernel.org, James Morris <jmorris@namei.org>,
+ David Howells <dhowells@redhat.com>, "AKASHI,
+ Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw2@infradead.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael !
 
-Thanks for the kind help.
+Mimi Zohar <zohar@linux.ibm.com> writes:
 
-On Tue, May 28, 2019 at 7:21 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Hi Thiago,
 >
-> Mathieu Malaterre <malat@debian.org> writes:
-> > Hi there,
-> >
-> > Is there a way to dump more context (somewhere in of tree
-> > flattening?). I cannot make sense of the following:
+> On Thu, 2019-04-18 at 00:51 -0300, Thiago Jung Bauermann wrote:
+>> If the IMA template contains the "modsig" or "d-modsig" field, then the
+>> modsig should be added to the measurement list when the file is appraised.
+>>
+>> And that is what normally happens, but if a measurement rule caused a file
+>> containing a modsig to be measured before a different rule causes it to be
+>> appraised, the resulting measurement entry will not contain the modsig
+>> because it is only fetched during appraisal. When the appraisal rule
+>> triggers, it won't store a new measurement containing the modsig because
+>> the file was already measured.
+>>
+>> We need to detect that situation and store an additional measurement with
+>> the modsig. This is done by adding an IMA_MEASURE action flag if we read a
+>> modsig and the IMA template contains a modsig field.
 >
-> Hmm. Not that I know of.
->
-> Those don't look related to OF flattening/unflattening. That's just
-> sysfs setup based on the unflattened device tree.
->
-> The allocations are happening in safe_name() AFAICS.
->
-> int __of_add_property_sysfs(struct device_node *np, struct property *pp)
-> {
->         ...
->         pp->attr.attr.name = safe_name(&np->kobj, pp->name);
->
-> And the free is in __of_sysfs_remove_bin_file():
->
-> void __of_sysfs_remove_bin_file(struct device_node *np, struct property *prop)
-> {
->         if (!IS_ENABLED(CONFIG_SYSFS))
->                 return;
->
->         sysfs_remove_bin_file(&np->kobj, &prop->attr);
->         kfree(prop->attr.attr.name);
->
+> With the new per policy rule "template" support being added, this
+> patch needs to be modified so that the per policy "template" format is
+> checked. ima_template_has_modsig() should be called with the
+> template_desc being used.
 
-Right. That helped a lot !
+Right. Thanks for point out what needs to be done. After rebasing on top
+of Matthew Garret's "IMA: Allow profiles to define the desired IMA
+template" patch I changed ima_template_has_modsig() to check the
+template_desc obtained from process_measurement().
 
-> There is this check which could be failing leading to us not calling the
-> free at all:
->
-> void __of_remove_property_sysfs(struct device_node *np, struct property *prop)
-> {
->         /* at early boot, bail here and defer setup to of_init() */
->         if (of_kset && of_node_is_attached(np))
->                 __of_sysfs_remove_bin_file(np, prop);
-> }
->
->
-> So maybe stick a printk() in there to see if you're hitting that
-> condition, eg something like:
->
->         if (of_kset && of_node_is_attached(np))
->                 __of_sysfs_remove_bin_file(np, prop);
->         else
->                 printk("%s: leaking prop %s on node %pOF\n", __func__, prop->attr.attr.name, np);
->
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
-If I understand correctly those are false positive. I was first
-starting to consider using something like kmemleak_not_leak, but I
-remember that I have been using kmemleak for a couple of years now.
-Those reports starting to show up only recently.
-
-Catalin, do you have an idea why on a non-SMP machine kmemleak reports
-leaks from:
-
-[...]
-void __init of_core_init(void)
-{
-[...]
- for_each_of_allnodes(np)
-    __of_attach_node_sysfs(np);
-
-
-
-> cheers
->
-> > kmemleak: 1157 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> >
-> > Where:
-> >
-> > # head -40 /sys/kernel/debug/kmemleak
-> > unreferenced object 0xdf44d180 (size 8):
-> >   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
-> >   hex dump (first 8 bytes):
-> >     62 61 73 65 00 00 00 00                          base....
-> >   backtrace:
-> >     [<0ca59825>] kstrdup+0x4c/0xb8
-> >     [<c8a79377>] kobject_set_name_vargs+0x34/0xc8
-> >     [<661b4c86>] kobject_add+0x78/0x120
-> >     [<c1416f27>] __of_attach_node_sysfs+0xa0/0x14c
-> >     [<2a143d10>] of_core_init+0x90/0x114
-> >     [<a353d0e1>] driver_init+0x30/0x48
-> >     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
-> >     [<dc60f815>] kernel_init+0x20/0x110
-> >     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
-> > unreferenced object 0xdf44d178 (size 8):
-> >   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
-> >   hex dump (first 8 bytes):
-> >     6d 6f 64 65 6c 00 97 c8                          model...
-> >   backtrace:
-> >     [<0ca59825>] kstrdup+0x4c/0xb8
-> >     [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
-> >     [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
-> >     [<2a143d10>] of_core_init+0x90/0x114
-> >     [<a353d0e1>] driver_init+0x30/0x48
-> >     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
-> >     [<dc60f815>] kernel_init+0x20/0x110
-> >     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
-> > unreferenced object 0xdf4021e0 (size 16):
-> >   comm "swapper", pid 1, jiffies 4294892297 (age 4766.460s)
-> >   hex dump (first 16 bytes):
-> >     63 6f 6d 70 61 74 69 62 6c 65 00 01 00 00 00 00  compatible......
-> >   backtrace:
-> >     [<0ca59825>] kstrdup+0x4c/0xb8
-> >     [<0eeb0a3b>] __of_add_property_sysfs+0x88/0x12c
-> >     [<f6c64af0>] __of_attach_node_sysfs+0xcc/0x14c
-> >     [<2a143d10>] of_core_init+0x90/0x114
-> >     [<a353d0e1>] driver_init+0x30/0x48
-> >     [<84ed01b1>] kernel_init_freeable+0xfc/0x3fc
-> >     [<dc60f815>] kernel_init+0x20/0x110
-> >     [<faa1c5b0>] ret_from_kernel_thread+0x14/0x1c
