@@ -1,41 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A606A2C63B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:14:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D302C639
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 14:12:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Ct4f6XcbzDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 22:12:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Ct6w0F8XzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2019 22:14:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ct2b1XwxzDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 22:10:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45Cswj0YKJzDqGJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 22:05:08 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26FEB341;
- Tue, 28 May 2019 05:05:07 -0700 (PDT)
-Received: from e119884-lin.cambridge.arm.com (e119884-lin.cambridge.arm.com
- [10.1.196.72])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF33A3F59C;
- Tue, 28 May 2019 05:05:04 -0700 (PDT)
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-To: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 3/3] kselftest: Extend vDSO selftest to clock_getres
-Date: Tue, 28 May 2019 13:04:46 +0100
-Message-Id: <20190528120446.48911-4-vincenzo.frascino@arm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190528120446.48911-1-vincenzo.frascino@arm.com>
-References: <20190528120446.48911-1-vincenzo.frascino@arm.com>
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45Ct2b0Q3Cz8wLB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2019 22:10:15 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45Ct2Z6Fbmz9s7h; Tue, 28 May 2019 22:10:14 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+365a05151ac8b8961682+5756+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="ol5OLlcQ"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45Ct2Y6j3Nz9s5c;
+ Tue, 28 May 2019 22:10:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=/llYLDcfDrDF9UOsCQrC0ywgRhGU/i6nXwTNUFk18A8=; b=ol5OLlcQhjgWilPhDzrhAUrxJ
+ Kzt+A9yozua/feDdo8UIBgJ6vt+KymwBFVNW8lDQEEDDvvGEEiaNBLQ+lTfdSySdy0Y1tAQO30Fhe
+ N8f5DFAdltt5w+c3rOanEF/vhFejM7dn9Vweoa+NZ/ytIBXVFkpyUD+odYL1ylKYH4TC3HFJ6FsI2
+ Amj0xaecxP3xsHaKQJHqaUjMms7vy9Px6nSYyDj6ZqICdensNwezXk7FaUCpZ/95d3/RJCa0Fza2G
+ YoJ0/vOXO5ax+DIPwXdguD0ibUForHifRX/js9ERdOqCosSs+7m52xNNNQBqAsaFNkjGWGwz290FW
+ pOQZ8MnuA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
+ Hat Linux)) id 1hVavi-0004La-2U; Tue, 28 May 2019 12:10:10 +0000
+Date: Tue, 28 May 2019 05:10:09 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/configs: Rename foo_basic_defconfig to
+ foo_base.config
+Message-ID: <20190528121009.GA11901@infradead.org>
+References: <20190528081614.26096-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190528081614.26096-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,184 +78,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, vincenzo.frascino@arm.com,
- Shuah Khan <shuah@kernel.org>
+Cc: linuxppc-dev@ozlabs.org, linux-kbuild@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The current version of the multiarch vDSO selftest verifies only
-gettimeofday.
+On Tue, May 28, 2019 at 06:16:14PM +1000, Michael Ellerman wrote:
+> We have several "defconfigs" that are not actually full defconfigs
+> they are just a base set of options which are then merged with other
+> fragments to produce a working defconfig.
+> 
+> The most obvious example is corenet_basic_defconfig which only
+> contains one symbol CONFIG_CORENET_GENERIC=y. But there is also
+> mpc85xx_base_defconfig which doesn't actually enable CONFIG_PPC_85xx.
+> 
+> To avoid confusion, rename these config fragments to "foo_base.config"
+> to make it clearer that they are not full defconfigs.
 
-Extend the vDSO selftest to clock_getres, to verify that the
-syscall and the vDSO library function return the same information.
+Adding linux-kbuild, maybe we can make the handling of these fragments
+generic and actually document it..
 
-The extension has been used to verify the hrtimer_resoltion fix.
-
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
----
-
-Note: This patch is independent from the others in this series, hence it
-can be merged singularly by the kselftest maintainers.
-
- tools/testing/selftests/vDSO/Makefile         |   2 +
- .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
-
-diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
-index 9e03d61f52fd..d5c5bfdf1ac1 100644
---- a/tools/testing/selftests/vDSO/Makefile
-+++ b/tools/testing/selftests/vDSO/Makefile
-@@ -5,6 +5,7 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
- ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
- 
- TEST_GEN_PROGS := $(OUTPUT)/vdso_test
-+TEST_GEN_PROGS += $(OUTPUT)/vdso_clock_getres
- ifeq ($(ARCH),x86)
- TEST_GEN_PROGS += $(OUTPUT)/vdso_standalone_test_x86
- endif
-@@ -18,6 +19,7 @@ endif
- 
- all: $(TEST_GEN_PROGS)
- $(OUTPUT)/vdso_test: parse_vdso.c vdso_test.c
-+$(OUTPUT)/vdso_clock_getres: vdso_clock_getres.c
- $(OUTPUT)/vdso_standalone_test_x86: vdso_standalone_test_x86.c parse_vdso.c
- 	$(CC) $(CFLAGS) $(CFLAGS_vdso_standalone_test_x86) \
- 		vdso_standalone_test_x86.c parse_vdso.c \
-diff --git a/tools/testing/selftests/vDSO/vdso_clock_getres.c b/tools/testing/selftests/vDSO/vdso_clock_getres.c
-new file mode 100644
-index 000000000000..15dcee16ff72
---- /dev/null
-+++ b/tools/testing/selftests/vDSO/vdso_clock_getres.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note
-+/*
-+ * vdso_clock_getres.c: Sample code to test clock_getres.
-+ * Copyright (c) 2019 Arm Ltd.
-+ *
-+ * Compile with:
-+ * gcc -std=gnu99 vdso_clock_getres.c
-+ *
-+ * Tested on ARM, ARM64, MIPS32, x86 (32-bit and 64-bit),
-+ * Power (32-bit and 64-bit), S390x (32-bit and 64-bit).
-+ * Might work on other architectures.
-+ */
-+
-+#define _GNU_SOURCE
-+#include <elf.h>
-+#include <err.h>
-+#include <fcntl.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <time.h>
-+#include <sys/auxv.h>
-+#include <sys/mman.h>
-+#include <sys/time.h>
-+#include <unistd.h>
-+#include <sys/syscall.h>
-+
-+#include "../kselftest.h"
-+
-+static long syscall_clock_getres(clockid_t _clkid, struct timespec *_ts)
-+{
-+	long ret;
-+
-+	ret = syscall(SYS_clock_getres, _clkid, _ts);
-+
-+	return ret;
-+}
-+
-+const char *vdso_clock_name[12] = {
-+	"CLOCK_REALTIME",
-+	"CLOCK_MONOTONIC",
-+	"CLOCK_PROCESS_CPUTIME_ID",
-+	"CLOCK_THREAD_CPUTIME_ID",
-+	"CLOCK_MONOTONIC_RAW",
-+	"CLOCK_REALTIME_COARSE",
-+	"CLOCK_MONOTONIC_COARSE",
-+	"CLOCK_BOOTTIME",
-+	"CLOCK_REALTIME_ALARM",
-+	"CLOCK_BOOTTIME_ALARM",
-+	"CLOCK_SGI_CYCLE",
-+	"CLOCK_TAI",
-+};
-+
-+/*
-+ * This function calls clock_getres in vdso and by system call
-+ * with different values for clock_id.
-+ *
-+ * Example of output:
-+ *
-+ * clock_id: CLOCK_REALTIME [PASS]
-+ * clock_id: CLOCK_BOOTTIME [PASS]
-+ * clock_id: CLOCK_TAI [PASS]
-+ * clock_id: CLOCK_REALTIME_COARSE [PASS]
-+ * clock_id: CLOCK_MONOTONIC [PASS]
-+ * clock_id: CLOCK_MONOTONIC_RAW [PASS]
-+ * clock_id: CLOCK_MONOTONIC_COARSE [PASS]
-+ */
-+static inline int vdso_test_clock(unsigned int clock_id)
-+{
-+	struct timespec x, y;
-+
-+	printf("clock_id: %s", vdso_clock_name[clock_id]);
-+	clock_getres(clock_id, &x);
-+	syscall_clock_getres(clock_id, &y);
-+
-+	if ((x.tv_sec != y.tv_sec) || (x.tv_nsec != y.tv_nsec)) {
-+		printf(" [FAIL]\n");
-+		return KSFT_FAIL;
-+	}
-+
-+	printf(" [PASS]\n");
-+	return KSFT_PASS;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int ret;
-+
-+#if _POSIX_TIMERS > 0
-+
-+#ifdef CLOCK_REALTIME
-+	ret = vdso_test_clock(CLOCK_REALTIME);
-+#endif
-+
-+#ifdef CLOCK_BOOTTIME
-+	ret += vdso_test_clock(CLOCK_BOOTTIME);
-+#endif
-+
-+#ifdef CLOCK_TAI
-+	ret += vdso_test_clock(CLOCK_TAI);
-+#endif
-+
-+#ifdef CLOCK_REALTIME_COARSE
-+	ret += vdso_test_clock(CLOCK_REALTIME_COARSE);
-+#endif
-+
-+#ifdef CLOCK_MONOTONIC
-+	ret += vdso_test_clock(CLOCK_MONOTONIC);
-+#endif
-+
-+#ifdef CLOCK_MONOTONIC_RAW
-+	ret += vdso_test_clock(CLOCK_MONOTONIC_RAW);
-+#endif
-+
-+#ifdef CLOCK_MONOTONIC_COARSE
-+	ret += vdso_test_clock(CLOCK_MONOTONIC_COARSE);
-+#endif
-+
-+#endif
-+	if (ret > 0)
-+		return KSFT_FAIL;
-+
-+	return KSFT_PASS;
-+}
--- 
-2.21.0
-
+>
+> Reported-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/Makefile                                | 12 ++++++------
+>  .../{corenet_basic_defconfig => corenet_base.config} |  0
+>  .../{mpc85xx_basic_defconfig => mpc85xx_base.config} |  0
+>  .../{mpc86xx_basic_defconfig => mpc86xx_base.config} |  0
+>  4 files changed, 6 insertions(+), 6 deletions(-)
+>  rename arch/powerpc/configs/{corenet_basic_defconfig => corenet_base.config} (100%)
+>  rename arch/powerpc/configs/{mpc85xx_basic_defconfig => mpc85xx_base.config} (100%)
+>  rename arch/powerpc/configs/{mpc86xx_basic_defconfig => mpc86xx_base.config} (100%)
+> 
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index c345b79414a9..94f735db2229 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -333,32 +333,32 @@ PHONY += powernv_be_defconfig
+>  
+>  PHONY += mpc85xx_defconfig
+>  mpc85xx_defconfig:
+> -	$(call merge_into_defconfig,mpc85xx_basic_defconfig,\
+> +	$(call merge_into_defconfig,mpc85xx_base.config,\
+>  		85xx-32bit 85xx-hw fsl-emb-nonhw)
+>  
+>  PHONY += mpc85xx_smp_defconfig
+>  mpc85xx_smp_defconfig:
+> -	$(call merge_into_defconfig,mpc85xx_basic_defconfig,\
+> +	$(call merge_into_defconfig,mpc85xx_base.config,\
+>  		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw)
+>  
+>  PHONY += corenet32_smp_defconfig
+>  corenet32_smp_defconfig:
+> -	$(call merge_into_defconfig,corenet_basic_defconfig,\
+> +	$(call merge_into_defconfig,corenet_base.config,\
+>  		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw dpaa)
+>  
+>  PHONY += corenet64_smp_defconfig
+>  corenet64_smp_defconfig:
+> -	$(call merge_into_defconfig,corenet_basic_defconfig,\
+> +	$(call merge_into_defconfig,corenet_base.config,\
+>  		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw dpaa)
+>  
+>  PHONY += mpc86xx_defconfig
+>  mpc86xx_defconfig:
+> -	$(call merge_into_defconfig,mpc86xx_basic_defconfig,\
+> +	$(call merge_into_defconfig,mpc86xx_base.config,\
+>  		86xx-hw fsl-emb-nonhw)
+>  
+>  PHONY += mpc86xx_smp_defconfig
+>  mpc86xx_smp_defconfig:
+> -	$(call merge_into_defconfig,mpc86xx_basic_defconfig,\
+> +	$(call merge_into_defconfig,mpc86xx_base.config,\
+>  		86xx-smp 86xx-hw fsl-emb-nonhw)
+>  
+>  PHONY += ppc32_allmodconfig
+> diff --git a/arch/powerpc/configs/corenet_basic_defconfig b/arch/powerpc/configs/corenet_base.config
+> similarity index 100%
+> rename from arch/powerpc/configs/corenet_basic_defconfig
+> rename to arch/powerpc/configs/corenet_base.config
+> diff --git a/arch/powerpc/configs/mpc85xx_basic_defconfig b/arch/powerpc/configs/mpc85xx_base.config
+> similarity index 100%
+> rename from arch/powerpc/configs/mpc85xx_basic_defconfig
+> rename to arch/powerpc/configs/mpc85xx_base.config
+> diff --git a/arch/powerpc/configs/mpc86xx_basic_defconfig b/arch/powerpc/configs/mpc86xx_base.config
+> similarity index 100%
+> rename from arch/powerpc/configs/mpc86xx_basic_defconfig
+> rename to arch/powerpc/configs/mpc86xx_base.config
+> -- 
+> 2.20.1
+> 
+---end quoted text---
