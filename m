@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C30C2DDF3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 15:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB56D2DDFB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 15:20:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DWV25QQPzDqPN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 23:17:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DWYB0BJ8zDqRh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 23:20:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="PvWN50R5"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="R7gVn7iu"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45DWQr0WQHzDqHl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 23:14:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45DWQs2DLfzDqHk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 23:15:01 +1000 (AEST)
 Received: from localhost (unknown [23.100.24.84])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F00B7217F9;
- Wed, 29 May 2019 13:14:56 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 50626217D4;
+ Wed, 29 May 2019 13:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559135697;
+ s=default; t=1559135699;
  bh=O/8evzPRCciUudwmym3BED9Gn/r0gJgN81NDZ5pjxHA=;
  h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
  References:From;
- b=PvWN50R54qN6h0HT8BZkg4LyNglEOy8RcidoA9vFqlFYPC0t/Ccl2QhX54p49Avpm
- dZF0l9DiAAjoYlTQJDDlWumEXxqkYW4mMDcES9EABlSrscsOffpS61QTAmAsQxKEyc
- Cj4itwf5BpcSeCRg3BPAZ0FGoHcop6RhZ9qvUzC8=
-Date: Wed, 29 May 2019 13:14:56 +0000
+ b=R7gVn7iuzshVNzVyC3st5StP4NTPD0tKrmw7r4IewDAgdHNomVIDBRzM716FfmMi2
+ qSbgbm068B4uoVvrDtTuyV3xTD7N3hVCj9tTr7L/EP/TZM+Uzim5zrzfD6Vt+bXljX
+ L9Z9BwNmQzFzBfIZVAZDD924d9EVg/uOihQ70y0s=
+Date: Wed, 29 May 2019 13:14:58 +0000
 From: Sasha Levin <sashal@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 To: Vincenzo Frascino <vincenzo.frascino@arm.com>
 To: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-Subject: Re: [PATCH v4 1/3] powerpc: Fix vDSO clock_getres()
-In-Reply-To: <20190523112116.19233-2-vincenzo.frascino@arm.com>
-References: <20190523112116.19233-2-vincenzo.frascino@arm.com>
-Message-Id: <20190529131456.F00B7217F9@mail.kernel.org>
+Subject: Re: [PATCH v3 1/3] powerpc: Fix vDSO clock_getres()
+In-Reply-To: <20190522110722.28094-2-vincenzo.frascino@arm.com>
+References: <20190522110722.28094-2-vincenzo.frascino@arm.com>
+Message-Id: <20190529131459.50626217D4@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,8 +56,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: , stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- vincenzo.frascino@arm.com
+Cc: , stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
