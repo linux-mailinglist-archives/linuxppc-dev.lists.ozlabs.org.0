@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86AA52DF2A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 16:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68D32DF47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 16:08:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DXYJ1QdYzDqHK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 00:05:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DXcs45DDzDqJc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 00:08:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,37 +16,37 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="P/PbkYBO"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="hwPE3sV0"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45DXRy5kd5zDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 00:01:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45DXVC4RBkzDqJ7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 00:02:59 +1000 (AEST)
 Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8950C233A0;
- Wed, 29 May 2019 14:00:59 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0A8B823402;
+ Wed, 29 May 2019 14:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559138459;
- bh=6I6e8RsN54app+WgA8e9wHTb5JQKaczTUSAMC9nxhD8=;
+ s=default; t=1559138577;
+ bh=0tSTYoMlHTVZxSrDog0lJVqBtj8J4qQgEtdzSomSTZ4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=P/PbkYBO0+PESFocyvmX3yQ8ejtkce/xlNo/QTQ27X4Rr5gMKVwtXyYlysdjFs3Jr
- mLPWrLTSlu0qClL6mmANi9oN62seB1OtaqqdvIwUy0MD32YraneGaQ+wVpBCx91w4L
- b9gs9XherqoaTEXq03Ypd6UOF7RDiffICYLVC85g=
-Date: Wed, 29 May 2019 09:00:58 -0500
+ b=hwPE3sV0wXedjVr2aCpquvp1LlpXrqHZxg6pcjxrIWPJnAL89WxJloIzstRSR3/fP
+ qVENpoMlU08Pz8ufgiUfRIDhOJejZEckw5R5QAGerIRKFXdg9N74E2PtvMpan7kL2K
+ 9Vn44KtWtwtDC4BiiJqeIgClHffjxPlDQz3boADc=
+Date: Wed, 29 May 2019 09:02:56 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Oliver <oohall@gmail.com>
-Subject: Re: [PATCH v3 1/3] PCI: Introduce pcibios_ignore_alignment_request
-Message-ID: <20190529140058.GB28250@google.com>
+To: Shawn Anastasio <shawn@anastas.io>
+Subject: Re: [PATCH v3 3/3] powerpc/pseries: Allow user-specified PCI
+ resource alignment after init
+Message-ID: <20190529140256.GC28250@google.com>
 References: <20190528040313.35582-1-shawn@anastas.io>
- <20190528040313.35582-2-shawn@anastas.io>
- <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+ <20190528040313.35582-4-shawn@anastas.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+In-Reply-To: <20190528040313.35582-4-shawn@anastas.io>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,71 +59,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, Sam Bobroff <sbobroff@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rppt@linux.ibm.com,
- Paul Mackerras <paulus@samba.org>, linux-pci@vger.kernel.org,
- xyjxie@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: sbobroff@linux.ibm.com, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rppt@linux.ibm.com, paulus@samba.org,
+ xyjxie@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 28, 2019 at 03:36:34PM +1000, Oliver wrote:
-> On Tue, May 28, 2019 at 2:03 PM Shawn Anastasio <shawn@anastas.io> wrote:
-> >
-> > Introduce a new pcibios function pcibios_ignore_alignment_request
-> > which allows the PCI core to defer to platform-specific code to
-> > determine whether or not to ignore alignment requests for PCI resources.
-> >
-> > The existing behavior is to simply ignore alignment requests when
-> > PCI_PROBE_ONLY is set. This is behavior is maintained by the
-> > default implementation of pcibios_ignore_alignment_request.
-> >
-> > Signed-off-by: Shawn Anastasio <shawn@anastas.io>
-> > ---
-> >  drivers/pci/pci.c   | 9 +++++++--
-> >  include/linux/pci.h | 1 +
-> >  2 files changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > index 8abc843b1615..8207a09085d1 100644
-> > --- a/drivers/pci/pci.c
-> > +++ b/drivers/pci/pci.c
-> > @@ -5882,6 +5882,11 @@ resource_size_t __weak pcibios_default_alignment(void)
-> >         return 0;
-> >  }
-> >
-> > +int __weak pcibios_ignore_alignment_request(void)
-> > +{
-> > +       return pci_has_flag(PCI_PROBE_ONLY);
-> > +}
-> > +
-> >  #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
-> >  static char resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] = {0};
-> >  static DEFINE_SPINLOCK(resource_alignment_lock);
-> > @@ -5906,9 +5911,9 @@ static resource_size_t pci_specified_resource_alignment(struct pci_dev *dev,
-> >         p = resource_alignment_param;
-> >         if (!*p && !align)
-> >                 goto out;
-> > -       if (pci_has_flag(PCI_PROBE_ONLY)) {
-> > +       if (pcibios_ignore_alignment_request()) {
-> >                 align = 0;
-> > -               pr_info_once("PCI: Ignoring requested alignments (PCI_PROBE_ONLY)\n");
-> > +               pr_info_once("PCI: Ignoring requested alignments\n");
-> >                 goto out;
-> >         }
+On Mon, May 27, 2019 at 11:03:13PM -0500, Shawn Anastasio wrote:
+> On pseries, custom PCI resource alignment specified with the commandline
+> argument pci=resource_alignment is disabled due to PCI resources being
+> managed by the firmware. However, in the case of PCI hotplug the
+> resources are managed by the kernel, so custom alignments should be
+> honored in these cases. This is done by only honoring custom
+> alignments after initial PCI initialization is done, to ensure that
+> all devices managed by the firmware are excluded.
 > 
-> I think the logic here is questionable to begin with. If the user has
-> explicitly requested re-aligning a resource via the command line then
-> we should probably do it even if PCI_PROBE_ONLY is set. When it breaks
-> they get to keep the pieces.
+> Without this ability, sub-page BARs sometimes get mapped in between
+> page boundaries for hotplugged devices and are therefore unusable
+> with the VFIO framework. This change allows users to request
+> page alignment for devices they wish to access via VFIO using
+> the pci=resource_alignment commandline argument.
+> 
+> In the future, this could be extended to provide page-aligned
+> resources by default for hotplugged devices, similar to what is
+> done on powernv by commit 382746376993 ("powerpc/powernv: Override
+> pcibios_default_alignment() to force PCI devices to be page aligned")
+> 
+> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+> ---
+>  arch/powerpc/include/asm/machdep.h     |  3 +++
+>  arch/powerpc/kernel/pci-common.c       |  9 +++++++++
+>  arch/powerpc/platforms/pseries/setup.c | 22 ++++++++++++++++++++++
+>  3 files changed, 34 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+> index 2fbfaa9176ed..46eb62c0954e 100644
+> --- a/arch/powerpc/include/asm/machdep.h
+> +++ b/arch/powerpc/include/asm/machdep.h
+> @@ -179,6 +179,9 @@ struct machdep_calls {
+>  
+>  	resource_size_t (*pcibios_default_alignment)(void);
+>  
+> +	/* Called when determining PCI resource alignment */
+> +	int (*pcibios_ignore_alignment_request)(void);
+> +
+>  #ifdef CONFIG_PCI_IOV
+>  	void (*pcibios_fixup_sriov)(struct pci_dev *pdev);
+>  	resource_size_t (*pcibios_iov_resource_alignment)(struct pci_dev *, int resno);
+> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+> index ff4b7539cbdf..8e0d73b4c188 100644
+> --- a/arch/powerpc/kernel/pci-common.c
+> +++ b/arch/powerpc/kernel/pci-common.c
+> @@ -238,6 +238,15 @@ resource_size_t pcibios_default_alignment(void)
+>  	return 0;
+>  }
+>  
+> +int pcibios_ignore_alignment_request(void)
+> +{
+> +	if (ppc_md.pcibios_ignore_alignment_request)
+> +		return ppc_md.pcibios_ignore_alignment_request();
+> +
+> +	/* Fall back to default method of checking PCI_PROBE_ONLY */
+> +	return pci_has_flag(PCI_PROBE_ONLY);
+> +}
+> +
+>  #ifdef CONFIG_PCI_IOV
+>  resource_size_t pcibios_iov_resource_alignment(struct pci_dev *pdev, int resno)
+>  {
+> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+> index e4f0dfd4ae33..07f03be02afe 100644
+> --- a/arch/powerpc/platforms/pseries/setup.c
+> +++ b/arch/powerpc/platforms/pseries/setup.c
+> @@ -82,6 +82,8 @@ EXPORT_SYMBOL(CMO_PageSize);
+>  
+>  int fwnmi_active;  /* TRUE if an FWNMI handler is present */
+>  
+> +static int initial_pci_init_done; /* TRUE if initial pcibios init has completed */
+> +
+>  static void pSeries_show_cpuinfo(struct seq_file *m)
+>  {
+>  	struct device_node *root;
+> @@ -749,6 +751,23 @@ static resource_size_t pseries_pci_iov_resource_alignment(struct pci_dev *pdev,
+>  }
+>  #endif
+>  
+> +static void pseries_after_init(void)
+> +{
+> +	initial_pci_init_done = 1;
+> +}
+> +
+> +static int pseries_ignore_alignment_request(void)
+> +{
+> +	if (initial_pci_init_done)
+> +		/*
+> +		 * Allow custom alignments after init for things
+> +		 * like PCI hotplugging.
+> +		 */
+> +		return 0;
 
-I agree.  I don't like PCI_PROBE_ONLY in the first place.  It's a
-sledgehammer approach that doesn't tell us which resource assignments
-need to be preserved or why.  I'd rather use IORESOURCE_PCI_FIXED and
-set it for the BARs where there's actually some sort of
-hypervisor/firmware/OS dependency.
+Hmm, if there's any way to avoid this sort of early/late flag, that
+would be nicer.
 
-If there's a way to avoid another pciobios_*() weak function, that
-would also be better.
-
-Bjorn
+> +
+> +	return pci_has_flag(PCI_PROBE_ONLY);
+> +}
+> +
+>  static void __init pSeries_setup_arch(void)
+>  {
+>  	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
+> @@ -797,6 +816,9 @@ static void __init pSeries_setup_arch(void)
+>  	}
+>  
+>  	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
+> +	ppc_md.pcibios_after_init = pseries_after_init;
+> +	ppc_md.pcibios_ignore_alignment_request =
+> +		pseries_ignore_alignment_request;
+>  }
+>  
+>  static void pseries_panic(char *str)
+> -- 
+> 2.20.1
+> 
