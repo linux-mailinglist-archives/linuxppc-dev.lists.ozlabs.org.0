@@ -2,50 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A6B2E1BF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 17:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ED12E2D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 19:05:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Db1N5VpxzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 01:56:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DcYB6DKjzDqRD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 03:05:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Db036kvyzDqHw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 01:55:29 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45DZzt0bSPz9tyQt;
- Wed, 29 May 2019 17:55:22 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xIGpvSYCFY2m; Wed, 29 May 2019 17:55:22 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45DZzs6t4Zz9tyQn;
- Wed, 29 May 2019 17:55:21 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id B1050668; Wed, 29 May 2019 17:55:21 +0200 (CEST)
-Received: from 37.170.135.142 ([37.170.135.142]) by messagerie.si.c-s.fr
- (Horde Framework) with HTTP; Wed, 29 May 2019 17:55:21 +0200
-Date: Wed, 29 May 2019 17:55:21 +0200
-Message-ID: <20190529175521.Horde.-9imEnHzm7NQQEzTci_TuQ2@messagerie.si.c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/mm: Move some of the boot time info print to
- generic file
-In-Reply-To: <20190528053513.1966-1-aneesh.kumar@linux.ibm.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.101.70])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45DcWf404yzDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 03:04:28 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D8FA341;
+ Wed, 29 May 2019 10:04:27 -0700 (PDT)
+Received: from mbp (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A50F23F5AF;
+ Wed, 29 May 2019 10:04:26 -0700 (PDT)
+Date: Wed, 29 May 2019 18:04:23 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Mathieu Malaterre <malat@debian.org>
+Subject: Re: kmemleak: 1157 new suspected memory leaks (see
+ /sys/kernel/debug/kmemleak)
+Message-ID: <20190529170423.3a56t7vtioznzbnx@mbp>
+References: <CA+7wUsw_jkgWfknXbpK7_yfy=S5Y0jvQe1KP3kM-LT8fFnUF5g@mail.gmail.com>
+ <87tvdfp31x.fsf@concordia.ellerman.id.au>
+ <CA+7wUszCdg_xRRh_DX=wAoWnpZTyc7dG=RsiEUCYJN=p_yBX6A@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CA+7wUszCdg_xRRh_DX=wAoWnpZTyc7dG=RsiEUCYJN=p_yBX6A@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,72 +49,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, paulus@samba.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> a =C3=A9crit=C2=A0:
+On Tue, May 28, 2019 at 09:14:12PM +0200, Mathieu Malaterre wrote:
+> On Tue, May 28, 2019 at 7:21 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> > Mathieu Malaterre <malat@debian.org> writes:
+> > > Is there a way to dump more context (somewhere in of tree
+> > > flattening?). I cannot make sense of the following:
+> >
+> > Hmm. Not that I know of.
+> >
+> > Those don't look related to OF flattening/unflattening. That's just
+> > sysfs setup based on the unflattened device tree.
+> >
+> > The allocations are happening in safe_name() AFAICS.
+> >
+> > int __of_add_property_sysfs(struct device_node *np, struct property *pp)
+> > {
+> >         ...
+> >         pp->attr.attr.name = safe_name(&np->kobj, pp->name);
+> >
+> > And the free is in __of_sysfs_remove_bin_file():
+> >
+> > void __of_sysfs_remove_bin_file(struct device_node *np, struct property *prop)
+> > {
+> >         if (!IS_ENABLED(CONFIG_SYSFS))
+> >                 return;
+> >
+> >         sysfs_remove_bin_file(&np->kobj, &prop->attr);
+> >         kfree(prop->attr.attr.name);
+> >
+> 
+> Right. That helped a lot !
+> 
+> > There is this check which could be failing leading to us not calling the
+> > free at all:
+> >
+> > void __of_remove_property_sysfs(struct device_node *np, struct property *prop)
+> > {
+> >         /* at early boot, bail here and defer setup to of_init() */
+> >         if (of_kset && of_node_is_attached(np))
+> >                 __of_sysfs_remove_bin_file(np, prop);
+> > }
+> >
+> >
+> > So maybe stick a printk() in there to see if you're hitting that
+> > condition, eg something like:
+> >
+> >         if (of_kset && of_node_is_attached(np))
+> >                 __of_sysfs_remove_bin_file(np, prop);
+> >         else
+> >                 printk("%s: leaking prop %s on node %pOF\n", __func__, prop->attr.attr.name, np);
+> >
+> 
+> If I understand correctly those are false positive. I was first
+> starting to consider using something like kmemleak_not_leak, but I
+> remember that I have been using kmemleak for a couple of years now.
+> Those reports starting to show up only recently.
+> 
+> Catalin, do you have an idea why on a non-SMP machine kmemleak reports
+> leaks from:
+> 
+> [...]
+> void __init of_core_init(void)
+> {
+> [...]
+>  for_each_of_allnodes(np)
+>     __of_attach_node_sysfs(np);
 
-> With radix translation enabled we find in dmesg
->
->  hash-mmu: ppc64_pft_size    =3D 0x0
->  hash-mmu: kernel vmalloc start   =3D 0xc008000000000000
->  hash-mmu: kernel IO start        =3D 0xc00a000000000000
->  hash-mmu: kernel vmemmap start   =3D 0xc00c000000000000
->
-> This is because these pr_info calls are in hash_utils.c which has
->
->  #define pr_fmt(fmt) "hash-mmu: " fmt
->
-> The information printed in generic and hence move that to generic file
+It's likely that they are false positives but usually, rather than just
+adding a kmemleak_not_leak(), it's better to figure out why kmemleak
+reports them. The strings allocated above through kstrdup() can't be
+tracked starting with the root objects. I think for the of stuff, this
+should be the of_root pointer.
 
-Some similarities with Nick's patch=20=20
-https://patchwork.ozlabs.org/patch/1100245/=20?
+Is it only with non-SMP that this happens? I can't reproduce it on arm64
+to be able to dig further.
 
-Christophe
+Even better if you could bisect to the commit that's causing this.
 
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/setup-common.c    | 4 ++++
->  arch/powerpc/mm/book3s64/hash_utils.c | 5 -----
->  2 files changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/setup-common.c=20=20
->=20b/arch/powerpc/kernel/setup-common.c
-> index aad9f5df6ab6..a73a91f2c21f 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -810,6 +810,10 @@ static __init void print_system_info(void)
->  	pr_info("mmu_features      =3D 0x%08x\n", cur_cpu_spec->mmu_features);
->  #ifdef CONFIG_PPC64
->  	pr_info("firmware_features =3D 0x%016lx\n", powerpc_firmware_features);
-> +	pr_info("ppc64_pft_size    =3D 0x%llx\n", ppc64_pft_size);
-> +	pr_info("kernel vmalloc start   =3D 0x%lx\n", KERN_VIRT_START);
-> +	pr_info("kernel IO start        =3D 0x%lx\n", KERN_IO_START);
-> +	pr_info("kernel vmemmap start   =3D 0x%lx\n", (unsigned long)vmemmap);
->  #endif
->
->  	print_system_hash_info();
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c=20=20
->=20b/arch/powerpc/mm/book3s64/hash_utils.c
-> index 919a861a8ec0..2f677914bfd2 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -1950,11 +1950,6 @@ machine_device_initcall(pseries, hash64_debugfs);
->
->  void __init print_system_hash_info(void)
->  {
-> -	pr_info("ppc64_pft_size    =3D 0x%llx\n", ppc64_pft_size);
-> -
->  	if (htab_hash_mask)
->  		pr_info("htab_hash_mask    =3D 0x%lx\n", htab_hash_mask);
-> -	pr_info("kernel vmalloc start   =3D 0x%lx\n", KERN_VIRT_START);
-> -	pr_info("kernel IO start        =3D 0x%lx\n", KERN_IO_START);
-> -	pr_info("kernel vmemmap start   =3D 0x%lx\n", (unsigned long)vmemmap);
->  }
-> --
-> 2.21.0
-
-
+-- 
+Catalin
