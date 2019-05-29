@@ -1,44 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAFE2DE3F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 15:33:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DWr16HWjzDqBV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 23:33:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C30C2DDF3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 15:17:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DWV25QQPzDqPN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2019 23:17:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=hisilicon.com
- (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=zhangshaokun@hisilicon.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=hisilicon.com
-X-Greylist: delayed 927 seconds by postgrey-1.36 at bilbo;
- Wed, 29 May 2019 19:39:02 AEST
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PvWN50R5"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45DQdf0V1CzDqFK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 19:39:00 +1000 (AEST)
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 65645ED0CC80F5AD7B17
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 17:23:27 +0800 (CST)
-Received: from localhost.localdomain (10.67.212.132) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 29 May 2019 17:23:19 +0800
-From: Shaokun Zhang <zhangshaokun@hisilicon.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/64s: Fix misleading SPR and timebase information
-Date: Wed, 29 May 2019 17:21:51 +0800
-Message-ID: <1559121711-24114-1-git-send-email-zhangshaokun@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.212.132]
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Wed, 29 May 2019 23:30:12 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45DWQr0WQHzDqHl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2019 23:14:59 +1000 (AEST)
+Received: from localhost (unknown [23.100.24.84])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id F00B7217F9;
+ Wed, 29 May 2019 13:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1559135697;
+ bh=O/8evzPRCciUudwmym3BED9Gn/r0gJgN81NDZ5pjxHA=;
+ h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
+ References:From;
+ b=PvWN50R54qN6h0HT8BZkg4LyNglEOy8RcidoA9vFqlFYPC0t/Ccl2QhX54p49Avpm
+ dZF0l9DiAAjoYlTQJDDlWumEXxqkYW4mMDcES9EABlSrscsOffpS61QTAmAsQxKEyc
+ Cj4itwf5BpcSeCRg3BPAZ0FGoHcop6RhZ9qvUzC8=
+Date: Wed, 29 May 2019 13:14:56 +0000
+From: Sasha Levin <sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>
+To: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+Subject: Re: [PATCH v4 1/3] powerpc: Fix vDSO clock_getres()
+In-Reply-To: <20190523112116.19233-2-vincenzo.frascino@arm.com>
+References: <20190523112116.19233-2-vincenzo.frascino@arm.com>
+Message-Id: <20190529131456.F00B7217F9@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,42 +56,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shaokun Zhang <zhangshaokun@hisilicon.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: , stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ vincenzo.frascino@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pr_info shows SPR and timebase as a decimal value with a '0x'
-prefix, which is somewhat misleading.
+Hi,
 
-Fix it to print hexadecimal, as was intended.
+[This is an automated email]
 
-Fixes: 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
----
- arch/powerpc/platforms/powernv/idle.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This commit has been processed because it contains a "Fixes:" tag,
+fixing commit: a7f290dad32ee [PATCH] powerpc: Merge vdso's and add vdso support to 32 bits kernel.
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index c9133f7908ca..77f2e0a4ee37 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -1159,10 +1159,10 @@ static void __init pnv_power9_idle_init(void)
- 			pnv_deepest_stop_psscr_mask);
- 	}
- 
--	pr_info("cpuidle-powernv: First stop level that may lose SPRs = 0x%lld\n",
-+	pr_info("cpuidle-powernv: First stop level that may lose SPRs = 0x%llx\n",
- 		pnv_first_spr_loss_level);
- 
--	pr_info("cpuidle-powernv: First stop level that may lose timebase = 0x%lld\n",
-+	pr_info("cpuidle-powernv: First stop level that may lose timebase = 0x%llx\n",
- 		pnv_first_tb_loss_level);
- }
- 
--- 
-2.7.4
+The bot has tested the following trees: v5.1.4, v5.0.18, v4.19.45, v4.14.121, v4.9.178, v4.4.180, v3.18.140.
 
+v5.1.4: Build OK!
+v5.0.18: Build OK!
+v4.19.45: Build OK!
+v4.14.121: Failed to apply! Possible dependencies:
+    5c929885f1bb4 ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+    b5b4453e7912f ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
+
+v4.9.178: Failed to apply! Possible dependencies:
+    4546561551106 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
+    5c929885f1bb4 ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+    5d451a87e5ebb ("powerpc/64: Retrieve number of L1 cache sets from device-tree")
+    7c5b06cadf274 ("KVM: PPC: Book3S HV: Adapt TLB invalidations to work on POWER9")
+    83677f551e0a6 ("KVM: PPC: Book3S HV: Adjust host/guest context switch for POWER9")
+    902e06eb86cd6 ("powerpc/32: Change the stack protector canary value per task")
+    b5b4453e7912f ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
+    bd067f83b0840 ("powerpc/64: Fix naming of cache block vs. cache line")
+    e2827fe5c1566 ("powerpc/64: Clean up ppc64_caches using a struct per cache")
+    e9cf1e085647b ("KVM: PPC: Book3S HV: Add new POWER9 guest-accessible SPRs")
+    f4c51f841d2ac ("KVM: PPC: Book3S HV: Modify guest entry/exit paths to handle radix guests")
+
+v4.4.180: Failed to apply! Possible dependencies:
+    153086644fd1f ("powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI")
+    3eb5d5888dc68 ("powerpc: Add ppc_strict_facility_enable boot option")
+    4546561551106 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
+    579e633e764e6 ("powerpc: create flush_all_to_thread()")
+    5c929885f1bb4 ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+    70fe3d980f5f1 ("powerpc: Restore FPU/VEC/VSX if previously used")
+    85baa095497f3 ("powerpc/livepatch: Add live patching support on ppc64le")
+    902e06eb86cd6 ("powerpc/32: Change the stack protector canary value per task")
+    b5b4453e7912f ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
+    bf76f73c5f655 ("powerpc: enable UBSAN support")
+    c208505900b23 ("powerpc: create giveup_all()")
+    d1e1cf2e38def ("powerpc: clean up asm/switch_to.h")
+    dc4fbba11e466 ("powerpc: Create disable_kernel_{fp,altivec,vsx,spe}()")
+    f17c4e01e906c ("powerpc/module: Mark module stubs with a magic value")
+
+v3.18.140: Failed to apply! Possible dependencies:
+    10239733ee861 ("powerpc: Remove bootmem allocator")
+    2449acc5348b9 ("powerpc/kernel: Enable seccomp filter")
+    4546561551106 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
+    49e4e15619cd7 ("tile: support CONTEXT_TRACKING and thus NOHZ_FULL")
+    5c929885f1bb4 ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
+    73569d87e2cc5 ("MIPS: OCTEON: Enable little endian kernel.")
+    817820b0226a1 ("powerpc/iommu: Support "hybrid" iommu/direct DMA ops for coherent_mask < dma_mask")
+    83fe27ea53116 ("rcu: Make SRCU optional by using CONFIG_SRCU")
+    85baa095497f3 ("powerpc/livepatch: Add live patching support on ppc64le")
+    b01aec9b2c7d3 ("EDAC: Cleanup atomic_scrub mess")
+    b30e759072c18 ("powerpc/mm: Switch to generic RCU get_user_pages_fast")
+    b5b4453e7912f ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
+    bf76f73c5f655 ("powerpc: enable UBSAN support")
+    c54b2bf1b5e99 ("powerpc: Add ppc64 hard lockup detector support")
+    f30c59e921f12 ("mm: Update generic gup implementation to handle hugepage directory")
+    f47436734dc89 ("tile: Use the more common pr_warn instead of pr_warning")
+
+
+How should we proceed with this patch?
+
+--
+Thanks,
+Sasha
