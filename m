@@ -1,37 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317862F7A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 08:57:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD512F754
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 07:57:45 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Dxgp5j7TzDqVy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 15:57:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Dz0f4TvWzDqW9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 16:57:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45DxfZ2FQJzDqT4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 15:56:36 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B439A78;
- Wed, 29 May 2019 22:56:34 -0700 (PDT)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
- [10.162.40.143])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7D1333F5AF;
- Wed, 29 May 2019 22:56:25 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC] mm: Generalize notify_page_fault()
-Date: Thu, 30 May 2019 11:25:13 +0530
-Message-Id: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45DyzJ5r7MzDqTG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 16:56:11 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4U6svWQ127192
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 02:56:07 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sta87g4wv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 02:56:07 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Thu, 30 May 2019 07:56:05 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 30 May 2019 07:56:01 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4U6u0qM52101362
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 May 2019 06:56:00 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 436004204C;
+ Thu, 30 May 2019 06:56:00 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2D304204B;
+ Thu, 30 May 2019 06:55:59 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 30 May 2019 06:55:59 +0000 (GMT)
+Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 635B3A01EA;
+ Thu, 30 May 2019 16:55:58 +1000 (AEST)
+Date: Thu, 30 May 2019 16:55:57 +1000
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: Oliver <oohall@gmail.com>
+Subject: Re: [EXTERNAL] Re: [PATCH v3 1/3] PCI: Introduce
+ pcibios_ignore_alignment_request
+References: <20190528040313.35582-1-shawn@anastas.io>
+ <20190528040313.35582-2-shawn@anastas.io>
+ <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+User-Agent: Mutt/1.9.3 (2018-01-21)
+X-TM-AS-GCONF: 00
+x-cbid: 19053006-0028-0000-0000-00000372DD29
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19053006-0029-0000-0000-00002432A459
+Message-Id: <20190530065556.GA29428@tungsten.ozlabs.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-30_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905300051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,349 +96,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Stephen Rothwell <sfr@canb.auug.org.au>, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
- Fenghua Yu <fenghua.yu@intel.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Andrey Konovalov <andreyknvl@google.com>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Shawn Anastasio <shawn@anastas.io>, linux-pci@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rppt@linux.ibm.com,
+ Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ xyjxie@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similar notify_page_fault() definitions are being used by architectures
-duplicating much of the same code. This attempts to unify them into a
-single implementation, generalize it and then move it to a common place.
-kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
-must not be wrapped again within CONFIG_KPROBES. Trap number argument can
-now contain upto an 'unsigned int' accommodating all possible platforms.
 
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Andrey Konovalov <andreyknvl@google.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: "David S. Miller" <davem@davemloft.net>
----
-Boot tested on arm64 and build tested on some others.
+On Tue, May 28, 2019 at 03:36:34PM +1000, Oliver wrote:
+> On Tue, May 28, 2019 at 2:03 PM Shawn Anastasio <shawn@anastas.io> wrote:
+> >
+> > Introduce a new pcibios function pcibios_ignore_alignment_request
+> > which allows the PCI core to defer to platform-specific code to
+> > determine whether or not to ignore alignment requests for PCI resources.
+> >
+> > The existing behavior is to simply ignore alignment requests when
+> > PCI_PROBE_ONLY is set. This is behavior is maintained by the
+> > default implementation of pcibios_ignore_alignment_request.
+> >
+> > Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+> > ---
+> >  drivers/pci/pci.c   | 9 +++++++--
+> >  include/linux/pci.h | 1 +
+> >  2 files changed, 8 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 8abc843b1615..8207a09085d1 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -5882,6 +5882,11 @@ resource_size_t __weak pcibios_default_alignment=
+(void)
+> >         return 0;
+> >  }
+> >
+> > +int __weak pcibios_ignore_alignment_request(void)
+> > +{
+> > +       return pci_has_flag(PCI_PROBE_ONLY);
+> > +}
+> > +
+> >  #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
+> >  static char resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] =
+=3D {0};
+> >  static DEFINE_SPINLOCK(resource_alignment_lock);
+> > @@ -5906,9 +5911,9 @@ static resource_size_t pci_specified_resource_ali=
+gnment(struct pci_dev *dev,
+> >         p =3D resource_alignment_param;
+> >         if (!*p && !align)
+> >                 goto out;
+> > -       if (pci_has_flag(PCI_PROBE_ONLY)) {
+> > +       if (pcibios_ignore_alignment_request()) {
+> >                 align =3D 0;
+> > -               pr_info_once("PCI: Ignoring requested alignments (PCI_P=
+ROBE_ONLY)\n");
+> > +               pr_info_once("PCI: Ignoring requested alignments\n");
+> >                 goto out;
+> >         }
+>=20
+> I think the logic here is questionable to begin with. If the user has
+> explicitly requested re-aligning a resource via the command line then
+> we should probably do it even if PCI_PROBE_ONLY is set. When it breaks
+> they get to keep the pieces.
+>=20
+> That said, the real issue here is that PCI_PROBE_ONLY probably
+> shouldn't be set under qemu/kvm. Under the other hypervisor (PowerVM)
+> hotplugged devices are configured by firmware before it's passed to
+> the guest and we need to keep the FW assignments otherwise things
+> break. QEMU however doesn't do any BAR assignments and relies on that
+> being handled by the guest. At boot time this is done by SLOF, but
+> Linux only keeps SLOF around until it's extracted the device-tree.
+> Once that's done SLOF gets blown away and the kernel needs to do it's
+> own BAR assignments. I'm guessing there's a hack in there to make it
+> work today, but it's a little surprising that it works at all...
+>=20
+> IIRC Sam Bobroff was looking at hotplug under pseries recently so he
+> might have something to add. He's sick at the moment, but I'll ask him
+> to take a look at this once he's back among the living
 
- arch/arm/mm/fault.c      | 22 ----------------------
- arch/arm64/mm/fault.c    | 22 ----------------------
- arch/ia64/mm/fault.c     | 22 ----------------------
- arch/powerpc/mm/fault.c  | 23 ++---------------------
- arch/s390/mm/fault.c     | 16 +---------------
- arch/sh/mm/fault.c       | 14 --------------
- arch/sparc/mm/fault_64.c | 16 +---------------
- include/linux/mm.h       |  1 +
- mm/memory.c              | 14 ++++++++++++++
- 9 files changed, 19 insertions(+), 131 deletions(-)
+There seems to be some code already in the kernel that will disable
+PCI_PROBE_ONLY based on a device tree property, so I did a quick test
+today and it seems to work. Only a trivial tweak is needed in QEMU to
+do it (have spapr_dt_chosen() add a node called "linux,pci-probe-only"
+with a value of 0), and that would allow us to set it only for QEMU (and
+not PowerVM) if that's what we want to do. Is that useful?
 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 58f69fa..1bc3b18 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -30,28 +30,6 @@
- 
- #ifdef CONFIG_MMU
- 
--#ifdef CONFIG_KPROBES
--static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
--{
--	int ret = 0;
--
--	if (!user_mode(regs)) {
--		/* kprobe_running() needs smp_processor_id() */
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, fsr))
--			ret = 1;
--		preempt_enable();
--	}
--
--	return ret;
--}
--#else
--static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
--{
--	return 0;
--}
--#endif
--
- /*
-  * This is useful to dump out the page tables associated with
-  * 'addr' in mm 'mm'.
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index a30818e..152f1f1 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -70,28 +70,6 @@ static inline const struct fault_info *esr_to_debug_fault_info(unsigned int esr)
- 	return debug_fault_info + DBG_ESR_EVT(esr);
- }
- 
--#ifdef CONFIG_KPROBES
--static inline int notify_page_fault(struct pt_regs *regs, unsigned int esr)
--{
--	int ret = 0;
--
--	/* kprobe_running() needs smp_processor_id() */
--	if (!user_mode(regs)) {
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, esr))
--			ret = 1;
--		preempt_enable();
--	}
--
--	return ret;
--}
--#else
--static inline int notify_page_fault(struct pt_regs *regs, unsigned int esr)
--{
--	return 0;
--}
--#endif
--
- static void data_abort_decode(unsigned int esr)
- {
- 	pr_alert("Data abort info:\n");
-diff --git a/arch/ia64/mm/fault.c b/arch/ia64/mm/fault.c
-index 5baeb02..64283d2 100644
---- a/arch/ia64/mm/fault.c
-+++ b/arch/ia64/mm/fault.c
-@@ -21,28 +21,6 @@
- 
- extern int die(char *, struct pt_regs *, long);
- 
--#ifdef CONFIG_KPROBES
--static inline int notify_page_fault(struct pt_regs *regs, int trap)
--{
--	int ret = 0;
--
--	if (!user_mode(regs)) {
--		/* kprobe_running() needs smp_processor_id() */
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, trap))
--			ret = 1;
--		preempt_enable();
--	}
--
--	return ret;
--}
--#else
--static inline int notify_page_fault(struct pt_regs *regs, int trap)
--{
--	return 0;
--}
--#endif
--
- /*
-  * Return TRUE if ADDRESS points at a page in the kernel's mapped segment
-  * (inside region 5, on ia64) and that page is present.
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index b5d3578..5a0d71f 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -46,26 +46,6 @@
- #include <asm/debug.h>
- #include <asm/kup.h>
- 
--static inline bool notify_page_fault(struct pt_regs *regs)
--{
--	bool ret = false;
--
--#ifdef CONFIG_KPROBES
--	/* kprobe_running() needs smp_processor_id() */
--	if (!user_mode(regs)) {
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, 11))
--			ret = true;
--		preempt_enable();
--	}
--#endif /* CONFIG_KPROBES */
--
--	if (unlikely(debugger_fault_handler(regs)))
--		ret = true;
--
--	return ret;
--}
--
- /*
-  * Check whether the instruction inst is a store using
-  * an update addressing form which will update r1.
-@@ -466,8 +446,9 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
- 	int is_write = page_fault_is_write(error_code);
- 	vm_fault_t fault, major = 0;
- 	bool must_retry = false;
-+	int kprobe_fault = notify_page_fault(regs, 11);
- 
--	if (notify_page_fault(regs))
-+	if (unlikely(debugger_fault_handler(regs) || kprobe_fault))
- 		return 0;
- 
- 	if (unlikely(page_fault_is_bad(error_code))) {
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index c220399..d317263 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -67,20 +67,6 @@ static int __init fault_init(void)
- }
- early_initcall(fault_init);
- 
--static inline int notify_page_fault(struct pt_regs *regs)
--{
--	int ret = 0;
--
--	/* kprobe_running() needs smp_processor_id() */
--	if (kprobes_built_in() && !user_mode(regs)) {
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, 14))
--			ret = 1;
--		preempt_enable();
--	}
--	return ret;
--}
--
- /*
-  * Find out which address space caused the exception.
-  * Access register mode is impossible, ignore space == 3.
-@@ -409,7 +395,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
- 	 */
- 	clear_pt_regs_flag(regs, PIF_PER_TRAP);
- 
--	if (notify_page_fault(regs))
-+	if (notify_page_fault(regs, 14))
- 		return 0;
- 
- 	mm = tsk->mm;
-diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
-index 6defd2c6..94bdfcb 100644
---- a/arch/sh/mm/fault.c
-+++ b/arch/sh/mm/fault.c
-@@ -24,20 +24,6 @@
- #include <asm/tlbflush.h>
- #include <asm/traps.h>
- 
--static inline int notify_page_fault(struct pt_regs *regs, int trap)
--{
--	int ret = 0;
--
--	if (kprobes_built_in() && !user_mode(regs)) {
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, trap))
--			ret = 1;
--		preempt_enable();
--	}
--
--	return ret;
--}
--
- static void
- force_sig_info_fault(int si_signo, int si_code, unsigned long address,
- 		     struct task_struct *tsk)
-diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
-index 8f8a604..e5557a1 100644
---- a/arch/sparc/mm/fault_64.c
-+++ b/arch/sparc/mm/fault_64.c
-@@ -38,20 +38,6 @@
- 
- int show_unhandled_signals = 1;
- 
--static inline __kprobes int notify_page_fault(struct pt_regs *regs)
--{
--	int ret = 0;
--
--	/* kprobe_running() needs smp_processor_id() */
--	if (kprobes_built_in() && !user_mode(regs)) {
--		preempt_disable();
--		if (kprobe_running() && kprobe_fault_handler(regs, 0))
--			ret = 1;
--		preempt_enable();
--	}
--	return ret;
--}
--
- static void __kprobes unhandled_fault(unsigned long address,
- 				      struct task_struct *tsk,
- 				      struct pt_regs *regs)
-@@ -285,7 +271,7 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
- 
- 	fault_code = get_thread_fault_code();
- 
--	if (notify_page_fault(regs))
-+	if (notify_page_fault(regs, 0))
- 		goto exit_exception;
- 
- 	si_code = SEGV_MAPERR;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0e8834a..c5a8dcf 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1778,6 +1778,7 @@ static inline int pte_devmap(pte_t pte)
- }
- #endif
- 
-+int notify_page_fault(struct pt_regs *regs, unsigned int trap);
- int vma_wants_writenotify(struct vm_area_struct *vma, pgprot_t vm_page_prot);
- 
- extern pte_t *__get_locked_pte(struct mm_struct *mm, unsigned long addr,
-diff --git a/mm/memory.c b/mm/memory.c
-index ddf20bd..82022d7 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -52,6 +52,7 @@
- #include <linux/pagemap.h>
- #include <linux/memremap.h>
- #include <linux/ksm.h>
-+#include <linux/kprobes.h>
- #include <linux/rmap.h>
- #include <linux/export.h>
- #include <linux/delayacct.h>
-@@ -141,6 +142,19 @@ static int __init init_zero_pfn(void)
- core_initcall(init_zero_pfn);
- 
- 
-+int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
-+{
-+	int ret = 0;
-+
-+	if (kprobes_built_in() && !user_mode(regs)) {
-+		preempt_disable();
-+		if (kprobe_running() && kprobe_fault_handler(regs, trap))
-+			ret = 1;
-+		preempt_enable();
-+	}
-+	return ret;
-+}
-+
- #if defined(SPLIT_RSS_COUNTING)
- 
- void sync_mm_rss(struct mm_struct *mm)
--- 
-2.7.4
+(I haven't done any real testing yet but the guest booted up OK.)
+
+> > diff --git a/include/linux/pci.h b/include/linux/pci.h
+> > index 4a5a84d7bdd4..47471dcdbaf9 100644
+> > --- a/include/linux/pci.h
+> > +++ b/include/linux/pci.h
+> > @@ -1990,6 +1990,7 @@ static inline void pcibios_penalize_isa_irq(int i=
+rq, int active) {}
+> >  int pcibios_alloc_irq(struct pci_dev *dev);
+> >  void pcibios_free_irq(struct pci_dev *dev);
+> >  resource_size_t pcibios_default_alignment(void);
+> > +int pcibios_ignore_alignment_request(void);
+> >
+> >  #ifdef CONFIG_HIBERNATE_CALLBACKS
+> >  extern struct dev_pm_ops pcibios_pm_ops;
+> > --
+> > 2.20.1
+> >
+>=20
+
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAlzvfnUACgkQMX8w6AQl
+/iLbOwf/d0gNgnSqs8kTnw36ULHdsfnYqJ1nnP1JdurEmTRvPQmXzeIHWFqDcs8O
+IQGdXSiM2A+K53DAppyOR+VA11rlk1xPPMllSjR5OYGXBqRIEnILf2775KVAVFRO
+xBbuLwoaf5ALbncD47CUZIQrj/SCcm5eaQTG/gFZplYfGQXybiSzvAEWCpNglC34
+7m/jfyQHxJ6jlxU9dllz/RlFChiE4Opv2G2romtnL+Ysf+NwLccArSz0LC6ZQ1Gk
+2Ar3LGpWIPwnXYVC9vUJMDwxYRL9dWX1I7WiksD/P0021gjVpe0XkntRqvhILmbb
+AkPDkvXYmBkoEMYSPunaff28TpkXdQ==
+=pvCZ
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--
 
