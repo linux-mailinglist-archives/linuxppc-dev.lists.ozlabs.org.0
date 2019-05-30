@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E742FBFE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 15:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4052FC97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 15:45:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45F7Gp22njzDqVp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 23:10:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45F83M5qvHzDqVb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 23:45:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.85.167.65; helo=mail-lf1-f65.google.com;
- envelope-from=bhsharma@redhat.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mail-lf1-f65.google.com (mail-lf1-f65.google.com
- [209.85.167.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="cO8H1JSN"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45F7DQ6x9NzDqFG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 23:08:04 +1000 (AEST)
-Received: by mail-lf1-f65.google.com with SMTP id r15so4951359lfm.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 06:08:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lo8Pf5qQPzDgv3LbnRe5hAmhzj8l8zc5AuLXNn3lbXo=;
- b=NwP8+P8DP1X4h6VHDhQwIvIaNIytcQLn8iFED/JmkC2oouB5YRMjzT08Z5HDraF1rl
- AngFTle25jkxPznjaZVidpkcmslK1nMkv0bDyo5VRXq7ZvQn2ezBt7YAI54uG9xjr38m
- PmH7+hcrCqcqoQFD01AP1DvFGTY3quYDITKHJSyHYF0GfYpJmGwwxqdugE817iQ/fnaL
- 2VCeOmdge62/QXWknvN0W5bGt6XqLZ+bTehHyRGJ6vB4WBoPGSN/G2HrAQljbhYwZ3lt
- V/mCEEKJT0VLb6aC+HnypLcpYK+82/Zr9SYwxQXHiDq6YwXmWblpsUFg5YFw2DS85id3
- AxWw==
-X-Gm-Message-State: APjAAAVPD6Nm9ctwHStORSNH+oSgdiGpCMG0sm/mA+LOmxCl2ZRkRSCm
- ZCYIB3p4cRe9qMorP62tPvo/dabqQEFgXc60JoKQ0g==
-X-Google-Smtp-Source: APXvYqyavwnJULw4Wz7Yg0S3xURZgWHWuSrHKVYFeYqBmDka5ggDKKE/RR5194S1GfsiIfocaRV06vuTWRje8VGjYSQ=
-X-Received: by 2002:a19:ec12:: with SMTP id b18mr2020933lfa.149.1559221680444; 
- Thu, 30 May 2019 06:08:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45F7xH3rhnzDqQL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 23:40:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=1z2R00tGmVK2jShz09WQ0aSl4fghOklhUmq3MkzmZGo=; b=cO8H1JSNfCwyIOlnTHicp8Zhy
+ tdZp1B1hNurTw3WgAzPBczTGKcSpIkF2nUeFXWFXbacSglBjt8yYhoxBpvJQd2bkSo8SPeHDMVlbk
+ AmGm77WpHy+tChpRqlM72RL0yDXaK+gT4W1Kljnz/VQ/KVDugsJZ0Tc/HFFB2pHCUi7WQ8dCXvAcZ
+ squPNwIZONWngjyh6R0Q/O1CiEId8WQLaglsMjfxroLiY82v0UZBHk7vWS3/3ejIRWejmUyHZlDM1
+ gPiCoTWkidUnsD2jvuDxMSsXlKB3TaOPHa9W0ihPAK8uyAmomCO3ELcq+JfaA9MCjatOQ5PlCd63o
+ jpySg/rQw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
+ Hat Linux)) id 1hWLHe-0001vX-Pd; Thu, 30 May 2019 13:39:54 +0000
+Date: Thu, 30 May 2019 06:39:54 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+Message-ID: <20190530133954.GA2024@bombadil.infradead.org>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+ <20190530110639.GC23461@bombadil.infradead.org>
+ <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
 MIME-Version: 1.0
-References: <1559212177-7072-1-git-send-email-bhsharma@redhat.com>
- <87v9xsnlu9.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87v9xsnlu9.fsf@concordia.ellerman.id.au>
-From: Bhupesh Sharma <bhsharma@redhat.com>
-Date: Thu, 30 May 2019 18:37:46 +0530
-Message-ID: <CACi5LpM9v1YC_6HhA-uKghawzkEu=TTPVkomMmv2i-LGi8X7+g@mail.gmail.com>
-Subject: Re: [PATCH] Documentation/stackprotector: powerpc supports stack
- protector
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,52 +62,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, corbet@lwn.net, linux-doc@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Bhupesh SHARMA <bhupesh.linux@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Russell King <linux@armlinux.org.uk>, Fenghua Yu <fenghua.yu@intel.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrey Konovalov <andreyknvl@google.com>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 30, 2019 at 6:25 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Bhupesh Sharma <bhsharma@redhat.com> writes:
-> > powerpc architecture (both 64-bit and 32-bit) supports stack protector
-> > mechanism since some time now [see commit 06ec27aea9fc ("powerpc/64:
-> > add stack protector support")].
-> >
-> > Update stackprotector arch support documentation to reflect the same.
-> >
-> > Signed-off-by: Bhupesh Sharma <bhsharma@redhat.com>
-> > ---
-> >  Documentation/features/debug/stackprotector/arch-support.txt | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/features/debug/stackprotector/arch-support.txt b/Documentation/features/debug/stackprotector/arch-support.txt
-> > index 9999ea521f3e..32bbdfc64c32 100644
-> > --- a/Documentation/features/debug/stackprotector/arch-support.txt
-> > +++ b/Documentation/features/debug/stackprotector/arch-support.txt
-> > @@ -22,7 +22,7 @@
-> >      |       nios2: | TODO |
-> >      |    openrisc: | TODO |
-> >      |      parisc: | TODO |
-> > -    |     powerpc: | TODO |
-> > +    |     powerpc: |  ok  |
-> >      |       riscv: | TODO |
-> >      |        s390: | TODO |
-> >      |          sh: |  ok  |
-> > --
-> > 2.7.4
->
-> Thanks.
->
-> This should probably go via the documentation tree?
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
+> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
+> > The two handle preemption differently.  Why is x86 wrong and this one
+> > correct?
+> 
+> Here it expects context to be already non-preemptible where as the proposed
+> generic function makes it non-preemptible with a preempt_[disable|enable]()
+> pair for the required code section, irrespective of it's present state. Is
+> not this better ?
 
-Thanks for the review Michael.
-I am ok with this going through the documentation tree as well.
+git log -p arch/x86/mm/fault.c
 
-Regards,
-Bhupesh
+search for 'kprobes'.
+
+tell me what you think.
