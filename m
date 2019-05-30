@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9312ED60
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 05:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E16072ED10
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 05:30:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DtXR0pQ8zDqL4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 13:36:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DtQQ3SPWzDqHd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 13:30:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="veU8EiFA"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="UL0u7tSU"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Dt7X5Lt4zDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 13:18:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Dt7S2CcCzDqMX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 13:17:56 +1000 (AEST)
 Received: from localhost (ip67-88-213-2.z213-88-67.customer.algx.net
  [67.88.213.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9ED942474C;
- Thu, 30 May 2019 03:17:58 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id EDE3924479;
+ Thu, 30 May 2019 03:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559186278;
- bh=k8XCWb3nVGyoshzNZpVRJe/i8quHXBLiNB8Xg/6kpDo=;
+ s=default; t=1559186274;
+ bh=MUReWeJro4bxc7yBDsWgZz5yQ6ksbBFwyAHIyxQ+gJ8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=veU8EiFA6prP/BzDTrW4Ot1c7HdIXeM3LWllA5ob/k6xYZE6PUOQf1W6KETcLYvna
- A/2B2/4qRywBioVzNBaCaijj8XUbXeQW1VfLB3cRkvQ85/5i16pg+7Ar9ZEk1KtG5v
- BaXMwd5ugzPFekJm7XmjK84EJu5IuKMm0lCti9sw=
+ b=UL0u7tSUhErc5Y8FNYg/h6FnYl5PI4WurIq+ocV5iLEqHXZcj/TBWu0I/k1InHgaE
+ vbPFxXmeFlspGEQ5+Dk/8hOMhCMA6l6G7H9uyrFJj9MOGWDul5vlCOQRexpsW0Wa67
+ o86gQIs5hgRqspbI3CvgkjHrJZKVPSWb7kbfhhHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.19 181/276] cpufreq: pmac32: fix possible object reference
- leak
-Date: Wed, 29 May 2019 20:05:39 -0700
-Message-Id: <20190530030536.601129220@linuxfoundation.org>
+Subject: [PATCH 4.19 215/276] ASoC: fsl_utils: fix a leaked reference by
+ adding missing of_node_put
+Date: Wed, 29 May 2019 20:06:13 -0700
+Message-Id: <20190530030538.571433062@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190530030523.133519668@linuxfoundation.org>
 References: <20190530030523.133519668@linuxfoundation.org>
@@ -60,61 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, stable@vger.kernel.org,
- Viresh Kumar <viresh.kumar@linaro.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Wen Yang <wen.yang99@zte.com.cn>
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, stable@vger.kernel.org,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Upstream commit 8d10dc28a9ea6e8c02e825dab28699f3c72b02d9 ]
+[ Upstream commit c705247136a523488eac806bd357c3e5d79a7acd ]
 
-The call to of_find_node_by_name returns a node pointer with refcount
+The call to of_parse_phandle returns a node pointer with refcount
 incremented thus it must be explicitly decremented after the last
 usage.
 
 Detected by coccinelle with the following warnings:
-./drivers/cpufreq/pmac32-cpufreq.c:557:2-8: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 552, but without a corresponding object release within this function.
-./drivers/cpufreq/pmac32-cpufreq.c:569:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 552, but without a corresponding object release within this function.
-./drivers/cpufreq/pmac32-cpufreq.c:598:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 587, but without a corresponding object release within this function.
+./sound/soc/fsl/fsl_utils.c:74:2-8: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 38, but without a corresponding     object release within this function.
 
 Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linux-pm@vger.kernel.org
+Cc: Timur Tabi <timur@kernel.org>
+Cc: Nicolin Chen <nicoleotsuka@gmail.com>
+Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: alsa-devel@alsa-project.org
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/pmac32-cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/fsl_utils.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
-index 61ae06ca008e7..e225edb5c3593 100644
---- a/drivers/cpufreq/pmac32-cpufreq.c
-+++ b/drivers/cpufreq/pmac32-cpufreq.c
-@@ -552,6 +552,7 @@ static int pmac_cpufreq_init_7447A(struct device_node *cpunode)
- 	volt_gpio_np = of_find_node_by_name(NULL, "cpu-vcore-select");
- 	if (volt_gpio_np)
- 		voltage_gpio = read_gpio(volt_gpio_np);
-+	of_node_put(volt_gpio_np);
- 	if (!voltage_gpio){
- 		pr_err("missing cpu-vcore-select gpio\n");
- 		return 1;
-@@ -588,6 +589,7 @@ static int pmac_cpufreq_init_750FX(struct device_node *cpunode)
- 	if (volt_gpio_np)
- 		voltage_gpio = read_gpio(volt_gpio_np);
- 
-+	of_node_put(volt_gpio_np);
- 	pvr = mfspr(SPRN_PVR);
- 	has_cpu_l2lve = !((pvr & 0xf00) == 0x100);
- 
+diff --git a/sound/soc/fsl/fsl_utils.c b/sound/soc/fsl/fsl_utils.c
+index 7f0fa4b522231..cca33ab7020a4 100644
+--- a/sound/soc/fsl/fsl_utils.c
++++ b/sound/soc/fsl/fsl_utils.c
+@@ -71,6 +71,7 @@ int fsl_asoc_get_dma_channel(struct device_node *ssi_np,
+ 	iprop = of_get_property(dma_np, "cell-index", NULL);
+ 	if (!iprop) {
+ 		of_node_put(dma_np);
++		of_node_put(dma_channel_np);
+ 		return -EINVAL;
+ 	}
+ 	*dma_id = be32_to_cpup(iprop);
 -- 
 2.20.1
 
