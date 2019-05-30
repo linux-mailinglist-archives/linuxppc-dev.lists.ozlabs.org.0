@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C169B2F7C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 09:12:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4922F7BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 09:11:00 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DzJL2g6VzDqXV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 17:10:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DzL12mqBzDqRv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 17:12:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="iWA3PU4H"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="ooZK0Kk4"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Dz9H2LLJzDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 17:04:50 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id w34so1430593pga.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 00:04:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45DzGN4JQ5zDqVQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 17:09:16 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id c5so2160288pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 00:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=wmfDkU2RzLL4WY5yaqcs8I+JmZsxTmaMJlVPb9rArso=;
- b=iWA3PU4HEBRGAeQPqtZ2ZRyGm3sVMD+XeZKyAa7xHGMA0apWs6UsgfbeyWUzIpFlaP
- QyO2GhNT7pa6CXKq4lExMRR5gYBVrCbY3w4hE2+NF6g+nlc2Q2awnWZGwW83xStSg4gR
- NMZfLvn6oHvNMBHRaCnb0r/a3ogl6MMGH0K9+53BCENyBUBxoIbpwv08KxPRkiVf2eT2
- X0OccykhiG3V5VY88PXmrK212cXc71yklnxOzxQ9gf4AINtJU16B0nzxGyddDGMLHQdQ
- ovqg+DXwG7Gnh0nK5qLW/M8GODetGJA5X4/HuM4wrwOBSF1Xb/Cmsi7nPL7UYop8taac
- IbGA==
+ bh=zv6mEACBFNnHpTtqofUcdCjxsiBj3nDjmG7El5zs98s=;
+ b=ooZK0Kk4w+4FK5exqqa5+2xtZT1VHu8ObKZpmEIRsJ65XbpnmH1KrWSW5tYmAsjcqv
+ rpqkaVuzkpX9s3XQPepak0XTJiWt4/t8SOLoaujNi42LfbndKllusYrH4lXTMtG2XBiH
+ ZbU2aS9PcvzVtoU7ttveYDi/bahtPo9rbAa+4IK4tXrQ/m1HeOwqgUZ1djNgHPU4GGkb
+ H0i45PB5ELokbdlFj+1oFzYXAEtXZE+2QOd2ibqgxXMc/d3GdoPiXaRhua0+NjEmtqyc
+ c0pod4MzpvHhrVTbIm7M3o2HgM5qMHOxXvXPEWXQjr2Q5gt+ejjCoKqSKNXcUDLxvv1N
+ LaXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=wmfDkU2RzLL4WY5yaqcs8I+JmZsxTmaMJlVPb9rArso=;
- b=nn15/kGrw4iiE2xFpu1MlpmzJMX+1qF7x/NvrxycUasaPGDbzSyKqOGaarupGw8gq8
- 0blFrOzXh/k06bwDmdHXmG1dMUYe+LaC+K33gP/ETcTj9eTifm9el7zDIEVvaKwNWMuu
- h4haybep6DNK3dOkQSQVKQ1GE4qY0x10LkKYM2GmXqsjlsyrMxGe87q+RkAEhAqtqCT8
- Gy1PVxmVtzAuArB5LXJFpVKS0/+DAKUa4b4maBE9h6y0XCw5WdYuOLWrV0Hu4OToCv7N
- 56X3kRz6tSAJ2zdD/y8jGSF4VE5+nMkSrrZw3GldZTfEzEB67kvl+/7xaU4n78nU6ID5
- owEw==
-X-Gm-Message-State: APjAAAXkZmWXkkpiMfTRYgLzypGHmsPe2dUYNQPQfXSkQlSxo+SQw1tK
- 1AGc2WQmE50LCRTErU19t0AAnA==
-X-Google-Smtp-Source: APXvYqyzf4z5w+0SWd/WeETVt78vUWAG4DOWR6CYw1nQxupIIzJ1eNQZaC/OzW1s1EoKjJwDSdv08Q==
-X-Received: by 2002:aa7:8c12:: with SMTP id c18mr2312665pfd.194.1559199888029; 
- Thu, 30 May 2019 00:04:48 -0700 (PDT)
+ bh=zv6mEACBFNnHpTtqofUcdCjxsiBj3nDjmG7El5zs98s=;
+ b=N73nwFSXUxyRx9M77+6HyJWtks3feet9nJVAgYjt4vLwMSXYtw2bfBKINt2US1qBDR
+ Of0UZNXs9+07TBT04IJyP1Mp5LUdAxGpWg3B4Xa3ulEHMBtjeWPmoDKyAdd2jHalIkWP
+ 7uFQbbk9Bu0Ng4sZgh29nv9Nvj5UbHEDMD/jKPa6F6oPAFyPopgyQVnWpXaOKdiHknwC
+ v20nClHj4Lp7kGFBkTY173mnFcs/ZrAUqNmB5RGi1dDlOH/ogyAhUyJJPuIuTpkdci89
+ MeYUIAgas25FzHe7nlz/Bmi7pgpw7aVkdMSsLWznfBxirRf17mR2xvEte/NCGNZWelry
+ f9GA==
+X-Gm-Message-State: APjAAAWqgvTWBZGPOq0NzmHU+a3ATfWncgYHLnxsXJyoZTV8XU92vfWR
+ j0Nz4+anys3N1UqwoaliZgQoWA==
+X-Google-Smtp-Source: APXvYqyh3E+9LZwkiE7e9eYT3jMIayjCBdPLdzJWiTyLrgoKYnKqIL2r30euGcASxPYiEBV8KvpfkA==
+X-Received: by 2002:a17:902:18a:: with SMTP id
+ b10mr2360771plb.277.1559200153200; 
+ Thu, 30 May 2019 00:09:13 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 85sm2556998pgb.52.2019.05.30.00.04.45
+ by smtp.gmail.com with ESMTPSA id n12sm1607469pgq.54.2019.05.30.00.09.07
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 30 May 2019 00:04:47 -0700 (PDT)
-Subject: Re: [PATCH kernel 0/2] pseries: Enable SWIOTLB
-To: linuxppc-dev@lists.ozlabs.org
-References: <20190507062559.20295-1-aik@ozlabs.ru>
+ Thu, 30 May 2019 00:09:09 -0700 (PDT)
+Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
+ system firmware
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20190501034221.18437-1-aik@ozlabs.ru>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Openpgp: preference=signencrypt
 Autocrypt: addr=aik@ozlabs.ru; keydata=
@@ -139,12 +141,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <3b82ac48-3e68-4d37-6489-9e9a35fba57d@ozlabs.ru>
-Date: Thu, 30 May 2019 17:04:44 +1000
+Message-ID: <a62a8612-77f5-5c6b-a6a2-15f006051d5e@ozlabs.ru>
+Date: Thu, 30 May 2019 17:09:06 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190507062559.20295-1-aik@ozlabs.ru>
+In-Reply-To: <20190501034221.18437-1-aik@ozlabs.ru>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -159,40 +161,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ping, anyone?
+so, it is sort-of nack from David and sort-of ack from Segher, what
+happens now?
 
-On 07/05/2019 16:25, Alexey Kardashevskiy wrote:
-> This is an attempt to allow PCI pass through to a secure guest when
-> hardware can only access insecure memory. This allows SWIOTLB use
-> for passed through devices.
+
+
+On 01/05/2019 13:42, Alexey Kardashevskiy wrote:
+> At the moment, on 256CPU + 256 PCI devices guest, it takes the guest
+> about 8.5sec to fetch the entire device tree via the client interface
+> as the DT is traversed twice - for strings blob and for struct blob.
+> Also, "getprop" is quite slow too as SLOF stores properties in a linked
+> list.
 > 
-> Later on secure VMs will unsecure SWIOTLB bounce buffers for DMA
-> and the rest of the guest RAM will be unavailable to the hardware
-> by default.
+> However, since [1] SLOF builds flattened device tree (FDT) for another
+> purpose. [2] adds a new "fdt-fetch" client interface for the OS to fetch
+> the FDT.
 > 
+> This tries the new method; if not supported, this falls back to
+> the old method.
 > 
-> This is based on sha1
-> e93c9c99a629 Linus Torvalds "Linux 5.1".
+> There is a change in the FDT layout - the old method produced
+> (reserved map, strings, structs), the new one receives only strings and
+> structs from the firmware and adds the final reserved map to the end,
+> so it is (fw reserved map, strings, structs, reserved map).
+> This still produces the same unflattened device tree.
 > 
-> Please comment. Thanks.
+> This merges the reserved map from the firmware into the kernel's reserved
+> map. At the moment SLOF generates an empty reserved map so this does not
+> change the existing behaviour in regard of reservations.
 > 
+> This supports only v17 onward as only that version provides dt_struct_size
+> which works as "fdt-fetch" only produces v17 blobs.
 > 
+> If "fdt-fetch" is not available, the old method of fetching the DT is used.
 > 
-> Alexey Kardashevskiy (2):
->   powerpc/pseries/dma: Allow swiotlb
->   powerpc/pseries/dma: Enable swiotlb
+> [1] https://git.qemu.org/?p=SLOF.git;a=commitdiff;h=e6fc84652c9c00
+> [2] https://git.qemu.org/?p=SLOF.git;a=commit;h=ecda95906930b80
 > 
->  arch/powerpc/kernel/dma-iommu.c        | 36 ++++++++++++++++++++++++++
->  arch/powerpc/platforms/pseries/setup.c |  5 ++++
->  arch/powerpc/platforms/pseries/Kconfig |  1 +
->  3 files changed, 42 insertions(+)
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
+>  arch/powerpc/kernel/prom_init.c | 43 +++++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index f33ff4163a51..72e7a602b68e 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -2457,6 +2457,48 @@ static void __init flatten_device_tree(void)
+>  		prom_panic("Can't allocate initial device-tree chunk\n");
+>  	mem_end = mem_start + room;
+>  
+> +	hdr = (void *) mem_start;
+> +	if (!call_prom_ret("fdt-fetch", 2, 1, NULL, mem_start,
+> +				room - sizeof(mem_reserve_map)) &&
+> +			hdr->version >= 17) {
+> +		u32 size;
+> +		struct mem_map_entry *fwrmap;
+> +
+> +		/* Fixup the boot cpuid */
+> +		hdr->boot_cpuid_phys = cpu_to_be32(prom.cpu);
+> +
+> +		/*
+> +		 * Store the struct and strings addresses, mostly
+> +		 * for consistency, only dt_header_start actually matters later.
+> +		 */
+> +		dt_header_start = mem_start;
+> +		dt_string_start = mem_start + be32_to_cpu(hdr->off_dt_strings);
+> +		dt_string_end = dt_string_start +
+> +			be32_to_cpu(hdr->dt_strings_size);
+> +		dt_struct_start = mem_start + be32_to_cpu(hdr->off_dt_struct);
+> +		dt_struct_end = dt_struct_start +
+> +			be32_to_cpu(hdr->dt_struct_size);
+> +
+> +		/*
+> +		 * Calculate the reserved map location (which we put
+> +		 * at the blob end) and update total size.
+> +		 */
+> +		fwrmap = (void *)(mem_start + be32_to_cpu(hdr->off_mem_rsvmap));
+> +		hdr->off_mem_rsvmap = hdr->totalsize;
+> +		size = be32_to_cpu(hdr->totalsize);
+> +		hdr->totalsize = cpu_to_be32(size + sizeof(mem_reserve_map));
+> +
+> +		/* Merge reserved map from firmware to ours */
+> +		for ( ; fwrmap->size; ++fwrmap)
+> +			reserve_mem(be64_to_cpu(fwrmap->base),
+> +					be64_to_cpu(fwrmap->size));
+> +
+> +		rsvmap = (u64 *)(mem_start + size);
+> +
+> +		prom_debug("Fetched DTB: %d bytes to @%lx\n", size, mem_start);
+> +		goto finalize_exit;
+> +	}
+> +
+>  	/* Get root of tree */
+>  	root = call_prom("peer", 1, 1, (phandle)0);
+>  	if (root == (phandle)0)
+> @@ -2504,6 +2546,7 @@ static void __init flatten_device_tree(void)
+>  	/* Version 16 is not backward compatible */
+>  	hdr->last_comp_version = cpu_to_be32(0x10);
+>  
+> +finalize_exit:
+>  	/* Copy the reserve map in */
+>  	memcpy(rsvmap, mem_reserve_map, sizeof(mem_reserve_map));
+>  
 > 
 
 -- 
