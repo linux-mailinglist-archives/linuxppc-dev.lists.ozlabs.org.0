@@ -1,35 +1,153 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB4E2F7B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 09:09:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DzGV50HmzDqQV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 17:09:22 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4922F7BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 09:11:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DzJL2g6VzDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 17:10:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 45Dz926gxgzDqTZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 17:04:38 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 490B9AE807E6;
- Thu, 30 May 2019 03:04:06 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="iWA3PU4H"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Dz9H2LLJzDqTk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 17:04:50 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id w34so1430593pga.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 00:04:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=wmfDkU2RzLL4WY5yaqcs8I+JmZsxTmaMJlVPb9rArso=;
+ b=iWA3PU4HEBRGAeQPqtZ2ZRyGm3sVMD+XeZKyAa7xHGMA0apWs6UsgfbeyWUzIpFlaP
+ QyO2GhNT7pa6CXKq4lExMRR5gYBVrCbY3w4hE2+NF6g+nlc2Q2awnWZGwW83xStSg4gR
+ NMZfLvn6oHvNMBHRaCnb0r/a3ogl6MMGH0K9+53BCENyBUBxoIbpwv08KxPRkiVf2eT2
+ X0OccykhiG3V5VY88PXmrK212cXc71yklnxOzxQ9gf4AINtJU16B0nzxGyddDGMLHQdQ
+ ovqg+DXwG7Gnh0nK5qLW/M8GODetGJA5X4/HuM4wrwOBSF1Xb/Cmsi7nPL7UYop8taac
+ IbGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=wmfDkU2RzLL4WY5yaqcs8I+JmZsxTmaMJlVPb9rArso=;
+ b=nn15/kGrw4iiE2xFpu1MlpmzJMX+1qF7x/NvrxycUasaPGDbzSyKqOGaarupGw8gq8
+ 0blFrOzXh/k06bwDmdHXmG1dMUYe+LaC+K33gP/ETcTj9eTifm9el7zDIEVvaKwNWMuu
+ h4haybep6DNK3dOkQSQVKQ1GE4qY0x10LkKYM2GmXqsjlsyrMxGe87q+RkAEhAqtqCT8
+ Gy1PVxmVtzAuArB5LXJFpVKS0/+DAKUa4b4maBE9h6y0XCw5WdYuOLWrV0Hu4OToCv7N
+ 56X3kRz6tSAJ2zdD/y8jGSF4VE5+nMkSrrZw3GldZTfEzEB67kvl+/7xaU4n78nU6ID5
+ owEw==
+X-Gm-Message-State: APjAAAXkZmWXkkpiMfTRYgLzypGHmsPe2dUYNQPQfXSkQlSxo+SQw1tK
+ 1AGc2WQmE50LCRTErU19t0AAnA==
+X-Google-Smtp-Source: APXvYqyzf4z5w+0SWd/WeETVt78vUWAG4DOWR6CYw1nQxupIIzJ1eNQZaC/OzW1s1EoKjJwDSdv08Q==
+X-Received: by 2002:aa7:8c12:: with SMTP id c18mr2312665pfd.194.1559199888029; 
+ Thu, 30 May 2019 00:04:48 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id 85sm2556998pgb.52.2019.05.30.00.04.45
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 30 May 2019 00:04:47 -0700 (PDT)
+Subject: Re: [PATCH kernel 0/2] pseries: Enable SWIOTLB
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v3 3/3] powerpc/powernv/ioda2: Create bigger default
- window with 64k IOMMU pages
-Date: Thu, 30 May 2019 17:03:55 +1000
-Message-Id: <20190530070355.121802-4-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190530070355.121802-1-aik@ozlabs.ru>
-References: <20190530070355.121802-1-aik@ozlabs.ru>
+References: <20190507062559.20295-1-aik@ozlabs.ru>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Openpgp: preference=signencrypt
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <3b82ac48-3e68-4d37-6489-9e9a35fba57d@ozlabs.ru>
+Date: Thu, 30 May 2019 17:04:44 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <20190507062559.20295-1-aik@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,249 +159,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>, Oliver O'Halloran <oohall@gmail.com>,
- Sam Bobroff <sbobroff@linux.ibm.com>,
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the moment we create a small window only for 32bit devices, the window
-maps 0..2GB of the PCI space only. For other devices we either use
-a sketchy bypass or hardware bypass but the former can only work if
-the amount of RAM is no bigger than the device's DMA mask and the latter
-requires devices to support at least 59bit DMA.
+Ping, anyone?
 
-This extends the default DMA window to the maximum size possible to allow
-a wider DMA mask than just 32bit. The default window size is now limited
-by the the iommu_table::it_map allocation bitmap which is a contiguous
-array, 1 bit per an IOMMU page.
+On 07/05/2019 16:25, Alexey Kardashevskiy wrote:
+> This is an attempt to allow PCI pass through to a secure guest when
+> hardware can only access insecure memory. This allows SWIOTLB use
+> for passed through devices.
+> 
+> Later on secure VMs will unsecure SWIOTLB bounce buffers for DMA
+> and the rest of the guest RAM will be unavailable to the hardware
+> by default.
+> 
+> 
+> This is based on sha1
+> e93c9c99a629 Linus Torvalds "Linux 5.1".
+> 
+> Please comment. Thanks.
+> 
+> 
+> 
+> Alexey Kardashevskiy (2):
+>   powerpc/pseries/dma: Allow swiotlb
+>   powerpc/pseries/dma: Enable swiotlb
+> 
+>  arch/powerpc/kernel/dma-iommu.c        | 36 ++++++++++++++++++++++++++
+>  arch/powerpc/platforms/pseries/setup.c |  5 ++++
+>  arch/powerpc/platforms/pseries/Kconfig |  1 +
+>  3 files changed, 42 insertions(+)
+> 
 
-This increases the default IOMMU page size from hard coded 4K to
-the system page size to allow wider DMA masks.
-
-This increases the level number to not exceed the max order allocation
-limit per TCE level. By the same time, this keeps minimal levels number
-as 2 in order to save memory.
-
-As the extended window now overlaps the 32bit MMIO region, this adds
-an area reservation to iommu_init_table().
-
-After this change the default window size is 0x80000000000==1<<43 so
-devices limited to DMA mask smaller than the amount of system RAM can
-still use more than just 2GB of memory for DMA.
-
-With the on-demand allocation of indirect TCE table levels enabled and
-2 levels, the first TCE level size is just
-1<<ceil((log2(0x7ffffffffff+1)-16)/2)=16384 TCEs or 2 system pages.
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
-Changes:
-v3:
-* fixed tce levels calculation
-
-v2:
-* adjusted level number to the max order
----
- arch/powerpc/include/asm/iommu.h          |  8 +++-
- arch/powerpc/kernel/iommu.c               | 58 +++++++++++++++--------
- arch/powerpc/platforms/powernv/pci-ioda.c | 40 +++++++++++++---
- 3 files changed, 79 insertions(+), 27 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 0ac52392ed99..5ea782e04803 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -124,6 +124,8 @@ struct iommu_table {
- 	struct iommu_table_ops *it_ops;
- 	struct kref    it_kref;
- 	int it_nid;
-+	unsigned long it_reserved_start; /* Start of not-DMA-able (MMIO) area */
-+	unsigned long it_reserved_end;
- };
- 
- #define IOMMU_TABLE_USERSPACE_ENTRY_RO(tbl, entry) \
-@@ -162,8 +164,10 @@ extern int iommu_tce_table_put(struct iommu_table *tbl);
- /* Initializes an iommu_table based in values set in the passed-in
-  * structure
-  */
--extern struct iommu_table *iommu_init_table(struct iommu_table * tbl,
--					    int nid);
-+extern struct iommu_table *iommu_init_table_res(struct iommu_table *tbl,
-+		int nid, unsigned long res_start, unsigned long res_end);
-+#define iommu_init_table(tbl, nid) iommu_init_table_res((tbl), (nid), 0, 0)
-+
- #define IOMMU_TABLE_GROUP_MAX_TABLES	2
- 
- struct iommu_table_group;
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 33bbd59cff79..209306ce7f4b 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -646,11 +646,43 @@ static void iommu_table_clear(struct iommu_table *tbl)
- #endif
- }
- 
-+static void iommu_table_reserve_pages(struct iommu_table *tbl)
-+{
-+	int i;
-+
-+	/*
-+	 * Reserve page 0 so it will not be used for any mappings.
-+	 * This avoids buggy drivers that consider page 0 to be invalid
-+	 * to crash the machine or even lose data.
-+	 */
-+	if (tbl->it_offset == 0)
-+		set_bit(0, tbl->it_map);
-+
-+	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
-+		set_bit(i, tbl->it_map);
-+}
-+
-+static void iommu_table_release_pages(struct iommu_table *tbl)
-+{
-+	int i;
-+
-+	/*
-+	 * In case we have reserved the first bit, we should not emit
-+	 * the warning below.
-+	 */
-+	if (tbl->it_offset == 0)
-+		clear_bit(0, tbl->it_map);
-+
-+	for (i = tbl->it_reserved_start; i < tbl->it_reserved_end; ++i)
-+		clear_bit(i, tbl->it_map);
-+}
-+
- /*
-  * Build a iommu_table structure.  This contains a bit map which
-  * is used to manage allocation of the tce space.
-  */
--struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid)
-+struct iommu_table *iommu_init_table_res(struct iommu_table *tbl, int nid,
-+		unsigned long res_start, unsigned long res_end)
- {
- 	unsigned long sz;
- 	static int welcomed = 0;
-@@ -669,13 +701,9 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid)
- 	tbl->it_map = page_address(page);
- 	memset(tbl->it_map, 0, sz);
- 
--	/*
--	 * Reserve page 0 so it will not be used for any mappings.
--	 * This avoids buggy drivers that consider page 0 to be invalid
--	 * to crash the machine or even lose data.
--	 */
--	if (tbl->it_offset == 0)
--		set_bit(0, tbl->it_map);
-+	tbl->it_reserved_start = res_start;
-+	tbl->it_reserved_end = res_end;
-+	iommu_table_reserve_pages(tbl);
- 
- 	/* We only split the IOMMU table if we have 1GB or more of space */
- 	if ((tbl->it_size << tbl->it_page_shift) >= (1UL * 1024 * 1024 * 1024))
-@@ -727,12 +755,7 @@ static void iommu_table_free(struct kref *kref)
- 		return;
- 	}
- 
--	/*
--	 * In case we have reserved the first bit, we should not emit
--	 * the warning below.
--	 */
--	if (tbl->it_offset == 0)
--		clear_bit(0, tbl->it_map);
-+	iommu_table_release_pages(tbl);
- 
- 	/* verify that table contains no entries */
- 	if (!bitmap_empty(tbl->it_map, tbl->it_size))
-@@ -1037,8 +1060,7 @@ int iommu_take_ownership(struct iommu_table *tbl)
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_lock(&tbl->pools[i].lock);
- 
--	if (tbl->it_offset == 0)
--		clear_bit(0, tbl->it_map);
-+	iommu_table_reserve_pages(tbl);
- 
- 	if (!bitmap_empty(tbl->it_map, tbl->it_size)) {
- 		pr_err("iommu_tce: it_map is not empty");
-@@ -1068,9 +1090,7 @@ void iommu_release_ownership(struct iommu_table *tbl)
- 
- 	memset(tbl->it_map, 0, sz);
- 
--	/* Restore bit#0 set by iommu_init_table() */
--	if (tbl->it_offset == 0)
--		set_bit(0, tbl->it_map);
-+	iommu_table_release_pages(tbl);
- 
- 	for (i = 0; i < tbl->nr_pools; i++)
- 		spin_unlock(&tbl->pools[i].lock);
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 126602b4e399..ce2efdb3900d 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2422,6 +2422,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- {
- 	struct iommu_table *tbl = NULL;
- 	long rc;
-+	unsigned long res_start, res_end;
- 
- 	/*
- 	 * crashkernel= specifies the kdump kernel's maximum memory at
-@@ -2435,19 +2436,46 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 	 * DMA window can be larger than available memory, which will
- 	 * cause errors later.
- 	 */
--	const u64 window_size = min((u64)pe->table_group.tce32_size, max_memory);
-+	const u64 maxblock = 1UL << (PAGE_SHIFT + MAX_ORDER - 1);
- 
--	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0,
--			IOMMU_PAGE_SHIFT_4K,
--			window_size,
--			POWERNV_IOMMU_DEFAULT_LEVELS, false, &tbl);
-+	/*
-+	 * We create the default window as big as we can. The constraint is
-+	 * the max order of allocation possible. The TCE tableis likely to
-+	 * end up being multilevel and with on-demand allocation in place,
-+	 * the initial use is not going to be huge as the default window aims
-+	 * to support cripplied devices (i.e. not fully 64bit DMAble) only.
-+	 */
-+	/* iommu_table::it_map uses 1 bit per IOMMU page, hence 8 */
-+	const u64 window_size = min((maxblock * 8) << PAGE_SHIFT, max_memory);
-+	/* Each TCE level cannot exceed maxblock so go multilevel if needed */
-+	unsigned long tces_order = ilog2(window_size >> PAGE_SHIFT);
-+	unsigned long tcelevel_order = ilog2(maxblock >> 3);
-+	unsigned int levels = tces_order / tcelevel_order;
-+
-+	if (tces_order % tcelevel_order)
-+		levels += 1;
-+	/*
-+	 * We try to stick to default levels (which is >1 at the moment) in
-+	 * order to save memory by relying on on-demain TCE level allocation.
-+	 */
-+	levels = max_t(unsigned int, levels, POWERNV_IOMMU_DEFAULT_LEVELS);
-+
-+	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0, PAGE_SHIFT,
-+			window_size, levels, false, &tbl);
- 	if (rc) {
- 		pe_err(pe, "Failed to create 32-bit TCE table, err %ld",
- 				rc);
- 		return rc;
- 	}
- 
--	iommu_init_table(tbl, pe->phb->hose->node);
-+	/* We use top part of 32bit space for MMIO so exclude it from DMA */
-+	res_start = 0;
-+	res_end = 0;
-+	if (window_size > pe->phb->ioda.m32_pci_base) {
-+		res_start = pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
-+		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
-+	}
-+	iommu_init_table_res(tbl, pe->phb->hose->node, res_start, res_end);
- 
- 	rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
- 	if (rc) {
 -- 
-2.17.1
-
+Alexey
