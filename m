@@ -1,40 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5052F897
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 10:31:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885DD2F839
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 10:05:06 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45F0Vm0rgtzDqV5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 18:05:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45F15X1MynzDqVK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 18:31:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=the-dreams.de
- (client-ip=88.99.104.3; helo=pokefinder.org; envelope-from=wsa@the-dreams.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.85.128.65; helo=mail-wm1-f65.google.com;
+ envelope-from=pbonzini@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=the-dreams.de
-Received: from pokefinder.org (sauhun.de [88.99.104.3])
- by lists.ozlabs.org (Postfix) with ESMTP id 45DzXM0c3XzDqQh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 17:21:20 +1000 (AEST)
-Received: from localhost (unknown [91.64.182.124])
- by pokefinder.org (Postfix) with ESMTPSA id 2A8B82C360B;
- Thu, 30 May 2019 09:21:16 +0200 (CEST)
-Date: Thu, 30 May 2019 09:21:14 +0200
-From: Wolfram Sang <wsa@the-dreams.de>
-To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Subject: Re: [PATCH 22/22] docs: fix broken documentation links
-Message-ID: <20190530072110.GA1776@kunai>
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
+ [209.85.128.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45F1406RS0zDqTP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 18:30:20 +1000 (AEST)
+Received: by mail-wm1-f65.google.com with SMTP id c6so322523wml.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 01:30:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=pIqrbsE6/Nv/138vVdlcEQnoXvw/3uCQiUSd/l1oIaY=;
+ b=I81dugDTc3tAzijLBAO5BaqYw/GdUHlMMgNYgIoCW4mn+t+WlSKi5QsvpYgaSaC4+E
+ MZUcHna3T+YpqNZx5d2zkc6m6uhr+p4zSmFrtDwZyWZ3lIRZ9Gf9nPX2YIv5llc0sj2I
+ SWg5uOe/3xv1zw915y4g14GWuJ886syk3k86WFvlmXVAmPRD6wM4BsFOcc5X1Jyeo/rR
+ yFM2dtOjBpaRbuzh7J94KS6taAOC0RbzjWj6O6EEaol4lqPs0xvcLoYByXWWf+AHHa99
+ UFdnKc2hLIwOuSZ4hGbeV5jeYni6wfxIghYBKsWM8Pb/EdY4j8YJsJRcSDdVJ6AEU4pI
+ CDFA==
+X-Gm-Message-State: APjAAAWno/FiaEm98GnxfbqF5Yxgg9RNAZJMg9ckWDOcyyoaBHLVxqJg
+ 9FHymQjC+NUlKWsO27arQyvGow==
+X-Google-Smtp-Source: APXvYqxguQuxTuphnJ9ISpnJqaH4xcMLu4CCyeeLtDHqpdu4VJX+hsaHIz6Atqsiq1kkBiYITPXGpg==
+X-Received: by 2002:a7b:c043:: with SMTP id u3mr910083wmc.56.1559205017089;
+ Thu, 30 May 2019 01:30:17 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:3da1:318a:275c:408?
+ ([2001:b07:6468:f312:3da1:318a:275c:408])
+ by smtp.gmail.com with ESMTPSA id y8sm1688765wmi.8.2019.05.30.01.30.15
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Thu, 30 May 2019 01:30:16 -0700 (PDT)
+Subject: Re: [PATCH 09/22] docs: mark orphan documents as such
+To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>
 References: <cover.1559171394.git.mchehab+samsung@kernel.org>
- <f9fecacbe4ce0b2b3aed38d71ae3753f2daf3ce3.1559171394.git.mchehab+samsung@kernel.org>
+ <e0bf4e767dd5de9189e5993fbec2f4b1bafd2064.1559171394.git.mchehab+samsung@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <ea534992-07ff-15d8-e48b-5fde37c88f73@redhat.com>
+Date: Thu, 30 May 2019 10:30:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="fUYQa+Pmc3FrFX/N"
-Content-Disposition: inline
-In-Reply-To: <f9fecacbe4ce0b2b3aed38d71ae3753f2daf3ce3.1559171394.git.mchehab+samsung@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Thu, 30 May 2019 18:03:48 +1000
+In-Reply-To: <e0bf4e767dd5de9189e5993fbec2f4b1bafd2064.1559171394.git.mchehab+samsung@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,125 +72,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>, Will Deacon <will.deacon@arm.com>,
- Pavel Tatashin <pasha.tatashin@oracle.com>, Paul Mackerras <paulus@samba.org>,
- Alessia Mantegazza <amantegazza@vaga.pv.it>, Jakub Wilk <jwilk@jwilk.net>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>,
- "Paul E. McKenney" <paulmck@linux.ibm.com>,
- Kevin Hilman <khilman@baylibre.com>, James Morris <jmorris@namei.org>,
- linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- xen-devel@lists.xenproject.org, Jason Wang <jasowang@redhat.com>,
- Alexander Popov <alex.popov@linux.com>, Qian Cai <cai@lca.pw>,
- Al Viro <viro@zeniv.linux.org.uk>,
- Thomas Preston <thomas.preston@codethink.co.uk>,
- Thomas Gleixner <tglx@linutronix.de>, Kairui Song <kasong@redhat.com>,
- Ding Xiang <dingxiang@cmss.chinamobile.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Jiri Kosina <jkosina@suse.cz>,
- Casey Schaufler <casey@schaufler-ca.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Mark Rutland <mark.rutland@arm.com>, Feng Tang <feng.tang@intel.com>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, linux-mm@kvack.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Yannik Sembritzki <yannik@sembritzki.me>, Harry Wei <harryxiyou@gmail.com>,
- linux-i2c@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Stefano Stabellini <sstabellini@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
- YueHaibing <yuehaibing@huawei.com>, Robert Moore <robert.moore@intel.com>,
- AKASHI Takahiro <takahiro.akashi@linaro.org>, Len Brown <lenb@kernel.org>,
- Joerg Roedel <jroedel@suse.de>, linux-arm-msm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
- linux-gpio@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-amlogic@lists.infradead.org,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- James Morse <james.morse@arm.com>, Samuel Mendoza-Jonas <sam@mendozajonas.com>,
- linux-pci@vger.kernel.org, Bhupesh Sharma <bhsharma@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- platform-driver-x86@vger.kernel.org, Quentin Perret <quentin.perret@arm.com>,
- linux-kselftest@vger.kernel.org, Alex Shi <alex.shi@linux.alibaba.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Baoquan He <bhe@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, Raphael Gault <raphael.gault@arm.com>,
- Joel Stanley <joel@jms.id.au>, Federico Vaga <federico.vaga@vaga.pv.it>,
- Darren Hart <dvhart@infradead.org>, linux-edac@vger.kernel.org,
- Erik Schmauss <erik.schmauss@intel.com>, "Serge E. Hallyn" <serge@hallyn.com>,
- Palmer Dabbelt <palmer@sifive.com>, Kees Cook <keescook@chromium.org>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- SeongJae Park <sj38.park@gmail.com>, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- virtualization@lists.linux-foundation.org, devel@acpica.org,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Olof Johansson <olof@lixom.net>,
- Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Sven Van Asbroeck <thesven73@gmail.com>, Michal Hocko <mhocko@suse.com>,
- kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Thorsten Leemhuis <linux@leemhuis.info>,
- David Howells <dhowells@redhat.com>, David Brown <david.brown@linaro.org>,
- "H. Peter Anvin" <hpa@zytor.com>, devel@driverdev.osuosl.org,
- Manfred Spraul <manfred@colorfullife.com>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Andy Gross <agross@kernel.org>, Dave Young <dyoung@redhat.com>,
- devicetree@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
- Jerome Glisse <jglisse@redhat.com>, Rob Herring <robh+dt@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Dmitry Vyukov <dvyukov@google.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Juergen Gross <jgross@suse.com>,
- Denis Efremov <efremov@ispras.ru>, netdev@vger.kernel.org,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Changbin Du <changbin.du@intel.com>, linux-security-module@vger.kernel.org,
- Robin Murphy <robin.murphy@arm.com>, Andy Shevchenko <andy@infradead.org>
+Cc: kvm@vger.kernel.org, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+ Maxime Ripard <maxime.ripard@bootlin.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Alexandre Torgue <alexandre.torgue@st.com>, Jonathan Corbet <corbet@lwn.net>,
+ David Airlie <airlied@linux.ie>, Andrew Donnellan <ajd@linux.ibm.com>,
+ linux-pm@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Matan Ziv-Av <matan@svgalib.org>,
+ Mauro Carvalho Chehab <mchehab@infradead.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Sean Paul <sean@poorly.run>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Georgi Djakov <georgi.djakov@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---fUYQa+Pmc3FrFX/N
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, May 29, 2019 at 08:23:53PM -0300, Mauro Carvalho Chehab wrote:
-> Mostly due to x86 and acpi conversion, several documentation
-> links are still pointing to the old file. Fix them.
->=20
+On 30/05/19 01:23, Mauro Carvalho Chehab wrote:
+> Sphinx doesn't like orphan documents:
+> 
+>     Documentation/accelerators/ocxl.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/stm32f429-overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/stm32f746-overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/stm32f769-overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/stm32h743-overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/arm/stm32/stm32mp157-overview.rst: WARNING: document isn't included in any toctree
+>     Documentation/gpu/msm-crash-dump.rst: WARNING: document isn't included in any toctree
+>     Documentation/interconnect/interconnect.rst: WARNING: document isn't included in any toctree
+>     Documentation/laptops/lg-laptop.rst: WARNING: document isn't included in any toctree
+>     Documentation/powerpc/isa-versions.rst: WARNING: document isn't included in any toctree
+>     Documentation/virtual/kvm/amd-memory-encryption.rst: WARNING: document isn't included in any toctree
+>     Documentation/virtual/kvm/vcpu-requests.rst: WARNING: document isn't included in any toctree
+> 
+> So, while they aren't on any toctree, add :orphan: to them, in order
+> to silent this warning.
+> 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 
-Didn't I ack this already?
+Please leave out KVM, I'll fix that instead.  Thanks for the report!
 
-For the I2C part:
+Paolo
 
-Reviewed-by: Wolfram Sang <wsa@the-dreams.de>
+> ---
+>  Documentation/accelerators/ocxl.rst                 | 2 ++
+>  Documentation/arm/stm32/overview.rst                | 2 ++
+>  Documentation/arm/stm32/stm32f429-overview.rst      | 2 ++
+>  Documentation/arm/stm32/stm32f746-overview.rst      | 2 ++
+>  Documentation/arm/stm32/stm32f769-overview.rst      | 2 ++
+>  Documentation/arm/stm32/stm32h743-overview.rst      | 2 ++
+>  Documentation/arm/stm32/stm32mp157-overview.rst     | 2 ++
+>  Documentation/gpu/msm-crash-dump.rst                | 2 ++
+>  Documentation/interconnect/interconnect.rst         | 2 ++
+>  Documentation/laptops/lg-laptop.rst                 | 2 ++
+>  Documentation/powerpc/isa-versions.rst              | 2 ++
+>  Documentation/virtual/kvm/amd-memory-encryption.rst | 2 ++
+>  Documentation/virtual/kvm/vcpu-requests.rst         | 2 ++
+>  13 files changed, 26 insertions(+)
+> 
+> diff --git a/Documentation/accelerators/ocxl.rst b/Documentation/accelerators/ocxl.rst
+> index 14cefc020e2d..b1cea19a90f5 100644
+> --- a/Documentation/accelerators/ocxl.rst
+> +++ b/Documentation/accelerators/ocxl.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  ========================================================
+>  OpenCAPI (Open Coherent Accelerator Processor Interface)
+>  ========================================================
+> diff --git a/Documentation/arm/stm32/overview.rst b/Documentation/arm/stm32/overview.rst
+> index 85cfc8410798..f7e734153860 100644
+> --- a/Documentation/arm/stm32/overview.rst
+> +++ b/Documentation/arm/stm32/overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  ========================
+>  STM32 ARM Linux Overview
+>  ========================
+> diff --git a/Documentation/arm/stm32/stm32f429-overview.rst b/Documentation/arm/stm32/stm32f429-overview.rst
+> index 18feda97f483..65bbb1c3b423 100644
+> --- a/Documentation/arm/stm32/stm32f429-overview.rst
+> +++ b/Documentation/arm/stm32/stm32f429-overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  STM32F429 Overview
+>  ==================
+>  
+> diff --git a/Documentation/arm/stm32/stm32f746-overview.rst b/Documentation/arm/stm32/stm32f746-overview.rst
+> index b5f4b6ce7656..42d593085015 100644
+> --- a/Documentation/arm/stm32/stm32f746-overview.rst
+> +++ b/Documentation/arm/stm32/stm32f746-overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  STM32F746 Overview
+>  ==================
+>  
+> diff --git a/Documentation/arm/stm32/stm32f769-overview.rst b/Documentation/arm/stm32/stm32f769-overview.rst
+> index 228656ced2fe..f6adac862b17 100644
+> --- a/Documentation/arm/stm32/stm32f769-overview.rst
+> +++ b/Documentation/arm/stm32/stm32f769-overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  STM32F769 Overview
+>  ==================
+>  
+> diff --git a/Documentation/arm/stm32/stm32h743-overview.rst b/Documentation/arm/stm32/stm32h743-overview.rst
+> index 3458dc00095d..c525835e7473 100644
+> --- a/Documentation/arm/stm32/stm32h743-overview.rst
+> +++ b/Documentation/arm/stm32/stm32h743-overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  STM32H743 Overview
+>  ==================
+>  
+> diff --git a/Documentation/arm/stm32/stm32mp157-overview.rst b/Documentation/arm/stm32/stm32mp157-overview.rst
+> index 62e176d47ca7..2c52cd020601 100644
+> --- a/Documentation/arm/stm32/stm32mp157-overview.rst
+> +++ b/Documentation/arm/stm32/stm32mp157-overview.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  STM32MP157 Overview
+>  ===================
+>  
+> diff --git a/Documentation/gpu/msm-crash-dump.rst b/Documentation/gpu/msm-crash-dump.rst
+> index 757cd257e0d8..240ef200f76c 100644
+> --- a/Documentation/gpu/msm-crash-dump.rst
+> +++ b/Documentation/gpu/msm-crash-dump.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  =====================
+>  MSM Crash Dump Format
+>  =====================
+> diff --git a/Documentation/interconnect/interconnect.rst b/Documentation/interconnect/interconnect.rst
+> index c3e004893796..56e331dab70e 100644
+> --- a/Documentation/interconnect/interconnect.rst
+> +++ b/Documentation/interconnect/interconnect.rst
+> @@ -1,5 +1,7 @@
+>  .. SPDX-License-Identifier: GPL-2.0
+>  
+> +:orphan:
+> +
+>  =====================================
+>  GENERIC SYSTEM INTERCONNECT SUBSYSTEM
+>  =====================================
+> diff --git a/Documentation/laptops/lg-laptop.rst b/Documentation/laptops/lg-laptop.rst
+> index aa503ee9b3bc..f2c2ffe31101 100644
+> --- a/Documentation/laptops/lg-laptop.rst
+> +++ b/Documentation/laptops/lg-laptop.rst
+> @@ -1,5 +1,7 @@
+>  .. SPDX-License-Identifier: GPL-2.0+
+>  
+> +:orphan:
+> +
+>  LG Gram laptop extra features
+>  =============================
+>  
+> diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/powerpc/isa-versions.rst
+> index 812e20cc898c..66c24140ebf1 100644
+> --- a/Documentation/powerpc/isa-versions.rst
+> +++ b/Documentation/powerpc/isa-versions.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  CPU to ISA Version Mapping
+>  ==========================
+>  
+> diff --git a/Documentation/virtual/kvm/amd-memory-encryption.rst b/Documentation/virtual/kvm/amd-memory-encryption.rst
+> index 659bbc093b52..33d697ab8a58 100644
+> --- a/Documentation/virtual/kvm/amd-memory-encryption.rst
+> +++ b/Documentation/virtual/kvm/amd-memory-encryption.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  ======================================
+>  Secure Encrypted Virtualization (SEV)
+>  ======================================
+> diff --git a/Documentation/virtual/kvm/vcpu-requests.rst b/Documentation/virtual/kvm/vcpu-requests.rst
+> index 5feb3706a7ae..c1807a1b92e6 100644
+> --- a/Documentation/virtual/kvm/vcpu-requests.rst
+> +++ b/Documentation/virtual/kvm/vcpu-requests.rst
+> @@ -1,3 +1,5 @@
+> +:orphan:
+> +
+>  =================
+>  KVM VCPU Requests
+>  =================
+> 
 
-
---fUYQa+Pmc3FrFX/N
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAlzvhGEACgkQFA3kzBSg
-KbZPRxAAhFPNKyTqg0No7kzvML2PBj9puH4y5gi/QPmIpGm4lHZikJFOlq9rgwR+
-PNNz1an8lJFTrFan9VvG36hYv4zCcWm80yw2U9xZfBOk1QRHUN5jTbC8UdGyCYh+
-Vo1yR3nEWEODI3yIS8kvTwlFWENBd5YA7O4GllMR1Ink+IPkc+60ji8Rt+VNZuFp
-J8tzUF5tCJlUFQYTgf8fSFvM+hA1shd0gnHRUNGKIBNLONCg9mbWBODwSfZi/VcV
-5J2t00XQuI/cXPk/I5Hm1XHxQKuaV/pQmcTDkrYB/ZFkPOUxqP6PM/I5S+usHBDr
-7CHd3KxR04qYdmaNac8E3NOqnN4xvGMVAGpO5mvvJ0lwSVvVsdMCETSjZ8pjfnXO
-pfDKBThEmJLVp9PdG5pVz1MwHv20PXAYax1rujWRjWIFdr/E8HyoW/qurTZf/bTs
-tQc63rAg5QHrF177J3WR13tZp+zpVN0KL061qk9J65j3aDMsyProevJz2RN/cQzX
-3630pUKa6S/q7r/t2yfL//sGW5K1nbWj3XdtpSZKvyp8KUmEM41oi48rkwMdMGL9
-aB7uRlDM/0J+WIRHeXSMJ50Yfk0rKjdAuyKbhWU9+nwgPaTxUW6KMLsRhjV1K57Y
-VK46VL1PX9nHY6d5572YnbuNT5Nzxeazz5nuBYHTLFDyBkyHHL8=
-=MWyf
------END PGP SIGNATURE-----
-
---fUYQa+Pmc3FrFX/N--
