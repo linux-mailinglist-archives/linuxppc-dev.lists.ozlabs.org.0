@@ -2,45 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED622FDAB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 16:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2840D2FDF8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 16:36:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45F8vY2XLrzDqWY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 00:23:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45F9Bm5M6LzDqX8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 00:36:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=shuah@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="BGm48iFn"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45F8qR1fHpzDqVQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 00:20:00 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 45B6F2005FF;
- Thu, 30 May 2019 16:19:57 +0200 (CEST)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com
- [134.27.226.22])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 380D12002A0;
- Thu, 30 May 2019 16:19:57 +0200 (CEST)
-Received: from fsr-ub1864-101.ea.freescale.net
- (fsr-ub1864-101.ea.freescale.net [10.171.82.13])
- by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id A3E7F2062D;
- Thu, 30 May 2019 16:19:56 +0200 (CEST)
-From: laurentiu.tudor@nxp.com
-To: netdev@vger.kernel.org, madalin.bucur@nxp.com, roy.pledge@nxp.com,
- camelia.groza@nxp.com, leoyang.li@nxp.com
-Subject: [PATCH v3 6/6] dpaa_eth: fix iova handling for sg frames
-Date: Thu, 30 May 2019 17:19:51 +0300
-Message-Id: <20190530141951.6704-7-laurentiu.tudor@nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
-References: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45F91R61WPzDqWC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 00:28:43 +1000 (AEST)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net
+ [24.9.64.241])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id D975F25ADC;
+ Thu, 30 May 2019 14:28:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1559226520;
+ bh=+Q7jRzI+M/anX5LfvaXilWi6p15ICQ6el/ITqMpdKrA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=BGm48iFnmwhxeaM/klXZnK0kvBFvDAflnLLDE8+siDjc+eCOQ5yoF2A3OpJGGkSt1
+ V0nqsK1v0DNXUd3RSsccjAOKEu20d4zoOIaTmGU+ENNxjq3L+QOKZifTxVcwACq6ma
+ fqvekD33Ih3PjTLl2iQGW74EqLPR28S/B3jEcsHs=
+Subject: Re: [PATCH v5 1/3] powerpc: Fix vDSO clock_getres()
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20190528120446.48911-1-vincenzo.frascino@arm.com>
+ <20190528120446.48911-2-vincenzo.frascino@arm.com>
+From: shuah <shuah@kernel.org>
+Message-ID: <d4c2380d-1811-18f3-51a3-10bd3782b9de@kernel.org>
+Date: Thu, 30 May 2019 08:28:27 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <20190528120446.48911-2-vincenzo.frascino@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,136 +63,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
- linux-arm-kernel@lists.infradead.org,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Shuah Khan <skhan@linuxfoundation.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, stable@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, shuah <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+On 5/28/19 6:04 AM, Vincenzo Frascino wrote:
+> clock_getres in the vDSO library has to preserve the same behaviour
+> of posix_get_hrtimer_res().
+> 
+> In particular, posix_get_hrtimer_res() does:
+>      sec = 0;
+>      ns = hrtimer_resolution;
+> and hrtimer_resolution depends on the enablement of the high
+> resolution timers that can happen either at compile or at run time.
+> 
+> Fix the powerpc vdso implementation of clock_getres keeping a copy of
+> hrtimer_resolution in vdso data and using that directly.
+> 
+> Fixes: a7f290dad32e ("[PATCH] powerpc: Merge vdso's and add vdso support
+> to 32 bits kernel")
+> Cc: stable@vger.kernel.org
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+> 
+> Note: This patch is independent from the others in this series, hence it
+> can be merged singularly by the powerpc maintainers.
+> 
 
-The driver relies on the no longer valid assumption that dma addresses
-(iovas) are identical to physical addressees and uses phys_to_virt() to
-make iova -> vaddr conversions. Fix this also for scatter-gather frames
-using the iova -> phys conversion function added in the previous patch.
-While at it, clean-up a redundant dpaa_bpid2pool() and pass the bp
-as parameter.
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Acked-by: Madalin Bucur <madalin.bucur@nxp.com>
----
- .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 40 +++++++++++--------
- 1 file changed, 23 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index 46194a04617a..7d978a93dffd 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -1641,14 +1641,17 @@ static struct sk_buff *dpaa_cleanup_tx_fd(const struct dpaa_priv *priv,
- 
- 	if (unlikely(qm_fd_get_format(fd) == qm_fd_sg)) {
- 		nr_frags = skb_shinfo(skb)->nr_frags;
--		dma_unmap_single(dev, addr,
--				 qm_fd_get_offset(fd) + DPAA_SGT_SIZE,
--				 dma_dir);
- 
- 		/* The sgt buffer has been allocated with netdev_alloc_frag(),
- 		 * it's from lowmem.
- 		 */
--		sgt = phys_to_virt(addr + qm_fd_get_offset(fd));
-+		sgt = phys_to_virt(dpaa_iova_to_phys(priv,
-+						     addr +
-+						     qm_fd_get_offset(fd)));
-+
-+		dma_unmap_single(dev, addr,
-+				 qm_fd_get_offset(fd) + DPAA_SGT_SIZE,
-+				 dma_dir);
- 
- 		/* sgt[0] is from lowmem, was dma_map_single()-ed */
- 		dma_unmap_single(dev, qm_sg_addr(&sgt[0]),
-@@ -1663,7 +1666,7 @@ static struct sk_buff *dpaa_cleanup_tx_fd(const struct dpaa_priv *priv,
- 		}
- 
- 		/* Free the page frag that we allocated on Tx */
--		skb_free_frag(phys_to_virt(addr));
-+		skb_free_frag(skbh);
- 	} else {
- 		dma_unmap_single(dev, addr,
- 				 skb_tail_pointer(skb) - (u8 *)skbh, dma_dir);
-@@ -1724,14 +1727,14 @@ static struct sk_buff *contig_fd_to_skb(const struct dpaa_priv *priv,
-  * The page fragment holding the S/G Table is recycled here.
-  */
- static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
--				    const struct qm_fd *fd)
-+				    const struct qm_fd *fd,
-+				    struct dpaa_bp *dpaa_bp,
-+				    void *vaddr)
- {
- 	ssize_t fd_off = qm_fd_get_offset(fd);
--	dma_addr_t addr = qm_fd_addr(fd);
- 	const struct qm_sg_entry *sgt;
- 	struct page *page, *head_page;
--	struct dpaa_bp *dpaa_bp;
--	void *vaddr, *sg_vaddr;
-+	void *sg_vaddr;
- 	int frag_off, frag_len;
- 	struct sk_buff *skb;
- 	dma_addr_t sg_addr;
-@@ -1740,7 +1743,6 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
- 	int *count_ptr;
- 	int i;
- 
--	vaddr = phys_to_virt(addr);
- 	WARN_ON(!IS_ALIGNED((unsigned long)vaddr, SMP_CACHE_BYTES));
- 
- 	/* Iterate through the SGT entries and add data buffers to the skb */
-@@ -1751,14 +1753,17 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
- 		WARN_ON(qm_sg_entry_is_ext(&sgt[i]));
- 
- 		sg_addr = qm_sg_addr(&sgt[i]);
--		sg_vaddr = phys_to_virt(sg_addr);
--		WARN_ON(!IS_ALIGNED((unsigned long)sg_vaddr,
--				    SMP_CACHE_BYTES));
- 
- 		/* We may use multiple Rx pools */
- 		dpaa_bp = dpaa_bpid2pool(sgt[i].bpid);
--		if (!dpaa_bp)
-+		if (!dpaa_bp) {
-+			pr_info("%s: fail to get dpaa_bp for sg bpid %d\n",
-+				__func__, sgt[i].bpid);
- 			goto free_buffers;
-+		}
-+		sg_vaddr = phys_to_virt(dpaa_iova_to_phys(priv, sg_addr));
-+		WARN_ON(!IS_ALIGNED((unsigned long)sg_vaddr,
-+				    SMP_CACHE_BYTES));
- 
- 		count_ptr = this_cpu_ptr(dpaa_bp->percpu_count);
- 		dma_unmap_single(dpaa_bp->dev, sg_addr, dpaa_bp->size,
-@@ -1830,10 +1835,11 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
- 	/* free all the SG entries */
- 	for (i = 0; i < DPAA_SGT_MAX_ENTRIES ; i++) {
- 		sg_addr = qm_sg_addr(&sgt[i]);
--		sg_vaddr = phys_to_virt(sg_addr);
--		skb_free_frag(sg_vaddr);
- 		dpaa_bp = dpaa_bpid2pool(sgt[i].bpid);
- 		if (dpaa_bp) {
-+			sg_addr = dpaa_iova_to_phys(priv, sg_addr);
-+			sg_vaddr = phys_to_virt(sg_addr);
-+			skb_free_frag(sg_vaddr);
- 			count_ptr = this_cpu_ptr(dpaa_bp->percpu_count);
- 			(*count_ptr)--;
- 		}
-@@ -2326,7 +2332,7 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
- 	if (likely(fd_format == qm_fd_contig))
- 		skb = contig_fd_to_skb(priv, fd, dpaa_bp, vaddr);
- 	else
--		skb = sg_fd_to_skb(priv, fd);
-+		skb = sg_fd_to_skb(priv, fd, dpaa_bp, vaddr);
- 	if (!skb)
- 		return qman_cb_dqrr_consume;
- 
--- 
-2.17.1
+thanks,
+-- Shuah
 
