@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41C32F200
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 06:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743E72F244
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 06:20:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DvSx2BJZzDqBZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 14:18:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45DvWl6ZtMzDqFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 14:20:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Dtqw0DdNzDqRb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 13:49:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Dtqw6H0gzDqCC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 13:49:32 +1000 (AEST)
 Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id C7C93B2D6DC8094364CD;
+ by Forcepoint Email with ESMTP id BC38EA36FC591233E71A;
  Thu, 30 May 2019 11:49:27 +0800 (CST)
 Received: from HGHY4L002753561.china.huawei.com (10.133.215.186) by
  DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 30 May 2019 11:49:19 +0800
+ 14.3.439.0; Thu, 30 May 2019 11:49:20 +0800
 From: Zhen Lei <thunder.leizhen@huawei.com>
 To: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>, John Garry
  <john.garry@huawei.com>, Robin Murphy <robin.murphy@arm.com>, Will Deacon
@@ -43,10 +43,9 @@ To: Jean-Philippe Brucker <jean-philippe.brucker@arm.com>, John Garry
  <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, x86 <x86@kernel.org>,
  linux-ia64 <linux-ia64@vger.kernel.org>
-Subject: [PATCH v8 6/7] iommu/amd: add support for IOMMU default DMA mode
- build options
-Date: Thu, 30 May 2019 11:48:30 +0800
-Message-ID: <20190530034831.4184-7-thunder.leizhen@huawei.com>
+Subject: [PATCH v8 7/7] ia64: hide build option IOMMU_DEFAULT_PASSTHROUGH
+Date: Thu, 30 May 2019 11:48:31 +0800
+Message-ID: <20190530034831.4184-8-thunder.leizhen@huawei.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20190530034831.4184-1-thunder.leizhen@huawei.com>
 References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
@@ -71,44 +70,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The default DMA mode of AMD IOMMU is LAZY, this patch make it can be set
-to STRICT at build time. It can be overridden by boot option.
-
-There is no functional change.
+The DMA mode PASSTHROUGH is not used on ia64.
 
 Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 ---
- drivers/iommu/Kconfig          | 2 +-
- drivers/iommu/amd_iommu_init.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/iommu/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index af580274b7c5270..f6c030433d38048 100644
+index f6c030433d38048..f7400e35628dce4 100644
 --- a/drivers/iommu/Kconfig
 +++ b/drivers/iommu/Kconfig
-@@ -79,7 +79,7 @@ choice
- 	prompt "IOMMU default DMA mode"
- 	depends on IOMMU_API
- 	default IOMMU_DEFAULT_PASSTHROUGH if (PPC_POWERNV && PCI)
--	default IOMMU_DEFAULT_LAZY if (INTEL_IOMMU || S390_IOMMU)
-+	default IOMMU_DEFAULT_LAZY if (AMD_IOMMU || INTEL_IOMMU || S390_IOMMU)
- 	default IOMMU_DEFAULT_STRICT
- 	help
- 	  This option allows IOMMU DMA mode to be chose at build time, to
-diff --git a/drivers/iommu/amd_iommu_init.c b/drivers/iommu/amd_iommu_init.c
-index f977df90d2a4912..6b0bfa43f6faa32 100644
---- a/drivers/iommu/amd_iommu_init.c
-+++ b/drivers/iommu/amd_iommu_init.c
-@@ -166,7 +166,8 @@ struct ivmd_header {
- 					   to handle */
- LIST_HEAD(amd_iommu_unity_map);		/* a list of required unity mappings
- 					   we find in ACPI */
--bool amd_iommu_unmap_flush;		/* if true, flush on every unmap */
-+bool amd_iommu_unmap_flush = IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
-+					/* if true, flush on every unmap */
+@@ -89,7 +89,7 @@ choice
  
- LIST_HEAD(amd_iommu_list);		/* list of all AMD IOMMUs in the
- 					   system */
+ config IOMMU_DEFAULT_PASSTHROUGH
+ 	bool "passthrough"
+-	depends on !S390_IOMMU
++	depends on (!S390_IOMMU && !IA64)
+ 	help
+ 	  In this mode, the DMA access through IOMMU without any addresses
+ 	  translation. That means, the wrong or illegal DMA access can not
 -- 
 1.8.3
 
