@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FD22ED7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 05:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C9D2EDAB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 05:41:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45DtbL3PHbzDqFS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 13:38:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Dtf558CfzDqBt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 13:41:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="r/tNuhO/"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="uH82h4yP"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Dt9M2n3yzDqQh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Dt9M3883zDqQl
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 13:19:35 +1000 (AEST)
 Received: from localhost (ip67-88-213-2.z213-88-67.customer.algx.net
  [67.88.213.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1CC2F2489F;
+ by mail.kernel.org (Postfix) with ESMTPSA id AB19124879;
  Thu, 30 May 2019 03:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=default; t=1559186373;
- bh=WeE25g83ma4VNVN8TPBWVGA/qrGdFQKGMw85tuQEoYk=;
+ bh=k8XCWb3nVGyoshzNZpVRJe/i8quHXBLiNB8Xg/6kpDo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=r/tNuhO/YBbYtJimVfXt0n5xMF3ZDqXSlPjBmgXk9BtWbAK8z5uCuT0JUDU14Fts0
- PwcK9NxY7/h1Llhk6+86Xco678GSc+7YbRIZPoNSXJdWvevinvERc0JZ8d2R+AUvka
- 9r5LZsHFZ28qBNZGRf+O6GVwyFp7UThi6STeVbrQ=
+ b=uH82h4yPgMpMkBurhOMiV6jh6o5A8eXUa2VxSTu9ZuugLZg2uwuckXqXlWEPbPd/6
+ vPuf44+UZ95nTBVSl55BLfR3xHqe/cRwB22wPtkHbWedp+J8Y6Pb9fzIfE0M6/zy0Q
+ +2+GtyCmyqISjYLoZWN6LUD+nnf2j7z0psqlXMiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.14 131/193] cpufreq/pasemi: fix possible object reference
+Subject: [PATCH 4.14 132/193] cpufreq: pmac32: fix possible object reference
  leak
-Date: Wed, 29 May 2019 20:06:25 -0700
-Message-Id: <20190530030506.693074332@linuxfoundation.org>
+Date: Wed, 29 May 2019 20:06:26 -0700
+Message-Id: <20190530030506.796645818@linuxfoundation.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190530030446.953835040@linuxfoundation.org>
 References: <20190530030446.953835040@linuxfoundation.org>
@@ -63,45 +63,57 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J. Wysocki" <rjw@rjwysocki.net>, stable@vger.kernel.org,
- Viresh Kumar <viresh.kumar@linaro.org>, linuxppc-dev@lists.ozlabs.org,
- Wen Yang <wen.yang99@zte.com.cn>
+ Viresh Kumar <viresh.kumar@linaro.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Upstream commit a9acc26b75f652f697e02a9febe2ab0da648a571 ]
+[ Upstream commit 8d10dc28a9ea6e8c02e825dab28699f3c72b02d9 ]
 
-The call to of_get_cpu_node returns a node pointer with refcount
+The call to of_find_node_by_name returns a node pointer with refcount
 incremented thus it must be explicitly decremented after the last
 usage.
 
 Detected by coccinelle with the following warnings:
-./drivers/cpufreq/pasemi-cpufreq.c:212:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 147, but without a corresponding object release within this function.
-./drivers/cpufreq/pasemi-cpufreq.c:220:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 147, but without a corresponding object release within this function.
+./drivers/cpufreq/pmac32-cpufreq.c:557:2-8: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 552, but without a corresponding object release within this function.
+./drivers/cpufreq/pmac32-cpufreq.c:569:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 552, but without a corresponding object release within this function.
+./drivers/cpufreq/pmac32-cpufreq.c:598:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 587, but without a corresponding object release within this function.
 
 Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
 Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/pasemi-cpufreq.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/pmac32-cpufreq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-index b257fc7d52041..8456492124f0c 100644
---- a/drivers/cpufreq/pasemi-cpufreq.c
-+++ b/drivers/cpufreq/pasemi-cpufreq.c
-@@ -146,6 +146,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
+index 61ae06ca008e7..e225edb5c3593 100644
+--- a/drivers/cpufreq/pmac32-cpufreq.c
++++ b/drivers/cpufreq/pmac32-cpufreq.c
+@@ -552,6 +552,7 @@ static int pmac_cpufreq_init_7447A(struct device_node *cpunode)
+ 	volt_gpio_np = of_find_node_by_name(NULL, "cpu-vcore-select");
+ 	if (volt_gpio_np)
+ 		voltage_gpio = read_gpio(volt_gpio_np);
++	of_node_put(volt_gpio_np);
+ 	if (!voltage_gpio){
+ 		pr_err("missing cpu-vcore-select gpio\n");
+ 		return 1;
+@@ -588,6 +589,7 @@ static int pmac_cpufreq_init_750FX(struct device_node *cpunode)
+ 	if (volt_gpio_np)
+ 		voltage_gpio = read_gpio(volt_gpio_np);
  
- 	cpu = of_get_cpu_node(policy->cpu, NULL);
- 
-+	of_node_put(cpu);
- 	if (!cpu)
- 		goto out;
++	of_node_put(volt_gpio_np);
+ 	pvr = mfspr(SPRN_PVR);
+ 	has_cpu_l2lve = !((pvr & 0xf00) == 0x100);
  
 -- 
 2.20.1
