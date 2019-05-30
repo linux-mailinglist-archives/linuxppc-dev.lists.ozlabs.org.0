@@ -1,42 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F41D2FD03
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 16:16:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B80E2FCBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 15:56:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45F8JG70jFzDqX3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2019 23:56:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45F8kl6z1BzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 00:15:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gondor.apana.org.au
- (client-ip=216.24.177.18; helo=deadmen.hmeau.com;
- envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gondor.apana.org.au
-Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
+ spf=pass (mailfrom) smtp.mailfrom=lwn.net
+ (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lwn.net
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45F7zv5XJLzDqV9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 23:42:19 +1000 (AEST)
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
- by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
- id 1hWLJq-0005bs-ME; Thu, 30 May 2019 21:42:10 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
- (envelope-from <herbert@gondor.apana.org.au>)
- id 1hWLJo-0003f3-NQ; Thu, 30 May 2019 21:42:08 +0800
-Date: Thu, 30 May 2019 21:42:08 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v1 00/15] Fixing selftests failure on Talitos driver
-Message-ID: <20190530134208.frpozzmqtafw35hy@gondor.apana.org.au>
-References: <cover.1558445259.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45F8hW6xS9zDqT8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 00:14:02 +1000 (AEST)
+Received: from lwn.net (localhost [127.0.0.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ms.lwn.net (Postfix) with ESMTPSA id CDA636D9;
+ Thu, 30 May 2019 14:13:59 +0000 (UTC)
+Date: Thu, 30 May 2019 08:13:58 -0600
+From: Jonathan Corbet <corbet@lwn.net>
+To: Bhupesh Sharma <bhsharma@redhat.com>
+Subject: Re: [PATCH] Documentation/stackprotector: powerpc supports stack
+ protector
+Message-ID: <20190530081358.650930ad@lwn.net>
+In-Reply-To: <CACi5LpM9v1YC_6HhA-uKghawzkEu=TTPVkomMmv2i-LGi8X7+g@mail.gmail.com>
+References: <1559212177-7072-1-git-send-email-bhsharma@redhat.com>
+ <87v9xsnlu9.fsf@concordia.ellerman.id.au>
+ <CACi5LpM9v1YC_6HhA-uKghawzkEu=TTPVkomMmv2i-LGi8X7+g@mail.gmail.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1558445259.git.christophe.leroy@c-s.fr>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,46 +50,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, horia.geanta@nxp.com,
- linux-crypto@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Bhupesh SHARMA <bhupesh.linux@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 21, 2019 at 01:34:06PM +0000, Christophe Leroy wrote:
-> Several test failures have popped up following recent changes to crypto
-> selftests.
-> 
-> This series fixes (most of) them.
-> 
-> The last three patches are trivial cleanups.
-> 
-> Christophe Leroy (15):
->   crypto: talitos - fix skcipher failure due to wrong output IV
->   crypto: talitos - rename alternative AEAD algos.
->   crypto: talitos - reduce max key size for SEC1
->   crypto: talitos - check AES key size
->   crypto: talitos - fix CTR alg blocksize
->   crypto: talitos - check data blocksize in ablkcipher.
->   crypto: talitos - fix ECB algs ivsize
->   crypto: talitos - Do not modify req->cryptlen on decryption.
->   crypto: talitos - HMAC SNOOP NO AFEU mode requires SW icv checking.
->   crypto: talitos - properly handle split ICV.
->   crypto: talitos - Align SEC1 accesses to 32 bits boundaries.
->   crypto: talitos - fix AEAD processing.
->   Revert "crypto: talitos - export the talitos_submit function"
->   crypto: talitos - use IS_ENABLED() in has_ftr_sec1()
->   crypto: talitos - use SPDX-License-Identifier
-> 
->  drivers/crypto/talitos.c | 281 ++++++++++++++++++++++-------------------------
->  drivers/crypto/talitos.h |  45 ++------
->  2 files changed, 139 insertions(+), 187 deletions(-)
+On Thu, 30 May 2019 18:37:46 +0530
+Bhupesh Sharma <bhsharma@redhat.com> wrote:
 
-Patch 1 was already applied.
+> > This should probably go via the documentation tree?
+> >
+> > Acked-by: Michael Ellerman <mpe@ellerman.id.au>  
+> 
+> Thanks for the review Michael.
+> I am ok with this going through the documentation tree as well.
 
-2-15 applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Works for me too, but I don't seem to find the actual patch anywhere I
+look.  Can you send me a copy?
+
+Thanks,
+
+jon
