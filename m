@@ -2,44 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C8430A9F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 10:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD1730C4C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 12:05:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45FdQw2BCGzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 18:48:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Fg6f5VN7zDqbY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 20:04:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45FdPT0NkJzDqGF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 18:47:39 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7619E341;
- Fri, 31 May 2019 01:47:37 -0700 (PDT)
-Received: from [10.162.42.223] (unknown [10.162.42.223])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20D713F59C;
- Fri, 31 May 2019 01:47:28 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [RFC] mm: Generalize notify_page_fault()
-To: Matthew Wilcox <willy@infradead.org>
-References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
- <20190530110639.GC23461@bombadil.infradead.org>
- <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
- <20190530133954.GA2024@bombadil.infradead.org>
-Message-ID: <f1995445-d5ab-f292-d26c-809581002184@arm.com>
-Date: Fri, 31 May 2019 14:17:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Fg5G4mcCzDqY1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 20:03:45 +1000 (AEST)
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 9BBDB1EFB9AB272BF3AF;
+ Fri, 31 May 2019 18:03:36 +0800 (CST)
+Received: from [127.0.0.1] (10.133.215.186) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0;
+ Fri, 31 May 2019 18:03:29 +0800
+Subject: Re: [PATCH v8 1/7] iommu: enhance IOMMU default DMA mode build options
+To: John Garry <john.garry@huawei.com>, Jean-Philippe Brucker
+ <jean-philippe.brucker@arm.com>, Robin Murphy <robin.murphy@arm.com>, "Will
+ Deacon" <will.deacon@arm.com>, Joerg Roedel <joro@8bytes.org>, Jonathan
+ Corbet <corbet@lwn.net>, linux-doc <linux-doc@vger.kernel.org>, Sebastian Ott
+ <sebott@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ "Martin Schwidefsky" <schwidefsky@de.ibm.com>, Heiko Carstens
+ <heiko.carstens@de.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, Tony Luck <tony.luck@intel.com>, Fenghua Yu
+ <fenghua.yu@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin"
+ <hpa@zytor.com>, David Woodhouse <dwmw2@infradead.org>, iommu
+ <iommu@lists.linux-foundation.org>, linux-kernel
+ <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, x86 <x86@kernel.org>,
+ linux-ia64 <linux-ia64@vger.kernel.org>
+References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
+ <20190530034831.4184-2-thunder.leizhen@huawei.com>
+ <645bd526-4eb0-4a36-2dda-023f009247ab@huawei.com>
+From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <030bafab-58f5-8bb1-0533-2977d6e138b2@huawei.com>
+Date: Fri, 31 May 2019 18:03:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190530133954.GA2024@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <645bd526-4eb0-4a36-2dda-023f009247ab@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.133.215.186]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,52 +69,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Russell King <linux@armlinux.org.uk>, Fenghua Yu <fenghua.yu@intel.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrey Konovalov <andreyknvl@google.com>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Linuxarm <linuxarm@huawei.com>, Hanjun Guo <guohanjun@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
-> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
->> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
->>> The two handle preemption differently.  Why is x86 wrong and this one
->>> correct?
+On 2019/5/30 20:20, John Garry wrote:
+> On 30/05/2019 04:48, Zhen Lei wrote:
+>> First, add build option IOMMU_DEFAULT_{LAZY|STRICT}, so that we have the
+>> opportunity to set {lazy|strict} mode as default at build time. Then put
+>> the three config options in an choice, make people can only choose one of
+>> the three at a time.
 >>
->> Here it expects context to be already non-preemptible where as the proposed
->> generic function makes it non-preemptible with a preempt_[disable|enable]()
->> pair for the required code section, irrespective of it's present state. Is
->> not this better ?
 > 
-> git log -p arch/x86/mm/fault.c
+> Since this was not picked up, but modulo (somtimes same) comments below:
 > 
-> search for 'kprobes'.
+> Reviewed-by: John Garry <john.garry@huawei.com>
 > 
-> tell me what you think.
+>> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+>> ---
+>>  drivers/iommu/Kconfig | 42 +++++++++++++++++++++++++++++++++++-------
+>>  drivers/iommu/iommu.c |  3 ++-
+>>  2 files changed, 37 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+>> index 83664db5221df02..d6a1a45f80ffbf5 100644
+>> --- a/drivers/iommu/Kconfig
+>> +++ b/drivers/iommu/Kconfig
+>> @@ -75,17 +75,45 @@ config IOMMU_DEBUGFS
+>>        debug/iommu directory, and then populate a subdirectory with
+>>        entries as required.
+>>
+>> -config IOMMU_DEFAULT_PASSTHROUGH
+>> -    bool "IOMMU passthrough by default"
+>> +choice
+>> +    prompt "IOMMU default DMA mode"
+>>      depends on IOMMU_API
+>> -        help
+>> -      Enable passthrough by default, removing the need to pass in
+>> -      iommu.passthrough=on or iommu=pt through command line. If this
+>> -      is enabled, you can still disable with iommu.passthrough=off
+>> -      or iommu=nopt depending on the architecture.
+>> +    default IOMMU_DEFAULT_STRICT
+>> +    help
+>> +      This option allows IOMMU DMA mode to be chose at build time, to
+> 
+> As before:
+> /s/chose/chosen/, /s/allows IOMMU/allows an IOMMU/
+I'm sorry that the previous version was not modified.
+
+> 
+>> +      override the default DMA mode of each ARCHs, removing the need to
+> 
+> Again, as before:
+> ARCHs should be singular
+OK
+
+> 
+>> +      pass in kernel parameters through command line. You can still use
+>> +      ARCHs specific boot options to override this option again.
+>> +
+>> +config IOMMU_DEFAULT_PASSTHROUGH
+>> +    bool "passthrough"
+>> +    help
+>> +      In this mode, the DMA access through IOMMU without any addresses
+>> +      translation. That means, the wrong or illegal DMA access can not
+>> +      be caught, no error information will be reported.
+>>
+>>        If unsure, say N here.
+>>
+>> +config IOMMU_DEFAULT_LAZY
+>> +    bool "lazy"
+>> +    help
+>> +      Support lazy mode, where for every IOMMU DMA unmap operation, the
+>> +      flush operation of IOTLB and the free operation of IOVA are deferred.
+>> +      They are only guaranteed to be done before the related IOVA will be
+>> +      reused.
+> 
+> why no advisory on how to set if unsure?
+Because the LAZY and STRICT have their own advantages and disadvantages.
+
+Should I say: If unsure, keep the default。
+
+> 
+>> +
+>> +config IOMMU_DEFAULT_STRICT
+>> +    bool "strict"
+>> +    help
+>> +      For every IOMMU DMA unmap operation, the flush operation of IOTLB and
+>> +      the free operation of IOVA are guaranteed to be done in the unmap
+>> +      function.
+>> +
+>> +      This mode is safer than the two above, but it maybe slower in some
+>> +      high performace scenarios.
+> 
+> and here?
+> 
+>> +
+>> +endchoice
+>> +
+>>  config OF_IOMMU
+>>         def_bool y
+>>         depends on OF && IOMMU_API
+>> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+>> index 67ee6623f9b2a4d..56bce221285b15f 100644
+>> --- a/drivers/iommu/iommu.c
+>> +++ b/drivers/iommu/iommu.c
+>> @@ -43,7 +43,8 @@
+>>  #else
+>>  static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_DMA;
+>>  #endif
+>> -static bool iommu_dma_strict __read_mostly = true;
+>> +static bool iommu_dma_strict __read_mostly =
+>> +            IS_ENABLED(CONFIG_IOMMU_DEFAULT_STRICT);
+>>
+>>  struct iommu_group {
+>>      struct kobject kobj;
+>>
+> 
+> 
+> 
+> .
 > 
 
-Are you referring to these following commits
-
-a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
-b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
-
-In particular the later one (b506a9d08bae). It explains how the invoking context
-in itself should be non-preemptible for the kprobes processing context irrespective
-of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
-does not make much sense to continue when original invoking context is preemptible.
-Instead just bail out earlier. This seems to be making more sense than preempt
-disable-enable pair. If there are no concerns about this change from other platforms,
-I will change the preemption behavior in proposed generic function next time around.
