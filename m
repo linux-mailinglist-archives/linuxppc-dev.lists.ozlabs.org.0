@@ -1,66 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB03F308E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 08:43:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45FZfg55WDzDr5Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 16:43:55 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58831308EE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 08:45:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45FZhm4kMlzDrKj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 16:45:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="HOIoCMyi"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="ispSS450"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45FZKY4qVVzDqY0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 16:29:04 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id x10so435090pfi.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 23:29:04 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45FZKq31lxzDqdG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 16:29:19 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id e5so1836814pls.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2019 23:29:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=U1q4nyu1wWh9F6RWJJuLI88/9B7MUNJ47qh4u9mobT0=;
- b=HOIoCMyilj6wXmhyXsyVXVafUYIOv8GIeWCBP+tiW/hHaRbNyeSAOsC8bQ5NwVuoFu
- 9N1yr7geIEiJmpjUAnnoK0C7MZHsQfueUq7KA0v/jmVUfdLp/bPZYsIF2a8razVZWGPV
- L9Gx1dGQZ3WfxO2w6+Yts/2BJgcYTQETfsZFI=
+ bh=Fd/VsGZ+Z9Ncti9VvNCLWk3+S2P8ZxqTRqByeam8TOk=;
+ b=ispSS450pvRSYnNyHQgJ91C38bo4ch/YMGbd0za05L5B6oEd6vL/UY5eO7pDGdl8hq
+ Uu2b1lb3P7kT+YIZ1Vd387UIM1txNQ0cg6DO9DypNmab+2sMkag1qK7HPq7xgcBKpDE2
+ huuDOSOgulkqGxdQf99HkcmJFWbKIV52oRj10=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=U1q4nyu1wWh9F6RWJJuLI88/9B7MUNJ47qh4u9mobT0=;
- b=KEIAn+l1BEZruMY1aJ4Rz/FlHUuza9gYO/h0x8S9KWtY5BtCOR7x/IDrhTwKF/H1WN
- AW9xU+VtMWUVu1c4FsBs/Qh+r6eC1h8pjecJujfOCJCZNxFXYku8oRaGy/8JaCveaBKn
- cv/2Dq9aJXfTJ8nXZXRfhnsDt/aGOQtwEuMWYe+e5AuXydSjyGuLA00zaxVSvhJDVE0Q
- AmVVvBCQDrYhk/Qy6NtXrBQwH5xrLdJz4XuF5e3FkfJbv+roc74euNK3+TrMlSEc3ZpN
- 3tuREJi31mw7+2bNGJgdomd5KqbMwnlW3UXYWS5tGXG0awg1AlRO9eKnthFuX4M0HfUA
- Likg==
-X-Gm-Message-State: APjAAAUu+NZGT9kE6wBs6yEJg/3bcF2Ov4RUBnA7TSnKjyF5Hbq7nsaA
- yhuCPLmbyYfLc5NRRGE+KvL2vkq5vVg=
-X-Google-Smtp-Source: APXvYqxmaJGSmNYa+6wJzVu68L8OlqMbDKkRTJVq3Yq6lRVi0G/W+PnEqvW6RmjfDmoU30PT1VwwAw==
-X-Received: by 2002:aa7:881a:: with SMTP id c26mr8076779pfo.254.1559284140410; 
- Thu, 30 May 2019 23:29:00 -0700 (PDT)
+ bh=Fd/VsGZ+Z9Ncti9VvNCLWk3+S2P8ZxqTRqByeam8TOk=;
+ b=UKtH5qWlJBWC7FqDBov3AkELhXCxSUEb7hxIlvFSSKtygGcAJ5Slmf3E/EpXZwlAHi
+ 2OBnQ/9tGLV/fHCf7ZUTTb1qsZcu6aJYVK8x2Hn3HPrmAUpFmy7+mI1RssPUZCJc/FNf
+ AMVGkAOcFWUl0xGZOQ5xOyFd0Ps8G9DlJyJ5vM6/ObT+i2Nez2oM4dTzN8h+3Zjvvtgx
+ btkRLEFxmOXcTuB+/XE4s4c+ds5UiYJIaDMo6bnV/lI/9SjQHcKUw/W3k6ofxQULDNy4
+ 9ZdmmVfKxkJEmDUd210ucD/on9daHdiprLR45unJem3aftjC8LlTRt6rBknACNxVC29F
+ 490Q==
+X-Gm-Message-State: APjAAAWmHr73MhXLcSCbczarVUM/E6gUQdfBY42C0cRn0Yg4xkAsqyLJ
+ qDGbxRPZIfFuieAt2qDnbJyPemomgcc=
+X-Google-Smtp-Source: APXvYqwP7bvx5d1gOADNelWqpvcQkrzpxsRlqh5ABwsGbMtOS+RTNmFtd/RbOyuGgcXl2v30ZNlevg==
+X-Received: by 2002:a17:902:4827:: with SMTP id
+ s36mr7556678pld.197.1559284156239; 
+ Thu, 30 May 2019 23:29:16 -0700 (PDT)
 Received: from localhost (ppp167-251-205.static.internode.on.net.
  [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id j72sm5038672pje.12.2019.05.30.23.28.58
+ by smtp.gmail.com with ESMTPSA id n70sm4152332pjb.4.2019.05.30.23.29.14
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 30 May 2019 23:28:59 -0700 (PDT)
+ Thu, 30 May 2019 23:29:15 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH BACKPORT 4.19, 5.0,
- 5.1] crypto: vmx - ghash: do nosimd fallback manually
-Date: Fri, 31 May 2019 16:28:53 +1000
-Message-Id: <20190531062853.30957-1-dja@axtens.net>
+Subject: [PATCH BACKPORT 4.9,
+ 4.14] crypto: vmx - ghash: do nosimd fallback manually
+Date: Fri, 31 May 2019 16:29:09 +1000
+Message-Id: <20190531062909.31028-1-dja@axtens.net>
 X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -102,11 +103,11 @@ Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 (backported from commit 357d065a44cdd77ed5ff35155a989f2a763e96ef)
 Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
- drivers/crypto/vmx/ghash.c | 212 +++++++++++++++----------------------
- 1 file changed, 86 insertions(+), 126 deletions(-)
+ drivers/crypto/vmx/ghash.c | 213 +++++++++++++++----------------------
+ 1 file changed, 87 insertions(+), 126 deletions(-)
 
 diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
-index dd8b8716467a..2d1a8cd35509 100644
+index 1c4b5b889fba..1bfe867c0b7b 100644
 --- a/drivers/crypto/vmx/ghash.c
 +++ b/drivers/crypto/vmx/ghash.c
 @@ -1,22 +1,14 @@
@@ -374,11 +375,12 @@ index dd8b8716467a..2d1a8cd35509 100644
  }
  
  struct shash_alg p8_ghash_alg = {
-@@ -215,11 +178,8 @@ struct shash_alg p8_ghash_alg = {
+@@ -215,11 +178,9 @@ struct shash_alg p8_ghash_alg = {
  		 .cra_name = "ghash",
  		 .cra_driver_name = "p8_ghash",
  		 .cra_priority = 1000,
--		 .cra_flags = CRYPTO_ALG_NEED_FALLBACK,
+-		 .cra_flags = CRYPTO_ALG_TYPE_SHASH | CRYPTO_ALG_NEED_FALLBACK,
++		 .cra_flags = CRYPTO_ALG_TYPE_SHASH,
  		 .cra_blocksize = GHASH_BLOCK_SIZE,
  		 .cra_ctxsize = sizeof(struct p8_ghash_ctx),
  		 .cra_module = THIS_MODULE,
