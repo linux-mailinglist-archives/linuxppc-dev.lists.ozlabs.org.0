@@ -1,44 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBCC331363
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 19:05:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45FrRL3JZszDqZV
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 03:05:02 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EB13136F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 19:06:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45FrT034cxzDqc8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 03:06:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=afaerber@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45FrPp34Z2zDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 03:03:39 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00600A78;
- Fri, 31 May 2019 10:03:37 -0700 (PDT)
-Received: from [10.1.196.75] (e110467-lin.cambridge.arm.com [10.1.196.75])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7B94C3F59C;
- Fri, 31 May 2019 10:03:32 -0700 (PDT)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45FrQ2371gzDqZX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 03:03:53 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 91664ACC4;
+ Fri, 31 May 2019 17:03:49 +0000 (UTC)
 Subject: Re: [PATCH v3 0/6] Prerequisites for NXP LS104xA SMMU enablement
-To: Christoph Hellwig <hch@infradead.org>, David Miller <davem@davemloft.net>
+To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 References: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
- <20190530.150844.1826796344374758568.davem@davemloft.net>
- <20190531163350.GB8708@infradead.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <37406608-df48-c7a0-6975-4b4ad408ba36@arm.com>
-Date: Fri, 31 May 2019 18:03:30 +0100
+ <d086216f-f3fc-c88a-3891-81e84e8bdb01@suse.de>
+ <VI1PR04MB5134BFA391D8FF013762882FEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
+From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+Openpgp: preference=signencrypt
+Organization: SUSE Linux GmbH
+Message-ID: <19cc3230-33b0-e465-6317-590780b33efa@suse.de>
+Date: Fri, 31 May 2019 19:03:48 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190531163350.GB8708@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <VI1PR04MB5134BFA391D8FF013762882FEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,36 +52,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: madalin.bucur@nxp.com, netdev@vger.kernel.org, roy.pledge@nxp.com,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
- iommu@lists.linux-foundation.org, camelia.groza@nxp.com,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Roy Pledge <roy.pledge@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>,
+ "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+ Camelia Alexandra Groza <camelia.groza@nxp.com>,
+ Mian Yousaf Kaukab <yousaf.kaukab@suse.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31/05/2019 17:33, Christoph Hellwig wrote:
-> On Thu, May 30, 2019 at 03:08:44PM -0700, David Miller wrote:
->> From: laurentiu.tudor@nxp.com
->> Date: Thu, 30 May 2019 17:19:45 +0300
+Hello Laurentiu,
+
+Am 31.05.19 um 18:46 schrieb Laurentiu Tudor:
+>> -----Original Message-----
+>> From: Andreas Färber <afaerber@suse.de>
+>> Sent: Friday, May 31, 2019 7:15 PM
 >>
->>> Depends on this pull request:
->>>
->>>   http://lists.infradead.org/pipermail/linux-arm-kernel/2019-May/653554.html
+>> Hi Laurentiu,
 >>
->> I'm not sure how you want me to handle this.
+>> Am 30.05.19 um 16:19 schrieb laurentiu.tudor@nxp.com:
+>>> This patch series contains several fixes in preparation for SMMU
+>>> support on NXP LS1043A and LS1046A chips. Once these get picked up,
+>>> I'll submit the actual SMMU enablement patches consisting in the
+>>> required device tree changes.
+>>
+>> Have you thought through what will happen if this patch ordering is not
+>> preserved? In particular, a user installing a future U-Boot update with
+>> the DTB bits but booting a stable kernel without this patch series -
+>> wouldn't that regress dpaa then for our customers?
+>>
 > 
-> The thing needs to be completely redone as it abuses parts of the
-> iommu API in a completely unacceptable way.
+> These are fixes for issues that popped out after enabling SMMU. 
+> I do not expect them to break anything.
 
-`git grep iommu_iova_to_phys drivers/{crypto,gpu,net}`
+That was not my question! You're missing my point: All your patches are
+lacking a Fixes header in their commit message, for backporting them, to
+avoid _your DT patches_ breaking the driver on stable branches!
 
-:(
+Regards,
+Andreas
 
-I guess one alternative is for the offending drivers to maintain their 
-own lookup tables of mapped DMA addresses - I think at least some of 
-these things allow storing some kind of token in a descriptor, which 
-even if it's not big enough for a virtual address might be sufficient 
-for an index.
-
-Robin.
+-- 
+SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
+HRB 21284 (AG Nürnberg)
