@@ -2,43 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3023731212
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 18:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F7131274
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 18:34:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45FqMh45HFzDqX9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 02:16:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Fqlq3h7HzDqZF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 02:34:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=afaerber@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+1238baab1fee290d454e+5759+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45FqLK2RLLzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 02:15:29 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 6E218AE8D;
- Fri, 31 May 2019 16:15:24 +0000 (UTC)
-Subject: Re: [PATCH v3 0/6] Prerequisites for NXP LS104xA SMMU enablement
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Fqjz46kSzDqXt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 02:32:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=71MT+BROvQCbPstDEU/GSeEYIz2R3vLcby0U7n4LLfY=; b=KRm8qX1ifVr9clKQgPQOzBCIX
+ 5tOQM22B22476qAO11z49POuV0WFuttFD147Sio3LcgfdkcNHLGLpRuCTgkvxXbCamh15MJCX7TwT
+ pIRxuAEyJgKmVL2vlhOwM+Z93AtSS3/MhVMwIaZlFhMcfOsn7GOgd1/wSuA+wWLTY752BsJLEZ+Bu
+ lkcXe/xe4BlysB2zjEEaMWjWuLlS1imej7I2WEaFy2y/woAEHj/8ViFu141ug5u8ey9ElaYvX1Rst
+ 1oMgg0dyoHRukxYhLQlc1GeatYALHXRpBZDxVWuIfhb3B/llNOQfd8lw662bBJBIDZgnUOr/bJRBS
+ FV/pugisw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
+ Hat Linux)) id 1hWkSD-0003l4-C7; Fri, 31 May 2019 16:32:29 +0000
+Date: Fri, 31 May 2019 09:32:29 -0700
+From: Christoph Hellwig <hch@infradead.org>
 To: laurentiu.tudor@nxp.com
+Subject: Re: [PATCH v3 5/6] dpaa_eth: fix iova handling for contiguous frames
+Message-ID: <20190531163229.GA8708@infradead.org>
 References: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Openpgp: preference=signencrypt
-Organization: SUSE Linux GmbH
-Message-ID: <d086216f-f3fc-c88a-3891-81e84e8bdb01@suse.de>
-Date: Fri, 31 May 2019 18:15:22 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ <20190530141951.6704-6-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190530141951.6704-6-laurentiu.tudor@nxp.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,29 +64,19 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: madalin.bucur@nxp.com, netdev@vger.kernel.org, roy.pledge@nxp.com,
  linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
  iommu@lists.linux-foundation.org, camelia.groza@nxp.com,
- Mian Yousaf Kaukab <yousaf.kaukab@suse.com>, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net, linux-arm-kernel@lists.infradead.org
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Laurentiu,
+On Thu, May 30, 2019 at 05:19:50PM +0300, laurentiu.tudor@nxp.com wrote:
+> +static phys_addr_t dpaa_iova_to_phys(const struct dpaa_priv *priv,
+> +				     dma_addr_t addr)
+> +{
+> +	return priv->domain ? iommu_iova_to_phys(priv->domain, addr) : addr;
+> +}
 
-Am 30.05.19 um 16:19 schrieb laurentiu.tudor@nxp.com:
-> This patch series contains several fixes in preparation for SMMU
-> support on NXP LS1043A and LS1046A chips. Once these get picked up,
-> I'll submit the actual SMMU enablement patches consisting in the
-> required device tree changes.
+Again, a driver using the iommu API must not call iommu_* APIs.
 
-Have you thought through what will happen if this patch ordering is not
-preserved? In particular, a user installing a future U-Boot update with
-the DTB bits but booting a stable kernel without this patch series -
-wouldn't that regress dpaa then for our customers?
-
-Regards,
-Andreas
-
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
-HRB 21284 (AG Nürnberg)
+This chane is not acceptable.
