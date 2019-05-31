@@ -2,79 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9737C30E79
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 15:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0568D30EA9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 15:12:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Fl3F4zs2zDqYX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 23:02:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45FlH76nz2zDqV3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2019 23:12:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=permerror (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=2a01:111:f400:fe08::603;
+ helo=eur03-am5-obe.outbound.protection.outlook.com;
+ envelope-from=laurentiu.tudor@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="piBRNDz/"; 
+ dkim-atps=neutral
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com
+ (mail-am5eur03on0603.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe08::603])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Fl1R5xYQzDqYB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 23:00:42 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4VCvXT2120767
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 09:00:36 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2su2d8wes6-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 09:00:35 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
- Fri, 31 May 2019 14:00:33 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 31 May 2019 14:00:32 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4VD0Wx749610840
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 31 May 2019 13:00:32 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB94E42059;
- Fri, 31 May 2019 13:00:31 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2EFDB42054;
- Fri, 31 May 2019 13:00:31 +0000 (GMT)
-Received: from [9.85.94.205] (unknown [9.85.94.205])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 31 May 2019 13:00:30 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45FlCk0S0HzDqTk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2019 23:09:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=thIHFzZq6Yb7o0fGxI4pwYvE39AiI5eu80a85wEuJ1M=;
+ b=piBRNDz/eG+pR7bxfuC6i1wl8ga2ktUmDf4jTvetzep3//wcRekFdj/IKE5xVPUlWWOtzUoxJCr+wuB6WhPjFWQbeAqgmJSfghpkdyyWyYNXHNGZFFuV/o2TMFm6mxBi9DZKQltnEX6YKC8Au9LONQO72h8BLhdgZTRbVFXKoDc=
+Received: from VI1PR04MB5134.eurprd04.prod.outlook.com (20.177.50.159) by
+ VI1PR04MB5583.eurprd04.prod.outlook.com (20.178.123.33) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1943.17; Fri, 31 May 2019 13:09:25 +0000
+Received: from VI1PR04MB5134.eurprd04.prod.outlook.com
+ ([fe80::8d0e:de86:9b49:b40]) by VI1PR04MB5134.eurprd04.prod.outlook.com
+ ([fe80::8d0e:de86:9b49:b40%7]) with mapi id 15.20.1922.024; Fri, 31 May 2019
+ 13:09:25 +0000
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+To: David Miller <davem@davemloft.net>
+Subject: RE: [PATCH v3 0/6] Prerequisites for NXP LS104xA SMMU enablement
+Thread-Topic: [PATCH v3 0/6] Prerequisites for NXP LS104xA SMMU enablement
+Thread-Index: AQHVFvLAUsVmmx2jaE2ZHLZY1pGN66aEOpgAgAD6PbA=
+Date: Fri, 31 May 2019 13:09:25 +0000
+Message-ID: <VI1PR04MB5134C8FF07C4BED216DE12DCEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
+References: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
+ <20190530.150844.1826796344374758568.davem@davemloft.net>
+In-Reply-To: <20190530.150844.1826796344374758568.davem@davemloft.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=laurentiu.tudor@nxp.com; 
+x-originating-ip: [192.88.166.1]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 3b320303-6336-4846-e41c-08d6e5c934cc
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR04MB5583; 
+x-ms-traffictypediagnostic: VI1PR04MB5583:
+x-ms-exchange-purlcount: 1
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-microsoft-antispam-prvs: <VI1PR04MB5583705E1A156E9DF61DFD80EC190@VI1PR04MB5583.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1443;
+x-forefront-prvs: 00540983E2
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(136003)(366004)(376002)(39860400002)(346002)(396003)(189003)(199004)(13464003)(26005)(66946007)(64756008)(6916009)(73956011)(11346002)(3846002)(99286004)(33656002)(6116002)(4744005)(66556008)(76176011)(66446008)(66476007)(186003)(55016002)(44832011)(966005)(7696005)(476003)(14454004)(446003)(486006)(478600001)(6246003)(2906002)(229853002)(4326008)(6436002)(25786009)(14444005)(74316002)(9686003)(68736007)(6306002)(76116006)(52536014)(66066001)(305945005)(71190400001)(71200400001)(53936002)(54906003)(6506007)(256004)(5660300002)(7736002)(8936002)(102836004)(81156014)(86362001)(81166006)(316002)(8676002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR04MB5583;
+ H:VI1PR04MB5134.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: gnqMazF+nzQTNQhmoGkYY7imzrTpo5wzUZ0kcmM93IUJDEfrqOQ15Bn2XqpCjTa3uflPhM7mwZTLTJgCnOUMXfqxueSQmCHsmwuAwaYHLFQxyZeA6CAuWSXcyDGmQxgMgurtAAz281eZP7q6owXMEUUFykgBzo6nbx9XLMwdU7nTQqRDIV2Fv5osOT8lAg8ICwAL949f8xK40AVKOr6S1UYlcAdys2155+H3eB4fm0RARCGp+1BPqG0DAysREEtvLq053Y2HP+E+fycMKUfnmo9NG07i3yb3lspMDUUOngq7ufnseDXmT8SuNLpk/KpW+IN7lsj8hZ9EgjOrbqtoY6JpLj4gg4Dz+KhCE1/Dq0pUwajK3hUW1m72SLQA0D0ML6OAEf2x2E88mvqknaf9qppWSBg3/as88O4VfPz4pds=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: [next-20190530] Boot failure on PowerPC
-Date: Fri, 31 May 2019 18:30:28 +0530
-To: linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
-X-Mailer: Apple Mail (2.3445.104.11)
-X-TM-AS-GCONF: 00
-x-cbid: 19053113-4275-0000-0000-0000033AA229
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19053113-4276-0000-0000-0000384AA765
-Message-Id: <79EEB945-661A-41AD-8B26-2FD3B3F84697@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-31_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=562 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905310083
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b320303-6336-4846-e41c-08d6e5c934cc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 May 2019 13:09:25.4735 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: laurentiu.tudor@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5583
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,41 +98,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Roy Pledge <roy.pledge@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Leo Li <leoyang.li@nxp.com>,
+ "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+ Camelia Alexandra Groza <camelia.groza@nxp.com>,
+ "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Latest next fails to boot with a kernel panic on POWER9.
+Hello,
 
-[   33.689332] Kernel panic - not syncing: stack-protector: Kernel stack =
-is corrupted in: write_irq_affinity.isra.5+0x15c/0x160
-[   33.689346] CPU: 35 PID: 4907 Comm: irqbalance Not tainted =
-5.2.0-rc2-next-20190530-autotest-autotest #1
-[   33.689352] Call Trace:
-[   33.689356] [c0000018d974bab0] [c000000000b5328c] =
-dump_stack+0xb0/0xf4 (unreliable)
-[   33.689364] [c0000018d974baf0] [c000000000120694] panic+0x16c/0x408
-[   33.689370] [c0000018d974bb80] [c00000000012010c] =
-__stack_chk_fail+0x2c/0x30
-[   33.689376] [c0000018d974bbe0] [c0000000001b859c] =
-write_irq_affinity.isra.5+0x15c/0x160
-[   33.689383] [c0000018d974bd30] [c0000000004d6f30] =
-proc_reg_write+0x90/0x110
-[   33.689388] [c0000018d974bd60] [c00000000041453c] =
-__vfs_write+0x3c/0x70
-[   33.689394] [c0000018d974bd80] [c000000000418650] =
-vfs_write+0xd0/0x250
-[   33.689399] [c0000018d974bdd0] [c000000000418a2c] =
-ksys_write+0x7c/0x130
-[   33.689405] [c0000018d974be20] [c00000000000b688] =
-system_call+0x5c/0x70
+> -----Original Message-----
+> From: David Miller <davem@davemloft.net>
+> Sent: Friday, May 31, 2019 1:09 AM
+>=20
+> From: laurentiu.tudor@nxp.com
+> Date: Thu, 30 May 2019 17:19:45 +0300
+>=20
+> > Depends on this pull request:
+> >
+> >
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2019-May/653554.htm=
+l
+>=20
+> I'm not sure how you want me to handle this.
 
-Machine boots till login prompt and then panics few seconds later.
+Dave, would it make sense / be possible to also pick Leo's PR through your =
+tree?
 
-Last known next build was May 24th. Will attempt few builds till May 30 =
-to
-narrow down this problem.
-
-Thanks
--Sachin=
-
+---
+Thanks & Best Regards, Laurentiu
