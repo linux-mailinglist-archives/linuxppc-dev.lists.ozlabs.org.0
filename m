@@ -1,55 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F408831E8D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 15:38:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45GMpQ3L3jzDqDp
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 23:38:22 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D4831FE6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 18:17:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45GRKj2GqvzDqVv
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 02:17:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
+ envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="kJ48E0Jk"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="RdmXCPI1"; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45GMYT5qXhzDqSt
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:27:09 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 54522273CD;
- Sat,  1 Jun 2019 13:27:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559395627;
- bh=3K6/aUg3C52Mziko9m56XexLE8geFfS7O36EjOwfNKI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kJ48E0JkWSo9dkFWAXyRWVGOD9IxwW2yPNiKYPtTo2Yn+IZ2i/2EdzWsnAm50YLXO
- P0eu/2GqTzRkYA7BWaqDoq2Wq8HCrIGcnUFTeMdZLc3C5LU7TjEWvigztOYgVEfF9G
- Z1zIgFmu0mAHT0aJc/RwKmXrXmmSCKtpnL+/9sj8=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 39/56] PCI: rpadlpar: Fix leaked device_node
- references in add/remove paths
-Date: Sat,  1 Jun 2019 09:25:43 -0400
-Message-Id: <20190601132600.27427-39-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
-References: <20190601132600.27427-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45GRGr1TVlzDqZw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 02:14:42 +1000 (AEST)
+Received: by mail-lf1-x142.google.com with SMTP id r15so10335881lfm.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=TKTAJ8E7sNy2vEZhocfTI/IVyiugHenGqfHPAGmTqUU=;
+ b=RdmXCPI1V+CWEuQQLIpoDnZHvNbMKl90LuqFIcI1YnEKXhPCSK5AUEFPNd650/ERUV
+ Qh10sm7MSlB6HnOBHykL5KhchRGHirJ9ssAdIkVcDYKPumYo1Zi2YYM6BhTRVFDVSg7U
+ Nczzjs9o+pp1b0tTsgtO9YPvDZ1uwi7oKCdAA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=TKTAJ8E7sNy2vEZhocfTI/IVyiugHenGqfHPAGmTqUU=;
+ b=CGRykCuxqyGwkw2xvJTqm8Viy5VaN+KuQ00nfUCIXMBzX0FZbdDT3UNuVQZ2veCmqq
+ 8GctZd9014zEc5Hk2nMUYa29S5OQGyBUBR4qVFXWRniNtwEH9wAGm7OEVo3Gqx6qEG4/
+ DVccqO7AU0Cdf530cqz71O7xXF2+pZiDFd8qxMWgzb9TwTd6K8sMBmj1OG2m54tLghf8
+ 9xxpKJShjWmkNyIxkNb67tdD1UzdO1gHIcRPmvU+K9ScFpFZlU/VTfx4LFb7xoVtYcqb
+ IjEgwrYLuSFGWPOPnUU4+HkV/HjOGrnA96Hi5SBH4KIXye5K59AWOSj1HKE+EWAdOjZj
+ vyQg==
+X-Gm-Message-State: APjAAAW99hX5tLq3YTyjM9YjfxZ9GUATalgd2ziMoP/3W7OUXLbYZQnG
+ Uk+Wu2QjD9Bc5+8ptg47613UBfuj2RI=
+X-Google-Smtp-Source: APXvYqz35kGwYWhIhbDMiaQ+GwjWoXGyaMShO5aj2nRBiosDn+5AZeLPrzzDV5uA0J2CbMg6LWjgfA==
+X-Received: by 2002:a19:a20a:: with SMTP id l10mr5114231lfe.81.1559405675855; 
+ Sat, 01 Jun 2019 09:14:35 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com.
+ [209.85.167.53])
+ by smtp.gmail.com with ESMTPSA id n75sm1887611lfn.59.2019.06.01.09.14.33
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 01 Jun 2019 09:14:34 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id v18so10368820lfi.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:14:33 -0700 (PDT)
+X-Received: by 2002:a19:ae01:: with SMTP id f1mr8899724lfc.29.1559405673566;
+ Sat, 01 Jun 2019 09:14:33 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20190601074959.14036-1-hch@lst.de>
+ <20190601074959.14036-4-hch@lst.de>
+In-Reply-To: <20190601074959.14036-4-hch@lst.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 1 Jun 2019 09:14:17 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
+Message-ID: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
+Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,70 +82,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Sasha Levin <sashal@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Tyrel Datwyler <tyreld@linux.vnet.ibm.com>,
- linux-pci@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Linux-sh list <linux-sh@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mips@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+On Sat, Jun 1, 2019 at 12:50 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Pass in the already calculated end value instead of recomputing it, and
+> leave the end > start check in the callers instead of duplicating them
+> in the arch code.
 
-[ Upstream commit fb26228bfc4ce3951544848555c0278e2832e618 ]
+Good cleanup, except it's wrong.
 
-The find_dlpar_node() helper returns a device node with its reference
-incremented.  Both the add and remove paths use this helper for find the
-appropriate node, but fail to release the reference when done.
+> -       if (nr_pages <= 0)
+> +       if (end < start)
+>                 return 0;
 
-Annotate the find_dlpar_node() helper with a comment about the incremented
-reference count and call of_node_put() on the obtained device_node in the
-add and remove paths.  Also, fixup a reference leak in the find_vio_slot()
-helper where we fail to call of_node_put() on the vdevice node after we
-iterate over its children.
+You moved the overflow test to generic code - good.
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pci/hotplug/rpadlpar_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+You removed the sign and zero test on nr_pages - bad.
 
-diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
-index f2fcbe944d940..aae295708ea7a 100644
---- a/drivers/pci/hotplug/rpadlpar_core.c
-+++ b/drivers/pci/hotplug/rpadlpar_core.c
-@@ -55,6 +55,7 @@ static struct device_node *find_vio_slot_node(char *drc_name)
- 		if ((rc == 0) && (!strcmp(drc_name, name)))
- 			break;
- 	}
-+	of_node_put(parent);
- 
- 	return dn;
- }
-@@ -78,6 +79,7 @@ static struct device_node *find_php_slot_pci_node(char *drc_name,
- 	return np;
- }
- 
-+/* Returns a device_node with its reference count incremented */
- static struct device_node *find_dlpar_node(char *drc_name, int *node_type)
- {
- 	struct device_node *dn;
-@@ -314,6 +316,7 @@ int dlpar_add_slot(char *drc_name)
- 			rc = dlpar_add_phb(drc_name, dn);
- 			break;
- 	}
-+	of_node_put(dn);
- 
- 	printk(KERN_INFO "%s: slot %s added\n", DLPAR_MODULE_NAME, drc_name);
- exit:
-@@ -447,6 +450,7 @@ int dlpar_remove_slot(char *drc_name)
- 			rc = dlpar_remove_pci_slot(drc_name, dn);
- 			break;
- 	}
-+	of_node_put(dn);
- 	vm_unmap_aliases();
- 
- 	printk(KERN_INFO "%s: slot %s removed\n", DLPAR_MODULE_NAME, drc_name);
--- 
-2.20.1
+The zero test in particular is _important_ - the GUP range operators
+know and depend on the fact that they are passed a non-empty range.
 
+The sign test it less so, but is definitely appropriate. It might be
+even better to check that the "<< PAGE_SHIFT" doesn't overflow in
+"long", of course, but with callers being supposed to be trusted, the
+sign test at least checks for stupid underflow issues.
+
+So at the very least that "(end < start)" needs to be "(end <=
+start)", but honestly, I think the sign of the nr_pages should be
+continued to be checked.
+
+                      Linus
