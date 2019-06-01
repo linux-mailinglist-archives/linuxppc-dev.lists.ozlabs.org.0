@@ -2,66 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8C431E2E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 15:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F408831E8D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 15:38:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45GMkH24MczDqdg
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 23:34:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45GMpQ3L3jzDqDp
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 23:38:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45GMVd5VprzDqSr
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:24:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="cgkYysJR"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45GMVd2DVlz8tQv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:24:41 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45GMVc69yCz9sSq; Sat,  1 Jun 2019 23:24:40 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=kernel.org
  (client-ip=198.145.29.99; helo=mail.kernel.org;
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="cgkYysJR"; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="kJ48E0Jk"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45GMVc2fpSz9sSp
- for <linuxppc-dev@ozlabs.org>; Sat,  1 Jun 2019 23:24:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45GMYT5qXhzDqSt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:27:09 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DF57727358;
- Sat,  1 Jun 2019 13:24:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 54522273CD;
+ Sat,  1 Jun 2019 13:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559395478;
- bh=a1/59yPA5qvkX/IzatJ1mZxQdqXMcsdATBRZAsjQNgc=;
+ s=default; t=1559395627;
+ bh=3K6/aUg3C52Mziko9m56XexLE8geFfS7O36EjOwfNKI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cgkYysJRDS30p67Vc0FTWLwjdC7VgtahZpOE9nxUoXn7CjY1AKRqzlTxIUOqBbFm6
- hZGIzDRF/Ttln6alw2oADiwgFflXoRje6LI3qPCr7cT9x8oJv2g4AIceVhP84Hi3Hi
- WkeNby3YXZwws+yWPJfvf79+Vx9UcfeKDMFmsGI0=
+ b=kJ48E0JkWSo9dkFWAXyRWVGOD9IxwW2yPNiKYPtTo2Yn+IZ2i/2EdzWsnAm50YLXO
+ P0eu/2GqTzRkYA7BWaqDoq2Wq8HCrIGcnUFTeMdZLc3C5LU7TjEWvigztOYgVEfF9G
+ Z1zIgFmu0mAHT0aJc/RwKmXrXmmSCKtpnL+/9sj8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 23/99] EDAC/mpc85xx: Prevent building as a module
-Date: Sat,  1 Jun 2019 09:22:30 -0400
-Message-Id: <20190601132346.26558-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 39/56] PCI: rpadlpar: Fix leaked device_node
+ references in add/remove paths
+Date: Sat,  1 Jun 2019 09:25:43 -0400
+Message-Id: <20190601132600.27427-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601132346.26558-1-sashal@kernel.org>
-References: <20190601132346.26558-1-sashal@kernel.org>
+In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
+References: <20190601132600.27427-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -77,66 +61,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Borislav Petkov <bp@suse.de>,
- Johannes Thumshirn <jth@kernel.org>, linuxppc-dev@ozlabs.org,
- morbidrsa@gmail.com, James Morse <james.morse@arm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- linux-edac <linux-edac@vger.kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Sasha Levin <sashal@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Tyrel Datwyler <tyreld@linux.vnet.ibm.com>,
+ linux-pci@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
 
-[ Upstream commit 2b8358a951b1e2a534a54924cd8245e58a1c5fb8 ]
+[ Upstream commit fb26228bfc4ce3951544848555c0278e2832e618 ]
 
-The mpc85xx EDAC driver can be configured as a module but then fails to
-build because it uses two unexported symbols:
+The find_dlpar_node() helper returns a device node with its reference
+incremented.  Both the add and remove paths use this helper for find the
+appropriate node, but fail to release the reference when done.
 
-  ERROR: ".pci_find_hose_for_OF_device" [drivers/edac/mpc85xx_edac_mod.ko] undefined!
-  ERROR: ".early_find_capability" [drivers/edac/mpc85xx_edac_mod.ko] undefined!
+Annotate the find_dlpar_node() helper with a comment about the incremented
+reference count and call of_node_put() on the obtained device_node in the
+add and remove paths.  Also, fixup a reference leak in the find_vio_slot()
+helper where we fail to call of_node_put() on the vdevice node after we
+iterate over its children.
 
-We don't want to export those symbols just for this driver, so make the
-driver only configurable as a built-in.
-
-This seems to have been broken since at least
-
-  c92132f59806 ("edac/85xx: Add PCIe error interrupt edac support")
-
-(Nov 2013).
-
- [ bp: make it depend on EDAC=y so that the EDAC core doesn't get built
-   as a module. ]
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Johannes Thumshirn <jth@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: linuxppc-dev@ozlabs.org
-Cc: morbidrsa@gmail.com
-Link: https://lkml.kernel.org/r/20190502141941.12927-1-mpe@ellerman.id.au
+Signed-off-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/rpadlpar_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
-index 96afb2aeed18a..aaaa8ce8d3fdd 100644
---- a/drivers/edac/Kconfig
-+++ b/drivers/edac/Kconfig
-@@ -246,8 +246,8 @@ config EDAC_PND2
- 	  micro-server but may appear on others in the future.
+diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
+index f2fcbe944d940..aae295708ea7a 100644
+--- a/drivers/pci/hotplug/rpadlpar_core.c
++++ b/drivers/pci/hotplug/rpadlpar_core.c
+@@ -55,6 +55,7 @@ static struct device_node *find_vio_slot_node(char *drc_name)
+ 		if ((rc == 0) && (!strcmp(drc_name, name)))
+ 			break;
+ 	}
++	of_node_put(parent);
  
- config EDAC_MPC85XX
--	tristate "Freescale MPC83xx / MPC85xx"
--	depends on FSL_SOC
-+	bool "Freescale MPC83xx / MPC85xx"
-+	depends on FSL_SOC && EDAC=y
- 	help
- 	  Support for error detection and correction on the Freescale
- 	  MPC8349, MPC8560, MPC8540, MPC8548, T4240
+ 	return dn;
+ }
+@@ -78,6 +79,7 @@ static struct device_node *find_php_slot_pci_node(char *drc_name,
+ 	return np;
+ }
+ 
++/* Returns a device_node with its reference count incremented */
+ static struct device_node *find_dlpar_node(char *drc_name, int *node_type)
+ {
+ 	struct device_node *dn;
+@@ -314,6 +316,7 @@ int dlpar_add_slot(char *drc_name)
+ 			rc = dlpar_add_phb(drc_name, dn);
+ 			break;
+ 	}
++	of_node_put(dn);
+ 
+ 	printk(KERN_INFO "%s: slot %s added\n", DLPAR_MODULE_NAME, drc_name);
+ exit:
+@@ -447,6 +450,7 @@ int dlpar_remove_slot(char *drc_name)
+ 			rc = dlpar_remove_pci_slot(drc_name, dn);
+ 			break;
+ 	}
++	of_node_put(dn);
+ 	vm_unmap_aliases();
+ 
+ 	printk(KERN_INFO "%s: slot %s removed\n", DLPAR_MODULE_NAME, drc_name);
 -- 
 2.20.1
 
