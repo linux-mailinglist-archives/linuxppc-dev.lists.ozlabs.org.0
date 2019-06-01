@@ -2,60 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D7F31A82
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 10:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8966B31C89
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 15:22:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45GDdq61YpzDqWC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 18:15:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45GMS56BkDzDqSW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 23:22:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+47bfdebe920718d2a071+5760+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45GMMg1nf5zDqSP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:18:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="hmItU0Mz"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="VJqS7q3m"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45GMMc5Vjmz8sjs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 23:18:36 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45GMMc3vnYz9sPh; Sat,  1 Jun 2019 23:18:36 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="VJqS7q3m"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45GD5y585szDqcG
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2019 17:51:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rc9LqUIutMEld6u5RSQ1sWzYs7kKnMm3S4iYITq0SoM=; b=hmItU0MzoKBxkW0xZSY+1V9IVJ
- UlnIz7x0urr62nzgcyqnB/5AQ1M6XxA40U4gxuVcAGCsZXzQMrqW+4eKIbaj5MYaWx5FKa+gz1mKz
- HRuyf4AFR/AjCjgH8EDN4vHwAhjKlzmMds++4hoDLSl7tnnj8utVFIcJ1xF5v2BvjcyJSGfnZhRgg
- CGtHKWy+mwizinD1wdoATmhB/sprl/mtqAL2Mea12uUVfEACrsVwrstfEucPET4mDXbr7743/4ZpD
- tGZvwusRlY1sYBD80QVps0fAgFJ6FrIu6GKRIDGA4zcDNIRUJhWop4eFhMFiU+OV0AXhP+aTvhS++
- PTXgcQDg==;
-Received: from 217-76-161-89.static.highway.a1.net ([217.76.161.89]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hWynB-0007sS-Px; Sat, 01 Jun 2019 07:51:06 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Paul Burton <paul.burton@mips.com>, James Hogan <jhogan@kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 16/16] mm: mark the page referenced in gup_hugepte
-Date: Sat,  1 Jun 2019 09:49:59 +0200
-Message-Id: <20190601074959.14036-17-hch@lst.de>
+ by ozlabs.org (Postfix) with ESMTPS id 45GMMc0Gjqz9sPg
+ for <linuxppc-dev@ozlabs.org>; Sat,  1 Jun 2019 23:18:36 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C026E272AA;
+ Sat,  1 Jun 2019 13:18:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1559395113;
+ bh=cj/IQ77HXq6PLhUf2CGtPUKkuQrgVntohc1tmQxxOjs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=VJqS7q3mj+MAm0nfGhNrKyewbwxESjIs1ikN+G008LpxUy/pS6GO5OoNCJKrzMWcY
+ BsvM1xxTTZ2K45fHGw5b/7sWhJRTvce2Wh+XOr8h678Lvt61xuPMR4XzKDtpsUDtJd
+ buQ6XW0lgAguR+lJVbNhmtajR+iifjzlxR8e4sw8=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 038/186] EDAC/mpc85xx: Prevent building as a module
+Date: Sat,  1 Jun 2019 09:14:14 -0400
+Message-Id: <20190601131653.24205-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601074959.14036-1-hch@lst.de>
-References: <20190601074959.14036-1-hch@lst.de>
+In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
+References: <20190601131653.24205-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,36 +77,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Andrey Konovalov <andreyknvl@google.com>,
- x86@kernel.org, linux-mips@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Khalid Aziz <khalid.aziz@oracle.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Borislav Petkov <bp@suse.de>,
+ Johannes Thumshirn <jth@kernel.org>, linuxppc-dev@ozlabs.org,
+ morbidrsa@gmail.com, James Morse <james.morse@arm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ linux-edac <linux-edac@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All other get_user_page_fast cases mark the page referenced, so do
-this here as well.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+[ Upstream commit 2b8358a951b1e2a534a54924cd8245e58a1c5fb8 ]
+
+The mpc85xx EDAC driver can be configured as a module but then fails to
+build because it uses two unexported symbols:
+
+  ERROR: ".pci_find_hose_for_OF_device" [drivers/edac/mpc85xx_edac_mod.ko] undefined!
+  ERROR: ".early_find_capability" [drivers/edac/mpc85xx_edac_mod.ko] undefined!
+
+We don't want to export those symbols just for this driver, so make the
+driver only configurable as a built-in.
+
+This seems to have been broken since at least
+
+  c92132f59806 ("edac/85xx: Add PCIe error interrupt edac support")
+
+(Nov 2013).
+
+ [ bp: make it depend on EDAC=y so that the EDAC core doesn't get built
+   as a module. ]
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Johannes Thumshirn <jth@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-edac <linux-edac@vger.kernel.org>
+Cc: linuxppc-dev@ozlabs.org
+Cc: morbidrsa@gmail.com
+Link: https://lkml.kernel.org/r/20190502141941.12927-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/gup.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 6090044227f1..d1fc008de292 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2020,6 +2020,7 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
- 		return 0;
- 	}
+diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
+index 47eb4d13ed5f8..5e2e0348d460f 100644
+--- a/drivers/edac/Kconfig
++++ b/drivers/edac/Kconfig
+@@ -263,8 +263,8 @@ config EDAC_PND2
+ 	  micro-server but may appear on others in the future.
  
-+	SetPageReferenced(head);
- 	return 1;
- }
- 
+ config EDAC_MPC85XX
+-	tristate "Freescale MPC83xx / MPC85xx"
+-	depends on FSL_SOC
++	bool "Freescale MPC83xx / MPC85xx"
++	depends on FSL_SOC && EDAC=y
+ 	help
+ 	  Support for error detection and correction on the Freescale
+ 	  MPC8349, MPC8560, MPC8540, MPC8548, T4240
 -- 
 2.20.1
 
