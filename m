@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6463F32000
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 18:31:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D4831FE6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2019 18:17:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45GRKj2GqvzDqVv
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 02:17:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45GRfX5V87zDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 02:31:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
+ (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
  envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.b="RdmXCPI1"; dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+ header.b="Fa5BzECD"; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45GRGr1TVlzDqZw
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 02:14:42 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id r15so10335881lfm.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:14:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45GRbf6ksnzDqbX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 02:29:17 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id o13so12450596lji.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux-foundation.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=TKTAJ8E7sNy2vEZhocfTI/IVyiugHenGqfHPAGmTqUU=;
- b=RdmXCPI1V+CWEuQQLIpoDnZHvNbMKl90LuqFIcI1YnEKXhPCSK5AUEFPNd650/ERUV
- Qh10sm7MSlB6HnOBHykL5KhchRGHirJ9ssAdIkVcDYKPumYo1Zi2YYM6BhTRVFDVSg7U
- Nczzjs9o+pp1b0tTsgtO9YPvDZ1uwi7oKCdAA=
+ :cc; bh=WbBlTtzN8zF5Iqk8bw1nVflVKcbi7cIeUDGHN5Yot1E=;
+ b=Fa5BzECDkVJJVil3Feep0HbYjDwApJFYj92zZCD6f4aYCxc2Als39M3w9fuXET3xGS
+ 3dJFRH9YhqCQxcCzt7i+R2DDortv76Hw0c0yls+ilBPK12ky3bwefHhCdXxs096uQvMr
+ JNZz4F8UnUXJp5G999kMQlHK92/csNz/XzzF4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=TKTAJ8E7sNy2vEZhocfTI/IVyiugHenGqfHPAGmTqUU=;
- b=CGRykCuxqyGwkw2xvJTqm8Viy5VaN+KuQ00nfUCIXMBzX0FZbdDT3UNuVQZ2veCmqq
- 8GctZd9014zEc5Hk2nMUYa29S5OQGyBUBR4qVFXWRniNtwEH9wAGm7OEVo3Gqx6qEG4/
- DVccqO7AU0Cdf530cqz71O7xXF2+pZiDFd8qxMWgzb9TwTd6K8sMBmj1OG2m54tLghf8
- 9xxpKJShjWmkNyIxkNb67tdD1UzdO1gHIcRPmvU+K9ScFpFZlU/VTfx4LFb7xoVtYcqb
- IjEgwrYLuSFGWPOPnUU4+HkV/HjOGrnA96Hi5SBH4KIXye5K59AWOSj1HKE+EWAdOjZj
- vyQg==
-X-Gm-Message-State: APjAAAW99hX5tLq3YTyjM9YjfxZ9GUATalgd2ziMoP/3W7OUXLbYZQnG
- Uk+Wu2QjD9Bc5+8ptg47613UBfuj2RI=
-X-Google-Smtp-Source: APXvYqz35kGwYWhIhbDMiaQ+GwjWoXGyaMShO5aj2nRBiosDn+5AZeLPrzzDV5uA0J2CbMg6LWjgfA==
-X-Received: by 2002:a19:a20a:: with SMTP id l10mr5114231lfe.81.1559405675855; 
- Sat, 01 Jun 2019 09:14:35 -0700 (PDT)
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com.
- [209.85.167.53])
- by smtp.gmail.com with ESMTPSA id n75sm1887611lfn.59.2019.06.01.09.14.33
+ bh=WbBlTtzN8zF5Iqk8bw1nVflVKcbi7cIeUDGHN5Yot1E=;
+ b=NY+jI7dmImIrOPQxmhYDuFtzCED9HISabk+8ozNiQ3JUXvp266rm44tqLGePOEcrs+
+ B8pvXHbQfCiOwicCqNoKwjdMfCaNtoz7TC1PzTh4jj5s+wBEdERo33QMztZBujYe9ljj
+ +8hslQxsn6OxbzTVNIz14REPiHdZGt46YXWUsltR7uu5eSbJkowa+k5kmpnX/0JthRmx
+ HvIy1R6U+4RqroVJ8LBGhfjisCWHURWGd5RWYQIu+VBzKXKBNDdaT7/Sp8YWlSTuHztz
+ SeYjbUYgjbxah3K6z6anbUIAWdJ5YIVuBTe521dH70tZ3g6w78GAr8mGnz/JEK/K41FQ
+ oINA==
+X-Gm-Message-State: APjAAAX3IwjFUvZhgdl4CnQ5pffSUK9GfFIDZ0TDCaUxxY5BLjLnCy4r
+ C1VSS19W4HYPS0MKlt23ncu/4AEHD+Y=
+X-Google-Smtp-Source: APXvYqwXJewPmW01z9OibdGwez/3lGh4G/wz852Wk0d2rrmsNpgdcn/3BvWO6kYHNqk3JPSAMyh5eQ==
+X-Received: by 2002:a2e:9e07:: with SMTP id e7mr2063037ljk.55.1559406553675;
+ Sat, 01 Jun 2019 09:29:13 -0700 (PDT)
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com.
+ [209.85.208.174])
+ by smtp.gmail.com with ESMTPSA id x29sm1847058lfg.58.2019.06.01.09.29.10
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 01 Jun 2019 09:14:34 -0700 (PDT)
-Received: by mail-lf1-f53.google.com with SMTP id v18so10368820lfi.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:14:33 -0700 (PDT)
-X-Received: by 2002:a19:ae01:: with SMTP id f1mr8899724lfc.29.1559405673566;
- Sat, 01 Jun 2019 09:14:33 -0700 (PDT)
+ Sat, 01 Jun 2019 09:29:10 -0700 (PDT)
+Received: by mail-lj1-f174.google.com with SMTP id j24so12490757ljg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jun 2019 09:29:10 -0700 (PDT)
+X-Received: by 2002:a2e:9ad1:: with SMTP id p17mr9481496ljj.147.1559406549964; 
+ Sat, 01 Jun 2019 09:29:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190601074959.14036-1-hch@lst.de>
- <20190601074959.14036-4-hch@lst.de>
-In-Reply-To: <20190601074959.14036-4-hch@lst.de>
+ <20190601074959.14036-9-hch@lst.de>
+In-Reply-To: <20190601074959.14036-9-hch@lst.de>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 1 Jun 2019 09:14:17 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
-Message-ID: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
-Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
+Date: Sat, 1 Jun 2019 09:28:54 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj9w5NxTcJsqpvYUiL3OBOH-J3=4-vXcc3GaG_U8H-gJw@mail.gmail.com>
+Message-ID: <CAHk-=wj9w5NxTcJsqpvYUiL3OBOH-J3=4-vXcc3GaG_U8H-gJw@mail.gmail.com>
+Subject: Re: [PATCH 08/16] sparc64: add the missing pgd_page definition
 To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -95,32 +95,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Both sparc64 and sh had this pattern, but now that I look at it more
+closely, I think your version is wrong, or at least nonoptimal.
+
 On Sat, Jun 1, 2019 at 12:50 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> Pass in the already calculated end value instead of recomputing it, and
-> leave the end > start check in the callers instead of duplicating them
-> in the arch code.
+> +#define pgd_page(pgd)                  virt_to_page(__va(pgd_val(pgd)))
 
-Good cleanup, except it's wrong.
+Going through the virtual address is potentially very inefficient, and
+might in some cases just be wrong (ie it's definitely wrong for
+HIGHMEM style setups).
 
-> -       if (nr_pages <= 0)
-> +       if (end < start)
->                 return 0;
+It would likely be much better to go through the physical address and
+use "pfn_to_page()". I realize that we don't have a "pgd to physical",
+but neither do we really have a "pgd to virtual", and your
+"__va(pgd_val(x))" thing is not at allguaranteed to work. You're
+basically assuming that "pgd_val(x)" is the physical address, which is
+likely not entirely incorrect, but it should be checked by the
+architecture people.
 
-You moved the overflow test to generic code - good.
+The pgd value could easily have high bits with meaning, which would
+also potentially screw up the __va(x) model.
 
-You removed the sign and zero test on nr_pages - bad.
+So I thgink this would be better done with
 
-The zero test in particular is _important_ - the GUP range operators
-know and depend on the fact that they are passed a non-empty range.
+     #define pgd_page(pgd)    pfn_to_page(pgd_pfn(pgd))
 
-The sign test it less so, but is definitely appropriate. It might be
-even better to check that the "<< PAGE_SHIFT" doesn't overflow in
-"long", of course, but with callers being supposed to be trusted, the
-sign test at least checks for stupid underflow issues.
+where that "pgd_pfn()" would need to be a new (but likely very
+trivial) function. That's what we do for pte_pfn().
 
-So at the very least that "(end < start)" needs to be "(end <=
-start)", but honestly, I think the sign of the nr_pages should be
-continued to be checked.
+IOW, it would likely end up something like
 
-                      Linus
+  #define pgd_to_pfn(pgd) (pgd_val(x) >> PFN_PGD_SHIFT)
+
+David?
+
+                  Linus
