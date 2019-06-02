@@ -1,84 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E8A32282
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 09:45:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8618E32200
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 06:45:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Glws4p8XzDqdf
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 14:45:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Gqwb5n56zDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 17:45:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=sina.com
+ (client-ip=202.108.3.162; helo=mail3-162.sinamail.sina.com.cn;
+ envelope-from=hdanton@sina.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Glvc5Y43zDqSP
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 14:44:12 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x524gI4n023827; Sun, 2 Jun 2019 00:44:02 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sv6vc9few-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 02 Jun 2019 00:44:02 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x524i1SX026492;
- Sun, 2 Jun 2019 00:44:01 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sv6vc9fej-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 02 Jun 2019 00:44:01 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x51Mh6fr005078;
- Sat, 1 Jun 2019 22:48:59 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 2suh08n80b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 01 Jun 2019 22:48:59 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x524i0fD43254136
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 2 Jun 2019 04:44:00 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01313B2064;
- Sun,  2 Jun 2019 04:44:00 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08F3EB205F;
- Sun,  2 Jun 2019 04:43:58 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.62.243])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Sun,  2 Jun 2019 04:43:57 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/nvdimm: Add support for multibyte read/write for
- metadata
-Date: Sun,  2 Jun 2019 10:13:50 +0530
-Message-Id: <20190602044350.31660-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
+ dmarc=none (p=none dis=none) header.from=sina.com
+X-Greylist: delayed 135 seconds by postgrey-1.36 at bilbo;
+ Sun, 02 Jun 2019 17:42:26 AEST
+Received: from mail3-162.sinamail.sina.com.cn (mail3-162.sinamail.sina.com.cn
+ [202.108.3.162])
+ by lists.ozlabs.org (Postfix) with SMTP id 45GqsG4tLmzDqR7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 17:42:24 +1000 (AEST)
+Received: from unknown (HELO localhost.localdomain)([123.112.52.63])
+ by sina.com with ESMTP
+ id 5CF37D4B00006234; Sun, 2 Jun 2019 15:39:58 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 820312401022
+From: Hillf Danton <hdanton@sina.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 10/16] sparc64: use the generic get_user_pages_fast code
+Date: Sun,  2 Jun 2019 15:39:48 +0800
+Message-Id: <20190601074959.14036-11-hch@lst.de>
+In-Reply-To: <20190601074959.14036-1-hch@lst.de>
+References: <20190601074959.14036-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Precedence: bulk
+X-Mailing-List: linux-kernel@vger.kernel.org
+Archived-At: <https://lore.kernel.org/lkml/20190601074959.14036-11-hch@lst.de/>
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-02_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906020034
+X-Mailman-Approved-At: Sun, 02 Jun 2019 17:44:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -87,166 +53,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: x86@kernel.org, Rich Felker <dalias@libc.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ James Hogan <jhogan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SCM_READ/WRITE_MEATADATA hcall supports multibyte read/write. This patch
-updates the metadata read/write to use 1, 2, 4 or 8 byte read/write as
-mentioned in PAPR document.
 
-READ/WRITE_METADATA hcall supports the 1, 2, 4, or 8 bytes read/write.
-For other values hcall results H_P3.
+Hi Christoph 
 
-Hypervisor stores the metadata contents in big-endian format and in-order
-to enable read/write in different granularity, we need to switch the contents
-to big-endian before calling HCALL.
+On Sat,  1 Jun 2019 09:49:53 +0200 Christoph Hellwig wrote:
+> 
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index a93eca29e85a..2301ab5250e4 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -1098,6 +1098,24 @@ static inline unsigned long untagged_addr(unsigned long start)
+>  }
+>  #define untagged_addr untagged_addr
+>  
+> +static inline bool pte_access_permitted(pte_t pte, bool write)
+> +{
+> +	u64 prot;
+> +
+> +	if (tlb_type == hypervisor) {
+> +		prot = _PAGE_PRESENT_4V | _PAGE_P_4V;
+> +		if (prot)
 
-Based on an patch from Oliver O'Halloran <oohall@gmail.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 104 +++++++++++++++++-----
- 1 file changed, 82 insertions(+), 22 deletions(-)
+Feel free to correct me if I misread or miss anything.
+It looks like a typo: s/prot/write/, as checking _PAGE_PRESENT_4V and
+_PAGE_P_4V makes prot always have _PAGE_WRITE_4V set, regardless of write.
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 0176ce66673f..e33cebb8ee6c 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -97,42 +97,102 @@ static int drc_pmem_unbind(struct papr_scm_priv *p)
- }
- 
- static int papr_scm_meta_get(struct papr_scm_priv *p,
--			struct nd_cmd_get_config_data_hdr *hdr)
-+			     struct nd_cmd_get_config_data_hdr *hdr)
- {
- 	unsigned long data[PLPAR_HCALL_BUFSIZE];
-+	unsigned long offset, data_offset;
-+	int len, read;
- 	int64_t ret;
- 
--	if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
-+	if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
- 		return -EINVAL;
- 
--	ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
--			hdr->in_offset, 1);
--
--	if (ret == H_PARAMETER) /* bad DRC index */
--		return -ENODEV;
--	if (ret)
--		return -EINVAL; /* other invalid parameter */
--
--	hdr->out_buf[0] = data[0] & 0xff;
--
-+	for (len = hdr->in_length; len; len -= read) {
-+
-+		data_offset = hdr->in_length - len;
-+		offset = hdr->in_offset + data_offset;
-+
-+		if (len >= 8)
-+			read = 8;
-+		else if (len >= 4)
-+			read = 4;
-+		else if ( len >= 2)
-+			read = 2;
-+		else
-+			read = 1;
-+
-+		ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
-+				  offset, read);
-+
-+		if (ret == H_PARAMETER) /* bad DRC index */
-+			return -ENODEV;
-+		if (ret)
-+			return -EINVAL; /* other invalid parameter */
-+
-+		switch (read) {
-+		case 8:
-+			*(uint64_t *)(hdr->out_buf + data_offset) = be64_to_cpu(data[0]);
-+			break;
-+		case 4:
-+			*(uint32_t *)(hdr->out_buf + data_offset) = be32_to_cpu(data[0] & 0xffffffff);
-+			break;
-+
-+		case 2:
-+			*(uint16_t *)(hdr->out_buf + data_offset) = be16_to_cpu(data[0] & 0xffff);
-+			break;
-+
-+		case 1:
-+			*(uint32_t *)(hdr->out_buf + data_offset) = (data[0] & 0xff);
-+			break;
-+		}
-+	}
- 	return 0;
- }
- 
- static int papr_scm_meta_set(struct papr_scm_priv *p,
--			struct nd_cmd_set_config_hdr *hdr)
-+			     struct nd_cmd_set_config_hdr *hdr)
- {
-+	unsigned long offset, data_offset;
-+	int len, wrote;
-+	unsigned long data;
-+	__be64 data_be;
- 	int64_t ret;
- 
--	if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
-+	if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
- 		return -EINVAL;
- 
--	ret = plpar_hcall_norets(H_SCM_WRITE_METADATA,
--			p->drc_index, hdr->in_offset, hdr->in_buf[0], 1);
--
--	if (ret == H_PARAMETER) /* bad DRC index */
--		return -ENODEV;
--	if (ret)
--		return -EINVAL; /* other invalid parameter */
-+	for (len = hdr->in_length; len; len -= wrote) {
-+
-+		data_offset = hdr->in_length - len;
-+		offset = hdr->in_offset + data_offset;
-+
-+		if (len >= 8) {
-+			data = *(uint64_t *)(hdr->in_buf + data_offset);
-+			data_be = cpu_to_be64(data);
-+			wrote = 8;
-+		} else if (len >= 4) {
-+			data = *(uint32_t *)(hdr->in_buf + data_offset);
-+			data &= 0xffffffff;
-+			data_be = cpu_to_be32(data);
-+			wrote = 4;
-+		} else if (len >= 2) {
-+			data = *(uint16_t *)(hdr->in_buf + data_offset);
-+			data &= 0xffff;
-+			data_be = cpu_to_be16(data);
-+			wrote = 2;
-+		} else {
-+			data_be = *(uint8_t *)(hdr->in_buf + data_offset);
-+			data_be &= 0xff;
-+			wrote = 1;
-+		}
-+
-+		ret = plpar_hcall_norets(H_SCM_WRITE_METADATA, p->drc_index,
-+					 offset, data_be, wrote);
-+		if (ret == H_PARAMETER) /* bad DRC index */
-+			return -ENODEV;
-+		if (ret)
-+			return -EINVAL; /* other invalid parameter */
-+	}
- 
- 	return 0;
- }
-@@ -154,7 +214,7 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 		get_size_hdr = buf;
- 
- 		get_size_hdr->status = 0;
--		get_size_hdr->max_xfer = 1;
-+		get_size_hdr->max_xfer = 8;
- 		get_size_hdr->config_size = p->metadata_size;
- 		*cmd_rc = 0;
- 		break;
--- 
-2.21.0
+> +			prot |= _PAGE_WRITE_4V;
+> +	} else {
+> +		prot = _PAGE_PRESENT_4U | _PAGE_P_4U;
+> +		if (write)
+> +			prot |= _PAGE_WRITE_4U;
+> +	}
+> +
+> +	return (pte_val(pte) & (prot | _PAGE_SPECIAL)) == prot;
+> +}
+> +#define pte_access_permitted pte_access_permitted
+> +
+>  #include <asm/tlbflush.h>
+>  #include <asm-generic/pgtable.h>
+
+BR
+Hillf
 
