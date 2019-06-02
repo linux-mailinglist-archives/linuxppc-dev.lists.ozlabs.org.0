@@ -1,65 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760F2322E0
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 12:01:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45GtxK5fwvzDqSM
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 20:01:09 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA32322EA
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 12:16:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45GvHJ5ygzzDqV5
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2019 20:16:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Gtw71Y7nzDqKt
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 20:00:06 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 024E628C09
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 10:00:04 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id EAFC128C15; Sun,  2 Jun 2019 10:00:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203517] WARNING: inconsistent lock state. inconsistent
- {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-Date: Sun, 02 Jun 2019 10:00:02 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: File System
-X-Bugzilla-Component: btrfs
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-203517-206035-b1kneqW9ad@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203517-206035@https.bugzilla.kernel.org/>
-References: <bug-203517-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45GvG510cXzDqQg
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2019 20:15:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45GvG369hPz9s7h;
+ Sun,  2 Jun 2019 20:15:39 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Chancellor <natechancellor@gmail.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH] scsi: ibmvscsi: Don't use rc uninitialized in
+ ibmvscsi_do_work
+In-Reply-To: <20190531185306.41290-1-natechancellor@gmail.com>
+References: <20190531185306.41290-1-natechancellor@gmail.com>
+Date: Sun, 02 Jun 2019 20:15:38 +1000
+Message-ID: <87blzgnvhx.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,25 +47,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: clang-built-linux@googlegroups.com,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203517
+Hi Nathan,
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Nathan Chancellor <natechancellor@gmail.com> writes:
+> clang warns:
+>
+> drivers/scsi/ibmvscsi/ibmvscsi.c:2126:7: warning: variable 'rc' is used
+> uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
+>         case IBMVSCSI_HOST_ACTION_NONE:
+>              ^~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/scsi/ibmvscsi/ibmvscsi.c:2151:6: note: uninitialized use occurs
+> here
+>         if (rc) {
+>             ^~
+>
+> Initialize rc to zero so that the atomic_set and dev_err statement don't
+> trigger for the cases that just break.
+>
+> Fixes: 035a3c4046b5 ("scsi: ibmvscsi: redo driver work thread to use enum action states")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/502
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/scsi/ibmvscsi/ibmvscsi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+> index 727c31dc11a0..6714d8043e62 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+> @@ -2118,7 +2118,7 @@ static unsigned long ibmvscsi_get_desired_dma(struct vio_dev *vdev)
+>  static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
+>  {
+>  	unsigned long flags;
+> -	int rc;
+> +	int rc = 0;
+>  	char *action = "reset";
+>  
+>  	spin_lock_irqsave(hostdata->host->host_lock, flags);
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |michael@ellerman.id.au
+It's always preferable IMHO to keep any initialisation as localised as
+possible, so that the compiler can continue to warn about uninitialised
+usages elsewhere. In this case that would mean doing the rc = 0 in the
+switch, something like:
 
---- Comment #10 from Michael Ellerman (michael@ellerman.id.au) ---
-No, it's in mainline since Friday so it will get picked up for stable in the
-next week or so:
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index 727c31dc11a0..7ee5755cf636 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -2123,9 +2123,6 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
+ 
+        spin_lock_irqsave(hostdata->host->host_lock, flags);
+        switch (hostdata->action) {
+-       case IBMVSCSI_HOST_ACTION_NONE:
+-       case IBMVSCSI_HOST_ACTION_UNBLOCK:
+-               break;
+        case IBMVSCSI_HOST_ACTION_RESET:
+                spin_unlock_irqrestore(hostdata->host->host_lock, flags);
+                rc = ibmvscsi_reset_crq_queue(&hostdata->queue, hostdata);
+@@ -2142,7 +2139,10 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
+                if (!rc)
+                        rc = ibmvscsi_send_crq(hostdata, 0xC001000000000000LL, 0);
+                break;
++       case IBMVSCSI_HOST_ACTION_NONE:
++       case IBMVSCSI_HOST_ACTION_UNBLOCK:
+        default:
++               rc = 0;
+                break;
+        }
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3Dfee13fe96529523a709d1fff487f14a5e0d56d34
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+But then that makes me wonder if that's actually correct?
+
+If we get an action that we don't recognise should we just throw it away
+like that? (by doing hostdata->action = IBMVSCSI_HOST_ACTION_NONE). Tyrel?
+
+cheers
