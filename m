@@ -1,94 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5806033A0C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 23:46:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACD133352
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:18:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Hdwh2wWJzDqVJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 01:18:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HpYB6nQ4zDqQg
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 07:46:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=oracle.com
- (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=khalid.aziz@oracle.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.b="YXOLt6gq"; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="Rfq++3K2"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HdvG0FV9zDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 01:16:51 +1000 (AEST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53F8i5n001438;
- Mon, 3 Jun 2019 15:16:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=Ki7uylAda9xiN8zeds9nD/lyhAxSHsFTY/OHo5Iyx7w=;
- b=YXOLt6gqicqliY0an8pQp23MWi+nuI/j4RGb+V08q3E7RR9WpVudFd5tNi4UxJ8lT0V9
- QD15UU8Ceho68KaL4kpbutE9o6Kpgs0IjTtiqjniDbCB+F9K1WpyqpIpqioC2rJaCtMh
- llks/iMsYyRfOQC4WnOnnxFDi27Jd2asmRi4WyP9/xsG/884I4UjKrjzqsyKfYJgHoYn
- UYnK6X7LqXJB+20nQKMluHBKTPmzH6k6zJiVxpivgk7t5UOwmzcdlX+dY8SEKUyL4P2U
- GaduDIDe9lruho7fEctWyrciD+R46VlcI1f8BJut/7IKfhaBV8i8kjHt6SyaoLqopGkK oA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2120.oracle.com with ESMTP id 2suj0q7mkh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Jun 2019 15:16:22 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53FEZCm155123;
- Mon, 3 Jun 2019 15:16:21 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3020.oracle.com with ESMTP id 2sv36s9bcr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 03 Jun 2019 15:16:21 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x53FGA4B012052;
- Mon, 3 Jun 2019 15:16:10 GMT
-Received: from [192.168.1.16] (/24.9.64.241)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Mon, 03 Jun 2019 08:16:10 -0700
-Subject: Re: [PATCH 01/16] uaccess: add untagged_addr definition for other
- arches
-To: Christoph Hellwig <hch@lst.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Paul Burton <paul.burton@mips.com>, James Hogan <jhogan@kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Rich Felker <dalias@libc.org>, "David S. Miller" <davem@davemloft.net>,
- Andrey Konovalov <andreyknvl@google.com>
-References: <20190601074959.14036-1-hch@lst.de>
- <20190601074959.14036-2-hch@lst.de>
-From: Khalid Aziz <khalid.aziz@oracle.com>
-Organization: Oracle Corp
-Message-ID: <431c7395-2327-2f7c-cc8f-b01412b74e10@oracle.com>
-Date: Mon, 3 Jun 2019 09:16:08 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HfS80XNYzDqRL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 01:41:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=1nerRAALIr+GbFV8r1sFGZ42UhtZBI7DJIk+wBaRWY4=; b=Rfq++3K2CPz/V+xtU6FTwnmqV
+ IrZkS8JUafj4B/5u2jbV1gF5lzZyd9isVPq0hf5673+l2SKd1sxHzHMYLDaBSNAPoLzxFQZz0hlU0
+ VtxIW60leJ7SHhCzEfDkc4gMVE5CU1hjWUpdByTfPbLiJqn67GDK4S9nwoWk8/8XdK3gg=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=finisterre.sirena.org.uk)
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.89)
+ (envelope-from <broonie@sirena.org.uk>)
+ id 1hXp5K-0002FH-HL; Mon, 03 Jun 2019 15:41:18 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+ id B00B8440046; Mon,  3 Jun 2019 16:41:17 +0100 (BST)
+Date: Mon, 3 Jun 2019 16:41:17 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: Re: [PATCH 22/22] docs: fix broken documentation links
+Message-ID: <20190603154117.GW2456@sirena.org.uk>
+References: <cover.1559171394.git.mchehab+samsung@kernel.org>
+ <f9fecacbe4ce0b2b3aed38d71ae3753f2daf3ce3.1559171394.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190601074959.14036-2-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=874
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906030106
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=887 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906030106
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="ULJ2Z7kCM1hyNsWd"
+Content-Disposition: inline
+In-Reply-To: <f9fecacbe4ce0b2b3aed38d71ae3753f2daf3ce3.1559171394.git.mchehab+samsung@kernel.org>
+X-Cookie: The other line moves faster.
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Tue, 04 Jun 2019 07:45:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,59 +67,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-sh@vger.kernel.org,
- x86@kernel.org, linux-mips@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Andy Lutomirski <luto@kernel.org>,
+ Wolfram Sang <wsa@the-dreams.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Will Deacon <will.deacon@arm.com>,
+ Pavel Tatashin <pasha.tatashin@oracle.com>, Paul Mackerras <paulus@samba.org>,
+ Alessia Mantegazza <amantegazza@vaga.pv.it>, Jakub Wilk <jwilk@jwilk.net>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+ "Paul E. McKenney" <paulmck@linux.ibm.com>,
+ Kevin Hilman <khilman@baylibre.com>, James Morris <jmorris@namei.org>,
+ linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ xen-devel@lists.xenproject.org, Jason Wang <jasowang@redhat.com>,
+ Alexander Popov <alex.popov@linux.com>, Qian Cai <cai@lca.pw>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ Thomas Preston <thomas.preston@codethink.co.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, Kairui Song <kasong@redhat.com>,
+ Ding Xiang <dingxiang@cmss.chinamobile.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Jiri Kosina <jkosina@suse.cz>,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Mark Rutland <mark.rutland@arm.com>, Feng Tang <feng.tang@intel.com>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>, linux-mm@kvack.org,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Yannik Sembritzki <yannik@sembritzki.me>, Harry Wei <harryxiyou@gmail.com>,
+ linux-i2c@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Stefano Stabellini <sstabellini@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ YueHaibing <yuehaibing@huawei.com>, Robert Moore <robert.moore@intel.com>,
+ AKASHI Takahiro <takahiro.akashi@linaro.org>, Len Brown <lenb@kernel.org>,
+ Joerg Roedel <jroedel@suse.de>, linux-arm-msm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
+ linux-gpio@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-amlogic@lists.infradead.org,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ James Morse <james.morse@arm.com>, Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+ linux-pci@vger.kernel.org, Bhupesh Sharma <bhsharma@redhat.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ platform-driver-x86@vger.kernel.org, Quentin Perret <quentin.perret@arm.com>,
+ linux-kselftest@vger.kernel.org, Alex Shi <alex.shi@linux.alibaba.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Baoquan He <bhe@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, Raphael Gault <raphael.gault@arm.com>,
+ Joel Stanley <joel@jms.id.au>, Federico Vaga <federico.vaga@vaga.pv.it>,
+ Darren Hart <dvhart@infradead.org>, linux-edac@vger.kernel.org,
+ Erik Schmauss <erik.schmauss@intel.com>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Palmer Dabbelt <palmer@sifive.com>, Kees Cook <keescook@chromium.org>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+ SeongJae Park <sj38.park@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ virtualization@lists.linux-foundation.org, devel@acpica.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Olof Johansson <olof@lixom.net>,
+ Logan Gunthorpe <logang@deltatee.com>, "David S. Miller" <davem@davemloft.net>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Sven Van Asbroeck <thesven73@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Thorsten Leemhuis <linux@leemhuis.info>,
+ David Howells <dhowells@redhat.com>, David Brown <david.brown@linaro.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, devel@driverdev.osuosl.org,
+ Manfred Spraul <manfred@colorfullife.com>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ Andy Gross <agross@kernel.org>, Dave Young <dyoung@redhat.com>,
+ devicetree@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Jerome Glisse <jglisse@redhat.com>, Rob Herring <robh+dt@kernel.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Juergen Gross <jgross@suse.com>,
+ Denis Efremov <efremov@ispras.ru>, netdev@vger.kernel.org,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Changbin Du <changbin.du@intel.com>, linux-security-module@vger.kernel.org,
+ Robin Murphy <robin.murphy@arm.com>, Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/1/19 1:49 AM, Christoph Hellwig wrote:
-> From: Andrey Konovalov <andreyknvl@google.com>
->=20
-> To allow arm64 syscalls to accept tagged pointers from userspace, we mu=
-st
-> untag them when they are passed to the kernel. Since untagging is done =
-in
-> generic parts of the kernel, the untagged_addr macro needs to be define=
-d
-> for all architectures.
->=20
-> Define it as a noop for architectures other than arm64.
 
-Could you reword above sentence? We are already starting off with
-untagged_addr() not being no-op for arm64 and sparc64. It will expand
-further potentially. So something more along the lines of "Define it as
-noop for architectures that do not support memory tagging". The first
-paragraph in the log can also be rewritten to be not specific to arm64.
+--ULJ2Z7kCM1hyNsWd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---
-Khalid
+On Wed, May 29, 2019 at 08:23:53PM -0300, Mauro Carvalho Chehab wrote:
+> Mostly due to x86 and acpi conversion, several documentation
+> links are still pointing to the old file. Fix them.
 
->=20
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/linux/mm.h | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0e8834ac32b7..949d43e9c0b6 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -99,6 +99,10 @@ extern int mmap_rnd_compat_bits __read_mostly;
->  #include <asm/pgtable.h>
->  #include <asm/processor.h>
-> =20
-> +#ifndef untagged_addr
-> +#define untagged_addr(addr) (addr)
-> +#endif
-> +
->  #ifndef __pa_symbol
->  #define __pa_symbol(x)  __pa(RELOC_HIDE((unsigned long)(x), 0))
->  #endif
->=20
+Acked-by: Mark Brown <broonie@kernel.org>
 
+--ULJ2Z7kCM1hyNsWd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz1P5wACgkQJNaLcl1U
+h9CgCQf+J9k75rt3mgSxGm21PStcBWah+jHorcSB3vAFo/VgwBXCI7/qQymUKkNd
+rUN0absPBGdyjsU+iDp0RrGijvdavWuigfic8bEJ/z2tbzj1I3+XRrah0tiPgdrF
+6/uFF/xfdYflsvBqmmu+/uXwwvzWtE/DITZ/m7fXcUjk8uahw4sWCAiyoPAqgUCL
+otIcJ8/L/0bQ2oiDiLTBqWp/NcOepodvjV5BcRyh49dwR0RDdBVxfdjyVboI9WQN
+YK9ZiCa/QaQRl0S5ce7bPH/c4U+mujmla7rE8icfqRDhtsMuXa+JvQMCPEIfnzxe
+kGqmVHCLVcqZZ5sJZOMLQSVlIsbckw==
+=aP8U
+-----END PGP SIGNATURE-----
+
+--ULJ2Z7kCM1hyNsWd--
