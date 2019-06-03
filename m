@@ -2,74 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5159232B11
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 10:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5333832B39
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 10:56:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HTF05q12zDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 18:46:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HTS46DwxzDqR2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 18:56:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="WPHhyKe+"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HTCY3tmLzDqQ6
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 18:45:29 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45HTCL5n0hz9v0D9;
- Mon,  3 Jun 2019 10:45:18 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=WPHhyKe+; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EQ8AzAKtaaNi; Mon,  3 Jun 2019 10:45:18 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45HTCL4d8Zz9v0D6;
- Mon,  3 Jun 2019 10:45:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559551518; bh=EIz0NOWAX/uobIhHG6/is2QasF1BW3QEbpzGLpjwL20=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=WPHhyKe+I1HWbWe98+E4FhOSpt26176vUn6v3/2lkFHz1L1LOr2Xmj8wZWUmsR+eC
- 3tVRjZfv5eBf/GrTrixBbDrhI47OrRfp2EBRUMapPoOGlfOTohOZeXLD8bvmkraJO3
- 3pl2dBzGIRRSLmUhQvogdilTN1N6QHLR58kQqz/8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 555348B7B1;
- Mon,  3 Jun 2019 10:45:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id oJf0fEAn0lyt; Mon,  3 Jun 2019 10:45:23 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ECC778B7B8;
- Mon,  3 Jun 2019 10:45:22 +0200 (CEST)
-Subject: Re: [PATCH] scsi: ibmvscsi: Don't use rc uninitialized in
- ibmvscsi_do_work
-To: Nathan Chancellor <natechancellor@gmail.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20190531185306.41290-1-natechancellor@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d932b755-606e-6847-a460-da463411c562@c-s.fr>
-Date: Mon, 3 Jun 2019 10:45:24 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HTQm26kKzDqQF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 18:55:11 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x538llVf099462
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 04:55:10 -0400
+Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sw0740p4t-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 04:55:09 -0400
+Received: from localhost
+ by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
+ Mon, 3 Jun 2019 09:55:09 +0100
+Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
+ by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 3 Jun 2019 09:55:06 +0100
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x538t5bn33096164
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Jun 2019 08:55:05 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9883C136053;
+ Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48AFF13604F;
+ Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.124.31.17])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 511432E36A2; Mon,  3 Jun 2019 14:25:02 +0530 (IST)
+Date: Mon, 3 Jun 2019 14:25:02 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3] powerpc/pseries: Fix cpu_hotplug_lock acquisition in
+ resize_hpt()
+References: <1557906352-29048-1-git-send-email-ego@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190531185306.41290-1-natechancellor@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1557906352-29048-1-git-send-email-ego@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+x-cbid: 19060308-0012-0000-0000-0000173FA0B9
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011207; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01212557; UDB=6.00637236; IPR=6.00993618; 
+ MB=3.00027161; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-03 08:55:08
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060308-0013-0000-0000-0000578415E7
+Message-Id: <20190603085502.GA23270@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-03_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906030065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,59 +95,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org
+Reply-To: ego@linux.vnet.ibm.com
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
+
+On Wed, May 15, 2019 at 01:15:52PM +0530, Gautham R. Shenoy wrote:
+> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> 
+> The calls to arch_add_memory()/arch_remove_memory() are always made
+> with the read-side cpu_hotplug_lock acquired via
+> memory_hotplug_begin().  On pSeries,
+> arch_add_memory()/arch_remove_memory() eventually call resize_hpt()
+> which in turn calls stop_machine() which acquires the read-side
+> cpu_hotplug_lock again, thereby resulting in the recursive acquisition
+> of this lock.
+
+A clarification regarding why we hadn't observed this problem earlier.
+
+In the absence of CONFIG_PROVE_LOCKING, we hadn't observed a system
+lockup during a memory hotplug operation because cpus_read_lock() is a
+per-cpu rwsem read, which, in the fast-path (in the absence of the
+writer, which in our case is a CPU-hotplug operation) simply
+increments the read_count on the semaphore. Thus a recursive read in
+the fast-path doesn't cause any problems.
+
+However, we can hit this problem in practice if there is a concurrent
+CPU-Hotplug operation in progress which is waiting to acquire the
+write-side of the lock. This will cause the second recursive read to
+block until the writer finishes. While the writer is blocked since the
+first read holds the lock. Thus both the reader as well as the writers
+fail to make any progress thereby blocking both CPU-Hotplug as well as
+Memory Hotplug operations.
+
+Memory-Hotplug				CPU-Hotplug
+CPU 0					CPU 1
+------                                  ------
+
+1. down_read(cpu_hotplug_lock.rw_sem)  
+   [memory_hotplug_begin]
+					2. down_write(cpu_hotplug_lock.rw_sem)
+					[cpu_up/cpu_down]
+3. down_read(cpu_hotplug_lock.rw_sem)
+   [stop_machine()]
 
 
-Le 31/05/2019 à 20:53, Nathan Chancellor a écrit :
-> clang warns:
 > 
-> drivers/scsi/ibmvscsi/ibmvscsi.c:2126:7: warning: variable 'rc' is used
-> uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
->          case IBMVSCSI_HOST_ACTION_NONE:
->               ^~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/scsi/ibmvscsi/ibmvscsi.c:2151:6: note: uninitialized use occurs
-> here
->          if (rc) {
->              ^~
+> Lockdep complains as follows in these code-paths.
 > 
-> Initialize rc to zero so that the atomic_set and dev_err statement don't
-> trigger for the cases that just break.
+>  swapper/0/1 is trying to acquire lock:
+>  (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: stop_machine+0x2c/0x60
 > 
-> Fixes: 035a3c4046b5 ("scsi: ibmvscsi: redo driver work thread to use enum action states")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/502
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> but task is already holding lock:
+> (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
+> 
+>  other info that might help us debug this:
+>   Possible unsafe locking scenario:
+> 
+>         CPU0
+>         ----
+>    lock(cpu_hotplug_lock.rw_sem);
+>    lock(cpu_hotplug_lock.rw_sem);
+> 
+>   *** DEADLOCK ***
+> 
+>   May be due to missing lock nesting notation
+> 
+>  3 locks held by swapper/0/1:
+>   #0: (____ptrval____) (&dev->mutex){....}, at: __driver_attach+0x12c/0x1b0
+>   #1: (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
+>   #2: (____ptrval____) (mem_hotplug_lock.rw_sem){++++}, at: percpu_down_write+0x54/0x1a0
+> 
+> stack backtrace:
+>  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.0.0-rc5-58373-gbc99402235f3-dirty #166
+>  Call Trace:
+>  [c0000000feb03150] [c000000000e32bd4] dump_stack+0xe8/0x164 (unreliable)
+>  [c0000000feb031a0] [c00000000020d6c0] __lock_acquire+0x1110/0x1c70
+>  [c0000000feb03320] [c00000000020f080] lock_acquire+0x240/0x290
+>  [c0000000feb033e0] [c00000000017f554] cpus_read_lock+0x64/0xf0
+>  [c0000000feb03420] [c00000000029ebac] stop_machine+0x2c/0x60
+>  [c0000000feb03460] [c0000000000d7f7c] pseries_lpar_resize_hpt+0x19c/0x2c0
+>  [c0000000feb03500] [c0000000000788d0] resize_hpt_for_hotplug+0x70/0xd0
+>  [c0000000feb03570] [c000000000e5d278] arch_add_memory+0x58/0xfc
+>  [c0000000feb03610] [c0000000003553a8] devm_memremap_pages+0x5e8/0x8f0
+>  [c0000000feb036c0] [c0000000009c2394] pmem_attach_disk+0x764/0x830
+>  [c0000000feb037d0] [c0000000009a7c38] nvdimm_bus_probe+0x118/0x240
+>  [c0000000feb03860] [c000000000968500] really_probe+0x230/0x4b0
+>  [c0000000feb038f0] [c000000000968aec] driver_probe_device+0x16c/0x1e0
+>  [c0000000feb03970] [c000000000968ca8] __driver_attach+0x148/0x1b0
+>  [c0000000feb039f0] [c0000000009650b0] bus_for_each_dev+0x90/0x130
+>  [c0000000feb03a50] [c000000000967dd4] driver_attach+0x34/0x50
+>  [c0000000feb03a70] [c000000000967068] bus_add_driver+0x1a8/0x360
+>  [c0000000feb03b00] [c00000000096a498] driver_register+0x108/0x170
+>  [c0000000feb03b70] [c0000000009a7400] __nd_driver_register+0xd0/0xf0
+>  [c0000000feb03bd0] [c00000000128aa90] nd_pmem_driver_init+0x34/0x48
+>  [c0000000feb03bf0] [c000000000010a10] do_one_initcall+0x1e0/0x45c
+>  [c0000000feb03cd0] [c00000000122462c] kernel_init_freeable+0x540/0x64c
+>  [c0000000feb03db0] [c00000000001110c] kernel_init+0x2c/0x160
+>  [c0000000feb03e20] [c00000000000bed4] ret_from_kernel_thread+0x5c/0x68
+> 
+> Fix this issue by
+>   1) Requiring all the calls to pseries_lpar_resize_hpt() be made
+>      with cpu_hotplug_lock held.
+> 
+>   2) In pseries_lpar_resize_hpt() invoke stop_machine_cpuslocked()
+>      as a consequence of 1)
+> 
+>   3) To satisfy 1), in hpt_order_set(), call mmu_hash_ops.resize_hpt()
+>      with cpu_hotplug_lock held.
+> 
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 > ---
->   drivers/scsi/ibmvscsi/ibmvscsi.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> v2 -> v3 : Updated the comment for pseries_lpar_resize_hpt()
+>            Updated the commit-log with the full backtrace.
+> v1 -> v2 : Rebased against powerpc/next instead of linux/master
 > 
-> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> index 727c31dc11a0..6714d8043e62 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> @@ -2118,7 +2118,7 @@ static unsigned long ibmvscsi_get_desired_dma(struct vio_dev *vdev)
->   static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
->   {
->   	unsigned long flags;
-> -	int rc;
-> +	int rc = 0;
-
-I don't think the above is the best solution, as it hides the warning 
-instead of really fixing it.
-
-Your problem is that some legs of the switch are missing setting the 
-value of rc, it would therefore be better to fix the legs instead of 
-setting a default value which may not be correct for every case, 
-allthough it may be at the time being.
-
-Christophe
-
-
->   	char *action = "reset";
->   
->   	spin_lock_irqsave(hostdata->host->host_lock, flags);
+>  arch/powerpc/mm/book3s64/hash_utils.c | 9 ++++++++-
+>  arch/powerpc/platforms/pseries/lpar.c | 8 ++++++--
+>  2 files changed, 14 insertions(+), 3 deletions(-)
 > 
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 919a861..d07fcafd 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/libfdt.h>
+>  #include <linux/pkeys.h>
+>  #include <linux/hugetlb.h>
+> +#include <linux/cpu.h>
+> 
+>  #include <asm/debugfs.h>
+>  #include <asm/processor.h>
+> @@ -1928,10 +1929,16 @@ static int hpt_order_get(void *data, u64 *val)
+> 
+>  static int hpt_order_set(void *data, u64 val)
+>  {
+> +	int ret;
+> +
+>  	if (!mmu_hash_ops.resize_hpt)
+>  		return -ENODEV;
+> 
+> -	return mmu_hash_ops.resize_hpt(val);
+> +	cpus_read_lock();
+> +	ret = mmu_hash_ops.resize_hpt(val);
+> +	cpus_read_unlock();
+> +
+> +	return ret;
+>  }
+> 
+>  DEFINE_DEBUGFS_ATTRIBUTE(fops_hpt_order, hpt_order_get, hpt_order_set, "%llu\n");
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+> index 1034ef1..557d592 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -859,7 +859,10 @@ static int pseries_lpar_resize_hpt_commit(void *data)
+>  	return 0;
+>  }
+> 
+> -/* Must be called in user context */
+> +/*
+> + * Must be called in process context. The caller must hold the
+> + * cpus_lock.
+> + */
+>  static int pseries_lpar_resize_hpt(unsigned long shift)
+>  {
+>  	struct hpt_resize_state state = {
+> @@ -913,7 +916,8 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
+> 
+>  	t1 = ktime_get();
+> 
+> -	rc = stop_machine(pseries_lpar_resize_hpt_commit, &state, NULL);
+> +	rc = stop_machine_cpuslocked(pseries_lpar_resize_hpt_commit,
+> +				     &state, NULL);
+> 
+>  	t2 = ktime_get();
+> 
+> -- 
+> 1.9.4
+> 
+
