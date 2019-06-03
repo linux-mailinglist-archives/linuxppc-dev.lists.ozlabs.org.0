@@ -2,71 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1800F329F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 09:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE68329E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 09:44:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HRtp1TV0zDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:45:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HRsF09KGzDqST
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:44:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Qtv3gOPH"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HRrR5WKszDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 17:43:51 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45HRnF5Fgnz9tyqw;
- Mon,  3 Jun 2019 09:41:05 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Qtv3gOPH; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Dsy0c5Yur4an; Mon,  3 Jun 2019 09:41:05 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45HRnF46nqz9tyqn;
- Mon,  3 Jun 2019 09:41:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559547665; bh=Y8cfuzmoIUD2uZtBZ3hVZsVK552cgO2EazLDuN4FCbg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Qtv3gOPH08lZc7zm6sTjvP6SZccZhvq4jBSN0knmn+pETmpAPadopY67L/2F7JzPM
- pmSIAYKGIMqG4zU2Nk6cpbwZdnokKILH/IYmgrOqqzWOAgjrin/nA3lIodcALz2p6T
- XDvXlEVO/6ketciaUzqiDQMHtwn0IvT8unnemBms=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 326D38B7B1;
- Mon,  3 Jun 2019 09:41:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id kKga41XuLrYB; Mon,  3 Jun 2019 09:41:10 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 172368B7A1;
- Mon,  3 Jun 2019 09:41:10 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc/64s: __find_linux_pte synchronization vs
- pmdp_invalidate
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20190603064408.14735-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b7732d44-a83c-321c-b158-87e0fd6af007@c-s.fr>
-Date: Mon, 3 Jun 2019 09:41:11 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HRpF2PTpzDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 17:41:50 +1000 (AEST)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id B4E2E67358; Mon,  3 Jun 2019 09:41:21 +0200 (CEST)
+Date: Mon, 3 Jun 2019 09:41:21 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
+Message-ID: <20190603074121.GA22920@lst.de>
+References: <20190601074959.14036-1-hch@lst.de>
+ <20190601074959.14036-4-hch@lst.de>
+ <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190603064408.14735-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,66 +46,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Linux-sh list <linux-sh@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Linux-MM <linux-mm@kvack.org>,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>,
+ Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 03/06/2019 à 08:44, Nicholas Piggin a écrit :
-> The pmd_none check does not catch hugepage collapse, nor does the
-> pmd_present check in pmd_trans_huge, because hugepage collapse sets
-> !_PAGE_PRESENT && _PAGE_INVALID (which results in !pmd_none and
-> pmd_present).
+On Sat, Jun 01, 2019 at 09:14:17AM -0700, Linus Torvalds wrote:
+> On Sat, Jun 1, 2019 at 12:50 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > Pass in the already calculated end value instead of recomputing it, and
+> > leave the end > start check in the callers instead of duplicating them
+> > in the arch code.
 > 
-> Aneesh noticed we might need this check as well.
+> Good cleanup, except it's wrong.
 > 
-> ---
->   arch/powerpc/mm/pgtable.c | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
+> > -       if (nr_pages <= 0)
+> > +       if (end < start)
+> >                 return 0;
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index db4a6253df92..7a702d21400a 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -372,13 +372,20 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
->   	pdshift = PMD_SHIFT;
->   	pmdp = pmd_offset(&pud, ea);
->   	pmd  = READ_ONCE(*pmdp);
-> -	/*
-> -	 * A hugepage collapse is captured by pmd_none, because
-> -	 * it mark the pmd none and do a hpte invalidate.
-> -	 */
-> +
->   	if (pmd_none(pmd))
->   		return NULL;
->   
-> +#ifdef CONFIG_PPC_BOOK3S_64
-
-I can't see anything that would build fail on other subarches. Wouldn't 
-be better to use
-
-if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && (pmd_val(pmd) & 
-(_PAGE_PRESENT|_PAGE_INVALID) == _PAGE_INVALID))
-
-
-> +	if (pmd_val(pmd) & (_PAGE_PRESENT|_PAGE_INVALID) == _PAGE_INVALID) {
-
-Maybe using pmd_raw() instead as in all the book3s64 helpers ?
-
-Christophe
-
-
-> +		/*
-> +		 * A hugepage collapse is captured by this condition, see
-> +		 * pmdp_invalidate.
-> +		 */
-> +		return NULL;
-> +	}
-> +#endif
-> +
->   	if (pmd_trans_huge(pmd) || pmd_devmap(pmd)) {
->   		if (is_thp)
->   			*is_thp = true;
+> You moved the overflow test to generic code - good.
 > 
+> You removed the sign and zero test on nr_pages - bad.
+
+I only removed a duplicate of it.  The full (old) code in
+get_user_pages_fast() looks like this:
+
+	if (nr_pages <= 0)
+		return 0;
+
+	if (unlikely(!access_ok((void __user *)start, len)))
+		return -EFAULT;
+
+	if (gup_fast_permitted(start, nr_pages)) {
