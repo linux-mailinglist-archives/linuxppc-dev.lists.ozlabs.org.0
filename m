@@ -1,48 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685B233530
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 18:43:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HgqF6ww1zDqRq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 02:43:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2643363A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 19:12:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HhRx4pR2zDqWf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 03:11:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=afaerber@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=2a00:1450:4864:20::241; helo=mail-lj1-x241.google.com;
+ envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="WxopflXf"; dkim-atps=neutral
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Hgnl3VcXzDqR3
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 02:42:17 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id B3319AE79;
- Mon,  3 Jun 2019 16:42:13 +0000 (UTC)
-Subject: Re: [PATCH v3 0/6] Prerequisites for NXP LS104xA SMMU enablement
-To: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-References: <20190530141951.6704-1-laurentiu.tudor@nxp.com>
- <d086216f-f3fc-c88a-3891-81e84e8bdb01@suse.de>
- <VI1PR04MB5134BFA391D8FF013762882FEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
- <19cc3230-33b0-e465-6317-590780b33efa@suse.de>
- <VI1PR04MB5134E4DA6EA052BEBB3C26EFEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Openpgp: preference=signencrypt
-Organization: SUSE Linux GmbH
-Message-ID: <c237dd17-ed43-d2d0-c76c-0c1dbf859690@suse.de>
-Date: Mon, 3 Jun 2019 18:42:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HhQd0Vd1zDqNp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 03:10:48 +1000 (AEST)
+Received: by mail-lj1-x241.google.com with SMTP id t28so5836544lje.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 10:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=O+yPhSShogh4P3ENVap3W5oMkAXveVWtK8AHmfJ6K4g=;
+ b=WxopflXf16/Ij+BgtcycHtZ4Hmf9aaeOSPmXtzqGSQ8pDwEzPIMOBMYFkAoo4wEYeT
+ 8VeRq+J0v+JDAfheb+586kInV+Sa1f85J5zB8gURyeRKoOLNnlPfX9pmOGSsXGwefMUi
+ 0J3B6sJE1Hr8n5WVFsXQ5gn72CRPCxqM1IM0U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=O+yPhSShogh4P3ENVap3W5oMkAXveVWtK8AHmfJ6K4g=;
+ b=H+OBrC44emRVyw5sr4voCH8HmIKqPPXZG5GqDoTf+bTF96r28MHLfuo/aiQRq30LaO
+ 6st1f37u02loUKKjJWlN9uUlk+hNHAMIpSTfMdhyIOzV/g9YmzOJr18iKsEYqdbVt7/O
+ JlcRxeo7G9YT1IJkZt9VPeM5WbAvxMArpnjxwS68Jwdvujeqg+O7DZvjWvbZkAypUJ1G
+ OqN2mtj5bPtbN/lbZ5fMvbIVvHxw136INjaD2Qh+Q2pzsGO/e1dDXmKrh6O2ZBwOJqx5
+ i8TTWBzg2WgEF7zHsOBLZm6pQVc0B/Nj+Zo2vZGTltDk8TOOIKlJF0zAtpbZ6iWQH/lx
+ 3aQw==
+X-Gm-Message-State: APjAAAVXfo4Pq94rESNI2cEsvGgmC0MYwLwPBoRfUy/Pkm1raHkXZ2VN
+ qY2xofIPNvkf2/hE6kKH4FMdi2XOaaU=
+X-Google-Smtp-Source: APXvYqx7fW8731hZtOFw40tDQ3a1UQhCKhUWSKSjS9j2DuNVLzN0T2SioAQWFuFKWzIYC2ZFb/W44g==
+X-Received: by 2002:a2e:8591:: with SMTP id b17mr3198262lji.71.1559581840087; 
+ Mon, 03 Jun 2019 10:10:40 -0700 (PDT)
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com.
+ [209.85.167.46])
+ by smtp.gmail.com with ESMTPSA id k12sm3233941lfm.90.2019.06.03.10.10.39
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 03 Jun 2019 10:10:39 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id a25so14218878lfg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 10:10:39 -0700 (PDT)
+X-Received: by 2002:a19:2d41:: with SMTP id t1mr13904609lft.79.1559581346039; 
+ Mon, 03 Jun 2019 10:02:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <VI1PR04MB5134E4DA6EA052BEBB3C26EFEC190@VI1PR04MB5134.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20190601074959.14036-1-hch@lst.de>
+ <20190601074959.14036-4-hch@lst.de>
+ <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
+ <20190603074121.GA22920@lst.de>
+ <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
+In-Reply-To: <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 3 Jun 2019 10:02:10 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjU3ycY2FvhKmYmOTi95L0qSi9Hj+yrzWTAWepW-zdBOA@mail.gmail.com>
+Message-ID: <CAHk-=wjU3ycY2FvhKmYmOTi95L0qSi9Hj+yrzWTAWepW-zdBOA@mail.gmail.com>
+Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,79 +85,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Roy Pledge <roy.pledge@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>,
- "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
- Camelia Alexandra Groza <camelia.groza@nxp.com>,
- Mian Yousaf Kaukab <yousaf.kaukab@suse.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Linux-sh list <linux-sh@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mips@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 31.05.19 um 19:32 schrieb Laurentiu Tudor:
->> -----Original Message-----
->> From: Andreas Färber <afaerber@suse.de>
->> Sent: Friday, May 31, 2019 8:04 PM
->>
->> Hello Laurentiu,
->>
->> Am 31.05.19 um 18:46 schrieb Laurentiu Tudor:
->>>> -----Original Message-----
->>>> From: Andreas Färber <afaerber@suse.de>
->>>> Sent: Friday, May 31, 2019 7:15 PM
->>>>
->>>> Hi Laurentiu,
->>>>
->>>> Am 30.05.19 um 16:19 schrieb laurentiu.tudor@nxp.com:
->>>>> This patch series contains several fixes in preparation for SMMU
->>>>> support on NXP LS1043A and LS1046A chips. Once these get picked up,
->>>>> I'll submit the actual SMMU enablement patches consisting in the
->>>>> required device tree changes.
->>>>
->>>> Have you thought through what will happen if this patch ordering is not
->>>> preserved? In particular, a user installing a future U-Boot update with
->>>> the DTB bits but booting a stable kernel without this patch series -
->>>> wouldn't that regress dpaa then for our customers?
->>>>
->>>
->>> These are fixes for issues that popped out after enabling SMMU.
->>> I do not expect them to break anything.
->>
->> That was not my question! You're missing my point: All your patches are
->> lacking a Fixes header in their commit message, for backporting them, to
->> avoid _your DT patches_ breaking the driver on stable branches!
-> 
-> It does appear that I'm missing your point. For sure, the DT updates solely will
-> break the kernel without these fixes but I'm not sure I understand how this
-> could happen.
+On Mon, Jun 3, 2019 at 9:08 AM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> The new code has no test at all for "nr_pages == 0", afaik.
 
-In short, customers rarely run master branch. Kindly have your
-colleagues explain stable branches to you in details.
+Note that it really is important to check for that, because right now we do
 
-With Fixes header I was referring to the syntax explained here:
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+        if (gup_fast_permitted(start, nr_pages)) {
+                local_irq_save(flags);
+                gup_pgd_range(start, end, write ? FOLL_WRITE : 0, pages, &nr);
+                local_irq_restore(flags);
+        }
 
-> My plan was to share the kernel dts patches sometime after this series
-> makes it through.
+and that gup_pgd_range() function *depends* on the range being
+non-zero, and does
 
-That's fine. What I'm warning you is that seemingly your DT patches,
-once in one of your LSDK U-Boot releases, will cause a regression for
-distros like our SLES 15 SP1 unless these prereq kernel patches get
-applied on the respective stable branches. Which will not happen
-automatically unless you as patch author take the appropriate action
-before they get merged.
+        pgdp = pgd_offset(current->mm, addr);
+        do {
+                pgd_t pgd = READ_ONCE(*pgdp);
+...
+        } while (pgdp++, addr = next, addr != end);
 
-Thanks,
-Andreas
+Note how a zero range would turn into an infinite range here.
 
--- 
-SUSE Linux GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
-HRB 21284 (AG Nürnberg)
+And the only check for 0 was that
+
+        if (nr_pages <= 0)
+                return 0;
+
+in get_user_pages_fast() that you removed.
+
+(Admittedly, it would be much better to have that check in
+__get_user_pages_fast() itself, because we do have callers that call
+the double-underscore version)
+
+Now, I sincerely hope that we don't have anybody that passes in a zero
+nr_pages (or a negative one), but we do actually have a comment saying
+it's ok.
+
+Note that the check for "if (end < start)" not only does not check for
+0, it also doesn't really check for negative. It checks for
+_overflow_. Admittedly most negative values would be expected to
+overflow, but it's still a very different issue.
+
+Maybe you added the check for negative somewhere else (in another
+patch), but I don't see it.
+
+                Linus
