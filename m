@@ -2,88 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5333832B39
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 10:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822FF32C14
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 11:15:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HTS46DwxzDqR2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 18:56:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HTsf4MsMzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 19:15:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=anastas.io
+ (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=anastas.io header.i=@anastas.io header.b="SmF0L0ds"; 
+ dkim-atps=neutral
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HTQm26kKzDqQF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 18:55:11 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x538llVf099462
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 04:55:10 -0400
-Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sw0740p4t-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 04:55:09 -0400
-Received: from localhost
- by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
- Mon, 3 Jun 2019 09:55:09 +0100
-Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
- by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 3 Jun 2019 09:55:06 +0100
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x538t5bn33096164
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Jun 2019 08:55:05 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9883C136053;
- Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48AFF13604F;
- Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.124.31.17])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  3 Jun 2019 08:55:05 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 511432E36A2; Mon,  3 Jun 2019 14:25:02 +0530 (IST)
-Date: Mon, 3 Jun 2019 14:25:02 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3] powerpc/pseries: Fix cpu_hotplug_lock acquisition in
- resize_hpt()
-References: <1557906352-29048-1-git-send-email-ego@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HTq55Lw2zDqLN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 19:12:49 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by alpha.anastas.io (Postfix) with ESMTPSA id 96F27808B8;
+ Mon,  3 Jun 2019 04:12:15 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1559553136; bh=qJnfDDzz4DgW5+Ag559cHbbNjOf/DlUtH7AzqY69aiA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=SmF0L0dskQ1MJbih5rNVzg+tVHtmU/zlfVvYEUmq92M0OhrXOUy/d5uuQMk+Wmrkx
+ +269Ntl6yHMwBJmUTDbfNbiVEDJmWzTUyQvetEgSF9YNI0nqcdmnes9OqKy73POI5Q
+ pzZ59z6ZMElAapcl+4jKLv31Mq2dxT2WSuRRhOhBV3/FkRiEiffPgtthLhoq4OBnyZ
+ S1RAXEVNL2hZwkQxVRSrdX8IokIk+FnUeyPRpzVpPxVrZTFW82b2Duijb5C1uNMkFs
+ J0Vp95wbcSPb3iFYYBoMS94F1BAHZesbnxCuw9t7i8dnr/3pW6fnqIFC7+x7Kj0h0d
+ 5U6IMSUPhWPZg==
+Subject: Re: [PATCH v3 1/3] PCI: Introduce pcibios_ignore_alignment_request
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20190528040313.35582-1-shawn@anastas.io>
+ <20190528040313.35582-2-shawn@anastas.io>
+ <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+ <b0a38504-24c3-77bc-b308-7b498f07760a@ozlabs.ru>
+ <bccfec8f-c8a4-fac1-7e96-be84113b9a73@anastas.io>
+ <3e6b9d7d-5d18-645e-5ef9-6b8a77fa62e9@ozlabs.ru>
+ <985681e4-1236-fff7-e9e7-189a340487dd@anastas.io>
+ <81a015ed-2c99-7ca8-c5ad-cede93aeba97@ozlabs.ru>
+ <bdc914aa-9aab-1377-c036-cca4710ef233@anastas.io>
+ <2f4185ac-d19f-6668-7b3e-a300ce3b9e00@ozlabs.ru>
+ <bab59b8e-f1fc-f92a-36bb-4ff471e6da24@ozlabs.ru>
+From: Shawn Anastasio <shawn@anastas.io>
+Message-ID: <419bf151-401d-231e-649e-22ddf53c4fcc@anastas.io>
+Date: Mon, 3 Jun 2019 04:12:14 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1557906352-29048-1-git-send-email-ego@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-x-cbid: 19060308-0012-0000-0000-0000173FA0B9
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011207; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01212557; UDB=6.00637236; IPR=6.00993618; 
- MB=3.00027161; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-03 08:55:08
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060308-0013-0000-0000-0000578415E7
-Message-Id: <20190603085502.GA23270@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-03_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906030065
+In-Reply-To: <bab59b8e-f1fc-f92a-36bb-4ff471e6da24@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,188 +69,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rppt@linux.ibm.com,
+ Oliver <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Paul Mackerras <paulus@samba.org>, xyjxie@linux.vnet.ibm.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On Wed, May 15, 2019 at 01:15:52PM +0530, Gautham R. Shenoy wrote:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> 
-> The calls to arch_add_memory()/arch_remove_memory() are always made
-> with the read-side cpu_hotplug_lock acquired via
-> memory_hotplug_begin().  On pSeries,
-> arch_add_memory()/arch_remove_memory() eventually call resize_hpt()
-> which in turn calls stop_machine() which acquires the read-side
-> cpu_hotplug_lock again, thereby resulting in the recursive acquisition
-> of this lock.
-
-A clarification regarding why we hadn't observed this problem earlier.
-
-In the absence of CONFIG_PROVE_LOCKING, we hadn't observed a system
-lockup during a memory hotplug operation because cpus_read_lock() is a
-per-cpu rwsem read, which, in the fast-path (in the absence of the
-writer, which in our case is a CPU-hotplug operation) simply
-increments the read_count on the semaphore. Thus a recursive read in
-the fast-path doesn't cause any problems.
-
-However, we can hit this problem in practice if there is a concurrent
-CPU-Hotplug operation in progress which is waiting to acquire the
-write-side of the lock. This will cause the second recursive read to
-block until the writer finishes. While the writer is blocked since the
-first read holds the lock. Thus both the reader as well as the writers
-fail to make any progress thereby blocking both CPU-Hotplug as well as
-Memory Hotplug operations.
-
-Memory-Hotplug				CPU-Hotplug
-CPU 0					CPU 1
-------                                  ------
-
-1. down_read(cpu_hotplug_lock.rw_sem)  
-   [memory_hotplug_begin]
-					2. down_write(cpu_hotplug_lock.rw_sem)
-					[cpu_up/cpu_down]
-3. down_read(cpu_hotplug_lock.rw_sem)
-   [stop_machine()]
 
 
+On 6/3/19 3:35 AM, Alexey Kardashevskiy wrote:
 > 
-> Lockdep complains as follows in these code-paths.
 > 
->  swapper/0/1 is trying to acquire lock:
->  (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: stop_machine+0x2c/0x60
+> On 03/06/2019 15:02, Alexey Kardashevskiy wrote:
+>>
+>>
+>> On 03/06/2019 12:23, Shawn Anastasio wrote:
+>>>
+>>>
+>>> On 5/30/19 10:56 PM, Alexey Kardashevskiy wrote:
+>>>>
+>>>>
+>>>> On 31/05/2019 08:49, Shawn Anastasio wrote:
+>>>>> On 5/29/19 10:39 PM, Alexey Kardashevskiy wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 28/05/2019 17:39, Shawn Anastasio wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 5/28/19 1:27 AM, Alexey Kardashevskiy wrote:
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> On 28/05/2019 15:36, Oliver wrote:
+>>>>>>>>> On Tue, May 28, 2019 at 2:03 PM Shawn Anastasio <shawn@anastas.io>
+>>>>>>>>> wrote:
+>>>>>>>>>>
+>>>>>>>>>> Introduce a new pcibios function pcibios_ignore_alignment_request
+>>>>>>>>>> which allows the PCI core to defer to platform-specific code to
+>>>>>>>>>> determine whether or not to ignore alignment requests for PCI
+>>>>>>>>>> resources.
+>>>>>>>>>>
+>>>>>>>>>> The existing behavior is to simply ignore alignment requests when
+>>>>>>>>>> PCI_PROBE_ONLY is set. This is behavior is maintained by the
+>>>>>>>>>> default implementation of pcibios_ignore_alignment_request.
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+>>>>>>>>>> ---
+>>>>>>>>>>      drivers/pci/pci.c   | 9 +++++++--
+>>>>>>>>>>      include/linux/pci.h | 1 +
+>>>>>>>>>>      2 files changed, 8 insertions(+), 2 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>>>>>>>>>> index 8abc843b1615..8207a09085d1 100644
+>>>>>>>>>> --- a/drivers/pci/pci.c
+>>>>>>>>>> +++ b/drivers/pci/pci.c
+>>>>>>>>>> @@ -5882,6 +5882,11 @@ resource_size_t __weak
+>>>>>>>>>> pcibios_default_alignment(void)
+>>>>>>>>>>             return 0;
+>>>>>>>>>>      }
+>>>>>>>>>>
+>>>>>>>>>> +int __weak pcibios_ignore_alignment_request(void)
+>>>>>>>>>> +{
+>>>>>>>>>> +       return pci_has_flag(PCI_PROBE_ONLY);
+>>>>>>>>>> +}
+>>>>>>>>>> +
+>>>>>>>>>>      #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
+>>>>>>>>>>      static char
+>>>>>>>>>> resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] = {0};
+>>>>>>>>>>      static DEFINE_SPINLOCK(resource_alignment_lock);
+>>>>>>>>>> @@ -5906,9 +5911,9 @@ static resource_size_t
+>>>>>>>>>> pci_specified_resource_alignment(struct pci_dev *dev,
+>>>>>>>>>>             p = resource_alignment_param;
+>>>>>>>>>>             if (!*p && !align)
+>>>>>>>>>>                     goto out;
+>>>>>>>>>> -       if (pci_has_flag(PCI_PROBE_ONLY)) {
+>>>>>>>>>> +       if (pcibios_ignore_alignment_request()) {
+>>>>>>>>>>                     align = 0;
+>>>>>>>>>> -               pr_info_once("PCI: Ignoring requested alignments
+>>>>>>>>>> (PCI_PROBE_ONLY)\n");
+>>>>>>>>>> +               pr_info_once("PCI: Ignoring requested
+>>>>>>>>>> alignments\n");
+>>>>>>>>>>                     goto out;
+>>>>>>>>>>             }
+>>>>>>>>>
+>>>>>>>>> I think the logic here is questionable to begin with. If the user
+>>>>>>>>> has
+>>>>>>>>> explicitly requested re-aligning a resource via the command line
+>>>>>>>>> then
+>>>>>>>>> we should probably do it even if PCI_PROBE_ONLY is set. When it
+>>>>>>>>> breaks
+>>>>>>>>> they get to keep the pieces.
+>>>>>>>>>
+>>>>>>>>> That said, the real issue here is that PCI_PROBE_ONLY probably
+>>>>>>>>> shouldn't be set under qemu/kvm. Under the other hypervisor
+>>>>>>>>> (PowerVM)
+>>>>>>>>> hotplugged devices are configured by firmware before it's passed to
+>>>>>>>>> the guest and we need to keep the FW assignments otherwise things
+>>>>>>>>> break. QEMU however doesn't do any BAR assignments and relies on
+>>>>>>>>> that
+>>>>>>>>> being handled by the guest. At boot time this is done by SLOF, but
+>>>>>>>>> Linux only keeps SLOF around until it's extracted the device-tree.
+>>>>>>>>> Once that's done SLOF gets blown away and the kernel needs to do
+>>>>>>>>> it's
+>>>>>>>>> own BAR assignments. I'm guessing there's a hack in there to make it
+>>>>>>>>> work today, but it's a little surprising that it works at all...
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> The hack is to run a modified qemu-aware "/usr/sbin/rtas_errd" in the
+>>>>>>>> guest which receives an event from qemu (RAS_EPOW from
+>>>>>>>> /proc/interrupts), fetches device tree chunks (and as I understand
+>>>>>>>> it -
+>>>>>>>> they come with BARs from phyp but without from qemu) and writes
+>>>>>>>> "1" to
+>>>>>>>> "/sys/bus/pci/rescan" which calls pci_assign_resource() eventually:
+>>>>>>>
+>>>>>>> Interesting. Does this mean that the PHYP hotplug path doesn't
+>>>>>>> call pci_assign_resource?
+>>>>>>
+>>>>>>
+>>>>>> I'd expect dlpar_add_slot() to be called under phyp and eventually
+>>>>>> pci_device_add() which (I think) may or may not trigger later
+>>>>>> reassignment.
+>>>>>>
+>>>>>>
+>>>>>>> If so it means the patch may not
+>>>>>>> break that platform after all, though it still may not be
+>>>>>>> the correct way of doing things.
+>>>>>>
+>>>>>>
+>>>>>> We should probably stop enforcing the PCI_PROBE_ONLY flag - it seems
+>>>>>> that (unless resource_alignment= is used) the pseries guest should just
+>>>>>> walk through all allocated resources and leave them unchanged.
+>>>>>
+>>>>> If we add a pcibios_default_alignment() implementation like was
+>>>>> suggested earlier, then it will behave as if the user has
+>>>>> specified resource_alignment= by default and SLOF's assignments
+>>>>> won't be honored (I think).
+>>>>
+>>>>
+>>>> I removed pci_add_flags(PCI_PROBE_ONLY) from pSeries_setup_arch and
+>>>> tried booting with and without pci=resource_alignment= and I can see no
+>>>> difference - BARs are still aligned to 64K as programmed in SLOF; if I
+>>>> hack SLOF to align to 4K or 32K - BARs get packed and the guest leaves
+>>>> them unchanged.
+>>>>
+>>>>
+>>>>> I guess it boils down to one question - is it important that we
+>>>>> observe SLOF's initial BAR assignments?
+>>>>
+>>>> It isn't if it's SLOF but it is if it's phyp. It used to not
+>>>> allow/support BAR reassignment and even if it does not, I'd rather avoid
+>>>> touching them.
+>>>
+>>> A quick update. I tried removing pci_add_flags(PCI_PROBE_ONLY) which
+>>> worked, but if I add an implementation of pcibios_default_alignment
+>>> which simply returns PAGE_SIZE, my VM fails to boot and many errors
+>>> from the virtio disk driver are printed to the console.
+>>>
+>>> After some investigation, it seems that with pcibios_default_alignment
+>>> present, Linux will reallocate all resources provided by SLOF on
+>>> boot. I'm still not sure why exactly this causes the virtio driver
+>>> to fail, but it does indicate that there is a reason to keep
+>>> SLOF's initial assignments.
+>>>
+>>> Anybody have an idea what's causing this?
+>>
+>> With your changes the guest feels the urge to reassign bars (no idea why
+>> but ok), when it does so, it puts both BARs (one is prefetchable) into
+>> the 32bit non-prefetchable window of the PHB (SLOF puts the prefetchable
+>> bar to a 64bit prefetchable window, I have no idea why the guest does it
+>> different either but this must still work) and then qemu does not
+>> emulate something properly - unassigned_mem_accepts() is triggered on
+>> the bar access - no idea why - I am debugging it right now.
 > 
-> but task is already holding lock:
-> (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
 > 
->  other info that might help us debug this:
->   Possible unsafe locking scenario:
+> Sooo the problem is that resouce::flags has 2 bits to describe 64bit
+> BARs - PCI_BASE_ADDRESS_MEM_TYPE_64 and IORESOURCE_MEM_64 - and we don't
+> set IORESOURCE_MEM_64 for 64bit BARs when parsing the fdt.
 > 
->         CPU0
->         ----
->    lock(cpu_hotplug_lock.rw_sem);
->    lock(cpu_hotplug_lock.rw_sem);
+> So the BAR reallocator moves the BAR to 32bit window (which is not
+> desirable but permitted, I still have to chase it) and then
+> pci_std_update_resource() writes BAR back but since now it is 32bit BAR,
+> it does not write to the upper 32bits so that half remains 0x2100, QEMU
+> does not move BAR to the right window and the MMIO stops working.
 > 
->   *** DEADLOCK ***
-> 
->   May be due to missing lock nesting notation
-> 
->  3 locks held by swapper/0/1:
->   #0: (____ptrval____) (&dev->mutex){....}, at: __driver_attach+0x12c/0x1b0
->   #1: (____ptrval____) (cpu_hotplug_lock.rw_sem){++++}, at: mem_hotplug_begin+0x20/0x50
->   #2: (____ptrval____) (mem_hotplug_lock.rw_sem){++++}, at: percpu_down_write+0x54/0x1a0
-> 
-> stack backtrace:
->  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.0.0-rc5-58373-gbc99402235f3-dirty #166
->  Call Trace:
->  [c0000000feb03150] [c000000000e32bd4] dump_stack+0xe8/0x164 (unreliable)
->  [c0000000feb031a0] [c00000000020d6c0] __lock_acquire+0x1110/0x1c70
->  [c0000000feb03320] [c00000000020f080] lock_acquire+0x240/0x290
->  [c0000000feb033e0] [c00000000017f554] cpus_read_lock+0x64/0xf0
->  [c0000000feb03420] [c00000000029ebac] stop_machine+0x2c/0x60
->  [c0000000feb03460] [c0000000000d7f7c] pseries_lpar_resize_hpt+0x19c/0x2c0
->  [c0000000feb03500] [c0000000000788d0] resize_hpt_for_hotplug+0x70/0xd0
->  [c0000000feb03570] [c000000000e5d278] arch_add_memory+0x58/0xfc
->  [c0000000feb03610] [c0000000003553a8] devm_memremap_pages+0x5e8/0x8f0
->  [c0000000feb036c0] [c0000000009c2394] pmem_attach_disk+0x764/0x830
->  [c0000000feb037d0] [c0000000009a7c38] nvdimm_bus_probe+0x118/0x240
->  [c0000000feb03860] [c000000000968500] really_probe+0x230/0x4b0
->  [c0000000feb038f0] [c000000000968aec] driver_probe_device+0x16c/0x1e0
->  [c0000000feb03970] [c000000000968ca8] __driver_attach+0x148/0x1b0
->  [c0000000feb039f0] [c0000000009650b0] bus_for_each_dev+0x90/0x130
->  [c0000000feb03a50] [c000000000967dd4] driver_attach+0x34/0x50
->  [c0000000feb03a70] [c000000000967068] bus_add_driver+0x1a8/0x360
->  [c0000000feb03b00] [c00000000096a498] driver_register+0x108/0x170
->  [c0000000feb03b70] [c0000000009a7400] __nd_driver_register+0xd0/0xf0
->  [c0000000feb03bd0] [c00000000128aa90] nd_pmem_driver_init+0x34/0x48
->  [c0000000feb03bf0] [c000000000010a10] do_one_initcall+0x1e0/0x45c
->  [c0000000feb03cd0] [c00000000122462c] kernel_init_freeable+0x540/0x64c
->  [c0000000feb03db0] [c00000000001110c] kernel_init+0x2c/0x160
->  [c0000000feb03e20] [c00000000000bed4] ret_from_kernel_thread+0x5c/0x68
-> 
-> Fix this issue by
->   1) Requiring all the calls to pseries_lpar_resize_hpt() be made
->      with cpu_hotplug_lock held.
-> 
->   2) In pseries_lpar_resize_hpt() invoke stop_machine_cpuslocked()
->      as a consequence of 1)
-> 
->   3) To satisfy 1), in hpt_order_set(), call mmu_hash_ops.resize_hpt()
->      with cpu_hotplug_lock held.
-> 
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> ---
-> v2 -> v3 : Updated the comment for pseries_lpar_resize_hpt()
->            Updated the commit-log with the full backtrace.
-> v1 -> v2 : Rebased against powerpc/next instead of linux/master
-> 
->  arch/powerpc/mm/book3s64/hash_utils.c | 9 ++++++++-
->  arch/powerpc/platforms/pseries/lpar.c | 8 ++++++--
->  2 files changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-> index 919a861..d07fcafd 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -38,6 +38,7 @@
->  #include <linux/libfdt.h>
->  #include <linux/pkeys.h>
->  #include <linux/hugetlb.h>
-> +#include <linux/cpu.h>
-> 
->  #include <asm/debugfs.h>
->  #include <asm/processor.h>
-> @@ -1928,10 +1929,16 @@ static int hpt_order_get(void *data, u64 *val)
-> 
->  static int hpt_order_set(void *data, u64 val)
->  {
-> +	int ret;
-> +
->  	if (!mmu_hash_ops.resize_hpt)
->  		return -ENODEV;
-> 
-> -	return mmu_hash_ops.resize_hpt(val);
-> +	cpus_read_lock();
-> +	ret = mmu_hash_ops.resize_hpt(val);
-> +	cpus_read_unlock();
-> +
-> +	return ret;
->  }
-> 
->  DEFINE_DEBUGFS_ATTRIBUTE(fops_hpt_order, hpt_order_get, hpt_order_set, "%llu\n");
-> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-> index 1034ef1..557d592 100644
-> --- a/arch/powerpc/platforms/pseries/lpar.c
-> +++ b/arch/powerpc/platforms/pseries/lpar.c
-> @@ -859,7 +859,10 @@ static int pseries_lpar_resize_hpt_commit(void *data)
->  	return 0;
->  }
-> 
-> -/* Must be called in user context */
-> +/*
-> + * Must be called in process context. The caller must hold the
-> + * cpus_lock.
-> + */
->  static int pseries_lpar_resize_hpt(unsigned long shift)
->  {
->  	struct hpt_resize_state state = {
-> @@ -913,7 +916,8 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
-> 
->  	t1 = ktime_get();
-> 
-> -	rc = stop_machine(pseries_lpar_resize_hpt_commit, &state, NULL);
-> +	rc = stop_machine_cpuslocked(pseries_lpar_resize_hpt_commit,
-> +				     &state, NULL);
-> 
->  	t2 = ktime_get();
-> 
-> -- 
-> 1.9.4
-> 
+> Try this in the guest kernel, it seems to keep bars where they were
+> after slof.
 
+Nice debugging work! With your patch the VM does boot. I'm not sure
+if SLOF's original allocations are being kept or if Linux is redoing
+them (how do you check?), but MMIO works and the system boots anyways.
+
+I've also tested hotplug and the BAR allocations are page-aligned too,
+as expected.
