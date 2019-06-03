@@ -2,73 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED203291C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 09:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A7032933
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 09:16:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HR3747JszDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:08:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HRFD2tgkzDqQy
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:16:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ spf=pass (mailfrom) smtp.mailfrom=microsoft.com
+ (client-ip=40.107.131.122; helo=apc01-sg2-obe.outbound.protection.outlook.com;
+ envelope-from=v-lide@microsoft.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none)
+ header.from=microsoft.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jT+2W/Wz"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=microsoft.com header.i=@microsoft.com
+ header.b="WZKU8doD"; dkim-atps=neutral
+Received: from APC01-SG2-obe.outbound.protection.outlook.com
+ (mail-eopbgr1310122.outbound.protection.outlook.com [40.107.131.122])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HR1k58MHzDqNg
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 17:06:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45HR1T5ts5z9v0Y5;
- Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jT+2W/Wz; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id tjgsNbk0AB5p; Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45HR1T4c8Cz9v0Xt;
- Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559545597; bh=TC6QmhQY0SmiltKr9v5TB3XVNP5MrNYwND4rHdTmvjk=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=jT+2W/WzsIbJ/ZKXYgErTK0Iskxwp7f2O0hZxeEgqEvfPHWGnTMYZPhg5iYLFQ5WZ
- nbnkKNs1Uy1Kts2uUWEepKBFYXvvwmgcu4s2kRdLsX06NXVg2rd6+x1QPnKT3C2y9v
- Jid+nI7vA04PYNdQZqVHEXyjTk+aL0LpOjRGSMWg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 37F9E8B7B1;
- Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YtoxeglRdgkU; Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0D1408B7A1;
- Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc/book3e: KASAN Full support for 64bit
-To: Daniel Axtens <dja@axtens.net>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <3401648225001077db54172ee87573b21e1cfa38.1553782837.git.christophe.leroy@c-s.fr>
- <877ea7za12.fsf@dja-thinkpad.axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <028d7332-57e0-bbec-1843-29f87b33a1d4@c-s.fr>
-Date: Mon, 3 Jun 2019 09:06:42 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HRCc1QXpzDqLZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 17:15:23 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=testarcselector01; d=microsoft.com; cv=none;
+ b=N8s0CaSF7ax+RuQ37BjMX8mRkdoaiX/SR7f2yRqsh/BLH2Dm8nEpUBdbN7o6eZaQM/6J/pfTrd0QEEb/xJWdJGOUTojDK4rtZ5dxuUss1Mkamxo8YsEZSIUt1hGad788xmEw2YTucVMQKQDKgulPibU1L9vfF6wT7ZnjUGiI3wg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=testarcselector01;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+CA6rYCEr9x5blaWaXK8yuaYeYYlTQpmEFoxPCLOsPI=;
+ b=DBXoWi38Tm7lASfWrlB5iB+KIf7zUMkRE/0lt/fzpU0BYa6BGRxQcUG2RElLTkGz4TmZfyXHlM6Oic34rlWegAgNjWHAca/dlkRT37PPbFtkXigsWlHuEn49ekvfgOw1wjxTPqBrQ+5FtRwZ0qyMVT1Mjjr8yJzTbRTvNiZRUN8=
+ARC-Authentication-Results: i=1; test.office365.com
+ 1;spf=none;dmarc=none;dkim=none;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+CA6rYCEr9x5blaWaXK8yuaYeYYlTQpmEFoxPCLOsPI=;
+ b=WZKU8doD3IjQUgv8wyJAPspZ9XkXuw26K4+U2O+XPoctsd3kIdSXbeOin0W545K7KJqf3cNNB4Ih2jY5bKaGM6SLFOKmdsCEk3hthqD5kNaqKyVK9/sGf7FwMx/Puk5vKmVrV/a3bss6BCPmUqf92q74An3QmXHBZOPhAz575hw=
+Received: from KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM (52.132.240.147) by
+ KL1P15301MB0262.APCP153.PROD.OUTLOOK.COM (52.132.240.15) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.3; Mon, 3 Jun 2019 07:15:17 +0000
+Received: from KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM
+ ([fe80::94b3:929c:cb30:a005]) by KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM
+ ([fe80::94b3:929c:cb30:a005%9]) with mapi id 15.20.1987.003; Mon, 3 Jun 2019
+ 07:15:17 +0000
+From: "Lili Deng (Wicresoft North America Ltd)" <v-lide@microsoft.com>
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>, Dexuan-Linux Cui
+ <dexuan.linux@gmail.com>
+Subject: RE: [next-20190530] Boot failure on PowerPC
+Thread-Topic: [next-20190530] Boot failure on PowerPC
+Thread-Index: AQHVF9yX3BwniFeSJ0iqHPvcE2BsqqaJRHIAgAAC7PCAADugsA==
+Date: Mon, 3 Jun 2019 07:15:17 +0000
+Message-ID: <KL1P15301MB029432D948C04440E7250F759E140@KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM>
+References: <79EEB945-661A-41AD-8B26-2FD3B3F84697@linux.vnet.ibm.com>
+ <87h89aohnu.fsf@concordia.ellerman.id.au>
+ <CAA42JLYcPi4ypvX=Ma8yWzUCF=B=FkDrzLex=bJiLyryuWTE2g@mail.gmail.com>
+ <D8C9598F-4A51-4402-9344-894EC6B6CE47@linux.vnet.ibm.com>
+ <KL1P15301MB02948DA3C780A2DC4A145E0F9E140@KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM>
+In-Reply-To: <KL1P15301MB02948DA3C780A2DC4A145E0F9E140@KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=v-lide@microsoft.com; 
+x-originating-ip: [2404:f801:8050:3:c0::35f8]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a0903708-a713-40cd-1727-08d6e7f33b57
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:KL1P15301MB0262; 
+x-ms-traffictypediagnostic: KL1P15301MB0262:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <KL1P15301MB026242BD7AE136D93DE884E29E140@KL1P15301MB0262.APCP153.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0057EE387C
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(136003)(366004)(376002)(39860400002)(346002)(396003)(199004)(189003)(13464003)(14444005)(256004)(478600001)(10290500003)(8990500004)(2940100002)(316002)(14454004)(11346002)(81166006)(81156014)(8676002)(486006)(5660300002)(446003)(8936002)(22452003)(476003)(10090500001)(305945005)(74316002)(52536014)(46003)(7736002)(966005)(229853002)(4326008)(86362001)(53936002)(76176011)(7696005)(6436002)(9686003)(6116002)(99286004)(6306002)(55016002)(33656002)(107886003)(2906002)(64756008)(66446008)(66556008)(66476007)(6246003)(73956011)(66946007)(76116006)(53546011)(6506007)(186003)(110136005)(102836004)(71190400001)(71200400001)(25786009)(54906003)(68736007);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:KL1P15301MB0262;
+ H:KL1P15301MB0294.APCP153.PROD.OUTLOOK.COM; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: aixrWrbs8h7B1ylxhqJRyXV0Dg4qCuKyfC0YCpjdlwHDeYc6/8nTgDyidzOx//mimV7E0jD/Zip00hPS9rbAUjwfOt4oyHwchuktNopCtkDbJPFzWAoGm8392OU0bXE13qrjKuClBy3mCIr2UoCjpFwpek+4ygSw2g0XdssRNRae3zsc4DEEFAjdgA9h/2DthJd4DiLUHCDtXfiGNzgX0uD+1CJMY/pUm9C67KMW5GXCGIqF0Cj8vR7sMmMhjqjLkCp3ylTwxElgkUmDVZYv2AMX8NuMoAH6Ghgwy4CRYunGG5LTbLPbTCIgPONF1rRN4PFjU90Yp0Rue+6P2zFho13dK9B94ia8E0ibJ0cz88ZrVBR+m8sZKUggDtcG6SQDzczOMRw2ij9DC7TyKgc/ORO6xbjT5LwIJO61MGjM4C0=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <877ea7za12.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0903708-a713-40cd-1727-08d6e7f33b57
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jun 2019 07:15:17.3758 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v-lide@microsoft.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1P15301MB0262
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,305 +109,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Dexuan Cui <decui@microsoft.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+ACK for ' but it fixes the get_swap_device warning messages during the boot=
+.'
+Double check for kernel panic issue, without this patch, it seems not repro=
+ in my local manual environment, so please ignore my previous mail for 'the=
+ patch fixes the kernel panic'.
+Sorry for the confusion.=20
 
-Ok, can you share your .config ?
+-----Original Message-----
+From: Lili Deng (Wicresoft North America Ltd)=20
+Sent: Monday, June 3, 2019 11:24 AM
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>; Dexuan-Linux Cui <dexuan.linu=
+x@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>; linuxppc-dev@lists.ozlabs.org; l=
+inux-next@vger.kernel.org; Dexuan Cui <decui@microsoft.com>
+Subject: RE: [next-20190530] Boot failure on PowerPC
 
-Christophe
+Hi Sachin,
 
-Le 31/05/2019 à 03:29, Daniel Axtens a écrit :
-> Hi Christophe,
-> 
-> I tried this on the t4240rdb and it fails to boot if KASAN is
-> enabled. It does boot with the patch applied but KASAN disabled, so that
-> narrows it down a little bit.
-> 
-> I need to focus on 3s first so I'll just drop 3e from my patch set for
-> now.
-> 
-> Regards,
-> Daniel
-> 
->> The KASAN shadow area is mapped into vmemmap space:
->> 0x8000 0400 0000 0000 to 0x8000 0600 0000 0000.
->> For this vmemmap has to be disabled.
->>
->> Cc: Daniel Axtens <dja@axtens.net>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/Kconfig                  |   1 +
->>   arch/powerpc/Kconfig.debug            |   3 +-
->>   arch/powerpc/include/asm/kasan.h      |  11 +++
->>   arch/powerpc/kernel/Makefile          |   2 +
->>   arch/powerpc/kernel/head_64.S         |   3 +
->>   arch/powerpc/kernel/setup_64.c        |  20 +++---
->>   arch/powerpc/mm/kasan/Makefile        |   1 +
->>   arch/powerpc/mm/kasan/kasan_init_64.c | 129 ++++++++++++++++++++++++++++++++++
->>   8 files changed, 159 insertions(+), 11 deletions(-)
->>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_64.c
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 1a2fb50126b2..e0b7c45e4dc7 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -174,6 +174,7 @@ config PPC
->>   	select HAVE_ARCH_AUDITSYSCALL
->>   	select HAVE_ARCH_JUMP_LABEL
->>   	select HAVE_ARCH_KASAN			if PPC32
->> +	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64 && !SPARSEMEM_VMEMMAP
->>   	select HAVE_ARCH_KGDB
->>   	select HAVE_ARCH_MMAP_RND_BITS
->>   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
->> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
->> index 61febbbdd02b..b4140dd6b4e4 100644
->> --- a/arch/powerpc/Kconfig.debug
->> +++ b/arch/powerpc/Kconfig.debug
->> @@ -370,4 +370,5 @@ config PPC_FAST_ENDIAN_SWITCH
->>   config KASAN_SHADOW_OFFSET
->>   	hex
->>   	depends on KASAN
->> -	default 0xe0000000
->> +	default 0xe0000000 if PPC32
->> +	default 0x6800040000000000 if PPC64
->> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
->> index 296e51c2f066..756b3d58f921 100644
->> --- a/arch/powerpc/include/asm/kasan.h
->> +++ b/arch/powerpc/include/asm/kasan.h
->> @@ -23,10 +23,21 @@
->>   
->>   #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
->>   
->> +#ifdef CONFIG_PPC32
->>   #define KASAN_SHADOW_END	0UL
->>   
->>   #define KASAN_SHADOW_SIZE	(KASAN_SHADOW_END - KASAN_SHADOW_START)
->>   
->> +#else
->> +
->> +#include <asm/pgtable.h>
->> +
->> +#define KASAN_SHADOW_SIZE	(KERN_VIRT_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
->> +
->> +#define KASAN_SHADOW_END	(KASAN_SHADOW_START + KASAN_SHADOW_SIZE)
->> +
->> +#endif /* CONFIG_PPC32 */
->> +
->>   #ifdef CONFIG_KASAN
->>   void kasan_early_init(void);
->>   void kasan_mmu_init(void);
->> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
->> index 0ea6c4aa3a20..7f232c06f11d 100644
->> --- a/arch/powerpc/kernel/Makefile
->> +++ b/arch/powerpc/kernel/Makefile
->> @@ -35,6 +35,8 @@ KASAN_SANITIZE_early_32.o := n
->>   KASAN_SANITIZE_cputable.o := n
->>   KASAN_SANITIZE_prom_init.o := n
->>   KASAN_SANITIZE_btext.o := n
->> +KASAN_SANITIZE_paca.o := n
->> +KASAN_SANITIZE_setup_64.o := n
->>   
->>   ifdef CONFIG_KASAN
->>   CFLAGS_early_32.o += -DDISABLE_BRANCH_PROFILING
->> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
->> index 3fad8d499767..80fbd8024fb2 100644
->> --- a/arch/powerpc/kernel/head_64.S
->> +++ b/arch/powerpc/kernel/head_64.S
->> @@ -966,6 +966,9 @@ start_here_multiplatform:
->>   	 * and SLB setup before we turn on relocation.
->>   	 */
->>   
->> +#ifdef CONFIG_KASAN
->> +	bl	kasan_early_init
->> +#endif
->>   	/* Restore parameters passed from prom_init/kexec */
->>   	mr	r3,r31
->>   	bl	early_setup		/* also sets r13 and SPRG_PACA */
->> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
->> index ba404dd9ce1d..d2bf860dd966 100644
->> --- a/arch/powerpc/kernel/setup_64.c
->> +++ b/arch/powerpc/kernel/setup_64.c
->> @@ -311,6 +311,16 @@ void __init early_setup(unsigned long dt_ptr)
->>    	DBG(" -> early_setup(), dt_ptr: 0x%lx\n", dt_ptr);
->>   
->>   	/*
->> +	 * Configure exception handlers. This include setting up trampolines
->> +	 * if needed, setting exception endian mode, etc...
->> +	 */
->> +	configure_exceptions();
->> +
->> +	/* Apply all the dynamic patching */
->> +	apply_feature_fixups();
->> +	setup_feature_keys();
->> +
->> +	/*
->>   	 * Do early initialization using the flattened device
->>   	 * tree, such as retrieving the physical memory map or
->>   	 * calculating/retrieving the hash table size.
->> @@ -325,16 +335,6 @@ void __init early_setup(unsigned long dt_ptr)
->>   	setup_paca(paca_ptrs[boot_cpuid]);
->>   	fixup_boot_paca();
->>   
->> -	/*
->> -	 * Configure exception handlers. This include setting up trampolines
->> -	 * if needed, setting exception endian mode, etc...
->> -	 */
->> -	configure_exceptions();
->> -
->> -	/* Apply all the dynamic patching */
->> -	apply_feature_fixups();
->> -	setup_feature_keys();
->> -
->>   	/* Initialize the hash table or TLB handling */
->>   	early_init_mmu();
->>   
->> diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
->> index 6577897673dd..0bfbe3892808 100644
->> --- a/arch/powerpc/mm/kasan/Makefile
->> +++ b/arch/powerpc/mm/kasan/Makefile
->> @@ -3,3 +3,4 @@
->>   KASAN_SANITIZE := n
->>   
->>   obj-$(CONFIG_PPC32)           += kasan_init_32.o
->> +obj-$(CONFIG_PPC64)	+= kasan_init_64.o
->> diff --git a/arch/powerpc/mm/kasan/kasan_init_64.c b/arch/powerpc/mm/kasan/kasan_init_64.c
->> new file mode 100644
->> index 000000000000..7fd71b8e883b
->> --- /dev/null
->> +++ b/arch/powerpc/mm/kasan/kasan_init_64.c
->> @@ -0,0 +1,129 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +#define DISABLE_BRANCH_PROFILING
->> +
->> +#include <linux/kasan.h>
->> +#include <linux/printk.h>
->> +#include <linux/memblock.h>
->> +#include <linux/sched/task.h>
->> +#include <asm/pgalloc.h>
->> +
->> +static void __init kasan_populate_pte(pte_t *ptep, pgprot_t prot)
->> +{
->> +	unsigned long va = (unsigned long)kasan_early_shadow_page;
->> +	phys_addr_t pa = __pa(kasan_early_shadow_page);
->> +	int i;
->> +
->> +	for (i = 0; i < PTRS_PER_PTE; i++, ptep++)
->> +		__set_pte_at(&init_mm, va, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
->> +}
->> +
->> +static void __init kasan_populate_pmd(pmd_t *pmdp)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < PTRS_PER_PMD; i++)
->> +		pmd_populate_kernel(&init_mm, pmdp + i, kasan_early_shadow_pte);
->> +}
->> +
->> +static void __init kasan_populate_pud(pud_t *pudp)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < PTRS_PER_PUD; i++)
->> +		pud_populate(&init_mm, pudp + i, kasan_early_shadow_pmd);
->> +}
->> +
->> +static void __init *kasan_alloc_pgtable(unsigned long size)
->> +{
->> +	void *ptr = memblock_alloc_try_nid(size, size, MEMBLOCK_LOW_LIMIT,
->> +					   __pa(MAX_DMA_ADDRESS), NUMA_NO_NODE);
->> +
->> +	if (!ptr)
->> +		panic("%s: Failed to allocate %lu bytes align=0x%lx max_addr=%lx\n",
->> +		      __func__, size, size, __pa(MAX_DMA_ADDRESS));
->> +
->> +	return ptr;
->> +}
->> +
->> +static int __init kasan_map_page(unsigned long va, unsigned long pa, pgprot_t prot)
->> +{
->> +	pgd_t *pgdp = pgd_offset_k(va);
->> +	pud_t *pudp;
->> +	pmd_t *pmdp;
->> +	pte_t *ptep;
->> +
->> +	if (pgd_none(*pgdp) || (void *)pgd_page_vaddr(*pgdp) == kasan_early_shadow_pud) {
->> +		pudp = kasan_alloc_pgtable(PUD_TABLE_SIZE);
->> +		kasan_populate_pud(pudp);
->> +		pgd_populate(&init_mm, pgdp, pudp);
->> +	}
->> +	pudp = pud_offset(pgdp, va);
->> +	if (pud_none(*pudp) || (void *)pud_page_vaddr(*pudp) == kasan_early_shadow_pmd) {
->> +		pmdp = kasan_alloc_pgtable(PMD_TABLE_SIZE);
->> +		kasan_populate_pmd(pmdp);
->> +		pud_populate(&init_mm, pudp, pmdp);
->> +	}
->> +	pmdp = pmd_offset(pudp, va);
->> +	if (!pmd_present(*pmdp) || (void *)pmd_page_vaddr(*pmdp) == kasan_early_shadow_pte) {
->> +		ptep = kasan_alloc_pgtable(PTE_TABLE_SIZE);
->> +		kasan_populate_pte(ptep, PAGE_KERNEL);
->> +		pmd_populate_kernel(&init_mm, pmdp, ptep);
->> +	}
->> +	ptep = pte_offset_kernel(pmdp, va);
->> +
->> +	__set_pte_at(&init_mm, va, ptep, pfn_pte(pa >> PAGE_SHIFT, prot), 0);
->> +
->> +	return 0;
->> +}
->> +
->> +static void __init kasan_init_region(struct memblock_region *reg)
->> +{
->> +	void *start = __va(reg->base);
->> +	void *end = __va(reg->base + reg->size);
->> +	unsigned long k_start, k_end, k_cur;
->> +
->> +	if (start >= end)
->> +		return;
->> +
->> +	k_start = (unsigned long)kasan_mem_to_shadow(start);
->> +	k_end = (unsigned long)kasan_mem_to_shadow(end);
->> +
->> +	for (k_cur = k_start; k_cur < k_end; k_cur += PAGE_SIZE) {
->> +		void *va = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
->> +
->> +		kasan_map_page(k_cur, __pa(va), PAGE_KERNEL);
->> +	}
->> +	flush_tlb_kernel_range(k_start, k_end);
->> +}
->> +
->> +void __init kasan_init(void)
->> +{
->> +	struct memblock_region *reg;
->> +
->> +	for_each_memblock(memory, reg)
->> +		kasan_init_region(reg);
->> +
->> +	/* It's too early to use clear_page() ! */
->> +	memset(kasan_early_shadow_page, 0, sizeof(kasan_early_shadow_page));
->> +
->> +	/* Enable error messages */
->> +	init_task.kasan_depth = 0;
->> +	pr_info("KASAN init done\n");
->> +}
->> +
->> +/* The early shadow maps everything to a single page of zeroes */
->> +asmlinkage void __init kasan_early_init(void)
->> +{
->> +	unsigned long addr = KASAN_SHADOW_START;
->> +	unsigned long end = KASAN_SHADOW_END;
->> +	pgd_t *pgdp = pgd_offset_k(addr);
->> +
->> +	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
->> +	kasan_populate_pmd(kasan_early_shadow_pmd);
->> +	kasan_populate_pud(kasan_early_shadow_pud);
->> +
->> +	do {
->> +		pgd_populate(&init_mm, pgdp, kasan_early_shadow_pud);
->> +	} while (pgdp++, addr = pgd_addr_end(addr, end), addr != end);
->> +}
->> -- 
->> 2.13.3
+I verified below patch against Ubuntu 18.04, didn't hit the kernel panic an=
+y more, could you please let know how did you verify?
+
+Thanks,
+Lili
+-----Original Message-----
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>=20
+Sent: Monday, June 3, 2019 11:12 AM
+To: Dexuan-Linux Cui <dexuan.linux@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>; linuxppc-dev@lists.ozlabs.org; l=
+inux-next@vger.kernel.org; Dexuan Cui <decui@microsoft.com>; Lili Deng (Wic=
+resoft North America Ltd) <v-lide@microsoft.com>
+Subject: Re: [next-20190530] Boot failure on PowerPC
+
+
+
+> On 31-May-2019, at 11:43 PM, Dexuan-Linux Cui <dexuan.linux@gmail.com> wr=
+ote:
+>=20
+> On Fri, May 31, 2019 at 6:52 AM Michael Ellerman <mpe@ellerman.id.au> wro=
+te:
+>>>=20
+>>> Machine boots till login prompt and then panics few seconds later.
+>>>=20
+>>> Last known next build was May 24th. Will attempt few builds till May=20
+>>> 30 to narrow down this problem.
+>>=20
+>> My CI was fine with next-20190529 (9a15d2e3fd03e3).
+>>=20
+>> cheers
+>=20
+> Hi Sachin,
+> It looks this patch may fix the issue:
+> https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flkml.=
+org%2Flkml%2F2019%2F5%2F30%2F1630&amp;data=3D02%7C01%7Cv-lide%40microsoft.c=
+om%7C66e1ef6017aa461703f808d6e7d148cd%7C72f988bf86f141af91ab2d7cd011db47%7C=
+1%7C1%7C636951283393233385&amp;sdata=3DIJFhtvL2Bd87HCoMZ7oWL%2Bar6NY%2FfPbm=
+dCZMT%2BJz5t4%3D&amp;reserved=3D0 , but I'm not sure.
+
+It does not help fix the kernel panic issue, but it fixes the get_swap_devi=
+ce warning messages during the boot.
+
+Thanks
+-Sachin
+
