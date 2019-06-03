@@ -1,68 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C262832696
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 04:25:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A443267F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 04:14:02 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HJWq3ZLLzDqLL
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 12:13:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HJmd6RyGzDqM0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 12:25:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="OWV+H2uk"; 
+ spf=pass (mailfrom) smtp.mailfrom=anastas.io
+ (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=anastas.io header.i=@anastas.io header.b="gqRwvu8i"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HJQf2ZBPzDqMv
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 12:09:30 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id r22so9643472pfh.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 19:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=stz73iUf9C6RHHj3xWZfepbbnMyNao045W9wPexeqOg=;
- b=OWV+H2ukCkdcMzBttQVcGVVY/ANUL2/4r1X7AY/OpH5D16JJup0DYJtgmo+zicX5Jv
- 0VMGP2aS03USXjvIUoknRaRoJsfKg0lVy+h4tBa8JlZBX9OH281VnGv44MIdQWUjfW4F
- b0/BuVLfgjxapSRnGjmkHbdb9LLD60Yrxrdts=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=stz73iUf9C6RHHj3xWZfepbbnMyNao045W9wPexeqOg=;
- b=S7yHg9d4RO869Lc1jdIE+O+kqITtVWiw96mElZCLz4Pv7i3LH2VWjV7U27cdPYJCsM
- FVoJ9PmjInDU0L/cQrH+lygzswNVjT1Z9kOX7NPiiQs88u5xVF9EPp+kZUVRNrBDM8vK
- 4DTknBa9s8CEYGja3fCryslWXh0zMmbuMhYaqoEUbLV4DT5l9uX8ooRtNZaX6hwbnuw0
- 1hrqn9g/0dwN8G8ql0qytadvWpnxVXu45pnlV6cT3IuqC5M1RHLFzUbwGveW8Rm9pYj5
- odpEv3qqppGjqZDzmSdu5d/v/1UDxeb0xbTfAudlwoDx28qk6h9Iq4/ce7mol6pRANDz
- 0nLg==
-X-Gm-Message-State: APjAAAWijgEiEQk4oJ0K3skw1cg0K5RSYcqcz0mB/NCXe4cZJn3Bqhrs
- eV68XliuW4iTMB4k8FjgP9spli5XLUo=
-X-Google-Smtp-Source: APXvYqyLSdTdqYJobr3J//O8hGFEnS+QMTUvdKcaopilRPTmvD/1cRXiCDjhda0nHzlYUKVlrEIJaQ==
-X-Received: by 2002:a65:6495:: with SMTP id e21mr25177639pgv.383.1559527767587; 
- Sun, 02 Jun 2019 19:09:27 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id p18sm723916pff.93.2019.06.02.19.09.25
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 02 Jun 2019 19:09:26 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH BACKPORTv2 4.4] crypto: vmx - ghash: do nosimd fallback
- manually
-Date: Mon,  3 Jun 2019 12:09:20 +1000
-Message-Id: <20190603020920.9798-1-dja@axtens.net>
-X-Mailer: git-send-email 2.19.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HJlM4BQ6zDq7W
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 12:23:59 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by alpha.anastas.io (Postfix) with ESMTPSA id 015087F6B4;
+ Sun,  2 Jun 2019 21:23:55 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1559528636; bh=+/duAU9XL92ctEZ3sNHy++gGMbn1xWFWJV4PdCXDBhA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=gqRwvu8il7GnTct/LxLSowY39wiUUMkDD7jPiEpdnuJwmcOR66zYMIiwszSDxsXIV
+ MFCh1p95YTFv4nHSS1gSCkxlceCkz8y8YK084uiCVd/HT8cXmYaayjnlWee4aPGN/Y
+ l33Pfb/3cuH4XSwszOcs06ShaHi7AOHnHGUy0AS6o3Kbz7CJ1hpNUWS+cHf0Oa07jL
+ Kj5Iuy57TBqGzsKK+ZoQX6RqnVRvxJkC+XguKZyjemh+3lcKI/k92MvnQDEqSbU1k5
+ PKGzt2goLxkMzBT0RDVWXWE39WJnwhjHbOLnnvDTzPkCS5rUcxnVi/xg1lSq8e3hcp
+ N7bn9y2/NOu4g==
+Subject: Re: [PATCH v3 1/3] PCI: Introduce pcibios_ignore_alignment_request
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver <oohall@gmail.com>
+References: <20190528040313.35582-1-shawn@anastas.io>
+ <20190528040313.35582-2-shawn@anastas.io>
+ <CAOSf1CEFfbmwfvmdqT1xdt8SFb=tYdYXLfXeyZ8=iRnhg4a3Pg@mail.gmail.com>
+ <b0a38504-24c3-77bc-b308-7b498f07760a@ozlabs.ru>
+ <bccfec8f-c8a4-fac1-7e96-be84113b9a73@anastas.io>
+ <3e6b9d7d-5d18-645e-5ef9-6b8a77fa62e9@ozlabs.ru>
+ <985681e4-1236-fff7-e9e7-189a340487dd@anastas.io>
+ <81a015ed-2c99-7ca8-c5ad-cede93aeba97@ozlabs.ru>
+From: Shawn Anastasio <shawn@anastas.io>
+Message-ID: <bdc914aa-9aab-1377-c036-cca4710ef233@anastas.io>
+Date: Sun, 2 Jun 2019 21:23:54 -0500
 MIME-Version: 1.0
+In-Reply-To: <81a015ed-2c99-7ca8-c5ad-cede93aeba97@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,332 +66,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org,
- Daniel Axtens <dja@axtens.net>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, rppt@linux.ibm.com,
+ Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ xyjxie@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 357d065a44cdd77ed5ff35155a989f2a763e96ef upstream.
-[backported: the VMX driver did not use crypto_simd_usable() until
- after 5.1, CRYPTO_ALG_TYPE_SHASH was still specified in .options
- until after 4.14, and the sequence for preparing the kernel to use
- vmx changed after 4.4.]
 
-VMX ghash was using a fallback that did not support interleaving simd
-and nosimd operations, leading to failures in the extended test suite.
 
-If I understood correctly, Eric's suggestion was to use the same
-data format that the generic code uses, allowing us to call into it
-with the same contexts. I wasn't able to get that to work - I think
-there's a very different key structure and data layout being used.
+On 5/30/19 10:56 PM, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 31/05/2019 08:49, Shawn Anastasio wrote:
+>> On 5/29/19 10:39 PM, Alexey Kardashevskiy wrote:
+>>>
+>>>
+>>> On 28/05/2019 17:39, Shawn Anastasio wrote:
+>>>>
+>>>>
+>>>> On 5/28/19 1:27 AM, Alexey Kardashevskiy wrote:
+>>>>>
+>>>>>
+>>>>> On 28/05/2019 15:36, Oliver wrote:
+>>>>>> On Tue, May 28, 2019 at 2:03 PM Shawn Anastasio <shawn@anastas.io>
+>>>>>> wrote:
+>>>>>>>
+>>>>>>> Introduce a new pcibios function pcibios_ignore_alignment_request
+>>>>>>> which allows the PCI core to defer to platform-specific code to
+>>>>>>> determine whether or not to ignore alignment requests for PCI
+>>>>>>> resources.
+>>>>>>>
+>>>>>>> The existing behavior is to simply ignore alignment requests when
+>>>>>>> PCI_PROBE_ONLY is set. This is behavior is maintained by the
+>>>>>>> default implementation of pcibios_ignore_alignment_request.
+>>>>>>>
+>>>>>>> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+>>>>>>> ---
+>>>>>>>     drivers/pci/pci.c   | 9 +++++++--
+>>>>>>>     include/linux/pci.h | 1 +
+>>>>>>>     2 files changed, 8 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>>>>>>> index 8abc843b1615..8207a09085d1 100644
+>>>>>>> --- a/drivers/pci/pci.c
+>>>>>>> +++ b/drivers/pci/pci.c
+>>>>>>> @@ -5882,6 +5882,11 @@ resource_size_t __weak
+>>>>>>> pcibios_default_alignment(void)
+>>>>>>>            return 0;
+>>>>>>>     }
+>>>>>>>
+>>>>>>> +int __weak pcibios_ignore_alignment_request(void)
+>>>>>>> +{
+>>>>>>> +       return pci_has_flag(PCI_PROBE_ONLY);
+>>>>>>> +}
+>>>>>>> +
+>>>>>>>     #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
+>>>>>>>     static char
+>>>>>>> resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] = {0};
+>>>>>>>     static DEFINE_SPINLOCK(resource_alignment_lock);
+>>>>>>> @@ -5906,9 +5911,9 @@ static resource_size_t
+>>>>>>> pci_specified_resource_alignment(struct pci_dev *dev,
+>>>>>>>            p = resource_alignment_param;
+>>>>>>>            if (!*p && !align)
+>>>>>>>                    goto out;
+>>>>>>> -       if (pci_has_flag(PCI_PROBE_ONLY)) {
+>>>>>>> +       if (pcibios_ignore_alignment_request()) {
+>>>>>>>                    align = 0;
+>>>>>>> -               pr_info_once("PCI: Ignoring requested alignments
+>>>>>>> (PCI_PROBE_ONLY)\n");
+>>>>>>> +               pr_info_once("PCI: Ignoring requested alignments\n");
+>>>>>>>                    goto out;
+>>>>>>>            }
+>>>>>>
+>>>>>> I think the logic here is questionable to begin with. If the user has
+>>>>>> explicitly requested re-aligning a resource via the command line then
+>>>>>> we should probably do it even if PCI_PROBE_ONLY is set. When it breaks
+>>>>>> they get to keep the pieces.
+>>>>>>
+>>>>>> That said, the real issue here is that PCI_PROBE_ONLY probably
+>>>>>> shouldn't be set under qemu/kvm. Under the other hypervisor (PowerVM)
+>>>>>> hotplugged devices are configured by firmware before it's passed to
+>>>>>> the guest and we need to keep the FW assignments otherwise things
+>>>>>> break. QEMU however doesn't do any BAR assignments and relies on that
+>>>>>> being handled by the guest. At boot time this is done by SLOF, but
+>>>>>> Linux only keeps SLOF around until it's extracted the device-tree.
+>>>>>> Once that's done SLOF gets blown away and the kernel needs to do it's
+>>>>>> own BAR assignments. I'm guessing there's a hack in there to make it
+>>>>>> work today, but it's a little surprising that it works at all...
+>>>>>
+>>>>>
+>>>>> The hack is to run a modified qemu-aware "/usr/sbin/rtas_errd" in the
+>>>>> guest which receives an event from qemu (RAS_EPOW from
+>>>>> /proc/interrupts), fetches device tree chunks (and as I understand it -
+>>>>> they come with BARs from phyp but without from qemu) and writes "1" to
+>>>>> "/sys/bus/pci/rescan" which calls pci_assign_resource() eventually:
+>>>>
+>>>> Interesting. Does this mean that the PHYP hotplug path doesn't
+>>>> call pci_assign_resource?
+>>>
+>>>
+>>> I'd expect dlpar_add_slot() to be called under phyp and eventually
+>>> pci_device_add() which (I think) may or may not trigger later
+>>> reassignment.
+>>>
+>>>
+>>>> If so it means the patch may not
+>>>> break that platform after all, though it still may not be
+>>>> the correct way of doing things.
+>>>
+>>>
+>>> We should probably stop enforcing the PCI_PROBE_ONLY flag - it seems
+>>> that (unless resource_alignment= is used) the pseries guest should just
+>>> walk through all allocated resources and leave them unchanged.
+>>
+>> If we add a pcibios_default_alignment() implementation like was
+>> suggested earlier, then it will behave as if the user has
+>> specified resource_alignment= by default and SLOF's assignments
+>> won't be honored (I think).
+> 
+> 
+> I removed pci_add_flags(PCI_PROBE_ONLY) from pSeries_setup_arch and
+> tried booting with and without pci=resource_alignment= and I can see no
+> difference - BARs are still aligned to 64K as programmed in SLOF; if I
+> hack SLOF to align to 4K or 32K - BARs get packed and the guest leaves
+> them unchanged.
+> 
+> 
+>> I guess it boils down to one question - is it important that we
+>> observe SLOF's initial BAR assignments?
+> 
+> It isn't if it's SLOF but it is if it's phyp. It used to not
+> allow/support BAR reassignment and even if it does not, I'd rather avoid
+> touching them.
 
-So instead steal the arm64 approach and perform the fallback
-operations directly if required.
+A quick update. I tried removing pci_add_flags(PCI_PROBE_ONLY) which
+worked, but if I add an implementation of pcibios_default_alignment
+which simply returns PAGE_SIZE, my VM fails to boot and many errors
+from the virtio disk driver are printed to the console.
 
-Fixes: cc333cd68dfa ("crypto: vmx - Adding GHASH routines for VMX module")
-Cc: stable@vger.kernel.org # v4.1+
-Reported-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
-Acked-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
+After some investigation, it seems that with pcibios_default_alignment
+present, Linux will reallocate all resources provided by SLOF on
+boot. I'm still not sure why exactly this causes the virtio driver
+to fail, but it does indicate that there is a reason to keep
+SLOF's initial assignments.
 
-v2: do stable backport form correctly.
-
----
- drivers/crypto/vmx/ghash.c | 218 +++++++++++++++----------------------
- 1 file changed, 89 insertions(+), 129 deletions(-)
-
-diff --git a/drivers/crypto/vmx/ghash.c b/drivers/crypto/vmx/ghash.c
-index 84b9389bf1ed..d6b68cf7bba7 100644
---- a/drivers/crypto/vmx/ghash.c
-+++ b/drivers/crypto/vmx/ghash.c
-@@ -1,22 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
- /**
-  * GHASH routines supporting VMX instructions on the Power 8
-  *
-- * Copyright (C) 2015 International Business Machines Inc.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; version 2 only.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ * Copyright (C) 2015, 2019 International Business Machines Inc.
-  *
-  * Author: Marcelo Henrique Cerri <mhcerri@br.ibm.com>
-+ *
-+ * Extended by Daniel Axtens <dja@axtens.net> to replace the fallback
-+ * mechanism. The new approach is based on arm64 code, which is:
-+ *   Copyright (C) 2014 - 2018 Linaro Ltd. <ard.biesheuvel@linaro.org>
-  */
- 
- #include <linux/types.h>
-@@ -39,71 +31,25 @@ void gcm_ghash_p8(u64 Xi[2], const u128 htable[16],
- 		  const u8 *in, size_t len);
- 
- struct p8_ghash_ctx {
-+	/* key used by vector asm */
- 	u128 htable[16];
--	struct crypto_shash *fallback;
-+	/* key used by software fallback */
-+	be128 key;
- };
- 
- struct p8_ghash_desc_ctx {
- 	u64 shash[2];
- 	u8 buffer[GHASH_DIGEST_SIZE];
- 	int bytes;
--	struct shash_desc fallback_desc;
- };
- 
--static int p8_ghash_init_tfm(struct crypto_tfm *tfm)
--{
--	const char *alg = "ghash-generic";
--	struct crypto_shash *fallback;
--	struct crypto_shash *shash_tfm = __crypto_shash_cast(tfm);
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	fallback = crypto_alloc_shash(alg, 0, CRYPTO_ALG_NEED_FALLBACK);
--	if (IS_ERR(fallback)) {
--		printk(KERN_ERR
--		       "Failed to allocate transformation for '%s': %ld\n",
--		       alg, PTR_ERR(fallback));
--		return PTR_ERR(fallback);
--	}
--
--	crypto_shash_set_flags(fallback,
--			       crypto_shash_get_flags((struct crypto_shash
--						       *) tfm));
--
--	/* Check if the descsize defined in the algorithm is still enough. */
--	if (shash_tfm->descsize < sizeof(struct p8_ghash_desc_ctx)
--	    + crypto_shash_descsize(fallback)) {
--		printk(KERN_ERR
--		       "Desc size of the fallback implementation (%s) does not match the expected value: %lu vs %u\n",
--		       alg,
--		       shash_tfm->descsize - sizeof(struct p8_ghash_desc_ctx),
--		       crypto_shash_descsize(fallback));
--		return -EINVAL;
--	}
--	ctx->fallback = fallback;
--
--	return 0;
--}
--
--static void p8_ghash_exit_tfm(struct crypto_tfm *tfm)
--{
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	if (ctx->fallback) {
--		crypto_free_shash(ctx->fallback);
--		ctx->fallback = NULL;
--	}
--}
--
- static int p8_ghash_init(struct shash_desc *desc)
- {
--	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
- 	dctx->bytes = 0;
- 	memset(dctx->shash, 0, GHASH_DIGEST_SIZE);
--	dctx->fallback_desc.tfm = ctx->fallback;
--	dctx->fallback_desc.flags = desc->flags;
--	return crypto_shash_init(&dctx->fallback_desc);
-+	return 0;
- }
- 
- static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
-@@ -122,7 +68,53 @@ static int p8_ghash_setkey(struct crypto_shash *tfm, const u8 *key,
- 	gcm_init_p8(ctx->htable, (const u64 *) key);
- 	pagefault_enable();
- 	preempt_enable();
--	return crypto_shash_setkey(ctx->fallback, key, keylen);
-+
-+	memcpy(&ctx->key, key, GHASH_BLOCK_SIZE);
-+
-+	return 0;
-+}
-+
-+static inline void __ghash_block(struct p8_ghash_ctx *ctx,
-+				 struct p8_ghash_desc_ctx *dctx)
-+{
-+	if (!IN_INTERRUPT) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_altivec();
-+		enable_kernel_vsx();
-+		enable_kernel_fp();
-+		gcm_ghash_p8(dctx->shash, ctx->htable,
-+				dctx->buffer, GHASH_DIGEST_SIZE);
-+		pagefault_enable();
-+		preempt_enable();
-+	} else {
-+		crypto_xor((u8 *)dctx->shash, dctx->buffer, GHASH_BLOCK_SIZE);
-+		gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-+	}
-+}
-+
-+static inline void __ghash_blocks(struct p8_ghash_ctx *ctx,
-+				  struct p8_ghash_desc_ctx *dctx,
-+				  const u8 *src, unsigned int srclen)
-+{
-+	if (!IN_INTERRUPT) {
-+		preempt_disable();
-+		pagefault_disable();
-+		enable_kernel_altivec();
-+		enable_kernel_vsx();
-+		enable_kernel_fp();
-+		gcm_ghash_p8(dctx->shash, ctx->htable,
-+				src, srclen);
-+		pagefault_enable();
-+		preempt_enable();
-+	} else {
-+		while (srclen >= GHASH_BLOCK_SIZE) {
-+			crypto_xor((u8 *)dctx->shash, src, GHASH_BLOCK_SIZE);
-+			gf128mul_lle((be128 *)dctx->shash, &ctx->key);
-+			srclen -= GHASH_BLOCK_SIZE;
-+			src += GHASH_BLOCK_SIZE;
-+		}
-+	}
- }
- 
- static int p8_ghash_update(struct shash_desc *desc,
-@@ -132,51 +124,33 @@ static int p8_ghash_update(struct shash_desc *desc,
- 	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
--	if (IN_INTERRUPT) {
--		return crypto_shash_update(&dctx->fallback_desc, src,
--					   srclen);
--	} else {
--		if (dctx->bytes) {
--			if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
--				memcpy(dctx->buffer + dctx->bytes, src,
--				       srclen);
--				dctx->bytes += srclen;
--				return 0;
--			}
-+	if (dctx->bytes) {
-+		if (dctx->bytes + srclen < GHASH_DIGEST_SIZE) {
- 			memcpy(dctx->buffer + dctx->bytes, src,
--			       GHASH_DIGEST_SIZE - dctx->bytes);
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_altivec();
--			enable_kernel_vsx();
--			enable_kernel_fp();
--			gcm_ghash_p8(dctx->shash, ctx->htable,
--				     dctx->buffer, GHASH_DIGEST_SIZE);
--			pagefault_enable();
--			preempt_enable();
--			src += GHASH_DIGEST_SIZE - dctx->bytes;
--			srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
--			dctx->bytes = 0;
--		}
--		len = srclen & ~(GHASH_DIGEST_SIZE - 1);
--		if (len) {
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_altivec();
--			enable_kernel_vsx();
--			enable_kernel_fp();
--			gcm_ghash_p8(dctx->shash, ctx->htable, src, len);
--			pagefault_enable();
--			preempt_enable();
--			src += len;
--			srclen -= len;
--		}
--		if (srclen) {
--			memcpy(dctx->buffer, src, srclen);
--			dctx->bytes = srclen;
-+				srclen);
-+			dctx->bytes += srclen;
-+			return 0;
- 		}
--		return 0;
-+		memcpy(dctx->buffer + dctx->bytes, src,
-+			GHASH_DIGEST_SIZE - dctx->bytes);
-+
-+		__ghash_block(ctx, dctx);
-+
-+		src += GHASH_DIGEST_SIZE - dctx->bytes;
-+		srclen -= GHASH_DIGEST_SIZE - dctx->bytes;
-+		dctx->bytes = 0;
-+	}
-+	len = srclen & ~(GHASH_DIGEST_SIZE - 1);
-+	if (len) {
-+		__ghash_blocks(ctx, dctx, src, len);
-+		src += len;
-+		srclen -= len;
- 	}
-+	if (srclen) {
-+		memcpy(dctx->buffer, src, srclen);
-+		dctx->bytes = srclen;
-+	}
-+	return 0;
- }
- 
- static int p8_ghash_final(struct shash_desc *desc, u8 *out)
-@@ -185,26 +159,14 @@ static int p8_ghash_final(struct shash_desc *desc, u8 *out)
- 	struct p8_ghash_ctx *ctx = crypto_tfm_ctx(crypto_shash_tfm(desc->tfm));
- 	struct p8_ghash_desc_ctx *dctx = shash_desc_ctx(desc);
- 
--	if (IN_INTERRUPT) {
--		return crypto_shash_final(&dctx->fallback_desc, out);
--	} else {
--		if (dctx->bytes) {
--			for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
--				dctx->buffer[i] = 0;
--			preempt_disable();
--			pagefault_disable();
--			enable_kernel_altivec();
--			enable_kernel_vsx();
--			enable_kernel_fp();
--			gcm_ghash_p8(dctx->shash, ctx->htable,
--				     dctx->buffer, GHASH_DIGEST_SIZE);
--			pagefault_enable();
--			preempt_enable();
--			dctx->bytes = 0;
--		}
--		memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
--		return 0;
-+	if (dctx->bytes) {
-+		for (i = dctx->bytes; i < GHASH_DIGEST_SIZE; i++)
-+			dctx->buffer[i] = 0;
-+		__ghash_block(ctx, dctx);
-+		dctx->bytes = 0;
- 	}
-+	memcpy(out, dctx->shash, GHASH_DIGEST_SIZE);
-+	return 0;
- }
- 
- struct shash_alg p8_ghash_alg = {
-@@ -219,11 +181,9 @@ struct shash_alg p8_ghash_alg = {
- 		 .cra_name = "ghash",
- 		 .cra_driver_name = "p8_ghash",
- 		 .cra_priority = 1000,
--		 .cra_flags = CRYPTO_ALG_TYPE_SHASH | CRYPTO_ALG_NEED_FALLBACK,
-+		 .cra_flags = CRYPTO_ALG_TYPE_SHASH,
- 		 .cra_blocksize = GHASH_BLOCK_SIZE,
- 		 .cra_ctxsize = sizeof(struct p8_ghash_ctx),
- 		 .cra_module = THIS_MODULE,
--		 .cra_init = p8_ghash_init_tfm,
--		 .cra_exit = p8_ghash_exit_tfm,
- 	},
- };
--- 
-2.19.1
-
+Anybody have an idea what's causing this?
