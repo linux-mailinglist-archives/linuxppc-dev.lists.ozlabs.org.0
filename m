@@ -2,91 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C532325AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 02:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F43E325AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 02:26:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HFsQ08Q8zDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 10:14:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HG8B0kp1zDqNk
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 10:26:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=tyreld@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="o7CZ/sjt"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HFr954qJzDqMN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 10:12:56 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x53073BX082452
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 2 Jun 2019 20:12:53 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2svrj4gf50-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 20:12:53 -0400
-Received: from localhost
- by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <tyreld@linux.vnet.ibm.com>;
- Mon, 3 Jun 2019 01:12:52 +0100
-Received: from b01cxnp23034.gho.pok.ibm.com (9.57.198.29)
- by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 3 Jun 2019 01:12:51 +0100
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x530BZoW43057658
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Jun 2019 00:11:35 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2477CB2065;
- Mon,  3 Jun 2019 00:11:35 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D65EB2064;
- Mon,  3 Jun 2019 00:11:34 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.80.203.186])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  3 Jun 2019 00:11:34 +0000 (GMT)
-Subject: Re: [PATCH 1/3] powerpc/pseries: Simplify cpu readd to use drc_index
-To: Nathan Lynch <nathanl@linux.ibm.com>,
- Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-References: <20190516023706.50118-1-tyreld@linux.ibm.com>
- <8736leky3x.fsf@linux.ibm.com>
- <05a4295b-dea5-bea2-5fd3-c8fbee7bac48@linux.vnet.ibm.com>
- <87tvdpjhju.fsf@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Date: Sun, 2 Jun 2019 17:11:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HG6t00BFzDqGk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 10:25:39 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id i10so2979781iol.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 17:25:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MExxoXadMOs/4dei2Z/lDA7bd71U6fdxY4xEu+jsw3g=;
+ b=o7CZ/sjtAQyde3vaJV6o1j1xVidzz45pjhePp6n+A0ZXxt23TT8Phgnbtr3GpU6tOV
+ f7i6MnNbRPY+pxSn93mjBnwRoXk23J96pSfbAlcAQZwQjfkCqXp2Edqbuk6m2nJKHT7o
+ 1oeS5JNi0W8drJaBh+OHiz0S29DaoVkfO6anZgxcaHd7HA0bN4xjdoQC3CyiWnf74Ooy
+ Za4VY6zQLvO2hRpbeNqB3J07ecD0XKxXh7/8GDuPg9ZjlIKvqi+UZ08q/7ijU3FT7Qp4
+ wYeBYEUyxNoHWHpvA0mu79tmK4eXbU+M2/X2LoRf04CdKYvsEiBMLsdrqYIxmQ6D1YvR
+ MDyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MExxoXadMOs/4dei2Z/lDA7bd71U6fdxY4xEu+jsw3g=;
+ b=LSYOi48bwBRqa+XvQemm16xbe0ViIS5A9BY4Wi5CY94ceJo2IytjWS7S6injxAIdMT
+ ONxtiFgkSZhIrreZ/gzWiHjP3aM1p1dgjO/nUvvqoxRDGABQiDhD+Uu6pQpAAriW0vaE
+ yuxLp+hHXdm0Ur8IppU8H+QE0uGBngv1YU8vxPRLRrshQhlRA06V14u3vtQOQEsoc83a
+ FlrywOETicBwpG+WHi/7oXk3fiTHh21JCu3IJZ7Ok/dx2J5JwE6NSbTin4878TUNyLLk
+ nOFhRwOjmLhD6smMapFshV4I/H52cYlPBrN/Eclb02VGxUi28t3eNecOFD+IMonCZfBt
+ eghQ==
+X-Gm-Message-State: APjAAAUOHqXO/IfCEfoLuBIynEgXsHMEKMdPPOmJFph4NcfI3u/jkY+S
+ 3f/feJUTVonQoSq8w2drJSt4ZA81Q+qoqRAGVVY=
+X-Google-Smtp-Source: APXvYqyCeUiE6u/jO+gJroKyuBmhsP3Fy9YTtKedxAmY3Uyuem4WhlCLQdLI96UPt7/CBmIGP/ZViQi0dIvYvZejS+k=
+X-Received: by 2002:a5e:c70c:: with SMTP id f12mr424688iop.293.1559521536432; 
+ Sun, 02 Jun 2019 17:25:36 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87tvdpjhju.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19060300-0064-0000-0000-000003E8C903
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011205; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01212389; UDB=6.00637131; IPR=6.00993444; 
- MB=3.00027158; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-03 00:12:52
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060300-0065-0000-0000-00003DB64C1D
-Message-Id: <69336ea3-7937-17cc-8082-d4ad782d7e8c@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-02_16:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906020177
+References: <20190602044350.31660-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190602044350.31660-1-aneesh.kumar@linux.ibm.com>
+From: Oliver <oohall@gmail.com>
+Date: Mon, 3 Jun 2019 10:25:25 +1000
+Message-ID: <CAOSf1CEsWiDyc3rAzNoPwBUUhs4deXt_1MJpuKUV_CP-LJhjhw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/nvdimm: Add support for multibyte read/write for
+ metadata
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,47 +73,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mingming.cao@ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/20/2019 08:01 AM, Nathan Lynch wrote:
-> Tyrel Datwyler <tyreld@linux.vnet.ibm.com> writes:
-> 
->> On 05/16/2019 12:17 PM, Nathan Lynch wrote:
->>> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
->>>> The current dlpar_cpu_readd() takes in a cpu_id and uses that to look up
->>>> the cpus device_node so that we can get at the ibm,my-drc-index
->>>> property. The only user of cpu readd is an OF notifier call back. This
->>>> call back already has a reference to the device_node and therefore can
->>>> retrieve the drc_index from the device_node.
->>>
->>> dlpar_cpu_readd is a hack to try to change the CPU-node relationship at
->>> runtime without destabilizing the system. It doesn't accomplish that and
->>> it should just be removed (and I'm working on that).
->>>
->>
->> I will politely disagree. We've done exactly this from userspace for
->> years. My experience still suggests that memory affinity is the
->> problem area, and that the work to push this all into the kernel
->> originally was poorly tested.
-> 
-> Kernel implementation details aside, how do you change the cpu-node
-> relationship at runtime without breaking NUMA-aware applications? Is
-> this not a fundamental issue to address before adding code like this?
-> 
+On Sun, Jun 2, 2019 at 2:44 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> SCM_READ/WRITE_MEATADATA hcall supports multibyte read/write. This patch
+> updates the metadata read/write to use 1, 2, 4 or 8 byte read/write as
+> mentioned in PAPR document.
+>
+> READ/WRITE_METADATA hcall supports the 1, 2, 4, or 8 bytes read/write.
+> For other values hcall results H_P3.
 
-If that is the concern then hotplug in general already breaks them. Take for
-example the removal of a faulty processor and then adding a new processor back.
-It is quite possible that the new processor is in a different NUMA node. Keep in
-mind that in this scenario the new processor and threads gets the same logical
-cpu ids as the faulty processor we just removed.
+You should probably fold the second paragraph here into the first.
 
-Now we have to ask the question who is right and who is wrong. In this case the
-kernel data structures reflect the correct NUMA topology. However, did the NUMA
-aware application or libnuma make an assumption that specific sets of logical
-cpu ids are always in the same NUMA node?
+> Hypervisor stores the metadata contents in big-endian format and in-order
+> to enable read/write in different granularity, we need to switch the contents
+> to big-endian before calling HCALL.
+>
+> Based on an patch from Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 104 +++++++++++++++++-----
+>  1 file changed, 82 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0176ce66673f..e33cebb8ee6c 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -97,42 +97,102 @@ static int drc_pmem_unbind(struct papr_scm_priv *p)
+>  }
+>
+>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+> -                       struct nd_cmd_get_config_data_hdr *hdr)
+> +                            struct nd_cmd_get_config_data_hdr *hdr)
+>  {
+>         unsigned long data[PLPAR_HCALL_BUFSIZE];
+> +       unsigned long offset, data_offset;
+> +       int len, read;
+>         int64_t ret;
+>
+> -       if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
+> +       if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
+>                 return -EINVAL;
+>
+> -       ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
+> -                       hdr->in_offset, 1);
+> -
+> -       if (ret == H_PARAMETER) /* bad DRC index */
+> -               return -ENODEV;
+> -       if (ret)
+> -               return -EINVAL; /* other invalid parameter */
+> -
+> -       hdr->out_buf[0] = data[0] & 0xff;
+> -
+> +       for (len = hdr->in_length; len; len -= read) {
+> +
+> +               data_offset = hdr->in_length - len;
+> +               offset = hdr->in_offset + data_offset;
+> +
+> +               if (len >= 8)
+> +                       read = 8;
+> +               else if (len >= 4)
+> +                       read = 4;
+> +               else if ( len >= 2)
+> +                       read = 2;
+> +               else
+> +                       read = 1;
+> +
+> +               ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
+> +                                 offset, read);
+> +
+> +               if (ret == H_PARAMETER) /* bad DRC index */
+> +                       return -ENODEV;
+> +               if (ret)
+> +                       return -EINVAL; /* other invalid parameter */
+> +
+> +               switch (read) {
+> +               case 8:
+> +                       *(uint64_t *)(hdr->out_buf + data_offset) = be64_to_cpu(data[0]);
+> +                       break;
+> +               case 4:
+> +                       *(uint32_t *)(hdr->out_buf + data_offset) = be32_to_cpu(data[0] & 0xffffffff);
+> +                       break;
+> +
+> +               case 2:
+> +                       *(uint16_t *)(hdr->out_buf + data_offset) = be16_to_cpu(data[0] & 0xffff);
+> +                       break;
+> +
+> +               case 1:
+> +                       *(uint32_t *)(hdr->out_buf + data_offset) = (data[0] & 0xff);
+> +                       break;
+> +               }
+> +       }
+>         return 0;
+>  }
+>
+>  static int papr_scm_meta_set(struct papr_scm_priv *p,
+> -                       struct nd_cmd_set_config_hdr *hdr)
+> +                            struct nd_cmd_set_config_hdr *hdr)
+>  {
+> +       unsigned long offset, data_offset;
+> +       int len, wrote;
+> +       unsigned long data;
+> +       __be64 data_be;
+>         int64_t ret;
+>
+> -       if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
+> +       if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
+>                 return -EINVAL;
+>
+> -       ret = plpar_hcall_norets(H_SCM_WRITE_METADATA,
+> -                       p->drc_index, hdr->in_offset, hdr->in_buf[0], 1);
+> -
+> -       if (ret == H_PARAMETER) /* bad DRC index */
+> -               return -ENODEV;
+> -       if (ret)
+> -               return -EINVAL; /* other invalid parameter */
+> +       for (len = hdr->in_length; len; len -= wrote) {
+> +
+> +               data_offset = hdr->in_length - len;
+> +               offset = hdr->in_offset + data_offset;
+> +
+> +               if (len >= 8) {
+> +                       data = *(uint64_t *)(hdr->in_buf + data_offset);
+> +                       data_be = cpu_to_be64(data);
+> +                       wrote = 8;
+> +               } else if (len >= 4) {
+> +                       data = *(uint32_t *)(hdr->in_buf + data_offset);
+> +                       data &= 0xffffffff;
+> +                       data_be = cpu_to_be32(data);
+> +                       wrote = 4;
+> +               } else if (len >= 2) {
+> +                       data = *(uint16_t *)(hdr->in_buf + data_offset);
+> +                       data &= 0xffff;
+> +                       data_be = cpu_to_be16(data);
+> +                       wrote = 2;
+> +               } else {
+> +                       data_be = *(uint8_t *)(hdr->in_buf + data_offset);
+> +                       data_be &= 0xff;
+> +                       wrote = 1;
+> +               }
+> +
+> +               ret = plpar_hcall_norets(H_SCM_WRITE_METADATA, p->drc_index,
+> +                                        offset, data_be, wrote);
+> +               if (ret == H_PARAMETER) /* bad DRC index */
+> +                       return -ENODEV;
+> +               if (ret)
+> +                       return -EINVAL; /* other invalid parameter */
+> +       }
+>
+>         return 0;
+>  }
+> @@ -154,7 +214,7 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>                 get_size_hdr = buf;
+>
+>                 get_size_hdr->status = 0;
+> -               get_size_hdr->max_xfer = 1;
+> +               get_size_hdr->max_xfer = 8;
+>                 get_size_hdr->config_size = p->metadata_size;
+>                 *cmd_rc = 0;
+>                 break;
+> --
+> 2.21.0
 
--Tyrel
+I assume you got the qemu bits sorted out with Shiva? Looks good otherwise.
 
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
