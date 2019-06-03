@@ -1,75 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D7C327D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 06:54:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B116326E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 05:25:12 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HL5x5xg6zDqMn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 13:25:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HN4x3nwFzDqP1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 14:54:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="p6EmQsSt"; 
- dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HL4X30sJzDqMn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 13:23:55 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id p26so24832562edr.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 20:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=pSfpsds9EQbM9WscG0cMmvHxHZNBbzbAhxUSUQzMxEw=;
- b=p6EmQsSt3vDqhOEAwdmtI53kfWo8NyOM/SYeUgm4HfVyXUGbblyzBEvJnA5bHfpVPG
- xCFLdPnD1URb6fyiDAuy641+yfjX2pTPOqINI1Dkw1w4MRtvrUi9PJVzd1YW+ybRtJrs
- cmbdXsMHjSI2Q439j1d2MingD2Mi6Acj+RLRpUWwWtNpOQAtNnAmPyk0uvbecGTv3Ezo
- mJM+RwmKVo0EuneEkAfSZU0AxwmE3ndyzF48eI+0G9be6V1wrOTHhoG6Y8kuIGO6gR4D
- p8AkgiTx7mTFmxTMG0l1mTJD2k46Cxs8BeBLR9E+q43EhepsyS872Lui4rFkACUg7P4I
- DgxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=pSfpsds9EQbM9WscG0cMmvHxHZNBbzbAhxUSUQzMxEw=;
- b=JCmtKJh+axY534rK4TLRW5q4UtTUwjCVhk+7VYdzJVu1fD71ipVCWE6wLCei3JRDrp
- U/QNQJa/Gi9wNIzWt5zO3JPw4b6w75o2BQt0r4bHAk7DR6/dfRZK9KcIzYCZPtGA7M0y
- 8ly3Ix8nO378diDR4LrdzRrW87NKmnftPx+JhbtHky3riairQv2VBs+Y9Vj+6dJn+E/q
- F1/JmJafQM88fGQfrb1AV1mGQnPTaPSxSV29Sd7MVjW/JzANukYXBcReEFimQ9+ATWES
- 3lSj+HcR0+r9UHxT5sk03ZDfAdZURMTRbQVVVZESteJCJr63YuvxI0YtWHv+FQ2iZf/y
- VDYg==
-X-Gm-Message-State: APjAAAVA6AUDCtIjcE/at0xa3qbMOSqDuK1R+GT5PZjpQzjfzeUNhGoA
- 4g8cnRSAFLhyADt/hmTEZ64=
-X-Google-Smtp-Source: APXvYqy4Hsm/zoTmC0MBbcJlJ9Z2m/nmDD28JaXgZZmuAomhkyMRxC1lnzngw7n2bVbjhVi1S66Pww==
-X-Received: by 2002:a50:f286:: with SMTP id f6mr23354274edm.44.1559532227215; 
- Sun, 02 Jun 2019 20:23:47 -0700 (PDT)
-Received: from archlinux-epyc ([2a01:4f9:2b:2b15::2])
- by smtp.gmail.com with ESMTPSA id a40sm3735370edd.1.2019.06.02.20.23.46
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 02 Jun 2019 20:23:46 -0700 (PDT)
-Date: Sun, 2 Jun 2019 20:23:44 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] scsi: ibmvscsi: Don't use rc uninitialized in
- ibmvscsi_do_work
-Message-ID: <20190603032344.GA26021@archlinux-epyc>
-References: <20190531185306.41290-1-natechancellor@gmail.com>
- <87blzgnvhx.fsf@concordia.ellerman.id.au>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (usa-sjc-mx-foss1.foss.arm.com [217.140.101.70])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45HN3k5gtfzDqNF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 14:53:21 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A87D1341;
+ Sun,  2 Jun 2019 21:53:18 -0700 (PDT)
+Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ CC0BB3F5AF; Sun,  2 Jun 2019 21:53:11 -0700 (PDT)
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+To: Matthew Wilcox <willy@infradead.org>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+ <20190530110639.GC23461@bombadil.infradead.org>
+ <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+ <20190530133954.GA2024@bombadil.infradead.org>
+ <f1995445-d5ab-f292-d26c-809581002184@arm.com>
+ <20190531174854.GA31852@bombadil.infradead.org>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <6338fef8-e097-a76e-5c07-455d0d9b6e24@arm.com>
+Date: Mon, 3 Jun 2019 10:23:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87blzgnvhx.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+In-Reply-To: <20190531174854.GA31852@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,62 +53,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Russell King <linux@armlinux.org.uk>, Fenghua Yu <fenghua.yu@intel.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrey Konovalov <andreyknvl@google.com>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
 
-On Sun, Jun 02, 2019 at 08:15:38PM +1000, Michael Ellerman wrote:
-> Hi Nathan,
-> 
-> It's always preferable IMHO to keep any initialisation as localised as
-> possible, so that the compiler can continue to warn about uninitialised
-> usages elsewhere. In this case that would mean doing the rc = 0 in the
-> switch, something like:
 
-I am certainly okay with implementing this in a v2. I mulled over which
-would be preferred, I suppose I guessed wrong :) Thank you for the
-review and input.
+On 05/31/2019 11:18 PM, Matthew Wilcox wrote:
+> On Fri, May 31, 2019 at 02:17:43PM +0530, Anshuman Khandual wrote:
+>> On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
+>>> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
+>>>> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
+>>>>> The two handle preemption differently.  Why is x86 wrong and this one
+>>>>> correct?
+>>>>
+>>>> Here it expects context to be already non-preemptible where as the proposed
+>>>> generic function makes it non-preemptible with a preempt_[disable|enable]()
+>>>> pair for the required code section, irrespective of it's present state. Is
+>>>> not this better ?
+>>>
+>>> git log -p arch/x86/mm/fault.c
+>>>
+>>> search for 'kprobes'.
+>>>
+>>> tell me what you think.
+>>
+>> Are you referring to these following commits
+>>
+>> a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
+>> b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
+>>
+>> In particular the later one (b506a9d08bae). It explains how the invoking context
+>> in itself should be non-preemptible for the kprobes processing context irrespective
+>> of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
+>> does not make much sense to continue when original invoking context is preemptible.
+>> Instead just bail out earlier. This seems to be making more sense than preempt
+>> disable-enable pair. If there are no concerns about this change from other platforms,
+>> I will change the preemption behavior in proposed generic function next time around.
+> 
+> Exactly.
+> 
+> So, any of the arch maintainers know of a reason they behave differently
+> from x86 in this regard?  Or can Anshuman use the x86 implementation
+> for all the architectures supporting kprobes?
 
-> 
-> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> index 727c31dc11a0..7ee5755cf636 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> @@ -2123,9 +2123,6 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
->  
->         spin_lock_irqsave(hostdata->host->host_lock, flags);
->         switch (hostdata->action) {
-> -       case IBMVSCSI_HOST_ACTION_NONE:
-> -       case IBMVSCSI_HOST_ACTION_UNBLOCK:
-> -               break;
->         case IBMVSCSI_HOST_ACTION_RESET:
->                 spin_unlock_irqrestore(hostdata->host->host_lock, flags);
->                 rc = ibmvscsi_reset_crq_queue(&hostdata->queue, hostdata);
-> @@ -2142,7 +2139,10 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data *hostdata)
->                 if (!rc)
->                         rc = ibmvscsi_send_crq(hostdata, 0xC001000000000000LL, 0);
->                 break;
-> +       case IBMVSCSI_HOST_ACTION_NONE:
-> +       case IBMVSCSI_HOST_ACTION_UNBLOCK:
->         default:
-> +               rc = 0;
->                 break;
->         }
-> 
-> 
-> But then that makes me wonder if that's actually correct?
-> 
-> If we get an action that we don't recognise should we just throw it away
-> like that? (by doing hostdata->action = IBMVSCSI_HOST_ACTION_NONE). Tyrel?
+So the generic notify_page_fault() will be like this.
 
-However, because of this, I will hold off on v2 until Tyrel can give
-some feedback.
+int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
+{
+        int ret = 0;
 
-Thanks,
-Nathan
+        /*
+         * To be potentially processing a kprobe fault and to be allowed
+         * to call kprobe_running(), we have to be non-preemptible.
+         */
+        if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+                if (kprobe_running() && kprobe_fault_handler(regs, trap))
+                        ret = 1;
+        }
+        return ret;
+}
