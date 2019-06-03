@@ -2,68 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC7A328B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 08:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2298432902
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 08:58:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HQYm5DKSzDqP4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 16:46:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HQql3Xf4zDqQy
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 16:58:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qsobwIzl"; 
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="Rt8XkLpT"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HQWg4ftMzDqPK
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 16:44:15 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id h17so7716970pgv.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 23:44:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HQpY028LzDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 16:57:07 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id a186so9327292pfa.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 23:57:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=t6dd4hCNwQbpKL0MwPJ7GiGXjPkRi2/zbWZ1wOGORnU=;
- b=qsobwIzlhYVjVLzzqYEaDldV2VPnauhMjJrOG36Yx9gtSQiClFK9TufHZ3ZSDoZvYM
- p4dDdKFnlNsT8we0JN6bKuJclOPUEutZ0efZ42EvrhIkdu9uXD0NxHWJyHsGhtv/bcux
- ARJHtmjcUCouqnnWdHH+ZktuZ3/OJ02baLRbac2FhyfHf+j45dXhLBuopw21szm3Yk0Q
- mKbacOMoU4fo3noDPMzRD5OY0TGmR6zjf+tmFFi5C3IGt9JmYoEVaD4PjTESCbVkW3BA
- HU1DCEFL6Qkv7BKeb1wFi/YdsY9BzrrnoPleluGq8Y6U9juCFUvTt7Za5kQMWwkmzPeT
- SuEg==
+ bh=kJ0QFMzqYV1PJ8wBpau0Xqg70yYE6JKTP6lyDqZVbcE=;
+ b=Rt8XkLpTgVAu7m4UcOeGrfklXy2IOECdhFlsJSsajlzasyd4sBUV9jib0jJb0+Obqr
+ sEVzZvg06mS7foR07Go6ffybuSzac6w7e5rUK2w4ezsLvZkQ3GoPLuuT74GtC0RkQtNb
+ 9z1YDoaozZIaGuOWG/RtSOKRM15p/ahEQj8P4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=t6dd4hCNwQbpKL0MwPJ7GiGXjPkRi2/zbWZ1wOGORnU=;
- b=hTnmJDKC8gX7r9P8QCAlOxmYYu0six4UB7xANT6EAHUR2QSBIWzSxfQonf/3hv627w
- JT8c9BGumA070fIs0/IE7BKpAMKZt6kP0CiD9R5swXBiM+ltZLImcTSYgj6JCHYcAd17
- vSlR5Cm5CwBnG4Hp5T2T0zlReW3IT34uARAx9QyFpL19wpcINfyrXoqE0yF5W69VbEBm
- jqt+9K8h3cJWNfUIpqyEXjcsfN/T80eREm33GpSnnqTK/XO4qDtDg1Jaj+WADklahBDK
- glmthGNX6Ub3OwTzC2w2NMRexIH5C75C8w7sSzF22RAPztWw26fnrPYekLDiDkJye0eS
- Ha/g==
-X-Gm-Message-State: APjAAAVtsz9tTNF4ytKfZsKT/20vGkFH/egicRgZ+FVQUpv2782IO3cw
- nn2lSZdTfS5xrKvtxJZddnyWAVap
-X-Google-Smtp-Source: APXvYqwFeShqTVNvJ5/A+t5FwpNOurfl29L8bFzIEbnNZZttYDneTPdb2JzqoqPeaUbWcRN6UrrX7g==
-X-Received: by 2002:a65:5304:: with SMTP id m4mr26343493pgq.126.1559544251339; 
- Sun, 02 Jun 2019 23:44:11 -0700 (PDT)
-Received: from bobo.local0.net ([193.114.104.220])
- by smtp.gmail.com with ESMTPSA id d128sm10656116pfd.147.2019.06.02.23.44.08
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 02 Jun 2019 23:44:10 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
+ bh=kJ0QFMzqYV1PJ8wBpau0Xqg70yYE6JKTP6lyDqZVbcE=;
+ b=lZDA0HHHroNFJ8rpBCyJdOIpePV3IN7Bv586FWhjoiu0GzT/teUMfMRThLTV0j+pTo
+ DDHlVRtH27/Ted6tJg0q4fzfKN8orP0Nxo+LbtXKeQrQoH73GREBEKcYEVaYnGJzAdG7
+ 2rWm6hqv68rO+zll+wEVhW3cNHBcGFStGAT+oZTrTvGpy5rJ8ArHOr3wdg/pNAkbpFlT
+ Pk76b3sWxzueaA40Vuo+shbDH1XpiBJjs8AMENLAIHFhaw3qu133suDkvWJXjcHj3D1S
+ WEGY8jEpoevOPvMlWeQdnanzh7QTsTXr2orV8+Tr8VegCUor/q7OcpHQmIgcgPdKdAF1
+ //xg==
+X-Gm-Message-State: APjAAAVgX89Lz8zZHaViRNK4qKYGoP5qHPIS1ca94uo0EX4vERpNIGdM
+ 48Pv3o/gRYvdVaTuQYAkh3qbjQkDElA=
+X-Google-Smtp-Source: APXvYqynlaq3S3Hp6ZrIWU4WFk5OqV7KxzuYoZ3ZtKXK1kkNcFybKgYAhmjUMKUtUSsn8qaesFAivQ==
+X-Received: by 2002:a63:8bc7:: with SMTP id j190mr5949329pge.104.1559545024153; 
+ Sun, 02 Jun 2019 23:57:04 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id d9sm12060023pgj.34.2019.06.02.23.57.02
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Sun, 02 Jun 2019 23:57:03 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc/64s: __find_linux_pte synchronization vs
- pmdp_invalidate
-Date: Mon,  3 Jun 2019 16:44:08 +1000
-Message-Id: <20190603064408.14735-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
+Subject: [PATCH v2] powerpc: pseries/hvconsole: fix stack overread via udbg
+Date: Mon,  3 Jun 2019 16:56:57 +1000
+Message-Id: <20190603065657.7986-1-dja@axtens.net>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,52 +74,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pmd_none check does not catch hugepage collapse, nor does the
-pmd_present check in pmd_trans_huge, because hugepage collapse sets
-!_PAGE_PRESENT && _PAGE_INVALID (which results in !pmd_none and
-pmd_present).
+While developing kasan for 64-bit book3s, I hit the following stack
+over-read.
 
-Aneesh noticed we might need this check as well.
+It occurs because the hypercall to put characters onto the terminal
+takes 2 longs (128 bits/16 bytes) of characters at a time, and so
+hvc_put_chars would unconditionally copy 16 bytes from the argument
+buffer, regardless of supplied length. However, udbg_hvc_putc can
+call hvc_put_chars with a single-byte buffer, leading to the error.
+
+[    0.001931] ==================================================================                                                  [150/819]
+[    0.001933] BUG: KASAN: stack-out-of-bounds in hvc_put_chars+0xdc/0x110
+[    0.001934] Read of size 8 at addr c0000000023e7a90 by task swapper/0
+[    0.001934]
+[    0.001935] CPU: 0 PID: 0 Comm: swapper Not tainted 5.2.0-rc2-next-20190528-02824-g048a6ab4835b #113
+[    0.001935] Call Trace:
+[    0.001936] [c0000000023e7790] [c000000001b4a450] dump_stack+0x104/0x154 (unreliable)
+[    0.001937] [c0000000023e77f0] [c0000000006d3524] print_address_description+0xa0/0x30c
+[    0.001938] [c0000000023e7880] [c0000000006d318c] __kasan_report+0x20c/0x224
+[    0.001939] [c0000000023e7950] [c0000000006d19d8] kasan_report+0x18/0x30
+[    0.001940] [c0000000023e7970] [c0000000006d4854] __asan_report_load8_noabort+0x24/0x40
+[    0.001941] [c0000000023e7990] [c0000000001511ac] hvc_put_chars+0xdc/0x110
+[    0.001942] [c0000000023e7a10] [c000000000f81cfc] hvterm_raw_put_chars+0x9c/0x110
+[    0.001943] [c0000000023e7a50] [c000000000f82634] udbg_hvc_putc+0x154/0x200
+[    0.001944] [c0000000023e7b10] [c000000000049c90] udbg_write+0xf0/0x240
+[    0.001945] [c0000000023e7b70] [c0000000002e5d88] console_unlock+0x868/0xd30
+[    0.001946] [c0000000023e7ca0] [c0000000002e6e00] register_console+0x970/0xe90
+[    0.001947] [c0000000023e7d80] [c000000001ff1928] register_early_udbg_console+0xf8/0x114
+[    0.001948] [c0000000023e7df0] [c000000001ff1174] setup_arch+0x108/0x790
+[    0.001948] [c0000000023e7e90] [c000000001fe41c8] start_kernel+0x104/0x784
+[    0.001949] [c0000000023e7f90] [c00000000000b368] start_here_common+0x1c/0x534
+[    0.001950]
+[    0.001950]
+[    0.001951] Memory state around the buggy address:
+[    0.001952]  c0000000023e7980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    0.001952]  c0000000023e7a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
+[    0.001953] >c0000000023e7a80: f1 f1 01 f2 f2 f2 00 00 00 00 00 00 00 00 00 00
+[    0.001953]                          ^
+[    0.001954]  c0000000023e7b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    0.001954]  c0000000023e7b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    0.001955] ==================================================================
+
+Document that a 16-byte buffer is requred, and provide it in udbg.
+
+CC: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
 
 ---
- arch/powerpc/mm/pgtable.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index db4a6253df92..7a702d21400a 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -372,13 +372,20 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
- 	pdshift = PMD_SHIFT;
- 	pmdp = pmd_offset(&pud, ea);
- 	pmd  = READ_ONCE(*pmdp);
--	/*
--	 * A hugepage collapse is captured by pmd_none, because
--	 * it mark the pmd none and do a hpte invalidate.
--	 */
-+
- 	if (pmd_none(pmd))
- 		return NULL;
+v2: avoid memcpy, push responsibility to caller.
+    Solution suggested by mpe.
+---
+ arch/powerpc/platforms/pseries/hvconsole.c |  2 +-
+ drivers/tty/hvc/hvc_vio.c                  | 16 +++++++++++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
+index 74da18de853a..73ec15cd2708 100644
+--- a/arch/powerpc/platforms/pseries/hvconsole.c
++++ b/arch/powerpc/platforms/pseries/hvconsole.c
+@@ -62,7 +62,7 @@ EXPORT_SYMBOL(hvc_get_chars);
+  * @vtermno: The vtermno or unit_address of the adapter from which the data
+  *	originated.
+  * @buf: The character buffer that contains the character data to send to
+- *	firmware.
++ *	firmware. Must be at least 16 bytes, even if count is less than 16.
+  * @count: Send this number of characters.
+  */
+ int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
+diff --git a/drivers/tty/hvc/hvc_vio.c b/drivers/tty/hvc/hvc_vio.c
+index 6de6d4a1a221..7af54d6ed5b8 100644
+--- a/drivers/tty/hvc/hvc_vio.c
++++ b/drivers/tty/hvc/hvc_vio.c
+@@ -107,6 +107,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
+ 	return got;
+ }
  
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	if (pmd_val(pmd) & (_PAGE_PRESENT|_PAGE_INVALID) == _PAGE_INVALID) {
-+		/*
-+		 * A hugepage collapse is captured by this condition, see
-+		 * pmdp_invalidate.
-+		 */
-+		return NULL;
-+	}
-+#endif
-+
- 	if (pmd_trans_huge(pmd) || pmd_devmap(pmd)) {
- 		if (is_thp)
- 			*is_thp = true;
++/**
++ * hvterm_raw_put_chars: send characters to firmware for given vterm adapter
++ * @vtermno: The virtual terminal number.
++ * @buf: The characters to send. Because of the underlying hypercall in
++ *       hvc_put_chars(), this buffer must be at least 16 bytes long, even if
++ *       you are sending fewer chars.
++ * @count: number of chars to send.
++ */
+ static int hvterm_raw_put_chars(uint32_t vtermno, const char *buf, int count)
+ {
+ 	struct hvterm_priv *pv = hvterm_privs[vtermno];
+@@ -219,6 +227,7 @@ static const struct hv_ops hvterm_hvsi_ops = {
+ static void udbg_hvc_putc(char c)
+ {
+ 	int count = -1;
++	unsigned char bounce_buffer[16];
+ 
+ 	if (!hvterm_privs[0])
+ 		return;
+@@ -229,7 +238,12 @@ static void udbg_hvc_putc(char c)
+ 	do {
+ 		switch(hvterm_privs[0]->proto) {
+ 		case HV_PROTOCOL_RAW:
+-			count = hvterm_raw_put_chars(0, &c, 1);
++			/*
++			 * hvterm_raw_put_chars requires at least a 16-byte
++			 * buffer, so go via the bounce buffer
++			 */
++			bounce_buffer[0] = c;
++			count = hvterm_raw_put_chars(0, bounce_buffer, 1);
+ 			break;
+ 		case HV_PROTOCOL_HVSI:
+ 			count = hvterm_hvsi_put_chars(0, &c, 1);
 -- 
-2.20.1
+2.19.1
 
