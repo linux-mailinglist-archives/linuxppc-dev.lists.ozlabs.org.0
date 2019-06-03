@@ -1,95 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3F333C0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 01:44:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A5733C03
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 01:37:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Hs0H1plLzDqWM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 09:37:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Hs8K5Z4KzDqX1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 09:44:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=tyreld@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Hrz52vn3zDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 09:36:01 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x53NX24v054196
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 19:35:58 -0400
-Received: from e17.ny.us.ibm.com (e17.ny.us.ibm.com [129.33.205.207])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sw92sj7hh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 19:35:58 -0400
-Received: from localhost
- by e17.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <tyreld@linux.vnet.ibm.com>;
- Tue, 4 Jun 2019 00:35:57 +0100
-Received: from b01cxnp23033.gho.pok.ibm.com (9.57.198.28)
- by e17.ny.us.ibm.com (146.89.104.204) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 4 Jun 2019 00:35:54 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x53NZrHf25756138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Jun 2019 23:35:53 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC28AAC059;
- Mon,  3 Jun 2019 23:35:53 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8AB16AC062;
- Mon,  3 Jun 2019 23:35:52 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.85.191.102])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  3 Jun 2019 23:35:52 +0000 (GMT)
-Subject: Re: [PATCH v2] scsi: ibmvscsi: Don't use rc uninitialized in
- ibmvscsi_do_work
-From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-To: Nathan Chancellor <natechancellor@gmail.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20190531185306.41290-1-natechancellor@gmail.com>
- <20190603221941.65432-1-natechancellor@gmail.com>
- <6fa1dd2e-676f-b12a-5bb6-e86f5c5628fa@linux.vnet.ibm.com>
- <8598d642-82e3-daad-a487-693208e13c90@linux.vnet.ibm.com>
-Date: Mon, 3 Jun 2019 16:35:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <8598d642-82e3-daad-a487-693208e13c90@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19060323-0040-0000-0000-000004F82A9E
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011210; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01212851; UDB=6.00637412; IPR=6.00993912; 
- MB=3.00027171; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-03 23:35:56
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060323-0041-0000-0000-00000904484E
-Message-Id: <3416c496-9f5d-ea3c-8df5-85227007d29d@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-03_19:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906030158
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Hs764P41zDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 09:42:58 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x53NgnpS015961;
+ Mon, 3 Jun 2019 18:42:49 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x53NglbP015960;
+ Mon, 3 Jun 2019 18:42:47 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 3 Jun 2019 18:42:47 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
+ system firmware
+Message-ID: <20190603234247.GQ31586@gate.crashing.org>
+References: <20190501034221.18437-1-aik@ozlabs.ru>
+ <a62a8612-77f5-5c6b-a6a2-15f006051d5e@ozlabs.ru>
+ <20190530193736.GC31586@gate.crashing.org>
+ <43f037c57eed8ad2175470c940917dced947bb70.camel@kernel.crashing.org>
+ <20190602232330.GN31586@gate.crashing.org>
+ <7fc6cd5e-ddd6-4028-b4ef-7bdcd6db69d0@ozlabs.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7fc6cd5e-ddd6-4028-b4ef-7bdcd6db69d0@ozlabs.ru>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,72 +56,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06/03/2019 04:34 PM, Tyrel Datwyler wrote:
-> On 06/03/2019 04:25 PM, Tyrel Datwyler wrote:
->> On 06/03/2019 03:19 PM, Nathan Chancellor wrote:
->>> clang warns:
->>>
->>> drivers/scsi/ibmvscsi/ibmvscsi.c:2126:7: warning: variable 'rc' is used
->>> uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
->>>         case IBMVSCSI_HOST_ACTION_NONE:
->>>              ^~~~~~~~~~~~~~~~~~~~~~~~~
->>> drivers/scsi/ibmvscsi/ibmvscsi.c:2151:6: note: uninitialized use occurs
->>> here
->>>         if (rc) {
->>>             ^~
->>>
->>> Initialize rc to zero in the case statements that clang mentions so that
->>> the atomic_set and dev_err statement don't trigger for them.
->>>
->>> Fixes: 035a3c4046b5 ("scsi: ibmvscsi: redo driver work thread to use enum action states")
->>> Link: https://github.com/ClangBuiltLinux/linux/issues/502
->>> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
->>> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
->>
->> Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
->>
-> 
-> On second thought NACK. See my response to Michael earlier in the thread.
-> 
-> I think this is the better solution:
-> 
-> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> index 727c31dc11a0..c3cf05dd8733 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-> @@ -2123,8 +2123,8 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data
-> *hostdata)
-> 
->         spin_lock_irqsave(hostdata->host->host_lock, flags);
->         switch (hostdata->action) {
-> -       case IBMVSCSI_HOST_ACTION_NONE:
->         case IBMVSCSI_HOST_ACTION_UNBLOCK:
-> +               rc = 0;
->                 break;
->         case IBMVSCSI_HOST_ACTION_RESET:
->                 spin_unlock_irqrestore(hostdata->host->host_lock, flags);
-> @@ -2142,8 +2142,9 @@ static void ibmvscsi_do_work(struct ibmvscsi_host_data
-> *hostdata)
->                 if (!rc)
->                         rc = ibmvscsi_send_crq(hostdata, 0xC001000000000000LL, 0);
->                 break;
-> +       case IBMVSCSI_HOST_ACTION_NONE:
->         default:
-> -               break;
+Hi!
 
-Need a spin_unlock_irqrestore() here before the return.
-
--Tyrel
-
-> +               return;
->         }
+On Mon, Jun 03, 2019 at 12:56:26PM +1000, Alexey Kardashevskiy wrote:
+> On 03/06/2019 09:23, Segher Boessenkool wrote:
+> >> So I go for the simple one and agree with Alexey's idea.
+> > 
+> > When dealing with a whole device tree you have to know about the various
+> > dynamically generated nodes and props, and handle each appropriately.
 > 
->         hostdata->action = IBMVSCSI_HOST_ACTION_NONE;
-> 
+> The code I am changing fetches the device tree and build an fdt. What is
+> that special knowledge in this context you are talking about?
 
+Things like /options are dynamically generated.
+
+I thought you would just be able to reuse some FDT parsing code to
+implement my suggested new interface.  Maybe that was too optimistic.
+
+
+Segher
