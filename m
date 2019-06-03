@@ -1,79 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA74334A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 18:10:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Hg4v4M6dzDqS3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 02:10:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53E133A1A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 23:48:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HpZp6rX6zDqR3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 07:48:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
- envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.b="WCXqjpyK"; dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com;
+ envelope-from=paweldembicki@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="N7C/10lL"; 
+ dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Hg3S0ByLzDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 02:09:07 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id y198so3564214lfa.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 09:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lgsfrWNkeAwXitTJcoIdmm+S5jV0yGJC2wH7GAyc/RM=;
- b=WCXqjpyK9CxskKR1Rsa2JsUVjNbLjTBCO3DKbpdiCOAgDG3/x4OwA5zT3oR9AF+TAb
- KoxRzjysV3/yPddUMg57RzzWz8pj3wl00UXp/zI8qmqY5Pxb0GSO0BkOluklf9MnQYLn
- o8mf30F5cjoqsx0tY+OcCybKIrmRF+OMKq7aY=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Hgnq4B1KzDqBv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 02:42:19 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id h11so16909635ljb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 09:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZxdsJUzrzirDV9SoFUmfun9q9AXOSWclIRGIX2baL2Y=;
+ b=N7C/10lLvMRhc2gCSkGs8QaF+cwD/Qcw7BW0cuFy6wQsDwPxn8AmDJJUuIvTaSjEXg
+ SuzZSrENjfTHUoDrJ6gD+eOIU3cpI6oqUldqD9gs2uNz8p7DQdwOTjAg+JMH/x601m7H
+ Esxj/dVD0a+fnLHEKWjDWxB9FvUVdOvgv8KqwpaScBTvTAbmRS3azMY3CwiT4OWn4i6Y
+ dWBL2iKbD9fISePhoUn07PDTAFHu94rMZVQ+81cO+p8GrIJhU6lTdQO7ywMxlzLHz6vS
+ cuTS+gGOJOMt2YW8aJavsWZNikY7/5MZY90WYuuJip/QPnSi9RebnPJjk6zKZH75y4Fb
+ 3Oaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lgsfrWNkeAwXitTJcoIdmm+S5jV0yGJC2wH7GAyc/RM=;
- b=eOGOg8x5nmyV2iEnd7qATb9HPFckbkzjTxQT6HuM+toTIcbzfszJOV/kF+oIHj7LY5
- gq5VX0793S3sP787CandBBtwl9mt1VgLYuhGhyLdZNJAhhSQOV7jYCSjgezo1L0s03om
- +qbHqnKjWHus7VH2Aq0tQiHuwx9zF++wvXUQuv7LbGAPhFFeI2vOxDIJIrMa5PC85DXX
- PVr3Wm2zmIeiPkLUWbGjVHDmSCcAzsOuSqLKq4uI4zGi2E43M1W9ha00Hqj4mZEbyCW6
- uYENYv47k+7Hsjwf8wXhiHxt/Ly4IU0LXdysMhgoUOb+rJgg26pqAjENinl2jeBbXpg9
- Wrjw==
-X-Gm-Message-State: APjAAAVMwoC7IC4HhOho7evPe4JlFve8UNSjDI/1LGaus1AiNbJbn39e
- SKfXamWOj45JxUFUquwEdDwTn5Mcgg4=
-X-Google-Smtp-Source: APXvYqwpyyDK7pfS+eAfvu487rQVdeFSqYkM3tJQdExfrhcZy+JNeE1dUjPgfuueLr6Fzy73d5/H9g==
-X-Received: by 2002:a05:6512:144:: with SMTP id
- m4mr14352674lfo.114.1559578141119; 
- Mon, 03 Jun 2019 09:09:01 -0700 (PDT)
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com.
- [209.85.208.174])
- by smtp.gmail.com with ESMTPSA id f10sm3250523ljk.95.2019.06.03.09.08.59
- for <linuxppc-dev@lists.ozlabs.org>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=ZxdsJUzrzirDV9SoFUmfun9q9AXOSWclIRGIX2baL2Y=;
+ b=NFdSSf2EYaQimrAfyZeweiu5rbzUCv5BwujmJbQFIbpaB9HKBsh9yab9eDD8p3c+tY
+ ZMUVXXQVbbmO2B7hCFOkIIbMfwnLCcG/Mv0OHP0JgOa0xYFkIBwtvmta/cLKUHTB/r2y
+ LxlxwiRsDl4d5ODB9KZshfAMXtgFl70956B03ekbJdJAPU9xIBc4L7ADsGb9G1ycCGrx
+ OCe0hpWW5Uyh4cxAZ5ntk5kdaCRB0Lv2zIhRircSTMtOZR2tHYB+ncjDmwPCYXOGRK7u
+ 4isWbBwj9r2B9kZErDJcXGtmUhHme78vRg+CwmRJFCjb/cC1DCXIQVSwumCs5fAPWzwX
+ yqTg==
+X-Gm-Message-State: APjAAAXYBNzNQW+8//M+UiIB8MlXbnYkTgeu104eA28OCKBB7ZERDtgZ
+ q/pEN2RShYEPUID5EVeaa5Q=
+X-Google-Smtp-Source: APXvYqxXFTRtKG8W/wE7vPy3gcwzNZsFCLLCuA9ttno3xoT+sqGIVtk64GC8X0e7QSJHyfZsXHThsg==
+X-Received: by 2002:a2e:4256:: with SMTP id p83mr14154095lja.201.1559580135602; 
+ Mon, 03 Jun 2019 09:42:15 -0700 (PDT)
+Received: from krolik-desktop.lan ([91.238.216.6])
+ by smtp.gmail.com with ESMTPSA id d5sm3251109lji.85.2019.06.03.09.42.14
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 03 Jun 2019 09:08:59 -0700 (PDT)
-Received: by mail-lj1-f174.google.com with SMTP id a10so13524880ljf.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 09:08:59 -0700 (PDT)
-X-Received: by 2002:a2e:4246:: with SMTP id p67mr14377820lja.44.1559578139147; 
- Mon, 03 Jun 2019 09:08:59 -0700 (PDT)
+ Mon, 03 Jun 2019 09:42:15 -0700 (PDT)
+From: Pawel Dembicki <paweldembicki@gmail.com>
+To: 
+Subject: [PATCH] powerpc: Enable kernel XZ compression option on PPC_85xx
+Date: Mon,  3 Jun 2019 18:41:14 +0200
+Message-Id: <20190603164115.27471-1-paweldembicki@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190601074959.14036-1-hch@lst.de>
- <20190601074959.14036-4-hch@lst.de>
- <CAHk-=whusWKhS=SYoC9f9HjVmPvR5uP51Mq=ZCtktqTBT2qiBw@mail.gmail.com>
- <20190603074121.GA22920@lst.de>
-In-Reply-To: <20190603074121.GA22920@lst.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 3 Jun 2019 09:08:43 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
-Message-ID: <CAHk-=wg5mww3StP8HqPN4d5eij3KmEayM743v-nDKAMgRe2J6g@mail.gmail.com>
-Subject: Re: [PATCH 03/16] mm: simplify gup_fast_permitted
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 04 Jun 2019 07:45:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,37 +77,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Linux-sh list <linux-sh@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
- linux-mips@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
- Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
- Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Cc: Christian Lamparter <chunkeey@gmail.com>, linux-kernel@vger.kernel.org,
+ Pawel Dembicki <paweldembicki@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 3, 2019 at 12:41 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> I only removed a duplicate of it.
+Enable kernel XZ compression option on PPC_85xx. Tested with
+simpleImage on TP-Link TL-WDR4900 (Freescale P1014 processor).
 
-I don't see any remaining cases.
+Suggested-by: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+---
+ arch/powerpc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The full (old) code in get_user_pages_fast() looks like this:
->
->         if (nr_pages <= 0)
->                 return 0;
->
->         if (unlikely(!access_ok((void __user *)start, len)))
->                 return -EFAULT;
->
->         if (gup_fast_permitted(start, nr_pages)) {
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..daf4cb968922 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -196,7 +196,7 @@ config PPC
+ 	select HAVE_IOREMAP_PROT
+ 	select HAVE_IRQ_EXIT_ON_IRQ_STACK
+ 	select HAVE_KERNEL_GZIP
+-	select HAVE_KERNEL_XZ			if PPC_BOOK3S || 44x
++	select HAVE_KERNEL_XZ			if PPC_BOOK3S || 44x || PPC_85xx
+ 	select HAVE_KPROBES
+ 	select HAVE_KPROBES_ON_FTRACE
+ 	select HAVE_KRETPROBES
+-- 
+2.20.1
 
-Yes, and that code was correct.
-
-The new code has no test at all for "nr_pages == 0", afaik.
-
-                 Linus
