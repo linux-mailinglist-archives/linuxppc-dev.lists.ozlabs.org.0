@@ -1,67 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED203291C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 09:08:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2298432902
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 08:58:14 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HQql3Xf4zDqQy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 16:58:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HR3747JszDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 17:08:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Rt8XkLpT"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jT+2W/Wz"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HQpY028LzDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 16:57:07 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id a186so9327292pfa.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2019 23:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=kJ0QFMzqYV1PJ8wBpau0Xqg70yYE6JKTP6lyDqZVbcE=;
- b=Rt8XkLpTgVAu7m4UcOeGrfklXy2IOECdhFlsJSsajlzasyd4sBUV9jib0jJb0+Obqr
- sEVzZvg06mS7foR07Go6ffybuSzac6w7e5rUK2w4ezsLvZkQ3GoPLuuT74GtC0RkQtNb
- 9z1YDoaozZIaGuOWG/RtSOKRM15p/ahEQj8P4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=kJ0QFMzqYV1PJ8wBpau0Xqg70yYE6JKTP6lyDqZVbcE=;
- b=lZDA0HHHroNFJ8rpBCyJdOIpePV3IN7Bv586FWhjoiu0GzT/teUMfMRThLTV0j+pTo
- DDHlVRtH27/Ted6tJg0q4fzfKN8orP0Nxo+LbtXKeQrQoH73GREBEKcYEVaYnGJzAdG7
- 2rWm6hqv68rO+zll+wEVhW3cNHBcGFStGAT+oZTrTvGpy5rJ8ArHOr3wdg/pNAkbpFlT
- Pk76b3sWxzueaA40Vuo+shbDH1XpiBJjs8AMENLAIHFhaw3qu133suDkvWJXjcHj3D1S
- WEGY8jEpoevOPvMlWeQdnanzh7QTsTXr2orV8+Tr8VegCUor/q7OcpHQmIgcgPdKdAF1
- //xg==
-X-Gm-Message-State: APjAAAVgX89Lz8zZHaViRNK4qKYGoP5qHPIS1ca94uo0EX4vERpNIGdM
- 48Pv3o/gRYvdVaTuQYAkh3qbjQkDElA=
-X-Google-Smtp-Source: APXvYqynlaq3S3Hp6ZrIWU4WFk5OqV7KxzuYoZ3ZtKXK1kkNcFybKgYAhmjUMKUtUSsn8qaesFAivQ==
-X-Received: by 2002:a63:8bc7:: with SMTP id j190mr5949329pge.104.1559545024153; 
- Sun, 02 Jun 2019 23:57:04 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id d9sm12060023pgj.34.2019.06.02.23.57.02
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 02 Jun 2019 23:57:03 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc: pseries/hvconsole: fix stack overread via udbg
-Date: Mon,  3 Jun 2019 16:56:57 +1000
-Message-Id: <20190603065657.7986-1-dja@axtens.net>
-X-Mailer: git-send-email 2.19.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HR1k58MHzDqNg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 17:06:47 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45HR1T5ts5z9v0Y5;
+ Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=jT+2W/Wz; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tjgsNbk0AB5p; Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45HR1T4c8Cz9v0Xt;
+ Mon,  3 Jun 2019 09:06:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1559545597; bh=TC6QmhQY0SmiltKr9v5TB3XVNP5MrNYwND4rHdTmvjk=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=jT+2W/WzsIbJ/ZKXYgErTK0Iskxwp7f2O0hZxeEgqEvfPHWGnTMYZPhg5iYLFQ5WZ
+ nbnkKNs1Uy1Kts2uUWEepKBFYXvvwmgcu4s2kRdLsX06NXVg2rd6+x1QPnKT3C2y9v
+ Jid+nI7vA04PYNdQZqVHEXyjTk+aL0LpOjRGSMWg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 37F9E8B7B1;
+ Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id YtoxeglRdgkU; Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.231.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0D1408B7A1;
+ Mon,  3 Jun 2019 09:06:42 +0200 (CEST)
+Subject: Re: [RFC PATCH] powerpc/book3e: KASAN Full support for 64bit
+To: Daniel Axtens <dja@axtens.net>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <3401648225001077db54172ee87573b21e1cfa38.1553782837.git.christophe.leroy@c-s.fr>
+ <877ea7za12.fsf@dja-thinkpad.axtens.net>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <028d7332-57e0-bbec-1843-29f87b33a1d4@c-s.fr>
+Date: Mon, 3 Jun 2019 09:06:42 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <877ea7za12.fsf@dja-thinkpad.axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,120 +80,305 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While developing kasan for 64-bit book3s, I hit the following stack
-over-read.
+Hi,
 
-It occurs because the hypercall to put characters onto the terminal
-takes 2 longs (128 bits/16 bytes) of characters at a time, and so
-hvc_put_chars would unconditionally copy 16 bytes from the argument
-buffer, regardless of supplied length. However, udbg_hvc_putc can
-call hvc_put_chars with a single-byte buffer, leading to the error.
+Ok, can you share your .config ?
 
-[    0.001931] ==================================================================                                                  [150/819]
-[    0.001933] BUG: KASAN: stack-out-of-bounds in hvc_put_chars+0xdc/0x110
-[    0.001934] Read of size 8 at addr c0000000023e7a90 by task swapper/0
-[    0.001934]
-[    0.001935] CPU: 0 PID: 0 Comm: swapper Not tainted 5.2.0-rc2-next-20190528-02824-g048a6ab4835b #113
-[    0.001935] Call Trace:
-[    0.001936] [c0000000023e7790] [c000000001b4a450] dump_stack+0x104/0x154 (unreliable)
-[    0.001937] [c0000000023e77f0] [c0000000006d3524] print_address_description+0xa0/0x30c
-[    0.001938] [c0000000023e7880] [c0000000006d318c] __kasan_report+0x20c/0x224
-[    0.001939] [c0000000023e7950] [c0000000006d19d8] kasan_report+0x18/0x30
-[    0.001940] [c0000000023e7970] [c0000000006d4854] __asan_report_load8_noabort+0x24/0x40
-[    0.001941] [c0000000023e7990] [c0000000001511ac] hvc_put_chars+0xdc/0x110
-[    0.001942] [c0000000023e7a10] [c000000000f81cfc] hvterm_raw_put_chars+0x9c/0x110
-[    0.001943] [c0000000023e7a50] [c000000000f82634] udbg_hvc_putc+0x154/0x200
-[    0.001944] [c0000000023e7b10] [c000000000049c90] udbg_write+0xf0/0x240
-[    0.001945] [c0000000023e7b70] [c0000000002e5d88] console_unlock+0x868/0xd30
-[    0.001946] [c0000000023e7ca0] [c0000000002e6e00] register_console+0x970/0xe90
-[    0.001947] [c0000000023e7d80] [c000000001ff1928] register_early_udbg_console+0xf8/0x114
-[    0.001948] [c0000000023e7df0] [c000000001ff1174] setup_arch+0x108/0x790
-[    0.001948] [c0000000023e7e90] [c000000001fe41c8] start_kernel+0x104/0x784
-[    0.001949] [c0000000023e7f90] [c00000000000b368] start_here_common+0x1c/0x534
-[    0.001950]
-[    0.001950]
-[    0.001951] Memory state around the buggy address:
-[    0.001952]  c0000000023e7980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.001952]  c0000000023e7a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
-[    0.001953] >c0000000023e7a80: f1 f1 01 f2 f2 f2 00 00 00 00 00 00 00 00 00 00
-[    0.001953]                          ^
-[    0.001954]  c0000000023e7b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.001954]  c0000000023e7b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[    0.001955] ==================================================================
+Christophe
 
-Document that a 16-byte buffer is requred, and provide it in udbg.
-
-CC: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
-
----
-
-v2: avoid memcpy, push responsibility to caller.
-    Solution suggested by mpe.
----
- arch/powerpc/platforms/pseries/hvconsole.c |  2 +-
- drivers/tty/hvc/hvc_vio.c                  | 16 +++++++++++++++-
- 2 files changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
-index 74da18de853a..73ec15cd2708 100644
---- a/arch/powerpc/platforms/pseries/hvconsole.c
-+++ b/arch/powerpc/platforms/pseries/hvconsole.c
-@@ -62,7 +62,7 @@ EXPORT_SYMBOL(hvc_get_chars);
-  * @vtermno: The vtermno or unit_address of the adapter from which the data
-  *	originated.
-  * @buf: The character buffer that contains the character data to send to
-- *	firmware.
-+ *	firmware. Must be at least 16 bytes, even if count is less than 16.
-  * @count: Send this number of characters.
-  */
- int hvc_put_chars(uint32_t vtermno, const char *buf, int count)
-diff --git a/drivers/tty/hvc/hvc_vio.c b/drivers/tty/hvc/hvc_vio.c
-index 6de6d4a1a221..7af54d6ed5b8 100644
---- a/drivers/tty/hvc/hvc_vio.c
-+++ b/drivers/tty/hvc/hvc_vio.c
-@@ -107,6 +107,14 @@ static int hvterm_raw_get_chars(uint32_t vtermno, char *buf, int count)
- 	return got;
- }
- 
-+/**
-+ * hvterm_raw_put_chars: send characters to firmware for given vterm adapter
-+ * @vtermno: The virtual terminal number.
-+ * @buf: The characters to send. Because of the underlying hypercall in
-+ *       hvc_put_chars(), this buffer must be at least 16 bytes long, even if
-+ *       you are sending fewer chars.
-+ * @count: number of chars to send.
-+ */
- static int hvterm_raw_put_chars(uint32_t vtermno, const char *buf, int count)
- {
- 	struct hvterm_priv *pv = hvterm_privs[vtermno];
-@@ -219,6 +227,7 @@ static const struct hv_ops hvterm_hvsi_ops = {
- static void udbg_hvc_putc(char c)
- {
- 	int count = -1;
-+	unsigned char bounce_buffer[16];
- 
- 	if (!hvterm_privs[0])
- 		return;
-@@ -229,7 +238,12 @@ static void udbg_hvc_putc(char c)
- 	do {
- 		switch(hvterm_privs[0]->proto) {
- 		case HV_PROTOCOL_RAW:
--			count = hvterm_raw_put_chars(0, &c, 1);
-+			/*
-+			 * hvterm_raw_put_chars requires at least a 16-byte
-+			 * buffer, so go via the bounce buffer
-+			 */
-+			bounce_buffer[0] = c;
-+			count = hvterm_raw_put_chars(0, bounce_buffer, 1);
- 			break;
- 		case HV_PROTOCOL_HVSI:
- 			count = hvterm_hvsi_put_chars(0, &c, 1);
--- 
-2.19.1
-
+Le 31/05/2019 à 03:29, Daniel Axtens a écrit :
+> Hi Christophe,
+> 
+> I tried this on the t4240rdb and it fails to boot if KASAN is
+> enabled. It does boot with the patch applied but KASAN disabled, so that
+> narrows it down a little bit.
+> 
+> I need to focus on 3s first so I'll just drop 3e from my patch set for
+> now.
+> 
+> Regards,
+> Daniel
+> 
+>> The KASAN shadow area is mapped into vmemmap space:
+>> 0x8000 0400 0000 0000 to 0x8000 0600 0000 0000.
+>> For this vmemmap has to be disabled.
+>>
+>> Cc: Daniel Axtens <dja@axtens.net>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>   arch/powerpc/Kconfig                  |   1 +
+>>   arch/powerpc/Kconfig.debug            |   3 +-
+>>   arch/powerpc/include/asm/kasan.h      |  11 +++
+>>   arch/powerpc/kernel/Makefile          |   2 +
+>>   arch/powerpc/kernel/head_64.S         |   3 +
+>>   arch/powerpc/kernel/setup_64.c        |  20 +++---
+>>   arch/powerpc/mm/kasan/Makefile        |   1 +
+>>   arch/powerpc/mm/kasan/kasan_init_64.c | 129 ++++++++++++++++++++++++++++++++++
+>>   8 files changed, 159 insertions(+), 11 deletions(-)
+>>   create mode 100644 arch/powerpc/mm/kasan/kasan_init_64.c
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 1a2fb50126b2..e0b7c45e4dc7 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -174,6 +174,7 @@ config PPC
+>>   	select HAVE_ARCH_AUDITSYSCALL
+>>   	select HAVE_ARCH_JUMP_LABEL
+>>   	select HAVE_ARCH_KASAN			if PPC32
+>> +	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64 && !SPARSEMEM_VMEMMAP
+>>   	select HAVE_ARCH_KGDB
+>>   	select HAVE_ARCH_MMAP_RND_BITS
+>>   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+>> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+>> index 61febbbdd02b..b4140dd6b4e4 100644
+>> --- a/arch/powerpc/Kconfig.debug
+>> +++ b/arch/powerpc/Kconfig.debug
+>> @@ -370,4 +370,5 @@ config PPC_FAST_ENDIAN_SWITCH
+>>   config KASAN_SHADOW_OFFSET
+>>   	hex
+>>   	depends on KASAN
+>> -	default 0xe0000000
+>> +	default 0xe0000000 if PPC32
+>> +	default 0x6800040000000000 if PPC64
+>> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
+>> index 296e51c2f066..756b3d58f921 100644
+>> --- a/arch/powerpc/include/asm/kasan.h
+>> +++ b/arch/powerpc/include/asm/kasan.h
+>> @@ -23,10 +23,21 @@
+>>   
+>>   #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
+>>   
+>> +#ifdef CONFIG_PPC32
+>>   #define KASAN_SHADOW_END	0UL
+>>   
+>>   #define KASAN_SHADOW_SIZE	(KASAN_SHADOW_END - KASAN_SHADOW_START)
+>>   
+>> +#else
+>> +
+>> +#include <asm/pgtable.h>
+>> +
+>> +#define KASAN_SHADOW_SIZE	(KERN_VIRT_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
+>> +
+>> +#define KASAN_SHADOW_END	(KASAN_SHADOW_START + KASAN_SHADOW_SIZE)
+>> +
+>> +#endif /* CONFIG_PPC32 */
+>> +
+>>   #ifdef CONFIG_KASAN
+>>   void kasan_early_init(void);
+>>   void kasan_mmu_init(void);
+>> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+>> index 0ea6c4aa3a20..7f232c06f11d 100644
+>> --- a/arch/powerpc/kernel/Makefile
+>> +++ b/arch/powerpc/kernel/Makefile
+>> @@ -35,6 +35,8 @@ KASAN_SANITIZE_early_32.o := n
+>>   KASAN_SANITIZE_cputable.o := n
+>>   KASAN_SANITIZE_prom_init.o := n
+>>   KASAN_SANITIZE_btext.o := n
+>> +KASAN_SANITIZE_paca.o := n
+>> +KASAN_SANITIZE_setup_64.o := n
+>>   
+>>   ifdef CONFIG_KASAN
+>>   CFLAGS_early_32.o += -DDISABLE_BRANCH_PROFILING
+>> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+>> index 3fad8d499767..80fbd8024fb2 100644
+>> --- a/arch/powerpc/kernel/head_64.S
+>> +++ b/arch/powerpc/kernel/head_64.S
+>> @@ -966,6 +966,9 @@ start_here_multiplatform:
+>>   	 * and SLB setup before we turn on relocation.
+>>   	 */
+>>   
+>> +#ifdef CONFIG_KASAN
+>> +	bl	kasan_early_init
+>> +#endif
+>>   	/* Restore parameters passed from prom_init/kexec */
+>>   	mr	r3,r31
+>>   	bl	early_setup		/* also sets r13 and SPRG_PACA */
+>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+>> index ba404dd9ce1d..d2bf860dd966 100644
+>> --- a/arch/powerpc/kernel/setup_64.c
+>> +++ b/arch/powerpc/kernel/setup_64.c
+>> @@ -311,6 +311,16 @@ void __init early_setup(unsigned long dt_ptr)
+>>    	DBG(" -> early_setup(), dt_ptr: 0x%lx\n", dt_ptr);
+>>   
+>>   	/*
+>> +	 * Configure exception handlers. This include setting up trampolines
+>> +	 * if needed, setting exception endian mode, etc...
+>> +	 */
+>> +	configure_exceptions();
+>> +
+>> +	/* Apply all the dynamic patching */
+>> +	apply_feature_fixups();
+>> +	setup_feature_keys();
+>> +
+>> +	/*
+>>   	 * Do early initialization using the flattened device
+>>   	 * tree, such as retrieving the physical memory map or
+>>   	 * calculating/retrieving the hash table size.
+>> @@ -325,16 +335,6 @@ void __init early_setup(unsigned long dt_ptr)
+>>   	setup_paca(paca_ptrs[boot_cpuid]);
+>>   	fixup_boot_paca();
+>>   
+>> -	/*
+>> -	 * Configure exception handlers. This include setting up trampolines
+>> -	 * if needed, setting exception endian mode, etc...
+>> -	 */
+>> -	configure_exceptions();
+>> -
+>> -	/* Apply all the dynamic patching */
+>> -	apply_feature_fixups();
+>> -	setup_feature_keys();
+>> -
+>>   	/* Initialize the hash table or TLB handling */
+>>   	early_init_mmu();
+>>   
+>> diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+>> index 6577897673dd..0bfbe3892808 100644
+>> --- a/arch/powerpc/mm/kasan/Makefile
+>> +++ b/arch/powerpc/mm/kasan/Makefile
+>> @@ -3,3 +3,4 @@
+>>   KASAN_SANITIZE := n
+>>   
+>>   obj-$(CONFIG_PPC32)           += kasan_init_32.o
+>> +obj-$(CONFIG_PPC64)	+= kasan_init_64.o
+>> diff --git a/arch/powerpc/mm/kasan/kasan_init_64.c b/arch/powerpc/mm/kasan/kasan_init_64.c
+>> new file mode 100644
+>> index 000000000000..7fd71b8e883b
+>> --- /dev/null
+>> +++ b/arch/powerpc/mm/kasan/kasan_init_64.c
+>> @@ -0,0 +1,129 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +#define DISABLE_BRANCH_PROFILING
+>> +
+>> +#include <linux/kasan.h>
+>> +#include <linux/printk.h>
+>> +#include <linux/memblock.h>
+>> +#include <linux/sched/task.h>
+>> +#include <asm/pgalloc.h>
+>> +
+>> +static void __init kasan_populate_pte(pte_t *ptep, pgprot_t prot)
+>> +{
+>> +	unsigned long va = (unsigned long)kasan_early_shadow_page;
+>> +	phys_addr_t pa = __pa(kasan_early_shadow_page);
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PTRS_PER_PTE; i++, ptep++)
+>> +		__set_pte_at(&init_mm, va, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
+>> +}
+>> +
+>> +static void __init kasan_populate_pmd(pmd_t *pmdp)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PTRS_PER_PMD; i++)
+>> +		pmd_populate_kernel(&init_mm, pmdp + i, kasan_early_shadow_pte);
+>> +}
+>> +
+>> +static void __init kasan_populate_pud(pud_t *pudp)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < PTRS_PER_PUD; i++)
+>> +		pud_populate(&init_mm, pudp + i, kasan_early_shadow_pmd);
+>> +}
+>> +
+>> +static void __init *kasan_alloc_pgtable(unsigned long size)
+>> +{
+>> +	void *ptr = memblock_alloc_try_nid(size, size, MEMBLOCK_LOW_LIMIT,
+>> +					   __pa(MAX_DMA_ADDRESS), NUMA_NO_NODE);
+>> +
+>> +	if (!ptr)
+>> +		panic("%s: Failed to allocate %lu bytes align=0x%lx max_addr=%lx\n",
+>> +		      __func__, size, size, __pa(MAX_DMA_ADDRESS));
+>> +
+>> +	return ptr;
+>> +}
+>> +
+>> +static int __init kasan_map_page(unsigned long va, unsigned long pa, pgprot_t prot)
+>> +{
+>> +	pgd_t *pgdp = pgd_offset_k(va);
+>> +	pud_t *pudp;
+>> +	pmd_t *pmdp;
+>> +	pte_t *ptep;
+>> +
+>> +	if (pgd_none(*pgdp) || (void *)pgd_page_vaddr(*pgdp) == kasan_early_shadow_pud) {
+>> +		pudp = kasan_alloc_pgtable(PUD_TABLE_SIZE);
+>> +		kasan_populate_pud(pudp);
+>> +		pgd_populate(&init_mm, pgdp, pudp);
+>> +	}
+>> +	pudp = pud_offset(pgdp, va);
+>> +	if (pud_none(*pudp) || (void *)pud_page_vaddr(*pudp) == kasan_early_shadow_pmd) {
+>> +		pmdp = kasan_alloc_pgtable(PMD_TABLE_SIZE);
+>> +		kasan_populate_pmd(pmdp);
+>> +		pud_populate(&init_mm, pudp, pmdp);
+>> +	}
+>> +	pmdp = pmd_offset(pudp, va);
+>> +	if (!pmd_present(*pmdp) || (void *)pmd_page_vaddr(*pmdp) == kasan_early_shadow_pte) {
+>> +		ptep = kasan_alloc_pgtable(PTE_TABLE_SIZE);
+>> +		kasan_populate_pte(ptep, PAGE_KERNEL);
+>> +		pmd_populate_kernel(&init_mm, pmdp, ptep);
+>> +	}
+>> +	ptep = pte_offset_kernel(pmdp, va);
+>> +
+>> +	__set_pte_at(&init_mm, va, ptep, pfn_pte(pa >> PAGE_SHIFT, prot), 0);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void __init kasan_init_region(struct memblock_region *reg)
+>> +{
+>> +	void *start = __va(reg->base);
+>> +	void *end = __va(reg->base + reg->size);
+>> +	unsigned long k_start, k_end, k_cur;
+>> +
+>> +	if (start >= end)
+>> +		return;
+>> +
+>> +	k_start = (unsigned long)kasan_mem_to_shadow(start);
+>> +	k_end = (unsigned long)kasan_mem_to_shadow(end);
+>> +
+>> +	for (k_cur = k_start; k_cur < k_end; k_cur += PAGE_SIZE) {
+>> +		void *va = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+>> +
+>> +		kasan_map_page(k_cur, __pa(va), PAGE_KERNEL);
+>> +	}
+>> +	flush_tlb_kernel_range(k_start, k_end);
+>> +}
+>> +
+>> +void __init kasan_init(void)
+>> +{
+>> +	struct memblock_region *reg;
+>> +
+>> +	for_each_memblock(memory, reg)
+>> +		kasan_init_region(reg);
+>> +
+>> +	/* It's too early to use clear_page() ! */
+>> +	memset(kasan_early_shadow_page, 0, sizeof(kasan_early_shadow_page));
+>> +
+>> +	/* Enable error messages */
+>> +	init_task.kasan_depth = 0;
+>> +	pr_info("KASAN init done\n");
+>> +}
+>> +
+>> +/* The early shadow maps everything to a single page of zeroes */
+>> +asmlinkage void __init kasan_early_init(void)
+>> +{
+>> +	unsigned long addr = KASAN_SHADOW_START;
+>> +	unsigned long end = KASAN_SHADOW_END;
+>> +	pgd_t *pgdp = pgd_offset_k(addr);
+>> +
+>> +	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+>> +	kasan_populate_pmd(kasan_early_shadow_pmd);
+>> +	kasan_populate_pud(kasan_early_shadow_pud);
+>> +
+>> +	do {
+>> +		pgd_populate(&init_mm, pgdp, kasan_early_shadow_pud);
+>> +	} while (pgdp++, addr = pgd_addr_end(addr, end), addr != end);
+>> +}
+>> -- 
+>> 2.13.3
