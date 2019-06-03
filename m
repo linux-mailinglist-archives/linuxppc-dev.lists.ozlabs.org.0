@@ -1,79 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB1A32EFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 13:52:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823C732C99
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 11:18:53 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HTy25F6LzDqRP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 19:18:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45HYMH5r6jzDqTZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2019 21:52:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sebott@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="qK7a3Bjr"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HTvj0PY8zDqLN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 19:16:49 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45HTvX2c3jz9v0D1;
- Mon,  3 Jun 2019 11:16:40 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=qK7a3Bjr; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id h-bkbOG883yC; Mon,  3 Jun 2019 11:16:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45HTvX1RnFz9v0Cw;
- Mon,  3 Jun 2019 11:16:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559553400; bh=K6V04fp2wmNbVXlm3f+rVXZBYc12IY9zUHEdy7YPcVY=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=qK7a3Bjr5D25uyATGphCM9C/xx8iCEUSQGdHuU9XkZ6fme6ggDZem5DtAkMj1EdTH
- yynocMV1TG0Mi6+RMi7USLvmLHcBw1mrY+q/bg1aMBm6F1x8byrpJFvnDw89c54Lt3
- oLMDPd1y2F/oH5SezRWm9qg2/2wwVHaLZjKqNzr8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DFCF68B879;
- Mon,  3 Jun 2019 11:16:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xrKd7VIqcsZv; Mon,  3 Jun 2019 11:16:44 +0200 (CEST)
-Received: from po16846vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.231.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AD5C18B7B1;
- Mon,  3 Jun 2019 11:16:44 +0200 (CEST)
-Subject: Re: [PATCH v3 14/16] powerpc/32: implement fast entry for syscalls on
- BOOKE
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1556627571.git.christophe.leroy@c-s.fr>
- <3e254178a157e7eaeef48f983880f71f97d1f296.1556627571.git.christophe.leroy@c-s.fr>
- <20190523061427.GA19655@blackberry>
- <98bf5745-88ae-7f17-fcb9-7d06ba5b9e49@c-s.fr>
- <58f0e70f-ed9d-965e-e8d2-cc5d13a4c9eb@c-s.fr>
- <87r28jp2b0.fsf@concordia.ellerman.id.au>
- <20190528190341.Horde.nTXOule-IO2ReXFiNIqNbg8@messagerie.si.c-s.fr>
-Message-ID: <c4ff97c8-f601-0e62-9408-08bbef409636@c-s.fr>
-Date: Mon, 3 Jun 2019 09:16:21 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45HYL23C6VzDqM1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2019 21:51:19 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x53Bkxv9157273
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 07:51:14 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sw2wx08ah-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 07:51:13 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sebott@linux.ibm.com>;
+ Mon, 3 Jun 2019 12:51:11 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 3 Jun 2019 12:51:05 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x53Bp4TO59768908
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Jun 2019 11:51:04 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 398195204E;
+ Mon,  3 Jun 2019 11:51:04 +0000 (GMT)
+Received: from dyn-9-152-212-90.boeblingen.de.ibm.com (unknown [9.152.212.90])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 6A9A252050; 
+ Mon,  3 Jun 2019 11:51:03 +0000 (GMT)
+Date: Mon, 3 Jun 2019 13:51:02 +0200 (CEST)
+From: Sebastian Ott <sebott@linux.ibm.com>
+X-X-Sender: sebott@schleppi
+To: Zhen Lei <thunder.leizhen@huawei.com>
+Subject: Re: [PATCH v8 3/7] s390/pci: add support for IOMMU default DMA mode
+ build options
+In-Reply-To: <20190530034831.4184-4-thunder.leizhen@huawei.com>
+References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
+ <20190530034831.4184-4-thunder.leizhen@huawei.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Organization: =?ISO-8859-15?Q?=22IBM_Deutschland_Research_&_Development_GmbH?=
+ =?ISO-8859-15?Q?_=2F_Vorsitzende_des_Aufsichtsrats=3A_Matthias?=
+ =?ISO-8859-15?Q?_Hartmann_Gesch=E4ftsf=FChrung=3A_Dirk_Wittkopp?=
+ =?ISO-8859-15?Q?_Sitz_der_Gesellschaft=3A_B=F6blingen_=2F_Reg?=
+ =?ISO-8859-15?Q?istergericht=3A_Amtsgericht_Stuttgart=2C_HRB_2432?=
+ =?ISO-8859-15?Q?94=22?=
 MIME-Version: 1.0
-In-Reply-To: <20190528190341.Horde.nTXOule-IO2ReXFiNIqNbg8@messagerie.si.c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-TM-AS-GCONF: 00
+x-cbid: 19060311-0016-0000-0000-000002832141
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060311-0017-0000-0000-000032E02A71
+Message-Id: <alpine.LFD.2.21.1906031350240.18543@schleppi>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-03_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=638 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906030087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,70 +93,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-ia64 <linux-ia64@vger.kernel.org>,
+ linux-doc <linux-doc@vger.kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ "H . Peter Anvin" <hpa@zytor.com>, linux-s390 <linux-s390@vger.kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Will Deacon <will.deacon@arm.com>, John Garry <john.garry@huawei.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Borislav Petkov <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>, Tony Luck <tony.luck@intel.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ iommu <iommu@lists.linux-foundation.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Robin Murphy <robin.murphy@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+On Thu, 30 May 2019, Zhen Lei wrote:
+> The default DMA mode is LAZY on s390, this patch make it can be set to
+> STRICT at build time. It can be overridden by boot option.
+> 
+> There is no functional change.
+> 
+> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 
-On 05/28/2019 05:03 PM, Christophe Leroy wrote:
-> Michael Ellerman <mpe@ellerman.id.au> a écrit :
-> 
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>> Le 23/05/2019 à 09:00, Christophe Leroy a écrit :
->>>
->>> [...]
->>>
->>>>> arch/powerpc/kernel/head_fsl_booke.o: In function `SystemCall':
->>>>> arch/powerpc/kernel/head_fsl_booke.S:416: undefined reference to
->>>>> `kvmppc_handler_BOOKE_INTERRUPT_SYSCALL_SPRN_SRR1'
->>>>> Makefile:1052: recipe for target 'vmlinux' failed
->>>>>
->>>>>> +.macro SYSCALL_ENTRY trapno intno
->>>>>> +    mfspr    r10, SPRN_SPRG_THREAD
->>>>>> +#ifdef CONFIG_KVM_BOOKE_HV
->>>>>> +BEGIN_FTR_SECTION
->>>>>> +    mtspr    SPRN_SPRG_WSCRATCH0, r10
->>>>>> +    stw    r11, THREAD_NORMSAVE(0)(r10)
->>>>>> +    stw    r13, THREAD_NORMSAVE(2)(r10)
->>>>>> +    mfcr    r13            /* save CR in r13 for now       */
->>>>>> +    mfspr    r11, SPRN_SRR1
->>>>>> +    mtocrf    0x80, r11    /* check MSR[GS] without clobbering 
->>>>>> reg */
->>>>>> +    bf    3, 1975f
->>>>>> +    b    kvmppc_handler_BOOKE_INTERRUPT_\intno\()_SPRN_SRR1
->>>>>
->>>>> It seems to me that the "_SPRN_SRR1" on the end of this line
->>>>> isn't meant to be there...  However, it still fails to link with that
->>>>> removed.
->>>
->>> It looks like I missed the macro expansion.
->>>
->>> The called function should be kvmppc_handler_8_0x01B
->>>
->>> Seems like kisskb doesn't build any config like this.
->>
->> I thought we did, ie:
->>
->> http://kisskb.ellerman.id.au/kisskb/buildresult/13817941/
-> 
-> That's a ppc64 config it seems. The problem was on booke32.
-> 
-> Christophe
-> 
->>
->> But clearly something is missing to trigger the bug.
+Acked-by: Sebastian Ott <sebott@linux.ibm.com>
 
-I was able to trigger the bug with mpc85xx_defconfig + 
-CONFIG_VIRTUALIZATION + CONFIG_PPC_E500MC
-
-The bug pops up when CONFIG_KVM_BOOKE_HV is set.
-
-Christophe
-
->>
->> cheers
-> 
-> 
