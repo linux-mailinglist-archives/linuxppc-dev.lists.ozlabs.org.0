@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4776A342D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:12:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65712342A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:08:02 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J5g36xZPzDqQx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:07:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J5mY6BvTzDqNQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:12:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,65 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45J5dc6vcwzDqG9
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 19:06:44 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J5jV3bM5zDqPc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 19:10:06 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x548pVA4015170
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Jun 2019 05:06:41 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2swn7v9g3d-1
+ x5499wtr120271
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Jun 2019 05:10:02 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2swns7r06r-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 05:06:40 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 05:10:02 -0400
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 4 Jun 2019 10:06:39 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
+ Tue, 4 Jun 2019 10:10:02 +0100
+Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
+ by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 4 Jun 2019 10:06:37 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5496alv53608612
+ Tue, 4 Jun 2019 10:09:58 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5499vQ015728696
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Jun 2019 09:06:37 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9C84A4062;
- Tue,  4 Jun 2019 09:06:36 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09A09A4060;
- Tue,  4 Jun 2019 09:06:36 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.124.35.234])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  4 Jun 2019 09:06:35 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+ Tue, 4 Jun 2019 09:09:57 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 65482AE06D;
+ Tue,  4 Jun 2019 09:09:56 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BC025AE063;
+ Tue,  4 Jun 2019 09:09:54 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.35.234])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jun 2019 09:09:54 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Oliver <oohall@gmail.com>
-Subject: Re: [PATCH] powerpc/nvdimm: Add support for multibyte read/write for
- metadata
-In-Reply-To: <CAOSf1CEsWiDyc3rAzNoPwBUUhs4deXt_1MJpuKUV_CP-LJhjhw@mail.gmail.com>
-References: <20190602044350.31660-1-aneesh.kumar@linux.ibm.com>
- <CAOSf1CEsWiDyc3rAzNoPwBUUhs4deXt_1MJpuKUV_CP-LJhjhw@mail.gmail.com>
-Date: Tue, 04 Jun 2019 14:36:34 +0530
+To: akpm@linux-foundation.org
+Subject: [PATCH] mm/mmap: Move common defines to mman-common.h
+Date: Tue,  4 Jun 2019 14:39:50 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19060409-4275-0000-0000-0000033C52A8
+x-cbid: 19060409-0064-0000-0000-000003E974B8
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011212; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01213036; UDB=6.00637527; IPR=6.00994103; 
+ MB=3.00027178; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-04 09:10:00
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060409-4276-0000-0000-0000384C6059
-Message-Id: <87ef49hg85.fsf@linux.ibm.com>
+x-cbparentid: 19060409-0065-0000-0000-00003DBBE0F9
+Message-Id: <20190604090950.31417-1-aneesh.kumar@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-04_07:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906040060
+ mlxlogscore=400 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906040061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,184 +89,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Oliver <oohall@gmail.com> writes:
+Two architecture that use arch specific MMAP flags are powerpc and sparc.
+We still have few flag values common across them and other architectures.
+Consolidate this in mman-common.h.
 
-> On Sun, Jun 2, 2019 at 2:44 PM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> SCM_READ/WRITE_MEATADATA hcall supports multibyte read/write. This patch
->> updates the metadata read/write to use 1, 2, 4 or 8 byte read/write as
->> mentioned in PAPR document.
->>
->> READ/WRITE_METADATA hcall supports the 1, 2, 4, or 8 bytes read/write.
->> For other values hcall results H_P3.
->
-> You should probably fold the second paragraph here into the first.
->
->> Hypervisor stores the metadata contents in big-endian format and in-order
->> to enable read/write in different granularity, we need to switch the contents
->> to big-endian before calling HCALL.
->>
->> Based on an patch from Oliver O'Halloran <oohall@gmail.com>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/papr_scm.c | 104 +++++++++++++++++-----
->>  1 file changed, 82 insertions(+), 22 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 0176ce66673f..e33cebb8ee6c 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -97,42 +97,102 @@ static int drc_pmem_unbind(struct papr_scm_priv *p)
->>  }
->>
->>  static int papr_scm_meta_get(struct papr_scm_priv *p,
->> -                       struct nd_cmd_get_config_data_hdr *hdr)
->> +                            struct nd_cmd_get_config_data_hdr *hdr)
->>  {
->>         unsigned long data[PLPAR_HCALL_BUFSIZE];
->> +       unsigned long offset, data_offset;
->> +       int len, read;
->>         int64_t ret;
->>
->> -       if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
->> +       if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
->>                 return -EINVAL;
->>
->> -       ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
->> -                       hdr->in_offset, 1);
->> -
->> -       if (ret == H_PARAMETER) /* bad DRC index */
->> -               return -ENODEV;
->> -       if (ret)
->> -               return -EINVAL; /* other invalid parameter */
->> -
->> -       hdr->out_buf[0] = data[0] & 0xff;
->> -
->> +       for (len = hdr->in_length; len; len -= read) {
->> +
->> +               data_offset = hdr->in_length - len;
->> +               offset = hdr->in_offset + data_offset;
->> +
->> +               if (len >= 8)
->> +                       read = 8;
->> +               else if (len >= 4)
->> +                       read = 4;
->> +               else if ( len >= 2)
->> +                       read = 2;
->> +               else
->> +                       read = 1;
->> +
->> +               ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
->> +                                 offset, read);
->> +
->> +               if (ret == H_PARAMETER) /* bad DRC index */
->> +                       return -ENODEV;
->> +               if (ret)
->> +                       return -EINVAL; /* other invalid parameter */
->> +
->> +               switch (read) {
->> +               case 8:
->> +                       *(uint64_t *)(hdr->out_buf + data_offset) = be64_to_cpu(data[0]);
->> +                       break;
->> +               case 4:
->> +                       *(uint32_t *)(hdr->out_buf + data_offset) = be32_to_cpu(data[0] & 0xffffffff);
->> +                       break;
->> +
->> +               case 2:
->> +                       *(uint16_t *)(hdr->out_buf + data_offset) = be16_to_cpu(data[0] & 0xffff);
->> +                       break;
->> +
->> +               case 1:
->> +                       *(uint32_t *)(hdr->out_buf + data_offset) = (data[0] & 0xff);
->> +                       break;
->> +               }
->> +       }
->>         return 0;
->>  }
->>
->>  static int papr_scm_meta_set(struct papr_scm_priv *p,
->> -                       struct nd_cmd_set_config_hdr *hdr)
->> +                            struct nd_cmd_set_config_hdr *hdr)
->>  {
->> +       unsigned long offset, data_offset;
->> +       int len, wrote;
->> +       unsigned long data;
->> +       __be64 data_be;
->>         int64_t ret;
->>
->> -       if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
->> +       if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
->>                 return -EINVAL;
->>
->> -       ret = plpar_hcall_norets(H_SCM_WRITE_METADATA,
->> -                       p->drc_index, hdr->in_offset, hdr->in_buf[0], 1);
->> -
->> -       if (ret == H_PARAMETER) /* bad DRC index */
->> -               return -ENODEV;
->> -       if (ret)
->> -               return -EINVAL; /* other invalid parameter */
->> +       for (len = hdr->in_length; len; len -= wrote) {
->> +
->> +               data_offset = hdr->in_length - len;
->> +               offset = hdr->in_offset + data_offset;
->> +
->> +               if (len >= 8) {
->> +                       data = *(uint64_t *)(hdr->in_buf + data_offset);
->> +                       data_be = cpu_to_be64(data);
->> +                       wrote = 8;
->> +               } else if (len >= 4) {
->> +                       data = *(uint32_t *)(hdr->in_buf + data_offset);
->> +                       data &= 0xffffffff;
->> +                       data_be = cpu_to_be32(data);
->> +                       wrote = 4;
->> +               } else if (len >= 2) {
->> +                       data = *(uint16_t *)(hdr->in_buf + data_offset);
->> +                       data &= 0xffff;
->> +                       data_be = cpu_to_be16(data);
->> +                       wrote = 2;
->> +               } else {
->> +                       data_be = *(uint8_t *)(hdr->in_buf + data_offset);
->> +                       data_be &= 0xff;
->> +                       wrote = 1;
->> +               }
->> +
->> +               ret = plpar_hcall_norets(H_SCM_WRITE_METADATA, p->drc_index,
->> +                                        offset, data_be, wrote);
->> +               if (ret == H_PARAMETER) /* bad DRC index */
->> +                       return -ENODEV;
->> +               if (ret)
->> +                       return -EINVAL; /* other invalid parameter */
->> +       }
->>
->>         return 0;
->>  }
->> @@ -154,7 +214,7 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->>                 get_size_hdr = buf;
->>
->>                 get_size_hdr->status = 0;
->> -               get_size_hdr->max_xfer = 1;
->> +               get_size_hdr->max_xfer = 8;
->>                 get_size_hdr->config_size = p->metadata_size;
->>                 *cmd_rc = 0;
->>                 break;
->> --
->> 2.21.0
->
-> I assume you got the qemu bits sorted out with Shiva? Looks good otherwise.
+Also update the comment to indicate where to find HugeTLB specific reserved
+values
 
-That is correct. I also tested with different xfer values (1, 2, 4, 8)
-on both Qemu and PowerVM.
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/uapi/asm/mman.h   | 6 +-----
+ arch/sparc/include/uapi/asm/mman.h     | 6 ------
+ include/uapi/asm-generic/mman-common.h | 6 +++++-
+ include/uapi/asm-generic/mman.h        | 9 ++++-----
+ 4 files changed, 10 insertions(+), 17 deletions(-)
 
->
-> Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
-
-Thanks
--aneesh
+diff --git a/arch/powerpc/include/uapi/asm/mman.h b/arch/powerpc/include/uapi/asm/mman.h
+index 65065ce32814..c0c737215b00 100644
+--- a/arch/powerpc/include/uapi/asm/mman.h
++++ b/arch/powerpc/include/uapi/asm/mman.h
+@@ -21,15 +21,11 @@
+ #define MAP_DENYWRITE	0x0800		/* ETXTBSY */
+ #define MAP_EXECUTABLE	0x1000		/* mark it as an executable */
+ 
++
+ #define MCL_CURRENT     0x2000          /* lock all currently mapped pages */
+ #define MCL_FUTURE      0x4000          /* lock all additions to address space */
+ #define MCL_ONFAULT	0x8000		/* lock all pages that are faulted in */
+ 
+-#define MAP_POPULATE	0x8000		/* populate (prefault) pagetables */
+-#define MAP_NONBLOCK	0x10000		/* do not block on IO */
+-#define MAP_STACK	0x20000		/* give out an address that is best suited for process/thread stacks */
+-#define MAP_HUGETLB	0x40000		/* create a huge page mapping */
+-
+ /* Override any generic PKEY permission defines */
+ #define PKEY_DISABLE_EXECUTE   0x4
+ #undef PKEY_ACCESS_MASK
+diff --git a/arch/sparc/include/uapi/asm/mman.h b/arch/sparc/include/uapi/asm/mman.h
+index f6f99ec65bb3..cec9f4109687 100644
+--- a/arch/sparc/include/uapi/asm/mman.h
++++ b/arch/sparc/include/uapi/asm/mman.h
+@@ -22,10 +22,4 @@
+ #define MCL_FUTURE      0x4000          /* lock all additions to address space */
+ #define MCL_ONFAULT	0x8000		/* lock all pages that are faulted in */
+ 
+-#define MAP_POPULATE	0x8000		/* populate (prefault) pagetables */
+-#define MAP_NONBLOCK	0x10000		/* do not block on IO */
+-#define MAP_STACK	0x20000		/* give out an address that is best suited for process/thread stacks */
+-#define MAP_HUGETLB	0x40000		/* create a huge page mapping */
+-
+-
+ #endif /* _UAPI__SPARC_MMAN_H__ */
+diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
+index bea0278f65ab..ef4623f03156 100644
+--- a/include/uapi/asm-generic/mman-common.h
++++ b/include/uapi/asm-generic/mman-common.h
+@@ -25,7 +25,11 @@
+ # define MAP_UNINITIALIZED 0x0		/* Don't support this flag */
+ #endif
+ 
+-/* 0x0100 - 0x40000 flags are defined in asm-generic/mman.h */
++/* 0x0100 - 0x4000 flags are defined in asm-generic/mman.h */
++#define MAP_POPULATE		0x008000	/* populate (prefault) pagetables */
++#define MAP_NONBLOCK		0x010000	/* do not block on IO */
++#define MAP_STACK		0x020000	/* give out an address that is best suited for process/thread stacks */
++#define MAP_HUGETLB		0x040000	/* create a huge page mapping */
+ #define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
+ 
+diff --git a/include/uapi/asm-generic/mman.h b/include/uapi/asm-generic/mman.h
+index 2dffcbf705b3..57e8195d0b53 100644
+--- a/include/uapi/asm-generic/mman.h
++++ b/include/uapi/asm-generic/mman.h
+@@ -9,12 +9,11 @@
+ #define MAP_EXECUTABLE	0x1000		/* mark it as an executable */
+ #define MAP_LOCKED	0x2000		/* pages are locked */
+ #define MAP_NORESERVE	0x4000		/* don't check for reservations */
+-#define MAP_POPULATE	0x8000		/* populate (prefault) pagetables */
+-#define MAP_NONBLOCK	0x10000		/* do not block on IO */
+-#define MAP_STACK	0x20000		/* give out an address that is best suited for process/thread stacks */
+-#define MAP_HUGETLB	0x40000		/* create a huge page mapping */
+ 
+-/* Bits [26:31] are reserved, see mman-common.h for MAP_HUGETLB usage */
++/*
++ * Bits [26:31] are reserved, see asm-generic/hugetlb_encode.h
++ * for MAP_HUGETLB usage
++ */
+ 
+ #define MCL_CURRENT	1		/* lock all current mappings */
+ #define MCL_FUTURE	2		/* lock all future mappings */
+-- 
+2.21.0
 
