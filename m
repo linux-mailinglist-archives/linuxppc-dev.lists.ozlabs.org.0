@@ -2,50 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4C43453F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 13:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E129B345E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 13:48:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J8Zg44xSzDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 21:19:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J9DV3DcvzDqKb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 21:48:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.79; helo=conuserg-12.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=google.com
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=andreyknvl@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="zU9GZzrI"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="l/j965oT"; 
  dkim-atps=neutral
-Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45J8YN6CJ8zDqDF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 21:18:15 +1000 (AEST)
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp
- [153.142.97.92]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id x54BGvLH009633;
- Tue, 4 Jun 2019 20:16:58 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com x54BGvLH009633
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1559647019;
- bh=0QZKxY5pgYied5dcdhzPAVfJ4vw59SmOyFiNqN2eH8Y=;
- h=From:To:Cc:Subject:Date:From;
- b=zU9GZzrIDSRFvCVh22UF0auDxXNQY1UOH1VC8qhSJSrflclWa9p0lSsoH5fzjiYTT
- +4mYPcE3hXLAWcyOeOr0Zts1pGZyCaqkkB2wvG6r+HvJV0nIEnrHcPCOz9TWelrYxh
- uj98l9srM15CKvuhGxgGjHXMDS7H+v0cK6sj5KR8G2rNWQLqmEdaQTUFQrHNYJyxzF
- KYglswUnZ5u4XZnRpld3T1e6sbEtr8WG2AZDafPjNHltAabVyHE95uSdbJYRrOYGpr
- 8YTfe0pi8nTwKmFMg3ZkfnlWhWfXrWLtjfBHlphKgBTTQAn4wXgYcuQ/Ir6502MGW7
- PzSsqx3DC0tYQ==
-X-Nifty-SrcIP: [153.142.97.92]
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ocxl: do not use C++ style comments in uapi header
-Date: Tue,  4 Jun 2019 20:16:32 +0900
-Message-Id: <20190604111632.22479-1-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J9Bt6wBVzDqRq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 21:47:10 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id bh12so2171572plb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 04:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Dqp69e2uVFEsGCK8JhiQUI0eIhdoGk5h13T4mTC3vdY=;
+ b=l/j965oTYVXJlxTYWvckE8VTMI089RUFBuoqrrqtaXuZS/XGL2imWUR4Yj62ofLJ5B
+ DgxG1n0xNvR+Z1Q2WKLjXP4Ic6bW7ST7vC/dzKmyj0IUR6vTT0z9AontN1QI8ObMfrqT
+ YfQOny7N2gMtvrAIhPa+UYF2M069gzxKv7PwiRWZjJ1iI6LDinGjOYSS+sjqs5grnF0B
+ e9aJoVfdsnL4PaWC5CyQ3SVTmBWLITUXFdUA/VEb4rquThulv4tr3tFv4LY7s8DA7Ygg
+ QJSsuhRnspRaLycykpAiwScHW5uSOeCZARUrOt7CO58SxO5d7ZxzOztZ8o9JgluM7fHh
+ Jptw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Dqp69e2uVFEsGCK8JhiQUI0eIhdoGk5h13T4mTC3vdY=;
+ b=QOgdj+iMD/HN+pZcSQ+ReHDW0tXPrw9jjp+FM5t7ayho8P8iw3OG6nGfObD34tNBNU
+ DoS2U77dGjlGidS713TEd7ZFEKjYmy5AP9LPxBWS/1Urtg6we3PO0xJgBKhNlDb+RGxe
+ FqZCMwaeGOf3r3ccZGAGhwjZN0sLPOCvgRySb6p9RufIbJZJ4eRVHqBnUzH8aOg58kCi
+ Gt7vppJkLyWIPO4eSo3bIr9Q4N8Cjy5OoajEqEX1BBkQ1IcGPkKKNiCNVA8HSQzH/bZv
+ h9Yi0zqxxllxNSyXzhHwDGGdAFoalZsGVaDtQ/R0p9IoyaGtQn9umTTGen8ev2OUP2JV
+ KQlA==
+X-Gm-Message-State: APjAAAUWVeeHmhwzzRdeTVCjOQq/m9YXWGhI7hkEKxeQXEog+6pC7X9k
+ cFVD/Zt8Y26yrtvo3ObAeCfZ8KualqcW4htUaQqung==
+X-Google-Smtp-Source: APXvYqxxKCotfIzPUp2KWeKyy9ei43iIKcJ+7sjPmxGSimbHW7NgNBX2aQnmBFtOckHX4w3Dtt0BdqhA9Y8aOzwYWxs=
+X-Received: by 2002:a17:902:1566:: with SMTP id
+ b35mr36931113plh.147.1559648827583; 
+ Tue, 04 Jun 2019 04:47:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190601074959.14036-1-hch@lst.de>
+ <20190601074959.14036-2-hch@lst.de>
+ <431c7395-2327-2f7c-cc8f-b01412b74e10@oracle.com>
+ <20190604072706.GF15680@lst.de>
+In-Reply-To: <20190604072706.GF15680@lst.de>
+From: Andrey Konovalov <andreyknvl@google.com>
+Date: Tue, 4 Jun 2019 13:46:56 +0200
+Message-ID: <CAAeHK+xtFwY+S0VY-yyb+i_+GnSjYHfgYHB9Ss=r9xxZZvsKFw@mail.gmail.com>
+Subject: Re: [PATCH 01/16] uaccess: add untagged_addr definition for other
+ arches
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,61 +77,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- Masahiro Yamada <yamada.masahiro@socionext.com>, Joe Perches <joe@perches.com>,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: the arch/x86 maintainers <x86@kernel.org>, Rich Felker <dalias@libc.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ James Hogan <jhogan@kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Paul Burton <paul.burton@mips.com>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mips@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>,
+ Khalid Aziz <khalid.aziz@oracle.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linux kernel tolerates C++ style comments these days. Actually, the
-SPDX License tags for .c files start with //.
+On Tue, Jun 4, 2019 at 9:27 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Mon, Jun 03, 2019 at 09:16:08AM -0600, Khalid Aziz wrote:
+> > Could you reword above sentence? We are already starting off with
+> > untagged_addr() not being no-op for arm64 and sparc64. It will expand
+> > further potentially. So something more along the lines of "Define it as
+> > noop for architectures that do not support memory tagging". The first
+> > paragraph in the log can also be rewritten to be not specific to arm64.
+>
+> Well, as of this patch this actually is a no-op for everyone.
+>
+> Linus, what do you think of applying this patch (maybe with a slightly
+> fixed up commit log) to 5.2-rc so that we remove a cross dependency
+> between the series?
 
-On the other hand, uapi headers are written in more strict C, where
-the C++ comment style is forbidden.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
- include/uapi/misc/ocxl.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/include/uapi/misc/ocxl.h b/include/uapi/misc/ocxl.h
-index 97937cfa3baa..6d29a60a896a 100644
---- a/include/uapi/misc/ocxl.h
-+++ b/include/uapi/misc/ocxl.h
-@@ -33,23 +33,23 @@ struct ocxl_ioctl_attach {
- };
- 
- struct ocxl_ioctl_metadata {
--	__u16 version; // struct version, always backwards compatible
-+	__u16 version; /* struct version, always backwards compatible */
- 
--	// Version 0 fields
-+	/* Version 0 fields */
- 	__u8  afu_version_major;
- 	__u8  afu_version_minor;
--	__u32 pasid;		// PASID assigned to the current context
-+	__u32 pasid;		/* PASID assigned to the current context */
- 
--	__u64 pp_mmio_size;	// Per PASID MMIO size
-+	__u64 pp_mmio_size;	/* Per PASID MMIO size */
- 	__u64 global_mmio_size;
- 
--	// End version 0 fields
-+	/* End version 0 fields */
- 
--	__u64 reserved[13]; // Total of 16*u64
-+	__u64 reserved[13]; /* Total of 16*u64 */
- };
- 
- struct ocxl_ioctl_p9_wait {
--	__u16 thread_id; // The thread ID required to wake this thread
-+	__u16 thread_id; /* The thread ID required to wake this thread */
- 	__u16 reserved1;
- 	__u32 reserved2;
- 	__u64 reserved3[3];
--- 
-2.17.1
-
+(I have adjusted the patch description and have just sent it out
+separately from the series).
