@@ -1,68 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFEC33D65
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 05:06:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HxfL3vDwzDqNZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 13:06:50 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1791E33D81
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 05:24:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Hy3D3r5hzDqcn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 13:24:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Hxcq39BhzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 13:05:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45Hxcq2P4fz8vsm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 13:05:31 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45Hxcq25Q1z9s3l; Tue,  4 Jun 2019 13:05:31 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=198.54.127.52; helo=new-02-3.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from NEW-02-3.privateemail.com (new-02-3.privateemail.com
- [198.54.127.52])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45Hxcp2MCDz9s3Z
- for <linuxppc-dev@ozlabs.org>; Tue,  4 Jun 2019 13:05:29 +1000 (AEST)
-Received: from MTA-06-1.privateemail.com (unknown [10.20.147.16])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-02.privateemail.com (Postfix) with ESMTPS id 38F3260277;
- Tue,  4 Jun 2019 03:05:25 +0000 (UTC)
-Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id 22A236003D;
- Mon,  3 Jun 2019 23:05:25 -0400 (EDT)
-Received: from APP-01 (unknown [10.20.147.151])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id E75D560039;
- Tue,  4 Jun 2019 03:05:24 +0000 (UTC)
-Date: Mon, 3 Jun 2019 23:05:24 -0400 (EDT)
-From: Christopher M Riedl <cmr@informatik.wtf>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com
-Message-ID: <1146575236.484635.1559617524880@privateemail.com>
-In-Reply-To: <81549d40-e477-6552-9a12-7200933279af@linux.ibm.com>
-References: <20190524123816.1773-1-cmr@informatik.wtf>
- <81549d40-e477-6552-9a12-7200933279af@linux.ibm.com>
-Subject: Re: [RFC PATCH v2] powerpc/xmon: restrict when kernel is locked down
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Hy223T4zzDqNp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 13:23:53 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x543HPw1055305
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 23:23:50 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2swefhvrnf-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 23:23:49 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
+ Tue, 4 Jun 2019 04:23:49 +0100
+Received: from b01cxnp23033.gho.pok.ibm.com (9.57.198.28)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 4 Jun 2019 04:23:46 +0100
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x543NjWL22282558
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jun 2019 03:23:45 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8AB93112064;
+ Tue,  4 Jun 2019 03:23:45 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47CA6112062;
+ Tue,  4 Jun 2019 03:23:45 +0000 (GMT)
+Received: from birb.localdomain (unknown [9.185.142.53])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jun 2019 03:23:45 +0000 (GMT)
+Received: by birb.localdomain (Postfix, from userid 1000)
+ id E18574EC6EE; Tue,  4 Jun 2019 13:23:42 +1000 (AEST)
+From: Stewart Smith <stewart@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, haren@linux.vnet.ibm.com
+Subject: crash after NX error
+Date: Tue, 04 Jun 2019 13:23:42 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Medium
-X-Mailer: Open-Xchange Mailer v7.8.4-Rev57
-X-Originating-Client: open-xchange-appsuite
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19060403-0060-0000-0000-0000034BBE91
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011211; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01212922; UDB=6.00637457; IPR=6.00993987; 
+ MB=3.00027173; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-04 03:23:47
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060403-0061-0000-0000-0000499CFCAE
+Message-Id: <87pnnuav9d.fsf@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-04_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906040020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,203 +90,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mjg59@google.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On my two socket POWER9 system (powernv) with 842 zwap set up, I
+recently got a crash with the Ubuntu kernel (I haven't tried with
+upstream, and this is the first time the system has died like this, so
+I'm not sure how repeatable it is).
 
-> On June 3, 2019 at 1:36 AM Andrew Donnellan <ajd@linux.ibm.com> wrote:
-> 
-> 
-> On 24/5/19 10:38 pm, Christopher M. Riedl wrote:
-> > Xmon should be either fully or partially disabled depending on the
-> > kernel lockdown state.
-> > 
-> > Put xmon into read-only mode for lockdown=integrity and completely
-> > disable xmon when lockdown=confidentiality. Xmon checks the lockdown
-> > state and takes appropriate action:
-> > 
-> >   (1) during xmon_setup to prevent early xmon'ing
-> > 
-> >   (2) when triggered via sysrq
-> > 
-> >   (3) when toggled via debugfs
-> > 
-> >   (4) when triggered via a previously enabled breakpoint
-> > 
-> > The following lockdown state transitions are handled:
-> > 
-> >   (1) lockdown=none -> lockdown=integrity
-> >       clear all breakpoints, set xmon read-only mode
-> > 
-> >   (2) lockdown=none -> lockdown=confidentiality
-> >       clear all breakpoints, prevent re-entry into xmon
-> > 
-> >   (3) lockdown=integrity -> lockdown=confidentiality
-> >       prevent re-entry into xmon
-> > 
-> > Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-> > Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> > ---
-> > 
-> > Applies on top of this series:
-> > 	https://patchwork.kernel.org/cover/10884631/
-> > 
-> > I've done some limited testing of the scenarios mentioned in the commit
-> > message on a single CPU QEMU config.
-> > 
-> > v1->v2:
-> > 	Fix subject line
-> > 	Submit to linuxppc-dev and kernel-hardening
-> > 
-> >   arch/powerpc/xmon/xmon.c | 56 +++++++++++++++++++++++++++++++++++++++-
-> >   1 file changed, 55 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> > index 3e7be19aa208..8c4a5a0c28f0 100644
-> > --- a/arch/powerpc/xmon/xmon.c
-> > +++ b/arch/powerpc/xmon/xmon.c
-> > @@ -191,6 +191,9 @@ static void dump_tlb_44x(void);
-> >   static void dump_tlb_book3e(void);
-> >   #endif
-> >   
-> > +static void clear_all_bpt(void);
-> > +static void xmon_init(int);
-> > +
-> >   #ifdef CONFIG_PPC64
-> >   #define REG		"%.16lx"
-> >   #else
-> > @@ -291,6 +294,39 @@ Commands:\n\
-> >     zh	halt\n"
-> >   ;
-> >   
-> > +#ifdef CONFIG_LOCK_DOWN_KERNEL
-> > +static bool xmon_check_lockdown(void)
-> > +{
-> > +	static bool lockdown = false;
-> > +
-> > +	if (!lockdown) {
-> > +		lockdown = kernel_is_locked_down("Using xmon",
-> > +						 LOCKDOWN_CONFIDENTIALITY);
-> > +		if (lockdown) {
-> > +			printf("xmon: Disabled by strict kernel lockdown\n");
-> > +			xmon_on = 0;
-> > +			xmon_init(0);
-> > +		}
-> > +	}
-> > +
-> > +	if (!xmon_is_ro) {
-> > +		xmon_is_ro = kernel_is_locked_down("Using xmon write-access",
-> > +						   LOCKDOWN_INTEGRITY);
-> > +		if (xmon_is_ro) {
-> > +			printf("xmon: Read-only due to kernel lockdown\n");
-> > +			clear_all_bpt();
-> 
-> Remind me again why we need to clear breakpoints in integrity mode?
-> 
-> 
-> Andrew
-> 
+[    2.891463] zswap: loaded using pool 842-nx/zbud
+...
+[15626.124646] nx_compress_powernv: ERROR: CSB still not valid after 5000000 us, giving up : 00 00 00 00 00000000
+[16868.932913] Unable to handle kernel paging request for data at address 0x6655f67da816cdb8
+[16868.933726] Faulting instruction address: 0xc000000000391600
 
-I interpreted "integrity" mode as meaning that any changes made by xmon should
-be reversed. This also covers the case when a user creates some breakpoint(s)
-in xmon, exits xmon, and then elevates the lockdown state. Upon hitting the
-first breakpoint and (re-)entering xmon, xmon will clear all breakpoints.
 
-Xmon can only take action in response to dynamic lockdown level changes when
-xmon is invoked in some manner - if there is a better way I am all ears :)
+cpu 0x68: Vector: 380 (Data Access Out of Range) at [c000001c9d98b9a0]
+    pc: c000000000391600: kmem_cache_alloc+0x2e0/0x340
+    lr: c0000000003915ec: kmem_cache_alloc+0x2cc/0x340
+    sp: c000001c9d98bc20
+   msr: 900000000280b033
+   dar: 6655f67da816cdb8
+  current = 0xc000001ad43cb400
+  paca    = 0xc00000000fac7800   softe: 0        irq_happened: 0x01
+    pid   = 8319, comm = make
+Linux version 4.15.0-50-generic (buildd@bos02-ppc64el-006) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #54-Ubuntu SMP Mon May 6 18:55:18 UTC 2019 (Ubuntu 4.15.0-50.54-generic 4.15.18)
 
-> 
-> > +		}
-> > +	}
-> > +
-> > +	return lockdown;
-> > +}
-> > +#else
-> > +inline static bool xmon_check_lockdown(void)
-> > +{
-> > +	return false;
-> > +}
-> > +#endif /* CONFIG_LOCK_DOWN_KERNEL */
-> > +
-> >   static struct pt_regs *xmon_regs;
-> >   
-> >   static inline void sync(void)
-> > @@ -708,6 +744,9 @@ static int xmon_bpt(struct pt_regs *regs)
-> >   	struct bpt *bp;
-> >   	unsigned long offset;
-> >   
-> > +	if (xmon_check_lockdown())
-> > +		return 0;
-> > +
-> >   	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
-> >   		return 0;
-> >   
-> > @@ -739,6 +778,9 @@ static int xmon_sstep(struct pt_regs *regs)
-> >   
-> >   static int xmon_break_match(struct pt_regs *regs)
-> >   {
-> > +	if (xmon_check_lockdown())
-> > +		return 0;
-> > +
-> >   	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
-> >   		return 0;
-> >   	if (dabr.enabled == 0)
-> > @@ -749,6 +791,9 @@ static int xmon_break_match(struct pt_regs *regs)
-> >   
-> >   static int xmon_iabr_match(struct pt_regs *regs)
-> >   {
-> > +	if (xmon_check_lockdown())
-> > +		return 0;
-> > +
-> >   	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
-> >   		return 0;
-> >   	if (iabr == NULL)
-> > @@ -3742,6 +3787,9 @@ static void xmon_init(int enable)
-> >   #ifdef CONFIG_MAGIC_SYSRQ
-> >   static void sysrq_handle_xmon(int key)
-> >   {
-> > +	if (xmon_check_lockdown())
-> > +		return;
-> > +
-> >   	/* ensure xmon is enabled */
-> >   	xmon_init(1);
-> >   	debugger(get_irq_regs());
-> > @@ -3763,7 +3811,6 @@ static int __init setup_xmon_sysrq(void)
-> >   device_initcall(setup_xmon_sysrq);
-> >   #endif /* CONFIG_MAGIC_SYSRQ */
-> >   
-> > -#ifdef CONFIG_DEBUG_FS
-> >   static void clear_all_bpt(void)
-> >   {
-> >   	int i;
-> > @@ -3785,8 +3832,12 @@ static void clear_all_bpt(void)
-> >   	printf("xmon: All breakpoints cleared\n");
-> >   }
-> >   
-> > +#ifdef CONFIG_DEBUG_FS
-> >   static int xmon_dbgfs_set(void *data, u64 val)
-> >   {
-> > +	if (xmon_check_lockdown())
-> > +		return 0;
-> > +
-> >   	xmon_on = !!val;
-> >   	xmon_init(xmon_on);
-> >   
-> > @@ -3845,6 +3896,9 @@ early_param("xmon", early_parse_xmon);
-> >   
-> >   void __init xmon_setup(void)
-> >   {
-> > +	if (xmon_check_lockdown())
-> > +		return;
-> > +
-> >   	if (xmon_on)
-> >   		xmon_init(1);
-> >   	if (xmon_early)
-> > 
-> 
-> -- 
-> Andrew Donnellan              OzLabs, ADL Canberra
-> ajd@linux.ibm.com             IBM Australia Limited
->
+68:mon> t
+[c000001c9d98bc20] c0000000003914d4 kmem_cache_alloc+0x1b4/0x340 (unreliable)
+[c000001c9d98bc80] c0000000003b1e14 __khugepaged_enter+0x54/0x220
+[c000001c9d98bcc0] c00000000010f0ec copy_process.isra.5.part.6+0xebc/0x1a10
+[c000001c9d98bda0] c00000000010fe4c _do_fork+0xec/0x510
+[c000001c9d98be30] c00000000000b584 ppc_clone+0x8/0xc
+--- Exception: c00 (System Call) at 00007afe9daf87f4
+SP (7fffca606880) is in userspace
+
+So, it looks like there could be a problem in the error path, plausibly
+fixed by this patch:
+
+commit 656ecc16e8fc2ab44b3d70e3fcc197a7020d0ca5
+Author: Haren Myneni <haren@linux.vnet.ibm.com>
+Date:   Wed Jun 13 00:32:40 2018 -0700
+
+    crypto/nx: Initialize 842 high and normal RxFIFO control registers
+    
+    NX increments readOffset by FIFO size in receive FIFO control register
+    when CRB is read. But the index in RxFIFO has to match with the
+    corresponding entry in FIFO maintained by VAS in kernel. Otherwise NX
+    may be processing incorrect CRBs and can cause CRB timeout.
+    
+    VAS FIFO offset is 0 when the receive window is opened during
+    initialization. When the module is reloaded or in kexec boot, readOffset
+    in FIFO control register may not match with VAS entry. This patch adds
+    nx_coproc_init OPAL call to reset readOffset and queued entries in FIFO
+    control register for both high and normal FIFOs.
+    
+    Signed-off-by: Haren Myneni <haren@us.ibm.com>
+    [mpe: Fixup uninitialized variable warning]
+    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+$ git describe --contains 656ecc16e8fc2ab44b3d70e3fcc197a7020d0ca5
+v4.19-rc1~24^2~50
+
+
+Which was never backported to any stable release, so probably needs to
+be for v4.14 through v4.18. Notably, Ubuntu is on v4.15 and it doesn't
+seem to have picked up the patch. I'm opening an Ubuntu bug for this.
+
+Haren, is this something you can drive through the stable process
+(assuming my above crash looks like this failure)?
+
+-- 
+Stewart Smith
+OPAL Architect, IBM.
+
