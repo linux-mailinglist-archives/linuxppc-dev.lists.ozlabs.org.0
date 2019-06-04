@@ -1,69 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA37350E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 22:31:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8DF350A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 22:07:27 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JNHw5WxGzDqQd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 06:07:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JNq65YHXzDqVQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 06:30:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::141; helo=mail-it1-x141.google.com;
- envelope-from=matthewgarrett@google.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.167.193; helo=mail-oi1-f193.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="pv/6OPT1"; 
- dkim-atps=neutral
-Received: from mail-it1-x141.google.com (mail-it1-x141.google.com
- [IPv6:2607:f8b0:4864:20::141])
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JNGQ46XSzDq5t
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 06:06:00 +1000 (AEST)
-Received: by mail-it1-x141.google.com with SMTP id n189so59985itd.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 13:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ZREhuJlsDtH89ZVDYphzf41RLCVZZkM936cBZurEuKE=;
- b=pv/6OPT1BwcW5kLEBR+t89bzJ6UremuUyrRRzifMONzXagldwUIj4ryQti4Jce45X3
- YEqlt80vgw/1s9GumZrTUbCOUG1NmsmW6pUOoHe9r1iHLbpAPBsMiCQti4XuzcoymGTf
- yRK4Yp32kJT1dNc4oAtYkpiMcmE6Y3X7yQXCgUTLsgrsSA7TI8MEz14fbjA3EbNcjAlY
- 2idbOTzsQd664g8fX2JJ8XhDoeqMwDy4YUdEwBa5PaQXDZn8oJjRkRjkseIlZr4mFJto
- QT6ZqnKS7YsQaium2oEVGTjkIDxej2XHbJmZ/VKarQFFIw/oW3HevHdtuWUbxY+c7WM1
- NCVA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JNnZ3Z2JzDqR3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 06:29:38 +1000 (AEST)
+Received: by mail-oi1-f193.google.com with SMTP id q186so16633193oia.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 13:29:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=ZREhuJlsDtH89ZVDYphzf41RLCVZZkM936cBZurEuKE=;
- b=nQruzOl0HhARh+WIHy4YOvEfAFmqL16vbKC4eTELeuGB22eDMT+LikbX6YJPqCaKV6
- rvVqQ9kk418jReZKCn4lxztE61LIoseyi44LfrYpZYWUpBEJIQbwkXul03fizZ7x8pj6
- NQhFUzMVHpS9SvinU+XoNU4YJlC0T6fIZ9zKVe1eTy1zXGfU8FQ1PeFrIho1bvo/RqST
- 5OR67WNt5FxyGMJe0LPP4wbQ1B9i2S2e4yDOJP//ZHtXzKqJnEv+ysKN5Bt5hgYEFatC
- OhaFpz5xBHPt4iOCt/7oeBYKQx1eVluCiKTo5xOXsNeli91mhnYpKocbWb//8hmIx9iQ
- AOVQ==
-X-Gm-Message-State: APjAAAUMiiDUOu+ljakf+gG6wfiW1sTHUvHlmYEJhpLiLB/TJr3MmKZu
- OExgOJ2mt87iFJcj49FYrMcQxBK6Y64WowlboY5iMQ==
-X-Google-Smtp-Source: APXvYqwsa9hUdLg9OFkrqEiChjF1ClMm07RxLnCex43+ESQGujO4p+QXESe0Hiljy+pNbzZoo6W0gnVr8MJ1YwSahpo=
-X-Received: by 2002:a24:bd4:: with SMTP id 203mr22280225itd.119.1559678756641; 
- Tue, 04 Jun 2019 13:05:56 -0700 (PDT)
+ bh=ShuaCglHMPdgyal6GGIwZRaEUD77Ogg+O3HSaYQ63/E=;
+ b=nEUqFsC/wKx9nfmvUGVq1/zbGpFNJ6NLA/cdxPzqC3QyWSYL07KAAL3LoAGR5F+J4A
+ ZBcdz4wPu6rpYP41A4yis1RmjRQfiW3XeQEztcUHqoTL9DBwSO+2oJO64nSCE8yfgbCR
+ YwdKIeREwksVAqJQYCiy5QoT5TPo8WHT10Rg7BLtqIrd9jojG/aVqmvXRQ30NHA6qCJ4
+ geWm+Iu5W9Ns027y3WYGIOHczcscyqY7Q/DitNHGVqRsVzy+TmbUAzQHHJcScJp26WL4
+ QfiQjnIsPIIfkZB++yERy7Nk/KyGKgzNZqvYgguobSaV/mSoYhl0hVoCo4ClCXqX/Mw3
+ VjYQ==
+X-Gm-Message-State: APjAAAV9OJsgASMCsptfNVSaJAR2J/SrldKBFEHHvfKoin3w12sxWv2R
+ +Ck0Hzo5NBAadhRmxiKwI5tKg+zZIm4=
+X-Google-Smtp-Source: APXvYqx1IbthGyXA78DuHou4nFBVq1EFPjKV93u1NgcR5poDl31LTXP3kkbcnYXz5+hwu29G7wpoew==
+X-Received: by 2002:aca:5bd6:: with SMTP id p205mr5534173oib.67.1559680174927; 
+ Tue, 04 Jun 2019 13:29:34 -0700 (PDT)
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com.
+ [209.85.210.42])
+ by smtp.gmail.com with ESMTPSA id g16sm6192442otl.40.2019.06.04.13.29.33
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 04 Jun 2019 13:29:34 -0700 (PDT)
+Received: by mail-ot1-f42.google.com with SMTP id l15so1093479otn.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 13:29:33 -0700 (PDT)
+X-Received: by 2002:a9d:6058:: with SMTP id v24mr441623otj.110.1559680173629; 
+ Tue, 04 Jun 2019 13:29:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190520062553.14947-1-dja@axtens.net>
- <316a0865-7e14-b36a-7e49-5113f3dfc35f@linux.vnet.ibm.com>
- <87zhmzxkzz.fsf@dja-thinkpad.axtens.net> <20190603072916.GA7545@kroah.com>
- <87tvd6xlx9.fsf@dja-thinkpad.axtens.net>
- <b2312934-42a6-f2e7-61d2-3d95222a1699@linux.vnet.ibm.com>
-In-Reply-To: <b2312934-42a6-f2e7-61d2-3d95222a1699@linux.vnet.ibm.com>
-From: Matthew Garrett <mjg59@google.com>
-Date: Tue, 4 Jun 2019 13:05:45 -0700
-Message-ID: <CACdnJutpgxd0Se-UDR4Gw3s+KfTuHprUTqFqxq+qu17vd4xr7Q@mail.gmail.com>
-Subject: Re: [WIP RFC PATCH 0/6] Generic Firmware Variable Filesystem
-To: Nayna <nayna@linux.vnet.ibm.com>
+References: <20190501092841.9026-1-rasmus.villemoes@prevas.dk>
+ <20190513111442.25724-1-rasmus.villemoes@prevas.dk>
+In-Reply-To: <20190513111442.25724-1-rasmus.villemoes@prevas.dk>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Tue, 4 Jun 2019 15:29:22 -0500
+X-Gmail-Original-Message-ID: <CADRPPNRfAk2ZWJQt=Wx5SEqvw4iSpzkj8_XvHa_CZYHDAxFgxg@mail.gmail.com>
+Message-ID: <CADRPPNRfAk2ZWJQt=Wx5SEqvw4iSpzkj8_XvHa_CZYHDAxFgxg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] soc/fsl/qe: cleanups and new DT binding
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,26 +72,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Nayna Jain <nayna@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- George Wilson <gcwilson@us.ibm.com>, Elaine Palmer <erpalmer@us.ibm.com>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Daniel Axtens <dja@axtens.net>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
+ Rob Herring <robh+dt@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 4, 2019 at 1:01 PM Nayna <nayna@linux.vnet.ibm.com> wrote:
-> It seems efivars were first implemented in sysfs and then later
-> separated out as efivarfs.
-> Refer - Documentation/filesystems/efivarfs.txt.
+On Mon, May 13, 2019 at 6:17 AM Rasmus Villemoes
+<rasmus.villemoes@prevas.dk> wrote:
 >
-> So, the reason wasn't that sysfs should not be used for exposing
-> firmware variables,
-> but for the size limitations which seems to come from UEFI Specification.
+> This small series consists of some small cleanups and simplifications
+> of the QUICC engine driver, and introduces a new DT binding that makes
+> it much easier to support other variants of the QUICC engine IP block
+> that appears in the wild: There's no reason to expect in general that
+> the number of valid SNUMs uniquely determines the set of such, so it's
+> better to simply let the device tree specify the values (and,
+> implicitly via the array length, also the count).
 >
-> Is this limitation valid for the new requirement of secure variables ?
+> Which tree should this go through?
+>
+> v3:
+> - Move example from commit log into binding document (adapting to
+>   MPC8360 which the existing example pertains to).
+> - Add more review tags.
+> - Fix minor style issue.
+>
+> v2:
+> - Address comments from Christophe Leroy
+> - Add his Reviewed-by to 1/6 and 3/6
+> - Split DT binding update to separate patch as per
+>   Documentation/devicetree/bindings/submitting-patches.txt
+>
+> Rasmus Villemoes (6):
+>   soc/fsl/qe: qe.c: drop useless static qualifier
+>   soc/fsl/qe: qe.c: reduce static memory footprint by 1.7K
+>   soc/fsl/qe: qe.c: introduce qe_get_device_node helper
+>   dt-bindings: soc/fsl: qe: document new fsl,qe-snums binding
+>   soc/fsl/qe: qe.c: support fsl,qe-snums property
+>   soc/fsl/qe: qe.c: fold qe_get_num_of_snums into qe_snums_init
 
-I don't think the size restriction is an issue now, but there's a lot
-of complex semantics around variable deletion and immutability that
-need to be represented somehow.
+Series applied to soc/fsl for-next.  Thanks!
+
+Regards,
+Leo
+
+>
+>  .../devicetree/bindings/soc/fsl/cpm_qe/qe.txt |  13 +-
+>  drivers/soc/fsl/qe/qe.c                       | 163 +++++++-----------
+>  2 files changed, 77 insertions(+), 99 deletions(-)
+>
+> --
+> 2.20.1
+>
