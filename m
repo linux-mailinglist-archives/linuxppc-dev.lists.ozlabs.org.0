@@ -1,54 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEEF33D09
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 04:16:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45HwXc1ZnXzDqWG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 12:16:48 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A93A33CB3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 03:15:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Hv9l5c8pzDqWR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:15:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45HwWD4wFmzDqPB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 12:15:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.b="JEBKlTZo"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 45HwWD2tmNz9s9y; Tue,  4 Jun 2019 12:15:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1559614536;
- bh=z09flnAUfm9RhIXEmOxG01cmWOy778r4YU6BkCM/Qvo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=JEBKlTZodXcJ9Di1OQg0ZI7jgZKNyBqd5zK6kaVMBzirScj+k3u5qgH0mNBuHJJrW
- yf1fycjJa02UUyzjq7KUtNthvwjD1DplYcaGcPoLM0oazQ2KhQSkawZT3jj2/Gx+y6
- gSPnx1CgphWyhSiyvTq1wfGkmDLmY3daqqDB/iUk=
-Date: Tue, 4 Jun 2019 10:32:56 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH kernel] prom_init: Fetch flatten device tree from the
- system firmware
-Message-ID: <20190604003255.GA9045@umbus.fritz.box>
-References: <20190501034221.18437-1-aik@ozlabs.ru>
- <a62a8612-77f5-5c6b-a6a2-15f006051d5e@ozlabs.ru>
- <20190530193736.GC31586@gate.crashing.org>
- <43f037c57eed8ad2175470c940917dced947bb70.camel@kernel.crashing.org>
- <20190602232330.GN31586@gate.crashing.org>
- <7fc6cd5e-ddd6-4028-b4ef-7bdcd6db69d0@ozlabs.ru>
- <32063141651fd502c8ce94be19cb5c5330ce39bd.camel@kernel.crashing.org>
- <20190603234932.GR31586@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Hv8T6RJGzDqTL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 11:14:17 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x541CDvV124251
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Jun 2019 21:14:14 -0400
+Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2swdyk9mw8-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2019 21:14:14 -0400
+Received: from localhost
+ by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Tue, 4 Jun 2019 02:14:13 +0100
+Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
+ by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 4 Jun 2019 02:14:09 +0100
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x541E8Gw18284804
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jun 2019 01:14:08 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA40278064;
+ Tue,  4 Jun 2019 01:14:07 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27B4E7805C;
+ Tue,  4 Jun 2019 01:14:04 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.162.142])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue,  4 Jun 2019 01:14:03 +0000 (GMT)
+References: <87zhrj8kcp.fsf@morokweng.localdomain>
+ <87womn8inf.fsf@morokweng.localdomain>
+ <20190129134750-mutt-send-email-mst@kernel.org>
+ <877eefxvyb.fsf@morokweng.localdomain>
+ <20190204144048-mutt-send-email-mst@kernel.org>
+ <87ef71seve.fsf@morokweng.localdomain>
+ <20190320171027-mutt-send-email-mst@kernel.org>
+ <87tvfvbwpb.fsf@morokweng.localdomain>
+ <20190323165456-mutt-send-email-mst@kernel.org>
+ <87a7go71hz.fsf@morokweng.localdomain>
+ <20190520090939-mutt-send-email-mst@kernel.org>
+User-agent: mu4e 1.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [RFC PATCH] virtio_ring: Use DMA API if guest memory is encrypted
+In-reply-to: <20190520090939-mutt-send-email-mst@kernel.org>
+Date: Mon, 03 Jun 2019 22:13:59 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
-Content-Disposition: inline
-In-Reply-To: <20190603234932.GR31586@gate.crashing.org>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19060401-0004-0000-0000-00001517D37A
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011210; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01212884; UDB=6.00637431; IPR=6.00993944; 
+ MB=3.00027172; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-04 01:14:12
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060401-0005-0000-0000-00008BEB7B8D
+Message-Id: <877ea26tk8.fsf@morokweng.localdomain>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-04_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906040004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,63 +101,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+Cc: Mike Anderson <andmike@linux.ibm.com>,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+ Jason Wang <jasowang@redhat.com>, Alexey Kardashevskiy <aik@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---pWyiEgJYm5f9v55/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 03, 2019 at 06:49:32PM -0500, Segher Boessenkool wrote:
-> On Tue, Jun 04, 2019 at 07:18:42AM +1000, Benjamin Herrenschmidt wrote:
-> > Yes we could make property fetching faster but mostly by creating a new
-> > bulk interface which is quite a bit of work, a new API, and will in
-> > practice not be used for anything other than creating the FDT. In that
-> > case, nothing will beat in performance having OF create the FDT itself
-> > based on its current tree.
->=20
-> And that will change the whole boot protocol, the interaction between OF
-> and its client, which is a much bigger change, not conceptually trivial
-> at all.  Copying all properties at once is, which is why I suggested it.
+Michael S. Tsirkin <mst@redhat.com> writes:
 
-Much as I wasn't terribly convinced by the original idea, I agree with
-Ben and Alexey here.  Your approach has slightly more complexity for
-slightly less benefit.  If it's worth doing yours it's better to do
-theirs.
+> On Wed, Apr 17, 2019 at 06:42:00PM -0300, Thiago Jung Bauermann wrote:
+>> I rephrased it in terms of address translation. What do you think of
+>> this version? The flag name is slightly different too:
+>>
+>>
+>> VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION This feature has the same
+>>     meaning as VIRTIO_F_ACCESS_PLATFORM both when set and when not set,
+>>     with the exception that address translation is guaranteed to be
+>>     unnecessary when accessing memory addresses supplied to the device
+>>     by the driver. Which is to say, the device will always use physical
+>>     addresses matching addresses used by the driver (typically meaning
+>>     physical addresses used by the CPU) and not translated further. This
+>>     flag should be set by the guest if offered, but to allow for
+>>     backward-compatibility device implementations allow for it to be
+>>     left unset by the guest. It is an error to set both this flag and
+>>     VIRTIO_F_ACCESS_PLATFORM.
+>
+>
+> OK so VIRTIO_F_ACCESS_PLATFORM is designed to allow unpriveledged
+> drivers. This is why devices fail when it's not negotiated.
 
-> It would take away the opposition to your patch.
+Just to clarify, what do you mean by unprivileged drivers? Is it drivers
+implemented in guest userspace such as with VFIO? Or unprivileged in
+some other sense such as needing to use bounce buffers for some reason?
 
-Only from you, AFAICT...
+> This confuses me.
+> If driver is unpriveledged then what happens with this flag?
+> It can supply any address it wants. Will that corrupt kernel
+> memory?
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Not needing address translation doesn't necessarily mean that there's no
+IOMMU. On powerpc we don't use VIRTIO_F_ACCESS_PLATFORM but there's
+always an IOMMU present. And we also support VFIO drivers. The VFIO API
+for pseries (sPAPR section in Documentation/vfio.txt) has extra ioctls
+to program the IOMMU.
 
---pWyiEgJYm5f9v55/
-Content-Type: application/pgp-signature; name="signature.asc"
+For our use case, we don't need address translation because we set up an
+identity mapping in the IOMMU so that the device can use guest physical
+addresses.
 
------BEGIN PGP SIGNATURE-----
+If the guest kernel is concerned that an unprivileged driver could
+jeopardize its integrity it should not negotiate this feature flag.
+Perhaps there should be a note about this in the flag definition? This
+concern is platform-dependant though. I don't believe it's an issue in
+pseries.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAlz1vDUACgkQbDjKyiDZ
-s5L/rBAA5iDgysEvs13JBaX9C9BwA1X0tM/3uwsKh6pVfnyRG32ZFYsl61TEgIJB
-00P+ewsT01qXaZn+VZZztk76U2l6RY6HMmEU46NHcK7KFgsH85ibUMX+VTeMYh3J
-dNuKoI0AZ+cRlZNimomnyH/90WuptpwR6w/Cl9CCK2NzgtZ+EEwenhus7Y0TTLdo
-oP2e6DLYO+eGrZEOyK5/OhOTqEqaUffmVLq9Yu3Odor1j+xc0pIl/mGf0D8hfJyG
-RTBA9nrISln4wCG4LFxQXs94vI2/At1D6uKOQEcAHIcyFuuANX+FOXf3+94fsZ94
-O4qhzQZ5lsHg+1JKNBUF5j+2QidZnmOK7XNtdbeaIYpXP3941MK79sQ8e8gIVZZY
-XuhZ+gpA/+eJhhdpwbOyPFnJeG5AcvmY+6qdyrNARDmT4NSzUn+GckcRkvjJLK5v
-IXqGCC0g48LZlIfzh97l9Ff1KQbWa87OIbhcn6nF32Q22A9O7Z6Ble9JszZ1Bnj6
-IyIfR82hVx1uKHQBBRAxDHUdFE62CMNmtMrekBq7v3c/twx/ogtI8ZsDlQIyuJBu
-c+X+kXO0bInf7sqhJGtFy/daNiJ7OJT6D22PbzR9Y3bQs6Jh7c0RTK4Y/PHf0mAV
-685IdGdmw9AdU0JX6G+p5yIzM1ljS97hX8nAZlvegImQnqikC7g=
-=hy3s
------END PGP SIGNATURE-----
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
---pWyiEgJYm5f9v55/--
