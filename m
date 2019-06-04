@@ -1,52 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD2634E2E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:01:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDDA34A5D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 16:27:02 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JDl739tbzDqW7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 00:26:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JJ9J5HmwzDqWF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 03:01:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45JDcS4nNDzDqHw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 00:21:11 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DC53341;
- Tue,  4 Jun 2019 07:21:10 -0700 (PDT)
-Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 02D163F690;
- Tue,  4 Jun 2019 07:21:07 -0700 (PDT)
-Subject: Re: [PATCH v4 3/3] kselftest: Extend vDSO selftest to clock_getres
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-arch@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20190523112116.19233-1-vincenzo.frascino@arm.com>
- <20190523112116.19233-4-vincenzo.frascino@arm.com>
- <87lfyrp0d2.fsf@concordia.ellerman.id.au>
- <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
- <5c99721a-ce6b-10a0-99f2-6c37c1da4542@c-s.fr>
- <b710d906-edac-f8a7-792b-e6822399187c@arm.com>
- <dd8bf915-f438-74f0-494e-427d10fc0505@c-s.fr>
- <eacdc960-c344-9f9f-7f1b-ad770cb4a725@arm.com>
- <2389b7f2-288b-215e-994a-3b24be08e125@c-s.fr>
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <42cdb5cf-797a-2497-92a2-730250ad436a@arm.com>
-Date: Tue, 4 Jun 2019 15:21:06 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="lRxptcyc"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JJ7h6nBBzDqS8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 02:59:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45JJ7V5b3jz9v0FN;
+ Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=lRxptcyc; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id qW66f5xptFAU; Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45JJ7V4X7Fz9v0FC;
+ Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1559667590; bh=M/gFqK7lNCwKusjAc9u2ML0vs/6IGlCg8EgQMDWaRl4=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=lRxptcyctzAGCWwul2GIdV7aOB8ReA46oksDDYQi3pzV9AeOgmMt8+fjTTgSkggWX
+ WYpt4JHhHwBc1XCOCFFFDHeoHInHEy+S9f9zprJONpsT4lTON9AvUBnfMZLqDSwTFj
+ RiLWx3ZGLJU2Ytu2/c1p5zcupyEDzbAAGEMON3dA=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C27848B99C;
+ Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0mnSeiSXSBB8; Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B0A18B98E;
+ Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
+Subject: Re: [PATCH v3 14/16] powerpc/32: implement fast entry for syscalls on
+ BOOKE
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <cover.1556627571.git.christophe.leroy@c-s.fr>
+ <3e254178a157e7eaeef48f983880f71f97d1f296.1556627571.git.christophe.leroy@c-s.fr>
+ <20190523061427.GA19655@blackberry>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <4f5fa8af-08c2-e71a-dd43-4c1a64018409@c-s.fr>
+Date: Tue, 4 Jun 2019 18:59:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <2389b7f2-288b-215e-994a-3b24be08e125@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20190523061427.GA19655@blackberry>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,186 +80,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Paul,
 
-On 04/06/2019 14:52, Christophe Leroy wrote:
-> 
-> 
-> Le 04/06/2019 à 15:43, Vincenzo Frascino a écrit :
->> On 04/06/2019 14:39, Christophe Leroy wrote:
->>>
->>>
->>> Le 04/06/2019 à 15:32, Vincenzo Frascino a écrit :
->>>> Hi Christophe,
->>>>
->>>> On 04/06/2019 14:16, Christophe Leroy wrote:
->>>>> Hi Vincenzo
->>>>>
->>>>> Le 28/05/2019 à 13:57, Vincenzo Frascino a écrit :
->>>>>> Hi Michael,
->>>>>>
->>>>>> thank you for your reply.
->>>>>>
->>>>>> On 28/05/2019 07:19, Michael Ellerman wrote:
->>>>>>> Vincenzo Frascino <vincenzo.frascino@arm.com> writes:
->>>>>>>
->>>>>>>> The current version of the multiarch vDSO selftest verifies only
->>>>>>>> gettimeofday.
->>>>>>>>
->>>>>>>> Extend the vDSO selftest to clock_getres, to verify that the
->>>>>>>> syscall and the vDSO library function return the same information.
->>>>>>>>
->>>>>>>> The extension has been used to verify the hrtimer_resoltion fix.
->>>>>>>
->>>>>>> This is passing for me even without patch 1 applied, shouldn't it fail
->>>>>>> without the fix? What am I missing?
->>>>>>>
->>>>>>
->>>>>> This is correct, because during the refactoring process I missed an "n" :)
->>>>>>
->>>>>> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_sec·!=·y.tv_sec))
->>>>>>
->>>>>> Should be:
->>>>>>
->>>>>> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_nsec·!=·y.tv_nsec))
->>>>>>
->>>>>> My mistake, I am going to fix the test and re-post v5 of this set.
->>>>>>
->>>>>> Without my patch if you pass "highres=off" to the kernel (as a command line
->>>>>> parameter) it leads to a broken implementation of clock_getres since the value
->>>>>> of CLOCK_REALTIME_RES does not change at runtime.
->>>>>>
->>>>>> Expected result (with highres=off):
->>>>>>
->>>>>> # uname -r
->>>>>> 5.2.0-rc2
->>>>>> # ./vdso_clock_getres
->>>>>> clock_id: CLOCK_REALTIME [FAIL]
->>>>>> clock_id: CLOCK_BOOTTIME [PASS]
->>>>>> clock_id: CLOCK_TAI [PASS]
->>>>>> clock_id: CLOCK_REALTIME_COARSE [PASS]
->>>>>> clock_id: CLOCK_MONOTONIC [FAIL]
->>>>>> clock_id: CLOCK_MONOTONIC_RAW [PASS]
->>>>>> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->>>>>>
->>>>>> The reason of this behavior is that the only clocks supported by getres on
->>>>>> powerpc are CLOCK_REALTIME and CLOCK_MONOTONIC, the rest on the clocks use
->>>>>> always syscalls.
->>>>>
->>>>> vdso64 is supposed to implement CLOCK_{REALTIME/MONOTONIC}_COARSE, so I
->>>>> guess it should fail for them too ?
->>>>>
->>>>> Or is your test done on vdso32 ?
->>>>>
->>>>
->>>> Based on what I can see in kernel/vdso64 in 5.2-rc3:
->>>>
->>>> /*
->>>>    * Exact prototype of clock_getres()
->>>>    *
->>>>    * int __kernel_clock_getres(clockid_t clock_id, struct timespec *res);
->>>>    *
->>>>    */
->>>> V_FUNCTION_BEGIN(__kernel_clock_getres)
->>>>     .cfi_startproc
->>>> 	/* Check for supported clock IDs */
->>>> 	cmpwi	cr0,r3,CLOCK_REALTIME
->>>> 	cmpwi	cr1,r3,CLOCK_MONOTONIC
->>>> 	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
->>>> 	bne	cr0,99f
->>>>
->>>> 	li	r3,0
->>>> 	cmpldi	cr0,r4,0
->>>> 	crclr	cr0*4+so
->>>> 	beqlr
->>>> 	lis	r5,CLOCK_REALTIME_RES@h
->>>> 	ori	r5,r5,CLOCK_REALTIME_RES@l
->>>> 	std	r3,TSPC64_TV_SEC(r4)
->>>> 	std	r5,TSPC64_TV_NSEC(r4)
->>>> 	blr
->>>>
->>>> 	/*
->>>> 	 * syscall fallback
->>>> 	 */
->>>> 99:
->>>> 	li	r0,__NR_clock_getres
->>>> 	sc
->>>> 	blr
->>>>     .cfi_endproc
->>>> V_FUNCTION_END(__kernel_clock_getres)
->>>>
->>>> it does not seem so for what concerns vdso64. I did run again the test both on
->>>> ppc and ppc64 qemu instances and the result is the same to what I reported in
->>>> this thread.
->>>>
->>>> Am I missing something?
->>>
->>> I was thinking about
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5c929885f1bb
->>> but apparently clock_getres() was left aside. Should we do something
->>> about it ?
->>>
+Le 23/05/2019 à 08:14, Paul Mackerras a écrit :
+> On Tue, Apr 30, 2019 at 12:39:03PM +0000, Christophe Leroy wrote:
+>> This patch implements a fast entry for syscalls.
 >>
->> Sure, but I would like this series to be merged first (since the topic is
->> different). I am happy, after that, to push a separate one on top that addresses
->> the problem.
+>> Syscalls don't have to preserve non volatile registers except LR.
 >>
->> Please let me know if it works for you and Michael.
+>> This patch then implement a fast entry for syscalls, where
+>> volatile registers get clobbered.
+>>
+>> As this entry is dedicated to syscall it always sets MSR_EE
+>> and warns in case MSR_EE was previously off
+>>
+>> It also assumes that the call is always from user, system calls are
+>> unexpected from kernel.
 > 
-> No problem for myself.
+> This is now upstream as commit 1a4b739bbb4f.  On the e500mc test
+> config that I use, I'm getting this build failure:
 > 
-> By the way, next time (or next spin ?) I recommend you to handle your 
-> patches independently and not as a series since they are all 
-> independant. It would have avoided confusion and the need for you to 
-> resend all 3 patches everytime you did a change in one of them.
->
+> arch/powerpc/kernel/head_fsl_booke.o: In function `SystemCall':
+> arch/powerpc/kernel/head_fsl_booke.S:416: undefined reference to `kvmppc_handler_BOOKE_INTERRUPT_SYSCALL_SPRN_SRR1'
+> Makefile:1052: recipe for target 'vmlinux' failed
 
-Thanks for the advise, I will do next time.
+Does my patch (https://patchwork.ozlabs.org/patch/1103909/) fixes the 
+issue for you ?
 
-> Christophe
+Thanks
+Christophe
+
 > 
->>
->>> Christophe
->>>
->>>>
->>>>> Christophe
->>>>>
->>>>>>
->>>>>>> # uname -r
->>>>>>> 5.2.0-rc2-gcc-8.2.0
->>>>>>>
->>>>>>> # ./vdso_clock_getres
->>>>>>> clock_id: CLOCK_REALTIME [PASS]
->>>>>>> clock_id: CLOCK_BOOTTIME [PASS]
->>>>>>> clock_id: CLOCK_TAI [PASS]
->>>>>>> clock_id: CLOCK_REALTIME_COARSE [PASS]
->>>>>>> clock_id: CLOCK_MONOTONIC [PASS]
->>>>>>> clock_id: CLOCK_MONOTONIC_RAW [PASS]
->>>>>>> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->>>>>>>
->>>>>>> cheers
->>>>>>>
->>>>>>>> Cc: Shuah Khan <shuah@kernel.org>
->>>>>>>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
->>>>>>>> ---
->>>>>>>>
->>>>>>>> Note: This patch is independent from the others in this series, hence it
->>>>>>>> can be merged singularly by the kselftest maintainers.
->>>>>>>>
->>>>>>>>     tools/testing/selftests/vDSO/Makefile         |   2 +
->>>>>>>>     .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
->>>>>>>>     2 files changed, 126 insertions(+)
->>>>>>>>     create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
->>>>>>
->>>>
->>
-
--- 
-Regards,
-Vincenzo
+>> +.macro SYSCALL_ENTRY trapno intno
+>> +	mfspr	r10, SPRN_SPRG_THREAD
+>> +#ifdef CONFIG_KVM_BOOKE_HV
+>> +BEGIN_FTR_SECTION
+>> +	mtspr	SPRN_SPRG_WSCRATCH0, r10
+>> +	stw	r11, THREAD_NORMSAVE(0)(r10)
+>> +	stw	r13, THREAD_NORMSAVE(2)(r10)
+>> +	mfcr	r13			/* save CR in r13 for now	   */
+>> +	mfspr	r11, SPRN_SRR1
+>> +	mtocrf	0x80, r11	/* check MSR[GS] without clobbering reg */
+>> +	bf	3, 1975f
+>> +	b	kvmppc_handler_BOOKE_INTERRUPT_\intno\()_SPRN_SRR1
+> 
+> It seems to me that the "_SPRN_SRR1" on the end of this line
+> isn't meant to be there...  However, it still fails to link with that
+> removed.
+> 
+> Paul.
+> 
