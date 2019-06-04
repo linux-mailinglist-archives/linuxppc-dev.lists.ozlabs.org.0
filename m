@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77D133F67
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 08:59:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F88733F62
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 08:57:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J2mj50FjzDqRv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 16:57:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J2pF48QgzDqJf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 16:59:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45J2lF1kDJzDqQ9
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 16:56:25 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J2lf4sxmzDqR3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 16:56:46 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 7D37F75727;
- Tue,  4 Jun 2019 06:56:22 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id EF1C2368E3;
+ Tue,  4 Jun 2019 06:56:44 +0000 (UTC)
 Received: from [10.36.117.37] (ovpn-117-37.ams2.redhat.com [10.36.117.37])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A151510013D9;
- Tue,  4 Jun 2019 06:56:16 +0000 (UTC)
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add temporary arch_remove_memory()
- implementation
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 61C2B60FD5;
+ Tue,  4 Jun 2019 06:56:41 +0000 (UTC)
+Subject: Re: [PATCH v3 05/11] drivers/base/memory: Pass a block_id to
+ init_memory_block()
 To: Wei Yang <richard.weiyang@gmail.com>
 References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-5-david@redhat.com>
- <20190603214139.mercn5hol2yyfl2s@master>
+ <20190527111152.16324-6-david@redhat.com>
+ <20190603214932.3xsvxwiiutcve4tz@master>
 From: David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -81,18 +81,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <5059f68d-45d2-784e-0770-ee67060773c7@redhat.com>
-Date: Tue, 4 Jun 2019 08:56:15 +0200
+Message-ID: <cd708cec-f369-4176-16c9-93a3c8ab6947@redhat.com>
+Date: Tue, 4 Jun 2019 08:56:40 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190603214139.mercn5hol2yyfl2s@master>
+In-Reply-To: <20190603214932.3xsvxwiiutcve4tz@master>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.25]); Tue, 04 Jun 2019 06:56:22 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.30]); Tue, 04 Jun 2019 06:56:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,103 +104,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, Yu Zhao <yuzhao@google.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, Will Deacon <will.deacon@arm.com>,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Jun Yao <yaojun8558363@gmail.com>, linux-mm@kvack.org,
- Chintan Pandya <cpandya@codeaurora.org>, Igor Mammedov <imammedo@redhat.com>,
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Igor Mammedov <imammedo@redhat.com>,
  akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- Robin Murphy <robin.murphy@arm.com>
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03.06.19 23:41, Wei Yang wrote:
-> On Mon, May 27, 2019 at 01:11:45PM +0200, David Hildenbrand wrote:
->> A proper arch_remove_memory() implementation is on its way, which also
->> cleanly removes page tables in arch_add_memory() in case something goes
->> wrong.
-> 
-> Would this be better to understand?
-> 
->     removes page tables created in arch_add_memory
-
-That's not what this sentence expresses. Have a look at
-arch_add_memory(), in case  __add_pages() fails, the page tables are not
-removed. This will also be fixed by Anshuman in the same shot.
-
-> 
+On 03.06.19 23:49, Wei Yang wrote:
+> On Mon, May 27, 2019 at 01:11:46PM +0200, David Hildenbrand wrote:
+>> We'll rework hotplug_memory_register() shortly, so it no longer consumes
+>> pass a section.
 >>
->> As we want to use arch_remove_memory() in case something goes wrong
->> during memory hotplug after arch_add_memory() finished, let's add
->> a temporary hack that is sufficient enough until we get a proper
->> implementation that cleans up page table entries.
->>
->> We will remove CONFIG_MEMORY_HOTREMOVE around this code in follow up
->> patches.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will.deacon@arm.com>
->> Cc: Mark Rutland <mark.rutland@arm.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
->> Cc: Chintan Pandya <cpandya@codeaurora.org>
->> Cc: Mike Rapoport <rppt@linux.ibm.com>
->> Cc: Jun Yao <yaojun8558363@gmail.com>
->> Cc: Yu Zhao <yuzhao@google.com>
->> Cc: Robin Murphy <robin.murphy@arm.com>
->> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
 >> Signed-off-by: David Hildenbrand <david@redhat.com>
 >> ---
->> arch/arm64/mm/mmu.c | 19 +++++++++++++++++++
->> 1 file changed, 19 insertions(+)
+>> drivers/base/memory.c | 15 +++++++--------
+>> 1 file changed, 7 insertions(+), 8 deletions(-)
 >>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index a1bfc4413982..e569a543c384 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1084,4 +1084,23 @@ int arch_add_memory(int nid, u64 start, u64 size,
->> 	return __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
->> 			   restrictions);
+>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>> index f180427e48f4..f914fa6fe350 100644
+>> --- a/drivers/base/memory.c
+>> +++ b/drivers/base/memory.c
+>> @@ -651,21 +651,18 @@ int register_memory(struct memory_block *memory)
+>> 	return ret;
 >> }
->> +#ifdef CONFIG_MEMORY_HOTREMOVE
->> +void arch_remove_memory(int nid, u64 start, u64 size,
->> +			struct vmem_altmap *altmap)
->> +{
->> +	unsigned long start_pfn = start >> PAGE_SHIFT;
->> +	unsigned long nr_pages = size >> PAGE_SHIFT;
->> +	struct zone *zone;
->> +
->> +	/*
->> +	 * FIXME: Cleanup page tables (also in arch_add_memory() in case
->> +	 * adding fails). Until then, this function should only be used
->> +	 * during memory hotplug (adding memory), not for memory
->> +	 * unplug. ARCH_ENABLE_MEMORY_HOTREMOVE must not be
->> +	 * unlocked yet.
->> +	 */
->> +	zone = page_zone(pfn_to_page(start_pfn));
+>>
+>> -static int init_memory_block(struct memory_block **memory,
+>> -			     struct mem_section *section, unsigned long state)
+>> +static int init_memory_block(struct memory_block **memory, int block_id,
+>> +			     unsigned long state)
+>> {
+>> 	struct memory_block *mem;
+>> 	unsigned long start_pfn;
+>> -	int scn_nr;
+>> 	int ret = 0;
+>>
+>> 	mem = kzalloc(sizeof(*mem), GFP_KERNEL);
+>> 	if (!mem)
+>> 		return -ENOMEM;
+>>
+>> -	scn_nr = __section_nr(section);
+>> -	mem->start_section_nr =
+>> -			base_memory_block_id(scn_nr) * sections_per_block;
+>> +	mem->start_section_nr = block_id * sections_per_block;
+>> 	mem->end_section_nr = mem->start_section_nr + sections_per_block - 1;
+>> 	mem->state = state;
+>> 	start_pfn = section_nr_to_pfn(mem->start_section_nr);
+>> @@ -694,7 +691,8 @@ static int add_memory_block(int base_section_nr)
+>>
+>> 	if (section_count == 0)
+>> 		return 0;
+>> -	ret = init_memory_block(&mem, __nr_to_section(section_nr), MEM_ONLINE);
+>> +	ret = init_memory_block(&mem, base_memory_block_id(base_section_nr),
+>> +				MEM_ONLINE);
 > 
-> Compared with arch_remove_memory in x86. If altmap is not NULL, zone will be
-> retrieved from page related to altmap. Not sure why this is not the same?
+> If my understanding is correct, section_nr could be removed too.
 
-This is a minimal implementation, sufficient for this use case here. A
-full implementation is in the works. For now, this function will not be
-used with an altmap (ZONE_DEVICE is not esupported for arm64 yet).
-
-Thanks!
-
-> 
->> +	__remove_pages(zone, start_pfn, nr_pages, altmap);
->> +}
->> +#endif
->> #endif
->> -- 
->> 2.20.1
-> 
+Yes you are, this has already been addressed in linux-next.
 
 
 -- 
