@@ -1,43 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2D434144
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 10:13:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J4S359rlzDqTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 18:13:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9A2342BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:11:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J5kg2qf1zDqNs
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:11:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.101.70; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.101.70])
- by lists.ozlabs.org (Postfix) with ESMTP id 45J4Qg37rHzDqKw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 18:12:09 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22F87A78;
- Tue,  4 Jun 2019 01:12:06 -0700 (PDT)
-Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 82BA43F246; Tue,  4 Jun 2019 01:11:55 -0700 (PDT)
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-To: Peter Zijlstra <peterz@infradead.org>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <afe886e5-8420-0c33-ed2f-159cd3d55882@arm.com>
-Date: Tue, 4 Jun 2019 13:42:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ spf=none (mailfrom) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=richardw.yang@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J4vR4N8hzDqK9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 18:33:39 +1000 (AEST)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2019 01:32:26 -0700
+X-ExtLoop1: 1
+Received: from richard.sh.intel.com (HELO localhost) ([10.239.159.54])
+ by orsmga006.jf.intel.com with ESMTP; 04 Jun 2019 01:32:17 -0700
+Date: Tue, 4 Jun 2019 16:31:48 +0800
+From: Wei Yang <richardw.yang@linux.intel.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3 06/11] mm/memory_hotplug: Allow arch_remove_pages()
+ without CONFIG_MEMORY_HOTREMOVE
+Message-ID: <20190604083148.GA28403@richard>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-7-david@redhat.com>
+ <20190603221540.bvhuvltlwuirm5sl@master>
+ <2ba74d1d-643e-7e22-acff-2b04c579b4f8@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ba74d1d-643e-7e22-acff-2b04c579b4f8@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Tue, 04 Jun 2019 19:07:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,62 +56,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+Reply-To: Wei Yang <richardw.yang@linux.intel.com>
+Cc: Oscar Salvador <osalvador@suse.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Arun KS <arunks@codeaurora.org>,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Michal Hocko <mhocko@suse.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Qian Cai <cai@lca.pw>, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
  Ingo Molnar <mingo@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, "mike.travis@hpe.com" <mike.travis@hpe.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Baoquan He <bhe@redhat.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Banman <andrew.banman@hpe.com>, linux-kernel@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Wei Yang <richardw.yang@linux.intel.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Igor Mammedov <imammedo@redhat.com>, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jun 04, 2019 at 08:59:43AM +0200, David Hildenbrand wrote:
+>On 04.06.19 00:15, Wei Yang wrote:
+>> Allow arch_remove_pages() or arch_remove_memory()?
+>
+>Looks like I merged __remove_pages() and arch_remove_memory().
+>
+>@Andrew, can you fix this up to
+>
+>"mm/memory_hotplug: Allow arch_remove_memory() without
+>CONFIG_MEMORY_HOTREMOVE"
+>
+>? Thanks!
+>
 
+Already merged?
 
-On 06/04/2019 12:24 PM, Peter Zijlstra wrote:
-> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
->> diff --git a/mm/memory.c b/mm/memory.c
->> index ddf20bd..b6bae8f 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -52,6 +52,7 @@
->>  #include <linux/pagemap.h>
->>  #include <linux/memremap.h>
->>  #include <linux/ksm.h>
->> +#include <linux/kprobes.h>
->>  #include <linux/rmap.h>
->>  #include <linux/export.h>
->>  #include <linux/delayacct.h>
->> @@ -141,6 +142,21 @@ static int __init init_zero_pfn(void)
->>  core_initcall(init_zero_pfn);
->>  
->>  
->> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
->> +{
->> +	int ret = 0;
->> +
->> +	/*
->> +	 * To be potentially processing a kprobe fault and to be allowed
->> +	 * to call kprobe_running(), we have to be non-preemptible.
->> +	 */
->> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
->> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
->> +			ret = 1;
->> +	}
->> +	return ret;
->> +}
-> 
-> That thing should be called kprobe_page_fault() or something,
-> notify_page_fault() is a horribly crap name for this function.
+>> 
+>> And want to confirm the kernel build on affected arch succeed?
+>
+>I compile-tested on s390x and x86. As the patches are in linux-next for
+>some time, I think the other builds are also fine.
+>
 
-Agreed. kprobe_page_fault() sounds good.
+Yep, sounds good~
+
+>Thanks!
+>
+>-- 
+>
+>Thanks,
+>
+>David / dhildenb
+
+-- 
+Wei Yang
+Help you, Help me
