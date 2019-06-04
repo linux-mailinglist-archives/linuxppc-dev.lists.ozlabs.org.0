@@ -2,79 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F9B3497B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 15:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4984A34A33
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 16:21:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JD1Q3nXYzDqNK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 23:54:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JDcM6X5hzDqHw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 00:21:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org; envelope-from=mchehab@bombadil.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="hcyL/Npk"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="Zs3KQXTO"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JCz04Ns5zDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 23:52:08 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45JCyq61Nqz9tvgH;
- Tue,  4 Jun 2019 15:52:03 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=hcyL/Npk; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Xob6WxqZVdF0; Tue,  4 Jun 2019 15:52:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45JCyq4m0yz9tvgB;
- Tue,  4 Jun 2019 15:52:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559656323; bh=cG2I4/+or6jXocomspUNW4bsSOR2Dja046zVaBRzVW0=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=hcyL/Npk9wJ9Gktux6y6e2ijNkjejGIUDc3bf1FMtdfJq9xDzJe8yarKpH2NyOPKB
- BNyKoTleJQnbyimqTnvpYN/8A8iyTK8ueA/RJY/D1S2tTme1AxIeK6Xm5Zi0cMUR9n
- fkfXF5tN6bJIzunEK/VDarAIwlr2JehxKg8421qs=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 908658B98E;
- Tue,  4 Jun 2019 15:52:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qcGfuJDy_YZD; Tue,  4 Jun 2019 15:52:04 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 23EF68B967;
- Tue,  4 Jun 2019 15:52:03 +0200 (CEST)
-Subject: Re: [PATCH v4 3/3] kselftest: Extend vDSO selftest to clock_getres
-To: Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-arch@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20190523112116.19233-1-vincenzo.frascino@arm.com>
- <20190523112116.19233-4-vincenzo.frascino@arm.com>
- <87lfyrp0d2.fsf@concordia.ellerman.id.au>
- <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
- <5c99721a-ce6b-10a0-99f2-6c37c1da4542@c-s.fr>
- <b710d906-edac-f8a7-792b-e6822399187c@arm.com>
- <dd8bf915-f438-74f0-494e-427d10fc0505@c-s.fr>
- <eacdc960-c344-9f9f-7f1b-ad770cb4a725@arm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <2389b7f2-288b-215e-994a-3b24be08e125@c-s.fr>
-Date: Tue, 4 Jun 2019 15:52:02 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JDY51QyszDqJh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 00:18:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=dqaD3wghyI6IWFrArZRMjNM4vtEr+hqHLagvjFWdfkg=; b=Zs3KQXTOPjmcHFgUgxG5qH+gKO
+ o8BJz6y3IPantgcA/Voyx6kH/hrE9ccQ3FZi6STf8TVmNX3mkcfsoh0ZxT3ZI3w1tG56iFWPGuiay
+ fHK+QOmvCUpgAVnSPhpqFd56jlL0V6NoAZHlFCbPi8/Ejej/f3oBNuy1f6sslmGARdoNvQfDBV2Da
+ h+mmNSzuadqqucttR9O4Ayry8wEzO+MptxTN7giKFVJvtiAXHfibZ5j1TmziUWXZ5eJ0O3mTu3oE0
+ BcBjLpRasxpfI2PClkJKdwUgtAW+p0SZt3CqGsdTKTJzh139ngqBGbIlL6s77zCzADuP5DTAD5j8B
+ OoIbhHLQ==;
+Received: from [179.182.172.34] (helo=bombadil.infradead.org)
+ by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hYAGH-0001Rw-UE; Tue, 04 Jun 2019 14:18:01 +0000
+Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
+ (envelope-from <mchehab@bombadil.infradead.org>)
+ id 1hYAGE-0002kz-LE; Tue, 04 Jun 2019 11:17:58 -0300
+From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH v2 06/22] docs: mark orphan documents as such
+Date: Tue,  4 Jun 2019 11:17:40 -0300
+Message-Id: <4afa83787acec906c383978dc01f286940e28616.1559656538.git.mchehab+samsung@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <cover.1559656538.git.mchehab+samsung@kernel.org>
+References: <cover.1559656538.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <eacdc960-c344-9f9f-7f1b-ad770cb4a725@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,177 +63,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Alexandre Torgue <alexandre.torgue@st.com>, Jonathan Corbet <corbet@lwn.net>,
+ David Airlie <airlied@linux.ie>, Andrew Donnellan <ajd@linux.ibm.com>,
+ linux-pm@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Matan Ziv-Av <matan@svgalib.org>,
+ Mauro Carvalho Chehab <mchehab@infradead.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Sean Paul <sean@poorly.run>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Georgi Djakov <georgi.djakov@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sphinx doesn't like orphan documents:
 
+    Documentation/accelerators/ocxl.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/overview.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/stm32f429-overview.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/stm32f746-overview.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/stm32f769-overview.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/stm32h743-overview.rst: WARNING: document isn't included in any toctree
+    Documentation/arm/stm32/stm32mp157-overview.rst: WARNING: document isn't included in any toctree
+    Documentation/gpu/msm-crash-dump.rst: WARNING: document isn't included in any toctree
+    Documentation/interconnect/interconnect.rst: WARNING: document isn't included in any toctree
+    Documentation/laptops/lg-laptop.rst: WARNING: document isn't included in any toctree
+    Documentation/powerpc/isa-versions.rst: WARNING: document isn't included in any toctree
+    Documentation/virtual/kvm/amd-memory-encryption.rst: WARNING: document isn't included in any toctree
+    Documentation/virtual/kvm/vcpu-requests.rst: WARNING: document isn't included in any toctree
 
-Le 04/06/2019 à 15:43, Vincenzo Frascino a écrit :
-> On 04/06/2019 14:39, Christophe Leroy wrote:
->>
->>
->> Le 04/06/2019 à 15:32, Vincenzo Frascino a écrit :
->>> Hi Christophe,
->>>
->>> On 04/06/2019 14:16, Christophe Leroy wrote:
->>>> Hi Vincenzo
->>>>
->>>> Le 28/05/2019 à 13:57, Vincenzo Frascino a écrit :
->>>>> Hi Michael,
->>>>>
->>>>> thank you for your reply.
->>>>>
->>>>> On 28/05/2019 07:19, Michael Ellerman wrote:
->>>>>> Vincenzo Frascino <vincenzo.frascino@arm.com> writes:
->>>>>>
->>>>>>> The current version of the multiarch vDSO selftest verifies only
->>>>>>> gettimeofday.
->>>>>>>
->>>>>>> Extend the vDSO selftest to clock_getres, to verify that the
->>>>>>> syscall and the vDSO library function return the same information.
->>>>>>>
->>>>>>> The extension has been used to verify the hrtimer_resoltion fix.
->>>>>>
->>>>>> This is passing for me even without patch 1 applied, shouldn't it fail
->>>>>> without the fix? What am I missing?
->>>>>>
->>>>>
->>>>> This is correct, because during the refactoring process I missed an "n" :)
->>>>>
->>>>> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_sec·!=·y.tv_sec))
->>>>>
->>>>> Should be:
->>>>>
->>>>> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_nsec·!=·y.tv_nsec))
->>>>>
->>>>> My mistake, I am going to fix the test and re-post v5 of this set.
->>>>>
->>>>> Without my patch if you pass "highres=off" to the kernel (as a command line
->>>>> parameter) it leads to a broken implementation of clock_getres since the value
->>>>> of CLOCK_REALTIME_RES does not change at runtime.
->>>>>
->>>>> Expected result (with highres=off):
->>>>>
->>>>> # uname -r
->>>>> 5.2.0-rc2
->>>>> # ./vdso_clock_getres
->>>>> clock_id: CLOCK_REALTIME [FAIL]
->>>>> clock_id: CLOCK_BOOTTIME [PASS]
->>>>> clock_id: CLOCK_TAI [PASS]
->>>>> clock_id: CLOCK_REALTIME_COARSE [PASS]
->>>>> clock_id: CLOCK_MONOTONIC [FAIL]
->>>>> clock_id: CLOCK_MONOTONIC_RAW [PASS]
->>>>> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->>>>>
->>>>> The reason of this behavior is that the only clocks supported by getres on
->>>>> powerpc are CLOCK_REALTIME and CLOCK_MONOTONIC, the rest on the clocks use
->>>>> always syscalls.
->>>>
->>>> vdso64 is supposed to implement CLOCK_{REALTIME/MONOTONIC}_COARSE, so I
->>>> guess it should fail for them too ?
->>>>
->>>> Or is your test done on vdso32 ?
->>>>
->>>
->>> Based on what I can see in kernel/vdso64 in 5.2-rc3:
->>>
->>> /*
->>>    * Exact prototype of clock_getres()
->>>    *
->>>    * int __kernel_clock_getres(clockid_t clock_id, struct timespec *res);
->>>    *
->>>    */
->>> V_FUNCTION_BEGIN(__kernel_clock_getres)
->>>     .cfi_startproc
->>> 	/* Check for supported clock IDs */
->>> 	cmpwi	cr0,r3,CLOCK_REALTIME
->>> 	cmpwi	cr1,r3,CLOCK_MONOTONIC
->>> 	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
->>> 	bne	cr0,99f
->>>
->>> 	li	r3,0
->>> 	cmpldi	cr0,r4,0
->>> 	crclr	cr0*4+so
->>> 	beqlr
->>> 	lis	r5,CLOCK_REALTIME_RES@h
->>> 	ori	r5,r5,CLOCK_REALTIME_RES@l
->>> 	std	r3,TSPC64_TV_SEC(r4)
->>> 	std	r5,TSPC64_TV_NSEC(r4)
->>> 	blr
->>>
->>> 	/*
->>> 	 * syscall fallback
->>> 	 */
->>> 99:
->>> 	li	r0,__NR_clock_getres
->>> 	sc
->>> 	blr
->>>     .cfi_endproc
->>> V_FUNCTION_END(__kernel_clock_getres)
->>>
->>> it does not seem so for what concerns vdso64. I did run again the test both on
->>> ppc and ppc64 qemu instances and the result is the same to what I reported in
->>> this thread.
->>>
->>> Am I missing something?
->>
->> I was thinking about
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5c929885f1bb
->> but apparently clock_getres() was left aside. Should we do something
->> about it ?
->>
-> 
-> Sure, but I would like this series to be merged first (since the topic is
-> different). I am happy, after that, to push a separate one on top that addresses
-> the problem.
-> 
-> Please let me know if it works for you and Michael.
+So, while they aren't on any toctree, add :orphan: to them, in order
+to silent this warning.
 
-No problem for myself.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+---
+ Documentation/accelerators/ocxl.rst             | 2 ++
+ Documentation/arm/stm32/overview.rst            | 2 ++
+ Documentation/arm/stm32/stm32f429-overview.rst  | 2 ++
+ Documentation/arm/stm32/stm32f746-overview.rst  | 2 ++
+ Documentation/arm/stm32/stm32f769-overview.rst  | 2 ++
+ Documentation/arm/stm32/stm32h743-overview.rst  | 2 ++
+ Documentation/arm/stm32/stm32mp157-overview.rst | 2 ++
+ Documentation/gpu/msm-crash-dump.rst            | 2 ++
+ Documentation/interconnect/interconnect.rst     | 2 ++
+ Documentation/laptops/lg-laptop.rst             | 2 ++
+ Documentation/powerpc/isa-versions.rst          | 2 ++
+ 11 files changed, 22 insertions(+)
 
-By the way, next time (or next spin ?) I recommend you to handle your 
-patches independently and not as a series since they are all 
-independant. It would have avoided confusion and the need for you to 
-resend all 3 patches everytime you did a change in one of them.
+diff --git a/Documentation/accelerators/ocxl.rst b/Documentation/accelerators/ocxl.rst
+index 14cefc020e2d..b1cea19a90f5 100644
+--- a/Documentation/accelerators/ocxl.rst
++++ b/Documentation/accelerators/ocxl.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ ========================================================
+ OpenCAPI (Open Coherent Accelerator Processor Interface)
+ ========================================================
+diff --git a/Documentation/arm/stm32/overview.rst b/Documentation/arm/stm32/overview.rst
+index 85cfc8410798..f7e734153860 100644
+--- a/Documentation/arm/stm32/overview.rst
++++ b/Documentation/arm/stm32/overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ ========================
+ STM32 ARM Linux Overview
+ ========================
+diff --git a/Documentation/arm/stm32/stm32f429-overview.rst b/Documentation/arm/stm32/stm32f429-overview.rst
+index 18feda97f483..65bbb1c3b423 100644
+--- a/Documentation/arm/stm32/stm32f429-overview.rst
++++ b/Documentation/arm/stm32/stm32f429-overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ STM32F429 Overview
+ ==================
+ 
+diff --git a/Documentation/arm/stm32/stm32f746-overview.rst b/Documentation/arm/stm32/stm32f746-overview.rst
+index b5f4b6ce7656..42d593085015 100644
+--- a/Documentation/arm/stm32/stm32f746-overview.rst
++++ b/Documentation/arm/stm32/stm32f746-overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ STM32F746 Overview
+ ==================
+ 
+diff --git a/Documentation/arm/stm32/stm32f769-overview.rst b/Documentation/arm/stm32/stm32f769-overview.rst
+index 228656ced2fe..f6adac862b17 100644
+--- a/Documentation/arm/stm32/stm32f769-overview.rst
++++ b/Documentation/arm/stm32/stm32f769-overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ STM32F769 Overview
+ ==================
+ 
+diff --git a/Documentation/arm/stm32/stm32h743-overview.rst b/Documentation/arm/stm32/stm32h743-overview.rst
+index 3458dc00095d..c525835e7473 100644
+--- a/Documentation/arm/stm32/stm32h743-overview.rst
++++ b/Documentation/arm/stm32/stm32h743-overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ STM32H743 Overview
+ ==================
+ 
+diff --git a/Documentation/arm/stm32/stm32mp157-overview.rst b/Documentation/arm/stm32/stm32mp157-overview.rst
+index 62e176d47ca7..2c52cd020601 100644
+--- a/Documentation/arm/stm32/stm32mp157-overview.rst
++++ b/Documentation/arm/stm32/stm32mp157-overview.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ STM32MP157 Overview
+ ===================
+ 
+diff --git a/Documentation/gpu/msm-crash-dump.rst b/Documentation/gpu/msm-crash-dump.rst
+index 757cd257e0d8..240ef200f76c 100644
+--- a/Documentation/gpu/msm-crash-dump.rst
++++ b/Documentation/gpu/msm-crash-dump.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ =====================
+ MSM Crash Dump Format
+ =====================
+diff --git a/Documentation/interconnect/interconnect.rst b/Documentation/interconnect/interconnect.rst
+index c3e004893796..56e331dab70e 100644
+--- a/Documentation/interconnect/interconnect.rst
++++ b/Documentation/interconnect/interconnect.rst
+@@ -1,5 +1,7 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
++:orphan:
++
+ =====================================
+ GENERIC SYSTEM INTERCONNECT SUBSYSTEM
+ =====================================
+diff --git a/Documentation/laptops/lg-laptop.rst b/Documentation/laptops/lg-laptop.rst
+index aa503ee9b3bc..f2c2ffe31101 100644
+--- a/Documentation/laptops/lg-laptop.rst
++++ b/Documentation/laptops/lg-laptop.rst
+@@ -1,5 +1,7 @@
+ .. SPDX-License-Identifier: GPL-2.0+
+ 
++:orphan:
++
+ LG Gram laptop extra features
+ =============================
+ 
+diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/powerpc/isa-versions.rst
+index 812e20cc898c..66c24140ebf1 100644
+--- a/Documentation/powerpc/isa-versions.rst
++++ b/Documentation/powerpc/isa-versions.rst
+@@ -1,3 +1,5 @@
++:orphan:
++
+ CPU to ISA Version Mapping
+ ==========================
+ 
+-- 
+2.21.0
 
-Christophe
-
-> 
->> Christophe
->>
->>>
->>>> Christophe
->>>>
->>>>>
->>>>>> # uname -r
->>>>>> 5.2.0-rc2-gcc-8.2.0
->>>>>>
->>>>>> # ./vdso_clock_getres
->>>>>> clock_id: CLOCK_REALTIME [PASS]
->>>>>> clock_id: CLOCK_BOOTTIME [PASS]
->>>>>> clock_id: CLOCK_TAI [PASS]
->>>>>> clock_id: CLOCK_REALTIME_COARSE [PASS]
->>>>>> clock_id: CLOCK_MONOTONIC [PASS]
->>>>>> clock_id: CLOCK_MONOTONIC_RAW [PASS]
->>>>>> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->>>>>>
->>>>>> cheers
->>>>>>
->>>>>>> Cc: Shuah Khan <shuah@kernel.org>
->>>>>>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
->>>>>>> ---
->>>>>>>
->>>>>>> Note: This patch is independent from the others in this series, hence it
->>>>>>> can be merged singularly by the kselftest maintainers.
->>>>>>>
->>>>>>>     tools/testing/selftests/vDSO/Makefile         |   2 +
->>>>>>>     .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
->>>>>>>     2 files changed, 126 insertions(+)
->>>>>>>     create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
->>>>>
->>>
-> 
