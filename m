@@ -1,50 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1D534850
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 15:20:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8101B34754
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 14:52:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JBfH4LRHzDqS1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 22:52:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JCGF0NffzDqMm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 23:20:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="JkZRNfOW"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="g318kWAe"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JBcC14MdzDq5n
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 22:50:50 +1000 (AEST)
-Received: from localhost (unknown [23.100.24.84])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 78C02249CE;
- Tue,  4 Jun 2019 12:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559652648;
- bh=DGULkud8Akk5VUZUwzDp/xT8hwY7RYCfLMfZEAA4SoQ=;
- h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
- References:From;
- b=JkZRNfOW1CCX/Qc+EAUnNC4Dhjx/cZxuSQk2/j9B0smW8Mko3l3d1YLXySghAbx5A
- JgCEH83HUYx9xhIOxp4LE98JlmFcY7/DoRMmgLQQYw7Po6vrt6czDc8ll/LY0EXjtj
- 7M3CJl/G19xnc6WSGoMGp+5n1+O6FJd5B/YwTVFw=
-Date: Tue, 04 Jun 2019 12:50:47 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: Vincenzo Frascino <vincenzo.frascino@arm.com>
-To: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-Subject: Re: [PATCH v5 1/3] powerpc: Fix vDSO clock_getres()
-In-Reply-To: <20190528120446.48911-2-vincenzo.frascino@arm.com>
-References: <20190528120446.48911-2-vincenzo.frascino@arm.com>
-Message-Id: <20190604125048.78C02249CE@mail.kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JC9g5sVczDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 23:16:23 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45JC9Y2bXMzB09ZH;
+ Tue,  4 Jun 2019 15:16:17 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=g318kWAe; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id tkfUg4heobmt; Tue,  4 Jun 2019 15:16:17 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45JC9Y1LDlzB09ZG;
+ Tue,  4 Jun 2019 15:16:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1559654177; bh=SiZOSxV6YbRCD9djo6CWIUlX4YsLdd8Aowd1s+w+IgI=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=g318kWAeZ14KM+smIsIhPEoySLoonF40ifYa0j61xTNWAdpGsHghO5JCz3/Gs8uz3
+ Funpew3V0at2CN6L9j+R7C8iIUDkfmc2JXq6wWqXH0tFVarcx7VLq71hEDJgpjvkcC
+ ly41WOlKmVYMJd99P1Mma67Fxt3TC7Q21urYTNVk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 10F698B988;
+ Tue,  4 Jun 2019 15:16:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id io2cBWa9AAmx; Tue,  4 Jun 2019 15:16:17 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BFE08B967;
+ Tue,  4 Jun 2019 15:16:16 +0200 (CEST)
+Subject: Re: [PATCH v4 3/3] kselftest: Extend vDSO selftest to clock_getres
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20190523112116.19233-1-vincenzo.frascino@arm.com>
+ <20190523112116.19233-4-vincenzo.frascino@arm.com>
+ <87lfyrp0d2.fsf@concordia.ellerman.id.au>
+ <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <5c99721a-ce6b-10a0-99f2-6c37c1da4542@c-s.fr>
+Date: Tue, 4 Jun 2019 15:16:16 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,60 +83,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: , stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- vincenzo.frascino@arm.com
+Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Vincenzo
 
-[This is an automated email]
+Le 28/05/2019 à 13:57, Vincenzo Frascino a écrit :
+> Hi Michael,
+> 
+> thank you for your reply.
+> 
+> On 28/05/2019 07:19, Michael Ellerman wrote:
+>> Vincenzo Frascino <vincenzo.frascino@arm.com> writes:
+>>
+>>> The current version of the multiarch vDSO selftest verifies only
+>>> gettimeofday.
+>>>
+>>> Extend the vDSO selftest to clock_getres, to verify that the
+>>> syscall and the vDSO library function return the same information.
+>>>
+>>> The extension has been used to verify the hrtimer_resoltion fix.
+>>
+>> This is passing for me even without patch 1 applied, shouldn't it fail
+>> without the fix? What am I missing?
+>>
+> 
+> This is correct, because during the refactoring process I missed an "n" :)
+> 
+> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_sec·!=·y.tv_sec))
+> 
+> Should be:
+> 
+> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_nsec·!=·y.tv_nsec))
+> 
+> My mistake, I am going to fix the test and re-post v5 of this set.
+> 
+> Without my patch if you pass "highres=off" to the kernel (as a command line
+> parameter) it leads to a broken implementation of clock_getres since the value
+> of CLOCK_REALTIME_RES does not change at runtime.
+> 
+> Expected result (with highres=off):
+> 
+> # uname -r
+> 5.2.0-rc2
+> # ./vdso_clock_getres
+> clock_id: CLOCK_REALTIME [FAIL]
+> clock_id: CLOCK_BOOTTIME [PASS]
+> clock_id: CLOCK_TAI [PASS]
+> clock_id: CLOCK_REALTIME_COARSE [PASS]
+> clock_id: CLOCK_MONOTONIC [FAIL]
+> clock_id: CLOCK_MONOTONIC_RAW [PASS]
+> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
+> 
+> The reason of this behavior is that the only clocks supported by getres on
+> powerpc are CLOCK_REALTIME and CLOCK_MONOTONIC, the rest on the clocks use
+> always syscalls.
 
-This commit has been processed because it contains a "Fixes:" tag,
-fixing commit: a7f290dad32e [PATCH] powerpc: Merge vdso's and add vdso support to 32 bits kernel.
+vdso64 is supposed to implement CLOCK_{REALTIME/MONOTONIC}_COARSE, so I 
+guess it should fail for them too ?
 
-The bot has tested the following trees: v5.1.6, v5.0.20, v4.19.47, v4.14.123, v4.9.180, v4.4.180.
+Or is your test done on vdso32 ?
 
-v5.1.6: Build OK!
-v5.0.20: Build OK!
-v4.19.47: Build OK!
-v4.14.123: Failed to apply! Possible dependencies:
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
+Christophe
 
-v4.9.180: Failed to apply! Possible dependencies:
-    454656155110 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    5d451a87e5eb ("powerpc/64: Retrieve number of L1 cache sets from device-tree")
-    7c5b06cadf27 ("KVM: PPC: Book3S HV: Adapt TLB invalidations to work on POWER9")
-    83677f551e0a ("KVM: PPC: Book3S HV: Adjust host/guest context switch for POWER9")
-    902e06eb86cd ("powerpc/32: Change the stack protector canary value per task")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
-    bd067f83b084 ("powerpc/64: Fix naming of cache block vs. cache line")
-    e2827fe5c156 ("powerpc/64: Clean up ppc64_caches using a struct per cache")
-    e9cf1e085647 ("KVM: PPC: Book3S HV: Add new POWER9 guest-accessible SPRs")
-    f4c51f841d2a ("KVM: PPC: Book3S HV: Modify guest entry/exit paths to handle radix guests")
-
-v4.4.180: Failed to apply! Possible dependencies:
-    153086644fd1 ("powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI")
-    3eb5d5888dc6 ("powerpc: Add ppc_strict_facility_enable boot option")
-    454656155110 ("powerpc/asm: Use OFFSET macro in asm-offsets.c")
-    579e633e764e ("powerpc: create flush_all_to_thread()")
-    5c929885f1bb ("powerpc/vdso64: Add support for CLOCK_{REALTIME/MONOTONIC}_COARSE")
-    70fe3d980f5f ("powerpc: Restore FPU/VEC/VSX if previously used")
-    85baa095497f ("powerpc/livepatch: Add live patching support on ppc64le")
-    902e06eb86cd ("powerpc/32: Change the stack protector canary value per task")
-    b5b4453e7912 ("powerpc/vdso64: Fix CLOCK_MONOTONIC inconsistencies across Y2038")
-    bf76f73c5f65 ("powerpc: enable UBSAN support")
-    c208505900b2 ("powerpc: create giveup_all()")
-    d1e1cf2e38de ("powerpc: clean up asm/switch_to.h")
-    dc4fbba11e46 ("powerpc: Create disable_kernel_{fp,altivec,vsx,spe}()")
-    f17c4e01e906 ("powerpc/module: Mark module stubs with a magic value")
-
-
-How should we proceed with this patch?
-
---
-Thanks,
-Sasha
+> 
+>> # uname -r
+>> 5.2.0-rc2-gcc-8.2.0
+>>
+>> # ./vdso_clock_getres
+>> clock_id: CLOCK_REALTIME [PASS]
+>> clock_id: CLOCK_BOOTTIME [PASS]
+>> clock_id: CLOCK_TAI [PASS]
+>> clock_id: CLOCK_REALTIME_COARSE [PASS]
+>> clock_id: CLOCK_MONOTONIC [PASS]
+>> clock_id: CLOCK_MONOTONIC_RAW [PASS]
+>> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
+>>
+>> cheers
+>>
+>>> Cc: Shuah Khan <shuah@kernel.org>
+>>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
+>>> ---
+>>>
+>>> Note: This patch is independent from the others in this series, hence it
+>>> can be merged singularly by the kselftest maintainers.
+>>>
+>>>   tools/testing/selftests/vDSO/Makefile         |   2 +
+>>>   .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
+>>>   2 files changed, 126 insertions(+)
+>>>   create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
+> 
