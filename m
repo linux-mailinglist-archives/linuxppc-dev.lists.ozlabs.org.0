@@ -2,56 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A28434467
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 12:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B91AA34471
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 12:33:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J7X05jbqzDqTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 20:32:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J7YW0DSDzDqV1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 20:33:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+7243a8a963bcae4fad07+5763+infradead.org+mchehab@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=mchehab+samsung@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="c43fmGuy"; dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ header.b="ahI9Qmwo"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45J6Zz4b5czDqN1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 19:49:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J6rG3xsJzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 20:01:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=3k/+hinVCOAW7PyAk4gGWRix3vBPUw0AszrhY/mQ3ZU=; b=c43fmGuydsUZF63gosC+IZttlH
- gYzXBa8/0V4uVej1GzWEfMdi2xsydIvFd4tLBw+bv5HsldVLWQpvBcl2DkCU8yEkZ3PpnBYigbxPy
- aJIPOI/kE6ARXFCY1s5KfQX2iWaMACSu0pb5sUT6WRNnaSYW3Q/O3/Uowzws4daSoi9dcPsmsSY2l
- VX04lJI0KYglAeJjvFrz+UFSQLllkCQ53CYPXVg36kjtzR1mDsSFjNm9hkWBnUY5w3LhWk+QfvoOT
- XtTwuQYDFsrF/nEh1fnH19V8Vx4DlTvLBA8VAJkQ8nL7ezVvWeKU28nLcOpjX2tHNEltz/jrED1vA
- JHOrPT3Q==;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+ From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Omh6TzV4Gmx81j5VEp+7dLuZclw2RBTzNTaS7uo9g/w=; b=ahI9Qmwo3+3p7PXlpDr67Lf+f
+ exS3e8UxHuG/BT7M1ThoePbPfaJiWqASMOiDsQQ+hQ/1Exz3iBYEE8Oiup0jdHRHMpQtOVf51JPB5
+ wAUl11j91om/kx5A03GVcpYYKhGxYIGfY8P+FKa+/T4RtCnf6JbJ154w+GdxgtfRPwoMOX6/7k4tr
+ dhtH+IsR9vlCiEPhrn4WWtkkePrgGuLJJSSweQ26ld9L6uNGSkRHxxbtYgKYHomINREtkHjHRQHRj
+ Y6nXe/FiiILXkJQ4nx/d30EWvlqtmljmh3NWrZuBagGU4bOhYyNzK1bjyUHN4CjoGkcht4/og3vYJ
+ YpihbVGnQ==;
 Received: from [187.113.6.249] (helo=coco.lan)
- by casper.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
- id 1hY61q-0004kh-OZ; Tue, 04 Jun 2019 09:46:51 +0000
-Date: Tue, 4 Jun 2019 06:46:14 -0300
-From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+ by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hY6D8-0008Uz-UV; Tue, 04 Jun 2019 09:58:31 +0000
+Date: Tue, 4 Jun 2019 06:58:02 -0300
+From: Mauro Carvalho Chehab <mchehab@infradead.org>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH 22/22] docs: fix broken documentation links
-Message-ID: <20190604064614.67cde821@coco.lan>
-In-Reply-To: <64e136de-1a7b-3436-9675-44ea9fa7b64a@c-s.fr>
+Message-ID: <20190604065802.47a9d24b@coco.lan>
+In-Reply-To: <20190604064614.67cde821@coco.lan>
 References: <cover.1559171394.git.mchehab+samsung@kernel.org>
  <f9fecacbe4ce0b2b3aed38d71ae3753f2daf3ce3.1559171394.git.mchehab+samsung@kernel.org>
  <64e136de-1a7b-3436-9675-44ea9fa7b64a@c-s.fr>
+ <20190604064614.67cde821@coco.lan>
 X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <mchehab@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Mailman-Approved-At: Tue, 04 Jun 2019 20:30:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,8 +99,8 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
  YueHaibing <yuehaibing@huawei.com>, Robert Moore <robert.moore@intel.com>,
  Bartosz Golaszewski <bgolaszewski@baylibre.com>, Len Brown <lenb@kernel.org>,
  David Brown <david.brown@linaro.org>, Joerg Roedel <jroedel@suse.de>,
- linux-arm-msm@vger.kernel.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
- linux-gpio@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
  Florian Fainelli <f.fainelli@gmail.com>,
  Jacek Anaszewski <jacek.anaszewski@gmail.com>,
  Bjorn Helgaas <bhelgaas@google.com>, linux-amlogic@lists.infradead.org,
@@ -149,116 +153,150 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Mon, 3 Jun 2019 09:34:15 +0200
-Christophe Leroy <christophe.leroy@c-s.fr> escreveu:
+Em Tue, 4 Jun 2019 06:46:14 -0300
+Mauro Carvalho Chehab <mchehab+samsung@kernel.org> escreveu:
 
-> Le 30/05/2019 =C3=A0 01:23, Mauro Carvalho Chehab a =C3=A9crit=C2=A0:
-> > Mostly due to x86 and acpi conversion, several documentation
-> > links are still pointing to the old file. Fix them.
-> >=20
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-> > ---
-> >   Documentation/acpi/dsd/leds.txt                  |  2 +-
-> >   Documentation/admin-guide/kernel-parameters.rst  |  6 +++---
-> >   Documentation/admin-guide/kernel-parameters.txt  | 16 ++++++++--------
-> >   Documentation/admin-guide/ras.rst                |  2 +-
-> >   .../devicetree/bindings/net/fsl-enetc.txt        |  7 +++----
-> >   .../bindings/pci/amlogic,meson-pcie.txt          |  2 +-
-> >   .../bindings/regulator/qcom,rpmh-regulator.txt   |  2 +-
-> >   Documentation/devicetree/booting-without-of.txt  |  2 +-
-> >   Documentation/driver-api/gpio/board.rst          |  2 +-
-> >   Documentation/driver-api/gpio/consumer.rst       |  2 +-
-> >   .../firmware-guide/acpi/enumeration.rst          |  2 +-
-> >   .../firmware-guide/acpi/method-tracing.rst       |  2 +-
-> >   Documentation/i2c/instantiating-devices          |  2 +-
-> >   Documentation/sysctl/kernel.txt                  |  4 ++--
-> >   .../translations/it_IT/process/howto.rst         |  2 +-
-> >   .../it_IT/process/stable-kernel-rules.rst        |  4 ++--
-> >   .../translations/zh_CN/process/4.Coding.rst      |  2 +-
-> >   Documentation/x86/x86_64/5level-paging.rst       |  2 +-
-> >   Documentation/x86/x86_64/boot-options.rst        |  4 ++--
-> >   .../x86/x86_64/fake-numa-for-cpusets.rst         |  2 +-
-> >   MAINTAINERS                                      |  6 +++---
-> >   arch/arm/Kconfig                                 |  2 +-
-> >   arch/arm64/kernel/kexec_image.c                  |  2 +-
-> >   arch/powerpc/Kconfig                             |  2 +-
-> >   arch/x86/Kconfig                                 | 16 ++++++++--------
-> >   arch/x86/Kconfig.debug                           |  2 +-
-> >   arch/x86/boot/header.S                           |  2 +-
-> >   arch/x86/entry/entry_64.S                        |  2 +-
-> >   arch/x86/include/asm/bootparam_utils.h           |  2 +-
-> >   arch/x86/include/asm/page_64_types.h             |  2 +-
-> >   arch/x86/include/asm/pgtable_64_types.h          |  2 +-
-> >   arch/x86/kernel/cpu/microcode/amd.c              |  2 +-
-> >   arch/x86/kernel/kexec-bzimage64.c                |  2 +-
-> >   arch/x86/kernel/pci-dma.c                        |  2 +-
-> >   arch/x86/mm/tlb.c                                |  2 +-
-> >   arch/x86/platform/pvh/enlighten.c                |  2 +-
-> >   drivers/acpi/Kconfig                             | 10 +++++-----
-> >   drivers/net/ethernet/faraday/ftgmac100.c         |  2 +-
-> >   .../fieldbus/Documentation/fieldbus_dev.txt      |  4 ++--
-> >   drivers/vhost/vhost.c                            |  2 +-
-> >   include/acpi/acpi_drivers.h                      |  2 +-
-> >   include/linux/fs_context.h                       |  2 +-
-> >   include/linux/lsm_hooks.h                        |  2 +-
-> >   mm/Kconfig                                       |  2 +-
-> >   security/Kconfig                                 |  2 +-
-> >   tools/include/linux/err.h                        |  2 +-
-> >   tools/objtool/Documentation/stack-validation.txt |  4 ++--
-> >   tools/testing/selftests/x86/protection_keys.c    |  2 +-
-> >   48 files changed, 77 insertions(+), 78 deletions(-) =20
->=20
-> [...]
->=20
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index 8c1c636308c8..e868d2bd48b8 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -898,7 +898,7 @@ config PPC_MEM_KEYS
-> >   	  page-based protections, but without requiring modification of the
-> >   	  page tables when an application changes protection domains.
-> >  =20
-> > -	  For details, see Documentation/vm/protection-keys.rst
-> > +	  For details, see Documentation/x86/protection-keys.rst =20
->=20
-> It looks strange to reference an x86 file, for powerpc arch.
+> Em Mon, 3 Jun 2019 09:34:15 +0200
+> Christophe Leroy <christophe.leroy@c-s.fr> escreveu:
+> 
 
-Indeed. Yet, seeking for the API documented there:
+> > [...]
+> > 
+> > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > > index 8c1c636308c8..e868d2bd48b8 100644
+> > > --- a/arch/powerpc/Kconfig
+> > > +++ b/arch/powerpc/Kconfig
+> > > @@ -898,7 +898,7 @@ config PPC_MEM_KEYS
+> > >   	  page-based protections, but without requiring modification of the
+> > >   	  page tables when an application changes protection domains.
+> > >   
+> > > -	  For details, see Documentation/vm/protection-keys.rst
+> > > +	  For details, see Documentation/x86/protection-keys.rst  
+> > 
+> > It looks strange to reference an x86 file, for powerpc arch.
+> 
+> Indeed. Yet, seeking for the API documented there:
+> 
+>  $ git grep -l pkey_mprotect
+> Documentation/x86/protection-keys.rst
+> arch/alpha/kernel/syscalls/syscall.tbl
+> arch/arm/tools/syscall.tbl
+> arch/arm64/include/asm/unistd32.h
+> arch/ia64/kernel/syscalls/syscall.tbl
+> arch/m68k/kernel/syscalls/syscall.tbl
+> arch/microblaze/kernel/syscalls/syscall.tbl
+> arch/mips/kernel/syscalls/syscall_n32.tbl
+> arch/mips/kernel/syscalls/syscall_n64.tbl
+> arch/mips/kernel/syscalls/syscall_o32.tbl
+> arch/parisc/kernel/syscalls/syscall.tbl
+> arch/powerpc/kernel/syscalls/syscall.tbl
+> arch/s390/kernel/syscalls/syscall.tbl
+> arch/sh/kernel/syscalls/syscall.tbl
+> arch/sparc/kernel/syscalls/syscall.tbl
+> arch/x86/entry/syscalls/syscall_32.tbl
+> arch/x86/entry/syscalls/syscall_64.tbl
+> arch/xtensa/kernel/syscalls/syscall.tbl
+> include/linux/syscalls.h
+> include/uapi/asm-generic/unistd.h
+> kernel/sys_ni.c
+> mm/mprotect.c
+> tools/include/uapi/asm-generic/unistd.h
+> tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+> tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+> tools/perf/builtin-trace.c
+> tools/testing/selftests/x86/protection_keys.c
+> 
+> Despite being used on several archs, the only documentation for it
+> is inside the x86 directory, as it seems that this is not
+> arch-specific.
+> 
+> Perhaps the file should, instead, be moved to another book.
 
- $ git grep -l pkey_mprotect
-Documentation/x86/protection-keys.rst
-arch/alpha/kernel/syscalls/syscall.tbl
-arch/arm/tools/syscall.tbl
-arch/arm64/include/asm/unistd32.h
-arch/ia64/kernel/syscalls/syscall.tbl
-arch/m68k/kernel/syscalls/syscall.tbl
-arch/microblaze/kernel/syscalls/syscall.tbl
-arch/mips/kernel/syscalls/syscall_n32.tbl
-arch/mips/kernel/syscalls/syscall_n64.tbl
-arch/mips/kernel/syscalls/syscall_o32.tbl
-arch/parisc/kernel/syscalls/syscall.tbl
-arch/powerpc/kernel/syscalls/syscall.tbl
-arch/s390/kernel/syscalls/syscall.tbl
-arch/sh/kernel/syscalls/syscall.tbl
-arch/sparc/kernel/syscalls/syscall.tbl
-arch/x86/entry/syscalls/syscall_32.tbl
-arch/x86/entry/syscalls/syscall_64.tbl
-arch/xtensa/kernel/syscalls/syscall.tbl
-include/linux/syscalls.h
-include/uapi/asm-generic/unistd.h
-kernel/sys_ni.c
-mm/mprotect.c
-tools/include/uapi/asm-generic/unistd.h
-tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-tools/perf/builtin-trace.c
-tools/testing/selftests/x86/protection_keys.c
+I guess the best is to have this inside the core-api book.
 
-Despite being used on several archs, the only documentation for it
-is inside the x86 directory, as it seems that this is not
-arch-specific.
+Patch enclosed.
 
-Perhaps the file should, instead, be moved to another book.
-
-Thanks,
+Regards,
 Mauro
+
+
+[PATCH] docs: move protection-keys.rst to the core-api book
+
+This document is used by multiple architectures:
+
+	$ echo $(git grep -l  pkey_mprotect arch|cut -d'/' -f 2|sort|uniq)
+	alpha arm arm64 ia64 m68k microblaze mips parisc powerpc s390 sh sparc x86 xtensa
+
+So, let's move it to the core book and adjust the links to it
+accordingly.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+
+diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+index ee1bb8983a88..2466a4c51031 100644
+--- a/Documentation/core-api/index.rst
++++ b/Documentation/core-api/index.rst
+@@ -34,6 +34,7 @@ Core utilities
+    timekeeping
+    boot-time-mm
+    memory-hotplug
++   protection-keys
+ 
+ 
+ Interfaces for kernel debugging
+diff --git a/Documentation/x86/protection-keys.rst b/Documentation/core-api/protection-keys.rst
+similarity index 100%
+rename from Documentation/x86/protection-keys.rst
+rename to Documentation/core-api/protection-keys.rst
+diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
+index ae36fc5fc649..f2de1b2d3ac7 100644
+--- a/Documentation/x86/index.rst
++++ b/Documentation/x86/index.rst
+@@ -19,7 +19,6 @@ x86-specific Documentation
+    tlb
+    mtrr
+    pat
+-   protection-keys
+    intel_mpx
+    amd-memory-encryption
+    pti
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..3b795a0cab62 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -898,7 +898,7 @@ config PPC_MEM_KEYS
+ 	  page-based protections, but without requiring modification of the
+ 	  page tables when an application changes protection domains.
+ 
+-	  For details, see Documentation/vm/protection-keys.rst
++	  For details, see Documentation/core-api/protection-keys.rst
+ 
+ 	  If unsure, say y.
+ 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2bbbd4d1ba31..d87d53fcd261 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1911,7 +1911,7 @@ config X86_INTEL_MEMORY_PROTECTION_KEYS
+ 	  page-based protections, but without requiring modification of the
+ 	  page tables when an application changes protection domains.
+ 
+-	  For details, see Documentation/x86/protection-keys.txt
++	  For details, see Documentation/core-api/protection-keys.rst
+ 
+ 	  If unsure, say y.
+ 
+diff --git a/tools/testing/selftests/x86/protection_keys.c b/tools/testing/selftests/x86/protection_keys.c
+index 5d546dcdbc80..480995bceefa 100644
+--- a/tools/testing/selftests/x86/protection_keys.c
++++ b/tools/testing/selftests/x86/protection_keys.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Tests x86 Memory Protection Keys (see Documentation/x86/protection-keys.txt)
++ * Tests x86 Memory Protection Keys (see Documentation/core-api/protection-keys.rst)
+  *
+  * There are examples in here of:
+  *  * how to set protection keys on memory
+
+
