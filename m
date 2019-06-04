@@ -1,74 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD2634E2E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:01:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JJ9J5HmwzDqWF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 03:01:24 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CAC34EA9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:23:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JJfH21ZlzDqTJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 03:23:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="lRxptcyc"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JJ7h6nBBzDqS8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 02:59:58 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45JJ7V5b3jz9v0FN;
- Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=lRxptcyc; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id qW66f5xptFAU; Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45JJ7V4X7Fz9v0FC;
- Tue,  4 Jun 2019 18:59:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559667590; bh=M/gFqK7lNCwKusjAc9u2ML0vs/6IGlCg8EgQMDWaRl4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=lRxptcyctzAGCWwul2GIdV7aOB8ReA46oksDDYQi3pzV9AeOgmMt8+fjTTgSkggWX
- WYpt4JHhHwBc1XCOCFFFDHeoHInHEy+S9f9zprJONpsT4lTON9AvUBnfMZLqDSwTFj
- RiLWx3ZGLJU2Ytu2/c1p5zcupyEDzbAAGEMON3dA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C27848B99C;
- Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0mnSeiSXSBB8; Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B0A18B98E;
- Tue,  4 Jun 2019 18:59:51 +0200 (CEST)
-Subject: Re: [PATCH v3 14/16] powerpc/32: implement fast entry for syscalls on
- BOOKE
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <cover.1556627571.git.christophe.leroy@c-s.fr>
- <3e254178a157e7eaeef48f983880f71f97d1f296.1556627571.git.christophe.leroy@c-s.fr>
- <20190523061427.GA19655@blackberry>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <4f5fa8af-08c2-e71a-dd43-4c1a64018409@c-s.fr>
-Date: Tue, 4 Jun 2019 18:59:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JJcl2ggzzDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 03:21:42 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x54HIMkK051699
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Jun 2019 13:21:38 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2swu4bwayu-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2019 13:21:37 -0400
+Received: from localhost
+ by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <nathanl@linux.ibm.com>;
+ Tue, 4 Jun 2019 18:21:36 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 4 Jun 2019 18:21:35 +0100
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x54HLY2B37880220
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jun 2019 17:21:34 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 504AD28066;
+ Tue,  4 Jun 2019 17:21:34 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D7F928059;
+ Tue,  4 Jun 2019 17:21:34 +0000 (GMT)
+Received: from localhost (unknown [9.41.101.192])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jun 2019 17:21:34 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/3] powerpc/pseries: Simplify cpu readd to use drc_index
+In-Reply-To: <69336ea3-7937-17cc-8082-d4ad782d7e8c@linux.vnet.ibm.com>
+References: <20190516023706.50118-1-tyreld@linux.ibm.com>
+ <8736leky3x.fsf@linux.ibm.com>
+ <05a4295b-dea5-bea2-5fd3-c8fbee7bac48@linux.vnet.ibm.com>
+ <87tvdpjhju.fsf@linux.ibm.com>
+ <69336ea3-7937-17cc-8082-d4ad782d7e8c@linux.vnet.ibm.com>
+Date: Tue, 04 Jun 2019 12:21:28 -0500
 MIME-Version: 1.0
-In-Reply-To: <20190523061427.GA19655@blackberry>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19060417-0064-0000-0000-000003E9A3BD
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011215; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01213199; UDB=6.00637625; IPR=6.00994267; 
+ MB=3.00027182; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-04 17:21:36
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060417-0065-0000-0000-00003DBD9A79
+Message-Id: <87tvd5mfl3.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-04_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=833 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906040110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,59 +94,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: mingming.cao@ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul,
+Tyrel Datwyler <tyreld@linux.vnet.ibm.com> writes:
+> On 05/20/2019 08:01 AM, Nathan Lynch wrote:
+>> Kernel implementation details aside, how do you change the cpu-node
+>> relationship at runtime without breaking NUMA-aware applications? Is
+>> this not a fundamental issue to address before adding code like this?
+>> 
+>
+> If that is the concern then hotplug in general already breaks
+> them. Take for example the removal of a faulty processor and then
+> adding a new processor back.  It is quite possible that the new
+> processor is in a different NUMA node. Keep in mind that in this
+> scenario the new processor and threads gets the same logical cpu ids
+> as the faulty processor we just removed.
 
-Le 23/05/2019 à 08:14, Paul Mackerras a écrit :
-> On Tue, Apr 30, 2019 at 12:39:03PM +0000, Christophe Leroy wrote:
->> This patch implements a fast entry for syscalls.
->>
->> Syscalls don't have to preserve non volatile registers except LR.
->>
->> This patch then implement a fast entry for syscalls, where
->> volatile registers get clobbered.
->>
->> As this entry is dedicated to syscall it always sets MSR_EE
->> and warns in case MSR_EE was previously off
->>
->> It also assumes that the call is always from user, system calls are
->> unexpected from kernel.
-> 
-> This is now upstream as commit 1a4b739bbb4f.  On the e500mc test
-> config that I use, I'm getting this build failure:
-> 
-> arch/powerpc/kernel/head_fsl_booke.o: In function `SystemCall':
-> arch/powerpc/kernel/head_fsl_booke.S:416: undefined reference to `kvmppc_handler_BOOKE_INTERRUPT_SYSCALL_SPRN_SRR1'
-> Makefile:1052: recipe for target 'vmlinux' failed
+Yes, the problem is re-use of a logical CPU id with a node id that
+differs from the one it was initially assigned, and there are several
+ways to get into that situation on this platform. We probably need to be
+more careful in how we allocate a spot in the CPU maps for a newly-added
+processor. I believe the algorithm is simple first-fit right now, and it
+doesn't take into account prior NUMA relationships.
 
-Does my patch (https://patchwork.ozlabs.org/patch/1103909/) fixes the 
-issue for you ?
 
-Thanks
-Christophe
+> Now we have to ask the question who is right and who is wrong. In this
+> case the kernel data structures reflect the correct NUMA
+> topology. However, did the NUMA aware application or libnuma make an
+> assumption that specific sets of logical cpu ids are always in the
+> same NUMA node?
 
-> 
->> +.macro SYSCALL_ENTRY trapno intno
->> +	mfspr	r10, SPRN_SPRG_THREAD
->> +#ifdef CONFIG_KVM_BOOKE_HV
->> +BEGIN_FTR_SECTION
->> +	mtspr	SPRN_SPRG_WSCRATCH0, r10
->> +	stw	r11, THREAD_NORMSAVE(0)(r10)
->> +	stw	r13, THREAD_NORMSAVE(2)(r10)
->> +	mfcr	r13			/* save CR in r13 for now	   */
->> +	mfspr	r11, SPRN_SRR1
->> +	mtocrf	0x80, r11	/* check MSR[GS] without clobbering reg */
->> +	bf	3, 1975f
->> +	b	kvmppc_handler_BOOKE_INTERRUPT_\intno\()_SPRN_SRR1
-> 
-> It seems to me that the "_SPRN_SRR1" on the end of this line
-> isn't meant to be there...  However, it still fails to link with that
-> removed.
-> 
-> Paul.
-> 
+Yes, and that assumption is widespread because people tend to develop on
+an architecture where this kind of stuff doesn't happen (at least not
+yet).
+
+And I don't really agree that the current behavior reflects what is
+actually going on. When Linux running in a PowerVM LPAR receives a
+notification to change the NUMA properties of a processor at runtime,
+it's because the platform has changed the physical characteristics of
+the partition. I.e. you're now using a different physical processor,
+with different relationships to the other resources in the system. Even
+if it didn't destabilize the kernel (by changing the result of
+cpu_to_node() when various subsystems assume it will be static),
+continuing to use the logical CPU ids on the new processor obscures what
+has actually happened. And we have developers that have told us that
+this behavior - changing the logical cpu<->node relationship at runtime
+- is something their existing NUMA-aware applications cannot handle.
+
