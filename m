@@ -2,49 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9A2342BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601AF3428F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 11:03:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45J5kg2qf1zDqNs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:11:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45J5YT5GBSzDqTG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2019 19:03:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=richardw.yang@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45J4vR4N8hzDqK9
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 18:33:39 +1000 (AEST)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2019 01:32:26 -0700
-X-ExtLoop1: 1
-Received: from richard.sh.intel.com (HELO localhost) ([10.239.159.54])
- by orsmga006.jf.intel.com with ESMTP; 04 Jun 2019 01:32:17 -0700
-Date: Tue, 4 Jun 2019 16:31:48 +0800
-From: Wei Yang <richardw.yang@linux.intel.com>
-To: David Hildenbrand <david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45J5Wk54TKzDqMK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2019 19:01:38 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 8F4F12ED2D0;
+ Tue,  4 Jun 2019 09:01:03 +0000 (UTC)
+Received: from [10.36.117.61] (ovpn-117-61.ams2.redhat.com [10.36.117.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DDBC661350;
+ Tue,  4 Jun 2019 09:00:34 +0000 (UTC)
 Subject: Re: [PATCH v3 06/11] mm/memory_hotplug: Allow arch_remove_pages()
  without CONFIG_MEMORY_HOTREMOVE
-Message-ID: <20190604083148.GA28403@richard>
+To: Wei Yang <richardw.yang@linux.intel.com>
 References: <20190527111152.16324-1-david@redhat.com>
  <20190527111152.16324-7-david@redhat.com>
  <20190603221540.bvhuvltlwuirm5sl@master>
  <2ba74d1d-643e-7e22-acff-2b04c579b4f8@redhat.com>
+ <20190604083148.GA28403@richard>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <5208fb80-8062-3757-082b-1ac4e9ca0e94@redhat.com>
+Date: Tue, 4 Jun 2019 11:00:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ba74d1d-643e-7e22-acff-2b04c579b4f8@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Tue, 04 Jun 2019 19:07:14 +1000
+In-Reply-To: <20190604083148.GA28403@richard>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.29]); Tue, 04 Jun 2019 09:01:32 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,7 +106,6 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Wei Yang <richardw.yang@linux.intel.com>
 Cc: Oscar Salvador <osalvador@suse.com>, Rich Felker <dalias@libc.org>,
  linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
@@ -81,7 +130,6 @@ Cc: Oscar Salvador <osalvador@suse.com>, Rich Felker <dalias@libc.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Andrew Banman <andrew.banman@hpe.com>, linux-kernel@vger.kernel.org,
  Logan Gunthorpe <logang@deltatee.com>,
- Wei Yang <richardw.yang@linux.intel.com>,
  Martin Schwidefsky <schwidefsky@de.ibm.com>,
  Igor Mammedov <imammedo@redhat.com>, akpm@linux-foundation.org,
  linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
@@ -90,39 +138,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 04, 2019 at 08:59:43AM +0200, David Hildenbrand wrote:
->On 04.06.19 00:15, Wei Yang wrote:
->> Allow arch_remove_pages() or arch_remove_memory()?
->
->Looks like I merged __remove_pages() and arch_remove_memory().
->
->@Andrew, can you fix this up to
->
->"mm/memory_hotplug: Allow arch_remove_memory() without
->CONFIG_MEMORY_HOTREMOVE"
->
->? Thanks!
->
+On 04.06.19 10:31, Wei Yang wrote:
+> On Tue, Jun 04, 2019 at 08:59:43AM +0200, David Hildenbrand wrote:
+>> On 04.06.19 00:15, Wei Yang wrote:
+>>> Allow arch_remove_pages() or arch_remove_memory()?
+>>
+>> Looks like I merged __remove_pages() and arch_remove_memory().
+>>
+>> @Andrew, can you fix this up to
+>>
+>> "mm/memory_hotplug: Allow arch_remove_memory() without
+>> CONFIG_MEMORY_HOTREMOVE"
+>>
+>> ? Thanks!
+>>
+> 
+> Already merged?
 
-Already merged?
-
->> 
->> And want to confirm the kernel build on affected arch succeed?
->
->I compile-tested on s390x and x86. As the patches are in linux-next for
->some time, I think the other builds are also fine.
->
-
-Yep, sounds good~
-
->Thanks!
->
->-- 
->
->Thanks,
->
->David / dhildenb
+Andrew picked it up, but it's not in linus' tree yet.
 
 -- 
-Wei Yang
-Help you, Help me
+
+Thanks,
+
+David / dhildenb
