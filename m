@@ -2,54 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B2735B3E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 13:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930CD35B50
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 13:34:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JmfV5Q2FzDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 21:24:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Jms80BTbzDqZS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 21:34:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="ZxNl0qOQ"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Jmd53m9yzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 21:23:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=sVN3EHsvpO4JEKTL1zRRHRBKbHxUnSg7DWieN951vaQ=; b=ZxNl0qOQMb2nfXeNThDfWARnO
- IjMcoH4MbKtQUU/nYGjzXO/SzWGoG4bwvM6cBsqxqnboCmwXwdmrZT6ztabNtnUgigfRmXDx8fQga
- 0rKqTEt4/6uc2AluHwNMT79+xCxIagqOb/We+wKGSyrnU5U0zj89HIUQ91CjDb3ocZFKE34NA73Xt
- ht21jsc6XZzCEdyBsoxDu/s7ytcLxb6tZ+TqSKkA+jPRHteOcwa78zZTOL6egPiRNwQtvKPfLFnxB
- 43TAXA7rZyGVZ8LyRQz4qMmoOohTstIupqEoWtffXXODQJqZlI73n1KFz6tSlAtnVI5oGHg9JPstG
- ajfQGCbTw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
- Hat Linux)) id 1hYU0u-0005Bg-TM; Wed, 05 Jun 2019 11:23:28 +0000
-Date: Wed, 5 Jun 2019 04:23:28 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-Message-ID: <20190605112328.GB2025@bombadil.infradead.org>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <87sgsomg91.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Jmqn6KNLzDqQh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 21:32:53 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id 107so370742otj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2019 04:32:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=gKIrzdoUs9Q5HqSQ9aF++SWQgmsoIMMP53yLp9JAEhA=;
+ b=S3GCnogqDd4736yHaR6Sv/eerB7w0jIQIolcNBvGeYIUi03+hEH8KL5oRbZws9Y8Zr
+ 7u0KlqHTpSpJp0onqaMOnyf6pKdO1NmUVrYkluhzzU9koqKT4A4S/3DRqrCfHyJXoQpj
+ bV/gY9384kR72NOoQZAv69FbselNP1DKNoxTaynhRRscsIjPB4c0bjclLdh/gMwaBpXb
+ NnuzsUpHYV9yCWIUy2XF/ewVt1tqdkqaRmnCcIEvZCaFlROvjPS0hi+T+k3zS8VpLj1B
+ zjdcyQ2QZ4gKHgiX85zhwdWna2W98F8uhHAB4hL+FqDk9dHxRnZNvZLb4keaARGH9Ur6
+ Yi8w==
+X-Gm-Message-State: APjAAAX2c+1duDkBLvBInm3HniHfPV8OtOv7ijjBTR6wqKvuPTc6309b
+ e4fnDioxXtlTHtmqLaGjKrP6C0brX6xIkGdXNKk=
+X-Google-Smtp-Source: APXvYqz+JZW2+VQCD6Erxe5NqzDpmFjd4VjgArIo0C0WgsuCGX5oKZ7QMpJqVs3/r9yA8gOMHCxJc6awbkEujZVMQjU=
+X-Received: by 2002:a9d:7987:: with SMTP id h7mr9178825otm.284.1559734370049; 
+ Wed, 05 Jun 2019 04:32:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sgsomg91.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+References: <90d30adb0943a11ab127808c03229ba657478df4.1559566521.git.christophe.leroy@c-s.fr>
+In-Reply-To: <90d30adb0943a11ab127808c03229ba657478df4.1559566521.git.christophe.leroy@c-s.fr>
+From: Mathieu Malaterre <malat@debian.org>
+Date: Wed, 5 Jun 2019 13:32:39 +0200
+Message-ID: <CA+7wUswvw3JJ2dLCn877tNbTd==O5c9LxHGezOm+y5otQZnS2w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,50 +60,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Paul Mackerras <paulus@samba.org>, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 05, 2019 at 09:19:22PM +1000, Michael Ellerman wrote:
-> Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> > Similar notify_page_fault() definitions are being used by architectures
-> > duplicating much of the same code. This attempts to unify them into a
-> > single implementation, generalize it and then move it to a common place.
-> > kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
-> > need not be wrapped again within CONFIG_KPROBES. Trap number argument can
-> > now contain upto an 'unsigned int' accommodating all possible platforms.
-> ...
-> 
-> You've changed several of the architectures from something like above,
-> where it disables preemption around the call into the below:
-> 
-> 
-> Which skips everything if we're preemptible. Is that an equivalent
-> change? If so can you please explain why in more detail.
+On Mon, Jun 3, 2019 at 3:00 PM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>
+> When booting through OF, setup_disp_bat() does nothing because
+> disp_BAT are not set. By change, it used to work because BOOTX
+> buffer is mapped 1:1 at address 0x81000000 by the bootloader, and
+> btext_setup_display() sets virt addr same as phys addr.
+>
+> But since commit 215b823707ce ("powerpc/32s: set up an early static
+> hash table for KASAN."), a temporary page table overrides the
+> bootloader mapping.
+>
+> This 0x81000000 is also problematic with the newly implemented
+> Kernel Userspace Access Protection (KUAP) because it is within user
+> address space.
+>
+> This patch fixes those issues by properly setting disp_BAT through
+> a call to btext_prepare_BAT(), allowing setup_disp_bat() to
+> properly setup BAT3 for early bootx screen buffer access.
+>
+> Reported-by: Mathieu Malaterre <malat@debian.org>
+> Fixes: 215b823707ce ("powerpc/32s: set up an early static hash table for KASAN.")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-See the discussion in v1 of this patch, which you were cc'd on.
+The patch below does fix the symptoms I reported. Tested with CONFIG_KASAN=n :
 
-I agree the description here completely fails to mention why the change.
-It should mention commit a980c0ef9f6d8c.
+Tested-by: Mathieu Malaterre <malat@debian.org>
 
-> Also why not have it return bool?
-> 
-> cheers
-> 
+Thanks !
+
+> ---
+>  arch/powerpc/include/asm/btext.h       | 4 ++++
+>  arch/powerpc/kernel/prom_init.c        | 1 +
+>  arch/powerpc/kernel/prom_init_check.sh | 2 +-
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/btext.h b/arch/powerpc/include/asm/btext.h
+> index 3ffad030393c..461b0f193864 100644
+> --- a/arch/powerpc/include/asm/btext.h
+> +++ b/arch/powerpc/include/asm/btext.h
+> @@ -13,7 +13,11 @@ extern void btext_update_display(unsigned long phys, int width, int height,
+>                                  int depth, int pitch);
+>  extern void btext_setup_display(int width, int height, int depth, int pitch,
+>                                 unsigned long address);
+> +#ifdef CONFIG_PPC32
+>  extern void btext_prepare_BAT(void);
+> +#else
+> +static inline void btext_prepare_BAT(void) { }
+> +#endif
+>  extern void btext_map(void);
+>  extern void btext_unmap(void);
+>
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index 3555cad7bdde..ed446b7ea164 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -2336,6 +2336,7 @@ static void __init prom_check_displays(void)
+>                         prom_printf("W=%d H=%d LB=%d addr=0x%x\n",
+>                                     width, height, pitch, addr);
+>                         btext_setup_display(width, height, 8, pitch, addr);
+> +                       btext_prepare_BAT();
+>                 }
+>  #endif /* CONFIG_PPC_EARLY_DEBUG_BOOTX */
+>         }
+> diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
+> index 518d416971c1..160bef0d553d 100644
+> --- a/arch/powerpc/kernel/prom_init_check.sh
+> +++ b/arch/powerpc/kernel/prom_init_check.sh
+> @@ -24,7 +24,7 @@ fi
+>  WHITELIST="add_reloc_offset __bss_start __bss_stop copy_and_flush
+>  _end enter_prom $MEM_FUNCS reloc_offset __secondary_hold
+>  __secondary_hold_acknowledge __secondary_hold_spinloop __start
+> -logo_linux_clut224
+> +logo_linux_clut224 btext_prepare_BAT
+>  reloc_got2 kernstart_addr memstart_addr linux_banner _stext
+>  __prom_init_toc_start __prom_init_toc_end btext_setup_display TOC."
+>
+> --
+> 2.13.3
+>
