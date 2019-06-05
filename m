@@ -1,74 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF011366C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 23:24:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45K1xs1TdmzDqW0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 07:24:01 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17197366CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 23:25:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45K1zJ3PTtzDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 07:25:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com;
+ (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com;
  envelope-from=richard.weiyang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="HtLdXNwl"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eLDsRwOh"; 
  dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45K1ty6BqrzDqZn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 07:21:30 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id c26so33677edt.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2019 14:21:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45K1wY36ZczDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 07:22:53 +1000 (AEST)
+Received: by mail-ed1-x541.google.com with SMTP id p26so31640edr.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2019 14:22:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=jmqIL302FliKztrku23iEbel/vN8Om9KZr4KoJVUQBs=;
- b=HtLdXNwlPpU1RFxmpHZq/rH78NiFyUbMRNR4XLHGl5DFaciTYXzczF+YOEaOthAltb
- LzfrkniAfXeG9XfS8k8l9WWdWJTCb5t0Qydwrx9HDSWfQxVverG9o6eBxNShll611+Xk
- D8MDiZNeQ9S8YaEkKYI92ohNxvxiKGjBgdANYmGfcUxcUcAmDq0kOuCUWCUGDd+d7T8p
- u6tdGt0M3uFblUt67ApuYvpm2psLcK1H66EYwESimtXZEx5o8tKBJ+DBxrVlRNPstQNp
- 2xk+bEsv5+yigah3/6Lj+npsGt7LKO/9d2Bkh2IRQhSgPxae7KCEIl0WkMOEkno6k2FP
- 1Lng==
+ bh=XYR0qJWfd1D1ufm9G1S7XwxRI+/pUaRAjNUa1IxBLC8=;
+ b=eLDsRwOhaZ0avYP5JbU/qyfKGB5DOL//jHeF0QIsj1xnkLpW3HfER5+1gHsFmyizdC
+ TuPwJNXIJpeJwU2upcFzFr2gEM64wh1+94uumBqpRcHFkWQutwdt26Yv9sREHRvruvlk
+ znKdHE2O7dSxq57NCvmgeA8foqkPAvf6tdKk+a+LkY6ICiZeCziK45J+jM2lAsYvL8tU
+ +Q8RJK0GedIjFeQ+8FmqES5ccIjWGHSdcUNJ5Cq529NwrtvIRUY0YNg79G4IDKPEHmSd
+ H8/CXuU0qTWRFEgsEUaYHo7abpCchUSLqryQVVOJdl4FKhHRIozaUGG29SyMvtoYQjn2
+ iqLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
  :references:mime-version:content-disposition:in-reply-to:user-agent;
- bh=jmqIL302FliKztrku23iEbel/vN8Om9KZr4KoJVUQBs=;
- b=tnn7SGCgjMMdc1YNbaUDsJPpGEfNkuwKdd/vjkWmGpJrjGO4Zc/s+5FjsMTAWYYWQv
- M6qcRXZj8hoNtC/BGaSnjpXLtVit1LXgwGQkcIsOEkpD7Z6K+vZEsj1T1x9T0xtawmQ0
- y3GniMwGGPtznSx5PwkMTEAo0S0NKHBpwHMAYFAfiaGURdIS1iqLrYI9dQRrwKljvNxy
- J8+7KsQsxVY1ISI8sYQCh+2jxUICdkyhZRep8pvGDe2vznejurA9shCHnpRklK4iwsuZ
- RQhgLAVSh84rmMdwG2/FgvUcq9BUFC9QZvGcGhss4r+veHoYRsVpf+0Bw8VrilQoAfxa
- mnrA==
-X-Gm-Message-State: APjAAAU+VWwPX8DxU3BbxYihZWuHOIVfxlgBayRRXaT3HH+LkQti/x2V
- tjDAepc8IsM2z0n1cQBcCgQ=
-X-Google-Smtp-Source: APXvYqxldygk3PkHMpihOlAqhwTjzhXRQF4Z9tCxVu286QjlehnozfaHCkEEtI5NYMQPFpu5SuYeWg==
-X-Received: by 2002:a50:ca48:: with SMTP id e8mr45737760edi.101.1559769687081; 
- Wed, 05 Jun 2019 14:21:27 -0700 (PDT)
+ bh=XYR0qJWfd1D1ufm9G1S7XwxRI+/pUaRAjNUa1IxBLC8=;
+ b=WBS0ewjvOljl5/SsZ4pvAUGtd7SbhTM7tBjArPalEI1tp45vj0PhFRPe2z+VPzvavx
+ NOXWmQQXIlICDhBNDn/GC0YmknHJPXH1Zf72wm1UU6CIgxZuZ07qnKlF6FyH6NFt54JC
+ XcRYxAYcsuC+IuAOWOPwLohVeanXYdenWcSSx+4dedvmvtsN3rK/P3wC1oyO5wEwU5B7
+ FK9TdasdKKj78gt+QWQSllXf0l4ilLRUzd6CxLmXM1aIhmpYBsrRsehBkqXpjvAcoGC4
+ xwsP4FVF0hZM2CjNkgrqSx0EtnYZhR10wqDspdD1ZEMj17II5uVq/p5PyW3v4XOh59bm
+ HiBg==
+X-Gm-Message-State: APjAAAWLwmUUwHDXk0O530Jwe9p8clYTCt7kIMk3hYuydHsg8hFyxtZ2
+ 4AnnqqAMPd1C93AUrdLXZ7w=
+X-Google-Smtp-Source: APXvYqzyKS0phZCywdwPXToHaq30FkGf9zmLn9+DGARhqy7Cp0rjLbRZrzlUzgkPZspLLdcqpnQe5Q==
+X-Received: by 2002:a50:927d:: with SMTP id j58mr11330969eda.230.1559769770516; 
+ Wed, 05 Jun 2019 14:22:50 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
- by smtp.gmail.com with ESMTPSA id e19sm3550413edy.36.2019.06.05.14.21.26
+ by smtp.gmail.com with ESMTPSA id c7sm3853751ejz.71.2019.06.05.14.22.49
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 05 Jun 2019 14:21:26 -0700 (PDT)
-Date: Wed, 5 Jun 2019 21:21:25 +0000
+ Wed, 05 Jun 2019 14:22:49 -0700 (PDT)
+Date: Wed, 5 Jun 2019 21:22:49 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 11/11] mm/memory_hotplug: Remove "zone" parameter from
- sparse_remove_one_section
-Message-ID: <20190605212125.gwmvjjicylhp3wcz@master>
+Subject: Re: [PATCH v3 07/11] mm/memory_hotplug: Create memory block devices
+ after arch_add_memory()
+Message-ID: <20190605212249.s7knac6vimealdmx@master>
 References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-12-david@redhat.com>
+ <20190527111152.16324-8-david@redhat.com>
+ <20190604214234.ltwtkcdoju2gxisx@master>
+ <f6523d67-cac9-1189-884a-67b6829320ba@redhat.com>
+ <9a1d282f-8dd9-a48b-cc96-f9afaa435c62@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190527111152.16324-12-david@redhat.com>
+In-Reply-To: <9a1d282f-8dd9-a48b-cc96-f9afaa435c62@redhat.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,75 +85,137 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+ linux-mm@kvack.org, Arun KS <arunks@codeaurora.org>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ "mike.travis@hpe.com" <mike.travis@hpe.com>, Qian Cai <cai@lca.pw>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>, Andrew Banman <andrew.banman@hpe.com>,
+ Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
  Igor Mammedov <imammedo@redhat.com>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 27, 2019 at 01:11:52PM +0200, David Hildenbrand wrote:
->The parameter is unused, so let's drop it. Memory removal paths should
->never care about zones. This is the job of memory offlining and will
->require more refactorings.
+On Wed, Jun 05, 2019 at 12:58:46PM +0200, David Hildenbrand wrote:
+>On 05.06.19 10:58, David Hildenbrand wrote:
+>>>> /*
+>>>>  * For now, we have a linear search to go find the appropriate
+>>>>  * memory_block corresponding to a particular phys_index. If
+>>>> @@ -658,6 +670,11 @@ static int init_memory_block(struct memory_block **memory, int block_id,
+>>>> 	unsigned long start_pfn;
+>>>> 	int ret = 0;
+>>>>
+>>>> +	mem = find_memory_block_by_id(block_id, NULL);
+>>>> +	if (mem) {
+>>>> +		put_device(&mem->dev);
+>>>> +		return -EEXIST;
+>>>> +	}
+>>>
+>>> find_memory_block_by_id() is not that close to the main idea in this patch.
+>>> Would it be better to split this part?
+>> 
+>> I played with that but didn't like the temporary results (e.g. having to
+>> export find_memory_block_by_id()). I'll stick to this for now.
+>> 
+>>>
+>>>> 	mem = kzalloc(sizeof(*mem), GFP_KERNEL);
+>>>> 	if (!mem)
+>>>> 		return -ENOMEM;
+>>>> @@ -699,44 +716,53 @@ static int add_memory_block(int base_section_nr)
+>>>> 	return 0;
+>>>> }
+>>>>
+>>>> +static void unregister_memory(struct memory_block *memory)
+>>>> +{
+>>>> +	if (WARN_ON_ONCE(memory->dev.bus != &memory_subsys))
+>>>> +		return;
+>>>> +
+>>>> +	/* drop the ref. we got via find_memory_block() */
+>>>> +	put_device(&memory->dev);
+>>>> +	device_unregister(&memory->dev);
+>>>> +}
+>>>> +
+>>>> /*
+>>>> - * need an interface for the VM to add new memory regions,
+>>>> - * but without onlining it.
+>>>> + * Create memory block devices for the given memory area. Start and size
+>>>> + * have to be aligned to memory block granularity. Memory block devices
+>>>> + * will be initialized as offline.
+>>>>  */
+>>>> -int hotplug_memory_register(int nid, struct mem_section *section)
+>>>> +int create_memory_block_devices(unsigned long start, unsigned long size)
+>>>> {
+>>>> -	int block_id = base_memory_block_id(__section_nr(section));
+>>>> -	int ret = 0;
+>>>> +	const int start_block_id = pfn_to_block_id(PFN_DOWN(start));
+>>>> +	int end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
+>>>> 	struct memory_block *mem;
+>>>> +	unsigned long block_id;
+>>>> +	int ret = 0;
+>>>>
+>>>> -	mutex_lock(&mem_sysfs_mutex);
+>>>> +	if (WARN_ON_ONCE(!IS_ALIGNED(start, memory_block_size_bytes()) ||
+>>>> +			 !IS_ALIGNED(size, memory_block_size_bytes())))
+>>>> +		return -EINVAL;
+>>>>
+>>>> -	mem = find_memory_block(section);
+>>>> -	if (mem) {
+>>>> -		mem->section_count++;
+>>>> -		put_device(&mem->dev);
+>>>> -	} else {
+>>>> +	mutex_lock(&mem_sysfs_mutex);
+>>>> +	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+>>>> 		ret = init_memory_block(&mem, block_id, MEM_OFFLINE);
+>>>> 		if (ret)
+>>>> -			goto out;
+>>>> -		mem->section_count++;
+>>>> +			break;
+>>>> +		mem->section_count = sections_per_block;
+>>>> +	}
+>>>> +	if (ret) {
+>>>> +		end_block_id = block_id;
+>>>> +		for (block_id = start_block_id; block_id != end_block_id;
+>>>> +		     block_id++) {
+>>>> +			mem = find_memory_block_by_id(block_id, NULL);
+>>>> +			mem->section_count = 0;
+>>>> +			unregister_memory(mem);
+>>>> +		}
+>>>> 	}
+>>>
+>>> Would it be better to do this in reverse order?
+>>>
+>>> And unregister_memory() would free mem, so it is still necessary to set
+>>> section_count to 0?
+>> 
+>> 1. I kept the existing behavior (setting it to 0) for now. I am planning
+>> to eventually remove the section count completely (it could be
+>> beneficial to detect removing of partially populated memory blocks).
 >
->Reviewed-by: Dan Williams <dan.j.williams@intel.com>
->Signed-off-by: David Hildenbrand <david@redhat.com>
+>Correction: We already use it to block offlining of partially populated
+>memory blocks \o/
 
-Reviewed-by: Wei Yang <richardw.yang@linux.intel.com>
+Would you mind letting me know where we leverage this?
 
->---
-> include/linux/memory_hotplug.h | 2 +-
-> mm/memory_hotplug.c            | 2 +-
-> mm/sparse.c                    | 4 ++--
-> 3 files changed, 4 insertions(+), 4 deletions(-)
 >
->diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
->index 2f1f87e13baa..1a4257c5f74c 100644
->--- a/include/linux/memory_hotplug.h
->+++ b/include/linux/memory_hotplug.h
->@@ -346,7 +346,7 @@ extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
-> extern bool is_memblock_offlined(struct memory_block *mem);
-> extern int sparse_add_one_section(int nid, unsigned long start_pfn,
-> 				  struct vmem_altmap *altmap);
->-extern void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
->+extern void sparse_remove_one_section(struct mem_section *ms,
-> 		unsigned long map_offset, struct vmem_altmap *altmap);
-> extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
-> 					  unsigned long pnum);
->diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->index 82136c5b4c5f..e48ec7b9dee2 100644
->--- a/mm/memory_hotplug.c
->+++ b/mm/memory_hotplug.c
->@@ -524,7 +524,7 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
-> 	start_pfn = section_nr_to_pfn((unsigned long)scn_nr);
-> 	__remove_zone(zone, start_pfn);
-> 
->-	sparse_remove_one_section(zone, ms, map_offset, altmap);
->+	sparse_remove_one_section(ms, map_offset, altmap);
-> }
-> 
-> /**
->diff --git a/mm/sparse.c b/mm/sparse.c
->index d1d5e05f5b8d..1552c855d62a 100644
->--- a/mm/sparse.c
->+++ b/mm/sparse.c
->@@ -800,8 +800,8 @@ static void free_section_usemap(struct page *memmap, unsigned long *usemap,
-> 		free_map_bootmem(memmap);
-> }
-> 
->-void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
->-		unsigned long map_offset, struct vmem_altmap *altmap)
->+void sparse_remove_one_section(struct mem_section *ms, unsigned long map_offset,
->+			       struct vmem_altmap *altmap)
-> {
-> 	struct page *memmap = NULL;
-> 	unsigned long *usemap = NULL;
+>> 
+>> 2. Reverse order: We would have to start with "block_id - 1", I don't
+>> like that better.
+>> 
+>> Thanks for having a look!
+>> 
+>
+>
 >-- 
->2.20.1
+>
+>Thanks,
+>
+>David / dhildenb
 
 -- 
 Wei Yang
