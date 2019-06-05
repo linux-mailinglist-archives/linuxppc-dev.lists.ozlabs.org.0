@@ -1,87 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252403555C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 04:41:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JY2N4V2JzDqVL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 12:41:16 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A64355AA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 05:40:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JZLF20V5zDqLN
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 13:40:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=oracle.com
- (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.b="l/5PCHpN"; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JY0c4FTFzDq6B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 12:39:44 +1000 (AEST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x552XZTP048759;
- Wed, 5 Jun 2019 02:39:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=z/la0Iaw8QvvEtAdeZ/2XourCSKmrS+ERTV018zk7cI=;
- b=l/5PCHpNUqUOkOl1KntQONU3PjFaETgfVfGLnBhy2cbt8wcY4T7Kl0nXn3uAorPiiSUO
- E0vga1hS/A1bmyi7LS3gePe/QahKsvyCnZAKp6BZbWejVqyiRm5hkCS2//YGNsBAvD3/
- LeRw+su+tsvRP+FnYyVwIBsYdktkBT/cG06q+wW0bO8lU8y+AHmmW4EdLbBeN5xdgryM
- LBxOUYSOP2yguCUAW/wkOPYY/4/xJqC+UzBMBaIi7pqAkWCTJsI1SzDV6Pxv1RMuK200
- QrSZ+5X2oAh7LoBWGy6lsKmtv23yvQeezAZTiyvwWum8eeTbms7/OpT0kHjx1ymEGgmK eQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2120.oracle.com with ESMTP id 2suj0qg94t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 05 Jun 2019 02:39:26 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x552c2SX145348;
- Wed, 5 Jun 2019 02:39:25 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3020.oracle.com with ESMTP id 2swnghp1kn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 05 Jun 2019 02:39:25 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x552dM0N020688;
- Wed, 5 Jun 2019 02:39:22 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 04 Jun 2019 19:39:22 -0700
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH v3] scsi: ibmvscsi: Don't use rc uninitialized in
- ibmvscsi_do_work
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190603221941.65432-1-natechancellor@gmail.com>
- <20190603234405.29600-1-natechancellor@gmail.com>
-Date: Tue, 04 Jun 2019 22:39:19 -0400
-In-Reply-To: <20190603234405.29600-1-natechancellor@gmail.com> (Nathan
- Chancellor's message of "Mon, 3 Jun 2019 16:44:06 -0700")
-Message-ID: <yq1ef48rc14.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9278
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=773
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906050014
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9278
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=814 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906050014
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45JZJq5NJwzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 13:38:51 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id B779EAE8000F;
+ Tue,  4 Jun 2019 23:38:16 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/pci/of: Fix OF flags parsing for 64bit BARs
+Date: Wed,  5 Jun 2019 13:38:14 +1000
+Message-Id: <20190605033814.127962-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,25 +38,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, linuxppc-dev@lists.ozlabs.org
+Cc: Shawn Anastasio <shawn@anastas.io>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Michael Roth <mdroth@linux.vnet.ibm.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When the firmware does PCI BAR resource allocation, it passes the assigned
+addresses and flags (prefetch/64bit/...) via the "reg" property of
+a PCI device device tree node so the kernel does not need to do
+resource allocation.
 
-Nathan,
+The flags are stored in resource::flags - the lower byte stores
+PCI_BASE_ADDRESS_SPACE/etc bits and the other bytes are IORESOURCE_IO/etc.
+Some flags from PCI_BASE_ADDRESS_xxx and IORESOURCE_xxx are duplicated,
+such as PCI_BASE_ADDRESS_MEM_PREFETCH/PCI_BASE_ADDRESS_MEM_TYPE_64/etc.
+When parsing the "reg" property, we copy the prefetch flag but we skip
+on PCI_BASE_ADDRESS_MEM_TYPE_64 which leaves the flags out of sync.
 
-> clang warns:
->
-> drivers/scsi/ibmvscsi/ibmvscsi.c:2126:7: warning: variable 'rc' is used
-> uninitialized whenever switch case is taken [-Wsometimes-uninitialized]
->         case IBMVSCSI_HOST_ACTION_NONE:
->              ^~~~~~~~~~~~~~~~~~~~~~~~~
+The missing IORESOURCE_MEM_64 flag comes into play under 2 conditions:
+1. we remove PCI_PROBE_ONLY for pseries (by hacking pSeries_setup_arch()
+or by passing "/chosen/linux,pci-probe-only");
+2. we request resource alignment (by passing pci=resource_alignment=
+via the kernel cmd line to request PAGE_SIZE alignment or defining
+ppc_md.pcibios_default_alignment which returns anything but 0). Note that
+the alignment requests are ignored if PCI_PROBE_ONLY is enabled.
 
-Applied to 5.3/scsi-queue, thanks!
+With 1) and 2), the generic PCI code in the kernel unconditionally
+decides to:
+- reassign the BARs in pci_specified_resource_alignment() (works fine)
+- write new BARs to the device - this fails for 64bit BARs as the generic
+code looks at IORESOURCE_MEM_64 (not set) and writes only lower 32bits
+of the BAR and leaves the upper 32bit unmodified which breaks BAR mapping
+in the hypervisor.
 
+This fixes the issue by copying the flag. This is useful if we want to
+enforce certain BAR alignment per platform as handling subpage sized BARs
+is proven to cause problems with hotplug (SLOF already aligns BARs to 64k).
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+
+This code is there for ages (from 200x) hence no "Fixes:".
+
+Ideally I want to enforce /chosen/linux,pci-probe-only in QEMU as
+at the moment:
+- pci=resource_alignment= alone does not do anything;
+- /chosen/linux,pci-probe-only alone does not cause the kernel to
+reassign resources;
+- pci=resource_alignment= with /chosen/linux,pci-probe-only is broken
+anyway.
+
+---
+ arch/powerpc/kernel/pci_of_scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/kernel/pci_of_scan.c b/arch/powerpc/kernel/pci_of_scan.c
+index 24191ea2d9a7..64ad92016b63 100644
+--- a/arch/powerpc/kernel/pci_of_scan.c
++++ b/arch/powerpc/kernel/pci_of_scan.c
+@@ -45,6 +45,8 @@ unsigned int pci_parse_of_flags(u32 addr0, int bridge)
+ 	if (addr0 & 0x02000000) {
+ 		flags = IORESOURCE_MEM | PCI_BASE_ADDRESS_SPACE_MEMORY;
+ 		flags |= (addr0 >> 22) & PCI_BASE_ADDRESS_MEM_TYPE_64;
++		if (flags & PCI_BASE_ADDRESS_MEM_TYPE_64)
++			flags |= IORESOURCE_MEM_64;
+ 		flags |= (addr0 >> 28) & PCI_BASE_ADDRESS_MEM_TYPE_1M;
+ 		if (addr0 & 0x40000000)
+ 			flags |= IORESOURCE_PREFETCH
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.17.1
+
