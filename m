@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCD935921
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 11:00:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45JjRd1P51zDqHG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 19:00:13 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B283592F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 11:02:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45JjTq0Q5MzDqXm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2019 19:02:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45JjQF4Dh9zDq9m
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 18:58:59 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45JjSQ349JzDqB5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2019 19:00:54 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 9D2A8B0CCB;
- Wed,  5 Jun 2019 08:58:36 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id E0E3030C0DD6;
+ Wed,  5 Jun 2019 09:00:36 +0000 (UTC)
 Received: from [10.36.118.48] (unknown [10.36.118.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0A8321001E80;
- Wed,  5 Jun 2019 08:58:26 +0000 (UTC)
-Subject: Re: [PATCH v3 07/11] mm/memory_hotplug: Create memory block devices
- after arch_add_memory()
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C8C0E5C225;
+ Wed,  5 Jun 2019 09:00:29 +0000 (UTC)
+Subject: Re: [PATCH v3 09/11] mm/memory_hotplug: Remove memory block devices
+ before arch_remove_memory()
 To: Wei Yang <richard.weiyang@gmail.com>
 References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-8-david@redhat.com>
- <20190604214234.ltwtkcdoju2gxisx@master>
+ <20190527111152.16324-10-david@redhat.com>
+ <20190604220715.d4d2ctwjk25vd5sq@master>
 From: David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -81,18 +81,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <f6523d67-cac9-1189-884a-67b6829320ba@redhat.com>
-Date: Wed, 5 Jun 2019 10:58:26 +0200
+Message-ID: <38b8b004-9a26-e4ba-d8e3-a41c8fcc51c1@redhat.com>
+Date: Wed, 5 Jun 2019 11:00:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190604214234.ltwtkcdoju2gxisx@master>
+In-Reply-To: <20190604220715.d4d2ctwjk25vd5sq@master>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.26]); Wed, 05 Jun 2019 08:58:50 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.45]); Wed, 05 Jun 2019 09:00:47 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,118 +104,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-sh@vger.kernel.org, "mike.travis@hpe.com" <mike.travis@hpe.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Mathieu Malaterre <malat@debian.org>,
- linux-kernel@vger.kernel.org, Arun KS <arunks@codeaurora.org>,
- Ingo Molnar <mingo@kernel.org>, linux-mm@kvack.org,
- Andrew Banman <andrew.banman@hpe.com>, Qian Cai <cai@lca.pw>,
- Igor Mammedov <imammedo@redhat.com>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Chris Wilson <chris@chris-wilson.co.uk>,
+ linux-mm@kvack.org, Arun KS <arunks@codeaurora.org>,
+ Ingo Molnar <mingo@kernel.org>, linux-s390@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ "mike.travis@hpe.com" <mike.travis@hpe.com>, Mark Brown <broonie@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>, Andrew Banman <andrew.banman@hpe.com>,
+ Mathieu Malaterre <malat@debian.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Alex Deucher <alexander.deucher@amd.com>, Igor Mammedov <imammedo@redhat.com>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> /*
->>  * For now, we have a linear search to go find the appropriate
->>  * memory_block corresponding to a particular phys_index. If
->> @@ -658,6 +670,11 @@ static int init_memory_block(struct memory_block **memory, int block_id,
->> 	unsigned long start_pfn;
->> 	int ret = 0;
+On 05.06.19 00:07, Wei Yang wrote:
+> On Mon, May 27, 2019 at 01:11:50PM +0200, David Hildenbrand wrote:
+>> Let's factor out removing of memory block devices, which is only
+>> necessary for memory added via add_memory() and friends that created
+>> memory block devices. Remove the devices before calling
+>> arch_remove_memory().
 >>
->> +	mem = find_memory_block_by_id(block_id, NULL);
->> +	if (mem) {
->> +		put_device(&mem->dev);
->> +		return -EEXIST;
->> +	}
-> 
-> find_memory_block_by_id() is not that close to the main idea in this patch.
-> Would it be better to split this part?
-
-I played with that but didn't like the temporary results (e.g. having to
-export find_memory_block_by_id()). I'll stick to this for now.
-
-> 
->> 	mem = kzalloc(sizeof(*mem), GFP_KERNEL);
->> 	if (!mem)
->> 		return -ENOMEM;
->> @@ -699,44 +716,53 @@ static int add_memory_block(int base_section_nr)
->> 	return 0;
+>> This finishes factoring out memory block device handling from
+>> arch_add_memory() and arch_remove_memory().
+>>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Andrew Banman <andrew.banman@hpe.com>
+>> Cc: Ingo Molnar <mingo@kernel.org>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Mark Brown <broonie@kernel.org>
+>> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Pavel Tatashin <pavel.tatashin@microsoft.com>
+>> Cc: Arun KS <arunks@codeaurora.org>
+>> Cc: Mathieu Malaterre <malat@debian.org>
+>> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>> drivers/base/memory.c  | 37 ++++++++++++++++++-------------------
+>> drivers/base/node.c    | 11 ++++++-----
+>> include/linux/memory.h |  2 +-
+>> include/linux/node.h   |  6 ++----
+>> mm/memory_hotplug.c    |  5 +++--
+>> 5 files changed, 30 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>> index 5a0370f0c506..f28efb0bf5c7 100644
+>> --- a/drivers/base/memory.c
+>> +++ b/drivers/base/memory.c
+>> @@ -763,32 +763,31 @@ int create_memory_block_devices(unsigned long start, unsigned long size)
+>> 	return ret;
 >> }
 >>
->> +static void unregister_memory(struct memory_block *memory)
->> +{
->> +	if (WARN_ON_ONCE(memory->dev.bus != &memory_subsys))
->> +		return;
->> +
->> +	/* drop the ref. we got via find_memory_block() */
->> +	put_device(&memory->dev);
->> +	device_unregister(&memory->dev);
->> +}
->> +
->> /*
->> - * need an interface for the VM to add new memory regions,
->> - * but without onlining it.
->> + * Create memory block devices for the given memory area. Start and size
+>> -void unregister_memory_section(struct mem_section *section)
+>> +/*
+>> + * Remove memory block devices for the given memory area. Start and size
 >> + * have to be aligned to memory block granularity. Memory block devices
->> + * will be initialized as offline.
->>  */
->> -int hotplug_memory_register(int nid, struct mem_section *section)
->> +int create_memory_block_devices(unsigned long start, unsigned long size)
+>> + * have to be offline.
+>> + */
+>> +void remove_memory_block_devices(unsigned long start, unsigned long size)
 >> {
->> -	int block_id = base_memory_block_id(__section_nr(section));
->> -	int ret = 0;
 >> +	const int start_block_id = pfn_to_block_id(PFN_DOWN(start));
->> +	int end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
+>> +	const int end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
 >> 	struct memory_block *mem;
->> +	unsigned long block_id;
->> +	int ret = 0;
+>> +	int block_id;
 >>
->> -	mutex_lock(&mem_sysfs_mutex);
+>> -	if (WARN_ON_ONCE(!present_section(section)))
 >> +	if (WARN_ON_ONCE(!IS_ALIGNED(start, memory_block_size_bytes()) ||
 >> +			 !IS_ALIGNED(size, memory_block_size_bytes())))
->> +		return -EINVAL;
+>> 		return;
 >>
+>> 	mutex_lock(&mem_sysfs_mutex);
+>> -
+>> -	/*
+>> -	 * Some users of the memory hotplug do not want/need memblock to
+>> -	 * track all sections. Skip over those.
+>> -	 */
 >> -	mem = find_memory_block(section);
->> -	if (mem) {
->> -		mem->section_count++;
->> -		put_device(&mem->dev);
->> -	} else {
->> +	mutex_lock(&mem_sysfs_mutex);
+>> -	if (!mem)
+>> -		goto out_unlock;
+>> -
+>> -	unregister_mem_sect_under_nodes(mem, __section_nr(section));
+>> -
+>> -	mem->section_count--;
+>> -	if (mem->section_count == 0)
 >> +	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
->> 		ret = init_memory_block(&mem, block_id, MEM_OFFLINE);
->> 		if (ret)
->> -			goto out;
->> -		mem->section_count++;
->> +			break;
->> +		mem->section_count = sections_per_block;
->> +	}
->> +	if (ret) {
->> +		end_block_id = block_id;
->> +		for (block_id = start_block_id; block_id != end_block_id;
->> +		     block_id++) {
->> +			mem = find_memory_block_by_id(block_id, NULL);
->> +			mem->section_count = 0;
->> +			unregister_memory(mem);
->> +		}
->> 	}
+>> +		mem = find_memory_block_by_id(block_id, NULL);
+>> +		if (WARN_ON_ONCE(!mem))
+>> +			continue;
+>> +		mem->section_count = 0;
 > 
-> Would it be better to do this in reverse order?
-> 
-> And unregister_memory() would free mem, so it is still necessary to set
-> section_count to 0?
+> Is this step necessary?
 
-1. I kept the existing behavior (setting it to 0) for now. I am planning
-to eventually remove the section count completely (it could be
-beneficial to detect removing of partially populated memory blocks).
-
-2. Reverse order: We would have to start with "block_id - 1", I don't
-like that better.
-
-Thanks for having a look!
+It's what the previous code does, it might not be - I'll leave it like
+that for now. As mentioned in another reply, I might remove the
+section_count completely, eventually.
 
 -- 
 
