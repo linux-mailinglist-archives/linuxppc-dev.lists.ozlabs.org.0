@@ -2,73 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDE1375A1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 15:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A871375F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 16:03:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KRnX4BYZzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 23:48:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KS713KxGzDq7k
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 00:03:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ spf=pass (mailfrom) smtp.mailfrom=lca.pw
  (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
- envelope-from=radu.rendec@gmail.com; receiver=<UNKNOWN>)
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="mRWpWXNn"; 
+ unprotected) header.d=lca.pw header.i=@lca.pw header.b="BawoU+DL"; 
  dkim-atps=neutral
 Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
  [IPv6:2607:f8b0:4864:20::844])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KRkC6KcGzDqNS
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 23:45:23 +1000 (AEST)
-Received: by mail-qt1-x844.google.com with SMTP id 14so2712094qtf.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 06:45:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=cbWHU2TAAmriqlsqy0lbK2IJbHWP0xfk7NysNgwfeo8=;
- b=mRWpWXNnd6IloiFR3j9MKpFCeFiw5eb1UTxh/Yna9fXaG+lS69+4dSNYnb+ZLnYefm
- gPr+q3EmChGjEwQ/QsjmeL2PWVMa1vGeEanLMVasS083LSUVwNI0sEYqaKlXqRp42dK5
- E1c15vyvwU3PfVG2Np1fEQASww6/BPoacCL97GaatofPLmvt5qQ0SfcveAKYTEczXzzU
- YKaYRIulLlJEhR+l7TkrEg978aCeHaJ0BRmtqynJOtn+d4OhMdh0t59zOE1o6PzHnwGZ
- EjO9rlJDr6i8cX+MpDS1Y0QrZZQZY8AP3uJEuehjwFA3w8ajfBrystuCnH803KySqAsP
- /Qvw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KS1v3MKpzDqGC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 23:58:58 +1000 (AEST)
+Received: by mail-qt1-x844.google.com with SMTP id x47so2687595qtk.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 06:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id;
+ bh=uYUP0WvJ8OVS3p9Pt4OYtUrTIoCYyxeTlVr1HS9+PVI=;
+ b=BawoU+DL761/Zz0pvNB6yfVLELjpaY9MrjtJ0ekcgITb2LHMm4DTA2HU38p+oKSvXR
+ rSFXzn+w3C05cINtZPNzeEV1ew7Vq1ZglQak8DyZPuzo4AIMlWRpyes9S/pMbCpTNnVH
+ xcxNXEPpDaDBd4QRoOowoLwwOQom/8GW7sCbWMScLXCYaSJXhHnjMqbkOFNFKWPO9fV2
+ ilP3PSW4ionpHoc4SD3idfYN04JrvqI3PopNdU6+fSYe39X5yumAU1/J+S0yGA7Ez72F
+ nGieJwobbaK1j6EcqQM9I0V4OAk98A7kFe9C5ixNzgKwiP/R1c4dALSlCUKOJraptUrz
+ 0+WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=cbWHU2TAAmriqlsqy0lbK2IJbHWP0xfk7NysNgwfeo8=;
- b=nLsLKHCH2pt5miYGnWm+XbGSHnnbYYx0sHCW1RbHljtcZYqKW7BxDJMzBwWyS6jzW6
- 1dlf/jlwxLUyil2hlDr8+GHdpwNXASX41DgK5s6TqBTWzLgA/wzjdN+V1hYfoYCuI9u6
- B5iPKeHr5G+NO5A6E2ID1/lMrHccRuDLcEVRXlnefDj0m2LVFkSwYFnyI1AawzfYoJJV
- QCqDpfCBD+fnlHZbbab1F4U+WSbB/jx5iaP4DwWY8Ct3zbqnzBxOtuE2qnUaDjm/IKqJ
- 67A6PL4Yvr5uvNSJMUQiKpxgZ7IePb82JMAAt4DodjZ+1EP9NT/Bud3iBYOKc0Njs6GM
- qDiQ==
-X-Gm-Message-State: APjAAAUtWPyl1dtw565DPkFgShIFDup1D5TlF3CQfYvrPY8b8i4iAKkB
- dz285ONNyre4CNQunvH+sQo=
-X-Google-Smtp-Source: APXvYqyIQracPlFANu0gkJzTq/eda8YSkMBqTyT1yJOPRhYGrfUBvdRsWrfXGwUXRdGyeSrl0Qmi7w==
-X-Received: by 2002:ac8:1a39:: with SMTP id v54mr41116077qtj.21.1559828718157; 
- Thu, 06 Jun 2019 06:45:18 -0700 (PDT)
-Received: from bat.mindbit.ro (ftp.optelian.com. [216.13.53.98])
- by smtp.gmail.com with ESMTPSA id u8sm871366qkk.7.2019.06.06.06.45.17
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 06 Jun 2019 06:45:17 -0700 (PDT)
-Message-ID: <62eaddb44743811a8b2cf4da5aa85f5b61662539.camel@gmail.com>
-Subject: Re: PowerPC arch_ptrace() writes beyond thread_struct/task_struct
-From: Radu Rendec <radu.rendec@gmail.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 06 Jun 2019 09:45:16 -0400
-In-Reply-To: <84012c6a-befa-5091-ee13-4da5d5eb7d75@c-s.fr>
-References: <CAD5jUk-meCjEoqJqwriEZxfXQqWvObZUPq0MP=pSQmAbAbXMkw@mail.gmail.com>
- <84012c6a-befa-5091-ee13-4da5d5eb7d75@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=uYUP0WvJ8OVS3p9Pt4OYtUrTIoCYyxeTlVr1HS9+PVI=;
+ b=s+8rjLcvvpCPC1VBcUmN10Yc7tyCZSoLqR5HFoynTiijdiImZgAMnvI/AL04GGTZW0
+ TyBa9XLLvgbueXkWK2N6S5FV4KAb+kypo3MstPysiA3ueccYOwZYvwF2Rzt/gGP1gWw2
+ T72FAOBqC648M13XlT4uwjcoRPfvbEgUirtoM4ubb97HRBLPf1kANPxgwRkoitIIHWJu
+ 5XTqgMKf8048o8O3nFa2bM1lB19qtJy/4b0V89+fU5/3W425D4/rLLFIRaZTHwx3Xbz6
+ jm/ItJsiKw014LK4shFV13VbMUPXB4g9dOOJIfPF9Y8cCUPwqPC5V/gLVl8M0WoxUzZK
+ +i5A==
+X-Gm-Message-State: APjAAAXq6Z3HiDnCGC6S+kKPB3OdJFCv/PIKbSwCJ5BMPCVRnH1EUC3f
+ 4QLdykAd5pf2DOx0exrgs2PrvQ==
+X-Google-Smtp-Source: APXvYqyk9fFSY8mn2x/l3b8QgjpGyHo8ZJJqsmgAk74ri7d+TLveq7JP/0BgDvBCA7rhpkjJLK6EGg==
+X-Received: by 2002:a0c:acba:: with SMTP id m55mr39733792qvc.52.1559829536685; 
+ Thu, 06 Jun 2019 06:58:56 -0700 (PDT)
+Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id d38sm1369241qtb.95.2019.06.06.06.58.55
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 06 Jun 2019 06:58:55 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/cacheflush: fix variable set but not used
+Date: Thu,  6 Jun 2019 09:58:13 -0400
+Message-Id: <1559829493-28457-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,93 +72,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>, paulus@samba.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-06-06 at 07:15 +0200, Christophe Leroy wrote:
-> 
-> Le 05/06/2019 à 23:45, Radu Rendec a écrit :
-> > Hi Everyone,
-> > 
-> > I'm seeing some weird memory corruption that I have been able to isolate
-> > to arch_ptrace() [arch/powerpc/kernel/ptrace.c] and PTRACE_POKEUSR. I am
-> > on PowerPC 32 (MPC8378), kernel 4.9.179.
-> > 
-> > It's not very easy for me to test on the latest kernel, but I guess
-> > little has changed since 4.9 in either the architecture specific ptrace
-> > code or PowerPC register data structures.
-> > 
-> > What happens is that gdb calls ptrace(PTRACE_POKEUSER) with addr=0x158.
-> > This goes down to arch_ptrace() [arch/powerpc/kernel/ptrace.c], inside
-> > `case PTRACE_POKEUSR`, on the branch that does this:
-> > 
-> >      memcpy(&child->thread.TS_FPR(fpidx), &data,
-> >              sizeof(long));
-> > 
-> > where:
-> >      index = addr >> 2 = 0x56 = 86
-> >      fpidx = index - PT_FPR0 = 86 - 48 = 38
-> 
-> In struct thread_fp_state, fpr field is u64, so I guess we should have 
-> the following on PPC32:
-> 
-> fpidx = (index - PT_FPR0) >> 1;
+The powerpc's flush_cache_vmap() is defined as a macro and never use
+both of its arguments, so it will generate a compilation warning,
 
-I guess this would only apply to PPC32, since everything up to fpidx is
-calculated in units of sizeof(long) - which is 4 on PPC32 and 8 on
-PPC64. But fpr[0:31] is always u64.
+lib/ioremap.c: In function 'ioremap_page_range':
+lib/ioremap.c:203:16: warning: variable 'start' set but not used
+[-Wunused-but-set-variable]
 
-It also looks odd that only sizeof(long) bytes are ever copied for any
-given fpr[fpidx], which means one half of the u64 is never accessible on
-PPC32.
+Fix it by making it an inline function.
 
-Ont other thing I don't get is the "+1" in the definition of PT_FPSCR
-for PPC32:
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+ arch/powerpc/include/asm/cacheflush.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-    #define PT_FPSCR (PT_FPR0 + 2*32 + 1)
-
-Looking at struct thread_fp_state, fpscr follows immediately after
-fpr[31]. Is the FPSCR register only 32-bit on PPC32? Is it stored in the
-2nd half of (struct thread_fp_state).fpscr? This line:
-
-    child->thread.fp_state.fpscr = data;
-
-suggests so. And in that case, the "+1" in PT_FPSCR makes sense, but
-only for big endian: assigning `data` (which is "long", 32-bit) to the
-`fpscr` field (which is "u64") would go to the higher address, which is
-indeed "+1" in units of 32-bit words.
-
-Then there is also a problem is the condition that determines whether
-memcpy() is used to access one of the fpr[0:31] or fpscr is assigned
-directly:
-
-    if (fpidx < (PT_FPSCR - PT_FPR0))
-
-The case when the supplied addr points to the lower half of fpscr (which
-is unused on PPC32?) erroneously indexes into fpr[0:31].
-
-Is there any documentation of what "addr" is supposed to mean?
-
-
-> >      &child->thread.TS_FPR(fpidx) = (void *)child + 1296
-> > 
-> >      offsetof(struct task_struct, thread) = 960
-> >      sizeof(struct thread_struct) = 336
-> >      sizeof(struct task_struct) = 1296
-> > 
-> > In other words, the memcpy() call writes just beyond thread_struct
-> > (which is also beyond task_struct, for that matter).
-> > 
-> > This should never get past the bounds checks for `index`, so perhaps
-> > there is a mismatch between ptrace macros and the actual register data
-> > structures layout.
-> > 
-> > I will continue to investigate, but I'm not familiar with the PowerPC
-> > registers so it will take a while before I make sense of all the data
-> > structures and macros. Hopefully this rings a bell to someone who is
-> > already familiar with those and could figure out quickly what the
-> > problem is.
-
+diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
+index 74d60cfe8ce5..fd318f7c3eed 100644
+--- a/arch/powerpc/include/asm/cacheflush.h
++++ b/arch/powerpc/include/asm/cacheflush.h
+@@ -29,9 +29,12 @@
+  * not expect this type of fault. flush_cache_vmap is not exactly the right
+  * place to put this, but it seems to work well enough.
+  */
+-#define flush_cache_vmap(start, end)		do { asm volatile("ptesync" ::: "memory"); } while (0)
++static inline void flush_cache_vmap(unsigned long start, unsigned long end)
++{
++	asm volatile("ptesync" ::: "memory");
++}
+ #else
+-#define flush_cache_vmap(start, end)		do { } while (0)
++static inline void flush_cache_vmap(unsigned long start, unsigned long end) { }
+ #endif
+ 
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+-- 
+1.8.3.1
 
