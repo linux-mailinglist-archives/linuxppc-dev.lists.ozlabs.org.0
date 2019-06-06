@@ -2,68 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3BC373D1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 14:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A27B37487
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 14:52:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KPcJ37FKzDqdw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 22:10:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KQY744J2zDqjj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 22:52:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="AAtfIILd"; 
- dkim-atps=neutral
-Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KPZ11PwMzDqhN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 22:08:09 +1000 (AEST)
-Received: by mail-it1-x142.google.com with SMTP id h20so2727420itk.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 05:08:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=dZ7R0pcXA65PXniczVNE7XA0L8Asj1FxMwzaYfr9tp0=;
- b=AAtfIILdQAkBLgG0upntqLzSwtwspE9LuROSskeXQSGVHkW/JZJXM1aLo7VT7zhH5I
- S9WtYibb2Cj+qHHT8/2rVPSDPvzPqAFHhkL92NOdxsaHz97TWjgUH6jquViDUkIa2Gwn
- Nq7gwocMm2NbInnFzu8LFbHFfl11C+2rWPAUi1+J4E/sZQJ4/gy6jgPVesGkySKqlB6o
- Dx8yeCC0T7b87SPrd2qdv7esEXduKqGDH9cUPupUQU/w/YlHK/i+/a1MOKhafR8Jp9PP
- zyBx3h0qGsrFrrQ3rHC0YnSyMQqK13z5QGc/HgSL+ngZ+AkuUcsBdttkfXql5m4vMd3c
- VXHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=dZ7R0pcXA65PXniczVNE7XA0L8Asj1FxMwzaYfr9tp0=;
- b=az/sygXh73dFwJYw8BpKUDcKGLxxePtivFRM7jg5CbyY2DkCkD0YPLywZCbtvyNAfq
- MXPg7Ijew3+QKXzxvnIz28Nk2w2gSg5gDePY7m/T6fhHbYSvLeqQLyXcEfUWAcqXO4V0
- rG2POkLEZl80i1zPuFxoJhbIZS3hv2qXXHSP/q50otAsB9d1JZT2qTwU2EaHchsJRT0u
- Uw7p8ioU27EdMY9v+R/WulOwEIplo2aiMxn3JCteuKqxI1Hk0ntx7Wd/iWpyeWTkNfR8
- gQYdEAVfpWLLMqVpchqkCWlyMKCZdNW8dbmesD4+hJ1FMLQ/Ckdozi3qHFzjj4/pKTul
- v8+g==
-X-Gm-Message-State: APjAAAWvXfnB0VVFD8/s/dGNQ+BQwcNg3nC8NFi2Gw97TZhNB054TeU8
- tf7D5LcTBwvjZuS7IHXExlj+nxRlDu5jEyUn2UU=
-X-Google-Smtp-Source: APXvYqyOTE4GT8vWWdF91SU85htM+ex0Uy5QBCXBLYg9jnh2e7xZ2Ow6/H+m3BwA/eqLoJ1vHYhnrOmiSdq677k4LBQ=
-X-Received: by 2002:a24:d145:: with SMTP id w66mr29390110itg.71.1559822885848; 
- Thu, 06 Jun 2019 05:08:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KQVS1YV3zDqjJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 22:50:06 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x56CheCP087339
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Jun 2019 08:50:03 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sy0bm90w3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 08:50:02 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Thu, 6 Jun 2019 13:49:59 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 6 Jun 2019 13:49:56 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x56Cnu6m23003466
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Jun 2019 12:49:56 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3EFEAE04D;
+ Thu,  6 Jun 2019 12:49:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67909AE051;
+ Thu,  6 Jun 2019 12:49:54 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.84.230])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Jun 2019 12:49:54 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, npiggin@gmail.com, paulus@samba.org, 
+ mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc/nvdimm: Add support for multibyte read/write for
+ metadata
+In-Reply-To: <fcb825c4-39fe-5c0f-0eed-764723295d54@ozlabs.ru>
+References: <20190602044350.31660-1-aneesh.kumar@linux.ibm.com>
+ <fcb825c4-39fe-5c0f-0eed-764723295d54@ozlabs.ru>
+Date: Thu, 06 Jun 2019 18:19:52 +0530
 MIME-Version: 1.0
-References: <20190530070355.121802-1-aik@ozlabs.ru>
- <deb34b5f-9472-2156-e58d-8dbcb0a38979@anastas.io>
- <4003261.yxAxO8Uj8t@townsend>
-In-Reply-To: <4003261.yxAxO8Uj8t@townsend>
-From: Oliver <oohall@gmail.com>
-Date: Thu, 6 Jun 2019 22:07:54 +1000
-Message-ID: <CAOSf1CEKwFHLHLC+CAiEiH=9v+hfRgTSuNUH3hXR4eDyQM1G9g@mail.gmail.com>
-Subject: Re: [PATCH kernel v3 0/3] powerpc/ioda2: Yet another attempt to allow
- DMA masks between 32 and 59
-To: Alistair Popple <alistair@popple.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19060612-0012-0000-0000-000003258A0F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060612-0013-0000-0000-0000215E717A
+Message-Id: <87blzaho9b.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-06_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=18 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906060091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,35 +90,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Shawn Anastasio <shawn@anastas.io>,
- David Gibson <david@gibson.dropbear.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Sam Bobroff <sbobroff@linux.ibm.com>
+Cc: oohall@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 6, 2019 at 5:17 PM Alistair Popple <alistair@popple.id.au> wrote:
->
-> I have been hitting EEH address errors testing this with some network
-> cards which map/unmap DMA addresses more frequently. For example:
->
-> PHB4 PHB#5 Diag-data (Version: 1)
-> brdgCtl:    00000002
-> RootSts:    00060020 00402000 a0220008 00100107 00000800
-> PhbSts:     0000001c00000000 0000001c00000000
-> Lem:        0000000100000080 0000000000000000 0000000000000080
-> PhbErr:     0000028000000000 0000020000000000 2148000098000240 a008400000000000
-> RxeTceErr:  2000000000000000 2000000000000000 c000000000000000 0000000000000000
-> PblErr:     0000000000020000 0000000000020000 0000000000000000 0000000000000000
-> RegbErr:    0000004000000000 0000004000000000 61000c4800000000 0000000000000000
-> PE[000] A/B: 8300b03800000000 8000000000000000
->
-> Interestingly the PE[000] A/B data is the same across different cards
-> and drivers.
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 
-TCE page fault due to permissions so odds are the DMA address was unmapped.
+> On 02/06/2019 14:43, Aneesh Kumar K.V wrote:
+>> SCM_READ/WRITE_MEATADATA hcall supports multibyte read/write. This patch
+>> updates the metadata read/write to use 1, 2, 4 or 8 byte read/write as
+>> mentioned in PAPR document.
+>> 
+>> READ/WRITE_METADATA hcall supports the 1, 2, 4, or 8 bytes read/write.
+>> For other values hcall results H_P3.
+>> 
+>> Hypervisor stores the metadata contents in big-endian format and in-order
+>> to enable read/write in different granularity, we need to switch the contents
+>> to big-endian before calling HCALL.
+>> 
+>> Based on an patch from Oliver O'Halloran <oohall@gmail.com>
+>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/papr_scm.c | 104 +++++++++++++++++-----
+>>  1 file changed, 82 insertions(+), 22 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+>> index 0176ce66673f..e33cebb8ee6c 100644
+>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>> @@ -97,42 +97,102 @@ static int drc_pmem_unbind(struct papr_scm_priv *p)
+>>  }
+>>  
+>>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+>> -			struct nd_cmd_get_config_data_hdr *hdr)
+>> +			     struct nd_cmd_get_config_data_hdr *hdr)
+>>  {
+>>  	unsigned long data[PLPAR_HCALL_BUFSIZE];
+>> +	unsigned long offset, data_offset;
+>> +	int len, read;
+>>  	int64_t ret;
+>>  
+>> -	if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
+>> +	if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
+>>  		return -EINVAL;
+>>  
+>> -	ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
+>> -			hdr->in_offset, 1);
+>> -
+>> -	if (ret == H_PARAMETER) /* bad DRC index */
+>> -		return -ENODEV;
+>> -	if (ret)
+>> -		return -EINVAL; /* other invalid parameter */
+>> -
+>> -	hdr->out_buf[0] = data[0] & 0xff;
+>> -
+>> +	for (len = hdr->in_length; len; len -= read) {
+>> +
+>> +		data_offset = hdr->in_length - len;
+>> +		offset = hdr->in_offset + data_offset;
+>> +
+>> +		if (len >= 8)
+>> +			read = 8;
+>> +		else if (len >= 4)
+>> +			read = 4;
+>> +		else if ( len >= 2)
+>
+> Do not need a space before "len".
 
-What cards did you get this with? I tried with one of the common
-BCM5719 NICs and generated network traffic by using rsync to copy a
-linux git tree to the system and it worked fine.
+Will fix in next update
+
+>
+>
+>> +			read = 2;
+>> +		else
+>> +			read = 1;
+>> +
+>> +		ret = plpar_hcall(H_SCM_READ_METADATA, data, p->drc_index,
+>> +				  offset, read);
+>> +
+>> +		if (ret == H_PARAMETER) /* bad DRC index */
+>> +			return -ENODEV;
+>> +		if (ret)
+>> +			return -EINVAL; /* other invalid parameter */
+>> +
+>> +		switch (read) {
+>> +		case 8:
+>> +			*(uint64_t *)(hdr->out_buf + data_offset) = be64_to_cpu(data[0]);
+>> +			break;
+>> +		case 4:
+>> +			*(uint32_t *)(hdr->out_buf + data_offset) = be32_to_cpu(data[0] & 0xffffffff);
+>> +			break;
+>> +
+>> +		case 2:
+>> +			*(uint16_t *)(hdr->out_buf + data_offset) = be16_to_cpu(data[0] & 0xffff);
+>> +			break;
+>> +
+>> +		case 1:
+>> +			*(uint32_t *)(hdr->out_buf + data_offset) = (data[0] & 0xff);
+>
+>
+> Memory corruption, should be uint8_t*.
+
+Good catch. That also resulted in an error on big endian kernel. Will
+fix that in next update
+>
+>
+>> +			break;
+>> +		}
+>> +	}
+>>  	return 0;
+>>  }
+>>  
+>>  static int papr_scm_meta_set(struct papr_scm_priv *p,
+>> -			struct nd_cmd_set_config_hdr *hdr)
+>> +			     struct nd_cmd_set_config_hdr *hdr)
+>>  {
+>> +	unsigned long offset, data_offset;
+>> +	int len, wrote;
+>> +	unsigned long data;
+>> +	__be64 data_be;
+>>  	int64_t ret;
+>>  
+>> -	if (hdr->in_offset >= p->metadata_size || hdr->in_length != 1)
+>> +	if ((hdr->in_offset + hdr->in_length) >= p->metadata_size)
+>>  		return -EINVAL;
+>>  
+>> -	ret = plpar_hcall_norets(H_SCM_WRITE_METADATA,
+>> -			p->drc_index, hdr->in_offset, hdr->in_buf[0], 1);
+>> -
+>> -	if (ret == H_PARAMETER) /* bad DRC index */
+>> -		return -ENODEV;
+>> -	if (ret)
+>> -		return -EINVAL; /* other invalid parameter */
+>> +	for (len = hdr->in_length; len; len -= wrote) {
+>> +
+>> +		data_offset = hdr->in_length - len;
+>> +		offset = hdr->in_offset + data_offset;
+>> +
+>> +		if (len >= 8) {
+>> +			data = *(uint64_t *)(hdr->in_buf + data_offset);
+>> +			data_be = cpu_to_be64(data);
+>> +			wrote = 8;
+>> +		} else if (len >= 4) {
+>> +			data = *(uint32_t *)(hdr->in_buf + data_offset);
+>> +			data &= 0xffffffff;
+>
+>
+> Why do you need &0xffffffff here and below (&0xffff, &0xff)? uint32_t is
+> unsigned type so the sign bit won't be extended.
+
+Sure. I just want to make sure we don't take extra data. For now I will
+keep it as it is and let Michael Ellerman decide to drop that?
+
+>
+>
+>> +			data_be = cpu_to_be32(data);
+>> +			wrote = 4;
+>> +		} else if (len >= 2) {
+>> +			data = *(uint16_t *)(hdr->in_buf + data_offset);
+>> +			data &= 0xffff;
+>> +			data_be = cpu_to_be16(data);
+>> +			wrote = 2;
+>> +		} else {
+>> +			data_be = *(uint8_t *)(hdr->in_buf + data_offset);
+>> +			data_be &= 0xff;
+>> +			wrote = 1;
+>> +		}
+>> +
+>> +		ret = plpar_hcall_norets(H_SCM_WRITE_METADATA, p->drc_index,
+>> +					 offset, data_be, wrote);
+>> +		if (ret == H_PARAMETER) /* bad DRC index */
+>> +			return -ENODEV;
+>> +		if (ret)
+>> +			return -EINVAL; /* other invalid parameter */
+>> +	}
+>>  
+>>  	return 0;
+>>  }
+>> @@ -154,7 +214,7 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+>>  		get_size_hdr = buf;
+>>  
+>>  		get_size_hdr->status = 0;
+>> -		get_size_hdr->max_xfer = 1;
+>> +		get_size_hdr->max_xfer = 8;
+>>  		get_size_hdr->config_size = p->metadata_size;
+>>  		*cmd_rc = 0;
+>>  		break;
+>> 
+>
+> -- 
+> Alexey
+
+Thanks for the review
+-aneesh
+
