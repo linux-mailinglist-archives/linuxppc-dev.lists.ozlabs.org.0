@@ -1,82 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F0C36F5D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 11:02:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E8B36EB2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 10:32:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KJnK4YTyzDqgH
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 18:32:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KKRm4Hr6zDqbG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 19:02:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.82; helo=conssluserg-03.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=socionext.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="HkBsTD/3"; 
+ dkim-atps=neutral
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
+ [210.131.2.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KJls2PTdzDqLH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 18:31:20 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x568S5Fl051715
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Jun 2019 04:31:17 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sxw4ypkjn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 04:31:17 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Thu, 6 Jun 2019 09:31:15 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 6 Jun 2019 09:31:13 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x568VCln57278506
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Jun 2019 08:31:12 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7842E5204E;
- Thu,  6 Jun 2019 08:31:12 +0000 (GMT)
-Received: from [9.199.33.95] (unknown [9.199.33.95])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5DC6052051;
- Thu,  6 Jun 2019 08:31:06 +0000 (GMT)
-Subject: Re: [PATCH] Powerpc/Watchpoint: Restore nvgprs while returning from
- exception
-To: mpe@ellerman.id.au
-References: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Thu, 6 Jun 2019 14:00:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KKQ22Px8zDqSH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 19:00:56 +1000 (AEST)
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com
+ [209.85.217.42]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id x5690cqk014240
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Jun 2019 18:00:39 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x5690cqk014240
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1559811639;
+ bh=TBwtdfm16uGyBAXSj/TNuY/KhFKFlouLYXyh5UH4Y40=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=HkBsTD/3/zEHkWM6YjcHqGb3w+fG6fM/QTrm8zVmkTQpS1uP/MX8uLFAGaH5BRBqv
+ 479JGjYak62hFetyOPDQKAXzjOkjlaDAIESCVNCAG/6/5ATZ8lo4HucdAx1gg4tW5z
+ oB8bnEaOnSMxHw022av+Rw68BLpsvbUB1ogH+4VbyUgwvHl4tBbaSTLcf7fpIQCmYw
+ PovOIeyN3vwVrOboM1cY1LI+PrvHYGsF9Wx0CWHwSo4SwF2wso91scl9pbAYDsdwto
+ vlwEzBk44PI6PRHnvYTqHOG26jLy4127V8xryRcN+BzyjYMz/tipekIl2nJWMjDq4k
+ zl4mDgNCMa+ZQ==
+X-Nifty-SrcIP: [209.85.217.42]
+Received: by mail-vs1-f42.google.com with SMTP id g24so754222vso.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 02:00:39 -0700 (PDT)
+X-Gm-Message-State: APjAAAXhI50aRZxnDhVVoUx8lzVGPfy/S0VjrcrXzwETu9lwxUYEt6Ur
+ RmxHXw2Vv56PnQ1pKGahs+N7W54i8eJAkBGzc+E=
+X-Google-Smtp-Source: APXvYqwb6RbzmXpl729o6DP9QlUu6snm+nAvBpVaX/mpqeH8Au7h14UR5ZfnVhlceWVEmWYfPAR6PjkdLjEHX/TcxMU=
+X-Received: by 2002:a67:ed04:: with SMTP id l4mr6217862vsp.179.1559811638421; 
+ Thu, 06 Jun 2019 02:00:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19060608-4275-0000-0000-0000033F4D72
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060608-4276-0000-0000-0000384F512B
-Message-Id: <162079d5-bfc2-0707-5c98-33e196ed5d96@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-06_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=829 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906060062
+References: <20190604111632.22479-1-yamada.masahiro@socionext.com>
+ <90aa6d91-7592-17b0-17fd-e33676bd0a46@linux.ibm.com>
+ <CAK7LNASV9Chjd+o3+2ZbA0WHu=dVBFf2AC1dT=eLSf3_2pe12Q@mail.gmail.com>
+ <ab22b27e-dd07-1c83-af60-19403c98c6a2@linux.ibm.com>
+In-Reply-To: <ab22b27e-dd07-1c83-af60-19403c98c6a2@linux.ibm.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Thu, 6 Jun 2019 18:00:02 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQ2eurVdK=uu=ysExjpbXPY+SaPatad-SGv8T4JfDmXew@mail.gmail.com>
+Message-ID: <CAK7LNAQ2eurVdK=uu=ysExjpbXPY+SaPatad-SGv8T4JfDmXew@mail.gmail.com>
+Subject: Re: [PATCH] ocxl: do not use C++ style comments in uapi header
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,28 +73,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
- mahesh@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Joe Perches <joe@perches.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Michael,
+
+On Wed, Jun 5, 2019 at 3:18 PM Andrew Donnellan <ajd@linux.ibm.com> wrote:
+>
+> On 4/6/19 10:12 pm, Masahiro Yamada wrote:
+> > On Tue, Jun 4, 2019 at 8:54 PM Frederic Barrat <fbarrat@linux.ibm.com> =
+wrote:
+> >>
+> >>
+> >>
+> >> Le 04/06/2019 =C3=A0 13:16, Masahiro Yamada a =C3=A9crit :
+> >>> Linux kernel tolerates C++ style comments these days. Actually, the
+> >>> SPDX License tags for .c files start with //.
+> >>>
+> >>> On the other hand, uapi headers are written in more strict C, where
+> >>> the C++ comment style is forbidden.
+> >>>
+> >>> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> >>> ---
+> >>
+> >> Thanks!
+> >> Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> >>
+> >
+> > Please hold on this patch until
+> > we get consensus about the C++ comment style.
+> >
+> > Discussion just started here:
+> > https://lore.kernel.org/patchwork/patch/1083801/
+>
+> If you choose to proceed with this patch:
+>
+> Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+After some discussion,
+the other one was applied to the media subsystem.
+
+Please pick up this one with Frederic and Andrew's Ack.
+
+Thanks.
 
 
-On 6/6/19 12:59 PM, Ravi Bangoria wrote:
-> Powerpc hw triggers watchpoint before executing the instruction.
-> To make trigger-after-execute behavior, kernel emulates the
-> instruction. If the instruction is 'load something into non-
-> volatile register', exception handler should restore emulated
-> register state while returning back, otherwise there will be
-> register state corruption. Ex, Adding a watchpoint on a list
-> can corrput the list:
-> 
->   # cat /proc/kallsyms | grep kthread_create_list
->   c00000000121c8b8 d kthread_create_list
-> 
-> Add watchpoint on kthread_create_list->next:
 
-s/kthread_create_list->next/kthread_create_list->prev/
-
+--=20
+Best Regards
+Masahiro Yamada
