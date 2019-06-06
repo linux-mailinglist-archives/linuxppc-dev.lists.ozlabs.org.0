@@ -2,67 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE3F37320
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 13:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B8937344
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 13:45:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KNyr481PzDqRk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 21:41:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KP3b4mYNzDqjv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 21:45:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="s8SV6TPa"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KNm23GxGzDqdL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 21:31:46 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45KNlv59S7zB09ZT;
- Thu,  6 Jun 2019 13:31:39 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=s8SV6TPa; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id LDyzcTRL0Pw3; Thu,  6 Jun 2019 13:31:39 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45KNlv47SgzB09ZF;
- Thu,  6 Jun 2019 13:31:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559820699; bh=qIFQKb1N1ogct12r5N11IyeBAwzBADP2oCf+gxBp0T4=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=s8SV6TPaEgaJ3fs8aE/PfEZpUKWX6GQFed9TV6rdiwpF0svv46OQH5qWTYysAW93f
- wamkF8kCxBmx36XB/AzzzJNSFYF1S3tEe4Fh6Sc4td/YpwPOrUQMGcuihl25rhDlc2
- nxVqzriH6THsN3uiJ2ckbD48alHYmymrXXe42l5g=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D183C8B894;
- Thu,  6 Jun 2019 13:31:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id C7IcPtaUiVJW; Thu,  6 Jun 2019 13:31:40 +0200 (CEST)
-Received: from po16838vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F5838B891;
- Thu,  6 Jun 2019 13:31:40 +0200 (CEST)
-Received: by po16838vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 7B3C568CFD; Thu,  6 Jun 2019 11:31:40 +0000 (UTC)
-Message-Id: <a8d43c4414fc4fc3442f185b304ca9f659e6bfbb.1559819372.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1559819372.git.christophe.leroy@c-s.fr>
-References: <cover.1559819372.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v1 5/5] crypto: talitos - drop icv_ool
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, horia.geanta@nxp.com
-Date: Thu,  6 Jun 2019 11:31:40 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KP2708HgzDqW7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 21:43:56 +1000 (AEST)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id C2C8268B20; Thu,  6 Jun 2019 13:43:26 +0200 (CEST)
+Date: Thu, 6 Jun 2019 13:43:25 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+Message-ID: <20190606114325.GA7497@lst.de>
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+ <dfe6451c93574b61d4bdde4a05c5f8ccf86b31a0.camel@kernel.crashing.org>
+ <20190606093149.GA11598@darkstar.musicnaut.iki.fi>
+ <d87ac9a7faac0d5522cb496d74afc586410fed9c.camel@kernel.crashing.org>
+ <f8df19ffe5b75537045119037459ae9ad4a1de39.camel@kernel.crashing.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8df19ffe5b75537045119037459ae9ad4a1de39.camel@kernel.crashing.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,55 +48,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-icv_ool is not used anymore, drop it.
+On Thu, Jun 06, 2019 at 08:57:49PM +1000, Benjamin Herrenschmidt wrote:
+> > Wow... that's an odd amount. One thing we could possibly do is add code
+> > to limit the amount of RAM when we detect that device....
+> 
+> Sent too quickly... I mean that *or* force swiotlb at 30-bits on those systems based
+> on detecting the presence of that device in the device-tree.
 
-Fixes: 9cc87bc3613b ("crypto: talitos - fix AEAD processing")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- drivers/crypto/talitos.c | 3 ---
- drivers/crypto/talitos.h | 2 --
- 2 files changed, 5 deletions(-)
+swiotlb doesn't really help you, as these days swiotlb on matters for
+the dma_map* case.  What would help is a ZONE_DMA that covers these
+devices.  No need to do the 24-bit x86 does, but 30-bit would do it.
 
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index b2de931de623..03b7a5d28fb0 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -1278,9 +1278,6 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
- 				 is_ipsec_esp && !encrypt);
- 	tbl_off += ret;
+WIP patch for testing below:
+
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index b8286a2013b4..7a367ce87c41 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -319,6 +319,10 @@ struct vm_area_struct;
+ #endif /* __ASSEMBLY__ */
+ #include <asm/slice.h>
  
--	/* ICV data */
--	edesc->icv_ool = !encrypt;
--
- 	if (!encrypt && is_ipsec_esp) {
- 		struct talitos_ptr *tbl_ptr = &edesc->link_tbl[tbl_off];
++#if 1 /* XXX: pmac?  dynamic discovery? */
++#define ARCH_ZONE_DMA_BITS 30
++#else
+ #define ARCH_ZONE_DMA_BITS 31
++#endif
  
-diff --git a/drivers/crypto/talitos.h b/drivers/crypto/talitos.h
-index 95f78c6d9206..1469b956948a 100644
---- a/drivers/crypto/talitos.h
-+++ b/drivers/crypto/talitos.h
-@@ -46,7 +46,6 @@ struct talitos_desc {
-  * talitos_edesc - s/w-extended descriptor
-  * @src_nents: number of segments in input scatterlist
-  * @dst_nents: number of segments in output scatterlist
-- * @icv_ool: whether ICV is out-of-line
-  * @iv_dma: dma address of iv for checking continuity and link table
-  * @dma_len: length of dma mapped link_tbl space
-  * @dma_link_tbl: bus physical address of link_tbl/buf
-@@ -61,7 +60,6 @@ struct talitos_desc {
- struct talitos_edesc {
- 	int src_nents;
- 	int dst_nents;
--	bool icv_ool;
- 	dma_addr_t iv_dma;
- 	int dma_len;
- 	dma_addr_t dma_link_tbl;
--- 
-2.13.3
-
+ #endif /* _ASM_POWERPC_PAGE_H */
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index cba29131bccc..2540d3b2588c 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -248,7 +248,8 @@ void __init paging_init(void)
+ 	       (long int)((top_of_ram - total_ram) >> 20));
+ 
+ #ifdef CONFIG_ZONE_DMA
+-	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn, 0x7fffffffUL >> PAGE_SHIFT);
++	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
++			((1UL << ARCH_ZONE_DMA_BITS) - 1) >> PAGE_SHIFT);
+ #endif
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+ #ifdef CONFIG_HIGHMEM
