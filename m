@@ -2,70 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F0436DAE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 09:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A3736E6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 10:22:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KHlV2M3xzDqgs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 17:45:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KJZ20Kl2zDqJK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2019 18:22:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nvidia.com
- (client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.b="h3LHlMdQ"; 
- dkim-atps=neutral
-Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KHjN24HrzDq7W
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 17:44:08 +1000 (AEST)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5cf8c4430001>; Thu, 06 Jun 2019 00:44:04 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Thu, 06 Jun 2019 00:44:04 -0700
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Thu, 06 Jun 2019 00:44:04 -0700
-Received: from ngvpn01-171-236.dyn.scz.us.nvidia.com (10.124.1.5) by
- HQMAIL107.nvidia.com (172.20.187.13) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3; Thu, 6 Jun 2019 07:44:02 +0000
-Subject: Re: [PATCH 12/16] mm: consolidate the get_user_pages* implementations
-To: Christoph Hellwig <hch@lst.de>
-References: <20190601074959.14036-1-hch@lst.de>
- <20190601074959.14036-13-hch@lst.de>
- <b0b73eae-6d79-b621-ce4e-997ccfbf4446@nvidia.com>
- <20190606062018.GA26745@lst.de>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <f7ccf08d-b269-c5e9-7a86-0b5c6176a7c3@nvidia.com>
-Date: Thu, 6 Jun 2019 00:44:02 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.0
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KJXW0fjgzDqNr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2019 18:21:30 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x568HQRo133279
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Jun 2019 04:21:27 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2sxv7eg9q8-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 04:21:27 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Thu, 6 Jun 2019 09:21:25 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 6 Jun 2019 09:21:22 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x568LLRj63045844
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Jun 2019 08:21:21 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B92C6A405B;
+ Thu,  6 Jun 2019 08:21:21 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B507A4054;
+ Thu,  6 Jun 2019 08:21:21 +0000 (GMT)
+Received: from localhost (unknown [9.122.211.182])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Jun 2019 08:21:21 +0000 (GMT)
+Date: Thu, 06 Jun 2019 13:51:20 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] Powerpc/Watchpoint: Restore nvgprs while returning from
+ exception
+To: mpe@ellerman.id.au, Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
 MIME-Version: 1.0
-In-Reply-To: <20190606062018.GA26745@lst.de>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1559807044; bh=mMOlfiNeriS8dHk456D4i2uPqqdGUdRNA/UjahArgCQ=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=h3LHlMdQHamD4aUSwPzeTds3U6FI5EEYLkWJ4CyKjK6e+LboNBSAbcSHpVs2ab/a6
- z9eQd8NbRaW2yWXClwhhhoDwI/Bg8V5MhP9jYxjADW4on9H1UbzwmFXUvBa2QQc0YP
- 3BZxHfWSY+4OVCEed52WcnU8jW1oCIuqanuBVjnZxsQlD1tSrzhAGFH+mkQujZW9MV
- 3WEIf8zeYJc6hdtRCd3LqEJefWg6Q5t5xgsR/hrqbzz+0tbm21c1EGeCCpOskwezjW
- 2zGjfIhkSG9BX9aupNObBuuWNlgR4cVZm3rSLITraOByP9C918Zm94j22vnCvn0l3v
- eA+GgKwaIXi4w==
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 19060608-4275-0000-0000-0000033F4CA3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060608-4276-0000-0000-0000384F5055
+Message-Id: <1559809100.x2v1my2997.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-06_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906060061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,44 +89,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Rich Felker <dalias@libc.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
- James Hogan <jhogan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
- Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, "David S.
- Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
+Cc: mikey@neuling.org, mahesh@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/5/19 11:20 PM, Christoph Hellwig wrote:
-> On Wed, Jun 05, 2019 at 11:01:17PM -0700, John Hubbard wrote:
->> I started reviewing this one patch, and it's kind of messy figuring out
->> if the code motion preserves everything because of
->> all the consolidation from other places, plus having to move things in
->> and out of the ifdef blocks.  So I figured I'd check and see if this is
->> going to make it past RFC status soon, and if it's going before or after
->> Ira's recent RFC ("RDMA/FS DAX truncate proposal").
-> 
-> I don't like the huge moves either, but I can't really think of any
-> better way to do it.  Proposals welcome, though.
-> 
+Ravi Bangoria wrote:
+> Powerpc hw triggers watchpoint before executing the instruction.
+> To make trigger-after-execute behavior, kernel emulates the
+> instruction. If the instruction is 'load something into non-
+> volatile register', exception handler should restore emulated
+> register state while returning back, otherwise there will be
+> register state corruption. Ex, Adding a watchpoint on a list
+> can corrput the list:
+>=20
+>   # cat /proc/kallsyms | grep kthread_create_list
+>   c00000000121c8b8 d kthread_create_list
+>=20
+> Add watchpoint on kthread_create_list->next:
+>=20
+>   # perf record -e mem:0xc00000000121c8c0
+>=20
+> Run some workload such that new kthread gets invoked. Ex, I
+> just logged out from console:
+>=20
+>   list_add corruption. next->prev should be prev (c000000001214e00), \
+> 	but was c00000000121c8b8. (next=3Dc00000000121c8b8).
+>   WARNING: CPU: 59 PID: 309 at lib/list_debug.c:25 __list_add_valid+0xb4/=
+0xc0
+>   CPU: 59 PID: 309 Comm: kworker/59:0 Kdump: loaded Not tainted 5.1.0-rc7=
++ #69
+>   ...
+>   NIP __list_add_valid+0xb4/0xc0
+>   LR __list_add_valid+0xb0/0xc0
+>   Call Trace:
+>   __list_add_valid+0xb0/0xc0 (unreliable)
+>   __kthread_create_on_node+0xe0/0x260
+>   kthread_create_on_node+0x34/0x50
+>   create_worker+0xe8/0x260
+>   worker_thread+0x444/0x560
+>   kthread+0x160/0x1a0
+>   ret_from_kernel_thread+0x5c/0x70
+>=20
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/exceptions-64s.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
 
-One way would be to do it in two patches:
+Awesome catch - this one has had a glorious run...
+Fixes: 5aae8a5370802 ("powerpc, hw_breakpoints: Implement hw_breakpoints fo=
+r 64-bit server processors")
 
-1) Move the code into gup.c, maybe at the bottom. Surround each function
-or group of functions by whatever ifdefs they need.
+Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-2) Move code out of the bottom of gup.c, into the final location.
 
-...but I'm not certain that will be that much better. In the spirit of
-not creating gratuitous work for others, I could try it out and send
-out something if it looks like it's noticeably easier to verify/review.
+- Naveen
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+=
+
