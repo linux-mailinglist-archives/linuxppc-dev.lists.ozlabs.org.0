@@ -1,58 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6E33969A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 22:16:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3AC3951A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 20:59:59 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45LBfg3SGbzDqFB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 04:59:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LDLY2SwNzDqJ3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 06:16:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org; envelope-from=mchehab@bombadil.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="Y15WIe1h"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LBY35HhzzDqsb
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 04:55:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=9BFa2w9dMfs23jOauwpVzpiJfCyUvRSxJugmmRhg1+Y=; b=Y15WIe1h7RPtXfVg22IaFG2tXE
- jj21RoR5ji9hW/5iHiNsUij9LVME21L0rqVFtBCDMlpjSRfhysh/yuHiSOyw4pueOTm4CLPYm2Jqz
- 7zNqjECImbRU6kQQb0vgexgHrsc//KTxsEdJgN/PnScnipxBPkVKNL0DfIBSl5IjWEUU4/pN1aHkp
- IQ6M3/cSEYcvDAviucCr3n7cKcQp+HQrHtPU4DdqvAWQ0iU+4CJAP48DAuSF8fweXu6SA0pkQTO9X
- kaZsKnt9RvfnmKZewOVk9HvV+hY407Ql4vOSl/TzV+uc1EkVTECFepaldWMDUX68NBWWtpGdvH42L
- tfdlZLnA==;
-Received: from [179.181.119.115] (helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hZK0d-0005sn-O1; Fri, 07 Jun 2019 18:54:39 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
- (envelope-from <mchehab@bombadil.infradead.org>)
- id 1hZK0b-0007FS-J9; Fri, 07 Jun 2019 15:54:37 -0300
-From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH v3 15/20] docs: move protection-keys.rst to the core-api book
-Date: Fri,  7 Jun 2019 15:54:31 -0300
-Message-Id: <4948a096397bb86cebf489b8ac4f623797257fe7.1559933665.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
-References: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LDHC2Qx4zDr0y
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 06:13:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45LDHB3c92z8tFS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 06:13:10 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45LDHB2WyMz9sCJ; Sat,  8 Jun 2019 06:13:10 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45LDH96CnQz9sBp;
+ Sat,  8 Jun 2019 06:13:09 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x57KCPhd124296; Fri, 7 Jun 2019 16:13:05 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sywfqu5w3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Jun 2019 16:13:05 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x57K1Uqi017260;
+ Fri, 7 Jun 2019 20:10:38 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01dal.us.ibm.com with ESMTP id 2syxdfr2un-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Jun 2019 20:10:38 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x57KBnJc31130042
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 7 Jun 2019 20:11:49 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E64A9AC05E;
+ Fri,  7 Jun 2019 20:11:48 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4521EAC05B;
+ Fri,  7 Jun 2019 20:11:47 +0000 (GMT)
+Received: from leobras.br.ibm.com (unknown [9.18.235.153])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri,  7 Jun 2019 20:11:47 +0000 (GMT)
+Message-ID: <0f6d278e78b2784a77ce2cd07a84377da6f5262e.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 1/9] KVM: PPC: Ultravisor: Add PPC_UV config option
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Date: Fri, 07 Jun 2019 17:11:42 -0300
+In-Reply-To: <20190606173614.32090-2-cclaudio@linux.ibm.com>
+References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
+ <20190606173614.32090-2-cclaudio@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-ulrQwuweQ3GGKql+lSZh"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-07_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906070135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,103 +97,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Jonathan Corbet <corbet@lwn.net>,
- x86@kernel.org, linux-kernel@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, linux-kselftest@vger.kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- Shuah Khan <shuah@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This document is used by multiple architectures:
 
-	$ echo $(git grep -l  pkey_mprotect arch|cut -d'/' -f 2|sort|uniq)
-	alpha arm arm64 ia64 m68k microblaze mips parisc powerpc s390 sh sparc x86 xtensa
+--=-ulrQwuweQ3GGKql+lSZh
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-So, let's move it to the core book and adjust the links to it
-accordingly.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/core-api/index.rst                    | 1 +
- Documentation/{x86 => core-api}/protection-keys.rst | 0
- Documentation/x86/index.rst                         | 1 -
- arch/powerpc/Kconfig                                | 2 +-
- arch/x86/Kconfig                                    | 2 +-
- tools/testing/selftests/x86/protection_keys.c       | 2 +-
- 6 files changed, 4 insertions(+), 4 deletions(-)
- rename Documentation/{x86 => core-api}/protection-keys.rst (100%)
 
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index ee1bb8983a88..2466a4c51031 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -34,6 +34,7 @@ Core utilities
-    timekeeping
-    boot-time-mm
-    memory-hotplug
-+   protection-keys
- 
- 
- Interfaces for kernel debugging
-diff --git a/Documentation/x86/protection-keys.rst b/Documentation/core-api/protection-keys.rst
-similarity index 100%
-rename from Documentation/x86/protection-keys.rst
-rename to Documentation/core-api/protection-keys.rst
-diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
-index ae36fc5fc649..f2de1b2d3ac7 100644
---- a/Documentation/x86/index.rst
-+++ b/Documentation/x86/index.rst
-@@ -19,7 +19,6 @@ x86-specific Documentation
-    tlb
-    mtrr
-    pat
--   protection-keys
-    intel_mpx
-    amd-memory-encryption
-    pti
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8c1c636308c8..3b795a0cab62 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -898,7 +898,7 @@ config PPC_MEM_KEYS
- 	  page-based protections, but without requiring modification of the
- 	  page tables when an application changes protection domains.
- 
--	  For details, see Documentation/vm/protection-keys.rst
-+	  For details, see Documentation/core-api/protection-keys.rst
- 
- 	  If unsure, say y.
- 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2bbbd4d1ba31..d87d53fcd261 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1911,7 +1911,7 @@ config X86_INTEL_MEMORY_PROTECTION_KEYS
- 	  page-based protections, but without requiring modification of the
- 	  page tables when an application changes protection domains.
- 
--	  For details, see Documentation/x86/protection-keys.txt
-+	  For details, see Documentation/core-api/protection-keys.rst
- 
- 	  If unsure, say y.
- 
-diff --git a/tools/testing/selftests/x86/protection_keys.c b/tools/testing/selftests/x86/protection_keys.c
-index 5d546dcdbc80..480995bceefa 100644
---- a/tools/testing/selftests/x86/protection_keys.c
-+++ b/tools/testing/selftests/x86/protection_keys.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * Tests x86 Memory Protection Keys (see Documentation/x86/protection-keys.txt)
-+ * Tests x86 Memory Protection Keys (see Documentation/core-api/protection-keys.rst)
-  *
-  * There are examples in here of:
-  *  * how to set protection keys on memory
--- 
-2.21.0
+On Thu, 2019-06-06 at 14:36 -0300, Claudio Carvalho wrote:
+> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+>=20
+> CONFIG_PPC_UV adds support for ultravisor.
+>=20
+> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> [Update config help and commit message]
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> ---
+>  arch/powerpc/Kconfig | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+>=20
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 8c1c636308c8..276c1857c335 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -439,6 +439,26 @@ config PPC_TRANSACTIONAL_MEM
+>         ---help---
+>           Support user-mode Transactional Memory on POWERPC.
+>=20
+> +config PPC_UV
+> +	bool "Ultravisor support"
+> +	depends on KVM_BOOK3S_HV_POSSIBLE
+> +	select HMM_MIRROR
+> +	select HMM
+> +	select ZONE_DEVICE
+> +	select MIGRATE_VMA_HELPER
+> +	select DEV_PAGEMAP_OPS
+> +	select DEVICE_PRIVATE
+> +	select MEMORY_HOTPLUG
+> +	select MEMORY_HOTREMOVE
+> +	default n
+> +	help
+> +	  This option paravirtualizes the kernel to run in POWER platforms that
+> +	  supports the Protected Execution Facility (PEF). In such platforms,
+> +	  the ultravisor firmware runs at a privilege level above the
+> +	  hypervisor.
+> +
+> +	  If unsure, say "N".
+> +
+>  config LD_HEAD_STUB_CATCH
+>  	bool "Reserve 256 bytes to cope with linker stubs in HEAD text" if EXPE=
+RT
+>  	depends on PPC64
+
+Maybe this patch should be the last of the series, as it may cause some
+bisect trouble to have this option enabled while missing some of the
+patches.
+
+
+
+--=-ulrQwuweQ3GGKql+lSZh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz6xP4ACgkQlQYWtz9S
+ttQCfQ/9EITv/NW9EfhotrqtIUvzBsquQmS84AYxUYEghiTj5uQIFPn3VBVTxT7e
+ZbKWEMeOVQWHQ87Hrl6Y90IinkIeacnfdOWD1jk8HG81HAvluF5PmPHoEBMJPH0N
+WLSLdvf6+LQKiRR4du5ffta39bVok/CXOIOBdhrH+vC33xAuFZEBRNXfYi3XBGEj
++DAmiv/ZXF+QBXYqmx9R/q8Po+5lO3OHN2Zm+D7Kh6+yl4xBBlLjaDNaez8YbNpx
+rol3Hw0fhGpL5CasQI7+sxIZU23mm7v5z32THsks+WCaMgXVq+ejT6jeEC3i+Yw+
+bcDpPGkBg5Gczzo8ItpSGCC9MMu/k9ojFsuBjeNL5A5XEw8Je9/GAKXGhn/t468O
+XwAy+dPxFRZdeUo3a0VmJFscQXlMRjVYC9GP2lwHteghfSLZ/xuQDlCk8Jw2r3j6
+240GxjIKnOCKYD/shTdpOCy7h6ZeqzF5EZPMeQgeLJo/ysZdMAIMTOBvf2s4DHFn
+MqzvQkqNwWIOjxH5mn1lsmrzrQGn8dxgtJ/L8Xxsr2qMEqyuBpnqIlDhO0NOXuoq
+dlDilmPtD88qCbNEnGvb2ov/jRQ4SeM5KavckmXuEH3TOvKmrSnF3Z7cQ1+P3PKq
+5NInu8jm3ltKM5704HOS7iXzLEA0jwF1nlnB+e/wbyErqYSf7jc=
+=tU5v
+-----END PGP SIGNATURE-----
+
+--=-ulrQwuweQ3GGKql+lSZh--
 
