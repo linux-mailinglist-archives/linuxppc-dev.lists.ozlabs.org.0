@@ -1,91 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6E33969A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 22:16:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45LDLY2SwNzDqJ3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 06:16:05 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005483968E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 22:14:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LDJ541cczDr1K
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 06:13:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="G2TH77zw"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LDHC2Qx4zDr0y
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 06:13:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45LDHB3c92z8tFS
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 06:13:10 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45LDHB2WyMz9sCJ; Sat,  8 Jun 2019 06:13:10 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45LDH96CnQz9sBp;
- Sat,  8 Jun 2019 06:13:09 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x57KCPhd124296; Fri, 7 Jun 2019 16:13:05 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sywfqu5w3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jun 2019 16:13:05 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x57K1Uqi017260;
- Fri, 7 Jun 2019 20:10:38 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma01dal.us.ibm.com with ESMTP id 2syxdfr2un-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jun 2019 20:10:38 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x57KBnJc31130042
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jun 2019 20:11:49 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E64A9AC05E;
- Fri,  7 Jun 2019 20:11:48 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4521EAC05B;
- Fri,  7 Jun 2019 20:11:47 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.18.235.153])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jun 2019 20:11:47 +0000 (GMT)
-Message-ID: <0f6d278e78b2784a77ce2cd07a84377da6f5262e.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 1/9] KVM: PPC: Ultravisor: Add PPC_UV config option
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Date: Fri, 07 Jun 2019 17:11:42 -0300
-In-Reply-To: <20190606173614.32090-2-cclaudio@linux.ibm.com>
-References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-2-cclaudio@linux.ibm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-ulrQwuweQ3GGKql+lSZh"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LDG25cRhzDr0R
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 06:12:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=V+gSVnIv9QBKq1mZboB8NpBLa64Y8lrKysJJF3r5Di4=; b=G2TH77zwcRW+ghgSutS9pXWwx
+ q06PFG90kLdW9nSZ8eT0zhsmJkCONTk9ihOiwCD/vOWRCH7+RiVotuRpO+PXMPtB8viY749wFWiHD
+ e35WP8ojqL7BLHfJjBicKoWZKTv7dWog/hIuqMTYYTk2e38Bi6ed1zJgJ9LV8EZFY6S7kzQtNbxWR
+ dq2EVJjEtvyg+7uncwjU/GfOave+g4SmAyk4QaIqVw/cBAp5JROl4fss5kOmhhd48m/zKN/BT2Kne
+ 4r7aT25INlQYUt07MKB6e3JiljH56Bv5dF61FNPZ9GAePTzIrq6vFfaE5EIdtGfqYacXVUhZ0+nnV
+ aWTdDN8VA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
+ Hat Linux)) id 1hZLDX-0002mb-5b; Fri, 07 Jun 2019 20:12:03 +0000
+Date: Fri, 7 Jun 2019 13:12:03 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+Message-ID: <20190607201202.GA32656@bombadil.infradead.org>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-07_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906070135
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,96 +62,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-kernel@vger.kernel.org, Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Before:
 
---=-ulrQwuweQ3GGKql+lSZh
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> @@ -46,23 +46,6 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
+>  	return 0;
+>  }
+>  
+> -static nokprobe_inline int kprobes_fault(struct pt_regs *regs)
+> -{
+> -	if (!kprobes_built_in())
+> -		return 0;
+> -	if (user_mode(regs))
+> -		return 0;
+> -	/*
+> -	 * To be potentially processing a kprobe fault and to be allowed to call
+> -	 * kprobe_running(), we have to be non-preemptible.
+> -	 */
+> -	if (preemptible())
+> -		return 0;
+> -	if (!kprobe_running())
+> -		return 0;
+> -	return kprobe_fault_handler(regs, X86_TRAP_PF);
+> -}
 
+After:
 
-
-On Thu, 2019-06-06 at 14:36 -0300, Claudio Carvalho wrote:
-> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
->=20
-> CONFIG_PPC_UV adds support for ultravisor.
->=20
-> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> [Update config help and commit message]
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> ---
->  arch/powerpc/Kconfig | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->=20
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 8c1c636308c8..276c1857c335 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -439,6 +439,26 @@ config PPC_TRANSACTIONAL_MEM
->         ---help---
->           Support user-mode Transactional Memory on POWERPC.
->=20
-> +config PPC_UV
-> +	bool "Ultravisor support"
-> +	depends on KVM_BOOK3S_HV_POSSIBLE
-> +	select HMM_MIRROR
-> +	select HMM
-> +	select ZONE_DEVICE
-> +	select MIGRATE_VMA_HELPER
-> +	select DEV_PAGEMAP_OPS
-> +	select DEVICE_PRIVATE
-> +	select MEMORY_HOTPLUG
-> +	select MEMORY_HOTREMOVE
-> +	default n
-> +	help
-> +	  This option paravirtualizes the kernel to run in POWER platforms that
-> +	  supports the Protected Execution Facility (PEF). In such platforms,
-> +	  the ultravisor firmware runs at a privilege level above the
-> +	  hypervisor.
+> +++ b/include/linux/kprobes.h
+> @@ -458,4 +458,20 @@ static inline bool is_kprobe_optinsn_slot(unsigned long addr)
+>  }
+>  #endif
+>  
+> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
+> +					      unsigned int trap)
+> +{
+> +	int ret = 0;
 > +
-> +	  If unsure, say "N".
-> +
->  config LD_HEAD_STUB_CATCH
->  	bool "Reserve 256 bytes to cope with linker stubs in HEAD text" if EXPE=
-RT
->  	depends on PPC64
+> +	/*
+> +	 * To be potentially processing a kprobe fault and to be allowed
+> +	 * to call kprobe_running(), we have to be non-preemptible.
+> +	 */
+> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+> +			ret = 1;
+> +	}
+> +	return ret;
+> +}
 
-Maybe this patch should be the last of the series, as it may cause some
-bisect trouble to have this option enabled while missing some of the
-patches.
+Do you really think this is easier to read?
 
+Why not just move the x86 version to include/linux/kprobes.h, and replace
+the int with bool?
 
+On Fri, Jun 07, 2019 at 04:04:15PM +0530, Anshuman Khandual wrote:
+> Very similar definitions for notify_page_fault() are being used by multiple
+> architectures duplicating much of the same code. This attempts to unify all
+> of them into a generic implementation, rename it as kprobe_page_fault() and
+> then move it to a common header.
 
---=-ulrQwuweQ3GGKql+lSZh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+I think this description suffers from having been written for v1 of
+this patch.  It describes what you _did_, but it's not what this patch
+currently _is_.
 
------BEGIN PGP SIGNATURE-----
+Why not something like:
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz6xP4ACgkQlQYWtz9S
-ttQCfQ/9EITv/NW9EfhotrqtIUvzBsquQmS84AYxUYEghiTj5uQIFPn3VBVTxT7e
-ZbKWEMeOVQWHQ87Hrl6Y90IinkIeacnfdOWD1jk8HG81HAvluF5PmPHoEBMJPH0N
-WLSLdvf6+LQKiRR4du5ffta39bVok/CXOIOBdhrH+vC33xAuFZEBRNXfYi3XBGEj
-+DAmiv/ZXF+QBXYqmx9R/q8Po+5lO3OHN2Zm+D7Kh6+yl4xBBlLjaDNaez8YbNpx
-rol3Hw0fhGpL5CasQI7+sxIZU23mm7v5z32THsks+WCaMgXVq+ejT6jeEC3i+Yw+
-bcDpPGkBg5Gczzo8ItpSGCC9MMu/k9ojFsuBjeNL5A5XEw8Je9/GAKXGhn/t468O
-XwAy+dPxFRZdeUo3a0VmJFscQXlMRjVYC9GP2lwHteghfSLZ/xuQDlCk8Jw2r3j6
-240GxjIKnOCKYD/shTdpOCy7h6ZeqzF5EZPMeQgeLJo/ysZdMAIMTOBvf2s4DHFn
-MqzvQkqNwWIOjxH5mn1lsmrzrQGn8dxgtJ/L8Xxsr2qMEqyuBpnqIlDhO0NOXuoq
-dlDilmPtD88qCbNEnGvb2ov/jRQ4SeM5KavckmXuEH3TOvKmrSnF3Z7cQ1+P3PKq
-5NInu8jm3ltKM5704HOS7iXzLEA0jwF1nlnB+e/wbyErqYSf7jc=
-=tU5v
------END PGP SIGNATURE-----
+Architectures which support kprobes have very similar boilerplate around
+calling kprobe_fault_handler().  Use a helper function in kprobes.h to
+unify them, based on the x86 code.
 
---=-ulrQwuweQ3GGKql+lSZh--
+This changes the behaviour for other architectures when preemption
+is enabled.  Previously, they would have disabled preemption while
+calling the kprobe handler.  However, preemption would be disabled
+if this fault was due to a kprobe, so we know the fault was not due
+to a kprobe handler and can simply return failure.  This behaviour was
+introduced in commit a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault()
+like kprobe_exceptions_notify()")
+
+>  arch/arm/mm/fault.c      | 24 +-----------------------
+>  arch/arm64/mm/fault.c    | 24 +-----------------------
+>  arch/ia64/mm/fault.c     | 24 +-----------------------
+>  arch/powerpc/mm/fault.c  | 23 ++---------------------
+>  arch/s390/mm/fault.c     | 16 +---------------
+>  arch/sh/mm/fault.c       | 18 ++----------------
+>  arch/sparc/mm/fault_64.c | 16 +---------------
+>  arch/x86/mm/fault.c      | 21 ++-------------------
+>  include/linux/kprobes.h  | 16 ++++++++++++++++
+
+What about arc and mips?
 
