@@ -2,73 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C6A3833F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 06:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9612338341
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 06:10:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KpkV0TGGzDqDN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 14:01:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Kpwm4RXHzDqK1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 14:10:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bh6Fhegr"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="WHGxHbAy"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KpfD2J7szDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 13:58:12 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id u17so394296pfn.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 20:58:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Kptx57LZzDqBX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 14:09:11 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id a186so413973pfa.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 21:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=rHOwJW8PXVAArob+Z/w9HeA1N1YMwiRnwXx60hJd8co=;
- b=bh6FhegrMCW9Kk3xTl7nWLi1OXcPNUB+M2Gd9uAyId/cyMqznH7fFgLAxvQaYXgheO
- RCSvkGdUZgOh7ZBcC0EPfKjQSyy4qHWumQMZAMnLnPEPqWf0u8ev1TPxlRHWqtQT2qcZ
- c99ACWX39flT/9tYnhXIQ90Z+YIyB1VSQo3GHRzygsiubRBNZZulNfjrzn4emNdf+rdN
- Eyx8FqRg7Gad+UJtva0BPlm5r1MhAAqwfiFViIG6vycsRRYzEtpl1cZ4pU621P6YZy2i
- A99CYn/j72+RR7H4ZsN69S0Z4xH1ewwSDm2mytMaT5Be0XUKCNI0Qx8l69eqaZtFHF1a
- powA==
+ h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=R+Z70WKAnPAtAbx5vIOTBBQHVJGkjTt0H0j9hA1sc5s=;
+ b=WHGxHbAyuuxNsUQ+4FvVyzrGnytrEdlVY1fMaVoDYh4AYjHQ9Qi+desFta8Ws1N3xy
+ 3zWVVDMxTMlHl6798MzvVFHRoogMSGEQuJnfQyKEUsTLEQLvW4Kxb+/ohJFg2hHOxMT3
+ 9Tp1OYM277i12owff4Ryk1J4WF2n1FmjuuAZ4EhKNwdXTOFlhBm9MelY0EVRGYgPwIMJ
+ GkJ7M85kBIyIIr4SCvSi6vRbLhEhBs36MP0dVVMjsEfjiwJQxx47XjEaLTyf11+udKNA
+ w+6aNbdN8w7t6RzFfZ0DX0ttNBfgYDwvfg3I2GKxF+1UC7cmv0hrbTRnpCP/2w/D9UWh
+ FbFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=rHOwJW8PXVAArob+Z/w9HeA1N1YMwiRnwXx60hJd8co=;
- b=n1WlxHNfMDdTgCUkiw8ZmtSXJwUSEUOy8JpUeU83tlaRBdu0Vb15r2CJp0doyxb4z7
- E523Jl4C8gGfzO8XBlnffntmYmXdX8G1NsuXhUuhc4H2JmHi+x44KXV8DDZ1Y1ftcDtE
- 8DhVJki9XURwDZXGD3hEkb6S3YZIwbjv2d0XypNIk2Q53yAXZv624Wy034nd5BHAtCqs
- Ls9kuHzCcxUUxqv+6TubQBZJ0FiNk8VNjYYoiEKWDhuv9fllsdBfIffs2MBOByVTVfxE
- u27jgoJsKDLKyhMoykCTTIr4V/WupuKL1utI1Ly9/nY89qCS20fnboD9prfSzjuwFQw8
- 9HZA==
-X-Gm-Message-State: APjAAAVqa3I1mxVbqerFeHFNJGbdQvNkciKaYox5EweTiMRlS5AvqzVI
- lvaHzsprMiP++fGbc1E47BTfx2V7
-X-Google-Smtp-Source: APXvYqwL0/pluNmtX8cxKn9Pvj61esE8EvrvBEB+rRatCQbMmY6IsAqtqkNKYoWtxK+53qy7Arc6OQ==
-X-Received: by 2002:a17:90a:cb12:: with SMTP id
- z18mr3131940pjt.82.1559879889436; 
- Thu, 06 Jun 2019 20:58:09 -0700 (PDT)
-Received: from bobo.local0.net (193-116-93-94.tpgi.com.au. [193.116.93.94])
- by smtp.gmail.com with ESMTPSA id p63sm611660pfb.70.2019.06.06.20.58.06
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=R+Z70WKAnPAtAbx5vIOTBBQHVJGkjTt0H0j9hA1sc5s=;
+ b=VITDEQ2Wy/7qtzJBHaBzSsr9I+Dqtih+ZYo981kVM1VHSiFjW+c4edOonyvA8tMtlm
+ 40SU+Slzc/VGPdUgbyNmlDaybny19ViEkQSbNtUbjXB7LnVAcylTb2FufglLlLUaww44
+ vH4GCT8TaGOX2fnfFXg0gYachiQNFMjxzE9+zE1WcidtmJEViSXGzqblMUoQvuZATTPm
+ /o1txDF03oPi3kerttB/i/1O1H18y58TLizbPxWZynXYima+D+QIcNpDy8kozsRoude8
+ j+ekJt/QyomQqHGqfmP+sFWxVqHDAveFoEBZexFw4wzqxrqsmxuN9QhWlhfhuP1qhOlu
+ AKaQ==
+X-Gm-Message-State: APjAAAVVo6A+8jp017qjlC1whHs1okoKrSwZVpoZDhD60uNigc2WypBG
+ a3C+LYVA6hH9fgi0p4SqSUk=
+X-Google-Smtp-Source: APXvYqxP+9VglmSe7tmlHh65Iazdp5krFC8vPCNMH2yMP7Tg3YZM1XSgWBQal9JPPAunHe2p2g90BA==
+X-Received: by 2002:a63:5457:: with SMTP id e23mr1041118pgm.307.1559880547948; 
+ Thu, 06 Jun 2019 21:09:07 -0700 (PDT)
+Received: from localhost (193-116-93-94.tpgi.com.au. [193.116.93.94])
+ by smtp.gmail.com with ESMTPSA id a12sm660018pgq.0.2019.06.06.21.09.06
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 06 Jun 2019 20:58:08 -0700 (PDT)
+ Thu, 06 Jun 2019 21:09:07 -0700 (PDT)
+Date: Fri, 07 Jun 2019 14:07:40 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/64s: __find_linux_pte synchronization vs
- pmdp_invalidate
-Date: Fri,  7 Jun 2019 13:56:36 +1000
-Message-Id: <20190607035636.5446-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190607035636.5446-1-npiggin@gmail.com>
-References: <20190607035636.5446-1-npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s: Fix THP PMD collapse serialisation
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190603060531.13088-1-npiggin@gmail.com>
+ <8736kmhh62.fsf@linux.ibm.com>
+In-Reply-To: <8736kmhh62.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1559880348.0wirq74jve.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,58 +81,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The change to pmdp_invalidate to mark the pmd with _PAGE_INVALID broke
-the synchronisation against lock free lookups, __find_linux_pte's
-pmd_none check no longer returns true for such cases.
+Aneesh Kumar K.V's on June 7, 2019 1:23 am:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>=20
+>> Commit 1b2443a547f9 ("powerpc/book3s64: Avoid multiple endian conversion
+>> in pte helpers") changed the actual bitwise tests in pte_access_permitte=
+d
+>> by using pte_write() and pte_present() helpers rather than raw bitwise
+>> testing _PAGE_WRITE and _PAGE_PRESENT bits.
+>>
+>> The pte_present change now returns true for ptes which are !_PAGE_PRESEN=
+T
+>> and _PAGE_INVALID, which is the combination used by pmdp_invalidate to
+>> synchronize access from lock-free lookups. pte_access_permitted is used =
+by
+>> pmd_access_permitted, so allowing GUP lock free access to proceed with
+>> such PTEs breaks this synchronisation.
+>>
+>> This bug has been observed on HPT host, with random crashes and corrupti=
+on
+>> in guests, usually together with bad PMD messages in the host.
+>>
+>> Fix this by adding an explicit check in pmd_access_permitted, and
+>> documenting the condition explicitly.
+>>
+>> The pte_write() change should be okay, and would prevent GUP from fallin=
+g
+>> back to the slow path when encountering savedwrite ptes, which matches
+>> what x86 (that does not implement savedwrite) does.
+>>
+>=20
+> I guess we are doing the find_linux_pte change in another patch.
+>=20
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Fix this by adding a check for this condition as well.
+Sorry, just got delayed with re-testing. Thanks for the feedback on it
+I send new patches.
 
-Fixes: da7ad366b497 ("powerpc/mm/book3s: Update pmd_present to look at _PAGE_PRESENT bit")
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/mm/pgtable.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+Two patches yes because they fix issues introduced in different
+commits so it should make backports easier.
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index db4a6253df92..533fc6fa6726 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -372,13 +372,25 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
- 	pdshift = PMD_SHIFT;
- 	pmdp = pmd_offset(&pud, ea);
- 	pmd  = READ_ONCE(*pmdp);
-+
- 	/*
--	 * A hugepage collapse is captured by pmd_none, because
--	 * it mark the pmd none and do a hpte invalidate.
-+	 * A hugepage collapse is captured by this condition, see
-+	 * pmdp_collapse_flush.
- 	 */
- 	if (pmd_none(pmd))
- 		return NULL;
- 
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	/*
-+	 * A hugepage split is captured by this condition, see
-+	 * pmdp_invalidate.
-+	 *
-+	 * Huge page modification can be caught here too.
-+	 */
-+	if (pmd_is_serializing(pmd))
-+		return NULL;
-+#endif
-+
- 	if (pmd_trans_huge(pmd) || pmd_devmap(pmd)) {
- 		if (is_thp)
- 			*is_thp = true;
--- 
-2.20.1
+Thanks,
+Nick
 
+=
