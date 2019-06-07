@@ -2,67 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1047F38445
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3147638446
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:24:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Ksrj4P9jzDqTd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:22:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Kstw3X35zDqBN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:24:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Yf5qQ8Zb"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="qpgwmo+B"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Ksq040bwzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:21:00 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id h2so614346pgg.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:21:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ksq23R0PzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:21:02 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id u17so583737pfn.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:21:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=QljXkCsHOY3LQbq2OYSUJdATLBoEbRR4SOZXS+4kyck=;
- b=Yf5qQ8ZbJ8lJzNp9lHbJ6rtzn58+mqGzW9MGq3k7vXquY85ygewnTQMk9YINtgd5+x
- NWzQUHQ0psWsH+rM0S+fF5VrHTfkEt8oChS3hxQOCOeyTuhQUyZAlAAMeXmQIgnH772a
- RbtNZPEwy5NaoTZW510x+2aIOTD202N9RUZu3x5TPkmCk0uGMIenwiR01oGhlunj7JMv
- KoYJx4pkPQ1m6L/+rJer6yoGVkI8+iHIH7ckLgUvOtJzYu9s/79BcJQG6yi6HAOfi18Q
- XfTuhBAe/bm5LdurmP+TIHYzJ+TixcxkfVsmfSgBpYlGMxlIfQw1Wnf4X082qouSnToT
- uWgg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=4NWOIK8RqXV1Z0c7HGWMQUem4tMfyzTDAbk6azU2yDQ=;
+ b=qpgwmo+BIs/bGAo5yGs7Vy3+OrBeNzagzzWW2BikffRheBPPDCCfHabLIexgm94atJ
+ smJuAle58NHWLPxvwOy7AQqoYguL/b2iOhvLDtAdYzsZ0OUa5mz9HvAeBpXexYLTj8Pr
+ tTbJY6Rt9cTesXkGFYWpgsxmvVokXF8aVnv8R6wVC4T0/3ZyIBzMWg292sJg9rO5NF95
+ vAs5P5hLDxq1fgXhD77wT4ZJcBS2xNrgo50b6EV6OHGJMqaqYAyFdRAERrJ21abV6JgX
+ +K3/NFV2TMr0mh1LkvjRkpNcu+jq2gIgfmoxTODdQmBN5OTvpn4Jlcn9flTc9N/QFqzq
+ SpIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=QljXkCsHOY3LQbq2OYSUJdATLBoEbRR4SOZXS+4kyck=;
- b=CS2DFQq0aEsjASXM1Dk6+ErP5o7snGziiLCetXKm/Pvr7GToTV1GZls98YXs2szf5e
- hfvWXzWRYMyhfgWqCT2McBRHb9oSWj/fgLSCbUa8MmRLU/Lay+MG4HebQdJU7qr83RAg
- zpeTVfbVR+jKexZImgLoD5sLfCPQvRm/xuBFRaleMt4pvUhoEpK7dTWPX+m+kjO5M2u3
- oz+voQX7FNRmUKdoVVppg4+bRyDjbPIL+LbFGiLHTOdVabOOW5qEHaLco2erjwGNvfbF
- nCIWXdJTkDjz2t1UTo5JDv723cBlup9FBIdUEnjex3PDNxNyPKz/1CDAf8zhyNvIgJdN
- +76w==
-X-Gm-Message-State: APjAAAUYxAURSqLjU2dmNaR+M9lVPXwhTV4vd+GKmBMOWtY4J8XwwyNO
- w1r5bNupfCUo3VOny6rJn8htLArh
-X-Google-Smtp-Source: APXvYqyzHBpkj9D+bbqvHn0vlsfmqpcvUclCQl9FrcDiZvrNwt/qBMWKc1RI+ORheKPpht6lmJ3UKQ==
-X-Received: by 2002:aa7:8c4c:: with SMTP id e12mr47279018pfd.131.1559888457676; 
- Thu, 06 Jun 2019 23:20:57 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=4NWOIK8RqXV1Z0c7HGWMQUem4tMfyzTDAbk6azU2yDQ=;
+ b=lC4d2W/Pn5Je7oNcN679VUBJqBu383v7rR9frM3F/yS5bRRhZGFe8wBvG4f4dFqcRM
+ 8Gpjwo9ujjapiTLTbrQmZ/QpRqveVIg5bk0MEsvrTWXOlUB1f3xh1tSGW4T7bUTwA1bT
+ bnlakDhk6lNd+KX+OkggXc+gBGkQI/ACI28WuWR8asLlUfNNo3sOJpCkrwt5hv8F6jdp
+ bpYOr5hwKyhWLro7Z1HxupKWdAn62+opx+gJMLy6cW/QOSioMdLrIF/+SRrghvd0e57Z
+ 1ELZaJPtiZpOrZUCewTrcM4DH9Pqpfzb76fHDkiaWSCR1Cr/fOBA0lOjADhMeyDqh13U
+ stNA==
+X-Gm-Message-State: APjAAAV8rOS34w79hR8gBoIhMkhNTpWsn0TtOop9cfy8pU9ctC6fgzOu
+ JwiJbHYN53PagJN0z8EwbmL1zKgmmZ8=
+X-Google-Smtp-Source: APXvYqxj0nA5IQj9uPHlNHvKkqClaseXd1V13X2OXTJVTYqacs9EVUjAt0ilyMEbfjj0B/vbZUd/9w==
+X-Received: by 2002:a62:2643:: with SMTP id m64mr55308775pfm.46.1559888459969; 
+ Thu, 06 Jun 2019 23:20:59 -0700 (PDT)
 Received: from bobo.local0.net ([202.125.30.143])
- by smtp.gmail.com with ESMTPSA id w24sm1215748pga.90.2019.06.06.23.20.55
+ by smtp.gmail.com with ESMTPSA id w24sm1215748pga.90.2019.06.06.23.20.58
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 06 Jun 2019 23:20:56 -0700 (PDT)
+ Thu, 06 Jun 2019 23:20:59 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/64s/radix: Enable HAVE_ARCH_HUGE_VMAP
-Date: Fri,  7 Jun 2019 16:19:21 +1000
-Message-Id: <20190607061922.20542-1-npiggin@gmail.com>
+Subject: [PATCH 2/2] powerpc/64s/radix: ioremap use huge page mappings
+Date: Fri,  7 Jun 2019 16:19:22 +1000
+Message-Id: <20190607061922.20542-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190607061922.20542-1-npiggin@gmail.com>
+References: <20190607061922.20542-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,152 +83,146 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This sets the HAVE_ARCH_HUGE_VMAP option, and defines the required
-page table functions.
-
-This will not enable huge iomaps, because powerpc/64 ioremap does not
-call ioremap_page_range. That is done in a later change.
-
-HAVE_ARCH_HUGE_VMAP facilities will be used to enable huge pages for
-vmalloc memory in a set of generic kernel changes. Combined, this
-improves cached `git diff` performance by about 5% on a 2-node POWER9
-with 32MB dentry cache hash, by allowing the dentry/inode hashes to
-be mapped with 2MB pages:
-
-  Profiling git diff dTLB misses with a vanilla kernel:
-
-  81.75%  git      [kernel.vmlinux]    [k] __d_lookup_rcu
-   7.21%  git      [kernel.vmlinux]    [k] strncpy_from_user
-   1.77%  git      [kernel.vmlinux]    [k] find_get_entry
-   1.59%  git      [kernel.vmlinux]    [k] kmem_cache_free
-
-            40,168      dTLB-miss
-       0.100342754 seconds time elapsed
-
-  With powerpc huge vmap and generic huge vmap vmalloc:
-
-             2,987      dTLB-miss
-       0.095933138 seconds time elapsed
+powerpc/64s does not use ioremap_page_range, so it does not get huge
+vmap iomap mappings automatically. The radix kernel mapping function
+already allows larger page mappings that work with huge vmap, so wire
+that up to allow huge pages to be used for ioremap mappings.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                     |  1 +
- arch/powerpc/mm/book3s64/radix_pgtable.c | 93 ++++++++++++++++++++++++
- 2 files changed, 94 insertions(+)
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  8 +++
+ arch/powerpc/mm/pgtable_64.c                 | 58 ++++++++++++++++++--
+ include/linux/io.h                           |  1 +
+ lib/ioremap.c                                |  2 +-
+ 4 files changed, 62 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8c1c636308c8..f0e5b38d52e8 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -167,6 +167,7 @@ config PPC
- 	select GENERIC_STRNLEN_USER
- 	select GENERIC_TIME_VSYSCALL
- 	select HAVE_ARCH_AUDITSYSCALL
-+	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_JUMP_LABEL
- 	select HAVE_ARCH_KASAN			if PPC32
- 	select HAVE_ARCH_KGDB
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index c9bcf428dd2b..3bc9ade56277 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1122,3 +1122,96 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index ccf00a8b98c6..d7a4f2d80598 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -274,6 +274,14 @@ extern unsigned long __vmalloc_end;
+ #define VMALLOC_START	__vmalloc_start
+ #define VMALLOC_END	__vmalloc_end
  
- 	set_pte_at(mm, addr, ptep, pte);
- }
-+
-+int __init arch_ioremap_pud_supported(void)
++static inline unsigned int ioremap_max_order(void)
 +{
-+	return radix_enabled();
++	if (radix_enabled())
++		return PUD_SHIFT;
++	return 7 + PAGE_SHIFT; /* default from linux/vmalloc.h */
++}
++#define IOREMAP_MAX_ORDER ({ ioremap_max_order();})
++
+ extern unsigned long __kernel_virt_start;
+ extern unsigned long __kernel_virt_size;
+ extern unsigned long __kernel_io_start;
+diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
+index d2d976ff8a0e..cf02b67eee55 100644
+--- a/arch/powerpc/mm/pgtable_64.c
++++ b/arch/powerpc/mm/pgtable_64.c
+@@ -112,7 +112,7 @@ unsigned long ioremap_bot = IOREMAP_BASE;
+  * __ioremap_at - Low level function to establish the page tables
+  *                for an IO mapping
+  */
+-void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
++static void __iomem * hash__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
+ {
+ 	unsigned long i;
+ 
+@@ -120,6 +120,54 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
+ 	if (pgprot_val(prot) & H_PAGE_4K_PFN)
+ 		return NULL;
+ 
++	for (i = 0; i < size; i += PAGE_SIZE)
++		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
++			return NULL;
++
++	return (void __iomem *)ea;
 +}
 +
-+int __init arch_ioremap_pmd_supported(void)
++static int radix__ioremap_page_range(unsigned long addr, unsigned long end,
++		       phys_addr_t phys_addr, pgprot_t prot)
 +{
-+	return radix_enabled();
-+}
++	while (addr != end) {
++		if (unlikely(ioremap_huge_disabled))
++			goto use_small_page;
 +
-+int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
-+{
-+	return 0;
-+}
++		if (!(addr & ~PUD_MASK) && !(phys_addr & ~PUD_MASK) &&
++				end - addr >= PUD_SIZE) {
++			if (radix__map_kernel_page(addr, phys_addr, prot, PUD_SIZE))
++				return -ENOMEM;
++			addr += PUD_SIZE;
++			phys_addr += PUD_SIZE;
 +
-+int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
-+{
-+	pte_t *ptep = (pte_t *)pud;
-+	pte_t new_pud = pfn_pte(__phys_to_pfn(addr), prot);
++		} else if (!(addr & ~PMD_MASK) && !(phys_addr & ~PMD_MASK) &&
++				end - addr >= PMD_SIZE) {
++			if (radix__map_kernel_page(addr, phys_addr, prot, PMD_SIZE))
++				return -ENOMEM;
++			addr += PMD_SIZE;
++			phys_addr += PMD_SIZE;
 +
-+	set_pte_at(&init_mm, 0 /* radix unused */, ptep, new_pud);
-+
-+	return 1;
-+}
-+
-+int pud_clear_huge(pud_t *pud)
-+{
-+	if (pud_huge(*pud)) {
-+		pud_clear(pud);
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-+{
-+	pmd_t *pmd;
-+	int i;
-+
-+	pmd = (pmd_t *)pud_page_vaddr(*pud);
-+	pud_clear(pud);
-+
-+	flush_tlb_kernel_range(addr, addr + PUD_SIZE);
-+
-+	for (i = 0; i < PTRS_PER_PMD; i++) {
-+		if (!pmd_none(pmd[i])) {
-+			pte_t *pte;
-+			pte = (pte_t *)pmd_page_vaddr(pmd[i]);
-+
-+			pte_free_kernel(&init_mm, pte);
++		} else {
++use_small_page:
++			if (radix__map_kernel_page(addr, phys_addr, prot, PAGE_SIZE))
++				return -ENOMEM;
++			addr += PAGE_SIZE;
++			phys_addr += PAGE_SIZE;
 +		}
 +	}
-+
-+	pmd_free(&init_mm, pmd);
-+
-+	return 1;
-+}
-+
-+int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
-+{
-+	pte_t *ptep = (pte_t *)pmd;
-+	pte_t new_pmd = pfn_pte(__phys_to_pfn(addr), prot);
-+
-+	set_pte_at(&init_mm, 0 /* radix unused */, ptep, new_pmd);
-+
-+	return 1;
-+}
-+
-+int pmd_clear_huge(pmd_t *pmd)
-+{
-+	if (pmd_huge(*pmd)) {
-+		pmd_clear(pmd);
-+		return 1;
-+	}
-+
 +	return 0;
 +}
 +
-+int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
++static void __iomem * radix__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
 +{
-+	pte_t *pte;
-+
-+	pte = (pte_t *)pmd_page_vaddr(*pmd);
-+	pmd_clear(pmd);
-+
-+	flush_tlb_kernel_range(addr, addr + PMD_SIZE);
-+
-+	pte_free_kernel(&init_mm, pte);
-+
-+	return 1;
++	if (radix__ioremap_page_range((unsigned long)ea, (unsigned long)ea + size, pa, prot))
++		return NULL;
++	return ea;
 +}
++
++void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
++{
+ 	if ((ea + size) >= (void *)IOREMAP_END) {
+ 		pr_warn("Outside the supported range\n");
+ 		return NULL;
+@@ -129,11 +177,9 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
+ 	WARN_ON(((unsigned long)ea) & ~PAGE_MASK);
+ 	WARN_ON(size & ~PAGE_MASK);
+ 
+-	for (i = 0; i < size; i += PAGE_SIZE)
+-		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
+-			return NULL;
+-
+-	return (void __iomem *)ea;
++	if (radix_enabled())
++		return radix__ioremap_at(pa, ea, size, prot);
++	return hash__ioremap_at(pa, ea, size, prot);
+ }
+ 
+ /**
+diff --git a/include/linux/io.h b/include/linux/io.h
+index 32e30e8fb9db..423c4294aaa3 100644
+--- a/include/linux/io.h
++++ b/include/linux/io.h
+@@ -44,6 +44,7 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
+ #endif
+ 
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
++extern int ioremap_huge_disabled;
+ void __init ioremap_huge_init(void);
+ int arch_ioremap_pud_supported(void);
+ int arch_ioremap_pmd_supported(void);
+diff --git a/lib/ioremap.c b/lib/ioremap.c
+index 063213685563..386ff956755f 100644
+--- a/lib/ioremap.c
++++ b/lib/ioremap.c
+@@ -18,7 +18,7 @@
+ static int __read_mostly ioremap_p4d_capable;
+ static int __read_mostly ioremap_pud_capable;
+ static int __read_mostly ioremap_pmd_capable;
+-static int __read_mostly ioremap_huge_disabled;
++int __read_mostly ioremap_huge_disabled;
+ 
+ static int __init set_nohugeiomap(char *str)
+ {
 -- 
 2.20.1
 
