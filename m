@@ -2,72 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557B3383CD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 07:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C18A383CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 07:41:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Krtw0YQWzDqhN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 15:39:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Krws56xCzDqjd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 15:41:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Dvlyzreu"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Krps3kkfzDqDd
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 15:35:49 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Krpl68wTz9tygK;
- Fri,  7 Jun 2019 07:35:43 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Dvlyzreu; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id GlfedUmMl7Oc; Fri,  7 Jun 2019 07:35:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Krpl58gsz9tygJ;
- Fri,  7 Jun 2019 07:35:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559885743; bh=awtb2K2L/pY0LqP0uu2of3n3HarcCZpSOiH93bH5nw4=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=DvlyzreuELhDax09caib3ENJoKVeMqorlazus7kPoETmJfW+2lq/7VzcixdbbjDC2
- 1GYxzyw8yk+j8qpcjRf0NYRSdmv1Lbt8HMAFmz6SFrdAt809s703py/AE9jug3s1N2
- +G9Go+XqHRv34U/tdSkOh7RqaYLTzEybEsstY/6M=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 951A28B781;
- Fri,  7 Jun 2019 07:35:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JAlNUjQv0yZC; Fri,  7 Jun 2019 07:35:44 +0200 (CEST)
-Received: from PO15451 (unknown [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 777268B75A;
- Fri,  7 Jun 2019 07:35:44 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Krq947qBzDqHg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 15:36:05 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x575Xbjb119261
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 7 Jun 2019 01:36:03 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2syh6e1jum-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 01:36:02 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Fri, 7 Jun 2019 06:36:00 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 7 Jun 2019 06:35:58 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x575Zveh17629308
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 7 Jun 2019 05:35:57 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BF9634C052;
+ Fri,  7 Jun 2019 05:35:57 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A3F44C05C;
+ Fri,  7 Jun 2019 05:35:57 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.124.35.207])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  7 Jun 2019 05:35:56 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH 2/2] powerpc/64s: __find_linux_pte synchronization vs
  pmdp_invalidate
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20190607035636.5446-2-npiggin@gmail.com>
 References: <20190607035636.5446-1-npiggin@gmail.com>
  <20190607035636.5446-2-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <46295970-4740-5648-efb4-513ab6a5c1c0@c-s.fr>
-Date: Fri, 7 Jun 2019 07:35:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+Date: Fri, 07 Jun 2019 11:05:56 +0530
 MIME-Version: 1.0
-In-Reply-To: <20190607035636.5446-2-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19060705-0028-0000-0000-000003782026
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060705-0029-0000-0000-000024380282
+Message-Id: <87wohyez43.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-07_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906070039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,46 +89,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-
-Le 07/06/2019 à 05:56, Nicholas Piggin a écrit :
 > The change to pmdp_invalidate to mark the pmd with _PAGE_INVALID broke
 > the synchronisation against lock free lookups, __find_linux_pte's
 > pmd_none check no longer returns true for such cases.
-> 
+>
 > Fix this by adding a check for this condition as well.
-> 
+>
+
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
 > Fixes: da7ad366b497 ("powerpc/mm/book3s: Update pmd_present to look at _PAGE_PRESENT bit")
 > Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 > Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   arch/powerpc/mm/pgtable.c | 16 ++++++++++++++--
->   1 file changed, 14 insertions(+), 2 deletions(-)
-> 
+>  arch/powerpc/mm/pgtable.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+>
 > diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
 > index db4a6253df92..533fc6fa6726 100644
 > --- a/arch/powerpc/mm/pgtable.c
 > +++ b/arch/powerpc/mm/pgtable.c
 > @@ -372,13 +372,25 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
->   	pdshift = PMD_SHIFT;
->   	pmdp = pmd_offset(&pud, ea);
->   	pmd  = READ_ONCE(*pmdp);
+>  	pdshift = PMD_SHIFT;
+>  	pmdp = pmd_offset(&pud, ea);
+>  	pmd  = READ_ONCE(*pmdp);
 > +
->   	/*
+>  	/*
 > -	 * A hugepage collapse is captured by pmd_none, because
 > -	 * it mark the pmd none and do a hpte invalidate.
 > +	 * A hugepage collapse is captured by this condition, see
 > +	 * pmdp_collapse_flush.
->   	 */
->   	if (pmd_none(pmd))
->   		return NULL;
->   
+>  	 */
+>  	if (pmd_none(pmd))
+>  		return NULL;
+>  
 > +#ifdef CONFIG_PPC_BOOK3S_64
 > +	/*
 > +	 * A hugepage split is captured by this condition, see
@@ -130,15 +142,9 @@ Le 07/06/2019 à 05:56, Nicholas Piggin a écrit :
 > +		return NULL;
 > +#endif
 > +
+>  	if (pmd_trans_huge(pmd) || pmd_devmap(pmd)) {
+>  		if (is_thp)
+>  			*is_thp = true;
+> -- 
+> 2.20.1
 
-Could get rid of that #ifdef by adding the following in book3s32 and 
-nohash pgtable.h:
-
-static inline bool pmd_is_serializing()  { return false; }
-
-Christophe
-
->   	if (pmd_trans_huge(pmd) || pmd_devmap(pmd)) {
->   		if (is_thp)
->   			*is_thp = true;
-> 
