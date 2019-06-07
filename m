@@ -2,69 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9298138181
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 01:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AEC38203
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 02:02:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Kh590lYXzDqrn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 09:02:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KjQB0FWJzDqrs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 10:02:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="AReiaJER"; 
- dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Kh3f5lQLzDqHL
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 09:01:17 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id x7so19520plr.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 16:01:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=12La436VbNM+cCSd7W2kZMhljrLWHemPkQdkpyh82vY=;
- b=AReiaJERh9zfxRcBRKv/f5ZBzgNxQuBHCtL/MVHd7MWiPpVT1CnFdhZULF9v76DzvI
- APLMydZtIIGHUOF8LV9te1yum4VCqoO+JJo8fP8KQK3tcqsZVLtZjJU3eGYyNSQ1T8Sj
- dPbD4GyBcbK8B2wpKq2m7HnmayAH2ojTkHIhzVJydEe23H3GiltSObE8Vmsh3WBHMTsL
- UCc6dTDfvgdqwHalbqqL7ixq6ZcHpMDgN7SMcCwQBeJVfHPuhsJfCgSUruUu+0Q9Eubl
- Yq1eOLubJF54PHrSBAmTqhrTv0L+bf5qtlvG89eMew8LVYpvRULeTKj6Hwc7A8tWVUFH
- 9V5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=12La436VbNM+cCSd7W2kZMhljrLWHemPkQdkpyh82vY=;
- b=DsBopydapMEtaIr4X7yTEUy/hfeJImwojJVdmIex09cuHmNm9Cn979ImByxpqPOi2M
- CxXeZQx3QTGBUmBGc/d2Ovrk9/jDvfDZwfl+esQBvTpfGklvJrjOx2NCl9mRwXgrQnWy
- my5WQArdflQvUxcJsJhe7Wvna/1ARQWsybbqzACFiayYjF1M8QIPYiFl96fYrOKo5B8d
- 1RrrLgvNli2/xUtOWSTpPTk2O1W0LuAT/cwpqZbQs+SRIwMG0dH7w8CRlfdEtAYy2xkA
- mh5KlCXUQMVXEzVsBYiY/aZ6Amt32fQcDWK36uRrEteT3R95aL+94lcD2POq1d1M3Q4/
- 2hVw==
-X-Gm-Message-State: APjAAAXkNiUClPzvQaBegZPYVoaxfI0Q0ICaboeiMStI3ax4iRf5Ileh
- KJisjCl9r8LxpGfKqkstc74=
-X-Google-Smtp-Source: APXvYqyJRnNHG/xd1j5UBLUN+f975Gpvky3R4SP3NlglwXTBLeJVJJ23pdeMLMfwRDTHpYXKxwk0/Q==
-X-Received: by 2002:a17:902:694b:: with SMTP id
- k11mr38505043plt.307.1559862071919; 
- Thu, 06 Jun 2019 16:01:11 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id w190sm198049pgw.51.2019.06.06.16.01.11
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 06 Jun 2019 16:01:11 -0700 (PDT)
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: shengjiu.wang@nxp.com,
-	broonie@kernel.org
-Subject: [RFC/RFT PATCH] Revert "ASoC: fsl_esai: ETDR and TX0~5 registers are
- non volatile"
-Date: Thu,  6 Jun 2019 16:01:05 -0700
-Message-Id: <20190606230105.4385-1-nicoleotsuka@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KjNS5JT6zDqBW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 10:00:56 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id AEE3328B1F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 00:00:53 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id AA97628B20; Fri,  7 Jun 2019 00:00:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=unavailable version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203839] New: Kernel 5.2-rc3 fails to boot on a PowerMac G4 3, 6:
+ systemd[1]: Failed to bump fs.file-max, ignoring: invalid argument
+Date: Fri, 07 Jun 2019 00:00:52 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression attachments.created
+Message-ID: <bug-203839-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,83 +71,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, lgirdwood@gmail.com,
- linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, tiwai@suse.com,
- perex@perex.cz, festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit 8973112aa41b8ad956a5b47f2fe17bc2a5cf2645.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203839
 
-ETDR and TX0~5 are TX data registers. There are a couple of reasons
-to revert the change:
-1) Though ETDR and TX0~5 are not volatile but write-only registers,
-   they should not be cached either. According to the definition of
-   "volatile_reg", one should be put in the volatile list if it can
-   not be cached.
-2) When doing regcache_sync(), the operation may accidentally write
-   some "dirty" data into these registers, in case that cached data
-   happen to be different from the default ones. It may also result
-   in a channel shift/swap situation since the number of write-via-
-   sync operations at ETDR would unlikely match the channel number.
+            Bug ID: 203839
+           Summary: Kernel 5.2-rc3 fails to boot on a PowerMac G4 3,6:
+                    systemd[1]: Failed to bump fs.file-max, ignoring:
+                    invalid argument
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.2-rc3
+          Hardware: PPC-32
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-32
+          Assignee: platform_ppc-32@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+        Regression: No
 
-Note: this revert is not a complete revert as it keeps those macros
-of registers remaining in the default value list while the original
-commit also changed other entries in the list. And this patch isn't
-very necessary to Cc stable tree since there has been always a FIFO
-reset operation around the regcache_sync() call, even prior to this
-reverted commit.
+Created attachment 283135
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283135&action=3Dedit
+failed boot, screenshot 5.2-rc3
 
-Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-Hi Mark,
-In case there's no objection against the patch, I'd still like to
-wait for a Tested-by from NXP folks before submitting it. Thanks!
+The system boots fine with kernel 5.1.7. Starting with 5.2-rc1 the G4 got
+problems to correctly finish booting. With 5.2-rc3 basic boot process seems=
+ to
+complete, but crashes when handing control over to systemd:
 
- sound/soc/fsl/fsl_esai.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+systemd[1]: Failed to bump fs.file-max, ignoring: invalid argument
+systemd[1]: segfault (11) at 0 nip 0 ir 0 code 1
+systemd[1]: Bad NIP, not dumping instructions
+[...]
 
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index 10d2210c91ef..8f0a86335f73 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -652,16 +652,9 @@ static const struct snd_soc_component_driver fsl_esai_component = {
- };
- 
- static const struct reg_default fsl_esai_reg_defaults[] = {
--	{REG_ESAI_ETDR,	 0x00000000},
- 	{REG_ESAI_ECR,	 0x00000000},
- 	{REG_ESAI_TFCR,	 0x00000000},
- 	{REG_ESAI_RFCR,	 0x00000000},
--	{REG_ESAI_TX0,	 0x00000000},
--	{REG_ESAI_TX1,	 0x00000000},
--	{REG_ESAI_TX2,	 0x00000000},
--	{REG_ESAI_TX3,	 0x00000000},
--	{REG_ESAI_TX4,	 0x00000000},
--	{REG_ESAI_TX5,	 0x00000000},
- 	{REG_ESAI_TSR,	 0x00000000},
- 	{REG_ESAI_SAICR, 0x00000000},
- 	{REG_ESAI_TCR,	 0x00000000},
-@@ -711,10 +704,17 @@ static bool fsl_esai_readable_reg(struct device *dev, unsigned int reg)
- static bool fsl_esai_volatile_reg(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case REG_ESAI_ETDR:
- 	case REG_ESAI_ERDR:
- 	case REG_ESAI_ESR:
- 	case REG_ESAI_TFSR:
- 	case REG_ESAI_RFSR:
-+	case REG_ESAI_TX0:
-+	case REG_ESAI_TX1:
-+	case REG_ESAI_TX2:
-+	case REG_ESAI_TX3:
-+	case REG_ESAI_TX4:
-+	case REG_ESAI_TX5:
- 	case REG_ESAI_RX0:
- 	case REG_ESAI_RX1:
- 	case REG_ESAI_RX2:
--- 
-2.17.1
+For more details see the screenshot. Kernel 5.2-rc1 errors out even earlier
+(see screenshot) with a different error. Also this problem maybe is 32bit
+specific. Tried 5.2-rc3 on a PowerMac G5 which boots successfully without
+problems.
 
+root is ext4, boot is ext2, systemd is v241.
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
