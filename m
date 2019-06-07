@@ -1,73 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED383932C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 19:27:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6800738F25
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 17:33:18 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45L64942fmzDqx5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 01:33:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45L8cR3dC1zDr15
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 03:27:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eGVfNun4"; 
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="HnwPzkHo"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45L61m41vVzDqHV
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 01:31:07 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45L61d14g1zB09ZC;
- Fri,  7 Jun 2019 17:31:01 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=eGVfNun4; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id x89FBxEH0k-2; Fri,  7 Jun 2019 17:31:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45L61c6w95z9vDcN;
- Fri,  7 Jun 2019 17:31:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1559921461; bh=VmfDdFiLX51Z+4KXelOTCLHxqnwbZKmMb30NnGggSrg=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=eGVfNun43ICAVfa8ZTRLt9LZB+Sw+rVDTnJQrQQzRDQR1yqPQrK5CRYJQxf8p+Ipa
- R1OpmRuRWrOPBIlhZSprzwJ/3NLXR8zDak3Nj1wnhzpk5JfCcrrPY7EoJV7dnEmkz3
- YFKZL+PWpjANAl87vTbWY/TcYYwKl4VV2B3J7fwk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 831ED8B8BE;
- Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id s9MhfGu4umRg; Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
-Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A6BD8B8BA;
- Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
-Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <ec764ff4-f68a-fce5-ac1e-a4664e1123c7@c-s.fr>
-Date: Fri, 7 Jun 2019 17:31:01 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45L8ZJ2c2HzDqsR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 03:25:59 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id l15so2552846otn.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 10:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language;
+ bh=KxyBt4jFYkAeqzf1jEUKJMpLVe7B1ILDm+weChcMIWw=;
+ b=HnwPzkHoHgK8lOOT8fORnOn+rF7rlPB11fEFxNBLb2wCizpjrn0Ago99EygaIR8z9u
+ XjWZkQctj5jJAG65bHjVuFjL9i0NhzMIzc2MKuveTgOfRmLS73o8vaC7lJVfFG2wbpkC
+ /OZwr8Ebeu5i/HUwj+we5xFYlBaGtcopi2b8mf1IsWP8y7fZErxntTbPrgY6YzPB0kJM
+ KfY2EJbS4bt8fNWlB43PwrRUqLdbGh918XvALaSKWGIELcuFjeYd+QdQ4SVO866gE6hr
+ M2pWQf/bvEnpr0J/7Bo4mw92Ep5jTmUxXGMDFK02ArX+W/+iDJY7TusqO52L71+Y777n
+ RpSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language;
+ bh=KxyBt4jFYkAeqzf1jEUKJMpLVe7B1ILDm+weChcMIWw=;
+ b=kltEs/xclVQHCD8GGCYE3DcyeRP28yG4t6zpJwtt9BFPWeOrysIwrkEzQdBjthWytb
+ NJiSB8Xviuy/lm7hC/e2eYDDKR7gTZrHARz1eAKVQn9v3u6r2vHfJ8pEnJqqVjBizv2Z
+ wVCDhZ245snTYqnUZzVU+VKLYsz8bykrddvc4fDuxnC5nswjCkGGmjPB4y/LnNTbZ4C4
+ XcFivm0ZaCGqwMWm05ZuenFZ0/Q+QHJed4LLYAp7Z1KGGqlkkP+CNCma8pOcZMI4lsWb
+ DtEmRSeLRh7s7Ugj5CT+DxC4hr2cZxp5a9NEqgx4yqtemz63fc3GEO2ME45FNBNvH91W
+ N+Sg==
+X-Gm-Message-State: APjAAAWM210gj2CAwwqiTYHFq7fu4SUEkkfUTBUe6raCg9qb1DTuaRyk
+ sLZKkRjbwGvjqL6elFOTvIEw388s
+X-Google-Smtp-Source: APXvYqwXL1deWJrUvbwAmin4bTYZyo7x2kVTaz7L0oNC2lOp+UdNDa2GM6U8DS0msSrwKTPNKwAkzg==
+X-Received: by 2002:a9d:5d1a:: with SMTP id b26mr20723333oti.50.1559928356639; 
+ Fri, 07 Jun 2019 10:25:56 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id c19sm945378otl.70.2019.06.07.10.25.55
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Fri, 07 Jun 2019 10:25:55 -0700 (PDT)
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Christoph Hellwig <hch@lst.de>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
+Date: Fri, 7 Jun 2019 12:25:54 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+Content-Type: multipart/mixed; boundary="------------248DB5856E99694593DD245B"
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,154 +83,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Will Deacon <will.deacon@arm.com>, Ingo Molnar <mingo@redhat.com>,
- Fenghua Yu <fenghua.yu@intel.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is a multi-part message in MIME format.
+--------------248DB5856E99694593DD245B
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 6/5/19 5:50 PM, Aaro Koskinen wrote:
+> Hi,
+> 
+> When upgrading from v5.0 -> v5.1 on G4 PowerBook, I noticed WLAN does
+> not work anymore:
+> 
+> [   42.004303] b43legacy-phy0: Loading firmware version 0x127, patch level 14 (2005-04-18 02:36:27)
+> [   42.184837] b43legacy-phy0 debug: Chip initialized
+> [   42.184873] b43legacy-phy0 ERROR: The machine/kernel does not support the required 30-bit DMA mask
+> 
+> The same happens with the current mainline.
+> 
+> Bisected to:
+> 
+> 	commit 65a21b71f948406201e4f62e41f06513350ca390
+> 	Author: Christoph Hellwig <hch@lst.de>
+> 	Date:   Wed Feb 13 08:01:26 2019 +0100
+> 
+> 	    powerpc/dma: remove dma_nommu_dma_supported
+> 
+> 	    This function is largely identical to the generic version used
+> 	    everywhere else.  Replace it with the generic version.
+> 
+> 	    Signed-off-by: Christoph Hellwig <hch@lst.de>
+> 	    Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> 	    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+Aaro,
+
+Please try the attached patch. I'm not really pleased with it and I will 
+continue to determine why the fallback to a 30-bit mask fails, but at least this 
+one works for me.
+
+Larry
 
 
-Le 07/06/2019 à 12:34, Anshuman Khandual a écrit :
-> Very similar definitions for notify_page_fault() are being used by multiple
-> architectures duplicating much of the same code. This attempts to unify all
-> of them into a generic implementation, rename it as kprobe_page_fault() and
-> then move it to a common header.
-> 
-> kprobes_built_in() can detect CONFIG_KPROBES, hence new kprobe_page_fault()
-> need not be wrapped again within CONFIG_KPROBES. Trap number argument can
-> now contain upto an 'unsigned int' accommodating all possible platforms.
-> 
-> kprobe_page_fault() goes the x86 way while dealing with preemption context.
-> As explained in these following commits the invoking context in itself must
-> be non-preemptible for kprobes processing context irrespective of whether
-> kprobe_running() or perhaps smp_processor_id() is safe or not. It does not
-> make much sense to continue when original context is preemptible. Instead
-> just bail out earlier.
-> 
-> commit a980c0ef9f6d
-> ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
-> 
-> commit b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
-> 
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Andrey Konovalov <andreyknvl@google.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will.deacon@arm.com>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> Testing:
-> 
-> - Build and boot tested on arm64 and x86
-> - Build tested on some other archs (arm, sparc64, alpha, powerpc etc)
-> 
-> Changes in RFC V3:
-> 
-> - Updated the commit message with an explaination for new preemption behaviour
-> - Moved notify_page_fault() to kprobes.h with 'static nokprobe_inline' per Matthew
-> - Changed notify_page_fault() return type from int to bool per Michael Ellerman
-> - Renamed notify_page_fault() as kprobe_page_fault() per Peterz
-> 
-> Changes in RFC V2: (https://patchwork.kernel.org/patch/10974221/)
-> 
-> - Changed generic notify_page_fault() per Mathew Wilcox
-> - Changed x86 to use new generic notify_page_fault()
-> - s/must not/need not/ in commit message per Matthew Wilcox
-> 
-> Changes in RFC V1: (https://patchwork.kernel.org/patch/10968273/)
-> 
->   arch/arm/mm/fault.c      | 24 +-----------------------
->   arch/arm64/mm/fault.c    | 24 +-----------------------
->   arch/ia64/mm/fault.c     | 24 +-----------------------
->   arch/powerpc/mm/fault.c  | 23 ++---------------------
->   arch/s390/mm/fault.c     | 16 +---------------
->   arch/sh/mm/fault.c       | 18 ++----------------
->   arch/sparc/mm/fault_64.c | 16 +---------------
->   arch/x86/mm/fault.c      | 21 ++-------------------
->   include/linux/kprobes.h  | 16 ++++++++++++++++
->   9 files changed, 27 insertions(+), 155 deletions(-)
-> 
 
-[...]
+--------------248DB5856E99694593DD245B
+Content-Type: text/x-patch;
+ name="0001-b43legacy-Fix-DMA-breakage-from-commit-commit-65a21b.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename*0="0001-b43legacy-Fix-DMA-breakage-from-commit-commit-65a21b.pa";
+ filename*1="tch"
 
-> diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-> index 443d980..064dd15 100644
-> --- a/include/linux/kprobes.h
-> +++ b/include/linux/kprobes.h
-> @@ -458,4 +458,20 @@ static inline bool is_kprobe_optinsn_slot(unsigned long addr)
->   }
->   #endif
->   
-> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
-> +					      unsigned int trap)
-> +{
-> +	int ret = 0;
+From 25e2f50273e785598b6bd9a8aee28cf825d3fe9f Mon Sep 17 00:00:00 2001
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Date: Fri, 7 Jun 2019 12:04:16 -0500
+Subject: [PATCH] b43legacy: Fix DMA breakage from commit commit 65a21b71f948
+To: kvalo@codeaurora.org
+Cc: linux-wireless@vger.kernel.org,
+    pkshih@realtek.com
 
-ret is pointless.
+Following commit 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported"),
+this driver errors with a message that "The machine/kernel does not
+support the required 30-bit DMA mask." Indeed, the hardware only allows
+31-bit masks. This solution is to change the fallback mask from 30-
+to 31-bits for 32-bit PPC systems.
 
-> +
-> +	/*
-> +	 * To be potentially processing a kprobe fault and to be allowed
-> +	 * to call kprobe_running(), we have to be non-preemptible.
-> +	 */
-> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
-> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
+Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/net/wireless/broadcom/b43legacy/dma.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-don't need an 'if A if B', can do 'if A && B'
+diff --git a/drivers/net/wireless/broadcom/b43legacy/dma.c b/drivers/net/wireless/broadcom/b43legacy/dma.c
+index 1cc25f44dd9a..75613f516e50 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/dma.c
++++ b/drivers/net/wireless/broadcom/b43legacy/dma.c
+@@ -27,6 +27,15 @@
+ #include <linux/slab.h>
+ #include <net/dst.h>
+ 
++/* Special handling for PPC32 - The maximum DMA mask is 31 bits, and
++ * the fallback to 30 bits fails. Set the fallback at 31.
++ */
++#ifdef CONFIG_PPC32
++#define FB_DMA	31
++#else
++#define FB_DMA	30
++#endif
++
+ /* 32bit DMA ops. */
+ static
+ struct b43legacy_dmadesc32 *op32_idx2desc(struct b43legacy_dmaring *ring,
+@@ -418,7 +427,7 @@ static bool b43legacy_dma_mapping_error(struct b43legacy_dmaring *ring,
+ 
+ 	switch (ring->type) {
+ 	case B43legacy_DMA_30BIT:
+-		if ((u64)addr + buffersize > (1ULL << 30))
++		if ((u64)addr + buffersize > (1ULL << FB_DMA))
+ 			goto address_error;
+ 		break;
+ 	case B43legacy_DMA_32BIT:
+@@ -617,12 +626,12 @@ static u64 supported_dma_mask(struct b43legacy_wldev *dev)
+ 	if (tmp & B43legacy_DMA32_TXADDREXT_MASK)
+ 		return DMA_BIT_MASK(32);
+ 
+-	return DMA_BIT_MASK(30);
++	return DMA_BIT_MASK(FB_DMA);
+ }
+ 
+ static enum b43legacy_dmatype dma_mask_to_engine_type(u64 dmamask)
+ {
+-	if (dmamask == DMA_BIT_MASK(30))
++	if (dmamask == DMA_BIT_MASK(FB_DMA))
+ 		return B43legacy_DMA_30BIT;
+ 	if (dmamask == DMA_BIT_MASK(32))
+ 		return B43legacy_DMA_32BIT;
+@@ -802,7 +811,7 @@ static int b43legacy_dma_set_mask(struct b43legacy_wldev *dev, u64 mask)
+ 			continue;
+ 		}
+ 		if (mask == DMA_BIT_MASK(32)) {
+-			mask = DMA_BIT_MASK(30);
++			mask = DMA_BIT_MASK(FB_DMA);
+ 			fallback = true;
+ 			continue;
+ 		}
+-- 
+2.21.0
 
-> +			ret = 1;
 
-can do 'return true;' directly here
-
-> +	}
-> +	return ret;
-
-And 'return false' here.
-
-Christophe
-
-> +}
-> +
->   #endif /* _LINUX_KPROBES_H */
-> 
+--------------248DB5856E99694593DD245B--
