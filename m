@@ -2,90 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD85D38EAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 17:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6800738F25
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 17:33:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45L5dc2BMLzDqHw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 01:13:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45L64942fmzDqx5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 01:33:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="eGVfNun4"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45L5TZ5k4lzDqsX
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 01:06:35 +1000 (AEST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2019 08:06:31 -0700
-X-ExtLoop1: 1
-Received: from unknown (HELO [10.7.198.156]) ([10.7.198.156])
- by orsmga002.jf.intel.com with ESMTP; 07 Jun 2019 08:06:30 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45L61m41vVzDqHV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 01:31:07 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45L61d14g1zB09ZC;
+ Fri,  7 Jun 2019 17:31:01 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=eGVfNun4; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id x89FBxEH0k-2; Fri,  7 Jun 2019 17:31:01 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45L61c6w95z9vDcN;
+ Fri,  7 Jun 2019 17:31:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1559921461; bh=VmfDdFiLX51Z+4KXelOTCLHxqnwbZKmMb30NnGggSrg=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=eGVfNun43ICAVfa8ZTRLt9LZB+Sw+rVDTnJQrQQzRDQR1yqPQrK5CRYJQxf8p+Ipa
+ R1OpmRuRWrOPBIlhZSprzwJ/3NLXR8zDak3Nj1wnhzpk5JfCcrrPY7EoJV7dnEmkz3
+ YFKZL+PWpjANAl87vTbWY/TcYYwKl4VV2B3J7fwk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 831ED8B8BE;
+ Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id s9MhfGu4umRg; Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A6BD8B8BA;
+ Fri,  7 Jun 2019 17:31:02 +0200 (CEST)
 Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
  kprobe_page_fault()
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <6e095842-0f7f-f428-653d-2b6e98fea6b3@intel.com>
-Date: Fri, 7 Jun 2019 08:06:30 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <ec764ff4-f68a-fce5-ac1e-a4664e1123c7@c-s.fr>
+Date: Fri, 7 Jun 2019 17:31:01 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
 In-Reply-To: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,27 +83,128 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
  linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
  Peter Zijlstra <peterz@infradead.org>,
  Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org,
  linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
  x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will.deacon@arm.com>, Ingo Molnar <mingo@redhat.com>,
  Fenghua Yu <fenghua.yu@intel.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
  Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Tony Luck <tony.luck@intel.com>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/7/19 3:34 AM, Anshuman Khandual wrote:
+
+
+Le 07/06/2019 à 12:34, Anshuman Khandual a écrit :
+> Very similar definitions for notify_page_fault() are being used by multiple
+> architectures duplicating much of the same code. This attempts to unify all
+> of them into a generic implementation, rename it as kprobe_page_fault() and
+> then move it to a common header.
+> 
+> kprobes_built_in() can detect CONFIG_KPROBES, hence new kprobe_page_fault()
+> need not be wrapped again within CONFIG_KPROBES. Trap number argument can
+> now contain upto an 'unsigned int' accommodating all possible platforms.
+> 
+> kprobe_page_fault() goes the x86 way while dealing with preemption context.
+> As explained in these following commits the invoking context in itself must
+> be non-preemptible for kprobes processing context irrespective of whether
+> kprobe_running() or perhaps smp_processor_id() is safe or not. It does not
+> make much sense to continue when original context is preemptible. Instead
+> just bail out earlier.
+> 
+> commit a980c0ef9f6d
+> ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
+> 
+> commit b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
+> 
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+> Cc: Andrey Konovalov <andreyknvl@google.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will.deacon@arm.com>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> Testing:
+> 
+> - Build and boot tested on arm64 and x86
+> - Build tested on some other archs (arm, sparc64, alpha, powerpc etc)
+> 
+> Changes in RFC V3:
+> 
+> - Updated the commit message with an explaination for new preemption behaviour
+> - Moved notify_page_fault() to kprobes.h with 'static nokprobe_inline' per Matthew
+> - Changed notify_page_fault() return type from int to bool per Michael Ellerman
+> - Renamed notify_page_fault() as kprobe_page_fault() per Peterz
+> 
+> Changes in RFC V2: (https://patchwork.kernel.org/patch/10974221/)
+> 
+> - Changed generic notify_page_fault() per Mathew Wilcox
+> - Changed x86 to use new generic notify_page_fault()
+> - s/must not/need not/ in commit message per Matthew Wilcox
+> 
+> Changes in RFC V1: (https://patchwork.kernel.org/patch/10968273/)
+> 
+>   arch/arm/mm/fault.c      | 24 +-----------------------
+>   arch/arm64/mm/fault.c    | 24 +-----------------------
+>   arch/ia64/mm/fault.c     | 24 +-----------------------
+>   arch/powerpc/mm/fault.c  | 23 ++---------------------
+>   arch/s390/mm/fault.c     | 16 +---------------
+>   arch/sh/mm/fault.c       | 18 ++----------------
+>   arch/sparc/mm/fault_64.c | 16 +---------------
+>   arch/x86/mm/fault.c      | 21 ++-------------------
+>   include/linux/kprobes.h  | 16 ++++++++++++++++
+>   9 files changed, 27 insertions(+), 155 deletions(-)
+> 
+
+[...]
+
+> diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+> index 443d980..064dd15 100644
+> --- a/include/linux/kprobes.h
+> +++ b/include/linux/kprobes.h
+> @@ -458,4 +458,20 @@ static inline bool is_kprobe_optinsn_slot(unsigned long addr)
+>   }
+>   #endif
+>   
 > +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
 > +					      unsigned int trap)
 > +{
 > +	int ret = 0;
+
+ret is pointless.
+
 > +
 > +	/*
 > +	 * To be potentially processing a kprobe fault and to be allowed
@@ -130,19 +212,21 @@ On 6/7/19 3:34 AM, Anshuman Khandual wrote:
 > +	 */
 > +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
 > +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+
+don't need an 'if A if B', can do 'if A && B'
+
 > +			ret = 1;
+
+can do 'return true;' directly here
+
 > +	}
 > +	return ret;
+
+And 'return false' here.
+
+Christophe
+
 > +}
-
-Nits: Other that taking the nice, readable, x86 one and globbing it onto
-a single line, looks OK to me.  It does seem a _bit_ silly to go to the
-trouble of converting to 'bool' and then using 0/1 and an 'int'
-internally instead of true/false and a bool, though.  It's also not a
-horrible thing to add a single line comment to this sucker to say:
-
-/* returns true if kprobes handled the fault */
-
-In any case, and even if you don't clean any of this up:
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> +
+>   #endif /* _LINUX_KPROBES_H */
+> 
