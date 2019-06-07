@@ -2,71 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3147638446
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1ED38450
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:28:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Kstw3X35zDqBN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:24:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Kszt20fYzDqHv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:28:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qpgwmo+B"; 
- dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Ksq23R0PzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:21:02 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id u17so583737pfn.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=4NWOIK8RqXV1Z0c7HGWMQUem4tMfyzTDAbk6azU2yDQ=;
- b=qpgwmo+BIs/bGAo5yGs7Vy3+OrBeNzagzzWW2BikffRheBPPDCCfHabLIexgm94atJ
- smJuAle58NHWLPxvwOy7AQqoYguL/b2iOhvLDtAdYzsZ0OUa5mz9HvAeBpXexYLTj8Pr
- tTbJY6Rt9cTesXkGFYWpgsxmvVokXF8aVnv8R6wVC4T0/3ZyIBzMWg292sJg9rO5NF95
- vAs5P5hLDxq1fgXhD77wT4ZJcBS2xNrgo50b6EV6OHGJMqaqYAyFdRAERrJ21abV6JgX
- +K3/NFV2TMr0mh1LkvjRkpNcu+jq2gIgfmoxTODdQmBN5OTvpn4Jlcn9flTc9N/QFqzq
- SpIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=4NWOIK8RqXV1Z0c7HGWMQUem4tMfyzTDAbk6azU2yDQ=;
- b=lC4d2W/Pn5Je7oNcN679VUBJqBu383v7rR9frM3F/yS5bRRhZGFe8wBvG4f4dFqcRM
- 8Gpjwo9ujjapiTLTbrQmZ/QpRqveVIg5bk0MEsvrTWXOlUB1f3xh1tSGW4T7bUTwA1bT
- bnlakDhk6lNd+KX+OkggXc+gBGkQI/ACI28WuWR8asLlUfNNo3sOJpCkrwt5hv8F6jdp
- bpYOr5hwKyhWLro7Z1HxupKWdAn62+opx+gJMLy6cW/QOSioMdLrIF/+SRrghvd0e57Z
- 1ELZaJPtiZpOrZUCewTrcM4DH9Pqpfzb76fHDkiaWSCR1Cr/fOBA0lOjADhMeyDqh13U
- stNA==
-X-Gm-Message-State: APjAAAV8rOS34w79hR8gBoIhMkhNTpWsn0TtOop9cfy8pU9ctC6fgzOu
- JwiJbHYN53PagJN0z8EwbmL1zKgmmZ8=
-X-Google-Smtp-Source: APXvYqxj0nA5IQj9uPHlNHvKkqClaseXd1V13X2OXTJVTYqacs9EVUjAt0ilyMEbfjj0B/vbZUd/9w==
-X-Received: by 2002:a62:2643:: with SMTP id m64mr55308775pfm.46.1559888459969; 
- Thu, 06 Jun 2019 23:20:59 -0700 (PDT)
-Received: from bobo.local0.net ([202.125.30.143])
- by smtp.gmail.com with ESMTPSA id w24sm1215748pga.90.2019.06.06.23.20.58
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 06 Jun 2019 23:20:59 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/64s/radix: ioremap use huge page mappings
-Date: Fri,  7 Jun 2019 16:19:22 +1000
-Message-Id: <20190607061922.20542-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190607061922.20542-1-npiggin@gmail.com>
-References: <20190607061922.20542-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ksxp3YCzzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:26:54 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x576Mx8V113558
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 7 Jun 2019 02:26:52 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2syh6e3en2-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 02:26:51 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Fri, 7 Jun 2019 07:26:49 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 7 Jun 2019 07:26:45 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x576QiSS58065094
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 7 Jun 2019 06:26:44 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18689A4040;
+ Fri,  7 Jun 2019 06:26:44 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD75DA405E;
+ Fri,  7 Jun 2019 06:26:40 +0000 (GMT)
+Received: from [9.199.59.123] (unknown [9.199.59.123])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  7 Jun 2019 06:26:40 +0000 (GMT)
+Subject: Re: [PATCH] Powerpc/Watchpoint: Restore nvgprs while returning from
+ exception
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
+ <87ftom0wrm.fsf@concordia.ellerman.id.au>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date: Fri, 7 Jun 2019 11:56:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ftom0wrm.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19060706-0012-0000-0000-00000326210D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060706-0013-0000-0000-0000215F0B48
+Message-Id: <a2696037-539c-2f37-3b2f-7288a58fbfe7@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-07_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906070045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,151 +92,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
+ mahesh@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc/64s does not use ioremap_page_range, so it does not get huge
-vmap iomap mappings automatically. The radix kernel mapping function
-already allows larger page mappings that work with huge vmap, so wire
-that up to allow huge pages to be used for ioremap mappings.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/book3s/64/pgtable.h |  8 +++
- arch/powerpc/mm/pgtable_64.c                 | 58 ++++++++++++++++++--
- include/linux/io.h                           |  1 +
- lib/ioremap.c                                |  2 +-
- 4 files changed, 62 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index ccf00a8b98c6..d7a4f2d80598 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -274,6 +274,14 @@ extern unsigned long __vmalloc_end;
- #define VMALLOC_START	__vmalloc_start
- #define VMALLOC_END	__vmalloc_end
- 
-+static inline unsigned int ioremap_max_order(void)
-+{
-+	if (radix_enabled())
-+		return PUD_SHIFT;
-+	return 7 + PAGE_SHIFT; /* default from linux/vmalloc.h */
-+}
-+#define IOREMAP_MAX_ORDER ({ ioremap_max_order();})
-+
- extern unsigned long __kernel_virt_start;
- extern unsigned long __kernel_virt_size;
- extern unsigned long __kernel_io_start;
-diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-index d2d976ff8a0e..cf02b67eee55 100644
---- a/arch/powerpc/mm/pgtable_64.c
-+++ b/arch/powerpc/mm/pgtable_64.c
-@@ -112,7 +112,7 @@ unsigned long ioremap_bot = IOREMAP_BASE;
-  * __ioremap_at - Low level function to establish the page tables
-  *                for an IO mapping
-  */
--void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
-+static void __iomem * hash__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
- {
- 	unsigned long i;
- 
-@@ -120,6 +120,54 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
- 	if (pgprot_val(prot) & H_PAGE_4K_PFN)
- 		return NULL;
- 
-+	for (i = 0; i < size; i += PAGE_SIZE)
-+		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
-+			return NULL;
-+
-+	return (void __iomem *)ea;
-+}
-+
-+static int radix__ioremap_page_range(unsigned long addr, unsigned long end,
-+		       phys_addr_t phys_addr, pgprot_t prot)
-+{
-+	while (addr != end) {
-+		if (unlikely(ioremap_huge_disabled))
-+			goto use_small_page;
-+
-+		if (!(addr & ~PUD_MASK) && !(phys_addr & ~PUD_MASK) &&
-+				end - addr >= PUD_SIZE) {
-+			if (radix__map_kernel_page(addr, phys_addr, prot, PUD_SIZE))
-+				return -ENOMEM;
-+			addr += PUD_SIZE;
-+			phys_addr += PUD_SIZE;
-+
-+		} else if (!(addr & ~PMD_MASK) && !(phys_addr & ~PMD_MASK) &&
-+				end - addr >= PMD_SIZE) {
-+			if (radix__map_kernel_page(addr, phys_addr, prot, PMD_SIZE))
-+				return -ENOMEM;
-+			addr += PMD_SIZE;
-+			phys_addr += PMD_SIZE;
-+
-+		} else {
-+use_small_page:
-+			if (radix__map_kernel_page(addr, phys_addr, prot, PAGE_SIZE))
-+				return -ENOMEM;
-+			addr += PAGE_SIZE;
-+			phys_addr += PAGE_SIZE;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static void __iomem * radix__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
-+{
-+	if (radix__ioremap_page_range((unsigned long)ea, (unsigned long)ea + size, pa, prot))
-+		return NULL;
-+	return ea;
-+}
-+
-+void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
-+{
- 	if ((ea + size) >= (void *)IOREMAP_END) {
- 		pr_warn("Outside the supported range\n");
- 		return NULL;
-@@ -129,11 +177,9 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
- 	WARN_ON(((unsigned long)ea) & ~PAGE_MASK);
- 	WARN_ON(size & ~PAGE_MASK);
- 
--	for (i = 0; i < size; i += PAGE_SIZE)
--		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
--			return NULL;
--
--	return (void __iomem *)ea;
-+	if (radix_enabled())
-+		return radix__ioremap_at(pa, ea, size, prot);
-+	return hash__ioremap_at(pa, ea, size, prot);
- }
- 
- /**
-diff --git a/include/linux/io.h b/include/linux/io.h
-index 32e30e8fb9db..423c4294aaa3 100644
---- a/include/linux/io.h
-+++ b/include/linux/io.h
-@@ -44,6 +44,7 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+extern int ioremap_huge_disabled;
- void __init ioremap_huge_init(void);
- int arch_ioremap_pud_supported(void);
- int arch_ioremap_pmd_supported(void);
-diff --git a/lib/ioremap.c b/lib/ioremap.c
-index 063213685563..386ff956755f 100644
---- a/lib/ioremap.c
-+++ b/lib/ioremap.c
-@@ -18,7 +18,7 @@
- static int __read_mostly ioremap_p4d_capable;
- static int __read_mostly ioremap_pud_capable;
- static int __read_mostly ioremap_pmd_capable;
--static int __read_mostly ioremap_huge_disabled;
-+int __read_mostly ioremap_huge_disabled;
- 
- static int __init set_nohugeiomap(char *str)
- {
--- 
-2.20.1
+On 6/7/19 11:20 AM, Michael Ellerman wrote:
+> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+> 
+>> Powerpc hw triggers watchpoint before executing the instruction.
+>> To make trigger-after-execute behavior, kernel emulates the
+>> instruction. If the instruction is 'load something into non-
+>> volatile register', exception handler should restore emulated
+>> register state while returning back, otherwise there will be
+>> register state corruption. Ex, Adding a watchpoint on a list
+>> can corrput the list:
+>>
+>>   # cat /proc/kallsyms | grep kthread_create_list
+>>   c00000000121c8b8 d kthread_create_list
+>>
+>> Add watchpoint on kthread_create_list->next:
+>>
+>>   # perf record -e mem:0xc00000000121c8c0
+>>
+>> Run some workload such that new kthread gets invoked. Ex, I
+>> just logged out from console:
+>>
+>>   list_add corruption. next->prev should be prev (c000000001214e00), \
+>> 	but was c00000000121c8b8. (next=c00000000121c8b8).
+>>   WARNING: CPU: 59 PID: 309 at lib/list_debug.c:25 __list_add_valid+0xb4/0xc0
+>>   CPU: 59 PID: 309 Comm: kworker/59:0 Kdump: loaded Not tainted 5.1.0-rc7+ #69
+>>   ...
+>>   NIP __list_add_valid+0xb4/0xc0
+>>   LR __list_add_valid+0xb0/0xc0
+>>   Call Trace:
+>>   __list_add_valid+0xb0/0xc0 (unreliable)
+>>   __kthread_create_on_node+0xe0/0x260
+>>   kthread_create_on_node+0x34/0x50
+>>   create_worker+0xe8/0x260
+>>   worker_thread+0x444/0x560
+>>   kthread+0x160/0x1a0
+>>   ret_from_kernel_thread+0x5c/0x70
+> 
+> This all depends on what code the compiler generates for the list
+> access.
+
+True. list corruption is just an example. But any load instruction that uses
+non-volatile register and hits a watchpoint, will result in register state
+corruption.
+
+> Can you include a disassembly of the relevant code in your
+> kernel so we have an example of the bad case.
+
+Register state from WARN_ON():
+
+  GPR00: c00000000059a3a0 c000007ff23afb50 c000000001344e00 0000000000000075
+  GPR04: 0000000000000000 0000000000000000 0000001852af8bc1 0000000000000000
+  GPR08: 0000000000000001 0000000000000007 0000000000000006 00000000000004aa
+  GPR12: 0000000000000000 c000007ffffeb080 c000000000137038 c000005ff62aaa00
+  GPR16: 0000000000000000 0000000000000000 c000007fffbe7600 c000007fffbe7370
+  GPR20: c000007fffbe7320 c000007fffbe7300 c000000001373a00 0000000000000000
+  GPR24: fffffffffffffef7 c00000000012e320 c000007ff23afcb0 c000000000cb8628
+  GPR28: c00000000121c8b8 c000000001214e00 c000007fef5b17e8 c000007fef5b17c0
+
+Snippet from __kthread_create_on_node:
+
+  c000000000136be8:       ed ff a2 3f     addis   r29,r2,-19
+  c000000000136bec:       c0 7a bd eb     ld      r29,31424(r29)
+          if (!__list_add_valid(new, prev, next))
+  c000000000136bf0:       78 f3 c3 7f     mr      r3,r30
+  c000000000136bf4:       78 e3 85 7f     mr      r5,r28
+  c000000000136bf8:       78 eb a4 7f     mr      r4,r29
+  c000000000136bfc:       fd 36 46 48     bl      c00000000059a2f8 <__list_add_valid+0x8>
+
+Watchpoint hit at 0xc000000000136bec. 
+
+  addis   r29,r2,-19
+   => r29 = 0xc000000001344e00 + (-19 << 16)
+   => r29 = 0xc000000001214e00
+
+  ld      r29,31424(r29)
+   => r29 = *(0xc000000001214e00 + 31424)
+   => r29 = *(0xc00000000121c8c0)
+
+0xc00000000121c8c0 is where we placed a watchpoint and thus this instruction was
+emulated by emulate_step. But because handle_dabr_fault did not restore emulated
+register state, r29 still contains stale value in above register state.
 
