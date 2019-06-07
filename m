@@ -1,84 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F08539838
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 00:07:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660AB39753
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 23:06:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45LFSQ1gy1zDr27
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 07:06:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LGqG1q5szDr1X
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 08:07:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=tlfalcon@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eQ8X5t7S"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LFQ33Xg8zDqDZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 07:04:07 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x57L2KCD029537
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 7 Jun 2019 17:04:04 -0400
-Received: from e31.co.us.ibm.com (e31.co.us.ibm.com [32.97.110.149])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2syv5w8btt-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 17:04:04 -0400
-Received: from localhost
- by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <tlfalcon@linux.ibm.com>;
- Fri, 7 Jun 2019 22:04:03 +0100
-Received: from b03cxnp07028.gho.boulder.ibm.com (9.17.130.15)
- by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 7 Jun 2019 22:04:02 +0100
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x57L40Qg21430772
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jun 2019 21:04:00 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D22EBC6059;
- Fri,  7 Jun 2019 21:04:00 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4BB2EC605B;
- Fri,  7 Jun 2019 21:04:00 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.80.206.102])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jun 2019 21:04:00 +0000 (GMT)
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net 3/3] ibmvnic: Fix unchecked return codes of memory
- allocations
-Date: Fri,  7 Jun 2019 16:03:55 -0500
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1559941435-30124-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1559941435-30124-1-git-send-email-tlfalcon@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19060721-8235-0000-0000-00000EA52B56
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011229; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01214693; UDB=6.00638533; IPR=6.00995777; 
- MB=3.00027226; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-07 21:04:03
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060721-8236-0000-0000-000045EBB42F
-Message-Id: <1559941435-30124-4-git-send-email-tlfalcon@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-07_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906070141
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LGmc50y9zDqh3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 08:05:20 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id g9so1314383plm.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 15:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=C3WCTEPJuMhnDtyj4nCQQWf8hst+6hFcFTW9HCjkuQc=;
+ b=eQ8X5t7ShcbHZ2iAaeihT56yVGm93DJwoGdLe+RAL+T33ZJeM5dpHTBSOFHnV6exd2
+ McjPg9HRK4VzL2d97TDKLdk4cgN6l4tkjv6zJgwUwj1poxqn1D4faGt9f0dgLEJvD4kI
+ nlj2hFdkXuXE9V6dflG5xHbpe+pelkqjFJDVStQgh4TZr8C3CXVWdShiPtMOmz92io3F
+ G/7PZiS1LCcwJLyHB6DMjE+r1mSTqQMSaVXt4uniH3d8iUxxoPLLsGtjpKOqkzsTcqbY
+ izGdDivK3ySoKFH5HXbVfJ1MkBO+mwjFUh9lObsesRKIEoo/4P5NBkxPi/L9gGPIPE7F
+ GoDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=C3WCTEPJuMhnDtyj4nCQQWf8hst+6hFcFTW9HCjkuQc=;
+ b=r/CIEHZtQrsiJVc5UpNlOIPuwBrSlAmVp9agstA02k9LmBIgJ2p2tuS/QU5r1JAz/Z
+ UXfflOWr1v2WipyP4Z4t+fkyzTfVKyyAzkCHhppez9JnU6uLfcjvhREEnvfOyAVo2CcE
+ 2r+wq3ZfPnErrIHCBPBHUcgGK5+ttexrDnnspmT7SHw2syMGPMoDX+y/PemR0SVVWUaK
+ 6jn/p0TxBDq2tzi5c+JqacAZ5XTMimLAvSFX3zS2IFqgvFq5dQKJYnw+ZqOzWNqXlVvt
+ ielCdVJy9XSCJwJhQgK9dKOkn27RZ7vPnaaJylVv6g23faDJnlBe/BFpqKxgqw29Dd9I
+ VaEQ==
+X-Gm-Message-State: APjAAAWPDfMv+Q19MBT4J/2fky00MGxnVIt09BlpQxPk4Naw5w449r/2
+ nk87aqDVxxZf57AKDay1upw=
+X-Google-Smtp-Source: APXvYqw79sGEGu7vaJbDLnMprFiFeHzfXZWGcQnVHInNP3xeYbkjRgBIAgRsCI7J7qswMroRiib5FA==
+X-Received: by 2002:a17:902:6ac6:: with SMTP id
+ i6mr44253449plt.233.1559945116817; 
+ Fri, 07 Jun 2019 15:05:16 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id d3sm3843748pfa.176.2019.06.07.15.05.15
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 07 Jun 2019 15:05:16 -0700 (PDT)
+Date: Fri, 7 Jun 2019 15:05:18 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC/RFT PATCH] Revert "ASoC: fsl_esai: ETDR and TX0~5 registers
+ are non volatile"
+Message-ID: <20190607220517.GA3824@Asurada-Nvidia.nvidia.com>
+References: <20190606230105.4385-1-nicoleotsuka@gmail.com>
+ <20190607111244.GE2456@sirena.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190607111244.GE2456@sirena.org.uk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,51 +83,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, shengjiu.wang@nxp.com, tiwai@suse.com,
+ lgirdwood@gmail.com, perex@perex.cz, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The return values for these memory allocations are unchecked,
-which may cause an oops if the driver does not handle them after
-a failure. Fix by checking the function's return code.
+Hello Mark,
 
-Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+On Fri, Jun 07, 2019 at 12:12:44PM +0100, Mark Brown wrote:
+> On Thu, Jun 06, 2019 at 04:01:05PM -0700, Nicolin Chen wrote:
+> > This reverts commit 8973112aa41b8ad956a5b47f2fe17bc2a5cf2645.
+> 
+> Please use subject lines matching the style for the subsystem.  This
+> makes it easier for people to identify relevant patches.
+> 
+> > 1) Though ETDR and TX0~5 are not volatile but write-only registers,
+> >    they should not be cached either. According to the definition of
+> >    "volatile_reg", one should be put in the volatile list if it can
+> >    not be cached.
+> 
+> There's no problem with caching write only registers, having a cache
+> allows one to do read/modify/write cycles on them and can help with
+> debugging.  The original reason we had cache code in ASoC was for write
+> only devices.
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 9e9f409..3da6800 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -428,9 +428,10 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
- 		if (rx_pool->buff_size != be64_to_cpu(size_array[i])) {
- 			free_long_term_buff(adapter, &rx_pool->long_term_buff);
- 			rx_pool->buff_size = be64_to_cpu(size_array[i]);
--			alloc_long_term_buff(adapter, &rx_pool->long_term_buff,
--					     rx_pool->size *
--					     rx_pool->buff_size);
-+			rc = alloc_long_term_buff(adapter,
-+						  &rx_pool->long_term_buff,
-+						  rx_pool->size *
-+						  rx_pool->buff_size);
- 		} else {
- 			rc = reset_long_term_buff(adapter,
- 						  &rx_pool->long_term_buff);
-@@ -696,9 +697,9 @@ static int init_tx_pools(struct net_device *netdev)
- 			return rc;
- 		}
- 
--		init_one_tx_pool(netdev, &adapter->tso_pool[i],
--				 IBMVNIC_TSO_BUFS,
--				 IBMVNIC_TSO_BUF_SZ);
-+		rc = init_one_tx_pool(netdev, &adapter->tso_pool[i],
-+				      IBMVNIC_TSO_BUFS,
-+				      IBMVNIC_TSO_BUF_SZ);
- 		if (rc) {
- 			release_tx_pools(adapter);
- 			return rc;
--- 
-1.8.3.1
+Maybe because my paragraph doesn't state it clearly -- it's nothing
+wrong with regmap caching write-only registers; but it caching data
+registers would potentially cause dirty data or channel swap/shift.
+So the reason (1) here is "cannot cached" == "should be volatile".
 
+I will revise the commit message for review and fix the subject.
+
+Thank you
+Nicolin
