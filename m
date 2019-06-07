@@ -1,86 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43C938316
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 05:19:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Knns0LTVzDqHS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 13:19:45 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BC33833A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 05:59:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Kph26BTtzDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 13:59:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="AhmsPY6n"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Knlt0Js3zDqpJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 13:18:01 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x573Buwk187819
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Jun 2019 23:17:58 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2syfayh0hu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:17:58 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Fri, 7 Jun 2019 04:17:56 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 7 Jun 2019 04:17:54 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x573HrZP43909258
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jun 2019 03:17:53 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4505AA4051;
- Fri,  7 Jun 2019 03:17:53 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0BCFA404D;
- Fri,  7 Jun 2019 03:17:49 +0000 (GMT)
-Received: from [9.199.59.123] (unknown [9.199.59.123])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jun 2019 03:17:49 +0000 (GMT)
-Subject: Re: [PATCH] Powerpc/Watchpoint: Restore nvgprs while returning from
- exception
-To: Michael Neuling <mikey@neuling.org>, mpe@ellerman.id.au
-References: <20190606072951.32116-1-ravi.bangoria@linux.ibm.com>
- <80cfc8d7327d3bb744ea1f7e2843943a998d48de.camel@neuling.org>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Fri, 7 Jun 2019 08:47:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45KpfB6xnBzDqmC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 13:58:09 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id c5so275900pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 20:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YC0pFYA+cb67+XEqZ1TqteuvJbww8i3LiUiYW17QScI=;
+ b=AhmsPY6np1q+EG3W1DqnOuM68jaX8C/EPjdzaU2TBPLeg+Qs9x6ANedrFTK53ktASy
+ lX2OFt9rFE8HsDgsI0wrRPkaodovXX86oIUkHuOUAShN1txvhA7Fq+iYZU4jT6wtp3w1
+ MQgdSaTdnGDV3vE/9LkBCNJMWK+olvQUPhBtA4FdjI+sFMo+JylD7iNJkEux/TMMI2tZ
+ 7CMJGRpX6X/FLDMPASXbxn2FF0iHALaJhjoxzpbbP748GjXaj78NXuZFzTJS1w5q4WR0
+ Of6oiCv9+cQyjcSBPNI+Qujf5EvtjFebAqvmTbqKVrxwMf+Bx1DWhCmjYtFr+coP2z5/
+ +tLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YC0pFYA+cb67+XEqZ1TqteuvJbww8i3LiUiYW17QScI=;
+ b=P9GzP5xFz2ax1oqIrdmI2Rh1mtWFo5zGR2QIrDVh//z59CnKmBFgXe5q7Sqrurrz4Q
+ pqkslCYbwno/DKAstAmis/W7k9DN8Rpbb5NQtVsfO3y3oN2ThmYOW1te1Wh2LgHbsk3r
+ q9LJA+QOSUQUAMuidVUIAOllAcuWnT2EQurz0YVNJO+9SvrQGX/YKo0d6+GrQ73YPA/E
+ PXragntxWQmBnO7QLIYpb3/IUln3YxHaK9TZM0REEw4CD6wgsmylGJPNFkdmmngh7+oH
+ efH3gM5tiBIXxezgJYJceD/bOW99AimH8TCfk4EzLWqCKC9Pmps6oeqeym7OcTgkjHAt
+ bbLA==
+X-Gm-Message-State: APjAAAVtgR7ws5q2nxK3w2HYArh0O/UTd2HAdznsofiBiWWNCIuBOfOB
+ pqB0oE1o+CXVdoZHCF7oeEO2f7c4
+X-Google-Smtp-Source: APXvYqzB1cBHv4dAQKFkAn8V261tZVCTzOrR4OoaDoy/U/rvfS3RialLAYZNDY8IQB7/li7jeXiz0g==
+X-Received: by 2002:a17:902:a708:: with SMTP id
+ w8mr50968255plq.162.1559879886416; 
+ Thu, 06 Jun 2019 20:58:06 -0700 (PDT)
+Received: from bobo.local0.net (193-116-93-94.tpgi.com.au. [193.116.93.94])
+ by smtp.gmail.com with ESMTPSA id p63sm611660pfb.70.2019.06.06.20.58.03
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 06 Jun 2019 20:58:05 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/64s: Fix THP PMD collapse serialisation
+Date: Fri,  7 Jun 2019 13:56:35 +1000
+Message-Id: <20190607035636.5446-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <80cfc8d7327d3bb744ea1f7e2843943a998d48de.camel@neuling.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19060703-0020-0000-0000-00000347E8B6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060703-0021-0000-0000-0000219AFFBF
-Message-Id: <b6f6e2c7-f193-1721-de59-1e36127ceac1@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-07_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906070021
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,56 +77,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, paulus@samba.org, mahesh@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Commit 1b2443a547f9 ("powerpc/book3s64: Avoid multiple endian conversion
+in pte helpers") changed the actual bitwise tests in pte_access_permitted
+by using pte_write() and pte_present() helpers rather than raw bitwise
+testing _PAGE_WRITE and _PAGE_PRESENT bits.
 
+The pte_present change now returns true for ptes which are !_PAGE_PRESENT
+and _PAGE_INVALID, which is the combination used by pmdp_invalidate to
+synchronize access from lock-free lookups. pte_access_permitted is used by
+pmd_access_permitted, so allowing GUP lock free access to proceed with
+such PTEs breaks this synchronisation.
 
-On 6/7/19 6:20 AM, Michael Neuling wrote:
-> On Thu, 2019-06-06 at 12:59 +0530, Ravi Bangoria wrote:
->> Powerpc hw triggers watchpoint before executing the instruction.
->> To make trigger-after-execute behavior, kernel emulates the
->> instruction. If the instruction is 'load something into non-
->> volatile register', exception handler should restore emulated
->> register state while returning back, otherwise there will be
->> register state corruption. Ex, Adding a watchpoint on a list
->> can corrput the list:
->>
->>   # cat /proc/kallsyms | grep kthread_create_list
->>   c00000000121c8b8 d kthread_create_list
->>
->> Add watchpoint on kthread_create_list->next:
->>
->>   # perf record -e mem:0xc00000000121c8c0
->>
->> Run some workload such that new kthread gets invoked. Ex, I
->> just logged out from console:
->>
->>   list_add corruption. next->prev should be prev (c000000001214e00), \
->> 	but was c00000000121c8b8. (next=c00000000121c8b8).
->>   WARNING: CPU: 59 PID: 309 at lib/list_debug.c:25 __list_add_valid+0xb4/0xc0
->>   CPU: 59 PID: 309 Comm: kworker/59:0 Kdump: loaded Not tainted 5.1.0-rc7+ #69
->>   ...
->>   NIP __list_add_valid+0xb4/0xc0
->>   LR __list_add_valid+0xb0/0xc0
->>   Call Trace:
->>   __list_add_valid+0xb0/0xc0 (unreliable)
->>   __kthread_create_on_node+0xe0/0x260
->>   kthread_create_on_node+0x34/0x50
->>   create_worker+0xe8/0x260
->>   worker_thread+0x444/0x560
->>   kthread+0x160/0x1a0
->>   ret_from_kernel_thread+0x5c/0x70
->>
->> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> 
-> How long has this been around? Should we be CCing stable?
+This bug has been observed on HPT host, with random crashes and corruption
+in guests, usually together with bad PMD messages in the host.
 
-"bl .save_nvgprs" was added in the commit 5aae8a5370802 ("powerpc, hw_breakpoints:
-Implement hw_breakpoints for 64-bit server processors"), which was merged in
-v2.6.36.
+Fix this by adding an explicit check in pmd_access_permitted, and
+documenting the condition explicitly.
+
+The pte_write() change should be okay, and would prevent GUP from falling
+back to the slow path when encountering savedwrite ptes, which matches
+what x86 (that does not implement savedwrite) does.
+
+Fixes: 1b2443a547f9 ("powerpc/book3s64: Avoid multiple endian conversion in pte helpers")
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+
+I accounted for Aneesh's and Christophe's feedback, except I couldn't
+find a good way to replace the ifdef with IS_ENABLED because of
+_PAGE_INVALID etc., but at least cleaned that up a bit nicer.
+
+Patch 1 solves a problem I can hit quite reliably running HPT/HPT KVM.
+Patch 2 was noticed by Aneesh when inspecting code for similar bugs.
+They should probably both be merged in stable kernels after upstream.
+
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++++++++
+ arch/powerpc/mm/book3s64/pgtable.c           |  3 ++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 7dede2e34b70..ccf00a8b98c6 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -876,6 +876,23 @@ static inline int pmd_present(pmd_t pmd)
+ 	return false;
+ }
+ 
++static inline int pmd_is_serializing(pmd_t pmd)
++{
++	/*
++	 * If the pmd is undergoing a split, the _PAGE_PRESENT bit is clear
++	 * and _PAGE_INVALID is set (see pmd_present, pmdp_invalidate).
++	 *
++	 * This condition may also occur when flushing a pmd while flushing
++	 * it (see ptep_modify_prot_start), so callers must ensure this
++	 * case is fine as well.
++	 */
++	if ((pmd_raw(pmd) & cpu_to_be64(_PAGE_PRESENT | _PAGE_INVALID)) ==
++						cpu_to_be64(_PAGE_INVALID))
++		return true;
++
++	return false;
++}
++
+ static inline int pmd_bad(pmd_t pmd)
+ {
+ 	if (radix_enabled())
+@@ -1092,6 +1109,19 @@ static inline int pmd_protnone(pmd_t pmd)
+ #define pmd_access_permitted pmd_access_permitted
+ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
+ {
++	/*
++	 * pmdp_invalidate sets this combination (which is not caught by
++	 * !pte_present() check in pte_access_permitted), to prevent
++	 * lock-free lookups, as part of the serialize_against_pte_lookup()
++	 * synchronisation.
++	 *
++	 * This also catches the case where the PTE's hardware PRESENT bit is
++	 * cleared while TLB is flushed, which is suboptimal but should not
++	 * be frequent.
++	 */
++	if (pmd_is_serializing(pmd))
++		return false;
++
+ 	return pte_access_permitted(pmd_pte(pmd), write);
+ }
+ 
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 16bda049187a..ff98b663c83e 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -116,6 +116,9 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 	/*
+ 	 * This ensures that generic code that rely on IRQ disabling
+ 	 * to prevent a parallel THP split work as expected.
++	 *
++	 * Marking the entry with _PAGE_INVALID && ~_PAGE_PRESENT requires
++	 * a special case check in pmd_access_permitted.
+ 	 */
+ 	serialize_against_pte_lookup(vma->vm_mm);
+ 	return __pmd(old_pmd);
+-- 
+2.20.1
 
