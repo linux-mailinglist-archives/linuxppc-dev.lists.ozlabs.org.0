@@ -1,55 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD313843A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:17:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KslD4fD4zDqtG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:17:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1047F38445
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:22:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Ksrj4P9jzDqTd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:22:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Yf5qQ8Zb"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KsjX5p5wzDqs6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:16:15 +1000 (AEST)
-Received: by mail-ot1-f66.google.com with SMTP id b7so817671otl.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:16:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ksq040bwzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:21:00 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id h2so614346pgg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2019 23:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QljXkCsHOY3LQbq2OYSUJdATLBoEbRR4SOZXS+4kyck=;
+ b=Yf5qQ8ZbJ8lJzNp9lHbJ6rtzn58+mqGzW9MGq3k7vXquY85ygewnTQMk9YINtgd5+x
+ NWzQUHQ0psWsH+rM0S+fF5VrHTfkEt8oChS3hxQOCOeyTuhQUyZAlAAMeXmQIgnH772a
+ RbtNZPEwy5NaoTZW510x+2aIOTD202N9RUZu3x5TPkmCk0uGMIenwiR01oGhlunj7JMv
+ KoYJx4pkPQ1m6L/+rJer6yoGVkI8+iHIH7ckLgUvOtJzYu9s/79BcJQG6yi6HAOfi18Q
+ XfTuhBAe/bm5LdurmP+TIHYzJ+TixcxkfVsmfSgBpYlGMxlIfQw1Wnf4X082qouSnToT
+ uWgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=RZEyhVJci2O3YmynUPS3B0YvCUIErQDKFmVmynlEGRs=;
- b=jplV8ick3TAvGCcnaqA2cXvbplLA/XT67JB6paX/3Qgo2dfhwRUAx15D43Xb4g2FMM
- rUGV5VP5sUEGNy2cg0hfPM/0l6e5wYX9bO3wF7yawn5sQmokqbAMzzgDukmpE2N3DX1W
- 5iC7fAwrMUw9ISCzxY2DFuWOAk6VkpliiYtPCY8O5EEEcffqDVm/AcvAtL5YeZxrw+Qr
- RVcoZKi1JdLhAWIb/h72kBM7u/1YVgMGU2NGBwPEx53w1jNti+q2c8sH2MahZaHJ06jc
- yKcwCnVMRui4lN80K7+NjgaLZiV2bwLmfG29UJ8VTse04lulymffQzRmXl7+Dv6nTZ5R
- wjOQ==
-X-Gm-Message-State: APjAAAVzS2uL2t3S8t0yFGutobFt0GMpye2n3bJlOV43sIO+ITFCXVe+
- 3WOoVDytEeuIOx0wWSi/JKWakVAoWMqqnCfVaEw=
-X-Google-Smtp-Source: APXvYqyJf/wrYiT2xRYpT2aplvwECx5lcPUcu/SSLo1RSR7yNFZ7VeuIfWVdI0wOjGspIOH0eVoY6Tyw5pBJ85jiVAc=
-X-Received: by 2002:a9d:4109:: with SMTP id o9mr17588768ote.353.1559888172957; 
- Thu, 06 Jun 2019 23:16:12 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QljXkCsHOY3LQbq2OYSUJdATLBoEbRR4SOZXS+4kyck=;
+ b=CS2DFQq0aEsjASXM1Dk6+ErP5o7snGziiLCetXKm/Pvr7GToTV1GZls98YXs2szf5e
+ hfvWXzWRYMyhfgWqCT2McBRHb9oSWj/fgLSCbUa8MmRLU/Lay+MG4HebQdJU7qr83RAg
+ zpeTVfbVR+jKexZImgLoD5sLfCPQvRm/xuBFRaleMt4pvUhoEpK7dTWPX+m+kjO5M2u3
+ oz+voQX7FNRmUKdoVVppg4+bRyDjbPIL+LbFGiLHTOdVabOOW5qEHaLco2erjwGNvfbF
+ nCIWXdJTkDjz2t1UTo5JDv723cBlup9FBIdUEnjex3PDNxNyPKz/1CDAf8zhyNvIgJdN
+ +76w==
+X-Gm-Message-State: APjAAAUYxAURSqLjU2dmNaR+M9lVPXwhTV4vd+GKmBMOWtY4J8XwwyNO
+ w1r5bNupfCUo3VOny6rJn8htLArh
+X-Google-Smtp-Source: APXvYqyzHBpkj9D+bbqvHn0vlsfmqpcvUclCQl9FrcDiZvrNwt/qBMWKc1RI+ORheKPpht6lmJ3UKQ==
+X-Received: by 2002:aa7:8c4c:: with SMTP id e12mr47279018pfd.131.1559888457676; 
+ Thu, 06 Jun 2019 23:20:57 -0700 (PDT)
+Received: from bobo.local0.net ([202.125.30.143])
+ by smtp.gmail.com with ESMTPSA id w24sm1215748pga.90.2019.06.06.23.20.55
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 06 Jun 2019 23:20:56 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] powerpc/64s/radix: Enable HAVE_ARCH_HUGE_VMAP
+Date: Fri,  7 Jun 2019 16:19:21 +1000
+Message-Id: <20190607061922.20542-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <90d30adb0943a11ab127808c03229ba657478df4.1559566521.git.christophe.leroy@c-s.fr>
- <CA+7wUswvw3JJ2dLCn877tNbTd==O5c9LxHGezOm+y5otQZnS2w@mail.gmail.com>
-In-Reply-To: <CA+7wUswvw3JJ2dLCn877tNbTd==O5c9LxHGezOm+y5otQZnS2w@mail.gmail.com>
-From: Mathieu Malaterre <malat@debian.org>
-Date: Fri, 7 Jun 2019 08:16:01 +0200
-Message-ID: <CA+7wUsx+SfuFJRjm5vByL++7TMr+F3OE_ZT0rNKOf1dMzuJAHg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,93 +76,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Paul Mackerras <paulus@samba.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 5, 2019 at 1:32 PM Mathieu Malaterre <malat@debian.org> wrote:
->
-> On Mon, Jun 3, 2019 at 3:00 PM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
-> >
-> > When booting through OF, setup_disp_bat() does nothing because
-> > disp_BAT are not set. By change, it used to work because BOOTX
-> > buffer is mapped 1:1 at address 0x81000000 by the bootloader, and
-> > btext_setup_display() sets virt addr same as phys addr.
-> >
-> > But since commit 215b823707ce ("powerpc/32s: set up an early static
-> > hash table for KASAN."), a temporary page table overrides the
-> > bootloader mapping.
-> >
-> > This 0x81000000 is also problematic with the newly implemented
-> > Kernel Userspace Access Protection (KUAP) because it is within user
-> > address space.
-> >
-> > This patch fixes those issues by properly setting disp_BAT through
-> > a call to btext_prepare_BAT(), allowing setup_disp_bat() to
-> > properly setup BAT3 for early bootx screen buffer access.
-> >
-> > Reported-by: Mathieu Malaterre <malat@debian.org>
-> > Fixes: 215b823707ce ("powerpc/32s: set up an early static hash table for KASAN.")
-> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->
-> The patch below does fix the symptoms I reported. Tested with CONFIG_KASAN=n :
->
-> Tested-by: Mathieu Malaterre <malat@debian.org>
+This sets the HAVE_ARCH_HUGE_VMAP option, and defines the required
+page table functions.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=203699
+This will not enable huge iomaps, because powerpc/64 ioremap does not
+call ioremap_page_range. That is done in a later change.
 
->
-> Thanks !
->
-> > ---
-> >  arch/powerpc/include/asm/btext.h       | 4 ++++
-> >  arch/powerpc/kernel/prom_init.c        | 1 +
-> >  arch/powerpc/kernel/prom_init_check.sh | 2 +-
-> >  3 files changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/btext.h b/arch/powerpc/include/asm/btext.h
-> > index 3ffad030393c..461b0f193864 100644
-> > --- a/arch/powerpc/include/asm/btext.h
-> > +++ b/arch/powerpc/include/asm/btext.h
-> > @@ -13,7 +13,11 @@ extern void btext_update_display(unsigned long phys, int width, int height,
-> >                                  int depth, int pitch);
-> >  extern void btext_setup_display(int width, int height, int depth, int pitch,
-> >                                 unsigned long address);
-> > +#ifdef CONFIG_PPC32
-> >  extern void btext_prepare_BAT(void);
-> > +#else
-> > +static inline void btext_prepare_BAT(void) { }
-> > +#endif
-> >  extern void btext_map(void);
-> >  extern void btext_unmap(void);
-> >
-> > diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> > index 3555cad7bdde..ed446b7ea164 100644
-> > --- a/arch/powerpc/kernel/prom_init.c
-> > +++ b/arch/powerpc/kernel/prom_init.c
-> > @@ -2336,6 +2336,7 @@ static void __init prom_check_displays(void)
-> >                         prom_printf("W=%d H=%d LB=%d addr=0x%x\n",
-> >                                     width, height, pitch, addr);
-> >                         btext_setup_display(width, height, 8, pitch, addr);
-> > +                       btext_prepare_BAT();
-> >                 }
-> >  #endif /* CONFIG_PPC_EARLY_DEBUG_BOOTX */
-> >         }
-> > diff --git a/arch/powerpc/kernel/prom_init_check.sh b/arch/powerpc/kernel/prom_init_check.sh
-> > index 518d416971c1..160bef0d553d 100644
-> > --- a/arch/powerpc/kernel/prom_init_check.sh
-> > +++ b/arch/powerpc/kernel/prom_init_check.sh
-> > @@ -24,7 +24,7 @@ fi
-> >  WHITELIST="add_reloc_offset __bss_start __bss_stop copy_and_flush
-> >  _end enter_prom $MEM_FUNCS reloc_offset __secondary_hold
-> >  __secondary_hold_acknowledge __secondary_hold_spinloop __start
-> > -logo_linux_clut224
-> > +logo_linux_clut224 btext_prepare_BAT
-> >  reloc_got2 kernstart_addr memstart_addr linux_banner _stext
-> >  __prom_init_toc_start __prom_init_toc_end btext_setup_display TOC."
-> >
-> > --
-> > 2.13.3
-> >
+HAVE_ARCH_HUGE_VMAP facilities will be used to enable huge pages for
+vmalloc memory in a set of generic kernel changes. Combined, this
+improves cached `git diff` performance by about 5% on a 2-node POWER9
+with 32MB dentry cache hash, by allowing the dentry/inode hashes to
+be mapped with 2MB pages:
+
+  Profiling git diff dTLB misses with a vanilla kernel:
+
+  81.75%  git      [kernel.vmlinux]    [k] __d_lookup_rcu
+   7.21%  git      [kernel.vmlinux]    [k] strncpy_from_user
+   1.77%  git      [kernel.vmlinux]    [k] find_get_entry
+   1.59%  git      [kernel.vmlinux]    [k] kmem_cache_free
+
+            40,168      dTLB-miss
+       0.100342754 seconds time elapsed
+
+  With powerpc huge vmap and generic huge vmap vmalloc:
+
+             2,987      dTLB-miss
+       0.095933138 seconds time elapsed
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/Kconfig                     |  1 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 93 ++++++++++++++++++++++++
+ 2 files changed, 94 insertions(+)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..f0e5b38d52e8 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -167,6 +167,7 @@ config PPC
+ 	select GENERIC_STRNLEN_USER
+ 	select GENERIC_TIME_VSYSCALL
+ 	select HAVE_ARCH_AUDITSYSCALL
++	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_KASAN			if PPC32
+ 	select HAVE_ARCH_KGDB
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index c9bcf428dd2b..3bc9ade56277 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1122,3 +1122,96 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+ 
+ 	set_pte_at(mm, addr, ptep, pte);
+ }
++
++int __init arch_ioremap_pud_supported(void)
++{
++	return radix_enabled();
++}
++
++int __init arch_ioremap_pmd_supported(void)
++{
++	return radix_enabled();
++}
++
++int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
++{
++	return 0;
++}
++
++int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
++{
++	pte_t *ptep = (pte_t *)pud;
++	pte_t new_pud = pfn_pte(__phys_to_pfn(addr), prot);
++
++	set_pte_at(&init_mm, 0 /* radix unused */, ptep, new_pud);
++
++	return 1;
++}
++
++int pud_clear_huge(pud_t *pud)
++{
++	if (pud_huge(*pud)) {
++		pud_clear(pud);
++		return 1;
++	}
++
++	return 0;
++}
++
++int pud_free_pmd_page(pud_t *pud, unsigned long addr)
++{
++	pmd_t *pmd;
++	int i;
++
++	pmd = (pmd_t *)pud_page_vaddr(*pud);
++	pud_clear(pud);
++
++	flush_tlb_kernel_range(addr, addr + PUD_SIZE);
++
++	for (i = 0; i < PTRS_PER_PMD; i++) {
++		if (!pmd_none(pmd[i])) {
++			pte_t *pte;
++			pte = (pte_t *)pmd_page_vaddr(pmd[i]);
++
++			pte_free_kernel(&init_mm, pte);
++		}
++	}
++
++	pmd_free(&init_mm, pmd);
++
++	return 1;
++}
++
++int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
++{
++	pte_t *ptep = (pte_t *)pmd;
++	pte_t new_pmd = pfn_pte(__phys_to_pfn(addr), prot);
++
++	set_pte_at(&init_mm, 0 /* radix unused */, ptep, new_pmd);
++
++	return 1;
++}
++
++int pmd_clear_huge(pmd_t *pmd)
++{
++	if (pmd_huge(*pmd)) {
++		pmd_clear(pmd);
++		return 1;
++	}
++
++	return 0;
++}
++
++int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
++{
++	pte_t *pte;
++
++	pte = (pte_t *)pmd_page_vaddr(*pmd);
++	pmd_clear(pmd);
++
++	flush_tlb_kernel_range(addr, addr + PMD_SIZE);
++
++	pte_free_kernel(&init_mm, pte);
++
++	return 1;
++}
+-- 
+2.20.1
+
