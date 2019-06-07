@@ -1,85 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B023849B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:52:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45KtVx2NPnzDqv8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:52:09 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254B9384A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 08:58:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45KtfK39RBzDqr5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 16:58:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="wCaGEw9e"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45KtPw5drfzDqwl
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:47:48 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x576lVra126880
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 7 Jun 2019 02:47:46 -0400
-Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2syh77vfg7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2019 02:47:46 -0400
-Received: from localhost
- by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Fri, 7 Jun 2019 07:47:45 +0100
-Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
- by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 7 Jun 2019 07:47:41 +0100
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x576le5c19202352
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jun 2019 06:47:40 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6EB8B2064;
- Fri,  7 Jun 2019 06:47:40 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4726EB2067;
- Fri,  7 Jun 2019 06:47:39 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.124.35.207])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jun 2019 06:47:39 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH] =?UTF-8?q?mm/nvdimm:=20Fix=20endian=20conversion=20issues?=
- =?UTF-8?q?=C2=A0?=
-Date: Fri,  7 Jun 2019 12:17:32 +0530
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Ktcc40PWzDqhn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2019 16:57:03 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45KtcT21D4z9v0N1;
+ Fri,  7 Jun 2019 08:56:57 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=wCaGEw9e; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id A-GiD1E03wRz; Fri,  7 Jun 2019 08:56:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45KtcT0s81z9v0N0;
+ Fri,  7 Jun 2019 08:56:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1559890617; bh=rT2KYJLpEW56BJH8AO09xSF37HrkE6VvVKe3nohmyDo=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=wCaGEw9ewG+laqvE9GkVsbqSFGW0Sp0xPRSo+RMueeQaMdVDoHU/S8gMVyISuFk6s
+ ONc9j90Spga9/8AUpxido37Hyei8rTYLUDTOhG4b1zzq2ZG55xMP9BjR2zIH0Ee9gg
+ 0WLo2cbnb+4y5KGzOSrN7h+N6zdXYjTFueabdxjs=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1C6958B83A;
+ Fri,  7 Jun 2019 08:56:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id z1rrrPhV_zWW; Fri,  7 Jun 2019 08:56:58 +0200 (CEST)
+Received: from PO15451 (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E692A8B75A;
+ Fri,  7 Jun 2019 08:56:57 +0200 (CEST)
+Subject: Re: [PATCH 2/2] powerpc/64s/radix: ioremap use huge page mappings
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190607061922.20542-1-npiggin@gmail.com>
+ <20190607061922.20542-2-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <f842646a-c9a1-61a8-9c2b-befb4d6313fa@c-s.fr>
+Date: Fri, 7 Jun 2019 08:56:57 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20190607061922.20542-2-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19060706-0052-0000-0000-000003CCAA7E
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011227; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01214407; UDB=6.00638362; IPR=6.00995493; 
- MB=3.00027216; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-07 06:47:43
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060706-0053-0000-0000-00006138181D
-Message-Id: <20190607064732.30384-1-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-07_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906070048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,74 +78,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-nd_label->dpa issue was observed when trying to enable the namespace created
-with little-endian kernel on a big-endian kernel. That made me run
-`sparse` on the rest of the code and other changes are the result of that.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- drivers/nvdimm/btt.c            | 8 ++++----
- drivers/nvdimm/namespace_devs.c | 7 ++++---
- 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-index 4671776f5623..4ac0f5dde467 100644
---- a/drivers/nvdimm/btt.c
-+++ b/drivers/nvdimm/btt.c
-@@ -400,9 +400,9 @@ static int btt_flog_write(struct arena_info *arena, u32 lane, u32 sub,
- 	arena->freelist[lane].sub = 1 - arena->freelist[lane].sub;
- 	if (++(arena->freelist[lane].seq) == 4)
- 		arena->freelist[lane].seq = 1;
--	if (ent_e_flag(ent->old_map))
-+	if (ent_e_flag(le32_to_cpu(ent->old_map)))
- 		arena->freelist[lane].has_err = 1;
--	arena->freelist[lane].block = le32_to_cpu(ent_lba(ent->old_map));
-+	arena->freelist[lane].block = ent_lba(le32_to_cpu(ent->old_map));
- 
- 	return ret;
- }
-@@ -568,8 +568,8 @@ static int btt_freelist_init(struct arena_info *arena)
- 		 * FIXME: if error clearing fails during init, we want to make
- 		 * the BTT read-only
- 		 */
--		if (ent_e_flag(log_new.old_map) &&
--				!ent_normal(log_new.old_map)) {
-+		if (ent_e_flag(le32_to_cpu(log_new.old_map)) &&
-+		    !ent_normal(le32_to_cpu(log_new.old_map))) {
- 			arena->freelist[i].has_err = 1;
- 			ret = arena_clear_freelist_error(arena, i);
- 			if (ret)
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index c4c5a191b1d6..500c37db496a 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -1995,7 +1995,7 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
- 		nd_mapping = &nd_region->mapping[i];
- 		label_ent = list_first_entry_or_null(&nd_mapping->labels,
- 				typeof(*label_ent), list);
--		label0 = label_ent ? label_ent->label : 0;
-+		label0 = label_ent ? label_ent->label : NULL;
- 
- 		if (!label0) {
- 			WARN_ON(1);
-@@ -2330,8 +2330,9 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 			continue;
- 
- 		/* skip labels that describe extents outside of the region */
--		if (nd_label->dpa < nd_mapping->start || nd_label->dpa > map_end)
--			continue;
-+		if (__le64_to_cpu(nd_label->dpa) < nd_mapping->start ||
-+		    __le64_to_cpu(nd_label->dpa) > map_end)
-+				continue;
- 
- 		i = add_namespace_resource(nd_region, nd_label, devs, count);
- 		if (i < 0)
--- 
-2.21.0
+Le 07/06/2019 à 08:19, Nicholas Piggin a écrit :
+> powerpc/64s does not use ioremap_page_range, so it does not get huge
+> vmap iomap mappings automatically. The radix kernel mapping function
+> already allows larger page mappings that work with huge vmap, so wire
+> that up to allow huge pages to be used for ioremap mappings.
 
+Argh ... I was on the way to merge pgtable_64.c and pgtable_32.c. This 
+will complicate the task ... Anyway this looks a good improvment.
+
+Any reason to limit that to Radix ?
+
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/include/asm/book3s/64/pgtable.h |  8 +++
+>   arch/powerpc/mm/pgtable_64.c                 | 58 ++++++++++++++++++--
+>   include/linux/io.h                           |  1 +
+>   lib/ioremap.c                                |  2 +-
+>   4 files changed, 62 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index ccf00a8b98c6..d7a4f2d80598 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -274,6 +274,14 @@ extern unsigned long __vmalloc_end;
+>   #define VMALLOC_START	__vmalloc_start
+>   #define VMALLOC_END	__vmalloc_end
+>   
+> +static inline unsigned int ioremap_max_order(void)
+> +{
+> +	if (radix_enabled())
+> +		return PUD_SHIFT;
+> +	return 7 + PAGE_SHIFT; /* default from linux/vmalloc.h */
+> +}
+> +#define IOREMAP_MAX_ORDER ({ ioremap_max_order();})
+
+Following form doesn't work ?
+
+#define IOREMAP_MAX_ORDER	ioremap_max_order()
+
+> +
+>   extern unsigned long __kernel_virt_start;
+>   extern unsigned long __kernel_virt_size;
+>   extern unsigned long __kernel_io_start;
+> diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
+> index d2d976ff8a0e..cf02b67eee55 100644
+> --- a/arch/powerpc/mm/pgtable_64.c
+> +++ b/arch/powerpc/mm/pgtable_64.c
+> @@ -112,7 +112,7 @@ unsigned long ioremap_bot = IOREMAP_BASE;
+>    * __ioremap_at - Low level function to establish the page tables
+>    *                for an IO mapping
+>    */
+> -void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
+> +static void __iomem * hash__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
+
+Is this the correct name ?
+
+As far as I understand, this function will be used by nohash/64, looks 
+strange to call hash__something() a function used by nohash platforms.
+
+>   {
+>   	unsigned long i;
+>   
+> @@ -120,6 +120,54 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
+>   	if (pgprot_val(prot) & H_PAGE_4K_PFN)
+>   		return NULL;
+>   
+> +	for (i = 0; i < size; i += PAGE_SIZE)
+> +		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
+> +			return NULL;
+> +
+> +	return (void __iomem *)ea;
+> +}
+> +
+> +static int radix__ioremap_page_range(unsigned long addr, unsigned long end,
+> +		       phys_addr_t phys_addr, pgprot_t prot)
+> +{
+> +	while (addr != end) {
+> +		if (unlikely(ioremap_huge_disabled))
+> +			goto use_small_page;
+
+I don't like too much a goto in the middle of an if/else set inside a loop.
+
+Couldn't we have two while() loops, one for the !ioremap_huge_disabled() 
+and one for the ioremap_huge_disabled() case ? It would duplicate some 
+code but that's only 3 small lines.
+
+Or, when ioremap_huge_disabled(), couldn't it just fallback to the 
+hash__ioremap_at() function ?
+
+> +
+> +		if (!(addr & ~PUD_MASK) && !(phys_addr & ~PUD_MASK) &&
+> +				end - addr >= PUD_SIZE) {
+> +			if (radix__map_kernel_page(addr, phys_addr, prot, PUD_SIZE))
+> +				return -ENOMEM;
+> +			addr += PUD_SIZE;
+> +			phys_addr += PUD_SIZE;
+> +
+> +		} else if (!(addr & ~PMD_MASK) && !(phys_addr & ~PMD_MASK) &&
+> +				end - addr >= PMD_SIZE) {
+> +			if (radix__map_kernel_page(addr, phys_addr, prot, PMD_SIZE))
+> +				return -ENOMEM;
+> +			addr += PMD_SIZE;
+> +			phys_addr += PMD_SIZE;
+> +
+> +		} else {
+> +use_small_page:
+> +			if (radix__map_kernel_page(addr, phys_addr, prot, PAGE_SIZE))
+> +				return -ENOMEM;
+> +			addr += PAGE_SIZE;
+> +			phys_addr += PAGE_SIZE;
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+> +static void __iomem * radix__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
+> +{
+> +	if (radix__ioremap_page_range((unsigned long)ea, (unsigned long)ea + size, pa, prot))
+> +		return NULL;
+> +	return ea;
+> +}
+> +
+> +void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_t prot)
+> +{
+>   	if ((ea + size) >= (void *)IOREMAP_END) {
+>   		pr_warn("Outside the supported range\n");
+>   		return NULL;
+> @@ -129,11 +177,9 @@ void __iomem *__ioremap_at(phys_addr_t pa, void *ea, unsigned long size, pgprot_
+>   	WARN_ON(((unsigned long)ea) & ~PAGE_MASK);
+>   	WARN_ON(size & ~PAGE_MASK);
+>   
+> -	for (i = 0; i < size; i += PAGE_SIZE)
+> -		if (map_kernel_page((unsigned long)ea + i, pa + i, prot))
+> -			return NULL;
+> -
+> -	return (void __iomem *)ea;
+> +	if (radix_enabled())
+
+What about  if (radix_enabled() && !ioremap_huge_disabled())  instead ?
+
+> +		return radix__ioremap_at(pa, ea, size, prot);
+> +	return hash__ioremap_at(pa, ea, size, prot);
+
+Can't we just leave the no radix stuff here instead of making that 
+hash__ioremap_at() function ?
+
+Christophe
+
+
+>   }
+>   
+>   /**
+> diff --git a/include/linux/io.h b/include/linux/io.h
+> index 32e30e8fb9db..423c4294aaa3 100644
+> --- a/include/linux/io.h
+> +++ b/include/linux/io.h
+> @@ -44,6 +44,7 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
+>   #endif
+>   
+>   #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +extern int ioremap_huge_disabled;
+>   void __init ioremap_huge_init(void);
+>   int arch_ioremap_pud_supported(void);
+>   int arch_ioremap_pmd_supported(void);
+> diff --git a/lib/ioremap.c b/lib/ioremap.c
+> index 063213685563..386ff956755f 100644
+> --- a/lib/ioremap.c
+> +++ b/lib/ioremap.c
+> @@ -18,7 +18,7 @@
+>   static int __read_mostly ioremap_p4d_capable;
+>   static int __read_mostly ioremap_pud_capable;
+>   static int __read_mostly ioremap_pmd_capable;
+> -static int __read_mostly ioremap_huge_disabled;
+> +int __read_mostly ioremap_huge_disabled;
+>   
+>   static int __init set_nohugeiomap(char *str)
+>   {
+> 
