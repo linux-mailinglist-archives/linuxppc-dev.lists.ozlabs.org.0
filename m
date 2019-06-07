@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE813950F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 20:58:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45LBcP1yL3zDqt0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 04:57:57 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3AC3951A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2019 20:59:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LBfg3SGbzDqFB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 04:59:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -17,37 +17,37 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="aNhl8dac"; dkim-atps=neutral
+ header.b="Y15WIe1h"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LBXt3h0rzDqsb
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 04:54:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LBY35HhzzDqsb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 04:55:03 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2J2gC9Vs88UenWpiQZnFm6PaAxca9INOF19LE67/S2I=; b=aNhl8dacQHaQT8ZWBlETCijC8Y
- lg1YPVn8DDjHbLyWw+r8yZBYDGye95GZmFRXwYSibTcBF0fZOmeKblvMuYhGxXBEZ2yshGFyeC5rg
- AcMvZuiJ1NryVFqZCchbDpGTq8Y/o9os+EZkOTbizFgqvG1JG+yW2Jzyjkn9ZsXOR66jrsDiO0W7b
- huDodtsOQYzZhbYLFDi6k4PhhzQU+g43uhYWXZqj0C46A5hVQ6ddU4OGu6+cXuG2g2S1bfTm9BApU
- qNe8G1pW4/N1nG2SDTivv0NafqWQ5dR2qYUQtARfji3bYp8K931C+ZTlCho5lklVmvXebTm4T3keb
- R8eBrTmg==;
+ bh=9BFa2w9dMfs23jOauwpVzpiJfCyUvRSxJugmmRhg1+Y=; b=Y15WIe1h7RPtXfVg22IaFG2tXE
+ jj21RoR5ji9hW/5iHiNsUij9LVME21L0rqVFtBCDMlpjSRfhysh/yuHiSOyw4pueOTm4CLPYm2Jqz
+ 7zNqjECImbRU6kQQb0vgexgHrsc//KTxsEdJgN/PnScnipxBPkVKNL0DfIBSl5IjWEUU4/pN1aHkp
+ IQ6M3/cSEYcvDAviucCr3n7cKcQp+HQrHtPU4DdqvAWQ0iU+4CJAP48DAuSF8fweXu6SA0pkQTO9X
+ kaZsKnt9RvfnmKZewOVk9HvV+hY407Ql4vOSl/TzV+uc1EkVTECFepaldWMDUX68NBWWtpGdvH42L
+ tfdlZLnA==;
 Received: from [179.181.119.115] (helo=bombadil.infradead.org)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hZK0d-0005sm-Nx; Fri, 07 Jun 2019 18:54:39 +0000
+ id 1hZK0d-0005sn-O1; Fri, 07 Jun 2019 18:54:39 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
  (envelope-from <mchehab@bombadil.infradead.org>)
- id 1hZK0b-0007Em-BH; Fri, 07 Jun 2019 15:54:37 -0300
+ id 1hZK0b-0007FS-J9; Fri, 07 Jun 2019 15:54:37 -0300
 From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH v3 06/20] docs: mark orphan documents as such
-Date: Fri,  7 Jun 2019 15:54:22 -0300
-Message-Id: <0bea1c7c4fc06c7edabbf3185c0cbbc6e85eafd0.1559933665.git.mchehab+samsung@kernel.org>
+Subject: [PATCH v3 15/20] docs: move protection-keys.rst to the core-api book
+Date: Fri,  7 Jun 2019 15:54:31 -0300
+Message-Id: <4948a096397bb86cebf489b8ac4f623797257fe7.1559933665.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
 References: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
@@ -64,173 +64,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+Cc: linuxppc-dev@lists.ozlabs.org, Jonathan Corbet <corbet@lwn.net>,
+ x86@kernel.org, linux-kernel@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, linux-kselftest@vger.kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,
  Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- linux-stm32@st-md-mailman.stormreply.com,
- Alexandre Torgue <alexandre.torgue@st.com>, Jonathan Corbet <corbet@lwn.net>,
- David Airlie <airlied@linux.ie>, Andrew Donnellan <ajd@linux.ibm.com>,
- linux-pm@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Matan Ziv-Av <matan@svgalib.org>,
- Mauro Carvalho Chehab <mchehab@infradead.org>, Daniel Vetter <daniel@ffwll.ch>,
- Sean Paul <sean@poorly.run>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Georgi Djakov <georgi.djakov@linaro.org>
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sphinx doesn't like orphan documents:
+This document is used by multiple architectures:
 
-    Documentation/accelerators/ocxl.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/overview.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/stm32f429-overview.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/stm32f746-overview.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/stm32f769-overview.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/stm32h743-overview.rst: WARNING: document isn't included in any toctree
-    Documentation/arm/stm32/stm32mp157-overview.rst: WARNING: document isn't included in any toctree
-    Documentation/gpu/msm-crash-dump.rst: WARNING: document isn't included in any toctree
-    Documentation/interconnect/interconnect.rst: WARNING: document isn't included in any toctree
-    Documentation/laptops/lg-laptop.rst: WARNING: document isn't included in any toctree
-    Documentation/powerpc/isa-versions.rst: WARNING: document isn't included in any toctree
-    Documentation/virtual/kvm/amd-memory-encryption.rst: WARNING: document isn't included in any toctree
-    Documentation/virtual/kvm/vcpu-requests.rst: WARNING: document isn't included in any toctree
+	$ echo $(git grep -l  pkey_mprotect arch|cut -d'/' -f 2|sort|uniq)
+	alpha arm arm64 ia64 m68k microblaze mips parisc powerpc s390 sh sparc x86 xtensa
 
-So, while they aren't on any toctree, add :orphan: to them, in order
-to silent this warning.
+So, let's move it to the core book and adjust the links to it
+accordingly.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
- Documentation/accelerators/ocxl.rst             | 2 ++
- Documentation/arm/stm32/overview.rst            | 2 ++
- Documentation/arm/stm32/stm32f429-overview.rst  | 2 ++
- Documentation/arm/stm32/stm32f746-overview.rst  | 2 ++
- Documentation/arm/stm32/stm32f769-overview.rst  | 2 ++
- Documentation/arm/stm32/stm32h743-overview.rst  | 2 ++
- Documentation/arm/stm32/stm32mp157-overview.rst | 2 ++
- Documentation/gpu/msm-crash-dump.rst            | 2 ++
- Documentation/interconnect/interconnect.rst     | 2 ++
- Documentation/laptops/lg-laptop.rst             | 2 ++
- Documentation/powerpc/isa-versions.rst          | 2 ++
- 11 files changed, 22 insertions(+)
+ Documentation/core-api/index.rst                    | 1 +
+ Documentation/{x86 => core-api}/protection-keys.rst | 0
+ Documentation/x86/index.rst                         | 1 -
+ arch/powerpc/Kconfig                                | 2 +-
+ arch/x86/Kconfig                                    | 2 +-
+ tools/testing/selftests/x86/protection_keys.c       | 2 +-
+ 6 files changed, 4 insertions(+), 4 deletions(-)
+ rename Documentation/{x86 => core-api}/protection-keys.rst (100%)
 
-diff --git a/Documentation/accelerators/ocxl.rst b/Documentation/accelerators/ocxl.rst
-index 14cefc020e2d..b1cea19a90f5 100644
---- a/Documentation/accelerators/ocxl.rst
-+++ b/Documentation/accelerators/ocxl.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- ========================================================
- OpenCAPI (Open Coherent Accelerator Processor Interface)
- ========================================================
-diff --git a/Documentation/arm/stm32/overview.rst b/Documentation/arm/stm32/overview.rst
-index 85cfc8410798..f7e734153860 100644
---- a/Documentation/arm/stm32/overview.rst
-+++ b/Documentation/arm/stm32/overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- ========================
- STM32 ARM Linux Overview
- ========================
-diff --git a/Documentation/arm/stm32/stm32f429-overview.rst b/Documentation/arm/stm32/stm32f429-overview.rst
-index 18feda97f483..65bbb1c3b423 100644
---- a/Documentation/arm/stm32/stm32f429-overview.rst
-+++ b/Documentation/arm/stm32/stm32f429-overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- STM32F429 Overview
- ==================
+diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+index ee1bb8983a88..2466a4c51031 100644
+--- a/Documentation/core-api/index.rst
++++ b/Documentation/core-api/index.rst
+@@ -34,6 +34,7 @@ Core utilities
+    timekeeping
+    boot-time-mm
+    memory-hotplug
++   protection-keys
  
-diff --git a/Documentation/arm/stm32/stm32f746-overview.rst b/Documentation/arm/stm32/stm32f746-overview.rst
-index b5f4b6ce7656..42d593085015 100644
---- a/Documentation/arm/stm32/stm32f746-overview.rst
-+++ b/Documentation/arm/stm32/stm32f746-overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- STM32F746 Overview
- ==================
  
-diff --git a/Documentation/arm/stm32/stm32f769-overview.rst b/Documentation/arm/stm32/stm32f769-overview.rst
-index 228656ced2fe..f6adac862b17 100644
---- a/Documentation/arm/stm32/stm32f769-overview.rst
-+++ b/Documentation/arm/stm32/stm32f769-overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- STM32F769 Overview
- ==================
+ Interfaces for kernel debugging
+diff --git a/Documentation/x86/protection-keys.rst b/Documentation/core-api/protection-keys.rst
+similarity index 100%
+rename from Documentation/x86/protection-keys.rst
+rename to Documentation/core-api/protection-keys.rst
+diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
+index ae36fc5fc649..f2de1b2d3ac7 100644
+--- a/Documentation/x86/index.rst
++++ b/Documentation/x86/index.rst
+@@ -19,7 +19,6 @@ x86-specific Documentation
+    tlb
+    mtrr
+    pat
+-   protection-keys
+    intel_mpx
+    amd-memory-encryption
+    pti
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..3b795a0cab62 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -898,7 +898,7 @@ config PPC_MEM_KEYS
+ 	  page-based protections, but without requiring modification of the
+ 	  page tables when an application changes protection domains.
  
-diff --git a/Documentation/arm/stm32/stm32h743-overview.rst b/Documentation/arm/stm32/stm32h743-overview.rst
-index 3458dc00095d..c525835e7473 100644
---- a/Documentation/arm/stm32/stm32h743-overview.rst
-+++ b/Documentation/arm/stm32/stm32h743-overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- STM32H743 Overview
- ==================
+-	  For details, see Documentation/vm/protection-keys.rst
++	  For details, see Documentation/core-api/protection-keys.rst
  
-diff --git a/Documentation/arm/stm32/stm32mp157-overview.rst b/Documentation/arm/stm32/stm32mp157-overview.rst
-index 62e176d47ca7..2c52cd020601 100644
---- a/Documentation/arm/stm32/stm32mp157-overview.rst
-+++ b/Documentation/arm/stm32/stm32mp157-overview.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- STM32MP157 Overview
- ===================
+ 	  If unsure, say y.
  
-diff --git a/Documentation/gpu/msm-crash-dump.rst b/Documentation/gpu/msm-crash-dump.rst
-index 757cd257e0d8..240ef200f76c 100644
---- a/Documentation/gpu/msm-crash-dump.rst
-+++ b/Documentation/gpu/msm-crash-dump.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- =====================
- MSM Crash Dump Format
- =====================
-diff --git a/Documentation/interconnect/interconnect.rst b/Documentation/interconnect/interconnect.rst
-index c3e004893796..56e331dab70e 100644
---- a/Documentation/interconnect/interconnect.rst
-+++ b/Documentation/interconnect/interconnect.rst
-@@ -1,5 +1,7 @@
- .. SPDX-License-Identifier: GPL-2.0
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2bbbd4d1ba31..d87d53fcd261 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1911,7 +1911,7 @@ config X86_INTEL_MEMORY_PROTECTION_KEYS
+ 	  page-based protections, but without requiring modification of the
+ 	  page tables when an application changes protection domains.
  
-+:orphan:
-+
- =====================================
- GENERIC SYSTEM INTERCONNECT SUBSYSTEM
- =====================================
-diff --git a/Documentation/laptops/lg-laptop.rst b/Documentation/laptops/lg-laptop.rst
-index aa503ee9b3bc..f2c2ffe31101 100644
---- a/Documentation/laptops/lg-laptop.rst
-+++ b/Documentation/laptops/lg-laptop.rst
-@@ -1,5 +1,7 @@
- .. SPDX-License-Identifier: GPL-2.0+
+-	  For details, see Documentation/x86/protection-keys.txt
++	  For details, see Documentation/core-api/protection-keys.rst
  
-+:orphan:
-+
- LG Gram laptop extra features
- =============================
+ 	  If unsure, say y.
  
-diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/powerpc/isa-versions.rst
-index 812e20cc898c..66c24140ebf1 100644
---- a/Documentation/powerpc/isa-versions.rst
-+++ b/Documentation/powerpc/isa-versions.rst
-@@ -1,3 +1,5 @@
-+:orphan:
-+
- CPU to ISA Version Mapping
- ==========================
- 
+diff --git a/tools/testing/selftests/x86/protection_keys.c b/tools/testing/selftests/x86/protection_keys.c
+index 5d546dcdbc80..480995bceefa 100644
+--- a/tools/testing/selftests/x86/protection_keys.c
++++ b/tools/testing/selftests/x86/protection_keys.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Tests x86 Memory Protection Keys (see Documentation/x86/protection-keys.txt)
++ * Tests x86 Memory Protection Keys (see Documentation/core-api/protection-keys.rst)
+  *
+  * There are examples in here of:
+  *  * how to set protection keys on memory
 -- 
 2.21.0
 
