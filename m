@@ -2,69 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA0F3A0CA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 18:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 700923A23A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 23:54:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Llp218fYzDqwv
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jun 2019 02:53:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LtT75zHCzDqxs
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jun 2019 07:54:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
- envelope-from=tom.leiming@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="UHjKKPz1"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="tzvISmEO"; 
  dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LlmG2nBvzDqdh
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jun 2019 02:51:37 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id n4so5124890wrs.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Jun 2019 09:51:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LtRM1XmRzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jun 2019 07:52:29 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id d17so5077572oth.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Jun 2019 14:52:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=gR4IOaCCUTGvBaZhfnsBw7K29W8etkz1Veuscov6zNA=;
- b=UHjKKPz15vYhk+MgoG9uVx4fK1yxijnZCNRu6yIdLp9RluyynJHwDpOu21+vJzcAZN
- cpVWmxxo96r1H/xTIKiSgtEpDH7cUWuWgEykWij/Kirkrk6PL5l8nKxOCu4rsdC4VItv
- BLQ/9Qkoco8MZwsL78R+R/9TBT/cFYGNAt8pi9/XrvlIXgyjvLgNlYB0E+aDd0crD5dv
- fPdNDqK0EGGBqI7mGmY46jsr1w238NJglg6JZuUrXhwSuFW/tblEcuIpvR4p1GI0YOFR
- nRWclfFPiPJJD1DKoFNoxAM7tG3m95AuNk+cVYxJm3rBEDANJotjx0KEaAhPtW4Vm2y/
- C2Iw==
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=DP0Ajt421DWmwrwPNPAX2Snzk01exwZi53pmjm8wyCc=;
+ b=tzvISmEOqHqBLXuy40FjHOzFqJ26diODbTZR6+DZIDlO4cEPiRGFRwVsaPPccWWb22
+ Dt+krxD8IbMjPpv3jL/u3t8j+Dcz2FJgHolsWR3RfVDBaeJ4Dd+khyn4YnBPbiV3JdQe
+ F5L9RodSkDYunEDFhRlGXD/9A3AfKLbtfGu7JuHE96q+hfY9t155d6Bs8r9iCgbgRvpW
+ mHQyL60NAtW+cecdreCwYb87VHDMKZtOjEUUSPH92V7yhWG3c74nzSUzNVq2mhU8Di0S
+ N71xiKfzyWnDhAcOhvIKqi5vVooZcBQgjgOooEIDBGJMLqkXUE3u0PhUyqzVfgVflP+J
+ +tXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=gR4IOaCCUTGvBaZhfnsBw7K29W8etkz1Veuscov6zNA=;
- b=c4HHLkXhkod56y/T+B2J47/IBPjuDgJTg9yQUeKUrUXC+SwnSeEeMYAnPoE+uGMVqu
- baHjz3RD+2HuL2iHu0Nha70kJi/omgr82gV3cRbqrQOucqruBneC1ILCzc5OXhLyPopT
- iHMxICDkPXESVStvuNEMpS01DW/6ZX1C3XksCt0AKJt5RXYflTE81JcOHugfzBhfGr2h
- luOJ3p8SM6bPgHSRZRQG/ruSmnJH4J8b6919l3iCGSpUz5IYxuG8JwfQpGiWsyilfaLF
- q6O+OErRUrGO/eYXduXjCBU8kLY/ZhQVx2l+ySaoSocqSgR+y4Fuf7uc11bWop9eejhz
- gsVg==
-X-Gm-Message-State: APjAAAWa1qu1QCvOeqJQkc9h+AIDO+YDtTLxrp+gWRDQ19p2tRADLuLl
- IiYau+4KSpTb7IbJvm3TYskbPtKZtkG36JAiQoQ=
-X-Google-Smtp-Source: APXvYqyW1YAlHxl5jkTyIcVuWsUg5I6pHPOlF0d5SX+3EM96SZi5nAuY5I1ng/URaIR2wG9ZaKlQHAS9xDFWTweJltc=
-X-Received: by 2002:adf:fbc2:: with SMTP id d2mr12050109wrs.334.1560012692846; 
- Sat, 08 Jun 2019 09:51:32 -0700 (PDT)
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=DP0Ajt421DWmwrwPNPAX2Snzk01exwZi53pmjm8wyCc=;
+ b=truTvo/49/BOT8oibg2IsWyKkvRY8JU8yIlIxIt46cGGwgmUjaRWNDkfs47c/hCLbJ
+ az4y8jbDeY9R/gWdPN0pqYoh8upIgfPyQQ9BgmOvJcSUUhozvVfNfZEn3/bxnFwdMLG2
+ WH3CWbLMoM/cnbe3KPme50Qp7fK3/0nY4Cwm9F74YTU/YALNHwOXg/kwkysK5W2L7s1Q
+ zFubDx+OZ8aSVYElAEwBWVBXJIhE42/wnGKXOMdVr+ah59QZusi3U02ujy/csdcfWvIw
+ iowMwlg3y9bjmUpkuf+XhNqbBd6B3nJHqIGTbhusRsSzn7tnjKNm/NZ3cjjCF2yNr1/P
+ Bl8w==
+X-Gm-Message-State: APjAAAW5njPyiaFN6Hh3DKD7flN291NvuPIR1vA4dkHtlUavN7C4TmL+
+ f4N0eKZbL29hdQcrFJm/LYPTq8kQ
+X-Google-Smtp-Source: APXvYqylrHE1LwideVdmvtrEqXgf6WG98D9rmgXo7hve9bgy8IQFtIcM/FU4/1dkGLypNJ6zscThgQ==
+X-Received: by 2002:a05:6830:1558:: with SMTP id
+ l24mr18682545otp.352.1560030746626; 
+ Sat, 08 Jun 2019 14:52:26 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id c204sm2472908oih.19.2019.06.08.14.52.25
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Sat, 08 Jun 2019 14:52:25 -0700 (PDT)
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+To: Christoph Hellwig <hch@lst.de>
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+ <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
+ <20190607172902.GA8183@lst.de>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
+Date: Sat, 8 Jun 2019 16:52:24 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <20190423054131.GB31496@umbus.fritz.box>
- <20190425061958.GA7881@lst.de>
- <20190426010517.GA7378@umbus.fritz.box>
- <20190426035643.GB7378@umbus.fritz.box>
-In-Reply-To: <20190426035643.GB7378@umbus.fritz.box>
-From: Ming Lei <tom.leiming@gmail.com>
-Date: Sun, 9 Jun 2019 00:51:20 +0800
-Message-ID: <CACVXFVP09V_mAbYm-QgfDmSiLCw5Td-EeDZ-c=B7t-TxV6DZwQ@mail.gmail.com>
-Subject: Re: powerpc hugepage leak caused by 576ed913 "block: use bio_add_page
- in bio_iov_iter_get_pages"
-To: David Gibson <david@gibson.dropbear.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190607172902.GA8183@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,92 +86,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nick Piggin <npiggin@gmail.com>, Michael Ellerman <michael@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 26, 2019 at 12:41 PM David Gibson
-<david@gibson.dropbear.id.au> wrote:
->
-> On Fri, Apr 26, 2019 at 11:05:17AM +1000, David Gibson wrote:
-> > On Thu, Apr 25, 2019 at 08:19:58AM +0200, Christoph Hellwig wrote:
-> > > Just curious:  What exact trees do you see this with?  This area
-> > > changed a lot with the multipage bvec support, and subsequent fixes.
-> >
-> > So, I tried it with 576ed913 itself and with 576ed913^ to verify that
-> > it didn't happen there.  The problem also occurred with Linus' tree as
-> > of when I started bisecting, which appears to have been 444fe991.
-> > Actually, come to that, here's the whole bisect log in case it's
-> > helpful:
-> >
-> > # git bisect log
-> > git bisect start
-> > # good: [bebc6082da0a9f5d47a1ea2edc099bf671058bd4] Linux 4.14
-> > git bisect good bebc6082da0a9f5d47a1ea2edc099bf671058bd4
-> > # bad: [444fe991353987c1c9bc5ab1f903d01f1b4ad415] Merge tag 'riscv-for-linus-5.1-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/palmer/riscv-linux
-> > git bisect bad 444fe991353987c1c9bc5ab1f903d01f1b4ad415
-> > # good: [399c4129eba6145924ab90363352b7bdcd554751] Merge tag 'pxa-for-4.19-dma_slave_map' of https://github.com/rjarzmik/linux
-> > git bisect good 399c4129eba6145924ab90363352b7bdcd554751
-> > # bad: [73b6f96cbc0162787bcbdac5f538167084c8d605] Merge branch 'drm-fixes-4.20' of git://people.freedesktop.org/~agd5f/linux into drm-fixes
-> > git bisect bad 73b6f96cbc0162787bcbdac5f538167084c8d605
-> > # good: [85a585918fb4122ad26b6febaec5c3c90bf2535c] Merge tag 'loadpin-security-next' of https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux into next-loadpin
-> > git bisect good 85a585918fb4122ad26b6febaec5c3c90bf2535c
-> > # bad: [3acbd2de6bc3af215c6ed7732dfc097d1e238503] Merge tag 'sound-4.20-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-> > git bisect bad 3acbd2de6bc3af215c6ed7732dfc097d1e238503
-> > # good: [8f18da47211554f1ef674fef627c05f23b75a8e0] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next
-> > git bisect good 8f18da47211554f1ef674fef627c05f23b75a8e0
-> > # bad: [0d1b82cd8ac2e8856ae9045c97782ac1c359929c] Merge branch 'ras-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-> > git bisect bad 0d1b82cd8ac2e8856ae9045c97782ac1c359929c
-> > # bad: [1650ac53066577a5e83fe3e9d992c9311597ff8c] Merge tag 'mmc-v4.20' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc
-> > git bisect bad 1650ac53066577a5e83fe3e9d992c9311597ff8c
-> > # bad: [6ab9e09238fdfd742fe23b81e2d385a1cab49d9b] Merge tag 'for-4.20/block-20181021' of git://git.kernel.dk/linux-block
-> > git bisect bad 6ab9e09238fdfd742fe23b81e2d385a1cab49d9b
-> > # good: [528985117126f11beea339cf39120ee99da04cd2] Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
-> > git bisect good 528985117126f11beea339cf39120ee99da04cd2
-> > # bad: [2cf99bbd106f89fc72f778e8ad9d5538f1ef939b] lightnvm: pblk: add helpers for chunk addresses
-> > git bisect bad 2cf99bbd106f89fc72f778e8ad9d5538f1ef939b
-> > # bad: [33b14f67a4e1eabd219fd6543da8f15ed86b641c] nvme: register ns_id attributes as default sysfs groups
-> > git bisect bad 33b14f67a4e1eabd219fd6543da8f15ed86b641c
-> > # bad: [27ca1d4ed04ea29dc77b47190a3cc82697023e76] block: move req_gap_back_merge to blk.h
-> > git bisect bad 27ca1d4ed04ea29dc77b47190a3cc82697023e76
-> > # bad: [07b05bcc3213ac9f8c28c9d835b4bf3d5798cc60] blkcg: convert blkg_lookup_create to find closest blkg
-> > git bisect bad 07b05bcc3213ac9f8c28c9d835b4bf3d5798cc60
-> > # good: [cbeb869a3d1110450186b738199963c5e68c2a71] block, bfq: correctly charge and reset entity service in all cases
-> > git bisect good cbeb869a3d1110450186b738199963c5e68c2a71
-> > # bad: [576ed9135489c723fb39b97c4e2c73428d06dd78] block: use bio_add_page in bio_iov_iter_get_pages
-> > git bisect bad 576ed9135489c723fb39b97c4e2c73428d06dd78
-> > # good: [c8765de0adfcaaf4ffb2d951e07444f00ffa9453] blok, bfq: do not plug I/O if all queues are weight-raised
-> > git bisect good c8765de0adfcaaf4ffb2d951e07444f00ffa9453
-> > # first bad commit: [576ed9135489c723fb39b97c4e2c73428d06dd78] block: use bio_add_page in bio_iov_iter_get_pages
-> >
-> > The problem also occurred with the RHEL8 downstream kernel tree.
-> > That's based on 4.18, but has 576ed913 backported.
-> >
-> > > So I'd be really curious if it can be reproduced with Jens' latest
-> > > block for-5.2 tree (which should be in latest linux-next).
-> >
-> > I'll see if I can try that when I next get access to the machine.
->
-> Ok, I've now had a chance to test the next-20190423 tree.
->
-> I can still reproduce the problem: in fact it is substantially worse,
-> and somewhat more consistent.
->
-> Previously I usually lost 2-3 hugepages per run, though I'd
-> occasionally seen other values between 0 and 8.  With the next tree, I
-> lost 46 hugepages on most runs, though I also saw 45 and 48
-> occasionally.
+On 6/7/19 12:29 PM, Christoph Hellwig wrote:
+> I don't think we should work around this in the driver, we need to fix
+> it in the core.  I'm curious why my previous patch didn't work.  Can
+> you throw in a few printks what failed?  I.e. did dma_direct_supported
+> return false?  Did the actual allocation fail?
 
-Hi David,
+Routine dma_direct_supported() returns true.
 
-The following two patches should fix the issue, please test it.
+The failure is in routine dma_set_mask() in the following if test:
 
-https://lore.kernel.org/linux-block/20190608164853.10938-1-ming.lei@redhat.com/T/#t
+         if (!dev->dma_mask || !dma_supported(dev, mask))
+                 return -EIO;
 
-Thanks,
-Ming Lei
+For b43legacy, dev->dma_mask is 0xc265684800000000.
+     dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and the 
+routine returns -EIO.
+
+For b43,       dev->dma_mask is 0xc265684800000001,
+     dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and the 
+routine returns 0.
+
+Thus far I have not found what sets the low-order bit of dev->dma_mask. 
+Suggestions are welcome.
+
+These tests have all been with your patch that sets ARCH_ZONE_DMA_BITS to 30.
+
+Larry
