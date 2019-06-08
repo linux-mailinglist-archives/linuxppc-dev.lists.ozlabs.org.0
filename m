@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F316439F4B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 13:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2401939F5F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 13:58:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45LdBg5f5hzDqJl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 21:55:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LdG91XKGzDqxX
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 21:58:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="JzB9KyWK"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="g60DYRQq"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LcwG4rj6zDqKl
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 21:43:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Lcz46VDwzDqkb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 21:45:36 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9A943214D8;
- Sat,  8 Jun 2019 11:43:07 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D4EB5214D8;
+ Sat,  8 Jun 2019 11:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559994188;
- bh=cq1t1h63ROIahrQxeXUUYboG1bSJEqtwDjbiu2safbI=;
+ s=default; t=1559994333;
+ bh=aTAjHWnmhBwOH3nrTA/x1z+5nFP+4mKcGJ6YvIg1hFE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=JzB9KyWK0ziO+0tLWduqZSKOFTB0sL0gTgqCRRbtJdlIUWoJO+WuhgrRicJqT+gEC
- rbQimCg6bTv0eLlxWBpsXYo3icT3juoUot76QB9yLS8gAF3OCRlcXU7tq3VV6NqBpq
- FPd4XhI8ple9iU1tZqW82WxiDGIdRYiLdEG0947Q=
+ b=g60DYRQq/UheYBRq8vgPy7zRU3I5n1eHpvz5W4Y9SLov41cUVrwOUfJn5agSzJsUL
+ VGidpNPRtzIWt26KT60+qSyv/l4FG9UJCSogc3XkKAoB1hq+RWqi9qIUJwojniSWyA
+ /P7/8gR4RRcpPSKKlPb+ermynlCzdU0ql/H4anlo=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 09/49] powerpc/powernv: Return for invalid IMC
- domain
-Date: Sat,  8 Jun 2019 07:41:50 -0400
-Message-Id: <20190608114232.8731-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 36/49] KVM: PPC: Book3S: Use new mutex to
+ synchronize access to rtas token list
+Date: Sat,  8 Jun 2019 07:42:17 -0400
+Message-Id: <20190608114232.8731-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190608114232.8731-1-sashal@kernel.org>
 References: <20190608114232.8731-1-sashal@kernel.org>
@@ -61,58 +61,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Pavaman Subramaniyam <pavsubra@in.ibm.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+From: Paul Mackerras <paulus@ozlabs.org>
 
-[ Upstream commit b59bd3527fe3c1939340df558d7f9d568fc9f882 ]
+[ Upstream commit 1659e27d2bc1ef47b6d031abe01b467f18cb72d9 ]
 
-Currently init_imc_pmu() can fail either because we try to register an
-IMC unit with an invalid domain (i.e an IMC node not supported by the
-kernel) or something went wrong while registering a valid IMC unit. In
-both the cases kernel provides a 'Register failed' error message.
+Currently the Book 3S KVM code uses kvm->lock to synchronize access
+to the kvm->arch.rtas_tokens list.  Because this list is scanned
+inside kvmppc_rtas_hcall(), which is called with the vcpu mutex held,
+taking kvm->lock cause a lock inversion problem, which could lead to
+a deadlock.
 
-For example when trace-imc node is not supported by the kernel, but
-skiboot advertises a trace-imc node we print:
+To fix this, we add a new mutex, kvm->arch.rtas_token_lock, which nests
+inside the vcpu mutexes, and use that instead of kvm->lock when
+accessing the rtas token list.
 
-  IMC Unknown Device type
-  IMC PMU (null) Register failed
+This removes the lockdep_assert_held() in kvmppc_rtas_tokens_free().
+At this point we don't hold the new mutex, but that is OK because
+kvmppc_rtas_tokens_free() is only called when the whole VM is being
+destroyed, and at that point nothing can be looking up a token in
+the list.
 
-To avoid confusion just print the unknown device type message, before
-attempting PMU registration, so the second message isn't printed.
-
-Fixes: 8f95faaac56c ("powerpc/powernv: Detect and create IMC device")
-Reported-by: Pavaman Subramaniyam <pavsubra@in.ibm.com>
-Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-[mpe: Reword change log a bit]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-imc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/include/asm/kvm_host.h |  1 +
+ arch/powerpc/kvm/book3s.c           |  1 +
+ arch/powerpc/kvm/book3s_rtas.c      | 14 ++++++--------
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-index 3d27f02695e4..828f6656f8f7 100644
---- a/arch/powerpc/platforms/powernv/opal-imc.c
-+++ b/arch/powerpc/platforms/powernv/opal-imc.c
-@@ -161,6 +161,10 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
- 	struct imc_pmu *pmu_ptr;
- 	u32 offset;
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index bccc5051249e..2b6049e83970 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -299,6 +299,7 @@ struct kvm_arch {
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	struct list_head spapr_tce_tables;
+ 	struct list_head rtas_tokens;
++	struct mutex rtas_token_lock;
+ 	DECLARE_BITMAP(enabled_hcalls, MAX_HCALL_OPCODE/4 + 1);
+ #endif
+ #ifdef CONFIG_KVM_MPIC
+diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+index 87348e498c89..281f074581a3 100644
+--- a/arch/powerpc/kvm/book3s.c
++++ b/arch/powerpc/kvm/book3s.c
+@@ -840,6 +840,7 @@ int kvmppc_core_init_vm(struct kvm *kvm)
+ #ifdef CONFIG_PPC64
+ 	INIT_LIST_HEAD_RCU(&kvm->arch.spapr_tce_tables);
+ 	INIT_LIST_HEAD(&kvm->arch.rtas_tokens);
++	mutex_init(&kvm->arch.rtas_token_lock);
+ #endif
  
-+	/* Return for unknown domain */
-+	if (domain < 0)
-+		return -EINVAL;
-+
- 	/* memory for pmu */
- 	pmu_ptr = kzalloc(sizeof(*pmu_ptr), GFP_KERNEL);
- 	if (!pmu_ptr)
+ 	return kvm->arch.kvm_ops->init_vm(kvm);
+diff --git a/arch/powerpc/kvm/book3s_rtas.c b/arch/powerpc/kvm/book3s_rtas.c
+index 2d3b2b1cc272..8f2355138f80 100644
+--- a/arch/powerpc/kvm/book3s_rtas.c
++++ b/arch/powerpc/kvm/book3s_rtas.c
+@@ -146,7 +146,7 @@ static int rtas_token_undefine(struct kvm *kvm, char *name)
+ {
+ 	struct rtas_token_definition *d, *tmp;
+ 
+-	lockdep_assert_held(&kvm->lock);
++	lockdep_assert_held(&kvm->arch.rtas_token_lock);
+ 
+ 	list_for_each_entry_safe(d, tmp, &kvm->arch.rtas_tokens, list) {
+ 		if (rtas_name_matches(d->handler->name, name)) {
+@@ -167,7 +167,7 @@ static int rtas_token_define(struct kvm *kvm, char *name, u64 token)
+ 	bool found;
+ 	int i;
+ 
+-	lockdep_assert_held(&kvm->lock);
++	lockdep_assert_held(&kvm->arch.rtas_token_lock);
+ 
+ 	list_for_each_entry(d, &kvm->arch.rtas_tokens, list) {
+ 		if (d->token == token)
+@@ -206,14 +206,14 @@ int kvm_vm_ioctl_rtas_define_token(struct kvm *kvm, void __user *argp)
+ 	if (copy_from_user(&args, argp, sizeof(args)))
+ 		return -EFAULT;
+ 
+-	mutex_lock(&kvm->lock);
++	mutex_lock(&kvm->arch.rtas_token_lock);
+ 
+ 	if (args.token)
+ 		rc = rtas_token_define(kvm, args.name, args.token);
+ 	else
+ 		rc = rtas_token_undefine(kvm, args.name);
+ 
+-	mutex_unlock(&kvm->lock);
++	mutex_unlock(&kvm->arch.rtas_token_lock);
+ 
+ 	return rc;
+ }
+@@ -245,7 +245,7 @@ int kvmppc_rtas_hcall(struct kvm_vcpu *vcpu)
+ 	orig_rets = args.rets;
+ 	args.rets = &args.args[be32_to_cpu(args.nargs)];
+ 
+-	mutex_lock(&vcpu->kvm->lock);
++	mutex_lock(&vcpu->kvm->arch.rtas_token_lock);
+ 
+ 	rc = -ENOENT;
+ 	list_for_each_entry(d, &vcpu->kvm->arch.rtas_tokens, list) {
+@@ -256,7 +256,7 @@ int kvmppc_rtas_hcall(struct kvm_vcpu *vcpu)
+ 		}
+ 	}
+ 
+-	mutex_unlock(&vcpu->kvm->lock);
++	mutex_unlock(&vcpu->kvm->arch.rtas_token_lock);
+ 
+ 	if (rc == 0) {
+ 		args.rets = orig_rets;
+@@ -282,8 +282,6 @@ void kvmppc_rtas_tokens_free(struct kvm *kvm)
+ {
+ 	struct rtas_token_definition *d, *tmp;
+ 
+-	lockdep_assert_held(&kvm->lock);
+-
+ 	list_for_each_entry_safe(d, tmp, &kvm->arch.rtas_tokens, list) {
+ 		list_del(&d->list);
+ 		kfree(d);
 -- 
 2.20.1
 
