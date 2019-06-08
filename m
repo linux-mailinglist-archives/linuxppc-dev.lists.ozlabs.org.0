@@ -2,54 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196FC39F9F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 14:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4603A009
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 15:48:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Ldd13l1fzDr0k
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 22:15:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LgjK2925zDqmK
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 23:48:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="abHw9JoT"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Ld374nP5zDqwV
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 21:49:07 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 010252168B;
- Sat,  8 Jun 2019 11:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559994544;
- bh=Ga/Q2fsQ3x6HGX8E6Ru0cHNocZm+Y0qsmKRFrj5LVYs=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=abHw9JoTBttfanElTateLoHJZoBkk4b9PypJ6O4gmyKVpM39XWAVCOyp3syzad6WB
- dsHPXh1JYdby17SU/0wjz26F6jR+hg91cWJZFE2YTXoqLcjk1l/6ZKc86KW49eJFqO
- tBs/gPel0Ez7fa4wGjGO3eRCnfSVra4U6U68YBTo=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 10/13] KVM: PPC: Book3S: Use new mutex to
- synchronize access to rtas token list
-Date: Sat,  8 Jun 2019 07:48:42 -0400
-Message-Id: <20190608114847.9973-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608114847.9973-1-sashal@kernel.org>
-References: <20190608114847.9973-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Lgds4WBSzDqWs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 23:45:52 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id B79512849B
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 13:45:49 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id A7EFE28B9B; Sat,  8 Jun 2019 13:45:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203839] Kernel 5.2-rc3 fails to boot on a PowerMac G4 3,6:
+ systemd[1]: Failed to bump fs.file-max, ignoring: invalid argument
+Date: Sat, 08 Jun 2019 13:45:48 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-203839-206035-3tu0cdAZKW@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203839-206035@https.bugzilla.kernel.org/>
+References: <bug-203839-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,130 +71,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Paul Mackerras <paulus@ozlabs.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203839
 
-[ Upstream commit 1659e27d2bc1ef47b6d031abe01b467f18cb72d9 ]
+--- Comment #4 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 283163
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283163&action=3Dedit
+failed boot, screenshot 5.2-rc3+
 
-Currently the Book 3S KVM code uses kvm->lock to synchronize access
-to the kvm->arch.rtas_tokens list.  Because this list is scanned
-inside kvmppc_rtas_hcall(), which is called with the vcpu mutex held,
-taking kvm->lock cause a lock inversion problem, which could lead to
-a deadlock.
+After reverting the 3 commits on top of v5.2-rc3 the kernel panics at an
+earlier stage with:
 
-To fix this, we add a new mutex, kvm->arch.rtas_token_lock, which nests
-inside the vcpu mutexes, and use that instead of kvm->lock when
-accessing the rtas token list.
+Kernel panic - not syncing: Requested init /lib/systemd/systemd failed (err=
+or
+-8)
 
-This removes the lockdep_assert_held() in kvmppc_rtas_tokens_free().
-At this point we don't hold the new mutex, but that is OK because
-kvmppc_rtas_tokens_free() is only called when the whole VM is being
-destroyed, and at that point nothing can be looking up a token in
-the list.
 
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/include/asm/kvm_host.h |  1 +
- arch/powerpc/kvm/book3s.c           |  1 +
- arch/powerpc/kvm/book3s_rtas.c      | 14 ++++++--------
- 3 files changed, 8 insertions(+), 8 deletions(-)
+# LC_MESSAGES=3DC git status
+HEAD detached at v5.2-rc3
+You are currently reverting commit b86fb88855ea.
+  (all conflicts fixed: run "git revert --continue")
+  (use "git revert --abort" to cancel the revert operation)
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index a92d95aee42d..1883627eb12c 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -250,6 +250,7 @@ struct kvm_arch {
- #ifdef CONFIG_PPC_BOOK3S_64
- 	struct list_head spapr_tce_tables;
- 	struct list_head rtas_tokens;
-+	struct mutex rtas_token_lock;
- 	DECLARE_BITMAP(enabled_hcalls, MAX_HCALL_OPCODE/4 + 1);
- #endif
- #ifdef CONFIG_KVM_MPIC
-diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-index 099c79d8c160..4aab1c9c83e1 100644
---- a/arch/powerpc/kvm/book3s.c
-+++ b/arch/powerpc/kvm/book3s.c
-@@ -809,6 +809,7 @@ int kvmppc_core_init_vm(struct kvm *kvm)
- #ifdef CONFIG_PPC64
- 	INIT_LIST_HEAD(&kvm->arch.spapr_tce_tables);
- 	INIT_LIST_HEAD(&kvm->arch.rtas_tokens);
-+	mutex_init(&kvm->arch.rtas_token_lock);
- #endif
- 
- 	return kvm->arch.kvm_ops->init_vm(kvm);
-diff --git a/arch/powerpc/kvm/book3s_rtas.c b/arch/powerpc/kvm/book3s_rtas.c
-index ef27fbd5d9c5..b1b2273d1f6d 100644
---- a/arch/powerpc/kvm/book3s_rtas.c
-+++ b/arch/powerpc/kvm/book3s_rtas.c
-@@ -133,7 +133,7 @@ static int rtas_token_undefine(struct kvm *kvm, char *name)
- {
- 	struct rtas_token_definition *d, *tmp;
- 
--	lockdep_assert_held(&kvm->lock);
-+	lockdep_assert_held(&kvm->arch.rtas_token_lock);
- 
- 	list_for_each_entry_safe(d, tmp, &kvm->arch.rtas_tokens, list) {
- 		if (rtas_name_matches(d->handler->name, name)) {
-@@ -154,7 +154,7 @@ static int rtas_token_define(struct kvm *kvm, char *name, u64 token)
- 	bool found;
- 	int i;
- 
--	lockdep_assert_held(&kvm->lock);
-+	lockdep_assert_held(&kvm->arch.rtas_token_lock);
- 
- 	list_for_each_entry(d, &kvm->arch.rtas_tokens, list) {
- 		if (d->token == token)
-@@ -193,14 +193,14 @@ int kvm_vm_ioctl_rtas_define_token(struct kvm *kvm, void __user *argp)
- 	if (copy_from_user(&args, argp, sizeof(args)))
- 		return -EFAULT;
- 
--	mutex_lock(&kvm->lock);
-+	mutex_lock(&kvm->arch.rtas_token_lock);
- 
- 	if (args.token)
- 		rc = rtas_token_define(kvm, args.name, args.token);
- 	else
- 		rc = rtas_token_undefine(kvm, args.name);
- 
--	mutex_unlock(&kvm->lock);
-+	mutex_unlock(&kvm->arch.rtas_token_lock);
- 
- 	return rc;
- }
-@@ -232,7 +232,7 @@ int kvmppc_rtas_hcall(struct kvm_vcpu *vcpu)
- 	orig_rets = args.rets;
- 	args.rets = &args.args[be32_to_cpu(args.nargs)];
- 
--	mutex_lock(&vcpu->kvm->lock);
-+	mutex_lock(&vcpu->kvm->arch.rtas_token_lock);
- 
- 	rc = -ENOENT;
- 	list_for_each_entry(d, &vcpu->kvm->arch.rtas_tokens, list) {
-@@ -243,7 +243,7 @@ int kvmppc_rtas_hcall(struct kvm_vcpu *vcpu)
- 		}
- 	}
- 
--	mutex_unlock(&vcpu->kvm->lock);
-+	mutex_unlock(&vcpu->kvm->arch.rtas_token_lock);
- 
- 	if (rc == 0) {
- 		args.rets = orig_rets;
-@@ -269,8 +269,6 @@ void kvmppc_rtas_tokens_free(struct kvm *kvm)
- {
- 	struct rtas_token_definition *d, *tmp;
- 
--	lockdep_assert_held(&kvm->lock);
--
- 	list_for_each_entry_safe(d, tmp, &kvm->arch.rtas_tokens, list) {
- 		list_del(&d->list);
- 		kfree(d);
--- 
-2.20.1
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
 
+        modified:   arch/powerpc/kernel/entry_32.S
+        modified:   arch/powerpc/kernel/head_32.S
+        modified:   arch/powerpc/kernel/head_32.h
+        modified:   arch/powerpc/kernel/head_40x.S
+        modified:   arch/powerpc/kernel/head_44x.S
+        modified:   arch/powerpc/kernel/head_8xx.S
+        modified:   arch/powerpc/kernel/head_booke.h
+        modified:   arch/powerpc/kernel/head_fsl_booke.S
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
