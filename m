@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4F539EC9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 13:52:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Ld6d4j5RzDqxD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 21:52:09 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F316439F4B
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 13:55:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45LdBg5f5hzDqJl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2019 21:55:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,38 +16,37 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="vtjNu9RU"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="JzB9KyWK"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45LctH00KqzDqXq
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 21:41:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45LcwG4rj6zDqKl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2019 21:43:10 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D27B1214D8;
- Sat,  8 Jun 2019 11:41:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9A943214D8;
+ Sat,  8 Jun 2019 11:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559994083;
- bh=lAKfE8nLhpz2DXzAudynrNUtfh9uXCTBu1CWgk2rz3A=;
+ s=default; t=1559994188;
+ bh=cq1t1h63ROIahrQxeXUUYboG1bSJEqtwDjbiu2safbI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vtjNu9RUtkYsoGy5Ll2K5CSwmNo/Fdks9XA+FHldmq+/tNtqU22MwG8s6fw3nhM1u
- I9UJUVT0C+NZPs3uk2rc4zl6p+J+fwHqCLV0S5QOH+DwZPmTy4WKpVvHPT4IYW9cyB
- f1jgdu6x/wm+GJeoiHy6HuMVpt0TumTZg8x/Ev7c=
+ b=JzB9KyWK0ziO+0tLWduqZSKOFTB0sL0gTgqCRRbtJdlIUWoJO+WuhgrRicJqT+gEC
+ rbQimCg6bTv0eLlxWBpsXYo3icT3juoUot76QB9yLS8gAF3OCRlcXU7tq3VV6NqBpq
+ FPd4XhI8ple9iU1tZqW82WxiDGIdRYiLdEG0947Q=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 54/70] KVM: PPC: Book3S HV: Don't take kvm->lock
- around kvm_for_each_vcpu
-Date: Sat,  8 Jun 2019 07:39:33 -0400
-Message-Id: <20190608113950.8033-54-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 09/49] powerpc/powernv: Return for invalid IMC
+ domain
+Date: Sat,  8 Jun 2019 07:41:50 -0400
+Message-Id: <20190608114232.8731-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
-References: <20190608113950.8033-1-sashal@kernel.org>
+In-Reply-To: <20190608114232.8731-1-sashal@kernel.org>
+References: <20190608114232.8731-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -62,71 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, kvm-ppc@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Pavaman Subramaniyam <pavsubra@in.ibm.com>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Paul Mackerras <paulus@ozlabs.org>
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 
-[ Upstream commit 5a3f49364c3ffa1107bd88f8292406e98c5d206c ]
+[ Upstream commit b59bd3527fe3c1939340df558d7f9d568fc9f882 ]
 
-Currently the HV KVM code takes the kvm->lock around calls to
-kvm_for_each_vcpu() and kvm_get_vcpu_by_id() (which can call
-kvm_for_each_vcpu() internally).  However, that leads to a lock
-order inversion problem, because these are called in contexts where
-the vcpu mutex is held, but the vcpu mutexes nest within kvm->lock
-according to Documentation/virtual/kvm/locking.txt.  Hence there
-is a possibility of deadlock.
+Currently init_imc_pmu() can fail either because we try to register an
+IMC unit with an invalid domain (i.e an IMC node not supported by the
+kernel) or something went wrong while registering a valid IMC unit. In
+both the cases kernel provides a 'Register failed' error message.
 
-To fix this, we simply don't take the kvm->lock mutex around these
-calls.  This is safe because the implementations of kvm_for_each_vcpu()
-and kvm_get_vcpu_by_id() have been designed to be able to be called
-locklessly.
+For example when trace-imc node is not supported by the kernel, but
+skiboot advertises a trace-imc node we print:
 
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+  IMC Unknown Device type
+  IMC PMU (null) Register failed
+
+To avoid confusion just print the unknown device type message, before
+attempting PMU registration, so the second message isn't printed.
+
+Fixes: 8f95faaac56c ("powerpc/powernv: Detect and create IMC device")
+Reported-by: Pavaman Subramaniyam <pavsubra@in.ibm.com>
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+[mpe: Reword change log a bit]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/powerpc/platforms/powernv/opal-imc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 4519c55ba19d..bea595c94cfc 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -445,12 +445,7 @@ static void kvmppc_dump_regs(struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+index 3d27f02695e4..828f6656f8f7 100644
+--- a/arch/powerpc/platforms/powernv/opal-imc.c
++++ b/arch/powerpc/platforms/powernv/opal-imc.c
+@@ -161,6 +161,10 @@ static int imc_pmu_create(struct device_node *parent, int pmu_index, int domain)
+ 	struct imc_pmu *pmu_ptr;
+ 	u32 offset;
  
- static struct kvm_vcpu *kvmppc_find_vcpu(struct kvm *kvm, int id)
- {
--	struct kvm_vcpu *ret;
--
--	mutex_lock(&kvm->lock);
--	ret = kvm_get_vcpu_by_id(kvm, id);
--	mutex_unlock(&kvm->lock);
--	return ret;
-+	return kvm_get_vcpu_by_id(kvm, id);
- }
- 
- static void init_vpa(struct kvm_vcpu *vcpu, struct lppaca *vpa)
-@@ -1502,7 +1497,6 @@ static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 	u64 mask;
- 
--	mutex_lock(&kvm->lock);
- 	spin_lock(&vc->lock);
- 	/*
- 	 * If ILE (interrupt little-endian) has changed, update the
-@@ -1542,7 +1536,6 @@ static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
- 		mask &= 0xFFFFFFFF;
- 	vc->lpcr = (vc->lpcr & ~mask) | (new_lpcr & mask);
- 	spin_unlock(&vc->lock);
--	mutex_unlock(&kvm->lock);
- }
- 
- static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
++	/* Return for unknown domain */
++	if (domain < 0)
++		return -EINVAL;
++
+ 	/* memory for pmu */
+ 	pmu_ptr = kzalloc(sizeof(*pmu_ptr), GFP_KERNEL);
+ 	if (!pmu_ptr)
 -- 
 2.20.1
 
