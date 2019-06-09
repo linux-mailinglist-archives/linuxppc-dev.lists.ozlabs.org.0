@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C176E3A977
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jun 2019 19:10:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B203A474
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jun 2019 11:21:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45M9k43FdCzDqJ8
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jun 2019 19:21:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45MN7p45NGzDqDM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 03:10:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.66; helo=mail-lf1-f66.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-lf1-f66.google.com (mail-lf1-f66.google.com
- [209.85.167.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="NpRdEmAt"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45M9hK2Br7zDqBx
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jun 2019 19:19:44 +1000 (AEST)
-Received: by mail-lf1-f66.google.com with SMTP id q26so4594592lfc.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Jun 2019 02:19:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=tm1kUkU8K0xP+6qbFcyeQd6hDSnbqz5Xinvig3WgCVk=;
- b=jupRz0csDdbFdql6TAIg4RF1GuryFryAa7FJxXa6s9RrhUg8/NkjhWsttGAJvnvIG5
- iZy9oKSmDZqM5/G7/l+dqQwhyKS7iNMX+4qtLIxZBickmx0Hi1L4GtYToV6ukc5X9egL
- GhrQrDNNe0e/RbqUjG9708dgv3mH2wfpxg1T/hCPiYCMbO2tzR0iqPplDRQRfpBv0hPu
- WxRUvG4rm2AwkYruQReNWWtYFIEivDFTtdySnSsQRrV+h7ySNaKX7K3bQMMdIGj4NWse
- W8hIyErEsvUWM/iUfJxv14X/G5vDKkKQCu3lLWFjB4UjDWHtf0P+ipZtFvdd9Z87Ssfn
- EFIw==
-X-Gm-Message-State: APjAAAWyaBfFlPJeEK+YaZ801r4Zq4Kz1/7eHPK2LjeQudtp7UlqtwUf
- K+ZFvmYdwCyI6gqQqll4hLHxc+v7jeyhAQb7sTm5Vdzn
-X-Google-Smtp-Source: APXvYqxnnYV8kl5R90oD40qadn5h+TZeP7RkBZTi+rdt/dFdy/gyUH8r8MQ2aYrIT1EQJA6MQAqc14471W+iVtoVwcY=
-X-Received: by 2002:ac2:546a:: with SMTP id e10mr31848175lfn.75.1560071980695; 
- Sun, 09 Jun 2019 02:19:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45MN0J6KKfzDqN6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 03:04:15 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1CD47206DF;
+ Sun,  9 Jun 2019 17:04:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1560099853;
+ bh=sdK1Xn6v9YbWQEGAiClWqejKazMG/VXN5F69IhQH0JM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=NpRdEmAtvJi7DtcT5WUN6b0uiyCYC0Orgc3k88UOhF9gSxqSyj14sl5uZOiAC3rLK
+ DXIOdRHQoUZ61dLeiGxf9JALTwlCsuPl8xHLChxL8mFo2KyNbNcFW5fAHVNguvA/ng
+ 0S7n1J/9sQ/dW1L4OwBt9cP+x7d7BNY8CNzA1NKY=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.4 145/241] cpufreq/pasemi: fix possible object reference leak
+Date: Sun,  9 Jun 2019 18:41:27 +0200
+Message-Id: <20190609164151.967723685@linuxfoundation.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190609164147.729157653@linuxfoundation.org>
+References: <20190609164147.729157653@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-References: <ff457774d46d96e8fe56b45409aba39d87a8672a.1559933665.git.mchehab+samsung@kernel.org>
- <4948a096397bb86cebf489b8ac4f623797257fe7.1559933665.git.mchehab+samsung@kernel.org>
-In-Reply-To: <4948a096397bb86cebf489b8ac4f623797257fe7.1559933665.git.mchehab+samsung@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sun, 9 Jun 2019 11:19:28 +0200
-Message-ID: <CAMuHMdVnBP-CJ5S0+D_H4RedkHV5m8m8wGXy-PRzaFk0JWdW8Q@mail.gmail.com>
-Subject: Re: [PATCH v3 15/20] docs: move protection-keys.rst to the core-api
- book
-To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,47 +59,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: the arch/x86 maintainers <x86@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Mauro Carvalho Chehab <mchehab@infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, stable@vger.kernel.org,
+ Viresh Kumar <viresh.kumar@linaro.org>, linuxppc-dev@lists.ozlabs.org,
+ Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mauro,
+[ Upstream commit a9acc26b75f652f697e02a9febe2ab0da648a571 ]
 
-On Fri, Jun 7, 2019 at 9:38 PM Mauro Carvalho Chehab
-<mchehab+samsung@kernel.org> wrote:
-> This document is used by multiple architectures:
+The call to of_get_cpu_node returns a node pointer with refcount
+incremented thus it must be explicitly decremented after the last
+usage.
 
-Indeed it is...
+Detected by coccinelle with the following warnings:
+./drivers/cpufreq/pasemi-cpufreq.c:212:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 147, but without a corresponding object release within this function.
+./drivers/cpufreq/pasemi-cpufreq.c:220:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 147, but without a corresponding object release within this function.
 
->
->         $ echo $(git grep -l  pkey_mprotect arch|cut -d'/' -f 2|sort|uniq)
->         alpha arm arm64 ia64 m68k microblaze mips parisc powerpc s390 sh sparc x86 xtensa
+Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/cpufreq/pasemi-cpufreq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-... but not because we now have a unified space for new syscall numbers ;-)
-
-$ git grep -w ARCH_HAS_PKEYS -- "*Kconf*"
-arch/powerpc/Kconfig:   select ARCH_HAS_PKEYS
-arch/x86/Kconfig:       select ARCH_HAS_PKEYS
-mm/Kconfig:config ARCH_HAS_PKEYS
-
-I.e. limited to x86 and powerpc.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
+index 35dd4d7ffee08..58c933f483004 100644
+--- a/drivers/cpufreq/pasemi-cpufreq.c
++++ b/drivers/cpufreq/pasemi-cpufreq.c
+@@ -146,6 +146,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	cpu = of_get_cpu_node(policy->cpu, NULL);
+ 
++	of_node_put(cpu);
+ 	if (!cpu)
+ 		goto out;
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.20.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
+
