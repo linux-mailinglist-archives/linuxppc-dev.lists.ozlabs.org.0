@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E982D3AF03
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 08:35:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Mjzr23m9zDqSP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 16:35:04 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9813AF24
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 08:47:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45MkG015dFzDqMb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 16:47:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,61 +19,59 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Mjx516FhzDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 16:32:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45MkCt4LZFzDqMX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 16:45:29 +1000 (AEST)
 Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5A6VlOa100810
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 02:32:36 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t1e27fxqg-1
+ x5A6ftmk126451
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 02:45:27 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t1e27genv-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 02:32:36 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 02:45:27 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
- Mon, 10 Jun 2019 07:32:34 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Mon, 10 Jun 2019 07:45:25 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 10 Jun 2019 07:32:32 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5A6WVj160555446
+ Mon, 10 Jun 2019 07:45:22 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x5A6jEeC28508438
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Jun 2019 06:32:31 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 43A864203F;
- Mon, 10 Jun 2019 06:32:31 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F87C42045;
- Mon, 10 Jun 2019 06:32:30 +0000 (GMT)
+ Mon, 10 Jun 2019 06:45:14 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4D85D52059;
+ Mon, 10 Jun 2019 06:45:21 +0000 (GMT)
 Received: from localhost.in.ibm.com (unknown [9.124.35.72])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 10 Jun 2019 06:32:30 +0000 (GMT)
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 742C15204E;
+ Mon, 10 Jun 2019 06:45:19 +0000 (GMT)
 From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/perf: Use cpumask_last() to determine the
- designated cpu for nest/core units.
-Date: Mon, 10 Jun 2019 12:02:29 +0530
+To: mpe@ellerman.id.au, acme@kernel.org, jolsa@redhat.com
+Subject: [PATCH RESEND 1/2] tools/perf: Add arch neutral function to choose
+ event for perf kvm record
+Date: Mon, 10 Jun 2019 12:15:17 +0530
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19061006-0008-0000-0000-000002F1D49A
+x-cbid: 19061006-0028-0000-0000-00000378DAC2
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061006-0009-0000-0000-0000225ECA41
-Message-Id: <20190610063229.32560-1-anju@linux.vnet.ibm.com>
+x-cbparentid: 19061006-0029-0000-0000-00002438C425
+Message-Id: <20190610064518.949-1-anju@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-10_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906100045
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906100047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,110 +83,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, anju@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.vnet.ibm.com
+Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, namhyung@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nest and core imc(In-memory Collection counters) assigns a particular
-cpu as the designated target for counter data collection.
-During system boot, the first online cpu in a chip gets assigned as
-the designated cpu for that chip(for nest-imc) and the first online cpu
-in a core gets assigned as the designated cpu for that core(for core-imc).
+'perf kvm record' uses 'cycles'(if the user did not specify any event) as
+the default event to profile the guest.
+This will not provide any proper samples from the guest incase of
+powerpc architecture, since in powerpc the PMUs are controlled by
+the guest rather than the host.
 
-If the designated cpu goes offline, the next online cpu from the same
-chip(for nest-imc)/core(for core-imc) is assigned as the next target,
-and the event context is migrated to the target cpu.
-Currently, cpumask_any_but() function is used to find the target cpu.
-Though this function is expected to return a `random` cpu, this always
-returns the next online cpu.
+Patch adds a function to pick an arch specific event for 'perf kvm record',
+instead of selecting 'cycles' as a default event for all architectures.
 
-If all cpus in a chip/core is offlined in a sequential manner, starting
-from the first cpu, the event migration has to happen for all the cpus
-which goes offline. Since the migration process involves a grace period,
-the total time taken to offline all the cpus will be significantly high.
-
-Example:
-In a system which has 2 sockets, with
-NUMA node0 CPU(s):     0-87
-NUMA node8 CPU(s):     88-175
-
-Time taken to offline cpu 88-175:
-real    2m56.099s
-user    0m0.191s
-sys     0m0.000s
-
-Use cpumask_last() to choose the target cpu, when the designated cpu
-goes online, so the migration will happen only when the last_cpu in the
-mask goes offline. This way the time taken to offline all cpus in a
-chip/core can be reduced.
-
-With the patch, 
-
-Time taken  to offline cpu 88-175:
-real    0m12.207s
-user    0m0.171s
-sys     0m0.000s
-
-
-Offlining all cpus in reverse order is also taken care because,
-cpumask_any_but() is used to find the designated cpu if the last cpu in
-the mask goes offline. Since cpumask_any_but() always return the first
-cpu in the mask, that becomes the designated cpu and migration will happen
-only when the first_cpu in the mask goes offline.
-
-Example:
-With the patch,
-
-Time taken to offline cpu from 175-88:
-real    0m9.330s
-user    0m0.110s
-sys     0m0.000s
+For powerpc this function checks for any user specified event, and if there
+isn't any it returns invalid instead of proceeding with 'cycles' event.
 
 Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
 ---
+ tools/perf/arch/powerpc/util/kvm-stat.c | 37 +++++++++++++++++++++++++
+ tools/perf/builtin-kvm.c                | 12 +++++++-
+ tools/perf/util/kvm-stat.h              |  2 +-
+ 3 files changed, 49 insertions(+), 2 deletions(-)
 
-Changes from v1:
-	Modified the commit log with more info.
----
-
- arch/powerpc/perf/imc-pmu.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 31fa753..fbfd6e7 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -366,7 +366,14 @@ static int ppc_nest_imc_cpu_offline(unsigned int cpu)
- 	 */
- 	nid = cpu_to_node(cpu);
- 	l_cpumask = cpumask_of_node(nid);
--	target = cpumask_any_but(l_cpumask, cpu);
-+	target = cpumask_last(l_cpumask);
+diff --git a/tools/perf/arch/powerpc/util/kvm-stat.c b/tools/perf/arch/powerpc/util/kvm-stat.c
+index f9db341c47b6..66f8fe500945 100644
+--- a/tools/perf/arch/powerpc/util/kvm-stat.c
++++ b/tools/perf/arch/powerpc/util/kvm-stat.c
+@@ -8,6 +8,7 @@
+ 
+ #include "book3s_hv_exits.h"
+ #include "book3s_hcalls.h"
++#include <subcmd/parse-options.h>
+ 
+ #define NR_TPS 4
+ 
+@@ -172,3 +173,39 @@ int cpu_isa_init(struct perf_kvm_stat *kvm, const char *cpuid __maybe_unused)
+ 
+ 	return ret;
+ }
 +
-+	/*
-+	 * If this(target) is the last cpu in the cpumask for this chip,
-+	 * check for any possible online cpu in the chip.
-+	 */
-+	if (unlikely(target == cpu))
-+		target = cpumask_any_but(l_cpumask, cpu);
- 
- 	/*
- 	 * Update the cpumask with the target cpu and
-@@ -671,7 +678,10 @@ static int ppc_core_imc_cpu_offline(unsigned int cpu)
- 		return 0;
- 
- 	/* Find any online cpu in that core except the current "cpu" */
--	ncpu = cpumask_any_but(cpu_sibling_mask(cpu), cpu);
-+	ncpu = cpumask_last(cpu_sibling_mask(cpu));
++/*
++ * Incase of powerpc architecture, pmu registers are programmable
++ * by guest kernel. So monitoring guest via host may not provide
++ * valid samples. It is better to fail the "perf kvm record"
++ * with default "cycles" event to monitor guest in powerpc.
++ *
++ * Function to parse the arguments and return appropriate values.
++ */
++int kvm_add_default_arch_event(int *argc, const char **argv)
++{
++	const char **tmp;
++	bool event = false;
++	int i, j = *argc;
 +
-+	if (unlikely(ncpu == cpu))
-+		ncpu = cpumask_any_but(cpu_sibling_mask(cpu), cpu);
++	const struct option event_options[] = {
++		OPT_BOOLEAN('e', "event", &event, NULL),
++		OPT_END()
++	};
++
++	tmp = calloc(j + 1, sizeof(char *));
++	if (!tmp)
++		return -EINVAL;
++
++	for (i = 0; i < j; i++)
++		tmp[i] = argv[i];
++
++	parse_options(j, tmp, event_options, NULL, 0);
++	if (!event) {
++		free(tmp);
++		return -EINVAL;
++	}
++
++	free(tmp);
++	return 0;
++}
+diff --git a/tools/perf/builtin-kvm.c b/tools/perf/builtin-kvm.c
+index dbb6f737a3e2..fe33b3ec55c9 100644
+--- a/tools/perf/builtin-kvm.c
++++ b/tools/perf/builtin-kvm.c
+@@ -1510,11 +1510,21 @@ static int kvm_cmd_stat(const char *file_name, int argc, const char **argv)
+ }
+ #endif /* HAVE_KVM_STAT_SUPPORT */
  
- 	if (ncpu >= 0 && ncpu < nr_cpu_ids) {
- 		cpumask_set_cpu(ncpu, &core_imc_cpumask);
++int __weak kvm_add_default_arch_event(int *argc __maybe_unused,
++					const char **argv __maybe_unused)
++{
++	return 0;
++}
++
+ static int __cmd_record(const char *file_name, int argc, const char **argv)
+ {
+-	int rec_argc, i = 0, j;
++	int rec_argc, i = 0, j, ret;
+ 	const char **rec_argv;
+ 
++	ret = kvm_add_default_arch_event(&argc, argv);
++	if (ret)
++		return -EINVAL;
++
+ 	rec_argc = argc + 2;
+ 	rec_argv = calloc(rec_argc + 1, sizeof(char *));
+ 	rec_argv[i++] = strdup("record");
+diff --git a/tools/perf/util/kvm-stat.h b/tools/perf/util/kvm-stat.h
+index 1403dec189b4..da38b56c46cb 100644
+--- a/tools/perf/util/kvm-stat.h
++++ b/tools/perf/util/kvm-stat.h
+@@ -144,5 +144,5 @@ extern const int decode_str_len;
+ extern const char *kvm_exit_reason;
+ extern const char *kvm_entry_trace;
+ extern const char *kvm_exit_trace;
+-
++extern int kvm_add_default_arch_event(int *argc, const char **argv);
+ #endif /* __PERF_KVM_STAT_H */
 -- 
-1.8.3.1
+2.17.2
 
