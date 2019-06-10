@@ -2,81 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8543BBFB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 20:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807433BC02
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 20:49:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45N2D61ghwzDqR1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 04:46:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45N2Hb0VnGzDqQN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 04:49:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="DVW5iXzx"; 
- dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45N29x54vBzDqPR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 04:44:53 +1000 (AEST)
-Received: by mail-ot1-x344.google.com with SMTP id r10so9316576otd.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 11:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=D3rnPxkKkOcWLjb9M3zXKMP8YGdus9mVV7OMcZq7pcE=;
- b=DVW5iXzx64p4Z3JZnxlxs0vIKwgxfFCNmYLEcmQukipOh4AkADT4du6f0HN/erCPT0
- yuTL9qyCL6VAMwebjQD3hB1vTUCR3FJEraylBTE1PQ/6HfA7xk47lLm92/JbD/8kquWs
- 8whChl5q7Bd4PZZRchNe33DfU/HStFantcBM+eLHLsstePld5xV84aCqf4L03cmJiFu8
- KH8bTM434yHlZjNa0ohDkL0oJz6qFfjNGcr8fw2SL9GgZvo5VgeYu5O5KL93bK2DNED2
- 5j3uNh1vklJhT2VMvsjlKcZjt2c/z7HiKLaKetkwy0kQXJCMJHv0GtezcsQrC1x6hZSa
- T+dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=D3rnPxkKkOcWLjb9M3zXKMP8YGdus9mVV7OMcZq7pcE=;
- b=eDD/876HNLhCkXAr8IgdE9FDMPDRwLz7vSbNsJMnKkDYR79iKsPL17enmBFuoE4WJS
- NaWh4zZjVvgYXxES8FeN2Hvu96z58HFiUJZ4LCJn9qae+tYD9sCBN4I5f8AlBb3a3bO/
- /tnN2ZOZq3bGepeNXXtJHOHNXXDagiYaZjE1WWoD/3Vsmi/8iyssqyMATM2SKQq1Mr1r
- BZaylKYO6aZhgq80WuBQI+dyJSBg4WJ2EYf2vO2WD6hHbQ1GKZRY4soAbOoiuhUk3pJE
- 0dCxdCFEqV+ZCXtyY7PcUQ+O4VN56fQ2XQU562j2B5I3I5aJDyoSlPmCy6eYLa/ufj4b
- hfIg==
-X-Gm-Message-State: APjAAAVQDJWtdtx7WtyWwYUYwgBJvNEzml4MOQwwwqB+ic0T61J7savv
- hyT957WDF/r7/25fv+lB76g=
-X-Google-Smtp-Source: APXvYqzFkDPZUfQTRZ+iIhDbbjsNqAeRD5O0Bl+f2oVgQX41yDJYVUD2AZA7z+ewtprdGgM6/MXViQ==
-X-Received: by 2002:a9d:6c46:: with SMTP id g6mr25448205otq.162.1560192290284; 
- Mon, 10 Jun 2019 11:44:50 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
- [24.31.245.230])
- by smtp.gmail.com with ESMTPSA id f5sm4018251otl.51.2019.06.10.11.44.48
- (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
- Mon, 10 Jun 2019 11:44:49 -0700 (PDT)
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Christoph Hellwig <hch@lst.de>,
- Christian Zigotzky <chzigotzky@xenosoft.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
- <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
- <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <3ed1ccfe-d7ca-11b9-17b3-303d1ae1bb0f@lwfinger.net>
-Date: Mon, 10 Jun 2019 13:44:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45N2Fr5DkXzDqPR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 04:48:16 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5AIfwGZ163750
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 14:48:13 -0400
+Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2t1uapujux-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 14:48:12 -0400
+Received: from localhost
+ by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <leonardo@linux.ibm.com>;
+ Mon, 10 Jun 2019 19:48:11 +0100
+Received: from b03cxnp08027.gho.boulder.ibm.com (9.17.130.19)
+ by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 10 Jun 2019 19:48:10 +0100
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5AIm9oF28639616
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 10 Jun 2019 18:48:09 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 136D2BE051;
+ Mon, 10 Jun 2019 18:48:09 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA044BE054;
+ Mon, 10 Jun 2019 18:48:04 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.221.234])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Jun 2019 18:48:04 +0000 (GMT)
+Subject: Re: [PATCH v2] powerpc/perf: Use cpumask_last() to determine the
+ designated cpu for nest/core units.
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Anju T Sudhakar <anju@linux.vnet.ibm.com>, mpe@ellerman.id.au
+Date: Mon, 10 Jun 2019 15:47:55 -0300
+In-Reply-To: <20190610063229.32560-1-anju@linux.vnet.ibm.com>
+References: <20190610063229.32560-1-anju@linux.vnet.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-OBPBxP5t6SGUuJaRFawp"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-In-Reply-To: <7697a9d10777b28ae79fdffdde6d0985555f6310.camel@kernel.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061018-0016-0000-0000-000009C0E953
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011243; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01216070; UDB=6.00639370; IPR=6.00997170; 
+ MB=3.00027254; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-10 18:48:11
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061018-0017-0000-0000-0000439913CD
+Message-Id: <181424243e879218b732034f6014ac4af5c68285.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-10_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906100126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,34 +93,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/7/19 11:21 PM, Benjamin Herrenschmidt wrote:
-> 
->> Please try the attached patch. I'm not really pleased with it and I will
->> continue to determine why the fallback to a 30-bit mask fails, but at least this
->> one works for me.
-> 
-> Your patch only makes sense if the device is indeed capable of
-> addressing 31-bits.
-> 
-> So either the driver is buggy and asks for a too small mask in which
-> case your patch is ok, or it's not and you're just going to cause all
-> sort of interesting random problems including possible memory
-> corruption.
 
-Of course the driver may be buggy, but it asks for the correct mask.
+--=-OBPBxP5t6SGUuJaRFawp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This particular device is not capable of handling 32-bit DMA. The driver detects 
-the 32-bit failure and falls back to 30 bits. It works on x86, and did on PPC32 
-until 5.1. As Christoph said, it should always be possible to use fewer bits 
-than the maximum.
+On Mon, 2019-06-10 at 12:02 +0530, Anju T Sudhakar wrote:
+> Nest and core imc(In-memory Collection counters) assigns a particular
+> cpu as the designated target for counter data collection.
+> During system boot, the first online cpu in a chip gets assigned as
+> the designated cpu for that chip(for nest-imc) and the first online cpu
+> in a core gets assigned as the designated cpu for that core(for core-imc)=
+.
+>=20
+> If the designated cpu goes offline, the next online cpu from the same
+> chip(for nest-imc)/core(for core-imc) is assigned as the next target,
+> and the event context is migrated to the target cpu.
+> Currently, cpumask_any_but() function is used to find the target cpu.
+> Though this function is expected to return a `random` cpu, this always
+> returns the next online cpu.
+>=20
+> If all cpus in a chip/core is offlined in a sequential manner, starting
+> from the first cpu, the event migration has to happen for all the cpus
+> which goes offline. Since the migration process involves a grace period,
+> the total time taken to offline all the cpus will be significantly high.
+>=20
+> Example:
+> In a system which has 2 sockets, with
+> NUMA node0 CPU(s):     0-87
+> NUMA node8 CPU(s):     88-175
+>=20
+> Time taken to offline cpu 88-175:
+> real    2m56.099s
+> user    0m0.191s
+> sys     0m0.000s
+>=20
+> Use cpumask_last() to choose the target cpu, when the designated cpu
+> goes online, so the migration will happen only when the last_cpu in the
+> mask goes offline. This way the time taken to offline all cpus in a
+> chip/core can be reduced.
+>=20
+> With the patch,=20
+>=20
+> Time taken  to offline cpu 88-175:
+> real    0m12.207s
+> user    0m0.171s
+> sys     0m0.000s
+>=20
+>=20
+> Offlining all cpus in reverse order is also taken care because,
+> cpumask_any_but() is used to find the designated cpu if the last cpu in
+> the mask goes offline. Since cpumask_any_but() always return the first
+> cpu in the mask, that becomes the designated cpu and migration will happe=
+n
+> only when the first_cpu in the mask goes offline.
+>=20
+> Example:
+> With the patch,
+>=20
+> Time taken to offline cpu from 175-88:
+> real    0m9.330s
+> user    0m0.110s
+> sys     0m0.000s
 
-Similar devices that are new enough to use b43 rather than b43legacy work with 
-new kernels; however, they have and use 32-bit DMA.
+Seems like a very interesting work.
+Out of curiosity, have you used 'chcpu -d' to create your benchmark?
 
-Larry
+>=20
+> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> ---
+>=20
+> Changes from v1:
+> 	Modified the commit log with more info.
+> ---
+>=20
+>  arch/powerpc/perf/imc-pmu.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+> index 31fa753..fbfd6e7 100644
+> --- a/arch/powerpc/perf/imc-pmu.c
+> +++ b/arch/powerpc/perf/imc-pmu.c
+> @@ -366,7 +366,14 @@ static int ppc_nest_imc_cpu_offline(unsigned int cpu=
+)
+>  	 */
+>  	nid =3D cpu_to_node(cpu);
+>  	l_cpumask =3D cpumask_of_node(nid);
+> -	target =3D cpumask_any_but(l_cpumask, cpu);
+> +	target =3D cpumask_last(l_cpumask);
+> +
+> +	/*
+> +	 * If this(target) is the last cpu in the cpumask for this chip,
+> +	 * check for any possible online cpu in the chip.
+> +	 */
+> +	if (unlikely(target =3D=3D cpu))
+> +		target =3D cpumask_any_but(l_cpumask, cpu);
+> =20
+>  	/*
+>  	 * Update the cpumask with the target cpu and
+> @@ -671,7 +678,10 @@ static int ppc_core_imc_cpu_offline(unsigned int cpu=
+)
+>  		return 0;
+> =20
+>  	/* Find any online cpu in that core except the current "cpu" */
+> -	ncpu =3D cpumask_any_but(cpu_sibling_mask(cpu), cpu);
+> +	ncpu =3D cpumask_last(cpu_sibling_mask(cpu));
+> +
+> +	if (unlikely(ncpu =3D=3D cpu))
+> +		ncpu =3D cpumask_any_but(cpu_sibling_mask(cpu), cpu);
+> =20
+>  	if (ncpu >=3D 0 && ncpu < nr_cpu_ids) {
+>  		cpumask_set_cpu(ncpu, &core_imc_cpumask);
+
+--=-OBPBxP5t6SGUuJaRFawp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz+pdsACgkQlQYWtz9S
+ttR5kRAAtSPaJEU9gZz/zdZ3YtGLIRA4z5TtSLXUwQ0r/ueUeZv+YvJ3U/RhmBwi
+BlP9fTy9bn79A+S7VY032ncyNLlK5fvERszIyUplXJWYSyQ6/j1w/JT27myv9gxu
+qiXUCFPsuf9m88Yh1XAZvhebE3Z38yeF1UWODzTV+UXjs8CzRCPhkxe2hcqpgtZY
+pLi9+s6DfhdVIYlBf9FCDcVIAjLZwwzKdByNNlpO7tMLA3fdYEyP4sS2ZbK9TpYs
+a655HZKVIqnhsNbuJCaCcLC9dOtQ2vdQVk1XHc/BgNFwlsUqq+zZzGQKCmoUgi7g
+T2t7PMfWxpGU+RiqZZjxkN+iBBnV4W/UJGv6RR3xjX57VL2pDzqcsW5OmhOAoqSy
+Me8c77fDQe+PAgn2+SQi9x7arAUu79uEdDd3q29CSAon4ISeaI1FlwMZmem+BSil
+/Rl4Fd5c/1fwmOkG08CpyU/EWs1WKmaT85NJ1DxgP5gkgVXi+mmuQJKEOOZT1qYU
+uipcOCSLCl31biirOwPuNlsLAP8VJmAnQvAVaTV+Cc9eaEuYKKBo4UOsSYXVViC3
+bLMBSYeAlVkAb7Ui5uQcovmWnvprhO88FErrRgM1kxBYhExeV00TbJD9AWMTzord
+fPkLSmWIOqxgt3Ykd8KsTydxQQvokVIv7+kI4oKzi+U5A3rtqHw=
+=8Iw+
+-----END PGP SIGNATURE-----
+
+--=-OBPBxP5t6SGUuJaRFawp--
+
