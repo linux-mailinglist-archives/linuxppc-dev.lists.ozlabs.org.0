@@ -1,104 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA5F3B4B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 14:22:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45MshC21twzDqMy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 22:22:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49AD3B72D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 16:21:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45MwLS0JdHzDqPM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 00:21:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Mscd0Z4vzDqMp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 22:18:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45Mscb4qgxz8tR6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 22:18:55 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45Mscb3cY8z9sN4; Mon, 10 Jun 2019 22:18:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45MscX1byrz9sNt
- for <linuxppc-dev@ozlabs.org>; Mon, 10 Jun 2019 22:18:51 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5ACCS6A046200
- for <linuxppc-dev@ozlabs.org>; Mon, 10 Jun 2019 08:18:47 -0400
-Received: from e31.co.us.ibm.com (e31.co.us.ibm.com [32.97.110.149])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t1n4sd8bc-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 10 Jun 2019 08:18:47 -0400
-Received: from localhost
- by e31.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <cclaudio@linux.ibm.com>;
- Mon, 10 Jun 2019 13:18:46 +0100
-Received: from b03cxnp07028.gho.boulder.ibm.com (9.17.130.15)
- by e31.co.us.ibm.com (192.168.1.131) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 10 Jun 2019 13:18:44 +0100
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5ACIg6223331120
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Jun 2019 12:18:42 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A94CB7805C;
- Mon, 10 Jun 2019 12:18:42 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F9D47805E;
- Mon, 10 Jun 2019 12:18:40 +0000 (GMT)
-Received: from [9.18.235.79] (unknown [9.18.235.79])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 10 Jun 2019 12:18:40 +0000 (GMT)
-Subject: Re: [PATCH v3 1/9] KVM: PPC: Ultravisor: Add PPC_UV config option
-To: Leonardo Bras <leonardo@linux.ibm.com>, linuxppc-dev@ozlabs.org
-References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-2-cclaudio@linux.ibm.com>
- <0f6d278e78b2784a77ce2cd07a84377da6f5262e.camel@linux.ibm.com>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Date: Mon, 10 Jun 2019 09:18:39 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+X-Greylist: delayed 536 seconds by postgrey-1.36 at bilbo;
+ Tue, 11 Jun 2019 00:19:43 AEST
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45MwHz5WP2zDqDs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 00:19:42 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77617344;
+ Mon, 10 Jun 2019 07:10:42 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
+ [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3D5A3F557;
+ Mon, 10 Jun 2019 07:10:41 -0700 (PDT)
+Date: Mon, 10 Jun 2019 15:10:36 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 4/4] mm/vmalloc: Hugepage vmalloc mappings
+Message-ID: <20190610141036.GA16989@lakrids.cambridge.arm.com>
+References: <20190610043838.27916-1-npiggin@gmail.com>
+ <20190610043838.27916-4-npiggin@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <0f6d278e78b2784a77ce2cd07a84377da6f5262e.camel@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19061012-8235-0000-0000-00000EA5F1A6
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011242; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01215941; UDB=6.00639292; IPR=6.00997040; 
- MB=3.00027252; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-10 12:18:45
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061012-8236-0000-0000-000045F57D3F
-Message-Id: <156cd4df-7616-1f34-afd6-7298ebdc8dc0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-10_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906100086
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190610043838.27916-4-npiggin@gmail.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,69 +50,333 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
-On 6/7/19 5:11 PM, Leonardo Bras wrote:
->
-> On Thu, 2019-06-06 at 14:36 -0300, Claudio Carvalho wrote:
->> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
->>
->> CONFIG_PPC_UV adds support for ultravisor.
->>
->> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
->> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
->> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
->> [Update config help and commit message]
->> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> ---
->>  arch/powerpc/Kconfig | 20 ++++++++++++++++++++
->>  1 file changed, 20 insertions(+)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 8c1c636308c8..276c1857c335 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -439,6 +439,26 @@ config PPC_TRANSACTIONAL_MEM
->>         ---help---
->>           Support user-mode Transactional Memory on POWERPC.
->>
->> +config PPC_UV
->> +	bool "Ultravisor support"
->> +	depends on KVM_BOOK3S_HV_POSSIBLE
->> +	select HMM_MIRROR
->> +	select HMM
->> +	select ZONE_DEVICE
->> +	select MIGRATE_VMA_HELPER
->> +	select DEV_PAGEMAP_OPS
->> +	select DEVICE_PRIVATE
->> +	select MEMORY_HOTPLUG
->> +	select MEMORY_HOTREMOVE
->> +	default n
->> +	help
->> +	  This option paravirtualizes the kernel to run in POWER platforms that
->> +	  supports the Protected Execution Facility (PEF). In such platforms,
->> +	  the ultravisor firmware runs at a privilege level above the
->> +	  hypervisor.
->> +
->> +	  If unsure, say "N".
->> +
->>  config LD_HEAD_STUB_CATCH
->>  	bool "Reserve 256 bytes to cope with linker stubs in HEAD text" if EXPERT
->>  	depends on PPC64
-> Maybe this patch should be the last of the series, as it may cause some
-> bisect trouble to have this option enabled while missing some of the
-> patches.
+On Mon, Jun 10, 2019 at 02:38:38PM +1000, Nicholas Piggin wrote:
+> For platforms that define HAVE_ARCH_HUGE_VMAP, have vmap allow vmalloc to
+> allocate huge pages and map them
+> 
+> This brings dTLB misses for linux kernel tree `git diff` from 45,000 to
+> 8,000 on a Kaby Lake KVM guest with 8MB dentry hash and mitigations=off
+> (performance is in the noise, under 1% difference, page tables are likely
+> to be well cached for this workload). Similar numbers are seen on POWER9.
 
-Thanks Leonardo. I changed that for the next version.
+Do you happen to know which vmalloc mappings these get used for in the
+above case? Where do we see vmalloc mappings that large?
 
-Claudio
+I'm worried as to how this would interact with the set_memory_*()
+functions, as on arm64 those can only operate on page-granular mappings.
+Those may need fixing up to handle huge mappings; certainly if the above
+is all for modules.
 
+Thanks,
+Mark.
 
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  include/asm-generic/4level-fixup.h |   1 +
+>  include/asm-generic/5level-fixup.h |   1 +
+>  include/linux/vmalloc.h            |   1 +
+>  mm/vmalloc.c                       | 132 +++++++++++++++++++++++------
+>  4 files changed, 107 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/4level-fixup.h
+> index e3667c9a33a5..3cc65a4dd093 100644
+> --- a/include/asm-generic/4level-fixup.h
+> +++ b/include/asm-generic/4level-fixup.h
+> @@ -20,6 +20,7 @@
+>  #define pud_none(pud)			0
+>  #define pud_bad(pud)			0
+>  #define pud_present(pud)		1
+> +#define pud_large(pud)			0
+>  #define pud_ERROR(pud)			do { } while (0)
+>  #define pud_clear(pud)			pgd_clear(pud)
+>  #define pud_val(pud)			pgd_val(pud)
+> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
+> index bb6cb347018c..c4377db09a4f 100644
+> --- a/include/asm-generic/5level-fixup.h
+> +++ b/include/asm-generic/5level-fixup.h
+> @@ -22,6 +22,7 @@
+>  #define p4d_none(p4d)			0
+>  #define p4d_bad(p4d)			0
+>  #define p4d_present(p4d)		1
+> +#define p4d_large(p4d)			0
+>  #define p4d_ERROR(p4d)			do { } while (0)
+>  #define p4d_clear(p4d)			pgd_clear(p4d)
+>  #define p4d_val(p4d)			pgd_val(p4d)
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index 812bea5866d6..4c92dc608928 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -42,6 +42,7 @@ struct vm_struct {
+>  	unsigned long		size;
+>  	unsigned long		flags;
+>  	struct page		**pages;
+> +	unsigned int		page_shift;
+>  	unsigned int		nr_pages;
+>  	phys_addr_t		phys_addr;
+>  	const void		*caller;
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index dd27cfb29b10..0cf8e861caeb 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -36,6 +36,7 @@
+>  #include <linux/rbtree_augmented.h>
+>  
+>  #include <linux/uaccess.h>
+> +#include <asm/pgtable.h>
+>  #include <asm/tlbflush.h>
+>  #include <asm/shmparam.h>
+>  
+> @@ -440,6 +441,41 @@ static int vmap_pages_range(unsigned long start, unsigned long end,
+>  	return ret;
+>  }
+>  
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +static int vmap_hpages_range(unsigned long start, unsigned long end,
+> +				   pgprot_t prot, struct page **pages,
+> +				   unsigned int page_shift)
+> +{
+> +	unsigned long addr = start;
+> +	unsigned int i, nr = (end - start) >> (PAGE_SHIFT + page_shift);
+> +
+> +	for (i = 0; i < nr; i++) {
+> +		int err;
+> +
+> +		err = vmap_range_noflush(addr,
+> +					addr + (PAGE_SIZE << page_shift),
+> +					__pa(page_address(pages[i])), prot,
+> +					PAGE_SHIFT + page_shift);
+> +		if (err)
+> +			return err;
+> +
+> +		addr += PAGE_SIZE << page_shift;
+> +	}
+> +	flush_cache_vmap(start, end);
+> +
+> +	return nr;
+> +}
+> +#else
+> +static int vmap_hpages_range(unsigned long start, unsigned long end,
+> +			   pgprot_t prot, struct page **pages,
+> +			   unsigned int page_shift)
+> +{
+> +	BUG_ON(page_shift != PAGE_SIZE);
+> +	return vmap_pages_range(start, end, prot, pages);
+> +}
+> +#endif
+> +
+> +
+>  int is_vmalloc_or_module_addr(const void *x)
+>  {
+>  	/*
+> @@ -462,7 +498,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  {
+>  	unsigned long addr = (unsigned long) vmalloc_addr;
+>  	struct page *page = NULL;
+> -	pgd_t *pgd = pgd_offset_k(addr);
+> +	pgd_t *pgd;
+>  	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+> @@ -474,27 +510,38 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  	 */
+>  	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
+>  
+> +	pgd = pgd_offset_k(addr);
+>  	if (pgd_none(*pgd))
+>  		return NULL;
+> +
+>  	p4d = p4d_offset(pgd, addr);
+>  	if (p4d_none(*p4d))
+>  		return NULL;
+> -	pud = pud_offset(p4d, addr);
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +	if (p4d_large(*p4d))
+> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+> +		return NULL;
+>  
+> -	/*
+> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+> -	 * identify huge mappings, which we may encounter on architectures
+> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+> -	 * not [unambiguously] associated with a struct page, so there is
+> -	 * no correct value to return for them.
+> -	 */
+> -	WARN_ON_ONCE(pud_bad(*pud));
+> -	if (pud_none(*pud) || pud_bad(*pud))
+> +	pud = pud_offset(p4d, addr);
+> +	if (pud_none(*pud))
+> +		return NULL;
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +	if (pud_large(*pud))
+> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(pud_bad(*pud)))
+>  		return NULL;
+> +
+>  	pmd = pmd_offset(pud, addr);
+> -	WARN_ON_ONCE(pmd_bad(*pmd));
+> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
+> +	if (pmd_none(*pmd))
+> +		return NULL;
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +	if (pmd_large(*pmd))
+> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+>  		return NULL;
+>  
+>  	ptep = pte_offset_map(pmd, addr);
+> @@ -502,6 +549,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>  	if (pte_present(pte))
+>  		page = pte_page(pte);
+>  	pte_unmap(ptep);
+> +
+>  	return page;
+>  }
+>  EXPORT_SYMBOL(vmalloc_to_page);
+> @@ -2185,8 +2233,9 @@ static struct vm_struct *__get_vm_area_node(unsigned long size,
+>  		return NULL;
+>  
+>  	if (flags & VM_IOREMAP)
+> -		align = 1ul << clamp_t(int, get_count_order_long(size),
+> -				       PAGE_SHIFT, IOREMAP_MAX_ORDER);
+> +		align = max(align,
+> +				1ul << clamp_t(int, get_count_order_long(size),
+> +				       PAGE_SHIFT, IOREMAP_MAX_ORDER));
+>  
+>  	area = kzalloc_node(sizeof(*area), gfp_mask & GFP_RECLAIM_MASK, node);
+>  	if (unlikely(!area))
+> @@ -2398,7 +2447,7 @@ static void __vunmap(const void *addr, int deallocate_pages)
+>  			struct page *page = area->pages[i];
+>  
+>  			BUG_ON(!page);
+> -			__free_pages(page, 0);
+> +			__free_pages(page, area->page_shift);
+>  		}
+>  
+>  		kvfree(area->pages);
+> @@ -2541,14 +2590,17 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  				 pgprot_t prot, int node)
+>  {
+>  	struct page **pages;
+> +	unsigned long addr = (unsigned long)area->addr;
+> +	unsigned long size = get_vm_area_size(area);
+> +	unsigned int page_shift = area->page_shift;
+> +	unsigned int shift = page_shift + PAGE_SHIFT;
+>  	unsigned int nr_pages, array_size, i;
+>  	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
+>  	const gfp_t alloc_mask = gfp_mask | __GFP_NOWARN;
+>  	const gfp_t highmem_mask = (gfp_mask & (GFP_DMA | GFP_DMA32)) ?
+> -					0 :
+> -					__GFP_HIGHMEM;
+> +					0 : __GFP_HIGHMEM;
+>  
+> -	nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
+> +	nr_pages = size >> shift;
+>  	array_size = (nr_pages * sizeof(struct page *));
+>  
+>  	area->nr_pages = nr_pages;
+> @@ -2569,10 +2621,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  	for (i = 0; i < area->nr_pages; i++) {
+>  		struct page *page;
+>  
+> -		if (node == NUMA_NO_NODE)
+> -			page = alloc_page(alloc_mask|highmem_mask);
+> -		else
+> -			page = alloc_pages_node(node, alloc_mask|highmem_mask, 0);
+> +		page = alloc_pages_node(node,
+> +				alloc_mask|highmem_mask, page_shift);
+>  
+>  		if (unlikely(!page)) {
+>  			/* Successfully allocated i pages, free them in __vunmap() */
+> @@ -2584,8 +2634,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>  			cond_resched();
+>  	}
+>  
+> -	if (map_vm_area(area, prot, pages))
+> +	if (vmap_hpages_range(addr, addr + size, prot, pages, page_shift) < 0)
+>  		goto fail;
+> +
+>  	return area->addr;
+>  
+>  fail:
+> @@ -2619,22 +2670,39 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>  			pgprot_t prot, unsigned long vm_flags, int node,
+>  			const void *caller)
+>  {
+> -	struct vm_struct *area;
+> +	struct vm_struct *area = NULL;
+>  	void *addr;
+>  	unsigned long real_size = size;
+> +	unsigned long real_align = align;
+> +	unsigned int shift = PAGE_SHIFT;
+>  
+>  	size = PAGE_ALIGN(size);
+>  	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
+>  		goto fail;
+>  
+> +	if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
+> +		unsigned long size_per_node;
+> +
+> +		size_per_node = size;
+> +		if (node == NUMA_NO_NODE)
+> +			size_per_node /= num_online_nodes();
+> +		if (size_per_node >= PMD_SIZE)
+> +			shift = PMD_SHIFT;
+> +	}
+> +again:
+> +	align = max(real_align, 1UL << shift);
+> +	size = ALIGN(real_size, align);
+> +
+>  	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
+>  				vm_flags, start, end, node, gfp_mask, caller);
+>  	if (!area)
+>  		goto fail;
+>  
+> +	area->page_shift = shift - PAGE_SHIFT;
+> +
+>  	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
+>  	if (!addr)
+> -		return NULL;
+> +		goto fail;
+>  
+>  	/*
+>  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
+> @@ -2648,8 +2716,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>  	return addr;
+>  
+>  fail:
+> -	warn_alloc(gfp_mask, NULL,
+> +	if (shift == PMD_SHIFT) {
+> +		shift = PAGE_SHIFT;
+> +		goto again;
+> +	}
+> +
+> +	if (!area) {
+> +		/* Warn for area allocation, page allocations already warn */
+> +		warn_alloc(gfp_mask, NULL,
+>  			  "vmalloc: allocation failure: %lu bytes", real_size);
+> +	}
+>  	return NULL;
+>  }
+>  
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
