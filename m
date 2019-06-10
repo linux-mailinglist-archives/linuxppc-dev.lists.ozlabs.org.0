@@ -2,78 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF663B919
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 18:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F933BC6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 21:05:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45MynK1SVYzDqHW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 02:11:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45N2f94RqCzDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 05:05:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=vaga.pv.it
+ (client-ip=95.128.36.40; helo=mx.kolabnow.com;
+ envelope-from=federico.vaga@vaga.pv.it; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="r6Jmcvz2"; 
+ dmarc=none (p=none dis=none) header.from=vaga.pv.it
+Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
+ secure) header.d=kolabnow.com header.i=@kolabnow.com header.b="Qbjr2lAF"; 
  dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx.kolabnow.com (mx.kolabnow.com [95.128.36.40])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Myl66NzczDqCw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 02:09:54 +1000 (AEST)
-Received: by mail-oi1-x244.google.com with SMTP id q186so6662147oia.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 09:09:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language;
- bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
- b=r6Jmcvz2cFKkJ6CTqjBzhvxeOFJ4KVWyE818wZ4KwtCLKljAY2IT2vM3t80hoTtMbY
- 8oh9zbpHVIRODOH06ZuEazfBGO/dChhf4nzkxDB29AToHowI5FXuk/8/t5MiKvp8FM4q
- nGzHeF2WXRojWEfEGs/SvA/weGEDneodiygsuHCKyq4DfLkoNZYpBZTSe5LOFOxCroW0
- hSlhJUJCvJkmm5emllO+K7uZd038eQA7XW3eIu6C/+t0y12awHExlcLw9xJ45AmNTT5J
- IRm+D5RS6g+VddIPA3ujJZacxH6pH0Loi9NgbqrhjLiBzJlyt6zMwhR9qohatonGnQSx
- lkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language;
- bh=o6kJfIIxf3+CLuDt60IWBugOj7DYo2cJ4pIJXDINxcQ=;
- b=dkU19b/zi4I1ilP4D9r1MS38CrA6LAsOjHyfl1MDqSzCC/zgLDWJMvXWwDFcj8QwUY
- QzutjmiDFy0R0RrB/bZ9WyBbLIPcp/6mvN0pkQPpjNddPt9NRYDCRlhj32sK/CfDR317
- YctIsn1tNoeHWfGo7y1E7NHZxifnX1lkf5m/Wardic6AUiMZqlLE8kiItOgURIl1s+m8
- NBVk5GXuosbh96rNSllQbal7l9PMoauYWt+HaEr4tKpVVfhOyHvtPEVCXd9Tc2vqjAuc
- 4u2x5wvZ158JE/X6zCDync64qtjYrpWQFn79JJaQDihvbV8N0xqZQCt/Uj4OOXKtLaMl
- gVxQ==
-X-Gm-Message-State: APjAAAWWyr5qszNo8/wfBHBleUAkjLPW5/mzeKTiblk27pzLrNheqh7S
- nlU/SKiztPIRqLM2p/9yFLqLDhOZ
-X-Google-Smtp-Source: APXvYqyPyr0j26tGMkWhtV43A0upDXJqDNFFrti25Vh1FAvy5t/Ay00kZncuJYv/jTolGck8yI/ccA==
-X-Received: by 2002:aca:50c6:: with SMTP id e189mr12465946oib.63.1560182991581; 
- Mon, 10 Jun 2019 09:09:51 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
- [24.31.245.230])
- by smtp.gmail.com with ESMTPSA id l12sm416626otp.74.2019.06.10.09.09.48
- (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
- Mon, 10 Jun 2019 09:09:49 -0700 (PDT)
-Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
-To: Christoph Hellwig <hch@lst.de>
-References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
- <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
- <20190607172902.GA8183@lst.de>
- <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
- <20190610081825.GA16534@lst.de>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
-Date: Mon, 10 Jun 2019 11:09:47 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Mz5P75h1zDqLx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 02:25:45 +1000 (AEST)
+Received: from localhost (unknown [127.0.0.1])
+ by ext-mx-out003.mykolab.com (Postfix) with ESMTP id 1FF58403E2;
+ Mon, 10 Jun 2019 18:25:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kolabnow.com; h=
+ content-type:content-type:content-transfer-encoding:mime-version
+ :references:in-reply-to:message-id:date:date:subject:subject
+ :from:from:received:received:received; s=dkim20160331; t=
+ 1560183940; x=1561998341; bh=ySLNIX1jiCqldrmER8p/c1YOLUiUU7vfIBo
+ k3u7v1yA=; b=Qbjr2lAFN/nwTVFb3YkUWU/8tkK2xRuhjZsLMgdCND9R34aGoNh
+ L2rcHMjFoWIBOEyBgi+MymRMgil8vhsvUkvUoupC7SoATMEh/iy6YPVpjA+5H4ji
+ Sq9azbND3/SSpkJHQo81xewDfs7u1H8fnDh9kVM4AjM48YEfBXsuVqT4rapzKmul
+ 1Ei88sIKitJClBwofZmi6InRA8gbKUKcVg7DR+C8Og1oKRbf3v3PTi2BIL/5Ow+m
+ fE5WCn3ir1WHhOXjbX9mYQIY6ionQ0oEGjmBF7gnqu8ILBGEfAUdczCqRfLLNKCu
+ Mgna0odiTpKA/ttrTXGmAUMaLJYKwuOFR2wMFJm6jNdjUVsq50EPgBNt5hojESRK
+ ARVzFlktwS9I7Dg3zxTTNCvNs1SDiPwRgnX2zRa6o2Hrxw0ZA9SD5NGvxwjwYkXn
+ RcfHGYEqdsFjfhrPUKzbyHovzfhc/DvM6es5MEDChVM6hbtU3ebGQuYz5ZzCLoU5
+ Tf5CE5ptqRaJnjqoewc+2I8Ou8dWd2AozVQYRI4NAjcWVDkkpXeNqNKSa8KUmZ9G
+ AbcsC0D7p3FXd28Z6d8F8A8HeKobEE1AM4rGfzQsMzvMT1TA0Dv5erAQVa/NLGEs
+ kZJ5ZtcjwU/5TJ6pEvxuxKdns93Yhvd/oWDj/yITosqRFhYy+AwM5lfQ=
+X-Virus-Scanned: amavisd-new at mykolab.com
+X-Spam-Flag: NO
+X-Spam-Score: -1.9
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 tagged_above=-10 required=5
+ tests=[BAYES_00=-1.9] autolearn=unavailable autolearn_force=no
+Received: from mx.kolabnow.com ([127.0.0.1])
+ by localhost (ext-mx-out003.mykolab.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id n9ph0Cuw_TXP; Mon, 10 Jun 2019 18:25:40 +0200 (CEST)
+Received: from int-mx002.mykolab.com (unknown [10.9.13.2])
+ by ext-mx-out003.mykolab.com (Postfix) with ESMTPS id 3D67D403AA;
+ Mon, 10 Jun 2019 18:25:39 +0200 (CEST)
+Received: from ext-subm003.mykolab.com (unknown [10.9.6.3])
+ by int-mx002.mykolab.com (Postfix) with ESMTPS id 6CFED3431;
+ Mon, 10 Jun 2019 18:25:38 +0200 (CEST)
+From: Federico Vaga <federico.vaga@vaga.pv.it>
+To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: Re: [PATCH v3 14/33] docs: kbuild: convert docs to ReST and rename to
+ *.rst
+Date: Mon, 10 Jun 2019 18:25:36 +0200
+Message-ID: <6349042.qd6NX4z2Zd@harkonnen>
+In-Reply-To: <3d40d111d0512d785b6a67573772f532f88d2359.1560045490.git.mchehab+samsung@kernel.org>
+References: <cover.1560045490.git.mchehab+samsung@kernel.org>
+ <3d40d111d0512d785b6a67573772f532f88d2359.1560045490.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190610081825.GA16534@lst.de>
-Content-Type: multipart/mixed; boundary="------------9E0BA6B24CBFDA3D78DB4932"
-Content-Language: en-US
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Mailman-Approved-At: Tue, 11 Jun 2019 05:02:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,163 +81,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
- linuxppc-dev@lists.ozlabs.org
+Cc: , linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Stanislaw Gruszka <sgruszka@redhat.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	bridge@lists.linux-foundation.org,
+	Palmer Dabbelt <palmer@sifive.com>, alsa-devel@alsa-project.org,
+	dri-devel@lists.freedesktop.org, Ofer Levi <oferle@mellanox.com>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Harry Wei <harryxiyou@gmail.com>, Paul Mackerras <paulus@samba.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-kbuild@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Vincent Chen <deanbo422@gmail.com>,
+	Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+	Jonas Bonn <jonas@southpole.se>,
+	Alex Shi <alex.shi@linux.alibaba.com>, linux-c6x-dev@linux-c6x.org,
+	linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+	netdev@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
+	coreteam@netfilter.org, Mark Salter <msalter@redhat.com>,
+	Al exey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	linux-snps-arc@lists.infradead.org,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>, devel@driverdev.osuosl.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Intel Linux Wireless <linuxwifi@intel.com>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	David Woodhouse <dwmw2@infradead.or>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Mauro Carvalho Chehab <mchehab@infradead.org>,
+	openrisc@lists.librecores.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Greentime Hu <green.hu@gmail.com>, linux-mtd@lists.infradead.org,
+	Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+	Stafford Horne <shorne@gmail.com>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
+	Jon Maloy <jon.maloy@ericsson.com>, Michal Simek <monstr@monstr.eu>,
+	Michal Marek <michal.lkml@markovi.net>,
+	netfilter-devel@vger.kernel.org,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	g@lists.ozlabs.org, Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	Vineet Gupta <vgupta@synopsys.com>, linux-usb@vger.kernel.org,
+	Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
+	Roopa Prabhu <roopa@cumulusnetworks.com>,
+	Richard Weinberger <richard@nod.at>,
+	Ying Xue <ying.xue@windriver.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	"David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------9E0BA6B24CBFDA3D78DB4932
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 6/10/19 3:18 AM, Christoph Hellwig wrote:
-> On Sat, Jun 08, 2019 at 04:52:24PM -0500, Larry Finger wrote:
->> On 6/7/19 12:29 PM, Christoph Hellwig wrote:
->>> I don't think we should work around this in the driver, we need to fix
->>> it in the core.  I'm curious why my previous patch didn't work.  Can
->>> you throw in a few printks what failed?  I.e. did dma_direct_supported
->>> return false?  Did the actual allocation fail?
->>
->> Routine dma_direct_supported() returns true.
->>
->> The failure is in routine dma_set_mask() in the following if test:
->>
->>          if (!dev->dma_mask || !dma_supported(dev, mask))
->>                  return -EIO;
->>
->> For b43legacy, dev->dma_mask is 0xc265684800000000.
->>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x3fffffff, and
->> the routine returns -EIO.
->>
->> For b43,       dev->dma_mask is 0xc265684800000001,
->>      dma_supported(dev, mask) is 0xc08b000000000000, mask is 0x77777777, and
->> the routine returns 0.
+In data Sunday, June 9, 2019 4:27:04 AM CEST, Mauro Carvalho Chehab ha 
+scritto:
+> The kbuild documentation clearly shows that the documents
+> there are written at different times: some use markdown,
+> some use their own peculiar logic to split sections.
 > 
-> I don't fully understand what values the above map to.  Can you send
-> me your actual debugging patch as well?
+> Convert everything to ReST without affecting too much
+> the author's style and avoiding adding uneeded markups.
+> 
+> The conversion is actually:
+>   - add blank lines and identation in order to identify paragraphs;
+>   - fix tables markups;
+>   - add some lists markups;
+>   - mark literal blocks;
+>   - adjust title markups.
+> 
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> ---
+>  Documentation/admin-guide/README.rst          |   2 +-
+>  ...eaders_install.txt => headers_install.rst} |   5 +-
+>  Documentation/kbuild/index.rst                |  27 +
+>  Documentation/kbuild/issues.rst               |  11 +
+>  .../kbuild/{kbuild.txt => kbuild.rst}         | 119 ++--
+>  ...nfig-language.txt => kconfig-language.rst} | 232 ++++----
+>  ...anguage.txt => kconfig-macro-language.rst} |  37 +-
+>  .../kbuild/{kconfig.txt => kconfig.rst}       | 136 +++--
+>  .../kbuild/{makefiles.txt => makefiles.rst}   | 530 +++++++++++-------
+>  .../kbuild/{modules.txt => modules.rst}       | 168 +++---
+>  Documentation/kernel-hacking/hacking.rst      |   4 +-
+>  Documentation/process/coding-style.rst        |   2 +-
+>  Documentation/process/submit-checklist.rst    |   2 +-
+>  .../it_IT/kernel-hacking/hacking.rst          |   4 +-
+>  .../it_IT/process/coding-style.rst            |   2 +-
+>  .../it_IT/process/submit-checklist.rst        |   2 +-
 
-I do not understand why the if statement returns true as neither of the values 
-is zero. After seeing the x86 output shown below, I also do not understand all 
-the trailing zeros.
+Limited to translations/it_IT
 
-My entire patch is attached. That output came from this section:
+Acked-by: Federico Vaga <federico.vaga@vaga.pv.it>
 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index f7afdad..ba2489d 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -317,9 +317,12 @@ int dma_supported(struct device *dev, u64 mask)
+>  .../zh_CN/process/coding-style.rst            |   2 +-
+>  .../zh_CN/process/submit-checklist.rst        |   2 +-
+>  Kconfig                                       |   2 +-
+>  arch/arc/plat-eznps/Kconfig                   |   2 +-
+>  arch/c6x/Kconfig                              |   2 +-
+>  arch/microblaze/Kconfig.debug                 |   2 +-
+>  arch/microblaze/Kconfig.platform              |   2 +-
+>  arch/nds32/Kconfig                            |   2 +-
+>  arch/openrisc/Kconfig                         |   2 +-
+>  arch/powerpc/sysdev/Kconfig                   |   2 +-
+>  arch/riscv/Kconfig                            |   2 +-
+>  drivers/auxdisplay/Kconfig                    |   2 +-
+>  drivers/firmware/Kconfig                      |   2 +-
+>  drivers/mtd/devices/Kconfig                   |   2 +-
+>  drivers/net/ethernet/smsc/Kconfig             |   6 +-
+>  drivers/net/wireless/intel/iwlegacy/Kconfig   |   4 +-
+>  drivers/net/wireless/intel/iwlwifi/Kconfig    |   2 +-
+>  drivers/parport/Kconfig                       |   2 +-
+>  drivers/scsi/Kconfig                          |   4 +-
+>  drivers/staging/sm750fb/Kconfig               |   2 +-
+>  drivers/usb/misc/Kconfig                      |   4 +-
+>  drivers/video/fbdev/Kconfig                   |  14 +-
+>  net/bridge/netfilter/Kconfig                  |   2 +-
+>  net/ipv4/netfilter/Kconfig                    |   2 +-
+>  net/ipv6/netfilter/Kconfig                    |   2 +-
+>  net/netfilter/Kconfig                         |  16 +-
+>  net/tipc/Kconfig                              |   2 +-
+>  scripts/Kbuild.include                        |   4 +-
+>  scripts/Makefile.host                         |   2 +-
+>  scripts/kconfig/symbol.c                      |   2 +-
+>  .../tests/err_recursive_dep/expected_stderr   |  14 +-
+>  sound/oss/dmasound/Kconfig                    |   6 +-
+>  48 files changed, 840 insertions(+), 561 deletions(-)
+>  rename Documentation/kbuild/{headers_install.txt => headers_install.rst}
+> (96%) create mode 100644 Documentation/kbuild/index.rst
+>  create mode 100644 Documentation/kbuild/issues.rst
+>  rename Documentation/kbuild/{kbuild.txt => kbuild.rst} (72%)
+>  rename Documentation/kbuild/{kconfig-language.txt => kconfig-language.rst}
+> (85%) rename Documentation/kbuild/{kconfig-macro-language.txt =>
+> kconfig-macro-language.rst} (94%) rename Documentation/kbuild/{kconfig.txt
+> => kconfig.rst} (80%)
+>  rename Documentation/kbuild/{makefiles.txt => makefiles.rst} (83%)
+>  rename Documentation/kbuild/{modules.txt => modules.rst} (84%)
 
-  int dma_set_mask(struct device *dev, u64 mask)
-  {
-+       pr_info("mask 0x%llx, dma_mask 0x%llx, dma_supported 0x%llx\n", mask, 
-dev->dma_mask,
-+               dma_supported(dev, mask));
-         if (!dev->dma_mask || !dma_supported(dev, mask))
-                 return -EIO;
 
-+       pr_info("Continuing in dma_set_mask()\n");
-         arch_dma_set_mask(dev, mask);
-         dma_check_mask(dev, mask);
-         *dev->dma_mask = mask;
 
-On a 32-bit x86 computer with 1GB of RAM, that same output was
 
-For b43legacy, dev->dma_mask is 0x01f4029044.
-     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0x3fffffff, and
-the routine returns 0. 30-bit DMA works.
 
-For b43,       dev->dma_mask is 0x01f4029044,
-     dma_supported(dev, mask) is 0x1ef37f7000, mask is 0xffffffff, and
-  the routine also returns 0. This card supports 32-bit DMA.
-
-Larry
-
---------------9E0BA6B24CBFDA3D78DB4932
-Content-Type: text/plain; charset=UTF-8;
- name="b43legacy_tests"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="b43legacy_tests"
-
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmggYi9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9hc20vcGFnZS5oCmluZGV4IGI4Mjg2YTIuLjdhMzY3Y2UgMTAwNjQ0
-Ci0tLSBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wYWdlLmgKKysrIGIvYXJjaC9wb3dl
-cnBjL2luY2x1ZGUvYXNtL3BhZ2UuaApAQCAtMzE5LDYgKzMxOSwxMCBAQCBleHRlcm4gdm9p
-ZCBjb3B5X3VzZXJfcGFnZSh2b2lkICp0bywgdm9pZCAqZnJvbSwgdW5zaWduZWQgbG9uZyB2
-YWRkciwKICNlbmRpZiAvKiBfX0FTU0VNQkxZX18gKi8KICNpbmNsdWRlIDxhc20vc2xpY2Uu
-aD4KIAorI2lmIDEgLyogWFhYOiBwbWFjPyAgZHluYW1pYyBkaXNjb3Zlcnk/ICovCisjZGVm
-aW5lIEFSQ0hfWk9ORV9ETUFfQklUUyAzMAorI2Vsc2UKICNkZWZpbmUgQVJDSF9aT05FX0RN
-QV9CSVRTIDMxCisjZW5kaWYKIAogI2VuZGlmIC8qIF9BU01fUE9XRVJQQ19QQUdFX0ggKi8K
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMgYi9hcmNoL3Bv
-d2VycGMva2VybmVsL2RtYS1pb21tdS5jCmluZGV4IDA5MjMxZWYuLjc2MWQ5NTEgMTAwNjQ0
-Ci0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvZG1hLWlvbW11LmMKKysrIGIvYXJjaC9wb3dl
-cnBjL2tlcm5lbC9kbWEtaW9tbXUuYwpAQCAtMjAsNiArMjAsOCBAQAogICovCiBzdGF0aWMg
-aW5saW5lIGJvb2wgZG1hX2lvbW11X2FsbG9jX2J5cGFzcyhzdHJ1Y3QgZGV2aWNlICpkZXYp
-CiB7CisJcHJfaW5mbygiZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBhc3MgJWQsICFpb21tdV9m
-aXhlZF9pc193ZWFrICVkXG4iLAorCQlkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFzcywgIWlv
-bW11X2ZpeGVkX2lzX3dlYWspCQkKIAlyZXR1cm4gZGV2LT5hcmNoZGF0YS5pb21tdV9ieXBh
-c3MgJiYgIWlvbW11X2ZpeGVkX2lzX3dlYWsgJiYKIAkJZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
-ZGV2LCBkZXYtPmNvaGVyZW50X2RtYV9tYXNrKTsKIH0KQEAgLTI3LDYgKzI5LDggQEAgc3Rh
-dGljIGlubGluZSBib29sIGRtYV9pb21tdV9hbGxvY19ieXBhc3Moc3RydWN0IGRldmljZSAq
-ZGV2KQogc3RhdGljIGlubGluZSBib29sIGRtYV9pb21tdV9tYXBfYnlwYXNzKHN0cnVjdCBk
-ZXZpY2UgKmRldiwKIAkJdW5zaWduZWQgbG9uZyBhdHRycykKIHsKKwlwcl9pbmZvKCIoYXR0
-cnMgJiBETUFfQVRUUl9XRUFLX09SREVSSU5HKSAlZFxuIiwKKwkJKGF0dHJzICYgRE1BX0FU
-VFJfV0VBS19PUkRFUklORykpOwogCXJldHVybiBkZXYtPmFyY2hkYXRhLmlvbW11X2J5cGFz
-cyAmJgogCQkoIWlvbW11X2ZpeGVkX2lzX3dlYWsgfHwgKGF0dHJzICYgRE1BX0FUVFJfV0VB
-S19PUkRFUklORykpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL21lbS5jIGIv
-YXJjaC9wb3dlcnBjL21tL21lbS5jCmluZGV4IGNiYTI5MTMuLjI1NDBkM2IgMTAwNjQ0Ci0t
-LSBhL2FyY2gvcG93ZXJwYy9tbS9tZW0uYworKysgYi9hcmNoL3Bvd2VycGMvbW0vbWVtLmMK
-QEAgLTI0OCw3ICsyNDgsOCBAQCB2b2lkIF9faW5pdCBwYWdpbmdfaW5pdCh2b2lkKQogCSAg
-ICAgICAobG9uZyBpbnQpKCh0b3Bfb2ZfcmFtIC0gdG90YWxfcmFtKSA+PiAyMCkpOwogCiAj
-aWZkZWYgQ09ORklHX1pPTkVfRE1BCi0JbWF4X3pvbmVfcGZuc1taT05FX0RNQV0JPSBtaW4o
-bWF4X2xvd19wZm4sIDB4N2ZmZmZmZmZVTCA+PiBQQUdFX1NISUZUKTsKKwltYXhfem9uZV9w
-Zm5zW1pPTkVfRE1BXQk9IG1pbihtYXhfbG93X3BmbiwKKwkJCSgoMVVMIDw8IEFSQ0hfWk9O
-RV9ETUFfQklUUykgLSAxKSA+PiBQQUdFX1NISUZUKTsKICNlbmRpZgogCW1heF96b25lX3Bm
-bnNbWk9ORV9OT1JNQUxdID0gbWF4X2xvd19wZm47CiAjaWZkZWYgQ09ORklHX0hJR0hNRU0K
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2I0My9kbWEuYwppbmRleCA4MDY0MDZh
-Li5lMDI3MGRhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9i
-NDMvZG1hLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzL2RtYS5j
-CkBAIC0xMDUzLDYgKzEwNTMsNyBAQCBzdGF0aWMgaW50IGI0M19kbWFfc2V0X21hc2soc3Ry
-dWN0IGI0M193bGRldiAqZGV2LCB1NjQgbWFzaykKIAkgKiBsb3dlciBtYXNrLCBhcyB3ZSBj
-YW4gYWx3YXlzIGFsc28gc3VwcG9ydCBhIGxvd2VyIG9uZS4gKi8KIAl3aGlsZSAoMSkgewog
-CQllcnIgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KGRldi0+ZGV2LT5kbWFfZGV2LCBt
-YXNrKTsKKwkJcHJfaW5mbygiZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudCAlZCwgbWFzayAw
-eCVsbHhcbiIsIGVyciwgbWFzayk7CiAJCWlmICghZXJyKQogCQkJYnJlYWs7CiAJCWlmICht
-YXNrID09IERNQV9CSVRfTUFTSyg2NCkpIHsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L2Jyb2FkY29tL2I0M2xlZ2FjeS9kbWEuYwppbmRleCAxY2MyNWY0Li5jNjI1ZmZjIDEwMDY0
-NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNvbS9iNDNsZWdhY3kvZG1hLmMK
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYnJvYWRjb20vYjQzbGVnYWN5L2RtYS5jCkBA
-IC03OTQsNiArNzk0LDcgQEAgc3RhdGljIGludCBiNDNsZWdhY3lfZG1hX3NldF9tYXNrKHN0
-cnVjdCBiNDNsZWdhY3lfd2xkZXYgKmRldiwgdTY0IG1hc2spCiAJICogbG93ZXIgbWFzaywg
-YXMgd2UgY2FuIGFsd2F5cyBhbHNvIHN1cHBvcnQgYSBsb3dlciBvbmUuICovCiAJd2hpbGUg
-KDEpIHsKIAkJZXJyID0gZG1hX3NldF9tYXNrX2FuZF9jb2hlcmVudChkZXYtPmRldi0+ZG1h
-X2RldiwgbWFzayk7CisJCXByX2luZm8oImRtYV9zZXRfbWFza19hbmRfY29oZXJlbnQgJWQs
-IG1hc2sgMHglbGx4XG4iLCBlcnIsIG1hc2spOwogCQlpZiAoIWVycikKIAkJCWJyZWFrOwog
-CQlpZiAobWFzayA9PSBETUFfQklUX01BU0soNjQpKSB7CmRpZmYgLS1naXQgYS9rZXJuZWwv
-ZG1hL2RpcmVjdC5jIGIva2VybmVsL2RtYS9kaXJlY3QuYwppbmRleCAyYzI3NzJlLi5iNzE2
-ZTYyIDEwMDY0NAotLS0gYS9rZXJuZWwvZG1hL2RpcmVjdC5jCisrKyBiL2tlcm5lbC9kbWEv
-ZGlyZWN0LmMKQEAgLTM5MSw2ICszOTEsOCBAQCBpbnQgZG1hX2RpcmVjdF9zdXBwb3J0ZWQo
-c3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIAkgKiB1c2UgX19waHlzX3RvX2RtYSgp
-IGhlcmUgc28gdGhhdCB0aGUgU01FIGVuY3J5cHRpb24gbWFzayBpc24ndAogCSAqIHBhcnQg
-b2YgdGhlIGNoZWNrLgogCSAqLworCXByX2luZm8oIm1pbl9tYXNrIDB4JXguIG1heF9wZm4g
-MHgleCwgX19waHlzX3RvX2RtYSAweCV4LCBtYXNrIDB4JXhcbiIsIG1pbl9tYXNrLAorCQlt
-YXhfcGZuLCBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spLCBtYXNrKTsKIAlyZXR1cm4g
-bWFzayA+PSBfX3BoeXNfdG9fZG1hKGRldiwgbWluX21hc2spOwogfQogCmRpZmYgLS1naXQg
-YS9rZXJuZWwvZG1hL21hcHBpbmcuYyBiL2tlcm5lbC9kbWEvbWFwcGluZy5jCmluZGV4IGY3
-YWZkYWQuLmJhMjQ4OWQgMTAwNjQ0Ci0tLSBhL2tlcm5lbC9kbWEvbWFwcGluZy5jCisrKyBi
-L2tlcm5lbC9kbWEvbWFwcGluZy5jCkBAIC0zMTcsOSArMzE3LDEyIEBAIGludCBkbWFfc3Vw
-cG9ydGVkKHN0cnVjdCBkZXZpY2UgKmRldiwgdTY0IG1hc2spCiAKIGludCBkbWFfc2V0X21h
-c2soc3RydWN0IGRldmljZSAqZGV2LCB1NjQgbWFzaykKIHsKKwlwcl9pbmZvKCJtYXNrIDB4
-JWxseCwgZG1hX21hc2sgMHglbGx4LCBkbWFfc3VwcG9ydGVkIDB4JWxseFxuIiwgbWFzaywg
-ZGV2LT5kbWFfbWFzaywKKwkJZG1hX3N1cHBvcnRlZChkZXYsIG1hc2spKTsKIAlpZiAoIWRl
-di0+ZG1hX21hc2sgfHwgIWRtYV9zdXBwb3J0ZWQoZGV2LCBtYXNrKSkKIAkJcmV0dXJuIC1F
-SU87CiAKKwlwcl9pbmZvKCJDb250aW51aW5nIGluIGRtYV9zZXRfbWFzaygpXG4iKTsKIAlh
-cmNoX2RtYV9zZXRfbWFzayhkZXYsIG1hc2spOwogCWRtYV9jaGVja19tYXNrKGRldiwgbWFz
-ayk7CiAJKmRldi0+ZG1hX21hc2sgPSBtYXNrOwo=
---------------9E0BA6B24CBFDA3D78DB4932--
