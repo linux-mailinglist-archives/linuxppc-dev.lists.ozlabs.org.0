@@ -1,94 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC133BDC5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 22:49:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45N4y737wLzDqQg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 06:49:51 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6973BFE0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 01:30:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45N8Wy0vQmzDqM3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 09:30:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45N4cJ1bWdzDqMB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 06:34:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45N4cG5Kzgz8t2T
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 06:34:22 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45N4cF677cz9sP8; Tue, 11 Jun 2019 06:34:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nayna@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::143; helo=mail-it1-x143.google.com;
+ envelope-from=radu.rendec@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="h556Ql2t"; 
+ dkim-atps=neutral
+Received: from mail-it1-x143.google.com (mail-it1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45N4cF1wNRz9sPM
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 06:34:21 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5AKWP8t108104
- for <linuxppc-dev@ozlabs.org>; Mon, 10 Jun 2019 16:34:17 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t1wbyj48c-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 10 Jun 2019 16:34:17 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
- Mon, 10 Jun 2019 21:34:15 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 10 Jun 2019 21:34:11 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5AKYAnG48889920
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Jun 2019 20:34:10 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48AB111C04A;
- Mon, 10 Jun 2019 20:34:10 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5753911C052;
- Mon, 10 Jun 2019 20:34:08 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.85.139.99])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 10 Jun 2019 20:34:08 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org,
- linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] powerpc: Add support to initialize ima policy rules
-Date: Mon, 10 Jun 2019 16:33:57 -0400
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
-References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 19061020-0016-0000-0000-00000287D71C
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061020-0017-0000-0000-000032E50167
-Message-Id: <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-10_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906100139
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45N8V70hvczDqGc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 09:29:18 +1000 (AEST)
+Received: by mail-it1-x143.google.com with SMTP id l21so1888991ita.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 16:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=J9HPrN2ssIKly8QosgZJTvVKX7D+6ItL0Y1EM/MaSs4=;
+ b=h556Ql2t33AHH/c9wvAMH6UaHR1pLK9XmQHUml6v+PHVg6mNr8lwZinqfXMlofNJHg
+ l54P2/C9CDNcmVqBx5UVElDg/BX/hJGlcqWn1sh4J9a/JBQ4ZplN+ld882VIOnC1+Bvh
+ IWnejCgqFApgQoASWSy/7OQMRZ9QZ/oGcTvL5Po5sSTA9Z/zF8LugjgtxkppNNIUDoqM
+ Zc8c244j0Y3sXePojM+G1v2Ae8mZ8/pmWjqhIkbwfel5oRuitvxK6ZtEzt9mJTt2v5vW
+ oFMItSZ2pWsVQWmp1Pa9qd0G8A0oYPibJedNXUMh8dD7nlwfTj2Zi+KgCC+Gxg8LMJLD
+ ZCVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=J9HPrN2ssIKly8QosgZJTvVKX7D+6ItL0Y1EM/MaSs4=;
+ b=LOKG81x826Y7YMS5TgHst6G8quZOigtWUA0pdi7wxccbrJlDGfU72qq8M0zXiKjf/o
+ Ucjgw8rIsrI3ddi3Eb/2OTCv79TjqSMLoBcZ4CR8gS05C/ciSogJrCq+QDiygWjKM9t2
+ FOklTNb4xAbZTZ4ewX8fjrNlp78YjfHLXs8riJtd8oqAuTrzmY4TIJ6jF5k9TBbc3aIY
+ /UDdFperMs+S/QKwSgLCpfkhLlX0W9Ffxuyu7s2kmblTREf5HSAIPHBhppKACEwe/xrw
+ 56YndklxES+b1ot8EDNkJuHbtWeAB/yIiB35gKFLtU3GWTGbw9o46T9sq4rEYwYQM1ye
+ Uprg==
+X-Gm-Message-State: APjAAAU2oCspqjF+cuZq/qaJSQG7gP58ZoD5qJv7UP++bGD1BxMnoXX4
+ bLaZjkXZ+D5ReMO1Bui7A/tmQZph
+X-Google-Smtp-Source: APXvYqzeB5YKRHak/Jh5rNv57dsgpfrVp8yafb74PZxOFf47a0dnv/GprC5y6iM1w9r6TVoSNqcsAw==
+X-Received: by 2002:a05:660c:20a:: with SMTP id
+ y10mr15540230itj.148.1560209355821; 
+ Mon, 10 Jun 2019 16:29:15 -0700 (PDT)
+Received: from bat.kanata.rendec.net
+ (CPE00fc8d79db03-CM00fc8d79db00.cpe.net.fido.ca. [72.140.67.131])
+ by smtp.gmail.com with ESMTPSA id z138sm488770itc.36.2019.06.10.16.29.14
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Mon, 10 Jun 2019 16:29:15 -0700 (PDT)
+From: Radu Rendec <radu.rendec@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
+Date: Mon, 10 Jun 2019 19:27:57 -0400
+Message-Id: <20190610232758.19010-1-radu.rendec@gmail.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,149 +78,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Nayna Jain <nayna@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Matthew Garret <matthew.garret@nebula.com>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>
+Cc: Oleg Nesterov <oleg@redhat.com>, Radu Rendec <radu.rendec@gmail.com>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerNV secure boot relies on the kernel IMA security subsystem to
-perform the OS kernel image signature verification. Since each secure
-boot mode has different IMA policy requirements, dynamic definition of
-the policy rules based on the runtime secure boot mode of the system is
-required. On systems that support secure boot, but have it disabled,
-only measurement policy rules of the kernel image and modules are
-defined.
+Hi Everyone,
 
-This patch defines the arch-specific implementation to retrieve the
-secure boot mode of the system and accordingly configures the IMA policy
-rules.
+I'm following up on the ptrace() problem that I reported a few days ago.
+I believe my version of the code handles all cases correctly. While the
+problem essentially boils down to dividing the fpidx by 2 on PPC32, it
+becomes tricky when the same code must work correctly on both PPC32 and
+PPC64.
 
-This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
-config is enabled.
+One other thing that I believe was handled incorrectly in the previous
+version is the unused half of fpscr on PPC32. Note that while PT_FPSCR
+is defined as (PT_FPR0 + 2*32 + 1), making only the upper half visible,
+PT_FPR0 + 2*32 still corresponds to a possible address that userspace
+can pass. In that case, comparing fpidx to (PT_FPSCR - PT_FPR0) would
+cause an invalid access to the FPU registers array.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
----
- arch/powerpc/Kconfig           | 14 +++++++++
- arch/powerpc/kernel/Makefile   |  1 +
- arch/powerpc/kernel/ima_arch.c | 54 ++++++++++++++++++++++++++++++++++
- include/linux/ima.h            |  3 +-
- 4 files changed, 71 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/kernel/ima_arch.c
+I tested the patch on 4.9.179, but that part of the code is identical in
+recent kernels so it should work just the same.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8c1c636308c8..9de77bb14f54 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -902,6 +902,20 @@ config PPC_MEM_KEYS
- 
- 	  If unsure, say y.
- 
-+config PPC_SECURE_BOOT
-+	prompt "Enable PowerPC Secure Boot"
-+	bool
-+	default n
-+	depends on PPC64
-+	depends on OPAL_SECVAR
-+	depends on IMA
-+	depends on IMA_ARCH_POLICY
-+	help
-+	  Linux on POWER with firmware secure boot enabled needs to define
-+	  security policies to extend secure boot to the OS.This config
-+	  allows user to enable OS Secure Boot on PowerPC systems that
-+	  have firmware secure boot support.
-+
- endmenu
- 
- config ISA_DMA_API
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 0ea6c4aa3a20..75c929b41341 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -131,6 +131,7 @@ ifdef CONFIG_IMA
- obj-y				+= ima_kexec.o
- endif
- endif
-+obj-$(CONFIG_PPC_SECURE_BOOT)	+= ima_arch.o
- 
- obj-$(CONFIG_AUDIT)		+= audit.o
- obj64-$(CONFIG_AUDIT)		+= compat_audit.o
-diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-new file mode 100644
-index 000000000000..1767bf6e6550
---- /dev/null
-+++ b/arch/powerpc/kernel/ima_arch.c
-@@ -0,0 +1,54 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2019 IBM Corporation
-+ * Author: Nayna Jain <nayna@linux.ibm.com>
-+ *
-+ * ima_arch.c
-+ *      - initialize ima policies for PowerPC Secure Boot
-+ */
-+
-+#include <linux/ima.h>
-+#include <asm/secboot.h>
-+
-+bool arch_ima_get_secureboot(void)
-+{
-+	bool sb_mode;
-+
-+	sb_mode = get_powerpc_sb_mode();
-+	if (sb_mode)
-+		return true;
-+	else
-+		return false;
-+}
-+
-+/*
-+ * File signature verification is not needed, include only measurements
-+ */
-+static const char *const default_arch_rules[] = {
-+	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
-+	"measure func=MODULE_CHECK template=ima-modsig",
-+	NULL
-+};
-+
-+/* Both file signature verification and measurements are needed */
-+static const char *const sb_arch_rules[] = {
-+	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
-+	"measure func=MODULE_CHECK template=ima-modsig",
-+	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig template=ima-modsig",
-+#if !IS_ENABLED(CONFIG_MODULE_SIG)
-+	"appraise func=MODULE_CHECK appraise_type=imasig|modsig template=ima-modsig",
-+#endif
-+	NULL
-+};
-+
-+/*
-+ * On PowerPC, file measurements are to be added to the IMA measurement list
-+ * irrespective of the secure boot state of the system. Signature verification
-+ * is conditionally enabled based on the secure boot state.
-+ */
-+const char *const *arch_get_ima_policy(void)
-+{
-+	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot())
-+		return sb_arch_rules;
-+	return default_arch_rules;
-+}
-diff --git a/include/linux/ima.h b/include/linux/ima.h
-index fd9f7cf4cdf5..a01df076ecae 100644
---- a/include/linux/ima.h
-+++ b/include/linux/ima.h
-@@ -31,7 +31,8 @@ extern void ima_post_path_mknod(struct dentry *dentry);
- extern void ima_add_kexec_buffer(struct kimage *image);
- #endif
- 
--#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390)
-+#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
-+	|| defined(CONFIG_PPC_SECURE_BOOT)
- extern bool arch_ima_get_secureboot(void);
- extern const char * const *arch_get_ima_policy(void);
- #else
+I wrote a simple test program than can be used to quickly test (on an
+x86_64 host) that all cases are handled correctly for both PPC32/PPC64.
+The code is included below.
+
+I also tested with gdbserver (test patch included below) and verified
+that it generates two ptrace() calls for each FPU register, with
+addresses between 0xc0 and 0x1bc.
+
+8<--------------- Makefile ---------------------------------------------
+.PHONY: all clean
+
+all: ptrace-fpregs-32 ptrace-fpregs-64
+
+ptrace-fpregs-32: ptrace-fpregs.c
+	$(CC) -o ptrace-fpregs-32 -Wall -O2 -m32 ptrace-fpregs.c
+
+ptrace-fpregs-64: ptrace-fpregs.c
+	$(CC) -o ptrace-fpregs-64 -Wall -O2 ptrace-fpregs.c
+
+clean:
+	rm -f ptrace-fpregs-32 ptrace-fpregs-64
+8<--------------- ptrace-fpregs.c --------------------------------------
+#include <stdio.h>
+#include <errno.h>
+
+#define PT_FPR0	48
+
+#ifndef __x86_64
+
+#define PT_FPR31 (PT_FPR0 + 2*31)
+#define PT_FPSCR (PT_FPR0 + 2*32 + 1)
+
+#else
+
+#define PT_FPSCR (PT_FPR0 + 32)
+
+#endif
+
+int test_access(unsigned long addr)
+{
+	int ret;
+
+	do {
+		unsigned long index, fpidx;
+
+		ret = -EIO;
+
+		/* convert to index and check */
+		index = addr / sizeof(long);
+		if ((addr & (sizeof(long) - 1)) || (index > PT_FPSCR))
+			break;
+
+		if (index < PT_FPR0) {
+			ret = printf("ptrace_put_reg(%lu)", index);
+			break;
+		}
+
+		ret = 0;
+#ifndef __x86_64
+		if (index == PT_FPSCR - 1) {
+			/* corner case for PPC32; do nothing */
+			printf("corner_case");
+			break;
+		}
+#endif
+		if (index == PT_FPSCR) {
+			printf("fpscr");
+			break;
+		}
+
+		/*
+		 * FPR is always 64-bit; on PPC32, userspace does two 32-bit
+		 * accesses. Add bit2 to allow accessing the upper half on
+		 * 32-bit; on 64-bit, bit2 is always 0 (we validate it above).
+		 */
+		fpidx = (addr - PT_FPR0 * sizeof(long)) / 8;
+		printf("TS_FPR[%lu] + %lu", fpidx, addr & 4);
+		break;
+	} while (0);
+
+	return ret;
+}
+
+int main(void)
+{
+	unsigned long addr;
+	int rc;
+
+	for (addr = 0; addr < PT_FPSCR * sizeof(long) + 16; addr++) {
+		printf("0x%04lx: ", addr);
+		rc = test_access(addr);
+		if (rc < 0)
+			printf("!err!");
+		printf("\t<%d>\n", rc);
+	}
+
+	return 0;
+}
+8<--------------- gdb.patch --------------------------------------------
+--- gdb/gdbserver/linux-low.c.orig	2019-06-10 11:45:53.810882669 -0400
++++ gdb/gdbserver/linux-low.c	2019-06-10 11:49:32.272929766 -0400
+@@ -4262,6 +4262,8 @@ store_register (struct regcache *regcach
+   pid = lwpid_of (get_thread_lwp (current_inferior));
+   for (i = 0; i < size; i += sizeof (PTRACE_XFER_TYPE))
+     {
++      printf("writing register #%d offset %d at address %#x\n",
++             regno, i, (unsigned int)regaddr);
+       errno = 0;
+       ptrace (PTRACE_POKEUSER, pid,
+ 	    /* Coerce to a uintptr_t first to avoid potential gcc warning
+8<----------------------------------------------------------------------
+
+Radu Rendec (1):
+  PPC32: fix ptrace() access to FPU registers
+
+ arch/powerpc/kernel/ptrace.c | 85 ++++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 33 deletions(-)
+
 -- 
 2.20.1
 
