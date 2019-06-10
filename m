@@ -2,71 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BBE3AE50
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 06:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02EB3AE60
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 06:59:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45MgcR3t7bzDqMg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 14:48:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Mgs732jzzDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2019 14:59:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="RO1OVz8a"; 
- dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45MgSS1MnDzDqH2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 14:41:12 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id a3so4332413pgb.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Jun 2019 21:41:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=sL83o5GmSL2dCmHfrkqeaNUT3nyNNx/ViCtqeruTtoM=;
- b=RO1OVz8aaLV5Rr9K7e6Kj+LnA1vIHWrb9LtDUDXGEyE9Sjtvt4YQF+5ZcrF/4bVwk5
- 0gHf3z1I/9rFUqJic3T2F4qbrXx9GixwaS3gwpL4u8KkjK7vESCtsydKVWvcVKYLy7bb
- uHkphxOUuDVniKUm+UYECNHKvuFQKiZOOUnBdVPZ9tzdcErdJmHSqBBV+u+0Ee5SCouk
- wUsZM5oIOc1lnIIfkEmgYF/aS0lpxEBe1s8j0dEQTKwkoCmwVNrc1a/JtAsby4fGD4OD
- h20RZZt8XYksTyyjUgW9zIezh8TaSurYm2QmMadQdKeXK2aEi3P8K85i22wEhBaIP4WW
- GesA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=sL83o5GmSL2dCmHfrkqeaNUT3nyNNx/ViCtqeruTtoM=;
- b=p2rtcFMNnT5C4jbnJ63Yt0ruWPETYEQIv/Z0p6J2iiCUEK/LieBb6/F6kmUem1T4j+
- 3I5v9NBBcei+K9nayg62SFSNh+1Dvp+85/Lo78eg+hlUxHPJJ8Y7K7al8R1rVKonZA8r
- KSmydZRCnQvnnw7ggqT0DouawBR/MVFO0grIQrwQVsRedw9b4PDYpMS7yoAODRMV31Yy
- Oh8E+zO4UbhbG+tjohIkbM70hvNkmbmg/V4okBwVWkmTUVpNUofxy+0eUknM6JPpQJmq
- aWC4pz/PYTK5ff0WkrhvjsKaVfsxcE3FeNbQbE15FDHw8eOt7F9RuVNk0uRtwoZawRJQ
- Kc9w==
-X-Gm-Message-State: APjAAAXKJvnCQY9lQ4rn42Wnm65qyIOKgTka8zQ/o1vcnzgVx+Y/QYlz
- em1hHQwe4jdt1F+acIhjRO0=
-X-Google-Smtp-Source: APXvYqx5xLsoxUHDjuTqVHUN6KWL4KccSuLF+xYRdn3IRei9u/+KqQ8FZiwEbYaMYD/V+xoD54miIA==
-X-Received: by 2002:a17:90a:b298:: with SMTP id
- c24mr19149840pjr.18.1560141670415; 
- Sun, 09 Jun 2019 21:41:10 -0700 (PDT)
-Received: from bobo.local0.net (60-241-56-246.tpgi.com.au. [60.241.56.246])
- by smtp.gmail.com with ESMTPSA id l1sm9166802pgj.67.2019.06.09.21.41.07
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 09 Jun 2019 21:41:09 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-mm@kvack.org
-Subject: [PATCH 4/4] mm/vmalloc: Hugepage vmalloc mappings
-Date: Mon, 10 Jun 2019 14:38:38 +1000
-Message-Id: <20190610043838.27916-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190610043838.27916-1-npiggin@gmail.com>
-References: <20190610043838.27916-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45MgqT0VqzzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 14:57:34 +1000 (AEST)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 09 Jun 2019 21:57:31 -0700
+X-ExtLoop1: 1
+Received: from jinzicui-mobl.amr.corp.intel.com (HELO [10.252.132.156])
+ ([10.252.132.156])
+ by orsmga002.jf.intel.com with ESMTP; 09 Jun 2019 21:57:30 -0700
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ Matthew Wilcox <willy@infradead.org>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+ <20190607201202.GA32656@bombadil.infradead.org>
+ <f1b109a3-ef4c-359c-a124-e219e84a6266@arm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <33c6a1cd-5c07-e623-28e5-f31f6fe30394@intel.com>
+Date: Sun, 9 Jun 2019 21:57:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <f1b109a3-ef4c-359c-a124-e219e84a6266@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,313 +101,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, James Hogan <jhogan@kernel.org>,
+ linux-snps-arc@lists.infradead.org, Fenghua Yu <fenghua.yu@intel.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrey Konovalov <andreyknvl@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For platforms that define HAVE_ARCH_HUGE_VMAP, have vmap allow vmalloc to
-allocate huge pages and map them
+On 6/9/19 9:34 PM, Anshuman Khandual wrote:
+>> Do you really think this is easier to read?
+>>
+>> Why not just move the x86 version to include/linux/kprobes.h, and replace
+>> the int with bool?
+> Will just return bool directly without an additional variable here as suggested
+> before. But for the conditional statement, I guess the proposed one here is more
+> compact than the x86 one.
 
-This brings dTLB misses for linux kernel tree `git diff` from 45,000 to
-8,000 on a Kaby Lake KVM guest with 8MB dentry hash and mitigations=off
-(performance is in the noise, under 1% difference, page tables are likely
-to be well cached for this workload). Similar numbers are seen on POWER9.
+FWIW, I don't think "compact" is generally a good goal for code.  Being
+readable is 100x more important than being compact and being un-compact
+is only a problem when it hurts readability.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- include/asm-generic/4level-fixup.h |   1 +
- include/asm-generic/5level-fixup.h |   1 +
- include/linux/vmalloc.h            |   1 +
- mm/vmalloc.c                       | 132 +++++++++++++++++++++++------
- 4 files changed, 107 insertions(+), 28 deletions(-)
-
-diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/4level-fixup.h
-index e3667c9a33a5..3cc65a4dd093 100644
---- a/include/asm-generic/4level-fixup.h
-+++ b/include/asm-generic/4level-fixup.h
-@@ -20,6 +20,7 @@
- #define pud_none(pud)			0
- #define pud_bad(pud)			0
- #define pud_present(pud)		1
-+#define pud_large(pud)			0
- #define pud_ERROR(pud)			do { } while (0)
- #define pud_clear(pud)			pgd_clear(pud)
- #define pud_val(pud)			pgd_val(pud)
-diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
-index bb6cb347018c..c4377db09a4f 100644
---- a/include/asm-generic/5level-fixup.h
-+++ b/include/asm-generic/5level-fixup.h
-@@ -22,6 +22,7 @@
- #define p4d_none(p4d)			0
- #define p4d_bad(p4d)			0
- #define p4d_present(p4d)		1
-+#define p4d_large(p4d)			0
- #define p4d_ERROR(p4d)			do { } while (0)
- #define p4d_clear(p4d)			pgd_clear(p4d)
- #define p4d_val(p4d)			pgd_val(p4d)
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index 812bea5866d6..4c92dc608928 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -42,6 +42,7 @@ struct vm_struct {
- 	unsigned long		size;
- 	unsigned long		flags;
- 	struct page		**pages;
-+	unsigned int		page_shift;
- 	unsigned int		nr_pages;
- 	phys_addr_t		phys_addr;
- 	const void		*caller;
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index dd27cfb29b10..0cf8e861caeb 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -36,6 +36,7 @@
- #include <linux/rbtree_augmented.h>
- 
- #include <linux/uaccess.h>
-+#include <asm/pgtable.h>
- #include <asm/tlbflush.h>
- #include <asm/shmparam.h>
- 
-@@ -440,6 +441,41 @@ static int vmap_pages_range(unsigned long start, unsigned long end,
- 	return ret;
- }
- 
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+static int vmap_hpages_range(unsigned long start, unsigned long end,
-+				   pgprot_t prot, struct page **pages,
-+				   unsigned int page_shift)
-+{
-+	unsigned long addr = start;
-+	unsigned int i, nr = (end - start) >> (PAGE_SHIFT + page_shift);
-+
-+	for (i = 0; i < nr; i++) {
-+		int err;
-+
-+		err = vmap_range_noflush(addr,
-+					addr + (PAGE_SIZE << page_shift),
-+					__pa(page_address(pages[i])), prot,
-+					PAGE_SHIFT + page_shift);
-+		if (err)
-+			return err;
-+
-+		addr += PAGE_SIZE << page_shift;
-+	}
-+	flush_cache_vmap(start, end);
-+
-+	return nr;
-+}
-+#else
-+static int vmap_hpages_range(unsigned long start, unsigned long end,
-+			   pgprot_t prot, struct page **pages,
-+			   unsigned int page_shift)
-+{
-+	BUG_ON(page_shift != PAGE_SIZE);
-+	return vmap_pages_range(start, end, prot, pages);
-+}
-+#endif
-+
-+
- int is_vmalloc_or_module_addr(const void *x)
- {
- 	/*
-@@ -462,7 +498,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
- {
- 	unsigned long addr = (unsigned long) vmalloc_addr;
- 	struct page *page = NULL;
--	pgd_t *pgd = pgd_offset_k(addr);
-+	pgd_t *pgd;
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
-@@ -474,27 +510,38 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
- 	 */
- 	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
- 
-+	pgd = pgd_offset_k(addr);
- 	if (pgd_none(*pgd))
- 		return NULL;
-+
- 	p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d))
- 		return NULL;
--	pud = pud_offset(p4d, addr);
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (p4d_large(*p4d))
-+		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(p4d_bad(*p4d)))
-+		return NULL;
- 
--	/*
--	 * Don't dereference bad PUD or PMD (below) entries. This will also
--	 * identify huge mappings, which we may encounter on architectures
--	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
--	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
--	 * not [unambiguously] associated with a struct page, so there is
--	 * no correct value to return for them.
--	 */
--	WARN_ON_ONCE(pud_bad(*pud));
--	if (pud_none(*pud) || pud_bad(*pud))
-+	pud = pud_offset(p4d, addr);
-+	if (pud_none(*pud))
-+		return NULL;
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (pud_large(*pud))
-+		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(pud_bad(*pud)))
- 		return NULL;
-+
- 	pmd = pmd_offset(pud, addr);
--	WARN_ON_ONCE(pmd_bad(*pmd));
--	if (pmd_none(*pmd) || pmd_bad(*pmd))
-+	if (pmd_none(*pmd))
-+		return NULL;
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (pmd_large(*pmd))
-+		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(pmd_bad(*pmd)))
- 		return NULL;
- 
- 	ptep = pte_offset_map(pmd, addr);
-@@ -502,6 +549,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
- 	if (pte_present(pte))
- 		page = pte_page(pte);
- 	pte_unmap(ptep);
-+
- 	return page;
- }
- EXPORT_SYMBOL(vmalloc_to_page);
-@@ -2185,8 +2233,9 @@ static struct vm_struct *__get_vm_area_node(unsigned long size,
- 		return NULL;
- 
- 	if (flags & VM_IOREMAP)
--		align = 1ul << clamp_t(int, get_count_order_long(size),
--				       PAGE_SHIFT, IOREMAP_MAX_ORDER);
-+		align = max(align,
-+				1ul << clamp_t(int, get_count_order_long(size),
-+				       PAGE_SHIFT, IOREMAP_MAX_ORDER));
- 
- 	area = kzalloc_node(sizeof(*area), gfp_mask & GFP_RECLAIM_MASK, node);
- 	if (unlikely(!area))
-@@ -2398,7 +2447,7 @@ static void __vunmap(const void *addr, int deallocate_pages)
- 			struct page *page = area->pages[i];
- 
- 			BUG_ON(!page);
--			__free_pages(page, 0);
-+			__free_pages(page, area->page_shift);
- 		}
- 
- 		kvfree(area->pages);
-@@ -2541,14 +2590,17 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
- 				 pgprot_t prot, int node)
- {
- 	struct page **pages;
-+	unsigned long addr = (unsigned long)area->addr;
-+	unsigned long size = get_vm_area_size(area);
-+	unsigned int page_shift = area->page_shift;
-+	unsigned int shift = page_shift + PAGE_SHIFT;
- 	unsigned int nr_pages, array_size, i;
- 	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
- 	const gfp_t alloc_mask = gfp_mask | __GFP_NOWARN;
- 	const gfp_t highmem_mask = (gfp_mask & (GFP_DMA | GFP_DMA32)) ?
--					0 :
--					__GFP_HIGHMEM;
-+					0 : __GFP_HIGHMEM;
- 
--	nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
-+	nr_pages = size >> shift;
- 	array_size = (nr_pages * sizeof(struct page *));
- 
- 	area->nr_pages = nr_pages;
-@@ -2569,10 +2621,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
- 	for (i = 0; i < area->nr_pages; i++) {
- 		struct page *page;
- 
--		if (node == NUMA_NO_NODE)
--			page = alloc_page(alloc_mask|highmem_mask);
--		else
--			page = alloc_pages_node(node, alloc_mask|highmem_mask, 0);
-+		page = alloc_pages_node(node,
-+				alloc_mask|highmem_mask, page_shift);
- 
- 		if (unlikely(!page)) {
- 			/* Successfully allocated i pages, free them in __vunmap() */
-@@ -2584,8 +2634,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
- 			cond_resched();
- 	}
- 
--	if (map_vm_area(area, prot, pages))
-+	if (vmap_hpages_range(addr, addr + size, prot, pages, page_shift) < 0)
- 		goto fail;
-+
- 	return area->addr;
- 
- fail:
-@@ -2619,22 +2670,39 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
- 			pgprot_t prot, unsigned long vm_flags, int node,
- 			const void *caller)
- {
--	struct vm_struct *area;
-+	struct vm_struct *area = NULL;
- 	void *addr;
- 	unsigned long real_size = size;
-+	unsigned long real_align = align;
-+	unsigned int shift = PAGE_SHIFT;
- 
- 	size = PAGE_ALIGN(size);
- 	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
- 		goto fail;
- 
-+	if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
-+		unsigned long size_per_node;
-+
-+		size_per_node = size;
-+		if (node == NUMA_NO_NODE)
-+			size_per_node /= num_online_nodes();
-+		if (size_per_node >= PMD_SIZE)
-+			shift = PMD_SHIFT;
-+	}
-+again:
-+	align = max(real_align, 1UL << shift);
-+	size = ALIGN(real_size, align);
-+
- 	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
- 				vm_flags, start, end, node, gfp_mask, caller);
- 	if (!area)
- 		goto fail;
- 
-+	area->page_shift = shift - PAGE_SHIFT;
-+
- 	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
- 	if (!addr)
--		return NULL;
-+		goto fail;
- 
- 	/*
- 	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
-@@ -2648,8 +2716,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
- 	return addr;
- 
- fail:
--	warn_alloc(gfp_mask, NULL,
-+	if (shift == PMD_SHIFT) {
-+		shift = PAGE_SHIFT;
-+		goto again;
-+	}
-+
-+	if (!area) {
-+		/* Warn for area allocation, page allocations already warn */
-+		warn_alloc(gfp_mask, NULL,
- 			  "vmalloc: allocation failure: %lu bytes", real_size);
-+	}
- 	return NULL;
- }
- 
--- 
-2.20.1
-
+For a function like the one in question, having the individual return
+conditions clearly commented is way more important than saving 10 lines
+of code.
