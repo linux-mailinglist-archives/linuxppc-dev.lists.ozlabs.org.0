@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5C43D1BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 18:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139783D1B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 18:05:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NZdy1g0dzDqbt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 02:07:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NZbZ3XP8zDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 02:05:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,38 +18,41 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="NooVa7od"; dkim-atps=neutral
+ header.b="hksldD9H"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NXkr4TtqzDqcW
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NXkr3FLfzDqVF
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 00:41:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=o2J4Gd6aGMYycQc2Cgd8ykATa6/NVo6qP3SsoSO5AUQ=; b=NooVa7odzLv7IOhiLuJXRzdAT
- 9847NXr6KbmlQQbCdm/roXtU733/1c0TujxJALV/CRskCxkSZJxIjTuvYje4Hu2HIx2/18lsT2IkT
- V4S9ZLfKxOjzNiNdjE9YSFiOAuEFWncLCMqFlld9C8E0tZO1blw/UZUNEDSAKtGyMp1ujFWNiFfe7
- bemGU+fEPeBzJVI3EYWYyNcNlr9PPjI0kHfUCTEX9tUwAnnuaSJSqAOCWqlHSD1idi9GIdvUa4nKM
- oFIEUMzaP5Hxm/4DCKB8Fju5R0z5GUcY9hrj8tNMF/3Z6P45ZzjIK8YKFH6ozHQKYWGLVdntjkdeO
- jfIDBIm1w==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+ :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=pU76vjF549TgrGMDxTP+px3yFTf1TEh0R8Swc6QhucM=; b=hksldD9HOj5evI3EEsvNNZserQ
+ 9QfL5wF9gT7egY+bR9UULwLlKaDcw+8UV7m2/8Nx0LXz3UkxV9NozCDfZ44qqcS/1MjRrVmQH691W
+ F+pa5IeoK2lMHw7zdweUhqWjsXhgXBNiVCgccTrkGw+N4DTtTTb6rdNpAcyxs2QNryR0hJKmc2s/b
+ YhzCLeQqFaGRjbitn3ZJ5vYl9VFojSvxwCaSFpt+Sy1VKPlpBJYsDKNs5rLGgMg2fBrAGZ19Pbgp0
+ SeqyCW789tSA3PxnOlwKgzjeyFyE2oxk6A62waWOoKoHh27uuHpxZYxoZuPf046XmMbKVyOakaQh1
+ ZCwcvfmw==;
 Received: from mpp-cp1-natpool-1-037.ethz.ch ([82.130.71.37] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hahxS-0005NR-8l; Tue, 11 Jun 2019 14:41:06 +0000
+ id 1hahxV-0005Nh-VL; Tue, 11 Jun 2019 14:41:10 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Paul Burton <paul.burton@mips.com>, James Hogan <jhogan@kernel.org>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  "David S. Miller" <davem@davemloft.net>
-Subject: switch the remaining architectures to use generic GUP v3
-Date: Tue, 11 Jun 2019 16:40:46 +0200
-Message-Id: <20190611144102.8848-1-hch@lst.de>
+Subject: [PATCH 01/16] mm: use untagged_addr() for get_user_pages_fast
+ addresses
+Date: Tue, 11 Jun 2019 16:40:47 +0200
+Message-Id: <20190611144102.8848-2-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190611144102.8848-1-hch@lst.de>
+References: <20190611144102.8848-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -75,23 +78,36 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Linus and maintainers,
+This will allow sparc64 to override its ADI tags for
+get_user_pages and get_user_pages_fast.
 
-below is a series to switch mips, sh and sparc64 to use the generic
-GUP code so that we only have one codebase to touch for further
-improvements to this code.  I don't have hardware for any of these
-architectures, and generally no clue about their page table
-management, so handle with care.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ mm/gup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes since v2:
- - rebase to mainline to pick up the untagged_addr definition
- - fix the gup range check to be start <= end to catch the 0 length case
- - use pfn based version for the missing pud_page/pgd_page definitions
- - fix a wrong check in the sparc64 version of pte_access_permitted
+diff --git a/mm/gup.c b/mm/gup.c
+index ddde097cf9e4..6bb521db67ec 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2146,7 +2146,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+ 	unsigned long flags;
+ 	int nr = 0;
+ 
+-	start &= PAGE_MASK;
++	start = untagged_addr(start) & PAGE_MASK;
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+ 	end = start + len;
+ 
+@@ -2219,7 +2219,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages,
+ 	unsigned long addr, len, end;
+ 	int nr = 0, ret = 0;
+ 
+-	start &= PAGE_MASK;
++	start = untagged_addr(start) & PAGE_MASK;
+ 	addr = start;
+ 	len = (unsigned long) nr_pages << PAGE_SHIFT;
+ 	end = start + len;
+-- 
+2.20.1
 
-Changes since v1:
- - fix various issues found by the build bot
- - cherry pick and use the untagged_addr helper form Andrey
- - add various refactoring patches to share more code over architectures
- - move the powerpc hugepd code to mm/gup.c and sync it with the generic
-   hup semantics
