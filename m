@@ -2,91 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756463D447
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 19:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E553D48F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 19:50:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NcY41p3tzDqlR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 03:33:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Ncwv05rnzDqvP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 03:50:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=nefkom.net
+ (client-ip=2001:a60:0:28:0:1:25:1; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-out.m-online.net (mail-out.m-online.net
+ [IPv6:2001:a60:0:28:0:1:25:1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NcW32bgBzDqlQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 03:31:43 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5BHHUUX066363
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 13:31:38 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t2et7dqag-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 13:31:36 -0400
-Received: from localhost
- by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <leonardo@linux.ibm.com>;
- Tue, 11 Jun 2019 18:31:35 +0100
-Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
- by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 11 Jun 2019 18:31:27 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5BHVPUl15401272
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Jun 2019 17:31:25 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5393F112061;
- Tue, 11 Jun 2019 17:31:25 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89B10112065;
- Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.86.24.233])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
-Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, Christophe Leroy
- <christophe.leroy@c-s.fr>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Date: Tue, 11 Jun 2019 14:31:12 -0300
-In-Reply-To: <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
-References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
- <ec764ff4-f68a-fce5-ac1e-a4664e1123c7@c-s.fr>
- <97e9c9b3-89c8-d378-4730-841a900e6800@arm.com>
- <8dd6168592437378ff4a7c204e0f2962d002b44f.camel@linux.ibm.com>
- <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-+TvBOjv046XEorglXBMQ"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NctN1j3XzDqtl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 03:48:28 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 45Nct32KfCz1rXhY;
+ Tue, 11 Jun 2019 19:48:10 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 45Nct20nSjz1rxRG;
+ Tue, 11 Jun 2019 19:48:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id 2BFHBsK6aqSo; Tue, 11 Jun 2019 19:48:09 +0200 (CEST)
+X-Auth-Info: HG913dC6nI3QeXdDWZOlZYfrTig6dgohUmdEi80BbIbGuJfv0F142LduSvY+GpMv
+Received: from igel.home (ppp-46-244-178-52.dynamic.mnet-online.de
+ [46.244.178.52])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Tue, 11 Jun 2019 19:48:09 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+ id C6AC72C0D1D; Tue, 11 Jun 2019 19:48:06 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: [BISECTED REGRESSION] b43legacy broken on G4 PowerBook
+References: <20190605225059.GA9953@darkstar.musicnaut.iki.fi>
+ <73da300c-871c-77ac-8a3a-deac226743ef@lwfinger.net>
+ <20190607172902.GA8183@lst.de>
+ <30000803-3772-3edf-f4a9-55122d504f3f@lwfinger.net>
+ <20190610081825.GA16534@lst.de>
+ <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net>
+X-Yow: Hello...  IRON CURTAIN?  Send over a SAUSAGE PIZZA!
+ World War III?  No thanks!
+Date: Tue, 11 Jun 2019 19:48:06 +0200
+In-Reply-To: <153c13f5-a829-1eab-a3c5-fecfb84127ff@lwfinger.net> (Larry
+ Finger's message of "Mon, 10 Jun 2019 11:09:47 -0500")
+Message-ID: <87ftogau95.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2 (gnu/linux)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19061117-0064-0000-0000-000003ECE701
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011247; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01216523; UDB=6.00639641; IPR=6.00997622; 
- MB=3.00027266; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 17:31:34
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061117-0065-0000-0000-00003DDA7110
-Message-Id: <bec5983d50e37953b3962a6e53fca0a243c7158b.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-11_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=677 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110111
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,86 +70,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Andrey Konovalov <andreyknvl@google.com>,
- Fenghua Yu <fenghua.yu@intel.com>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Will Deacon <will.deacon@arm.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Jun 10 2019, Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
---=-+TvBOjv046XEorglXBMQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> I do not understand why the if statement returns true as neither of the
+> values is zero.
 
-On Tue, 2019-06-11 at 10:44 +0530, Anshuman Khandual wrote:
->=20
-> On 06/10/2019 08:57 PM, Leonardo Bras wrote:
-> > On Mon, 2019-06-10 at 08:09 +0530, Anshuman Khandual wrote:
-> > > > > +    /*
-> > > > > +     * To be potentially processing a kprobe fault and to be all=
-owed
-> > > > > +     * to call kprobe_running(), we have to be non-preemptible.
-> > > > > +     */
-> > > > > +    if (kprobes_built_in() && !preemptible() && !user_mode(regs)=
-) {
-> > > > > +        if (kprobe_running() && kprobe_fault_handler(regs, trap)=
-)
-> > > >=20
-> > > > don't need an 'if A if B', can do 'if A && B'
-> > >=20
-> > > Which will make it a very lengthy condition check.
-> >=20
-> > Well, is there any problem line-breaking the if condition?
-> >=20
-> > if (A && B && C &&
-> >     D && E )
-> >=20
-> > Also, if it's used only to decide the return value, maybe would be fine
-> > to do somethink like that:
-> >=20
-> > return (A && B && C &&
-> >         D && E );=20
->=20
-> Got it. But as Dave and Matthew had pointed out earlier, the current x86
-> implementation has better readability. Hence will probably stick with it.
->=20
-Sure, I agree with them. It's way more readable.
+That's because the format string does not make any sense.  You are
+printing garbage.
 
---=-+TvBOjv046XEorglXBMQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+> index f7afdad..ba2489d 100644
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -317,9 +317,12 @@ int dma_supported(struct device *dev, u64 mask)
+>
+>  int dma_set_mask(struct device *dev, u64 mask)
+>  {
+> +       pr_info("mask 0x%llx, dma_mask 0x%llx, dma_supported 0x%llx\n",
+> mask, dev->dma_mask,
+> +               dma_supported(dev, mask));
 
------BEGIN PGP SIGNATURE-----
+None of the format directives match the type of the arguments.
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz/5WAACgkQlQYWtz9S
-ttSg4A/6A45T2BOxIm5qp+PJ+LwF0fbX0ZI762cE3X6nXDk5fJuRrjyQifBfrD0V
-IVWSUrnOXqarYOmPT3CxT33rW05vGtDWObX+OI6J/QW6qU7jSOD1Db1ZUHL0W3WL
-7B27RA3gNmEMugnjmM+JvtMkf5SwTdk3ZLr2IA22revoOBxOF5b8iICzA0HfaXg6
-8lFSegTY8C2nNQipkeSS4d3KiObNEA1TVJUFqhwJ/VA6qYMnOpKD6WR58QCOxFaF
-NIP4ln+HJccwleioGnQ+Q7jFGRD8Hb9zqLKNccpN1MfuZdE9OXcbFB5MXVuPyE/h
-JVYbITwMXbIxpZe8o6/Yoc875Tz1phA2GeprZlEF3FDbw/tH0tyb6U5o+8UNpOXp
-YdrNxy1oJRK6ZzhW0+FqgMJVo/BBh/8OV3r9ECwYxR3o8ELPVFAcyqrx2XEU7E6p
-fBWN/cYXuZFizM0/b2yKd3kO/JIemEdz58/aPOTgJevEb996p7JohS8H8/3lm4gu
-VcnlAsH9ivKDmkoFzz6JuXWJB19OSohPW8j2p9fqP5LA5snz8o+ehsewTjaVQsPJ
-eNlp1HQzVumviM07wrZmXzVc0zoUb3YhWHrUL26xcfvtfDZVQ+gIOCH9baNsgcoe
-U0uI1HQuuUreC4L10sgC2qrlYqbWMUmK5uj6T8fjTRaHlzP1UX8=
-=i2hD
------END PGP SIGNATURE-----
+Andreas.
 
---=-+TvBOjv046XEorglXBMQ--
-
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
