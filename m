@@ -1,88 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159ED3C0B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 02:46:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NBCG3Z39zDqTN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 10:46:34 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0063C0E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 03:23:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NC246hWGzDqRB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 11:23:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=haren@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="R29+1uik"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NB9R5sq0zDqQH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 10:44:59 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5B0g25R063784
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 20:44:55 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t1y8hd3wc-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 20:44:55 -0400
-Received: from localhost
- by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <haren@linux.vnet.ibm.com>;
- Tue, 11 Jun 2019 01:44:55 +0100
-Received: from b01cxnp23033.gho.pok.ibm.com (9.57.198.28)
- by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 11 Jun 2019 01:44:53 +0100
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5B0iqw135521002
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Jun 2019 00:44:52 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9534CB2064;
- Tue, 11 Jun 2019 00:44:52 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A3E8B205F;
- Tue, 11 Jun 2019 00:44:52 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 11 Jun 2019 00:44:52 +0000 (GMT)
-Date: Mon, 10 Jun 2019 17:44:46 -0700
-From: Haren Myneni <haren@linux.vnet.ibm.com>
-User-Agent: Mozilla/5.0 (X11; Linux i686;
- rv:15.0) Gecko/20120827 Thunderbird/15.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NC091h0rzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 11:21:58 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id d126so6320073pfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 18:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=8Hu6OaRpphTcydnEl+oRmHQ1ovnuEr92cVerD6GpVdc=;
+ b=R29+1uik24wxsgXVzPA3hnfYJfA5cNtuRSRnQ/mL5I9UfZeyHfeUf3MDSAX9nVuhvI
+ /9J/naELWaEUiTFf5TAkxSlOnYY9HGK4alHl0SIa8i1aQ/1ed4DmQMC7cmMxD/xYGB62
+ 5APwtNUdTeUBBvEIsbvnaPssSb6EcDXHRPobw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=8Hu6OaRpphTcydnEl+oRmHQ1ovnuEr92cVerD6GpVdc=;
+ b=kuYskx7VtcVJdqYIe+q+bV2UAjY8NAtpZfhtmigY3/XNkiwVUA1LV/Ot0M2kZcO6KY
+ DapIZY/3Bf9x0MXZJ2p3JVbfrGuHleIkJu4v8MYQRToKa1PZKS9g03J+aO9VbYIjXVin
+ MLcVTR8mr1ZskHpdFtqjLaTgHFXxS+OWkvYE+7xhAhtIzIquwD0r2DCdRse5Z5mwTIHc
+ DkIXWvoFYBLkD12zZruD/XTYf1pb2vmJD7EHZUjs135Kow6keJ5cTz+OyHSSl7Qcfg1J
+ s6IHoQm1VNvlSz90s/wVnighVM62TQPaGtPoRySPIHhOCpztmlvBd825E3IjAWPdv9GG
+ LSjQ==
+X-Gm-Message-State: APjAAAUofp6ozpaV6RD479gsT3wOn0ublTugg1ck2CezLyoSSd186813
+ yDBqPTWA/aGQ6lemQDLScEXuZg==
+X-Google-Smtp-Source: APXvYqwkbKc5AXEdTYzKq3rT43PIlftzD0fKmBhL2fQT8iG3e0iYLqCYyFzr+9vO7vP9UShovEGJ0Q==
+X-Received: by 2002:aa7:9087:: with SMTP id i7mr20139844pfa.40.1560216115675; 
+ Mon, 10 Jun 2019 18:21:55 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id t5sm11373642pgh.46.2019.06.10.18.21.53
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Mon, 10 Jun 2019 18:21:54 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH] powerpc/book3e: KASAN Full support for 64bit
+In-Reply-To: <a0c04cb8-a19b-2d73-5725-4868556e2b47@c-s.fr>
+References: <3401648225001077db54172ee87573b21e1cfa38.1553782837.git.christophe.leroy@c-s.fr>
+ <877ea7za12.fsf@dja-thinkpad.axtens.net>
+ <028d7332-57e0-bbec-1843-29f87b33a1d4@c-s.fr>
+ <87woi2xm8l.fsf@dja-thinkpad.axtens.net>
+ <a0c04cb8-a19b-2d73-5725-4868556e2b47@c-s.fr>
+Date: Tue, 11 Jun 2019 11:21:49 +1000
+Message-ID: <87lfy8q5le.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: crash after NX error
-References: <87pnnuav9d.fsf@linux.vnet.ibm.com>
- <87zhmwmgv7.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87zhmwmgv7.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061100-0064-0000-0000-000003EC7229
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011244; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01216189; UDB=6.00639440; IPR=6.00997288; 
- MB=3.00027257; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 00:44:54
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061100-0065-0000-0000-00003DD77D72
-Message-Id: <5CFEF97E.1020109@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-10_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110003
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,103 +82,378 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Stewart Smith <stewart@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06/05/2019 04:06 AM, Michael Ellerman wrote:
-> Stewart Smith <stewart@linux.ibm.com> writes:
->> On my two socket POWER9 system (powernv) with 842 zwap set up, I
->> recently got a crash with the Ubuntu kernel (I haven't tried with
->> upstream, and this is the first time the system has died like this, so
->> I'm not sure how repeatable it is).
->>
->> [    2.891463] zswap: loaded using pool 842-nx/zbud
->> ...
->> [15626.124646] nx_compress_powernv: ERROR: CSB still not valid after 5000000 us, giving up : 00 00 00 00 00000000
->> [16868.932913] Unable to handle kernel paging request for data at address 0x6655f67da816cdb8
->> [16868.933726] Faulting instruction address: 0xc000000000391600
->>
->>
->> cpu 0x68: Vector: 380 (Data Access Out of Range) at [c000001c9d98b9a0]
->>     pc: c000000000391600: kmem_cache_alloc+0x2e0/0x340
->>     lr: c0000000003915ec: kmem_cache_alloc+0x2cc/0x340
->>     sp: c000001c9d98bc20
->>    msr: 900000000280b033
->>    dar: 6655f67da816cdb8
->>   current = 0xc000001ad43cb400
->>   paca    = 0xc00000000fac7800   softe: 0        irq_happened: 0x01
->>     pid   = 8319, comm = make
->> Linux version 4.15.0-50-generic (buildd@bos02-ppc64el-006) (gcc version 7.3.0 (Ubuntu 7.3.0-16ubuntu3)) #54-Ubuntu SMP Mon May 6 18:55:18 UTC 2019 (Ubuntu 4.15.0-50.54-generic 4.15.18)
->>
->> 68:mon> t
->> [c000001c9d98bc20] c0000000003914d4 kmem_cache_alloc+0x1b4/0x340 (unreliable)
->> [c000001c9d98bc80] c0000000003b1e14 __khugepaged_enter+0x54/0x220
->> [c000001c9d98bcc0] c00000000010f0ec copy_process.isra.5.part.6+0xebc/0x1a10
->> [c000001c9d98bda0] c00000000010fe4c _do_fork+0xec/0x510
->> [c000001c9d98be30] c00000000000b584 ppc_clone+0x8/0xc
->> --- Exception: c00 (System Call) at 00007afe9daf87f4
->> SP (7fffca606880) is in userspace
->>
->> So, it looks like there could be a problem in the error path, plausibly
->> fixed by this patch:
->>
->> commit 656ecc16e8fc2ab44b3d70e3fcc197a7020d0ca5
->> Author: Haren Myneni <haren@linux.vnet.ibm.com>
->> Date:   Wed Jun 13 00:32:40 2018 -0700
->>
->>     crypto/nx: Initialize 842 high and normal RxFIFO control registers
->>     
->>     NX increments readOffset by FIFO size in receive FIFO control register
->>     when CRB is read. But the index in RxFIFO has to match with the
->>     corresponding entry in FIFO maintained by VAS in kernel. Otherwise NX
->>     may be processing incorrect CRBs and can cause CRB timeout.
->>     
->>     VAS FIFO offset is 0 when the receive window is opened during
->>     initialization. When the module is reloaded or in kexec boot, readOffset
->>     in FIFO control register may not match with VAS entry. This patch adds
->>     nx_coproc_init OPAL call to reset readOffset and queued entries in FIFO
->>     control register for both high and normal FIFOs.
->>     
->>     Signed-off-by: Haren Myneni <haren@us.ibm.com>
->>     [mpe: Fixup uninitialized variable warning]
->>     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->>
->> $ git describe --contains 656ecc16e8fc2ab44b3d70e3fcc197a7020d0ca5
->> v4.19-rc1~24^2~50
->>
->>
->> Which was never backported to any stable release, so probably needs to
->> be for v4.14 through v4.18.
-> 
-> Yeah the P9 NX support went in in:
->   b0d6c9bab5e4 ("crypto/nx: Add P9 NX support for 842 compression engine")
-> 
-> Which was: v4.14-rc1~119^2~21, so first released in v4.14.
-> 
-> 
-> I'm actually less interested in that and more interested in the
-> subsequent crash. The time stamps are miles apart though, did we just
-> leave some corrupted memory after the NX failed and then hit it later?
-> Or did we not correctly signal to the upper level APIs that the request
-> failed.
-> 
-> I think we need to do some testing with errors injected into the
-> wait_for_csb() path, to ensure that failures there are not causing
-> corrupting in zswap. Haren have you done any testing of error injection?
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
 
-The code path returns error code from wait_for_csb() properly to upper level APIs. In the case of decompression case, upon failure the request will fall back to SW 842. 
+> On 06/03/2019 11:50 PM, Daniel Axtens wrote:
+>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>=20
+>>> Hi,
+>>>
+>>> Ok, can you share your .config ?
+>>=20
+>> Sure! This one is with kasan off as the last build I did was testing to
+>> see if the code reorgisation was the cause of the issues. (it was not)
+>>=20
+>>=20
+>>=20
+>>=20
+>> This was the kasan-enabled config that failed to boot:
+>>=20
+>>=20
+>
+> Same issue with your .config under QEMU:
+>
+> A go with gdb shows:
+>
+> Breakpoint 3, 0xc000000000027b6c in exc_0x700_common ()
+> =3D> 0xc000000000027b6c <exc_0x700_common+0>:	f8 01 00 70	std     r0,112(=
+r1)
+> (gdb) bt
+> #0  0xc000000000027b6c in exc_0x700_common ()
+> #1  0xc00000000136f80c in .udbg_init_memcons ()
+>
 
-If NX is involved in this crash, the compression request may be successful with invalid CRB (mismatch FIFO entries in NX and VAS). Then SW 842 may be decompressed invalid data which might cause corruption later when accessing it. 
+Thanks for debugging this!
 
-I will try to reproduce the issue with 4.14 kernel,
+> Without CONFIG_PPC_EARLY_DEBUG, it boots fine for me. Can you check on=20
+> your side ?
 
-Thanks
-Haren
-  
-> 
-> cheers
-> 
+Yes, that works on my side.
 
+> Deactivating KASAN for arch/powerpc/kernel/udbg.o and=20
+> arch/powerpc/sysdev/udbg_memcons.o is not enough, we hit a call to=20
+> strstr() in register_early_udbg_console(), and once we get rid of it (in=
+=20
+> the same way as in prom_init.c) the next issue is register_console() and=
+=20
+> I don't know what to do about that one.
+
+Disabling early debug seems like a reasonable restriction to add.
+
+I'll have a look at modules across this and book3s next.
+
+Regards,
+Daniel
+
+>
+> Christophe
+>
+>>=20
+>>=20
+>> Regards,
+>> Daniel
+>>=20
+>>>
+>>> Christophe
+>>>
+>>> Le 31/05/2019 =C3=A0 03:29, Daniel Axtens a =C3=A9crit=C2=A0:
+>>>> Hi Christophe,
+>>>>
+>>>> I tried this on the t4240rdb and it fails to boot if KASAN is
+>>>> enabled. It does boot with the patch applied but KASAN disabled, so th=
+at
+>>>> narrows it down a little bit.
+>>>>
+>>>> I need to focus on 3s first so I'll just drop 3e from my patch set for
+>>>> now.
+>>>>
+>>>> Regards,
+>>>> Daniel
+>>>>
+>>>>> The KASAN shadow area is mapped into vmemmap space:
+>>>>> 0x8000 0400 0000 0000 to 0x8000 0600 0000 0000.
+>>>>> For this vmemmap has to be disabled.
+>>>>>
+>>>>> Cc: Daniel Axtens <dja@axtens.net>
+>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>>> ---
+>>>>>    arch/powerpc/Kconfig                  |   1 +
+>>>>>    arch/powerpc/Kconfig.debug            |   3 +-
+>>>>>    arch/powerpc/include/asm/kasan.h      |  11 +++
+>>>>>    arch/powerpc/kernel/Makefile          |   2 +
+>>>>>    arch/powerpc/kernel/head_64.S         |   3 +
+>>>>>    arch/powerpc/kernel/setup_64.c        |  20 +++---
+>>>>>    arch/powerpc/mm/kasan/Makefile        |   1 +
+>>>>>    arch/powerpc/mm/kasan/kasan_init_64.c | 129 ++++++++++++++++++++++=
+++++++++++++
+>>>>>    8 files changed, 159 insertions(+), 11 deletions(-)
+>>>>>    create mode 100644 arch/powerpc/mm/kasan/kasan_init_64.c
+>>>>>
+>>>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>>>> index 1a2fb50126b2..e0b7c45e4dc7 100644
+>>>>> --- a/arch/powerpc/Kconfig
+>>>>> +++ b/arch/powerpc/Kconfig
+>>>>> @@ -174,6 +174,7 @@ config PPC
+>>>>>    	select HAVE_ARCH_AUDITSYSCALL
+>>>>>    	select HAVE_ARCH_JUMP_LABEL
+>>>>>    	select HAVE_ARCH_KASAN			if PPC32
+>>>>> +	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64 && !SPARSEMEM_VMEMMAP
+>>>>>    	select HAVE_ARCH_KGDB
+>>>>>    	select HAVE_ARCH_MMAP_RND_BITS
+>>>>>    	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+>>>>> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+>>>>> index 61febbbdd02b..b4140dd6b4e4 100644
+>>>>> --- a/arch/powerpc/Kconfig.debug
+>>>>> +++ b/arch/powerpc/Kconfig.debug
+>>>>> @@ -370,4 +370,5 @@ config PPC_FAST_ENDIAN_SWITCH
+>>>>>    config KASAN_SHADOW_OFFSET
+>>>>>    	hex
+>>>>>    	depends on KASAN
+>>>>> -	default 0xe0000000
+>>>>> +	default 0xe0000000 if PPC32
+>>>>> +	default 0x6800040000000000 if PPC64
+>>>>> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/=
+asm/kasan.h
+>>>>> index 296e51c2f066..756b3d58f921 100644
+>>>>> --- a/arch/powerpc/include/asm/kasan.h
+>>>>> +++ b/arch/powerpc/include/asm/kasan.h
+>>>>> @@ -23,10 +23,21 @@
+>>>>>=20=20=20=20
+>>>>>    #define KASAN_SHADOW_OFFSET	ASM_CONST(CONFIG_KASAN_SHADOW_OFFSET)
+>>>>>=20=20=20=20
+>>>>> +#ifdef CONFIG_PPC32
+>>>>>    #define KASAN_SHADOW_END	0UL
+>>>>>=20=20=20=20
+>>>>>    #define KASAN_SHADOW_SIZE	(KASAN_SHADOW_END - KASAN_SHADOW_START)
+>>>>>=20=20=20=20
+>>>>> +#else
+>>>>> +
+>>>>> +#include <asm/pgtable.h>
+>>>>> +
+>>>>> +#define KASAN_SHADOW_SIZE	(KERN_VIRT_SIZE >> KASAN_SHADOW_SCALE_SHIF=
+T)
+>>>>> +
+>>>>> +#define KASAN_SHADOW_END	(KASAN_SHADOW_START + KASAN_SHADOW_SIZE)
+>>>>> +
+>>>>> +#endif /* CONFIG_PPC32 */
+>>>>> +
+>>>>>    #ifdef CONFIG_KASAN
+>>>>>    void kasan_early_init(void);
+>>>>>    void kasan_mmu_init(void);
+>>>>> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makef=
+ile
+>>>>> index 0ea6c4aa3a20..7f232c06f11d 100644
+>>>>> --- a/arch/powerpc/kernel/Makefile
+>>>>> +++ b/arch/powerpc/kernel/Makefile
+>>>>> @@ -35,6 +35,8 @@ KASAN_SANITIZE_early_32.o :=3D n
+>>>>>    KASAN_SANITIZE_cputable.o :=3D n
+>>>>>    KASAN_SANITIZE_prom_init.o :=3D n
+>>>>>    KASAN_SANITIZE_btext.o :=3D n
+>>>>> +KASAN_SANITIZE_paca.o :=3D n
+>>>>> +KASAN_SANITIZE_setup_64.o :=3D n
+>>>>>=20=20=20=20
+>>>>>    ifdef CONFIG_KASAN
+>>>>>    CFLAGS_early_32.o +=3D -DDISABLE_BRANCH_PROFILING
+>>>>> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head=
+_64.S
+>>>>> index 3fad8d499767..80fbd8024fb2 100644
+>>>>> --- a/arch/powerpc/kernel/head_64.S
+>>>>> +++ b/arch/powerpc/kernel/head_64.S
+>>>>> @@ -966,6 +966,9 @@ start_here_multiplatform:
+>>>>>    	 * and SLB setup before we turn on relocation.
+>>>>>    	 */
+>>>>>=20=20=20=20
+>>>>> +#ifdef CONFIG_KASAN
+>>>>> +	bl	kasan_early_init
+>>>>> +#endif
+>>>>>    	/* Restore parameters passed from prom_init/kexec */
+>>>>>    	mr	r3,r31
+>>>>>    	bl	early_setup		/* also sets r13 and SPRG_PACA */
+>>>>> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/set=
+up_64.c
+>>>>> index ba404dd9ce1d..d2bf860dd966 100644
+>>>>> --- a/arch/powerpc/kernel/setup_64.c
+>>>>> +++ b/arch/powerpc/kernel/setup_64.c
+>>>>> @@ -311,6 +311,16 @@ void __init early_setup(unsigned long dt_ptr)
+>>>>>     	DBG(" -> early_setup(), dt_ptr: 0x%lx\n", dt_ptr);
+>>>>>=20=20=20=20
+>>>>>    	/*
+>>>>> +	 * Configure exception handlers. This include setting up trampolines
+>>>>> +	 * if needed, setting exception endian mode, etc...
+>>>>> +	 */
+>>>>> +	configure_exceptions();
+>>>>> +
+>>>>> +	/* Apply all the dynamic patching */
+>>>>> +	apply_feature_fixups();
+>>>>> +	setup_feature_keys();
+>>>>> +
+>>>>> +	/*
+>>>>>    	 * Do early initialization using the flattened device
+>>>>>    	 * tree, such as retrieving the physical memory map or
+>>>>>    	 * calculating/retrieving the hash table size.
+>>>>> @@ -325,16 +335,6 @@ void __init early_setup(unsigned long dt_ptr)
+>>>>>    	setup_paca(paca_ptrs[boot_cpuid]);
+>>>>>    	fixup_boot_paca();
+>>>>>=20=20=20=20
+>>>>> -	/*
+>>>>> -	 * Configure exception handlers. This include setting up trampolines
+>>>>> -	 * if needed, setting exception endian mode, etc...
+>>>>> -	 */
+>>>>> -	configure_exceptions();
+>>>>> -
+>>>>> -	/* Apply all the dynamic patching */
+>>>>> -	apply_feature_fixups();
+>>>>> -	setup_feature_keys();
+>>>>> -
+>>>>>    	/* Initialize the hash table or TLB handling */
+>>>>>    	early_init_mmu();
+>>>>>=20=20=20=20
+>>>>> diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/M=
+akefile
+>>>>> index 6577897673dd..0bfbe3892808 100644
+>>>>> --- a/arch/powerpc/mm/kasan/Makefile
+>>>>> +++ b/arch/powerpc/mm/kasan/Makefile
+>>>>> @@ -3,3 +3,4 @@
+>>>>>    KASAN_SANITIZE :=3D n
+>>>>>=20=20=20=20
+>>>>>    obj-$(CONFIG_PPC32)           +=3D kasan_init_32.o
+>>>>> +obj-$(CONFIG_PPC64)	+=3D kasan_init_64.o
+>>>>> diff --git a/arch/powerpc/mm/kasan/kasan_init_64.c b/arch/powerpc/mm/=
+kasan/kasan_init_64.c
+>>>>> new file mode 100644
+>>>>> index 000000000000..7fd71b8e883b
+>>>>> --- /dev/null
+>>>>> +++ b/arch/powerpc/mm/kasan/kasan_init_64.c
+>>>>> @@ -0,0 +1,129 @@
+>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>> +
+>>>>> +#define DISABLE_BRANCH_PROFILING
+>>>>> +
+>>>>> +#include <linux/kasan.h>
+>>>>> +#include <linux/printk.h>
+>>>>> +#include <linux/memblock.h>
+>>>>> +#include <linux/sched/task.h>
+>>>>> +#include <asm/pgalloc.h>
+>>>>> +
+>>>>> +static void __init kasan_populate_pte(pte_t *ptep, pgprot_t prot)
+>>>>> +{
+>>>>> +	unsigned long va =3D (unsigned long)kasan_early_shadow_page;
+>>>>> +	phys_addr_t pa =3D __pa(kasan_early_shadow_page);
+>>>>> +	int i;
+>>>>> +
+>>>>> +	for (i =3D 0; i < PTRS_PER_PTE; i++, ptep++)
+>>>>> +		__set_pte_at(&init_mm, va, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
+>>>>> +}
+>>>>> +
+>>>>> +static void __init kasan_populate_pmd(pmd_t *pmdp)
+>>>>> +{
+>>>>> +	int i;
+>>>>> +
+>>>>> +	for (i =3D 0; i < PTRS_PER_PMD; i++)
+>>>>> +		pmd_populate_kernel(&init_mm, pmdp + i, kasan_early_shadow_pte);
+>>>>> +}
+>>>>> +
+>>>>> +static void __init kasan_populate_pud(pud_t *pudp)
+>>>>> +{
+>>>>> +	int i;
+>>>>> +
+>>>>> +	for (i =3D 0; i < PTRS_PER_PUD; i++)
+>>>>> +		pud_populate(&init_mm, pudp + i, kasan_early_shadow_pmd);
+>>>>> +}
+>>>>> +
+>>>>> +static void __init *kasan_alloc_pgtable(unsigned long size)
+>>>>> +{
+>>>>> +	void *ptr =3D memblock_alloc_try_nid(size, size, MEMBLOCK_LOW_LIMIT,
+>>>>> +					   __pa(MAX_DMA_ADDRESS), NUMA_NO_NODE);
+>>>>> +
+>>>>> +	if (!ptr)
+>>>>> +		panic("%s: Failed to allocate %lu bytes align=3D0x%lx max_addr=3D%=
+lx\n",
+>>>>> +		      __func__, size, size, __pa(MAX_DMA_ADDRESS));
+>>>>> +
+>>>>> +	return ptr;
+>>>>> +}
+>>>>> +
+>>>>> +static int __init kasan_map_page(unsigned long va, unsigned long pa,=
+ pgprot_t prot)
+>>>>> +{
+>>>>> +	pgd_t *pgdp =3D pgd_offset_k(va);
+>>>>> +	pud_t *pudp;
+>>>>> +	pmd_t *pmdp;
+>>>>> +	pte_t *ptep;
+>>>>> +
+>>>>> +	if (pgd_none(*pgdp) || (void *)pgd_page_vaddr(*pgdp) =3D=3D kasan_e=
+arly_shadow_pud) {
+>>>>> +		pudp =3D kasan_alloc_pgtable(PUD_TABLE_SIZE);
+>>>>> +		kasan_populate_pud(pudp);
+>>>>> +		pgd_populate(&init_mm, pgdp, pudp);
+>>>>> +	}
+>>>>> +	pudp =3D pud_offset(pgdp, va);
+>>>>> +	if (pud_none(*pudp) || (void *)pud_page_vaddr(*pudp) =3D=3D kasan_e=
+arly_shadow_pmd) {
+>>>>> +		pmdp =3D kasan_alloc_pgtable(PMD_TABLE_SIZE);
+>>>>> +		kasan_populate_pmd(pmdp);
+>>>>> +		pud_populate(&init_mm, pudp, pmdp);
+>>>>> +	}
+>>>>> +	pmdp =3D pmd_offset(pudp, va);
+>>>>> +	if (!pmd_present(*pmdp) || (void *)pmd_page_vaddr(*pmdp) =3D=3D kas=
+an_early_shadow_pte) {
+>>>>> +		ptep =3D kasan_alloc_pgtable(PTE_TABLE_SIZE);
+>>>>> +		kasan_populate_pte(ptep, PAGE_KERNEL);
+>>>>> +		pmd_populate_kernel(&init_mm, pmdp, ptep);
+>>>>> +	}
+>>>>> +	ptep =3D pte_offset_kernel(pmdp, va);
+>>>>> +
+>>>>> +	__set_pte_at(&init_mm, va, ptep, pfn_pte(pa >> PAGE_SHIFT, prot), 0=
+);
+>>>>> +
+>>>>> +	return 0;
+>>>>> +}
+>>>>> +
+>>>>> +static void __init kasan_init_region(struct memblock_region *reg)
+>>>>> +{
+>>>>> +	void *start =3D __va(reg->base);
+>>>>> +	void *end =3D __va(reg->base + reg->size);
+>>>>> +	unsigned long k_start, k_end, k_cur;
+>>>>> +
+>>>>> +	if (start >=3D end)
+>>>>> +		return;
+>>>>> +
+>>>>> +	k_start =3D (unsigned long)kasan_mem_to_shadow(start);
+>>>>> +	k_end =3D (unsigned long)kasan_mem_to_shadow(end);
+>>>>> +
+>>>>> +	for (k_cur =3D k_start; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
+>>>>> +		void *va =3D memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+>>>>> +
+>>>>> +		kasan_map_page(k_cur, __pa(va), PAGE_KERNEL);
+>>>>> +	}
+>>>>> +	flush_tlb_kernel_range(k_start, k_end);
+>>>>> +}
+>>>>> +
+>>>>> +void __init kasan_init(void)
+>>>>> +{
+>>>>> +	struct memblock_region *reg;
+>>>>> +
+>>>>> +	for_each_memblock(memory, reg)
+>>>>> +		kasan_init_region(reg);
+>>>>> +
+>>>>> +	/* It's too early to use clear_page() ! */
+>>>>> +	memset(kasan_early_shadow_page, 0, sizeof(kasan_early_shadow_page));
+>>>>> +
+>>>>> +	/* Enable error messages */
+>>>>> +	init_task.kasan_depth =3D 0;
+>>>>> +	pr_info("KASAN init done\n");
+>>>>> +}
+>>>>> +
+>>>>> +/* The early shadow maps everything to a single page of zeroes */
+>>>>> +asmlinkage void __init kasan_early_init(void)
+>>>>> +{
+>>>>> +	unsigned long addr =3D KASAN_SHADOW_START;
+>>>>> +	unsigned long end =3D KASAN_SHADOW_END;
+>>>>> +	pgd_t *pgdp =3D pgd_offset_k(addr);
+>>>>> +
+>>>>> +	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+>>>>> +	kasan_populate_pmd(kasan_early_shadow_pmd);
+>>>>> +	kasan_populate_pud(kasan_early_shadow_pud);
+>>>>> +
+>>>>> +	do {
+>>>>> +		pgd_populate(&init_mm, pgdp, kasan_early_shadow_pud);
+>>>>> +	} while (pgdp++, addr =3D pgd_addr_end(addr, end), addr !=3D end);
+>>>>> +}
+>>>>> --=20
+>>>>> 2.13.3
