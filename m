@@ -1,82 +1,155 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4763C23C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 06:31:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A36F3C199
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 05:37:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NFzx0pGLzDqTY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 13:37:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NHBC08BRzDqTq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 14:30:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="PNyMDSix"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NFxg25bxzDqSG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 13:35:02 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5B3XZgo139145
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 23:34:59 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t241ngqgx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 23:34:59 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Tue, 11 Jun 2019 04:34:57 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 11 Jun 2019 04:34:53 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5B3Yrnr45089018
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Jun 2019 03:34:53 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD1A9A404D;
- Tue, 11 Jun 2019 03:34:52 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56DF5A4055;
- Tue, 11 Jun 2019 03:34:49 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.102.1.214])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 11 Jun 2019 03:34:49 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH RESEND] Powerpc/Watchpoint: Restore nvgprs while returning
- from exception
-Date: Tue, 11 Jun 2019 09:04:47 +0530
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <a2696037-539c-2f37-3b2f-7288a58fbfe7@linux.ibm.com>
-References: <a2696037-539c-2f37-3b2f-7288a58fbfe7@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NH8J4DyRzDqGT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 14:29:18 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id t16so6556855pfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 21:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=bjtzjFRlNPysMDfsllOAL29bPsBSgek1NuSNwdVjobo=;
+ b=PNyMDSixa5s4GrdQ8T2QqErU7Q5dhQHCme1T6SvAdvSqSiKfgOUSgeXF5/51Wnv3y+
+ vnSBtjRB2/QWaudFtG+J7mYr7smwu4SZGovBVW0FE8HEmfEM7RVOu6tW7MyZKke9siZ5
+ wknaxdRPyUUGI+EWf7TN8+udIRv79fEX8f7Kjf8sx+Pn7Eio+MNJefMB7TNJzR4WnB1F
+ bwlpwtNHhZxXJpPMrnU8RBSbLqcBeVniaIfgV4lwdWGNqtQmVFg2yoZvwzszouwy7qyn
+ YtRyLw7K+AAma1iFPneXF0HmcwXuz3gCbbRQBS6Ye5+uF7ixg41Cmc48SZUgvhlaFHo8
+ J7ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=bjtzjFRlNPysMDfsllOAL29bPsBSgek1NuSNwdVjobo=;
+ b=KlLWIa6bagdVEaWaFjUbYL4yHxVRBLMxQrr/AcZ5A0qHE5hkjVYH2PmJ5SVT3DriPr
+ iSy6LiOA+GcwGHKmtGy1HRaH0C4JFgJgPe5OK9aUCxHPQ0/Tvv+kAAL2kJos6iT63H2T
+ cT3f/vCTykVMisY4Y+9XgxwR2XouPuC8Ao9Epa++pz4wsodqphPNkbGndrL8qECSsNa+
+ MLhPYxRJwdLiyXTwN0DRVua4xSh3KXJNPYV8o5NLavX6hpglNsBCQTaOLfqMDGyS0Rxu
+ Q8J0zgVuCDHjG+TzYe21qvkyJZPENwAnmT+IYpBFtaEqrYQ7IAuUYq10jB1eG7HMFCLR
+ aHew==
+X-Gm-Message-State: APjAAAWwEmla8A5hJoqr+8UIu6JNCN7PfqbyhQw518t/kKwnwHsDlWgw
+ 5dC6CTbs3JanMoXaTpkjNoMdmQ==
+X-Google-Smtp-Source: APXvYqwHX+zwXKbYs+3FDxOeK8d6MWs7S90WUZHNjQwItnqMp0zR2likeB0wnEppywmFnRB+6ztZIQ==
+X-Received: by 2002:a17:90a:338b:: with SMTP id
+ n11mr11754078pjb.21.1560227357055; 
+ Mon, 10 Jun 2019 21:29:17 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id b17sm14354413pfb.18.2019.06.10.21.29.12
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 10 Jun 2019 21:29:16 -0700 (PDT)
+Subject: Re: [PATCH kernel] powerpc/powernv/ioda: Fix race in TCE level
+ allocation
+To: linuxppc-dev@lists.ozlabs.org
+References: <20190611023103.86977-1-aik@ozlabs.ru>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Openpgp: preference=signencrypt
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <c9f13ce0-6ec0-40cd-9e4b-7c60c33d203a@ozlabs.ru>
+Date: Tue, 11 Jun 2019 14:29:10 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061103-0020-0000-0000-00000348F15D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061103-0021-0000-0000-0000219C15D7
-Message-Id: <20190611033447.28815-1-ravi.bangoria@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-11_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110023
+In-Reply-To: <20190611023103.86977-1-aik@ozlabs.ru>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,106 +161,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- paulus@samba.org, mahesh@linux.vnet.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Jose Ricardo Ziviani <joserz@linux.ibm.com>,
+ Sam Bobroff <sbobroff@linux.ibm.com>, Alistair Popple <alistair@popple.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, kvm-ppc@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, stable@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc hw triggers watchpoint before executing the instruction. To
-make trigger-after-execute behavior, kernel emulates the instruction.
-If the instruction is 'load something into non-volatile register',
-exception handler should restore emulated register state while
-returning back, otherwise there will be register state corruption.
-Ex, Adding a watchpoint on a list can corrput the list:
+Please ignore this (causes lockdep warnings), v2 is coming.
 
-  # cat /proc/kallsyms | grep kthread_create_list
-  c00000000121c8b8 d kthread_create_list
 
-Add watchpoint on kthread_create_list->prev:
+On 11/06/2019 12:31, Alexey Kardashevskiy wrote:
+> pnv_tce() returns a pointer to a TCE entry and originally a TCE table
+> would be pre-allocated. For the default case of 2GB window the table
+> needs only a single level and that is fine. However if more levels are
+> requested, it is possible to get a race when 2 threads want a pointer
+> to a TCE entry from the same page of TCEs.
+> 
+> This adds a spinlock to handle the race. The alloc==true case is not
+> possible in the real mode so spinlock is safe for KVM as well.
+> 
+> CC: stable@vger.kernel.org # v4.19+
+> Fixes: a68bd1267b72 ("powerpc/powernv/ioda: Allocate indirect TCE levels on demand")
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
+> 
+> This fixes EEH's from
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=110810
+> 
+> 
+> ---
+>  arch/powerpc/include/asm/iommu.h              |  1 +
+>  arch/powerpc/platforms/powernv/pci-ioda-tce.c | 21 ++++++++++++-------
+>  2 files changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+> index 2c1845e5e851..1825b4cc0097 100644
+> --- a/arch/powerpc/include/asm/iommu.h
+> +++ b/arch/powerpc/include/asm/iommu.h
+> @@ -111,6 +111,7 @@ struct iommu_table {
+>  	struct iommu_table_ops *it_ops;
+>  	struct kref    it_kref;
+>  	int it_nid;
+> +	spinlock_t it_lock;
+>  };
+>  
+>  #define IOMMU_TABLE_USERSPACE_ENTRY_RO(tbl, entry) \
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> index e28f03e1eb5e..9a19d61e2b12 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> @@ -29,6 +29,7 @@ void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
+>  	tbl->it_size = tce_size >> 3;
+>  	tbl->it_busno = 0;
+>  	tbl->it_type = TCE_PCI;
+> +	spin_lock_init(&tbl->it_lock);
+>  }
+>  
+>  static __be64 *pnv_alloc_tce_level(int nid, unsigned int shift)
+> @@ -60,18 +61,22 @@ static __be64 *pnv_tce(struct iommu_table *tbl, bool user, long idx, bool alloc)
+>  		unsigned long tce;
+>  
+>  		if (tmp[n] == 0) {
+> -			__be64 *tmp2;
+> -
+>  			if (!alloc)
+>  				return NULL;
+>  
+> -			tmp2 = pnv_alloc_tce_level(tbl->it_nid,
+> -					ilog2(tbl->it_level_size) + 3);
+> -			if (!tmp2)
+> -				return NULL;
+> +			spin_lock(&tbl->it_lock);
+> +			if (tmp[n] == 0) {
+> +				__be64 *tmp2;
+>  
+> -			tmp[n] = cpu_to_be64(__pa(tmp2) |
+> -					TCE_PCI_READ | TCE_PCI_WRITE);
+> +				tmp2 = pnv_alloc_tce_level(tbl->it_nid,
+> +						ilog2(tbl->it_level_size) + 3);
+> +				if (tmp2)
+> +					tmp[n] = cpu_to_be64(__pa(tmp2) |
+> +						TCE_PCI_READ | TCE_PCI_WRITE);
+> +			}
+> +			spin_unlock(&tbl->it_lock);
+> +			if (tmp[n] == 0)
+> +				return NULL;
+>  		}
+>  		tce = be64_to_cpu(tmp[n]);
+>  
+> 
 
-  # perf record -e mem:0xc00000000121c8c0
-
-Run some workload such that new kthread gets invoked. Ex, I just
-logged out from console:
-
-  list_add corruption. next->prev should be prev (c000000001214e00), \
-	but was c00000000121c8b8. (next=c00000000121c8b8).
-  WARNING: CPU: 59 PID: 309 at lib/list_debug.c:25 __list_add_valid+0xb4/0xc0
-  CPU: 59 PID: 309 Comm: kworker/59:0 Kdump: loaded Not tainted 5.1.0-rc7+ #69
-  ...
-  NIP __list_add_valid+0xb4/0xc0
-  LR __list_add_valid+0xb0/0xc0
-  Call Trace:
-  __list_add_valid+0xb0/0xc0 (unreliable)
-  __kthread_create_on_node+0xe0/0x260
-  kthread_create_on_node+0x34/0x50
-  create_worker+0xe8/0x260
-  worker_thread+0x444/0x560
-  kthread+0x160/0x1a0
-  ret_from_kernel_thread+0x5c/0x70
-
-List corruption happened because it uses 'load into non-volatile
-register' instruction:
-
-Snippet from __kthread_create_on_node:
-
-  c000000000136be8:     addis   r29,r2,-19
-  c000000000136bec:     ld      r29,31424(r29)
-        if (!__list_add_valid(new, prev, next))
-  c000000000136bf0:     mr      r3,r30
-  c000000000136bf4:     mr      r5,r28
-  c000000000136bf8:     mr      r4,r29
-  c000000000136bfc:     bl      c00000000059a2f8 <__list_add_valid+0x8>
-
-Register state from WARN_ON():
-
-  GPR00: c00000000059a3a0 c000007ff23afb50 c000000001344e00 0000000000000075
-  GPR04: 0000000000000000 0000000000000000 0000001852af8bc1 0000000000000000
-  GPR08: 0000000000000001 0000000000000007 0000000000000006 00000000000004aa
-  GPR12: 0000000000000000 c000007ffffeb080 c000000000137038 c000005ff62aaa00
-  GPR16: 0000000000000000 0000000000000000 c000007fffbe7600 c000007fffbe7370
-  GPR20: c000007fffbe7320 c000007fffbe7300 c000000001373a00 0000000000000000
-  GPR24: fffffffffffffef7 c00000000012e320 c000007ff23afcb0 c000000000cb8628
-  GPR28: c00000000121c8b8 c000000001214e00 c000007fef5b17e8 c000007fef5b17c0
-
-Watchpoint hit at 0xc000000000136bec.
-
-  addis   r29,r2,-19
-   => r29 = 0xc000000001344e00 + (-19 << 16)
-   => r29 = 0xc000000001214e00
-
-  ld      r29,31424(r29)
-   => r29 = *(0xc000000001214e00 + 31424)
-   => r29 = *(0xc00000000121c8c0)
-
-0xc00000000121c8c0 is where we placed a watchpoint and thus this
-instruction was emulated by emulate_step. But because handle_dabr_fault
-did not restore emulated register state, r29 still contains stale
-value in above register state.
-
-Fixes: 5aae8a5370802 ("powerpc, hw_breakpoints: Implement hw_breakpoints for 64-bit server processors") 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: stable@vger.kernel.org # 2.6.36+
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/exceptions-64s.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6b86055e5251..0e649d980ec3 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1761,7 +1761,7 @@ handle_dabr_fault:
- 	ld      r5,_DSISR(r1)
- 	addi    r3,r1,STACK_FRAME_OVERHEAD
- 	bl      do_break
--12:	b       ret_from_except_lite
-+12:	b       ret_from_except
- 
- 
- #ifdef CONFIG_PPC_BOOK3S_64
 -- 
-2.20.1
-
+Alexey
