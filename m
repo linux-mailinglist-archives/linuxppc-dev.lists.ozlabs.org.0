@@ -1,97 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5283C365
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:21:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NJJg054QzDqRf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:21:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EF23C36A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:26:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NJPl5jyLzDqTD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:26:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NJGl3SFkzDqJ7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:19:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45NJGk1vxlz8vsm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:19:58 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45NJGk1Zrfz9sND; Tue, 11 Jun 2019 15:19:58 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=sathnaga@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ge66Y4D5"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45NJGj5BrXz9s6w
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 15:19:57 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5B5CX1i138918
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 01:19:53 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t25e3h7f1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 01:19:53 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <sathnaga@linux.vnet.ibm.com>;
- Tue, 11 Jun 2019 06:19:51 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 11 Jun 2019 06:19:49 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5B5Jlhw51839080
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Jun 2019 05:19:47 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC463A405F;
- Tue, 11 Jun 2019 05:19:47 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9125A4060;
- Tue, 11 Jun 2019 05:19:45 +0000 (GMT)
-Received: from sathnaga86.in.ibm.com (unknown [9.122.211.230])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue, 11 Jun 2019 05:19:45 +0000 (GMT)
-Date: Tue, 11 Jun 2019 10:49:43 +0530
-From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-To: Nayna Jain <nayna@linux.ibm.com>
-Subject: Re: [PATCH v3 3/3] powerpc: Add support to initialize ima policy rules
-References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
- <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NJMp0112zDq9W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:24:21 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45NJMj2w3Mz9tyqV;
+ Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ge66Y4D5; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id fyyoRIc-tH9n; Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45NJMj1qNQz9v0p3;
+ Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1560230657; bh=OryAugs7TR5ttspxYLjCji77PWxYn28+eCLlZmxKaSs=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ge66Y4D5NeVyJ1VEQFUPgGLiA0P3jcJWqY2opg9SNR+Gi6jCSbFEKId7BcIp99i89
+ EIu0mGTtgWYmMO1xM/HrXU+JTOvwk17csNdMcyiw3aJG6vDtoQO4uVB9sjnCZ4epop
+ OMJ3bY9p4GgZfOsdsmRormyDBmzDV+7Ach9IkAFs=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0778E8B7D4;
+ Tue, 11 Jun 2019 07:24:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id A-475R45ce_Y; Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DB748B75B;
+ Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+Subject: Re: [PATCH 1/4] mm: Move ioremap page table mapping function to mm/
+To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org
+References: <20190610043838.27916-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <86991f76-2101-8087-37db-d939d5d744fa@c-s.fr>
+Date: Tue, 11 Jun 2019 07:24:17 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1560198837-18857-4-git-send-email-nayna@linux.ibm.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19061105-0016-0000-0000-00000287EF6D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061105-0017-0000-0000-000032E51AC8
-Message-Id: <20190611051943.GA7516@sathnaga86.in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-11_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110036
+In-Reply-To: <20190610043838.27916-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,176 +77,603 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- linux-integrity@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 10, 2019 at 04:33:57PM -0400, Nayna Jain wrote:
-> PowerNV secure boot relies on the kernel IMA security subsystem to
-> perform the OS kernel image signature verification. Since each secure
-> boot mode has different IMA policy requirements, dynamic definition of
-> the policy rules based on the runtime secure boot mode of the system is
-> required. On systems that support secure boot, but have it disabled,
-> only measurement policy rules of the kernel image and modules are
-> defined.
+
+
+Le 10/06/2019 à 06:38, Nicholas Piggin a écrit :
+> ioremap_page_range is a generic function to create a kernel virtual
+> mapping, move it to mm/vmalloc.c and rename it vmap_range.
 > 
-> This patch defines the arch-specific implementation to retrieve the
-> secure boot mode of the system and accordingly configures the IMA policy
-> rules.
+> For clarity with this move, also:
+> - Rename vunmap_page_range (vmap_range's inverse) to vunmap_range.
+> - Rename vmap_page_range (which takes a page array) to vmap_pages.
+
+Maybe it would be easier to follow the change if the name change was 
+done in another patch than the move.
+
 > 
-> This patch provides arch-specific IMA policies if PPC_SECURE_BOOT
-> config is enabled.
-> 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/Kconfig           | 14 +++++++++
->  arch/powerpc/kernel/Makefile   |  1 +
->  arch/powerpc/kernel/ima_arch.c | 54 ++++++++++++++++++++++++++++++++++
->  include/linux/ima.h            |  3 +-
->  4 files changed, 71 insertions(+), 1 deletion(-)
->  create mode 100644 arch/powerpc/kernel/ima_arch.c
-
-Hi,
-
-This series failed to build against linuxppc/merge tree with `ppc64le_defconfig`,
-
-arch/powerpc/platforms/powernv/secboot.c:14:6: error: redefinition of 'get_powerpc_sb_mode'
-   14 | bool get_powerpc_sb_mode(void)
-      |      ^~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/platforms/powernv/secboot.c:11:
-./arch/powerpc/include/asm/secboot.h:15:20: note: previous definition of 'get_powerpc_sb_mode' was here
-   15 | static inline bool get_powerpc_sb_mode(void)
-      |                    ^~~~~~~~~~~~~~~~~~~
-make[3]: *** [scripts/Makefile.build:278: arch/powerpc/platforms/powernv/secboot.o] Error 1
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [scripts/Makefile.build:489: arch/powerpc/platforms/powernv] Error 2
-make[1]: *** [scripts/Makefile.build:489: arch/powerpc/platforms] Error 2
-make: *** [Makefile:1071: arch/powerpc] Error 2
-make: *** Waiting for unfinished jobs....
-
-Regards,
--Satheesh
-
 > 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 8c1c636308c8..9de77bb14f54 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -902,6 +902,20 @@ config PPC_MEM_KEYS
+> Fixed up the arm64 compile errors, fixed a few bugs, and tidied
+> things up a bit more.
 > 
->  	  If unsure, say y.
+> Have tested powerpc and x86 but not arm64, would appreciate a review
+> and test of the arm64 patch if possible.
 > 
-> +config PPC_SECURE_BOOT
-> +	prompt "Enable PowerPC Secure Boot"
-> +	bool
-> +	default n
-> +	depends on PPC64
-> +	depends on OPAL_SECVAR
-> +	depends on IMA
-> +	depends on IMA_ARCH_POLICY
-> +	help
-> +	  Linux on POWER with firmware secure boot enabled needs to define
-> +	  security policies to extend secure boot to the OS.This config
-> +	  allows user to enable OS Secure Boot on PowerPC systems that
-> +	  have firmware secure boot support.
+>   include/linux/vmalloc.h |   3 +
+>   lib/ioremap.c           | 173 +++---------------------------
+>   mm/vmalloc.c            | 228 ++++++++++++++++++++++++++++++++++++----
+>   3 files changed, 229 insertions(+), 175 deletions(-)
+> 
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index 51e131245379..812bea5866d6 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -147,6 +147,9 @@ extern struct vm_struct *find_vm_area(const void *addr);
+>   extern int map_vm_area(struct vm_struct *area, pgprot_t prot,
+>   			struct page **pages);
+>   #ifdef CONFIG_MMU
+> +extern int vmap_range(unsigned long addr,
+> +		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +		       unsigned int max_page_shift);
+
+Drop extern keyword here.
+
+As checkpatch tells you, 'CHECK:AVOID_EXTERNS: extern prototypes should 
+be avoided in .h files'
+
+Christophe
+
+>   extern int map_kernel_range_noflush(unsigned long start, unsigned long size,
+>   				    pgprot_t prot, struct page **pages);
+>   extern void unmap_kernel_range_noflush(unsigned long addr, unsigned long size);
+> diff --git a/lib/ioremap.c b/lib/ioremap.c
+> index 063213685563..e13946da8ec3 100644
+> --- a/lib/ioremap.c
+> +++ b/lib/ioremap.c
+> @@ -58,165 +58,24 @@ static inline int ioremap_pud_enabled(void) { return 0; }
+>   static inline int ioremap_pmd_enabled(void) { return 0; }
+>   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>   
+> -static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
+> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> -{
+> -	pte_t *pte;
+> -	u64 pfn;
+> -
+> -	pfn = phys_addr >> PAGE_SHIFT;
+> -	pte = pte_alloc_kernel(pmd, addr);
+> -	if (!pte)
+> -		return -ENOMEM;
+> -	do {
+> -		BUG_ON(!pte_none(*pte));
+> -		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
+> -		pfn++;
+> -	} while (pte++, addr += PAGE_SIZE, addr != end);
+> -	return 0;
+> -}
+> -
+> -static int ioremap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys_addr,
+> -				pgprot_t prot)
+> -{
+> -	if (!ioremap_pmd_enabled())
+> -		return 0;
+> -
+> -	if ((end - addr) != PMD_SIZE)
+> -		return 0;
+> -
+> -	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
+> -		return 0;
+> -
+> -	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+> -		return 0;
+> -
+> -	return pmd_set_huge(pmd, phys_addr, prot);
+> -}
+> -
+> -static inline int ioremap_pmd_range(pud_t *pud, unsigned long addr,
+> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> -{
+> -	pmd_t *pmd;
+> -	unsigned long next;
+> -
+> -	pmd = pmd_alloc(&init_mm, pud, addr);
+> -	if (!pmd)
+> -		return -ENOMEM;
+> -	do {
+> -		next = pmd_addr_end(addr, end);
+> -
+> -		if (ioremap_try_huge_pmd(pmd, addr, next, phys_addr, prot))
+> -			continue;
+> -
+> -		if (ioremap_pte_range(pmd, addr, next, phys_addr, prot))
+> -			return -ENOMEM;
+> -	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
+> -	return 0;
+> -}
+> -
+> -static int ioremap_try_huge_pud(pud_t *pud, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys_addr,
+> -				pgprot_t prot)
+> -{
+> -	if (!ioremap_pud_enabled())
+> -		return 0;
+> -
+> -	if ((end - addr) != PUD_SIZE)
+> -		return 0;
+> -
+> -	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
+> -		return 0;
+> -
+> -	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
+> -		return 0;
+> -
+> -	return pud_set_huge(pud, phys_addr, prot);
+> -}
+> -
+> -static inline int ioremap_pud_range(p4d_t *p4d, unsigned long addr,
+> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> -{
+> -	pud_t *pud;
+> -	unsigned long next;
+> -
+> -	pud = pud_alloc(&init_mm, p4d, addr);
+> -	if (!pud)
+> -		return -ENOMEM;
+> -	do {
+> -		next = pud_addr_end(addr, end);
+> -
+> -		if (ioremap_try_huge_pud(pud, addr, next, phys_addr, prot))
+> -			continue;
+> -
+> -		if (ioremap_pmd_range(pud, addr, next, phys_addr, prot))
+> -			return -ENOMEM;
+> -	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
+> -	return 0;
+> -}
+> -
+> -static int ioremap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
+> -				unsigned long end, phys_addr_t phys_addr,
+> -				pgprot_t prot)
+> -{
+> -	if (!ioremap_p4d_enabled())
+> -		return 0;
+> -
+> -	if ((end - addr) != P4D_SIZE)
+> -		return 0;
+> -
+> -	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
+> -		return 0;
+> -
+> -	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
+> -		return 0;
+> -
+> -	return p4d_set_huge(p4d, phys_addr, prot);
+> -}
+> -
+> -static inline int ioremap_p4d_range(pgd_t *pgd, unsigned long addr,
+> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> -{
+> -	p4d_t *p4d;
+> -	unsigned long next;
+> -
+> -	p4d = p4d_alloc(&init_mm, pgd, addr);
+> -	if (!p4d)
+> -		return -ENOMEM;
+> -	do {
+> -		next = p4d_addr_end(addr, end);
+> -
+> -		if (ioremap_try_huge_p4d(p4d, addr, next, phys_addr, prot))
+> -			continue;
+> -
+> -		if (ioremap_pud_range(p4d, addr, next, phys_addr, prot))
+> -			return -ENOMEM;
+> -	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
+> -	return 0;
+> -}
+> -
+>   int ioremap_page_range(unsigned long addr,
+>   		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+>   {
+> -	pgd_t *pgd;
+> -	unsigned long start;
+> -	unsigned long next;
+> -	int err;
+> -
+> -	might_sleep();
+> -	BUG_ON(addr >= end);
+> -
+> -	start = addr;
+> -	pgd = pgd_offset_k(addr);
+> -	do {
+> -		next = pgd_addr_end(addr, end);
+> -		err = ioremap_p4d_range(pgd, addr, next, phys_addr, prot);
+> -		if (err)
+> -			break;
+> -	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+> -
+> -	flush_cache_vmap(start, end);
+> +	unsigned int max_page_shift = PAGE_SHIFT;
 > +
->  endmenu
-> 
->  config ISA_DMA_API
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index 0ea6c4aa3a20..75c929b41341 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -131,6 +131,7 @@ ifdef CONFIG_IMA
->  obj-y				+= ima_kexec.o
->  endif
->  endif
-> +obj-$(CONFIG_PPC_SECURE_BOOT)	+= ima_arch.o
-> 
->  obj-$(CONFIG_AUDIT)		+= audit.o
->  obj64-$(CONFIG_AUDIT)		+= compat_audit.o
-> diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
-> new file mode 100644
-> index 000000000000..1767bf6e6550
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/ima_arch.c
-> @@ -0,0 +1,54 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2019 IBM Corporation
-> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> + *
-> + * ima_arch.c
-> + *      - initialize ima policies for PowerPC Secure Boot
-> + */
-> +
-> +#include <linux/ima.h>
-> +#include <asm/secboot.h>
-> +
-> +bool arch_ima_get_secureboot(void)
+> +	/*
+> +	 * Due to the max_page_shift parameter to vmap_range, platforms must
+> +	 * enable all smaller sizes to take advantage of a given size,
+> +	 * otherwise fall back to small pages.
+> +	 */
+> +	if (ioremap_pmd_enabled()) {
+> +		max_page_shift = PMD_SHIFT;
+> +		if (ioremap_pud_enabled()) {
+> +			max_page_shift = PUD_SHIFT;
+> +			if (ioremap_p4d_enabled())
+> +				max_page_shift = P4D_SHIFT;
+> +		}
+> +	}
+>   
+> -	return err;
+> +	return vmap_range(addr, end, phys_addr, prot, max_page_shift);
+>   }
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 233af6936c93..dd27cfb29b10 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -119,7 +119,7 @@ static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end)
+>   	} while (p4d++, addr = next, addr != end);
+>   }
+>   
+> -static void vunmap_page_range(unsigned long addr, unsigned long end)
+> +static void vunmap_range(unsigned long addr, unsigned long end)
+>   {
+>   	pgd_t *pgd;
+>   	unsigned long next;
+> @@ -135,6 +135,198 @@ static void vunmap_page_range(unsigned long addr, unsigned long end)
+>   }
+>   
+>   static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
 > +{
-> +	bool sb_mode;
+> +	pte_t *pte;
+> +	u64 pfn;
 > +
-> +	sb_mode = get_powerpc_sb_mode();
-> +	if (sb_mode)
-> +		return true;
-> +	else
-> +		return false;
+> +	pfn = phys_addr >> PAGE_SHIFT;
+> +	pte = pte_alloc_kernel(pmd, addr);
+> +	if (!pte)
+> +		return -ENOMEM;
+> +	do {
+> +		BUG_ON(!pte_none(*pte));
+> +		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
+> +		pfn++;
+> +	} while (pte++, addr += PAGE_SIZE, addr != end);
+> +	return 0;
 > +}
 > +
-> +/*
-> + * File signature verification is not needed, include only measurements
-> + */
-> +static const char *const default_arch_rules[] = {
-> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
-> +	"measure func=MODULE_CHECK template=ima-modsig",
-> +	NULL
-> +};
-> +
-> +/* Both file signature verification and measurements are needed */
-> +static const char *const sb_arch_rules[] = {
-> +	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
-> +	"measure func=MODULE_CHECK template=ima-modsig",
-> +	"appraise func=KEXEC_KERNEL_CHECK appraise_type=imasig|modsig template=ima-modsig",
-> +#if !IS_ENABLED(CONFIG_MODULE_SIG)
-> +	"appraise func=MODULE_CHECK appraise_type=imasig|modsig template=ima-modsig",
-> +#endif
-> +	NULL
-> +};
-> +
-> +/*
-> + * On PowerPC, file measurements are to be added to the IMA measurement list
-> + * irrespective of the secure boot state of the system. Signature verification
-> + * is conditionally enabled based on the secure boot state.
-> + */
-> +const char *const *arch_get_ima_policy(void)
+> +static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
 > +{
-> +	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot())
-> +		return sb_arch_rules;
-> +	return default_arch_rules;
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +		return 0;
+> +
+> +	if (max_page_shift < PMD_SHIFT)
+> +		return 0;
+> +
+> +	if ((end - addr) != PMD_SIZE)
+> +		return 0;
+> +
+> +	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
+> +		return 0;
+> +
+> +	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+> +		return 0;
+> +
+> +	return pmd_set_huge(pmd, phys_addr, prot);
 > +}
-> diff --git a/include/linux/ima.h b/include/linux/ima.h
-> index fd9f7cf4cdf5..a01df076ecae 100644
-> --- a/include/linux/ima.h
-> +++ b/include/linux/ima.h
-> @@ -31,7 +31,8 @@ extern void ima_post_path_mknod(struct dentry *dentry);
->  extern void ima_add_kexec_buffer(struct kimage *image);
->  #endif
+> +
+> +static inline int vmap_pmd_range(pud_t *pud, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	pmd_t *pmd;
+> +	unsigned long next;
+> +
+> +	pmd = pmd_alloc(&init_mm, pud, addr);
+> +	if (!pmd)
+> +		return -ENOMEM;
+> +	do {
+> +		next = pmd_addr_end(addr, end);
+> +
+> +		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
+> +					max_page_shift))
+> +			continue;
+> +
+> +		if (vmap_pte_range(pmd, addr, next, phys_addr, prot))
+> +			return -ENOMEM;
+> +	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
+> +	return 0;
+> +}
+> +
+> +static int vmap_try_huge_pud(pud_t *pud, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +		return 0;
+> +
+> +	if (max_page_shift < PUD_SHIFT)
+> +		return 0;
+> +
+> +	if ((end - addr) != PUD_SIZE)
+> +		return 0;
+> +
+> +	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
+> +		return 0;
+> +
+> +	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
+> +		return 0;
+> +
+> +	return pud_set_huge(pud, phys_addr, prot);
+> +}
+> +
+> +static inline int vmap_pud_range(p4d_t *p4d, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	pud_t *pud;
+> +	unsigned long next;
+> +
+> +	pud = pud_alloc(&init_mm, p4d, addr);
+> +	if (!pud)
+> +		return -ENOMEM;
+> +	do {
+> +		next = pud_addr_end(addr, end);
+> +
+> +		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot,
+> +					max_page_shift))
+> +			continue;
+> +
+> +		if (vmap_pmd_range(pud, addr, next, phys_addr, prot,
+> +					max_page_shift))
+> +			return -ENOMEM;
+> +	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
+> +	return 0;
+> +}
+> +
+> +static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +		return 0;
+> +
+> +	if (max_page_shift < P4D_SHIFT)
+> +		return 0;
+> +
+> +	if ((end - addr) != P4D_SIZE)
+> +		return 0;
+> +
+> +	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
+> +		return 0;
+> +
+> +	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
+> +		return 0;
+> +
+> +	return p4d_set_huge(p4d, phys_addr, prot);
+> +}
+> +
+> +static inline int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	p4d_t *p4d;
+> +	unsigned long next;
+> +
+> +	p4d = p4d_alloc(&init_mm, pgd, addr);
+> +	if (!p4d)
+> +		return -ENOMEM;
+> +	do {
+> +		next = p4d_addr_end(addr, end);
+> +
+> +		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot,
+> +					max_page_shift))
+> +			continue;
+> +
+> +		if (vmap_pud_range(p4d, addr, next, phys_addr, prot,
+> +					max_page_shift))
+> +			return -ENOMEM;
+> +	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
+> +	return 0;
+> +}
+> +
+> +static int vmap_range_noflush(unsigned long addr,
+> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+> +{
+> +	pgd_t *pgd;
+> +	unsigned long start;
+> +	unsigned long next;
+> +	int err;
+> +
+> +	might_sleep();
+> +	BUG_ON(addr >= end);
+> +
+> +	start = addr;
+> +	pgd = pgd_offset_k(addr);
+> +	do {
+> +		next = pgd_addr_end(addr, end);
+> +		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot,
+> +					max_page_shift);
+> +		if (err)
+> +			break;
+> +	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+> +
+> +	return err;
+> +}
+> +
+> +int vmap_range(unsigned long addr,
+> +		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +		       unsigned int max_page_shift)
+> +{
+> +	int ret;
+> +
+> +	ret = vmap_range_noflush(addr, end, phys_addr, prot, max_page_shift);
+> +	flush_cache_vmap(addr, end);
+> +
+> +	return ret;
+> +}
+> +
+> +static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+>   {
+>   	pte_t *pte;
+> @@ -160,7 +352,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
+>   	return 0;
+>   }
+>   
+> -static int vmap_pmd_range(pud_t *pud, unsigned long addr,
+> +static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+>   {
+>   	pmd_t *pmd;
+> @@ -171,13 +363,13 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
+>   		return -ENOMEM;
+>   	do {
+>   		next = pmd_addr_end(addr, end);
+> -		if (vmap_pte_range(pmd, addr, next, prot, pages, nr))
+> +		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr))
+>   			return -ENOMEM;
+>   	} while (pmd++, addr = next, addr != end);
+>   	return 0;
+>   }
+>   
+> -static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
+> +static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+>   {
+>   	pud_t *pud;
+> @@ -188,13 +380,13 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
+>   		return -ENOMEM;
+>   	do {
+>   		next = pud_addr_end(addr, end);
+> -		if (vmap_pmd_range(pud, addr, next, prot, pages, nr))
+> +		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr))
+>   			return -ENOMEM;
+>   	} while (pud++, addr = next, addr != end);
+>   	return 0;
+>   }
+>   
+> -static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
+> +static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
+>   {
+>   	p4d_t *p4d;
+> @@ -205,7 +397,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
+>   		return -ENOMEM;
+>   	do {
+>   		next = p4d_addr_end(addr, end);
+> -		if (vmap_pud_range(p4d, addr, next, prot, pages, nr))
+> +		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr))
+>   			return -ENOMEM;
+>   	} while (p4d++, addr = next, addr != end);
+>   	return 0;
+> @@ -217,7 +409,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
+>    *
+>    * Ie. pte at addr+N*PAGE_SIZE shall point to pfn corresponding to pages[N]
+>    */
+> -static int vmap_page_range_noflush(unsigned long start, unsigned long end,
+> +static int vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>   				   pgprot_t prot, struct page **pages)
+>   {
+>   	pgd_t *pgd;
+> @@ -230,7 +422,7 @@ static int vmap_page_range_noflush(unsigned long start, unsigned long end,
+>   	pgd = pgd_offset_k(addr);
+>   	do {
+>   		next = pgd_addr_end(addr, end);
+> -		err = vmap_p4d_range(pgd, addr, next, prot, pages, &nr);
+> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr);
+>   		if (err)
+>   			return err;
+>   	} while (pgd++, addr = next, addr != end);
+> @@ -238,12 +430,12 @@ static int vmap_page_range_noflush(unsigned long start, unsigned long end,
+>   	return nr;
+>   }
+>   
+> -static int vmap_page_range(unsigned long start, unsigned long end,
+> +static int vmap_pages_range(unsigned long start, unsigned long end,
+>   			   pgprot_t prot, struct page **pages)
+>   {
+>   	int ret;
+>   
+> -	ret = vmap_page_range_noflush(start, end, prot, pages);
+> +	ret = vmap_pages_range_noflush(start, end, prot, pages);
+>   	flush_cache_vmap(start, end);
+>   	return ret;
+>   }
+> @@ -1148,7 +1340,7 @@ static void free_vmap_area(struct vmap_area *va)
+>    */
+>   static void unmap_vmap_area(struct vmap_area *va)
+>   {
+> -	vunmap_page_range(va->va_start, va->va_end);
+> +	vunmap_range(va->va_start, va->va_end);
+>   }
+>   
+>   /*
+> @@ -1586,7 +1778,7 @@ static void vb_free(const void *addr, unsigned long size)
+>   	rcu_read_unlock();
+>   	BUG_ON(!vb);
+>   
+> -	vunmap_page_range((unsigned long)addr, (unsigned long)addr + size);
+> +	vunmap_range((unsigned long)addr, (unsigned long)addr + size);
+>   
+>   	if (debug_pagealloc_enabled())
+>   		flush_tlb_kernel_range((unsigned long)addr,
+> @@ -1736,7 +1928,7 @@ void *vm_map_ram(struct page **pages, unsigned int count, int node, pgprot_t pro
+>   		addr = va->va_start;
+>   		mem = (void *)addr;
+>   	}
+> -	if (vmap_page_range(addr, addr + size, prot, pages) < 0) {
+> +	if (vmap_pages_range(addr, addr + size, prot, pages) < 0) {
+>   		vm_unmap_ram(mem, count);
+>   		return NULL;
+>   	}
+> @@ -1903,7 +2095,7 @@ void __init vmalloc_init(void)
+>   int map_kernel_range_noflush(unsigned long addr, unsigned long size,
+>   			     pgprot_t prot, struct page **pages)
+>   {
+> -	return vmap_page_range_noflush(addr, addr + size, prot, pages);
+> +	return vmap_pages_range_noflush(addr, addr + size, prot, pages);
+>   }
+>   
+>   /**
+> @@ -1922,7 +2114,7 @@ int map_kernel_range_noflush(unsigned long addr, unsigned long size,
+>    */
+>   void unmap_kernel_range_noflush(unsigned long addr, unsigned long size)
+>   {
+> -	vunmap_page_range(addr, addr + size);
+> +	vunmap_range(addr, addr + size);
+>   }
+>   EXPORT_SYMBOL_GPL(unmap_kernel_range_noflush);
+>   
+> @@ -1939,7 +2131,7 @@ void unmap_kernel_range(unsigned long addr, unsigned long size)
+>   	unsigned long end = addr + size;
+>   
+>   	flush_cache_vunmap(addr, end);
+> -	vunmap_page_range(addr, end);
+> +	vunmap_range(addr, end);
+>   	flush_tlb_kernel_range(addr, end);
+>   }
+>   EXPORT_SYMBOL_GPL(unmap_kernel_range);
+> @@ -1950,7 +2142,7 @@ int map_vm_area(struct vm_struct *area, pgprot_t prot, struct page **pages)
+>   	unsigned long end = addr + get_vm_area_size(area);
+>   	int err;
+>   
+> -	err = vmap_page_range(addr, end, prot, pages);
+> +	err = vmap_pages_range(addr, end, prot, pages);
+>   
+>   	return err > 0 ? 0 : err;
+>   }
 > 
-> -#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390)
-> +#if (defined(CONFIG_X86) && defined(CONFIG_EFI)) || defined(CONFIG_S390) \
-> +	|| defined(CONFIG_PPC_SECURE_BOOT)
->  extern bool arch_ima_get_secureboot(void);
->  extern const char * const *arch_get_ima_policy(void);
->  #else
-> -- 
-> 2.20.1
-> 
-
