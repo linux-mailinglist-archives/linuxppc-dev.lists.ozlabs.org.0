@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F241D3D15C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 17:51:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F293D14B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 17:48:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NZCj0zzCzDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 01:48:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NZGr5nxjzDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 01:51:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="LnPHun1C"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Q557gEjC"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NXZt03J5zDqWl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 00:34:46 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id k187so6588692pga.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 07:34:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NXZx0Wn2zDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 00:34:48 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id r7so1678882pfl.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 07:34:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=YZJgvtviNUnIWOS/HgWiTGklwujBjmKlLWmHEmiXJi8=;
- b=LnPHun1CxTXrS/mumpZ6hShzX3tHqSfjdrf1qRljzO0ghZ7WGwh8VmivJY/bcOHuzL
- y8RBPJAMXwHC25/qyEc2Xyp3PLxjVKeW3+6EjWNsF5gQAmwERd0G/9RU+d/drV/XjDFP
- B8syLzz30VG8FwWCoZWxbbuHuOtiURhyaAoMBV9ffY/7ZHEu3YEr2YhRK2UFIeJSm/33
- rLrgxxc4olIYx8mDFraYLC/UL7LkQ0P5WaGwHXp3ZBY0B+K9y7d6fjUyxQHxcJvrsDBN
- M+4Yf6lQ9pqjVIzLepjgDngGSpJVFo6fSs9ftTcxBkqqkRQYKb3hFfuxTkhvBYHaFu4B
- EY7A==
+ bh=oNemoAGeEM3tlgZLsG6lRdbAwTYYNe+SUGVqP3Mv7hE=;
+ b=Q557gEjC6i/3nNBfKrLeK4/TUMp0VoO36EjTaDhbckyycAqP+/BTaPmXC61h8anl/m
+ FKl0c5uag2YY0HMH/0xhAcAYkraw5r1FnG82D+m3hTzT9N8fyRDF9bSB/k8mXKNxXabv
+ rmkANjcYTgLo1uNmaFyexwjojX1qWcx33wIoEFUpkUQ6cI17fBxL0elrQWSTpYKeXsVU
+ liKucvjaqzXzigibzmS8VpYwWOI1KKmkzeLraSVfrGzkCXyi3YMBj0y+6IsRYNL+1a8L
+ +HHU2Ku5xCNWqyWuOYpE2f+oUSDc9c+BAS/qjqJH+6YUoBS5mPUG5LZmyDlJuz1oy183
+ Z+mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YZJgvtviNUnIWOS/HgWiTGklwujBjmKlLWmHEmiXJi8=;
- b=Q7amM7zGenwqt2Yug9pJyY/fNBpiorHzSQAc4JuT1IBHipJEMfjcp/heWlYSlwdPSl
- UpTovTr9QwjCrPYK8ZwcCO6JfWZkkEqdm90JaVyyYtI+RgO+g27TYukSDEBwdp6zLHLp
- JPY8j4ea5JSB/0juhYzp1u3LJfpOVqeT/fzflu2YHnhoQoBLD2N08pcyYHZS3DmSHZf0
- mXx1sZDvtDG4+xmwm9Wp4B/7Rm270W2w9FqEGodWLjDnxGoVbV9JmitBbt/u/43ITwS6
- 3nMccgvFm/TcPHOxU8hiNddUeSBGvzKF60NzLbHAhh4REIo9bHUN5VB+s8FgNggYpCSo
- IaPg==
-X-Gm-Message-State: APjAAAW4IU5Fracx0p4wJOeQTOE8vKZ2Sf09ZO00dP084PqCr0TiHR+p
- SHIXZ74W/kk9WAbndOZaC7JcqZ/i
-X-Google-Smtp-Source: APXvYqw43JjHKXdYgpQYUw/RH/XZqVmxLYz1RGvFiWUDQTCS1tPUYs5xt7yPkAcLFeiidqyw7/NrVg==
-X-Received: by 2002:a63:ec02:: with SMTP id j2mr21292527pgh.340.1560263684073; 
- Tue, 11 Jun 2019 07:34:44 -0700 (PDT)
+ bh=oNemoAGeEM3tlgZLsG6lRdbAwTYYNe+SUGVqP3Mv7hE=;
+ b=uQSTDv3ijTEG8D+y5+efeTOJ4Iwi1mUlxyOIIeKCT2hFM1GJDo4UQ8knIVz+YwGBuf
+ 5aV+T2kTK6kazy6QyBL8xXR6BVkUA+NIU7oaAlo0a+hFzS9+wfl9Otwui00El154VPGJ
+ xonPQooijS5cwzKeCwPHnwn1sNcFneEasb+iOdsuHaNzRD1iBZs0Kd3kUKQ/oyUwGA6P
+ Iiij+te8a+8O0GMoGKLgJB+bQ7F9X8pnRKqqFefDmiJwTs4dNCRbfaRae33cj3Gu9XM9
+ lQz6x3zjBwUMuicaukzXseqPBIM1g8muaf5q2l+cNFc6cZa2MXcZzyBPXD2GXJqxosos
+ b8aw==
+X-Gm-Message-State: APjAAAVRNItWe3ZKL7eLUJj/9d2lNDUPHEPtajREhM/QqsRckLOG+p6b
+ q/w+k0A1h/S+zR0TlgAGkiEuQD9p
+X-Google-Smtp-Source: APXvYqy3pyNTHptyX3VYcliNRflVquEKvD2u3Akqh635pUVISNvj7tGCT6gDeJholkcqf25tLxrF9w==
+X-Received: by 2002:a17:90a:25af:: with SMTP id
+ k44mr26556711pje.122.1560263686541; 
+ Tue, 11 Jun 2019 07:34:46 -0700 (PDT)
 Received: from bobo.local0.net (242.60.168.202.static.comindico.com.au.
  [202.168.60.242])
- by smtp.gmail.com with ESMTPSA id a16sm25345568pfd.68.2019.06.11.07.34.42
+ by smtp.gmail.com with ESMTPSA id a16sm25345568pfd.68.2019.06.11.07.34.44
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 11 Jun 2019 07:34:43 -0700 (PDT)
+ Tue, 11 Jun 2019 07:34:46 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 26/28] powerpc/64s/exception: move paca save area offsets into
- exception-64s.S
-Date: Wed, 12 Jun 2019 00:30:38 +1000
-Message-Id: <20190611143040.7834-27-npiggin@gmail.com>
+Subject: [PATCH 27/28] powerpc/64s/exception: clean up system call entry
+Date: Wed, 12 Jun 2019 00:30:39 +1000
+Message-Id: <20190611143040.7834-28-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190611143040.7834-1-npiggin@gmail.com>
 References: <20190611143040.7834-1-npiggin@gmail.com>
@@ -85,77 +85,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No generated code change. File is change is in bug table line numbers.
+syscall / hcall entry unnecessarily differs between KVM and non-KVM
+builds. Move the SMT priority instruction to the same location
+(after INTERRUPT_TO_KERNEL).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/exception-64s.h | 17 +++--------------
- arch/powerpc/kernel/exceptions-64s.S     | 22 ++++++++++++++++++++++
- 2 files changed, 25 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-index 79e5ac87c029..33f4f72eb035 100644
---- a/arch/powerpc/include/asm/exception-64s.h
-+++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -32,22 +32,11 @@
-  */
- #include <asm/feature-fixups.h>
- 
--/* PACA save area offsets (exgen, exmc, etc) */
--#define EX_R9		0
--#define EX_R10		8
--#define EX_R11		16
--#define EX_R12		24
--#define EX_R13		32
--#define EX_DAR		40
--#define EX_DSISR	48
--#define EX_CCR		52
--#define EX_CFAR		56
--#define EX_PPR		64
-+/* PACA save area size in u64 units (exgen, exmc, etc) */
- #if defined(CONFIG_RELOCATABLE)
--#define EX_CTR		72
--#define EX_SIZE		10	/* size in u64 units */
-+#define EX_SIZE		10
- #else
--#define EX_SIZE		9	/* size in u64 units */
-+#define EX_SIZE		9
- #endif
- 
- /*
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 8b571a2b3d76..c1075bbe4677 100644
+index c1075bbe4677..d9e531a00319 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -21,6 +21,28 @@
- #include <asm/feature-fixups.h>
- #include <asm/kup.h>
- 
-+/* PACA save area offsets (exgen, exmc, etc) */
-+#define EX_R9		0
-+#define EX_R10		8
-+#define EX_R11		16
-+#define EX_R12		24
-+#define EX_R13		32
-+#define EX_DAR		40
-+#define EX_DSISR	48
-+#define EX_CCR		52
-+#define EX_CFAR		56
-+#define EX_PPR		64
-+#if defined(CONFIG_RELOCATABLE)
-+#define EX_CTR		72
-+.if EX_SIZE != 10
-+	.error "EX_SIZE is wrong"
-+.endif
-+#else
-+.if EX_SIZE != 9
-+	.error "EX_SIZE is wrong"
-+.endif
-+#endif
+@@ -1643,10 +1643,8 @@ EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
+ 	std	r10,PACA_EXGEN+EX_R10(r13)
+ 	INTERRUPT_TO_KERNEL
+ 	KVMTEST EXC_STD 0xc00 /* uses r10, branch to do_kvm_0xc00_system_call */
+-	HMT_MEDIUM
+ 	mfctr	r9
+ #else
+-	HMT_MEDIUM
+ 	mr	r9,r13
+ 	GET_PACA(r13)
+ 	INTERRUPT_TO_KERNEL
+@@ -1658,11 +1656,13 @@ BEGIN_FTR_SECTION
+ 	beq-	1f
+ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
+ #endif
+-	/* We reach here with PACA in r13, r13 in r9, and HMT_MEDIUM. */
+-
+-	.if \real
++	/* We reach here with PACA in r13, r13 in r9. */
+ 	mfspr	r11,SPRN_SRR0
+ 	mfspr	r12,SPRN_SRR1
 +
- /*
-  * We're short on space and time in the exception prolog, so we can't
-  * use the normal LOAD_REG_IMMEDIATE macro to load the address of label.
++	HMT_MEDIUM
++
++	.if \real
+ 	__LOAD_HANDLER(r10, system_call_common)
+ 	mtspr	SPRN_SRR0,r10
+ 	ld	r10,PACAKMSR(r13)
+@@ -1670,24 +1670,13 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
+ 	RFI_TO_KERNEL
+ 	b	.	/* prevent speculative execution */
+ 	.else
++	li	r10,MSR_RI
++	mtmsrd 	r10,1			/* Set RI (EE=0) */
+ #ifdef CONFIG_RELOCATABLE
+-	/*
+-	 * We can't branch directly so we do it via the CTR which
+-	 * is volatile across system calls.
+-	 */
+ 	__LOAD_HANDLER(r10, system_call_common)
+ 	mtctr	r10
+-	mfspr	r11,SPRN_SRR0
+-	mfspr	r12,SPRN_SRR1
+-	li	r10,MSR_RI
+-	mtmsrd 	r10,1
+ 	bctr
+ #else
+-	/* We can branch directly */
+-	mfspr	r11,SPRN_SRR0
+-	mfspr	r12,SPRN_SRR1
+-	li	r10,MSR_RI
+-	mtmsrd 	r10,1			/* Set RI (EE=0) */
+ 	b	system_call_common
+ #endif
+ 	.endif
 -- 
 2.20.1
 
