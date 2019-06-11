@@ -1,82 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A813C73E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 11:32:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NPsw2YTCzDqc1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 19:32:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B27DC3C755
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 11:38:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NQ1Q6YkJzDqbl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 19:38:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NPqp39GlzDqXN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 19:30:29 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5B9Mdj8084896
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 05:30:25 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t27ewee5f-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 05:29:59 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 11 Jun 2019 10:29:09 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 11 Jun 2019 10:29:07 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5B9T6FD47317246
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 11 Jun 2019 09:29:06 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37FE211C050;
- Tue, 11 Jun 2019 09:29:06 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA52F11C058;
- Tue, 11 Jun 2019 09:29:04 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.93.18])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 11 Jun 2019 09:29:04 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: Re: [PATCH v3 1/6] nvdimm: Consider probe return -EOPNOTSUPP as
- success
-In-Reply-To: <20190604091357.32213-1-aneesh.kumar@linux.ibm.com>
-References: <20190604091357.32213-1-aneesh.kumar@linux.ibm.com>
-Date: Tue, 11 Jun 2019 14:59:03 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NPzL1FWvzDqRs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 19:37:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.b="uL5paWsi"; 
+ dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 45NPzK1RtZz9sDX;
+ Tue, 11 Jun 2019 19:37:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1560245821;
+ bh=QKFwgdieD6NDn1b6ANc4id5d+ZhAS5pp6dHmKguZogY=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=uL5paWsi726mK1nmBT5BfoZsEBdB39Ydc/nCPSuFvsIl9hw0wvUvvgcsNoaPBesBI
+ j0/w5BBZHAhi8wvGLj8pvYxvfRyLBq1Tpm15pwWWO30hsb3jQ1lTRhVn8To4SC8/F0
+ jqiej6G+aaKk1dgu5hu59p5nXGcfrv8Z/bk3vM4NiIscDHslNoprbZu2exPlURm8wN
+ ZmPAEEl2M4PGVHh4B3ALWZNgowXvAw77JhSauBRwY1Ygz/0SNulaROsA8mbKwrjhvZ
+ Uf9NzjWuLrsxw1nCCevMZcPtwVLyewwB6GkAH0BspAdS2/vTKeefqt72JtrnoiiJfh
+ ROzipwiSmUcjw==
+Received: by neuling.org (Postfix, from userid 1000)
+ id 125BC2A0E2F; Tue, 11 Jun 2019 19:37:01 +1000 (AEST)
+Message-ID: <7f8b0ca2feeac035a36ef88291602bede72e213c.camel@neuling.org>
+Subject: Re: [PATCH v2] powerpc: Add force enable of DAWR on P9 option
+From: Michael Neuling <mikey@neuling.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, =?ISO-8859-1?Q?C=E9dric?=
+ Le Goater <clg@kaod.org>, mpe@ellerman.id.au
+Date: Tue, 11 Jun 2019 19:37:00 +1000
+In-Reply-To: <4ebaff61-2e7e-e038-71c3-a7ae662b56f4@c-s.fr>
+References: <20190401060312.22670-1-mikey@neuling.org>
+ <68f4f99d-4bb7-7d25-1e68-96c65dfbfbe9@kaod.org>
+ <287ab7092cc6128e1c0d25f6245eb5f1706c6cb0.camel@neuling.org>
+ <dc9106e8-422f-5582-e463-def38902f03a@kaod.org>
+ <5d4cdec0f11e1d47b196b068fcd9fdb107f147b0.camel@neuling.org>
+ <4ebaff61-2e7e-e038-71c3-a7ae662b56f4@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19061109-0008-0000-0000-000002F235AC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061109-0009-0000-0000-0000225F2F8C
-Message-Id: <87pnnkcvxc.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-11_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,143 +63,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
+Cc: linuxppc-dev@lists.ozlabs.org, Cameron Kaiser <spectre@floodgap.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 2019-06-11 at 09:51 +0200, Christophe Leroy wrote:
+>=20
+> Le 11/06/2019 =C3=A0 09:24, Michael Neuling a =C3=A9crit :
+> > On Tue, 2019-06-11 at 08:48 +0200, C=C3=A9dric Le Goater wrote:
+> > > On 11/06/2019 08:44, Michael Neuling wrote:
+> > > > > >   2:
+> > > > > > -BEGIN_FTR_SECTION
+> > > > > > -	/* POWER9 with disabled DAWR */
+> > > > > > +	LOAD_REG_ADDR(r11, dawr_force_enable)
+> > > > > > +	lbz	r11, 0(r11)
+> > > > > > +	cmpdi	r11, 0
+> > > > > >   	li	r3, H_HARDWARE
+> > > > > > -	blr
+> > > > > > -END_FTR_SECTION_IFCLR(CPU_FTR_DAWR)
+> > > > > > +	beqlr
+> > > > >=20
+> > > > > Why is this a 'beqlr' ? Shouldn't it be a blr ?
+> > > >=20
+> > > > I believe it's right and should be a beqlr.  It's to replace the FT=
+R
+> > > > section to
+> > > > make it dynamic based on the dawr_force_enable bit.
+> > >=20
+> > > hmm, see the crash below on a L1 running a nested guest. r3 is set
+> > > to -1 (H_HARDWARE) but a vpcu pointer was expected. How can we fix
+> > > this ?
+> > >=20
+> > > C.
+> > >=20
+> > >=20
+> > > [   44.374746] BUG: Kernel NULL pointer dereference at 0x000013bf
+> > > [   44.374848] Faulting instruction address: 0xc00000000010b044
+> > > [   44.374906] Oops: Kernel access of bad area, sig: 11 [#1]
+> > > [   44.374951] LE PAGE_SIZE=3D64K MMU=3DRadix MMU=3DHash SMP NR_CPUS=
+=3D2048 NUMA
+> > > pSeries
+> > > [   44.375018] Modules linked in: vhost_net vhost tap xt_CHECKSUM
+> > > iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack nf_connt=
+rack
+> > > nf_defrag_ipv6 libcrc32c nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4
+> > > xt_tcpudp bridge stp llc ebtable_filter ebtables ip6table_filter
+> > > ip6_tables iptable_filter bpfilter vmx_crypto crct10dif_vpmsum
+> > > crc32c_vpmsum kvm_hv kvm sch_fq_codel ip_tables x_tables autofs4
+> > > virtio_net net_failover virtio_scsi failover
+> > > [   44.375401] CPU: 8 PID: 1771 Comm: qemu-system-ppc Kdump: loaded N=
+ot
+> > > tainted 5.2.0-rc4+ #3
+> > > [   44.375500] NIP:  c00000000010b044 LR: c0080000089dacf4 CTR:
+> > > c00000000010aff4
+> > > [   44.375604] REGS: c00000179b397710 TRAP: 0300   Not tainted  (5.2.=
+0-
+> > > rc4+)
+> > > [   44.375691] MSR:  800000000280b033
+> > > <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 42244842  XER: 00000000
+> > > [   44.375815] CFAR: c00000000010aff8 DAR: 00000000000013bf DSISR:
+> > > 42000000 IRQMASK: 0
+> > > [   44.375815] GPR00: c0080000089dd6bc c00000179b3979a0 c008000008a04=
+300
+> > > ffffffffffffffff
+> > > [   44.375815] GPR04: 0000000000000000 0000000000000003 000000002444b=
+05d
+> > > c0000017f11c45d0
+> > > [   44.375815] GPR08: 078000003e018dfe 0000000000000028 0000000000000=
+001
+> > > 0000000000000075
+> > > [   44.375815] GPR12: c00000000010aff4 c000000007ff6300 0000000000000=
+000
+> > > 0000000000000000
+> > > [   44.375815] GPR16: 0000000000000000 c0000017f11d0000 00000000fffff=
+fff
+> > > c0000017f11ca7a8
+> > > [   44.375815] GPR20: c0000017f11c42ec ffffffffffffffff 0000000000000=
+000
+> > > 000000000000000a
+> > > [   44.375815] GPR24: fffffffffffffffc 0000000000000000 c0000017f11c0=
+000
+> > > c000000001a77ed8
+> > > [   44.375815] GPR28: c00000179af70000 fffffffffffffffc c0080000089ff=
+170
+> > > c00000179ae88540
+> > > [   44.376673] NIP [c00000000010b044] kvmppc_h_set_dabr+0x50/0x68
+> > > [   44.376754] LR [c0080000089dacf4] kvmppc_pseries_do_hcall+0xa3c/0x=
+eb0
+> > > [kvm_hv]
+> > > [   44.376849] Call Trace:
+> > > [   44.376886] [c00000179b3979a0] [c0000017f11c0000] 0xc0000017f11c00=
+00
+> > > (unreliable)
+> > > [   44.376982] [c00000179b397a10] [c0080000089dd6bc]
+> > > kvmppc_vcpu_run_hv+0x694/0xec0 [kvm_hv]
+> > > [   44.377084] [c00000179b397ae0] [c0080000093f8bcc]
+> > > kvmppc_vcpu_run+0x34/0x48 [kvm]
+> > > [   44.377185] [c00000179b397b00] [c0080000093f522c]
+> > > kvm_arch_vcpu_ioctl_run+0x2f4/0x400 [kvm]
+> > > [   44.377286] [c00000179b397b90] [c0080000093e3618]
+> > > kvm_vcpu_ioctl+0x460/0x850 [kvm]
+> > > [   44.377384] [c00000179b397d00] [c0000000004ba6c4]
+> > > do_vfs_ioctl+0xe4/0xb40
+> > > [   44.377464] [c00000179b397db0] [c0000000004bb1e4] ksys_ioctl+0xc4/=
+0x110
+> > > [   44.377547] [c00000179b397e00] [c0000000004bb258] sys_ioctl+0x28/0=
+x80
+> > > [   44.377628] [c00000179b397e20] [c00000000000b888] system_call+0x5c=
+/0x70
+> > > [   44.377712] Instruction dump:
+> > > [   44.377765] 4082fff4 4c00012c 38600000 4e800020 e96280c0 896b0000
+> > > 2c2b0000 3860ffff
+> > > [   44.377862] 4d820020 50852e74 508516f6 78840724 <f88313c0> f8a313c=
+8
+> > > 7c942ba6 7cbc2ba6
+> >=20
+> > Opps, it's because I corrupted r3 :-(
+> >=20
+> > Does this fix it?
+> >=20
+> >=20
+> > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > index 139027c62d..f781ee1458 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> > @@ -2519,8 +2519,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+> >   	LOAD_REG_ADDR(r11, dawr_force_enable)
+> >   	lbz	r11, 0(r11)
+> >   	cmpdi	r11, 0
+> > +	bne	3f
+> >   	li	r3, H_HARDWARE
+> > -	beqlr
+> > +	blr
+> > +3:
+>=20
+> Or you could copy r3 into another unused volatile register and use it=20
+> instead of r3 below.
 
-Hi Dan,
+r3 is the vcpu pointer passed in. Changing to a different register will mak=
+e the
+code harder to follow IMHO.
 
-Any feedback on this?
+Plus this is a much clearer fix.
 
-A change I would like to get done on top of this series is
+So I don't think I'll do that.
 
-+	if (__le16_to_cpu(pfn_sb->version_minor) < 3) {
-+		/*
-+		 * For a large part we use PAGE_SIZE. But we
-+		 * do have some accounting code using SZ_4K.
-+		 */
-+		pfn_sb->page_struct_size = cpu_to_le16(64);
-+		pfn_sb->page_size = cpu_to_le32(SZ_4K);
-+	}
-+
+Mikey
 
-to
-
-+	if (__le16_to_cpu(pfn_sb->version_minor) < 3) {
-+		/*
-+		 * For a large part we use PAGE_SIZE. But we
-+		 * do have some accounting code using SZ_4K.
-+		 */
-+		pfn_sb->page_struct_size = cpu_to_le16(64);
-+		pfn_sb->page_size = cpu_to_le32(PAGE_SIZE);
-+	}
-+
-
-
-That would make sure we will able to access the namespace created on
-powerpc with newer kernel.
-
-Kindly let me know if you want to see further changes to this series. Do
-you think this is ready for next merge window?
-
--aneesh
-
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-
-> With following patches we add EOPNOTSUPP as return from probe callback to
-> indicate we were not able to initialize a namespace due to pfn superblock
-> feature/version mismatch. We want to consider this a probe success so that
-> we can create new namesapce seed and there by avoid marking the failed
-> namespace as the seed namespace.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  drivers/nvdimm/bus.c         |  4 ++--
->  drivers/nvdimm/nd-core.h     |  3 ++-
->  drivers/nvdimm/region_devs.c | 19 +++++++++++++++----
->  3 files changed, 19 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-> index 2eb6a6cfe9e4..792b3e90453b 100644
-> --- a/drivers/nvdimm/bus.c
-> +++ b/drivers/nvdimm/bus.c
-> @@ -100,8 +100,8 @@ static int nvdimm_bus_probe(struct device *dev)
->  
->  	nvdimm_bus_probe_start(nvdimm_bus);
->  	rc = nd_drv->probe(dev);
-> -	if (rc == 0)
-> -		nd_region_probe_success(nvdimm_bus, dev);
-> +	if (rc == 0 || rc == -EOPNOTSUPP)
-> +		nd_region_probe_success(nvdimm_bus, dev, rc);
->  	else
->  		nd_region_disable(nvdimm_bus, dev);
->  	nvdimm_bus_probe_end(nvdimm_bus);
-> diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-> index e5ffd5733540..9e67a79fb6d5 100644
-> --- a/drivers/nvdimm/nd-core.h
-> +++ b/drivers/nvdimm/nd-core.h
-> @@ -134,7 +134,8 @@ int __init nvdimm_bus_init(void);
->  void nvdimm_bus_exit(void);
->  void nvdimm_devs_exit(void);
->  void nd_region_devs_exit(void);
-> -void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev);
-> +void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus,
-> +			     struct device *dev, int ret);
->  struct nd_region;
->  void nd_region_create_ns_seed(struct nd_region *nd_region);
->  void nd_region_create_btt_seed(struct nd_region *nd_region);
-> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> index b4ef7d9ff22e..fcf3d8828540 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -723,7 +723,7 @@ void nd_mapping_free_labels(struct nd_mapping *nd_mapping)
->   * disable the region.
->   */
->  static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
-> -		struct device *dev, bool probe)
-> +					   struct device *dev, bool probe, int ret)
->  {
->  	struct nd_region *nd_region;
->  
-> @@ -753,6 +753,16 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
->  			nd_region_create_ns_seed(nd_region);
->  		nvdimm_bus_unlock(dev);
->  	}
-> +
-> +	if (dev->parent && is_nd_region(dev->parent) &&
-> +	    !probe && (ret == -EOPNOTSUPP)) {
-> +		nd_region = to_nd_region(dev->parent);
-> +		nvdimm_bus_lock(dev);
-> +		if (nd_region->ns_seed == dev)
-> +			nd_region_create_ns_seed(nd_region);
-> +		nvdimm_bus_unlock(dev);
-> +	}
-> +
->  	if (is_nd_btt(dev) && probe) {
->  		struct nd_btt *nd_btt = to_nd_btt(dev);
->  
-> @@ -788,14 +798,15 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
->  	}
->  }
->  
-> -void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev)
-> +void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus,
-> +			     struct device *dev, int ret)
->  {
-> -	nd_region_notify_driver_action(nvdimm_bus, dev, true);
-> +	nd_region_notify_driver_action(nvdimm_bus, dev, true, ret);
->  }
->  
->  void nd_region_disable(struct nvdimm_bus *nvdimm_bus, struct device *dev)
->  {
-> -	nd_region_notify_driver_action(nvdimm_bus, dev, false);
-> +	nd_region_notify_driver_action(nvdimm_bus, dev, false, 0);
->  }
->  
->  static ssize_t mappingN(struct device *dev, char *buf, int n)
-> -- 
-> 2.21.0
+>=20
+> Christophe
+>=20
+>=20
+> >   	/* Emulate H_SET_DABR/X on P8 for the sake of compat mode guests */
+> >   	rlwimi	r5, r4, 5, DAWRX_DR | DAWRX_DW
+> >   	rlwimi	r5, r4, 2, DAWRX_WT
+> >=20
 
