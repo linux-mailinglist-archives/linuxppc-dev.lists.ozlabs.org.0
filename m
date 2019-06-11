@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EF23C36A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4363C375
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:41:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NJPl5jyLzDqTD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:26:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NJlY6m6XzDqVN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:41:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,53 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ge66Y4D5"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="HjcLfeUm"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NJMp0112zDq9W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:24:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NJjf3sY7zDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:39:49 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45NJMj2w3Mz9tyqV;
- Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45NJjW0Fvbz9tyqp;
+ Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ge66Y4D5; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=HjcLfeUm; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fyyoRIc-tH9n; Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+ with ESMTP id aib5TBna1xD0; Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45NJMj1qNQz9v0p3;
- Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45NJjV5lPTz9tyqn;
+ Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560230657; bh=OryAugs7TR5ttspxYLjCji77PWxYn28+eCLlZmxKaSs=;
+ t=1560231582; bh=AcasQ1C3dA4AzkrneaeSDWm00r+6lIIPyCKEa+gH8Hc=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ge66Y4D5NeVyJ1VEQFUPgGLiA0P3jcJWqY2opg9SNR+Gi6jCSbFEKId7BcIp99i89
- EIu0mGTtgWYmMO1xM/HrXU+JTOvwk17csNdMcyiw3aJG6vDtoQO4uVB9sjnCZ4epop
- OMJ3bY9p4GgZfOsdsmRormyDBmzDV+7Ach9IkAFs=
+ b=HjcLfeUm591DKJbT4XFNh33xeQysAkzN9k9klX9HBIaGUqqvR6W3w4b9D0KzZKU98
+ qw92c4lk+e+Q+fZRgltKfcWO1yvWsJ2v27coTfB7ItNWDEryiHbKnepAb3xYDJrtpJ
+ pMxEq0Udn1K4Ymwd4ZmvQz3fxUBdmlqCrkmGMR/U=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0778E8B7D4;
- Tue, 11 Jun 2019 07:24:18 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A0EBF8B7D4;
+ Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id A-475R45ce_Y; Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
+ with ESMTP id dWTlxVxs_54c; Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DB748B75B;
- Tue, 11 Jun 2019 07:24:17 +0200 (CEST)
-Subject: Re: [PATCH 1/4] mm: Move ioremap page table mapping function to mm/
-To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 084DB8B75B;
+ Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
+Subject: Re: [PATCH 4/4] mm/vmalloc: Hugepage vmalloc mappings
+To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ Russell Currey <ruscur@russell.cc>
 References: <20190610043838.27916-1-npiggin@gmail.com>
+ <20190610043838.27916-4-npiggin@gmail.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <86991f76-2101-8087-37db-d939d5d744fa@c-s.fr>
-Date: Tue, 11 Jun 2019 07:24:17 +0200
+Message-ID: <b79bf11d-43c7-88c9-8395-239625a1bdcf@c-s.fr>
+Date: Tue, 11 Jun 2019 07:39:42 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190610043838.27916-1-npiggin@gmail.com>
+In-Reply-To: <20190610043838.27916-4-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -85,595 +87,337 @@ Sender: "Linuxppc-dev"
 
 
 Le 10/06/2019 à 06:38, Nicholas Piggin a écrit :
-> ioremap_page_range is a generic function to create a kernel virtual
-> mapping, move it to mm/vmalloc.c and rename it vmap_range.
+> For platforms that define HAVE_ARCH_HUGE_VMAP, have vmap allow vmalloc to
+> allocate huge pages and map them
+
+Will this be compatible with Russell's series 
+https://patchwork.ozlabs.org/patch/1099857/ for the implementation of 
+STRICT_MODULE_RWX ?
+I see that apply_to_page_range() have things like BUG_ON(pud_huge(*pud));
+
+Might also be an issue for arm64 as I think Russell's implementation 
+comes from there.
+
 > 
-> For clarity with this move, also:
-> - Rename vunmap_page_range (vmap_range's inverse) to vunmap_range.
-> - Rename vmap_page_range (which takes a page array) to vmap_pages.
-
-Maybe it would be easier to follow the change if the name change was 
-done in another patch than the move.
-
+> This brings dTLB misses for linux kernel tree `git diff` from 45,000 to
+> 8,000 on a Kaby Lake KVM guest with 8MB dentry hash and mitigations=off
+> (performance is in the noise, under 1% difference, page tables are likely
+> to be well cached for this workload). Similar numbers are seen on POWER9.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
+>   include/asm-generic/4level-fixup.h |   1 +
+>   include/asm-generic/5level-fixup.h |   1 +
+>   include/linux/vmalloc.h            |   1 +
+>   mm/vmalloc.c                       | 132 +++++++++++++++++++++++------
+>   4 files changed, 107 insertions(+), 28 deletions(-)
 > 
-> Fixed up the arm64 compile errors, fixed a few bugs, and tidied
-> things up a bit more.
-> 
-> Have tested powerpc and x86 but not arm64, would appreciate a review
-> and test of the arm64 patch if possible.
-> 
->   include/linux/vmalloc.h |   3 +
->   lib/ioremap.c           | 173 +++---------------------------
->   mm/vmalloc.c            | 228 ++++++++++++++++++++++++++++++++++++----
->   3 files changed, 229 insertions(+), 175 deletions(-)
-> 
+> diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/4level-fixup.h
+> index e3667c9a33a5..3cc65a4dd093 100644
+> --- a/include/asm-generic/4level-fixup.h
+> +++ b/include/asm-generic/4level-fixup.h
+> @@ -20,6 +20,7 @@
+>   #define pud_none(pud)			0
+>   #define pud_bad(pud)			0
+>   #define pud_present(pud)		1
+> +#define pud_large(pud)			0
+>   #define pud_ERROR(pud)			do { } while (0)
+>   #define pud_clear(pud)			pgd_clear(pud)
+>   #define pud_val(pud)			pgd_val(pud)
+> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
+> index bb6cb347018c..c4377db09a4f 100644
+> --- a/include/asm-generic/5level-fixup.h
+> +++ b/include/asm-generic/5level-fixup.h
+> @@ -22,6 +22,7 @@
+>   #define p4d_none(p4d)			0
+>   #define p4d_bad(p4d)			0
+>   #define p4d_present(p4d)		1
+> +#define p4d_large(p4d)			0
+>   #define p4d_ERROR(p4d)			do { } while (0)
+>   #define p4d_clear(p4d)			pgd_clear(p4d)
+>   #define p4d_val(p4d)			pgd_val(p4d)
 > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index 51e131245379..812bea5866d6 100644
+> index 812bea5866d6..4c92dc608928 100644
 > --- a/include/linux/vmalloc.h
 > +++ b/include/linux/vmalloc.h
-> @@ -147,6 +147,9 @@ extern struct vm_struct *find_vm_area(const void *addr);
->   extern int map_vm_area(struct vm_struct *area, pgprot_t prot,
->   			struct page **pages);
->   #ifdef CONFIG_MMU
-> +extern int vmap_range(unsigned long addr,
-> +		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +		       unsigned int max_page_shift);
-
-Drop extern keyword here.
-
-As checkpatch tells you, 'CHECK:AVOID_EXTERNS: extern prototypes should 
-be avoided in .h files'
-
-Christophe
-
->   extern int map_kernel_range_noflush(unsigned long start, unsigned long size,
->   				    pgprot_t prot, struct page **pages);
->   extern void unmap_kernel_range_noflush(unsigned long addr, unsigned long size);
-> diff --git a/lib/ioremap.c b/lib/ioremap.c
-> index 063213685563..e13946da8ec3 100644
-> --- a/lib/ioremap.c
-> +++ b/lib/ioremap.c
-> @@ -58,165 +58,24 @@ static inline int ioremap_pud_enabled(void) { return 0; }
->   static inline int ioremap_pmd_enabled(void) { return 0; }
->   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
->   
-> -static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
-> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
-> -{
-> -	pte_t *pte;
-> -	u64 pfn;
-> -
-> -	pfn = phys_addr >> PAGE_SHIFT;
-> -	pte = pte_alloc_kernel(pmd, addr);
-> -	if (!pte)
-> -		return -ENOMEM;
-> -	do {
-> -		BUG_ON(!pte_none(*pte));
-> -		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
-> -		pfn++;
-> -	} while (pte++, addr += PAGE_SIZE, addr != end);
-> -	return 0;
-> -}
-> -
-> -static int ioremap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys_addr,
-> -				pgprot_t prot)
-> -{
-> -	if (!ioremap_pmd_enabled())
-> -		return 0;
-> -
-> -	if ((end - addr) != PMD_SIZE)
-> -		return 0;
-> -
-> -	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
-> -		return 0;
-> -
-> -	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
-> -		return 0;
-> -
-> -	return pmd_set_huge(pmd, phys_addr, prot);
-> -}
-> -
-> -static inline int ioremap_pmd_range(pud_t *pud, unsigned long addr,
-> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
-> -{
-> -	pmd_t *pmd;
-> -	unsigned long next;
-> -
-> -	pmd = pmd_alloc(&init_mm, pud, addr);
-> -	if (!pmd)
-> -		return -ENOMEM;
-> -	do {
-> -		next = pmd_addr_end(addr, end);
-> -
-> -		if (ioremap_try_huge_pmd(pmd, addr, next, phys_addr, prot))
-> -			continue;
-> -
-> -		if (ioremap_pte_range(pmd, addr, next, phys_addr, prot))
-> -			return -ENOMEM;
-> -	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
-> -	return 0;
-> -}
-> -
-> -static int ioremap_try_huge_pud(pud_t *pud, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys_addr,
-> -				pgprot_t prot)
-> -{
-> -	if (!ioremap_pud_enabled())
-> -		return 0;
-> -
-> -	if ((end - addr) != PUD_SIZE)
-> -		return 0;
-> -
-> -	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
-> -		return 0;
-> -
-> -	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
-> -		return 0;
-> -
-> -	return pud_set_huge(pud, phys_addr, prot);
-> -}
-> -
-> -static inline int ioremap_pud_range(p4d_t *p4d, unsigned long addr,
-> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
-> -{
-> -	pud_t *pud;
-> -	unsigned long next;
-> -
-> -	pud = pud_alloc(&init_mm, p4d, addr);
-> -	if (!pud)
-> -		return -ENOMEM;
-> -	do {
-> -		next = pud_addr_end(addr, end);
-> -
-> -		if (ioremap_try_huge_pud(pud, addr, next, phys_addr, prot))
-> -			continue;
-> -
-> -		if (ioremap_pmd_range(pud, addr, next, phys_addr, prot))
-> -			return -ENOMEM;
-> -	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
-> -	return 0;
-> -}
-> -
-> -static int ioremap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
-> -				unsigned long end, phys_addr_t phys_addr,
-> -				pgprot_t prot)
-> -{
-> -	if (!ioremap_p4d_enabled())
-> -		return 0;
-> -
-> -	if ((end - addr) != P4D_SIZE)
-> -		return 0;
-> -
-> -	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
-> -		return 0;
-> -
-> -	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
-> -		return 0;
-> -
-> -	return p4d_set_huge(p4d, phys_addr, prot);
-> -}
-> -
-> -static inline int ioremap_p4d_range(pgd_t *pgd, unsigned long addr,
-> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
-> -{
-> -	p4d_t *p4d;
-> -	unsigned long next;
-> -
-> -	p4d = p4d_alloc(&init_mm, pgd, addr);
-> -	if (!p4d)
-> -		return -ENOMEM;
-> -	do {
-> -		next = p4d_addr_end(addr, end);
-> -
-> -		if (ioremap_try_huge_p4d(p4d, addr, next, phys_addr, prot))
-> -			continue;
-> -
-> -		if (ioremap_pud_range(p4d, addr, next, phys_addr, prot))
-> -			return -ENOMEM;
-> -	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
-> -	return 0;
-> -}
-> -
->   int ioremap_page_range(unsigned long addr,
->   		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
->   {
-> -	pgd_t *pgd;
-> -	unsigned long start;
-> -	unsigned long next;
-> -	int err;
-> -
-> -	might_sleep();
-> -	BUG_ON(addr >= end);
-> -
-> -	start = addr;
-> -	pgd = pgd_offset_k(addr);
-> -	do {
-> -		next = pgd_addr_end(addr, end);
-> -		err = ioremap_p4d_range(pgd, addr, next, phys_addr, prot);
-> -		if (err)
-> -			break;
-> -	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
-> -
-> -	flush_cache_vmap(start, end);
-> +	unsigned int max_page_shift = PAGE_SHIFT;
-> +
-> +	/*
-> +	 * Due to the max_page_shift parameter to vmap_range, platforms must
-> +	 * enable all smaller sizes to take advantage of a given size,
-> +	 * otherwise fall back to small pages.
-> +	 */
-> +	if (ioremap_pmd_enabled()) {
-> +		max_page_shift = PMD_SHIFT;
-> +		if (ioremap_pud_enabled()) {
-> +			max_page_shift = PUD_SHIFT;
-> +			if (ioremap_p4d_enabled())
-> +				max_page_shift = P4D_SHIFT;
-> +		}
-> +	}
->   
-> -	return err;
-> +	return vmap_range(addr, end, phys_addr, prot, max_page_shift);
->   }
+> @@ -42,6 +42,7 @@ struct vm_struct {
+>   	unsigned long		size;
+>   	unsigned long		flags;
+>   	struct page		**pages;
+> +	unsigned int		page_shift;
+>   	unsigned int		nr_pages;
+>   	phys_addr_t		phys_addr;
+>   	const void		*caller;
 > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 233af6936c93..dd27cfb29b10 100644
+> index dd27cfb29b10..0cf8e861caeb 100644
 > --- a/mm/vmalloc.c
 > +++ b/mm/vmalloc.c
-> @@ -119,7 +119,7 @@ static void vunmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end)
->   	} while (p4d++, addr = next, addr != end);
->   }
+> @@ -36,6 +36,7 @@
+>   #include <linux/rbtree_augmented.h>
 >   
-> -static void vunmap_page_range(unsigned long addr, unsigned long end)
-> +static void vunmap_range(unsigned long addr, unsigned long end)
->   {
->   	pgd_t *pgd;
->   	unsigned long next;
-> @@ -135,6 +135,198 @@ static void vunmap_page_range(unsigned long addr, unsigned long end)
->   }
+>   #include <linux/uaccess.h>
+> +#include <asm/pgtable.h>
+>   #include <asm/tlbflush.h>
+>   #include <asm/shmparam.h>
 >   
->   static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
-> +{
-> +	pte_t *pte;
-> +	u64 pfn;
-> +
-> +	pfn = phys_addr >> PAGE_SHIFT;
-> +	pte = pte_alloc_kernel(pmd, addr);
-> +	if (!pte)
-> +		return -ENOMEM;
-> +	do {
-> +		BUG_ON(!pte_none(*pte));
-> +		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
-> +		pfn++;
-> +	} while (pte++, addr += PAGE_SIZE, addr != end);
-> +	return 0;
-> +}
-> +
-> +static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> +		return 0;
-> +
-> +	if (max_page_shift < PMD_SHIFT)
-> +		return 0;
-> +
-> +	if ((end - addr) != PMD_SIZE)
-> +		return 0;
-> +
-> +	if (!IS_ALIGNED(phys_addr, PMD_SIZE))
-> +		return 0;
-> +
-> +	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
-> +		return 0;
-> +
-> +	return pmd_set_huge(pmd, phys_addr, prot);
-> +}
-> +
-> +static inline int vmap_pmd_range(pud_t *pud, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	pmd_t *pmd;
-> +	unsigned long next;
-> +
-> +	pmd = pmd_alloc(&init_mm, pud, addr);
-> +	if (!pmd)
-> +		return -ENOMEM;
-> +	do {
-> +		next = pmd_addr_end(addr, end);
-> +
-> +		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-> +					max_page_shift))
-> +			continue;
-> +
-> +		if (vmap_pte_range(pmd, addr, next, phys_addr, prot))
-> +			return -ENOMEM;
-> +	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
-> +	return 0;
-> +}
-> +
-> +static int vmap_try_huge_pud(pud_t *pud, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> +		return 0;
-> +
-> +	if (max_page_shift < PUD_SHIFT)
-> +		return 0;
-> +
-> +	if ((end - addr) != PUD_SIZE)
-> +		return 0;
-> +
-> +	if (!IS_ALIGNED(phys_addr, PUD_SIZE))
-> +		return 0;
-> +
-> +	if (pud_present(*pud) && !pud_free_pmd_page(pud, addr))
-> +		return 0;
-> +
-> +	return pud_set_huge(pud, phys_addr, prot);
-> +}
-> +
-> +static inline int vmap_pud_range(p4d_t *p4d, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	pud_t *pud;
-> +	unsigned long next;
-> +
-> +	pud = pud_alloc(&init_mm, p4d, addr);
-> +	if (!pud)
-> +		return -ENOMEM;
-> +	do {
-> +		next = pud_addr_end(addr, end);
-> +
-> +		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot,
-> +					max_page_shift))
-> +			continue;
-> +
-> +		if (vmap_pmd_range(pud, addr, next, phys_addr, prot,
-> +					max_page_shift))
-> +			return -ENOMEM;
-> +	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
-> +	return 0;
-> +}
-> +
-> +static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> +		return 0;
-> +
-> +	if (max_page_shift < P4D_SHIFT)
-> +		return 0;
-> +
-> +	if ((end - addr) != P4D_SIZE)
-> +		return 0;
-> +
-> +	if (!IS_ALIGNED(phys_addr, P4D_SIZE))
-> +		return 0;
-> +
-> +	if (p4d_present(*p4d) && !p4d_free_pud_page(p4d, addr))
-> +		return 0;
-> +
-> +	return p4d_set_huge(p4d, phys_addr, prot);
-> +}
-> +
-> +static inline int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	p4d_t *p4d;
-> +	unsigned long next;
-> +
-> +	p4d = p4d_alloc(&init_mm, pgd, addr);
-> +	if (!p4d)
-> +		return -ENOMEM;
-> +	do {
-> +		next = p4d_addr_end(addr, end);
-> +
-> +		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot,
-> +					max_page_shift))
-> +			continue;
-> +
-> +		if (vmap_pud_range(p4d, addr, next, phys_addr, prot,
-> +					max_page_shift))
-> +			return -ENOMEM;
-> +	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
-> +	return 0;
-> +}
-> +
-> +static int vmap_range_noflush(unsigned long addr,
-> +			unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +			unsigned int max_page_shift)
-> +{
-> +	pgd_t *pgd;
-> +	unsigned long start;
-> +	unsigned long next;
-> +	int err;
-> +
-> +	might_sleep();
-> +	BUG_ON(addr >= end);
-> +
-> +	start = addr;
-> +	pgd = pgd_offset_k(addr);
-> +	do {
-> +		next = pgd_addr_end(addr, end);
-> +		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot,
-> +					max_page_shift);
-> +		if (err)
-> +			break;
-> +	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
-> +
-> +	return err;
-> +}
-> +
-> +int vmap_range(unsigned long addr,
-> +		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> +		       unsigned int max_page_shift)
-> +{
-> +	int ret;
-> +
-> +	ret = vmap_range_noflush(addr, end, phys_addr, prot, max_page_shift);
-> +	flush_cache_vmap(addr, end);
-> +
-> +	return ret;
-> +}
-> +
-> +static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
->   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
->   {
->   	pte_t *pte;
-> @@ -160,7 +352,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
->   	return 0;
->   }
->   
-> -static int vmap_pmd_range(pud_t *pud, unsigned long addr,
-> +static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
->   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
->   {
->   	pmd_t *pmd;
-> @@ -171,13 +363,13 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
->   		return -ENOMEM;
->   	do {
->   		next = pmd_addr_end(addr, end);
-> -		if (vmap_pte_range(pmd, addr, next, prot, pages, nr))
-> +		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr))
->   			return -ENOMEM;
->   	} while (pmd++, addr = next, addr != end);
->   	return 0;
->   }
->   
-> -static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
-> +static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
->   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
->   {
->   	pud_t *pud;
-> @@ -188,13 +380,13 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
->   		return -ENOMEM;
->   	do {
->   		next = pud_addr_end(addr, end);
-> -		if (vmap_pmd_range(pud, addr, next, prot, pages, nr))
-> +		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr))
->   			return -ENOMEM;
->   	} while (pud++, addr = next, addr != end);
->   	return 0;
->   }
->   
-> -static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
-> +static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
->   		unsigned long end, pgprot_t prot, struct page **pages, int *nr)
->   {
->   	p4d_t *p4d;
-> @@ -205,7 +397,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
->   		return -ENOMEM;
->   	do {
->   		next = p4d_addr_end(addr, end);
-> -		if (vmap_pud_range(p4d, addr, next, prot, pages, nr))
-> +		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr))
->   			return -ENOMEM;
->   	} while (p4d++, addr = next, addr != end);
->   	return 0;
-> @@ -217,7 +409,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
->    *
->    * Ie. pte at addr+N*PAGE_SIZE shall point to pfn corresponding to pages[N]
->    */
-> -static int vmap_page_range_noflush(unsigned long start, unsigned long end,
-> +static int vmap_pages_range_noflush(unsigned long start, unsigned long end,
->   				   pgprot_t prot, struct page **pages)
->   {
->   	pgd_t *pgd;
-> @@ -230,7 +422,7 @@ static int vmap_page_range_noflush(unsigned long start, unsigned long end,
->   	pgd = pgd_offset_k(addr);
->   	do {
->   		next = pgd_addr_end(addr, end);
-> -		err = vmap_p4d_range(pgd, addr, next, prot, pages, &nr);
-> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr);
->   		if (err)
->   			return err;
->   	} while (pgd++, addr = next, addr != end);
-> @@ -238,12 +430,12 @@ static int vmap_page_range_noflush(unsigned long start, unsigned long end,
->   	return nr;
->   }
->   
-> -static int vmap_page_range(unsigned long start, unsigned long end,
-> +static int vmap_pages_range(unsigned long start, unsigned long end,
->   			   pgprot_t prot, struct page **pages)
->   {
->   	int ret;
->   
-> -	ret = vmap_page_range_noflush(start, end, prot, pages);
-> +	ret = vmap_pages_range_noflush(start, end, prot, pages);
->   	flush_cache_vmap(start, end);
+> @@ -440,6 +441,41 @@ static int vmap_pages_range(unsigned long start, unsigned long end,
 >   	return ret;
 >   }
-> @@ -1148,7 +1340,7 @@ static void free_vmap_area(struct vmap_area *va)
->    */
->   static void unmap_vmap_area(struct vmap_area *va)
+>   
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +static int vmap_hpages_range(unsigned long start, unsigned long end,
+> +				   pgprot_t prot, struct page **pages,
+> +				   unsigned int page_shift)
+> +{
+> +	unsigned long addr = start;
+> +	unsigned int i, nr = (end - start) >> (PAGE_SHIFT + page_shift);
+> +
+> +	for (i = 0; i < nr; i++) {
+> +		int err;
+> +
+> +		err = vmap_range_noflush(addr,
+> +					addr + (PAGE_SIZE << page_shift),
+> +					__pa(page_address(pages[i])), prot,
+> +					PAGE_SHIFT + page_shift);
+> +		if (err)
+> +			return err;
+> +
+> +		addr += PAGE_SIZE << page_shift;
+> +	}
+> +	flush_cache_vmap(start, end);
+> +
+> +	return nr;
+> +}
+> +#else
+> +static int vmap_hpages_range(unsigned long start, unsigned long end,
+> +			   pgprot_t prot, struct page **pages,
+> +			   unsigned int page_shift)
+> +{
+> +	BUG_ON(page_shift != PAGE_SIZE);
+
+Do we really need a BUG_ON() there ? What happens if this condition is 
+true ?
+
+> +	return vmap_pages_range(start, end, prot, pages);
+> +}
+> +#endif
+> +
+> +
+>   int is_vmalloc_or_module_addr(const void *x)
 >   {
-> -	vunmap_page_range(va->va_start, va->va_end);
-> +	vunmap_range(va->va_start, va->va_end);
->   }
+>   	/*
+> @@ -462,7 +498,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>   {
+>   	unsigned long addr = (unsigned long) vmalloc_addr;
+>   	struct page *page = NULL;
+> -	pgd_t *pgd = pgd_offset_k(addr);
+> +	pgd_t *pgd;
+>   	p4d_t *p4d;
+>   	pud_t *pud;
+>   	pmd_t *pmd;
+> @@ -474,27 +510,38 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>   	 */
+>   	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
 >   
->   /*
-> @@ -1586,7 +1778,7 @@ static void vb_free(const void *addr, unsigned long size)
->   	rcu_read_unlock();
->   	BUG_ON(!vb);
->   
-> -	vunmap_page_range((unsigned long)addr, (unsigned long)addr + size);
-> +	vunmap_range((unsigned long)addr, (unsigned long)addr + size);
->   
->   	if (debug_pagealloc_enabled())
->   		flush_tlb_kernel_range((unsigned long)addr,
-> @@ -1736,7 +1928,7 @@ void *vm_map_ram(struct page **pages, unsigned int count, int node, pgprot_t pro
->   		addr = va->va_start;
->   		mem = (void *)addr;
->   	}
-> -	if (vmap_page_range(addr, addr + size, prot, pages) < 0) {
-> +	if (vmap_pages_range(addr, addr + size, prot, pages) < 0) {
->   		vm_unmap_ram(mem, count);
+> +	pgd = pgd_offset_k(addr);
+>   	if (pgd_none(*pgd))
 >   		return NULL;
+> +
+>   	p4d = p4d_offset(pgd, addr);
+>   	if (p4d_none(*p4d))
+>   		return NULL;
+> -	pud = pud_offset(p4d, addr);
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+
+Do we really need that ifdef ? Won't p4d_large() always return 0 when is 
+not set ?
+Otherwise, could we use IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) instead ?
+
+Same several places below.
+
+> +	if (p4d_large(*p4d))
+> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+> +		return NULL;
+>   
+> -	/*
+> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+> -	 * identify huge mappings, which we may encounter on architectures
+> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+> -	 * not [unambiguously] associated with a struct page, so there is
+> -	 * no correct value to return for them.
+> -	 */
+> -	WARN_ON_ONCE(pud_bad(*pud));
+> -	if (pud_none(*pud) || pud_bad(*pud))
+> +	pud = pud_offset(p4d, addr);
+> +	if (pud_none(*pud))
+> +		return NULL;
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +	if (pud_large(*pud))
+> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(pud_bad(*pud)))
+>   		return NULL;
+> +
+>   	pmd = pmd_offset(pud, addr);
+> -	WARN_ON_ONCE(pmd_bad(*pmd));
+> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
+> +	if (pmd_none(*pmd))
+> +		return NULL;
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +	if (pmd_large(*pmd))
+> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> +#endif
+> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+>   		return NULL;
+>   
+>   	ptep = pte_offset_map(pmd, addr);
+> @@ -502,6 +549,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+>   	if (pte_present(pte))
+>   		page = pte_page(pte);
+>   	pte_unmap(ptep);
+> +
+>   	return page;
+>   }
+>   EXPORT_SYMBOL(vmalloc_to_page);
+> @@ -2185,8 +2233,9 @@ static struct vm_struct *__get_vm_area_node(unsigned long size,
+>   		return NULL;
+>   
+>   	if (flags & VM_IOREMAP)
+> -		align = 1ul << clamp_t(int, get_count_order_long(size),
+> -				       PAGE_SHIFT, IOREMAP_MAX_ORDER);
+> +		align = max(align,
+> +				1ul << clamp_t(int, get_count_order_long(size),
+> +				       PAGE_SHIFT, IOREMAP_MAX_ORDER));
+>   
+>   	area = kzalloc_node(sizeof(*area), gfp_mask & GFP_RECLAIM_MASK, node);
+>   	if (unlikely(!area))
+> @@ -2398,7 +2447,7 @@ static void __vunmap(const void *addr, int deallocate_pages)
+>   			struct page *page = area->pages[i];
+>   
+>   			BUG_ON(!page);
+> -			__free_pages(page, 0);
+> +			__free_pages(page, area->page_shift);
+>   		}
+>   
+>   		kvfree(area->pages);
+> @@ -2541,14 +2590,17 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>   				 pgprot_t prot, int node)
+>   {
+>   	struct page **pages;
+> +	unsigned long addr = (unsigned long)area->addr;
+> +	unsigned long size = get_vm_area_size(area);
+> +	unsigned int page_shift = area->page_shift;
+> +	unsigned int shift = page_shift + PAGE_SHIFT;
+>   	unsigned int nr_pages, array_size, i;
+>   	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
+>   	const gfp_t alloc_mask = gfp_mask | __GFP_NOWARN;
+>   	const gfp_t highmem_mask = (gfp_mask & (GFP_DMA | GFP_DMA32)) ?
+> -					0 :
+> -					__GFP_HIGHMEM;
+> +					0 : __GFP_HIGHMEM;
+
+This patch is already quite big, shouldn't this kind of unrelated 
+cleanups be in another patch ?
+
+>   
+> -	nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
+> +	nr_pages = size >> shift;
+>   	array_size = (nr_pages * sizeof(struct page *));
+>   
+>   	area->nr_pages = nr_pages;
+> @@ -2569,10 +2621,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>   	for (i = 0; i < area->nr_pages; i++) {
+>   		struct page *page;
+>   
+> -		if (node == NUMA_NO_NODE)
+> -			page = alloc_page(alloc_mask|highmem_mask);
+> -		else
+> -			page = alloc_pages_node(node, alloc_mask|highmem_mask, 0);
+> +		page = alloc_pages_node(node,
+> +				alloc_mask|highmem_mask, page_shift);
+
+This is also nice cleanup, but does it really belong to this patch ?
+
+>   
+>   		if (unlikely(!page)) {
+>   			/* Successfully allocated i pages, free them in __vunmap() */
+> @@ -2584,8 +2634,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>   			cond_resched();
 >   	}
-> @@ -1903,7 +2095,7 @@ void __init vmalloc_init(void)
->   int map_kernel_range_noflush(unsigned long addr, unsigned long size,
->   			     pgprot_t prot, struct page **pages)
+>   
+> -	if (map_vm_area(area, prot, pages))
+> +	if (vmap_hpages_range(addr, addr + size, prot, pages, page_shift) < 0)
+>   		goto fail;
+> +
+
+Cleanup ?
+
+>   	return area->addr;
+>   
+>   fail:
+> @@ -2619,22 +2670,39 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>   			pgprot_t prot, unsigned long vm_flags, int node,
+>   			const void *caller)
 >   {
-> -	return vmap_page_range_noflush(addr, addr + size, prot, pages);
-> +	return vmap_pages_range_noflush(addr, addr + size, prot, pages);
+> -	struct vm_struct *area;
+> +	struct vm_struct *area = NULL;
+>   	void *addr;
+>   	unsigned long real_size = size;
+> +	unsigned long real_align = align;
+> +	unsigned int shift = PAGE_SHIFT;
+>   
+>   	size = PAGE_ALIGN(size);
+>   	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
+>   		goto fail;
+>   
+> +	if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
+> +		unsigned long size_per_node;
+> +
+> +		size_per_node = size;
+> +		if (node == NUMA_NO_NODE)
+> +			size_per_node /= num_online_nodes();
+> +		if (size_per_node >= PMD_SIZE)
+> +			shift = PMD_SHIFT;
+> +	}
+> +again:
+> +	align = max(real_align, 1UL << shift);
+> +	size = ALIGN(real_size, align);
+> +
+>   	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
+>   				vm_flags, start, end, node, gfp_mask, caller);
+>   	if (!area)
+>   		goto fail;
+>   
+> +	area->page_shift = shift - PAGE_SHIFT;
+> +
+>   	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
+>   	if (!addr)
+> -		return NULL;
+> +		goto fail;
+>   
+>   	/*
+>   	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
+> @@ -2648,8 +2716,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>   	return addr;
+>   
+>   fail:
+> -	warn_alloc(gfp_mask, NULL,
+> +	if (shift == PMD_SHIFT) {
+> +		shift = PAGE_SHIFT;
+> +		goto again;
+> +	}
+> +
+> +	if (!area) {
+> +		/* Warn for area allocation, page allocations already warn */
+> +		warn_alloc(gfp_mask, NULL,
+>   			  "vmalloc: allocation failure: %lu bytes", real_size);
+> +	}
+>   	return NULL;
 >   }
 >   
->   /**
-> @@ -1922,7 +2114,7 @@ int map_kernel_range_noflush(unsigned long addr, unsigned long size,
->    */
->   void unmap_kernel_range_noflush(unsigned long addr, unsigned long size)
->   {
-> -	vunmap_page_range(addr, addr + size);
-> +	vunmap_range(addr, addr + size);
->   }
->   EXPORT_SYMBOL_GPL(unmap_kernel_range_noflush);
->   
-> @@ -1939,7 +2131,7 @@ void unmap_kernel_range(unsigned long addr, unsigned long size)
->   	unsigned long end = addr + size;
->   
->   	flush_cache_vunmap(addr, end);
-> -	vunmap_page_range(addr, end);
-> +	vunmap_range(addr, end);
->   	flush_tlb_kernel_range(addr, end);
->   }
->   EXPORT_SYMBOL_GPL(unmap_kernel_range);
-> @@ -1950,7 +2142,7 @@ int map_vm_area(struct vm_struct *area, pgprot_t prot, struct page **pages)
->   	unsigned long end = addr + get_vm_area_size(area);
->   	int err;
->   
-> -	err = vmap_page_range(addr, end, prot, pages);
-> +	err = vmap_pages_range(addr, end, prot, pages);
->   
->   	return err > 0 ? 0 : err;
->   }
 > 
+
+Christophe
