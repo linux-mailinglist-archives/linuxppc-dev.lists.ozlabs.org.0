@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3BC3D214
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 18:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21F63D21C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 18:23:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NZxZ2Gm7zDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 02:21:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Nb021wxkzDqhT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 02:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,37 +18,37 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="lctxf60o"; dkim-atps=neutral
+ header.b="QjUN4GXs"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NXky28D4zDqV1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 00:41:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NXl24yXBzDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 00:41:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=YLjfzK43wQ9CU00al+Ym+V5yBUHCJAJzq91hYzEVV+8=; b=lctxf60o+qeZ56iUVs4sFHqM9g
- Bhl9Dv3SAKW713Ypki/OIDIOKgshgcusVFDaJY04xE9PEL+nj6W+vPTcq7JYNGL6xmdw2OKqVHSZA
- wJ6OQJcmfOFC0wdk6AGsIWyjU3jowYGGcpltD1WM9o0bAv+v5iEFLlAgDzcA9g64YCZnPb3LMbiPy
- wfa1Qmx12MM5qG3ouc5kp6B6jJ7pltFZOfe7Y+qDODepS8DylwA9QQ6maqbjNTcnhamI0AxDdQ8Jo
- bTNehbXDNjVFbP2iwArNFZoxouMJxnrPETVIANVvrT3NyE4+eQyNI4FET7Z9TwvgVWAqjvhPnaJEp
- KTHj52cQ==;
+ bh=CCBHIDdzGw8dGT9zTCEQtOYrgJc8ZgxZZtlN4zHEVIg=; b=QjUN4GXs9WS8NwKVyrN/1jfeyT
+ 3JfuLGB1+nUhhITWtvXF8SBH4lyEcYO6uDwD65K79Me0wivesJlXkrfs5T57LWLMU9iQm4xFHLbVd
+ N1rJtvtrWFaqA+CTkEy00BvVIAGlu+kLv0CNclptcLbddV9z0NDcgkg5NODv0TTOG+2ZSGfbseBqD
+ XeLA7vHyIKnjNaCfUK495QHfnc9SPjvCMgdXYkHxwHnY3IlPaN33oaWheojAID9VApvkf5DXalh/8
+ J73XphRdNfXhsay33ktGM9xVYkdyXj+dMzrQXtknZ+uo5PNXfc1+eULr8rnEjLy2wv4OiIhJaysG8
+ l64kLMew==;
 Received: from mpp-cp1-natpool-1-037.ethz.ch ([82.130.71.37] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hahxr-0005RJ-A2; Tue, 11 Jun 2019 14:41:31 +0000
+ id 1hahxu-0005Rg-3u; Tue, 11 Jun 2019 14:41:34 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Paul Burton <paul.burton@mips.com>, James Hogan <jhogan@kernel.org>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 08/16] sparc64: define untagged_addr()
-Date: Tue, 11 Jun 2019 16:40:54 +0200
-Message-Id: <20190611144102.8848-9-hch@lst.de>
+Subject: [PATCH 09/16] sparc64: use the generic get_user_pages_fast code
+Date: Tue, 11 Jun 2019 16:40:55 +0200
+Message-Id: <20190611144102.8848-10-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190611144102.8848-1-hch@lst.de>
 References: <20190611144102.8848-1-hch@lst.de>
@@ -77,47 +77,418 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a helper to untag a user pointer.  This is needed for ADI support
-in get_user_pages_fast.
+The sparc64 code is mostly equivalent to the generic one, minus various
+bugfixes and two arch overrides that this patch adds to pgtable.h.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/sparc/include/asm/pgtable_64.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/sparc/Kconfig                  |   1 +
+ arch/sparc/include/asm/pgtable_64.h |  18 ++
+ arch/sparc/mm/Makefile              |   2 +-
+ arch/sparc/mm/gup.c                 | 340 ----------------------------
+ 4 files changed, 20 insertions(+), 341 deletions(-)
+ delete mode 100644 arch/sparc/mm/gup.c
 
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 26ab6f5bbaaf..22435471f942 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -28,6 +28,7 @@ config SPARC
+ 	select RTC_DRV_M48T59
+ 	select RTC_SYSTOHC
+ 	select HAVE_ARCH_JUMP_LABEL if SPARC64
++	select HAVE_GENERIC_GUP if SPARC64
+ 	select GENERIC_IRQ_SHOW
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select GENERIC_PCI_IOMAP
 diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index f0dcf991d27f..1904782dcd39 100644
+index 1904782dcd39..547ff96fb228 100644
 --- a/arch/sparc/include/asm/pgtable_64.h
 +++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -1076,6 +1076,28 @@ static inline int io_remap_pfn_range(struct vm_area_struct *vma,
+@@ -1098,6 +1098,24 @@ static inline unsigned long untagged_addr(unsigned long start)
  }
- #define io_remap_pfn_range io_remap_pfn_range 
+ #define untagged_addr untagged_addr
  
-+static inline unsigned long untagged_addr(unsigned long start)
++static inline bool pte_access_permitted(pte_t pte, bool write)
 +{
-+	if (adi_capable()) {
-+		long addr = start;
++	u64 prot;
 +
-+		/* If userspace has passed a versioned address, kernel
-+		 * will not find it in the VMAs since it does not store
-+		 * the version tags in the list of VMAs. Storing version
-+		 * tags in list of VMAs is impractical since they can be
-+		 * changed any time from userspace without dropping into
-+		 * kernel. Any address search in VMAs will be done with
-+		 * non-versioned addresses. Ensure the ADI version bits
-+		 * are dropped here by sign extending the last bit before
-+		 * ADI bits. IOMMU does not implement version tags.
-+		 */
-+		return (addr << (long)adi_nbits()) >> (long)adi_nbits();
++	if (tlb_type == hypervisor) {
++		prot = _PAGE_PRESENT_4V | _PAGE_P_4V;
++		if (write)
++			prot |= _PAGE_WRITE_4V;
++	} else {
++		prot = _PAGE_PRESENT_4U | _PAGE_P_4U;
++		if (write)
++			prot |= _PAGE_WRITE_4U;
 +	}
 +
-+	return start;
++	return (pte_val(pte) & (prot | _PAGE_SPECIAL)) == prot;
 +}
-+#define untagged_addr untagged_addr
++#define pte_access_permitted pte_access_permitted
 +
  #include <asm/tlbflush.h>
  #include <asm-generic/pgtable.h>
  
+diff --git a/arch/sparc/mm/Makefile b/arch/sparc/mm/Makefile
+index d39075b1e3b7..b078205b70e0 100644
+--- a/arch/sparc/mm/Makefile
++++ b/arch/sparc/mm/Makefile
+@@ -5,7 +5,7 @@
+ asflags-y := -ansi
+ ccflags-y := -Werror
+ 
+-obj-$(CONFIG_SPARC64)   += ultra.o tlb.o tsb.o gup.o
++obj-$(CONFIG_SPARC64)   += ultra.o tlb.o tsb.o
+ obj-y                   += fault_$(BITS).o
+ obj-y                   += init_$(BITS).o
+ obj-$(CONFIG_SPARC32)   += extable.o srmmu.o iommu.o io-unit.o
+diff --git a/arch/sparc/mm/gup.c b/arch/sparc/mm/gup.c
+deleted file mode 100644
+index 1e770a517d4a..000000000000
+--- a/arch/sparc/mm/gup.c
++++ /dev/null
+@@ -1,340 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * Lockless get_user_pages_fast for sparc, cribbed from powerpc
+- *
+- * Copyright (C) 2008 Nick Piggin
+- * Copyright (C) 2008 Novell Inc.
+- */
+-
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <linux/vmstat.h>
+-#include <linux/pagemap.h>
+-#include <linux/rwsem.h>
+-#include <asm/pgtable.h>
+-#include <asm/adi.h>
+-
+-/*
+- * The performance critical leaf functions are made noinline otherwise gcc
+- * inlines everything into a single function which results in too much
+- * register pressure.
+- */
+-static noinline int gup_pte_range(pmd_t pmd, unsigned long addr,
+-		unsigned long end, int write, struct page **pages, int *nr)
+-{
+-	unsigned long mask, result;
+-	pte_t *ptep;
+-
+-	if (tlb_type == hypervisor) {
+-		result = _PAGE_PRESENT_4V|_PAGE_P_4V;
+-		if (write)
+-			result |= _PAGE_WRITE_4V;
+-	} else {
+-		result = _PAGE_PRESENT_4U|_PAGE_P_4U;
+-		if (write)
+-			result |= _PAGE_WRITE_4U;
+-	}
+-	mask = result | _PAGE_SPECIAL;
+-
+-	ptep = pte_offset_kernel(&pmd, addr);
+-	do {
+-		struct page *page, *head;
+-		pte_t pte = *ptep;
+-
+-		if ((pte_val(pte) & mask) != result)
+-			return 0;
+-		VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
+-
+-		/* The hugepage case is simplified on sparc64 because
+-		 * we encode the sub-page pfn offsets into the
+-		 * hugepage PTEs.  We could optimize this in the future
+-		 * use page_cache_add_speculative() for the hugepage case.
+-		 */
+-		page = pte_page(pte);
+-		head = compound_head(page);
+-		if (!page_cache_get_speculative(head))
+-			return 0;
+-		if (unlikely(pte_val(pte) != pte_val(*ptep))) {
+-			put_page(head);
+-			return 0;
+-		}
+-
+-		pages[*nr] = page;
+-		(*nr)++;
+-	} while (ptep++, addr += PAGE_SIZE, addr != end);
+-
+-	return 1;
+-}
+-
+-static int gup_huge_pmd(pmd_t *pmdp, pmd_t pmd, unsigned long addr,
+-			unsigned long end, int write, struct page **pages,
+-			int *nr)
+-{
+-	struct page *head, *page;
+-	int refs;
+-
+-	if (!(pmd_val(pmd) & _PAGE_VALID))
+-		return 0;
+-
+-	if (write && !pmd_write(pmd))
+-		return 0;
+-
+-	refs = 0;
+-	page = pmd_page(pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+-	head = compound_head(page);
+-	do {
+-		VM_BUG_ON(compound_head(page) != head);
+-		pages[*nr] = page;
+-		(*nr)++;
+-		page++;
+-		refs++;
+-	} while (addr += PAGE_SIZE, addr != end);
+-
+-	if (!page_cache_add_speculative(head, refs)) {
+-		*nr -= refs;
+-		return 0;
+-	}
+-
+-	if (unlikely(pmd_val(pmd) != pmd_val(*pmdp))) {
+-		*nr -= refs;
+-		while (refs--)
+-			put_page(head);
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+-static int gup_huge_pud(pud_t *pudp, pud_t pud, unsigned long addr,
+-			unsigned long end, int write, struct page **pages,
+-			int *nr)
+-{
+-	struct page *head, *page;
+-	int refs;
+-
+-	if (!(pud_val(pud) & _PAGE_VALID))
+-		return 0;
+-
+-	if (write && !pud_write(pud))
+-		return 0;
+-
+-	refs = 0;
+-	page = pud_page(pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+-	head = compound_head(page);
+-	do {
+-		VM_BUG_ON(compound_head(page) != head);
+-		pages[*nr] = page;
+-		(*nr)++;
+-		page++;
+-		refs++;
+-	} while (addr += PAGE_SIZE, addr != end);
+-
+-	if (!page_cache_add_speculative(head, refs)) {
+-		*nr -= refs;
+-		return 0;
+-	}
+-
+-	if (unlikely(pud_val(pud) != pud_val(*pudp))) {
+-		*nr -= refs;
+-		while (refs--)
+-			put_page(head);
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+-static int gup_pmd_range(pud_t pud, unsigned long addr, unsigned long end,
+-		int write, struct page **pages, int *nr)
+-{
+-	unsigned long next;
+-	pmd_t *pmdp;
+-
+-	pmdp = pmd_offset(&pud, addr);
+-	do {
+-		pmd_t pmd = *pmdp;
+-
+-		next = pmd_addr_end(addr, end);
+-		if (pmd_none(pmd))
+-			return 0;
+-		if (unlikely(pmd_large(pmd))) {
+-			if (!gup_huge_pmd(pmdp, pmd, addr, next,
+-					  write, pages, nr))
+-				return 0;
+-		} else if (!gup_pte_range(pmd, addr, next, write,
+-					  pages, nr))
+-			return 0;
+-	} while (pmdp++, addr = next, addr != end);
+-
+-	return 1;
+-}
+-
+-static int gup_pud_range(pgd_t pgd, unsigned long addr, unsigned long end,
+-		int write, struct page **pages, int *nr)
+-{
+-	unsigned long next;
+-	pud_t *pudp;
+-
+-	pudp = pud_offset(&pgd, addr);
+-	do {
+-		pud_t pud = *pudp;
+-
+-		next = pud_addr_end(addr, end);
+-		if (pud_none(pud))
+-			return 0;
+-		if (unlikely(pud_large(pud))) {
+-			if (!gup_huge_pud(pudp, pud, addr, next,
+-					  write, pages, nr))
+-				return 0;
+-		} else if (!gup_pmd_range(pud, addr, next, write, pages, nr))
+-			return 0;
+-	} while (pudp++, addr = next, addr != end);
+-
+-	return 1;
+-}
+-
+-/*
+- * Note a difference with get_user_pages_fast: this always returns the
+- * number of pages pinned, 0 if no pages were pinned.
+- */
+-int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
+-			  struct page **pages)
+-{
+-	struct mm_struct *mm = current->mm;
+-	unsigned long addr, len, end;
+-	unsigned long next, flags;
+-	pgd_t *pgdp;
+-	int nr = 0;
+-
+-#ifdef CONFIG_SPARC64
+-	if (adi_capable()) {
+-		long addr = start;
+-
+-		/* If userspace has passed a versioned address, kernel
+-		 * will not find it in the VMAs since it does not store
+-		 * the version tags in the list of VMAs. Storing version
+-		 * tags in list of VMAs is impractical since they can be
+-		 * changed any time from userspace without dropping into
+-		 * kernel. Any address search in VMAs will be done with
+-		 * non-versioned addresses. Ensure the ADI version bits
+-		 * are dropped here by sign extending the last bit before
+-		 * ADI bits. IOMMU does not implement version tags.
+-		 */
+-		addr = (addr << (long)adi_nbits()) >> (long)adi_nbits();
+-		start = addr;
+-	}
+-#endif
+-	start &= PAGE_MASK;
+-	addr = start;
+-	len = (unsigned long) nr_pages << PAGE_SHIFT;
+-	end = start + len;
+-
+-	local_irq_save(flags);
+-	pgdp = pgd_offset(mm, addr);
+-	do {
+-		pgd_t pgd = *pgdp;
+-
+-		next = pgd_addr_end(addr, end);
+-		if (pgd_none(pgd))
+-			break;
+-		if (!gup_pud_range(pgd, addr, next, write, pages, &nr))
+-			break;
+-	} while (pgdp++, addr = next, addr != end);
+-	local_irq_restore(flags);
+-
+-	return nr;
+-}
+-
+-int get_user_pages_fast(unsigned long start, int nr_pages,
+-			unsigned int gup_flags, struct page **pages)
+-{
+-	struct mm_struct *mm = current->mm;
+-	unsigned long addr, len, end;
+-	unsigned long next;
+-	pgd_t *pgdp;
+-	int nr = 0;
+-
+-#ifdef CONFIG_SPARC64
+-	if (adi_capable()) {
+-		long addr = start;
+-
+-		/* If userspace has passed a versioned address, kernel
+-		 * will not find it in the VMAs since it does not store
+-		 * the version tags in the list of VMAs. Storing version
+-		 * tags in list of VMAs is impractical since they can be
+-		 * changed any time from userspace without dropping into
+-		 * kernel. Any address search in VMAs will be done with
+-		 * non-versioned addresses. Ensure the ADI version bits
+-		 * are dropped here by sign extending the last bit before
+-		 * ADI bits. IOMMU does not implements version tags,
+-		 */
+-		addr = (addr << (long)adi_nbits()) >> (long)adi_nbits();
+-		start = addr;
+-	}
+-#endif
+-	start &= PAGE_MASK;
+-	addr = start;
+-	len = (unsigned long) nr_pages << PAGE_SHIFT;
+-	end = start + len;
+-
+-	/*
+-	 * XXX: batch / limit 'nr', to avoid large irq off latency
+-	 * needs some instrumenting to determine the common sizes used by
+-	 * important workloads (eg. DB2), and whether limiting the batch size
+-	 * will decrease performance.
+-	 *
+-	 * It seems like we're in the clear for the moment. Direct-IO is
+-	 * the main guy that batches up lots of get_user_pages, and even
+-	 * they are limited to 64-at-a-time which is not so many.
+-	 */
+-	/*
+-	 * This doesn't prevent pagetable teardown, but does prevent
+-	 * the pagetables from being freed on sparc.
+-	 *
+-	 * So long as we atomically load page table pointers versus teardown,
+-	 * we can follow the address down to the the page and take a ref on it.
+-	 */
+-	local_irq_disable();
+-
+-	pgdp = pgd_offset(mm, addr);
+-	do {
+-		pgd_t pgd = *pgdp;
+-
+-		next = pgd_addr_end(addr, end);
+-		if (pgd_none(pgd))
+-			goto slow;
+-		if (!gup_pud_range(pgd, addr, next, gup_flags & FOLL_WRITE,
+-				   pages, &nr))
+-			goto slow;
+-	} while (pgdp++, addr = next, addr != end);
+-
+-	local_irq_enable();
+-
+-	VM_BUG_ON(nr != (end - start) >> PAGE_SHIFT);
+-	return nr;
+-
+-	{
+-		int ret;
+-
+-slow:
+-		local_irq_enable();
+-
+-		/* Try to get the remaining pages with get_user_pages */
+-		start += nr << PAGE_SHIFT;
+-		pages += nr;
+-
+-		ret = get_user_pages_unlocked(start,
+-			(end - start) >> PAGE_SHIFT, pages,
+-			gup_flags);
+-
+-		/* Have to be a bit careful with return values */
+-		if (nr > 0) {
+-			if (ret < 0)
+-				ret = nr;
+-			else
+-				ret += nr;
+-		}
+-
+-		return ret;
+-	}
+-}
 -- 
 2.20.1
 
