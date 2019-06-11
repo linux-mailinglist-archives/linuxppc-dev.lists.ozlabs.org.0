@@ -2,68 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2543C11C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 03:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CE43C131
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 04:17:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NCls2H9NzDqS8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 11:56:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NDDX21hXzDqTs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 12:17:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="dQpPZ6wo"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NCjp6rYfzDqJC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 11:54:37 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id 19so5515435pfa.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 18:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=d8vqyEfyEGXEarVNNYpCOFtLHlqzQ7o7fyj/liwhzuE=;
- b=dQpPZ6woCtcySsrf4Ul24GN4v7BttX0OsyBXheASptYvWUSyDbA8NWCGKPrtzLqrrv
- l7K8qC2z/2pi73CIZUzt9wGWtnEYd8AlZiYKTJWC787q4ePdDEMTa8c4vEX7IO97tRxm
- +3EMgB0ZMLZh1elTgLedz+xdXlx53qs8ajD7M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=d8vqyEfyEGXEarVNNYpCOFtLHlqzQ7o7fyj/liwhzuE=;
- b=qnU2ex6Y9pEyPKBGHSQPZe/xrogVHQgtgN6daszjjpTvAP/UnZnzd12wEMkFwSwrm8
- iwsIWRrd7M47WGXQ6ghtDyLKe0+KA9n6GcPGGYajC/X2QnU6cd9XMOMqRjhrxL7cQMqF
- kRqOt8eMPp6V+W8iH1eAWzSI2lgYg0olzYo4WCwfPOIFamVPH/+gYPlSjtYH2bkoy4n7
- U6qqkeVGB8/RbN4VLKtpNzGaB96pnXkaPNDwxncvQlOUTIoVnJuZR8pNv2XR9iA7igKB
- vn3A7jSRygIq21GKISA4Ji/QkwR0bCoLQfEPJqtIkeIv5yq2epSObvxfN5JrtS55p5A9
- ev5Q==
-X-Gm-Message-State: APjAAAW/LaW0CZt4wUDSNCzZ0fswalnuLznS3RA4VqHyjZ9lBnHioIef
- TIr4T/QDZTJ1HdOdF+H1f6m/Jg==
-X-Google-Smtp-Source: APXvYqw3WSeugZDuLtsfP733puLMUeQvH9dbPzsXTHy2ldDDcutOiW/unPP4BCv/v+BIqhRKFY58ig==
-X-Received: by 2002:a65:6284:: with SMTP id f4mr18441480pgv.14.1560218076066; 
- Mon, 10 Jun 2019 18:54:36 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id b26sm7741233pfo.129.2019.06.10.18.54.34
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 10 Jun 2019 18:54:35 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: mpe@ellerman.id.au, ebiggers@kernel.org, linux-crypto@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH] crypto: vmx - Document CTR mode counter width quirks
-Date: Tue, 11 Jun 2019 11:54:31 +1000
-Message-Id: <20190611015431.26772-1-dja@axtens.net>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NDBs0BGvzDqNJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 12:16:20 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5B2C7rN064255
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 22:16:17 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t229124fy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 22:16:17 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Tue, 11 Jun 2019 03:16:15 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 11 Jun 2019 03:16:11 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5B2GA9H49479802
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Jun 2019 02:16:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 282D1A4068;
+ Tue, 11 Jun 2019 02:16:09 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 256E9A4054;
+ Tue, 11 Jun 2019 02:16:05 +0000 (GMT)
+Received: from [9.102.1.214] (unknown [9.102.1.214])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Jun 2019 02:16:04 +0000 (GMT)
+Subject: Re: [PATCH RESEND 1/2] tools/perf: Add arch neutral function to
+ choose event for perf kvm record
+To: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>
+References: <20190610064518.949-1-anju@linux.vnet.ibm.com>
+ <20190610151642.GT21245@kernel.org>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date: Tue, 11 Jun 2019 07:46:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190610151642.GT21245@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061102-0016-0000-0000-00000287E5CB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061102-0017-0000-0000-000032E5109A
+Message-Id: <fb887226-52c9-3714-009f-c1c8a49197c9@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-11_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906110012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,72 +93,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: leo.barbosa@canonical.com, Stephan Mueller <smueller@chronox.de>,
- nayna@linux.ibm.com, omosnacek@gmail.com, leitao@debian.org,
- pfsmorigo@gmail.com, marcelo.cerri@canonical.com, gcwilson@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
+ peterz@infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
+ namhyung@kernel.org, jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The CTR code comes from OpenSSL, where it does a 32-bit counter.
-The kernel has a 128-bit counter. This difference has lead to
-issues.
 
-Document it.
 
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- drivers/crypto/vmx/aesp8-ppc.pl | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+On 6/10/19 8:46 PM, Arnaldo Carvalho de Melo wrote:
+> Em Mon, Jun 10, 2019 at 12:15:17PM +0530, Anju T Sudhakar escreveu:
+>> 'perf kvm record' uses 'cycles'(if the user did not specify any event) as
+>> the default event to profile the guest.
+>> This will not provide any proper samples from the guest incase of
+>> powerpc architecture, since in powerpc the PMUs are controlled by
+>> the guest rather than the host.
+>>
+>> Patch adds a function to pick an arch specific event for 'perf kvm record',
+>> instead of selecting 'cycles' as a default event for all architectures.
+>>
+>> For powerpc this function checks for any user specified event, and if there
+>> isn't any it returns invalid instead of proceeding with 'cycles' event.
+> 
+> Michael, Ravi, Maddy, could you please provide an Acked-by, Reviewed-by
+> or Tested-by?
 
-diff --git a/drivers/crypto/vmx/aesp8-ppc.pl b/drivers/crypto/vmx/aesp8-ppc.pl
-index 9c6b5c1d6a1a..db874367b602 100644
---- a/drivers/crypto/vmx/aesp8-ppc.pl
-+++ b/drivers/crypto/vmx/aesp8-ppc.pl
-@@ -1286,6 +1286,24 @@ ___
- 
- #########################################################################
- {{{	# CTR procedure[s]						#
-+
-+####################### WARNING: Here be dragons! #######################
-+#
-+# This code is written as 'ctr32', based on a 32-bit counter used
-+# upstream. The kernel does *not* use a 32-bit counter. The kernel uses
-+# a 128-bit counter.
-+#
-+# This leads to subtle changes from the upstream code: the counter
-+# is incremented with vaddu_q_m rather than vaddu_w_m. This occurs in
-+# both the bulk (8 blocks at a time) path, and in the individual block
-+# path. Be aware of this when doing updates.
-+#
-+# See:
-+# 1d4aa0b4c181 ("crypto: vmx - Fixing AES-CTR counter bug")
-+# 009b30ac7444 ("crypto: vmx - CTR: always increment IV as quadword")
-+# https://github.com/openssl/openssl/pull/8942
-+#
-+#########################################################################
- my ($inp,$out,$len,$key,$ivp,$x10,$rounds,$idx)=map("r$_",(3..10));
- my ($rndkey0,$rndkey1,$inout,$tmp)=		map("v$_",(0..3));
- my ($ivec,$inptail,$inpperm,$outhead,$outperm,$outmask,$keyperm,$one)=
-@@ -1357,7 +1375,7 @@ Loop_ctr32_enc:
- 	addi		$idx,$idx,16
- 	bdnz		Loop_ctr32_enc
- 
--	vadduqm		$ivec,$ivec,$one
-+	vadduqm		$ivec,$ivec,$one	# Kernel change for 128-bit
- 	 vmr		$dat,$inptail
- 	 lvx		$inptail,0,$inp
- 	 addi		$inp,$inp,16
-@@ -1501,7 +1519,7 @@ Load_ctr32_enc_key:
- 	$SHL		$len,$len,4
- 
- 	vadduqm		$out1,$ivec,$one	# counter values ...
--	vadduqm		$out2,$ivec,$two
-+	vadduqm		$out2,$ivec,$two	# (do all ctr adds as 128-bit)
- 	vxor		$out0,$ivec,$rndkey0	# ... xored with rndkey[0]
- 	 le?li		$idx,8
- 	vadduqm		$out3,$out1,$two
--- 
-2.20.1
+Code looks fine to me but cross-build fails for aarch64:
+
+  builtin-kvm.c:1513:12: error: no previous prototype for 'kvm_add_default_arch_event' [-Werror=missing-prototypes]
+   int __weak kvm_add_default_arch_event(int *argc __maybe_unused,
+              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
+  mv: cannot stat './.builtin-kvm.o.tmp': No such file or directory
+
+With the build fix:
+Acked-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
