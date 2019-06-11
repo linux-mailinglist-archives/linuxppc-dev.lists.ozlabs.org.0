@@ -2,72 +2,155 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4363C375
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB4A3C395
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 07:49:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NJlY6m6XzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NJxJ4g1szDqRf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2019 15:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="HjcLfeUm"; 
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="KkRkhoxE"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NJjf3sY7zDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:39:49 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45NJjW0Fvbz9tyqp;
- Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=HjcLfeUm; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id aib5TBna1xD0; Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45NJjV5lPTz9tyqn;
- Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560231582; bh=AcasQ1C3dA4AzkrneaeSDWm00r+6lIIPyCKEa+gH8Hc=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=HjcLfeUm591DKJbT4XFNh33xeQysAkzN9k9klX9HBIaGUqqvR6W3w4b9D0KzZKU98
- qw92c4lk+e+Q+fZRgltKfcWO1yvWsJ2v27coTfB7ItNWDEryiHbKnepAb3xYDJrtpJ
- pMxEq0Udn1K4Ymwd4ZmvQz3fxUBdmlqCrkmGMR/U=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A0EBF8B7D4;
- Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id dWTlxVxs_54c; Tue, 11 Jun 2019 07:39:43 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 084DB8B75B;
- Tue, 11 Jun 2019 07:39:42 +0200 (CEST)
-Subject: Re: [PATCH 4/4] mm/vmalloc: Hugepage vmalloc mappings
-To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- Russell Currey <ruscur@russell.cc>
-References: <20190610043838.27916-1-npiggin@gmail.com>
- <20190610043838.27916-4-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b79bf11d-43c7-88c9-8395-239625a1bdcf@c-s.fr>
-Date: Tue, 11 Jun 2019 07:39:42 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NJvC2pFCzDqQW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2019 15:48:05 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id c85so6700024pfc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2019 22:48:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=PHfT92gJ0DrHgi/NsEfUqYEAkEDUF3mXl4HPn2qXbk4=;
+ b=KkRkhoxEC984WunxXOx/Ix8LqUh4W5a7cjLfHdakQYUzoT5qYzmBNsZGf+/F6s5uxw
+ GOQDwCyt/tHzmi3wbguS6xyb6ha8I6Sk+zAHtgBwY2PWuWxOH7nB0gey+cTwo0InNQIW
+ v04q7+bhocDVXzk3iUV8YGil0eVxu9GdIpKj1GESCPF1xJTdZHNdSZVbkKY+Plh93V6m
+ zaJWDnJKa7G8pWovtIhOD7Czkm22vYLCsegE/+Yl4nGcah5r/Gborpwv9yLZQLnbbH7T
+ b+ZRA6GUd09dKC/qRn5FLtKG3OBKM4DmGoHgp8xNq1tAUWB7vSWaD5kbYDY1gxR0qUul
+ n/uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=PHfT92gJ0DrHgi/NsEfUqYEAkEDUF3mXl4HPn2qXbk4=;
+ b=WDA1vRPbz9NG+qtV7c1G3Arl57zCGXIZIxeW45pmwcK6JgMwmfjH7R04ToETGElbWq
+ KnXKCa4BsRPMYVuUCzVnooy96P0vEd28iHUBADXxVIi2ZZj3Cr5dujFF9wvhkdB12yNd
+ a1J1RJa6LqlDWLPHipwSmW1uCJ27Z8dl/QDprhCTI5MB80Q8zUgpyYQu5tk6/bNO7Ur5
+ bdofpmUkJAAnD6fXOm0GDWYdLo0/tLTjzpwKBHPJ8NJMXx371LQaVCYIMa1/5PxN7uZr
+ CdzZndmNkRPiwEF4BuvvO0yBj+R/JCH0E49joe8V/b3jnTMcnG/PlNq0d9lcf+LolIna
+ ZqHQ==
+X-Gm-Message-State: APjAAAWnIrT8sNokisMGT10QXD1fQr/amn31+y7rFDBtsKW/Hk6txJ4T
+ 6sHj9jaTlShXC2/z9JcApIAuMA==
+X-Google-Smtp-Source: APXvYqzvzzMIyHF7rh7N0evN7UC8QVtk6t3LeL0MGWDBe1Je6A0/HaasGKUG6NfuX3F3T6Qpe5L4KQ==
+X-Received: by 2002:a17:90a:718c:: with SMTP id
+ i12mr25541213pjk.32.1560232083112; 
+ Mon, 10 Jun 2019 22:48:03 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id d123sm22840443pfc.144.2019.06.10.22.48.00
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 10 Jun 2019 22:48:01 -0700 (PDT)
+Subject: Re: [PATCH v2 3/6] powerpc/eeh: Improve debug messages around device
+ addition
+To: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <cover.1557203383.git.sbobroff@linux.ibm.com>
+ <8deaedffad8ed3327f296a561c2a31c930c65f88.1557203383.git.sbobroff@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Openpgp: preference=signencrypt
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <ef181b9d-54df-23f9-2f06-f0f4d0bd8e8a@ozlabs.ru>
+Date: Tue, 11 Jun 2019 15:47:58 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190610043838.27916-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <8deaedffad8ed3327f296a561c2a31c930c65f88.1557203383.git.sbobroff@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,345 +162,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: oohall@gmail.com, tyreld@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 10/06/2019 à 06:38, Nicholas Piggin a écrit :
-> For platforms that define HAVE_ARCH_HUGE_VMAP, have vmap allow vmalloc to
-> allocate huge pages and map them
-
-Will this be compatible with Russell's series 
-https://patchwork.ozlabs.org/patch/1099857/ for the implementation of 
-STRICT_MODULE_RWX ?
-I see that apply_to_page_range() have things like BUG_ON(pud_huge(*pud));
-
-Might also be an issue for arm64 as I think Russell's implementation 
-comes from there.
-
+On 07/05/2019 14:30, Sam Bobroff wrote:
+> Also remove useless comment.
 > 
-> This brings dTLB misses for linux kernel tree `git diff` from 45,000 to
-> 8,000 on a Kaby Lake KVM guest with 8MB dentry hash and mitigations=off
-> (performance is in the noise, under 1% difference, page tables are likely
-> to be well cached for this workload). Similar numbers are seen on POWER9.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 > ---
->   include/asm-generic/4level-fixup.h |   1 +
->   include/asm-generic/5level-fixup.h |   1 +
->   include/linux/vmalloc.h            |   1 +
->   mm/vmalloc.c                       | 132 +++++++++++++++++++++++------
->   4 files changed, 107 insertions(+), 28 deletions(-)
+>  arch/powerpc/kernel/eeh.c                    |  2 +-
+>  arch/powerpc/platforms/powernv/eeh-powernv.c | 14 ++++++++----
+>  arch/powerpc/platforms/pseries/eeh_pseries.c | 23 +++++++++++++++-----
+>  3 files changed, 28 insertions(+), 11 deletions(-)
 > 
-> diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/4level-fixup.h
-> index e3667c9a33a5..3cc65a4dd093 100644
-> --- a/include/asm-generic/4level-fixup.h
-> +++ b/include/asm-generic/4level-fixup.h
-> @@ -20,6 +20,7 @@
->   #define pud_none(pud)			0
->   #define pud_bad(pud)			0
->   #define pud_present(pud)		1
-> +#define pud_large(pud)			0
->   #define pud_ERROR(pud)			do { } while (0)
->   #define pud_clear(pud)			pgd_clear(pud)
->   #define pud_val(pud)			pgd_val(pud)
-> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
-> index bb6cb347018c..c4377db09a4f 100644
-> --- a/include/asm-generic/5level-fixup.h
-> +++ b/include/asm-generic/5level-fixup.h
-> @@ -22,6 +22,7 @@
->   #define p4d_none(p4d)			0
->   #define p4d_bad(p4d)			0
->   #define p4d_present(p4d)		1
-> +#define p4d_large(p4d)			0
->   #define p4d_ERROR(p4d)			do { } while (0)
->   #define p4d_clear(p4d)			pgd_clear(p4d)
->   #define p4d_val(p4d)			pgd_val(p4d)
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index 812bea5866d6..4c92dc608928 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -42,6 +42,7 @@ struct vm_struct {
->   	unsigned long		size;
->   	unsigned long		flags;
->   	struct page		**pages;
-> +	unsigned int		page_shift;
->   	unsigned int		nr_pages;
->   	phys_addr_t		phys_addr;
->   	const void		*caller;
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index dd27cfb29b10..0cf8e861caeb 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -36,6 +36,7 @@
->   #include <linux/rbtree_augmented.h>
->   
->   #include <linux/uaccess.h>
-> +#include <asm/pgtable.h>
->   #include <asm/tlbflush.h>
->   #include <asm/shmparam.h>
->   
-> @@ -440,6 +441,41 @@ static int vmap_pages_range(unsigned long start, unsigned long end,
->   	return ret;
->   }
->   
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-> +static int vmap_hpages_range(unsigned long start, unsigned long end,
-> +				   pgprot_t prot, struct page **pages,
-> +				   unsigned int page_shift)
-> +{
-> +	unsigned long addr = start;
-> +	unsigned int i, nr = (end - start) >> (PAGE_SHIFT + page_shift);
-> +
-> +	for (i = 0; i < nr; i++) {
-> +		int err;
-> +
-> +		err = vmap_range_noflush(addr,
-> +					addr + (PAGE_SIZE << page_shift),
-> +					__pa(page_address(pages[i])), prot,
-> +					PAGE_SHIFT + page_shift);
-> +		if (err)
-> +			return err;
-> +
-> +		addr += PAGE_SIZE << page_shift;
-> +	}
-> +	flush_cache_vmap(start, end);
-> +
-> +	return nr;
-> +}
-> +#else
-> +static int vmap_hpages_range(unsigned long start, unsigned long end,
-> +			   pgprot_t prot, struct page **pages,
-> +			   unsigned int page_shift)
-> +{
-> +	BUG_ON(page_shift != PAGE_SIZE);
-
-Do we really need a BUG_ON() there ? What happens if this condition is 
-true ?
-
-> +	return vmap_pages_range(start, end, prot, pages);
-> +}
-> +#endif
-> +
-> +
->   int is_vmalloc_or_module_addr(const void *x)
->   {
->   	/*
-> @@ -462,7 +498,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->   {
->   	unsigned long addr = (unsigned long) vmalloc_addr;
->   	struct page *page = NULL;
-> -	pgd_t *pgd = pgd_offset_k(addr);
-> +	pgd_t *pgd;
->   	p4d_t *p4d;
->   	pud_t *pud;
->   	pmd_t *pmd;
-> @@ -474,27 +510,38 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->   	 */
->   	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
->   
-> +	pgd = pgd_offset_k(addr);
->   	if (pgd_none(*pgd))
->   		return NULL;
-> +
->   	p4d = p4d_offset(pgd, addr);
->   	if (p4d_none(*p4d))
->   		return NULL;
-> -	pud = pud_offset(p4d, addr);
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-
-Do we really need that ifdef ? Won't p4d_large() always return 0 when is 
-not set ?
-Otherwise, could we use IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP) instead ?
-
-Same several places below.
-
-> +	if (p4d_large(*p4d))
-> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
-> +#endif
-> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
-> +		return NULL;
->   
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 8d3c36a1f194..b14d89547895 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1291,7 +1291,7 @@ void eeh_add_device_late(struct pci_dev *dev)
+>  	pdn = pci_get_pdn_by_devfn(dev->bus, dev->devfn);
+>  	edev = pdn_to_eeh_dev(pdn);
+>  	if (edev->pdev == dev) {
+> -		pr_debug("EEH: Already referenced !\n");
+> +		pr_debug("EEH: Device %s already referenced!\n", pci_name(dev));
+>  		return;
+>  	}
+>  
+> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> index 6fc1a463b796..0e374cdba961 100644
+> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+> @@ -50,10 +50,7 @@ void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
+>  	if (!pdev->is_virtfn)
+>  		return;
+>  
 > -	/*
-> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
-> -	 * identify huge mappings, which we may encounter on architectures
-> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
-> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
-> -	 * not [unambiguously] associated with a struct page, so there is
-> -	 * no correct value to return for them.
+> -	 * The following operations will fail if VF's sysfs files
+> -	 * aren't created or its resources aren't finalized.
 > -	 */
-> -	WARN_ON_ONCE(pud_bad(*pud));
-> -	if (pud_none(*pud) || pud_bad(*pud))
-> +	pud = pud_offset(p4d, addr);
-> +	if (pud_none(*pud))
-> +		return NULL;
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-> +	if (pud_large(*pud))
-> +		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> +#endif
-> +	if (WARN_ON_ONCE(pud_bad(*pud)))
->   		return NULL;
-> +
->   	pmd = pmd_offset(pud, addr);
-> -	WARN_ON_ONCE(pmd_bad(*pmd));
-> -	if (pmd_none(*pmd) || pmd_bad(*pmd))
-> +	if (pmd_none(*pmd))
-> +		return NULL;
-> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-> +	if (pmd_large(*pmd))
-> +		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> +#endif
-> +	if (WARN_ON_ONCE(pmd_bad(*pmd)))
->   		return NULL;
->   
->   	ptep = pte_offset_map(pmd, addr);
-> @@ -502,6 +549,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
->   	if (pte_present(pte))
->   		page = pte_page(pte);
->   	pte_unmap(ptep);
-> +
->   	return page;
->   }
->   EXPORT_SYMBOL(vmalloc_to_page);
-> @@ -2185,8 +2233,9 @@ static struct vm_struct *__get_vm_area_node(unsigned long size,
->   		return NULL;
->   
->   	if (flags & VM_IOREMAP)
-> -		align = 1ul << clamp_t(int, get_count_order_long(size),
-> -				       PAGE_SHIFT, IOREMAP_MAX_ORDER);
-> +		align = max(align,
-> +				1ul << clamp_t(int, get_count_order_long(size),
-> +				       PAGE_SHIFT, IOREMAP_MAX_ORDER));
->   
->   	area = kzalloc_node(sizeof(*area), gfp_mask & GFP_RECLAIM_MASK, node);
->   	if (unlikely(!area))
-> @@ -2398,7 +2447,7 @@ static void __vunmap(const void *addr, int deallocate_pages)
->   			struct page *page = area->pages[i];
->   
->   			BUG_ON(!page);
-> -			__free_pages(page, 0);
-> +			__free_pages(page, area->page_shift);
->   		}
->   
->   		kvfree(area->pages);
-> @@ -2541,14 +2590,17 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->   				 pgprot_t prot, int node)
->   {
->   	struct page **pages;
-> +	unsigned long addr = (unsigned long)area->addr;
-> +	unsigned long size = get_vm_area_size(area);
-> +	unsigned int page_shift = area->page_shift;
-> +	unsigned int shift = page_shift + PAGE_SHIFT;
->   	unsigned int nr_pages, array_size, i;
->   	const gfp_t nested_gfp = (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
->   	const gfp_t alloc_mask = gfp_mask | __GFP_NOWARN;
->   	const gfp_t highmem_mask = (gfp_mask & (GFP_DMA | GFP_DMA32)) ?
-> -					0 :
-> -					__GFP_HIGHMEM;
-> +					0 : __GFP_HIGHMEM;
+> +	pr_debug("%s: EEH: Setting up device %s.\n", __func__, pci_name(pdev));
 
-This patch is already quite big, shouldn't this kind of unrelated 
-cleanups be in another patch ?
 
->   
-> -	nr_pages = get_vm_area_size(area) >> PAGE_SHIFT;
-> +	nr_pages = size >> shift;
->   	array_size = (nr_pages * sizeof(struct page *));
->   
->   	area->nr_pages = nr_pages;
-> @@ -2569,10 +2621,8 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->   	for (i = 0; i < area->nr_pages; i++) {
->   		struct page *page;
->   
-> -		if (node == NUMA_NO_NODE)
-> -			page = alloc_page(alloc_mask|highmem_mask);
-> -		else
-> -			page = alloc_pages_node(node, alloc_mask|highmem_mask, 0);
-> +		page = alloc_pages_node(node,
-> +				alloc_mask|highmem_mask, page_shift);
+dev_dbg() seems more appropriate.
 
-This is also nice cleanup, but does it really belong to this patch ?
 
->   
->   		if (unlikely(!page)) {
->   			/* Successfully allocated i pages, free them in __vunmap() */
-> @@ -2584,8 +2634,9 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->   			cond_resched();
->   	}
->   
-> -	if (map_vm_area(area, prot, pages))
-> +	if (vmap_hpages_range(addr, addr + size, prot, pages, page_shift) < 0)
->   		goto fail;
+>  	eeh_add_device_early(pdn);
+>  	eeh_add_device_late(pdev);
+>  	eeh_sysfs_add_device(pdev);
+> @@ -397,6 +394,10 @@ static void *pnv_eeh_probe(struct pci_dn *pdn, void *data)
+>  	int ret;
+>  	int config_addr = (pdn->busno << 8) | (pdn->devfn);
+>  
+> +	pr_debug("%s: probing %04x:%02x:%02x.%01x\n",
+> +		__func__, hose->global_number, pdn->busno,
+> +		PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
 > +
+>  	/*
+>  	 * When probing the root bridge, which doesn't have any
+>  	 * subordinate PCI devices. We don't have OF node for
+> @@ -491,6 +492,11 @@ static void *pnv_eeh_probe(struct pci_dn *pdn, void *data)
+>  	/* Save memory bars */
+>  	eeh_save_bars(edev);
+>  
+> +	pr_debug("%s: EEH enabled on %02x:%02x.%01x PHB#%x-PE#%x\n",
+> +		__func__, pdn->busno, PCI_SLOT(pdn->devfn),
+> +		PCI_FUNC(pdn->devfn), edev->pe->phb->global_number,
+> +		edev->pe->addr);
+> +
+>  	return NULL;
+>  }
+>  
+> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> index 7aa50258dd42..ae06878fbdea 100644
+> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> @@ -65,6 +65,8 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+>  	if (!pdev->is_virtfn)
+>  		return;
+>  
+> +	pr_debug("%s: EEH: Setting up device %s.\n", __func__, pci_name(pdev));
+> +
+>  	pdn->device_id  =  pdev->device;
+>  	pdn->vendor_id  =  pdev->vendor;
+>  	pdn->class_code =  pdev->class;
+> @@ -251,6 +253,10 @@ static void *pseries_eeh_probe(struct pci_dn *pdn, void *data)
+>  	int enable = 0;
+>  	int ret;
+>  
+> +	pr_debug("%s: probing %04x:%02x:%02x.%01x\n",
+> +		__func__, pdn->phb->global_number, pdn->busno,
+> +		PCI_SLOT(pdn->devfn), PCI_FUNC(pdn->devfn));
+> +
+>  	/* Retrieve OF node and eeh device */
+>  	edev = pdn_to_eeh_dev(pdn);
+>  	if (!edev || edev->pe)
+> @@ -294,7 +300,12 @@ static void *pseries_eeh_probe(struct pci_dn *pdn, void *data)
+>  
+>  	/* Enable EEH on the device */
+>  	ret = eeh_ops->set_option(&pe, EEH_OPT_ENABLE);
+> -	if (!ret) {
+> +	if (ret) {
+> +		pr_debug("%s: EEH failed to enable on %02x:%02x.%01x PHB#%x-PE#%x (code %d)\n",
+> +			__func__, pdn->busno, PCI_SLOT(pdn->devfn),
+> +			PCI_FUNC(pdn->devfn), pe.phb->global_number,
+> +			pe.addr, ret);
+> +	} else {
 
-Cleanup ?
 
->   	return area->addr;
->   
->   fail:
-> @@ -2619,22 +2670,39 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->   			pgprot_t prot, unsigned long vm_flags, int node,
->   			const void *caller)
->   {
-> -	struct vm_struct *area;
-> +	struct vm_struct *area = NULL;
->   	void *addr;
->   	unsigned long real_size = size;
-> +	unsigned long real_align = align;
-> +	unsigned int shift = PAGE_SHIFT;
->   
->   	size = PAGE_ALIGN(size);
->   	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
->   		goto fail;
->   
-> +	if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
-> +		unsigned long size_per_node;
-> +
-> +		size_per_node = size;
-> +		if (node == NUMA_NO_NODE)
-> +			size_per_node /= num_online_nodes();
-> +		if (size_per_node >= PMD_SIZE)
-> +			shift = PMD_SHIFT;
-> +	}
-> +again:
-> +	align = max(real_align, 1UL << shift);
-> +	size = ALIGN(real_size, align);
-> +
->   	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
->   				vm_flags, start, end, node, gfp_mask, caller);
->   	if (!area)
->   		goto fail;
->   
-> +	area->page_shift = shift - PAGE_SHIFT;
-> +
->   	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
->   	if (!addr)
-> -		return NULL;
-> +		goto fail;
->   
->   	/*
->   	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
-> @@ -2648,8 +2716,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->   	return addr;
->   
->   fail:
-> -	warn_alloc(gfp_mask, NULL,
-> +	if (shift == PMD_SHIFT) {
-> +		shift = PAGE_SHIFT;
-> +		goto again;
-> +	}
-> +
-> +	if (!area) {
-> +		/* Warn for area allocation, page allocations already warn */
-> +		warn_alloc(gfp_mask, NULL,
->   			  "vmalloc: allocation failure: %lu bytes", real_size);
-> +	}
->   	return NULL;
->   }
->   
+edev!=NULL here so you could do dev_dbg(&edev->pdev->dev,...) and skip
+PCI_SLOT/PCI_FUNC. Or is (edev!=NULL && edev->pdev==NULL) possible (it
+could be, just asking)?
+
+
+>  		/* Retrieve PE address */
+>  		edev->pe_config_addr = eeh_ops->get_pe_addr(&pe);
+>  		pe.addr = edev->pe_config_addr;
+> @@ -310,11 +321,6 @@ static void *pseries_eeh_probe(struct pci_dn *pdn, void *data)
+>  		if (enable) {
+>  			eeh_add_flag(EEH_ENABLED);
+>  			eeh_add_to_parent_pe(edev);
+> -
+> -			pr_debug("%s: EEH enabled on %02x:%02x.%01x PHB#%x-PE#%x\n",
+> -				__func__, pdn->busno, PCI_SLOT(pdn->devfn),
+> -				PCI_FUNC(pdn->devfn), pe.phb->global_number,
+> -				pe.addr);
+>  		} else if (pdn->parent && pdn_to_eeh_dev(pdn->parent) &&
+>  			   (pdn_to_eeh_dev(pdn->parent))->pe) {
+>  			/* This device doesn't support EEH, but it may have an
+> @@ -323,6 +329,11 @@ static void *pseries_eeh_probe(struct pci_dn *pdn, void *data)
+>  			edev->pe_config_addr = pdn_to_eeh_dev(pdn->parent)->pe_config_addr;
+>  			eeh_add_to_parent_pe(edev);
+>  		}
+> +		pr_debug("%s: EEH %s on %02x:%02x.%01x PHB#%x-PE#%x (code %d)\n",
+> +			__func__, (enable ? "enabled" : "unsupported"),
+> +			pdn->busno, PCI_SLOT(pdn->devfn),
+> +			PCI_FUNC(pdn->devfn), pe.phb->global_number,
+> +			pe.addr, ret);
+
+Same here. I understand though this one is a cut-n-paste :)
+
+
+>  	}
+>  
+>  	/* Save memory bars */
 > 
 
-Christophe
+-- 
+Alexey
