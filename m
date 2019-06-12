@@ -1,55 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7513E42171
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 11:53:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45P2HR6s7pzDr5d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 19:53:07 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AEE6421BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 11:56:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45P2Ml3l6szDr4L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 19:56:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.160.193; helo=mail-qt1-f193.google.com;
- envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=hisilicon.com
+ (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=zhangshaokun@hisilicon.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com
- [209.85.160.193])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=hisilicon.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45P2Fn4c6YzDr1C
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 19:51:41 +1000 (AEST)
-Received: by mail-qt1-f193.google.com with SMTP id h21so17828913qtn.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 02:51:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MsS2zjAtz2/RHX261bCXw3o3t0glrhV60YubFfcMrXo=;
- b=E8S8FpcdXBNwEra/DK7XNHiKGz/7TPpkRiTJgKlZ2P/8+sSdG77xMOtngqbH4VLMUt
- KEH5hHq/fw1H38Aaa4hlx4oifDMWuR7q+zKc6UCvPZoJQKJ4WqNXJCQ1xckEGLosnbQX
- 3y9MUeJKnu9feTPjUmpjtZBGDcjYEAAno7iimlbWd5MSM9P+K6xLm5dhdgyrWHjmuqRB
- iS1qSi3OshX8y0kEKP4M3dqRHQQ1xy6DnESzsIPD1UhtL1jGw+OgZizBKKEIyx9pqld/
- a+5xp7ywO7eAtK/OnwhmQjMzLWOm82BR5oLde4RTlGKIemx+Mv/mzNL1WRiJiXhod8xD
- 4XqA==
-X-Gm-Message-State: APjAAAV6nJKMKnPdwkXPGKS2mqUv/dSdZ/1ckudyRvSiQVYlmGcAobTU
- eIwl9OvH0Oy0aQnJ2OIzrlzAOVnmrWhf72P0z6M=
-X-Google-Smtp-Source: APXvYqxtOsPgKJeZqoOW4U1KGZxgCJkWOpAo/NnnA5Xt851IFkpQJiGQzHnu54c5uYfso+a1ZekmQk8BHoX0w/qdo3A=
-X-Received: by 2002:aed:2bc1:: with SMTP id e59mr49125846qtd.7.1560333098136; 
- Wed, 12 Jun 2019 02:51:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45P2K73RNMzDqmR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 19:54:32 +1000 (AEST)
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 98B5286654BF69C187E6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 17:54:26 +0800 (CST)
+Received: from [127.0.0.1] (10.74.221.148) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Wed, 12 Jun 2019
+ 17:54:22 +0800
+Subject: Re: [PATCH] powerpc/64s: Fix misleading SPR and timebase information
+To: <linuxppc-dev@lists.ozlabs.org>
+References: <1559121711-24114-1-git-send-email-zhangshaokun@hisilicon.com>
+From: Zhangshaokun <zhangshaokun@hisilicon.com>
+Message-ID: <6d2f5e3d-23a6-ccf1-61c4-7dd5c7e228ac@hisilicon.com>
+Date: Wed, 12 Jun 2019 17:54:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.1.1
 MIME-Version: 1.0
-References: <20190611181309.GA17098@kroah.com>
-In-Reply-To: <20190611181309.GA17098@kroah.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 12 Jun 2019 11:51:21 +0200
-Message-ID: <CAK8P3a1otKxoJUNH=-tZfzFy9qzQQc61i8AZPh-L7e-Ybd8kpg@mail.gmail.com>
-Subject: Re: [PATCH] cxl: no need to check return value of debugfs_create
- functions
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1559121711-24114-1-git-send-email-zhangshaokun@hisilicon.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.74.221.148]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,47 +51,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2019 at 8:13 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hi Michael,
 
-> @@ -64,8 +64,6 @@ int cxl_debugfs_adapter_add(struct cxl *adapter)
->
->         snprintf(buf, 32, "card%i", adapter->adapter_num);
->         dir = debugfs_create_dir(buf, cxl_debugfs);
-> -       if (IS_ERR(dir))
-> -               return PTR_ERR(dir);
->         adapter->debugfs = dir;
->
+A gentle ping.
 
-Should the check for 'cxl_debugfs' get removed here as well?
-If that is null, we might put the subdir in the wrong place in the
-tree, but that would otherwise be harmless as well, and the
-same thing happens if 'dir' is NULL above and we add the
-files in the debugfs root later (losing the ability to clean up
-afterwards).
+On 2019/5/29 17:21, Shaokun Zhang wrote:
+> pr_info shows SPR and timebase as a decimal value with a '0x'
+> prefix, which is somewhat misleading.
+> 
+> Fix it to print hexadecimal, as was intended.
+> 
+> Fixes: 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
+> ---
+>  arch/powerpc/platforms/powernv/idle.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+> index c9133f7908ca..77f2e0a4ee37 100644
+> --- a/arch/powerpc/platforms/powernv/idle.c
+> +++ b/arch/powerpc/platforms/powernv/idle.c
+> @@ -1159,10 +1159,10 @@ static void __init pnv_power9_idle_init(void)
+>  			pnv_deepest_stop_psscr_mask);
+>  	}
+>  
+> -	pr_info("cpuidle-powernv: First stop level that may lose SPRs = 0x%lld\n",
+> +	pr_info("cpuidle-powernv: First stop level that may lose SPRs = 0x%llx\n",
+>  		pnv_first_spr_loss_level);
+>  
+> -	pr_info("cpuidle-powernv: First stop level that may lose timebase = 0x%lld\n",
+> +	pr_info("cpuidle-powernv: First stop level that may lose timebase = 0x%llx\n",
+>  		pnv_first_tb_loss_level);
+>  }
+>  
+> 
 
-int cxl_debugfs_adapter_add(struct cxl *adapter)
-{
-        struct dentry *dir;
-        char buf[32];
-
-        if (!cxl_debugfs)
-                return -ENODEV;
-
-It's still a bit odd to return an error, since the caller then just
-ignores the return code anway:
-
-        /* Don't care if this one fails: */
-        cxl_debugfs_adapter_add(adapter);
-
-It would seem best to change the return type to 'void' here for
-consistency.
-
-     Arnd
