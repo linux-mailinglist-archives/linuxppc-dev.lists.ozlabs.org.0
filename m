@@ -1,86 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5460341CD4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:55:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F1741C4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:37:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NxxN72pNzDr3P
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:37:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NyL63NgQzDqnD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:55:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NxvX10KFzDqBg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:35:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="S9hscLxT"; 
- dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45NxvW71sMz8t23
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NyJ14GpTzDqlw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:53:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="GFvtK0jF"; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45NyHz4LJGz8t30
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:53:19 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45NxvW6PtYz9s9y; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
+ id 45NyHz3sQmz9sBr; Wed, 12 Jun 2019 16:53:19 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+eeb336ffa9092f1fc134+5771+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="S9hscLxT"; 
- dkim-atps=neutral
-Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="GFvtK0jF"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45NxvW4vkYz9s7h
- for <linuxppc-dev@ozlabs.org>; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
-Received: by mail-it1-x142.google.com with SMTP id m3so9052743itl.1
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 23:35:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=MHcvYWRnrXWxsWWs0BejJhNYWntQgPzwqsTyK3JVcEE=;
- b=S9hscLxT9U0oYcldK6EV5J/lbYqp/LZmLHawIS7nzJVR0hsF1YqVy150zNpRA9eZtS
- 04C0Hbr1JbzSiOoaoXFWJijWoXICJeBvkpEM2EMr+QojWFDJ8UlLUaUSBOpD2z9Nlfgc
- F6zwaVjxQlFzllxXNlNlaICFHIf4OAVLxZbKKCgBXFSFsBKTRA1B1KYpGaN4woeCH091
- GNSM6lSXYFA+slAMAiohXpmR69HFHKhg/lxP3dP1h954Fc/oEsyat+AX0WldkvkU2u94
- 81Otxa9+L7GosJ3ZF8B3x8fOUMRgxm3yuiWt+QNnp/cOpbigVendTpVFvhXldkxI+/D3
- x2Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MHcvYWRnrXWxsWWs0BejJhNYWntQgPzwqsTyK3JVcEE=;
- b=UgecDOv0bvD33KzVu3oPkoyUFyQIW2B2rK4me5uF9Mn0I0AVVy5e4MWWdZXqMuQG+s
- i9YzMuvZK0P/MF5WNRU7ougNOJ4QwmbESNNZ68a2PWpQ8EPpDPOjLfXsmd/0xuc4/iEL
- gIeJdOJKuzZlHBf/FBhdZiQsi+uImyhUO2k+Dq7uYOPuTyo2hYj1Op5Q3zw9AKmH+1R6
- u075xyjGlu3gdCk/ZsUCcGigJoc4NEgifEQL0V4kMc919QoDWTSh2U+MS47DG52VD3gV
- 58tUy7/dG3fLpOyG9bna5C3hPnmo68G8czxux5TCULP+3bWMZyn1cFPNSAQ5jntiYcHp
- 1lpg==
-X-Gm-Message-State: APjAAAVUcJXsHGucO+uAE8uKUIuXh9Ft9vbmG/Ue7aZpd4HpECDO/Rbh
- OVJgXQrmis5TFIjhKPusWPb0fSq4sOuRwYGXZ3w=
-X-Google-Smtp-Source: APXvYqx16rAJnIPnPFPqqoZ7lmzh1vpi/yzIxiE9JzX1lPl2u7spnY33oJUFEHnBbB8dL05qV9YE/DbB9OoGggJpIo4=
-X-Received: by 2002:a24:d145:: with SMTP id w66mr20513709itg.71.1560321333285; 
- Tue, 11 Jun 2019 23:35:33 -0700 (PDT)
-MIME-Version: 1.0
+ by ozlabs.org (Postfix) with ESMTPS id 45NyHz21VFz9s9y
+ for <linuxppc-dev@ozlabs.org>; Wed, 12 Jun 2019 16:53:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=xgUX4NVL92gkxOqiTvw1J9XqeyQ+MJXpugSZPm13AZs=; b=GFvtK0jFohgoH84MW52pkyI40
+ R1zEfRmP4a24R6XxrcvPT3RRZbLFUlUtEPxsULpUAaAK5nCVL8Sz4cA+wGpXZQLudidQvzYR6dqkg
+ 89yQXiFkJzeTJdX/YYYJ56lXLo7Vk7rvNbee/3ocS7fbGmRvhLPyyxwLW15FdZIKkNpcEiWvDopqf
+ T5QXYgcpiInC9kdOYDQXsM2QV5ii8Ur0ZT715wd7lQ4es8wB89/njfaF11nBFSWsohi1P3z+9BFJ3
+ OAbEfmPM0p4yE9eul8AJt2Eav6KrJtgquUD1xJPHnz2v0ox9BgG1BUWkq/2M7rQLshhgGHGEbLL31
+ JxdnZzHKg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hax8E-0000qt-4p; Wed, 12 Jun 2019 06:53:14 +0000
+Date: Tue, 11 Jun 2019 23:53:14 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH v2 8/8] habanalabs: enable 64-bit DMA mask in POWER9
+Message-ID: <20190612065314.GA28838@infradead.org>
 References: <20190611092144.11194-1-oded.gabbay@gmail.com>
  <20190611095857.GB24058@kroah.com>
- <20190611151753.GA11404@infradead.org> <20190611152655.GA3972@kroah.com>
+ <20190611151753.GA11404@infradead.org>
+ <20190611152655.GA3972@kroah.com>
  <CAFCwf13A73AxKzaa7Dk3tU-1NDgTFs4+xCO2os7SuSyUHZ9Z3Q@mail.gmail.com>
  <CAFCwf134nTD4FM_9Q+THQ7ZAZzGxhs15O6EheaRJMqM5wxi+aA@mail.gmail.com>
-In-Reply-To: <CAFCwf134nTD4FM_9Q+THQ7ZAZzGxhs15O6EheaRJMqM5wxi+aA@mail.gmail.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 12 Jun 2019 16:35:22 +1000
-Message-ID: <CAOSf1CE82uVVni638jkJJpQ7XLXX+HdD7xuB7Wv-f8mn=SBMeg@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] habanalabs: enable 64-bit DMA mask in POWER9
-To: Oded Gabbay <oded.gabbay@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ <CAOSf1CE82uVVni638jkJJpQ7XLXX+HdD7xuB7Wv-f8mn=SBMeg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CE82uVVni638jkJJpQ7XLXX+HdD7xuB7Wv-f8mn=SBMeg@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,41 +87,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Hellwig <hch@infradead.org>, Greg KH <gregkh@linuxfoundation.org>,
+Cc: Oded Gabbay <oded.gabbay@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Christoph Hellwig <hch@infradead.org>,
  "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
  linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2019 at 3:25 AM Oded Gabbay <oded.gabbay@gmail.com> wrote:
->
-> On Tue, Jun 11, 2019 at 8:03 PM Oded Gabbay <oded.gabbay@gmail.com> wrote:
-> >
-> > On Tue, Jun 11, 2019 at 6:26 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > *snip*
-> >
-> > Now, when I tried to integrate Goya into a POWER9 machine, I got a
-> > reject from the call to pci_set_dma_mask(pdev, 48). The standard code,
-> > as I wrote above, is to call the same function with 32-bits. That
-> > works BUT it is not practical, as our applications require much more
-> > memory mapped then 32-bits.
+On Wed, Jun 12, 2019 at 04:35:22PM +1000, Oliver O'Halloran wrote:
+> Setting a 48 bit DMA mask doesn't work today because we only allocate
+> IOMMU tables to cover the 0..2GB range of PCI bus addresses.
 
-Setting a 48 bit DMA mask doesn't work today because we only allocate
-IOMMU tables to cover the 0..2GB range of PCI bus addresses. Alexey
-has some patches to expand that range so we can support devices that
-can't hit the 64 bit bypass window. You need:
-
-This fix: http://patchwork.ozlabs.org/patch/1113506/
-This series: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=110810
-
-Give that a try and see if the IOMMU overhead is tolerable.
-
-> >In addition, once you add more cards which
-> > are all mapped to the same range, it is simply not usable at all.
-
-Each IOMMU group should have a separate bus address space and seperate
-cards shouldn't be in the same IOMMU group. If they are then there's
-something up.
-
-Oliver
+I don't think that is true upstream, and if it is we need to fix bug
+in the powerpc code.  powerpc should be falling back treating a 48-bit
+dma mask like a 32-bit one at least, that is use dynamic iommu mappings
+instead of using the direct mapping.  And from my reding of 
+arch/powerpc/kernel/dma-iommu.c that is exactly what it does.
