@@ -2,89 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AB441C1A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E93741C32
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:27:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NxYJ2hRNzDqnT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:19:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Nxkh6hBczDr1g
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:27:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NxVY6QTSzDr1G
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:17:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Nxhl3nDBzDqwl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:26:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="PpN6PEFO"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eyDsg02x"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45NxVY3Hsbz8sw2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:17:25 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45Nxhl3Hcbz8t23
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:26:15 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45NxVY2J5Lz9sNC; Wed, 12 Jun 2019 16:17:25 +1000 (AEST)
+ id 45Nxhl301Dz9sNC; Wed, 12 Jun 2019 16:26:15 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::e43; helo=mail-vs1-xe43.google.com;
+ envelope-from=oded.gabbay@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="PpN6PEFO"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="eyDsg02x"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com
+ [IPv6:2607:f8b0:4864:20::e43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45NxVV1b0zz9sBr
- for <linuxppc-dev@ozlabs.org>; Wed, 12 Jun 2019 16:17:21 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 19so8160322pfa.4
- for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 23:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=XfFiCk2hi1loFtSR3ZjqlUfAHTiBWq39sAwp51Bhapc=;
- b=PpN6PEFOS8qSJMctngFCBYS8DwxqTL8A0MvDrI8OYBi51IL1MooDjOSwr8kS/34Aa3
- rgN5NL/7KMdG1BJZ7PFBMbNwGoGsLrsUS0ny07dPRed3UTCub5C2nJ6EWPzb/fOIZO3u
- U0KW4ZAje8M3MAei0/BOJqOEndEpk3+NoTxvI=
+ by ozlabs.org (Postfix) with ESMTPS id 45Nxhl1pb5z9s9y
+ for <linuxppc-dev@ozlabs.org>; Wed, 12 Jun 2019 16:26:14 +1000 (AEST)
+Received: by mail-vs1-xe43.google.com with SMTP id n2so9534202vso.6
+ for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 23:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=lKi9fDU0Lxa/G5VIecJ7zcekWrVtK+7i/1xldaoGnKM=;
+ b=eyDsg02xExXKcTNUxPVULiXqWMYD105i/SYss3Q7V7I4w3D6V8UOwCLq2ZoHI3mfQg
+ OTOZo+12wHolv7tBGv3sdkmuSCqRtGRtsH/CXaw+WsTDMgkJfbsIxMXGQHVukIrCMeIp
+ WMJtP4K8mh4CfnD/OzA0LsD4n5zUmMJFuZbqIliJxj+/ysyNeX8d0WMZJkgvyDtB53cj
+ r8AAjqQ2NGyvklSU8TGfeou44Ndc8sZVnQxufRmi9ZUNRSE31V2H7I8bSiLHmCPd18cI
+ IzURSSp1riW/tb78SPfnulXCdtyqSevY9l/dVLxcqTLtox2ZZPsTDydfn6bTGUfVyk/U
+ s8xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=XfFiCk2hi1loFtSR3ZjqlUfAHTiBWq39sAwp51Bhapc=;
- b=pyBW71J7E0R1+4UR4JMur+xCVrWbBYWOWVZYTe73NPw9h8t/ox0gUiwVWLvK7JbL5C
- NJ1zTyN5a8W3JBR8XFb+1I5WWeOADOBWOWdo3NBFlpiC80OoelTm6uesszPh8dxHNiYq
- ewUR9gt5UweI+3k5ex3jh+snlqsPszhfG1y+UDmb4SgJEC6NtH/7OMvAVzisFm/4pLmM
- +x5EQ+o1hmqZ3nYvxr2prV+ipNt4pwqxtFPSr0Rtnjw5UPhwSP9MjfalP/G6eaJ8Ke85
- XtCyBJIISIMALb7SHIagdbMNLlan6LxanIOvEEV7fPD/V0BlVzX9H7LoPlpy2oHI9xaZ
- nkHw==
-X-Gm-Message-State: APjAAAXiEjX+UaiUDVQuwlEv/ewBtoG4iErsrZLICnPo87EbitiLTVLz
- 6tZk9x0Shx25vb7nvahcnGLnKw==
-X-Google-Smtp-Source: APXvYqySJlPYC22TbdsrGitWsIlEDVh3N6b9eggOHerDOFQzVYMRWmAjE6cTAFrrhQFh7QhZKBhg4g==
-X-Received: by 2002:a17:90a:db42:: with SMTP id
- u2mr21939507pjx.48.1560320239501; 
- Tue, 11 Jun 2019 23:17:19 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id x129sm18478568pfb.29.2019.06.11.23.17.17
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 11 Jun 2019 23:17:18 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] powerpc/powernv: Add OPAL API interface to get
- secureboot state
-In-Reply-To: <1560198837-18857-2-git-send-email-nayna@linux.ibm.com>
-References: <1560198837-18857-1-git-send-email-nayna@linux.ibm.com>
- <1560198837-18857-2-git-send-email-nayna@linux.ibm.com>
-Date: Wed, 12 Jun 2019 16:17:14 +1000
-Message-ID: <87ftofpbth.fsf@dja-thinkpad.axtens.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=lKi9fDU0Lxa/G5VIecJ7zcekWrVtK+7i/1xldaoGnKM=;
+ b=ZzwpX25FkMAWG6IW8S8j7pKVlDWVwQO++EgiCGaQVzYsoNIPbaTiYQ+vCVtUMtmDIs
+ v1rVFJclRZjaeBRfV+VJQiwDV4vxcfEbmLWr+07xDRVrMlNewZ5ul+GrylEnKeD6MfaD
+ EED3BPDPWAcQxCuqX+/aPZXMrozSkfGzrMzQ28g35jKBe8n8IGy6c3+DIBSvdGOEAbD6
+ 1OsUti33rTgtv+1XCYNzTblFsVNPKghg2jCapHzLbbIHQ1GCOF9+oYQIIHIqZnzJKoJy
+ s4xXc0gdQQf/MExiye6t00l3TQlpHsJJtfm1EamawCdsEo0PyvQgI5R3ShN+s5g/MRjC
+ ibpQ==
+X-Gm-Message-State: APjAAAUAy0FPR7mWNMGGaMed6x5JJOohMjjEQxMUImaoDkaBCBAyv2+L
+ z1tY+ZwJ/uldf+kokplN9VXeT1Ou/0VAFcHi270=
+X-Google-Smtp-Source: APXvYqwH8H0IVDzCPTEFhE+jcQW08UumKLElWDBxov+7klCRUS6XvGsbE9i0ORzHeyhkcLy76VZViwB8rgx59DVP6D8=
+X-Received: by 2002:a67:e3d5:: with SMTP id k21mr28292559vsm.172.1560320771385; 
+ Tue, 11 Jun 2019 23:26:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190611092144.11194-1-oded.gabbay@gmail.com>
+ <20190611095857.GB24058@kroah.com>
+ <20190611151753.GA11404@infradead.org> <20190611152655.GA3972@kroah.com>
+ <CAFCwf13A73AxKzaa7Dk3tU-1NDgTFs4+xCO2os7SuSyUHZ9Z3Q@mail.gmail.com>
+ <CAFCwf134nTD4FM_9Q+THQ7ZAZzGxhs15O6EheaRJMqM5wxi+aA@mail.gmail.com>
+ <ca81ca5d56a3a12db5a92f5cf9745763a86572e8.camel@kernel.crashing.org>
+In-Reply-To: <ca81ca5d56a3a12db5a92f5cf9745763a86572e8.camel@kernel.crashing.org>
+From: Oded Gabbay <oded.gabbay@gmail.com>
+Date: Wed, 12 Jun 2019 09:25:45 +0300
+Message-ID: <CAFCwf11naDCqotNx2mrr18WpJ80T=9=jfsJWMSBu7KPrF5paJw@mail.gmail.com>
+Subject: Re: [PATCH v2 8/8] habanalabs: enable 64-bit DMA mask in POWER9
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,272 +93,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Nayna Jain <nayna@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Matthew Garret <matthew.garret@nebula.com>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>
+Cc: Russell Currey <ruscur@au1.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Greg KH <gregkh@linuxfoundation.org>,
+ "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nayna Jain <nayna@linux.ibm.com> writes:
-
-> From: Claudio Carvalho <cclaudio@linux.ibm.com>
+On Wed, Jun 12, 2019 at 1:53 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
 >
-> The X.509 certificates trusted by the platform and other information
-> required to secure boot the OS kernel are wrapped in secure variables,
-> which are controlled by OPAL.
+> On Tue, 2019-06-11 at 20:22 +0300, Oded Gabbay wrote:
+> >
+> > > So, to summarize:
+> > > If I call pci_set_dma_mask with 48, then it fails on POWER9. However,
+> > > in runtime, I don't know if its POWER9 or not, so upon failure I will
+> > > call it again with 32, which makes our device pretty much unusable.
+> > > If I call pci_set_dma_mask with 64, and do the dedicated configuration
+> > > in Goya's PCIe controller, then it won't work on x86-64, because bit
+> > > 59 will be set and the host won't like it (I checked it). In addition,
+> > > I might get addresses above 50 bits, which my device can't generate.
+> > >
+> > > I hope this makes things more clear. Now, please explain to me how I
+> > > can call pci_set_dma_mask without any regard to whether I run on
+> > > x86-64 or POWER9, considering what I wrote above ?
+> > >
+> > > Thanks,
+> > > Oded
+> >
+> > Adding ppc mailing list.
 >
-> This patch adds support to read OPAL secure variables through
-> OPAL_SECVAR_GET call. It returns the metadata and data for a given secure
-> variable based on the unique key.
+> You can't. Your device is broken. Devices that don't support DMAing to
+> the full 64-bit deserve to be added to the trash pile.
 >
-> Since OPAL can support different types of backend which can vary in the
-> variable interpretation, a new OPAL API call named OPAL_SECVAR_BACKEND, is
-> added to retrieve the supported backend version. This helps the consumer
-> to know how to interpret the variable.
+Hmm... right know they are added to customers data-centers but what do I know ;)
+
+> As a result, getting it to work will require hacks. Some GPUs have
+> similar issues and require similar hacks, it's unfortunate.
 >
-
-(Firstly, apologies that I haven't got around to asking about this yet!)
-
-Are pluggable/versioned backend a good idea?
-
-There are a few things that worry me about the idea:
-
- - It adds complexity in crypto (or crypto-adjacent) code, and that
-   increases the likelihood that we'll accidentally add a bug with bad
-   consequences.
-
- - Under what circumstances would would we change the kernel-visible
-   behaviour of skiboot? Are we expecting to change the behaviour,
-   content or names of the variables in future? Otherwise the only
-   relevant change I can think of is a change to hardware platforms, and
-   I'm not sure how a change in hardware would lead to change in
-   behaviour in the kernel. Wouldn't Skiboot hide h/w differences?
-
- - If we are worried about a long-term-future change to how secure-boot
-   works, would it be better to just add more get/set calls to opal at
-   the point at which we actually implement the new system?
-   
- - UEFI added EFI_VARIABLE_AUTHENTICATION_3 in a way that - as far
-   as I know - didn't break backwards compatibility. Is there a reason
-   we cannot add features that way instead? (It also dropped v1 of the
-   authentication header.)
-   
- - What is the correct fallback behaviour if a kernel receives a result
-   that it does not expect? If a kernel expecting BackendV1 is instead
-   informed that it is running on BackendV2, then the cannot access the
-   secure variable at all, so it cannot load keys that are potentially
-   required to successfully boot (e.g. to validate the module for
-   network card or graphics!)
-
-Kind regards,
-Daniel
-
-> This support can be enabled using CONFIG_OPAL_SECVAR
+> Added a couple of guys on CC who might be able to help get those hacks
+> right.
+Thanks :)
 >
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> ---
-> This patch depends on a new OPAL call that is being added to skiboot.
-> The patch set that implements the new call has been posted to
-> https://patchwork.ozlabs.org/project/skiboot/list/?series=112868
+> It's still very fishy .. the idea is to detect the case where setting a
+> 64-bit mask will give your system memory mapped at a fixed high address
+> (1 << 59 in our case) and program that in your chip in the "Fixed high
+> bits" register that you seem to have (also make sure it doesn't affect
+> MSIs or it will break them).
+MSI-X are working. The set of bit 59 doesn't apply to MSI-X
+transactions (AFAICS from the PCIe controller spec we have).
 >
->  arch/powerpc/include/asm/opal-api.h          |  4 +-
->  arch/powerpc/include/asm/opal-secvar.h       | 23 ++++++
->  arch/powerpc/include/asm/opal.h              |  6 ++
->  arch/powerpc/platforms/powernv/Kconfig       |  6 ++
->  arch/powerpc/platforms/powernv/Makefile      |  1 +
->  arch/powerpc/platforms/powernv/opal-call.c   |  2 +
->  arch/powerpc/platforms/powernv/opal-secvar.c | 85 ++++++++++++++++++++
->  7 files changed, 126 insertions(+), 1 deletion(-)
->  create mode 100644 arch/powerpc/include/asm/opal-secvar.h
->  create mode 100644 arch/powerpc/platforms/powernv/opal-secvar.c
+> This will only work as long as all of the system memory can be
+> addressed at an offset from that fixed address that itself fits your
+> device addressing capabilities (50 bits in this case). It may or may
+> not be the case but there's no way to check since the DMA mask logic
+> won't really apply.
+Understood. In the specific system we are integrated to, that is the
+case - we have less then 48 bits. But, as you pointed out, it is not a
+generic solution but with my H/W I can't give a generic fit-all
+solution for POWER9. I'll settle for the best that I can do.
+
 >
-> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-> index e1577cfa7186..a505e669b4b6 100644
-> --- a/arch/powerpc/include/asm/opal-api.h
-> +++ b/arch/powerpc/include/asm/opal-api.h
-> @@ -212,7 +212,9 @@
->  #define OPAL_HANDLE_HMI2			166
->  #define	OPAL_NX_COPROC_INIT			167
->  #define OPAL_XIVE_GET_VP_STATE			170
-> -#define OPAL_LAST				170
-> +#define OPAL_SECVAR_GET                         173
-> +#define OPAL_SECVAR_BACKEND                     177
-> +#define OPAL_LAST				177
->  
->  #define QUIESCE_HOLD			1 /* Spin all calls at entry */
->  #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
-> diff --git a/arch/powerpc/include/asm/opal-secvar.h b/arch/powerpc/include/asm/opal-secvar.h
-> new file mode 100644
-> index 000000000000..b677171a0368
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/opal-secvar.h
-> @@ -0,0 +1,23 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * PowerNV definitions for secure variables OPAL API.
-> + *
-> + * Copyright (C) 2019 IBM Corporation
-> + * Author: Claudio Carvalho <cclaudio@linux.ibm.com>
-> + *
-> + */
-> +#ifndef OPAL_SECVAR_H
-> +#define OPAL_SECVAR_H
-> +
-> +enum {
-> +	BACKEND_NONE = 0,
-> +	BACKEND_TC_COMPAT_V1,
-> +};
-> +
-> +extern int opal_get_variable(u8 *key, unsigned long ksize,
-> +			     u8 *metadata, unsigned long *mdsize,
-> +			     u8 *data, unsigned long *dsize);
-> +
-> +extern int opal_variable_version(unsigned long *backend);
-> +
-> +#endif
-> diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-> index 4cc37e708bc7..57d2c2356eda 100644
-> --- a/arch/powerpc/include/asm/opal.h
-> +++ b/arch/powerpc/include/asm/opal.h
-> @@ -394,6 +394,12 @@ void opal_powercap_init(void);
->  void opal_psr_init(void);
->  void opal_sensor_groups_init(void);
->  
-> +extern int opal_secvar_get(uint64_t k_key, uint64_t k_key_len,
-> +			   uint64_t k_metadata, uint64_t k_metadata_size,
-> +			   uint64_t k_data, uint64_t k_data_size);
-> +
-> +extern int opal_secvar_backend(uint64_t k_backend);
-> +
->  #endif /* __ASSEMBLY__ */
->  
->  #endif /* _ASM_POWERPC_OPAL_H */
-> diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-> index 850eee860cf2..65b060539b5c 100644
-> --- a/arch/powerpc/platforms/powernv/Kconfig
-> +++ b/arch/powerpc/platforms/powernv/Kconfig
-> @@ -47,3 +47,9 @@ config PPC_VAS
->  	  VAS adapters are found in POWER9 based systems.
->  
->  	  If unsure, say N.
-> +
-> +config OPAL_SECVAR
-> +	bool "OPAL Secure Variables"
-> +	depends on PPC_POWERNV
-> +	help
-> +	  This enables the kernel to access OPAL secure variables.
-> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-> index da2e99efbd04..6651c742e530 100644
-> --- a/arch/powerpc/platforms/powernv/Makefile
-> +++ b/arch/powerpc/platforms/powernv/Makefile
-> @@ -16,3 +16,4 @@ obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
->  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
->  obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o
->  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
-> +obj-$(CONFIG_OPAL_SECVAR) += opal-secvar.o
-> diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-> index 36c8fa3647a2..0445980f294f 100644
-> --- a/arch/powerpc/platforms/powernv/opal-call.c
-> +++ b/arch/powerpc/platforms/powernv/opal-call.c
-> @@ -288,3 +288,5 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,		OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
->  OPAL_CALL(opal_sensor_read_u64,			OPAL_SENSOR_READ_U64);
->  OPAL_CALL(opal_sensor_group_enable,		OPAL_SENSOR_GROUP_ENABLE);
->  OPAL_CALL(opal_nx_coproc_init,			OPAL_NX_COPROC_INIT);
-> +OPAL_CALL(opal_secvar_get,                      OPAL_SECVAR_GET);
-> +OPAL_CALL(opal_secvar_backend,                  OPAL_SECVAR_BACKEND);
-> diff --git a/arch/powerpc/platforms/powernv/opal-secvar.c b/arch/powerpc/platforms/powernv/opal-secvar.c
-> new file mode 100644
-> index 000000000000..dba441dd5af1
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/powernv/opal-secvar.c
-> @@ -0,0 +1,85 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * PowerNV code for secure variables
-> + *
-> + * Copyright (C) 2019 IBM Corporation
-> + * Author: Claudio Carvalho <cclaudio@linux.ibm.com>
-> + *
-> + */
-> +
-> +/*
-> + * The opal wrappers in this file treat the @name, @vendor, and @data
-> + * parameters as little endian blobs.
-> + * @name is a ucs2 string
-> + * @vendor is the vendor GUID. It is converted to LE in the kernel
-> + * @data variable data, which layout may be different for each variable
-> + */
-> +
-> +#define pr_fmt(fmt) "secvar: "fmt
-> +
-> +#include <linux/types.h>
-> +#include <asm/opal.h>
-> +#include <asm/opal-secvar.h>
-> +
-> +static bool is_opal_secvar_supported(void)
-> +{
-> +	static bool opal_secvar_supported;
-> +	static bool initialized;
-> +
-> +	if (initialized)
-> +		return opal_secvar_supported;
-> +
-> +	if (!opal_check_token(OPAL_SECVAR_GET)
-> +	    || !opal_check_token(OPAL_SECVAR_BACKEND)) {
-> +		pr_err("OPAL doesn't support secure variables\n");
-> +		opal_secvar_supported = false;
-> +	} else {
-> +		opal_secvar_supported = true;
-> +	}
-> +
-> +	initialized = true;
-> +
-> +	return opal_secvar_supported;
-> +}
-> +
-> +int opal_get_variable(u8 *key, unsigned long ksize, u8 *metadata,
-> +		      unsigned long *mdsize, u8 *data, unsigned long *dsize)
-> +{
-> +	int rc;
-> +
-> +	if (!is_opal_secvar_supported())
-> +		return OPAL_UNSUPPORTED;
-> +
-> +	if (mdsize)
-> +		*mdsize = cpu_to_be64(*mdsize);
-> +	if (dsize)
-> +		*dsize = cpu_to_be64(*dsize);
-> +
-> +	rc = opal_secvar_get(__pa(key), ksize, __pa(metadata), __pa(mdsize),
-> +			     __pa(data), __pa(dsize));
-> +
-> +	if (mdsize)
-> +		*mdsize = be64_to_cpu(*mdsize);
-> +	if (dsize)
-> +		*dsize = be64_to_cpu(*dsize);
-> +
-> +	return rc;
-> +}
-> +
-> +int opal_variable_version(unsigned long *backend)
-> +{
-> +	int rc;
-> +
-> +	if (!is_opal_secvar_supported())
-> +		return OPAL_UNSUPPORTED;
-> +
-> +	if (backend)
-> +		*backend = cpu_to_be64(*backend);
-> +
-> +	rc = opal_secvar_backend(__pa(backend));
-> +
-> +	if (backend)
-> +		*backend = be64_to_cpu(*backend);
-> +
-> +	return rc;
-> +}
-> -- 
-> 2.20.1
+> You might want to consider fixing your HW in the next iteration... This
+> is going to bite you when x86 increases the max physical memory for
+> example, or on other architectures.
+Understood and taken care of.
+
+>
+> Cheers,
+> Ben.
+>
+>
+>
+>
