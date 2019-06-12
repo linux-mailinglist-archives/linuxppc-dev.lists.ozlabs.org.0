@@ -1,71 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9D142898
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:18:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D843E42877
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:11:38 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45P81g61nvzDqkc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 00:11:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45P89M36MCzDr3j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 00:18:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Ex0XtZdJ"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45P7w63K26zDr3F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 00:06:45 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id r7so3852652pfl.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 07:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=sJRJvDGs+SYX6gnssKjr/R4V03h6R8rFXBvNGB/Px7c=;
- b=Ex0XtZdJ0WwJmKGOyjFToqBf1/Tb3VMWVX5iknK/O2KNw4RApBbQKo0VwylA9XCyDH
- LDvpSsuqaEcZKyA2cgx1FQY49u1+AnZV1wyqGxZBLCQShCSgZjWyaALC4w6v6EyLoGS6
- 9VITahzv7g82sYQ0qAochAElJuNUinRbgBHmQFJ55pGsD2tOJcXHAcYIH9JCY0cytifZ
- gZ4dbxDeXa2BqqHU7BMGSrU+pEBjmmz5uuWLZvOMdkQ+drPOaxjIBiltf6kbLAIz7Btu
- 58j5GCVixJNYTAh7a66wqSakHX2XJMW1ZPFOSMWHDw4UjeJ5Ra+hzBEleJeIn/EU5jGd
- ziuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=sJRJvDGs+SYX6gnssKjr/R4V03h6R8rFXBvNGB/Px7c=;
- b=UGmM8xxrgKXFv/VnFs/e3iMnTZDY9FmQl9tTy6z3vA5bw3lGTR97XS8LIdpDQtfsyL
- wQMcL8tDaQaLywe3G01rT+Y0qVA6hxzkJyDFq4SdSLFUqB7dumE0y7OS/pK0K8NG8QFq
- fxMoJo2/jj7RrluNHhiFtN3EZzvNDFwOo5q7bVY3Eled/hld07ylYU10QHUBi+y8BhOA
- tuylcpJaXgShEItGIA7SH1ZZAcM0xILueV0wROSNneESA2Dj4Bc5pNeyJuHu7SKVChSv
- 7j9aZMxtVZfxCdcezsavuh1Jj22kQs4AArS32a9Tk62cpxcOm/XPnAQlSx6aPKMwTqjV
- 9jPg==
-X-Gm-Message-State: APjAAAXOUVm4fQAeNg8tDKYmVM6L4cpQXh0cFQtMMtgTyf8sNFyS1B3m
- gvAFstQhdQ56FSvYzhblan5jVvGJ
-X-Google-Smtp-Source: APXvYqy1zcuzuReMm+Nfmfx+6V8NfMWFkN3numk9qoIk2YlRlMSobHgSlndj2C51hGSY6BjE0qhYWA==
-X-Received: by 2002:a17:90a:a116:: with SMTP id
- s22mr32531612pjp.51.1560348401875; 
- Wed, 12 Jun 2019 07:06:41 -0700 (PDT)
-Received: from bobo.local0.net (193-116-86-57.tpgi.com.au. [193.116.86.57])
- by smtp.gmail.com with ESMTPSA id z186sm17923553pfz.7.2019.06.12.07.06.38
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 12 Jun 2019 07:06:40 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64: allow compiler to cache 'current'
-Date: Thu, 13 Jun 2019 00:03:17 +1000
-Message-Id: <20190612140317.24490-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45P865359MzDqtV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 00:15:24 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5CEFGr9120207
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 10:15:21 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t31mrv9rm-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 10:15:19 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 12 Jun 2019 15:10:37 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 12 Jun 2019 15:10:34 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5CEAXYR40763460
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Jun 2019 14:10:34 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 650CA4C070;
+ Wed, 12 Jun 2019 14:10:33 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3C91E4C046;
+ Wed, 12 Jun 2019 14:10:33 +0000 (GMT)
+Received: from bali.lab.toulouse-stg.fr.ibm.com (unknown [9.101.4.17])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Jun 2019 14:10:33 +0000 (GMT)
+Subject: Re: [PATCH] cxl: no need to check return value of debugfs_create
+ functions
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arnd Bergmann <arnd@arndb.de>
+References: <20190611181309.GA17098@kroah.com>
+ <CAK8P3a1otKxoJUNH=-tZfzFy9qzQQc61i8AZPh-L7e-Ybd8kpg@mail.gmail.com>
+ <20190612100226.GA18368@kroah.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 12 Jun 2019 16:10:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <20190612100226.GA18368@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061214-4275-0000-0000-00000341B106
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061214-4276-0000-0000-00003851C7A0
+Message-Id: <e887909b-00d4-c6d9-2bda-677ad2685f64@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-12_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906120096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,70 +94,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-current may be cached by the compiler, so remove the volatile asm
-restriction. This results in better generated code, as well as being
-smaller and fewer dependent loads, it can avoid store-hit-load flushes
-like this one that shows up in irq_exit():
 
-    preempt_count_sub(HARDIRQ_OFFSET);
-    if (!in_interrupt() && ...)
 
-Which ends up as:
+Le 12/06/2019 à 12:02, Greg Kroah-Hartman a écrit :
+> On Wed, Jun 12, 2019 at 11:51:21AM +0200, Arnd Bergmann wrote:
+>> On Tue, Jun 11, 2019 at 8:13 PM Greg Kroah-Hartman
+>> <gregkh@linuxfoundation.org> wrote:
+>>
+>>> @@ -64,8 +64,6 @@ int cxl_debugfs_adapter_add(struct cxl *adapter)
+>>>
+>>>          snprintf(buf, 32, "card%i", adapter->adapter_num);
+>>>          dir = debugfs_create_dir(buf, cxl_debugfs);
+>>> -       if (IS_ERR(dir))
+>>> -               return PTR_ERR(dir);
+>>>          adapter->debugfs = dir;
+>>>
+>>
+>> Should the check for 'cxl_debugfs' get removed here as well?
+> 
+> Maybe, I could not determine the logic if those functions could be
+> called before cxl_debugfs was ever set.
+> 
+> And debugfs_create_dir() will not return a NULL value if an error
+> happens, so no need to worry about files being created in the wrong
+> place.
+> 
+>> If that is null, we might put the subdir in the wrong place in the
+>> tree, but that would otherwise be harmless as well, and the
+>> same thing happens if 'dir' is NULL above and we add the
+>> files in the debugfs root later (losing the ability to clean up
+>> afterwards).
+>>
+>> int cxl_debugfs_adapter_add(struct cxl *adapter)
+>> {
+>>          struct dentry *dir;
+>>          char buf[32];
+>>
+>>          if (!cxl_debugfs)
+>>                  return -ENODEV;
+>>
+>> It's still a bit odd to return an error, since the caller then just
+>> ignores the return code anway:
+> 
+> Then let's just return nothing.
+> 
+>>          /* Don't care if this one fails: */
+>>          cxl_debugfs_adapter_add(adapter);
+>>
+>> It would seem best to change the return type to 'void' here for
+>> consistency.
+> 
+> I agree, let me go do that.
 
-    ((struct thread_info *)current)->preempt_count -= HARDIRQ_OFFSET;
-    if (((struct thread_info *)current)->preempt_count ...
 
-Evaluating current twice presently means it has to be loaded twice, and
-here gcc happens to pick a different register each time, then
-preempt_count is accessed via that base register:
+I don't see any problems with turning all those function return types to 
+'void'. Thanks for pointing it out and the clean up!
 
-    1058:       ld      r10,2392(r13)     <-- current
-    105c:       lwz     r9,0(r10)         <-- preempt_count
-    1060:       addis   r9,r9,-1
-    1064:       stw     r9,0(r10)         <-- preempt_count
-    1068:       ld      r9,2392(r13)      <-- current
-    106c:       lwz     r9,0(r9)          <-- preempt_count
-    1070:       rlwinm. r9,r9,0,11,23
-    1074:       bne     1090 <irq_exit+0x60>
+   Fred
 
-This can frustrate store-hit-load detection heuristics and cause
-flushes. Allowing the compiler to cache current in a reigster with this
-patch results in the same base register being used for all accesses,
-which is more likely to be detected as an alias:
 
-    1058:       ld      r31,2392(r13)
-    ...
-    1070:       lwz     r9,0(r31)
-    1074:       addis   r9,r9,-1
-    1078:       stw     r9,0(r31)
-    107c:       lwz     r9,0(r31)
-    1080:       rlwinm. r9,r9,0,11,23
-    1084:       bne     10a0 <irq_exit+0x60>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/current.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/current.h b/arch/powerpc/include/asm/current.h
-index 297827b76169..bbfb94800415 100644
---- a/arch/powerpc/include/asm/current.h
-+++ b/arch/powerpc/include/asm/current.h
-@@ -16,7 +16,8 @@ static inline struct task_struct *get_current(void)
- {
- 	struct task_struct *task;
- 
--	__asm__ __volatile__("ld %0,%1(13)"
-+	/* get_current can be cached by the compiler, so no volatile */
-+	asm ("ld %0,%1(13)"
- 	: "=r" (task)
- 	: "i" (offsetof(struct paca_struct, __current)));
- 
--- 
-2.20.1
+> thanks,
+> 
+> greg k-h
+> 
 
