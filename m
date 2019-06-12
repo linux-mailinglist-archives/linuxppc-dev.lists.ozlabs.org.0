@@ -2,82 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4369542F68
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 20:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE4A42FC9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 21:16:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PGMb62kCzDrBf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 04:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PGnv1FzczDr30
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 05:16:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=anastas.io
+ (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=anastas.io header.i=@anastas.io header.b="h0Sb92fU"; 
+ dkim-atps=neutral
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45PGFF03tVzDqvZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 04:52:00 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5CIlQBJ086248
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 14:51:58 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t35w8jqfx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 14:51:58 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Wed, 12 Jun 2019 19:51:56 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 12 Jun 2019 19:51:52 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5CIppiA40436118
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jun 2019 18:51:51 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C66F911C04A;
- Wed, 12 Jun 2019 18:51:51 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4408A11C04C;
- Wed, 12 Jun 2019 18:51:50 +0000 (GMT)
-Received: from naverao1-tp.ibmuc.com (unknown [9.199.37.223])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jun 2019 18:51:50 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 2/2] powerpc/bpf: use unsigned division instruction for 64-bit
- operations
-Date: Thu, 13 Jun 2019 00:21:40 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1560364574.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1560364574.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PGlw0yTzzDqyl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 05:15:07 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by alpha.anastas.io (Postfix) with ESMTPSA id E63457F6C7;
+ Wed, 12 Jun 2019 14:14:34 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1560366875; bh=29SGjY8pBVEnY3447aaZaOxYhHhpUdRGCrjebhFhyPc=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=h0Sb92fUymKO6cgeqRtkRDA7XgbFs7C1WTyuCjyCi7vGOrRs2liWAvOB114gtrcT3
+ hHii3D6zqnKLOuG6pTHpZILK6Vwcjp33HW9qrgFFh8vD+Lm1KdewaWMM7mSPATWlat
+ XW2f2C2f/KDfJs6XsowsYH1n4/Z58j15P10k6341spvl/cWAlloX0gF93oQg8fbsw+
+ TK0f8+iyt3+/olFXFp0u6PcbpvVySsHum+iCooTR7zFVcIoDuQu9wXD9I6q66N/2/w
+ /JnXa+HKpsusQNsG5z+Gnd9uKSQQ2ha4YoxGk6qWrEri6mtGR37FplGqZuC2Fs2m0U
+ jq6llLU2c6hkw==
+Subject: Re: [PATCH kernel v3 0/3] powerpc/ioda2: Yet another attempt to allow
+ DMA masks between 32 and 59
+To: Oliver O'Halloran <oohall@gmail.com>
+References: <20190530070355.121802-1-aik@ozlabs.ru>
+ <deb34b5f-9472-2156-e58d-8dbcb0a38979@anastas.io>
+ <1e3de274-aec4-6e69-5e37-be15ea888deb@anastas.io>
+ <CAOSf1CEoEgWwD2qmBHiCG0B4JjmS0g=SUqm+OEYsbvv11QSARw@mail.gmail.com>
+From: Shawn Anastasio <shawn@anastas.io>
+Message-ID: <eef72f17-0d6f-9fe2-b966-787f29d8f8f1@anastas.io>
+Date: Wed, 12 Jun 2019 14:14:32 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061218-0028-0000-0000-00000379C105
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061218-0029-0000-0000-00002439B6C5
-Message-Id: <1cc07782f4f09389e6c0df52e93a6db1ce6710d3.1560364574.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-12_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906120127
+In-Reply-To: <CAOSf1CEoEgWwD2qmBHiCG0B4JjmS0g=SUqm+OEYsbvv11QSARw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,86 +63,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alistair Popple <alistair@popple.id.au>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-BPF_ALU64 div/mod operations are currently using signed division, unlike
-BPF_ALU32 operations. Fix the same. DIV64 and MOD64 overflow tests pass
-with this fix.
+On 6/12/19 1:16 AM, Oliver O'Halloran wrote:
+> On Wed, Jun 12, 2019 at 3:06 PM Shawn Anastasio <shawn@anastas.io> wrote:
+>>
+>> On 6/5/19 11:11 PM, Shawn Anastasio wrote:
+>>> On 5/30/19 2:03 AM, Alexey Kardashevskiy wrote:
+>>>> This is an attempt to allow DMA masks between 32..59 which are not large
+>>>> enough to use either a PHB3 bypass mode or a sketchy bypass. Depending
+>>>> on the max order, up to 40 is usually available.
+>>>>
+>>>>
+>>>> This is based on v5.2-rc2.
+>>>>
+>>>> Please comment. Thanks.
+>>>
+>>> I have tested this patch set with an AMD GPU that's limited to <64bit
+>>> DMA (I believe it's 40 or 42 bit). It successfully allows the card to
+>>> operate without falling back to 32-bit DMA mode as it does without
+>>> the patches.
+>>>
+>>> Relevant kernel log message:
+>>> ```
+>>> [    0.311211] pci 0033:01     : [PE# 00] Enabling 64-bit DMA bypass
+>>> ```
+>>>
+>>> Tested-by: Shawn Anastasio <shawn@anastas.io>
+>>
+>> After a few days of further testing, I've started to run into stability
+>> issues with the patch applied and used with an AMD GPU. Specifically,
+>> the system sometimes spontaneously crashes. Not just EEH errors either,
+>> the whole system shuts down in what looks like a checkstop.
+> 
+> Any specific workload? Checkstops are harder to debug without a system
+> in the failed state so we'd need to replicate that locally to get a
+> decent idea what's up.
 
-Fixes: 156d0e290e969c ("powerpc/ebpf/jit: Implement JIT compiler for extended BPF")
-Cc: stable@vger.kernel.org # v4.8+
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/ppc-opcode.h | 1 +
- arch/powerpc/net/bpf_jit.h            | 2 +-
- arch/powerpc/net/bpf_jit_comp64.c     | 8 ++++----
- 3 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 23f7ed796f38..49d65cd08ee0 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -342,6 +342,7 @@
- #define PPC_INST_MADDLD			0x10000033
- #define PPC_INST_DIVWU			0x7c000396
- #define PPC_INST_DIVD			0x7c0003d2
-+#define PPC_INST_DIVDU			0x7c000392
- #define PPC_INST_RLWINM			0x54000000
- #define PPC_INST_RLWINM_DOT		0x54000001
- #define PPC_INST_RLWIMI			0x50000000
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index dcac37745b05..1e932898d430 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -116,7 +116,7 @@
- 				     ___PPC_RA(a) | IMM_L(i))
- #define PPC_DIVWU(d, a, b)	EMIT(PPC_INST_DIVWU | ___PPC_RT(d) |	      \
- 				     ___PPC_RA(a) | ___PPC_RB(b))
--#define PPC_DIVD(d, a, b)	EMIT(PPC_INST_DIVD | ___PPC_RT(d) |	      \
-+#define PPC_DIVDU(d, a, b)	EMIT(PPC_INST_DIVDU | ___PPC_RT(d) |	      \
- 				     ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_AND(d, a, b)	EMIT(PPC_INST_AND | ___PPC_RA(d) |	      \
- 				     ___PPC_RS(a) | ___PPC_RB(b))
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 0ebd946f178b..b0fa4723d6fb 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -399,12 +399,12 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
- 		case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /= src */
- 		case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %= src */
- 			if (BPF_OP(code) == BPF_MOD) {
--				PPC_DIVD(b2p[TMP_REG_1], dst_reg, src_reg);
-+				PPC_DIVDU(b2p[TMP_REG_1], dst_reg, src_reg);
- 				PPC_MULD(b2p[TMP_REG_1], src_reg,
- 						b2p[TMP_REG_1]);
- 				PPC_SUB(dst_reg, dst_reg, b2p[TMP_REG_1]);
- 			} else
--				PPC_DIVD(dst_reg, dst_reg, src_reg);
-+				PPC_DIVDU(dst_reg, dst_reg, src_reg);
- 			break;
- 		case BPF_ALU | BPF_MOD | BPF_K: /* (u32) dst %= (u32) imm */
- 		case BPF_ALU | BPF_DIV | BPF_K: /* (u32) dst /= (u32) imm */
-@@ -432,7 +432,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
- 				break;
- 			case BPF_ALU64:
- 				if (BPF_OP(code) == BPF_MOD) {
--					PPC_DIVD(b2p[TMP_REG_2], dst_reg,
-+					PPC_DIVDU(b2p[TMP_REG_2], dst_reg,
- 							b2p[TMP_REG_1]);
- 					PPC_MULD(b2p[TMP_REG_1],
- 							b2p[TMP_REG_1],
-@@ -440,7 +440,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
- 					PPC_SUB(dst_reg, dst_reg,
- 							b2p[TMP_REG_1]);
- 				} else
--					PPC_DIVD(dst_reg, dst_reg,
-+					PPC_DIVDU(dst_reg, dst_reg,
- 							b2p[TMP_REG_1]);
- 				break;
- 			}
--- 
-2.21.0
-
+I haven't been able to pinpoint the exact cause. The first time it
+happened was after about 4 days of uptime while playing a 1080p
+video in mpv. The second time was about 5 minutes after booting up
+while restoring a firefox session.
