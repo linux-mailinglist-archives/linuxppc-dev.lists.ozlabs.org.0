@@ -2,82 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC05441C4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F1741C4D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 08:37:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Nxtb5bMCzDqwl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:34:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NxxN72pNzDr3P
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:37:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Nxrf2jwtzDqBg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:33:05 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5C6VuO6082535
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 02:33:03 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t2t1amvrx-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 02:33:03 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
- Wed, 12 Jun 2019 07:33:00 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 12 Jun 2019 07:32:57 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5C6Wuxw61538430
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jun 2019 06:32:56 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1FF5A4051;
- Wed, 12 Jun 2019 06:32:56 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F16CA4053;
- Wed, 12 Jun 2019 06:32:56 +0000 (GMT)
-Received: from localhost (unknown [9.199.37.223])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jun 2019 06:32:56 +0000 (GMT)
-Date: Wed, 12 Jun 2019 12:02:53 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: sys_exit: NR -1
-To: "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
- Paul Clarke <pc@us.ibm.com>
-References: <2f004b41-4f6f-3e6f-227a-cb199b8429d2@us.ibm.com>
-In-Reply-To: <2f004b41-4f6f-3e6f-227a-cb199b8429d2@us.ibm.com>
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NxvX10KFzDqBg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:35:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="S9hscLxT"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45NxvW71sMz8t23
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45NxvW6PtYz9s9y; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="S9hscLxT"; 
+ dkim-atps=neutral
+Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
+ [IPv6:2607:f8b0:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45NxvW4vkYz9s7h
+ for <linuxppc-dev@ozlabs.org>; Wed, 12 Jun 2019 16:35:35 +1000 (AEST)
+Received: by mail-it1-x142.google.com with SMTP id m3so9052743itl.1
+ for <linuxppc-dev@ozlabs.org>; Tue, 11 Jun 2019 23:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MHcvYWRnrXWxsWWs0BejJhNYWntQgPzwqsTyK3JVcEE=;
+ b=S9hscLxT9U0oYcldK6EV5J/lbYqp/LZmLHawIS7nzJVR0hsF1YqVy150zNpRA9eZtS
+ 04C0Hbr1JbzSiOoaoXFWJijWoXICJeBvkpEM2EMr+QojWFDJ8UlLUaUSBOpD2z9Nlfgc
+ F6zwaVjxQlFzllxXNlNlaICFHIf4OAVLxZbKKCgBXFSFsBKTRA1B1KYpGaN4woeCH091
+ GNSM6lSXYFA+slAMAiohXpmR69HFHKhg/lxP3dP1h954Fc/oEsyat+AX0WldkvkU2u94
+ 81Otxa9+L7GosJ3ZF8B3x8fOUMRgxm3yuiWt+QNnp/cOpbigVendTpVFvhXldkxI+/D3
+ x2Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MHcvYWRnrXWxsWWs0BejJhNYWntQgPzwqsTyK3JVcEE=;
+ b=UgecDOv0bvD33KzVu3oPkoyUFyQIW2B2rK4me5uF9Mn0I0AVVy5e4MWWdZXqMuQG+s
+ i9YzMuvZK0P/MF5WNRU7ougNOJ4QwmbESNNZ68a2PWpQ8EPpDPOjLfXsmd/0xuc4/iEL
+ gIeJdOJKuzZlHBf/FBhdZiQsi+uImyhUO2k+Dq7uYOPuTyo2hYj1Op5Q3zw9AKmH+1R6
+ u075xyjGlu3gdCk/ZsUCcGigJoc4NEgifEQL0V4kMc919QoDWTSh2U+MS47DG52VD3gV
+ 58tUy7/dG3fLpOyG9bna5C3hPnmo68G8czxux5TCULP+3bWMZyn1cFPNSAQ5jntiYcHp
+ 1lpg==
+X-Gm-Message-State: APjAAAVUcJXsHGucO+uAE8uKUIuXh9Ft9vbmG/Ue7aZpd4HpECDO/Rbh
+ OVJgXQrmis5TFIjhKPusWPb0fSq4sOuRwYGXZ3w=
+X-Google-Smtp-Source: APXvYqx16rAJnIPnPFPqqoZ7lmzh1vpi/yzIxiE9JzX1lPl2u7spnY33oJUFEHnBbB8dL05qV9YE/DbB9OoGggJpIo4=
+X-Received: by 2002:a24:d145:: with SMTP id w66mr20513709itg.71.1560321333285; 
+ Tue, 11 Jun 2019 23:35:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 19061206-4275-0000-0000-000003419147
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061206-4276-0000-0000-00003851A644
-Message-Id: <1560320989.8h9se8cb9p.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-12_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=876 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906120045
+References: <20190611092144.11194-1-oded.gabbay@gmail.com>
+ <20190611095857.GB24058@kroah.com>
+ <20190611151753.GA11404@infradead.org> <20190611152655.GA3972@kroah.com>
+ <CAFCwf13A73AxKzaa7Dk3tU-1NDgTFs4+xCO2os7SuSyUHZ9Z3Q@mail.gmail.com>
+ <CAFCwf134nTD4FM_9Q+THQ7ZAZzGxhs15O6EheaRJMqM5wxi+aA@mail.gmail.com>
+In-Reply-To: <CAFCwf134nTD4FM_9Q+THQ7ZAZzGxhs15O6EheaRJMqM5wxi+aA@mail.gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 12 Jun 2019 16:35:22 +1000
+Message-ID: <CAOSf1CE82uVVni638jkJJpQ7XLXX+HdD7xuB7Wv-f8mn=SBMeg@mail.gmail.com>
+Subject: Re: [PATCH v2 8/8] habanalabs: enable 64-bit DMA mask in POWER9
+To: Oded Gabbay <oded.gabbay@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,42 +92,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Christoph Hellwig <hch@infradead.org>, Greg KH <gregkh@linuxfoundation.org>,
+ "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
+ linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Clarke wrote:
-> What are the circumstances in which raw_syscalls:sys_exit reports "-1" fo=
-r the syscall ID?
->=20
->     perf  5375 [007] 59632.478528:   raw_syscalls:sys_enter: NR 1 (3, 9fb=
-888, 8, 2d83740, 1, 7ffff)
->     perf  5375 [007] 59632.478532:    raw_syscalls:sys_exit: NR 1 =3D 8
->     perf  5375 [007] 59632.478538:   raw_syscalls:sys_enter: NR 15 (11, 7=
-ffffca734b0, 7ffffca73380, 2d83740, 1, 7ffff)
->     perf  5375 [007] 59632.478539:    raw_syscalls:sys_exit: NR -1 =3D 8
->     perf  5375 [007] 59632.478543:   raw_syscalls:sys_enter: NR 16 (4, 24=
-01, 0, 2d83740, 1, 0)
->     perf  5375 [007] 59632.478551:    raw_syscalls:sys_exit: NR 16 =3D 0
+On Wed, Jun 12, 2019 at 3:25 AM Oded Gabbay <oded.gabbay@gmail.com> wrote:
+>
+> On Tue, Jun 11, 2019 at 8:03 PM Oded Gabbay <oded.gabbay@gmail.com> wrote:
+> >
+> > On Tue, Jun 11, 2019 at 6:26 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > *snip*
+> >
+> > Now, when I tried to integrate Goya into a POWER9 machine, I got a
+> > reject from the call to pci_set_dma_mask(pdev, 48). The standard code,
+> > as I wrote above, is to call the same function with 32-bits. That
+> > works BUT it is not practical, as our applications require much more
+> > memory mapped then 32-bits.
 
-Which architecture?
-For powerpc, see:
+Setting a 48 bit DMA mask doesn't work today because we only allocate
+IOMMU tables to cover the 0..2GB range of PCI bus addresses. Alexey
+has some patches to expand that range so we can support devices that
+can't hit the 64 bit bypass window. You need:
 
-static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *=
-regs)
-{
-	/*
-	 * Note that we are returning an int here. That means 0xffffffff, ie.
-	 * 32-bit negative 1, will be interpreted as -1 on a 64-bit kernel.
-	 * This is important for seccomp so that compat tasks can set r0 =3D -1
-	 * to reject the syscall.
-	 */
-	return TRAP(regs) =3D=3D 0xc00 ? regs->gpr[0] : -1;
-}
+This fix: http://patchwork.ozlabs.org/patch/1113506/
+This series: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=110810
 
+Give that a try and see if the IOMMU overhead is tolerable.
 
-- Naveen
+> >In addition, once you add more cards which
+> > are all mapped to the same range, it is simply not usable at all.
 
-=
+Each IOMMU group should have a separate bus address space and seperate
+cards shouldn't be in the same IOMMU group. If they are then there's
+something up.
 
+Oliver
