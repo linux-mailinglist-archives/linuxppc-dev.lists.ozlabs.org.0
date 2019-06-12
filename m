@@ -2,77 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96240428D7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 16:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDEF42B57
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 17:56:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45P8LB6wnczDr3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 00:25:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PBLW2CBTzDr6Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 01:56:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="E0A2cXDQ"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45P8Fg3lq5zDr3G
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 00:21:57 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5CEGcpK182124
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 10:21:54 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t31fd58ua-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 10:21:53 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Wed, 12 Jun 2019 15:21:52 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 12 Jun 2019 15:21:50 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5CELmRa51445832
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jun 2019 14:21:48 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C72E311C066;
- Wed, 12 Jun 2019 14:21:48 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 096B011C04C;
- Wed, 12 Jun 2019 14:21:48 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.199.56.10])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jun 2019 14:21:47 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: Switch to GFP_ATOMIC allocations in hotplug
- interrupt handler
-Date: Wed, 12 Jun 2019 19:51:40 +0530
-X-Mailer: git-send-email 2.17.1
-X-TM-AS-GCONF: 00
-x-cbid: 19061214-0028-0000-0000-00000379ADD5
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061214-0029-0000-0000-00002439A2BD
-Message-Id: <20190612142140.19880-1-bharata@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-12_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=803 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906120096
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PBJ73PlmzDqnn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 01:54:15 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A24BD21019;
+ Wed, 12 Jun 2019 15:54:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1560354852;
+ bh=menpCBZD9aZUCarfRE2kMrzLz6afnT/Z2OnvYhmJ+z0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=E0A2cXDQeSax9afjc6Lw0sqX2o7/Mf6QccsptbwGMawXgvewp3+hxCCehlFOZcg/E
+ /0N/4r6jgzENlAVOSJJCaaWxupvr53eVNpeUGu5syCvAdERUgIJe4l39ipF45RfkfU
+ 1Xl7I+Q6IvXbwtOe0q1/yTaarandYmBHltVgocjA=
+Date: Wed, 12 Jun 2019 17:54:09 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] cxl: no need to check return value of debugfs_create
+ functions
+Message-ID: <20190612155409.GA26564@kroah.com>
+References: <20190611181309.GA17098@kroah.com>
+ <CAK8P3a1otKxoJUNH=-tZfzFy9qzQQc61i8AZPh-L7e-Ybd8kpg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1otKxoJUNH=-tZfzFy9qzQQc61i8AZPh-L7e-Ybd8kpg@mail.gmail.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,36 +60,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.vnet.ibm.com, Bharata B Rao <bharata@linux.ibm.com>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-queue_hotplug_event() gets called from interrupt handler code. Use
-GFP_ATOMIC allocations instead of GFP_KERNEL.
+On Wed, Jun 12, 2019 at 11:51:21AM +0200, Arnd Bergmann wrote:
+> On Tue, Jun 11, 2019 at 8:13 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> 
+> > @@ -64,8 +64,6 @@ int cxl_debugfs_adapter_add(struct cxl *adapter)
+> >
+> >         snprintf(buf, 32, "card%i", adapter->adapter_num);
+> >         dir = debugfs_create_dir(buf, cxl_debugfs);
+> > -       if (IS_ERR(dir))
+> > -               return PTR_ERR(dir);
+> >         adapter->debugfs = dir;
+> >
+> 
+> Should the check for 'cxl_debugfs' get removed here as well?
+> If that is null, we might put the subdir in the wrong place in the
+> tree, but that would otherwise be harmless as well, and the
+> same thing happens if 'dir' is NULL above and we add the
+> files in the debugfs root later (losing the ability to clean up
+> afterwards).
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/dlpar.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+dir can only be NULL if no one has initialized it, debugfs_create_dir()
+will never return a null value.  I don't really know the ordering of the
+calls here, so I'll keep this as-is for now incase someone is trying to
+add a "device" before a directory is initialized.
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 17958043e7f7..79b36d91be28 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -387,10 +387,10 @@ void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog)
- 	struct pseries_hp_errorlog *hp_errlog_copy;
- 
- 	hp_errlog_copy = kmalloc(sizeof(struct pseries_hp_errorlog),
--				 GFP_KERNEL);
-+				 GFP_ATOMIC);
- 	memcpy(hp_errlog_copy, hp_errlog, sizeof(struct pseries_hp_errorlog));
- 
--	work = kmalloc(sizeof(struct pseries_hp_work), GFP_KERNEL);
-+	work = kmalloc(sizeof(struct pseries_hp_work), GFP_ATOMIC);
- 	if (work) {
- 		INIT_WORK((struct work_struct *)work, pseries_hp_work_fn);
- 		work->errlog = hp_errlog_copy;
--- 
-2.17.1
+thanks,
 
+greg k-h
