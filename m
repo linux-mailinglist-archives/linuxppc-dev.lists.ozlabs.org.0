@@ -2,34 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224BA41B6D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 07:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568EF41B72
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 07:04:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45NvpN4fJrzDqwj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 15:01:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45NvtL49QMzDqvd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2019 15:04:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45NvmG3nVlzDqsv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 14:59:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45NvmH6xLGzDqsv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2019 14:59:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45NvmG0rjTz9s9y; Wed, 12 Jun 2019 14:59:10 +1000 (AEST)
+ id 45NvmH6CQKz9sDB; Wed, 12 Jun 2019 14:59:11 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 6c284228eb356a1ec62a704b4d2329711831eaed
+X-powerpc-patch-commit: 33258a1db165cf43a9e6382587ad06e9b7f8187c
 X-Patchwork-Hint: ignore
-In-Reply-To: <56efc3b317622d5f607d1f7a35894b194c385492.1559549824.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Aaro Koskinen <aaro.koskinen@iki.fi>
+In-Reply-To: <20190607035636.5446-1-npiggin@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3] powerpc: fix kexec failure on book3s/32
-Message-Id: <45NvmG0rjTz9s9y@ozlabs.org>
-Date: Wed, 12 Jun 2019 14:59:10 +1000 (AEST)
+Subject: Re: [PATCH 1/2] powerpc/64s: Fix THP PMD collapse serialisation
+Message-Id: <45NvmH6CQKz9sDB@ozlabs.org>
+Date: Wed, 12 Jun 2019 14:59:11 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,45 +39,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-06-03 at 08:20:28 UTC, Christophe Leroy wrote:
-> In the old days, _PAGE_EXEC didn't exist on 6xx aka book3s/32.
-> Therefore, allthough __mapin_ram_chunk() was already mapping kernel
-> text with PAGE_KERNEL_TEXT and the rest with PAGE_KERNEL, the entire
-> memory was executable. Part of the memory (first 512kbytes) was
-> mapped with BATs instead of page table, but it was also entirely
-> mapped as executable.
+On Fri, 2019-06-07 at 03:56:35 UTC, Nicholas Piggin wrote:
+> Commit 1b2443a547f9 ("powerpc/book3s64: Avoid multiple endian conversion
+> in pte helpers") changed the actual bitwise tests in pte_access_permitted
+> by using pte_write() and pte_present() helpers rather than raw bitwise
+> testing _PAGE_WRITE and _PAGE_PRESENT bits.
 > 
-> In commit 385e89d5b20f ("powerpc/mm: add exec protection on
-> powerpc 603"), we started adding exec protection to some 6xx, namely
-> the 603, for pages mapped via pagetables.
+> The pte_present change now returns true for ptes which are !_PAGE_PRESENT
+> and _PAGE_INVALID, which is the combination used by pmdp_invalidate to
+> synchronize access from lock-free lookups. pte_access_permitted is used by
+> pmd_access_permitted, so allowing GUP lock free access to proceed with
+> such PTEs breaks this synchronisation.
 > 
-> Then, in commit 63b2bc619565 ("powerpc/mm/32s: Use BATs for
-> STRICT_KERNEL_RWX"), the exec protection was extended to BAT mapped
-> memory, so that really only the kernel text could be executed.
+> This bug has been observed on HPT host, with random crashes and corruption
+> in guests, usually together with bad PMD messages in the host.
 > 
-> The problem here is that kexec is based on copying some code into
-> upper part of memory then executing it from there in order to install
-> a fresh new kernel at its definitive location.
+> Fix this by adding an explicit check in pmd_access_permitted, and
+> documenting the condition explicitly.
 > 
-> However, the code is position independant and first part of it is
-> just there to deactivate the MMU and jump to the second part. So it
-> is possible to run this first part inplace instead of running the
-> copy. Once the MMU is off, there is no protection anymore and the
-> second part of the code will just run as before.
+> The pte_write() change should be okay, and would prevent GUP from falling
+> back to the slow path when encountering savedwrite ptes, which matches
+> what x86 (that does not implement savedwrite) does.
 > 
-> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Fixes: 63b2bc619565 ("powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Fixes: 1b2443a547f9 ("powerpc/book3s64: Avoid multiple endian conversion in pte helpers")
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
 Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/6c284228eb356a1ec62a704b4d232971
+https://git.kernel.org/powerpc/c/33258a1db165cf43a9e6382587ad06e9
 
 cheers
