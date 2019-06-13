@@ -1,92 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CE044EFC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 00:11:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC73044ED0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 23:58:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PyKM0RG3zDrQS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 07:57:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PydH0rFxzDrNj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 08:11:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=pc@us.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.222.196; helo=mail-qk1-f196.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com
+ [209.85.222.196])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45PyHf4DSNzDrC1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 07:56:29 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5DLqLOR138776
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 17:56:25 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t3xbc90p3-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 17:56:25 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <pc@us.ibm.com>;
- Thu, 13 Jun 2019 22:56:24 +0100
-Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 13 Jun 2019 22:56:23 +0100
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5DLuMbe41615764
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jun 2019 21:56:23 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDD1B28058;
- Thu, 13 Jun 2019 21:56:22 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DB682805A;
- Thu, 13 Jun 2019 21:56:22 +0000 (GMT)
-Received: from oc3272150783.ibm.com (unknown [9.80.231.92])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTPS;
- Thu, 13 Jun 2019 21:56:22 +0000 (GMT)
-Subject: sys_exit: NR 0 (was "sys_exit: NR -1")
-From: Paul Clarke <pc@us.ibm.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>
-References: <2f004b41-4f6f-3e6f-227a-cb199b8429d2@us.ibm.com>
- <1560320989.8h9se8cb9p.naveen@linux.ibm.com>
- <b3d497ac-6e87-c675-3bd3-def0baddf53e@us.ibm.com>
- <96a869bd-c7c5-2f9e-856f-b3b4c0fdf89a@us.ibm.com>
-Date: Thu, 13 Jun 2019 16:56:21 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PyXQ3GmTzDrNh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 08:07:33 +1000 (AEST)
+Received: by mail-qk1-f196.google.com with SMTP id m14so410433qka.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 15:07:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=BhWdQ+n9lb5V8igkIdjlDGkO+bOshDClHntzHo4xkx4=;
+ b=pQw0GDTXD4wy390C6RVanu0ym/HA6mzHRmNuKNBoXSJDTLfAuhgRpzKAvRKjXlZgCE
+ lzaaOP6/N9o2F8vNXPFOb8ZUzHKi8+cXft/jQrEVGFptc4286TyjcVg2riZ4FfJnCQlM
+ pLaIcYXCrO8igoa9WcDSUzOe5VgBJfXPylkRBAGCyN0GIPhKcDkODfzP90oDCENrcV5h
+ S+SOLFoFPpqbYpo0z5MGF3iLckVEA5Jf9+/nIkLmtyhIsl6btj4P2csn1v5/JVEQIV6a
+ g6rx6+BEilfh3Z2Rx8hMfHLegzXQ+gukR+iXUNm0mGy/0sV6JVsQR4LBvjBXQRnFMoZv
+ Xl+Q==
+X-Gm-Message-State: APjAAAVsQ0fYlKSombnbCmdpq/HXQTHtmloxZTXN0svHZZ4k2/E4MJGN
+ h9yWfFc2HJ7Cx648K1BM8Q==
+X-Google-Smtp-Source: APXvYqzlg3l0HADoNTIkv5SXk7nuuzVo6Jw7oSlbsAolVM+MxEBgZazQrw5oWThYP2sbSY8L9PzBsg==
+X-Received: by 2002:a37:6512:: with SMTP id z18mr73992402qkb.158.1560463650992; 
+ Thu, 13 Jun 2019 15:07:30 -0700 (PDT)
+Received: from localhost ([64.188.179.243])
+ by smtp.gmail.com with ESMTPSA id t8sm708240qtc.80.2019.06.13.15.07.30
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 13 Jun 2019 15:07:30 -0700 (PDT)
+Date: Thu, 13 Jun 2019 16:07:29 -0600
+From: Rob Herring <robh@kernel.org>
+To: Ran Wang <ran.wang_1@nxp.com>
+Subject: Re: [PATCH 2/3] Documentation: dt: binding: fsl: Add 'little-endian'
+ and update Chassis define
+Message-ID: <20190613220729.GA29761@bogus>
+References: <20190517024748.15534-1-ran.wang_1@nxp.com>
+ <20190517024748.15534-2-ran.wang_1@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <96a869bd-c7c5-2f9e-856f-b3b4c0fdf89a@us.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061321-0060-0000-0000-000003504229
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011257; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01217555; UDB=6.00640269; IPR=6.00998666; 
- MB=3.00027300; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-13 21:56:24
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061321-0061-0000-0000-000049C419B1
-Message-Id: <071af0b8-2386-87d8-ebe0-f1ad6c359de0@us.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-13_13:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=737 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906130164
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190517024748.15534-2-ran.wang_1@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,20 +68,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pm@vger.kernel.org, "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+ Pavel Machek <pavel@ucw.cz>, Ran Wang <ran.wang_1@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I'm seeing another asymmetry, this one is on powerpc:
---
-  perf 30179 [001] 10374622.667436: raw_syscalls:sys_enter: NR 11 (3fffe16ef55e, [...])
-    ls 30179 [002] 10374622.667921:  raw_syscalls:sys_exit: NR 0 = 0
---
+On Fri, 17 May 2019 10:47:47 +0800, Ran Wang wrote:
+> By default, QorIQ SoC's RCPM register block is Big Endian. But
+> there are some exceptions, such as LS1088A and LS2088A, are Little
+> Endian. So add this optional property to help identify them.
+> 
+> Actually LS2021A and other Layerscapes won't totally follow Chassis
+> 2.1, so separate them from powerpc SoC.
+> 
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/soc/fsl/rcpm.txt |    8 +++++++-
+>  1 files changed, 7 insertions(+), 1 deletions(-)
+> 
 
-Syscall "11" is "execve", but is it expected that the sys_exit will report the ID as 0?  Is that because of the nature of "execve", to overlay the entire contents of the process?
-
-This does not seem to occur on x86.
-
-PC
-
+Reviewed-by: Rob Herring <robh@kernel.org>
