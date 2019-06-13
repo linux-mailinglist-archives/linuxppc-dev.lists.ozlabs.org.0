@@ -1,47 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5A343B23
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 17:26:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Pndm0TwGzDrL3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 01:26:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0036544703
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 18:56:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Pqdh01BBzDrLK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 02:56:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=vincenzo.frascino@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=ego.lkml@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 45PnYY2Q0DzDrJB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 01:22:54 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 765F6367;
- Thu, 13 Jun 2019 08:22:52 -0700 (PDT)
-Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7915C3F718;
- Thu, 13 Jun 2019 08:22:50 -0700 (PDT)
-Subject: Re: [PATCH v4 3/3] kselftest: Extend vDSO selftest to clock_getres
-From: Vincenzo Frascino <vincenzo.frascino@arm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-arch@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20190523112116.19233-1-vincenzo.frascino@arm.com>
- <20190523112116.19233-4-vincenzo.frascino@arm.com>
- <87lfyrp0d2.fsf@concordia.ellerman.id.au>
- <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
-Message-ID: <5262a024-7af1-4792-ec74-4cb5f2b0e76c@arm.com>
-Date: Thu, 13 Jun 2019 16:22:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="RCrD/VlF"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PqYY0YQtzDrJf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 02:53:01 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id k8so18483287iot.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 09:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+ :subject:to:cc;
+ bh=hR0Z89ObZTJEiQmmcpyW15UpSZ5qBuJglP5jTjxmzJc=;
+ b=RCrD/VlF/abpNohw1MDJvw9Gu7/+lnrTAV8fY1Gi3h0PbObxFaDeLezlLkAFRo0X1b
+ vBMP0m8UiSHfxWn/E599YqEtFJAoE97/zMcEQB9UfMJenH3572mp1sVFuICpn+pTq9ii
+ E4NXDwSIzRjpkGZhFs+nAvbwTHDtzGQtiyQbpjfQj6bIcqyufdcp99lriX/y5x2Eazc4
+ o4EeuFyyzNOfR0cDn3TSyItd1TrWVUYA0uhHMNtX+iThZvf1cfPVw0G5uXGxn69T26e7
+ Ghq7RrNB6z4OyS0w+9uFHD+Dh8AcYzoVQiBqymAV167vSO4igWc75XFxNOxC9T7PocW6
+ /IPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+ :from:date:message-id:subject:to:cc;
+ bh=hR0Z89ObZTJEiQmmcpyW15UpSZ5qBuJglP5jTjxmzJc=;
+ b=jNRA0HTYF1Y4uJyVnEnyWb1NCBmWELYocAetlW91pnnC/DSBmNz0eFb9KWHadAFqtT
+ cMACsl26v2vmSJnKCbVVjyVmbOTdte1jCQnbUXqKE4rafgiPGMgpgIxSbWcMzHuh0nHA
+ OFVhs+z2OxrRsfsfpciKxlwgrRd62vyqYOW+a6y9wacvrTQFrqSC81X9XlShD36bS4GI
+ 9Dwns0oukbuU/KK6LwB3P9Q5Oj/pF57I2RmJ8PJZ98lhFxeYEBwLXvt7A6i6N8QRHGcc
+ ezmCNHUstbkBkTlcaMSalJcUMHDzJvtVVT7H+ly1EHTTsS8OoqWYBtiQm5mQMMvBLTK5
+ CMhQ==
+X-Gm-Message-State: APjAAAWHx3Z3EH91IGqq6K+aqmD6OvHccUEpaVqXR7+qE6vbG3v9rVMN
+ QaDeFtImGSISOShuCtZk868iSWz3MaZ+1/ryLrM=
+X-Google-Smtp-Source: APXvYqy/fw3p8MVAHAAmnQIlmD0OgApsV5lwPeXsXWgqD4TlPG8dT9tj02Y81t3NB4FFtLFCtqGmf/F7cN65FdamzS4=
+X-Received: by 2002:a6b:e315:: with SMTP id u21mr52359809ioc.14.1560444777706; 
+ Thu, 13 Jun 2019 09:52:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <afb7395f-43e9-c304-2db2-349e6727b687@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20190612044506.16392-1-nathanl@linux.ibm.com>
+ <20190612044506.16392-3-nathanl@linux.ibm.com>
+In-Reply-To: <20190612044506.16392-3-nathanl@linux.ibm.com>
+From: Gautham R Shenoy <ego.lkml@gmail.com>
+Date: Thu, 13 Jun 2019 22:22:46 +0530
+Message-ID: <CAHZ_5Wz+7=R+NcBic2BwVppBRgps8=+BP2CK2JOg8Omto3Nydw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] powerpc/pseries/mobility: prevent cpu hotplug during
+ DT update
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,96 +75,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: ego@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Hello Nathan,
 
-I wanted to check with you if you had time to have a look at my new version (v5)
-of the patches with the fixed test, and if they are ready to be merged or if
-there is anything else I can do.
+On Wed, Jun 12, 2019 at 10:19 AM Nathan Lynch <nathanl@linux.ibm.com> wrote:
+>
+> CPU online/offline code paths are sensitive to parts of the device
+> tree (various cpu node properties, cache nodes) that can be changed as
+> a result of a migration.
+>
+> Prevent CPU hotplug while the device tree potentially is inconsistent.
+>
+> Fixes: 410bccf97881 ("powerpc/pseries: Partition migration in the kernel")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-Thanks and Regards,
-Vincenzo
+Audited the callbacks of of_reconfig_notify(). We are fine with
+respect to CPU-Hotplug locking.
 
-On 28/05/2019 12:57, Vincenzo Frascino wrote:
-> Hi Michael,
-> 
-> thank you for your reply.
-> 
-> On 28/05/2019 07:19, Michael Ellerman wrote:
->> Vincenzo Frascino <vincenzo.frascino@arm.com> writes:
->>
->>> The current version of the multiarch vDSO selftest verifies only
->>> gettimeofday.
->>>
->>> Extend the vDSO selftest to clock_getres, to verify that the
->>> syscall and the vDSO library function return the same information.
->>>
->>> The extension has been used to verify the hrtimer_resoltion fix.
->>
->> This is passing for me even without patch 1 applied, shouldn't it fail
->> without the fix? What am I missing?
->>
-> 
-> This is correct, because during the refactoring process I missed an "n" :)
-> 
-> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_sec·!=·y.tv_sec))
-> 
-> Should be:
-> 
-> if·((x.tv_sec·!=·y.tv_sec)·||·(x.tv_nsec·!=·y.tv_nsec))
-> 
-> My mistake, I am going to fix the test and re-post v5 of this set.
-> 
-> Without my patch if you pass "highres=off" to the kernel (as a command line
-> parameter) it leads to a broken implementation of clock_getres since the value
-> of CLOCK_REALTIME_RES does not change at runtime.
-> 
-> Expected result (with highres=off):
-> 
-> # uname -r
-> 5.2.0-rc2
-> # ./vdso_clock_getres
-> clock_id: CLOCK_REALTIME [FAIL]
-> clock_id: CLOCK_BOOTTIME [PASS]
-> clock_id: CLOCK_TAI [PASS]
-> clock_id: CLOCK_REALTIME_COARSE [PASS]
-> clock_id: CLOCK_MONOTONIC [FAIL]
-> clock_id: CLOCK_MONOTONIC_RAW [PASS]
-> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
-> 
-> The reason of this behavior is that the only clocks supported by getres on
-> powerpc are CLOCK_REALTIME and CLOCK_MONOTONIC, the rest on the clocks use
-> always syscalls.
-> 
->> # uname -r
->> 5.2.0-rc2-gcc-8.2.0
->>
->> # ./vdso_clock_getres
->> clock_id: CLOCK_REALTIME [PASS]
->> clock_id: CLOCK_BOOTTIME [PASS]
->> clock_id: CLOCK_TAI [PASS]
->> clock_id: CLOCK_REALTIME_COARSE [PASS]
->> clock_id: CLOCK_MONOTONIC [PASS]
->> clock_id: CLOCK_MONOTONIC_RAW [PASS]
->> clock_id: CLOCK_MONOTONIC_COARSE [PASS]
->>
->> cheers
->>
->>> Cc: Shuah Khan <shuah@kernel.org>
->>> Signed-off-by: Vincenzo Frascino <vincenzo.frascino@arm.com>
->>> ---
->>>
->>> Note: This patch is independent from the others in this series, hence it
->>> can be merged singularly by the kselftest maintainers.
->>>
->>>  tools/testing/selftests/vDSO/Makefile         |   2 +
->>>  .../selftests/vDSO/vdso_clock_getres.c        | 124 ++++++++++++++++++
->>>  2 files changed, 126 insertions(+)
->>>  create mode 100644 tools/testing/selftests/vDSO/vdso_clock_getres.c
-> 
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+
+> ---
+>  arch/powerpc/platforms/pseries/mobility.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+> index 88925f8ca8a0..edc1ec408589 100644
+> --- a/arch/powerpc/platforms/pseries/mobility.c
+> +++ b/arch/powerpc/platforms/pseries/mobility.c
+> @@ -9,6 +9,7 @@
+>   * 2 as published by the Free Software Foundation.
+>   */
+>
+> +#include <linux/cpu.h>
+>  #include <linux/kernel.h>
+>  #include <linux/kobject.h>
+>  #include <linux/smp.h>
+> @@ -338,11 +339,19 @@ void post_mobility_fixup(void)
+>         if (rc)
+>                 printk(KERN_ERR "Post-mobility activate-fw failed: %d\n", rc);
+>
+> +       /*
+> +        * We don't want CPUs to go online/offline while the device
+> +        * tree is being updated.
+> +        */
+> +       cpus_read_lock();
+> +
+>         rc = pseries_devicetree_update(MIGRATION_SCOPE);
+>         if (rc)
+>                 printk(KERN_ERR "Post-mobility device tree update "
+>                         "failed: %d\n", rc);
+>
+> +       cpus_read_unlock();
+> +
+>         /* Possibly switch to a new RFI flush type */
+>         pseries_setup_rfi_flush();
+>
+> --
+> 2.20.1
+>
+
+
+-- 
+Thanks and Regards
+gautham.
