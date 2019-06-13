@@ -1,69 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7C544D5F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 22:26:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PwHc3z6CzDrHt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 06:26:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E534144DDC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 22:52:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PwtB1W2RzDrNJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 06:52:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Pwqp5CmDzDqyl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 06:50:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45Pwqp0flRz8t30
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 06:50:46 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45Pwqp0WvNz9sNk; Fri, 14 Jun 2019 06:50:46 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nayna@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45PwFR0155zDr9B
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 06:24:26 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5DKM1xe125718; Thu, 13 Jun 2019 16:24:16 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t3v8g2v77-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jun 2019 16:24:16 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5DKGgiL023323;
- Thu, 13 Jun 2019 20:24:17 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01wdc.us.ibm.com with ESMTP id 2t1qctugq4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jun 2019 20:24:17 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5DKOELU35324248
+ by ozlabs.org (Postfix) with ESMTPS id 45Pwqn3ghwz9sND
+ for <linuxppc-dev@ozlabs.org>; Fri, 14 Jun 2019 06:50:44 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5DKkmYi059980
+ for <linuxppc-dev@ozlabs.org>; Thu, 13 Jun 2019 16:50:42 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t3tmkqrjw-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Thu, 13 Jun 2019 16:50:41 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <nayna@linux.ibm.com>;
+ Thu, 13 Jun 2019 21:50:39 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 13 Jun 2019 21:50:34 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x5DKoPUi28442968
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jun 2019 20:24:14 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BDF17805F;
- Thu, 13 Jun 2019 20:24:14 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8721B7805E;
- Thu, 13 Jun 2019 20:24:13 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.86.24.79])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jun 2019 20:24:13 +0000 (GMT)
-Message-ID: <9a09d8b720804ce99b160660068f507072abf943.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH] Replaces long number representation by BIT() macro
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 13 Jun 2019 17:24:04 -0300
-In-Reply-To: <20190613180227.29558-1-leonardo@linux.ibm.com>
-References: <20190613180227.29558-1-leonardo@linux.ibm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-zRNeLzYe/jbULZ/9xMKS"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
+ Thu, 13 Jun 2019 20:50:25 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C52C552050;
+ Thu, 13 Jun 2019 20:50:32 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.85.207.125])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B23F752051;
+ Thu, 13 Jun 2019 20:50:29 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-efi@vger.kernel.org
+Subject: [PATCH 0/2] powerpc/powernv: expose secure variables to userspace 
+Date: Thu, 13 Jun 2019 16:50:25 -0400
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
+x-cbid: 19061320-0028-0000-0000-0000037A1891
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061320-0029-0000-0000-0000243A12FA
+Message-Id: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-13_12:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -71,7 +82,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906130153
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906130156
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,148 +94,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, linux-integrity@vger.kernel.org,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This patch set is part of a series that implements secure boot on PowerNV
+systems[1]. The original series had been split into two patchsets:
+1. powerpc: enable ima arch specific policies[2]
+2. powerpc/powernv: expose secure variables to userspace, which is this
+patchset.
 
---=-zRNeLzYe/jbULZ/9xMKS
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Since there are major changes in this patchset compared to the previous
+one[1], I am posting it as new series rather than v2.
 
-Sorry, there is a typo on my commit message.
-'s/BIT_MASK/BIT/'
+As part of PowerNV secure boot support, NV OS verification keys are stored
+and controlled by OPAL as secure variables. However, to allow users to
+manage these keys, the secure variables need to be exposed to userspace.
 
-On Thu, 2019-06-13 at 15:02 -0300, Leonardo Bras wrote:
-> The main reason of this change is to make these bitmasks more readable.
->=20
-> The macro ASM_CONST() just appends an UL to it's parameter, so it can be
-> easily replaced by BIT_MASK, that already uses a UL representation.
->=20
-> ASM_CONST() in this file may behave different if __ASSEMBLY__ is defined,
-> as it is used on .S files, just leaving the parameter as is.
->=20
-> However, I have noticed no difference in the generated binary after this
-> change.
->=20
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/firmware.h | 75 ++++++++++++++---------------
->  1 file changed, 37 insertions(+), 38 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/a=
-sm/firmware.h
-> index 00bc42d95679..7a5b0cc0bc85 100644
-> --- a/arch/powerpc/include/asm/firmware.h
-> +++ b/arch/powerpc/include/asm/firmware.h
-> @@ -14,46 +14,45 @@
-> =20
->  #ifdef __KERNEL__
-> =20
-> -#include <asm/asm-const.h>
-> -
-> +#include <linux/bits.h>
->  /* firmware feature bitmask values */
-> =20
-> -#define FW_FEATURE_PFT		ASM_CONST(0x0000000000000001)
-> -#define FW_FEATURE_TCE		ASM_CONST(0x0000000000000002)
-> -#define FW_FEATURE_SPRG0	ASM_CONST(0x0000000000000004)
-> -#define FW_FEATURE_DABR		ASM_CONST(0x0000000000000008)
-> -#define FW_FEATURE_COPY		ASM_CONST(0x0000000000000010)
-> -#define FW_FEATURE_ASR		ASM_CONST(0x0000000000000020)
-> -#define FW_FEATURE_DEBUG	ASM_CONST(0x0000000000000040)
-> -#define FW_FEATURE_TERM		ASM_CONST(0x0000000000000080)
-> -#define FW_FEATURE_PERF		ASM_CONST(0x0000000000000100)
-> -#define FW_FEATURE_DUMP		ASM_CONST(0x0000000000000200)
-> -#define FW_FEATURE_INTERRUPT	ASM_CONST(0x0000000000000400)
-> -#define FW_FEATURE_MIGRATE	ASM_CONST(0x0000000000000800)
-> -#define FW_FEATURE_PERFMON	ASM_CONST(0x0000000000001000)
-> -#define FW_FEATURE_CRQ		ASM_CONST(0x0000000000002000)
-> -#define FW_FEATURE_VIO		ASM_CONST(0x0000000000004000)
-> -#define FW_FEATURE_RDMA		ASM_CONST(0x0000000000008000)
-> -#define FW_FEATURE_LLAN		ASM_CONST(0x0000000000010000)
-> -#define FW_FEATURE_BULK_REMOVE	ASM_CONST(0x0000000000020000)
-> -#define FW_FEATURE_XDABR	ASM_CONST(0x0000000000040000)
-> -#define FW_FEATURE_MULTITCE	ASM_CONST(0x0000000000080000)
-> -#define FW_FEATURE_SPLPAR	ASM_CONST(0x0000000000100000)
-> -#define FW_FEATURE_LPAR		ASM_CONST(0x0000000000400000)
-> -#define FW_FEATURE_PS3_LV1	ASM_CONST(0x0000000000800000)
-> -#define FW_FEATURE_HPT_RESIZE	ASM_CONST(0x0000000001000000)
-> -#define FW_FEATURE_CMO		ASM_CONST(0x0000000002000000)
-> -#define FW_FEATURE_VPHN		ASM_CONST(0x0000000004000000)
-> -#define FW_FEATURE_XCMO		ASM_CONST(0x0000000008000000)
-> -#define FW_FEATURE_OPAL		ASM_CONST(0x0000000010000000)
-> -#define FW_FEATURE_SET_MODE	ASM_CONST(0x0000000040000000)
-> -#define FW_FEATURE_BEST_ENERGY	ASM_CONST(0x0000000080000000)
-> -#define FW_FEATURE_TYPE1_AFFINITY ASM_CONST(0x0000000100000000)
-> -#define FW_FEATURE_PRRN		ASM_CONST(0x0000000200000000)
-> -#define FW_FEATURE_DRMEM_V2	ASM_CONST(0x0000000400000000)
-> -#define FW_FEATURE_DRC_INFO	ASM_CONST(0x0000000800000000)
-> -#define FW_FEATURE_BLOCK_REMOVE ASM_CONST(0x0000001000000000)
-> -#define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
-> +#define FW_FEATURE_PFT		BIT(0)
-> +#define FW_FEATURE_TCE		BIT(1)
-> +#define FW_FEATURE_SPRG0		BIT(2)
-> +#define FW_FEATURE_DABR		BIT(3)
-> +#define FW_FEATURE_COPY		BIT(4)
-> +#define FW_FEATURE_ASR		BIT(5)
-> +#define FW_FEATURE_DEBUG		BIT(6)
-> +#define FW_FEATURE_TERM		BIT(7)
-> +#define FW_FEATURE_PERF		BIT(8)
-> +#define FW_FEATURE_DUMP		BIT(9)
-> +#define FW_FEATURE_INTERRUPT	BIT(10)
-> +#define FW_FEATURE_MIGRATE	BIT(11)
-> +#define FW_FEATURE_PERFMON	BIT(12)
-> +#define FW_FEATURE_CRQ		BIT(13)
-> +#define FW_FEATURE_VIO		BIT(14)
-> +#define FW_FEATURE_RDMA		BIT(15)
-> +#define FW_FEATURE_LLAN		BIT(16)
-> +#define FW_FEATURE_BULK_REMOVE	BIT(17)
-> +#define FW_FEATURE_XDABR		BIT(18)
-> +#define FW_FEATURE_MULTITCE	BIT(19)
-> +#define FW_FEATURE_SPLPAR	BIT(20)
-> +#define FW_FEATURE_LPAR		BIT(22)
-> +#define FW_FEATURE_PS3_LV1	BIT(23)
-> +#define FW_FEATURE_HPT_RESIZE	BIT(24)
-> +#define FW_FEATURE_CMO		BIT(25)
-> +#define FW_FEATURE_VPHN		BIT(26)
-> +#define FW_FEATURE_XCMO		BIT(27)
-> +#define FW_FEATURE_OPAL		BIT(28)
-> +#define FW_FEATURE_SET_MODE	BIT(30)
-> +#define FW_FEATURE_BEST_ENERGY	BIT(31)
-> +#define FW_FEATURE_TYPE1_AFFINITY BIT(32)
-> +#define FW_FEATURE_PRRN		BIT(33)
-> +#define FW_FEATURE_DRMEM_V2	BIT(34)
-> +#define FW_FEATURE_DRC_INFO	BIT(35)
-> +#define FW_FEATURE_BLOCK_REMOVE	BIT(36)
-> +#define FW_FEATURE_PAPR_SCM	BIT(37)
-> =20
->  #ifndef __ASSEMBLY__
-> =20
+OPAL provides the runtime services for the kernel to be able to access the
+secure variables[3]. This patchset defines the kernel interface for the
+OPAL APIs. These APIs are used by the hooks, which expose these variables
+to userspace for reading/writing.
 
---=-zRNeLzYe/jbULZ/9xMKS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+In order to reuse the existing tools, we currently use the efi hooks to
+expose the secure variables via sysfs. Keeping the usability and
+maintainability in mind, we are starting with this scheme as simple sysfs
+implementation. We expect to refine it over time as we incorporate the
+feedback.
 
------BEGIN PGP SIGNATURE-----
+The patchset makes substantial reuse of drivers/firmware/efi/efivars.c and
+drivers/firmware/efi/vars.c, however because POWER platforms do not use
+EFI, a new config, POWER_SECVAR_SYSFS, is defined to enable this sysfs
+interface in POWER.
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl0CsOQACgkQlQYWtz9S
-ttQtPxAAzjJ2lD2eZszCUS1aM75C+hd0+7ptG+NHH8Ef5/buiJNG2hy0Pq8s7SNA
-mcbCMJw+sra/QK0pqURKm31gW4r0x16B8CJ1Jkjmgp+g+QjXtmuDIH72J4Gfvau1
-vFl8dbvcCetb0yojNYRBa46V5ozYBvgpbIuSdsqO4wbApm2PHSv5zu3c26JKgH3z
-StpW1EstxFgGIZJF93h3UFD/fKSwBkynUU4SE3C/vhuUs1PAvPgCmCeNqBcBaOCE
-0fKpd43H0Yr8I6652yi41WVT5+lAWkryqSUVpJ9sH0yhTdt/tRwZvj211WEMXmNx
-NXwuyFh4qO+lNFM5Q/xPuomPBmSF+1NicRh1Ie7Gs7+kl/9aP2NU4oOwqGM/G5CJ
-O21R8yJaMbVmqLgiuq0Yc9v6lb0oxK+Dhv3JtfcTNQyhardXqPh7YKKLoUX2EqMZ
-4z8anypKeleZWpNBw//nkTyV+8KdNfzvdHyXmnaFlq5xcObWOmR0AUYLF+XIfcV2
-B++/m6+Fk1PwMB4qIWz5/HAe/efJNnrjG6z01IU+5pKeJHRO9Y3caJBduBIOCXhI
-6Moisy8wcrIgeUhwfZEpNOiw23IvgPRb/cbzXOM6QGeF+CvKqMeCKx7e05loa1zC
-Q/LsUfI3dHH0iLO2lA145JUdVF1v/9b16xprdwvY12auITnN7Lc=
-=1i4L
------END PGP SIGNATURE-----
+This patchset has a pre-requisiste of other OPAL APIs which are posted as
+part of ima arch specific patches[2].
 
---=-zRNeLzYe/jbULZ/9xMKS--
+[1]https://patchwork.kernel.org/cover/10882149/  
+[2]https://lkml.org/lkml/2019/6/11/868
+[3]https://patchwork.ozlabs.org/project/skiboot/list/?series=112868 
+
+Claudio Carvalho (1):
+  powerpc/powernv: add OPAL APIs for secure variables
+
+Nayna Jain (1):
+  powerpc: expose secure variables via sysfs
+
+ arch/powerpc/Kconfig                         |   2 +
+ arch/powerpc/include/asm/opal-api.h          |   3 +
+ arch/powerpc/include/asm/opal-secvar.h       |   9 +
+ arch/powerpc/include/asm/opal.h              |   8 +
+ arch/powerpc/platforms/powernv/opal-call.c   |   3 +
+ arch/powerpc/platforms/powernv/opal-secvar.c |  60 +++-
+ drivers/firmware/Makefile                    |   1 +
+ drivers/firmware/efi/efivars.c               |   2 +-
+ drivers/firmware/powerpc/Kconfig             |  12 +
+ drivers/firmware/powerpc/Makefile            |   3 +
+ drivers/firmware/powerpc/efi_error.c         |  46 +++
+ drivers/firmware/powerpc/secvar.c            | 326 +++++++++++++++++++
+ 12 files changed, 473 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/firmware/powerpc/Kconfig
+ create mode 100644 drivers/firmware/powerpc/Makefile
+ create mode 100644 drivers/firmware/powerpc/efi_error.c
+ create mode 100644 drivers/firmware/powerpc/secvar.c
+
+-- 
+2.20.1
 
