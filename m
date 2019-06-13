@@ -2,57 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A800F43417
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 10:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 068FB43422
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 10:32:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PcKS5TydzDr9T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 18:26:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PcRT2RzTzDrCM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 18:32:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+aff2f865c54b6c032bcd+5772+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="CJfAiZ+S"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45PcHZ0wfxzDr8q
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:25:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=OeLHvABMR/TwR5YwkjiNrb3nSGoyZtNL+rTIgtUc4P0=; b=CJfAiZ+SswqFEtf6hSL7ttuQc
- o4qEscCyZxXtmKRMkWLZDzjKmCiMHk/NrH+9qyarVgx9twv4IRu4BRJpPwnCvn2NQuz//FdBPN5mS
- a3CLlgl4he317iXHiQW8TZgidVN3uEvNTfFrgbHkdBZ8dOLGuWp/6neQ1OOqXALkwVUAD/4gV36LQ
- /CPAgRw/bZTjsPjTqWRrsgwO+VP6YVPPp5DnfO34GYvIgT44sIQJp4n3uaxadU+mnIBxcmoa/ZPfN
- 9GgiBHeaxYFagJzkpDs/5Z1mpeHoCK3/114eGqG8kNgkyYMZF3uXofJ+Oha/KdvG6P4z352l0y7xV
- 1zfMOHnaA==;
-Received: from mpp-cp1-natpool-1-013.ethz.ch ([82.130.71.13] helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hbL2U-0000jE-2t; Thu, 13 Jun 2019 08:24:54 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: benh@kernel.crashing.org,
-	paulus@samba.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
-Date: Thu, 13 Jun 2019 10:24:46 +0200
-Message-Id: <20190613082446.18685-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PcPb0XZdzDqx4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:30:24 +1000 (AEST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 2AE1F7854A4A77E18E06;
+ Thu, 13 Jun 2019 16:30:18 +0800 (CST)
+Received: from [127.0.0.1] (10.133.215.186) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0;
+ Thu, 13 Jun 2019 16:30:11 +0800
+Subject: Re: [PATCH v8 1/7] iommu: enhance IOMMU default DMA mode build options
+To: John Garry <john.garry@huawei.com>, Jean-Philippe Brucker
+ <jean-philippe.brucker@arm.com>, Robin Murphy <robin.murphy@arm.com>, "Will
+ Deacon" <will.deacon@arm.com>, Joerg Roedel <joro@8bytes.org>, Jonathan
+ Corbet <corbet@lwn.net>, linux-doc <linux-doc@vger.kernel.org>, Sebastian Ott
+ <sebott@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ "Martin Schwidefsky" <schwidefsky@de.ibm.com>, Heiko Carstens
+ <heiko.carstens@de.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, Tony Luck <tony.luck@intel.com>, Fenghua Yu
+ <fenghua.yu@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin"
+ <hpa@zytor.com>, David Woodhouse <dwmw2@infradead.org>, iommu
+ <iommu@lists.linux-foundation.org>, linux-kernel
+ <linux-kernel@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, x86 <x86@kernel.org>,
+ linux-ia64 <linux-ia64@vger.kernel.org>
+References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
+ <20190530034831.4184-2-thunder.leizhen@huawei.com>
+ <645bd526-4eb0-4a36-2dda-023f009247ab@huawei.com>
+ <030bafab-58f5-8bb1-0533-2977d6e138b2@huawei.com>
+ <55d0e30c-5bca-41fc-5bf0-4366dc387afd@huawei.com>
+From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <7d3727e3-a455-3a26-1104-5b85c196bbdf@huawei.com>
+Date: Thu, 13 Jun 2019 16:30:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <55d0e30c-5bca-41fc-5bf0-4366dc387afd@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Originating-IP: [10.133.215.186]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,70 +71,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Larry.Finger@lwfinger.net, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi
+Cc: Linuxarm <linuxarm@huawei.com>, Hanjun Guo <guohanjun@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the strict dma mask checking introduced with the switch to
-the generic DMA direct code common wifi chips on 32-bit powerbooks
-stopped working.  Add a 30-bit ZONE_DMA to the 32-bit pmac builds
-to allow them to reliably allocate dma coherent memory.
 
-Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
-Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/powerpc/include/asm/page.h         | 7 +++++++
- arch/powerpc/mm/mem.c                   | 3 ++-
- arch/powerpc/platforms/powermac/Kconfig | 1 +
- 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index b8286a2013b4..0d52f57fca04 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -319,6 +319,13 @@ struct vm_area_struct;
- #endif /* __ASSEMBLY__ */
- #include <asm/slice.h>
- 
-+/*
-+ * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
-+ */
-+#ifdef CONFIG_PPC32
-+#define ARCH_ZONE_DMA_BITS 30
-+#else
- #define ARCH_ZONE_DMA_BITS 31
-+#endif
- 
- #endif /* _ASM_POWERPC_PAGE_H */
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index cba29131bccc..2540d3b2588c 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -248,7 +248,8 @@ void __init paging_init(void)
- 	       (long int)((top_of_ram - total_ram) >> 20));
- 
- #ifdef CONFIG_ZONE_DMA
--	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn, 0x7fffffffUL >> PAGE_SHIFT);
-+	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
-+			((1UL << ARCH_ZONE_DMA_BITS) - 1) >> PAGE_SHIFT);
- #endif
- 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
- #ifdef CONFIG_HIGHMEM
-diff --git a/arch/powerpc/platforms/powermac/Kconfig b/arch/powerpc/platforms/powermac/Kconfig
-index f834a19ed772..c02d8c503b29 100644
---- a/arch/powerpc/platforms/powermac/Kconfig
-+++ b/arch/powerpc/platforms/powermac/Kconfig
-@@ -7,6 +7,7 @@ config PPC_PMAC
- 	select PPC_INDIRECT_PCI if PPC32
- 	select PPC_MPC106 if PPC32
- 	select PPC_NATIVE
-+	select ZONE_DMA if PPC32
- 	default y
- 
- config PPC_PMAC64
--- 
-2.20.1
+On 2019/5/31 18:42, John Garry wrote:
+> 
+>>>> -config IOMMU_DEFAULT_PASSTHROUGH
+>>>> -    bool "IOMMU passthrough by default"
+>>>> +choice
+>>>> +    prompt "IOMMU default DMA mode"
+>>>>      depends on IOMMU_API
+>>>> -        help
+>>>> -      Enable passthrough by default, removing the need to pass in
+>>>> -      iommu.passthrough=on or iommu=pt through command line. If this
+>>>> -      is enabled, you can still disable with iommu.passthrough=off
+>>>> -      or iommu=nopt depending on the architecture.
+>>>> +    default IOMMU_DEFAULT_STRICT
+>>>> +    help
+>>>> +      This option allows IOMMU DMA mode to be chose at build time, to
+>>>
+>>> As before:
+>>> /s/chose/chosen/, /s/allows IOMMU/allows an IOMMU/
+>> I'm sorry that the previous version was not modified.
+>>
+>>>
+>>>> +      override the default DMA mode of each ARCHs, removing the need to
+>>>
+>>> Again, as before:
+>>> ARCHs should be singular
+>> OK
+>>
+>>>
+>>>> +      pass in kernel parameters through command line. You can still use
+>>>> +      ARCHs specific boot options to override this option again.
+> 
+> *
+> 
+>>>> +
+>>>> +config IOMMU_DEFAULT_PASSTHROUGH
+>>>> +    bool "passthrough"
+>>>> +    help
+>>>> +      In this mode, the DMA access through IOMMU without any addresses
+>>>> +      translation. That means, the wrong or illegal DMA access can not
+>>>> +      be caught, no error information will be reported.
+>>>>
+>>>>        If unsure, say N here.
+>>>>
+>>>> +config IOMMU_DEFAULT_LAZY
+>>>> +    bool "lazy"
+>>>> +    help
+>>>> +      Support lazy mode, where for every IOMMU DMA unmap operation, the
+>>>> +      flush operation of IOTLB and the free operation of IOVA are deferred.
+>>>> +      They are only guaranteed to be done before the related IOVA will be
+>>>> +      reused.
+>>>
+>>> why no advisory on how to set if unsure?
+>> Because the LAZY and STRICT have their own advantages and disadvantages.
+>>
+>> Should I say: If unsure, keep the default。
+> 
+> Maybe. So you could put this in the help for the choice, * above, and remove the advisory on IOMMU_DEFAULT_PASSTHROUGH.
+
+OK, I'll revise it according to this idea in v9.
+
+> 
+> However the maintainer may have a different view.
+> 
+> Thanks,
+> John
+> 
+>>
+>>>
+>>>> +
+>>>> +config IOMMU_DEFAULT_STRICT
+>>>> +    bool "strict"
+>>>> +    help
+>>>> +      For every IOMMU DMA unmap operation, the flush operation of IOTLB and
+>>>> +      the free operation of IOVA are guaranteed to be done in the unmap
+>>>> +      function.
+>>>> +
+>>>> +      This mode is safer than the two above, but it maybe slower in some
+>>>> +      high performace scenarios.
+>>>
+>>> and here?
+> 
+> 
+> .
+> 
 
