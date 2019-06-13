@@ -1,30 +1,30 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 147AD43429
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 10:37:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCDB43438
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 10:41:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Pcf02b9RzDrC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 18:41:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PcYF3F8vzDrCH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 18:37:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Pcc91XmjzDr9N
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:39:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PcWR2PQHzDr9P
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:35:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="lkutTp2U"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="EFa+4WGp"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45Pcc90q7Cz8t3y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:39:37 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45PcWR1Qhjz8vR9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 18:35:31 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45Pcc90RCcz9sDX; Thu, 13 Jun 2019 18:39:37 +1000 (AEST)
+ id 45PcWR143tz9sDX; Thu, 13 Jun 2019 18:35:31 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
@@ -33,34 +33,34 @@ Authentication-Results: ozlabs.org;
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="lkutTp2U"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="EFa+4WGp"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45Pcc85F7sz9s9y
- for <linuxppc-dev@ozlabs.org>; Thu, 13 Jun 2019 18:39:36 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 45PcWQ605Fz9s9y
+ for <linuxppc-dev@ozlabs.org>; Thu, 13 Jun 2019 18:35:28 +1000 (AEST)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 94BF321479;
- Thu, 13 Jun 2019 08:39:33 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 113D120B7C;
+ Thu, 13 Jun 2019 08:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1560415174;
- bh=xHK2yznNvP7abV7OQvqrwN/hV3EsN1/XtGCm2HbYo8c=;
+ s=default; t=1560414926;
+ bh=r/cQdU2vJehPtLKTUxVZzWc4VnWDJsWbAZXWsJZuhBw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=lkutTp2URsBZM1H1R1YxN7hr6dCGBQucHjHK1gt68BaY+M1PzI1kcuBpVn5OnRnsg
- nRg590R7zeoeCdzy/Czc0+HniYXH1wwHzosuGH2Jm9xS0qgVuWoCj4Mzq3mBsh0ctL
- fMD1EZX55ciriPehBfqyjuBLDMqxC12AqeIpkXSE=
+ b=EFa+4WGpWJc/koTHSq43Y2epWdWtqq6OPfQdBjI93XPa0fCROqOA0ZcftSPb9/zv+
+ OrrYvPIsQ2VQXCzdqxf96yCxTdvLucUspu0vkq8t17ozG45wbShSQeL1jox4WczzNV
+ QArYef2uYKZavSA/CedT2pY32wqzpMIgNdffaUck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.19 029/118] EDAC/mpc85xx: Prevent building as a module
-Date: Thu, 13 Jun 2019 10:32:47 +0200
-Message-Id: <20190613075645.207725772@linuxfoundation.org>
+Subject: [PATCH 4.14 23/81] EDAC/mpc85xx: Prevent building as a module
+Date: Thu, 13 Jun 2019 10:33:06 +0200
+Message-Id: <20190613075650.845289943@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190613075643.642092651@linuxfoundation.org>
-References: <20190613075643.642092651@linuxfoundation.org>
+In-Reply-To: <20190613075649.074682929@linuxfoundation.org>
+References: <20190613075649.074682929@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -121,10 +121,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/edac/Kconfig b/drivers/edac/Kconfig
-index 57304b2e989f..b00cc03ad6b6 100644
+index 96afb2aeed18..aaaa8ce8d3fd 100644
 --- a/drivers/edac/Kconfig
 +++ b/drivers/edac/Kconfig
-@@ -250,8 +250,8 @@ config EDAC_PND2
+@@ -246,8 +246,8 @@ config EDAC_PND2
  	  micro-server but may appear on others in the future.
  
  config EDAC_MPC85XX
