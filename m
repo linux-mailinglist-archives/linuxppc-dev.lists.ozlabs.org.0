@@ -2,72 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEA644AA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 20:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BAE44B26
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 20:53:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PsgL6n22zDrJB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 04:28:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PtDM09BszDrL9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 04:53:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="QciANm+R"; 
+ dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45PsdG2gSCzDrC9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 04:26:26 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5DIHFP6118168; Thu, 13 Jun 2019 14:26:16 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t3ufr0pha-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jun 2019 14:26:16 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5DI9IQD019216;
- Thu, 13 Jun 2019 18:10:09 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 2t1x6t00yc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jun 2019 18:10:09 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5DIQEjo7733510
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jun 2019 18:26:14 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E0CF112065;
- Thu, 13 Jun 2019 18:26:14 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4164B112061;
- Thu, 13 Jun 2019 18:26:13 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.170])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jun 2019 18:26:13 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [RFC PATCH] Replaces long number representation by BIT() macro
-Date: Thu, 13 Jun 2019 15:02:27 -0300
-Message-Id: <20190613180227.29558-1-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45PtBW2zXczDrJD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 04:51:47 +1000 (AEST)
+Received: by mail-oi1-x241.google.com with SMTP id j184so150029oih.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 11:51:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=/UPxWSlC5sa2bqOyrgAL69/GdR1/OE8Ch9dSPjw4HAw=;
+ b=QciANm+ReKrJ0szbSi1fGnbMist6Yz1rN7pI3bws0+TWRIzZdQkCmN6AUFv2/KsdzD
+ IN9IgdWsxE98VftCdxsxJmKPuG6hJUUmFifIuIokGVUuk+viIemj86pXrJbpvLP3UDV4
+ d03z93Bc+SwF6rBiezP5ABz+B6NXLmfzQ1LPyoYl4aqi8NdQQbwu5Z1Y+UccvWvKVGgL
+ UBdowE/ZPsjVfKaoCbhIJshixaflZXTTpw4XJIZLJOgFtPz8lk7Tb9SX4zwI7rAfWt/B
+ ju4Uw/3/rppXw6skGIETJAeoOPlzBvLXtKIa9JiHtWVoZa6xoP5p4ViZoDoPLc/HaxY7
+ yuEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=/UPxWSlC5sa2bqOyrgAL69/GdR1/OE8Ch9dSPjw4HAw=;
+ b=byaYYNs7Pe1Na8LR3dd/OM110nuDyRFNh7jzwAb+vpdg7jcJj/ImZIaxnIPSkNayW4
+ e1xhU5Ix8l61G7/YFwut+IURkZKN6jx1slPpd5hHSJbmUkvnBrGDRpUMkumVhB/dVgrd
+ Kcin5NwXLekUvr/29GxL6dGXkRn4Un3XAP+uUmtn/N/HaywHNlyQtHg+CmmUYcY+kO9s
+ K4rNKgkyGoSIiM3IVSZ+kumLYVxVOe0qusUcrvyYfv92UrJs9/vGXonZe6RxLeH2k3Nh
+ JsXHj4PeChOcqe9MW59APw3E+7gusPC7WVpZSyKvSaALYc+eXs2L922hy/40ZZmT5Cq/
+ qRYA==
+X-Gm-Message-State: APjAAAXMNo9Dly3dkmb0HXxW5aFZ4svqgixS1vrbl7pnJqmPdkRfP0eo
+ s1jRyPP0fUD7Jz5t/qRSOq4=
+X-Google-Smtp-Source: APXvYqxN7mmhXH/KLQY6oeLzDB+2IeuUjevbypQYE7vAYi0s8uy3XJkg3sdKQjMN7GdBPQGLpYJmJA==
+X-Received: by 2002:aca:80f:: with SMTP id 15mr3802774oii.118.1560451904574;
+ Thu, 13 Jun 2019 11:51:44 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id l65sm186063oif.20.2019.06.13.11.51.42
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Thu, 13 Jun 2019 11:51:43 -0700 (PDT)
+Subject: Re: [PATCH] powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
+To: Christoph Hellwig <hch@lst.de>, benh@kernel.crashing.org,
+ paulus@samba.org, mpe@ellerman.id.au
+References: <20190613082446.18685-1-hch@lst.de>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <334280df-9002-c92f-d381-9fd79e2a9036@lwfinger.net>
+Date: Thu, 13 Jun 2019 13:51:41 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-13_12:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906130134
+In-Reply-To: <20190613082446.18685-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,116 +84,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leonardo Bras <leonardo@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The main reason of this change is to make these bitmasks more readable.
+On 6/13/19 3:24 AM, Christoph Hellwig wrote:
+> With the strict dma mask checking introduced with the switch to
+> the generic DMA direct code common wifi chips on 32-bit powerbooks
+> stopped working.  Add a 30-bit ZONE_DMA to the 32-bit pmac builds
+> to allow them to reliably allocate dma coherent memory.
+> 
+> Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
+> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-The macro ASM_CONST() just appends an UL to it's parameter, so it can be
-easily replaced by BIT_MASK, that already uses a UL representation.
+As expected, it works. The patch needs
+Cc: Stable <stable*vger.kernel.org> # v5.1+
 
-ASM_CONST() in this file may behave different if __ASSEMBLY__ is defined,
-as it is used on .S files, just leaving the parameter as is.
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-However, I have noticed no difference in the generated binary after this
-change.
+Thanks for the help, and the patience with my debugging problems with u64 variables.
 
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
----
- arch/powerpc/include/asm/firmware.h | 75 ++++++++++++++---------------
- 1 file changed, 37 insertions(+), 38 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index 00bc42d95679..7a5b0cc0bc85 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -14,46 +14,45 @@
- 
- #ifdef __KERNEL__
- 
--#include <asm/asm-const.h>
--
-+#include <linux/bits.h>
- /* firmware feature bitmask values */
- 
--#define FW_FEATURE_PFT		ASM_CONST(0x0000000000000001)
--#define FW_FEATURE_TCE		ASM_CONST(0x0000000000000002)
--#define FW_FEATURE_SPRG0	ASM_CONST(0x0000000000000004)
--#define FW_FEATURE_DABR		ASM_CONST(0x0000000000000008)
--#define FW_FEATURE_COPY		ASM_CONST(0x0000000000000010)
--#define FW_FEATURE_ASR		ASM_CONST(0x0000000000000020)
--#define FW_FEATURE_DEBUG	ASM_CONST(0x0000000000000040)
--#define FW_FEATURE_TERM		ASM_CONST(0x0000000000000080)
--#define FW_FEATURE_PERF		ASM_CONST(0x0000000000000100)
--#define FW_FEATURE_DUMP		ASM_CONST(0x0000000000000200)
--#define FW_FEATURE_INTERRUPT	ASM_CONST(0x0000000000000400)
--#define FW_FEATURE_MIGRATE	ASM_CONST(0x0000000000000800)
--#define FW_FEATURE_PERFMON	ASM_CONST(0x0000000000001000)
--#define FW_FEATURE_CRQ		ASM_CONST(0x0000000000002000)
--#define FW_FEATURE_VIO		ASM_CONST(0x0000000000004000)
--#define FW_FEATURE_RDMA		ASM_CONST(0x0000000000008000)
--#define FW_FEATURE_LLAN		ASM_CONST(0x0000000000010000)
--#define FW_FEATURE_BULK_REMOVE	ASM_CONST(0x0000000000020000)
--#define FW_FEATURE_XDABR	ASM_CONST(0x0000000000040000)
--#define FW_FEATURE_MULTITCE	ASM_CONST(0x0000000000080000)
--#define FW_FEATURE_SPLPAR	ASM_CONST(0x0000000000100000)
--#define FW_FEATURE_LPAR		ASM_CONST(0x0000000000400000)
--#define FW_FEATURE_PS3_LV1	ASM_CONST(0x0000000000800000)
--#define FW_FEATURE_HPT_RESIZE	ASM_CONST(0x0000000001000000)
--#define FW_FEATURE_CMO		ASM_CONST(0x0000000002000000)
--#define FW_FEATURE_VPHN		ASM_CONST(0x0000000004000000)
--#define FW_FEATURE_XCMO		ASM_CONST(0x0000000008000000)
--#define FW_FEATURE_OPAL		ASM_CONST(0x0000000010000000)
--#define FW_FEATURE_SET_MODE	ASM_CONST(0x0000000040000000)
--#define FW_FEATURE_BEST_ENERGY	ASM_CONST(0x0000000080000000)
--#define FW_FEATURE_TYPE1_AFFINITY ASM_CONST(0x0000000100000000)
--#define FW_FEATURE_PRRN		ASM_CONST(0x0000000200000000)
--#define FW_FEATURE_DRMEM_V2	ASM_CONST(0x0000000400000000)
--#define FW_FEATURE_DRC_INFO	ASM_CONST(0x0000000800000000)
--#define FW_FEATURE_BLOCK_REMOVE ASM_CONST(0x0000001000000000)
--#define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
-+#define FW_FEATURE_PFT		BIT(0)
-+#define FW_FEATURE_TCE		BIT(1)
-+#define FW_FEATURE_SPRG0		BIT(2)
-+#define FW_FEATURE_DABR		BIT(3)
-+#define FW_FEATURE_COPY		BIT(4)
-+#define FW_FEATURE_ASR		BIT(5)
-+#define FW_FEATURE_DEBUG		BIT(6)
-+#define FW_FEATURE_TERM		BIT(7)
-+#define FW_FEATURE_PERF		BIT(8)
-+#define FW_FEATURE_DUMP		BIT(9)
-+#define FW_FEATURE_INTERRUPT	BIT(10)
-+#define FW_FEATURE_MIGRATE	BIT(11)
-+#define FW_FEATURE_PERFMON	BIT(12)
-+#define FW_FEATURE_CRQ		BIT(13)
-+#define FW_FEATURE_VIO		BIT(14)
-+#define FW_FEATURE_RDMA		BIT(15)
-+#define FW_FEATURE_LLAN		BIT(16)
-+#define FW_FEATURE_BULK_REMOVE	BIT(17)
-+#define FW_FEATURE_XDABR		BIT(18)
-+#define FW_FEATURE_MULTITCE	BIT(19)
-+#define FW_FEATURE_SPLPAR	BIT(20)
-+#define FW_FEATURE_LPAR		BIT(22)
-+#define FW_FEATURE_PS3_LV1	BIT(23)
-+#define FW_FEATURE_HPT_RESIZE	BIT(24)
-+#define FW_FEATURE_CMO		BIT(25)
-+#define FW_FEATURE_VPHN		BIT(26)
-+#define FW_FEATURE_XCMO		BIT(27)
-+#define FW_FEATURE_OPAL		BIT(28)
-+#define FW_FEATURE_SET_MODE	BIT(30)
-+#define FW_FEATURE_BEST_ENERGY	BIT(31)
-+#define FW_FEATURE_TYPE1_AFFINITY BIT(32)
-+#define FW_FEATURE_PRRN		BIT(33)
-+#define FW_FEATURE_DRMEM_V2	BIT(34)
-+#define FW_FEATURE_DRC_INFO	BIT(35)
-+#define FW_FEATURE_BLOCK_REMOVE	BIT(36)
-+#define FW_FEATURE_PAPR_SCM	BIT(37)
- 
- #ifndef __ASSEMBLY__
- 
--- 
-2.17.1
-
+Larry
