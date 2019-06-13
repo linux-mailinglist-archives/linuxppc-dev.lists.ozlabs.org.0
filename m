@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E014362C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 15:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F56F43637
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 15:04:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45PkQT6RnFzDrBG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 23:01:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45PkVB4HjvzDrQs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2019 23:04:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,53 +16,65 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Dy0Qae74"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="XGC4QkHz"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Pk7n0ZfmzDrKb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 22:48:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Pk9R2DgFzDrM2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2019 22:50:19 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Pk7h1nFWz9v00N;
- Thu, 13 Jun 2019 14:48:48 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45Pk9K4M2Dz9v00J;
+ Thu, 13 Jun 2019 14:50:13 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Dy0Qae74; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=XGC4QkHz; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 5zrcCdwVIyAp; Thu, 13 Jun 2019 14:48:48 +0200 (CEST)
+ with ESMTP id r2jrMUr4S6_f; Thu, 13 Jun 2019 14:50:13 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Pk7h0js1z9tyyY;
- Thu, 13 Jun 2019 14:48:48 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45Pk9K3CjSz9tyyl;
+ Thu, 13 Jun 2019 14:50:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560430128; bh=48bCG2FBih9b4lqcwwmGEUUwF3MxrGDZlCtBYkGURQw=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=Dy0Qae74kWDxgTVBD94oXCDe4f+EhieWJmfnqlGDMvV075Ctftar9r/PFQNK/S/V4
- 4IZCVxZhdhspJicETGepox/raLxokW0U4WenOlVw2F+F0JMYMs0R+oiWU49WKTxUlJ
- DlbZYcnyP1eTUmf5TmOa9eGik8LgUx6lDYXTAaAM=
+ t=1560430213; bh=tSiFMtfMvkoo1YAalFTMO8Zl4haXafUMn4htZhOOXBw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=XGC4QkHz/G0dORO17fuH504YhMMnNB4P+pF78ct0KiG+4jyQdmULNQdkyH/XqHHht
+ 6s66fVMxgJEgh+Aip60kOx7jIFbYrY5g2IJCAANf+1A8GN3geioEzUWdoQsN8elEES
+ Gs03Zln4G2Is0qj+AL0P2O8FfS0JZ5k+IeDT+sQI=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 748E68B8E4;
- Thu, 13 Jun 2019 14:48:49 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB8C18B8E4;
+ Thu, 13 Jun 2019 14:50:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id yAMQDT9dkyzE; Thu, 13 Jun 2019 14:48:49 +0200 (CEST)
-Received: from po16838vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CD2D8B8B9;
- Thu, 13 Jun 2019 14:48:49 +0200 (CEST)
-Received: by po16838vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 07A7C68D71; Thu, 13 Jun 2019 12:48:49 +0000 (UTC)
-Message-Id: <a588e8d3d0feaa76ee5eace8456447653dde9d48.1560429844.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1560429844.git.christophe.leroy@c-s.fr>
-References: <cover.1560429844.git.christophe.leroy@c-s.fr>
+ with ESMTP id vxc-WCLWMvLI; Thu, 13 Jun 2019 14:50:14 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DEFD8B8B9;
+ Thu, 13 Jun 2019 14:50:14 +0200 (CEST)
+Subject: Re: [PATCH v2 1/4] crypto: talitos - move struct talitos_edesc into
+ talitos.h
+To: Horia Geanta <horia.geanta@nxp.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
+References: <cover.1560263641.git.christophe.leroy@c-s.fr>
+ <d9b5fade242f0806a587392d31c272709949479f.1560263641.git.christophe.leroy@c-s.fr>
+ <VI1PR0402MB3485C0F4CB13F8674B8B5A5598EF0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+ <7fb54918-4524-1e6b-dd29-46be8843577b@c-s.fr>
+ <VI1PR0402MB34858ABA5DE0324FA6E2CFCD98EF0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+ <ce6beda2-75c8-f360-9e01-5a883128d153@c-s.fr>
+ <VI1PR0402MB348514C4AA9E41C26FF4430998EF0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 4/4] crypto: talitos - drop icv_ool
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, horia.geanta@nxp.com
-Date: Thu, 13 Jun 2019 12:48:49 +0000 (UTC)
+Message-ID: <4c3808ec-783d-d5b3-6c0b-ae5092652233@c-s.fr>
+Date: Thu, 13 Jun 2019 14:50:13 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <VI1PR0402MB348514C4AA9E41C26FF4430998EF0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,55 +86,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-icv_ool is not used anymore, drop it.
 
-Fixes: e345177ded17 ("crypto: talitos - fix AEAD processing.")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- drivers/crypto/talitos.c | 3 ---
- drivers/crypto/talitos.h | 2 --
- 2 files changed, 5 deletions(-)
 
-diff --git a/drivers/crypto/talitos.c b/drivers/crypto/talitos.c
-index b2de931de623..03b7a5d28fb0 100644
---- a/drivers/crypto/talitos.c
-+++ b/drivers/crypto/talitos.c
-@@ -1278,9 +1278,6 @@ static int ipsec_esp(struct talitos_edesc *edesc, struct aead_request *areq,
- 				 is_ipsec_esp && !encrypt);
- 	tbl_off += ret;
- 
--	/* ICV data */
--	edesc->icv_ool = !encrypt;
--
- 	if (!encrypt && is_ipsec_esp) {
- 		struct talitos_ptr *tbl_ptr = &edesc->link_tbl[tbl_off];
- 
-diff --git a/drivers/crypto/talitos.h b/drivers/crypto/talitos.h
-index 95f78c6d9206..1469b956948a 100644
---- a/drivers/crypto/talitos.h
-+++ b/drivers/crypto/talitos.h
-@@ -46,7 +46,6 @@ struct talitos_desc {
-  * talitos_edesc - s/w-extended descriptor
-  * @src_nents: number of segments in input scatterlist
-  * @dst_nents: number of segments in output scatterlist
-- * @icv_ool: whether ICV is out-of-line
-  * @iv_dma: dma address of iv for checking continuity and link table
-  * @dma_len: length of dma mapped link_tbl space
-  * @dma_link_tbl: bus physical address of link_tbl/buf
-@@ -61,7 +60,6 @@ struct talitos_desc {
- struct talitos_edesc {
- 	int src_nents;
- 	int dst_nents;
--	bool icv_ool;
- 	dma_addr_t iv_dma;
- 	int dma_len;
- 	dma_addr_t dma_link_tbl;
--- 
-2.13.3
+Le 13/06/2019 à 14:39, Horia Geanta a écrit :
+> On 6/13/2019 3:32 PM, Christophe Leroy wrote:
+>>
+>>
+>> Le 13/06/2019 à 14:24, Horia Geanta a écrit :
+>>> On 6/13/2019 3:16 PM, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 13/06/2019 à 14:13, Horia Geanta a écrit :
+>>>>> On 6/11/2019 5:39 PM, Christophe Leroy wrote:
+>>>>>> Next patch will require struct talitos_edesc to be defined
+>>>>>> earlier in talitos.c
+>>>>>>
+>>>>>> This patch moves it into talitos.h so that it can be used
+>>>>>> from any place in talitos.c
+>>>>>>
+>>>>>> Fixes: 37b5e8897eb5 ("crypto: talitos - chain in buffered data for ahash on SEC1")
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>>>> Again, this patch does not qualify as a fix.
+>>>>>
+>>>>
+>>>> But as I said, the following one is a fix and require that one, you told
+>>>> me to add stable in Cc: to make it explicit it was to go into stable.
+>>> Yes, but you should remove the Fixes tag.
+>>> And probably replace "Next patch" with the commit headline.
+>>>
+>>>> If someone tries to merge following one into stable with taking that one
+>>>> first, build will fail.
+>>> This shouldn't happen, order from main tree should be preserved.
+>>>
+>>
+>> When they pick up fixes, AFAIK they don't take all the preceeding commits.
+>>
+> This is not about Fixes tag, but Cc tag:
+> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> 
 
+Ah, ok. So I need to keep the Cc tag. I misunderstood sorry.
