@@ -2,78 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B101D4686D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 21:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C680468D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 22:28:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QWcq6QnYzDrq9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 05:58:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QXHJ0cK1zDrp4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 06:28:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
- envelope-from=chunkeey@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="qIH+M8u6"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="o3N5dXiK"; 
  dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QWb54vQPzDrgl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 05:56:46 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id v14so3743747wrr.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 12:56:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QXFT1MtjzDrhc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 06:26:36 +1000 (AEST)
+Received: by mail-oi1-x244.google.com with SMTP id m206so2860026oib.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 13:26:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=tkfIkc5EEziIC8JttuF44VEsntcOdSTSm668OicBieA=;
- b=qIH+M8u6ZHF56mysF2rv7LgxnEGFYR951cqj5/ufPiitDHFKDiSzyDgKT0UHHa7Rtw
- dCXyZoQ6PxgjU7i8iacuMREE1//5Vxt/sdt6LkWWPiUaLa9Wz4tVFuXy8BYpCscurA4B
- +BFnfpmmTNMht6wpoSgG+h+cw9fRpSX+PYwNQOEQ3eAaBm/QcK6prEkZ/YDSnHqTx8Ij
- HIztDKPZmech4lNjF6gFc9Y38nNiOgwnw5Vx28LAx6Rgf8d0OQziAe8/XsJbFo0do1i1
- 5bF8GfolMUILyUmsiSsazQMP4VdVln41Tu2/oJcriwLdUKKtyvakmU4ae1CRgzDAuDbh
- YjIQ==
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Hu6UH6SAxMoZ+zdg3c2COyOtX79gFZR/VtwmhecH8dA=;
+ b=o3N5dXiKLQ9PbDeRIB98rfVh15PxoVFa/1ufQzJRNpgABUqbXosiApy2K7CWnu2aFD
+ lptSKRX1xOc2/Zt5x5tc1uypFmRuOfUjlR1XzP+CMxmQijfWhcAJWJ6hQZO/28zmqhMu
+ ZZWs09so+lam17Oqi0ATZLBRk2R90J8lyxq5m2cKDJ6z0QdTrYTWgX2CG6kbO5VtTq/C
+ HVVB4iWvAUoIhVRd1sRZmKBbAV4u+Gs+PblKIbCyDifVZ8qXaUf9fpXu+R7YQS4sOVgV
+ SYMWYwzNgoKTsz+wYF2ceul3EWIC8IquOZzyX5r46poJ2lIi8oFLO9yWjpaoOZfsyK6p
+ aZwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=tkfIkc5EEziIC8JttuF44VEsntcOdSTSm668OicBieA=;
- b=eGuCSOAH8fWHxmW/0S3Q46OobvUMOzxBt2PSz+8Vtkv9oJfqhG4bFELQCojsMW3dWM
- FO6J3syXVG/RlbCOyplryDahcewqKImMcUYwZTVMCfYSbDSXZIYWGocdxjz/jvPf02pt
- 3eUWwGWZ8I48/HuecXtcoZ+7AHE1fK8agJEBHIg7Wdi442PX4Xjipa8DK4Yv4u3jayr6
- hjUG1A3Zi0r7KotJrwL1G/zIXEknDoul0u0d11gsImOkL1bZ5ryymrQcq+RZ3pG2xlDN
- x94efRCKy3/vV37zEHdwCzGFr2owrpQenDf66mHAZW2hIQyroxihyUL/bciUa3HMnOyv
- RZoA==
-X-Gm-Message-State: APjAAAWL9Ol7nPJgnuqWbHyuIdNUcuBF93yAuMES3sfRuz0z0DJb3REq
- hMGzqYoBEa7dNsxVKpkGJ5U=
-X-Google-Smtp-Source: APXvYqz4dnTX5FOuo1+mrF9OWokv0GO2DjUQU5Onl8cJM/+eoB8LwPhxf3ttG4o9SNRjq4RoASQQQg==
-X-Received: by 2002:a5d:6389:: with SMTP id p9mr52574643wru.297.1560542202338; 
- Fri, 14 Jun 2019 12:56:42 -0700 (PDT)
-Received: from debian64.daheim (pD9E29824.dip0.t-ipconnect.de.
- [217.226.152.36])
- by smtp.gmail.com with ESMTPSA id a19sm2447233wmm.46.2019.06.14.12.56.40
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 14 Jun 2019 12:56:41 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
- by debian64.daheim with esmtp (Exim 4.92)
- (envelope-from <chunkeey@gmail.com>)
- id 1hbsJU-0007ny-CJ; Fri, 14 Jun 2019 21:56:40 +0200
-From: Christian Lamparter <chunkeey@gmail.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc: Enable kernel XZ compression option on PPC_85xx
-Date: Fri, 14 Jun 2019 21:56:40 +0200
-Message-ID: <4407251.g26ZO3zR3C@debian64>
-In-Reply-To: <f988951c-3077-ab19-81eb-560418468d14@c-s.fr>
-References: <20190603164115.27471-1-paweldembicki@gmail.com>
- <87ftodempa.fsf@concordia.ellerman.id.au>
- <f988951c-3077-ab19-81eb-560418468d14@c-s.fr>
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Hu6UH6SAxMoZ+zdg3c2COyOtX79gFZR/VtwmhecH8dA=;
+ b=lRi2ZNTt+tQwQWEEUiEQrmy9Etd5a84vpTqbRea7eU6p39hkMjIuU0U94R1hhEJba3
+ NrNi7O0QuyB8goPr0XAJvmKeTbZqt3hyNCPwP1jLw4pekxDs4CteiJeNGcUbmpN0sLX4
+ CroHoFzhNHVnGNdq4gYgE1waTrdayjI6IC06v738L4waXpeypMyIKZYycWiNOan8PbqL
+ 7VBfprwgLRcxvixZvKa53ydJzAZZj2pnJBZltDySAHbQnj0gZJxHovaaWkTQusBx/9v5
+ uZHd5OVPwgvrmsUY7H47eRNzGytsf5XSMgIZ3V3PfIrYLah3ccJuuGVQEcyChAKxWcSQ
+ 2eiA==
+X-Gm-Message-State: APjAAAWDpTEew7j+eQOAizIZeFaz71webABScc46Lr2NqRGDNWrofmzZ
+ ghOav3rekU8JbuPTWqSn9ns=
+X-Google-Smtp-Source: APXvYqypZyd7CSFEGroYYb1iKjlsO3SWJUCtaP6WveZciRKaw0cfbgSxgbaQDgwzxZnfKZpsek1gNw==
+X-Received: by 2002:aca:3d54:: with SMTP id k81mr2811911oia.111.1560543992838; 
+ Fri, 14 Jun 2019 13:26:32 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id q2sm1532873oia.45.2019.06.14.13.26.31
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Fri, 14 Jun 2019 13:26:32 -0700 (PDT)
+Subject: Re: [PATCH] powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Mathieu Malaterre <malat@debian.org>
+References: <20190613082446.18685-1-hch@lst.de>
+ <CA+7wUswMtpVCoX0H5eF=GUY8jWDAEWa9Z223tKiKHiL69hhHtQ@mail.gmail.com>
+ <20190614191532.GC27145@darkstar.musicnaut.iki.fi>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <d508cc9c-435f-4108-17ac-6db74640514c@lwfinger.net>
+Date: Fri, 14 Jun 2019 15:26:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+In-Reply-To: <20190614191532.GC27145@darkstar.musicnaut.iki.fi>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,95 +85,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Pawel Dembicki <paweldembicki@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: LKML <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday, June 14, 2019 12:06:48 PM CEST Christophe Leroy wrote:
->=20
-> Le 13/06/2019 =E0 13:42, Michael Ellerman a =E9crit :
-> > Daniel Axtens <dja@axtens.net> writes:
-> >> Pawel Dembicki <paweldembicki@gmail.com> writes:
-> >>
-> >>> Enable kernel XZ compression option on PPC_85xx. Tested with
-> >>> simpleImage on TP-Link TL-WDR4900 (Freescale P1014 processor).
-> >>>
-> >>> Suggested-by: Christian Lamparter <chunkeey@gmail.com>
-> >>> Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-> >>> ---
-> >>>   arch/powerpc/Kconfig | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> >>> index 8c1c636308c8..daf4cb968922 100644
-> >>> --- a/arch/powerpc/Kconfig
-> >>> +++ b/arch/powerpc/Kconfig
-> >>> @@ -196,7 +196,7 @@ config PPC
-> >>>   	select HAVE_IOREMAP_PROT
-> >>>   	select HAVE_IRQ_EXIT_ON_IRQ_STACK
-> >>>   	select HAVE_KERNEL_GZIP
-> >>> -	select HAVE_KERNEL_XZ			if PPC_BOOK3S || 44x
-> >>> +	select HAVE_KERNEL_XZ			if PPC_BOOK3S || 44x || PPC_85xx
-> >>
-> >> (I'm not super well versed in the compression stuff, so apologies if
-> >> this is a dumb question.) If it's this simple, is there any reason we
-> >> can't turn it on generally, or convert it to a blacklist of platforms
-> >> known not to work?
-> >=20
-> > For some platforms enabling XZ requires that your u-boot has XZ support,
-> > and I'm not very clear on when that support landed in u-boot and what
-> > boards have it. And there are boards out there with old/custom u-boots
-> > that effectively can't be updated.
->=20
-> I don't think that it has anything to do with u-boot.
-> AFAIK, today's mainline U-boot only supports GZIP (by default) and the=20
-> following optional ones: LZO, LZMA, LZ4.
->=20
-> If we want to set additional compression types for u-boot, it is not=20
-> enough to select HAVE_KERNEL_XXXX, we also have to update uImage=20
-> generation scripts.
->=20
-> See the series I sent some time ago:=20
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D104153
-> I'll resent it without bzip2 as today's uboot doesn't support bzip2 anymo=
-re.
->=20
-> >=20
-> > But as a server guy I don't really know the details of all that very
-> > well. So if someone tells me that we should enable XZ for everything, or
-> > as you say just black list some platforms, then that's fine by me.
-> >=20
->=20
-> I guess we first need to understand how this is used.
->=20
+On 6/14/19 2:15 PM, Aaro Koskinen wrote:
+> Hi,
+> 
+> On Fri, Jun 14, 2019 at 09:24:16AM +0200, Mathieu Malaterre wrote:
+>> On Thu, Jun 13, 2019 at 10:27 AM Christoph Hellwig <hch@lst.de> wrote:
+>>> With the strict dma mask checking introduced with the switch to
+>>> the generic DMA direct code common wifi chips on 32-bit powerbooks
+>>> stopped working.  Add a 30-bit ZONE_DMA to the 32-bit pmac builds
+>>> to allow them to reliably allocate dma coherent memory.
+>>>
+>>> Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
+>>> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+>>> Signed-off-by: Christoph Hellwig <hch@lst.de>
+>>> ---
+>>>   arch/powerpc/include/asm/page.h         | 7 +++++++
+>>>   arch/powerpc/mm/mem.c                   | 3 ++-
+>>>   arch/powerpc/platforms/powermac/Kconfig | 1 +
+>>>   3 files changed, 10 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+>>> index b8286a2013b4..0d52f57fca04 100644
+>>> --- a/arch/powerpc/include/asm/page.h
+>>> +++ b/arch/powerpc/include/asm/page.h
+>>> @@ -319,6 +319,13 @@ struct vm_area_struct;
+>>>   #endif /* __ASSEMBLY__ */
+>>>   #include <asm/slice.h>
+>>>
+>>> +/*
+>>> + * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
+>>
+>> nit: would it be possible to mention explicit reference to b43-legacy.
+>> Using b43 on my macmini g4 never showed those symptoms (using
+>> 5.2.0-rc2+)
+> 
+> According to Wikipedia Mac mini G4 is limited to 1 GB RAM, so that's
+> why you don't see the issue.
 
-to add to the confusion:
+He wouldn't see it with b43. Those cards have 32-bit DMA.
 
-The powerpc arch is sort of special since it has the various targets have
-different arch/powerpc/boot/wrapper for everyone unfamiliar (people from
-ARM or other targets,) please look at:=20
-
-https://www.kernel.org/doc/Documentation/powerpc/bootwrapper.txt
-
-and see that this is very different from ARM, MIPS, x86, etc.
-
-I think the cuImage*, dtbImage*, simpleImage, etc... wouldn't
-be affected if the kernel is compressed by XZ, as in they should
-still boot fine, altough XZ takes a bit longer to unpack of course.
-
-However, for the uImage this could spell a problem, however "HAVE_KERNEL_XZ"
-does not automatically entail that the wrapper script from above
-compresses the generated uimage with LZMAd/xz. Instead this is controlled
-by init/Kconfig and the "Kernel compression mode" setting there.=20
-And currently that defaults to CONFIG_KERNEL_GZIP. So the wrapper script
-currently gzipped uImages unless the target config overwrites it to
-something else (and the target has the right=20
-HAVE_KERNEL_XZ/BZIP2/LZMA/LZO/LZ4/... as well).
-
-Regards,
-Christian
+Larry
 
 
