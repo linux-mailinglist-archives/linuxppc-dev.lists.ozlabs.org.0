@@ -1,95 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB26045FAD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 15:55:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50E445DE7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 15:16:34 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QLj92NKHzDrgM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 23:16:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QMZ949VqzDrdR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 23:55:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QLf43bMSzDrfN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45QLf41Qzqz8t30
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45QLf41BX5z9sBr; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="ltHpPMHD"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45QLf350KVz9s3l;
- Fri, 14 Jun 2019 23:13:47 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5ED7vRg118625; Fri, 14 Jun 2019 09:13:32 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t4bfvj5v2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2019 09:13:32 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5EDD25B005527;
- Fri, 14 Jun 2019 13:13:29 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04dal.us.ibm.com with ESMTP id 2t1xj31bd1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2019 13:13:29 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5EDDRSK36241758
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2019 13:13:27 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88C366A047;
- Fri, 14 Jun 2019 13:13:27 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 330316A05A;
- Fri, 14 Jun 2019 13:13:25 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.85.207.125])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jun 2019 13:13:24 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
- <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
- <20190614063443.GB17056@kroah.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-Message-ID: <2f4a3ab4-8e9c-a8fc-ba1a-71cf6a9fbb59@linux.vnet.ibm.com>
-Date: Fri, 14 Jun 2019 09:13:24 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QMSZ07J4zDrPl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 23:50:37 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2048120850;
+ Fri, 14 Jun 2019 13:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1560520233;
+ bh=Gko3ADTpWvlugdQMPv4rjs/zDLbwe8iI2q557FWXTvg=;
+ h=Date:From:To:Cc:Subject:From;
+ b=ltHpPMHDvmk9Z3+wJTqeqQP9O7ax8nr7Wa5CcXcH8MJJr2QlbKOmWdWJlA5jWp0ds
+ h5+4weyk1sPc8jQuVNQi13zHuCpxk1rTqdayPUF7n+uhbiZAnP0kCfB2nIGm8ta1wd
+ EF/y/ZZw5n5PM+1gO+GjMWMIZht3aOqWvUglAeeI=
+Date: Fri, 14 Jun 2019 15:50:31 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
+ Nayna Jain <nayna@linux.ibm.com>,
+ Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH] crypto: nx: no need to check return value of debugfs_create
+ functions
+Message-ID: <20190614135031.GA5809@kroah.com>
 MIME-Version: 1.0
-In-Reply-To: <20190614063443.GB17056@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-14_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906140111
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,229 +63,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, linux-integrity@vger.kernel.org,
- George Wilson <gcwilson@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When calling debugfs functions, there is no need to ever check the
+return value.  The function can work or not, but the code logic should
+never do something different based on this.
 
+Also, there is no need to store the individual debugfs file names,
+especially as the whole directiry is deleted at once, so remove the
+unneeded structure entirely.
 
-On 06/14/2019 02:34 AM, Greg Kroah-Hartman wrote:
-> On Thu, Jun 13, 2019 at 04:50:27PM -0400, Nayna Jain wrote:
->> As part of PowerNV secure boot support, OS verification keys are stored
->> and controlled by OPAL as secure variables. These need to be exposed to
->> the userspace so that sysadmins can perform key management tasks.
->>
->> This patch adds the support to expose secure variables via a sysfs
->> interface It reuses the the existing efi defined hooks and backend in
->> order to maintain the compatibility with the userspace tools.
->>
->> Though it reuses a great deal of efi, POWER platforms do not use EFI.
->> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
->> interface.
->>
->> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
->> ---
->>   arch/powerpc/Kconfig                 |   2 +
->>   drivers/firmware/Makefile            |   1 +
->>   drivers/firmware/efi/efivars.c       |   2 +-
->>   drivers/firmware/powerpc/Kconfig     |  12 +
->>   drivers/firmware/powerpc/Makefile    |   3 +
->>   drivers/firmware/powerpc/efi_error.c |  46 ++++
->>   drivers/firmware/powerpc/secvar.c    | 326 +++++++++++++++++++++++++++
->>   7 files changed, 391 insertions(+), 1 deletion(-)
->>   create mode 100644 drivers/firmware/powerpc/Kconfig
->>   create mode 100644 drivers/firmware/powerpc/Makefile
->>   create mode 100644 drivers/firmware/powerpc/efi_error.c
->>   create mode 100644 drivers/firmware/powerpc/secvar.c
-> If you add/remove/modify sysfs files, you also need to update the
-> relevant Documentation/ABI/ entry as well.  Please add something there
-> to describe your new files when you resend the next version of this
-> patch series.
->
->> diff --git a/drivers/firmware/powerpc/Kconfig b/drivers/firmware/powerpc/Kconfig
->> new file mode 100644
->> index 000000000000..e0303fc517d5
->> --- /dev/null
->> +++ b/drivers/firmware/powerpc/Kconfig
->> @@ -0,0 +1,12 @@
->> +config POWER_SECVAR_SYSFS
->> +	tristate "Enable sysfs interface for POWER secure variables"
->> +	default n
-> default is always n, no need to list it.
->
->> --- /dev/null
->> +++ b/drivers/firmware/powerpc/efi_error.c
->> @@ -0,0 +1,46 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Copyright (C) 2019 IBM Corporation
->> + * Author: Nayna Jain <nayna@linux.ibm.com>
->> + *
->> + * efi_error.c
->> + *      - Error codes as understood by efi based tools
->> + *      Taken from drivers/firmware/efi/efi.c
-> Why not just export the symbol from the original file instead of
-> duplicating it here?
->
->> +static int convert_buffer_to_efi_guid(u8 *buffer, efi_guid_t *guid)
->> +{
->> +	u32 *a1;
->> +	u16 *a2;
->> +	u16 *a3;
->> +
->> +	a1 = kzalloc(4, GFP_KERNEL);
-> No error checking in this function for memory issues at all?
->
->> +	memcpy(a1, buffer, 4);
->> +	*a1 = be32_to_cpu(*a1);
->> +
->> +	a2 = kzalloc(2, GFP_KERNEL);
->> +	memcpy(a2, buffer+4, 2);
->> +	*a2 = be16_to_cpu(*a2);
->> +
->> +	a3 = kzalloc(2, GFP_KERNEL);
->> +	memcpy(a3, buffer+6, 2);
->> +	*a3 = be16_to_cpu(*a3);
->> +
->> +	*guid = EFI_GUID(*a1, *a2, *a3, *(buffer + 8),
->> +			*(buffer + 9),
->> +			*(buffer + 10),
->> +			*(buffer + 11),
->> +			*(buffer + 12),
->> +			*(buffer + 13),
->> +			*(buffer + 14),
->> +			*(buffer + 15));
->> +
->> +	kfree(a1);
->> +	kfree(a2);
->> +	kfree(a3);
->> +	return 0;
->> +}
->> +static efi_status_t powerpc_get_next_variable(unsigned long *name_size,
->> +					      efi_char16_t *name,
->> +					      efi_guid_t *vendor)
->> +{
->> +	int rc;
->> +	u8 *key;
->> +	int namesize;
->> +	unsigned long keylen;
->> +	unsigned long keysize = 1024;
->> +	unsigned long *mdsize;
->> +	u8 *mdata = NULL;
->> +	efi_guid_t guid;
->> +
->> +	if (ucs2_strnlen(name, 1024) > 0) {
->> +		createkey(name, &key, &keylen);
->> +	} else {
->> +		keylen = 0;
->> +		key = kzalloc(1024, GFP_KERNEL);
->> +	}
->> +
->> +	pr_info("%s: powerpc get next variable, key is %s\n", __func__, key);
-> Don't put debugging info like this in the kernel log of everyone :(
->
->> +
->> +	rc = opal_get_next_variable(key, &keylen, keysize);
->> +	if (rc) {
->> +		kfree(key);
->> +		return opal_to_efi_status(rc);
->> +	}
->> +
->> +	mdsize = kzalloc(sizeof(unsigned long), GFP_KERNEL);
-> No error checking?
->
->> +	rc = opal_get_variable_size(key, keylen, mdsize, NULL);
->> +	if (rc)
->> +		goto out;
->> +
->> +	if (*mdsize <= 0)
->> +		goto out;
->> +
->> +	mdata = kzalloc(*mdsize, GFP_KERNEL);
->> +
->> +	rc = opal_get_variable(key, keylen, mdata, mdsize, NULL, NULL);
->> +	if (rc)
->> +		goto out;
->> +
->> +	if (*mdsize > 0) {
->> +		namesize = *mdsize - sizeof(efi_guid_t) - sizeof(u32);
->> +		if (namesize > 0) {
->> +			memset(&guid, 0, sizeof(efi_guid_t));
->> +			convert_buffer_to_efi_guid(mdata + namesize, &guid);
->> +			memcpy(vendor, &guid, sizeof(efi_guid_t));
->> +			memset(name, 0, namesize + 2);
->> +			memcpy(name, mdata, namesize);
->> +			*name_size = namesize + 2;
->> +			name[namesize++] = 0;
->> +			name[namesize] = 0;
->> +		}
->> +	}
->> +
->> +out:
->> +	kfree(mdsize);
->> +	kfree(mdata);
->> +
->> +	return opal_to_efi_status(rc);
->> +}
->> +
->> +static efi_status_t powerpc_set_variable(efi_char16_t *name, efi_guid_t *vendor,
->> +					 u32 attr, unsigned long data_size,
->> +					 void *data)
->> +{
->> +	int rc;
->> +	u8 *key;
->> +	unsigned long keylen;
->> +	u8 *metadata;
->> +	unsigned long mdsize;
->> +
->> +	if (!name)
->> +		return EFI_INVALID_PARAMETER;
->> +
->> +	if (!vendor)
->> +		return EFI_INVALID_PARAMETER;
->> +
->> +	createkey(name, &key, &keylen);
->> +	pr_info("%s: nayna key is %s\n", __func__, key);
-> Again, please remove all of your debugging code when resending.
->
->> +
->> +	createmetadata(name, vendor, &attr, &metadata, &mdsize);
->> +
->> +	rc = opal_set_variable(key, keylen, metadata, mdsize, data, data_size);
->> +
->> +	return opal_to_efi_status(rc);
->> +}
->> +
->> +
->> +static const struct efivar_operations efivar_ops = {
->> +	.get_variable = powerpc_get_variable,
->> +	.set_variable = powerpc_set_variable,
->> +	.get_next_variable = powerpc_get_next_variable,
->> +};
->> +
->> +
->> +static __init int power_secvar_init(void)
->> +{
->> +	int rc = 0;
->> +	unsigned long ver = 0;
->> +
->> +	rc = opal_variable_version(&ver);
->> +	if (ver != BACKEND_TC_COMPAT_V1) {
->> +		pr_info("Compatible backend unsupported\n");
->> +		return -1;
-> Do not make up error numbers, use the defined values please.
+Cc: "Breno Leit�o" <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/crypto/nx/nx.c         |  4 +-
+ drivers/crypto/nx/nx.h         | 12 +-----
+ drivers/crypto/nx/nx_debugfs.c | 71 +++++++++++-----------------------
+ 3 files changed, 26 insertions(+), 61 deletions(-)
 
-Thanks Greg for the review !!
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 3a5e31be4764..20b5e276f184 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -581,9 +581,7 @@ static int nx_register_algs(void)
+ 
+ 	memset(&nx_driver.stats, 0, sizeof(struct nx_stats));
+ 
+-	rc = NX_DEBUGFS_INIT(&nx_driver);
+-	if (rc)
+-		goto out;
++	NX_DEBUGFS_INIT(&nx_driver);
+ 
+ 	nx_driver.of.status = NX_OKAY;
+ 
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index c3e54af18645..c6b5a3be02be 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -76,20 +76,12 @@ struct nx_stats {
+ 	atomic_t last_error_pid;
+ };
+ 
+-struct nx_debugfs {
+-	struct dentry *dfs_root;
+-	struct dentry *dfs_aes_ops, *dfs_aes_bytes;
+-	struct dentry *dfs_sha256_ops, *dfs_sha256_bytes;
+-	struct dentry *dfs_sha512_ops, *dfs_sha512_bytes;
+-	struct dentry *dfs_errors, *dfs_last_error, *dfs_last_error_pid;
+-};
+-
+ struct nx_crypto_driver {
+ 	struct nx_stats    stats;
+ 	struct nx_of       of;
+ 	struct vio_dev    *viodev;
+ 	struct vio_driver  viodriver;
+-	struct nx_debugfs  dfs;
++	struct dentry     *dfs_root;
+ };
+ 
+ #define NX_GCM4106_NONCE_LEN		(4)
+@@ -177,7 +169,7 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
+ #define NX_DEBUGFS_INIT(drv)	nx_debugfs_init(drv)
+ #define NX_DEBUGFS_FINI(drv)	nx_debugfs_fini(drv)
+ 
+-int nx_debugfs_init(struct nx_crypto_driver *);
++void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+ #define NX_DEBUGFS_INIT(drv)	(0)
+diff --git a/drivers/crypto/nx/nx_debugfs.c b/drivers/crypto/nx/nx_debugfs.c
+index 7ab2e8dcd9b4..3aa80a6e34a1 100644
+--- a/drivers/crypto/nx/nx_debugfs.c
++++ b/drivers/crypto/nx/nx_debugfs.c
+@@ -42,62 +42,37 @@
+  * Documentation/ABI/testing/debugfs-pfo-nx-crypto
+  */
+ 
+-int nx_debugfs_init(struct nx_crypto_driver *drv)
++void nx_debugfs_init(struct nx_crypto_driver *drv)
+ {
+-	struct nx_debugfs *dfs = &drv->dfs;
++	struct dentry *root;
+ 
+-	dfs->dfs_root = debugfs_create_dir(NX_NAME, NULL);
++	root = debugfs_create_dir(NX_NAME, NULL);
++	drv->dfs_root = root;
+ 
+-	dfs->dfs_aes_ops =
+-		debugfs_create_u32("aes_ops",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root, (u32 *)&drv->stats.aes_ops);
+-	dfs->dfs_sha256_ops =
+-		debugfs_create_u32("sha256_ops",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u32 *)&drv->stats.sha256_ops);
+-	dfs->dfs_sha512_ops =
+-		debugfs_create_u32("sha512_ops",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u32 *)&drv->stats.sha512_ops);
+-	dfs->dfs_aes_bytes =
+-		debugfs_create_u64("aes_bytes",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u64 *)&drv->stats.aes_bytes);
+-	dfs->dfs_sha256_bytes =
+-		debugfs_create_u64("sha256_bytes",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u64 *)&drv->stats.sha256_bytes);
+-	dfs->dfs_sha512_bytes =
+-		debugfs_create_u64("sha512_bytes",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u64 *)&drv->stats.sha512_bytes);
+-	dfs->dfs_errors =
+-		debugfs_create_u32("errors",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root, (u32 *)&drv->stats.errors);
+-	dfs->dfs_last_error =
+-		debugfs_create_u32("last_error",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u32 *)&drv->stats.last_error);
+-	dfs->dfs_last_error_pid =
+-		debugfs_create_u32("last_error_pid",
+-				   S_IRUSR | S_IRGRP | S_IROTH,
+-				   dfs->dfs_root,
+-				   (u32 *)&drv->stats.last_error_pid);
+-	return 0;
++	debugfs_create_u32("aes_ops", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u32 *)&drv->stats.aes_ops);
++	debugfs_create_u32("sha256_ops", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u32 *)&drv->stats.sha256_ops);
++	debugfs_create_u32("sha512_ops", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u32 *)&drv->stats.sha512_ops);
++	debugfs_create_u64("aes_bytes", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u64 *)&drv->stats.aes_bytes);
++	debugfs_create_u64("sha256_bytes", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u64 *)&drv->stats.sha256_bytes);
++	debugfs_create_u64("sha512_bytes", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u64 *)&drv->stats.sha512_bytes);
++	debugfs_create_u32("errors", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u32 *)&drv->stats.errors);
++	debugfs_create_u32("last_error", S_IRUSR | S_IRGRP | S_IROTH,
++			   root, (u32 *)&drv->stats.last_error);
++	debugfs_create_u32("last_error_pid", S_IRUSR | S_IRGRP | S_IROTH,
++			   dfs_root, (u32 *)&drv->stats.last_error_pid);
+ }
+ 
+ void
+ nx_debugfs_fini(struct nx_crypto_driver *drv)
+ {
+-	debugfs_remove_recursive(drv->dfs.dfs_root);
++	debugfs_remove_recursive(drv->dfs_root);
+ }
+ 
+ #endif
+-- 
+2.22.0
 
-I will address everything in the next version.
-
-Thanks & Regards,
-         - Nayna
