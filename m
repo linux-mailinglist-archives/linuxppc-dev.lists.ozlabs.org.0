@@ -2,81 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3675546399
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 18:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D0C463D4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 18:18:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QQQc3T4DzDrnR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 02:04:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QQkf23M6zDrh7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 02:18:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="W3Hqbykg"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QQ0F57mkzDrSC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 01:44:45 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5EFhL18064804
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 11:44:43 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t4crpnbck-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 11:44:42 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Fri, 14 Jun 2019 16:44:41 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 14 Jun 2019 16:44:39 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5EFic7C47579356
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2019 15:44:38 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C35C11C05B;
- Fri, 14 Jun 2019 15:44:38 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94DCF11C04C;
- Fri, 14 Jun 2019 15:44:36 +0000 (GMT)
-Received: from naverao1-tp.ibmuc.com (unknown [9.85.70.176])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jun 2019 15:44:36 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 9/9] powerpc/pseries: Add documentation for
- vcpudispatch_stats
-Date: Fri, 14 Jun 2019 21:14:07 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1560526066.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1560526066.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QQhl5psBzDrTQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 02:16:23 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5AFD12084E;
+ Fri, 14 Jun 2019 16:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1560528981;
+ bh=nc6Gu5WBuukhttllfbWpI15h3ZGPSrpGNeXbIbz0ozA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=W3HqbykgRzdLv007Fa8DMJ6Kl9yBBdM5dM7hEe6w6/BmYne48hzMVGPojn41NRg+X
+ XFl3RtVlQ6wQmWCQ26AzbUtsa1a3EzKI/xREY4FW1fTjzKYCyGiqINBlk2M+nLJMQy
+ UD3crjifc+POF6aRF0+jbAnSYZenE2AX1jpaSB1w=
+Date: Fri, 14 Jun 2019 18:16:18 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Subject: Re: [PATCH 01/14] ABI: fix some syntax issues at the ABI database
+Message-ID: <20190614161618.GA23190@kroah.com>
+References: <cover.1560477540.git.mchehab+samsung@kernel.org>
+ <b908fc6555df8cae3e4c734b2d5f6284c46a5f14.1560477540.git.mchehab+samsung@kernel.org>
+ <1ef7b765-da34-c65b-a226-f17969935ce2@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061415-0008-0000-0000-000002F3CCA0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061415-0009-0000-0000-00002260D7A4
-Message-Id: <a95e04ec8dc8cf54a58ae9f7f90cf8643c8dc55c.1560526066.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-14_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906140130
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ef7b765-da34-c65b-a226-f17969935ce2@linux.ibm.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,96 +60,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mingming Cao <mingming.cao@ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Tony Luck <tony.luck@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
+ Mauro Carvalho Chehab <mchehab@s-opensource.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Colin Cross <ccross@android.com>,
+ linux-pm@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>,
+ Peter Meerwald-Stadler <pmeerw@pmeerw.net>, Hartmut Knaack <knaack.h@gmx.de>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Anton Vorontsov <anton@enomsg.org>,
+ Jonathan Cameron <jic23@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a document describing the fields provided by
-/proc/powerpc/vcpudispatch_stats.
+On Fri, Jun 14, 2019 at 05:20:29PM +1000, Andrew Donnellan wrote:
+> On 14/6/19 12:04 pm, Mauro Carvalho Chehab wrote:
+> > diff --git a/Documentation/ABI/testing/sysfs-class-cxl b/Documentation/ABI/testing/sysfs-class-cxl
+> > index bbbabffc682a..fc7c6f7c21b3 100644
+> > --- a/Documentation/ABI/testing/sysfs-class-cxl
+> > +++ b/Documentation/ABI/testing/sysfs-class-cxl
+> > @@ -1,6 +1,6 @@
+> > -Note: Attributes that are shared between devices are stored in the directory
+> > -pointed to by the symlink device/.
+> > -Example: The real path of the attribute /sys/class/cxl/afu0.0s/irqs_max is
+> > +Please notice that attributes that are shared between devices are stored in
+> 
+> Would prefer "Please note" over "Please notice".
 
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- Documentation/powerpc/vcpudispatch_stats.txt | 68 ++++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 Documentation/powerpc/vcpudispatch_stats.txt
+Now changed, but that's a minor grammer thing, both are correct. :)
 
-diff --git a/Documentation/powerpc/vcpudispatch_stats.txt b/Documentation/powerpc/vcpudispatch_stats.txt
-new file mode 100644
-index 000000000000..e21476bfd78c
---- /dev/null
-+++ b/Documentation/powerpc/vcpudispatch_stats.txt
-@@ -0,0 +1,68 @@
-+VCPU Dispatch Statistics:
-+=========================
-+
-+For Shared Processor LPARs, the POWER Hypervisor maintains a relatively
-+static mapping of the LPAR processors (vcpus) to physical processor
-+chips (representing the "home" node) and tries to always dispatch vcpus
-+on their associated physical processor chip. However, under certain
-+scenarios, vcpus may be dispatched on a different processor chip (away
-+from its home node).
-+
-+/proc/powerpc/vcpudispatch_stats can be used to obtain statistics
-+related to the vcpu dispatch behavior. Writing '1' to this file enables
-+collecting the statistics, while writing '0' disables the statistics.
-+By default, the DTLB log for each vcpu is processed 50 times a second so
-+as not to miss any entries. This processing frequency can be changed
-+through /proc/powerpc/vcpudispatch_stats_freq.
-+
-+The statistics themselves are available by reading the procfs file
-+/proc/powerpc/vcpudispatch_stats. Each line in the output corresponds to
-+a vcpu as represented by the first field, followed by 8 numbers.
-+
-+The first number corresponds to:
-+1. total vcpu dispatches since the beginning of statistics collection
-+
-+The next 4 numbers represent vcpu dispatch dispersions:
-+2. number of times this vcpu was dispatched on the same processor as last
-+   time
-+3. number of times this vcpu was dispatched on a different processor core
-+   as last time, but within the same chip
-+4. number of times this vcpu was dispatched on a different chip
-+5. number of times this vcpu was dispatches on a different socket/drawer
-+(next numa boundary)
-+
-+The final 3 numbers represent statistics in relation to the home node of
-+the vcpu:
-+6. number of times this vcpu was dispatched in its home node (chip)
-+7. number of times this vcpu was dispatched in a different node
-+8. number of times this vcpu was dispatched in a node further away (numa
-+distance)
-+
-+An example output:
-+    $ sudo cat /proc/powerpc/vcpudispatch_stats
-+    cpu0 6839 4126 2683 30 0 6821 18 0
-+    cpu1 2515 1274 1229 12 0 2509 6 0
-+    cpu2 2317 1198 1109 10 0 2312 5 0
-+    cpu3 2259 1165 1088 6 0 2256 3 0
-+    cpu4 2205 1143 1056 6 0 2202 3 0
-+    cpu5 2165 1121 1038 6 0 2162 3 0
-+    cpu6 2183 1127 1050 6 0 2180 3 0
-+    cpu7 2193 1133 1052 8 0 2187 6 0
-+    cpu8 2165 1115 1032 18 0 2156 9 0
-+    cpu9 2301 1252 1033 16 0 2293 8 0
-+    cpu10 2197 1138 1041 18 0 2187 10 0
-+    cpu11 2273 1185 1062 26 0 2260 13 0
-+    cpu12 2186 1125 1043 18 0 2177 9 0
-+    cpu13 2161 1115 1030 16 0 2153 8 0
-+    cpu14 2206 1153 1033 20 0 2196 10 0
-+    cpu15 2163 1115 1032 16 0 2155 8 0
-+
-+In the output above, for vcpu0, there have been 6839 dispatches since
-+statistics were enabled. 4126 of those dispatches were on the same
-+physical cpu as the last time. 2683 were on a different core, but within
-+the same chip, while 30 dispatches were on a different chip compared to
-+its last dispatch.
-+
-+Also, out of the total of 6839 dispatches, we see that there have been
-+6821 dispatches on the vcpu's home node, while 18 dispatches were
-+outside its home node, on a neighbouring chip.
--- 
-2.21.0
+> Acked-by: Andrew Donnellan <ajd@linux.ibm.com>  # cxl
 
+thanks,
+
+greg k-h
