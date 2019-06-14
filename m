@@ -1,90 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD62445B85
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 13:34:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QJRQ6dZczDrfs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 21:34:26 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50E445DE7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 15:16:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QLj92NKHzDrgM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 23:16:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=2a01:111:f400:fe08::631;
- helo=eur03-am5-obe.outbound.protection.outlook.com;
- envelope-from=horia.geanta@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="YxYlAoR0"; 
- dkim-atps=neutral
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com
- (mail-am5eur03on0631.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe08::631])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QLf43bMSzDrfN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45QLf41Qzqz8t30
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45QLf41BX5z9sBr; Fri, 14 Jun 2019 23:13:48 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QJPS3nSCzDrdb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 21:32:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f8fb3bJeZuVjmnFNb8No/0pPhO7hT4QzZSieGtZBDrA=;
- b=YxYlAoR06DejnMeEFeYyWbfX1LNN1fBLl0ANo4uN3F+vTapuBfThtrdNd0hlVfFYctzn8j7r5KlyHrcVgx/z6KB6GTkeyJBWna6D/J+UKJcvPjsI3ye1safZNFEHifAtE2u3XcoB34gdYIY3N80iYXAUw4pfxTSW6xNKmotmUpc=
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com (52.134.3.153) by
- VI1PR0402MB3853.eurprd04.prod.outlook.com (52.134.16.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.11; Fri, 14 Jun 2019 11:32:32 +0000
-Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::ccaf:f4a1:704a:e745]) by VI1PR0402MB3485.eurprd04.prod.outlook.com
- ([fe80::ccaf:f4a1:704a:e745%4]) with mapi id 15.20.1987.012; Fri, 14 Jun 2019
- 11:32:31 +0000
-From: Horia Geanta <horia.geanta@nxp.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3 2/4] crypto: talitos - fix hash on SEC1.
-Thread-Topic: [PATCH v3 2/4] crypto: talitos - fix hash on SEC1.
-Thread-Index: AQHVIeZZjrISGczaNEaQ63Pip1dkoQ==
-Date: Fri, 14 Jun 2019 11:32:31 +0000
-Message-ID: <VI1PR0402MB34855C37F53DC1012DAF670798EE0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
-References: <cover.1560429844.git.christophe.leroy@c-s.fr>
- <732ca0ff440bf4cd589d844cfda71d96efd500f5.1560429844.git.christophe.leroy@c-s.fr>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=horia.geanta@nxp.com; 
-x-originating-ip: [212.146.100.6]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 58372b73-6d99-40b6-7d67-08d6f0bbfd59
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VI1PR0402MB3853; 
-x-ms-traffictypediagnostic: VI1PR0402MB3853:
-x-microsoft-antispam-prvs: <VI1PR0402MB3853FE478ADAD9714EB90B3C98EE0@VI1PR0402MB3853.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 0068C7E410
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(979002)(376002)(396003)(366004)(136003)(346002)(39860400002)(199004)(189003)(305945005)(99286004)(14454004)(316002)(66446008)(7736002)(7696005)(110136005)(71200400001)(66556008)(2906002)(76176011)(66476007)(446003)(66066001)(66946007)(71190400001)(73956011)(55016002)(102836004)(3846002)(74316002)(6116002)(76116006)(54906003)(86362001)(6436002)(229853002)(478600001)(64756008)(14444005)(81156014)(81166006)(6246003)(8936002)(33656002)(4326008)(52536014)(9686003)(486006)(25786009)(8676002)(53936002)(186003)(5660300002)(53546011)(6506007)(44832011)(26005)(256004)(68736007)(476003)(969003)(989001)(999001)(1009001)(1019001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0402MB3853;
- H:VI1PR0402MB3485.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: xCpkA+4QuZX9q0Eoy+DJOpnFpJBGwzdMHn2buG6bL/pNKwrvwEQRpJcAwSIQNuM1nTcZHPQlC3FyL6o5/ABQIJDPHXUgKJUWbNQ7iAYv44/HH1Ty5jhaxUVH+TkbfzAhOgN7h5CwSQWlgZHQJoKiN53PlAlyQ6lb3XaZe8EZBOpHuTAnrLDAVKOyPyf70Go7Z5wgndlU0JjBKVO44ApYB8ZeJ8+j3CTtg8NYMgAZvfP9mTk2G5YLke50RanwDB6xJSky+1gBZm5MpbJdHTgbQ3tTcV+3wmXvc8bkYYgjCqDqPp8qWJdYKnWisXIJi+3D/N1YdS0QIfnYNthFcqD8+EarLlOP9SIkCon7TatkPb1SrYRNbc93SVgMsSq2hR+fZxETezIfKWlqRLouKX59pykE0fJD7A1Df0leHPTJkUA=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by ozlabs.org (Postfix) with ESMTPS id 45QLf350KVz9s3l;
+ Fri, 14 Jun 2019 23:13:47 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5ED7vRg118625; Fri, 14 Jun 2019 09:13:32 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t4bfvj5v2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jun 2019 09:13:32 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5EDD25B005527;
+ Fri, 14 Jun 2019 13:13:29 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 2t1xj31bd1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jun 2019 13:13:29 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5EDDRSK36241758
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jun 2019 13:13:27 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 88C366A047;
+ Fri, 14 Jun 2019 13:13:27 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 330316A05A;
+ Fri, 14 Jun 2019 13:13:25 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.85.207.125])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jun 2019 13:13:24 +0000 (GMT)
+Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
+ <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
+ <20190614063443.GB17056@kroah.com>
+From: Nayna <nayna@linux.vnet.ibm.com>
+Message-ID: <2f4a3ab4-8e9c-a8fc-ba1a-71cf6a9fbb59@linux.vnet.ibm.com>
+Date: Fri, 14 Jun 2019 09:13:24 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58372b73-6d99-40b6-7d67-08d6f0bbfd59
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2019 11:32:31.7675 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: horia.geanta@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3853
+In-Reply-To: <20190614063443.GB17056@kroah.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-14_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906140111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,53 +101,229 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Matthew Garret <matthew.garret@nebula.com>, linuxppc-dev@ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
+ Elaine Palmer <erpalmer@us.ibm.com>, linux-integrity@vger.kernel.org,
+ George Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/13/2019 3:48 PM, Christophe Leroy wrote:=0A=
-> @@ -336,15 +336,18 @@ static void flush_channel(struct device *dev, int c=
-h, int error, int reset_ch)=0A=
->  	tail =3D priv->chan[ch].tail;=0A=
->  	while (priv->chan[ch].fifo[tail].desc) {=0A=
->  		__be32 hdr;=0A=
-> +		struct talitos_edesc *edesc;=0A=
->  =0A=
->  		request =3D &priv->chan[ch].fifo[tail];=0A=
-> +		edesc =3D container_of(request->desc, struct talitos_edesc, desc);=0A=
-Not needed for all cases, should be moved to the block that uses it.=0A=
-=0A=
->  =0A=
->  		/* descriptors with their done bits set don't get the error */=0A=
->  		rmb();=0A=
->  		if (!is_sec1)=0A=
->  			hdr =3D request->desc->hdr;=0A=
->  		else if (request->desc->next_desc)=0A=
-> -			hdr =3D (request->desc + 1)->hdr1;=0A=
-> +			hdr =3D ((struct talitos_desc *)=0A=
-> +			       (edesc->buf + edesc->dma_len))->hdr1;=0A=
->  		else=0A=
->  			hdr =3D request->desc->hdr1;=0A=
->  =0A=
-[snip]=0A=
-> @@ -2058,7 +2065,18 @@ static int ahash_process_req(struct ahash_request =
-*areq, unsigned int nbytes)=0A=
->  		sg_copy_to_buffer(areq->src, nents,=0A=
->  				  ctx_buf + req_ctx->nbuf, offset);=0A=
->  		req_ctx->nbuf +=3D offset;=0A=
-> -		req_ctx->psrc =3D areq->src;=0A=
-> +		for (sg =3D areq->src; sg && offset >=3D sg->length;=0A=
-> +		     offset -=3D sg->length, sg =3D sg_next(sg))=0A=
-> +			;=0A=
-> +		if (offset) {=0A=
-> +			sg_init_table(req_ctx->bufsl, 2);=0A=
-> +			sg_set_buf(req_ctx->bufsl, sg_virt(sg) + offset,=0A=
-> +				   sg->length - offset);=0A=
-> +			sg_chain(req_ctx->bufsl, 2, sg_next(sg));=0A=
-> +			req_ctx->psrc =3D req_ctx->bufsl;=0A=
-Isn't this what scatterwalk_ffwd() does?=0A=
-=0A=
-Horia=0A=
+
+
+On 06/14/2019 02:34 AM, Greg Kroah-Hartman wrote:
+> On Thu, Jun 13, 2019 at 04:50:27PM -0400, Nayna Jain wrote:
+>> As part of PowerNV secure boot support, OS verification keys are stored
+>> and controlled by OPAL as secure variables. These need to be exposed to
+>> the userspace so that sysadmins can perform key management tasks.
+>>
+>> This patch adds the support to expose secure variables via a sysfs
+>> interface It reuses the the existing efi defined hooks and backend in
+>> order to maintain the compatibility with the userspace tools.
+>>
+>> Though it reuses a great deal of efi, POWER platforms do not use EFI.
+>> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
+>> interface.
+>>
+>> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+>> ---
+>>   arch/powerpc/Kconfig                 |   2 +
+>>   drivers/firmware/Makefile            |   1 +
+>>   drivers/firmware/efi/efivars.c       |   2 +-
+>>   drivers/firmware/powerpc/Kconfig     |  12 +
+>>   drivers/firmware/powerpc/Makefile    |   3 +
+>>   drivers/firmware/powerpc/efi_error.c |  46 ++++
+>>   drivers/firmware/powerpc/secvar.c    | 326 +++++++++++++++++++++++++++
+>>   7 files changed, 391 insertions(+), 1 deletion(-)
+>>   create mode 100644 drivers/firmware/powerpc/Kconfig
+>>   create mode 100644 drivers/firmware/powerpc/Makefile
+>>   create mode 100644 drivers/firmware/powerpc/efi_error.c
+>>   create mode 100644 drivers/firmware/powerpc/secvar.c
+> If you add/remove/modify sysfs files, you also need to update the
+> relevant Documentation/ABI/ entry as well.  Please add something there
+> to describe your new files when you resend the next version of this
+> patch series.
+>
+>> diff --git a/drivers/firmware/powerpc/Kconfig b/drivers/firmware/powerpc/Kconfig
+>> new file mode 100644
+>> index 000000000000..e0303fc517d5
+>> --- /dev/null
+>> +++ b/drivers/firmware/powerpc/Kconfig
+>> @@ -0,0 +1,12 @@
+>> +config POWER_SECVAR_SYSFS
+>> +	tristate "Enable sysfs interface for POWER secure variables"
+>> +	default n
+> default is always n, no need to list it.
+>
+>> --- /dev/null
+>> +++ b/drivers/firmware/powerpc/efi_error.c
+>> @@ -0,0 +1,46 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2019 IBM Corporation
+>> + * Author: Nayna Jain <nayna@linux.ibm.com>
+>> + *
+>> + * efi_error.c
+>> + *      - Error codes as understood by efi based tools
+>> + *      Taken from drivers/firmware/efi/efi.c
+> Why not just export the symbol from the original file instead of
+> duplicating it here?
+>
+>> +static int convert_buffer_to_efi_guid(u8 *buffer, efi_guid_t *guid)
+>> +{
+>> +	u32 *a1;
+>> +	u16 *a2;
+>> +	u16 *a3;
+>> +
+>> +	a1 = kzalloc(4, GFP_KERNEL);
+> No error checking in this function for memory issues at all?
+>
+>> +	memcpy(a1, buffer, 4);
+>> +	*a1 = be32_to_cpu(*a1);
+>> +
+>> +	a2 = kzalloc(2, GFP_KERNEL);
+>> +	memcpy(a2, buffer+4, 2);
+>> +	*a2 = be16_to_cpu(*a2);
+>> +
+>> +	a3 = kzalloc(2, GFP_KERNEL);
+>> +	memcpy(a3, buffer+6, 2);
+>> +	*a3 = be16_to_cpu(*a3);
+>> +
+>> +	*guid = EFI_GUID(*a1, *a2, *a3, *(buffer + 8),
+>> +			*(buffer + 9),
+>> +			*(buffer + 10),
+>> +			*(buffer + 11),
+>> +			*(buffer + 12),
+>> +			*(buffer + 13),
+>> +			*(buffer + 14),
+>> +			*(buffer + 15));
+>> +
+>> +	kfree(a1);
+>> +	kfree(a2);
+>> +	kfree(a3);
+>> +	return 0;
+>> +}
+>> +static efi_status_t powerpc_get_next_variable(unsigned long *name_size,
+>> +					      efi_char16_t *name,
+>> +					      efi_guid_t *vendor)
+>> +{
+>> +	int rc;
+>> +	u8 *key;
+>> +	int namesize;
+>> +	unsigned long keylen;
+>> +	unsigned long keysize = 1024;
+>> +	unsigned long *mdsize;
+>> +	u8 *mdata = NULL;
+>> +	efi_guid_t guid;
+>> +
+>> +	if (ucs2_strnlen(name, 1024) > 0) {
+>> +		createkey(name, &key, &keylen);
+>> +	} else {
+>> +		keylen = 0;
+>> +		key = kzalloc(1024, GFP_KERNEL);
+>> +	}
+>> +
+>> +	pr_info("%s: powerpc get next variable, key is %s\n", __func__, key);
+> Don't put debugging info like this in the kernel log of everyone :(
+>
+>> +
+>> +	rc = opal_get_next_variable(key, &keylen, keysize);
+>> +	if (rc) {
+>> +		kfree(key);
+>> +		return opal_to_efi_status(rc);
+>> +	}
+>> +
+>> +	mdsize = kzalloc(sizeof(unsigned long), GFP_KERNEL);
+> No error checking?
+>
+>> +	rc = opal_get_variable_size(key, keylen, mdsize, NULL);
+>> +	if (rc)
+>> +		goto out;
+>> +
+>> +	if (*mdsize <= 0)
+>> +		goto out;
+>> +
+>> +	mdata = kzalloc(*mdsize, GFP_KERNEL);
+>> +
+>> +	rc = opal_get_variable(key, keylen, mdata, mdsize, NULL, NULL);
+>> +	if (rc)
+>> +		goto out;
+>> +
+>> +	if (*mdsize > 0) {
+>> +		namesize = *mdsize - sizeof(efi_guid_t) - sizeof(u32);
+>> +		if (namesize > 0) {
+>> +			memset(&guid, 0, sizeof(efi_guid_t));
+>> +			convert_buffer_to_efi_guid(mdata + namesize, &guid);
+>> +			memcpy(vendor, &guid, sizeof(efi_guid_t));
+>> +			memset(name, 0, namesize + 2);
+>> +			memcpy(name, mdata, namesize);
+>> +			*name_size = namesize + 2;
+>> +			name[namesize++] = 0;
+>> +			name[namesize] = 0;
+>> +		}
+>> +	}
+>> +
+>> +out:
+>> +	kfree(mdsize);
+>> +	kfree(mdata);
+>> +
+>> +	return opal_to_efi_status(rc);
+>> +}
+>> +
+>> +static efi_status_t powerpc_set_variable(efi_char16_t *name, efi_guid_t *vendor,
+>> +					 u32 attr, unsigned long data_size,
+>> +					 void *data)
+>> +{
+>> +	int rc;
+>> +	u8 *key;
+>> +	unsigned long keylen;
+>> +	u8 *metadata;
+>> +	unsigned long mdsize;
+>> +
+>> +	if (!name)
+>> +		return EFI_INVALID_PARAMETER;
+>> +
+>> +	if (!vendor)
+>> +		return EFI_INVALID_PARAMETER;
+>> +
+>> +	createkey(name, &key, &keylen);
+>> +	pr_info("%s: nayna key is %s\n", __func__, key);
+> Again, please remove all of your debugging code when resending.
+>
+>> +
+>> +	createmetadata(name, vendor, &attr, &metadata, &mdsize);
+>> +
+>> +	rc = opal_set_variable(key, keylen, metadata, mdsize, data, data_size);
+>> +
+>> +	return opal_to_efi_status(rc);
+>> +}
+>> +
+>> +
+>> +static const struct efivar_operations efivar_ops = {
+>> +	.get_variable = powerpc_get_variable,
+>> +	.set_variable = powerpc_set_variable,
+>> +	.get_next_variable = powerpc_get_next_variable,
+>> +};
+>> +
+>> +
+>> +static __init int power_secvar_init(void)
+>> +{
+>> +	int rc = 0;
+>> +	unsigned long ver = 0;
+>> +
+>> +	rc = opal_variable_version(&ver);
+>> +	if (ver != BACKEND_TC_COMPAT_V1) {
+>> +		pr_info("Compatible backend unsupported\n");
+>> +		return -1;
+> Do not make up error numbers, use the defined values please.
+
+Thanks Greg for the review !!
+
+I will address everything in the next version.
+
+Thanks & Regards,
+         - Nayna
