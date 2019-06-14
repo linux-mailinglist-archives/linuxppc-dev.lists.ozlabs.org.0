@@ -1,68 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD62445B85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 13:34:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3E945A50
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 12:24:51 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QGv42Zj5zDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 20:24:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QJRQ6dZczDrfs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 21:34:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=permerror (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=2a01:111:f400:fe08::631;
+ helo=eur03-am5-obe.outbound.protection.outlook.com;
+ envelope-from=horia.geanta@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tj85kPHp"; 
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="YxYlAoR0"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com
+ (mail-am5eur03on0631.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe08::631])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QGjT4xGQzDrQ7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 20:16:29 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45QGjP1Vnrz9vDbm;
- Fri, 14 Jun 2019 12:16:25 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=tj85kPHp; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id x-ieB8R6280X; Fri, 14 Jun 2019 12:16:25 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45QGjP0QnZz9vDbh;
- Fri, 14 Jun 2019 12:16:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560507385; bh=Ncvp/xcVUmXSd5BetDki7lkPoESwzmp5vh6/pH0lEKQ=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=tj85kPHpr2D177M+FGuhqLYv9NsLU1LQYGPQYwqCLNN9iZeMM8RgHmBtgN4jRdWEQ
- VTgA4m5NgBN/KV1BWQ2o4sMdw/HdJsKveV4NzIVEri9Wk9ctOPjYaVh5w28rPAYK3H
- tIkmm6g3RiQTWPOygCtyb04gEqUqF65aBWB3G0So=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 32B6D8B7AD;
- Fri, 14 Jun 2019 12:16:26 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ZtED3dm1Hgo0; Fri, 14 Jun 2019 12:16:26 +0200 (CEST)
-Received: from PO15451.localdomain (po15451.idsi0.si.c-s.fr [172.25.230.107])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EE9C18B7AC;
- Fri, 14 Jun 2019 12:16:25 +0200 (CEST)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id EE63568D78; Fri, 14 Jun 2019 10:16:25 +0000 (UTC)
-Message-Id: <513745c616ff9c46a077578a21c843ab818a0e57.1560507284.git.christophe.leroy@c-s.fr>
-In-Reply-To: <1b4946c9e580b51b6ca2ddc5963d66406c013c2d.1560507284.git.christophe.leroy@c-s.fr>
-References: <1b4946c9e580b51b6ca2ddc5963d66406c013c2d.1560507284.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 3/3] powerpc/boot: Add lzo support for uImage
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 14 Jun 2019 10:16:25 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QJPS3nSCzDrdb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 21:32:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f8fb3bJeZuVjmnFNb8No/0pPhO7hT4QzZSieGtZBDrA=;
+ b=YxYlAoR06DejnMeEFeYyWbfX1LNN1fBLl0ANo4uN3F+vTapuBfThtrdNd0hlVfFYctzn8j7r5KlyHrcVgx/z6KB6GTkeyJBWna6D/J+UKJcvPjsI3ye1safZNFEHifAtE2u3XcoB34gdYIY3N80iYXAUw4pfxTSW6xNKmotmUpc=
+Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com (52.134.3.153) by
+ VI1PR0402MB3853.eurprd04.prod.outlook.com (52.134.16.149) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.11; Fri, 14 Jun 2019 11:32:32 +0000
+Received: from VI1PR0402MB3485.eurprd04.prod.outlook.com
+ ([fe80::ccaf:f4a1:704a:e745]) by VI1PR0402MB3485.eurprd04.prod.outlook.com
+ ([fe80::ccaf:f4a1:704a:e745%4]) with mapi id 15.20.1987.012; Fri, 14 Jun 2019
+ 11:32:31 +0000
+From: Horia Geanta <horia.geanta@nxp.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Herbert Xu
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v3 2/4] crypto: talitos - fix hash on SEC1.
+Thread-Topic: [PATCH v3 2/4] crypto: talitos - fix hash on SEC1.
+Thread-Index: AQHVIeZZjrISGczaNEaQ63Pip1dkoQ==
+Date: Fri, 14 Jun 2019 11:32:31 +0000
+Message-ID: <VI1PR0402MB34855C37F53DC1012DAF670798EE0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
+References: <cover.1560429844.git.christophe.leroy@c-s.fr>
+ <732ca0ff440bf4cd589d844cfda71d96efd500f5.1560429844.git.christophe.leroy@c-s.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=horia.geanta@nxp.com; 
+x-originating-ip: [212.146.100.6]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 58372b73-6d99-40b6-7d67-08d6f0bbfd59
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR0402MB3853; 
+x-ms-traffictypediagnostic: VI1PR0402MB3853:
+x-microsoft-antispam-prvs: <VI1PR0402MB3853FE478ADAD9714EB90B3C98EE0@VI1PR0402MB3853.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 0068C7E410
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(979002)(376002)(396003)(366004)(136003)(346002)(39860400002)(199004)(189003)(305945005)(99286004)(14454004)(316002)(66446008)(7736002)(7696005)(110136005)(71200400001)(66556008)(2906002)(76176011)(66476007)(446003)(66066001)(66946007)(71190400001)(73956011)(55016002)(102836004)(3846002)(74316002)(6116002)(76116006)(54906003)(86362001)(6436002)(229853002)(478600001)(64756008)(14444005)(81156014)(81166006)(6246003)(8936002)(33656002)(4326008)(52536014)(9686003)(486006)(25786009)(8676002)(53936002)(186003)(5660300002)(53546011)(6506007)(44832011)(26005)(256004)(68736007)(476003)(969003)(989001)(999001)(1009001)(1019001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0402MB3853;
+ H:VI1PR0402MB3485.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: xCpkA+4QuZX9q0Eoy+DJOpnFpJBGwzdMHn2buG6bL/pNKwrvwEQRpJcAwSIQNuM1nTcZHPQlC3FyL6o5/ABQIJDPHXUgKJUWbNQ7iAYv44/HH1Ty5jhaxUVH+TkbfzAhOgN7h5CwSQWlgZHQJoKiN53PlAlyQ6lb3XaZe8EZBOpHuTAnrLDAVKOyPyf70Go7Z5wgndlU0JjBKVO44ApYB8ZeJ8+j3CTtg8NYMgAZvfP9mTk2G5YLke50RanwDB6xJSky+1gBZm5MpbJdHTgbQ3tTcV+3wmXvc8bkYYgjCqDqPp8qWJdYKnWisXIJi+3D/N1YdS0QIfnYNthFcqD8+EarLlOP9SIkCon7TatkPb1SrYRNbc93SVgMsSq2hR+fZxETezIfKWlqRLouKX59pykE0fJD7A1Df0leHPTJkUA=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58372b73-6d99-40b6-7d67-08d6f0bbfd59
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jun 2019 11:32:31.7675 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: horia.geanta@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3853
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,79 +96,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch allows to generate lzo compressed uImage
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
----
- v3: rebased following the drop of patch 3 (bzip2) which is not supported anymore by uboot.
- v2: restore alphabetic order in Kconfig
----
- arch/powerpc/Kconfig       | 1 +
- arch/powerpc/boot/Makefile | 2 ++
- arch/powerpc/boot/wrapper  | 5 ++++-
- 3 files changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 5542430ba261..2b041f88b593 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -197,6 +197,7 @@ config PPC
- 	select HAVE_IRQ_EXIT_ON_IRQ_STACK
- 	select HAVE_KERNEL_GZIP
- 	select HAVE_KERNEL_LZMA			if DEFAULT_UIMAGE
-+	select HAVE_KERNEL_LZO			if DEFAULT_UIMAGE
- 	select HAVE_KERNEL_XZ			if PPC_BOOK3S || 44x
- 	select HAVE_KPROBES
- 	select HAVE_KPROBES_ON_FTRACE
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 9b7b11a22925..36fb51a9329f 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -23,6 +23,7 @@ all: $(obj)/zImage
- compress-$(CONFIG_KERNEL_GZIP) := CONFIG_KERNEL_GZIP
- compress-$(CONFIG_KERNEL_XZ)   := CONFIG_KERNEL_XZ
- compress-$(CONFIG_KERNEL_LZMA) := CONFIG_KERNEL_LZMA
-+compress-$(CONFIG_KERNEL_LZO)   := CONFIG_KERNEL_LZO
- 
- ifdef CROSS32_COMPILE
-     BOOTCC := $(CROSS32_COMPILE)gcc
-@@ -259,6 +260,7 @@ endif
- compressor-$(CONFIG_KERNEL_GZIP) := gz
- compressor-$(CONFIG_KERNEL_XZ)   := xz
- compressor-$(CONFIG_KERNEL_LZMA)   := lzma
-+compressor-$(CONFIG_KERNEL_LZO) := lzo
- 
- # args (to if_changed): 1 = (this rule), 2 = platform, 3 = dts 4=dtb 5=initrd
- quiet_cmd_wrap	= WRAP    $@
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 19887f6ad7c1..5148ac271f28 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -136,7 +136,7 @@ while [ "$#" -gt 0 ]; do
-     -Z)
- 	shift
- 	[ "$#" -gt 0 ] || usage
--        [ "$1" != "gz" -o "$1" != "xz" -o "$1" != "lzma" -o "$1" != "none" ] || usage
-+        [ "$1" != "gz" -o "$1" != "xz" -o "$1" != "lzma" -o "$1" != "lzo" -o "$1" != "none" ] || usage
- 
- 	compression=".$1"
- 	uboot_comp=$1
-@@ -376,6 +376,9 @@ if [ -z "$cacheit" -o ! -f "$vmz$compression" -o "$vmz$compression" -ot "$kernel
-     .lzma)
-         xz --format=lzma -f -6 "$vmz.$$"
- 	;;
-+    .lzo)
-+        lzop -f -9 "$vmz.$$"
-+	;;
-     *)
-         # drop the compression suffix so the stripped vmlinux is used
-         compression=
--- 
-2.13.3
-
+On 6/13/2019 3:48 PM, Christophe Leroy wrote:=0A=
+> @@ -336,15 +336,18 @@ static void flush_channel(struct device *dev, int c=
+h, int error, int reset_ch)=0A=
+>  	tail =3D priv->chan[ch].tail;=0A=
+>  	while (priv->chan[ch].fifo[tail].desc) {=0A=
+>  		__be32 hdr;=0A=
+> +		struct talitos_edesc *edesc;=0A=
+>  =0A=
+>  		request =3D &priv->chan[ch].fifo[tail];=0A=
+> +		edesc =3D container_of(request->desc, struct talitos_edesc, desc);=0A=
+Not needed for all cases, should be moved to the block that uses it.=0A=
+=0A=
+>  =0A=
+>  		/* descriptors with their done bits set don't get the error */=0A=
+>  		rmb();=0A=
+>  		if (!is_sec1)=0A=
+>  			hdr =3D request->desc->hdr;=0A=
+>  		else if (request->desc->next_desc)=0A=
+> -			hdr =3D (request->desc + 1)->hdr1;=0A=
+> +			hdr =3D ((struct talitos_desc *)=0A=
+> +			       (edesc->buf + edesc->dma_len))->hdr1;=0A=
+>  		else=0A=
+>  			hdr =3D request->desc->hdr1;=0A=
+>  =0A=
+[snip]=0A=
+> @@ -2058,7 +2065,18 @@ static int ahash_process_req(struct ahash_request =
+*areq, unsigned int nbytes)=0A=
+>  		sg_copy_to_buffer(areq->src, nents,=0A=
+>  				  ctx_buf + req_ctx->nbuf, offset);=0A=
+>  		req_ctx->nbuf +=3D offset;=0A=
+> -		req_ctx->psrc =3D areq->src;=0A=
+> +		for (sg =3D areq->src; sg && offset >=3D sg->length;=0A=
+> +		     offset -=3D sg->length, sg =3D sg_next(sg))=0A=
+> +			;=0A=
+> +		if (offset) {=0A=
+> +			sg_init_table(req_ctx->bufsl, 2);=0A=
+> +			sg_set_buf(req_ctx->bufsl, sg_virt(sg) + offset,=0A=
+> +				   sg->length - offset);=0A=
+> +			sg_chain(req_ctx->bufsl, 2, sg_next(sg));=0A=
+> +			req_ctx->psrc =3D req_ctx->bufsl;=0A=
+Isn't this what scatterwalk_ffwd() does?=0A=
+=0A=
+Horia=0A=
