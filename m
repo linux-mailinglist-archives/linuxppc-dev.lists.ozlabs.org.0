@@ -1,59 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42407460CA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 16:31:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QNMy2JPTzDrg7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 00:31:42 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C04E46338
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 17:46:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QQ2P4g5qzDrBq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 01:46:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="eiq/xb+U"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QNK33yhHzDrfv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 00:29:09 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9103420866;
- Fri, 14 Jun 2019 14:29:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1560522547;
- bh=cY7qQ7vl0+egy4AL6ZDqmTDm4h2jklkJUrmVOLowupA=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=eiq/xb+UdPxWqpEOmZmONEuKxa+SiiyvP9eYhCH3UgRBUIvfH0GN9HEM0EyX5u+nV
- RUbpqwvtSYeCYQXjqaywHQzWTqhJFoHyZwqfs05GdA56xHZCJTfDvE9I0jozAGTEDQ
- FNqGKrn/YTKGOEjp3fGLFj/D0RUOKHFpybtaugVk=
-Date: Fri, 14 Jun 2019 16:29:04 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>,
- Nayna Jain <nayna@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH v2] crypto: nx: no need to check return value of
- debugfs_create functions
-Message-ID: <20190614142904.GA11066@kroah.com>
-References: <20190614135031.GA5809@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QPzv4h1jzDr7N
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 01:44:27 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5EFhPVn017226
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 11:44:23 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t4e0cscyn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 11:44:22 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Fri, 14 Jun 2019 16:44:20 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 14 Jun 2019 16:44:18 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5EFiHqI63045822
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jun 2019 15:44:17 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2810B11C052;
+ Fri, 14 Jun 2019 15:44:17 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2FE911C04A;
+ Fri, 14 Jun 2019 15:44:15 +0000 (GMT)
+Received: from naverao1-tp.ibmuc.com (unknown [9.85.70.176])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jun 2019 15:44:15 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 0/9] Provide vcpu dispatch statistics
+Date: Fri, 14 Jun 2019 21:13:58 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190614135031.GA5809@kroah.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+X-TM-AS-GCONF: 00
+x-cbid: 19061415-0016-0000-0000-000002892169
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061415-0017-0000-0000-000032E66332
+Message-Id: <cover.1560526066.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-14_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906140130
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,178 +85,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mingming Cao <mingming.cao@ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When calling debugfs functions, there is no need to ever check the
-return value.  The function can work or not, but the code logic should
-never do something different based on this.
+Changes since v1:
+- Changes have been done primarily to address a few build issues, by 
+  moving changes out of mm/numa.c to other places.
+- Patches 1-5,8-9 have been rebased with patches 4 and 5 being 
+  interchanged, and patch 4 incorporating #ifdef CONFIG_PPC_SPLPAR.
+- Patch 6 is new and moves vphn code under pseries.
+- Patch 7 has changes to move most of the code from mm/numa.c into 
+  platforms/pseries/lpar.c, along with guarding some of these under 
+  CONFIG_PPC_SPLPAR. 
 
-Also, there is no need to store the individual debugfs file names,
-especially as the whole directiry is deleted at once, so remove the
-unneeded structure entirely.
+Changes since RFC:
+- Patches 1/8 to 5/8: no changes, except rebase to powerpc/merge
+- Patch 6/8: The mutex guarding the vphn hcall has been dropped. It was 
+  only meant to serialize hcalls issued when stats are initially 
+  enabled.  However, in reality, the various per-cpu workers will be 
+  scheduled at slightly different times and chances of hcalls for 
+  retrieving the same associativity information at the same time is very 
+  less. Even in that case, there are no other side effects.
+- Patch 6/8: The third column for vcpu dispatches on the same core, but 
+  different thread has been dropped and merged with the second column.  
+- Patch 7/8: new patch to ensure we don't take too much time while 
+  enabling/disabling statistics on large systems with heavy workload.
+- Patch 8/8: new patch adding a document describing the fields in the 
+  procfs file.
 
-Cc: "Breno Leitão" <leitao@debian.org>
-Cc: Nayna Jain <nayna@linux.ibm.com>
-Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
-v2: fixed build error found by kbuild
+--
+This series adds a new procfs file /proc/powerpc/vcpudispatch_stats for 
+providing statistics around how the LPAR processors are dispatched by 
+the POWER Hypervisor, in a shared LPAR environment. Patch 7/9 has more 
+details on how the statistics are gathered.
 
- drivers/crypto/nx/nx.c         |  4 +-
- drivers/crypto/nx/nx.h         | 12 +-----
- drivers/crypto/nx/nx_debugfs.c | 71 +++++++++++-----------------------
- 3 files changed, 26 insertions(+), 61 deletions(-)
+An example output:
+    $ sudo cat /proc/powerpc/vcpudispatch_stats
+    cpu0 6839 4126 2683 30 0 6821 18 0
+    cpu1 2515 1274 1229 12 0 2509 6 0
+    cpu2 2317 1198 1109 10 0 2312 5 0
+    cpu3 2259 1165 1088 6 0 2256 3 0
+    cpu4 2205 1143 1056 6 0 2202 3 0
+    cpu5 2165 1121 1038 6 0 2162 3 0
+    cpu6 2183 1127 1050 6 0 2180 3 0
+    cpu7 2193 1133 1052 8 0 2187 6 0
+    cpu8 2165 1115 1032 18 0 2156 9 0
+    cpu9 2301 1252 1033 16 0 2293 8 0
+    cpu10 2197 1138 1041 18 0 2187 10 0
+    cpu11 2273 1185 1062 26 0 2260 13 0
+    cpu12 2186 1125 1043 18 0 2177 9 0
+    cpu13 2161 1115 1030 16 0 2153 8 0
+    cpu14 2206 1153 1033 20 0 2196 10 0
+    cpu15 2163 1115 1032 16 0 2155 8 0
 
-diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
-index 3a5e31be4764..20b5e276f184 100644
---- a/drivers/crypto/nx/nx.c
-+++ b/drivers/crypto/nx/nx.c
-@@ -581,9 +581,7 @@ static int nx_register_algs(void)
- 
- 	memset(&nx_driver.stats, 0, sizeof(struct nx_stats));
- 
--	rc = NX_DEBUGFS_INIT(&nx_driver);
--	if (rc)
--		goto out;
-+	NX_DEBUGFS_INIT(&nx_driver);
- 
- 	nx_driver.of.status = NX_OKAY;
- 
-diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
-index c3e54af18645..c6b5a3be02be 100644
---- a/drivers/crypto/nx/nx.h
-+++ b/drivers/crypto/nx/nx.h
-@@ -76,20 +76,12 @@ struct nx_stats {
- 	atomic_t last_error_pid;
- };
- 
--struct nx_debugfs {
--	struct dentry *dfs_root;
--	struct dentry *dfs_aes_ops, *dfs_aes_bytes;
--	struct dentry *dfs_sha256_ops, *dfs_sha256_bytes;
--	struct dentry *dfs_sha512_ops, *dfs_sha512_bytes;
--	struct dentry *dfs_errors, *dfs_last_error, *dfs_last_error_pid;
--};
--
- struct nx_crypto_driver {
- 	struct nx_stats    stats;
- 	struct nx_of       of;
- 	struct vio_dev    *viodev;
- 	struct vio_driver  viodriver;
--	struct nx_debugfs  dfs;
-+	struct dentry     *dfs_root;
- };
- 
- #define NX_GCM4106_NONCE_LEN		(4)
-@@ -177,7 +169,7 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
- #define NX_DEBUGFS_INIT(drv)	nx_debugfs_init(drv)
- #define NX_DEBUGFS_FINI(drv)	nx_debugfs_fini(drv)
- 
--int nx_debugfs_init(struct nx_crypto_driver *);
-+void nx_debugfs_init(struct nx_crypto_driver *);
- void nx_debugfs_fini(struct nx_crypto_driver *);
- #else
- #define NX_DEBUGFS_INIT(drv)	(0)
-diff --git a/drivers/crypto/nx/nx_debugfs.c b/drivers/crypto/nx/nx_debugfs.c
-index 7ab2e8dcd9b4..add1d8d0d23c 100644
---- a/drivers/crypto/nx/nx_debugfs.c
-+++ b/drivers/crypto/nx/nx_debugfs.c
-@@ -42,62 +42,37 @@
-  * Documentation/ABI/testing/debugfs-pfo-nx-crypto
-  */
- 
--int nx_debugfs_init(struct nx_crypto_driver *drv)
-+void nx_debugfs_init(struct nx_crypto_driver *drv)
- {
--	struct nx_debugfs *dfs = &drv->dfs;
-+	struct dentry *root;
- 
--	dfs->dfs_root = debugfs_create_dir(NX_NAME, NULL);
-+	root = debugfs_create_dir(NX_NAME, NULL);
-+	drv->dfs_root = root;
- 
--	dfs->dfs_aes_ops =
--		debugfs_create_u32("aes_ops",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root, (u32 *)&drv->stats.aes_ops);
--	dfs->dfs_sha256_ops =
--		debugfs_create_u32("sha256_ops",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u32 *)&drv->stats.sha256_ops);
--	dfs->dfs_sha512_ops =
--		debugfs_create_u32("sha512_ops",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u32 *)&drv->stats.sha512_ops);
--	dfs->dfs_aes_bytes =
--		debugfs_create_u64("aes_bytes",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u64 *)&drv->stats.aes_bytes);
--	dfs->dfs_sha256_bytes =
--		debugfs_create_u64("sha256_bytes",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u64 *)&drv->stats.sha256_bytes);
--	dfs->dfs_sha512_bytes =
--		debugfs_create_u64("sha512_bytes",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u64 *)&drv->stats.sha512_bytes);
--	dfs->dfs_errors =
--		debugfs_create_u32("errors",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root, (u32 *)&drv->stats.errors);
--	dfs->dfs_last_error =
--		debugfs_create_u32("last_error",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u32 *)&drv->stats.last_error);
--	dfs->dfs_last_error_pid =
--		debugfs_create_u32("last_error_pid",
--				   S_IRUSR | S_IRGRP | S_IROTH,
--				   dfs->dfs_root,
--				   (u32 *)&drv->stats.last_error_pid);
--	return 0;
-+	debugfs_create_u32("aes_ops", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.aes_ops);
-+	debugfs_create_u32("sha256_ops", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.sha256_ops);
-+	debugfs_create_u32("sha512_ops", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.sha512_ops);
-+	debugfs_create_u64("aes_bytes", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u64 *)&drv->stats.aes_bytes);
-+	debugfs_create_u64("sha256_bytes", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u64 *)&drv->stats.sha256_bytes);
-+	debugfs_create_u64("sha512_bytes", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u64 *)&drv->stats.sha512_bytes);
-+	debugfs_create_u32("errors", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.errors);
-+	debugfs_create_u32("last_error", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.last_error);
-+	debugfs_create_u32("last_error_pid", S_IRUSR | S_IRGRP | S_IROTH,
-+			   root, (u32 *)&drv->stats.last_error_pid);
- }
- 
- void
- nx_debugfs_fini(struct nx_crypto_driver *drv)
- {
--	debugfs_remove_recursive(drv->dfs.dfs_root);
-+	debugfs_remove_recursive(drv->dfs_root);
- }
- 
- #endif
+In the output above, for vcpu0, there have been 6839 dispatches since
+statistics were enabled. 4126 of those dispatches were on the same
+physical cpu as the last time. 2683 were on a different core, but within
+the same chip, while 30 dispatches were on a different chip compared to
+its last dispatch.
+
+Also, out of the total of 6839 dispatches, we see that there have been
+6821 dispatches on the vcpu's home node, while 18 dispatches were
+outside its home node, on a neighbouring chip.
+
+
+- Naveen
+
+Naveen N. Rao (9):
+  powerpc/pseries: Use macros for referring to the DTL enable mask
+  powerpc/pseries: Do not save the previous DTL mask value
+  powerpc/pseries: Factor out DTL buffer allocation and registration
+    routines
+  powerpc/pseries: Introduce helpers to gatekeep DTLB usage
+  powerpc/pseries: Generalize hcall_vphn()
+  powerpc/pseries: Move mm/book3s64/vphn.c under platforms/pseries/
+  powerpc/pseries: Provide vcpu dispatch statistics
+  powerpc/pseries: Protect against hogging the cpu while setting up the
+    stats
+  powerpc/pseries: Add documentation for vcpudispatch_stats
+
+ Documentation/powerpc/vcpudispatch_stats.txt  |  68 ++
+ arch/powerpc/include/asm/lppaca.h             |  11 +
+ arch/powerpc/include/asm/plpar_wrappers.h     |  23 +
+ arch/powerpc/include/asm/topology.h           |   6 +
+ arch/powerpc/mm/book3s64/Makefile             |   1 -
+ arch/powerpc/mm/book3s64/vphn.h               |  16 -
+ arch/powerpc/mm/numa.c                        |  34 +-
+ arch/powerpc/platforms/pseries/Makefile       |   1 +
+ arch/powerpc/platforms/pseries/dtl.c          |  22 +-
+ arch/powerpc/platforms/pseries/lpar.c         | 647 +++++++++++++++++-
+ arch/powerpc/platforms/pseries/setup.c        |  34 +-
+ .../{mm/book3s64 => platforms/pseries}/vphn.c |  16 +-
+ 12 files changed, 784 insertions(+), 95 deletions(-)
+ create mode 100644 Documentation/powerpc/vcpudispatch_stats.txt
+ delete mode 100644 arch/powerpc/mm/book3s64/vphn.h
+ rename arch/powerpc/{mm/book3s64 => platforms/pseries}/vphn.c (83%)
+
 -- 
-2.22.0
+2.21.0
 
