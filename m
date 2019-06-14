@@ -2,78 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C680468D7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 22:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6AE46B14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 22:39:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QXHJ0cK1zDrp4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 06:28:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QXXg01WDzDrg1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 06:39:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=larry.finger@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=lwn.net
+ (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="o3N5dXiK"; 
- dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=lwn.net
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QXFT1MtjzDrhc
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 06:26:36 +1000 (AEST)
-Received: by mail-oi1-x244.google.com with SMTP id m206so2860026oib.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 13:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Hu6UH6SAxMoZ+zdg3c2COyOtX79gFZR/VtwmhecH8dA=;
- b=o3N5dXiKLQ9PbDeRIB98rfVh15PxoVFa/1ufQzJRNpgABUqbXosiApy2K7CWnu2aFD
- lptSKRX1xOc2/Zt5x5tc1uypFmRuOfUjlR1XzP+CMxmQijfWhcAJWJ6hQZO/28zmqhMu
- ZZWs09so+lam17Oqi0ATZLBRk2R90J8lyxq5m2cKDJ6z0QdTrYTWgX2CG6kbO5VtTq/C
- HVVB4iWvAUoIhVRd1sRZmKBbAV4u+Gs+PblKIbCyDifVZ8qXaUf9fpXu+R7YQS4sOVgV
- SYMWYwzNgoKTsz+wYF2ceul3EWIC8IquOZzyX5r46poJ2lIi8oFLO9yWjpaoOZfsyK6p
- aZwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Hu6UH6SAxMoZ+zdg3c2COyOtX79gFZR/VtwmhecH8dA=;
- b=lRi2ZNTt+tQwQWEEUiEQrmy9Etd5a84vpTqbRea7eU6p39hkMjIuU0U94R1hhEJba3
- NrNi7O0QuyB8goPr0XAJvmKeTbZqt3hyNCPwP1jLw4pekxDs4CteiJeNGcUbmpN0sLX4
- CroHoFzhNHVnGNdq4gYgE1waTrdayjI6IC06v738L4waXpeypMyIKZYycWiNOan8PbqL
- 7VBfprwgLRcxvixZvKa53ydJzAZZj2pnJBZltDySAHbQnj0gZJxHovaaWkTQusBx/9v5
- uZHd5OVPwgvrmsUY7H47eRNzGytsf5XSMgIZ3V3PfIrYLah3ccJuuGVQEcyChAKxWcSQ
- 2eiA==
-X-Gm-Message-State: APjAAAWDpTEew7j+eQOAizIZeFaz71webABScc46Lr2NqRGDNWrofmzZ
- ghOav3rekU8JbuPTWqSn9ns=
-X-Google-Smtp-Source: APXvYqypZyd7CSFEGroYYb1iKjlsO3SWJUCtaP6WveZciRKaw0cfbgSxgbaQDgwzxZnfKZpsek1gNw==
-X-Received: by 2002:aca:3d54:: with SMTP id k81mr2811911oia.111.1560543992838; 
- Fri, 14 Jun 2019 13:26:32 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com.
- [24.31.245.230])
- by smtp.gmail.com with ESMTPSA id q2sm1532873oia.45.2019.06.14.13.26.31
- (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
- Fri, 14 Jun 2019 13:26:32 -0700 (PDT)
-Subject: Re: [PATCH] powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, Mathieu Malaterre <malat@debian.org>
-References: <20190613082446.18685-1-hch@lst.de>
- <CA+7wUswMtpVCoX0H5eF=GUY8jWDAEWa9Z223tKiKHiL69hhHtQ@mail.gmail.com>
- <20190614191532.GC27145@darkstar.musicnaut.iki.fi>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <d508cc9c-435f-4108-17ac-6db74640514c@lwfinger.net>
-Date: Fri, 14 Jun 2019 15:26:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QXT55b9czDrhh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 06:36:40 +1000 (AEST)
+Received: from lwn.net (localhost [127.0.0.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ms.lwn.net (Postfix) with ESMTPSA id 656C91429;
+ Fri, 14 Jun 2019 20:36:36 +0000 (UTC)
+Date: Fri, 14 Jun 2019 14:36:35 -0600
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: Re: [PATCH v4 19/28] docs: powerpc: convert docs to ReST and rename
+ to *.rst
+Message-ID: <20190614143635.3aff154d@lwn.net>
+In-Reply-To: <63560c1ee7174952e148a353840a17969fe0be2d.1560361364.git.mchehab+samsung@kernel.org>
+References: <cover.1560361364.git.mchehab+samsung@kernel.org>
+ <63560c1ee7174952e148a353840a17969fe0be2d.1560361364.git.mchehab+samsung@kernel.org>
+Organization: LWN.net
 MIME-Version: 1.0
-In-Reply-To: <20190614191532.GC27145@darkstar.musicnaut.iki.fi>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,51 +49,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ linux-pci@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Qiang Zhao <qiang.zhao@nxp.com>, linux-scsi@vger.kernel.org,
+ Jiri Slaby <jslaby@suse.com>, Linas Vepstas <linasvepstas@gmail.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab@infradead.org>,
+ "Manoj N. Kumar" <manoj@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-arm-kernel@lists.infradead.org, "Matthew R. Ochs" <mrochs@linux.ibm.com>,
+ Uma Krishnan <ukrishn@linux.ibm.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/14/19 2:15 PM, Aaro Koskinen wrote:
-> Hi,
+On Wed, 12 Jun 2019 14:52:55 -0300
+Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
+
+> Convert docs to ReST and add them to the arch-specific
+> book.
 > 
-> On Fri, Jun 14, 2019 at 09:24:16AM +0200, Mathieu Malaterre wrote:
->> On Thu, Jun 13, 2019 at 10:27 AM Christoph Hellwig <hch@lst.de> wrote:
->>> With the strict dma mask checking introduced with the switch to
->>> the generic DMA direct code common wifi chips on 32-bit powerbooks
->>> stopped working.  Add a 30-bit ZONE_DMA to the 32-bit pmac builds
->>> to allow them to reliably allocate dma coherent memory.
->>>
->>> Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
->>> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
->>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>> ---
->>>   arch/powerpc/include/asm/page.h         | 7 +++++++
->>>   arch/powerpc/mm/mem.c                   | 3 ++-
->>>   arch/powerpc/platforms/powermac/Kconfig | 1 +
->>>   3 files changed, 10 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
->>> index b8286a2013b4..0d52f57fca04 100644
->>> --- a/arch/powerpc/include/asm/page.h
->>> +++ b/arch/powerpc/include/asm/page.h
->>> @@ -319,6 +319,13 @@ struct vm_area_struct;
->>>   #endif /* __ASSEMBLY__ */
->>>   #include <asm/slice.h>
->>>
->>> +/*
->>> + * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
->>
->> nit: would it be possible to mention explicit reference to b43-legacy.
->> Using b43 on my macmini g4 never showed those symptoms (using
->> 5.2.0-rc2+)
+> The conversion here was trivial, as almost every file there
+> was already using an elegant format close to ReST standard.
 > 
-> According to Wikipedia Mac mini G4 is limited to 1 GB RAM, so that's
-> why you don't see the issue.
+> The changes were mostly to mark literal blocks and add a few
+> missing section title identifiers.
+> 
+> One note with regards to "--": on Sphinx, this can't be used
+> to identify a list, as it will format it badly. This can be
+> used, however, to identify a long hyphen - and "---" is an
+> even longer one.
+> 
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> Acked-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com> # cxl
 
-He wouldn't see it with b43. Those cards have 32-bit DMA.
+This one fails to apply because ...
 
-Larry
+[...]
 
+> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
+> index 83db42092935..acc21ecca322 100644
+> --- a/Documentation/PCI/pci-error-recovery.rst
+> +++ b/Documentation/PCI/pci-error-recovery.rst
+> @@ -403,7 +403,7 @@ That is, the recovery API only requires that:
+>  .. note::
+>  
+>     Implementation details for the powerpc platform are discussed in
+> -   the file Documentation/powerpc/eeh-pci-error-recovery.txt
+> +   the file Documentation/powerpc/eeh-pci-error-recovery.rst
+>  
+>     As of this writing, there is a growing list of device drivers with
+>     patches implementing error recovery. Not all of these patches are in
+> @@ -422,3 +422,24 @@ That is, the recovery API only requires that:
+>     - drivers/net/cxgb3
+>     - drivers/net/s2io.c
+>     - drivers/net/qlge
+> +
+> +>>> As of this writing, there is a growing list of device drivers with
+> +>>> patches implementing error recovery. Not all of these patches are in
+> +>>> mainline yet. These may be used as "examples":
+> +>>>
+> +>>> drivers/scsi/ipr
+> +>>> drivers/scsi/sym53c8xx_2
+> +>>> drivers/scsi/qla2xxx
+> +>>> drivers/scsi/lpfc
+> +>>> drivers/next/bnx2.c
+> +>>> drivers/next/e100.c
+> +>>> drivers/net/e1000
+> +>>> drivers/net/e1000e
+> +>>> drivers/net/ixgb
+> +>>> drivers/net/ixgbe
+> +>>> drivers/net/cxgb3
+> +>>> drivers/net/s2io.c
+> +>>> drivers/net/qlge  
+
+...of this, which has the look of a set of conflict markers that managed
+to get committed...?
+
+jon
 
