@@ -1,89 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A39455AC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 09:22:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QBrW17X0zDrPx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 17:22:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7FF4563E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 09:26:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QBx809kGzDrQ3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 17:26:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QBpk6dqvzDr1G
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 17:20:46 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5E7HqFk085560
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 03:20:43 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t44qfvk1n-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 03:20:43 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Fri, 14 Jun 2019 08:20:41 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 14 Jun 2019 08:20:35 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5E7KYOd52428980
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2019 07:20:34 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AAD5D52054;
- Fri, 14 Jun 2019 07:20:34 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5972E52051;
- Fri, 14 Jun 2019 07:20:34 +0000 (GMT)
-Received: from [9.81.220.157] (unknown [9.81.220.157])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1C95CA00A5;
- Fri, 14 Jun 2019 17:20:30 +1000 (AEST)
-Subject: Re: [PATCH 01/14] ABI: fix some syntax issues at the ABI database
-To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <cover.1560477540.git.mchehab+samsung@kernel.org>
- <b908fc6555df8cae3e4c734b2d5f6284c46a5f14.1560477540.git.mchehab+samsung@kernel.org>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 14 Jun 2019 17:20:29 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QBv31LWSzDr9w
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 17:24:30 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id j19so1757921otq.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 00:24:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=5uCR24TBOk3OIH8vvM2+dQIPnKS4Tb63WZTvRttfMKk=;
+ b=f9Eq+zAgLqIY7X+AGcMyyWOSv9j4mU5xSCurxH7/zXfn2EwNvDGwQXRWQXycQWBuqY
+ xn3yRQ7JWqBH8JTgiMy/uQKzp1Dh9Vl0im4VbvrrDQjwzXNR37NJ62phhq2SaEXfbJXG
+ XaxU7l119u/ub3lHPb5biTrwi0nGuxGWCDhD86Pqwbj6FyF+4+LFGtwam+Kx4rYULNZ9
+ HpJw0s8FMswTN2cZZW2shGIN96TEEJN/ZeFFY9gjfCVSjFnJ67ppBEvS9RYJr43NNdrZ
+ wgdg27O42eqfvbF97hS1d22qULCtKiODKGD6ZKk9RpPt9TqrigHDcr66JLqvSiFdoX62
+ J27Q==
+X-Gm-Message-State: APjAAAU9HrK54eI4K5z3MMJFEkXIcZDLobAwnuxcSR3aIoIDiAd/ELVd
+ n9Il36PXHpmx1PCDPgdwuOOtPAJctoJ/2lCOujA=
+X-Google-Smtp-Source: APXvYqwGu1JHa1iz1amVUHNyIUTMhsCShMGjlKbwTjhPIIIdXS77eBjkBE8e5hTiKBm2eFNCEg8mXQSDdNhqnvlUZ8c=
+X-Received: by 2002:a9d:3b76:: with SMTP id
+ z109mr44758163otb.335.1560497067686; 
+ Fri, 14 Jun 2019 00:24:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <b908fc6555df8cae3e4c734b2d5f6284c46a5f14.1560477540.git.mchehab+samsung@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061407-0028-0000-0000-0000037A350D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061407-0029-0000-0000-0000243A3096
-Message-Id: <1ef7b765-da34-c65b-a226-f17969935ce2@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-14_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906140057
+References: <20190613082446.18685-1-hch@lst.de>
+In-Reply-To: <20190613082446.18685-1-hch@lst.de>
+From: Mathieu Malaterre <malat@debian.org>
+Date: Fri, 14 Jun 2019 09:24:16 +0200
+Message-ID: <CA+7wUswMtpVCoX0H5eF=GUY8jWDAEWa9Z223tKiKHiL69hhHtQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,37 +61,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tony Luck <tony.luck@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
- Anton Vorontsov <anton@enomsg.org>, linux-kernel@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@infradead.org>,
- Mauro Carvalho Chehab <mchehab@s-opensource.com>,
- Colin Cross <ccross@android.com>, linux-pm@vger.kernel.org,
- Andreas Klinger <ak@it-klinger.de>, Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
- Hartmut Knaack <knaack.h@gmx.de>, Frederic Barrat <fbarrat@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Jonathan Cameron <jic23@kernel.org>
+Cc: aaro.koskinen@iki.fi, LKML <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/6/19 12:04 pm, Mauro Carvalho Chehab wrote:
-> diff --git a/Documentation/ABI/testing/sysfs-class-cxl b/Documentation/ABI/testing/sysfs-class-cxl
-> index bbbabffc682a..fc7c6f7c21b3 100644
-> --- a/Documentation/ABI/testing/sysfs-class-cxl
-> +++ b/Documentation/ABI/testing/sysfs-class-cxl
-> @@ -1,6 +1,6 @@
-> -Note: Attributes that are shared between devices are stored in the directory
-> -pointed to by the symlink device/.
-> -Example: The real path of the attribute /sys/class/cxl/afu0.0s/irqs_max is
-> +Please notice that attributes that are shared between devices are stored in
+On Thu, Jun 13, 2019 at 10:27 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> With the strict dma mask checking introduced with the switch to
+> the generic DMA direct code common wifi chips on 32-bit powerbooks
+> stopped working.  Add a 30-bit ZONE_DMA to the 32-bit pmac builds
+> to allow them to reliably allocate dma coherent memory.
+>
+> Fixes: 65a21b71f948 ("powerpc/dma: remove dma_nommu_dma_supported")
+> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/powerpc/include/asm/page.h         | 7 +++++++
+>  arch/powerpc/mm/mem.c                   | 3 ++-
+>  arch/powerpc/platforms/powermac/Kconfig | 1 +
+>  3 files changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+> index b8286a2013b4..0d52f57fca04 100644
+> --- a/arch/powerpc/include/asm/page.h
+> +++ b/arch/powerpc/include/asm/page.h
+> @@ -319,6 +319,13 @@ struct vm_area_struct;
+>  #endif /* __ASSEMBLY__ */
+>  #include <asm/slice.h>
+>
+> +/*
+> + * Allow 30-bit DMA for very limited Broadcom wifi chips on many powerbooks.
 
-Would prefer "Please note" over "Please notice".
+nit: would it be possible to mention explicit reference to b43-legacy.
+Using b43 on my macmini g4 never showed those symptoms (using
+5.2.0-rc2+)
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>  # cxl
+$ dmesg | grep b43
+[   14.327189] bus: 'pci': add driver b43-pci-bridge
+[   14.345354] bus: 'pci': driver_probe_device: matched device
+0001:10:12.0 with driver b43-pci-bridge
+[   14.380110] bus: 'pci': really_probe: probing driver b43-pci-bridge
+with device 0001:10:12.0
+[   14.440295] b43-pci-bridge 0001:10:12.0: enabling device (0004 -> 0006)
+[   14.637223] b43-pci-bridge 0001:10:12.0: Sonics Silicon Backplane
+found on PCI device 0001:10:12.0
+[   14.644858] driver: 'b43-pci-bridge': driver_bound: bound to device
+'0001:10:12.0'
+[   14.743341] bus: 'pci': really_probe: bound device 0001:10:12.0 to
+driver b43-pci-bridge
+[   18.724343] bus: 'bcma': add driver b43
+[   18.728635] bus: 'ssb': add driver b43
+[   18.734305] bus: 'ssb': driver_probe_device: matched device ssb0:0
+with driver b43
+[   18.743155] bus: 'ssb': really_probe: probing driver b43 with device ssb0:0
+[   18.747782] b43-phy0: Broadcom 4306 WLAN found (core revision 5)
+[   18.767439] b43-phy0: Found PHY: Analog 2, Type 2 (G), Revision 2
+[   18.771759] b43-phy0: Found Radio: Manuf 0x17F, ID 0x2050, Revision
+2, Version 0
+[   18.795467] driver: 'b43': driver_bound: bound to device 'ssb0:0'
+[   18.801533] bus: 'ssb': really_probe: bound device ssb0:0 to driver b43
+[   22.143084] b43-phy0: Loading firmware version 666.2 (2011-02-23 01:15:07)
+[   25.133011] b43 ssb0:0 wlan0: disabling HT as WMM/QoS is not
+supported by the AP
+[   25.140221] b43 ssb0:0 wlan0: disabling VHT as WMM/QoS is not
+supported by the AP
 
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+> + */
+> +#ifdef CONFIG_PPC32
+> +#define ARCH_ZONE_DMA_BITS 30
+> +#else
+>  #define ARCH_ZONE_DMA_BITS 31
+> +#endif
+>
+>  #endif /* _ASM_POWERPC_PAGE_H */
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index cba29131bccc..2540d3b2588c 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -248,7 +248,8 @@ void __init paging_init(void)
+>                (long int)((top_of_ram - total_ram) >> 20));
+>
+>  #ifdef CONFIG_ZONE_DMA
+> -       max_zone_pfns[ZONE_DMA] = min(max_low_pfn, 0x7fffffffUL >> PAGE_SHIFT);
+> +       max_zone_pfns[ZONE_DMA] = min(max_low_pfn,
+> +                       ((1UL << ARCH_ZONE_DMA_BITS) - 1) >> PAGE_SHIFT);
+>  #endif
+>         max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+>  #ifdef CONFIG_HIGHMEM
+> diff --git a/arch/powerpc/platforms/powermac/Kconfig b/arch/powerpc/platforms/powermac/Kconfig
+> index f834a19ed772..c02d8c503b29 100644
+> --- a/arch/powerpc/platforms/powermac/Kconfig
+> +++ b/arch/powerpc/platforms/powermac/Kconfig
+> @@ -7,6 +7,7 @@ config PPC_PMAC
+>         select PPC_INDIRECT_PCI if PPC32
+>         select PPC_MPC106 if PPC32
+>         select PPC_NATIVE
+> +       select ZONE_DMA if PPC32
+>         default y
+>
+>  config PPC_PMAC64
+> --
+> 2.20.1
+>
