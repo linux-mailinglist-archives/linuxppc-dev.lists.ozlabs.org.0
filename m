@@ -2,85 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AE8457D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 10:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86337459E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 12:05:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QDk54pcczDrWX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 18:46:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QGTC0536zDqLW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2019 20:05:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QDh42BG4zDq9H
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 18:45:07 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5E8hK4g091610
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 04:45:06 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t4775avar-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 04:45:05 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.ibm.com>;
- Fri, 14 Jun 2019 09:45:02 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 14 Jun 2019 09:44:52 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5E8ioUG58589432
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2019 08:44:50 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C533CAE051;
- Fri, 14 Jun 2019 08:44:50 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 641BDAE045;
- Fri, 14 Jun 2019 08:44:48 +0000 (GMT)
-Received: from [9.145.160.23] (unknown [9.145.160.23])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jun 2019 08:44:48 +0000 (GMT)
-Subject: Re: [PATCH v12 00/31] Speculative page faults
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: Haiyan Song <haiyanx.song@intel.com>
-References: <20190416134522.17540-1-ldufour@linux.ibm.com>
- <20190606065129.d5s3534p23twksgp@haiyan.sh.intel.com>
- <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
-Date: Fri, 14 Jun 2019 10:44:47 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QGNm3SxBzDrVW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2019 20:02:00 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 7B670308FBB4;
+ Fri, 14 Jun 2019 10:01:33 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-116-252.ams2.redhat.com [10.36.116.252])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 22F6D5D9C3;
+ Fri, 14 Jun 2019 10:01:14 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/6] mm: Further memory block device cleanups
+Date: Fri, 14 Jun 2019 12:01:08 +0200
+Message-Id: <20190614100114.311-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061408-0008-0000-0000-000002F3B0D9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061408-0009-0000-0000-00002260BA09
-Message-Id: <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-14_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=777 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906140071
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.43]); Fri, 14 Jun 2019 10:01:54 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,36 +50,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, sergey.senozhatsky.work@gmail.com, peterz@infradead.org,
- Will Deacon <will.deacon@arm.com>, mhocko@kernel.org, linux-mm@kvack.org,
- paulus@samba.org, Punit Agrawal <punitagrawal@gmail.com>, hpa@zytor.com,
- Michel Lespinasse <walken@google.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andrea Arcangeli <aarcange@redhat.com>, ak@linux.intel.com,
- Minchan Kim <minchan@kernel.org>, aneesh.kumar@linux.ibm.com, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Ingo Molnar <mingo@redhat.com>,
- David Rientjes <rientjes@google.com>, paulmck@linux.vnet.ibm.com,
- npiggin@gmail.com, sj38.park@gmail.com, Jerome Glisse <jglisse@redhat.com>,
- dave@stgolabs.net, kemi.wang@intel.com, kirill@shutemov.name,
- Thomas Gleixner <tglx@linutronix.de>, zhong jiang <zhongjiang@huawei.com>,
- Ganesh Mahendran <opensource.ganesh@gmail.com>,
- Yang Shi <yang.shi@linux.alibaba.com>, Mike Rapoport <rppt@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- vinayak menon <vinayakm.list@gmail.com>, akpm@linux-foundation.org,
- Tim Chen <tim.c.chen@linux.intel.com>, haren@linux.vnet.ibm.com
+Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
+ Keith Busch <keith.busch@intel.com>, linux-mm@kvack.org,
+ Arun KS <arunks@codeaurora.org>, Rashmica Gupta <rashmica.g@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Michael Neuling <mikey@neuling.org>, Baoquan He <bhe@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Pavel Tatashin <pasha.tatashin@oracle.com>, linux-acpi@vger.kernel.org,
+ Len Brown <lenb@kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ "mike.travis@hpe.com" <mike.travis@hpe.com>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Qian Cai <cai@lca.pw>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Oscar Salvador <osalvador@suse.de>, Juergen Gross <jgross@suse.com>,
+ Andrew Banman <andrew.banman@hpe.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, Johannes Weiner <hannes@cmpxchg.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 14/06/2019 à 10:37, Laurent Dufour a écrit :
-> Please find attached the script I run to get these numbers.
-> This would be nice if you could give it a try on your victim node and share the result.
+Some further cleanups around memory block devices. Especially, clean up
+and simplify walk_memory_range(). Including some other minor cleanups.
 
-Sounds that the Intel mail fitering system doesn't like the attached shell script.
-Please find it there: https://gist.github.com/ldu4/a5cc1a93f293108ea387d43d5d5e7f44
+Based on: linux-next
 
-Thanks,
-Laurent.
+Minor conflict with Dan's subsection hot-add series.
+Compiled + tested on x86 with DIMMs under QEMU.
+
+David Hildenbrand (6):
+  mm: Section numbers use the type "unsigned long"
+  drivers/base/memory: Use "unsigned long" for block ids
+  mm: Make register_mem_sect_under_node() static
+  mm/memory_hotplug: Rename walk_memory_range() and pass start+size
+    instead of pfns
+  mm/memory_hotplug: Move and simplify walk_memory_blocks()
+  drivers/base/memory.c: Get rid of find_memory_block_hinted()
+
+ arch/powerpc/platforms/powernv/memtrace.c | 22 +++---
+ drivers/acpi/acpi_memhotplug.c            | 19 ++----
+ drivers/base/memory.c                     | 81 +++++++++++++++++------
+ drivers/base/node.c                       |  8 ++-
+ include/linux/memory.h                    |  5 +-
+ include/linux/memory_hotplug.h            |  2 -
+ include/linux/mmzone.h                    |  4 +-
+ include/linux/node.h                      |  7 --
+ mm/memory_hotplug.c                       | 57 +---------------
+ mm/sparse.c                               | 12 ++--
+ 10 files changed, 92 insertions(+), 125 deletions(-)
+
+-- 
+2.21.0
 
