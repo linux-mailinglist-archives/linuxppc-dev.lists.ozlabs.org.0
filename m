@@ -1,54 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02A44702D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 15:29:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QyxY3L84zDqNC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 23:29:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B7747034
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 15:37:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Qz771jgSzDrg1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 23:37:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Qysm4VWwzDqFD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 23:26:04 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Qysg71slz9v0qB;
- Sat, 15 Jun 2019 15:25:59 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ypMTtY4H2cjl; Sat, 15 Jun 2019 15:25:59 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Qysg6612z9v0q9;
- Sat, 15 Jun 2019 15:25:59 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 9DA2B3FF; Sat, 15 Jun 2019 15:25:59 +0200 (CEST)
-Received: from 37.170.137.36 ([37.170.137.36]) by messagerie.si.c-s.fr
- (Horde Framework) with HTTP; Sat, 15 Jun 2019 15:25:59 +0200
-Date: Sat, 15 Jun 2019 15:25:59 +0200
-Message-ID: <20190615152559.Horde.0lTFIZALxZ-RI75z94G3jA8@messagerie.si.c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Andreas Schwab <schwab@linux-m68k.org>
-Subject: Re: [PATCH] powerpc/mm/32s: only use MMU to mark initmem NX if
- STRICT_KERNEL_RWX
-References: <cover.1550775950.git.christophe.leroy@c-s.fr>
- <1e412310cc18ea654fb2ce4c935654d8d1069f27.1550775950.git.christophe.leroy@c-s.fr>
- <8736kb9fry.fsf_-_@igel.home>
-In-Reply-To: <8736kb9fry.fsf_-_@igel.home>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Qz3s4dg6zDrSd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 23:34:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45Qz3s1wF6z9s4Y;
+ Sat, 15 Jun 2019 23:34:49 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.2-4 tag
+Date: Sat, 15 Jun 2019 23:34:46 +1000
+Message-ID: <87v9x7nf9l.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,56 +41,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, j.neuschaefer@gmx.net,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andreas Schwab <schwab@linux-m68k.org> a =C3=A9crit=C2=A0:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-> If STRICT_KERNEL_RWX is disabled, never use the MMU to mark initmen
-> nonexecutable.
+Hi Linus,
 
-I dont understand, can you elaborate ?
+Please pull some more powerpc fixes for 5.2:
 
-This area is mapped with BATs so using change_page_attr() is pointless.
+The following changes since commit cd6c84d8f0cdc911df435bb075ba22ce3c605b07:
 
-Christophe
+  Linux 5.2-rc2 (2019-05-26 16:49:19 -0700)
 
->
-> Also move a misplaced paren that makes the condition always true.
->
-> Fixes: 63b2bc619565 ("powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX")
-> Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-> ---
->  arch/powerpc/mm/pgtable_32.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-> index d53188dee18f..3935dc263d65 100644
-> --- a/arch/powerpc/mm/pgtable_32.c
-> +++ b/arch/powerpc/mm/pgtable_32.c
-> @@ -360,9 +360,11 @@ void mark_initmem_nx(void)
->  	unsigned long numpages =3D PFN_UP((unsigned long)_einittext) -
->  				 PFN_DOWN((unsigned long)_sinittext);
->
-> -	if (v_block_mapped((unsigned long)_stext) + 1)
-> +#ifdef CONFIG_STRICT_KERNEL_RWX
-> +	if (v_block_mapped((unsigned long)_stext + 1))
->  		mmu_mark_initmem_nx();
->  	else
-> +#endif
->  		change_page_attr(page, numpages, PAGE_KERNEL);
->  }
->
-> --
-> 2.22.0
->
-> --
-> Andreas Schwab, schwab@linux-m68k.org
-> GPG Key fingerprint =3D 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC=
-1
-> "And now for something completely different."
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.2-4
+
+for you to fetch changes up to c21f5a9ed85ca3e914ca11f421677ae9ae0d04b0:
+
+  powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX (2019-06-07 19:00:14 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.2 #4
+
+One fix for a regression introduced by our 32-bit KASAN support, which broke
+booting on machines with "bootx" early debugging enabled.
+
+A fix for a bug which broke kexec on 32-bit, introduced by changes to the 32-bit
+STRICT_KERNEL_RWX support in v5.1.
+
+Finally two fixes going to stable for our THP split/collapse handling,
+discovered by Nick. The first fixes random crashes and/or corruption in guests
+under sufficient load.
+
+Thanks to:
+  Nicholas Piggin, Christophe Leroy, Aaro Koskinen, Mathieu Malaterre.
+
+- ------------------------------------------------------------------
+Christophe Leroy (2):
+      powerpc: Fix kexec failure on book3s/32
+      powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX
+
+Nicholas Piggin (2):
+      powerpc/64s: Fix THP PMD collapse serialisation
+      powerpc/64s: __find_linux_pte() synchronization vs pmdp_invalidate()
 
 
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/btext.h             |  4 ++++
+ arch/powerpc/include/asm/kexec.h             |  3 +++
+ arch/powerpc/kernel/machine_kexec_32.c       |  4 +++-
+ arch/powerpc/kernel/prom_init.c              |  1 +
+ arch/powerpc/kernel/prom_init_check.sh       |  2 +-
+ arch/powerpc/mm/book3s64/pgtable.c           |  3 +++
+ arch/powerpc/mm/pgtable.c                    | 16 +++++++++++++--
+ 8 files changed, 59 insertions(+), 4 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBAgAGBQJdBO4+AAoJEFHr6jzI4aWAsAwQAK+CK0jvw2pgZMk8/RwuPihJ
+gr6pvRaiUuyyiCpWxpzHslZx0WYSg84EYaog4e3fRss6MZeTd4CxxJqAIIny2XTK
+3Z6EI3GQGtA8U/+GY+whaQ5+ILdJotbPNRci+yGwc3HNZwT/4RScbmJz7E84MZv+
+9gyXrKUio0RdtdZmMHtkrCbpg24QYf1+168gUlJ8H5XGy5NVXVhXwxbYcFeN4zIY
+JI+exlBZwtYBJQMtR0FCvjybKk7kRdQzrrUEFM/ZmzsXQryUR7tLrwqAeLvcDc6x
+CY9/fn2q7BcFRiOxeZ3AGG89NRTGdOOC1cNJ+Wqn8bIxzP/yFwTEr+lcbdpooCAs
+MYyR0yoiI8Aty55lH0uTYQDbXWBZigvKDjLJzn3KN91NKnb3Yw37y5fM5e1ZYQez
+bJmbcJJpQzv0YVxXpxd27QeLQtJe6B8D5y0HkpRzYifma5ItAzc1VGzp66jLRFT+
+m4LmzD3TjQ61LWyxxDBjAWCHUKW7+cu++sFw0LOA2Wib5DjLjhQAu9qXN1sR5704
+FXji4jULMajLMhqqMxjwTEatS46THyz2rqOtJ5/eRWOHBMBS8rHTbHRtFF20mL7x
+tHtDmKCfFs2HwHOndtaWduBjiGVVwOo84o2jY0EvfaQ5nscf2XE9acVo6czpJacn
+NnIsVZZ6RU/y4Q/f55T4
+=Viyv
+-----END PGP SIGNATURE-----
