@@ -2,76 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F9446F11
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 10:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A98746F14
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 10:41:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QrVN3X80zDrgr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 18:38:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QrYZ69T3zDrgp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 18:41:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="EVs+enJu"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=haren@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QrSl47tszDrcW
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 18:37:27 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45QrSg2ND1z9v0Fx;
- Sat, 15 Jun 2019 10:37:23 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=EVs+enJu; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id h5MID7vsLt9m; Sat, 15 Jun 2019 10:37:23 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45QrSg1CYBz9v0Fw;
- Sat, 15 Jun 2019 10:37:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560587843; bh=1zQeOTucIcOz7nqyoTV+C9CLAATxs8YjeVAtiYK4GTE=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=EVs+enJuj66wz1GH4JYPlmhsC4UmOmMDxF16Gzd8G0vPfQB6A8zkuvFv/1SM8LNHH
- CV3s2+JpGylvAisOaKCTmsDwz1svIBkiVcQ3sNLSc91p3ddh0oC/8or4FO6N8tXV5c
- as/gAW7jGMdk6ciS63sVlOLzTnevRh3eQPYR4RYQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3F3DB8B7B3;
- Sat, 15 Jun 2019 10:37:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VqXv7xNOE4Pb; Sat, 15 Jun 2019 10:37:24 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D4118B77A;
- Sat, 15 Jun 2019 10:37:23 +0200 (CEST)
-Subject: Issue with sg_copy_to_buffer() ? (was Re: [PATCH v3 2/4] crypto:
- talitos - fix hash on SEC1.)
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Horia Geanta <horia.geanta@nxp.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-References: <cover.1560429844.git.christophe.leroy@c-s.fr>
- <732ca0ff440bf4cd589d844cfda71d96efd500f5.1560429844.git.christophe.leroy@c-s.fr>
- <VI1PR0402MB34855C37F53DC1012DAF670798EE0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
- <e98f196d-a47c-f2ae-e729-fe2613628da7@c-s.fr>
-Message-ID: <0cbec7fa-445c-4644-5ea9-9f0f774b20fd@c-s.fr>
-Date: Sat, 15 Jun 2019 10:37:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <e98f196d-a47c-f2ae-e729-fe2613628da7@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QrWn6YzHzDqpp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 18:40:05 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5F8WJ5J016552
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 04:40:03 -0400
+Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t4u0cd69r-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 04:40:02 -0400
+Received: from localhost
+ by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <haren@linux.vnet.ibm.com>;
+ Sat, 15 Jun 2019 09:40:01 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sat, 15 Jun 2019 09:39:59 +0100
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5F8dwpA32899392
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 15 Jun 2019 08:39:58 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2670A124052;
+ Sat, 15 Jun 2019 08:39:58 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9AF5A124053;
+ Sat, 15 Jun 2019 08:39:57 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sat, 15 Jun 2019 08:39:57 +0000 (GMT)
+Subject: crypto/NX: Set receive window credits to max number of CRBs in RxFIFO
+From: Haren Myneni <haren@linux.vnet.ibm.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>, mpe@ellerman.id.au
+Content-Type: text/plain; charset="UTF-8"
+Date: Sat, 15 Jun 2019 01:39:02 -0700
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061508-0052-0000-0000-000003D14D15
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011265; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01218225; UDB=6.00640686; IPR=6.00999361; 
+ MB=3.00027320; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-15 08:40:00
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061508-0053-0000-0000-00006155825F
+Message-Id: <1560587942.17547.18.camel@hbabu-laptop>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-15_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906150079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,111 +90,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+    
+System gets checkstop if RxFIFO overruns with more requests than the
+maximum possible number of CRBs in FIFO at the same time. So find max
+CRBs from FIFO size and set it to receive window credits.
+   
+CC: stable@vger.kernel.org # v4.14+
+Signed-off-by:Haren Myneni <haren@us.ibm.com>
+
+diff --git a/drivers/crypto/nx/nx-842-powernv.c b/drivers/crypto/nx/nx-842-powernv.c
+index 4acbc47..e78ff5c 100644
+--- a/drivers/crypto/nx/nx-842-powernv.c
++++ b/drivers/crypto/nx/nx-842-powernv.c
+@@ -27,8 +27,6 @@
+ #define WORKMEM_ALIGN	(CRB_ALIGN)
+ #define CSB_WAIT_MAX	(5000) /* ms */
+ #define VAS_RETRIES	(10)
+-/* # of requests allowed per RxFIFO at a time. 0 for unlimited */
+-#define MAX_CREDITS_PER_RXFIFO	(1024)
+ 
+ struct nx842_workmem {
+ 	/* Below fields must be properly aligned */
+@@ -812,7 +810,11 @@ static int __init vas_cfg_coproc_info(struct device_node *dn, int chip_id,
+ 	rxattr.lnotify_lpid = lpid;
+ 	rxattr.lnotify_pid = pid;
+ 	rxattr.lnotify_tid = tid;
+-	rxattr.wcreds_max = MAX_CREDITS_PER_RXFIFO;
++	/*
++	 * Maximum RX window credits can not be more than #CRBs in
++	 * RxFIFO. Otherwise, can get checkstop if RxFIFO overruns.
++	 */
++	rxattr.wcreds_max = fifo_size / CRB_SIZE;
+ 
+ 	/*
+ 	 * Open a VAS receice window which is used to configure RxFIFO
 
 
-Le 15/06/2019 à 10:18, Christophe Leroy a écrit :
->>> @@ -2058,7 +2065,18 @@ static int ahash_process_req(struct 
->>> ahash_request *areq, unsigned int nbytes)
->>>           sg_copy_to_buffer(areq->src, nents,
->>>                     ctx_buf + req_ctx->nbuf, offset);
->>>           req_ctx->nbuf += offset;
->>> -        req_ctx->psrc = areq->src;
->>> +        for (sg = areq->src; sg && offset >= sg->length;
->>> +             offset -= sg->length, sg = sg_next(sg))
->>> +            ;
->>> +        if (offset) {
->>> +            sg_init_table(req_ctx->bufsl, 2);
->>> +            sg_set_buf(req_ctx->bufsl, sg_virt(sg) + offset,
->>> +                   sg->length - offset);
->>> +            sg_chain(req_ctx->bufsl, 2, sg_next(sg));
->>> +            req_ctx->psrc = req_ctx->bufsl;
->> Isn't this what scatterwalk_ffwd() does?
-> 
-> Thanks for pointing this, I wasn't aware of that function. Looking at it 
-> it seems to do the same. Unfortunately, some tests fails with 'wrong 
-> result' when using it instead.
-> 
-> Comparing the results of scatterwalk_ffwd() with what I get with my open 
-> codying, I see the following difference:
-> 
-> scatterwalk_ffwd() uses sg_page(sg) + sg->offset + len
-> 
-> while my open codying results in virt_to_page(sg_virt(sg) + len)
-> 
-> When sg->offset + len is greater than PAGE_SIZE, the resulting SG entry 
-> is different allthough valid in both cases. I think this difference 
-> results in sg_copy_to_buffer() failing. I'm still investigating. Any idea ?
-> 
-
-After adding some dumps, I confirm the suspicion:
-
-My board uses 16k pages.
-
-SG list when not using scatterwalk_ffwd()
-[   64.120540] sg c6386794 page c7fc1c60 offset 22 len 213
-[   64.120579] sg c6386a48 page c7fc1b80 offset 4 len 2
-[   64.120618] sg c6386a5c page c7fc1b00 offset 3 len 17
-[   64.120658] sg c6386a70 page c7fc1b40 offset 2 len 10
-
-SG list when using scatterwalk_ffwd()
-[   64.120743] sg c6386794 page c7fc1c40 offset 16406 len 213
-[   64.120782] sg c6386a48 page c7fc1b80 offset 4 len 2
-[   64.120821] sg c6386a5c page c7fc1b00 offset 3 len 17
-[   64.120861] sg c6386a70 page c7fc1b40 offset 2 len 10
-
-Content of the SG list:
-[   64.120975] 00000000: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121021] 00000010: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121067] 00000020: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121112] 00000030: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121157] 00000040: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121202] 00000050: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121247] 00000060: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 a8 10
-[   64.121292] 00000070: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121337] 00000080: e8 40 98 f0 48 a0 f8 50 28 00 58 b0 08 60 b8 10
-[   64.121382] 00000090: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121427] 000000a0: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121472] 000000b0: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121517] 000000c0: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121557] 000000d0: 68 c0 18 30 c8
-[   64.121598] 00000000: 20 78
-[   64.121646] 00000000: d0 28 80 f8 30 88 e0 38 90 e8 40 98 f0 48 a0 f8
-[   64.121684] 00000010: 50
-[   64.121729] 00000000: a8 00 58 b0 08 60 b8 10 68 c0
-
-Content of the buffer after the copy from the list:
-[   64.121790] 00000000: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121836] 00000010: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121881] 00000020: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.121927] 00000030: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.121972] 00000040: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.122017] 00000050: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.122062] 00000060: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 a8 10
-[   64.122107] 00000070: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.122152] 00000080: e8 40 98 f0 48 a0 f8 50 28 00 58 b0 08 60 b8 10
-[   64.122197] 00000090: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.122243] 000000a0: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.122288] 000000b0: 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90
-[   64.122333] 000000c0: e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 60 b8 10
-[   64.122378] 000000d0: 68 c0 18 30 c8 d8 b0 08 60 b8 10 68 c0 18 70 c8
-[   64.122424] 000000e0: 20 78 d0 28 80 d8 30 88 e0 38 90 e8 40 98 f0 48
-[   64.122462] 000000f0: a0 f8
-
-As you can see, the data following the first block should be
-20 78 d0 28 80 f8 30 88 e0 38 90 e8 40 98 f0 48 a0 f8 50 a8 00 58 b0 08 
-60 b8 10 68 c0
-
-Instead it is
-d8 b0 08 60 b8 10 68 c0 18 70 c8 20 78 d0 28 80 d8 30 88 e0 38 90 e8 40 
-98 f0 48 a0 f8
-
-So I guess there is something wrong with sg_copy_to_buffer()
-
-Christophe
