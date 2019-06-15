@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D199A46EF3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 10:19:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F9E46EEB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 10:08:31 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QqqJ67nnzDrfS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 18:08:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Qr4B2LmlzDrfw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 18:19:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,56 +16,57 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="CFZCdvS6"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="S/HGbpHT"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Qqnh6BlYzDrX4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 18:07:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Qr2W5rvNzDrcV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 18:18:11 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45QqnX6hxKz9v0F9;
- Sat, 15 Jun 2019 10:06:56 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45Qr2Q4R0Yz9v0Dw;
+ Sat, 15 Jun 2019 10:18:06 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=CFZCdvS6; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=S/HGbpHT; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id hc2rOByaNF3V; Sat, 15 Jun 2019 10:06:56 +0200 (CEST)
+ with ESMTP id sapXI2Lu1-d5; Sat, 15 Jun 2019 10:18:06 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45QqnX5Gqkz9v0F8;
- Sat, 15 Jun 2019 10:06:56 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45Qr2Q2t64z9v0Dk;
+ Sat, 15 Jun 2019 10:18:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560586016; bh=1p6s1wDC21lFcLrW9LHAqnn+cIQAnQKI/I9iSnqTFsU=;
+ t=1560586686; bh=+Zco0FR9mmqB3Bll/AYl3OOsNrGQR4TrxurFLcfKqYQ=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=CFZCdvS6Gn44Gms6CdPAgtpa9H53SYlJJFfS68xOIrkZxayPk64IgDJI88xDV354W
- YUTg0/LxuR+UPAdtUprz+7sTpVdF78EI+TcFZzuJjZLj1OU2Oi01DPmjcAOipLL3Gq
- 9wjMJkVHKam+/9rCfdG+6q/sqIpKw2+fLOUwJHCI=
+ b=S/HGbpHTpbiPjpxKnfGawh1W0KnxaGu2okWAzbwWln7hJjfGK8J0BaGEsZJ9KK+oe
+ cpxxNcwCu10adPTu3ZeKimZC24Qg14UlA20Iai4/FBlyMbUpCwWgdbsC8cmITBMZUX
+ yqCKNNY3JpKWsyfcNcoVVS2GkvW59SX/ypVnzbZ0=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BA5A58B7B3;
- Sat, 15 Jun 2019 10:06:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BFB38B7B3;
+ Sat, 15 Jun 2019 10:18:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FwFmC_wRUTFQ; Sat, 15 Jun 2019 10:06:57 +0200 (CEST)
+ with ESMTP id D6B_beVqunfZ; Sat, 15 Jun 2019 10:18:07 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 96D348B77A;
- Sat, 15 Jun 2019 10:06:56 +0200 (CEST)
-Subject: Re: [PATCH v1 1/6] mm: Section numbers use the type "unsigned long"
-To: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>
-References: <20190614100114.311-1-david@redhat.com>
- <20190614100114.311-2-david@redhat.com>
- <20190614120036.00ae392e3f210e7bc9ec6960@linux-foundation.org>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BFCD58B77A;
+ Sat, 15 Jun 2019 10:18:06 +0200 (CEST)
+Subject: Re: [PATCH v3 2/4] crypto: talitos - fix hash on SEC1.
+To: Horia Geanta <horia.geanta@nxp.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
+References: <cover.1560429844.git.christophe.leroy@c-s.fr>
+ <732ca0ff440bf4cd589d844cfda71d96efd500f5.1560429844.git.christophe.leroy@c-s.fr>
+ <VI1PR0402MB34855C37F53DC1012DAF670798EE0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <701e8feb-cbf8-04c1-758c-046da9394ac1@c-s.fr>
-Date: Sat, 15 Jun 2019 10:06:54 +0200
+Message-ID: <e98f196d-a47c-f2ae-e729-fe2613628da7@c-s.fr>
+Date: Sat, 15 Jun 2019 10:18:06 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190614120036.00ae392e3f210e7bc9ec6960@linux-foundation.org>
+In-Reply-To: <VI1PR0402MB34855C37F53DC1012DAF670798EE0@VI1PR0402MB3485.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -80,131 +81,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Michal Hocko <mhocko@suse.com>,
- Pavel Tatashin <pasha.tatashin@oracle.com>, linux-acpi@vger.kernel.org,
- Baoquan He <bhe@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Arun KS <arunks@codeaurora.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 14/06/2019 à 21:00, Andrew Morton a écrit :
-> On Fri, 14 Jun 2019 12:01:09 +0200 David Hildenbrand <david@redhat.com> wrote:
-> 
->> We are using a mixture of "int" and "unsigned long". Let's make this
->> consistent by using "unsigned long" everywhere. We'll do the same with
->> memory block ids next.
->>
->> ...
->>
->> -	int i, ret, section_count = 0;
->> +	unsigned long i;
->>
->> ...
->>
->> -	unsigned int i;
->> +	unsigned long i;
-> 
-> Maybe I did too much fortran back in the day, but I think the
-> expectation is that a variable called "i" has type "int".
-> 
-> This?
-> 
-> 
-> 
-> s/unsigned long i/unsigned long section_nr/
+Le 14/06/2019 à 13:32, Horia Geanta a écrit :
+> On 6/13/2019 3:48 PM, Christophe Leroy wrote:
+>> @@ -336,15 +336,18 @@ static void flush_channel(struct device *dev, int ch, int error, int reset_ch)
+>>   	tail = priv->chan[ch].tail;
+>>   	while (priv->chan[ch].fifo[tail].desc) {
+>>   		__be32 hdr;
+>> +		struct talitos_edesc *edesc;
+>>   
+>>   		request = &priv->chan[ch].fifo[tail];
+>> +		edesc = container_of(request->desc, struct talitos_edesc, desc);
+> Not needed for all cases, should be moved to the block that uses it.
 
- From my point of view you degrade readability by doing that.
+Ok.
 
-section_nr_to_pfn(mem->start_section_nr + section_nr);
+> 
+>>   
+>>   		/* descriptors with their done bits set don't get the error */
+>>   		rmb();
+>>   		if (!is_sec1)
+>>   			hdr = request->desc->hdr;
+>>   		else if (request->desc->next_desc)
+>> -			hdr = (request->desc + 1)->hdr1;
+>> +			hdr = ((struct talitos_desc *)
+>> +			       (edesc->buf + edesc->dma_len))->hdr1;
+>>   		else
+>>   			hdr = request->desc->hdr1;
+>>   
+> [snip]
+>> @@ -2058,7 +2065,18 @@ static int ahash_process_req(struct ahash_request *areq, unsigned int nbytes)
+>>   		sg_copy_to_buffer(areq->src, nents,
+>>   				  ctx_buf + req_ctx->nbuf, offset);
+>>   		req_ctx->nbuf += offset;
+>> -		req_ctx->psrc = areq->src;
+>> +		for (sg = areq->src; sg && offset >= sg->length;
+>> +		     offset -= sg->length, sg = sg_next(sg))
+>> +			;
+>> +		if (offset) {
+>> +			sg_init_table(req_ctx->bufsl, 2);
+>> +			sg_set_buf(req_ctx->bufsl, sg_virt(sg) + offset,
+>> +				   sg->length - offset);
+>> +			sg_chain(req_ctx->bufsl, 2, sg_next(sg));
+>> +			req_ctx->psrc = req_ctx->bufsl;
+> Isn't this what scatterwalk_ffwd() does?
 
-Three times the word 'section_nr' in one line, is that worth it ? Gives 
-me headache.
+Thanks for pointing this, I wasn't aware of that function. Looking at it 
+it seems to do the same. Unfortunately, some tests fails with 'wrong 
+result' when using it instead.
 
-Codying style says the following, which makes full sense in my opinion:
+Comparing the results of scatterwalk_ffwd() with what I get with my open 
+codying, I see the following difference:
 
-LOCAL variable names should be short, and to the point.  If you have
-some random integer loop counter, it should probably be called ``i``.
-Calling it ``loop_counter`` is non-productive, if there is no chance of it
-being mis-understood.
+scatterwalk_ffwd() uses sg_page(sg) + sg->offset + len
 
-What about just naming it 'nr' if we want to use something else than 'i' ?
+while my open codying results in virt_to_page(sg_virt(sg) + len)
+
+When sg->offset + len is greater than PAGE_SIZE, the resulting SG entry 
+is different allthough valid in both cases. I think this difference 
+results in sg_copy_to_buffer() failing. I'm still investigating. Any idea ?
 
 Christophe
 
-
 > 
-> --- a/drivers/base/memory.c~mm-section-numbers-use-the-type-unsigned-long-fix
-> +++ a/drivers/base/memory.c
-> @@ -131,17 +131,17 @@ static ssize_t phys_index_show(struct de
->   static ssize_t removable_show(struct device *dev, struct device_attribute *attr,
->   			      char *buf)
->   {
-> -	unsigned long i, pfn;
-> +	unsigned long section_nr, pfn;
->   	int ret = 1;
->   	struct memory_block *mem = to_memory_block(dev);
->   
->   	if (mem->state != MEM_ONLINE)
->   		goto out;
->   
-> -	for (i = 0; i < sections_per_block; i++) {
-> -		if (!present_section_nr(mem->start_section_nr + i))
-> +	for (section_nr = 0; section_nr < sections_per_block; section_nr++) {
-> +		if (!present_section_nr(mem->start_section_nr + section_nr))
->   			continue;
-> -		pfn = section_nr_to_pfn(mem->start_section_nr + i);
-> +		pfn = section_nr_to_pfn(mem->start_section_nr + section_nr);
->   		ret &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
->   	}
->   
-> @@ -695,12 +695,12 @@ static int add_memory_block(unsigned lon
->   {
->   	int ret, section_count = 0;
->   	struct memory_block *mem;
-> -	unsigned long i;
-> +	unsigned long section_nr;
->   
-> -	for (i = base_section_nr;
-> -	     i < base_section_nr + sections_per_block;
-> -	     i++)
-> -		if (present_section_nr(i))
-> +	for (section_nr = base_section_nr;
-> +	     section_nr < base_section_nr + sections_per_block;
-> +	     section_nr++)
-> +		if (present_section_nr(section_nr))
->   			section_count++;
->   
->   	if (section_count == 0)
-> @@ -823,7 +823,7 @@ static const struct attribute_group *mem
->    */
->   int __init memory_dev_init(void)
->   {
-> -	unsigned long i;
-> +	unsigned long section_nr;
->   	int ret;
->   	int err;
->   	unsigned long block_sz;
-> @@ -840,9 +840,9 @@ int __init memory_dev_init(void)
->   	 * during boot and have been initialized
->   	 */
->   	mutex_lock(&mem_sysfs_mutex);
-> -	for (i = 0; i <= __highest_present_section_nr;
-> -		i += sections_per_block) {
-> -		err = add_memory_block(i);
-> +	for (section_nr = 0; section_nr <= __highest_present_section_nr;
-> +		section_nr += sections_per_block) {
-> +		err = add_memory_block(section_nr);
->   		if (!ret)
->   			ret = err;
->   	}
-> _
+> Horia
 > 
