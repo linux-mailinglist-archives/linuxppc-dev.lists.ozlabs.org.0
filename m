@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FB546EBF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC88946EC5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:41:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Qq9P145TzDrdM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:39:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QqCf1kfbzDrcW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:41:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Qq7X0KBwzDrcW
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Qq7X0sDgzDrcZ
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 17:37:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="djIhF63m"; 
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="bdb8QER0"; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 45Qq7W45fFz9sNk; Sat, 15 Jun 2019 17:37:27 +1000 (AEST)
+ id 45Qq7W4nsrz9sNT; Sat, 15 Jun 2019 17:37:27 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 45Qq7W3GGlz9sNC; Sat, 15 Jun 2019 17:37:27 +1000 (AEST)
+ id 45Qq7W41Drz9sDB; Sat, 15 Jun 2019 17:37:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1560584247; bh=RQlS/YGl7nl7lg0dX0YZ7lSdRdKWpVUbXN2p5z5araU=;
+ t=1560584247; bh=tKoVDInPecXoeEXMW70V2vj5KuXPanLCpYWOumHs1rc=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=djIhF63m3QNctERvE6C8SBA6S0u9kwKsIumUdSt9KnspzrRoXYUWCTqbGw5Fx7foE
- uNyUbSvGNusuJthv6pcc/S66S7eMsdMqFl/260/R2jCUtEa5HRAyN6vAlzt69BObgh
- VYwNTfIgsXYdrVHMksanL8yia/D9AxmPf4g2vgwTvsWhpMjeU70H+8eGZEPudB+t5c
- jykWUsD7zbrqchNFuIUBqacPOtm1ui47TqBbTwq79rC25+13+HKhnWhuMS6ecPH7o3
- 0+brV8YdRA7NOjp1fTGBnerJrpBBnChWIMU5xasM6w7tSFDgMuW+17Z/P/nO1vHS55
- nNTIeOAF+QdMA==
-Date: Sat, 15 Jun 2019 17:36:00 +1000
+ b=bdb8QER0aLThSFeUxQAFwQNi7i5uHfosRYjmTturWX2pu+Y46RASWLyKukwMrpK2y
+ v3Q+Ut+yaP7nAQCySox+ZasCthS6xSoaYInqpusAr+63FWI0YWanmF6eXu3wI46APk
+ +4G7qG43ELE/MH05qLKvmSqifeCfVfq0LC8kAFNWriRPEivN/fiqszUadjh33+Lmyq
+ BL+Usp8T1XiSZYbG+umSw0DC9xoSTurrVtuYyyEdbwgcPZSo3wriOpxgRZ2e0pFiRn
+ Bc4+zHxYbN7g0Al275AyW3X1jDDpuKAjAWIfOcwnyl2Uxp6iOGgMJfZGm8pVit50NQ
+ OaTTxXlYNiELg==
+Date: Sat, 15 Jun 2019 17:37:24 +1000
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Claudio Carvalho <cclaudio@linux.ibm.com>
-Subject: Re: [PATCH v3 3/9] powerpc: Introduce FW_FEATURE_ULTRAVISOR
-Message-ID: <20190615073600.GA24709@blackberry>
+Subject: Re: [PATCH v3 4/9] KVM: PPC: Ultravisor: Add generic ultravisor call
+ handler
+Message-ID: <20190615073724.GB24709@blackberry>
 References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-4-cclaudio@linux.ibm.com>
+ <20190606173614.32090-5-cclaudio@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190606173614.32090-4-cclaudio@linux.ibm.com>
+In-Reply-To: <20190606173614.32090-5-cclaudio@linux.ibm.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,32 +68,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 06, 2019 at 02:36:08PM -0300, Claudio Carvalho wrote:
-> This feature tells if the ultravisor firmware is available to handle
-> ucalls.
+On Thu, Jun 06, 2019 at 02:36:09PM -0300, Claudio Carvalho wrote:
+> From: Ram Pai <linuxram@us.ibm.com>
+> 
+> Add the ucall() function, which can be used to make ultravisor calls
+> with varied number of in and out arguments. Ultravisor calls can be made
+> from the host or guests.
+> 
+> This copies the implementation of plpar_hcall().
 
-Everything in this patch that depends on CONFIG_PPC_UV should just
-depend on CONFIG_PPC_POWERNV instead.  The reason is that every host
-kernel needs to be able to do the ultracall to set partition table
-entry 0, in case it ends up being run on a machine with an ultravisor.
-Otherwise we will have the situation where a host kernel may crash
-early in boot just because the machine it's booted on happens to have
-an ultravisor running.  The crash will be a particularly nasty one
-because it will happen before we have probed the machine type and
-initialized the console; therefore it will just look like the machine
-hangs for no discernable reason.
-
-We also need to think about how to provide a way for petitboot to know
-whether the kernel it is booting knows how to do a ucall to set its
-partition table entry.  One suggestion would be to modify
-vmlinux.lds.S to add a new PT_NOTE entry in the program header of the
-binary with (say) a 64-bit doubleword which is a bitmap indicating
-capabilities of the binary.  We would define the first bit as
-indicating that the kernel knows how to run under an ultravisor.
-When running under an ultravisor, petitboot could then look for the
-PT_NOTE and the ultravisor-capable bit in it, and if the PT_NOTE is
-not there or the bit is zero, put up a dialog warning the user that
-the kernel will probably crash early in boot, and asking for explicit
-confirmation that the user wants to proceed.
+Again, we will want all of this on every powernv-capable kernel, since
+they will all need to do UV_WRITE_PATE, even if they have no other
+support for the ultravisor.
 
 Paul.
