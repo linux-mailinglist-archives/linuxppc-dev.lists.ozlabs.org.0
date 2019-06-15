@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B7E46ED4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2450846EDD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:53:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QqPP66YJzDrfF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:49:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QqTV0jxJzDrg6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:53:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QqMR239FzDrQN
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QqMR2mDtzDrQw
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 17:47:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="KTBzlzh+"; 
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="cckdYsiE"; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 45QqMR1CyRz9sNk; Sat, 15 Jun 2019 17:47:47 +1000 (AEST)
+ id 45QqMR0G49z9sNy; Sat, 15 Jun 2019 17:47:47 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 45QqMR0FTCz9sNl; Sat, 15 Jun 2019 17:47:46 +1000 (AEST)
+ id 45QqMQ6mFsz9sNC; Sat, 15 Jun 2019 17:47:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1560584867; bh=RbVxzic/utIowZwLvmsu0ZqoiFt+kS5VBsZdtW+Utcc=;
+ t=1560584866; bh=U4SYbjz4U+6Wsqkyzvs7txI2fXrHWgxLLSwdp3uAUTI=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=KTBzlzh+vKbi32BAVrbFzAP8ZM8khVQoraLTz72U4uRj7oMEImg8+W93wiW5V0gXI
- ZEpWauGXSgcX/5cnNlH4vSEOomomYA2sLQhsa2PD71CN23j5ZT5CyvZ2NWkVAEvINJ
- GZB0CxHVHVzvrysEdmAYNDUhH1WWhftXdOkiaz0kCLNPxvXDN/jbqnV1yIZQ/UtfNq
- fbgpRI59KkSFj23SIcT4DLepKdeKbQ88QpOdJSTU0hcN/l52oSHagT79kvq/enb0lN
- P+7AT1nympiM2xIPoOUCraD1XuEAC+344cmM6gEE93W0npUa6xmhd55bv/55uurDtF
- c6NcXiGObMKHw==
-Date: Sat, 15 Jun 2019 17:43:34 +1000
+ b=cckdYsiEtfS4WN8bppW3NlL6eJH69EywRLSCJ5KMan3Z3pHuSmyo+JjWnmhg4lyaM
+ R2vIPIE1/4U5x5OyxofQVayM8j1QtjNMYYRhGu5aXdF2FCpfnhv9iTROBnZATJ56Tf
+ H5/fqg72ZcyM0944GSxv3aedZXpRIruvd/bdWsOuIj1psUVFIDlIlt5Wtp7ndZveUM
+ 8h+siEnzz5E9/IIZQMXyg6nPOVbP10V9jeOpvN2zmeNcT+5N7GvtNMXUQulXjfG+iM
+ jNvibLS5NDR/Qv5ITGNx8wCzX6OMTw1jEkqfpsRWqNvHgmGmGgVW5qw1KKn7Tqhpou
+ wDgL9Qg2/bo3w==
+Date: Sat, 15 Jun 2019 17:45:50 +1000
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Claudio Carvalho <cclaudio@linux.ibm.com>
-Subject: Re: [PATCH v3 7/9] KVM: PPC: Ultravisor: Restrict LDBAR access
-Message-ID: <20190615074334.GD24709@blackberry>
+Subject: Re: [PATCH v3 8/9] KVM: PPC: Ultravisor: Enter a secure guest
+Message-ID: <20190615074550.GE24709@blackberry>
 References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-8-cclaudio@linux.ibm.com>
+ <20190606173614.32090-9-cclaudio@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190606173614.32090-8-cclaudio@linux.ibm.com>
+In-Reply-To: <20190606173614.32090-9-cclaudio@linux.ibm.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,21 +67,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 06, 2019 at 02:36:12PM -0300, Claudio Carvalho wrote:
-> When the ultravisor firmware is available, it takes control over the
-> LDBAR register. In this case, thread-imc updates and save/restore
-> operations on the LDBAR register are handled by ultravisor.
+On Thu, Jun 06, 2019 at 02:36:13PM -0300, Claudio Carvalho wrote:
+> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 > 
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> To enter a secure guest, we have to go through the ultravisor, therefore
+> we do a ucall when we are entering a secure guest.
+> 
+> This change is needed for any sort of entry to the secure guest from the
+> hypervisor, whether it is a return from an hcall, a return from a
+> hypervisor interrupt, or the first time that a secure guest vCPU is run.
+> 
+> If we are returning from an hcall, the results are already in the
+> appropriate registers (R3:12), except for R6,7, which need to be
+> restored before doing the ucall (UV_RETURN).
+> 
+> Have fast_guest_return check the kvm_arch.secure_guest field so that a
+> new CPU enters UV when started (in response to a RTAS start-cpu call).
+> 
+> Thanks to input from Paul Mackerras, Ram Pai and Mike Anderson.
+> 
+> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> [Pass SRR1 in r11 for UV_RETURN, fix kvmppc_msr_interrupt to preserve
+>  the MSR_S bit]
+> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+> [Fix UV_RETURN token number and arch.secure_guest check]
 > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> [Update commit message and ret_to_ultra comment]
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
-
-Just a note on the signed-off-by: it's a bit weird to have Ram's
-signoff when he is neither the author nor the sender of the patch.
-The author is assumed to be Claudio; if that is not correct then the
-patch should have a From: line at the start telling us who the author
-is, and ideally that person should have a signoff line before
-Claudio's signoff as the sender of the patch.
 
 Paul.
