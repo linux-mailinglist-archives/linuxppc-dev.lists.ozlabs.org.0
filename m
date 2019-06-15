@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2450846EDD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF6246EDC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 09:51:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45QqTV0jxJzDrg6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:53:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QqRN2bR6zDrdQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 17:51:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45QqMR2mDtzDrQw
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45QqMR2BKjzDrQS
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 17:47:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="cckdYsiE"; 
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="SYwry4YV"; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 45QqMR0G49z9sNy; Sat, 15 Jun 2019 17:47:47 +1000 (AEST)
+ id 45QqMQ6vDrz9sNt; Sat, 15 Jun 2019 17:47:46 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 45QqMQ6mFsz9sNC; Sat, 15 Jun 2019 17:47:46 +1000 (AEST)
+ id 45QqMQ68b2z9sNT; Sat, 15 Jun 2019 17:47:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1560584866; bh=U4SYbjz4U+6Wsqkyzvs7txI2fXrHWgxLLSwdp3uAUTI=;
+ t=1560584866; bh=Omhq+JfRZdaBwAdpC7ZMYBk9IkvNPM4ETCl/bppBLP4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=cckdYsiEtfS4WN8bppW3NlL6eJH69EywRLSCJ5KMan3Z3pHuSmyo+JjWnmhg4lyaM
- R2vIPIE1/4U5x5OyxofQVayM8j1QtjNMYYRhGu5aXdF2FCpfnhv9iTROBnZATJ56Tf
- H5/fqg72ZcyM0944GSxv3aedZXpRIruvd/bdWsOuIj1psUVFIDlIlt5Wtp7ndZveUM
- 8h+siEnzz5E9/IIZQMXyg6nPOVbP10V9jeOpvN2zmeNcT+5N7GvtNMXUQulXjfG+iM
- jNvibLS5NDR/Qv5ITGNx8wCzX6OMTw1jEkqfpsRWqNvHgmGmGgVW5qw1KKn7Tqhpou
- wDgL9Qg2/bo3w==
-Date: Sat, 15 Jun 2019 17:45:50 +1000
+ b=SYwry4YVdi1T2o5VEEsKyPMbd3wqwA4NHhCqKjlzzhHPseX72gCQzM7tl3ABvBcQ+
+ dhu7MjyeTDmSpxevdX8s2ibjbwFuvej4/KKFQpG/nu2as2W/a+GEUkicKmKkci55Xy
+ axIzqd87vr3K1pLVzu58DfR2vxVyJeXpvxwSUmvgKNA3P69DMQo0NBjTaFIwLR7poI
+ KK/ShRl8i3Q7hHkZsTkyeCs55htDxFhKhambnmHH0j9YmLWWzgQEYfLwtT9ql8vJ5V
+ 3XlblyH+4McHXfzr4qvxB/DhHe/prTgbG60V+rY41fCTjgxfw4eAMr07QTDkJbUoR9
+ lk+KGfwfMeRmQ==
+Date: Sat, 15 Jun 2019 17:47:43 +1000
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Claudio Carvalho <cclaudio@linux.ibm.com>
-Subject: Re: [PATCH v3 8/9] KVM: PPC: Ultravisor: Enter a secure guest
-Message-ID: <20190615074550.GE24709@blackberry>
+Subject: Re: [PATCH v3 9/9] KVM: PPC: Ultravisor: Check for MSR_S during
+ hv_reset_msr
+Message-ID: <20190615074743.GF24709@blackberry>
 References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-9-cclaudio@linux.ibm.com>
+ <20190606173614.32090-10-cclaudio@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190606173614.32090-9-cclaudio@linux.ibm.com>
+In-Reply-To: <20190606173614.32090-10-cclaudio@linux.ibm.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,34 +68,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 06, 2019 at 02:36:13PM -0300, Claudio Carvalho wrote:
-> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+On Thu, Jun 06, 2019 at 02:36:14PM -0300, Claudio Carvalho wrote:
+> From: Michael Anderson <andmike@linux.ibm.com>
 > 
-> To enter a secure guest, we have to go through the ultravisor, therefore
-> we do a ucall when we are entering a secure guest.
+>  - Check for MSR_S so that kvmppc_set_msr will include. Prior to this
+
+Will include what? "it" maybe?
+
+>    change return to guest would not have the S bit set.
 > 
-> This change is needed for any sort of entry to the secure guest from the
-> hypervisor, whether it is a return from an hcall, a return from a
-> hypervisor interrupt, or the first time that a secure guest vCPU is run.
+>  - Patch based on comment from Paul Mackerras <pmac@au1.ibm.com>
 > 
-> If we are returning from an hcall, the results are already in the
-> appropriate registers (R3:12), except for R6,7, which need to be
-> restored before doing the ucall (UV_RETURN).
-> 
-> Have fast_guest_return check the kvm_arch.secure_guest field so that a
-> new CPU enters UV when started (in response to a RTAS start-cpu call).
-> 
-> Thanks to input from Paul Mackerras, Ram Pai and Mike Anderson.
-> 
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> [Pass SRR1 in r11 for UV_RETURN, fix kvmppc_msr_interrupt to preserve
->  the MSR_S bit]
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-> [Fix UV_RETURN token number and arch.secure_guest check]
-> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> [Update commit message and ret_to_ultra comment]
+> Signed-off-by: Michael Anderson <andmike@linux.ibm.com>
 > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 
 Acked-by: Paul Mackerras <paulus@ozlabs.org>
+
+but you should reword the commit message fix that first sentence.
 
 Paul.
