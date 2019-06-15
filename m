@@ -1,35 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9B747037
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 15:40:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B7747034
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 15:37:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Qz771jgSzDrg1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 23:37:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45QzBp3lbhzDrQL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2019 23:40:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Qz3s4dg6zDrSd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 23:34:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Qz5G1pgKzDrfy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2019 23:36:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45Qz3s1wF6z9s4Y;
- Sat, 15 Jun 2019 23:34:49 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.2-4 tag
-Date: Sat, 15 Jun 2019 23:34:46 +1000
-Message-ID: <87v9x7nf9l.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 45Qz5D53Mrz9sDX; Sat, 15 Jun 2019 23:35:59 +1000 (AEST)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: 934bda59f286d0221f1a3ebab7f5156a996cc37d
+X-Patchwork-Hint: ignore
+In-Reply-To: <20190603065657.7986-1-dja@axtens.net>
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH v2] powerpc: pseries/hvconsole: fix stack overread via udbg
+Message-Id: <45Qz5D53Mrz9sDX@ozlabs.org>
+Date: Sat, 15 Jun 2019 23:35:59 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,79 +39,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- npiggin@gmail.com
+Cc: Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On Mon, 2019-06-03 at 06:56:57 UTC, Daniel Axtens wrote:
+> While developing kasan for 64-bit book3s, I hit the following stack
+> over-read.
+> 
+> It occurs because the hypercall to put characters onto the terminal
+> takes 2 longs (128 bits/16 bytes) of characters at a time, and so
+> hvc_put_chars would unconditionally copy 16 bytes from the argument
+> buffer, regardless of supplied length. However, udbg_hvc_putc can
+> call hvc_put_chars with a single-byte buffer, leading to the error.
+> 
+> [    0.001931] ==================================================================                                                  [150/819]
+> [    0.001933] BUG: KASAN: stack-out-of-bounds in hvc_put_chars+0xdc/0x110
+> [    0.001934] Read of size 8 at addr c0000000023e7a90 by task swapper/0
+> [    0.001934]
+> [    0.001935] CPU: 0 PID: 0 Comm: swapper Not tainted 5.2.0-rc2-next-20190528-02824-g048a6ab4835b #113
+> [    0.001935] Call Trace:
+> [    0.001936] [c0000000023e7790] [c000000001b4a450] dump_stack+0x104/0x154 (unreliable)
+> [    0.001937] [c0000000023e77f0] [c0000000006d3524] print_address_description+0xa0/0x30c
+> [    0.001938] [c0000000023e7880] [c0000000006d318c] __kasan_report+0x20c/0x224
+> [    0.001939] [c0000000023e7950] [c0000000006d19d8] kasan_report+0x18/0x30
+> [    0.001940] [c0000000023e7970] [c0000000006d4854] __asan_report_load8_noabort+0x24/0x40
+> [    0.001941] [c0000000023e7990] [c0000000001511ac] hvc_put_chars+0xdc/0x110
+> [    0.001942] [c0000000023e7a10] [c000000000f81cfc] hvterm_raw_put_chars+0x9c/0x110
+> [    0.001943] [c0000000023e7a50] [c000000000f82634] udbg_hvc_putc+0x154/0x200
+> [    0.001944] [c0000000023e7b10] [c000000000049c90] udbg_write+0xf0/0x240
+> [    0.001945] [c0000000023e7b70] [c0000000002e5d88] console_unlock+0x868/0xd30
+> [    0.001946] [c0000000023e7ca0] [c0000000002e6e00] register_console+0x970/0xe90
+> [    0.001947] [c0000000023e7d80] [c000000001ff1928] register_early_udbg_console+0xf8/0x114
+> [    0.001948] [c0000000023e7df0] [c000000001ff1174] setup_arch+0x108/0x790
+> [    0.001948] [c0000000023e7e90] [c000000001fe41c8] start_kernel+0x104/0x784
+> [    0.001949] [c0000000023e7f90] [c00000000000b368] start_here_common+0x1c/0x534
+> [    0.001950]
+> [    0.001950]
+> [    0.001951] Memory state around the buggy address:
+> [    0.001952]  c0000000023e7980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    0.001952]  c0000000023e7a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
+> [    0.001953] >c0000000023e7a80: f1 f1 01 f2 f2 f2 00 00 00 00 00 00 00 00 00 00
+> [    0.001953]                          ^
+> [    0.001954]  c0000000023e7b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    0.001954]  c0000000023e7b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [    0.001955] ==================================================================
+> 
+> Document that a 16-byte buffer is requred, and provide it in udbg.
+> 
+> CC: Dmitry Vyukov <dvyukov@google.com>
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
 
-Hi Linus,
+Applied to powerpc next, thanks.
 
-Please pull some more powerpc fixes for 5.2:
+https://git.kernel.org/powerpc/c/934bda59f286d0221f1a3ebab7f5156a
 
-The following changes since commit cd6c84d8f0cdc911df435bb075ba22ce3c605b07:
-
-  Linux 5.2-rc2 (2019-05-26 16:49:19 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.2-4
-
-for you to fetch changes up to c21f5a9ed85ca3e914ca11f421677ae9ae0d04b0:
-
-  powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX (2019-06-07 19:00:14 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.2 #4
-
-One fix for a regression introduced by our 32-bit KASAN support, which broke
-booting on machines with "bootx" early debugging enabled.
-
-A fix for a bug which broke kexec on 32-bit, introduced by changes to the 32-bit
-STRICT_KERNEL_RWX support in v5.1.
-
-Finally two fixes going to stable for our THP split/collapse handling,
-discovered by Nick. The first fixes random crashes and/or corruption in guests
-under sufficient load.
-
-Thanks to:
-  Nicholas Piggin, Christophe Leroy, Aaro Koskinen, Mathieu Malaterre.
-
-- ------------------------------------------------------------------
-Christophe Leroy (2):
-      powerpc: Fix kexec failure on book3s/32
-      powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX
-
-Nicholas Piggin (2):
-      powerpc/64s: Fix THP PMD collapse serialisation
-      powerpc/64s: __find_linux_pte() synchronization vs pmdp_invalidate()
-
-
- arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++++++++++++++++
- arch/powerpc/include/asm/btext.h             |  4 ++++
- arch/powerpc/include/asm/kexec.h             |  3 +++
- arch/powerpc/kernel/machine_kexec_32.c       |  4 +++-
- arch/powerpc/kernel/prom_init.c              |  1 +
- arch/powerpc/kernel/prom_init_check.sh       |  2 +-
- arch/powerpc/mm/book3s64/pgtable.c           |  3 +++
- arch/powerpc/mm/pgtable.c                    | 16 +++++++++++++--
- 8 files changed, 59 insertions(+), 4 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBAgAGBQJdBO4+AAoJEFHr6jzI4aWAsAwQAK+CK0jvw2pgZMk8/RwuPihJ
-gr6pvRaiUuyyiCpWxpzHslZx0WYSg84EYaog4e3fRss6MZeTd4CxxJqAIIny2XTK
-3Z6EI3GQGtA8U/+GY+whaQ5+ILdJotbPNRci+yGwc3HNZwT/4RScbmJz7E84MZv+
-9gyXrKUio0RdtdZmMHtkrCbpg24QYf1+168gUlJ8H5XGy5NVXVhXwxbYcFeN4zIY
-JI+exlBZwtYBJQMtR0FCvjybKk7kRdQzrrUEFM/ZmzsXQryUR7tLrwqAeLvcDc6x
-CY9/fn2q7BcFRiOxeZ3AGG89NRTGdOOC1cNJ+Wqn8bIxzP/yFwTEr+lcbdpooCAs
-MYyR0yoiI8Aty55lH0uTYQDbXWBZigvKDjLJzn3KN91NKnb3Yw37y5fM5e1ZYQez
-bJmbcJJpQzv0YVxXpxd27QeLQtJe6B8D5y0HkpRzYifma5ItAzc1VGzp66jLRFT+
-m4LmzD3TjQ61LWyxxDBjAWCHUKW7+cu++sFw0LOA2Wib5DjLjhQAu9qXN1sR5704
-FXji4jULMajLMhqqMxjwTEatS46THyz2rqOtJ5/eRWOHBMBS8rHTbHRtFF20mL7x
-tHtDmKCfFs2HwHOndtaWduBjiGVVwOo84o2jY0EvfaQ5nscf2XE9acVo6czpJacn
-NnIsVZZ6RU/y4Q/f55T4
-=Viyv
------END PGP SIGNATURE-----
+cheers
