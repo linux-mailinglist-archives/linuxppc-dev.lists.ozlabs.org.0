@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D56473F4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 11:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E90647421
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 12:14:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45RTcY2pC5zDr4d
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 19:31:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45RVZk6RsSzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 20:14:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45RTZk66vmzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2019 19:29:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45RVY3279gzDqRf
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2019 20:13:25 +1000 (AEST)
 Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 45RTZd6XrWz1rC0W;
- Sun, 16 Jun 2019 11:29:45 +0200 (CEST)
+ by mail-out.m-online.net (Postfix) with ESMTP id 45RVXy03QRz1rGhP;
+ Sun, 16 Jun 2019 12:13:22 +0200 (CEST)
 Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 45RTZd5s8Xz1qql1;
- Sun, 16 Jun 2019 11:29:45 +0200 (CEST)
+ by mail.m-online.net (Postfix) with ESMTP id 45RVXx6V0rz1qql1;
+ Sun, 16 Jun 2019 12:13:21 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at mnet-online.de
 Received: from mail.mnet-online.de ([192.168.8.182])
  by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
  port 10024)
- with ESMTP id rh68AyRmP1Up; Sun, 16 Jun 2019 11:29:44 +0200 (CEST)
-X-Auth-Info: IBCJM83XJsrft7Zlp9/Ug88uxERziVkYs9510EWiwoxiATjiJNyy9asU0EOD/nLe
+ with ESMTP id MOFsqklPMlpF; Sun, 16 Jun 2019 12:13:21 +0200 (CEST)
+X-Auth-Info: cmuhtM6YUgJKHIsEcEpVlxTl8g7MpYPHC7rEiFby6sTT4CK1ale7h5rnC6HpCSiD
 Received: from igel.home (ppp-46-244-189-62.dynamic.mnet-online.de
  [46.244.189.62])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
  by mail.mnet-online.de (Postfix) with ESMTPSA;
- Sun, 16 Jun 2019 11:29:44 +0200 (CEST)
+ Sun, 16 Jun 2019 12:13:21 +0200 (CEST)
 Received: by igel.home (Postfix, from userid 1000)
- id 5B6D32C117A; Sun, 16 Jun 2019 11:29:42 +0200 (CEST)
+ id 748632C117A; Sun, 16 Jun 2019 12:13:20 +0200 (CEST)
 From: Andreas Schwab <schwab@linux-m68k.org>
 To: christophe leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH v5 13/16] powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX
@@ -47,12 +47,11 @@ References: <cover.1550775950.git.christophe.leroy@c-s.fr>
  <1e412310cc18ea654fb2ce4c935654d8d1069f27.1550775950.git.christophe.leroy@c-s.fr>
  <87blyz9jor.fsf@igel.home>
  <a76f7759-a407-3d9a-0f43-654fd7ea0b1e@c-s.fr>
-X-Yow: Hand me a pair of leather pants and a CASIO keyboard
- -- I'm living for today!
-Date: Sun, 16 Jun 2019 11:29:42 +0200
+X-Yow: Yow!
+Date: Sun, 16 Jun 2019 12:13:20 +0200
 In-Reply-To: <a76f7759-a407-3d9a-0f43-654fd7ea0b1e@c-s.fr> (christophe leroy's
  message of "Sun, 16 Jun 2019 10:20:29 +0200")
-Message-ID: <87h88paneh.fsf@igel.home>
+Message-ID: <87d0jdaldr.fsf@igel.home>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2.90 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -75,9 +74,11 @@ Sender: "Linuxppc-dev"
 
 On Jun 16 2019, christophe leroy <christophe.leroy@c-s.fr> wrote:
 
-> If any of registers IBATs 4 to 7 are used
+> If any of registers IBATs 4 to 7 are used, could you adjust
+> CONFIG_ETEXT_SHIFT so that only IBATs 0 to 3 be used, and check if
+> suspend/resume works when IBATs 4 to 7 are not used ?
 
-Nope.
+I forgot to remove my patch.  With only 0-3 used, suspend/resume works.
 
 Andreas.
 
