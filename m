@@ -2,74 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4DF473C7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 10:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F69473D0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 10:47:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45RS7H3QJdzDr8m
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 18:24:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45RSdf3b9WzDr30
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2019 18:47:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="I/eon35b"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=pass (mailfrom) smtp.mailfrom=nefkom.net
+ (client-ip=212.18.0.9; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45RS3b46XBzDqW5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2019 18:21:13 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45RS3Q4XrGz9v19r;
- Sun, 16 Jun 2019 10:21:06 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=I/eon35b; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id IVYRmuuTueHB; Sun, 16 Jun 2019 10:21:06 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45RS3Q3VBdz9v19n;
- Sun, 16 Jun 2019 10:21:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560673266; bh=nDddjU62SJMnatBSBKFnzXb/nxJGkqucoMGf//3m8xY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=I/eon35beLILDeNdqn5+T0Mrn9iajXcmzRWKFgcL1xtoTPsLiJsM9Zt+pv/RHb8/2
- pPBbZNB2LIMIo40jsiyfjTtYbOoYFFAnptyjTWGI9tYdUG0D5NAPnEDLa+TOIoueM3
- gXYPJ6VA1t384O8OCP7MeYf9egBEM3qNkEKrGJCg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 551628B7D1;
- Sun, 16 Jun 2019 10:21:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id j5p44WTEn-_X; Sun, 16 Jun 2019 10:21:09 +0200 (CEST)
-Received: from [192.168.232.53] (unknown [192.168.232.53])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BCED38B7CD;
- Sun, 16 Jun 2019 10:21:08 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45RSc721qYzDqyx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2019 18:45:55 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 45RSby1NXQz1rBn0;
+ Sun, 16 Jun 2019 10:45:50 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 45RSby0dMVz1qql1;
+ Sun, 16 Jun 2019 10:45:50 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id fnOwM6JoyojP; Sun, 16 Jun 2019 10:45:49 +0200 (CEST)
+X-Auth-Info: fJwPQASbNuDgl/aehkgpQTFNB7ny6jTRKY6YjGIMgoKnJD+r41neojvRQ/CdEYcp
+Received: from igel.home (ppp-46-244-189-62.dynamic.mnet-online.de
+ [46.244.189.62])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Sun, 16 Jun 2019 10:45:48 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+ id CF0352C117A; Sun, 16 Jun 2019 10:45:46 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: christophe leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH v5 13/16] powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX
-To: Andreas Schwab <schwab@linux-m68k.org>
 References: <cover.1550775950.git.christophe.leroy@c-s.fr>
  <1e412310cc18ea654fb2ce4c935654d8d1069f27.1550775950.git.christophe.leroy@c-s.fr>
- <87blyz9jor.fsf@igel.home>
-From: christophe leroy <christophe.leroy@c-s.fr>
-Message-ID: <a76f7759-a407-3d9a-0f43-654fd7ea0b1e@c-s.fr>
-Date: Sun, 16 Jun 2019 10:20:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ <877e9n9gng.fsf@igel.home>
+ <1c271e47-6917-2f29-97b6-f3160ddf5117@c-s.fr>
+X-Yow: While my BRAINPAN is being refused service in BURGER KING,
+ Jesuit priests are DATING CAREER DIPLOMATS!!
+Date: Sun, 16 Jun 2019 10:45:46 +0200
+In-Reply-To: <1c271e47-6917-2f29-97b6-f3160ddf5117@c-s.fr> (christophe leroy's
+ message of "Sun, 16 Jun 2019 10:01:10 +0200")
+Message-ID: <87lfy1apfp.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.2.90 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <87blyz9jor.fsf@igel.home>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Antivirus: Avast (VPS 190616-0, 16/06/2019), Outbound message
-X-Antivirus-Status: Clean
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,27 +74,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Jun 16 2019, christophe leroy <christophe.leroy@c-s.fr> wrote:
 
+> Le 15/06/2019 à 14:28, Andreas Schwab a écrit :
+>> On Feb 21 2019, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>
+>>> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+>>> index a000768a5cc9..6e56a6240bfa 100644
+>>> --- a/arch/powerpc/mm/pgtable_32.c
+>>> +++ b/arch/powerpc/mm/pgtable_32.c
+>>> @@ -353,7 +353,10 @@ void mark_initmem_nx(void)
+>>>   	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
+>>>   				 PFN_DOWN((unsigned long)_sinittext);
+>>>   -	change_page_attr(page, numpages, PAGE_KERNEL);
+>>> +	if (v_block_mapped((unsigned long)_stext) + 1)
+>>
+>> That is always true.
+>>
+>
+> Did you boot with 'nobats' kernel parameter ?
+>
+> If not, that's normal to be true, it means that memory is mapped with BATs.
 
-Le 15/06/2019 à 13:23, Andreas Schwab a écrit :
-> This breaks suspend (or resume) on the iBook G4.  no_console_suspend
-> doesn't give any clues, the display just stays dark.
-> 
+bool + 1 is always true.
 
-After a quick look at the suspend functions, I have the feeling that 
-those functions only store and restore BATs 0 to 3.
+Andreas.
 
-Could you build your kernel with CONFIG_PPC_PTDUMP and see in file 
-/sys/kernel/debug/powerpc/segment_registers how many IBATs registers are 
-used.
-If any of registers IBATs 4 to 7 are used, could you adjust 
-CONFIG_ETEXT_SHIFT so that only IBATs 0 to 3 be used, and check if 
-suspend/resume works when IBATs 4 to 7 are not used ?
-
-Thanks
-Christophe
-
----
-L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
-https://www.avast.com/antivirus
-
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
