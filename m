@@ -1,85 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F7147FD3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 12:36:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D792947D59
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 10:41:03 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45S4Rx0TxBzDqXt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 18:41:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45S71f35gFzDqRG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 20:36:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.56.136; helo=1.mo6.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45S4PL0fgdzDqC9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 18:38:45 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5H8c1h4145600
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 04:38:41 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t6708s95x-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 04:38:40 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Mon, 17 Jun 2019 09:38:39 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 17 Jun 2019 09:38:35 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5H8cY5M49283138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jun 2019 08:38:35 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CEA8611C05C;
- Mon, 17 Jun 2019 08:38:34 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B95611C04C;
- Mon, 17 Jun 2019 08:38:33 +0000 (GMT)
-Received: from [9.124.31.76] (unknown [9.124.31.76])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Jun 2019 08:38:33 +0000 (GMT)
-Subject: Re: [PATCH v2] perf ioctl: Add check for the sample_period value
-To: mpe@ellerman.id.au, peterz@infradead.org
-References: <87h89eq55e.fsf@concordia.ellerman.id.au>
- <20190604042953.914-1-ravi.bangoria@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Mon, 17 Jun 2019 14:08:32 +0530
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 1.mo6.mail-out.ovh.net (1.mo6.mail-out.ovh.net [46.105.56.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45S6yw3NpSzDqRG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 20:34:27 +1000 (AEST)
+Received: from player168.ha.ovh.net (unknown [10.109.143.223])
+ by mo6.mail-out.ovh.net (Postfix) with ESMTP id F3D8A1CF8AF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 11:06:40 +0200 (CEST)
+Received: from kaod.org (lfbn-1-10649-41.w90-89.abo.wanadoo.fr [90.89.235.41])
+ (Authenticated sender: clg@kaod.org)
+ by player168.ha.ovh.net (Postfix) with ESMTPSA id A99566CFA4E2;
+ Mon, 17 Jun 2019 09:06:34 +0000 (UTC)
+Subject: Re: [PATCH 0/2] Fix handling of h_set_dawr
+To: Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190617071619.19360-1-sjitindarsingh@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <87e219c8-1db7-9976-03ce-5a566a8df7ab@kaod.org>
+Date: Mon, 17 Jun 2019 11:06:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190604042953.914-1-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20190617071619.19360-1-sjitindarsingh@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061708-0008-0000-0000-000002F463F1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061708-0009-0000-0000-000022617484
-Message-Id: <e1d0fcf5-d7f8-44a0-a3b8-339f2b79fb2c@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-17_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906170081
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 6350075477084113851
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduuddrudeijedguddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,43 +56,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- jolsa@redhat.com, linux-kernel@vger.kernel.org, acme@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter / mpe,
+On 17/06/2019 09:16, Suraj Jitindar Singh wrote:
+> Series contains 2 patches to fix the host in kernel handling of the hcall
+> h_set_dawr.
+> 
+> First patch from Michael Neuling is just a resend added here for clarity.
+> 
+> Michael Neuling (1):
+>   KVM: PPC: Book3S HV: Fix r3 corruption in h_set_dabr()
+> 
+> Suraj Jitindar Singh (1):
+>   KVM: PPC: Book3S HV: Only write DAWR[X] when handling h_set_dawr in
+>     real mode
 
-Is the v2 looks good? If so, can anyone of you please pick this up.
 
-On 6/4/19 9:59 AM, Ravi Bangoria wrote:
-> perf_event_open() limits the sample_period to 63 bits. See
-> commit 0819b2e30ccb ("perf: Limit perf_event_attr::sample_period
-> to 63 bits"). Make ioctl() consistent with it.
-> 
-> Also on powerpc, negative sample_period could cause a recursive
-> PMIs leading to a hang (reported when running perf-fuzzer).
-> 
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->  kernel/events/core.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index abbd4b3b96c2..e44c90378940 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -5005,6 +5005,9 @@ static int perf_event_period(struct perf_event *event, u64 __user *arg)
->  	if (perf_event_check_period(event, value))
->  		return -EINVAL;
->  
-> +	if (!event->attr.freq && (value & (1ULL << 63)))
-> +		return -EINVAL;
-> +
->  	event_function_call(event, __perf_event_period, &value);
->  
->  	return 0;
-> 
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+and 
+
+Tested-by: Cédric Le Goater <clg@kaod.org>
+
+
+but I see slowdowns in nested as if the IPIs were not delivered. Have we
+touch this part in 5.2 ? 
+
+Thanks,
+
+C.
 
