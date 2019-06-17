@@ -2,82 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C024479A7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 07:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C2E479B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 07:32:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45RzwJ6ZzLzDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 15:16:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45S0Gg6LZSzDqKW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 15:32:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45RztZ2BglzDqVP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 15:15:17 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5H4c23V087993
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 00:42:20 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t62a8jxu1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 00:42:20 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Mon, 17 Jun 2019 05:42:18 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 17 Jun 2019 05:42:16 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5H4g7tp27001144
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jun 2019 04:42:07 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5821342042;
- Mon, 17 Jun 2019 04:42:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0857F42041;
- Mon, 17 Jun 2019 04:42:15 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Jun 2019 04:42:14 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DE718A0208;
- Mon, 17 Jun 2019 14:42:13 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: alastair@d-silva.org
-Subject: [PATCH] ocxl: Allow contexts to be attached with a NULL mm
-Date: Mon, 17 Jun 2019 14:41:52 +1000
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45S0Dw2BlNzDqTw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 15:31:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="jkus+um0"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 45S0Dt5YTVz9sBr; Mon, 17 Jun 2019 15:31:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1560749470; bh=lu5tLzpTIuP7SAD2hJCgjD6o3PI3Z3AU1ddnYIWPxKs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=jkus+um0JDg502lcrULwMT3JKhnQCxDYvL7qOwOWZ1WFpyNd1hZxyFJLOns2jPmsl
+ VysoUfSO/kePG8qojBjl3TcsJPa5JcZIiEUBDMaT6oICWGPshkm2hSBiYmKJt9HKbx
+ wwlpXSkCRAaOEDm5UqgN4vHEPb4gqvQC+vP1+ksBbWaYgaJeYS7Mc6r1ndunkiZsxe
+ 5OgJ9/RmlzDEe3ROWKbpS2faiI/XcoBZLC+oKQCTrUE4kfOqHZZB0e4+GhsvKU71/z
+ PH2e4QNgXGZKMP3MYxic8k8fJt3vijyhJwTraBJxMARt+DSCvsf5Mat6R6XxLyqj+b
+ i9geK5pcpAPuw==
+Date: Mon, 17 Jun 2019 15:31:06 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v4 1/6] kvmppc: HMM backend driver to manage pages of
+ secure guest
+Message-ID: <20190617053106.lqwzibpsz4d2464z@oak.ozlabs.ibm.com>
+References: <20190528064933.23119-1-bharata@linux.ibm.com>
+ <20190528064933.23119-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061704-0020-0000-0000-0000034AAC54
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061704-0021-0000-0000-0000219DEF49
-Message-Id: <20190617044152.13707-1-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-17_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=644 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906170042
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190528064933.23119-2-bharata@linux.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,90 +55,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxram@us.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ linux-mm@kvack.org, jglisse@redhat.com, aneesh.kumar@linux.vnet.ibm.com,
+ paulus@au1.ibm.com, sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alastair D'Silva <alastair@d-silva.org>
+On Tue, May 28, 2019 at 12:19:28PM +0530, Bharata B Rao wrote:
+> HMM driver for KVM PPC to manage page transitions of
+> secure guest via H_SVM_PAGE_IN and H_SVM_PAGE_OUT hcalls.
+> 
+> H_SVM_PAGE_IN: Move the content of a normal page to secure page
+> H_SVM_PAGE_OUT: Move the content of a secure page to normal page
 
-If an OpenCAPI context is to be used directly by a kernel driver, there
-may not be a suitable mm to use.
+Comments below...
 
-The patch makes the mm parameter to ocxl_context_attach optional.
+> @@ -4421,6 +4435,7 @@ static void kvmppc_core_free_memslot_hv(struct kvm_memory_slot *free,
+>  					struct kvm_memory_slot *dont)
+>  {
+>  	if (!dont || free->arch.rmap != dont->arch.rmap) {
+> +		kvmppc_hmm_release_pfns(free);
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- drivers/misc/ocxl/context.c |  9 ++++++---
- drivers/misc/ocxl/link.c    | 12 ++++++++----
- 2 files changed, 14 insertions(+), 7 deletions(-)
+I don't think this is the right place to do this.  The memslot will
+have no pages mapped by this time, because higher levels of code will
+have called kvmppc_core_flush_memslot_hv() before calling this.
+Releasing the pfns should be done in that function.
 
-diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
-index bab9c9364184..994563a078eb 100644
---- a/drivers/misc/ocxl/context.c
-+++ b/drivers/misc/ocxl/context.c
-@@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, u64 dsisr)
- int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
- {
- 	int rc;
-+	unsigned long pidr = 0;
- 
- 	// Locks both status & tidr
- 	mutex_lock(&ctx->status_mutex);
-@@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
- 		goto out;
- 	}
- 
--	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
--			mm->context.id, ctx->tidr, amr, mm,
--			xsl_fault_error, ctx);
-+	if (mm)
-+		pidr = mm->context.id;
-+
-+	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
-+			      amr, mm, xsl_fault_error, ctx);
- 	if (rc)
- 		goto out;
- 
-diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-index cce5b0d64505..43542f124807 100644
---- a/drivers/misc/ocxl/link.c
-+++ b/drivers/misc/ocxl/link.c
-@@ -523,7 +523,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 	pe->amr = cpu_to_be64(amr);
- 	pe->software_state = cpu_to_be32(SPA_PE_VALID);
- 
--	mm_context_add_copro(mm);
-+	if (mm)
-+		mm_context_add_copro(mm);
- 	/*
- 	 * Barrier is to make sure PE is visible in the SPA before it
- 	 * is used by the device. It also helps with the global TLBI
-@@ -546,7 +547,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 	 * have a reference on mm_users. Incrementing mm_count solves
- 	 * the problem.
- 	 */
--	mmgrab(mm);
-+	if (mm)
-+		mmgrab(mm);
- 	trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, tidr);
- unlock:
- 	mutex_unlock(&spa->spa_lock);
-@@ -652,8 +654,10 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
- 	if (!pe_data) {
- 		WARN(1, "Couldn't find pe data when removing PE\n");
- 	} else {
--		mm_context_remove_copro(pe_data->mm);
--		mmdrop(pe_data->mm);
-+		if (pe_data->mm) {
-+			mm_context_remove_copro(pe_data->mm);
-+			mmdrop(pe_data->mm);
-+		}
- 		kfree_rcu(pe_data, rcu);
- 	}
- unlock:
--- 
-2.21.0
+> diff --git a/arch/powerpc/kvm/book3s_hv_hmm.c b/arch/powerpc/kvm/book3s_hv_hmm.c
+> new file mode 100644
+> index 000000000000..713806003da3
 
+...
+
+> +#define KVMPPC_PFN_HMM		(0x1ULL << 61)
+> +
+> +static inline bool kvmppc_is_hmm_pfn(unsigned long pfn)
+> +{
+> +	return !!(pfn & KVMPPC_PFN_HMM);
+> +}
+
+Since you are putting in these values in the rmap entries, you need to
+be careful about overlaps between these values and the other uses of
+rmap entries.  The value you have chosen would be in the middle of the
+LPID field for an rmap entry for a guest that has nested guests, and
+in fact kvmhv_remove_nest_rmap_range() effectively assumes that a
+non-zero rmap entry must be a list of L2 guest mappings.  (This is for
+radix guests; HPT guests use the rmap entry differently, but I am
+assuming that we will enforce that only radix guests can be secure
+guests.)
+
+Maybe it is true that the rmap entry will be non-zero only for those
+guest pages which are not mapped on the host side, that is,
+kvmppc_radix_flush_memslot() will see !pte_present(*ptep) for any page
+of a secure guest where the rmap entry contains a HMM pfn.  If that is
+so and is a deliberate part of the design, then I would like to see it
+written down in comments and commit messages so it's clear to others
+working on the code in future.
+
+Suraj is working on support for nested HPT guests, which will involve
+changing the rmap format to indicate more explicitly what sort of
+entry each rmap entry is.  Please work with him to define a format for
+your rmap entries that is clearly distinguishable from the others.
+
+I think it is reasonable to say that a secure guest can't have nested
+guests, at least for now, but then we should make sure to kill all
+nested guests when a guest goes secure.
+
+...
+
+> +/*
+> + * Move page from normal memory to secure memory.
+> + */
+> +unsigned long
+> +kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+> +		     unsigned long flags, unsigned long page_shift)
+> +{
+> +	unsigned long addr, end;
+> +	unsigned long src_pfn, dst_pfn;
+> +	struct kvmppc_hmm_migrate_args args;
+> +	struct vm_area_struct *vma;
+> +	int srcu_idx;
+> +	unsigned long gfn = gpa >> page_shift;
+> +	struct kvm_memory_slot *slot;
+> +	unsigned long *rmap;
+> +	int ret = H_SUCCESS;
+> +
+> +	if (page_shift != PAGE_SHIFT)
+> +		return H_P3;
+> +
+> +	srcu_idx = srcu_read_lock(&kvm->srcu);
+> +	slot = gfn_to_memslot(kvm, gfn);
+> +	rmap = &slot->arch.rmap[gfn - slot->base_gfn];
+> +	addr = gfn_to_hva(kvm, gpa >> page_shift);
+> +	srcu_read_unlock(&kvm->srcu, srcu_idx);
+
+Shouldn't we keep the srcu read lock until we have finished working on
+the page?
+
+> +	if (kvm_is_error_hva(addr))
+> +		return H_PARAMETER;
+> +
+> +	end = addr + (1UL << page_shift);
+> +
+> +	if (flags)
+> +		return H_P2;
+> +
+> +	args.rmap = rmap;
+> +	args.lpid = kvm->arch.lpid;
+> +	args.gpa = gpa;
+> +	args.page_shift = page_shift;
+> +
+> +	down_read(&kvm->mm->mmap_sem);
+> +	vma = find_vma_intersection(kvm->mm, addr, end);
+> +	if (!vma || vma->vm_start > addr || vma->vm_end < end) {
+> +		ret = H_PARAMETER;
+> +		goto out;
+> +	}
+> +	ret = migrate_vma(&kvmppc_hmm_migrate_ops, vma, addr, end,
+> +			  &src_pfn, &dst_pfn, &args);
+> +	if (ret < 0)
+> +		ret = H_PARAMETER;
+> +out:
+> +	up_read(&kvm->mm->mmap_sem);
+> +	return ret;
+> +}
+
+...
+
+> +/*
+> + * Move page from secure memory to normal memory.
+> + */
+> +unsigned long
+> +kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
+> +		      unsigned long flags, unsigned long page_shift)
+> +{
+> +	unsigned long addr, end;
+> +	struct vm_area_struct *vma;
+> +	unsigned long src_pfn, dst_pfn = 0;
+> +	int srcu_idx;
+> +	int ret = H_SUCCESS;
+> +
+> +	if (page_shift != PAGE_SHIFT)
+> +		return H_P3;
+> +
+> +	if (flags)
+> +		return H_P2;
+> +
+> +	srcu_idx = srcu_read_lock(&kvm->srcu);
+> +	addr = gfn_to_hva(kvm, gpa >> page_shift);
+> +	srcu_read_unlock(&kvm->srcu, srcu_idx);
+
+and likewise here, shouldn't we unlock later, after the migrate_vma()
+call perhaps?
+
+> +	if (kvm_is_error_hva(addr))
+> +		return H_PARAMETER;
+> +
+> +	end = addr + (1UL << page_shift);
+> +
+> +	down_read(&kvm->mm->mmap_sem);
+> +	vma = find_vma_intersection(kvm->mm, addr, end);
+> +	if (!vma || vma->vm_start > addr || vma->vm_end < end) {
+> +		ret = H_PARAMETER;
+> +		goto out;
+> +	}
+> +	ret = migrate_vma(&kvmppc_hmm_fault_migrate_ops, vma, addr, end,
+> +			  &src_pfn, &dst_pfn, NULL);
+> +	if (ret < 0)
+> +		ret = H_PARAMETER;
+> +out:
+> +	up_read(&kvm->mm->mmap_sem);
+> +	return ret;
+> +}
+> +
+
+Paul.
