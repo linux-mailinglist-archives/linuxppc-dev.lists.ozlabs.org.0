@@ -2,72 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EAF4948C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 23:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A82404961B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 01:53:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45SPxN4s6mzDqW4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 07:49:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45SShv1trZzDqLJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 09:53:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45SSg80pfDzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 09:52:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="rFQ6wPYm"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45SSg72bTFz8t0w
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 09:52:03 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45SSg71vNdz9sP8; Tue, 18 Jun 2019 09:52:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=linuxram@us.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45SPvc2f3nzDqSg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 07:47:40 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45SPvX6TlFz9v2j5;
- Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=rFQ6wPYm; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id kfOc68UfSeIR; Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45SPvX5J6hz9v2j4;
- Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560808056; bh=ZZO4LfmpEKhCUXBijrOkaQcSAOYgGw2UTduyEJKqtUM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=rFQ6wPYmQaExzXDJpuiuwF99J40FOd3hnE2uSehyW28k5885nTWUowJdEwZb/P5d4
- pbBu5Tjp/FYB046ADolt7U/U7qWYQYalbvkkoGof6+o3NdbtRi3HPYmJrOZ8UtiWPx
- 95HrQPIJjHuHmOlx0hiK/+SInH+u1YZMgtadrHos=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EF6648B84D;
- Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id OwA-rgv9DTHK; Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 50FEF8B7FF;
- Mon, 17 Jun 2019 23:47:36 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/mm/32s: fix condition that is always true
-To: Andreas Schwab <schwab@linux-m68k.org>
-References: <cover.1550775950.git.christophe.leroy@c-s.fr>
- <1e412310cc18ea654fb2ce4c935654d8d1069f27.1550775950.git.christophe.leroy@c-s.fr>
- <87muif52lv.fsf_-_@igel.home>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <58297c81-430b-d615-fa11-55136ae924f5@c-s.fr>
-Date: Mon, 17 Jun 2019 23:47:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ by ozlabs.org (Postfix) with ESMTPS id 45SSg65NXrz9sNy
+ for <linuxppc-dev@ozlabs.org>; Tue, 18 Jun 2019 09:52:02 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5HNlSvD171331
+ for <linuxppc-dev@ozlabs.org>; Mon, 17 Jun 2019 19:51:59 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2t6hd4ef20-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 17 Jun 2019 19:51:59 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <linuxram@us.ibm.com>;
+ Tue, 18 Jun 2019 00:51:57 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 18 Jun 2019 00:51:56 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5HNps3W51445896
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Jun 2019 23:51:54 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0EA34A4053;
+ Mon, 17 Jun 2019 23:51:54 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 733B9A4040;
+ Mon, 17 Jun 2019 23:51:50 +0000 (GMT)
+Received: from ram.ibm.com (unknown [9.80.224.136])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 17 Jun 2019 23:51:50 +0000 (GMT)
+Date: Mon, 17 Jun 2019 16:51:46 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
+ <20190606173614.32090-5-cclaudio@linux.ibm.com>
+ <20190617020632.yywfoqwfinjxs3pb@oak.ozlabs.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87muif52lv.fsf_-_@igel.home>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190617020632.yywfoqwfinjxs3pb@oak.ozlabs.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19061723-0012-0000-0000-00000329F815
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061723-0013-0000-0000-00002163118D
+Message-Id: <20190617235146.GC10806@ram.ibm.com>
+Subject: Re: Re: [PATCH v3 4/9] KVM: PPC: Ultravisor: Add generic ultravisor
+ call handler
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-17_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906170206
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,37 +105,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: j.neuschaefer@gmx.net, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Thiago Bauermann <bauermann@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 17/06/2019 à 23:22, Andreas Schwab a écrit :
-> Move a misplaced paren that makes the condition always true.
+On Mon, Jun 17, 2019 at 12:06:32PM +1000, Paul Mackerras wrote:
+> On Thu, Jun 06, 2019 at 02:36:09PM -0300, Claudio Carvalho wrote:
+> > From: Ram Pai <linuxram@us.ibm.com>
+> > 
+> > Add the ucall() function, which can be used to make ultravisor calls
+> > with varied number of in and out arguments. Ultravisor calls can be made
+> > from the host or guests.
+> > 
+> > This copies the implementation of plpar_hcall().
 > 
-> Fixes: 63b2bc619565 ("powerpc/mm/32s: Use BATs for STRICT_KERNEL_RWX")
-> Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
-> ---
->   arch/powerpc/mm/pgtable_32.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> One point which I missed when I looked at this patch previously is
+> that the ABI that we're defining here is different from the hcall ABI
+> in that we are putting the ucall number in r0, whereas hcalls have the
+> hcall number in r3.  That makes ucalls more like syscalls, which have
+> the syscall number in r0.  So that last sentence quoted above is
+> somewhat misleading.
 > 
-> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-> index d53188dee18f..35cb96cfc258 100644
-> --- a/arch/powerpc/mm/pgtable_32.c
-> +++ b/arch/powerpc/mm/pgtable_32.c
-> @@ -360,7 +360,7 @@ void mark_initmem_nx(void)
->   	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
->   				 PFN_DOWN((unsigned long)_sinittext);
->   
-> -	if (v_block_mapped((unsigned long)_stext) + 1)
-> +	if (v_block_mapped((unsigned long)_stext + 1))
->   		mmu_mark_initmem_nx();
->   	else
->   		change_page_attr(page, numpages, PAGE_KERNEL);
+> The thing we need to consider is that when SMFCTRL[E] = 0, a ucall
+> instruction becomes a hcall (that is, sc 2 is executed as if it was
+> sc 1).  In that case, the first argument to the ucall will be
+> interpreted as the hcall number.  Mostly that will happen not to be a
+> valid hcall number, but sometimes it might unavoidably be a valid but
+> unintended hcall number.
 > 
+> I think that will make it difficult to get ucalls to fail gracefully
+> in the case where SMF/PEF is disabled.  It seems like the assignment
+> of ucall numbers was made so that they wouldn't overlap with valid
+> hcall numbers; presumably that was so that we could tell when an hcall
+> was actually intended to be a ucall.  However, using a different GPR
+> to pass the ucall number defeats that.
+
+Right this is a valid point. Glad that you caught it, otherwise it would
+have become a difficult to fix it in the future.
+
+> 
+> I realize that there is ultravisor code in development that takes the
+> ucall number in r0, and also that having the ucall number in r3 would
+> possibly make life more difficult for the place where we call
+> UV_RETURN in assembler code.  
+
+Its called from one place in the hypervisor, and the changes look
+simple.
+
+-       LOAD_REG_IMMEDIATE(r0, UV_RETURN)
++       LOAD_REG_IMMEDIATE(r3, UV_RETURN)
+        ld      r7, VCPU_GPR(R7)(r4)
+        ld      r6, VCPU_GPR(R6)(r4)
+        ld      r4, VCPU_GPR(R4)(r4)
+
+What am i missing?
+
+
+
+> Nevertheless, perhaps we should consider
+> changing the ABI to be like the hcall ABI before everything gets set
+> in concrete.
+
+
+yes.
+
+Thanks Paul!
+RP
+
