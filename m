@@ -2,67 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14A847792
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 03:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C104781E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 04:08:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Rthl3KtHzDqbg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 11:21:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45RvlD067NzDqZP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2019 12:08:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="Q4laYTsq"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Rtfq6mT2zDqXD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 11:19:46 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id v9so4780324pgr.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2019 18:19:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=+a8aH3dzJzfU6JF2w8Lb5Gh8y1mV4Zs/Nt/+MffjJYQ=;
- b=Q4laYTsqVhXdLFQj04BV+Kkb2Q97or6ehFtWrYqXD/HNwKTQ+7rsAvPvp332RM3I4L
- 76E5RJJ31kbE2fv5a8uwmabj9Jvh2DcF694Yd13Ky+MeRrrwi+OEjdocPy+gLqqUoyex
- Sh4N//M+NiIZ2gObc3B/HHUxS7+YkbfcVHt6s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=+a8aH3dzJzfU6JF2w8Lb5Gh8y1mV4Zs/Nt/+MffjJYQ=;
- b=MExIzaOrtmWm8L7Kje01RfSXhTnPTbYJwhiLqCPVMqCRusFK8Tws8HX0q0T8zQNo1n
- uXR62jfa+530zWGWEnsiTERv/CSu0yvTkdn4ZN6jwzRY6eE0njPZwZ556dE5UGMAl1lK
- CcOrbQDCmwzMt5fNIU96yw7SwnfJsuMdLA1rPbbIsVWfPmr9lTEgcG2MOa8fMy3/imJU
- 1XkkKcJSKkFqx2zb+V+sY5bdMVQqBGViTCTI9n6Pr6ND0QtjqYg0BxRNuDgnyCYg8FiP
- C1shuCRsHYEXmEhUPi6WP2ZAkAtVK/YQ+w2DoLeoTzn6EcvRN15M7QNyjdqFk7dD8Dwc
- N0RA==
-X-Gm-Message-State: APjAAAW5XHdB+TRv+O6p6uguYcocUCDMQq6K9ML67QF0EGmIKIHP8o62
- A8aqkgtq7dgquLrvDL1XX9N2hA==
-X-Google-Smtp-Source: APXvYqw3RdoLYEYltHXGoGHuYjbUL/jkWIH295bY6eGCpisoIs5BywhaD9AezcVL+IKLveu/JCysUg==
-X-Received: by 2002:a62:1c5:: with SMTP id 188mr47032834pfb.26.1560734384792; 
- Sun, 16 Jun 2019 18:19:44 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id g8sm8805707pfi.8.2019.06.16.18.19.43
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 16 Jun 2019 18:19:43 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Radu Rendec <radu.rendec@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
-In-Reply-To: <20190610232758.19010-1-radu.rendec@gmail.com>
-References: <20190610232758.19010-1-radu.rendec@gmail.com>
-Date: Mon, 17 Jun 2019 11:19:39 +1000
-Message-ID: <87r27t2el0.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Rvhq3Lj8zDqYk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2019 12:06:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="iKIkMtWu"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 45Rvhq2czdz9s3C; Mon, 17 Jun 2019 12:06:35 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 45Rvhq1xMXz9sBr; Mon, 17 Jun 2019 12:06:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1560737195; bh=oCQDQTZLySOsNpFkc0RCedPxkKTKkLOJdYTa6K/YZmw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=iKIkMtWu0qozAuAIchTQg8kWDplAc5IgvaAPRhr1iRDkdjkookK0pYnQkp85uADDD
+ Y2ypCoFLvSzDpGtSBThmOLIr0hKojL2Z4NF85cdGBWMzANG+5wADlQmOr5uWZxe3Rn
+ S7wMNbtE/9YKCaGH8e1eUywz3w81L3q2TAYm5zH4tvNEzf6fzhynrB+ZdN++e99h8Q
+ cr1Z0M4ub9FtRmVF1TLeKadxukW2lE7dENSGzFjc0uNdLp2NweSSeQPE5e0oR+ZjD9
+ Je9Jq5uKOgK+E6fHoSEZ5AJdCyvkNBL8wujL8iLvQ8uVbgo3l1rG24qfVtqehAKPk6
+ pZsfYv8Nk9sgA==
+Date: Mon, 17 Jun 2019 12:06:32 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Claudio Carvalho <cclaudio@linux.ibm.com>
+Subject: Re: [PATCH v3 4/9] KVM: PPC: Ultravisor: Add generic ultravisor call
+ handler
+Message-ID: <20190617020632.yywfoqwfinjxs3pb@oak.ozlabs.ibm.com>
+References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
+ <20190606173614.32090-5-cclaudio@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190606173614.32090-5-cclaudio@linux.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,158 +58,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Radu Rendec <radu.rendec@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Oleg Nesterov <oleg@redhat.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Thiago Bauermann <bauermann@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radu Rendec <radu.rendec@gmail.com> writes:
+On Thu, Jun 06, 2019 at 02:36:09PM -0300, Claudio Carvalho wrote:
+> From: Ram Pai <linuxram@us.ibm.com>
+> 
+> Add the ucall() function, which can be used to make ultravisor calls
+> with varied number of in and out arguments. Ultravisor calls can be made
+> from the host or guests.
+> 
+> This copies the implementation of plpar_hcall().
 
-> Hi Everyone,
->
-> I'm following up on the ptrace() problem that I reported a few days ago.
-> I believe my version of the code handles all cases correctly. While the
-> problem essentially boils down to dividing the fpidx by 2 on PPC32, it
-> becomes tricky when the same code must work correctly on both PPC32 and
-> PPC64.
->
-> One other thing that I believe was handled incorrectly in the previous
-> version is the unused half of fpscr on PPC32. Note that while PT_FPSCR
-> is defined as (PT_FPR0 + 2*32 + 1), making only the upper half visible,
-> PT_FPR0 + 2*32 still corresponds to a possible address that userspace
-> can pass. In that case, comparing fpidx to (PT_FPSCR - PT_FPR0) would
-> cause an invalid access to the FPU registers array.
->
-> I tested the patch on 4.9.179, but that part of the code is identical in
-> recent kernels so it should work just the same.
->
-> I wrote a simple test program than can be used to quickly test (on an
-> x86_64 host) that all cases are handled correctly for both PPC32/PPC64.
-> The code is included below.
->
-> I also tested with gdbserver (test patch included below) and verified
-> that it generates two ptrace() calls for each FPU register, with
-> addresses between 0xc0 and 0x1bc.
+One point which I missed when I looked at this patch previously is
+that the ABI that we're defining here is different from the hcall ABI
+in that we are putting the ucall number in r0, whereas hcalls have the
+hcall number in r3.  That makes ucalls more like syscalls, which have
+the syscall number in r0.  So that last sentence quoted above is
+somewhat misleading.
 
-Thanks for looking in to this. I can confirm your issue. What I'm
-currently wondering is: what is the behaviour with a 32-bit userspace on
-a 64-bit kernel? Should they also be going down the 32-bit path as far
-as calculating offsets goes?
+The thing we need to consider is that when SMFCTRL[E] = 0, a ucall
+instruction becomes a hcall (that is, sc 2 is executed as if it was
+sc 1).  In that case, the first argument to the ucall will be
+interpreted as the hcall number.  Mostly that will happen not to be a
+valid hcall number, but sometimes it might unavoidably be a valid but
+unintended hcall number.
 
-Regards,
-Daniel
+I think that will make it difficult to get ucalls to fail gracefully
+in the case where SMF/PEF is disabled.  It seems like the assignment
+of ucall numbers was made so that they wouldn't overlap with valid
+hcall numbers; presumably that was so that we could tell when an hcall
+was actually intended to be a ucall.  However, using a different GPR
+to pass the ucall number defeats that.
 
->
-> 8<--------------- Makefile ---------------------------------------------
-> .PHONY: all clean
->
-> all: ptrace-fpregs-32 ptrace-fpregs-64
->
-> ptrace-fpregs-32: ptrace-fpregs.c
-> 	$(CC) -o ptrace-fpregs-32 -Wall -O2 -m32 ptrace-fpregs.c
->
-> ptrace-fpregs-64: ptrace-fpregs.c
-> 	$(CC) -o ptrace-fpregs-64 -Wall -O2 ptrace-fpregs.c
->
-> clean:
-> 	rm -f ptrace-fpregs-32 ptrace-fpregs-64
-> 8<--------------- ptrace-fpregs.c --------------------------------------
-> #include <stdio.h>
-> #include <errno.h>
->
-> #define PT_FPR0	48
->
-> #ifndef __x86_64
->
-> #define PT_FPR31 (PT_FPR0 + 2*31)
-> #define PT_FPSCR (PT_FPR0 + 2*32 + 1)
->
-> #else
->
-> #define PT_FPSCR (PT_FPR0 + 32)
->
-> #endif
->
-> int test_access(unsigned long addr)
-> {
-> 	int ret;
->
-> 	do {
-> 		unsigned long index, fpidx;
->
-> 		ret = -EIO;
->
-> 		/* convert to index and check */
-> 		index = addr / sizeof(long);
-> 		if ((addr & (sizeof(long) - 1)) || (index > PT_FPSCR))
-> 			break;
->
-> 		if (index < PT_FPR0) {
-> 			ret = printf("ptrace_put_reg(%lu)", index);
-> 			break;
-> 		}
->
-> 		ret = 0;
-> #ifndef __x86_64
-> 		if (index == PT_FPSCR - 1) {
-> 			/* corner case for PPC32; do nothing */
-> 			printf("corner_case");
-> 			break;
-> 		}
-> #endif
-> 		if (index == PT_FPSCR) {
-> 			printf("fpscr");
-> 			break;
-> 		}
->
-> 		/*
-> 		 * FPR is always 64-bit; on PPC32, userspace does two 32-bit
-> 		 * accesses. Add bit2 to allow accessing the upper half on
-> 		 * 32-bit; on 64-bit, bit2 is always 0 (we validate it above).
-> 		 */
-> 		fpidx = (addr - PT_FPR0 * sizeof(long)) / 8;
-> 		printf("TS_FPR[%lu] + %lu", fpidx, addr & 4);
-> 		break;
-> 	} while (0);
->
-> 	return ret;
-> }
->
-> int main(void)
-> {
-> 	unsigned long addr;
-> 	int rc;
->
-> 	for (addr = 0; addr < PT_FPSCR * sizeof(long) + 16; addr++) {
-> 		printf("0x%04lx: ", addr);
-> 		rc = test_access(addr);
-> 		if (rc < 0)
-> 			printf("!err!");
-> 		printf("\t<%d>\n", rc);
-> 	}
->
-> 	return 0;
-> }
-> 8<--------------- gdb.patch --------------------------------------------
-> --- gdb/gdbserver/linux-low.c.orig	2019-06-10 11:45:53.810882669 -0400
-> +++ gdb/gdbserver/linux-low.c	2019-06-10 11:49:32.272929766 -0400
-> @@ -4262,6 +4262,8 @@ store_register (struct regcache *regcach
->    pid = lwpid_of (get_thread_lwp (current_inferior));
->    for (i = 0; i < size; i += sizeof (PTRACE_XFER_TYPE))
->      {
-> +      printf("writing register #%d offset %d at address %#x\n",
-> +             regno, i, (unsigned int)regaddr);
->        errno = 0;
->        ptrace (PTRACE_POKEUSER, pid,
->  	    /* Coerce to a uintptr_t first to avoid potential gcc warning
-> 8<----------------------------------------------------------------------
->
-> Radu Rendec (1):
->   PPC32: fix ptrace() access to FPU registers
->
->  arch/powerpc/kernel/ptrace.c | 85 ++++++++++++++++++++++--------------
->  1 file changed, 52 insertions(+), 33 deletions(-)
->
-> -- 
-> 2.20.1
+I realize that there is ultravisor code in development that takes the
+ucall number in r0, and also that having the ucall number in r3 would
+possibly make life more difficult for the place where we call
+UV_RETURN in assembler code.  Nevertheless, perhaps we should consider
+changing the ABI to be like the hcall ABI before everything gets set
+in concrete.
+
+Paul.
