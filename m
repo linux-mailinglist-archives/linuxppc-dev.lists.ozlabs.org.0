@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F434A4AE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 17:01:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Srr11ZjYzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 01:01:05 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413624A4CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 17:08:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Ss0P4mYnzDqgk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 01:08:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,66 +19,66 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45SrXs1fWHzDqcW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 00:47:57 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45SrYp5xmDzDqcq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 00:48:46 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5IEknpK091496
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 10:47:54 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t71nr96y4-1
+ x5IEmGwJ133620
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 10:48:44 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2t70kuv254-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 10:47:54 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 10:48:27 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Tue, 18 Jun 2019 15:47:52 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Tue, 18 Jun 2019 15:48:10 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 18 Jun 2019 15:47:48 +0100
+ Tue, 18 Jun 2019 15:47:50 +0100
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5IEldV628115384
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5IEloJU35127324
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jun 2019 14:47:39 GMT
+ Tue, 18 Jun 2019 14:47:50 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BF2B11C052;
- Tue, 18 Jun 2019 14:47:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DC31011C052;
+ Tue, 18 Jun 2019 14:47:49 +0000 (GMT)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6B9411C04C;
- Tue, 18 Jun 2019 14:47:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0269011C04C;
+ Tue, 18 Jun 2019 14:47:48 +0000 (GMT)
 Received: from naverao1-tp.ibmuc.com (unknown [9.85.74.6])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 18 Jun 2019 14:47:45 +0000 (GMT)
+ Tue, 18 Jun 2019 14:47:47 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Steven Rostedt <rostedt@goodmis.org>,
  Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 4/7] powerpc/ftrace: Additionally nop out the preceding mflr
- with -mprofile-kernel
-Date: Tue, 18 Jun 2019 20:17:03 +0530
+Subject: [PATCH 5/7] powerpc/ftrace: Update ftrace_location() for powerpc
+ -mprofile-kernel
+Date: Tue, 18 Jun 2019 20:17:04 +0530
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19061814-0008-0000-0000-000002F4CED1
+x-cbid: 19061814-4275-0000-0000-00000343618C
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061814-0009-0000-0000-00002261E6AE
-Message-Id: <72492bc769cd6f40a536e689fc3195570d07fd5c.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+x-cbparentid: 19061814-4276-0000-0000-0000385389DF
+Message-Id: <186656540d3e6225abd98374e791a13d10d86fab.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-18_07:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=901 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1906180119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,348 +96,97 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With -mprofile-kernel, gcc emits 'mflr r0', followed by 'bl _mcount' to
-enable function tracing and profiling. So far, with dynamic ftrace, we
-used to only patch out the branch to _mcount(). However, mflr is
-executed by the branch unit that can only execute one per cycle on
-POWER9 and shared with branches, so it would be nice to avoid it where
-possible.
+Now that we are patching the preceding 'mflr r0' instruction with
+-mprofile-kernel, we need to update ftrace_location[_range]() to
+recognise that as being part of ftrace. To do this, we make a small
+change to ftrace_location_range() and convert ftrace_cmp_recs() into a
+weak function. We implement a custom version of ftrace_cmp_recs() which
+looks at the instruction preceding the branch to _mcount() and marks
+that instruction as belonging to ftrace if it is a 'nop' or 'mflr r0'.
 
-We cannot simply nop out the mflr either. When enabling function
-tracing, there can be a race if tracing is enabled when some thread was
-interrupted after executing a nop'ed out mflr. In this case, the thread
-would execute the now-patched-in branch to _mcount() without having
-executed the preceding mflr.
-
-To solve this, we now enable function tracing in 2 steps: patch in the
-mflr instruction, use synchronize_rcu_tasks() to ensure all existing
-threads make progress, and then patch in the branch to _mcount(). We
-override ftrace_replace_code() with a powerpc64 variant for this
-purpose.
-
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 241 ++++++++++++++++++++++++++---
- 1 file changed, 219 insertions(+), 22 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 31 ++++++++++++++++++++++++++++++
+ include/linux/ftrace.h             |  1 +
+ kernel/trace/ftrace.c              |  4 ++--
+ 3 files changed, 34 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 517662a56bdc..5e2b29808af1 100644
+index 5e2b29808af1..b84046e43207 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -125,7 +125,7 @@ __ftrace_make_nop(struct module *mod,
- {
- 	unsigned long entry, ptr, tramp;
- 	unsigned long ip = rec->ip;
--	unsigned int op, pop;
-+	unsigned int op;
- 
- 	/* read where this goes */
- 	if (probe_kernel_read(&op, (void *)ip, sizeof(int))) {
-@@ -160,8 +160,6 @@ __ftrace_make_nop(struct module *mod,
+@@ -951,6 +951,37 @@ void arch_ftrace_update_code(int command)
+ }
  
  #ifdef CONFIG_MPROFILE_KERNEL
- 	/* When using -mkernel_profile there is no load to jump over */
--	pop = PPC_INST_NOP;
--
- 	if (probe_kernel_read(&op, (void *)(ip - 4), 4)) {
- 		pr_err("Fetching instruction at %lx failed.\n", ip - 4);
- 		return -EFAULT;
-@@ -169,26 +167,23 @@ __ftrace_make_nop(struct module *mod,
- 
- 	/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
- 	if (op != PPC_INST_MFLR && op != PPC_INST_STD_LR) {
--		pr_err("Unexpected instruction %08x around bl _mcount\n", op);
-+		pr_err("Unexpected instruction %08x before bl _mcount\n", op);
- 		return -EINVAL;
- 	}
--#else
--	/*
--	 * Our original call site looks like:
--	 *
--	 * bl <tramp>
--	 * ld r2,XX(r1)
--	 *
--	 * Milton Miller pointed out that we can not simply nop the branch.
--	 * If a task was preempted when calling a trace function, the nops
--	 * will remove the way to restore the TOC in r2 and the r2 TOC will
--	 * get corrupted.
--	 *
--	 * Use a b +8 to jump over the load.
--	 */
- 
--	pop = PPC_INST_BRANCH | 8;	/* b +8 */
-+	/* We should patch out the bl to _mcount first */
-+	if (patch_instruction((unsigned int *)ip, PPC_INST_NOP)) {
-+		pr_err("Patching NOP failed.\n");
-+		return -EPERM;
-+	}
- 
-+	/* then, nop out the preceding 'mflr r0' as an optimization */
-+	if (op == PPC_INST_MFLR &&
-+		patch_instruction((unsigned int *)(ip - 4), PPC_INST_NOP)) {
-+		pr_err("Patching NOP failed.\n");
-+		return -EPERM;
-+	}
-+#else
- 	/*
- 	 * Check what is in the next instruction. We can see ld r2,40(r1), but
- 	 * on first pass after boot we will see mflr r0.
-@@ -202,12 +197,25 @@ __ftrace_make_nop(struct module *mod,
- 		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, op);
- 		return -EINVAL;
- 	}
--#endif /* CONFIG_MPROFILE_KERNEL */
- 
--	if (patch_instruction((unsigned int *)ip, pop)) {
-+	/*
-+	 * Our original call site looks like:
-+	 *
-+	 * bl <tramp>
-+	 * ld r2,XX(r1)
-+	 *
-+	 * Milton Miller pointed out that we can not simply nop the branch.
-+	 * If a task was preempted when calling a trace function, the nops
-+	 * will remove the way to restore the TOC in r2 and the r2 TOC will
-+	 * get corrupted.
-+	 *
-+	 * Use a b +8 to jump over the load.
-+	 */
-+	if (patch_instruction((unsigned int *)ip, PPC_INST_BRANCH | 8)) {
- 		pr_err("Patching NOP failed.\n");
- 		return -EPERM;
- 	}
-+#endif /* CONFIG_MPROFILE_KERNEL */
- 
- 	return 0;
- }
-@@ -421,6 +429,26 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
- 		return -EPERM;
- 	}
- 
-+#ifdef CONFIG_MPROFILE_KERNEL
-+	/* Nop out the preceding 'mflr r0' as an optimization */
-+	if (probe_kernel_read(&op, (void *)(ip - 4), 4)) {
-+		pr_err("Fetching instruction at %lx failed.\n", ip - 4);
-+		return -EFAULT;
-+	}
-+
-+	/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
-+	if (op != PPC_INST_MFLR && op != PPC_INST_STD_LR) {
-+		pr_err("Unexpected instruction %08x before bl _mcount\n", op);
-+		return -EINVAL;
-+	}
-+
-+	if (op == PPC_INST_MFLR &&
-+		patch_instruction((unsigned int *)(ip - 4), PPC_INST_NOP)) {
-+		pr_err("Patching NOP failed.\n");
-+		return -EPERM;
-+	}
-+#endif
-+
- 	return 0;
- }
- 
-@@ -429,6 +457,7 @@ int ftrace_make_nop(struct module *mod,
- {
- 	unsigned long ip = rec->ip;
- 	unsigned int old, new;
-+	int rc;
- 
- 	/*
- 	 * If the calling address is more that 24 bits away,
-@@ -439,7 +468,34 @@ int ftrace_make_nop(struct module *mod,
- 		/* within range */
- 		old = ftrace_call_replace(ip, addr, 1);
- 		new = PPC_INST_NOP;
--		return ftrace_modify_code(ip, old, new);
-+		rc = ftrace_modify_code(ip, old, new);
-+#ifdef CONFIG_MPROFILE_KERNEL
-+		if (rc)
-+			return rc;
-+
-+		/*
-+		 * For -mprofile-kernel, we patch out the preceding 'mflr r0'
-+		 * instruction, as an optimization. It is important to nop out
-+		 * the branch to _mcount() first, as a lone 'mflr r0' is
-+		 * harmless.
-+		 */
-+		if (probe_kernel_read(&old, (void *)(ip - 4), 4)) {
-+			pr_err("Fetching instruction at %lx failed.\n", ip - 4);
-+			return -EFAULT;
-+		}
-+
-+		/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
-+		if (old != PPC_INST_MFLR && old != PPC_INST_STD_LR) {
-+			pr_err("Unexpected instruction %08x before bl _mcount\n",
-+					old);
-+			return -EINVAL;
-+		}
-+
-+		if (old == PPC_INST_MFLR)
-+			rc = patch_instruction((unsigned int *)(ip - 4),
-+					PPC_INST_NOP);
-+#endif
-+		return rc;
- 	} else if (core_kernel_text(ip))
- 		return __ftrace_make_nop_kernel(rec, addr);
- 
-@@ -567,6 +623,37 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 		return -EINVAL;
- 	}
- 
-+#ifdef CONFIG_MPROFILE_KERNEL
-+	/*
-+	 * We could end up here without having called __ftrace_make_call_prep()
-+	 * if function tracing is enabled before a module is loaded.
-+	 *
-+	 * ftrace_module_enable() --> ftrace_replace_code_rec() -->
-+	 *	ftrace_make_call() --> __ftrace_make_call()
-+	 *
-+	 * In this scenario, the previous instruction will be a NOP. It is
-+	 * safe to patch it with a 'mflr r0' since we know for a fact that
-+	 * this code is not yet being run.
-+	 */
-+	ip -= MCOUNT_INSN_SIZE;
-+
-+	/* read where this goes */
-+	if (probe_kernel_read(op, ip, MCOUNT_INSN_SIZE))
-+		return -EFAULT;
-+
-+	/*
-+	 * nothing to do if this is using the older -mprofile-kernel
-+	 * instruction sequence
-+	 */
-+	if (op[0] != PPC_INST_NOP)
-+		return 0;
-+
-+	if (patch_instruction((unsigned int *)ip, PPC_INST_MFLR)) {
-+		pr_err("Patching MFLR failed.\n");
-+		return -EPERM;
-+	}
-+#endif
-+
- 	return 0;
- }
- 
-@@ -863,6 +950,116 @@ void arch_ftrace_update_code(int command)
- 	ftrace_modify_all_code(command);
- }
- 
-+#ifdef CONFIG_MPROFILE_KERNEL
-+/* Returns 1 if we patched in the mflr */
-+static int __ftrace_make_call_prep(struct dyn_ftrace *rec)
-+{
-+	void *ip = (void *)rec->ip - MCOUNT_INSN_SIZE;
-+	unsigned int op[2];
-+
-+	/* read where this goes */
-+	if (probe_kernel_read(op, ip, sizeof(op)))
-+		return -EFAULT;
-+
-+	if (op[1] != PPC_INST_NOP) {
-+		pr_err("Unexpected call sequence at %p: %x %x\n",
-+							ip, op[0], op[1]);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * nothing to do if this is using the older -mprofile-kernel
-+	 * instruction sequence
-+	 */
-+	if (op[0] != PPC_INST_NOP)
-+		return 0;
-+
-+	if (patch_instruction((unsigned int *)ip, PPC_INST_MFLR)) {
-+		pr_err("Patching MFLR failed.\n");
-+		return -EPERM;
-+	}
-+
-+	return 1;
-+}
-+
 +/*
-+ * When enabling function tracing for -mprofile-kernel that uses a
-+ * 2-instruction sequence of 'mflr r0, bl _mcount()', we use a 2 step process:
-+ * 1. Patch in the 'mflr r0' instruction
-+ * 1a. synchronize_rcu_tasks() to ensure that any threads that had executed
-+ *     the earlier nop there make progress (and hence do not branch into
-+ *     ftrace without executing the preceding mflr)
-+ * 2. Patch in the branch to ftrace
++ * We need to check if the previous instruction is a 'nop' or 'mflr r0'.
++ * If so, we will patch those subsequently and that instruction must be
++ * considered as part of ftrace.
 + */
-+void ftrace_replace_code(int mod_flags)
++int ftrace_cmp_recs(const void *a, const void *b)
 +{
-+	int enable = mod_flags & FTRACE_MODIFY_ENABLE_FL;
-+	int schedulable = mod_flags & FTRACE_MODIFY_MAY_SLEEP_FL;
-+	int ret, failed, make_call = 0;
-+	struct ftrace_rec_iter *iter;
-+	struct dyn_ftrace *rec;
++	const struct dyn_ftrace *key = a;
++	const struct dyn_ftrace *rec = b;
++	unsigned int op;
 +
-+	if (unlikely(!ftrace_enabled))
-+		return;
++	if (key->flags < rec->ip - MCOUNT_INSN_SIZE)
++		return -1;
++	if (key->ip >= rec->ip + MCOUNT_INSN_SIZE)
++		return 1;
 +
-+	for_ftrace_rec_iter(iter) {
-+		rec = ftrace_rec_iter_record(iter);
++	if (key->flags > rec->ip)
++		return 0;
 +
-+		if (rec->flags & FTRACE_FL_DISABLED)
-+			continue;
++	/* check the previous instruction */
++	if (probe_kernel_read(&op, (void *)rec->ip - MCOUNT_INSN_SIZE,
++				sizeof(op)))
++		/* assume we own it */
++		return 0;
 +
-+		failed = 0;
-+		ret = ftrace_test_record(rec, enable);
-+		if (ret == FTRACE_UPDATE_MAKE_CALL) {
-+			failed = __ftrace_make_call_prep(rec);
-+			if (failed < 0) {
-+				ftrace_bug(failed, rec);
-+				return;
-+			} else if (failed == 1)
-+				make_call++;
-+		}
++	if (op != PPC_INST_NOP && op != PPC_INST_MFLR)
++		return -1;
 +
-+		if (!failed) {
-+			/* We can patch the record directly */
-+			failed = ftrace_replace_code_rec(rec, enable);
-+			if (failed) {
-+				ftrace_bug(failed, rec);
-+				return;
-+			}
-+		}
-+
-+		if (schedulable)
-+			cond_resched();
-+	}
-+
-+	if (!make_call)
-+		/* No records needed patching a preceding mflr */
-+		return;
-+
-+	synchronize_rcu_tasks();
-+
-+	for_ftrace_rec_iter(iter) {
-+		rec = ftrace_rec_iter_record(iter);
-+
-+		if (rec->flags & FTRACE_FL_DISABLED)
-+			continue;
-+
-+		ret = ftrace_test_record(rec, enable);
-+		if (ret == FTRACE_UPDATE_MAKE_CALL)
-+			failed = ftrace_replace_code_rec(rec, enable);
-+
-+		if (failed) {
-+			ftrace_bug(failed, rec);
-+			return;
-+		}
-+
-+		if (schedulable)
-+			cond_resched();
-+	}
-+
++	return 0;
 +}
-+#endif
 +
- #ifdef CONFIG_PPC64
- #define PACATOC offsetof(struct paca_struct, kernel_toc)
+ /* Returns 1 if we patched in the mflr */
+ static int __ftrace_make_call_prep(struct dyn_ftrace *rec)
+ {
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index fa653a561da5..9941987bf510 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -435,6 +435,7 @@ struct dyn_ftrace *ftrace_rec_iter_record(struct ftrace_rec_iter *iter);
+ int ftrace_update_record(struct dyn_ftrace *rec, int enable);
+ int ftrace_test_record(struct dyn_ftrace *rec, int enable);
+ void ftrace_run_stop_machine(int command);
++int ftrace_cmp_recs(const void *a, const void *b);
+ unsigned long ftrace_location(unsigned long ip);
+ unsigned long ftrace_location_range(unsigned long start, unsigned long end);
+ unsigned long ftrace_get_addr_new(struct dyn_ftrace *rec);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 21d8e201ee80..b5c61db0b452 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1517,7 +1517,7 @@ ftrace_ops_test(struct ftrace_ops *ops, unsigned long ip, void *regs)
+ 	}
  
+ 
+-static int ftrace_cmp_recs(const void *a, const void *b)
++int __weak ftrace_cmp_recs(const void *a, const void *b)
+ {
+ 	const struct dyn_ftrace *key = a;
+ 	const struct dyn_ftrace *rec = b;
+@@ -1551,7 +1551,7 @@ unsigned long ftrace_location_range(unsigned long start, unsigned long end)
+ 	key.flags = end;	/* overload flags, as it is unsigned long */
+ 
+ 	for (pg = ftrace_pages_start; pg; pg = pg->next) {
+-		if (end < pg->records[0].ip ||
++		if (end <= pg->records[0].ip ||
+ 		    start >= (pg->records[pg->index - 1].ip + MCOUNT_INSN_SIZE))
+ 			continue;
+ 		rec = bsearch(&key, pg->records, pg->index,
 -- 
 2.22.0
 
