@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0707498DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 08:26:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93769498D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 08:23:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45SdLk6zsnzDqJX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 16:23:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45SdQM38ZKzDqRZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 16:26:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,55 +16,54 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="TKNZzGvX"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="cFsBO9Zs"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45SdK54bVjzDqRZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 16:22:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45SdNV4NrtzDqLr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 16:24:58 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45SdK14Rfwz9vBJt;
- Tue, 18 Jun 2019 08:21:57 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45SdNQ5LxPz9v2hq;
+ Tue, 18 Jun 2019 08:24:54 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=TKNZzGvX; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=cFsBO9Zs; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id KSmGm5VL72on; Tue, 18 Jun 2019 08:21:57 +0200 (CEST)
+ with ESMTP id rONjPKrv_eoG; Tue, 18 Jun 2019 08:24:54 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45SdK13G6fz9vBJp;
- Tue, 18 Jun 2019 08:21:57 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45SdNQ4J7Tz9v2hp;
+ Tue, 18 Jun 2019 08:24:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560838917; bh=FCB7CdEBbBFcFNkuD3v6ni+zfUzz8NqMtrHA12Q714w=;
+ t=1560839094; bh=t8EkGCrHzuXsMOhfuoBqjBOp4EePACQOfRiTKQzo240=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=TKNZzGvXPy40kaL9LaUOHSsIwHMuZxENX96THuEAeEJRimn1kuU1dGmvPR3FDaC2W
- 7Jt9nzVF8LwISZuxamxBPn4InCA1/e/hEO+sHFsgDydB+M6A285DccUC2R40a5SeyN
- e9Ibc5LkeplbAUMVNVKaZfFvrL0Gl9nkNuo8TnHo=
+ b=cFsBO9ZsKYA6Rxu22NwSnfmVa4rWolVMT4MyHRVXUn1cxkA0aVhlqdmv9QVHxiu32
+ Caam8qSl7zZ8sBIpLx3p3zs2JpEUNXUqhlWXVikc39OUEbtrjhcZJeijlHHaOUylYk
+ ELYEzQ0F3erX2aXD4mYoICx28x5KH+hM2pjhnoCM=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DA238B86C;
- Tue, 18 Jun 2019 08:21:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 95EFD8B86D;
+ Tue, 18 Jun 2019 08:24:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qbpbh5PAMYh3; Tue, 18 Jun 2019 08:21:57 +0200 (CEST)
+ with ESMTP id LCs9YYj1ow45; Tue, 18 Jun 2019 08:24:54 +0200 (CEST)
 Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 78A5A8B78B;
- Tue, 18 Jun 2019 08:21:56 +0200 (CEST)
-Subject: Re: [PATCH 2/5] Powerpc/hw-breakpoint: Refactor
- hw_breakpoint_arch_parse()
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DC5E08B78B;
+ Tue, 18 Jun 2019 08:24:53 +0200 (CEST)
+Subject: Re: [PATCH 3/5] Powerpc/hw-breakpoint: Refactor set_dawr()
 To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au
 References: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
- <20190618042732.5582-3-ravi.bangoria@linux.ibm.com>
+ <20190618042732.5582-4-ravi.bangoria@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <66e70f57-befa-f241-9476-8e06519bac90@c-s.fr>
-Date: Tue, 18 Jun 2019 08:21:56 +0200
+Message-ID: <36044d6d-d46f-8c7b-c597-0e5d156fd9db@c-s.fr>
+Date: Tue, 18 Jun 2019 08:24:53 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190618042732.5582-3-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20190618042732.5582-4-ravi.bangoria@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -89,88 +88,48 @@ Sender: "Linuxppc-dev"
 
 
 Le 18/06/2019 à 06:27, Ravi Bangoria a écrit :
-> Move feature availability check at the start of the function.
-> Rearrange comment to it's associated code. Use hw->address and
-> hw->len in the 512 bytes boundary check(to write if statement
-> in a single line). Add spacing between code blocks.
+> Remove unnecessary comments. Code itself is self explanatory.
+> And, ISA already talks about MRD field. I Don't think we need
+> to re-describe it.
 
-Are those cosmetic changes in the boundary check worth it since they 
-disappear in the final patch ?
+In an RFC patch you may "don't think".
+But in the final patch you need to make a decision and write it as such.
 
-Christophe
+Ie, you should write: "We don't need to re-describe it."
+
 
 > 
 > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 > ---
->   arch/powerpc/kernel/hw_breakpoint.c | 34 +++++++++++++++--------------
->   1 file changed, 18 insertions(+), 16 deletions(-)
+>   arch/powerpc/kernel/process.c | 17 +++++------------
+>   1 file changed, 5 insertions(+), 12 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index 1908e4fcc132..36bcf705df65 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -133,10 +133,13 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
->   			     const struct perf_event_attr *attr,
->   			     struct arch_hw_breakpoint *hw)
->   {
-> -	int ret = -EINVAL, length_max;
-> +	int length_max;
-> +
-> +	if (!ppc_breakpoint_available())
-> +		return -ENODEV;
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index f0fbbf6a6a1f..f002d2ffff86 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -799,18 +799,11 @@ int set_dawr(struct arch_hw_breakpoint *brk)
 >   
->   	if (!bp)
-> -		return ret;
-> +		return -EINVAL;
+>   	dawr = brk->address;
 >   
->   	hw->type = HW_BRK_TYPE_TRANSLATE;
->   	if (attr->bp_type & HW_BREAKPOINT_R)
-> @@ -145,34 +148,33 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
->   		hw->type |= HW_BRK_TYPE_WRITE;
->   	if (hw->type == HW_BRK_TYPE_TRANSLATE)
->   		/* must set alteast read or write */
-> -		return ret;
-> +		return -EINVAL;
+> -	dawrx  = (brk->type & (HW_BRK_TYPE_READ | HW_BRK_TYPE_WRITE)) \
+> -		                   << (63 - 58); //* read/write bits */
+> -	dawrx |= ((brk->type & (HW_BRK_TYPE_TRANSLATE)) >> 2) \
+> -		                   << (63 - 59); //* translate */
+> -	dawrx |= (brk->type & (HW_BRK_TYPE_PRIV_ALL)) \
+> -		                   >> 3; //* PRIM bits */
+> -	/* dawr length is stored in field MDR bits 48:53.  Matches range in
+> -	   doublewords (64 bits) baised by -1 eg. 0b000000=1DW and
+> -	   0b111111=64DW.
+> -	   brk->len is in bytes.
+> -	   This aligns up to double word size, shifts and does the bias.
+> -	*/
+> +	dawrx  = (brk->type & HW_BRK_TYPE_RDWR) << (63 - 58);
+> +	dawrx |= ((brk->type & HW_BRK_TYPE_TRANSLATE) >> 2) << (63 - 59);
+> +	dawrx |= (brk->type & HW_BRK_TYPE_PRIV_ALL) >> 3;
 > +
->   	if (!attr->exclude_user)
->   		hw->type |= HW_BRK_TYPE_USER;
->   	if (!attr->exclude_kernel)
->   		hw->type |= HW_BRK_TYPE_KERNEL;
->   	if (!attr->exclude_hv)
->   		hw->type |= HW_BRK_TYPE_HYP;
-> +
->   	hw->address = attr->bp_addr;
->   	hw->len = attr->bp_len;
+> +	/* brk->len is in bytes. */
+>   	mrd = ((brk->len + 7) >> 3) - 1;
+>   	dawrx |= (mrd & 0x3f) << (63 - 53);
 >   
-> -	/*
-> -	 * Since breakpoint length can be a maximum of HW_BREAKPOINT_LEN(8)
-> -	 * and breakpoint addresses are aligned to nearest double-word
-> -	 * HW_BREAKPOINT_ALIGN by rounding off to the lower address, the
-> -	 * 'symbolsize' should satisfy the check below.
-> -	 */
-> -	if (!ppc_breakpoint_available())
-> -		return -ENODEV;
->   	length_max = 8; /* DABR */
->   	if (dawr_enabled()) {
->   		length_max = 512 ; /* 64 doublewords */
-> -		/* DAWR region can't cross 512 boundary */
-> -		if ((attr->bp_addr >> 9) !=
-> -		    ((attr->bp_addr + attr->bp_len - 1) >> 9))
-> +		/* DAWR region can't cross 512 bytes boundary */
-> +		if ((hw->address >> 9) != ((hw->address + hw->len - 1) >> 9))
->   			return -EINVAL;
->   	}
-> -	if (hw->len >
-> -	    (length_max - (hw->address & HW_BREAKPOINT_ALIGN)))
-> +
-> +	/*
-> +	 * Since breakpoint length can be a maximum of length_max and
-> +	 * breakpoint addresses are aligned to nearest double-word
-> +	 * HW_BREAKPOINT_ALIGN by rounding off to the lower address,
-> +	 * the 'symbolsize' should satisfy the check below.
-> +	 */
-> +	if (hw->len > (length_max - (hw->address & HW_BREAKPOINT_ALIGN)))
->   		return -EINVAL;
->   	return 0;
->   }
 > 
