@@ -2,36 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10324A100
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 14:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D0B4A109
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 14:43:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45SnkZ0syKzDq9j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 22:41:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45SnnR5NgkzDqHj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 22:43:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Snbk2XWlzDqSP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 22:35:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Snhn3p8kzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 22:39:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45Snbh1HPKz9sDX;
- Tue, 18 Jun 2019 22:35:12 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45Snhl0Bsrz9sCJ;
+ Tue, 18 Jun 2019 22:39:34 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Haren Myneni <haren@linux.vnet.ibm.com>,
- Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: crypto/NX: Set receive window credits to max number of CRBs in
- RxFIFO
-In-Reply-To: <1560587942.17547.18.camel@hbabu-laptop>
-References: <1560587942.17547.18.camel@hbabu-laptop>
-Date: Tue, 18 Jun 2019 22:35:05 +1000
-Message-ID: <87ef3royva.fsf@concordia.ellerman.id.au>
+To: Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: Re: [PATCH v4 19/28] docs: powerpc: convert docs to ReST and rename
+ to *.rst
+In-Reply-To: <20190614143635.3aff154d@lwn.net>
+References: <cover.1560361364.git.mchehab+samsung@kernel.org>
+ <63560c1ee7174952e148a353840a17969fe0be2d.1560361364.git.mchehab+samsung@kernel.org>
+ <20190614143635.3aff154d@lwn.net>
+Date: Tue, 18 Jun 2019 22:39:32 +1000
+Message-ID: <87blyvoynv.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,53 +47,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- stable@vger.kernel.org
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ linux-pci@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Qiang Zhao <qiang.zhao@nxp.com>, linux-scsi@vger.kernel.org,
+ Jiri Slaby <jslaby@suse.com>, Linas Vepstas <linasvepstas@gmail.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab@infradead.org>,
+ "Manoj N. Kumar" <manoj@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linux-arm-kernel@lists.infradead.org, "Matthew R. Ochs" <mrochs@linux.ibm.com>,
+ Uma Krishnan <ukrishn@linux.ibm.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.vnet.ibm.com> writes:
->     
-> System gets checkstop if RxFIFO overruns with more requests than the
-> maximum possible number of CRBs in FIFO at the same time. So find max
-> CRBs from FIFO size and set it to receive window credits.
->    
-> CC: stable@vger.kernel.org # v4.14+
-> Signed-off-by:Haren Myneni <haren@us.ibm.com>
+Jonathan Corbet <corbet@lwn.net> writes:
+> On Wed, 12 Jun 2019 14:52:55 -0300
+> Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
+>
+>> Convert docs to ReST and add them to the arch-specific
+>> book.
+>> 
+>> The conversion here was trivial, as almost every file there
+>> was already using an elegant format close to ReST standard.
+>> 
+>> The changes were mostly to mark literal blocks and add a few
+>> missing section title identifiers.
+>> 
+>> One note with regards to "--": on Sphinx, this can't be used
+>> to identify a list, as it will format it badly. This can be
+>> used, however, to identify a long hyphen - and "---" is an
+>> even longer one.
+>> 
+>> At its new index.rst, let's add a :orphan: while this is not linked to
+>> the main index.rst file, in order to avoid build warnings.
+>> 
+>> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+>> Acked-by: Andrew Donnellan <andrew.donnellan@au1.ibm.com> # cxl
+>
+> This one fails to apply because ...
+>
+> [...]
+>
+>> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
+>> index 83db42092935..acc21ecca322 100644
+>> --- a/Documentation/PCI/pci-error-recovery.rst
+>> +++ b/Documentation/PCI/pci-error-recovery.rst
+>> @@ -422,3 +422,24 @@ That is, the recovery API only requires that:
+>>     - drivers/net/cxgb3
+>>     - drivers/net/s2io.c
+>>     - drivers/net/qlge
+>> +
+>> +>>> As of this writing, there is a growing list of device drivers with
+>> +>>> patches implementing error recovery. Not all of these patches are in
+>> +>>> mainline yet. These may be used as "examples":
+>> +>>>
+>> +>>> drivers/scsi/ipr
+>> +>>> drivers/scsi/sym53c8xx_2
+>> +>>> drivers/scsi/qla2xxx
+>> +>>> drivers/scsi/lpfc
+>> +>>> drivers/next/bnx2.c
+>> +>>> drivers/next/e100.c
+>> +>>> drivers/net/e1000
+>> +>>> drivers/net/e1000e
+>> +>>> drivers/net/ixgb
+>> +>>> drivers/net/ixgbe
+>> +>>> drivers/net/cxgb3
+>> +>>> drivers/net/s2io.c
+>> +>>> drivers/net/qlge  
+>
+> ...of this, which has the look of a set of conflict markers that managed
+> to get committed...?
 
-It's helpful to mention the actual commit that's fixed, so that people
-with backports can join things up, so should that be:
+I don't think so.
 
-  Fixes: b0d6c9bab5e4 ("crypto/nx: Add P9 NX support for 842 compression engine")
+There's some other uses of >>> in that file, eg about line 162:
 
-???
+  >>> The current powerpc implementation assumes that a device driver will
+  >>> *not* schedule or semaphore in this routine; the current powerpc
+  >>> implementation uses one kernel thread to notify all devices;
+  >>> thus, if one device sleeps/schedules, all devices are affected.
+  >>> Doing better requires complex multi-threaded logic in the error
+  >>> recovery implementation (e.g. waiting for all notification threads
+  >>> to "join" before proceeding with recovery.)  This seems excessively
+  >>> complex and not worth implementing.
+
+
+So it's just an odd choice of emphasis device I think.
 
 cheers
-
-> diff --git a/drivers/crypto/nx/nx-842-powernv.c b/drivers/crypto/nx/nx-842-powernv.c
-> index 4acbc47..e78ff5c 100644
-> --- a/drivers/crypto/nx/nx-842-powernv.c
-> +++ b/drivers/crypto/nx/nx-842-powernv.c
-> @@ -27,8 +27,6 @@
->  #define WORKMEM_ALIGN	(CRB_ALIGN)
->  #define CSB_WAIT_MAX	(5000) /* ms */
->  #define VAS_RETRIES	(10)
-> -/* # of requests allowed per RxFIFO at a time. 0 for unlimited */
-> -#define MAX_CREDITS_PER_RXFIFO	(1024)
->  
->  struct nx842_workmem {
->  	/* Below fields must be properly aligned */
-> @@ -812,7 +810,11 @@ static int __init vas_cfg_coproc_info(struct device_node *dn, int chip_id,
->  	rxattr.lnotify_lpid = lpid;
->  	rxattr.lnotify_pid = pid;
->  	rxattr.lnotify_tid = tid;
-> -	rxattr.wcreds_max = MAX_CREDITS_PER_RXFIFO;
-> +	/*
-> +	 * Maximum RX window credits can not be more than #CRBs in
-> +	 * RxFIFO. Otherwise, can get checkstop if RxFIFO overruns.
-> +	 */
-> +	rxattr.wcreds_max = fifo_size / CRB_SIZE;
->  
->  	/*
->  	 * Open a VAS receice window which is used to configure RxFIFO
