@@ -2,71 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFAC49942
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 08:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F4C499D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 09:04:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Sdvn1HBvzDqfP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 16:48:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45SfFw4HlvzDqY6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 17:04:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="qbPK4m4X"; 
+ spf=pass (mailfrom) smtp.mailfrom=anastas.io
+ (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=anastas.io header.i=@anastas.io header.b="j4C7A8Sb"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Sds66cfqzDq5f
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 16:46:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Sds34Z4Kz9v2hv;
- Tue, 18 Jun 2019 08:46:15 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=qbPK4m4X; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id lrq2fcRQ0upr; Tue, 18 Jun 2019 08:46:15 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Sds33T5zz9v2ht;
- Tue, 18 Jun 2019 08:46:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560840375; bh=f1TaXLuQztNdjCCTBUyiCnXlkmIVTgD1cfbIcwlhhpk=;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Sf9h6cNwzDqXd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 17:00:40 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by alpha.anastas.io (Postfix) with ESMTPSA id 6A5A57F6DA;
+ Tue, 18 Jun 2019 02:00:07 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1560841207; bh=rP06JeWTpW1z0Kz8ysokhyqV7Kp3+b8O0tqRwV7tGCk=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=qbPK4m4XxMeIIwjWs0X/G8f9rowtUTNP28d2Jf1CzgT8sRP9N6lEZ0PYrzuTd6383
- 2TaHApDrVaiB84fu+5rJHYzG98NhI9O1cMPVN+or2FDfiGaoeJriZ8BEJsAhml6Ocp
- WQXKD6ts7zWJbWizCuO/MNp0PgAoBRRw/Y4yaLx8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 821368B894;
- Tue, 18 Jun 2019 08:46:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ghFB0ZVfi_lA; Tue, 18 Jun 2019 08:46:15 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B1378B78B;
- Tue, 18 Jun 2019 08:46:14 +0200 (CEST)
-Subject: Re: [PATCH 5/5] Powerpc/Watchpoint: Fix length calculation for
- unaligned target
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au
-References: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
- <20190618042732.5582-6-ravi.bangoria@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3390c3c2-8290-da55-a183-872c593c7b1e@c-s.fr>
-Date: Tue, 18 Jun 2019 08:46:14 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ b=j4C7A8Sb3Mp5eA4Uc82D1LruLni4cn7WgjdfxMMUX62HIpCMgSzvGuyAO6XLutoEA
+ kdS6o1BmjJ0a9oyrQlyDcoyp3wjapP4BMxy3thx2YDLGlh+ZBRs5YfB2ADSa7OXI7g
+ xpXCkdfpCObz1eadH/FQs0yg0FCCiZLwMZIkiCDiPE2COTyQLW7TDDOTHtsxh4097L
+ CvKKtzMbWKx6t4W/1MFdduO3P5DEcJMooCopxqcXfk3PnOaUcuKpBIvhWWB6vA8HD0
+ U/BKyS+fWhJ4dPQmB9k5rSm4h3Lu5vQohPie6l+VWMjq9A3QlW59RBtUTC0ZcfiHfF
+ ktSqCAbE/V6yA==
+Subject: Re: [PATCH kernel v3 0/3] powerpc/ioda2: Yet another attempt to allow
+ DMA masks between 32 and 59
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+References: <20190530070355.121802-1-aik@ozlabs.ru>
+ <deb34b5f-9472-2156-e58d-8dbcb0a38979@anastas.io>
+ <1e3de274-aec4-6e69-5e37-be15ea888deb@anastas.io>
+ <5ad2a281-6b31-a990-ea9c-06d4c331cd23@ozlabs.ru>
+ <382353e8-591c-1ec6-21d5-c81811efb097@anastas.io>
+ <57d69807-a31d-da21-b401-701389fe885b@anastas.io>
+ <d4a8d06e-aa5b-dab7-4b20-d1aa77b5304a@ozlabs.ru>
+From: Shawn Anastasio <shawn@anastas.io>
+Message-ID: <553b21c2-c57f-2b27-3210-a957158d22dc@anastas.io>
+Date: Tue, 18 Jun 2019 02:00:06 -0500
 MIME-Version: 1.0
-In-Reply-To: <20190618042732.5582-6-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <d4a8d06e-aa5b-dab7-4b20-d1aa77b5304a@ozlabs.ru>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,267 +66,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 18/06/2019 à 06:27, Ravi Bangoria a écrit :
-> Watchpoint match range is always doubleword(8 bytes) aligned on
-> powerpc. If the given range is crossing doubleword boundary, we
-> need to increase the length such that next doubleword also get
-> covered. Ex,
+On 6/18/19 1:39 AM, Alexey Kardashevskiy wrote:
 > 
->            address   len = 6 bytes
->                  |=========.
->     |------------v--|------v--------|
->     | | | | | | | | | | | | | | | | |
->     |---------------|---------------|
->      <---8 bytes--->
 > 
-> In such case, current code configures hw as:
->    start_addr = address & ~HW_BREAKPOINT_ALIGN
->    len = 8 bytes
+> On 18/06/2019 14:26, Shawn Anastasio wrote:
+>> On 6/12/19 2:15 PM, Shawn Anastasio wrote:
+>>> On 6/12/19 2:07 AM, Alexey Kardashevskiy wrote:
+>>>>
+>>>>
+>>>> On 12/06/2019 15:05, Shawn Anastasio wrote:
+>>>>> On 6/5/19 11:11 PM, Shawn Anastasio wrote:
+>>>>>> On 5/30/19 2:03 AM, Alexey Kardashevskiy wrote:
+>>>>>>> This is an attempt to allow DMA masks between 32..59 which are not
+>>>>>>> large
+>>>>>>> enough to use either a PHB3 bypass mode or a sketchy bypass.
+>>>>>>> Depending
+>>>>>>> on the max order, up to 40 is usually available.
+>>>>>>>
+>>>>>>>
+>>>>>>> This is based on v5.2-rc2.
+>>>>>>>
+>>>>>>> Please comment. Thanks.
+>>>>>>
+>>>>>> I have tested this patch set with an AMD GPU that's limited to <64bit
+>>>>>> DMA (I believe it's 40 or 42 bit). It successfully allows the card to
+>>>>>> operate without falling back to 32-bit DMA mode as it does without
+>>>>>> the patches.
+>>>>>>
+>>>>>> Relevant kernel log message:
+>>>>>> ```
+>>>>>> [    0.311211] pci 0033:01     : [PE# 00] Enabling 64-bit DMA bypass
+>>>>>> ```
+>>>>>>
+>>>>>> Tested-by: Shawn Anastasio <shawn@anastas.io>
+>>>>>
+>>>>> After a few days of further testing, I've started to run into stability
+>>>>> issues with the patch applied and used with an AMD GPU. Specifically,
+>>>>> the system sometimes spontaneously crashes. Not just EEH errors either,
+>>>>> the whole system shuts down in what looks like a checkstop.
+>>>>>
+>>>>> Perhaps some subtle corruption is occurring?
+>>>>
+>>>> Have you tried this?
+>>>>
+>>>> https://patchwork.ozlabs.org/patch/1113506/
+>>>
+>>> I have not. I'll give it a shot and try it out for a few days to see
+>>> if I'm able to reproduce the crashes.
+>>
+>> A few days later and I was able to reproduce the checkstop while
+>> watching a video in mpv. At this point the system had ~4 day
+>> uptime and this wasn't the first video I watched during that time.
+>>
+>> This is with https://patchwork.ozlabs.org/patch/1113506/ applied, too.
 > 
-> And thus read/write in last 4 bytes of the given range is ignored.
-> Fix this by including next doubleword in the length. Watchpoint
-> exception handler already ignores extraneous exceptions, so no
-> changes required for that.
 > 
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/hw_breakpoint.h |  7 ++--
->   arch/powerpc/kernel/hw_breakpoint.c      | 44 +++++++++++++-----------
->   arch/powerpc/kernel/process.c            | 34 ++++++++++++++++--
->   3 files changed, 60 insertions(+), 25 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-> index 8acbbdd4a2d5..749a357164d5 100644
-> --- a/arch/powerpc/include/asm/hw_breakpoint.h
-> +++ b/arch/powerpc/include/asm/hw_breakpoint.h
-> @@ -34,6 +34,8 @@ struct arch_hw_breakpoint {
->   #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
->   				 HW_BRK_TYPE_HYP)
->   
-> +#define HW_BREAKPOINT_ALIGN 0x7
-> +
->   #ifdef CONFIG_HAVE_HW_BREAKPOINT
->   #include <linux/kdebug.h>
->   #include <asm/reg.h>
-> @@ -45,8 +47,6 @@ struct pmu;
->   struct perf_sample_data;
->   struct task_struct;
->   
-> -#define HW_BREAKPOINT_ALIGN 0x7
-> -
->   extern int hw_breakpoint_slots(int type);
->   extern int arch_bp_generic_fields(int type, int *gen_bp_type);
->   extern int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw);
-> @@ -76,7 +76,8 @@ static inline void hw_breakpoint_disable(void)
->   }
->   extern void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs);
->   int hw_breakpoint_handler(struct die_args *args);
-> -
-> +extern u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
-> +		unsigned long *start_addr, unsigned long *end_addr);
->   extern int set_dawr(struct arch_hw_breakpoint *brk);
->   extern bool dawr_force_enable;
->   static inline bool dawr_enabled(void)
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index 36bcf705df65..c122fd55aa44 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -126,6 +126,28 @@ int arch_bp_generic_fields(int type, int *gen_bp_type)
->   	return 0;
->   }
->   
-> +/* Maximum len for DABR is 8 bytes and DAWR is 512 bytes */
-> +static int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
-> +{
-> +	u16 length_max = 8;
-> +	u16 final_len;
+> Any logs left? What was the reason for the checkstop and what is the
+> hardware? "lscpu" and "lspci -vv" for the starter would help. Thanks,
 
-You should be more consistent in naming. If one is called final_len, the 
-other one should be called max_len.
+The machine is a Talos II with 2x 8 core DD2.2 Sforza modules.
+I've added the output of lscpu and lspci below. As for logs,
+it doesn't seem there are any kernel logs of the event.
+The opal-gard utility shows some error records which I have
+also included below.
 
-> +	unsigned long start_addr, end_addr;
-> +
-> +	final_len = hw_breakpoint_get_final_len(hw, &start_addr, &end_addr);
-> +
-> +	if (dawr_enabled()) {
-> +		length_max = 512;
-> +		/* DAWR region can't cross 512 bytes boundary */
-> +		if ((start_addr >> 9) != (end_addr >> 9))
-> +			return -EINVAL;
-> +	}
-> +
-> +	if (final_len > length_max)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
+opal-gard:
+```
+$ sudo ./opal-gard show 1
+Record ID:    0x00000001
+========================
+Error ID:     0x9000000b
+Error Type:   Fatal (0xe3)
+Path Type: physical
+ >Sys, Instance #0
+  >Node, Instance #0
+   >Proc, Instance #1
+    >EQ, Instance #0
+     >EX, Instance #0
 
-Is many places, we have those numeric 512 and 9 shift. Could we replace 
-them by some symbol, for instance DAWR_SIZE and DAWR_SHIFT ?
+$ sudo ./opal-gard show 2
+Record ID:    0x00000002
+========================
+Error ID:     0x90000021
+Error Type:   Fatal (0xe3)
+Path Type: physical
+ >Sys, Instance #0
+  >Node, Instance #0
+   >Proc, Instance #1
+    >EQ, Instance #2
+     >EX, Instance #1
 
->   /*
->    * Validate the arch-specific HW Breakpoint register settings
->    */
-> @@ -133,12 +155,10 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
->   			     const struct perf_event_attr *attr,
->   			     struct arch_hw_breakpoint *hw)
->   {
-> -	int length_max;
-> -
->   	if (!ppc_breakpoint_available())
->   		return -ENODEV;
->   
-> -	if (!bp)
-> +	if (!bp || !attr->bp_len)
->   		return -EINVAL;
->   
->   	hw->type = HW_BRK_TYPE_TRANSLATE;
-> @@ -160,23 +180,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
->   	hw->address = attr->bp_addr;
->   	hw->len = attr->bp_len;
->   
-> -	length_max = 8; /* DABR */
-> -	if (dawr_enabled()) {
-> -		length_max = 512 ; /* 64 doublewords */
-> -		/* DAWR region can't cross 512 bytes boundary */
-> -		if ((hw->address >> 9) != ((hw->address + hw->len - 1) >> 9))
-> -			return -EINVAL;
-> -	}
-> -
-> -	/*
-> -	 * Since breakpoint length can be a maximum of length_max and
-> -	 * breakpoint addresses are aligned to nearest double-word
-> -	 * HW_BREAKPOINT_ALIGN by rounding off to the lower address,
-> -	 * the 'symbolsize' should satisfy the check below.
-> -	 */
-> -	if (hw->len > (length_max - (hw->address & HW_BREAKPOINT_ALIGN)))
-> -		return -EINVAL;
-> -	return 0;
-> +	return hw_breakpoint_validate_len(hw);
->   }
->   
->   /*
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 265fac9fb3a4..159aaa70de46 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -802,9 +802,39 @@ static int disable_dawr(void)
->   	return 0;
->   }
->   
-> +/*
-> + * Watchpoint match range is always doubleword(8 bytes) aligned on
-> + * powerpc. If the given range is crossing doubleword boundary, we
-> + * need to increase the length such that next doubleword also get
-> + * covered. Ex,
-> + *
-> + *          address   len = 6 bytes
-> + *                |=========.
-> + *   |------------v--|------v--------|
-> + *   | | | | | | | | | | | | | | | | |
-> + *   |---------------|---------------|
-> + *    <---8 bytes--->
-> + *
-> + * In this case, we should configure hw as:
-> + *   start_addr = address & ~HW_BREAKPOINT_ALIGN
-> + *   len = 16 bytes
-> + *
-> + * @start_addr and @end_addr are inclusive.
-> + */
-> +u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
-> +				unsigned long *start_addr,
-> +				unsigned long *end_addr)
-> +{
-> +	*start_addr = brk->address & ~HW_BREAKPOINT_ALIGN;
-> +	*end_addr = (brk->address + brk->len - 1) | HW_BREAKPOINT_ALIGN;
-> +	return *end_addr - *start_addr + 1;
-> +}
+```
 
-This function gives horrible code (a couple of unneeded store/re-read 
-and read/re-read).
+lscpu:
+```
+Architecture:        ppc64le
+Byte Order:          Little Endian
+CPU(s):              52
+On-line CPU(s) list: 0-3,8-31,36-47,52-63
+Thread(s) per core:  4
+Core(s) per socket:  6
+Socket(s):           2
+NUMA node(s):        2
+Model:               2.2 (pvr 004e 1202)
+Model name:          POWER9, altivec supported
+CPU max MHz:         3800.0000
+CPU min MHz:         2154.0000
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            512K
+L3 cache:            10240K
+NUMA node0 CPU(s):   0-3,8-31
+NUMA node8 CPU(s):   36-47,52-63
 
-000006bc <hw_breakpoint_get_final_len>:
-      6bc:	81 23 00 00 	lwz     r9,0(r3)
-      6c0:	55 29 00 38 	rlwinm  r9,r9,0,0,28
-      6c4:	91 24 00 00 	stw     r9,0(r4)
-      6c8:	81 43 00 00 	lwz     r10,0(r3)
-      6cc:	a1 23 00 06 	lhz     r9,6(r3)
-      6d0:	38 6a ff ff 	addi    r3,r10,-1
-      6d4:	7c 63 4a 14 	add     r3,r3,r9
-      6d8:	60 63 00 07 	ori     r3,r3,7
-      6dc:	90 65 00 00 	stw     r3,0(r5)
-      6e0:	38 63 00 01 	addi    r3,r3,1
-      6e4:	81 24 00 00 	lwz     r9,0(r4)
-      6e8:	7c 69 18 50 	subf    r3,r9,r3
-      6ec:	54 63 04 3e 	clrlwi  r3,r3,16
-      6f0:	4e 80 00 20 	blr
+```
 
-Below code gives something better:
-
-u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
-				unsigned long *start_addr,
-				unsigned long *end_addr)
-{
-	unsigned long address = brk->address;
-	unsigned long len = brk->len;
-	unsigned long start = address & ~HW_BREAKPOINT_ALIGN;
-	unsigned long end = (address + len - 1) | HW_BREAKPOINT_ALIGN;
-
-	*start_addr = start;
-	*end_addr = end;
-	return end - start + 1;
-}
-
-000006bc <hw_breakpoint_get_final_len>:
-      6bc:	81 43 00 00 	lwz     r10,0(r3)
-      6c0:	a1 03 00 06 	lhz     r8,6(r3)
-      6c4:	39 2a ff ff 	addi    r9,r10,-1
-      6c8:	7d 28 4a 14 	add     r9,r8,r9
-      6cc:	55 4a 00 38 	rlwinm  r10,r10,0,0,28
-      6d0:	61 29 00 07 	ori     r9,r9,7
-      6d4:	91 44 00 00 	stw     r10,0(r4)
-      6d8:	20 6a 00 01 	subfic  r3,r10,1
-      6dc:	91 25 00 00 	stw     r9,0(r5)
-      6e0:	7c 63 4a 14 	add     r3,r3,r9
-      6e4:	54 63 04 3e 	clrlwi  r3,r3,16
-      6e8:	4e 80 00 20 	blr
-
-
-And regardless, that's a pitty to have this function using pointers 
-which are from local variables in the callers, as we loose the benefit 
-of registers. Couldn't this function go in the .h as a static inline ? 
-I'm sure the result would be worth it.
-
-Christophe
-
-> +
->   int set_dawr(struct arch_hw_breakpoint *brk)
->   {
->   	unsigned long dawr, dawrx, mrd;
-> +	unsigned long start_addr, end_addr;
-> +	u16 final_len;
->   
->   	if (brk->type == HW_BRK_TYPE_DISABLE)
->   		return disable_dawr();
-> @@ -815,8 +845,8 @@ int set_dawr(struct arch_hw_breakpoint *brk)
->   	dawrx |= ((brk->type & HW_BRK_TYPE_TRANSLATE) >> 2) << (63 - 59);
->   	dawrx |= (brk->type & HW_BRK_TYPE_PRIV_ALL) >> 3;
->   
-> -	/* brk->len is in bytes. */
-> -	mrd = ((brk->len + 7) >> 3) - 1;
-> +	final_len = hw_breakpoint_get_final_len(brk, &start_addr, &end_addr);
-> +	mrd = ((final_len + 7) >> 3) - 1;
->   	dawrx |= (mrd & 0x3f) << (63 - 53);
->   
->   	if (ppc_md.set_dawr)
-> 
+lspci -vv:
+Output at: https://upaste.anastas.io/IwVQzt
