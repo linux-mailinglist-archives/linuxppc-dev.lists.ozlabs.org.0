@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE29549865
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 06:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6904449867
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 06:40:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Sb1K2YrbzDqVR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 14:38:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Sb3d3pRMzDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 14:40:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,62 +19,63 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45SZnX4CpQzDqWj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 14:28:00 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45SZnb644czDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 14:28:03 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5I4RG96085328
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 00:27:57 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t6k5eah26-1
+ x5I4RMu8152084
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 00:28:01 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2t6nt15pnv-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 00:27:57 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 00:28:00 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Tue, 18 Jun 2019 05:27:55 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Tue, 18 Jun 2019 05:27:59 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 18 Jun 2019 05:27:52 +0100
+ Tue, 18 Jun 2019 05:27:56 +0100
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5I4Rq2u52625532
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x5I4Rtul36241720
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jun 2019 04:27:52 GMT
+ Tue, 18 Jun 2019 04:27:55 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E86A211C05E;
- Tue, 18 Jun 2019 04:27:51 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6078811C050;
+ Tue, 18 Jun 2019 04:27:55 +0000 (GMT)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4733C11C04A;
- Tue, 18 Jun 2019 04:27:49 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 59D7311C064;
+ Tue, 18 Jun 2019 04:27:52 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.63.86])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 18 Jun 2019 04:27:49 +0000 (GMT)
+ Tue, 18 Jun 2019 04:27:52 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH 4/5] Powerpc/hw-breakpoint: Optimize disable path
-Date: Tue, 18 Jun 2019 09:57:31 +0530
+Subject: [PATCH 5/5] Powerpc/Watchpoint: Fix length calculation for unaligned
+ target
+Date: Tue, 18 Jun 2019 09:57:32 +0530
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
 References: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19061804-0020-0000-0000-0000034AFDFF
+x-cbid: 19061804-4275-0000-0000-0000034336F6
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061804-0021-0000-0000-0000219E4885
-Message-Id: <20190618042732.5582-5-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 19061804-4276-0000-0000-000038535CFC
+Message-Id: <20190618042732.5582-6-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-18_02:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=470 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1906180035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,64 +95,193 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Directly setting dawr and dawrx with 0 should be enough to
-disable watchpoint. No need to reset individual bits in
-variable and then set in hw.
+Watchpoint match range is always doubleword(8 bytes) aligned on
+powerpc. If the given range is crossing doubleword boundary, we
+need to increase the length such that next doubleword also get
+covered. Ex,
+
+          address   len = 6 bytes
+                |=========.
+   |------------v--|------v--------|
+   | | | | | | | | | | | | | | | | |
+   |---------------|---------------|
+    <---8 bytes--->
+
+In such case, current code configures hw as:
+  start_addr = address & ~HW_BREAKPOINT_ALIGN
+  len = 8 bytes
+
+And thus read/write in last 4 bytes of the given range is ignored.
+Fix this by including next doubleword in the length. Watchpoint
+exception handler already ignores extraneous exceptions, so no
+changes required for that.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- arch/powerpc/include/asm/hw_breakpoint.h |  3 ++-
- arch/powerpc/kernel/process.c            | 12 ++++++++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/hw_breakpoint.h |  7 ++--
+ arch/powerpc/kernel/hw_breakpoint.c      | 44 +++++++++++++-----------
+ arch/powerpc/kernel/process.c            | 34 ++++++++++++++++--
+ 3 files changed, 60 insertions(+), 25 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index 78202d5fb13a..8acbbdd4a2d5 100644
+index 8acbbdd4a2d5..749a357164d5 100644
 --- a/arch/powerpc/include/asm/hw_breakpoint.h
 +++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -19,6 +19,7 @@ struct arch_hw_breakpoint {
- /* Note: Don't change the the first 6 bits below as they are in the same order
-  * as the dabr and dabrx.
-  */
-+#define HW_BRK_TYPE_DISABLE		0x00
- #define HW_BRK_TYPE_READ		0x01
- #define HW_BRK_TYPE_WRITE		0x02
- #define HW_BRK_TYPE_TRANSLATE		0x04
-@@ -68,7 +69,7 @@ static inline void hw_breakpoint_disable(void)
- 	struct arch_hw_breakpoint brk;
+@@ -34,6 +34,8 @@ struct arch_hw_breakpoint {
+ #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
+ 				 HW_BRK_TYPE_HYP)
  
- 	brk.address = 0;
--	brk.type = 0;
-+	brk.type = HW_BRK_TYPE_DISABLE;
- 	brk.len = 0;
- 	if (ppc_breakpoint_available())
- 		__set_breakpoint(&brk);
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index f002d2ffff86..265fac9fb3a4 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -793,10 +793,22 @@ static inline int set_dabr(struct arch_hw_breakpoint *brk)
- 	return __set_dabr(dabr, dabrx);
++#define HW_BREAKPOINT_ALIGN 0x7
++
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ #include <linux/kdebug.h>
+ #include <asm/reg.h>
+@@ -45,8 +47,6 @@ struct pmu;
+ struct perf_sample_data;
+ struct task_struct;
+ 
+-#define HW_BREAKPOINT_ALIGN 0x7
+-
+ extern int hw_breakpoint_slots(int type);
+ extern int arch_bp_generic_fields(int type, int *gen_bp_type);
+ extern int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw);
+@@ -76,7 +76,8 @@ static inline void hw_breakpoint_disable(void)
+ }
+ extern void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs);
+ int hw_breakpoint_handler(struct die_args *args);
+-
++extern u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
++		unsigned long *start_addr, unsigned long *end_addr);
+ extern int set_dawr(struct arch_hw_breakpoint *brk);
+ extern bool dawr_force_enable;
+ static inline bool dawr_enabled(void)
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 36bcf705df65..c122fd55aa44 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -126,6 +126,28 @@ int arch_bp_generic_fields(int type, int *gen_bp_type)
+ 	return 0;
  }
  
-+static int disable_dawr(void)
++/* Maximum len for DABR is 8 bytes and DAWR is 512 bytes */
++static int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
 +{
-+	if (ppc_md.set_dawr)
-+		return ppc_md.set_dawr(0, 0);
++	u16 length_max = 8;
++	u16 final_len;
++	unsigned long start_addr, end_addr;
 +
-+	mtspr(SPRN_DAWRX, 0);
++	final_len = hw_breakpoint_get_final_len(hw, &start_addr, &end_addr);
++
++	if (dawr_enabled()) {
++		length_max = 512;
++		/* DAWR region can't cross 512 bytes boundary */
++		if ((start_addr >> 9) != (end_addr >> 9))
++			return -EINVAL;
++	}
++
++	if (final_len > length_max)
++		return -EINVAL;
++
 +	return 0;
++}
++
+ /*
+  * Validate the arch-specific HW Breakpoint register settings
+  */
+@@ -133,12 +155,10 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 			     const struct perf_event_attr *attr,
+ 			     struct arch_hw_breakpoint *hw)
+ {
+-	int length_max;
+-
+ 	if (!ppc_breakpoint_available())
+ 		return -ENODEV;
+ 
+-	if (!bp)
++	if (!bp || !attr->bp_len)
+ 		return -EINVAL;
+ 
+ 	hw->type = HW_BRK_TYPE_TRANSLATE;
+@@ -160,23 +180,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	hw->address = attr->bp_addr;
+ 	hw->len = attr->bp_len;
+ 
+-	length_max = 8; /* DABR */
+-	if (dawr_enabled()) {
+-		length_max = 512 ; /* 64 doublewords */
+-		/* DAWR region can't cross 512 bytes boundary */
+-		if ((hw->address >> 9) != ((hw->address + hw->len - 1) >> 9))
+-			return -EINVAL;
+-	}
+-
+-	/*
+-	 * Since breakpoint length can be a maximum of length_max and
+-	 * breakpoint addresses are aligned to nearest double-word
+-	 * HW_BREAKPOINT_ALIGN by rounding off to the lower address,
+-	 * the 'symbolsize' should satisfy the check below.
+-	 */
+-	if (hw->len > (length_max - (hw->address & HW_BREAKPOINT_ALIGN)))
+-		return -EINVAL;
+-	return 0;
++	return hw_breakpoint_validate_len(hw);
+ }
+ 
+ /*
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 265fac9fb3a4..159aaa70de46 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -802,9 +802,39 @@ static int disable_dawr(void)
+ 	return 0;
+ }
+ 
++/*
++ * Watchpoint match range is always doubleword(8 bytes) aligned on
++ * powerpc. If the given range is crossing doubleword boundary, we
++ * need to increase the length such that next doubleword also get
++ * covered. Ex,
++ *
++ *          address   len = 6 bytes
++ *                |=========.
++ *   |------------v--|------v--------|
++ *   | | | | | | | | | | | | | | | | |
++ *   |---------------|---------------|
++ *    <---8 bytes--->
++ *
++ * In this case, we should configure hw as:
++ *   start_addr = address & ~HW_BREAKPOINT_ALIGN
++ *   len = 16 bytes
++ *
++ * @start_addr and @end_addr are inclusive.
++ */
++u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
++				unsigned long *start_addr,
++				unsigned long *end_addr)
++{
++	*start_addr = brk->address & ~HW_BREAKPOINT_ALIGN;
++	*end_addr = (brk->address + brk->len - 1) | HW_BREAKPOINT_ALIGN;
++	return *end_addr - *start_addr + 1;
 +}
 +
  int set_dawr(struct arch_hw_breakpoint *brk)
  {
  	unsigned long dawr, dawrx, mrd;
++	unsigned long start_addr, end_addr;
++	u16 final_len;
  
-+	if (brk->type == HW_BRK_TYPE_DISABLE)
-+		return disable_dawr();
-+
- 	dawr = brk->address;
+ 	if (brk->type == HW_BRK_TYPE_DISABLE)
+ 		return disable_dawr();
+@@ -815,8 +845,8 @@ int set_dawr(struct arch_hw_breakpoint *brk)
+ 	dawrx |= ((brk->type & HW_BRK_TYPE_TRANSLATE) >> 2) << (63 - 59);
+ 	dawrx |= (brk->type & HW_BRK_TYPE_PRIV_ALL) >> 3;
  
- 	dawrx  = (brk->type & HW_BRK_TYPE_RDWR) << (63 - 58);
+-	/* brk->len is in bytes. */
+-	mrd = ((brk->len + 7) >> 3) - 1;
++	final_len = hw_breakpoint_get_final_len(brk, &start_addr, &end_addr);
++	mrd = ((final_len + 7) >> 3) - 1;
+ 	dawrx |= (mrd & 0x3f) << (63 - 53);
+ 
+ 	if (ppc_md.set_dawr)
 -- 
 2.20.1
 
