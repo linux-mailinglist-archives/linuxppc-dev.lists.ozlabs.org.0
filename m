@@ -2,59 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B134ACEB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2019 23:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741B44ADFB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 00:47:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45T10n4KjPzDqjY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 07:09:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45T39d4k7QzDqfv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 08:47:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org; envelope-from=mchehab@bombadil.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="uN25SBw4"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=rjwysocki.net
+ (client-ip=79.96.170.134; helo=cloudserver094114.home.pl;
+ envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl
+ [79.96.170.134])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45T0y00p8qzDqgp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 07:06:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
- To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=ECIQo8wjoJ4L3SNzTPduVDIOPVbFLBmTWJrd5JeuGbI=; b=uN25SBw4Qda4bD/guxXXptJsE9
- r7PlgDNIP3HjKrbIXXNJNKv0ft4+UxzRcRzr8ynhelVrVadVEEMty5KGn0/tHZa/OtSeGMzkdo7aH
- ud2kbZEVm5bnRJvA9k/AWf4Gj3lScOUrgiD3I2x2Yphrz9PJ2HD2IdUUJ9sKZca8/FnJ80L/xKPHw
- DuC2RymFuwdCyNTIMg7AFZgPZmyUQaxXufKDm4nJxM/92Mk3GSUuvgi0eMPqpDIJxD74otO/wern2
- VgpE8anPgIpMFNO2r2o0Eyu36fejzJVIl69APWrFet0an4rsUxFkW8N86PZH0ome46bT38xNCDjQh
- UwlTT3jw==;
-Received: from 177.133.86.196.dynamic.adsl.gvt.net.br ([177.133.86.196]
- helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hdLIc-0006zH-KZ; Tue, 18 Jun 2019 21:05:51 +0000
-Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
- (envelope-from <mchehab@bombadil.infradead.org>)
- id 1hdLIa-0002DI-7r; Tue, 18 Jun 2019 18:05:48 -0300
-From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH v1 22/22] admin-guide: add kdump documentation into it
-Date: Tue, 18 Jun 2019 18:05:46 -0300
-Message-Id: <e6a805d5b36d4dda2a474db4f9e7e86da710a9be.1560891322.git.mchehab+samsung@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1560891322.git.mchehab+samsung@kernel.org>
-References: <cover.1560891322.git.mchehab+samsung@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45T3772yxBzDqW1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 08:44:49 +1000 (AEST)
+Received: from 79.184.254.20.ipv4.supernova.orange.pl (79.184.254.20) (HELO
+ kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
+ id a04ace6452f9df28; Wed, 19 Jun 2019 00:44:44 +0200
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Ran Wang <ran.wang_1@nxp.com>
+Subject: Re: [PATCH v4 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Date: Wed, 19 Jun 2019 00:44:44 +0200
+Message-ID: <3448272.3g8bHhgBA9@kreacher>
+In-Reply-To: <20190520095238.29210-1-ran.wang_1@nxp.com>
+References: <20190520095238.29210-1-ran.wang_1@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,249 +47,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
- Jerry Hoemann <jerry.hoemann@hpe.com>, Harry Wei <harryxiyou@gmail.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Alex Shi <alex.shi@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Dave Young <dyoung@redhat.com>,
- Guenter Roeck <linux@roeck-us.net>, linux-watchdog@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@infradead.org>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- Wim Van Sebroeck <wim@linux-watchdog.org>,
- linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Len Brown <len.brown@intel.com>,
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Kdump documentation describes procedures with admins use
-in order to solve issues on their systems.
+On Monday, May 20, 2019 11:52:36 AM CEST Ran Wang wrote:
+> Some user might want to go through all registered wakeup sources
+> and doing things accordingly. For example, SoC PM driver might need to
+> do HW programming to prevent powering down specific IP which wakeup
+> source depending on. And is user's responsibility to identify if this
+> wakeup source he is interested in.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
----
- Documentation/admin-guide/bug-hunting.rst            | 4 ++--
- Documentation/admin-guide/index.rst                  | 1 +
- Documentation/{ => admin-guide}/kdump/gdbmacros.txt  | 0
- Documentation/{ => admin-guide}/kdump/index.rst      | 1 -
- Documentation/{ => admin-guide}/kdump/kdump.rst      | 0
- Documentation/{ => admin-guide}/kdump/vmcoreinfo.rst | 0
- Documentation/admin-guide/kernel-parameters.txt      | 6 +++---
- Documentation/powerpc/firmware-assisted-dump.rst     | 2 +-
- Documentation/translations/zh_CN/oops-tracing.txt    | 4 ++--
- Documentation/watchdog/hpwdt.rst                     | 2 +-
- MAINTAINERS                                          | 2 +-
- arch/arm/Kconfig                                     | 2 +-
- arch/arm64/Kconfig                                   | 2 +-
- arch/sh/Kconfig                                      | 2 +-
- arch/x86/Kconfig                                     | 4 ++--
- 15 files changed, 16 insertions(+), 16 deletions(-)
- rename Documentation/{ => admin-guide}/kdump/gdbmacros.txt (100%)
- rename Documentation/{ => admin-guide}/kdump/index.rst (97%)
- rename Documentation/{ => admin-guide}/kdump/kdump.rst (100%)
- rename Documentation/{ => admin-guide}/kdump/vmcoreinfo.rst (100%)
+I guess the idea here is that you need to walk wakeup devices and you noticed
+that there was a wakeup source object for each of them and those wakeup
+source objects were on a list, so you could walk wakeup devices by walking
+the list of wakeup source objects.
 
-diff --git a/Documentation/admin-guide/bug-hunting.rst b/Documentation/admin-guide/bug-hunting.rst
-index b761aa2a51d2..44b8a4edd348 100644
---- a/Documentation/admin-guide/bug-hunting.rst
-+++ b/Documentation/admin-guide/bug-hunting.rst
-@@ -90,9 +90,9 @@ the disk is not available then you have three options:
-     run a null modem to a second machine and capture the output there
-     using your favourite communication program.  Minicom works well.
+That is fair enough, but the changelog above doesn't even talk about that.
  
--(3) Use Kdump (see Documentation/kdump/kdump.rst),
-+(3) Use Kdump (see Documentation/admin-guide/kdump/kdump.rst),
-     extract the kernel ring buffer from old memory with using dmesg
--    gdbmacro in Documentation/kdump/gdbmacros.txt.
-+    gdbmacro in Documentation/admin-guide/kdump/gdbmacros.txt.
- 
- Finding the bug's location
- --------------------------
-diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
-index e4f0cb2a02bd..9f6820a7e8f8 100644
---- a/Documentation/admin-guide/index.rst
-+++ b/Documentation/admin-guide/index.rst
-@@ -39,6 +39,7 @@ problems and bugs in particular.
-    ramoops
-    dynamic-debug-howto
-    init
-+   kdump/index
- 
- This is the beginning of a section with information of interest to
- application developers.  Documents covering various aspects of the kernel
-diff --git a/Documentation/kdump/gdbmacros.txt b/Documentation/admin-guide/kdump/gdbmacros.txt
-similarity index 100%
-rename from Documentation/kdump/gdbmacros.txt
-rename to Documentation/admin-guide/kdump/gdbmacros.txt
-diff --git a/Documentation/kdump/index.rst b/Documentation/admin-guide/kdump/index.rst
-similarity index 97%
-rename from Documentation/kdump/index.rst
-rename to Documentation/admin-guide/kdump/index.rst
-index 2b17fcf6867a..8e2ebd0383cd 100644
---- a/Documentation/kdump/index.rst
-+++ b/Documentation/admin-guide/kdump/index.rst
-@@ -1,4 +1,3 @@
--:orphan:
- 
- ================================================================
- Documentation for Kdump - The kexec-based Crash Dumping Solution
-diff --git a/Documentation/kdump/kdump.rst b/Documentation/admin-guide/kdump/kdump.rst
-similarity index 100%
-rename from Documentation/kdump/kdump.rst
-rename to Documentation/admin-guide/kdump/kdump.rst
-diff --git a/Documentation/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
-similarity index 100%
-rename from Documentation/kdump/vmcoreinfo.rst
-rename to Documentation/admin-guide/kdump/vmcoreinfo.rst
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 69a9e2e66dfb..1f3fc445c78d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -708,14 +708,14 @@
- 			[KNL, x86_64] select a region under 4G first, and
- 			fall back to reserve region above 4G when '@offset'
- 			hasn't been specified.
--			See Documentation/kdump/kdump.rst for further details.
-+			See Documentation/admin-guide/kdump/kdump.rst for further details.
- 
- 	crashkernel=range1:size1[,range2:size2,...][@offset]
- 			[KNL] Same as above, but depends on the memory
- 			in the running system. The syntax of range is
- 			start-[end] where start and end are both
- 			a memory unit (amount[KMG]). See also
--			Documentation/kdump/kdump.rst for an example.
-+			Documentation/admin-guide/kdump/kdump.rst for an example.
- 
- 	crashkernel=size[KMG],high
- 			[KNL, x86_64] range could be above 4G. Allow kernel
-@@ -1207,7 +1207,7 @@
- 			Specifies physical address of start of kernel core
- 			image elf header and optionally the size. Generally
- 			kexec loader will pass this option to capture kernel.
--			See Documentation/kdump/kdump.rst for details.
-+			See Documentation/admin-guide/kdump/kdump.rst for details.
- 
- 	enable_mtrr_cleanup [X86]
- 			The kernel tries to adjust MTRR layout from continuous
-diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-index d7fa7c35dd12..9ca12830a48e 100644
---- a/Documentation/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/powerpc/firmware-assisted-dump.rst
-@@ -61,7 +61,7 @@ as follows:
-          the default calculated size. Use this option if default
-          boot memory size is not sufficient for second kernel to
-          boot successfully. For syntax of crashkernel= parameter,
--         refer to Documentation/kdump/kdump.rst. If any offset is
-+         refer to Documentation/admin-guide/kdump/kdump.rst. If any offset is
-          provided in crashkernel= parameter, it will be ignored
-          as fadump uses a predefined offset to reserve memory
-          for boot memory dump preservation in case of a crash.
-diff --git a/Documentation/translations/zh_CN/oops-tracing.txt b/Documentation/translations/zh_CN/oops-tracing.txt
-index 368ddd05b304..c5f3bda7abcb 100644
---- a/Documentation/translations/zh_CN/oops-tracing.txt
-+++ b/Documentation/translations/zh_CN/oops-tracing.txt
-@@ -53,8 +53,8 @@ cat /proc/kmsg > file， 然而你必须介入中止传输， kmsg是一个“
- （2）用串口终端启动（请参看Documentation/admin-guide/serial-console.rst），运行一个null
- modem到另一台机器并用你喜欢的通讯工具获取输出。Minicom工作地很好。
- 
--（3）使用Kdump（请参看Documentation/kdump/kdump.rst），
--使用在Documentation/kdump/gdbmacros.txt中定义的dmesg gdb宏，从旧的内存中提取内核
-+（3）使用Kdump（请参看Documentation/admin-guide/kdump/kdump.rst），
-+使用在Documentation/admin-guide/kdump/gdbmacros.txt中定义的dmesg gdb宏，从旧的内存中提取内核
- 环形缓冲区。
- 
- 完整信息
-diff --git a/Documentation/watchdog/hpwdt.rst b/Documentation/watchdog/hpwdt.rst
-index 437456bd91a4..9a75720dd51a 100644
---- a/Documentation/watchdog/hpwdt.rst
-+++ b/Documentation/watchdog/hpwdt.rst
-@@ -59,7 +59,7 @@ Last reviewed: 08/20/2018
-  and loop forever.  This is generally not what a watchdog user wants.
- 
-  For those wishing to learn more please see:
--	Documentation/kdump/kdump.rst
-+	Documentation/admin-guide/kdump/kdump.rst
- 	Documentation/admin-guide/kernel-parameters.txt (panic=)
- 	Your Linux Distribution specific documentation.
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ab170522ec55..071b9e5a1664 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8571,7 +8571,7 @@ R:	Vivek Goyal <vgoyal@redhat.com>
- L:	kexec@lists.infradead.org
- W:	http://lse.sourceforge.net/kdump/
- S:	Maintained
--F:	Documentation/kdump/
-+F:	Documentation/admin-guide/kdump/
- 
- KEENE FM RADIO TRANSMITTER DRIVER
- M:	Hans Verkuil <hverkuil@xs4all.nl>
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index ff0e247573d8..fc495004f148 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -2009,7 +2009,7 @@ config CRASH_DUMP
- 	  kdump/kexec. The crash dump kernel must be compiled to a
- 	  memory address not used by the main kernel
- 
--	  For more details see Documentation/kdump/kdump.rst
-+	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
- config AUTO_ZRELADDR
- 	bool "Auto calculation of the decompressed kernel image address"
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index a8a5fe91c579..9c2275b22904 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -995,7 +995,7 @@ config CRASH_DUMP
- 	  reserved region and then later executed after a crash by
- 	  kdump/kexec.
- 
--	  For more details see Documentation/kdump/kdump.rst
-+	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
- config XEN_DOM0
- 	def_bool y
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 7440639510a0..b731d22c5b9d 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -624,7 +624,7 @@ config CRASH_DUMP
- 	  to a memory address not used by the main kernel using
- 	  PHYSICAL_START.
- 
--	  For more details see Documentation/kdump/kdump.rst
-+	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
- config KEXEC_JUMP
- 	bool "kexec jump (EXPERIMENTAL)"
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 586dd3529d14..8ed2e47ef4ba 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2052,7 +2052,7 @@ config CRASH_DUMP
- 	  to a memory address not used by the main kernel or BIOS using
- 	  PHYSICAL_START, or it must be built as a relocatable image
- 	  (CONFIG_RELOCATABLE=y).
--	  For more details see Documentation/kdump/kdump.rst
-+	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
- config KEXEC_JUMP
- 	bool "kexec jump"
-@@ -2089,7 +2089,7 @@ config PHYSICAL_START
- 	  the reserved region.  In other words, it can be set based on
- 	  the "X" value as specified in the "crashkernel=YM@XM"
- 	  command line boot parameter passed to the panic-ed
--	  kernel. Please take a look at Documentation/kdump/kdump.rst
-+	  kernel. Please take a look at Documentation/admin-guide/kdump/kdump.rst
- 	  for more details about crash dumps.
- 
- 	  Usage of bzImage for capturing the crash dump is recommended as
--- 
-2.21.0
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+> ---
+> Change in v4:
+> 	- None.
+> 
+> Change in v3:
+> 	- Adjust indentation of *attached_dev;.
+> 
+> Change in v2:
+> 	- None.
+> 
+>  drivers/base/power/wakeup.c |   18 ++++++++++++++++++
+>  include/linux/pm_wakeup.h   |    3 +++
+>  2 files changed, 21 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
+> index 5b2b6a0..6904485 100644
+> --- a/drivers/base/power/wakeup.c
+> +++ b/drivers/base/power/wakeup.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/suspend.h>
+>  #include <linux/seq_file.h>
+>  #include <linux/debugfs.h>
+> +#include <linux/of_device.h>
+>  #include <linux/pm_wakeirq.h>
+>  #include <trace/events/power.h>
+>  
+> @@ -226,6 +227,22 @@ void wakeup_source_unregister(struct wakeup_source *ws)
+>  	}
+>  }
+>  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
+> +/**
+> + * wakeup_source_get_next - Get next wakeup source from the list
+> + * @ws: Previous wakeup source object, null means caller want first one.
+> + */
+> +struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws)
+> +{
+> +	struct list_head *ws_head = &wakeup_sources;
+> +
+> +	if (ws)
+> +		return list_next_or_null_rcu(ws_head, &ws->entry,
+> +				struct wakeup_source, entry);
+> +	else
+> +		return list_entry_rcu(ws_head->next,
+> +				struct wakeup_source, entry);
+> +}
+> +EXPORT_SYMBOL_GPL(wakeup_source_get_next);
+
+This needs to be arranged along the lines of wakeup_sources_stats_seq_start/next/stop()
+because of the SRCU protection of the list.
+
+>  
+>  /**
+>   * device_wakeup_attach - Attach a wakeup source object to a device object.
+> @@ -242,6 +259,7 @@ static int device_wakeup_attach(struct device *dev, struct wakeup_source *ws)
+>  		return -EEXIST;
+>  	}
+>  	dev->power.wakeup = ws;
+> +	ws->attached_dev = dev;
+>  	if (dev->power.wakeirq)
+>  		device_wakeup_attach_irq(dev, dev->power.wakeirq);
+>  	spin_unlock_irq(&dev->power.lock);
+> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
+> index 0ff134d..913b2fb 100644
+> --- a/include/linux/pm_wakeup.h
+> +++ b/include/linux/pm_wakeup.h
+> @@ -50,6 +50,7 @@
+>   * @wakeup_count: Number of times the wakeup source might abort suspend.
+>   * @active: Status of the wakeup source.
+>   * @has_timeout: The wakeup source has been activated with a timeout.
+> + * @attached_dev: The device it attached to
+>   */
+>  struct wakeup_source {
+>  	const char 		*name;
+> @@ -70,6 +71,7 @@ struct wakeup_source {
+>  	unsigned long		wakeup_count;
+>  	bool			active:1;
+>  	bool			autosleep_enabled:1;
+> +	struct device		*attached_dev;
+
+Please (a) call it just dev and (b) move it up (before wakeirq, say).
+
+>  };
+>  
+>  #ifdef CONFIG_PM_SLEEP
+> @@ -101,6 +103,7 @@ static inline void device_set_wakeup_path(struct device *dev)
+>  extern void wakeup_source_remove(struct wakeup_source *ws);
+>  extern struct wakeup_source *wakeup_source_register(const char *name);
+>  extern void wakeup_source_unregister(struct wakeup_source *ws);
+> +extern struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws);
+>  extern int device_wakeup_enable(struct device *dev);
+>  extern int device_wakeup_disable(struct device *dev);
+>  extern void device_set_wakeup_capable(struct device *dev, bool capable);
+> 
+
+
+
 
