@@ -1,86 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADB14B217
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 08:26:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FF84B201
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 08:16:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TF8Y02BXzDqmd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 16:16:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TFMt3F8DzDqgN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 16:26:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TF6c3mmvzDqW8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 16:15:03 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5J6BZ98004762
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 02:15:00 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t7cvw6b3s-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 02:15:00 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 19 Jun 2019 07:14:58 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 19 Jun 2019 07:14:53 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5J6EiKx36241820
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jun 2019 06:14:44 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA440A4051;
- Wed, 19 Jun 2019 06:14:52 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54168A4055;
- Wed, 19 Jun 2019 06:14:51 +0000 (GMT)
-Received: from [9.124.31.60] (unknown [9.124.31.60])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jun 2019 06:14:51 +0000 (GMT)
-Subject: Re: [PATCH 4/5] Powerpc/hw-breakpoint: Optimize disable path
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
- <20190618042732.5582-5-ravi.bangoria@linux.ibm.com>
- <6e7c6054-b152-40db-c7d3-89901949460f@c-s.fr>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Wed, 19 Jun 2019 11:44:50 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TFKp63xwzDqYV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 16:24:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="GbiWq5vg"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45TFKp5B1Tz8t5L
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 16:24:46 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45TFKp4yRsz9sN6; Wed, 19 Jun 2019 16:24:46 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="GbiWq5vg"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45TFKn0rc6z9s7h
+ for <linuxppc-dev@ozlabs.org>; Wed, 19 Jun 2019 16:24:42 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id 196so9058966pgc.6
+ for <linuxppc-dev@ozlabs.org>; Tue, 18 Jun 2019 23:24:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=sujGvoRGZJ3i3KZSIFgr7wBrpESiCcd+VDm4gizC9fs=;
+ b=GbiWq5vgFlAN0sNeKdhEmBifg8O5NWyoMcNgY0OqFifufBNe19n5knuKRlq4XnF5vX
+ Ld3jJ3pAHShXy0SUi+zWjADEC4rjbmp20xjyeF+NkP6zKrbbj3gs4sUUt4QFryfhHRsu
+ 5XqmD6e7AxCLyz2+LkSm3vTMrHX16LYMlsBR4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=sujGvoRGZJ3i3KZSIFgr7wBrpESiCcd+VDm4gizC9fs=;
+ b=ATA/CpzL1DaNS74YZvmkkbhKUhjlsw3Tp7uVa9tkHdRHZIRTzYEYBPGkvDaMZx4q+A
+ l4l0IrtOD9UaQD91vY0qF024Hn8ucBatzBAjxYY5ZHICU5QwXRl/jHosgUThZHqkEiS6
+ t7q6/51+bdhfYlC3xhowLjG/0HalIy4CjPp5Tzlrca09mRb/I+UL7HWiHW5IyYUHpt1J
+ 1srr7ZYE5HSpfu2pIWhspuHfyhbu3LAwI/uxBFANOK5yscsUXNbDQlcgBqerROWHxEYs
+ WR6eU29/VJ0SRbbCcQzombZqK1pCYtr1dxSFaOU/0su8KJytr+055lsKPaTz8ZMkDbs6
+ dPWg==
+X-Gm-Message-State: APjAAAV69XY0Ypt1mvB+WRySiQ0bYc6lHMXLs1n1mJnjfQyMdn2C9xh+
+ 5f5bpQHQe6UzClZPF7Dj0OpWgA==
+X-Google-Smtp-Source: APXvYqzu7fTlAhAdwUAA5u9aktaFiTv30wSiaYPtCc9idEzMq6pIPcjwS4Sw9C6jvTsPApRo3UNd+Q==
+X-Received: by 2002:a62:ab18:: with SMTP id p24mr2987259pff.113.1560925479811; 
+ Tue, 18 Jun 2019 23:24:39 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id i133sm14761005pfe.75.2019.06.18.23.24.37
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 18 Jun 2019 23:24:38 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ Christopher M Riedl <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
+ kernel-hardening@lists.openwall.com
+Subject: Re: [RFC PATCH v2] powerpc/xmon: restrict when kernel is locked down
+In-Reply-To: <57844920-c17b-d93c-66c0-e6822af71929@linux.ibm.com>
+References: <20190524123816.1773-1-cmr@informatik.wtf>
+ <81549d40-e477-6552-9a12-7200933279af@linux.ibm.com>
+ <1146575236.484635.1559617524880@privateemail.com>
+ <57844920-c17b-d93c-66c0-e6822af71929@linux.ibm.com>
+Date: Wed, 19 Jun 2019 16:24:35 +1000
+Message-ID: <87h88m2iu4.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <6e7c6054-b152-40db-c7d3-89901949460f@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061906-0016-0000-0000-0000028A5AFF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061906-0017-0000-0000-000032E7AF8A
-Message-Id: <6eb4afef-3277-a920-70d2-cadf34a05be6@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-19_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=672 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906190050
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,31 +96,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: mjg59@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Andrew Donnellan <ajd@linux.ibm.com> writes:
 
+> On 4/6/19 1:05 pm, Christopher M Riedl wrote:>>> +	if (!xmon_is_ro) {
+>>>> +		xmon_is_ro = kernel_is_locked_down("Using xmon write-access",
+>>>> +						   LOCKDOWN_INTEGRITY);
+>>>> +		if (xmon_is_ro) {
+>>>> +			printf("xmon: Read-only due to kernel lockdown\n");
+>>>> +			clear_all_bpt();
+>>>
+>>> Remind me again why we need to clear breakpoints in integrity mode?
+>>>
+>>>
+>>> Andrew
+>>>
+>> 
+>> I interpreted "integrity" mode as meaning that any changes made by xmon should
+>> be reversed. This also covers the case when a user creates some breakpoint(s)
+>> in xmon, exits xmon, and then elevates the lockdown state. Upon hitting the
+>> first breakpoint and (re-)entering xmon, xmon will clear all breakpoints.
+>> 
+>> Xmon can only take action in response to dynamic lockdown level changes when
+>> xmon is invoked in some manner - if there is a better way I am all ears :)
+>> 
+>
+> Integrity mode merely means we are aiming to prevent modifications to 
+> kernel memory. IMHO leaving existing breakpoints in place is fine as 
+> long as when we hit the breakpoint xmon is in read-only mode.
+>
+> (dja/mpe might have opinions on this)
 
-On 6/18/19 12:01 PM, Christophe Leroy wrote:
->> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
->> index f002d2ffff86..265fac9fb3a4 100644
->> --- a/arch/powerpc/kernel/process.c
->> +++ b/arch/powerpc/kernel/process.c
->> @@ -793,10 +793,22 @@ static inline int set_dabr(struct arch_hw_breakpoint *brk)
->>       return __set_dabr(dabr, dabrx);
->>   }
->>   +static int disable_dawr(void)
->> +{
->> +    if (ppc_md.set_dawr)
->> +        return ppc_md.set_dawr(0, 0);
->> +
->> +    mtspr(SPRN_DAWRX, 0);
-> 
-> And SPRN_DAWR ?
+Apologies for taking so long to get back to you.
 
-Setting DAWRx with 0 should be enough to disable the breakpoint.
+I think ajd is right. 
 
+I think about it like this. There are 2 transitions:
+
+ - into integrity mode
+
+   Here, we need to go into r/o, but do not need to clear breakpoints.
+   You can still insert breakpoints in readonly mode, so clearing them
+   just makes things more irritating rather than safer.
+
+ - into confidentiality mode
+
+   Here we need to purge breakpoints and disable xmon completely.
+
+Kind regards,
+Daniel
+
+>
+> -- 
+> Andrew Donnellan              OzLabs, ADL Canberra
+> ajd@linux.ibm.com             IBM Australia Limited
