@@ -2,153 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48DE4AF74
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 03:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 902E04B071
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 05:36:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45T6fX0ylLzDqW2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 11:23:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45T9bw61mTzDqfZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 13:36:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="tQxnc2DV"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="myoBF+ds"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45T6Zw0THwzDqLJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 11:20:37 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id f21so8658468pgi.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 18:20:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=5zfUVUvyuFjdQhEFmCGO1YsuLIeZIGEuHoioG1k1aBs=;
- b=tQxnc2DVtdVFq3GBuvil3fQOYqA9tbXzqRfZSW5FkJkylGb4uVPALG7vaFvzUCQXVO
- 2/7S49Z/ecqB6LuMt9C3L0y8USvqvAKK5TWQUlbcGynkoQi20vuUcMby7idJdhfMe0J9
- Zd39v7/CEjEj8wKvqHjEc9PkMyLKLBOnv8Sm6QbtgGj5WTZry01n3qxcb2m56Gokc2HS
- MyGEWN6+y3XVMLY6kywQiB3NnSEDtD3hhAArbtnRH6vPvnwBCt5POlQM5AGAqama2ETD
- Xn9xPIpLU43B1nfjtOEI7Sz/4CGwUAqmiDZO/YqtgamkJgXHHUd8OF4WfbgFsFAQHJBP
- /PuQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45T9Ys5v4yzDqf0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 13:34:57 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id 81so8849425pfy.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 20:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=aQYIiezoadkAUNJ9HxNcBE/gtfRYRxYn6A8Q2hhZFGI=;
+ b=myoBF+ds9/I86aN2kC3Tp5vxrpURD4189UJaDRoG28R5cKBh7HSn/fj4i6nMB4L8/M
+ 7KQ/QjrXbuvq5QWQmx8tPLIFP7SCmcNLFOYvasChY39PAMEHyUpd/YzuYZRbpwsbWzqt
+ 7RygsRn1jDob+6UmK08r9uQvtLymAd5+9vwd9sZ2lswN3Hr7W5XwkUrleW1RsF9fW+zA
+ jUucv1SmSA6HSqb4ZXxYgSu8+FbAduS5YKSfQxxFW1+xP0BXoeDhPPSR1y6RtwPfwqw9
+ ItTD0gCZu1Y6PzP2n8OSoDjE62/gxLPku5W+m+nLs44wjN181gfucyuzwGMUSBbiF1jf
+ 7l8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=5zfUVUvyuFjdQhEFmCGO1YsuLIeZIGEuHoioG1k1aBs=;
- b=ZKimlHBSv3shi2N7regaIX6+2es5Qgv2/vhAj+VZgGtKj8ubbaCcfwbYBif8DH9YbG
- ORkcouzgeu/56JG8hrHCEWi/6C0sGpxDXiErAU2v5XbHBAK5KnVDLBnxwc8bLwIm4nfM
- KBYz8dYoP+aLRHW0lymdp5cIAWkcl9SmJzykDMXco0VhHjquG5eKPxQdqXx6YIuuV7ON
- IRumjIE790E0wvFLYrEzdkv5RU5fBLPgeT3b00efyCANzE7cCudIpMvkcSbtoftZcqs5
- SFKx45e0S0EAJ4USgr59ZdWrA+8gvw1UKcO73PXxQPUtV3IBVRF9v3SlMmAvocqC2YZe
- l0wQ==
-X-Gm-Message-State: APjAAAWVZ6BozLlCljai+vu8E6XzV+mt7U5Zo2GMCasTUzqcvEHsQHAD
- tN99IpmHGASqb/MXfhOX1InJig==
-X-Google-Smtp-Source: APXvYqz6HUQgHg8aZz5yZyhBpa6MHIRHjcoG+8Azf7ndTx18A6B7gKtWTSXuEaEFyTSPt+gXejGNcQ==
-X-Received: by 2002:a63:6883:: with SMTP id d125mr5390796pgc.281.1560907234181; 
- Tue, 18 Jun 2019 18:20:34 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id u23sm14681083pfh.84.2019.06.18.18.20.28
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 18 Jun 2019 18:20:31 -0700 (PDT)
-Subject: Re: [PATCH kernel] powerpc/pci/of: Parse unassigned resources
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20190614025916.123589-1-aik@ozlabs.ru>
- <87sgs7ozsa.fsf@concordia.ellerman.id.au>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Openpgp: preference=signencrypt
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <1df3a6bb-6b44-e08f-f8e2-d2a55208c6dd@ozlabs.ru>
-Date: Wed, 19 Jun 2019 11:20:26 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=aQYIiezoadkAUNJ9HxNcBE/gtfRYRxYn6A8Q2hhZFGI=;
+ b=A8od/7uSN7Z7rTmWvCWVRzjWRlNQ6AtsskCmgZ+QH30Sad2eWOmYP5JgnnzXIssIRh
+ mhkDi6LUEKoCuvWJDjLo8SpkravgxyyGzt+fHYuBwsY0R8iLdOK+nzsVFJW3GvzPjQSk
+ 2I0oc1Y6xajx0/j3W8O8CL7jhKXmT0kCIUvNa5QH5lpTOXtj9ddBgKA1afpppM5oxE5y
+ yT3SYKvv9a9b41Ykj0ymUj9JZSaU+YnP5uMMb2+Qn/IK1K78UCQAR1vNl4t5SCKM/B/4
+ CtX1GDsNAm3ozoNadp+lNuXOu3UV/vZDVLSAKFgTohPCZXJjUSU6F/FDNAqCGeG+Rx+E
+ s4tg==
+X-Gm-Message-State: APjAAAVb1lGMjxMLWruLNN6hheu4pSyY+votLGi2ayLKR0T2holtYj0O
+ O+xO7bk7nf84mD2S6lAPEyM=
+X-Google-Smtp-Source: APXvYqxRH0ZwHGLASQnJ41JHZYuDzVHzMWanDuSc5Jjtkv5qvkIM5gFElRTcgtkxS+8l7SMWkPuKmw==
+X-Received: by 2002:a17:90a:24ac:: with SMTP id
+ i41mr8667378pje.124.1560915291392; 
+ Tue, 18 Jun 2019 20:34:51 -0700 (PDT)
+Received: from localhost (193-116-92-108.tpgi.com.au. [193.116.92.108])
+ by smtp.gmail.com with ESMTPSA id r6sm164084pji.0.2019.06.18.20.34.49
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 18 Jun 2019 20:34:50 -0700 (PDT)
+Date: Wed, 19 Jun 2019 13:29:46 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 4/4] mm/vmalloc: Hugepage vmalloc mappings
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <20190610043838.27916-1-npiggin@gmail.com>
+ <20190610043838.27916-4-npiggin@gmail.com>
+ <a3b2dcb1-148e-b2f1-e181-92c16d868bc9@arm.com>
+ <1560210095.fpemv3ultp.astroid@bobo.none>
+ <2bd573d5-84ab-4b27-2126-863681ca3ef4@arm.com>
+In-Reply-To: <2bd573d5-84ab-4b27-2126-863681ca3ef4@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <87sgs7ozsa.fsf@concordia.ellerman.id.au>
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1560913953.8b6zker0t3.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,39 +84,273 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
- Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
- Oliver O'Halloran <oohall@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <Ard.Biesheuvel@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Anshuman Khandual's on June 11, 2019 4:59 pm:
+> On 06/11/2019 05:46 AM, Nicholas Piggin wrote:
+>> Anshuman Khandual's on June 10, 2019 6:53 pm:
+>>> On 06/10/2019 10:08 AM, Nicholas Piggin wrote:
+>>>> For platforms that define HAVE_ARCH_HUGE_VMAP, have vmap allow vmalloc=
+ to
+>>>> allocate huge pages and map them.
+>>>
+>>> IIUC that extends HAVE_ARCH_HUGE_VMAP from iormap to vmalloc.=20
+>>>
+>>>>
+>>>> This brings dTLB misses for linux kernel tree `git diff` from 45,000 t=
+o
+>>>> 8,000 on a Kaby Lake KVM guest with 8MB dentry hash and mitigations=3D=
+off
+>>>> (performance is in the noise, under 1% difference, page tables are lik=
+ely
+>>>> to be well cached for this workload). Similar numbers are seen on POWE=
+R9.
+>>>
+>>> Sure will try this on arm64.
+>>>
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> ---
+>>>>  include/asm-generic/4level-fixup.h |   1 +
+>>>>  include/asm-generic/5level-fixup.h |   1 +
+>>>>  include/linux/vmalloc.h            |   1 +
+>>>>  mm/vmalloc.c                       | 132 +++++++++++++++++++++++-----=
+-
+>>>>  4 files changed, 107 insertions(+), 28 deletions(-)
+>>>>
+>>>> diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/=
+4level-fixup.h
+>>>> index e3667c9a33a5..3cc65a4dd093 100644
+>>>> --- a/include/asm-generic/4level-fixup.h
+>>>> +++ b/include/asm-generic/4level-fixup.h
+>>>> @@ -20,6 +20,7 @@
+>>>>  #define pud_none(pud)			0
+>>>>  #define pud_bad(pud)			0
+>>>>  #define pud_present(pud)		1
+>>>> +#define pud_large(pud)			0
+>>>>  #define pud_ERROR(pud)			do { } while (0)
+>>>>  #define pud_clear(pud)			pgd_clear(pud)
+>>>>  #define pud_val(pud)			pgd_val(pud)
+>>>> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/=
+5level-fixup.h
+>>>> index bb6cb347018c..c4377db09a4f 100644
+>>>> --- a/include/asm-generic/5level-fixup.h
+>>>> +++ b/include/asm-generic/5level-fixup.h
+>>>> @@ -22,6 +22,7 @@
+>>>>  #define p4d_none(p4d)			0
+>>>>  #define p4d_bad(p4d)			0
+>>>>  #define p4d_present(p4d)		1
+>>>> +#define p4d_large(p4d)			0
+>>>>  #define p4d_ERROR(p4d)			do { } while (0)
+>>>>  #define p4d_clear(p4d)			pgd_clear(p4d)
+>>>>  #define p4d_val(p4d)			pgd_val(p4d)
+>>>
+>>> Both of these are required from vmalloc_to_page() which as per a later =
+comment
+>>> should be part of a prerequisite patch before this series.
+>>=20
+>> I'm not sure what you mean. This patch is where they get used.
+>=20
+> In case you move out vmalloc_to_page() changes to a separate patch.
 
+Sorry for the delay in reply.
 
-On 18/06/2019 22:15, Michael Ellerman wrote:
-> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
->> The pseries platform uses the PCI_PROBE_DEVTREE method of PCI probing
->> which is basically reading "assigned-addresses" of every PCI device.
->> However if the property is missing or zero sized, then there is
->> no fallback of any kind and the PCI resources remain undiscovered, i.e.
->> pdev->resource[] array is empty.
->>
->> This adds a fallback which parses the "reg" property in pretty much same
->> way except it marks resources as "unset" which later makes Linux assign
->> those resources with proper addresses.
-> 
-> What happens under PowerVM is the big question.
-> 
-> ie. if we see such a device under PowerVM and then do our own assignment
-> what happens?
+I'll split this and see if we might be able to get it into next
+merge window. I can have another try at the huge vmalloc patch
+after that.
 
-I'd be surprised not to see at least one "assigned-addresses" under
-powervm, and a single assigned bar will do the old behavior.
+>=20
+>>=20
+>> Possibly I could split this and the vmalloc_to_page change out. I'll
+>> consider it.
+>>=20
+>>>> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+>>>> index 812bea5866d6..4c92dc608928 100644
+>>>> --- a/include/linux/vmalloc.h
+>>>> +++ b/include/linux/vmalloc.h
+>>>> @@ -42,6 +42,7 @@ struct vm_struct {
+>>>>  	unsigned long		size;
+>>>>  	unsigned long		flags;
+>>>>  	struct page		**pages;
+>>>> +	unsigned int		page_shift;
+>>>
+>>> So the entire vm_struct will be mapped with a single page_shift. It can=
+not have
+>>> mix and match mappings with PAGE_SIZE, PMD_SIZE, PUD_SIZE etc in case t=
+he
+>>> allocation fails for larger ones, falling back etc what over other reas=
+ons.
+>>=20
+>> For now, yes. I have a bit of follow up work to improve that and make
+>> it able to fall back, but it's a bit more churn and not a significant
+>> benefit just yet because there are not a lot of very large vmallocs
+>> (except the early hashes which can be satisfied with large allocs).
+>=20
+> Right but it will make this new feature complete like ioremap which logic=
+ally
+> supports till P4D (though AFAICT not used). If there are no actual vmallo=
+c
+> requests that large it is fine. Allocation attempts will start from the p=
+age
+> table level depending on the requested size. It is better to have PUD/P4D
+> considerations now rather than trying to after fit it later.
 
-I guess I could make it depend on "linux,pci-probe-only" (which I will
-need for this to work anyway), if that helps, should I?
+I've considered them, which is why e.g., a shift gets passed around=20
+rather than a bool for small/large.
 
+I won't over complicate this page array data structure for something
+that may never be supported though. I think we may actually be better
+moving away from it in the vmalloc code and just referencing pages
+from the page tables, so it's just something we can cross when we get
+to it.
 
--- 
-Alexey
+>>> Also should not we check for the alignment of the range [start...end] w=
+ith
+>>> respect to (1UL << [PAGE_SHIFT + page_shift]).
+>>=20
+>> The caller should if it specifies large page. Could check and -EINVAL
+>> for incorrect alignment.
+>=20
+> That might be a good check here.
+
+Will add.
+
+>>>> @@ -474,27 +510,38 @@ struct page *vmalloc_to_page(const void *vmalloc=
+_addr)
+>>>>  	 */
+>>>>  	VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
+>>>> =20
+>>>> +	pgd =3D pgd_offset_k(addr);
+>>>>  	if (pgd_none(*pgd))
+>>>>  		return NULL;
+>>>> +
+>>>
+>>> Small nit. Stray line here.
+>>>
+>>> 'pgd' related changes here seem to be just cleanups and should not part=
+ of this patch.
+>>=20
+>> Yeah I figure it doesn't matter to make small changes close by, but
+>> maybe that's more frowned upon now for git blame?
+>=20
+> Right. But I guess it should be okay if you can make vmalloc_to_page()
+> changes as a separate patch. This patch which adds a new feature should
+> not have any clean ups IMHO.
+
+Well... that alone would be a new feature too. Or could be considered
+a bug fix, which makes it even more important not to contain
+superfluous changes.
+
+Is there a real prohibition on small slightly peripheral tidying
+like this? I don't think I'd bother sending a lone patch just to
+change a couple lines of spacing.
+
+>>>>  	p4d =3D p4d_offset(pgd, addr);
+>>>>  	if (p4d_none(*p4d))
+>>>>  		return NULL;
+>>>> -	pud =3D pud_offset(p4d, addr);
+>>>> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+>>>> +	if (p4d_large(*p4d))
+>>>> +		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
+>>>> +#endif
+>>>> +	if (WARN_ON_ONCE(p4d_bad(*p4d)))
+>>>> +		return NULL;
+>>>> =20
+>>>> -	/*
+>>>> -	 * Don't dereference bad PUD or PMD (below) entries. This will also
+>>>> -	 * identify huge mappings, which we may encounter on architectures
+>>>> -	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=3Dy. Such regions will be
+>>>> -	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+>>>> -	 * not [unambiguously] associated with a struct page, so there is
+>>>> -	 * no correct value to return for them.
+>>>> -	 */
+>>>
+>>> What changed the situation so that we could return struct page for a hu=
+ge
+>>> mapping now ?
+>>=20
+>> For the PUD case? Nothing changed, per se, we I just calculate the
+>> correct struct page now, so I may return it.
+>=20
+> I was just curious what prevented this earlier (before this series). The
+> comment here and commit message which added this change making me wonder
+> what was the reason for not doing this earlier. =20
+
+Just not implemented I guess.
+
+>>> AFAICT even after this patch, PUD/P4D level huge pages can only
+>>> be created with ioremap_page_range() not with vmalloc() which creates P=
+MD
+>>> sized mappings only. Hence if it's okay to dereference struct page of a=
+ huge
+>>> mapping (not withstanding the comment here) it should be part of an ear=
+lier
+>>> patch fixing it first for existing ioremap_page_range() huge mappings.
+>>=20
+>> Possibly yes, we can consider 029c54b095995 to be a band-aid for huge
+>> vmaps which is fixed properly by this change, in which case it could
+>> make sense to break this into its own patch.
+>=20
+> On arm64 [pud|pmd]_bad() calls out huge mappings at PUD or PMD. I still w=
+onder what
+> Ard (copied him now) meant by "not [unambiguously] associated with a stru=
+ct page".
+> He also mentioned about compound pages in the commit message. Anyways the=
+se makes
+> sense (fetching the struct page) unless I am missing something. But shoul=
+d be part
+> of a separate patch.
+
+I do somewhat see the intention of the commit message, but if we
+consider the vmap/iomap layer's choice of page size as transparent to
+the caller, and the vmalloc_to_page API has always been specifically
+interested in the PAGE_SIZE struct page, then my patch is fine and
+introduces no problems. It restores the API functionality to be the
+same regardless of whether small or large pages were used for the
+actual mapping.
+
+>>>> +	if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
+>>>> +		unsigned long size_per_node;
+>>>> +
+>>>> +		size_per_node =3D size;
+>>>> +		if (node =3D=3D NUMA_NO_NODE)
+>>>> +			size_per_node /=3D num_online_nodes();
+>>>> +		if (size_per_node >=3D PMD_SIZE)
+>>>> +			shift =3D PMD_SHIFT;
+>>>
+>>> There are two problems here.
+>>>
+>>> 1. Should not size_per_node be aligned with PMD_SIZE to avoid wasting m=
+emory later
+>>>    because of alignment upwards (making it worse for NUMA_NO_NODE)
+>>=20
+>> I'm not sure what you mean, it's just a heuristic to check for node
+>> interleaving, and use small pages if large can not interleave well.
+>>=20
+>>> 2. What about PUD_SIZE which is not considered here at all
+>>=20
+>> Yeah, not doing PUD pages at all. It would be pretty trivial to add=20
+>> after PMD is working, but would it actually get used anywhere?
+>=20
+> But it should make this feature logically complete. Allocation attempts c=
+an start
+> at right pgtable level depending on the requested size. I dont think it w=
+ill have
+> any performance impact or something.
+
+I disagree that's necessary or desirable for PMD support here. Sure
+an arch might have PUD size within MAX_ORDER and implement that, but
+it's just something that can be implemented when the time comes.
+
+There's nothing about this patch that hinders being extendedto PUD
+level I just won't add code that's not used and I can't test.
+
+Thanks for the detailed review, I appreciate it.
+
+Thanks,
+Nick
+=
