@@ -1,87 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9574B26B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 08:53:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TFyr4YrFzDqcn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 16:53:24 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1C54B2F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 09:17:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TGW12qrwzDqlf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 17:17:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="rjbVsfxt"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TFx16w2gzDqhm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 16:51:49 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5J6m6RQ092919
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 02:51:46 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t7ephknx0-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 02:51:46 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 19 Jun 2019 07:51:44 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 19 Jun 2019 07:51:41 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5J6peBR59375666
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jun 2019 06:51:40 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 379F4A4053;
- Wed, 19 Jun 2019 06:51:40 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A95FEA4040;
- Wed, 19 Jun 2019 06:51:38 +0000 (GMT)
-Received: from [9.124.31.60] (unknown [9.124.31.60])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jun 2019 06:51:38 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Subject: Re: [PATCH 5/5] Powerpc/Watchpoint: Fix length calculation for
- unaligned target
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20190618042732.5582-1-ravi.bangoria@linux.ibm.com>
- <20190618042732.5582-6-ravi.bangoria@linux.ibm.com>
- <3390c3c2-8290-da55-a183-872c593c7b1e@c-s.fr>
-Date: Wed, 19 Jun 2019 12:21:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TGT515J9zDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 17:16:08 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id bh12so6817151plb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 00:16:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=sNH3esuo89MvVnkmn0pBqZBXKoLraPEAQm1KehvPJ+A=;
+ b=rjbVsfxt9ERQsJXWee+b5RBgj6pFFU/IJp7Cj3eX9eC9jBjMnzteAgKHvn/24xy9f6
+ h2XDU1eS1RkeOKM2zMnm/xgaQUmlejdoNBZTTqRlo2HE5WsNSGX/D3N9d4mKF8po7WDr
+ t8PwQEUIOrTHiychpBhRpTl39fhcgOxxfcUBtNFoeMWJDD4fwMLToYaB6q5FOBlceNVy
+ xNlcGaULm9R1xKuigoLTcQWwDk06EpI+L6fBwkzUeMbqh2C5giP0oYmUBenJt1gM9pRD
+ MvwgUIjaWr/EMSKV5b4KYssnIXwkzKRgtDKnwfA85/mCnBYmvVicnXxj/CcAyfwBFbDK
+ 3TmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=sNH3esuo89MvVnkmn0pBqZBXKoLraPEAQm1KehvPJ+A=;
+ b=o6rox7sNkS8EJiTS/ltiY7Mmd8zQWxK80e5i7GfhRGJhm01nevDiPtpI7+IsP+JHMM
+ 21RpVzp6Wavh5oXGVFhUN4XHR2X1a55gi9tE4jBQoXPpvNvgvQHfaOIjVtKK1GELCWyR
+ dl+WEJn0t7oBdSzWw6T2cu62Qh3YUufL2uYGFQpC/qMYN8PGqjHXhXWuBcIWTVhamipQ
+ 7uFvuYJSomsycAz7q8lGl6YeiDsjTMbnMqdOW3NjzX3N+gg2oE9ja1b6v8f4JIOPw9R6
+ 0RWKEvxo4Fsv3bVTBHNHqIzWNzc37DCJtQtaWAoyvipgjsQDu+zyyn5Z6xgVD0hYQcNc
+ 4pvQ==
+X-Gm-Message-State: APjAAAU/E2NVc1uzLOHYQYRePi1Fuq4epyXpZ1fJXg2hEQ/4M71FNrfp
+ D2lmN4Jwau+RYoNzvMMDX8Q=
+X-Google-Smtp-Source: APXvYqznH/Lv//49vNUEP8+M16EK9CA4iLmPTEN5+8c+5GM5h3VHXyjcSWO57rMh5hqlHbGTuV64MA==
+X-Received: by 2002:a17:902:e082:: with SMTP id
+ cb2mr266867plb.274.1560928565577; 
+ Wed, 19 Jun 2019 00:16:05 -0700 (PDT)
+Received: from localhost (193-116-92-108.tpgi.com.au. [193.116.92.108])
+ by smtp.gmail.com with ESMTPSA id x5sm885939pjp.21.2019.06.19.00.16.03
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 19 Jun 2019 00:16:04 -0700 (PDT)
+Date: Wed, 19 Jun 2019 17:10:52 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 4/7] powerpc/ftrace: Additionally nop out the preceding
+ mflr with -mprofile-kernel
+To: Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, "Naveen N. Rao"
+ <naveen.n.rao@linux.vnet.ibm.com>, Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+ <72492bc769cd6f40a536e689fc3195570d07fd5c.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+ <877e9idum7.fsf@concordia.ellerman.id.au>
+In-Reply-To: <877e9idum7.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <3390c3c2-8290-da55-a183-872c593c7b1e@c-s.fr>
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1560927184.kqsg9x9bd1.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19061906-0028-0000-0000-0000037B9370
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061906-0029-0000-0000-0000243B9F9B
-Message-Id: <1f3873b7-d924-61ad-2f0e-f6cc12c012ea@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-19_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906190056
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,112 +85,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Michael Ellerman's on June 19, 2019 3:14 pm:
+> Hi Naveen,
+>=20
+> Sorry I meant to reply to this earlier .. :/
+>=20
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>> With -mprofile-kernel, gcc emits 'mflr r0', followed by 'bl _mcount' to
+>> enable function tracing and profiling. So far, with dynamic ftrace, we
+>> used to only patch out the branch to _mcount(). However, mflr is
+>> executed by the branch unit that can only execute one per cycle on
+>> POWER9 and shared with branches, so it would be nice to avoid it where
+>> possible.
+>>
+>> We cannot simply nop out the mflr either. When enabling function
+>> tracing, there can be a race if tracing is enabled when some thread was
+>> interrupted after executing a nop'ed out mflr. In this case, the thread
+>> would execute the now-patched-in branch to _mcount() without having
+>> executed the preceding mflr.
+>>
+>> To solve this, we now enable function tracing in 2 steps: patch in the
+>> mflr instruction, use synchronize_rcu_tasks() to ensure all existing
+>> threads make progress, and then patch in the branch to _mcount(). We
+>> override ftrace_replace_code() with a powerpc64 variant for this
+>> purpose.
+>=20
+> According to the ISA we're not allowed to patch mflr at runtime. See the
+> section on "CMODX".
 
-On 6/18/19 12:16 PM, Christophe Leroy wrote:
->>   +/* Maximum len for DABR is 8 bytes and DAWR is 512 bytes */
->> +static int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
->> +{
->> +    u16 length_max = 8;
->> +    u16 final_len;
-> 
-> You should be more consistent in naming. If one is called final_len, the other one should be called max_len.
+According to "quasi patch class" engineering note, we can patch
+anything with a preferred nop. But that's written as an optional
+facility, which we don't have a feature to test for.
 
-Copy/paste :). Will change it.
+>=20
+> I'm also not convinced the ordering between the two patches is
+> guaranteed by the ISA, given that there's possibly no isync on the other
+> CPU.
 
-> 
->> +    unsigned long start_addr, end_addr;
->> +
->> +    final_len = hw_breakpoint_get_final_len(hw, &start_addr, &end_addr);
->> +
->> +    if (dawr_enabled()) {
->> +        length_max = 512;
->> +        /* DAWR region can't cross 512 bytes boundary */
->> +        if ((start_addr >> 9) != (end_addr >> 9))
->> +            return -EINVAL;
->> +    }
->> +
->> +    if (final_len > length_max)
->> +        return -EINVAL;
->> +
->> +    return 0;
->> +}
->> +
-> 
-> Is many places, we have those numeric 512 and 9 shift. Could we replace them by some symbol, for instance DAWR_SIZE and DAWR_SHIFT ?
+Will they go through a context synchronizing event?
 
-I don't see any other place where we check for boundary limit.
+synchronize_rcu_tasks() should ensure a thread is scheduled away, but
+I'm not actually sure it guarantees CSI if it's kernel->kernel. Could
+do a smp_call_function to do the isync on each CPU to be sure.
 
-[...]
+Thanks,
+Nick
 
-> 
->> +u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
->> +                unsigned long *start_addr,
->> +                unsigned long *end_addr)
->> +{
->> +    *start_addr = brk->address & ~HW_BREAKPOINT_ALIGN;
->> +    *end_addr = (brk->address + brk->len - 1) | HW_BREAKPOINT_ALIGN;
->> +    return *end_addr - *start_addr + 1;
->> +}
-> 
-> This function gives horrible code (a couple of unneeded store/re-read and read/re-read).
-> 
-> 000006bc <hw_breakpoint_get_final_len>:
->      6bc:    81 23 00 00     lwz     r9,0(r3)
->      6c0:    55 29 00 38     rlwinm  r9,r9,0,0,28
->      6c4:    91 24 00 00     stw     r9,0(r4)
->      6c8:    81 43 00 00     lwz     r10,0(r3)
->      6cc:    a1 23 00 06     lhz     r9,6(r3)
->      6d0:    38 6a ff ff     addi    r3,r10,-1
->      6d4:    7c 63 4a 14     add     r3,r3,r9
->      6d8:    60 63 00 07     ori     r3,r3,7
->      6dc:    90 65 00 00     stw     r3,0(r5)
->      6e0:    38 63 00 01     addi    r3,r3,1
->      6e4:    81 24 00 00     lwz     r9,0(r4)
->      6e8:    7c 69 18 50     subf    r3,r9,r3
->      6ec:    54 63 04 3e     clrlwi  r3,r3,16
->      6f0:    4e 80 00 20     blr
-> 
-> Below code gives something better:
-> 
-> u16 hw_breakpoint_get_final_len(struct arch_hw_breakpoint *brk,
->                 unsigned long *start_addr,
->                 unsigned long *end_addr)
-> {
->     unsigned long address = brk->address;
->     unsigned long len = brk->len;
->     unsigned long start = address & ~HW_BREAKPOINT_ALIGN;
->     unsigned long end = (address + len - 1) | HW_BREAKPOINT_ALIGN;
-> 
->     *start_addr = start;
->     *end_addr = end;
->     return end - start + 1;
-> }
-> 
-> 000006bc <hw_breakpoint_get_final_len>:
->      6bc:    81 43 00 00     lwz     r10,0(r3)
->      6c0:    a1 03 00 06     lhz     r8,6(r3)
->      6c4:    39 2a ff ff     addi    r9,r10,-1
->      6c8:    7d 28 4a 14     add     r9,r8,r9
->      6cc:    55 4a 00 38     rlwinm  r10,r10,0,0,28
->      6d0:    61 29 00 07     ori     r9,r9,7
->      6d4:    91 44 00 00     stw     r10,0(r4)
->      6d8:    20 6a 00 01     subfic  r3,r10,1
->      6dc:    91 25 00 00     stw     r9,0(r5)
->      6e0:    7c 63 4a 14     add     r3,r3,r9
->      6e4:    54 63 04 3e     clrlwi  r3,r3,16
->      6e8:    4e 80 00 20     blr
-> 
-> 
-> And regardless, that's a pitty to have this function using pointers which are from local variables in the callers, as we loose the benefit of registers. Couldn't this function go in the .h as a static inline ? I'm sure the result would be worth it.
-
-This is obviously a bit of optimization, but I like Mikey's idea of
-storing start_addr and end_addr in the arch_hw_breakpoint. That way
-we don't have to recalculate length every time in set_dawr.
-
+=
