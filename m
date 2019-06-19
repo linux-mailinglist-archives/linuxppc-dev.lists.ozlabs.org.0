@@ -2,73 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A210B4B61D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 12:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26204B64A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 12:38:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TLdd6H2XzDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 20:23:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TLy70Y4RzDqdk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 20:38:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="IhsI/Eh9"; 
- dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TLc012XdzDq5n
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 20:22:21 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id bi6so7011261plb.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 03:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=3jkwy9JzWkd1UukSfYYgvfZEKEYnDdPmRbkr9atVMxo=;
- b=IhsI/Eh9fnMEVCQcnT+HA2XuzMkxsOUF21cHOC/i7jD+KbRYuBGG51or0ii2/iAwbr
- 0/pdl/ULJt5TNuMcesnlGAmM1ABbNy3+eYEyDkIFJkn9XTGC8jZqWle0iinxd5QnaJa4
- OhnoJF40xzsY3U5yxI+dOTMDO7FOwhN8wMwJAQy0nVvz/ZaRN+sHj0JJGDXkd3XMgZeH
- Fus7Iu2bzV5aI79y7v0Ujj7PlsCjh41HOKPlBmlWD+d7iUDAZXLLsbi6msCgJM0K5i3S
- 7nAfjFTXfFJ+n6srpDmrs2mEmAT0+960WypgxiZOe9gL9X6+ajOmCBRi4ER/j8z1CTAV
- g0oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=3jkwy9JzWkd1UukSfYYgvfZEKEYnDdPmRbkr9atVMxo=;
- b=USCLyuJ8Rp+0yPifk1iYDGE/1B7gQ9rTtyOaPAhEfgaCupJ6+0TG3nZ6IViSRlhIMd
- 5UGWHaBDew7ibyHP3uj+8PDjjp33yazAh1MBqnd/kqZGo/pTPvtffjyzG4PuG/D5COoA
- dso4xzji5mUAnedKI5aBQjUMFVV9qRFcTTISEAj686nTmymfxbKDVMdXztfmCnUkRf6/
- Ym7KdVLhWFUejYpYfj64nJA25Wjto6U95iMAmPfWNiVTVktTXUwAVSPM45ZwILQpzMP6
- NRV1uI/WahDNSBQjNFMWAmOIaXbWofF4WkH4FVFK+hao7ZI7Y7wvS2EVFK4iTkWBewUQ
- I57w==
-X-Gm-Message-State: APjAAAV2HUrH2IxigoHvQTlu1pbyCUYDWumrEL/rQ1ddd6ovUCMrCb4o
- wFwZYWqJsDybm5gr5B7/ro0=
-X-Google-Smtp-Source: APXvYqzuSUgB1WWzEsCQbJUSXAzdTWxJkhgqpm3xAzI+HpfIxZ2e6B+3HlBKOEBo1PkFMCXAd6G2Og==
-X-Received: by 2002:a17:902:124:: with SMTP id
- 33mr58503680plb.145.1560939738586; 
- Wed, 19 Jun 2019 03:22:18 -0700 (PDT)
-Received: from localhost (193-116-92-108.tpgi.com.au. [193.116.92.108])
- by smtp.gmail.com with ESMTPSA id p7sm33213537pfp.131.2019.06.19.03.22.17
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 03:22:18 -0700 (PDT)
-Date: Wed, 19 Jun 2019 20:17:01 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH v0] powerpc: Fix BUG_ON during memory unplug on radix
-To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20190619074545.11761-1-bharata@linux.ibm.com>
-In-Reply-To: <20190619074545.11761-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TLwG1fXPzDqHm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 20:36:29 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5JAVjqw015692
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 06:36:26 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t7gsw0by0-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 06:36:26 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 19 Jun 2019 11:36:22 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 19 Jun 2019 11:36:18 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5JAaGwx43974834
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Jun 2019 10:36:17 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C834511C066;
+ Wed, 19 Jun 2019 10:36:16 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 833E711C054;
+ Wed, 19 Jun 2019 10:36:16 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.171.67])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Jun 2019 10:36:16 +0000 (GMT)
+Subject: Re: [PATCH] ocxl: Allow contexts to be attached with a NULL mm
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20190617044152.13707-1-alastair@au1.ibm.com>
+ <81f8951e-a095-3e13-4229-6475f6a8d4a5@linux.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 19 Jun 2019 12:36:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1560939185.n3y8722qvc.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <81f8951e-a095-3e13-4229-6475f6a8d4a5@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061910-0012-0000-0000-0000032A768C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061910-0013-0000-0000-000021639726
+Message-Id: <682c9b63-7edd-eb4e-8d6f-2bfdd36453e4@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-19_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=889 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906190088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,132 +92,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.vnet.ibm.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bharata B Rao's on June 19, 2019 5:45 pm:
-> We hit the following BUG_ON when memory hotplugged before reboot
-> is unplugged after reboot:
->=20
-> kernel BUG at arch/powerpc/mm/pgtable-frag.c:113!
->=20
->  remove_pagetable+0x594/0x6a0
->  (unreliable)
->  remove_pagetable+0x94/0x6a0
->  vmemmap_free+0x394/0x410
->  sparse_remove_one_section+0x26c/0x2e8
->  __remove_pages+0x428/0x540
->  arch_remove_memory+0xd0/0x170
->  __remove_memory+0xd4/0x1a0
->  dlpar_remove_lmb+0xbc/0x110
->  dlpar_memory+0xa80/0xd20
->  handle_dlpar_errorlog+0xa8/0x160
->  pseries_hp_work_fn+0x2c/0x60
->  process_one_work+0x46c/0x860
->  worker_thread+0x364/0x5e0
->  kthread+0x1b0/0x1c0
->  ret_from_kernel_thread+0x5c/0x68
->=20
-> This occurs because, during reboot-after-hotplug, the hotplugged
-> memory range gets initialized as regular memory and page
-> tables are setup using memblock allocator. This means that we
-> wouldn't have initialized the PMD or PTE fragment count for
-> those PMD or PTE pages.
->=20
-> Fixing this includes 3 aspects:
->=20
-> - Walk the init_mm page tables from mem_init() and initialize
->   the PMD and PTE fragment counts appropriately.
-> - When we do early allocation of PMD (and PGD as well) pages,
->   allocate in page size PAGE_SIZE granularity so that we are
->   sure that the complete page is available for us to set the
->   fragment count which is part of struct page.
-> - When PMD or PTE page is freed, check if it comes from memblock
->   allocator and free it appropriately.
->=20
-> Reported-by: Srikanth Aithal <sraithal@linux.vnet.ibm.com>
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/radix.h |  1 +
->  arch/powerpc/include/asm/sparsemem.h       |  1 +
->  arch/powerpc/mm/book3s64/pgtable.c         | 12 +++-
->  arch/powerpc/mm/book3s64/radix_pgtable.c   | 67 +++++++++++++++++++++-
->  arch/powerpc/mm/mem.c                      |  5 ++
->  arch/powerpc/mm/pgtable-frag.c             |  5 +-
->  6 files changed, 87 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/in=
-clude/asm/book3s/64/radix.h
-> index 574eca33f893..4320f2790e8d 100644
-> --- a/arch/powerpc/include/asm/book3s/64/radix.h
-> +++ b/arch/powerpc/include/asm/book3s/64/radix.h
-> @@ -285,6 +285,7 @@ static inline unsigned long radix__get_tree_size(void=
-)
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  int radix__create_section_mapping(unsigned long start, unsigned long end=
-, int nid);
->  int radix__remove_section_mapping(unsigned long start, unsigned long end=
-);
-> +void radix__fixup_pgtable_fragments(void);
->  #endif /* CONFIG_MEMORY_HOTPLUG */
->  #endif /* __ASSEMBLY__ */
->  #endif
-> diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/=
-asm/sparsemem.h
-> index 3192d454a733..e662f9232d35 100644
-> --- a/arch/powerpc/include/asm/sparsemem.h
-> +++ b/arch/powerpc/include/asm/sparsemem.h
-> @@ -15,6 +15,7 @@
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  extern int create_section_mapping(unsigned long start, unsigned long end=
-, int nid);
->  extern int remove_section_mapping(unsigned long start, unsigned long end=
-);
-> +void fixup_pgtable_fragments(void);
-> =20
->  #ifdef CONFIG_PPC_BOOK3S_64
->  extern int resize_hpt_for_hotplug(unsigned long new_mem_size);
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s6=
-4/pgtable.c
-> index 01bc9663360d..7efe9cc16b39 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -186,6 +186,13 @@ int __meminit remove_section_mapping(unsigned long s=
-tart, unsigned long end)
-> =20
->  	return hash__remove_section_mapping(start, end);
->  }
-> +
-> +void fixup_pgtable_fragments(void)
-> +{
-> +	if (radix_enabled())
-> +		radix__fixup_pgtable_fragments();
-> +}
-> +
->  #endif /* CONFIG_MEMORY_HOTPLUG */
-> =20
->  void __init mmu_partition_table_init(void)
-> @@ -320,7 +327,10 @@ void pmd_fragment_free(unsigned long *pmd)
->  	BUG_ON(atomic_read(&page->pt_frag_refcount) <=3D 0);
->  	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
->  		pgtable_pmd_page_dtor(page);
-> -		__free_page(page);
-> +		if (PageReserved(page))
-> +			free_reserved_page(page);
-
-Hmm. Rather than adding this special case here, I wonder if you can
-just go along in your fixup walk and convert all these pages to
-non-reserved pages?
-
-ClearPageReserved ; init_page_count ; adjust_managed_page_count ;=20
-should do the trick, right?
 
 
-> +		else
-> +			__free_page(page);
+Le 18/06/2019 à 03:50, Andrew Donnellan a écrit :
+> On 17/6/19 2:41 pm, Alastair D'Silva wrote:
+>> From: Alastair D'Silva <alastair@d-silva.org>
+>>
+>> If an OpenCAPI context is to be used directly by a kernel driver, there
+>> may not be a suitable mm to use.
+>>
+>> The patch makes the mm parameter to ocxl_context_attach optional.
+>>
+>> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> 
+> The one issue I can see here is that using mm == NULL bypasses our 
+> method of enabling/disabling global TLBIs in mm_context_add_copro().
+> 
+> Discussing this privately with Alastair and Fred - this should be fine, 
+> but perhaps we should document that.
 
-Thanks,
-Nick
-=
+
+So indeed we should be fine. I confirmed with Nick that kernel space 
+invalidations are already global today.
+Nick mentioned that we should still be fine tomorrow, but in the distant 
+future, we could imagine local usage of some part of the kernel space. 
+It will require some work, but it would be best to add a comment in one 
+of the kernel invalidation function (for example 
+radix__flush_tlb_kernel_range()) that if a kernel invalidation ever 
+becomes local, then clients of the nest MMU may need some work.
+
+A few more comments below.
+
+
+>> ---
+>>   drivers/misc/ocxl/context.c |  9 ++++++---
+>>   drivers/misc/ocxl/link.c    | 12 ++++++++----
+>>   2 files changed, 14 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+>> index bab9c9364184..994563a078eb 100644
+>> --- a/drivers/misc/ocxl/context.c
+>> +++ b/drivers/misc/ocxl/context.c
+>> @@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, 
+>> u64 dsisr)
+>>   int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct 
+>> mm_struct *mm)
+>>   {
+>>       int rc;
+>> +    unsigned long pidr = 0;
+>>       // Locks both status & tidr
+>>       mutex_lock(&ctx->status_mutex);
+>> @@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, 
+>> u64 amr, struct mm_struct *mm)
+>>           goto out;
+>>       }
+>> -    rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
+>> -            mm->context.id, ctx->tidr, amr, mm,
+>> -            xsl_fault_error, ctx);
+>> +    if (mm)
+>> +        pidr = mm->context.id;
+>> +
+>> +    rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, 
+>> ctx->tidr,
+>> +                  amr, mm, xsl_fault_error, ctx);
+>>       if (rc)
+>>           goto out;
+>> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+>> index cce5b0d64505..43542f124807 100644
+>> --- a/drivers/misc/ocxl/link.c
+>> +++ b/drivers/misc/ocxl/link.c
+>> @@ -523,7 +523,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, 
+>> u32 pidr, u32 tidr,
+>>       pe->amr = cpu_to_be64(amr);
+>>       pe->software_state = cpu_to_be32(SPA_PE_VALID);
+>> -    mm_context_add_copro(mm);
+>> +    if (mm)
+>> +        mm_context_add_copro(mm);
+
+
+Same as above, we should add a comment here in the driver code that a 
+kernel context is ok because invalidations are global.
+
+
+We also need a new check in xsl_fault_handler(). A valid kernel address 
+shouldn't fault, but it's still possible for the FPGA to try accessing a 
+bogus kernel address. In which case, xsl_fault_handler() would be 
+entered, with a valid fault context. We'll find pe_data in the tree 
+based on the valid pe_handle, but pe_data->mm will be NULL. In that, we 
+can return early, acknowledging the interrupt with ADDRESS_ERROR value 
+(like we do if pe_data is not found in the tree).
+
+   Fred
+
+
+>>       /*
+>>        * Barrier is to make sure PE is visible in the SPA before it
+>>        * is used by the device. It also helps with the global TLBI
+>> @@ -546,7 +547,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, 
+>> u32 pidr, u32 tidr,
+>>        * have a reference on mm_users. Incrementing mm_count solves
+>>        * the problem.
+>>        */
+>> -    mmgrab(mm);
+>> +    if (mm)
+>> +        mmgrab(mm);
+>>       trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, 
+>> tidr);
+>>   unlock:
+>>       mutex_unlock(&spa->spa_lock);
+>> @@ -652,8 +654,10 @@ int ocxl_link_remove_pe(void *link_handle, int 
+>> pasid)
+>>       if (!pe_data) {
+>>           WARN(1, "Couldn't find pe data when removing PE\n");
+>>       } else {
+>> -        mm_context_remove_copro(pe_data->mm);
+>> -        mmdrop(pe_data->mm);
+>> +        if (pe_data->mm) {
+>> +            mm_context_remove_copro(pe_data->mm);
+>> +            mmdrop(pe_data->mm);
+>> +        }
+>>           kfree_rcu(pe_data, rcu);
+>>       }
+>>   unlock:
+>>
+> 
+
