@@ -2,153 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8914AF0F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 02:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6BB4AF1B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 02:39:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45T5cn6MsgzDqgk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 10:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45T5gg4FbDzDqg8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 10:39:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="mBXEYJf4"; 
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="hiKbt56N"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45T5ZH2yrxzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 10:35:01 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id c14so6422040plo.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 17:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=FNSGYHZzl/1epONfXkSPRkarCmOGI9Kylp3nNSphz4s=;
- b=mBXEYJf4xCJeuk1CBDyIyMTeDOcYwyQRAjhZxWPsklE0f5TL+4cszH5m2FOyInOtuX
- K2Vvt15EYu4wAEhvtj5Zi9qpI1raeWPXc+gp2fxPzTgxSPKoMmce4bG6fHU+It9qx8PZ
- wl6o6eOitfhMma74ZyAF/47B09S3jysQS0TGmJRs5tfuzNGWzAlPGeHLF5rt2egYqymm
- ktiQUb2sWnvtzAIxtRO5QM5pMSPKdBbGYAq3yQSgap9q91VQWkzW+eF+5/JG7rEnN/nr
- URmnyEEzghOBp5KwIkXy8hPNoiITPHJrr6vQLd3jOm6RTPZlDxMlAu52aVCGCJzM+e7z
- yv5g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45T5ch6mSRzDqhn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 10:37:07 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id 19so8619982pfa.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 17:37:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=haw/uJEjokg0RcoZr7nO9DDOpI6nbsEXawjYSz3kqQg=;
+ b=hiKbt56NOlKkE5nP8qz4YZmKr/7xmy6oFqmSLRQX7BU1lJtj//2Vv4iLAwWzDRJLv7
+ /KiCuz1/y4GICi9g0HmnO5LXonj+7c/86L8OCFI0Bd4YmaoQHiyTQDElq7u3PgMSjcnY
+ 8v8OO/luyfpHm8kLcnVh4JTa9c+DsecxxwohQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=FNSGYHZzl/1epONfXkSPRkarCmOGI9Kylp3nNSphz4s=;
- b=YLXndSimVqNUO3LYC26iLozOihlQ1fnMj2Z+SODlpn+iIknNw6Uf1ntHwHxZzZTYXQ
- IsL8ucDPaVWnr7StnGZ7iZ94yd6bb+4LCJEtmzBc5vgFGYOe+YHCBYOQ/0DEVHfXPmiB
- bx7Xf1DAlD/4u/78tGcFqPZI7gxoppbhq4GVBp8mqX03PuQz8m2OcNbNx4OAtU3Bjfb9
- Nkivae8PkacKANzV2k7rTiEc06+Jc6bP+wBsnYJEVAj6emdsxSxVGX7H605dMn+CnMfU
- tCteH/nszQn122cVfjQVgHjKLEMArJQpRbUs+EW9rLCzngC5eMaHR+2bXb2luORA4R2C
- HFfA==
-X-Gm-Message-State: APjAAAUzBpEVnkqjbYU8zdifkm4RL1MKQh/vaVUJ/rRvN0wGDCndfjEm
- ZwdDfX8lkJ3NZNhktrCE8Et2xg==
-X-Google-Smtp-Source: APXvYqwnLPGMfE+GwdYSEZ7ETmZQu/i7DhI1QTj7VJjUYwAwz2cfgr/bbuJcEeyorZTHrDT0falfgw==
-X-Received: by 2002:a17:902:106:: with SMTP id 6mr53908676plb.64.1560904499950; 
- Tue, 18 Jun 2019 17:34:59 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id t5sm17030753pgh.46.2019.06.18.17.34.57
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 18 Jun 2019 17:34:59 -0700 (PDT)
-Subject: Re: [PATCH 3/4] powerpc/powernv: remove dead NPU DMA code
-To: Christoph Hellwig <hch@lst.de>
-References: <20190523074924.19659-1-hch@lst.de>
- <20190523074924.19659-4-hch@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Openpgp: preference=signencrypt
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <db502ec4-2e8f-fbc3-9db2-3fe98464a62c@ozlabs.ru>
-Date: Wed, 19 Jun 2019 10:34:54 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=haw/uJEjokg0RcoZr7nO9DDOpI6nbsEXawjYSz3kqQg=;
+ b=boWW2g4/iwd0J6HXq13ctcfWhD7mUqMLD5OlIO1OCcSlJzGFRLXEqqtazbh3fr0Gho
+ DKJ7wEAY6eKnZm6+xpQx8oWjfMRhW94nqfVk3hx8i+tgOOlv5u5t9Nt06ETqQmaVAAcp
+ A1h5aKpPdnIGfM3Q0nMqYONIGW5+iYj5XBF8W8L2MEB+1WbkNtgUwkeYKnXng6CN2+pR
+ hSrLz66BQMLGwcaz7qtnzp6MAgVq5d4kXZeGdA4XErbCtJoFXcKpTdR1L8PnC5ADjRUF
+ 9LLADbJ24qCW+y46nriJVwVgFo5t3W/z+3sT+7k5NIc/kZAbzIZDR/dgSiC3fPaYfqoN
+ bcPw==
+X-Gm-Message-State: APjAAAULmYYfEzcbRW6TN5MhXfS6zio2p2fIKi/U34eK6JUu7oUiIS/X
+ h8A0Ub54GVoLK9GJiKlmX197Lw==
+X-Google-Smtp-Source: APXvYqzDNXTwX5fv6QNKCIgdYTGcWxJlfnRoS/a8g6aYPKG2RjIcxr6RLvAnLyludLzBMgjEheLI/A==
+X-Received: by 2002:a63:d415:: with SMTP id a21mr5039278pgh.229.1560904624628; 
+ Tue, 18 Jun 2019 17:37:04 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id u23sm18230040pfn.140.2019.06.18.17.37.02
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 18 Jun 2019 17:37:03 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Andreas Schwab <schwab@linux-m68k.org>, Radu Rendec <radu.rendec@gmail.com>
+Subject: Re: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
+In-Reply-To: <875zp2rcip.fsf@igel.home>
+References: <20190610232758.19010-1-radu.rendec@gmail.com>
+ <87r27t2el0.fsf@dja-thinkpad.axtens.net>
+ <5fcdb5767b7cf4c7d5b7496c0032021e43115d39.camel@gmail.com>
+ <87muif2y4l.fsf@dja-thinkpad.axtens.net>
+ <fbf9f9cbb99fc40c7d7af86fee3984427c61b799.camel__46559.9162316479$1560860409$gmane$org@gmail.com>
+ <875zp2rcip.fsf@igel.home>
+Date: Wed, 19 Jun 2019 10:36:59 +1000
+Message-ID: <87k1di2yxg.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <20190523074924.19659-4-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,699 +80,47 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+ Oleg Nesterov <oleg@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Andreas Schwab <schwab@linux-m68k.org> writes:
+
+> On Jun 18 2019, Radu Rendec <radu.rendec@gmail.com> wrote:
+>
+>> Since you already have a working setup, it would be nice if you could
+>> add a printk to arch_ptrace() to print the address and confirm what I
+>> believe happens (by reading the gdb source code).
+>
+> A ppc32 ptrace syscall goes through compat_arch_ptrace.
 
 
-On 23/05/2019 17:49, Christoph Hellwig wrote:
-> None of these routines were ever used since they were added to the
-> kernel.
+Ah right, and that (in ptrace32.c) contains code that will work:
 
 
-It is still being used exactly in the way as it was explained before in
-previous respins. Thanks.
+			/*
+			 * the user space code considers the floating point
+			 * to be an array of unsigned int (32 bits) - the
+			 * index passed in is based on this assumption.
+			 */
+			tmp = ((unsigned int *)child->thread.fp_state.fpr)
+				[FPRINDEX(index)];
 
+FPRINDEX is defined above to deal with the various manipulations you
+need to do.
 
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/include/asm/book3s/64/mmu.h |   2 -
->  arch/powerpc/include/asm/powernv.h       |  22 -
->  arch/powerpc/mm/book3s64/mmu_context.c   |   1 -
->  arch/powerpc/platforms/powernv/npu-dma.c | 556 -----------------------
->  4 files changed, 581 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-> index 74d24201fc4f..23b83d3593e2 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -116,8 +116,6 @@ typedef struct {
->  	/* Number of users of the external (Nest) MMU */
->  	atomic_t copros;
->  
-> -	/* NPU NMMU context */
-> -	struct npu_context *npu_context;
->  	struct hash_mm_context *hash_context;
->  
->  	unsigned long vdso_base;
-> diff --git a/arch/powerpc/include/asm/powernv.h b/arch/powerpc/include/asm/powernv.h
-> index 05b552418519..40f868c5e93c 100644
-> --- a/arch/powerpc/include/asm/powernv.h
-> +++ b/arch/powerpc/include/asm/powernv.h
-> @@ -11,35 +11,13 @@
->  #define _ASM_POWERNV_H
->  
->  #ifdef CONFIG_PPC_POWERNV
-> -#define NPU2_WRITE 1
->  extern void powernv_set_nmmu_ptcr(unsigned long ptcr);
-> -extern struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			void (*cb)(struct npu_context *, void *),
-> -			void *priv);
-> -extern void pnv_npu2_destroy_context(struct npu_context *context,
-> -				struct pci_dev *gpdev);
-> -extern int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
-> -				unsigned long *flags, unsigned long *status,
-> -				int count);
->  
->  void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val);
->  
->  void pnv_tm_init(void);
->  #else
->  static inline void powernv_set_nmmu_ptcr(unsigned long ptcr) { }
-> -static inline struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			struct npu_context *(*cb)(struct npu_context *, void *),
-> -			void *priv) { return ERR_PTR(-ENODEV); }
-> -static inline void pnv_npu2_destroy_context(struct npu_context *context,
-> -					struct pci_dev *gpdev) { }
-> -
-> -static inline int pnv_npu2_handle_fault(struct npu_context *context,
-> -					uintptr_t *ea, unsigned long *flags,
-> -					unsigned long *status, int count) {
-> -	return -ENODEV;
-> -}
->  
->  static inline void pnv_tm_init(void) { }
->  #endif
-> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-> index cb2b08635508..0dd3e631cf3e 100644
-> --- a/arch/powerpc/mm/book3s64/mmu_context.c
-> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
-> @@ -140,7 +140,6 @@ static int radix__init_new_context(struct mm_struct *mm)
->  	 */
->  	asm volatile("ptesync;isync" : : : "memory");
->  
-> -	mm->context.npu_context = NULL;
->  	mm->context.hash_context = NULL;
->  
->  	return index;
-> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-> index 495550432f3d..4ed24132bb7c 100644
-> --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> @@ -22,12 +22,6 @@
->  
->  #include "pci.h"
->  
-> -/*
-> - * spinlock to protect initialisation of an npu_context for a particular
-> - * mm_struct.
-> - */
-> -static DEFINE_SPINLOCK(npu_context_lock);
-> -
->  static struct pci_dev *get_pci_dev(struct device_node *dn)
->  {
->  	struct pci_dn *pdn = PCI_DN(dn);
-> @@ -362,15 +356,6 @@ struct npu_comp {
->  /* An NPU descriptor, valid for POWER9 only */
->  struct npu {
->  	int index;
-> -	__be64 *mmio_atsd_regs[NV_NMMU_ATSD_REGS];
-> -	unsigned int mmio_atsd_count;
-> -
-> -	/* Bitmask for MMIO register usage */
-> -	unsigned long mmio_atsd_usage;
-> -
-> -	/* Do we need to explicitly flush the nest mmu? */
-> -	bool nmmu_flush;
-> -
->  	struct npu_comp npucomp;
->  };
->  
-> @@ -627,534 +612,8 @@ struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
->  }
->  #endif /* CONFIG_IOMMU_API */
->  
-> -/* Maximum number of nvlinks per npu */
-> -#define NV_MAX_LINKS 6
-> -
-> -/* Maximum index of npu2 hosts in the system. Always < NV_MAX_NPUS */
-> -static int max_npu2_index;
-> -
-> -struct npu_context {
-> -	struct mm_struct *mm;
-> -	struct pci_dev *npdev[NV_MAX_NPUS][NV_MAX_LINKS];
-> -	struct mmu_notifier mn;
-> -	struct kref kref;
-> -	bool nmmu_flush;
-> -
-> -	/* Callback to stop translation requests on a given GPU */
-> -	void (*release_cb)(struct npu_context *context, void *priv);
-> -
-> -	/*
-> -	 * Private pointer passed to the above callback for usage by
-> -	 * device drivers.
-> -	 */
-> -	void *priv;
-> -};
-> -
-> -struct mmio_atsd_reg {
-> -	struct npu *npu;
-> -	int reg;
-> -};
-> -
-> -/*
-> - * Find a free MMIO ATSD register and mark it in use. Return -ENOSPC
-> - * if none are available.
-> - */
-> -static int get_mmio_atsd_reg(struct npu *npu)
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i < npu->mmio_atsd_count; i++) {
-> -		if (!test_bit(i, &npu->mmio_atsd_usage))
-> -			if (!test_and_set_bit_lock(i, &npu->mmio_atsd_usage))
-> -				return i;
-> -	}
-> -
-> -	return -ENOSPC;
-> -}
-> -
-> -static void put_mmio_atsd_reg(struct npu *npu, int reg)
-> -{
-> -	clear_bit_unlock(reg, &npu->mmio_atsd_usage);
-> -}
-> -
-> -/* MMIO ATSD register offsets */
-> -#define XTS_ATSD_LAUNCH 0
-> -#define XTS_ATSD_AVA    1
-> -#define XTS_ATSD_STAT   2
-> -
-> -static unsigned long get_atsd_launch_val(unsigned long pid, unsigned long psize)
-> -{
-> -	unsigned long launch = 0;
-> -
-> -	if (psize == MMU_PAGE_COUNT) {
-> -		/* IS set to invalidate entire matching PID */
-> -		launch |= PPC_BIT(12);
-> -	} else {
-> -		/* AP set to invalidate region of psize */
-> -		launch |= (u64)mmu_get_ap(psize) << PPC_BITLSHIFT(17);
-> -	}
-> -
-> -	/* PRS set to process-scoped */
-> -	launch |= PPC_BIT(13);
-> -
-> -	/* PID */
-> -	launch |= pid << PPC_BITLSHIFT(38);
-> -
-> -	/* Leave "No flush" (bit 39) 0 so every ATSD performs a flush */
-> -
-> -	return launch;
-> -}
-> -
-> -static void mmio_atsd_regs_write(struct mmio_atsd_reg
-> -			mmio_atsd_reg[NV_MAX_NPUS], unsigned long offset,
-> -			unsigned long val)
-> -{
-> -	struct npu *npu;
-> -	int i, reg;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		reg = mmio_atsd_reg[i].reg;
-> -		if (reg < 0)
-> -			continue;
-> -
-> -		npu = mmio_atsd_reg[i].npu;
-> -		__raw_writeq_be(val, npu->mmio_atsd_regs[reg] + offset);
-> -	}
-> -}
-> -
-> -static void mmio_invalidate_pid(struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS],
-> -				unsigned long pid)
-> -{
-> -	unsigned long launch = get_atsd_launch_val(pid, MMU_PAGE_COUNT);
-> -
-> -	/* Invalidating the entire process doesn't use a va */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_LAUNCH, launch);
-> -}
-> -
-> -static void mmio_invalidate_range(struct mmio_atsd_reg
-> -			mmio_atsd_reg[NV_MAX_NPUS], unsigned long pid,
-> -			unsigned long start, unsigned long psize)
-> -{
-> -	unsigned long launch = get_atsd_launch_val(pid, psize);
-> -
-> -	/* Write all VAs first */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_AVA, start);
-> -
-> -	/* Issue one barrier for all address writes */
-> -	eieio();
-> -
-> -	/* Launch */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_LAUNCH, launch);
-> -}
-> -
-> -#define mn_to_npu_context(x) container_of(x, struct npu_context, mn)
-> -
-> -static void mmio_invalidate_wait(
-> -	struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	struct npu *npu;
-> -	int i, reg;
-> -
-> -	/* Wait for all invalidations to complete */
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		if (mmio_atsd_reg[i].reg < 0)
-> -			continue;
-> -
-> -		/* Wait for completion */
-> -		npu = mmio_atsd_reg[i].npu;
-> -		reg = mmio_atsd_reg[i].reg;
-> -		while (__raw_readq(npu->mmio_atsd_regs[reg] + XTS_ATSD_STAT))
-> -			cpu_relax();
-> -	}
-> -}
-> -
-> -/*
-> - * Acquires all the address translation shootdown (ATSD) registers required to
-> - * launch an ATSD on all links this npu_context is active on.
-> - */
-> -static void acquire_atsd_reg(struct npu_context *npu_context,
-> -			struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	int i, j;
-> -	struct npu *npu;
-> -	struct pci_dev *npdev;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		mmio_atsd_reg[i].reg = -1;
-> -		for (j = 0; j < NV_MAX_LINKS; j++) {
-> -			/*
-> -			 * There are no ordering requirements with respect to
-> -			 * the setup of struct npu_context, but to ensure
-> -			 * consistent behaviour we need to ensure npdev[][] is
-> -			 * only read once.
-> -			 */
-> -			npdev = READ_ONCE(npu_context->npdev[i][j]);
-> -			if (!npdev)
-> -				continue;
-> -
-> -			npu = pci_bus_to_host(npdev->bus)->npu;
-> -			if (!npu)
-> -				continue;
-> -
-> -			mmio_atsd_reg[i].npu = npu;
-> -			mmio_atsd_reg[i].reg = get_mmio_atsd_reg(npu);
-> -			while (mmio_atsd_reg[i].reg < 0) {
-> -				mmio_atsd_reg[i].reg = get_mmio_atsd_reg(npu);
-> -				cpu_relax();
-> -			}
-> -			break;
-> -		}
-> -	}
-> -}
-> -
-> -/*
-> - * Release previously acquired ATSD registers. To avoid deadlocks the registers
-> - * must be released in the same order they were acquired above in
-> - * acquire_atsd_reg.
-> - */
-> -static void release_atsd_reg(struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		/*
-> -		 * We can't rely on npu_context->npdev[][] being the same here
-> -		 * as when acquire_atsd_reg() was called, hence we use the
-> -		 * values stored in mmio_atsd_reg during the acquire phase
-> -		 * rather than re-reading npdev[][].
-> -		 */
-> -		if (mmio_atsd_reg[i].reg < 0)
-> -			continue;
-> -
-> -		put_mmio_atsd_reg(mmio_atsd_reg[i].npu, mmio_atsd_reg[i].reg);
-> -	}
-> -}
-> -
-> -/*
-> - * Invalidate a virtual address range
-> - */
-> -static void mmio_invalidate(struct npu_context *npu_context,
-> -			unsigned long start, unsigned long size)
-> -{
-> -	struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS];
-> -	unsigned long pid = npu_context->mm->context.id;
-> -	unsigned long atsd_start = 0;
-> -	unsigned long end = start + size - 1;
-> -	int atsd_psize = MMU_PAGE_COUNT;
-> -
-> -	/*
-> -	 * Convert the input range into one of the supported sizes. If the range
-> -	 * doesn't fit, use the next larger supported size. Invalidation latency
-> -	 * is high, so over-invalidation is preferred to issuing multiple
-> -	 * invalidates.
-> -	 *
-> -	 * A 4K page size isn't supported by NPU/GPU ATS, so that case is
-> -	 * ignored.
-> -	 */
-> -	if (size == SZ_64K) {
-> -		atsd_start = start;
-> -		atsd_psize = MMU_PAGE_64K;
-> -	} else if (ALIGN_DOWN(start, SZ_2M) == ALIGN_DOWN(end, SZ_2M)) {
-> -		atsd_start = ALIGN_DOWN(start, SZ_2M);
-> -		atsd_psize = MMU_PAGE_2M;
-> -	} else if (ALIGN_DOWN(start, SZ_1G) == ALIGN_DOWN(end, SZ_1G)) {
-> -		atsd_start = ALIGN_DOWN(start, SZ_1G);
-> -		atsd_psize = MMU_PAGE_1G;
-> -	}
-> -
-> -	if (npu_context->nmmu_flush)
-> -		/*
-> -		 * Unfortunately the nest mmu does not support flushing specific
-> -		 * addresses so we have to flush the whole mm once before
-> -		 * shooting down the GPU translation.
-> -		 */
-> -		flush_all_mm(npu_context->mm);
-> -
-> -	/*
-> -	 * Loop over all the NPUs this process is active on and launch
-> -	 * an invalidate.
-> -	 */
-> -	acquire_atsd_reg(npu_context, mmio_atsd_reg);
-> -
-> -	if (atsd_psize == MMU_PAGE_COUNT)
-> -		mmio_invalidate_pid(mmio_atsd_reg, pid);
-> -	else
-> -		mmio_invalidate_range(mmio_atsd_reg, pid, atsd_start,
-> -					atsd_psize);
-> -
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -
-> -	/*
-> -	 * The GPU requires two flush ATSDs to ensure all entries have been
-> -	 * flushed. We use PID 0 as it will never be used for a process on the
-> -	 * GPU.
-> -	 */
-> -	mmio_invalidate_pid(mmio_atsd_reg, 0);
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -	mmio_invalidate_pid(mmio_atsd_reg, 0);
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -
-> -	release_atsd_reg(mmio_atsd_reg);
-> -}
-> -
-> -static void pnv_npu2_mn_release(struct mmu_notifier *mn,
-> -				struct mm_struct *mm)
-> -{
-> -	struct npu_context *npu_context = mn_to_npu_context(mn);
-> -
-> -	/* Call into device driver to stop requests to the NMMU */
-> -	if (npu_context->release_cb)
-> -		npu_context->release_cb(npu_context, npu_context->priv);
-> -
-> -	/*
-> -	 * There should be no more translation requests for this PID, but we
-> -	 * need to ensure any entries for it are removed from the TLB.
-> -	 */
-> -	mmio_invalidate(npu_context, 0, ~0UL);
-> -}
-> -
-> -static void pnv_npu2_mn_invalidate_range(struct mmu_notifier *mn,
-> -					struct mm_struct *mm,
-> -					unsigned long start, unsigned long end)
-> -{
-> -	struct npu_context *npu_context = mn_to_npu_context(mn);
-> -	mmio_invalidate(npu_context, start, end - start);
-> -}
-> -
-> -static const struct mmu_notifier_ops nv_nmmu_notifier_ops = {
-> -	.release = pnv_npu2_mn_release,
-> -	.invalidate_range = pnv_npu2_mn_invalidate_range,
-> -};
-> -
-> -/*
-> - * Call into OPAL to setup the nmmu context for the current task in
-> - * the NPU. This must be called to setup the context tables before the
-> - * GPU issues ATRs. pdev should be a pointed to PCIe GPU device.
-> - *
-> - * A release callback should be registered to allow a device driver to
-> - * be notified that it should not launch any new translation requests
-> - * as the final TLB invalidate is about to occur.
-> - *
-> - * Returns an error if there no contexts are currently available or a
-> - * npu_context which should be passed to pnv_npu2_handle_fault().
-> - *
-> - * mmap_sem must be held in write mode and must not be called from interrupt
-> - * context.
-> - */
-> -struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			void (*cb)(struct npu_context *, void *),
-> -			void *priv)
-> -{
-> -	int rc;
-> -	u32 nvlink_index;
-> -	struct device_node *nvlink_dn;
-> -	struct mm_struct *mm = current->mm;
-> -	struct npu *npu;
-> -	struct npu_context *npu_context;
-> -	struct pci_controller *hose;
-> -
-> -	/*
-> -	 * At present we don't support GPUs connected to multiple NPUs and I'm
-> -	 * not sure the hardware does either.
-> -	 */
-> -	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
-> -
-> -	if (!npdev)
-> -		/* No nvlink associated with this GPU device */
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	/* We only support DR/PR/HV in pnv_npu2_map_lpar_dev() */
-> -	if (flags & ~(MSR_DR | MSR_PR | MSR_HV))
-> -		return ERR_PTR(-EINVAL);
-> -
-> -	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
-> -	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
-> -							&nvlink_index)))
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	if (!mm || mm->context.id == 0) {
-> -		/*
-> -		 * Kernel thread contexts are not supported and context id 0 is
-> -		 * reserved on the GPU.
-> -		 */
-> -		return ERR_PTR(-EINVAL);
-> -	}
-> -
-> -	hose = pci_bus_to_host(npdev->bus);
-> -	npu = hose->npu;
-> -	if (!npu)
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	/*
-> -	 * We store the npu pci device so we can more easily get at the
-> -	 * associated npus.
-> -	 */
-> -	spin_lock(&npu_context_lock);
-> -	npu_context = mm->context.npu_context;
-> -	if (npu_context) {
-> -		if (npu_context->release_cb != cb ||
-> -			npu_context->priv != priv) {
-> -			spin_unlock(&npu_context_lock);
-> -			return ERR_PTR(-EINVAL);
-> -		}
-> -
-> -		WARN_ON(!kref_get_unless_zero(&npu_context->kref));
-> -	}
-> -	spin_unlock(&npu_context_lock);
-> -
-> -	if (!npu_context) {
-> -		/*
-> -		 * We can set up these fields without holding the
-> -		 * npu_context_lock as the npu_context hasn't been returned to
-> -		 * the caller meaning it can't be destroyed. Parallel allocation
-> -		 * is protected against by mmap_sem.
-> -		 */
-> -		rc = -ENOMEM;
-> -		npu_context = kzalloc(sizeof(struct npu_context), GFP_KERNEL);
-> -		if (npu_context) {
-> -			kref_init(&npu_context->kref);
-> -			npu_context->mm = mm;
-> -			npu_context->mn.ops = &nv_nmmu_notifier_ops;
-> -			rc = __mmu_notifier_register(&npu_context->mn, mm);
-> -		}
-> -
-> -		if (rc) {
-> -			kfree(npu_context);
-> -			return ERR_PTR(rc);
-> -		}
-> -
-> -		mm->context.npu_context = npu_context;
-> -	}
-> -
-> -	npu_context->release_cb = cb;
-> -	npu_context->priv = priv;
-> -
-> -	/*
-> -	 * npdev is a pci_dev pointer setup by the PCI code. We assign it to
-> -	 * npdev[][] to indicate to the mmu notifiers that an invalidation
-> -	 * should also be sent over this nvlink. The notifiers don't use any
-> -	 * other fields in npu_context, so we just need to ensure that when they
-> -	 * deference npu_context->npdev[][] it is either a valid pointer or
-> -	 * NULL.
-> -	 */
-> -	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], npdev);
-> -
-> -	if (!npu->nmmu_flush) {
-> -		/*
-> -		 * If we're not explicitly flushing ourselves we need to mark
-> -		 * the thread for global flushes
-> -		 */
-> -		npu_context->nmmu_flush = false;
-> -		mm_context_add_copro(mm);
-> -	} else
-> -		npu_context->nmmu_flush = true;
-> -
-> -	return npu_context;
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_init_context);
-> -
-> -static void pnv_npu2_release_context(struct kref *kref)
-> -{
-> -	struct npu_context *npu_context =
-> -		container_of(kref, struct npu_context, kref);
-> -
-> -	if (!npu_context->nmmu_flush)
-> -		mm_context_remove_copro(npu_context->mm);
-> -
-> -	npu_context->mm->context.npu_context = NULL;
-> -}
-> -
-> -/*
-> - * Destroy a context on the given GPU. May free the npu_context if it is no
-> - * longer active on any GPUs. Must not be called from interrupt context.
-> - */
-> -void pnv_npu2_destroy_context(struct npu_context *npu_context,
-> -			struct pci_dev *gpdev)
-> -{
-> -	int removed;
-> -	struct npu *npu;
-> -	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
-> -	struct device_node *nvlink_dn;
-> -	u32 nvlink_index;
-> -	struct pci_controller *hose;
-> -
-> -	if (WARN_ON(!npdev))
-> -		return;
-> -
-> -	hose = pci_bus_to_host(npdev->bus);
-> -	npu = hose->npu;
-> -	if (!npu)
-> -		return;
-> -	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
-> -	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
-> -							&nvlink_index)))
-> -		return;
-> -	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], NULL);
-> -	spin_lock(&npu_context_lock);
-> -	removed = kref_put(&npu_context->kref, pnv_npu2_release_context);
-> -	spin_unlock(&npu_context_lock);
-> -
-> -	/*
-> -	 * We need to do this outside of pnv_npu2_release_context so that it is
-> -	 * outside the spinlock as mmu_notifier_destroy uses SRCU.
-> -	 */
-> -	if (removed) {
-> -		mmu_notifier_unregister(&npu_context->mn,
-> -					npu_context->mm);
-> -
-> -		kfree(npu_context);
-> -	}
-> -
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_destroy_context);
-> -
-> -/*
-> - * Assumes mmap_sem is held for the contexts associated mm.
-> - */
-> -int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
-> -			unsigned long *flags, unsigned long *status, int count)
-> -{
-> -	u64 rc = 0, result = 0;
-> -	int i, is_write;
-> -	struct page *page[1];
-> -	const char __user *u;
-> -	char c;
-> -
-> -	/* mmap_sem should be held so the struct_mm must be present */
-> -	struct mm_struct *mm = context->mm;
-> -
-> -	WARN_ON(!rwsem_is_locked(&mm->mmap_sem));
-> -
-> -	for (i = 0; i < count; i++) {
-> -		is_write = flags[i] & NPU2_WRITE;
-> -		rc = get_user_pages_remote(NULL, mm, ea[i], 1,
-> -					is_write ? FOLL_WRITE : 0,
-> -					page, NULL, NULL);
-> -
-> -		if (rc != 1) {
-> -			status[i] = rc;
-> -			result = -EFAULT;
-> -			continue;
-> -		}
-> -
-> -		/* Make sure partition scoped tree gets a pte */
-> -		u = page_address(page[0]);
-> -		if (__get_user(c, u))
-> -			result = -EFAULT;
-> -
-> -		status[i] = 0;
-> -		put_page(page[0]);
-> -	}
-> -
-> -	return result;
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_handle_fault);
-> -
->  int pnv_npu2_init(struct pci_controller *hose)
->  {
-> -	unsigned int i;
-> -	u64 mmio_atsd;
->  	static int npu_index;
->  	struct npu *npu;
->  	int ret;
-> @@ -1163,33 +622,18 @@ int pnv_npu2_init(struct pci_controller *hose)
->  	if (!npu)
->  		return -ENOMEM;
->  
-> -	npu->nmmu_flush = of_property_read_bool(hose->dn, "ibm,nmmu-flush");
-> -
-> -	for (i = 0; i < ARRAY_SIZE(npu->mmio_atsd_regs) &&
-> -			!of_property_read_u64_index(hose->dn, "ibm,mmio-atsd",
-> -				i, &mmio_atsd); i++)
-> -		npu->mmio_atsd_regs[i] = ioremap(mmio_atsd, 32);
-> -
-> -	pr_info("NPU%d: Found %d MMIO ATSD registers", hose->global_number, i);
-> -	npu->mmio_atsd_count = i;
-> -	npu->mmio_atsd_usage = 0;
->  	npu_index++;
->  	if (WARN_ON(npu_index >= NV_MAX_NPUS)) {
->  		ret = -ENOSPC;
->  		goto fail_exit;
->  	}
-> -	max_npu2_index = npu_index;
->  	npu->index = npu_index;
->  	hose->npu = npu;
->  
->  	return 0;
->  
->  fail_exit:
-> -	for (i = 0; i < npu->mmio_atsd_count; ++i)
-> -		iounmap(npu->mmio_atsd_regs[i]);
-> -
->  	kfree(npu);
-> -
->  	return ret;
->  }
->  
-> 
+Radu: I think we want to copy that working code back into ptrace.c. The
+challenge will be unpicking the awful mess of ifdefs in ptrace.c and
+making it somewhat more comprehensible.
 
--- 
-Alexey
+Regards,
+Daniel
+
+>
+> Andreas.
+>
+> -- 
+> Andreas Schwab, schwab@linux-m68k.org
+> GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+> "And now for something completely different."
