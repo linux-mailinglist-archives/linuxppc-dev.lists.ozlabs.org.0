@@ -1,87 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98F24B4AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 11:10:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TK1J4t5lzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 19:10:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67ADD4B4ED
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 11:29:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TKRF603YzDqmj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 19:29:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=huntbag@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=jzn+=us=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=goodmis.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TJyc5SrMzDqnR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 19:08:24 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5J97llO018257
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 05:08:21 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t7h64u4qu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 05:08:21 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <huntbag@linux.vnet.ibm.com>;
- Wed, 19 Jun 2019 10:08:19 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 19 Jun 2019 10:08:16 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5J987US38142230
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jun 2019 09:08:07 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B27A4203F;
- Wed, 19 Jun 2019 09:08:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6BB342047;
- Wed, 19 Jun 2019 09:08:13 +0000 (GMT)
-Received: from oc0383214508.ibm.com (unknown [9.124.35.103])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jun 2019 09:08:13 +0000 (GMT)
-Subject: Re: [PATCH v2 1/1] cpuidle-powernv : forced wakeup for stop states
-To: Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20190617095648.18847-1-huntbag@linux.vnet.ibm.com>
- <20190617095648.18847-2-huntbag@linux.vnet.ibm.com>
- <1560917320.mk5nn6r8jw.astroid@bobo.none>
-From: Abhishek <huntbag@linux.vnet.ibm.com>
-Date: Wed, 19 Jun 2019 14:38:13 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TKPP4qj0zDqRP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 19:28:09 +1000 (AEST)
+Received: from oasis.local.home (rrcs-50-75-126-20.nys.biz.rr.com
+ [50.75.126.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8AEE0206E0;
+ Wed, 19 Jun 2019 09:28:05 +0000 (UTC)
+Date: Wed, 19 Jun 2019 05:28:00 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 5/7] powerpc/ftrace: Update ftrace_location() for
+ powerpc -mprofile-kernel
+Message-ID: <20190619052800.434ff6f0@oasis.local.home>
+In-Reply-To: <1560930937.j2vguryjp3.naveen@linux.ibm.com>
+References: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+ <186656540d3e6225abd98374e791a13d10d86fab.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+ <20190618114509.5b1acbe5@gandalf.local.home>
+ <1560881411.p0i6a1dkwk.naveen@linux.ibm.com>
+ <1560881840.vz9llflvnf.naveen@linux.ibm.com>
+ <20190618143234.78539805@gandalf.local.home>
+ <1560930937.j2vguryjp3.naveen@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <1560917320.mk5nn6r8jw.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19061909-0016-0000-0000-0000028A66E6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061909-0017-0000-0000-000032E7BC79
-Message-Id: <689a52a7-7bfc-7225-e563-ac07f7357e75@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-19_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906190075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,149 +55,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
- dja@axtens.net
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick,
+On Wed, 19 Jun 2019 13:26:37 +0530
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
 
-Thanks for the review. Some replies below.
+> > In include/ftrace.h:
+> > 
+> > #ifndef FTRACE_IP_EXTENSION
+> > # define FTRACE_IP_EXTENSION	0
+> > #endif
+> > 
+> > 
+> > In arch/powerpc/include/asm/ftrace.h
+> > 
+> > #define FTRACE_IP_EXTENSION	MCOUNT_INSN_SIZE
+> > 
+> > 
+> > Then we can just have:
+> > 
+> > unsigned long ftrace_location(unsigned long ip)
+> > {
+> > 	return ftrace_location_range(ip, ip + FTRACE_IP_EXTENSION);
+> > }  
+> 
+> Thanks, that's indeed nice. I hope you don't mind me adding your SOB for 
+> that.
 
-On 06/19/2019 09:53 AM, Nicholas Piggin wrote:
-> Abhishek Goel's on June 17, 2019 7:56 pm:
->> Currently, the cpuidle governors determine what idle state a idling CPU
->> should enter into based on heuristics that depend on the idle history on
->> that CPU. Given that no predictive heuristic is perfect, there are cases
->> where the governor predicts a shallow idle state, hoping that the CPU will
->> be busy soon. However, if no new workload is scheduled on that CPU in the
->> near future, the CPU may end up in the shallow state.
->>
->> This is problematic, when the predicted state in the aforementioned
->> scenario is a shallow stop state on a tickless system. As we might get
->> stuck into shallow states for hours, in absence of ticks or interrupts.
->>
->> To address this, We forcefully wakeup the cpu by setting the
->> decrementer. The decrementer is set to a value that corresponds with the
->> residency of the next available state. Thus firing up a timer that will
->> forcefully wakeup the cpu. Few such iterations will essentially train the
->> governor to select a deeper state for that cpu, as the timer here
->> corresponds to the next available cpuidle state residency. Thus, cpu will
->> eventually end up in the deepest possible state.
->>
->> Signed-off-by: Abhishek Goel <huntbag@linux.vnet.ibm.com>
->> ---
->>
->> Auto-promotion
->>   v1 : started as auto promotion logic for cpuidle states in generic
->> driver
->>   v2 : Removed timeout_needed and rebased the code to upstream kernel
->> Forced-wakeup
->>   v1 : New patch with name of forced wakeup started
->>   v2 : Extending the forced wakeup logic for all states. Setting the
->> decrementer instead of queuing up a hrtimer to implement the logic.
->>
->>   drivers/cpuidle/cpuidle-powernv.c | 38 +++++++++++++++++++++++++++++++
->>   1 file changed, 38 insertions(+)
->>
->> diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
->> index 84b1ebe212b3..bc9ca18ae7e3 100644
->> --- a/drivers/cpuidle/cpuidle-powernv.c
->> +++ b/drivers/cpuidle/cpuidle-powernv.c
->> @@ -46,6 +46,26 @@ static struct stop_psscr_table stop_psscr_table[CPUIDLE_STATE_MAX] __read_mostly
->>   static u64 default_snooze_timeout __read_mostly;
->>   static bool snooze_timeout_en __read_mostly;
->>   
->> +static u64 forced_wakeup_timeout(struct cpuidle_device *dev,
->> +				 struct cpuidle_driver *drv,
->> +				 int index)
->> +{
->> +	int i;
->> +
->> +	for (i = index + 1; i < drv->state_count; i++) {
->> +		struct cpuidle_state *s = &drv->states[i];
->> +		struct cpuidle_state_usage *su = &dev->states_usage[i];
->> +
->> +		if (s->disabled || su->disable)
->> +			continue;
->> +
->> +		return (s->target_residency + 2 * s->exit_latency) *
->> +			tb_ticks_per_usec;
->> +	}
->> +
->> +	return 0;
->> +}
-> It would be nice to not have this kind of loop iteration in the
-> idle fast path. Can we add a flag or something to the idle state?
-Currently, we do not have any callback notification or some feedback that
-notifies the driver everytime some state is enabled/disabled. So we have
-to parse everytime to get the next enabled state. Are you suggesting to
-add something like next_enabled_state in cpuidle state structure itself
-which will be updated when a state is enabled or disabled?
->> +
->>   static u64 get_snooze_timeout(struct cpuidle_device *dev,
->>   			      struct cpuidle_driver *drv,
->>   			      int index)
->> @@ -144,8 +164,26 @@ static int stop_loop(struct cpuidle_device *dev,
->>   		     struct cpuidle_driver *drv,
->>   		     int index)
->>   {
->> +	u64 dec_expiry_tb, dec, timeout_tb, forced_wakeup;
->> +
->> +	dec = mfspr(SPRN_DEC);
->> +	timeout_tb = forced_wakeup_timeout(dev, drv, index);
->> +	forced_wakeup = 0;
->> +
->> +	if (timeout_tb && timeout_tb < dec) {
->> +		forced_wakeup = 1;
->> +		dec_expiry_tb = mftb() + dec;
->> +	}
-> The compiler probably can't optimise away the SPR manipulations so try
-> to avoid them if possible.
-Are you suggesting something like set_dec_before_idle?(in line with
-what you have suggested to do after idle, reset_dec_after_idle)
->
->> +
->> +	if (forced_wakeup)
->> +		mtspr(SPRN_DEC, timeout_tb);
-> This should just be put in the above 'if'.
-Fair point.
->
->> +
->>   	power9_idle_type(stop_psscr_table[index].val,
->>   			 stop_psscr_table[index].mask);
->> +
->> +	if (forced_wakeup)
->> +		mtspr(SPRN_DEC, dec_expiry_tb - mftb());
-> This will sometimes go negative and result in another timer interrupt.
->
-> It also breaks irq work (which can be set here by machine check I
-> believe.
->
-> May need to implement some timer code to do this for you.
->
-> static void reset_dec_after_idle(void)
-> {
-> 	u64 now;
->          u64 *next_tb;
->
-> 	if (test_irq_work_pending())
-> 		return;
-> 	now = mftb;
-> 	next_tb = this_cpu_ptr(&decrementers_next_tb);
->
-> 	if (now >= *next_tb)
-> 		return;
-> 	set_dec(*next_tb - now);
-> 	if (test_irq_work_pending())
-> 		set_dec(1);
-> }
->
-> Something vaguely like that. See timer_interrupt().
-Ah, Okay. Will go through timer_interrupt().
-> Thanks,
-> Nick
-Thanks,
-Abhishek
+Actually, it's best not to put a SOB by anyone other than yourself. It
+actually has legal meaning.
 
+In this case, please add:
+
+Suggested-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+Thanks!
+
+-- Steve
