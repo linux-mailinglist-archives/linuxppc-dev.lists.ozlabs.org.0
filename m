@@ -1,73 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A404B9BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 15:22:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TQbv1x9hzDqL8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 23:22:35 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE7B4BAE8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 16:13:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TRkl1nvmzDqJ2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 00:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Ga0F0K7E"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TQWX34X1zDqlD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 23:18:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45TQWN67qgzB09ZM;
- Wed, 19 Jun 2019 15:18:40 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Ga0F0K7E; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id eJHKCkKy6Csx; Wed, 19 Jun 2019 15:18:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45TQWN4sgfzB09ZJ;
- Wed, 19 Jun 2019 15:18:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1560950320; bh=qiE5blyrEXjR+EvN4cIOjdw+vmQhFfJ4XznqchvkiBE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Ga0F0K7E3XoSDkoIpBC50ILQufEvplU5MlC4X6vPhMU1h2lHMVlSrVE5mHAB+nqNC
- u3xzEP6IH5n8KFFmyPV57vrixG7l5hCWIOZ2C/GfThUKzBI/uYSic2p6jPyCT5mGlK
- iHsxCiOKvH3UEOSNrHTp85AHc9HB4RkpVmLZLu9A=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0727F8B92B;
- Wed, 19 Jun 2019 15:18:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id KNj3EcPtKvgV; Wed, 19 Jun 2019 15:18:42 +0200 (CEST)
-Received: from PO15451 (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A64938B93C;
- Wed, 19 Jun 2019 15:18:42 +0200 (CEST)
-Subject: Re: [PATCH 1/4] mm: Move ioremap page table mapping function to mm/
-To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org
-References: <20190610043838.27916-1-npiggin@gmail.com>
- <86991f76-2101-8087-37db-d939d5d744fa@c-s.fr>
- <1560915576.aqf69c3nf8.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <7218a243-0d9c-ad90-d409-87663893799e@c-s.fr>
-Date: Wed, 19 Jun 2019 15:18:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TQmV04YczDqp7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 23:30:01 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5JDM4bc006858
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 09:29:59 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t7kj47qvn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 09:29:57 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Wed, 19 Jun 2019 14:28:46 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 19 Jun 2019 14:28:42 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5JDSfXq58916956
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Jun 2019 13:28:41 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FAADA4051;
+ Wed, 19 Jun 2019 13:28:41 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E69DFA4055;
+ Wed, 19 Jun 2019 13:28:40 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.171.67])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Jun 2019 13:28:40 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, andrew.donnellan@au1.ibm.com,
+ clombard@linux.ibm.com
+Subject: [RFC 00/11] opencapi: enable card reset and link retraining
+Date: Wed, 19 Jun 2019 15:28:29 +0200
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <1560915576.aqf69c3nf8.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061913-0016-0000-0000-0000028A7853
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061913-0017-0000-0000-000032E7CF71
+Message-Id: <20190619132840.27634-1-fbarrat@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-19_08:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=784 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906190109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,60 +86,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: aik@ozlabs.ru, arbab@linux.ibm.com, oohall@gmail.com, groug@kaod.org,
+ alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is the linux part of the work to use the PCI hotplug framework to
+control an opencapi card so that it can be reset and re-read after
+flashing a new FPGA image.
+
+It needs support in skiboot:
+http://patchwork.ozlabs.org/project/skiboot/list/?series=114803
+On an old skiboot, it will do nothing.
+
+A virtual PCI slot is created for the opencapi adapter, and its state
+can be controlled through the pnv-php hotplug driver:
+
+  echo 0|1 > /sys/bus/pci/slots/OPENCAPI-<...>/power
+
+Note that the power to the card is not really turned off, as the card
+needs to stay on to be flashed with a new image. Instead the card is
+placed in reset.
+
+The first part of the series mostly deals with the pci/ioda state, as
+the devices can now go away and the state needs to be cleaned up.
+
+The second part is modifications to the hotplug driver on powernv, so
+that a virtual slot is created for the opencapi adapters found in the
+device tree
 
 
-Le 19/06/2019 à 05:43, Nicholas Piggin a écrit :
-> Christophe Leroy's on June 11, 2019 3:24 pm:
->>
->>
->> Le 10/06/2019 à 06:38, Nicholas Piggin a écrit :
 
-[snip]
+Frederic Barrat (11):
+  powerpc/powernv/ioda: Fix ref count for devices with their own PE
+  powerpc/powernv/ioda: Protect PE list
+  powerpc/powernv/ioda: set up PE on opencapi device when enabling
+  powerpc/powernv/ioda: Release opencapi device
+  powerpc/powernv/ioda: Find opencapi slot for a device node
+  pci/hotplug/pnv-php: Remove erroneous warning
+  pci/hotplug/pnv-php: Improve error msg on power state change failure
+  pci/hotplug/pnv-php: Register opencapi slots
+  pci/hotplug/pnv-php: Relax check when disabling slot
+  pci/hotplug/pnv-php: Wrap warnings in macro
+  ocxl: Add PCI hotplug dependency to Kconfig
 
->>> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
->>> index 51e131245379..812bea5866d6 100644
->>> --- a/include/linux/vmalloc.h
->>> +++ b/include/linux/vmalloc.h
->>> @@ -147,6 +147,9 @@ extern struct vm_struct *find_vm_area(const void *addr);
->>>    extern int map_vm_area(struct vm_struct *area, pgprot_t prot,
->>>    			struct page **pages);
->>>    #ifdef CONFIG_MMU
->>> +extern int vmap_range(unsigned long addr,
->>> +		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
->>> +		       unsigned int max_page_shift);
->>
->> Drop extern keyword here.
-> 
-> I don't know if I was going crazy but at one point I was getting
-> duplicate symbol errors that were fixed by adding extern somewhere.
+ arch/powerpc/include/asm/pnv-pci.h        |   1 +
+ arch/powerpc/platforms/powernv/pci-ioda.c | 106 ++++++++++++++--------
+ arch/powerpc/platforms/powernv/pci.c      |  10 +-
+ drivers/misc/ocxl/Kconfig                 |   1 +
+ drivers/pci/hotplug/pnv_php.c             |  66 ++++++++------
+ 5 files changed, 115 insertions(+), 69 deletions(-)
 
-probably not on a function name ...
+-- 
+2.21.0
 
-> Maybe sleep depravation. However...
-> 
->> As checkpatch tells you, 'CHECK:AVOID_EXTERNS: extern prototypes should
->> be avoided in .h files'
-> 
-> I prefer to follow existing style in surrounding code at the expense
-> of some checkpatch warnings. If somebody later wants to "fix" it
-> that's fine.
-
-I don't think that's fine to 'fix' later things that could be done right 
-from the begining. 'Cosmetic only' fixes never happen because they are a 
-nightmare for backports, and a shame for 'git blame'.
-
-In some patches, you add cleanups to make the code look nicer, and here 
-you have the opportunity to make the code nice from the begining and you 
-prefer repeating the errors done in the past ? You're surprising me.
-
-Christophe
-
-> 
-> Thanks,
-> Nick
-> 
