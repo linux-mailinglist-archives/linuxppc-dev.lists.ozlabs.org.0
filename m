@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1271A4AF5F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 03:13:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6BB4AF1B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 02:39:46 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45T5gg4FbDzDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 10:39:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45T6QS2SHczDqR7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 11:13:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="hiKbt56N"; 
- dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45T5ch6mSRzDqhn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 10:37:07 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id 19so8619982pfa.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2019 17:37:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=haw/uJEjokg0RcoZr7nO9DDOpI6nbsEXawjYSz3kqQg=;
- b=hiKbt56NOlKkE5nP8qz4YZmKr/7xmy6oFqmSLRQX7BU1lJtj//2Vv4iLAwWzDRJLv7
- /KiCuz1/y4GICi9g0HmnO5LXonj+7c/86L8OCFI0Bd4YmaoQHiyTQDElq7u3PgMSjcnY
- 8v8OO/luyfpHm8kLcnVh4JTa9c+DsecxxwohQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=haw/uJEjokg0RcoZr7nO9DDOpI6nbsEXawjYSz3kqQg=;
- b=boWW2g4/iwd0J6HXq13ctcfWhD7mUqMLD5OlIO1OCcSlJzGFRLXEqqtazbh3fr0Gho
- DKJ7wEAY6eKnZm6+xpQx8oWjfMRhW94nqfVk3hx8i+tgOOlv5u5t9Nt06ETqQmaVAAcp
- A1h5aKpPdnIGfM3Q0nMqYONIGW5+iYj5XBF8W8L2MEB+1WbkNtgUwkeYKnXng6CN2+pR
- hSrLz66BQMLGwcaz7qtnzp6MAgVq5d4kXZeGdA4XErbCtJoFXcKpTdR1L8PnC5ADjRUF
- 9LLADbJ24qCW+y46nriJVwVgFo5t3W/z+3sT+7k5NIc/kZAbzIZDR/dgSiC3fPaYfqoN
- bcPw==
-X-Gm-Message-State: APjAAAULmYYfEzcbRW6TN5MhXfS6zio2p2fIKi/U34eK6JUu7oUiIS/X
- h8A0Ub54GVoLK9GJiKlmX197Lw==
-X-Google-Smtp-Source: APXvYqzDNXTwX5fv6QNKCIgdYTGcWxJlfnRoS/a8g6aYPKG2RjIcxr6RLvAnLyludLzBMgjEheLI/A==
-X-Received: by 2002:a63:d415:: with SMTP id a21mr5039278pgh.229.1560904624628; 
- Tue, 18 Jun 2019 17:37:04 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id u23sm18230040pfn.140.2019.06.18.17.37.02
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 18 Jun 2019 17:37:03 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Andreas Schwab <schwab@linux-m68k.org>, Radu Rendec <radu.rendec@gmail.com>
-Subject: Re: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
-In-Reply-To: <875zp2rcip.fsf@igel.home>
-References: <20190610232758.19010-1-radu.rendec@gmail.com>
- <87r27t2el0.fsf@dja-thinkpad.axtens.net>
- <5fcdb5767b7cf4c7d5b7496c0032021e43115d39.camel@gmail.com>
- <87muif2y4l.fsf@dja-thinkpad.axtens.net>
- <fbf9f9cbb99fc40c7d7af86fee3984427c61b799.camel__46559.9162316479$1560860409$gmane$org@gmail.com>
- <875zp2rcip.fsf@igel.home>
-Date: Wed, 19 Jun 2019 10:36:59 +1000
-Message-ID: <87k1di2yxg.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45T6N512pVzDq5W
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 11:11:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.b="clEjH7Q7"; 
+ dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 45T6N420hRz9s3l;
+ Wed, 19 Jun 2019 11:11:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1560906676;
+ bh=7TMYlMTGr57kvpIOT2ri7jpdPyF9ZyOZTrYr59zbLeU=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=clEjH7Q74pThkxAepBWXKHk8UlgOALPKonzlOX/3/s7+30RIxj/FNBruoQLExdxZ5
+ k/X8utmiH2Qc+ezwEi71s3Cu3oMoPk9eqbTg01/srUd2tp2BqJ5nwQEAplDV9cLd4i
+ x0z1HhT/jIEvQyPKTDM8Dh6yFSU5XQPtKlMO+GZxaJsBajZl7+DmlbzxEE04utzzrt
+ qZTnotDUMr3usTPdDZEIkUWXYJ78u6Hn5V1xdSG4LE5gMJlllZPl71T39h3fCUtkm2
+ Bs+xVhIUaniBhbcVKSp7M/nku0rqDT0ZZDhwYvOnUAI/GK8HM1UNGpJqFmuxUKDIHE
+ 8fcTRS/Ff+UQA==
+Received: by neuling.org (Postfix, from userid 1000)
+ id 3D5932A2538; Wed, 19 Jun 2019 11:11:16 +1000 (AEST)
+Message-ID: <3426e38c9028694f2ea55f6adaf3b679a1bce19f.camel@neuling.org>
+Subject: Re: [PATCH v5 2/2] powerpc: Fix compile issue with force DAWR
+From: Michael Neuling <mikey@neuling.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, mpe@ellerman.id.au
+Date: Wed, 19 Jun 2019 11:11:16 +1000
+In-Reply-To: <e20b2d44-508c-7d06-1af8-b608563b8c57@c-s.fr>
+References: <20190604030037.9424-1-mikey@neuling.org>
+ <20190604030037.9424-2-mikey@neuling.org>
+ <e20b2d44-508c-7d06-1af8-b608563b8c57@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,48 +59,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Oleg Nesterov <oleg@redhat.com>
+Cc: Mathieu Malaterre <malat@debian.org>, hch@infradead.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andreas Schwab <schwab@linux-m68k.org> writes:
+On Tue, 2019-06-18 at 18:28 +0200, Christophe Leroy wrote:
+>=20
+> Le 04/06/2019 =C3=A0 05:00, Michael Neuling a =C3=A9crit :
+> > If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
+> > at linking with:
+> >    arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined
+> > reference to `dawr_force_enable'
+> >=20
+> > This was caused by commit c1fe190c0672 ("powerpc: Add force enable of
+> > DAWR on P9 option").
+> >=20
+> > This moves a bunch of code around to fix this. It moves a lot of the
+> > DAWR code in a new file and creates a new CONFIG_PPC_DAWR to enable
+> > compiling it.
+>=20
+> After looking at all this once more, I'm just wondering: why are we=20
+> creating stuff specific to DAWR ?
+>=20
+> In the old days, we only add DABR, and everything was named on DABR.
+> When DAWR was introduced some years ago we renamed stuff like do_dabr()=
+=20
+> to do_break() so that we could regroup things together. And now we are=
+=20
+> taking dawr() out of the rest. Why not keep dabr() stuff and dawr()=20
+> stuff all together in something dedicated to breakpoints, and try to=20
+> regroup all breakpoint stuff in a single place ? I see some=20
+> breakpointing stuff done in kernel/process.c and other things done in=20
+> hw_breakpoint.c, to common functions call from one file to the other,=20
+> preventing GCC to fully optimise, etc ...
+>=20
+> Also, behing this thinking, I have the idea that we could easily=20
+> implement 512 bytes breakpoints on the 8xx too. The 8xx have neither=20
+> DABR nor DAWR, but is using a set of comparators. And as you can see in=
+=20
+> the 8xx version of __set_dabr() in kernel/process.c, we emulate the DABR=
+=20
+> behaviour by setting two comparators. By using the same comparators with=
+=20
+> a different setup, we should be able to implement breakpoints on larger=
+=20
+> ranges of address.
 
-> On Jun 18 2019, Radu Rendec <radu.rendec@gmail.com> wrote:
->
->> Since you already have a working setup, it would be nice if you could
->> add a printk to arch_ptrace() to print the address and confirm what I
->> believe happens (by reading the gdb source code).
->
-> A ppc32 ptrace syscall goes through compat_arch_ptrace.
+Christophe
 
+I agree that their are opportunities to refactor this code and I appreciate=
+ your
+efforts in making this code better but...=20
 
-Ah right, and that (in ptrace32.c) contains code that will work:
+We have a problem here of not being able to compile an odd ball case that a=
+lmost
+no one ever hits (it was just an odd mpe CI case). We're up to v5 of a simp=
+le
+fix which is just silly.=20
 
-
-			/*
-			 * the user space code considers the floating point
-			 * to be an array of unsigned int (32 bits) - the
-			 * index passed in is based on this assumption.
-			 */
-			tmp = ((unsigned int *)child->thread.fp_state.fpr)
-				[FPRINDEX(index)];
-
-FPRINDEX is defined above to deal with the various manipulations you
-need to do.
-
-Radu: I think we want to copy that working code back into ptrace.c. The
-challenge will be unpicking the awful mess of ifdefs in ptrace.c and
-making it somewhat more comprehensible.
+So let's get this fix in and move on to the whole bunch of refactoring we c=
+an do
+in this code which is already documented in the github issue tracking.
 
 Regards,
-Daniel
+Mikey
 
->
-> Andreas.
->
-> -- 
-> Andreas Schwab, schwab@linux-m68k.org
-> GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-> "And now for something completely different."
