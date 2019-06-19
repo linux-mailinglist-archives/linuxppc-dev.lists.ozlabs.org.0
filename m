@@ -1,34 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D97F4B9EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 15:27:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CCA4B8C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 14:38:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TPdN6MjPzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 22:38:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TQj31jByzDqpg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 23:27:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZVMdWNxB"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TPZY6d5TzDqF1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:36:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 45TPZY50tMz9s7h; Wed, 19 Jun 2019 22:36:21 +1000 (AEST)
-X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: fabb2efcf0846e28b4910fc20bdc203d3d0170af
-X-Patchwork-Hint: ignore
-In-Reply-To: <20190617071619.19360-2-sjitindarsingh@gmail.com>
-To: Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/2] KVM: PPC: Book3S HV: Fix r3 corruption in h_set_dabr()
-Message-Id: <45TPZY50tMz9s7h@ozlabs.org>
-Date: Wed, 19 Jun 2019 22:36:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TQWX36jPzDqlQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 23:18:47 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45TQWM4qfLzB09ZK;
+ Wed, 19 Jun 2019 15:18:39 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ZVMdWNxB; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 1-J7oHQEb5oB; Wed, 19 Jun 2019 15:18:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45TQWM3kz4zB09ZJ;
+ Wed, 19 Jun 2019 15:18:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1560950319; bh=k5b84zQkH4mxZUcdgRG9azGWYvRhQwWD/Z4y0POu3M4=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=ZVMdWNxBPo8fOPOrTBG60GaQZH3NkMj4o/In0Uhr4WRN1LRCetm2fQXTjvAV7j1C4
+ 6FEftMC9jTXpB65QoUncilVt44Lt02LEuzJ/1J1CT3Z7aOC+bdi8UqTYDMElhfpmfY
+ h+ZineNGiLLs2y3YL2PGZ6+M1dW3fSaC6ObkyfIY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D24DE8B93C;
+ Wed, 19 Jun 2019 15:18:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 3JXBJ0BM-m1V; Wed, 19 Jun 2019 15:18:41 +0200 (CEST)
+Received: from PO15451 (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E93E8B92B;
+ Wed, 19 Jun 2019 15:18:41 +0200 (CEST)
+Subject: Re: [PATCH 2/3] powerpc/64s/radix: ioremap use ioremap_page_range
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190610030818.17965-1-npiggin@gmail.com>
+ <20190610030818.17965-2-npiggin@gmail.com>
+ <1a9a36aa-f2bb-1ce8-78d5-ddf24e336078@c-s.fr>
+ <1560915874.eudrz3r20a.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d4e026c5-d0cd-df5f-56d3-1cf62c3a18bd@c-s.fr>
+Date: Wed, 19 Jun 2019 14:49:37 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
+MIME-Version: 1.0
+In-Reply-To: <1560915874.eudrz3r20a.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,60 +80,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, clg@kaod.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2019-06-17 at 07:16:18 UTC, Suraj Jitindar Singh wrote:
-> From: Michael Neuling <mikey@neuling.org>
-> 
-> Commit c1fe190c0672 ("powerpc: Add force enable of DAWR on P9
-> option") screwed up some assembler and corrupted a pointer in
-> r3. This resulted in crashes like the below:
-> 
->   [   44.374746] BUG: Kernel NULL pointer dereference at 0x000013bf
->   [   44.374848] Faulting instruction address: 0xc00000000010b044
->   [   44.374906] Oops: Kernel access of bad area, sig: 11 [#1]
->   [   44.374951] LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
->   [   44.375018] Modules linked in: vhost_net vhost tap xt_CHECKSUM iptable_mangle xt_MASQUERADE iptable_nat nf_nat xt_conntrack nf_conntrack nf_defrag_ipv6 libcrc32c nf_defrag_ipv4 ipt_REJECT nf_reject_ipv4 xt_tcpudp bridge stp llc ebtable_filter ebtables ip6table_filter ip6_tables iptable_filter bpfilter vmx_crypto crct10dif_vpmsum crc32c_vpmsum kvm_hv kvm sch_fq_codel ip_tables x_tables autofs4 virtio_net net_failover virtio_scsi failover
->   [   44.375401] CPU: 8 PID: 1771 Comm: qemu-system-ppc Kdump: loaded Not tainted 5.2.0-rc4+ #3
->   [   44.375500] NIP:  c00000000010b044 LR: c0080000089dacf4 CTR: c00000000010aff4
->   [   44.375604] REGS: c00000179b397710 TRAP: 0300   Not tainted  (5.2.0-rc4+)
->   [   44.375691] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 42244842  XER: 00000000
->   [   44.375815] CFAR: c00000000010aff8 DAR: 00000000000013bf DSISR: 42000000 IRQMASK: 0
->   [   44.375815] GPR00: c0080000089dd6bc c00000179b3979a0 c008000008a04300 ffffffffffffffff
->   [   44.375815] GPR04: 0000000000000000 0000000000000003 000000002444b05d c0000017f11c45d0
->   [   44.375815] GPR08: 078000003e018dfe 0000000000000028 0000000000000001 0000000000000075
->   [   44.375815] GPR12: c00000000010aff4 c000000007ff6300 0000000000000000 0000000000000000
->   [   44.375815] GPR16: 0000000000000000 c0000017f11d0000 00000000ffffffff c0000017f11ca7a8
->   [   44.375815] GPR20: c0000017f11c42ec ffffffffffffffff 0000000000000000 000000000000000a
->   [   44.375815] GPR24: fffffffffffffffc 0000000000000000 c0000017f11c0000 c000000001a77ed8
->   [   44.375815] GPR28: c00000179af70000 fffffffffffffffc c0080000089ff170 c00000179ae88540
->   [   44.376673] NIP [c00000000010b044] kvmppc_h_set_dabr+0x50/0x68
->   [   44.376754] LR [c0080000089dacf4] kvmppc_pseries_do_hcall+0xa3c/0xeb0 [kvm_hv]
->   [   44.376849] Call Trace:
->   [   44.376886] [c00000179b3979a0] [c0000017f11c0000] 0xc0000017f11c0000 (unreliable)
->   [   44.376982] [c00000179b397a10] [c0080000089dd6bc] kvmppc_vcpu_run_hv+0x694/0xec0 [kvm_hv]
->   [   44.377084] [c00000179b397ae0] [c0080000093f8bcc] kvmppc_vcpu_run+0x34/0x48 [kvm]
->   [   44.377185] [c00000179b397b00] [c0080000093f522c] kvm_arch_vcpu_ioctl_run+0x2f4/0x400 [kvm]
->   [   44.377286] [c00000179b397b90] [c0080000093e3618] kvm_vcpu_ioctl+0x460/0x850 [kvm]
->   [   44.377384] [c00000179b397d00] [c0000000004ba6c4] do_vfs_ioctl+0xe4/0xb40
->   [   44.377464] [c00000179b397db0] [c0000000004bb1e4] ksys_ioctl+0xc4/0x110
->   [   44.377547] [c00000179b397e00] [c0000000004bb258] sys_ioctl+0x28/0x80
->   [   44.377628] [c00000179b397e20] [c00000000000b888] system_call+0x5c/0x70
->   [   44.377712] Instruction dump:
->   [   44.377765] 4082fff4 4c00012c 38600000 4e800020 e96280c0 896b0000 2c2b0000 3860ffff
->   [   44.377862] 4d820020 50852e74 508516f6 78840724 <f88313c0> f8a313c8 7c942ba6 7cbc2ba6
-> 
-> Fix the bug by only changing r3 when we are returning immediately.
-> 
-> Fixes: c1fe190c0672 ("powerpc: Add force enable of DAWR on P9 option")
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Reported-by: Cédric Le Goater <clg@kaod.org>
 
-Series applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/fabb2efcf0846e28b4910fc20bdc203d3d0170af
+Le 19/06/2019 à 05:59, Nicholas Piggin a écrit :
+> Christophe Leroy's on June 11, 2019 4:46 pm:
+>>
+>>
+>> Le 10/06/2019 à 05:08, Nicholas Piggin a écrit :
 
-cheers
+[snip]
+
+>>> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+>>> index c9bcf428dd2b..db993bc1aef3 100644
+>>> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+>>> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+>>> @@ -11,6 +11,7 @@
+>>>    
+>>>    #define pr_fmt(fmt) "radix-mmu: " fmt
+>>>    
+>>> +#include <linux/io.h>
+>>>    #include <linux/kernel.h>
+>>>    #include <linux/sched/mm.h>
+>>>    #include <linux/memblock.h>
+>>> @@ -1122,3 +1123,23 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+>>>    
+>>>    	set_pte_at(mm, addr, ptep, pte);
+>>>    }
+>>> +
+>>> +int radix__ioremap_range(unsigned long ea, phys_addr_t pa, unsigned long size,
+>>> +			pgprot_t prot, int nid)
+>>> +{
+>>> +	if (likely(slab_is_available())) {
+>>> +		int err = ioremap_page_range(ea, ea + size, pa, prot);
+>>> +		if (err)
+>>> +			unmap_kernel_range(ea, size);
+>>> +		return err;
+>>> +	} else {
+>>> +		unsigned long i;
+>>> +
+>>> +		for (i = 0; i < size; i += PAGE_SIZE) {
+>>> +			int err = map_kernel_page(ea + i, pa + i, prot);
+>>> +			if (WARN_ON_ONCE(err)) /* Should clean up */
+>>> +				return err;
+>>> +		}
+>>
+>> Same loop again.
+>>
+>> What about not doing a radix specific function and just putting
+>> something like below in the core ioremap_range() function ?
+>>
+>> 	if (likely(slab_is_available()) && radix_enabled()) {
+>> 		int err = ioremap_page_range(ea, ea + size, pa, prot);
+>>
+>> 		if (err)
+>> 			unmap_kernel_range(ea, size);
+>> 		return err;
+>> 	}
+>>
+>> Because I'm pretty sure will more and more use ioremap_page_range().
+> 
+> Well I agree the duplication is not so nice, but it's convenient
+> to see what is going on for each MMU type.
+> 
+> There is a significant amount of churn that needs to be done in
+> this layer so I prefer to make it a bit simpler despite duplication.
+> 
+> I would like to remove the early ioremap or make it into its own
+> function. Re-implement map_kernel_page with ioremap_page_range,
+> allow page tables that don't use slab to avoid the early check,
+> unbolt the hptes mapped in early boot, etc.
+> 
+> I just wanted to escape out the 64s and hash/radix implementations
+> completely until that settles.
+
+I can understand the benefit in some situations but here I just can't. 
+And code duplication should be avoided as much as possible as it makes 
+code maintenance more difficult.
+
+Here you have:
+
++static int ioremap_range(unsigned long ea, phys_addr_t pa, unsigned 
+long size, pgprot_t prot, int nid)
++{
++	unsigned long i;
++
++	for (i = 0; i < size; i += PAGE_SIZE) {
++		int err = map_kernel_page(ea + i, pa + i, prot);
++		if (err) {
++			if (slab_is_available())
++				unmap_kernel_range(ea, size);
++			else
++				WARN_ON_ONCE(1); /* Should clean up */
++			return err;
++		}
++	}
++
++	return 0;
++}
+
+You now create a new one in another file, that is almost identical:
+
++int ioremap_range(unsigned long ea, phys_addr_t pa, unsigned long size, 
+pgprot_t prot, int nid)
++{
++	unsigned long i;
++
++	if (radix_enabled())
++		return radix__ioremap_range(ea, pa, size, prot, nid);
++
++	for (i = 0; i < size; i += PAGE_SIZE) {
++		int err = map_kernel_page(ea + i, pa + i, prot);
++		if (err) {
++			if (slab_is_available())
++				unmap_kernel_range(ea, size);
++			else
++				WARN_ON_ONCE(1); /* Should clean up */
++			return err;
++		}
++	}
++
++	return 0;
++}
+
+Then you have to make the original one __weak.
+
+Sorry I'm still having difficulties understanding what the benefit is.
+
+radix_enabled() is defined for every platforms so could just add the 
+following on top of the existing ioremap_range() and voila.
+
++	if (radix_enabled())
++		return radix__ioremap_range(ea, pa, size, prot, nid);
+
+
+And with that you wouldn't have the __weak stuff to handle.
+
+> 
+>>> -static int ioremap_range(unsigned long ea, phys_addr_t pa, unsigned long size, pgprot_t prot, int nid)
+>>> +int __weak ioremap_range(unsigned long ea, phys_addr_t pa, unsigned long size, pgprot_t prot, int nid)
+>>
+>> Hum. Weak functions remain in unused in vmlinux unless
+>> CONFIG_LD_DEAD_CODE_DATA_ELIMINATION is selected.
+>>
+>> Also, they are some how dangerous because people might change them
+>> without seeing that it is overridden for some particular configuration.
+> 
+> Well you shouldn't assume that when you see a weak function, but
+> what's the preferred alternative? A config option?
+
+Yes you are right, nobody should assume that, but ...
+
+But I think if the fonctions were really different, the preferred 
+alternative would be to move the original function into a file dedicated 
+to nohash64.
+
+Christophe
