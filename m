@@ -2,86 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DF74BF71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 19:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E614C07D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2019 20:05:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TWpJ6BmHzDqtG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 03:16:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TXtl28QrzDqsx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 04:05:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="jVD1AiET"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TWmK3Ql1zDqsh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 03:15:12 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5JHC4iV129387
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 13:15:08 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t7rq4spvu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 13:15:08 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Wed, 19 Jun 2019 18:15:06 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 19 Jun 2019 18:15:03 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5JHF2qf45809886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jun 2019 17:15:02 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 541C452059;
- Wed, 19 Jun 2019 17:15:02 +0000 (GMT)
-Received: from localhost (unknown [9.85.70.229])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id F01395204F;
- Wed, 19 Jun 2019 17:15:01 +0000 (GMT)
-Date: Wed, 19 Jun 2019 22:44:56 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 4/7] powerpc/ftrace: Additionally nop out the preceding
- mflr with -mprofile-kernel
-To: Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
- <72492bc769cd6f40a536e689fc3195570d07fd5c.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
- <877e9idum7.fsf@concordia.ellerman.id.au>
- <1560927184.kqsg9x9bd1.astroid@bobo.none>
- <1560935530.70niyxru6o.naveen@linux.ibm.com>
- <1560939496.ovo51ph4i4.astroid@bobo.none>
-In-Reply-To: <1560939496.ovo51ph4i4.astroid@bobo.none>
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TXrP2bBfzDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 04:03:48 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45TXrK2rM4z9v3gr;
+ Wed, 19 Jun 2019 20:03:45 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=jVD1AiET; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0ivfhnAFLmlc; Wed, 19 Jun 2019 20:03:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45TXrK1h0pz9v3gk;
+ Wed, 19 Jun 2019 20:03:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1560967425; bh=hF9uyl1Y0uCKyuJ+ZrmdhspkTLdfLpici3IxoVzljMI=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=jVD1AiET+kjqbxCYVaMWkFP8+pj5DY7tazAxx6cwAonrw2TaxwBiC8Dijj9jPg4Da
+ j67hDj1L4Muq8Am5L7yqmFAkTdzs+QqkvfGeXHRrfwvfqN6TOcHtjOmsDiCxlk9FDi
+ 2W1R69pBruoDdXf0Wfi7hCTde0+hzB7yKJAHjJTg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2016D8B952;
+ Wed, 19 Jun 2019 20:03:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id EIDmk4IZlZqv; Wed, 19 Jun 2019 20:03:45 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B1EE8B92B;
+ Wed, 19 Jun 2019 20:03:44 +0200 (CEST)
+Subject: Re: [PATCH v5 2/2] powerpc: Fix compile issue with force DAWR
+To: Michael Neuling <mikey@neuling.org>, mpe@ellerman.id.au
+References: <20190604030037.9424-1-mikey@neuling.org>
+ <20190604030037.9424-2-mikey@neuling.org>
+ <e20b2d44-508c-7d06-1af8-b608563b8c57@c-s.fr>
+ <3426e38c9028694f2ea55f6adaf3b679a1bce19f.camel@neuling.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3bdfdc0c-62e3-6495-7a8c-601294e2db0c@c-s.fr>
+Date: Wed, 19 Jun 2019 20:03:43 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
+In-Reply-To: <3426e38c9028694f2ea55f6adaf3b679a1bce19f.camel@neuling.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 19061917-0016-0000-0000-0000028A95A4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061917-0017-0000-0000-000032E7EDD6
-Message-Id: <1560961996.5xzl76c7fj.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-19_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906190139
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,77 +80,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mathieu Malaterre <malat@debian.org>, hch@infradead.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin wrote:
-> Naveen N. Rao's on June 19, 2019 7:53 pm:
->> Nicholas Piggin wrote:
->>> Michael Ellerman's on June 19, 2019 3:14 pm:
->>>>=20
->>>> I'm also not convinced the ordering between the two patches is
->>>> guaranteed by the ISA, given that there's possibly no isync on the oth=
-er
->>>> CPU.
->>>=20
->>> Will they go through a context synchronizing event?
->>>=20
->>> synchronize_rcu_tasks() should ensure a thread is scheduled away, but
->>> I'm not actually sure it guarantees CSI if it's kernel->kernel. Could
->>> do a smp_call_function to do the isync on each CPU to be sure.
->>=20
->> Good point. Per=20
->> Documentation/RCU/Design/Requirements/Requirements.html#Tasks RCU:
->> "The solution, in the form of Tasks RCU, is to have implicit read-side=20
->> critical sections that are delimited by voluntary context switches, that=
-=20
->> is, calls to schedule(), cond_resched(), and synchronize_rcu_tasks(). In=
-=20
->> addition, transitions to and from userspace execution also delimit=20
->> tasks-RCU read-side critical sections."
->>=20
->> I suppose transitions to/from userspace, as well as calls to schedule()=20
->> result in context synchronizing instruction being executed. But, if some=
-=20
->> tasks call cond_resched() and synchronize_rcu_tasks(), we probably won't=
-=20
->> have a CSI executed.
->>=20
->> Also:
->> "In CONFIG_PREEMPT=3Dn kernels, trampolines cannot be preempted, so thes=
-e=20
->> APIs map to call_rcu(), synchronize_rcu(), and rcu_barrier(),=20
->> respectively."
->>=20
->> In this scenario as well, I think we won't have a CSI executed in case=20
->> of cond_resched().
->>=20
->> Should we enhance patch_instruction() to handle that?
->=20
-> Well, not sure. Do we have many post-boot callers of it? Should
-> they take care of their own synchronization requirements?
-
-Kprobes and ftrace are the two users (along with anything else that may=20
-use jump labels).
-
-Looking at this from the CMODX perspective: the main example quoted of=20
-an erratic behavior is when any variant of the patched instruction=20
-causes an exception.
-
-With ftrace, I think we are ok since we only ever patch a 'nop' or a=20
-'bl' (and the 'mflr' now), none of which should cause an exception. As=20
-such, the existing patch_instruction() should suffice.
-
-However, with kprobes, we patch a 'trap' (or a branch in case of=20
-optprobes) on most instructions. I wonder if we should be issuing an=20
-'isync' on all cpus in this case. Or, even if that is sufficient or=20
-necessary.
 
 
-Thanks,
-Naveen
+Le 19/06/2019 à 03:11, Michael Neuling a écrit :
+> On Tue, 2019-06-18 at 18:28 +0200, Christophe Leroy wrote:
+>>
+>> Le 04/06/2019 à 05:00, Michael Neuling a écrit :
+>>> If you compile with KVM but without CONFIG_HAVE_HW_BREAKPOINT you fail
+>>> at linking with:
+>>>     arch/powerpc/kvm/book3s_hv_rmhandlers.o:(.text+0x708): undefined
+>>> reference to `dawr_force_enable'
+>>>
+>>> This was caused by commit c1fe190c0672 ("powerpc: Add force enable of
+>>> DAWR on P9 option").
+>>>
+>>> This moves a bunch of code around to fix this. It moves a lot of the
+>>> DAWR code in a new file and creates a new CONFIG_PPC_DAWR to enable
+>>> compiling it.
+>>
+>> After looking at all this once more, I'm just wondering: why are we
+>> creating stuff specific to DAWR ?
+>>
+>> In the old days, we only add DABR, and everything was named on DABR.
+>> When DAWR was introduced some years ago we renamed stuff like do_dabr()
+>> to do_break() so that we could regroup things together. And now we are
+>> taking dawr() out of the rest. Why not keep dabr() stuff and dawr()
+>> stuff all together in something dedicated to breakpoints, and try to
+>> regroup all breakpoint stuff in a single place ? I see some
+>> breakpointing stuff done in kernel/process.c and other things done in
+>> hw_breakpoint.c, to common functions call from one file to the other,
+>> preventing GCC to fully optimise, etc ...
+>>
+>> Also, behing this thinking, I have the idea that we could easily
+>> implement 512 bytes breakpoints on the 8xx too. The 8xx have neither
+>> DABR nor DAWR, but is using a set of comparators. And as you can see in
+>> the 8xx version of __set_dabr() in kernel/process.c, we emulate the DABR
+>> behaviour by setting two comparators. By using the same comparators with
+>> a different setup, we should be able to implement breakpoints on larger
+>> ranges of address.
+> 
+> Christophe
+> 
+> I agree that their are opportunities to refactor this code and I appreciate your
+> efforts in making this code better but...
+> 
+> We have a problem here of not being able to compile an odd ball case that almost
+> no one ever hits (it was just an odd mpe CI case). We're up to v5 of a simple
+> fix which is just silly.
+> 
+> So let's get this fix in and move on to the whole bunch of refactoring we can do
+> in this code which is already documented in the github issue tracking.
+> 
 
-=
+Agreed.
 
+I've filed the following issue to keep that in mind: 
+https://github.com/linuxppc/issues/issues/251
+
+Thanks
+Christophe
