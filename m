@@ -2,85 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4164B4CB0A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71A54CB56
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:52:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TxYJ5cv5zDrFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:37:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Txtg0N5rzDrBj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:52:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="oNzKb/mh"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TxKj3t9pzDrD0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:27:05 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5K9LrwV006360
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 05:27:03 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2t85ymbxrn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 05:27:02 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Thu, 20 Jun 2019 10:27:01 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 20 Jun 2019 10:26:58 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5K9QvTe32636952
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Jun 2019 09:26:57 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87E2DA4054;
- Thu, 20 Jun 2019 09:26:57 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 116EEA405B;
- Thu, 20 Jun 2019 09:26:57 +0000 (GMT)
-Received: from [9.102.0.246] (unknown [9.102.0.246])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 20 Jun 2019 09:26:56 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Txrm62nHzDr9S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:50:30 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id f25so1291805pgv.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 02:50:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:user-agent
+ :message-id:content-transfer-encoding;
+ bh=+mDUe4agjaww7pUTLcDdC+BdIcMQQfoL3c6O57Ufp2U=;
+ b=oNzKb/mhO810DR5F03SbXf2Ln6xbMHsGQ1IgqTqzHKOQiS/eJCA2U/ZX2uTZVReRyv
+ EmBsb429a8t48ex83wZSsEsUey/Pn/FRSknQlUooSU/p141oEqmwmS7wLoegbHkq2lvw
+ jeN0erh9jhEvtxRFT9C6s1CAfcpU7P9TfhSgxsVQ617Uu9YOPt/GarKwwdGt+KNaZ5KR
+ Pn6Fs6QWCMz/PFDMoH6ouFp9kMwcsRM+R7DEKsmkZToWFXyzgoFhnIdyc3M9cdeeoBsW
+ W6bFEq5wQym9yGETlB3QyFgOgHuZh5s/U7O5ClTP4ctOJiJ+HvrWQwBAUKIo3D3o8GYF
+ etVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=+mDUe4agjaww7pUTLcDdC+BdIcMQQfoL3c6O57Ufp2U=;
+ b=qS17WrNPLdCJrV5wcsC1UX/HBImObPiG+5rYq4YiqZrAEh13Z/0zqrkf+dexKgN79b
+ iY+wXEUebypE9JsXbKsTjw4CM/OOwfYqzHwsIMtIhAhgRNEDQWwsGuH3O241DB50XdcM
+ foi0szDKvns2D5y/VV8fmu7k0JIac0YNCk6RTwbg96OzZW43gvnwI6ZRN2rUeHFfEmMr
+ tqXKrFX/FmSpe2yP/WmdbFgqmLFSdwz+LhwF1QPynL20n7P7JaBo/DZR3MwjpQHA+UU5
+ LPUd1WqcuussVlV4Yh2/ez9GlJxJag8BFvoiZczvVIf02ePirPYm8UEg/Y1A2TZ2JA4S
+ d6Vg==
+X-Gm-Message-State: APjAAAVGbAR7AHn3ZVyVd+AtYh8aeaS9eFNtU02xmzT4k1WlHt7uaoOF
+ evUvOeW9hywKSFNh3gB7ycHFpumyTE4=
+X-Google-Smtp-Source: APXvYqzBBzUi04O8pspRQeDL+SeGP8UTSBWwdxR8jDwaLLksjU5kNhet8eYJMjtr5LsKsJH05/v1kw==
+X-Received: by 2002:a17:90a:8d09:: with SMTP id
+ c9mr2199014pjo.131.1561024227121; 
+ Thu, 20 Jun 2019 02:50:27 -0700 (PDT)
+Received: from localhost ([203.220.63.126])
+ by smtp.gmail.com with ESMTPSA id s15sm28532309pfd.183.2019.06.20.02.50.25
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 20 Jun 2019 02:50:26 -0700 (PDT)
+Date: Thu, 20 Jun 2019 19:50:29 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [PATCH v2 42/52] powerpc/64s/exception: machine check fwnmi does
  not trigger when in HV mode
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+To: linuxppc-dev@lists.ozlabs.org, Mahesh Jagannath Salgaonkar
+ <mahesh@linux.vnet.ibm.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
  <20190620051459.29573-43-npiggin@gmail.com>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Thu, 20 Jun 2019 14:56:56 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ <275c465d-f7de-9c2d-af90-ab5d230b7240@linux.vnet.ibm.com>
+In-Reply-To: <275c465d-f7de-9c2d-af90-ab5d230b7240@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190620051459.29573-43-npiggin@gmail.com>
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1561023966.j8war0qcu0.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062009-0016-0000-0000-0000028AC7F9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062009-0017-0000-0000-000032E82443
-Message-Id: <275c465d-f7de-9c2d-af90-ab5d230b7240@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-20_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=945 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906200069
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,32 +88,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/20/19 10:44 AM, Nicholas Piggin wrote:
-> Remove dead code.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/kernel/exceptions-64s.S | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 286bd5670d60..b12755a4f884 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -1040,9 +1040,6 @@ TRAMP_REAL_BEGIN(machine_check_pSeries)
->  	.globl machine_check_fwnmi
->  machine_check_fwnmi:
->  	EXCEPTION_PROLOG_0 PACA_EXMC
-> -BEGIN_FTR_SECTION
-> -	b	machine_check_common_early
-> -END_FTR_SECTION_IFCLR(CPU_FTR_HVMODE)
+Mahesh Jagannath Salgaonkar's on June 20, 2019 7:26 pm:
+> On 6/20/19 10:44 AM, Nicholas Piggin wrote:
+>> Remove dead code.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  arch/powerpc/kernel/exceptions-64s.S | 3 ---
+>>  1 file changed, 3 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/=
+exceptions-64s.S
+>> index 286bd5670d60..b12755a4f884 100644
+>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>> @@ -1040,9 +1040,6 @@ TRAMP_REAL_BEGIN(machine_check_pSeries)
+>>  	.globl machine_check_fwnmi
+>>  machine_check_fwnmi:
+>>  	EXCEPTION_PROLOG_0 PACA_EXMC
+>> -BEGIN_FTR_SECTION
+>> -	b	machine_check_common_early
+>> -END_FTR_SECTION_IFCLR(CPU_FTR_HVMODE)
+>=20
+> Didn't We add that to handle SLB/ERAT errors in real mode for pseries ?
+> Are we taking that off ?
 
-Didn't We add that to handle SLB/ERAT errors in real mode for pseries ?
-Are we taking that off ?
+Oh that's a stupid mistake, as patch title says I mistook it for
+IFSET. Good catch, thanks, that probably messes up a later patch
+too, I'll fix.
 
->  machine_check_pSeries_0:
->  	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 1, 0x200, 1, 1, 0
->  	/*
-> 
-
-
+Thanks,
+Nick
+=
