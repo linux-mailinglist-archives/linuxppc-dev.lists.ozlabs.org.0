@@ -2,75 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735BA4CAE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0F34CAEE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:33:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TxRD6SdRzDrGG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:31:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TxTS014wzDrJp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:33:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tx6n2zgLzDr7q
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:17:37 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TxBW2kX7zDr8L
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:20:50 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5K9DwXT019986; Thu, 20 Jun 2019 05:17:23 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t87b3g49y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Jun 2019 05:17:23 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5K94kg7032616;
- Thu, 20 Jun 2019 09:17:22 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 2t4ra70nu6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Jun 2019 09:17:22 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5K9HLb334865502
+ x5K973Fh076234
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 05:20:48 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t863utvcb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 05:20:48 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
+ Thu, 20 Jun 2019 10:20:45 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 20 Jun 2019 10:20:41 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x5K9Kewl36503834
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Jun 2019 09:17:21 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 979C9AE063;
- Thu, 20 Jun 2019 09:17:21 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7F42AE05C;
- Thu, 20 Jun 2019 09:17:19 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.124.35.143])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 20 Jun 2019 09:17:19 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH v4 6/6] =?UTF-8?q?mm/nvdimm:=20Fix=20endian=20conversion?=
- =?UTF-8?q?=20issues=C2=A0?=
-Date: Thu, 20 Jun 2019 14:46:26 +0530
-Message-Id: <20190620091626.31824-7-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
-References: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
+ Thu, 20 Jun 2019 09:20:40 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FBEC11C05C;
+ Thu, 20 Jun 2019 09:20:40 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B31611C04A;
+ Thu, 20 Jun 2019 09:20:39 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.54.139])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Jun 2019 09:20:39 +0000 (GMT)
+Subject: Re: [PATCH v2] ocxl: Allow contexts to be attached with a NULL mm
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20190620041203.12274-1-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Thu, 20 Jun 2019 11:20:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20190620041203.12274-1-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr-MC
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
+x-cbid: 19062009-0020-0000-0000-0000034BCAAF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062009-0021-0000-0000-0000219F244B
+Message-Id: <0e4965a7-04e7-6412-be37-ea96bcf0e007@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-20_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=824 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1906200068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,79 +90,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Vishal Verma <vishal.l.verma@intel.com>,
- linuxppc-dev@lists.ozlabs.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-nvdimm@lists.01.org
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-nd_label->dpa issue was observed when trying to enable the namespace created
-with little-endian kernel on a big-endian kernel. That made me run
-`sparse` on the rest of the code and other changes are the result of that.
 
-Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
-Fixes: 9dedc73a4658 ("libnvdimm/btt: Fix LBA masking during 'free list' population")
 
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- drivers/nvdimm/btt.c            | 8 ++++----
- drivers/nvdimm/namespace_devs.c | 7 ++++---
- 2 files changed, 8 insertions(+), 7 deletions(-)
+Le 20/06/2019 à 06:12, Alastair D'Silva a écrit :
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> If an OpenCAPI context is to be used directly by a kernel driver, there
+> may not be a suitable mm to use.
+> 
+> The patch makes the mm parameter to ocxl_context_attach optional.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
 
-diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-index a8d56887ec88..3e9f45aec8d1 100644
---- a/drivers/nvdimm/btt.c
-+++ b/drivers/nvdimm/btt.c
-@@ -392,9 +392,9 @@ static int btt_flog_write(struct arena_info *arena, u32 lane, u32 sub,
- 	arena->freelist[lane].sub = 1 - arena->freelist[lane].sub;
- 	if (++(arena->freelist[lane].seq) == 4)
- 		arena->freelist[lane].seq = 1;
--	if (ent_e_flag(ent->old_map))
-+	if (ent_e_flag(le32_to_cpu(ent->old_map)))
- 		arena->freelist[lane].has_err = 1;
--	arena->freelist[lane].block = le32_to_cpu(ent_lba(ent->old_map));
-+	arena->freelist[lane].block = ent_lba(le32_to_cpu(ent->old_map));
- 
- 	return ret;
- }
-@@ -560,8 +560,8 @@ static int btt_freelist_init(struct arena_info *arena)
- 		 * FIXME: if error clearing fails during init, we want to make
- 		 * the BTT read-only
- 		 */
--		if (ent_e_flag(log_new.old_map) &&
--				!ent_normal(log_new.old_map)) {
-+		if (ent_e_flag(le32_to_cpu(log_new.old_map)) &&
-+		    !ent_normal(le32_to_cpu(log_new.old_map))) {
- 			arena->freelist[i].has_err = 1;
- 			ret = arena_clear_freelist_error(arena, i);
- 			if (ret)
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 007027202542..839da9e43572 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -1987,7 +1987,7 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
- 		nd_mapping = &nd_region->mapping[i];
- 		label_ent = list_first_entry_or_null(&nd_mapping->labels,
- 				typeof(*label_ent), list);
--		label0 = label_ent ? label_ent->label : 0;
-+		label0 = label_ent ? label_ent->label : NULL;
- 
- 		if (!label0) {
- 			WARN_ON(1);
-@@ -2322,8 +2322,9 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 			continue;
- 
- 		/* skip labels that describe extents outside of the region */
--		if (nd_label->dpa < nd_mapping->start || nd_label->dpa > map_end)
--			continue;
-+		if (__le64_to_cpu(nd_label->dpa) < nd_mapping->start ||
-+		    __le64_to_cpu(nd_label->dpa) > map_end)
-+				continue;
- 
- 		i = add_namespace_resource(nd_region, nd_label, devs, count);
- 		if (i < 0)
--- 
-2.21.0
+Thanks for the update.
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
+
+>   arch/powerpc/mm/book3s64/radix_tlb.c |  5 +++++
+>   drivers/misc/ocxl/context.c          |  9 ++++++---
+>   drivers/misc/ocxl/link.c             | 28 ++++++++++++++++++++++++----
+>   3 files changed, 35 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index bb9835681315..ce8a77fae6a7 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -666,6 +666,11 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
+>   #define radix__flush_all_mm radix__local_flush_all_mm
+>   #endif /* CONFIG_SMP */
+>   
+> +/*
+> + * If kernel TLBIs ever become local rather than global, then
+> + * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
+> + * assumes kernel TLBIs are global.
+> + */
+>   void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
+>   {
+>   	_tlbie_pid(0, RIC_FLUSH_ALL);
+> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+> index bab9c9364184..994563a078eb 100644
+> --- a/drivers/misc/ocxl/context.c
+> +++ b/drivers/misc/ocxl/context.c
+> @@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, u64 dsisr)
+>   int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+>   {
+>   	int rc;
+> +	unsigned long pidr = 0;
+>   
+>   	// Locks both status & tidr
+>   	mutex_lock(&ctx->status_mutex);
+> @@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+>   		goto out;
+>   	}
+>   
+> -	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
+> -			mm->context.id, ctx->tidr, amr, mm,
+> -			xsl_fault_error, ctx);
+> +	if (mm)
+> +		pidr = mm->context.id;
+> +
+> +	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
+> +			      amr, mm, xsl_fault_error, ctx);
+>   	if (rc)
+>   		goto out;
+>   
+> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+> index cce5b0d64505..58d111afd9f6 100644
+> --- a/drivers/misc/ocxl/link.c
+> +++ b/drivers/misc/ocxl/link.c
+> @@ -224,6 +224,17 @@ static irqreturn_t xsl_fault_handler(int irq, void *data)
+>   		ack_irq(spa, ADDRESS_ERROR);
+>   		return IRQ_HANDLED;
+>   	}
+> +
+> +	if (!pe_data->mm) {
+> +		/*
+> +		 * translation fault from a kernel context - an OpenCAPI
+> +		 * device tried to access a bad kernel address
+> +		 */
+> +		rcu_read_unlock();
+> +		pr_warn("Unresolved OpenCAPI xsl fault in kernel context\n");
+> +		ack_irq(spa, ADDRESS_ERROR);
+> +		return IRQ_HANDLED;
+> +	}
+>   	WARN_ON(pe_data->mm->context.id != pid);
+>   
+>   	if (mmget_not_zero(pe_data->mm)) {
+> @@ -523,7 +534,13 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+>   	pe->amr = cpu_to_be64(amr);
+>   	pe->software_state = cpu_to_be32(SPA_PE_VALID);
+>   
+> -	mm_context_add_copro(mm);
+> +	/*
+> +	 * For user contexts, register a copro so that TLBIs are seen
+> +	 * by the nest MMU. If we have a kernel context, TLBIs are
+> +	 * already global.
+> +	 */
+> +	if (mm)
+> +		mm_context_add_copro(mm);
+>   	/*
+>   	 * Barrier is to make sure PE is visible in the SPA before it
+>   	 * is used by the device. It also helps with the global TLBI
+> @@ -546,7 +563,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+>   	 * have a reference on mm_users. Incrementing mm_count solves
+>   	 * the problem.
+>   	 */
+> -	mmgrab(mm);
+> +	if (mm)
+> +		mmgrab(mm);
+>   	trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, tidr);
+>   unlock:
+>   	mutex_unlock(&spa->spa_lock);
+> @@ -652,8 +670,10 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
+>   	if (!pe_data) {
+>   		WARN(1, "Couldn't find pe data when removing PE\n");
+>   	} else {
+> -		mm_context_remove_copro(pe_data->mm);
+> -		mmdrop(pe_data->mm);
+> +		if (pe_data->mm) {
+> +			mm_context_remove_copro(pe_data->mm);
+> +			mmdrop(pe_data->mm);
+> +		}
+>   		kfree_rcu(pe_data, rcu);
+>   	}
+>   unlock:
+> 
 
