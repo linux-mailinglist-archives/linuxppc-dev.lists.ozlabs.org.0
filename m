@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6374D4C907
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6FF4C91B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:12:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Tvd24fvczDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:10:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Tvgy2TPHzDr2P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:12:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,25 +18,27 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TvXr5bCyzDq5W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:06:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TvZm1JRLzDrBy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:08:15 +1000 (AEST)
 Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
  by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
- id 1hds5S-0002ED-0a; Thu, 20 Jun 2019 16:06:26 +0800
+ id 1hds6w-0002GE-K7; Thu, 20 Jun 2019 16:07:58 +0800
 Received: from herbert by gondobar with local (Exim 4.89)
  (envelope-from <herbert@gondor.apana.org.au>)
- id 1hds5R-0007aV-M2; Thu, 20 Jun 2019 16:06:25 +0800
-Date: Thu, 20 Jun 2019 16:06:25 +0800
+ id 1hds6t-0008BD-NL; Thu, 20 Jun 2019 16:07:55 +0800
+Date: Thu, 20 Jun 2019 16:07:55 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] crypto: talitos - fix max key size for sha384 and sha512
-Message-ID: <20190620080625.5q5sok7ihh4ell2y@gondor.apana.org.au>
-References: <5f1004d33b2347dcfbc677551bafc9d469bb079e.1560318544.git.christophe.leroy@c-s.fr>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2] crypto: nx: no need to check return value of
+ debugfs_create functions
+Message-ID: <20190620080755.bl2klotl5em43b4s@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f1004d33b2347dcfbc677551bafc9d469bb079e.1560318544.git.christophe.leroy@c-s.fr>
+In-Reply-To: <20190614142904.GA11066@kroah.com>
+X-Newsgroups: apana.lists.os.linux.cryptoapi
+Organization: Core
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,24 +51,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, horia.geanta@nxp.com,
- linux-crypto@vger.kernel.org
+Cc: nayna@linux.ibm.com, pfsmorigo@gmail.com, linux-crypto@vger.kernel.org,
+ leitao@debian.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2019 at 05:49:50AM +0000, Christophe Leroy wrote:
-> Below commit came with a typo in the CONFIG_ symbol, leading
-> to a permanently reduced max key size regarless of the driver
-> capabilities.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> When calling debugfs functions, there is no need to ever check the
+> return value.  The function can work or not, but the code logic should
+> never do something different based on this.
 > 
-> Reported-by: Horia GeantÄƒ <horia.geanta@nxp.com>
-> Fixes: b8fbdc2bc4e7 ("crypto: talitos - reduce max key size for SEC1")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Also, there is no need to store the individual debugfs file names,
+> especially as the whole directiry is deleted at once, so remove the
+> unneeded structure entirely.
+> 
+> Cc: "Breno Leitão" <leitao@debian.org>
+> Cc: Nayna Jain <nayna@linux.ibm.com>
+> Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
->  drivers/crypto/talitos.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2: fixed build error found by kbuild
+> 
+> drivers/crypto/nx/nx.c         |  4 +-
+> drivers/crypto/nx/nx.h         | 12 +-----
+> drivers/crypto/nx/nx_debugfs.c | 71 +++++++++++-----------------------
+> 3 files changed, 26 insertions(+), 61 deletions(-)
 
 Patch applied.  Thanks.
 -- 
