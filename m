@@ -2,68 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7116B4C7AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D19824C7B0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:53:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Tst06fFczDr7M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:51:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TswW2tDCzDqH6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:53:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="X62JFb3L"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="cYvbTgf2"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqmm4R4nzDqwD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:16:40 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id y72so920304pgd.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:16:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqmp4rjXzDqwM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:16:42 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id a93so886124pla.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:16:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=eEPX4rW5Kz5NZMGWR4WCjT9DQpre7EAn3GrQ0NxKHwk=;
- b=X62JFb3LmFreFElyL33/RkdKjRlPSkJzWjNI1rnlyvk7a3eQhhHscTCozIFww3lT+x
- qBY1Au6bOG1dNnNt9/rnic/Iz0XtRNOWChN6PS+xKc4PzbjW/GeQjlSSk5+n6Erb8BoY
- FE6XTjQSFPTSrS2kHpnDaxnBe/lz+NVjW+CSaXvzYNLoJVdQWxxInV7ynJIdj3EE76T9
- C8W0ZGBKek5Df8ni4QTjgcAIPp5FAiGpK6onFfGSEGnUn/jcpj80NQ00Ac7CyHiqO1oi
- sllz0WNyd8+dToLyU7IpkaG22Y5mwGhWUWSb/p/8bStJRIk9SaBwF9QRqGvYrV2I9rNb
- pJ+g==
+ bh=S36gVoRulIicvgBrxukcBBJSWzxxF1rkoxok2Me9q0c=;
+ b=cYvbTgf2KXhdSq/pW1Mgtg+iecBxJ4grQA+Qfzp8jNgC1CwLfYVI7hVJXhzJfrVQDm
+ 1DU3q9iHmNqOeqlLB4cR1suqay9g98uPlCTriLSj/aRPZSf681xL9B7hlGaiIb34hhkv
+ ToXqBD5N3eZKvbtI9trbEHUO8zHXuIGkdCpSTjworwQkF1AQ6tBRS9lVSWdiP3oCPhUM
+ HW0QT9ZRTbA38V0WlcW9mXZt038qvv5p4TiEVB7uXEacbRdcwBGVfh1qMdSkX9BDFEk/
+ 0x8K16o1H4nJXIrWxs2r3BVFhEM2Gj1fnRM7NaOXktyt95y0wQ229FDt8RTvtjbt8tbd
+ ZwZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=eEPX4rW5Kz5NZMGWR4WCjT9DQpre7EAn3GrQ0NxKHwk=;
- b=BkFlZHm8cQM7OhrfDWzeRjjY5IilvBZ2mBf4N0EnUwR0IoF3zM6zf5z2W2BX4w26zH
- +3sKPV31oIz1jF7W24/LscMaxVKQs4/8c6KB6SX2yo2qITRqi4ceVs1ASNKb3xQt8cg7
- PFPhU5t5baUlQwW9tn6ng2iJ8IeyzQQB//tYIzgZVvnFBFT41NxPiiVFYc06OEgj3ROJ
- ySEtiuNqsaYWPU+gHGcoss8Sp84s943EAtYFu9QLmloFIaPU8ODnL4eIUblQqp9942vw
- 1Tc3UQ0RRtIyIeq5ytXOQaQjb0sk2RMV5AuuNw24+RiukE7ZL/8hxpFK5rMlERNHkERy
- N/qw==
-X-Gm-Message-State: APjAAAUHZZGMKJWWjD1BX6X0krmpZeg5uYkPHP3rn0duFKLVuiic/WKK
- 0e9/FCOCgpxrpjHw19tg2BenNbyA
-X-Google-Smtp-Source: APXvYqxmkxaFVtzRQNB7MxuxhC7mgLMYBftnWrG/r8NIwCF749+jv5qdhXscQYTJwKRE2RFijvG6Eg==
-X-Received: by 2002:a62:5214:: with SMTP id g20mr74653163pfb.187.1561007798339; 
- Wed, 19 Jun 2019 22:16:38 -0700 (PDT)
+ bh=S36gVoRulIicvgBrxukcBBJSWzxxF1rkoxok2Me9q0c=;
+ b=fIZmVdzXdbAf9BHNo4oM+zogkAD2MkMWqUgtexRCMi/6yQRkObdyt/IJWcS6kwcKi8
+ Xyio3z/EHB62aJq29bP05Zj+7fi8ZbIYE+7HcfQjkGBhYcXN8zOZZF6yO2jx+y8zRWy8
+ soo7IWSWcy8SNVcyYIwazz3OatPUEE7LaAnCNHxNp58s2ehHXhcwqD/eieHIIJh2xERn
+ FMr9x9+uRnhIUKU6kBAJX9GRNwO/WnZ8JAMhdNYxxgdzuOQBuH4I0hnTWZW3ugk2aHqh
+ 8o8Se5GOqAMg14Gx3Zeyi+hgGmEhHxkH4lSnsYE5Vz9gHfkX729GL36z28oubXbaLMZC
+ CRxw==
+X-Gm-Message-State: APjAAAWeGkCDbJIcWlJk2jXL4M5fya17/vrJAWsHfK24tXRkBi/cCnwt
+ lgyQhQdibVBvDv4uFMtaGmLhkQiY
+X-Google-Smtp-Source: APXvYqzpoCeYAKOguRjg6R7G79Q3arCVHhWnT8711IlwL1dH7YDqVfVDLsxfkFA1DmL5R+JTymg/WA==
+X-Received: by 2002:a17:902:b43:: with SMTP id
+ 61mr126100234plq.322.1561007800529; 
+ Wed, 19 Jun 2019 22:16:40 -0700 (PDT)
 Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
  by smtp.gmail.com with ESMTPSA id
- h12sm8235847pje.12.2019.06.19.22.16.36
+ h12sm8235847pje.12.2019.06.19.22.16.38
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 22:16:37 -0700 (PDT)
+ Wed, 19 Jun 2019 22:16:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 45/52] powerpc/64s/exception: machine check windup restore
- cfar for host delivery
-Date: Thu, 20 Jun 2019 15:14:52 +1000
-Message-Id: <20190620051459.29573-46-npiggin@gmail.com>
+Subject: [PATCH v2 46/52] powerpc/64s/exception: fix machine check early
+ should not set AMR
+Date: Thu, 20 Jun 2019 15:14:53 +1000
+Message-Id: <20190620051459.29573-47-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190620051459.29573-1-npiggin@gmail.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
@@ -85,38 +86,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bare metal machine checks run an "early" handler in real mode which
-potentially flushes faulting translation structures, among other
-things, before running the main handler which reports the event.
+The early machine check runs in real mode, so locking is unnecessary.
+Worse, the windup does not restore AMR, so this can result in a false
+KUAP fault after a recoverable machine check hits inside a user copy
+operation.
 
-The main handler runs as a normal interrupt handler, after a "windup"
-that sets registers back as they were at interrupt entry. CFAR does
-not get restored by the windup code, so add that. The current handler
-does not appear to use CFAR anywhere, because the main handler is not
-run if the MCE happens in kernel-mode and the user-mode message is not
-a register trace. However it may be useful in some cases or future
-changes (xmon, panic on mce, etc).
+Fix this similarly to HMI by just avoiding the kuap lock in the
+early machine check handler (it will be set by the late handler that
+runs in virtual mode if that runs).
 
+Fixes: 890274c2dc4c0 ("powerpc/64s: Implement KUAP for Radix MMU")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kernel/exceptions-64s.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 61c96502d2a8..ab22af2509d8 100644
+index ab22af2509d8..8ed787dc579c 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1205,6 +1205,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_206)
- 
- 9:
- 	/* Deliver the machine check to host kernel in V mode. */
-+BEGIN_FTR_SECTION
-+	ld	r10,ORIG_GPR3(r1)
-+	mtspr	SPRN_CFAR,r10
-+END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	MACHINE_CHECK_HANDLER_WINDUP
- 	EXCEPTION_PROLOG_0 PACA_EXMC
- 	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 1, 0x200, 1, 1, 0
+@@ -1012,7 +1012,7 @@ TRAMP_REAL_BEGIN(machine_check_common_early)
+ 	mfspr	r11,SPRN_DSISR		/* Save DSISR */
+ 	std	r11,_DSISR(r1)
+ 	std	r9,_CCR(r1)		/* Save CR in stackframe */
+-	kuap_save_amr_and_lock r9, r10, cr1
++	/* We don't touch AMR here, we never go to virtual mode */
+ 	/* Save r9 through r13 from EXMC save area to stack frame. */
+ 	EXCEPTION_PROLOG_COMMON_2(PACA_EXMC)
+ 	mfmsr	r11			/* get MSR value */
 -- 
 2.20.1
 
