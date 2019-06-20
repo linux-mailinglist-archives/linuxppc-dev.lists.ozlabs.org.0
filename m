@@ -1,48 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1075C4C80B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 09:14:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TtNy4RytzDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 17:14:42 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB664C829
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 09:17:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TtRl20HgzDr3T
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 17:17:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TrmT5kcRzDqXg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 16:01:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.b="UWQ8mUCs"; 
- dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 45TrmR2nPPz9sBp;
- Thu, 20 Jun 2019 16:01:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1561010487;
- bh=glw+2Td0oj/mdyoNqtydbZ/PHo9y+XS8MVB4rgGAwdY=;
- h=From:To:Cc:Subject:Date:From;
- b=UWQ8mUCsEbEnHRzuGYhHXMHaAPZMVt9UnTg3EP3ILgq+OvpmJBUGXKmMcrDoPOlp+
- uLHGP9MVwxoo1WpENcE27tjnBSTBbe/vgnc4HTWmUETUGEARZoPmujK3MSNpRDLPde
- YcDHw8DrorWVhxXp7SnC1WRUnK0DDCzDH70WMSzSzs+TCP4Gr8ZR3BXr2TgKfXX4WE
- TADLVZC3wKndLUwqzIEP3dO7zlRCGUPLgi3OQeESbwosJ6TQ/T0c/kjwBW4OfOgrDp
- c/SJXA9HYFCMjSlrzi0Sc3SH9TxJJByseaGLO1EGISQ+9hOK0DfjUq3CDV/Mx4xyTz
- txTRjd6bnt1KA==
-Received: by neuling.org (Postfix, from userid 1000)
- id D6E8A2A2091; Thu, 20 Jun 2019 16:00:54 +1000 (AEST)
-From: Michael Neuling <mikey@neuling.org>
-To: mpe@ellerman.id.au
-Subject: [PATCH] KVM: PPC: Book3S HV: Fix CR0 setting in TM emulation
-Date: Thu, 20 Jun 2019 16:00:40 +1000
-Message-Id: <20190620060040.26945-1-mikey@neuling.org>
-X-Mailer: git-send-email 2.21.0
+ spf=pass (mailfrom) smtp.mailfrom=gondor.apana.org.au
+ (client-ip=216.24.177.18; helo=deadmen.hmeau.com;
+ envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gondor.apana.org.au
+Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Trnz2hL7zDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 16:02:45 +1000 (AEST)
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+ by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+ id 1hdq9X-0008UB-3U; Thu, 20 Jun 2019 14:02:31 +0800
+Received: from herbert by gondobar with local (Exim 4.89)
+ (envelope-from <herbert@gondor.apana.org.au>)
+ id 1hdq9N-0006tl-Hn; Thu, 20 Jun 2019 14:02:21 +0800
+Date: Thu, 20 Jun 2019 14:02:21 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v4 1/4] lib/scatterlist: Fix mapping iterator when
+ sg->offset is greater than PAGE_SIZE
+Message-ID: <20190620060221.q4pbsqzsza3pxs42@gondor.apana.org.au>
+References: <cover.1560805614.git.christophe.leroy@c-s.fr>
+ <f28c6b0e2f9510f42ca934f19c4315084e668c21.1560805614.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f28c6b0e2f9510f42ca934f19c4315084e668c21.1560805614.git.christophe.leroy@c-s.fr>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,57 +50,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org, sjitindarsingh@gmail.com,
- kvm-ppc@vger.kernel.org
+Cc: horia.geanta@nxp.com, Imre Deak <imre.deak@intel.com>,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When emulating tsr, treclaim and trechkpt, we incorrectly set CR0. The
-code currently sets:
-    CR0 <- 00 || MSR[TS]
-but according to the ISA it should be:
-    CR0 <-  0 || MSR[TS] || 0
+On Mon, Jun 17, 2019 at 09:15:02PM +0000, Christophe Leroy wrote:
+> All mapping iterator logic is based on the assumption that sg->offset
+> is always lower than PAGE_SIZE.
+> 
+> But there are situations where sg->offset is such that the SG item
+> is on the second page. In that case sg_copy_to_buffer() fails
+> properly copying the data into the buffer. One of the reason is
+> that the data will be outside the kmapped area used to access that
+> data.
+> 
+> This patch fixes the issue by adjusting the mapping iterator
+> offset and pgoffset fields such that offset is always lower than
+> PAGE_SIZE.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Fixes: 4225fc8555a9 ("lib/scatterlist: use page iterator in the mapping iterator")
+> Cc: stable@vger.kernel.org
+> ---
+>  lib/scatterlist.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 
-This fixes the bit shift to put the bits in the correct location.
+Good catch.
 
-Tested-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-Signed-off-by: Michael Neuling <mikey@neuling.org>
----
- arch/powerpc/kvm/book3s_hv_tm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> @@ -686,7 +686,12 @@ static bool sg_miter_get_next_page(struct sg_mapping_iter *miter)
+>  		sg = miter->piter.sg;
+>  		pgoffset = miter->piter.sg_pgoffset;
+>  
+> -		miter->__offset = pgoffset ? 0 : sg->offset;
+> +		offset = pgoffset ? 0 : sg->offset;
+> +		while (offset >= PAGE_SIZE) {
+> +			miter->piter.sg_pgoffset = ++pgoffset;
+> +			offset -= PAGE_SIZE;
+> +		}
 
-diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_hv_tm.c
-index 888e2609e3..31cd0f327c 100644
---- a/arch/powerpc/kvm/book3s_hv_tm.c
-+++ b/arch/powerpc/kvm/book3s_hv_tm.c
-@@ -131,7 +131,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 		}
- 		/* Set CR0 to indicate previous transactional state */
- 		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
--			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
-+			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 29);
- 		/* L=1 => tresume, L=0 => tsuspend */
- 		if (instr & (1 << 21)) {
- 			if (MSR_TM_SUSPENDED(msr))
-@@ -175,7 +175,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 
- 		/* Set CR0 to indicate previous transactional state */
- 		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
--			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
-+			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 29);
- 		vcpu->arch.shregs.msr &= ~MSR_TS_MASK;
- 		return RESUME_GUEST;
- 
-@@ -205,7 +205,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
- 
- 		/* Set CR0 to indicate previous transactional state */
- 		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
--			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 28);
-+			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 29);
- 		vcpu->arch.shregs.msr = msr | MSR_TS_S;
- 		return RESUME_GUEST;
- 	}
+How about
+
+	miter->piter.sg_pgoffset += offset >> PAGE_SHIFT;
+	offset &= PAGE_SIZE - 1;
+
+Thanks,
 -- 
-2.21.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
