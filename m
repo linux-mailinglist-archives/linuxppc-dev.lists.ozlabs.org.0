@@ -2,83 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672F54C609
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 06:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C8A4C6BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 07:19:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TpPb6hV5zDqvh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 14:14:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Tqqb3qm4zDqD0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 15:19:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="fIrEpsAi"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TpMW6vLSzDqpd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 14:13:11 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5K4CNeO084846
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 00:13:08 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t80n7cbry-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 00:13:07 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Thu, 20 Jun 2019 05:13:05 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 20 Jun 2019 05:13:01 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5K4D0PO51970296
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Jun 2019 04:13:00 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A58AC4C04E;
- Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1342E4C044;
- Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AECBFA011C;
- Thu, 20 Jun 2019 14:12:57 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: alastair@d-silva.org
-Subject: [PATCH v2] ocxl: Allow contexts to be attached with a NULL mm
-Date: Thu, 20 Jun 2019 14:12:01 +1000
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqks669VzDqtp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:01 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id p184so962969pfp.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ei3SP30CEUBiwK1+xbruAz3DEc79ceG5FnZmM/o/KE8=;
+ b=fIrEpsAiyi1rJbrkHgUOgBcCeoDwLRPvXRdzmJCjimxY/oQYn6itkWlDwb1HME1YCv
+ nMRunNzreyY3aoLYQZdqhMQH4VikIjq2oQmblOTTAfbnbH1rXWLdXMFEvVuwfvuLd689
+ htY4xh7r5HkJ4ihLOgcmHTy35dIsVQn/TsBHMXqfhoXJxuHdPyImV1SU8l/5xwE/yH4z
+ 0uEW9g30pL0KAWR8xGwbOHURMD5F5GcJ7n2jsJvNTYJ6/rMfFOQ8a9bEaAHRqXHPXYpC
+ bTgSbGLdkacm4Ejoxoe242OZ1wu6k7hiJvqWihPwpapnem/PJdN9FqGY5DRK2OB+yJJw
+ 39RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ei3SP30CEUBiwK1+xbruAz3DEc79ceG5FnZmM/o/KE8=;
+ b=thuDLbWtq8KDcW9TxQHoP6O4FGQCcA3QHpukcvmvFeZYRkPF//94zauQYe2b1pWYDe
+ O4yv8dqOJ7HcU7NHDSB2PqkhXYT+d/2mEAWwT2zXKZ9drDURj2b17Qs8SIWB27+dCOSh
+ eHNDszqzMdAIff4ftGxc0F+M4lMFQdmCGXG4YPRLDkfE61/W28nJ9B/HhIq7jBlE0axs
+ Jhtrat5bHaN8Syf+ok+49BMKU0RI3DCmCYLOZTleyXLwMbcUPJ3pAEL/dlK14uAjG5zu
+ x0SHBNteCvma1gfQIM8XeBikZ8eFXowsOLcbOYhUhNay7grdl1TkzhH+q91iCChFEpR5
+ 0qzw==
+X-Gm-Message-State: APjAAAXAh2mrF/Z5pECALuzqQj6GOQuvS0ImC+ObR/mY9PGBWNCF37Ud
+ pGR1oqP0bgYwSY8vho4yAJkn1Bio
+X-Google-Smtp-Source: APXvYqyZs/VS4z9HZ42Tfql9ziC1ZL0HJ7WlZAe3UvQVp6KcEmBmK91qB2drtaoQ8HTW+JMJ97FcaA==
+X-Received: by 2002:a63:1c59:: with SMTP id c25mr11085388pgm.395.1561007697166; 
+ Wed, 19 Jun 2019 22:14:57 -0700 (PDT)
+Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
+ by smtp.gmail.com with ESMTPSA id
+ h12sm8235847pje.12.2019.06.19.22.14.54
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 19 Jun 2019 22:14:56 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/52] powerpc/64s interrupt handler cleanups, gasification
+Date: Thu, 20 Jun 2019 15:14:07 +1000
+Message-Id: <20190620051459.29573-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062004-4275-0000-0000-00000343F20B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062004-4276-0000-0000-000038541FDE
-Message-Id: <20190620041203.12274-1-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-20_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=502 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906200032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,136 +77,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alastair D'Silva <alastair@d-silva.org>
+This contains the previous 28 series in front, with one small fix
+mentioned in the last thread, plus one extra patch to remove
+unused BRANCH_TO_COMMON macro, so first 29 up to SPR RAW scoreboard
+are all quite minimal generated code change.
 
-If an OpenCAPI context is to be used directly by a kernel driver, there
-may not be a suitable mm to use.
+The next patches start to get a bit more into code change, starting
+to mainly attack the "odd" handlers which deviate significantly
+from the norm (sreset, machine check, still have pending work to
+do on hmi). The aim is to simplify them and make them more regular.
+That makes maintaining easier, and also reduces the need to have
+a lot of special cases and splits in macros, which helps further
+cleanup in future.
 
-The patch makes the mm parameter to ocxl_context_attach optional.
+After patch 19 I should add it's so much more pleasant to hack on
+this code, you don't have to rebuild practically the whole kernel
+whenever you change anything.
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- arch/powerpc/mm/book3s64/radix_tlb.c |  5 +++++
- drivers/misc/ocxl/context.c          |  9 ++++++---
- drivers/misc/ocxl/link.c             | 28 ++++++++++++++++++++++++----
- 3 files changed, 35 insertions(+), 7 deletions(-)
+Oh I also got a KUAP fix in there we should backport.
 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index bb9835681315..ce8a77fae6a7 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -666,6 +666,11 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
- #define radix__flush_all_mm radix__local_flush_all_mm
- #endif /* CONFIG_SMP */
- 
-+/*
-+ * If kernel TLBIs ever become local rather than global, then
-+ * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
-+ * assumes kernel TLBIs are global.
-+ */
- void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
- 	_tlbie_pid(0, RIC_FLUSH_ALL);
-diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
-index bab9c9364184..994563a078eb 100644
---- a/drivers/misc/ocxl/context.c
-+++ b/drivers/misc/ocxl/context.c
-@@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, u64 dsisr)
- int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
- {
- 	int rc;
-+	unsigned long pidr = 0;
- 
- 	// Locks both status & tidr
- 	mutex_lock(&ctx->status_mutex);
-@@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
- 		goto out;
- 	}
- 
--	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
--			mm->context.id, ctx->tidr, amr, mm,
--			xsl_fault_error, ctx);
-+	if (mm)
-+		pidr = mm->context.id;
-+
-+	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
-+			      amr, mm, xsl_fault_error, ctx);
- 	if (rc)
- 		goto out;
- 
-diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-index cce5b0d64505..58d111afd9f6 100644
---- a/drivers/misc/ocxl/link.c
-+++ b/drivers/misc/ocxl/link.c
-@@ -224,6 +224,17 @@ static irqreturn_t xsl_fault_handler(int irq, void *data)
- 		ack_irq(spa, ADDRESS_ERROR);
- 		return IRQ_HANDLED;
- 	}
-+
-+	if (!pe_data->mm) {
-+		/*
-+		 * translation fault from a kernel context - an OpenCAPI
-+		 * device tried to access a bad kernel address
-+		 */
-+		rcu_read_unlock();
-+		pr_warn("Unresolved OpenCAPI xsl fault in kernel context\n");
-+		ack_irq(spa, ADDRESS_ERROR);
-+		return IRQ_HANDLED;
-+	}
- 	WARN_ON(pe_data->mm->context.id != pid);
- 
- 	if (mmget_not_zero(pe_data->mm)) {
-@@ -523,7 +534,13 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 	pe->amr = cpu_to_be64(amr);
- 	pe->software_state = cpu_to_be32(SPA_PE_VALID);
- 
--	mm_context_add_copro(mm);
-+	/*
-+	 * For user contexts, register a copro so that TLBIs are seen
-+	 * by the nest MMU. If we have a kernel context, TLBIs are
-+	 * already global.
-+	 */
-+	if (mm)
-+		mm_context_add_copro(mm);
- 	/*
- 	 * Barrier is to make sure PE is visible in the SPA before it
- 	 * is used by the device. It also helps with the global TLBI
-@@ -546,7 +563,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
- 	 * have a reference on mm_users. Incrementing mm_count solves
- 	 * the problem.
- 	 */
--	mmgrab(mm);
-+	if (mm)
-+		mmgrab(mm);
- 	trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, tidr);
- unlock:
- 	mutex_unlock(&spa->spa_lock);
-@@ -652,8 +670,10 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
- 	if (!pe_data) {
- 		WARN(1, "Couldn't find pe data when removing PE\n");
- 	} else {
--		mm_context_remove_copro(pe_data->mm);
--		mmdrop(pe_data->mm);
-+		if (pe_data->mm) {
-+			mm_context_remove_copro(pe_data->mm);
-+			mmdrop(pe_data->mm);
-+		}
- 		kfree_rcu(pe_data, rcu);
- 	}
- unlock:
+Thanks,
+Nick
+
+Nicholas Piggin (52):
+  powerpc/64s/exception: fix line wrap and semicolon inconsistencies in
+    macros
+  powerpc/64s/exception: remove H concatenation for EXC_HV variants
+  powerpc/64s/exception: consolidate EXCEPTION_PROLOG_2 with _NORI
+    variant
+  powerpc/64s/exception: move and tidy EXCEPTION_PROLOG_2 variants
+  powerpc/64s/exception: fix sreset KVM test code
+  powerpc/64s/exception: remove the "extra" macro parameter
+  powerpc/64s/exception: consolidate maskable and non-maskable prologs
+  powerpc/64s/exception: merge KVM handler and skip variants
+  powerpc/64s/exception: KVM handler can set the HSRR trap bit
+  powerpc/64s/exception: Make EXCEPTION_PROLOG_0 a gas macro for
+    consistency with others
+  powerpc/64s/exception: Move EXCEPTION_COMMON handler and return
+    branches into callers
+  powerpc/64s/exception: Move EXCEPTION_COMMON additions into callers
+  powerpc/64s/exception: unwind exception-64s.h macros
+  powerpc/64s/exception: improve 0x500 handler code
+  powerpc/64s/exception: move EXCEPTION_PROLOG_2* to a more logical
+    place
+  powerpc/64s/exception: remove STD_EXCEPTION_COMMON variants
+  powerpc/64s/exception: move KVM related code together
+  powerpc/64s/exception: move exception-64s.h code to exception-64s.S
+    where it is used
+  powerpc/64s/exception: move head-64.h code to exception-64s.S where it
+    is used
+  powerpc/64s/exception: remove __BRANCH_TO_KVM
+  powerpc/64s/exception: remove unused BRANCH_TO_COMMON
+  powerpc/64s/exception: use a gas macro for system call handler code
+  powerpc/64s/exception: fix indenting irregularities
+  powerpc/64s/exception: generate regs clear instructions using .rept
+  powerpc/64s/exception: remove bad stack branch
+  powerpc/64s/exception: remove pointless EXCEPTION_PROLOG macro
+    indirection
+  powerpc/64s/exception: move paca save area offsets into
+    exception-64s.S
+  powerpc/64s/exception: clean up system call entry
+  powerpc/64s/exception: avoid SPR RAW scoreboard stall in real mode
+    entry
+  powerpc/64s/exception: optimise system_reset for idle, clean up
+    non-idle case
+  powerpc/64s/exception: mtmsrd L=1 cleanup
+  powerpc/64s/exception: windup use r9 consistently to restore SPRs
+  powerpc/64s/exception: move machine check windup in_mce handling
+  powerpc/64s/exception: simplify hmi windup code
+  powerpc/64s/exception: shuffle windup code around
+  powerpc/64s/exception: use common macro for windup
+  powerpc/64s/exception: add dar and dsisr options to exception macro
+  powerpc/64s/exception: machine check use standard macros to save
+    dar/dsisr
+  powerpc/64s/exception: denorm handler use standard scratch save macro
+  powerpc/64s/exception: move SET_SCRATCH0 into EXCEPTION_PROLOG_0
+  powerpc/tm: update comment about interrupt re-entrancy
+  powerpc/64s/exception: machine check fwnmi does not trigger when in HV
+    mode
+  powerpc/64s/exception: machine check early only runs in HV mode
+  powerpc/64s/exception: separate pseries and powernv mce delivery paths
+  powerpc/64s/exception: machine check windup restore cfar for host
+    delivery
+  powerpc/64s/exception: fix machine check early should not set AMR
+  powerpc/64s/exception: machine check restructure handler to be more
+    regular
+  powerpc/64s/exception: simplify machine check early path
+  powerpc/64s/exceptions: machine check move unrecoverable handling out
+    of line
+  powerpc/64s/exception: untangle early machine check handler
+  powerpc/64s/exception: machine check improve branch labels
+  powerpc/64s/exception: add missing branch to self after RFI
+
+ arch/powerpc/include/asm/exception-64s.h |  609 +-------
+ arch/powerpc/include/asm/head-64.h       |  204 +--
+ arch/powerpc/include/asm/paca.h          |    2 +
+ arch/powerpc/kernel/asm-offsets.c        |    2 +
+ arch/powerpc/kernel/exceptions-64s.S     | 1764 ++++++++++++++--------
+ arch/powerpc/kernel/tm.S                 |    4 +-
+ arch/powerpc/xmon/xmon.c                 |    2 +
+ 7 files changed, 1161 insertions(+), 1426 deletions(-)
+
 -- 
-2.21.0
+2.20.1
 
