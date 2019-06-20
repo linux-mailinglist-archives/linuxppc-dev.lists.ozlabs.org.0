@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901A94C6E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 07:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2A94C6E3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 07:50:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TrT472wCzDr2s
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 15:48:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TrWg69pjzDr0m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 15:50:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bNGGAAPF"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="pKkT8Ui1"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TqlW2TgKzDqwJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:35 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id t16so953433pfe.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TqlY3YNhzDqvh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:37 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id i189so955003pfg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HnyQLyQJWF52L9q1/Tv9uIZGI0sjVmfMaFZ6h1TzAQw=;
- b=bNGGAAPFHFfvQvl7NMlaTWQFdeYKSshKnb/wY/9EsoZWZjnZB6PsVi3IT1DSdN6Iao
- /UdTqo+u4IDBzy+RYzmwyRwNrUo05nJ4NeeYH73cy9sCRwWPuKWbqrwew2Y/JG/05ucn
- ki9x/JW1jcOVGbruU/RAau2COdO2dDD1/yn0AFCCk1aq46vSi2aqMwfCQpAu1ykh/AbT
- Q01lh1k1f9fy4LF3EEhgpP2U2eZuI16lNmKAvBSLQoessG0D2tvxov6Q47BA4MyFgWfC
- AC26bOxhI0NjUXlCWyXOa7oMOq4OKONhuzYBJudeAjw28jZoSFliMfy7PEicOuxM7LGD
- jcfw==
+ bh=ofIoTFcId4qfmMxew+F2dNna3EHcGfdPDyTFpWDJ9jQ=;
+ b=pKkT8Ui19a1fLKipi/jQtGVGQcZQQBYBDqsos7Rqu8GHRvh7rragI6X8TewufM5O5g
+ c0Pwoy/ZIluCh6NqFGC0McWA1ahdpL8fDesNOylFwNZBpOYyv3ldc8GNIuwL1gfj4NGE
+ bT9udDnDc5jJTaKwtOOtYZpfhf/J2qAB1CByRlyEv6rVwVHzuu8l1BMpJJ/Ly0WMAQ1Q
+ mqojIg61KbFAFdcyta4yBNqXcE67pn+FcOuyC/YsYtgpegMa4x+ECbCekVoaGm2XbuPa
+ o1fYaGPUujLYL2UmU1KYrZaaYqK05yIINWx8qkSBJ71CUz360HZLelQcGo4V+Q7MCNW1
+ IfwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HnyQLyQJWF52L9q1/Tv9uIZGI0sjVmfMaFZ6h1TzAQw=;
- b=HGpMOTLeW7Tg563/z6Nzli/zbi9rI8Ky1MVTRXphWNAvcvyob5JvmSeyDjYUvwu2NQ
- mS+i+fZv3HbvWhIi0heRa21Ftm4y28BKlrVNpImMwk6Jgy8wxk1gBgS0lUOFFz4fOR/J
- bRKK2SLW4AUqoNnLRqBYJ7QT6QbhDHgDD4f/dLlveuv3WatVAgrxs+mF+f9JnWIDYYxJ
- xv4kFse2iMURN9NWV11ca7YXQ5HZkpAKD3qC0aLUsTwF4vunvqRtsesEeVzo+OTPLzUJ
- A8psU1CIzUWNd93pWvy6xu63mcO4yp65oG9Hu9hQsTipGs1KhVnd4z3Gvz9xAIIgxY2e
- YSng==
-X-Gm-Message-State: APjAAAX3NwZPfuOwO6ffWxQyqLhWW2xq9kYkbvLp0tFRueJZ1ZpgPVxQ
- lCln9qwVbJssfrADZo0nENUyO1ZQ
-X-Google-Smtp-Source: APXvYqypk1eaaEEbY6lUwq6EsbIrzPYbQZZDWUdIh+PGDC1TrdcHwxIzVCtb7sB29NCILozIVxpKEA==
-X-Received: by 2002:a62:cd8b:: with SMTP id o133mr9932714pfg.24.1561007733025; 
- Wed, 19 Jun 2019 22:15:33 -0700 (PDT)
+ bh=ofIoTFcId4qfmMxew+F2dNna3EHcGfdPDyTFpWDJ9jQ=;
+ b=XPkEDb4Z3PIxCmzx7hYlIt3Eff8gmqilxqBZQsYURdYbpdV9ddiyyLF7FAzjiWWG2O
+ FHiV3mrsXLvj6VTuIhQ8tk1EH00T73gM9kh4LyKRJJR1TPeuCIejGrwGUjVT0z4yqv/1
+ ibwNBaJZ5Mj1goRT4d+NuQTt/LKNyztKTlgaV3JYVA8jt+u+B9xdEI0UmYcT9H0kBiki
+ i4nZjdH5ItnwPbKKh0xoedm6rjuaOZDz3L0Vl4oZ1pWv10HaIWzg2CaZw/g3hW/NTSC1
+ KOxKUKeQ3JpL3lcmrmTX6ba864OCb/HC0pnGcTG5aGaxp2ic6mNu9sXeHn9VI8TNU/vj
+ cP8g==
+X-Gm-Message-State: APjAAAVSsOZwyEG+8arjBsuNuYAzoUnlmF88f5uub6IPgrMZSigCBmaF
+ WVeROzfanJVAT6DGI5SM36dgTy3b
+X-Google-Smtp-Source: APXvYqyF3sM+le+xv5bdXj8JcBWQ02mm272gMfWVKdU6WvDULEdnOsFKogUyQv0oBgy3jcNtYAWf1w==
+X-Received: by 2002:a17:90a:376f:: with SMTP id
+ u102mr1120791pjb.5.1561007735193; 
+ Wed, 19 Jun 2019 22:15:35 -0700 (PDT)
 Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
  by smtp.gmail.com with ESMTPSA id
- h12sm8235847pje.12.2019.06.19.22.15.31
+ h12sm8235847pje.12.2019.06.19.22.15.33
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 22:15:32 -0700 (PDT)
+ Wed, 19 Jun 2019 22:15:34 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 16/52] powerpc/64s/exception: remove STD_EXCEPTION_COMMON
- variants
-Date: Thu, 20 Jun 2019 15:14:23 +1000
-Message-Id: <20190620051459.29573-17-npiggin@gmail.com>
+Subject: [PATCH v2 17/52] powerpc/64s/exception: move KVM related code together
+Date: Thu, 20 Jun 2019 15:14:24 +1000
+Message-Id: <20190620051459.29573-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190620051459.29573-1-npiggin@gmail.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
@@ -85,82 +85,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These are only called in one place each.
-
 No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/exception-64s.h | 22 ----------------------
- arch/powerpc/include/asm/head-64.h       | 19 +++++++++++++++++--
- 2 files changed, 17 insertions(+), 24 deletions(-)
+ arch/powerpc/include/asm/exception-64s.h | 40 +++++++++++++-----------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-index 6de3c393ddf7..73705421f423 100644
+index 73705421f423..e996ffe68cf3 100644
 --- a/arch/powerpc/include/asm/exception-64s.h
 +++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -555,28 +555,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
- 	EXCEPTION_PROLOG_COMMON_2(area);			\
- 	EXCEPTION_PROLOG_COMMON_3(trap)
+@@ -335,18 +335,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ #endif
+ .endm
  
--#define STD_EXCEPTION_COMMON(trap, hdlr)			\
--	EXCEPTION_COMMON(PACA_EXGEN, trap);			\
--	bl	save_nvgprs;					\
--	RECONCILE_IRQ_STATE(r10, r11);				\
--	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
--	bl	hdlr;						\
--	b	ret_from_except
 -
+-#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 -/*
-- * Like STD_EXCEPTION_COMMON, but for exceptions that can occur
-- * in the idle task and therefore need the special idle handling
-- * (finish nap and runlatch)
+- * If hv is possible, interrupts come into to the hv version
+- * of the kvmppc_interrupt code, which then jumps to the PR handler,
+- * kvmppc_interrupt_pr, if the guest is a PR guest.
 - */
--#define STD_EXCEPTION_COMMON_ASYNC(trap, hdlr)			\
--	EXCEPTION_COMMON(PACA_EXGEN, trap);			\
--	FINISH_NAP;						\
--	RECONCILE_IRQ_STATE(r10, r11);				\
--	RUNLATCH_ON;						\
--	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
--	bl	hdlr;						\
--	b	ret_from_except_lite
+-#define kvmppc_interrupt kvmppc_interrupt_hv
+-#else
+-#define kvmppc_interrupt kvmppc_interrupt_pr
+-#endif
 -
  /*
-  * When the idle code in power4_idle puts the CPU into NAP mode,
-  * it has to do so in a loop, and relies on the external interrupt
-diff --git a/arch/powerpc/include/asm/head-64.h b/arch/powerpc/include/asm/head-64.h
-index 54db05afb80f..dc1940c94a86 100644
---- a/arch/powerpc/include/asm/head-64.h
-+++ b/arch/powerpc/include/asm/head-64.h
-@@ -441,11 +441,26 @@ end_##sname:
+  * Branch to label using its 0xC000 address. This results in instruction
+  * address suitable for MSR[IR]=0 or 1, which allows relocation to be turned
+@@ -371,6 +359,17 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	mtctr	r12;							\
+ 	bctrl
  
- #define EXC_COMMON(name, realvec, hdlr)					\
- 	EXC_COMMON_BEGIN(name);						\
--	STD_EXCEPTION_COMMON(realvec, hdlr)
-+	EXCEPTION_COMMON(PACA_EXGEN, realvec);				\
-+	bl	save_nvgprs;						\
-+	RECONCILE_IRQ_STATE(r10, r11);					\
-+	addi	r3,r1,STACK_FRAME_OVERHEAD;				\
-+	bl	hdlr;							\
-+	b	ret_from_except
++#else
++#define BRANCH_TO_COMMON(reg, label)					\
++	b	label
++
++#define BRANCH_LINK_TO_FAR(label)					\
++	bl	label
++#endif
++
++#ifdef CONFIG_KVM_BOOK3S_64_HANDLER
++
++#ifdef CONFIG_RELOCATABLE
+ /*
+  * KVM requires __LOAD_FAR_HANDLER.
+  *
+@@ -387,19 +386,22 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	bctr
  
+ #else
+-#define BRANCH_TO_COMMON(reg, label)					\
+-	b	label
+-
+-#define BRANCH_LINK_TO_FAR(label)					\
+-	bl	label
+-
+ #define __BRANCH_TO_KVM_EXIT(area, label)				\
+ 	ld	r9,area+EX_R9(r13);					\
+ 	b	label
++#endif
+ 
++#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 +/*
-+ * Like EXC_COMMON, but for exceptions that can occur in the idle task and
-+ * therefore need the special idle handling (finish nap and runlatch)
++ * If hv is possible, interrupts come into to the hv version
++ * of the kvmppc_interrupt code, which then jumps to the PR handler,
++ * kvmppc_interrupt_pr, if the guest is a PR guest.
 + */
- #define EXC_COMMON_ASYNC(name, realvec, hdlr)				\
- 	EXC_COMMON_BEGIN(name);						\
--	STD_EXCEPTION_COMMON_ASYNC(realvec, hdlr)
-+	EXCEPTION_COMMON(PACA_EXGEN, realvec);				\
-+	FINISH_NAP;							\
-+	RECONCILE_IRQ_STATE(r10, r11);					\
-+	RUNLATCH_ON;							\
-+	addi	r3,r1,STACK_FRAME_OVERHEAD;				\
-+	bl	hdlr;							\
-+	b	ret_from_except_lite
++#define kvmppc_interrupt kvmppc_interrupt_hv
++#else
++#define kvmppc_interrupt kvmppc_interrupt_pr
+ #endif
  
- #endif /* __ASSEMBLY__ */
- 
+-#ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ .macro KVMTEST hsrr, n
+ 	lbz	r10,HSTATE_IN_GUEST(r13)
+ 	cmpwi	r10,0
 -- 
 2.20.1
 
