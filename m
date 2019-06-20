@@ -1,71 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672F54C609
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 06:15:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C061C4C5EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 05:47:30 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Tnnq5svwzDqsl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 13:47:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TpPb6hV5zDqvh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 14:14:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="HyW5DLL4"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tnlm03BDzDqsZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 13:45:39 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id i10so935647iol.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 20:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=xZPyXbSMMXcl1mLdquv3ab0eaDgC5j4gm7PvbosOLKA=;
- b=HyW5DLL4sI4Wss/UuyJ241/UF3wliGHa0hUHHArhvOv+WwmyW+UkWN105j+uvwdqlU
- iELSS1PvJar+xs6w3AeXFwwhwwltuaoXvx5o0U5ShwhCiux9qhyvyiRQqqAbNxLs+vaZ
- WAQrhUgLLOmcrnhkBn9/F5iVCb2zALAhaQ9k//39QxlxOkEg+EQwFWKmlcISi2aVHHsH
- DxrGfD02zbYAaz73tNDJ8ZFVmn0pczjuxZode9P1Vwd2Wb5NHBM6ymeFq+Lc5hlkdVKw
- yONQa7eOKMi0s1BXXYAg7TJzOUHhIYe+ujtEZYJTGxzgC8bWd+iMwY1gXI4Wi8Vlr/Ly
- hNRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=xZPyXbSMMXcl1mLdquv3ab0eaDgC5j4gm7PvbosOLKA=;
- b=Ku6JkvVb0CfM0tEwxs4OPeIbg1iHSvUnj3iRKos/3XExiqSpR0e3ytvxNGFaKUW4Lc
- /wkgG6Lies5C1fKNvdmt9CdDzi+TAZ55uBWkZQOIp1hZoJlNU8BwdezblczKtAvtEtuv
- +sGOItnHTBZZgpZZ3BxJG6TcxVT8c1DZ8s+pRVvHlSjje16iu48sg/f7m4fXwTVFM1uD
- 2Zr5MQxvTPjJj0Efip9SzNA8w6IRI9gbon33q496x72TCdXmPBKKTNVjix0qwTASnXaW
- MOR2X0WAe36/S0B4rNSyUoaOyNmflEF9fGYpzYmS1zzVdfqHKnl2fS0IUsECN7WGKElC
- bjQQ==
-X-Gm-Message-State: APjAAAXPzvSslIi+rhrHnhFAgKHc3q0MBB90sy1eAAQQJfcGQMx/Bg4i
- cHVlPVB45yRI/Ch+csUZSwlQB947sVBSX6CaBU9Dbg==
-X-Google-Smtp-Source: APXvYqw127HHQ+AvHwkn5NIKbLlAU1dgI/rwTgmfoojebpJwjwC6KKYnjyLhmrl6AGdWp8TrNbAg3M0vtWBJb9ZDAJc=
-X-Received: by 2002:a5d:8497:: with SMTP id t23mr16251599iom.298.1561002335703; 
- Wed, 19 Jun 2019 20:45:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TpMW6vLSzDqpd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 14:13:11 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5K4CNeO084846
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 00:13:08 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t80n7cbry-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 00:13:07 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Thu, 20 Jun 2019 05:13:05 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 20 Jun 2019 05:13:01 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5K4D0PO51970296
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 Jun 2019 04:13:00 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A58AC4C04E;
+ Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1342E4C044;
+ Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Jun 2019 04:13:00 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AECBFA011C;
+ Thu, 20 Jun 2019 14:12:57 +1000 (AEST)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH v2] ocxl: Allow contexts to be attached with a NULL mm
+Date: Thu, 20 Jun 2019 14:12:01 +1000
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <cover.1557203383.git.sbobroff@linux.ibm.com>
- <8deaedffad8ed3327f296a561c2a31c930c65f88.1557203383.git.sbobroff@linux.ibm.com>
- <ef181b9d-54df-23f9-2f06-f0f4d0bd8e8a@ozlabs.ru>
- <20190619042706.GA24143@tungsten.ozlabs.ibm.com>
- <e8f68068-bb62-6d2e-f484-d6a111811fbc@ozlabs.ru>
-In-Reply-To: <e8f68068-bb62-6d2e-f484-d6a111811fbc@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Thu, 20 Jun 2019 13:45:24 +1000
-Message-ID: <CAOSf1CFwj93TYGppJVU5djEe4TN6ezo36G=DxWbFU4buaCWM4g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] powerpc/eeh: Improve debug messages around device
- addition
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19062004-4275-0000-0000-00000343F20B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062004-4276-0000-0000-000038541FDE
+Message-Id: <20190620041203.12274-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-20_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=502 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906200032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,54 +90,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 20, 2019 at 12:40 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
-> On 19/06/2019 14:27, Sam Bobroff wrote:
-> > On Tue, Jun 11, 2019 at 03:47:58PM +1000, Alexey Kardashevskiy wrote:
-> >>
-> >> On 07/05/2019 14:30, Sam Bobroff wrote:
-> >>> Also remove useless comment.
-> >>>
-> >>> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-> >>> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> >>> ---
-> *snip*
-> >
-> > I can see that edev will be non-NULL here, but that pr_debug() pattern
-> > (using the PDN information to form the PCI address) is quite common
-> > across the EEH code, so I think rather than changing a couple of
-> > specific cases, I should do a separate cleanup patch and introduce
-> > something like pdn_debug(pdn, "...."). What do you think?
->
-> I'd switch them all to already existing dev_dbg/pci_debug rather than
-> adding pdn_debug as imho it should not have been used in the first place
-> really...
->
-> > (I don't know exactly when edev->pdev can be NULL.)
->
-> ... and if you switch to dev_dbg/pci_debug, I think quite soon you'll
-> know if it can or cannot be NULL :)
+From: Alastair D'Silva <alastair@d-silva.org>
 
-As far as I can tell edev->pdev is NULL in two cases:
+If an OpenCAPI context is to be used directly by a kernel driver, there
+may not be a suitable mm to use.
 
-1. Before eeh_device_add_late() has been called on the pdev. The late
-part of the add maps the pdev to an edev and sets the pdev's edev
-pointer and vis a vis.
-2. While recoverying EEH unaware devices. Unaware devices are
-destroyed and rescanned and the edev->pdev pointer is cleared by
-pcibios_device_release()
+The patch makes the mm parameter to ocxl_context_attach optional.
 
-In most of these cases it should be safe to use the pci_*() functions
-rather than making a new one up for printing pdns. In the cases where
-we might not have a PCI dev i'd make a new set of prints that take an
-EEH dev rather than a pci_dn since i'd like pci_dn to die sooner
-rather than later.
+Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+---
+ arch/powerpc/mm/book3s64/radix_tlb.c |  5 +++++
+ drivers/misc/ocxl/context.c          |  9 ++++++---
+ drivers/misc/ocxl/link.c             | 28 ++++++++++++++++++++++++----
+ 3 files changed, 35 insertions(+), 7 deletions(-)
 
-Oliver
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index bb9835681315..ce8a77fae6a7 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -666,6 +666,11 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
+ #define radix__flush_all_mm radix__local_flush_all_mm
+ #endif /* CONFIG_SMP */
+ 
++/*
++ * If kernel TLBIs ever become local rather than global, then
++ * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
++ * assumes kernel TLBIs are global.
++ */
+ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+ 	_tlbie_pid(0, RIC_FLUSH_ALL);
+diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+index bab9c9364184..994563a078eb 100644
+--- a/drivers/misc/ocxl/context.c
++++ b/drivers/misc/ocxl/context.c
+@@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, u64 dsisr)
+ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+ {
+ 	int rc;
++	unsigned long pidr = 0;
+ 
+ 	// Locks both status & tidr
+ 	mutex_lock(&ctx->status_mutex);
+@@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+ 		goto out;
+ 	}
+ 
+-	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
+-			mm->context.id, ctx->tidr, amr, mm,
+-			xsl_fault_error, ctx);
++	if (mm)
++		pidr = mm->context.id;
++
++	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
++			      amr, mm, xsl_fault_error, ctx);
+ 	if (rc)
+ 		goto out;
+ 
+diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+index cce5b0d64505..58d111afd9f6 100644
+--- a/drivers/misc/ocxl/link.c
++++ b/drivers/misc/ocxl/link.c
+@@ -224,6 +224,17 @@ static irqreturn_t xsl_fault_handler(int irq, void *data)
+ 		ack_irq(spa, ADDRESS_ERROR);
+ 		return IRQ_HANDLED;
+ 	}
++
++	if (!pe_data->mm) {
++		/*
++		 * translation fault from a kernel context - an OpenCAPI
++		 * device tried to access a bad kernel address
++		 */
++		rcu_read_unlock();
++		pr_warn("Unresolved OpenCAPI xsl fault in kernel context\n");
++		ack_irq(spa, ADDRESS_ERROR);
++		return IRQ_HANDLED;
++	}
+ 	WARN_ON(pe_data->mm->context.id != pid);
+ 
+ 	if (mmget_not_zero(pe_data->mm)) {
+@@ -523,7 +534,13 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+ 	pe->amr = cpu_to_be64(amr);
+ 	pe->software_state = cpu_to_be32(SPA_PE_VALID);
+ 
+-	mm_context_add_copro(mm);
++	/*
++	 * For user contexts, register a copro so that TLBIs are seen
++	 * by the nest MMU. If we have a kernel context, TLBIs are
++	 * already global.
++	 */
++	if (mm)
++		mm_context_add_copro(mm);
+ 	/*
+ 	 * Barrier is to make sure PE is visible in the SPA before it
+ 	 * is used by the device. It also helps with the global TLBI
+@@ -546,7 +563,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+ 	 * have a reference on mm_users. Incrementing mm_count solves
+ 	 * the problem.
+ 	 */
+-	mmgrab(mm);
++	if (mm)
++		mmgrab(mm);
+ 	trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, tidr);
+ unlock:
+ 	mutex_unlock(&spa->spa_lock);
+@@ -652,8 +670,10 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
+ 	if (!pe_data) {
+ 		WARN(1, "Couldn't find pe data when removing PE\n");
+ 	} else {
+-		mm_context_remove_copro(pe_data->mm);
+-		mmdrop(pe_data->mm);
++		if (pe_data->mm) {
++			mm_context_remove_copro(pe_data->mm);
++			mmdrop(pe_data->mm);
++		}
+ 		kfree_rcu(pe_data, rcu);
+ 	}
+ unlock:
+-- 
+2.21.0
+
