@@ -1,77 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979BF4CC14
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 12:39:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B2F4CBA2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 12:18:02 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TySN0MlzzDqG6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 20:17:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TyxS1w7SzDrF5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 20:39:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="o2+Jg7pv"; 
- dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TyQK240XzDr9S
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 20:16:08 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id 145so1342087pgh.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 03:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=r6MuAgpb0/2lJz7pVstqe3eWs0/BwcCgQyz1KMoDRzU=;
- b=o2+Jg7pvZhjcL+DDJKue0KURsf2/TOoCdCBBgrZJ16BHGrLN7F6dardFJAIuZMHsjH
- 3NWd4XyOTVBICM5+15b9AxNyx+PhbV0bv2O7nMl5NPm5eZh4ayT6AkZ5sjun7vMIsWKw
- N0cin0wsmIQgUmgzrondJzbBknZ65H1xH3G3bvH+25Qh9WwDNXtx9rBewwtLUH3uN9Of
- dssKR2CoTivLIBvH3/05Zic6SCU339rrilWE95FfyP9/lF8NoARa9+76hcd/Wp60mxXM
- wGSJYZdZucM/P7pzhhYjuYCMGfS9egtH/GWT7uUsRG1vR7COJlmOMMcSIV0RpF4kGO4h
- R+qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=r6MuAgpb0/2lJz7pVstqe3eWs0/BwcCgQyz1KMoDRzU=;
- b=uZDkUuDTfQZgy6BHI8JSoChgSJWOmrFMTTSRCalwENS9hwBTNZadPVN+afTVAtNhvS
- D2WoUYQjhaKwBmb1VTZZVO8XM/Nnju56uo+NNXLUsxgMpuvnfh/z2iK9f+P/VmyrV+uE
- ytT874+Fy4zP4IVlrj1a2k9c6AYdsXTqNmq0SDGasgGmH0lSPD/xwoWRFQa/KSQtQetH
- phkxPVsM1Z67LMv+KgIqJ02tn0Wq/KQaga4U+O+ro6SXuQklLUJUYKiW5CVfAHT47xtk
- 5kfzUDHEW8NKlcce86LinrsGKHNOuObOJuda+FDsjGoDiFaR5/E6p827f612MFVZZAVl
- P4bw==
-X-Gm-Message-State: APjAAAW4zQfN3XxC1LoxX2zpKlMUaDKzLwmUN1uu0EruyZSdPSENmlKq
- p8mhxEw0BbNK2z+kLDAOcQjA6clh8/s=
-X-Google-Smtp-Source: APXvYqyFY3Vfy63I2tdPgxGfwA5K3Ut78PQP/xZI1LYN/3PfMdcpGoki3ehveLZpWNAcTmOEcT/kRA==
-X-Received: by 2002:a17:90a:b115:: with SMTP id
- z21mr2315020pjq.64.1561025766936; 
- Thu, 20 Jun 2019 03:16:06 -0700 (PDT)
-Received: from localhost ([203.220.63.126])
- by smtp.gmail.com with ESMTPSA id c133sm22498288pfb.111.2019.06.20.03.16.04
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 20 Jun 2019 03:16:06 -0700 (PDT)
-Date: Thu, 20 Jun 2019 20:16:09 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 43/52] powerpc/64s/exception: machine check early only
- runs in HV mode
-To: mahesh@linux.vnet.ibm.com
-References: <20190620051459.29573-1-npiggin@gmail.com>
- <20190620051459.29573-44-npiggin@gmail.com>
- <20190620095329.rvrwxgtjsgkc4k5t@in.ibm.com>
-In-Reply-To: <20190620095329.rvrwxgtjsgkc4k5t@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tys22Gq4zDrDN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 20:35:50 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id E1A41C1EB202;
+ Thu, 20 Jun 2019 10:35:34 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-117-88.ams2.redhat.com [10.36.117.88])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6A49D608A7;
+ Thu, 20 Jun 2019 10:35:21 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/6] mm: Further memory block device cleanups
+Date: Thu, 20 Jun 2019 12:35:14 +0200
+Message-Id: <20190620103520.23481-1-david@redhat.com>
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1561025688.p6bobskuv9.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.32]); Thu, 20 Jun 2019 10:35:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,28 +50,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
+ Keith Busch <keith.busch@intel.com>, linux-mm@kvack.org,
+ Arun KS <arunks@codeaurora.org>, Rashmica Gupta <rashmica.g@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Michael Neuling <mikey@neuling.org>, Baoquan He <bhe@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Pavel Tatashin <pasha.tatashin@oracle.com>, linux-acpi@vger.kernel.org,
+ Len Brown <lenb@kernel.org>, Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ "mike.travis@hpe.com" <mike.travis@hpe.com>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Qian Cai <cai@lca.pw>,
+ Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Oscar Salvador <osalvador@suse.de>, Juergen Gross <jgross@suse.com>,
+ Andrew Banman <andrew.banman@hpe.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, Johannes Weiner <hannes@cmpxchg.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh J Salgaonkar's on June 20, 2019 7:53 pm:
-> On 2019-06-20 15:14:50 Thu, Nicholas Piggin wrote:
->> machine_check_common_early and machine_check_handle_early only run in
->> HVMODE. Remove dead code.
->=20
-> That's not true. For pseries guest with FWNMI enabled hypervisor,
-> machine_check_common_early gets called in non-HV mode as well.
->=20
->    machine_check_fwnmi
->      machine_check_common_early
->        machine_check_handle_early
->          machine_check_early
->            pseries_machine_check_realmode
+@Andrew: Only patch 1 and 6 changed. The patches are based on the
+same state as the previous patches (replace the old ones if possible).
 
-Yep, yep I was confused by the earlier patch. So we're only doing the
-early machine check path for the FWNMI case?
+Some further cleanups around memory block devices. Especially, clean up
+and simplify walk_memory_range(). Including some other minor cleanups.
 
-Thanks,
-Nick
-=
+Compiled + tested on x86 with DIMMs under QEMU.
+
+v1 -> v2:
+- "mm: Section numbers use the type "unsigned long""
+-- "unsigned long i" -> "unsigned long nr", in one case -> "int i"
+- "drivers/base/memory.c: Get rid of find_memory_block_hinted("
+-- Fix compilation error
+-- Get rid of the "hint" parameter completely
+
+David Hildenbrand (6):
+  mm: Section numbers use the type "unsigned long"
+  drivers/base/memory: Use "unsigned long" for block ids
+  mm: Make register_mem_sect_under_node() static
+  mm/memory_hotplug: Rename walk_memory_range() and pass start+size
+    instead of pfns
+  mm/memory_hotplug: Move and simplify walk_memory_blocks()
+  drivers/base/memory.c: Get rid of find_memory_block_hinted()
+
+ arch/powerpc/platforms/powernv/memtrace.c |  22 ++---
+ drivers/acpi/acpi_memhotplug.c            |  19 +---
+ drivers/base/memory.c                     | 115 ++++++++++++++--------
+ drivers/base/node.c                       |   8 +-
+ include/linux/memory.h                    |   5 +-
+ include/linux/memory_hotplug.h            |   2 -
+ include/linux/mmzone.h                    |   4 +-
+ include/linux/node.h                      |   7 --
+ mm/memory_hotplug.c                       |  57 +----------
+ mm/sparse.c                               |  12 +--
+ 10 files changed, 105 insertions(+), 146 deletions(-)
+
+-- 
+2.21.0
+
