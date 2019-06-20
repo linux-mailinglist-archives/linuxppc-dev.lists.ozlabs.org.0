@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AE84C73F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:09:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB28C4C719
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:07:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TrvC0g2QzDr0N
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Trxs4GnFzDr3t
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:09:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="eYfOPF0V"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="df+3yGiT"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqlv3K6dzDqvr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:55 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id s21so906578pga.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqlx2FhPzDqw4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:57 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id q10so957289pff.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=tPBHMFFLkCBxEFXYZ0eSojcON3VlvIWqEEH6sjb909E=;
- b=eYfOPF0V1f7cbNhzt7CNwDJgw0jGkM0tZt86peLwSBEXJMhg+rx66S9HgH9fN5wpzS
- s2S39NZyX5A8gRxSnWIPZegHSDyykNryGNPSNUawRU998z6v03zXp3KCwCpHbK92rSVy
- YeeI48Jkra5taq5vBJ7T6t8w+vFRz4lBxPHFHB+gglCwfXjts2vLBSbG67DJ+xFz0dJt
- Vi2itd7z++7dGnSKa6I33/RD+ckXgGs6MZy7hMzopCCYDqO5SqfuyhhOH1TZj+zM/Itt
- pjrUc4yZjNRJoe5l2u2H630lTds81MFOypIwio2bWXb5dnlxSA9yQKJcSdXXFuQjuU83
- WIGA==
+ bh=mJ/llcbKS2JS9OhsKK+PVwGrvrVTXD2YaS4afOkaTSs=;
+ b=df+3yGiTMlnBYTrf40Tk9Sggj2SDcDc2OPAhhkY+x6gKh2wSjp2i9qCWiUsc6XaHX7
+ v4ZQMHeODfS8t6Awe1odUp9AfydAJsqyMLIGhBPBUKOMmeizd3kR3q8rHSQmwBxyF3lU
+ Knck2jUay8i8E6NSvnVRR8/DEPtmRtyCbV2PysrDgaCzplZ1JZMGAPh3UfnFU8t1fEu5
+ wGOZGkVEBMWloCquce9LHs05DMdEQ79ZeDz1qGr57sAnGUJJpaQvMGwIlfgNUXAdZkw2
+ aHl6RbV0XR1Fwi6tuRJoVsRW1fZPXtWcb4avLcJcgN1rwj+iaWJrK+V63e8vZIPrS06V
+ uafA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=tPBHMFFLkCBxEFXYZ0eSojcON3VlvIWqEEH6sjb909E=;
- b=YAfdpkF+l0gyXM8tpr5WPDhQnUyxPAVmVJdqQiJP9LPZC02HoUE7QhCSVVj/tY3mhj
- RIIsoIHcUyeH92uhtN7mfWZnSNFnCsnUlNKs48b0Kwf028T7VsmEI9ellWAWgu2r7Z4a
- /evjOeH9C9xKwcAJasxjq0ARLiDuzfNty0V4KYQkZECRX+GUGgXBBBebdI6cBEajc/cd
- ZDcV9hSqvBNg6WKZ/hIXDxSjy22yfBfS6AEHmwu6q6tWVWfa+LEmNcm96eQNwp+FuJJu
- BSK0AXQsTXUV4RC1XpLfqhbJCS/kKkb/rOgFzO5KCrujOC0ncYilFbdalciBqwWj/MhY
- Myjg==
-X-Gm-Message-State: APjAAAXhNLszlHy/GzCtnv3G0jRJJ6mAO9Zkd/FBc0awP+CVYDIKmG7b
- GjW9s4DNSu1PuHC4Oqqo/cP/HGar
-X-Google-Smtp-Source: APXvYqwxfqmFSi8Ltt6X3NpqRJ/ynzwR8mfTMo88mc984B9Hk3QNRM/zRE9avos3oetGbZrl/AkezQ==
-X-Received: by 2002:a17:90a:1d8:: with SMTP id 24mr1140964pjd.70.1561007753250; 
- Wed, 19 Jun 2019 22:15:53 -0700 (PDT)
+ bh=mJ/llcbKS2JS9OhsKK+PVwGrvrVTXD2YaS4afOkaTSs=;
+ b=sXS6ZVF4x0Of5L+M9UGKtu62O+VOSdvH/PnSasno6EyVJtIyOZpdfJ/kslWw3Ar0ZT
+ MZoh7XQ4Yyxiw27TUHCxybDQPG9gO7H+QwTvxiBN53BMqi9Z9wgj4+0EYY3M2B38mpch
+ EWEDu84u/qVh+d1b0vF4wkZq447ggJwkyC/8bX3SmzMzVrcegE2gNqtW4gnh9PeR9NRs
+ ebc0gNAgdrdNYw90m+HMv8skuSjvNAbEKUt9GhiyRKrPcEdXtbvg5q/dpT+QABr/HXY7
+ kJCcYKphjxsF/DF8Bn0Y2eNDweSPHrs7fjA+1GS5a3IHa6qhevMr9i6eDpdtKH6yXHo7
+ +XVA==
+X-Gm-Message-State: APjAAAV3cKMeUcTMlCiA0yYH3sgynx7L3Ts2J3ykfkIgdX15zDigsQ2u
+ TWMGz8AXJJEZvB89/yidcjZ2Ai21
+X-Google-Smtp-Source: APXvYqyWyoyRdVjq8z5zUBUkcfG3SJ3QJUzUa3mz5RloRBi/btlAG0ysHlmPL6dvafaIJNV/W4+CZg==
+X-Received: by 2002:a63:e649:: with SMTP id p9mr11129394pgj.276.1561007755385; 
+ Wed, 19 Jun 2019 22:15:55 -0700 (PDT)
 Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
  by smtp.gmail.com with ESMTPSA id
- h12sm8235847pje.12.2019.06.19.22.15.51
+ h12sm8235847pje.12.2019.06.19.22.15.53
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 22:15:52 -0700 (PDT)
+ Wed, 19 Jun 2019 22:15:54 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 25/52] powerpc/64s/exception: remove bad stack branch
-Date: Thu, 20 Jun 2019 15:14:32 +1000
-Message-Id: <20190620051459.29573-26-npiggin@gmail.com>
+Subject: [PATCH v2 26/52] powerpc/64s/exception: remove pointless
+ EXCEPTION_PROLOG macro indirection
+Date: Thu, 20 Jun 2019 15:14:33 +1000
+Message-Id: <20190620051459.29573-27-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190620051459.29573-1-npiggin@gmail.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
@@ -84,243 +85,227 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The bad stack test in interrupt handlers has a few problems. For
-performance it is taken in the common case, which is a fetch bubble
-and a waste of i-cache.
-
-For code development and maintainence, it requires yet another stack
-frame setup routine, and that constrains all exception handlers to
-follow the same register save pattern which inhibits future
-optimisation.
-
-Remove the test/branch and replace it with a trap. Teach the program
-check handler to use the emergency stack for this case.
-
-This does not result in quite so nice a message, however the SRR0 and
-SRR1 of the crashed interrupt can be seen in r11 and r12, as is the
-original r1 (adjusted by INT_FRAME_SIZE). These are the most important
-parts to debugging the issue.
-
-The original r9-12 and cr0 is lost, which is the main downside.
-
-  kernel BUG at linux/arch/powerpc/kernel/exceptions-64s.S:847!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  BE SMP NR_CPUS=2048 NUMA PowerNV
-  Modules linked in:
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted
-  NIP:  c000000000009108 LR: c000000000cadbcc CTR: c0000000000090f0
-  REGS: c0000000fffcbd70 TRAP: 0700   Not tainted
-  MSR:  9000000000021032 <SF,HV,ME,IR,DR,RI>  CR: 28222448  XER: 20040000
-  CFAR: c000000000009100 IRQMASK: 0
-  GPR00: 000000000000003d fffffffffffffd00 c0000000018cfb00 c0000000f02b3166
-  GPR04: fffffffffffffffd 0000000000000007 fffffffffffffffb 0000000000000030
-  GPR08: 0000000000000037 0000000028222448 0000000000000000 c000000000ca8de0
-  GPR12: 9000000002009032 c000000001ae0000 c000000000010a00 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: c0000000f00322c0 c000000000f85200 0000000000000004 ffffffffffffffff
-  GPR24: fffffffffffffffe 0000000000000000 0000000000000000 000000000000000a
-  GPR28: 0000000000000000 0000000000000000 c0000000f02b391c c0000000f02b3167
-  NIP [c000000000009108] decrementer_common+0x18/0x160
-  LR [c000000000cadbcc] .vsnprintf+0x3ec/0x4f0
-  Call Trace:
-  Instruction dump:
-  996d098a 994d098b 38610070 480246ed 48005518 60000000 38200000 718a4000
-  7c2a0b78 3821fd00 41c20008 e82d0970 <0981fd00> f92101a0 f9610170 f9810178
+No generated code change. File is change is in bug table line numbers.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/exception-64s.h |  7 --
- arch/powerpc/include/asm/paca.h          |  2 +
- arch/powerpc/kernel/asm-offsets.c        |  2 +
- arch/powerpc/kernel/exceptions-64s.S     | 95 ++++--------------------
- arch/powerpc/xmon/xmon.c                 |  2 +
- 5 files changed, 22 insertions(+), 86 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 97 +++++++++++++---------------
+ 1 file changed, 45 insertions(+), 52 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-index dc6a5ccac965..79e5ac87c029 100644
---- a/arch/powerpc/include/asm/exception-64s.h
-+++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -55,13 +55,6 @@
-  */
- #define MAX_MCE_DEPTH	4
- 
--/*
-- * EX_R3 is only used by the bad_stack handler. bad_stack reloads and
-- * saves DAR from SPRN_DAR, and EX_DAR is not used. So EX_R3 can overlap
-- * with EX_DAR.
-- */
--#define EX_R3		EX_DAR
--
- #ifdef __ASSEMBLY__
- 
- #define STF_ENTRY_BARRIER_SLOT						\
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index 9bd2326bef6f..e3cc9eb9204d 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -166,7 +166,9 @@ struct paca_struct {
- 	u64 kstack;			/* Saved Kernel stack addr */
- 	u64 saved_r1;			/* r1 save for RTAS calls or PM or EE=0 */
- 	u64 saved_msr;			/* MSR saved here by enter_rtas */
-+#ifdef CONFIG_PPC_BOOK3E
- 	u16 trap_save;			/* Used when bad stack is encountered */
-+#endif
- 	u8 irq_soft_mask;		/* mask for irq soft masking */
- 	u8 irq_happened;		/* irq happened while soft-disabled */
- 	u8 irq_work_pending;		/* IRQ_WORK interrupt while soft-disable */
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 31dc7e64cbfc..4ccb6b3a7fbd 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -266,7 +266,9 @@ int main(void)
- 	OFFSET(ACCOUNT_STARTTIME_USER, paca_struct, accounting.starttime_user);
- 	OFFSET(ACCOUNT_USER_TIME, paca_struct, accounting.utime);
- 	OFFSET(ACCOUNT_SYSTEM_TIME, paca_struct, accounting.stime);
-+#ifdef CONFIG_PPC_BOOK3E
- 	OFFSET(PACA_TRAP_SAVE, paca_struct, trap_save);
-+#endif
- 	OFFSET(PACA_SPRG_VDSO, paca_struct, sprg_vdso);
- #else /* CONFIG_PPC64 */
- #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0a2b4e8b02b0..6c0321e128da 100644
+index 6c0321e128da..4b4bb8f43f55 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -343,14 +343,8 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	subi	r1,r1,INT_FRAME_SIZE;	/* alloc frame on kernel stack	*/ \
- 	beq-	1f;							   \
- 	ld	r1,PACAKSAVE(r13);	/* kernel stack to use		*/ \
--1:	cmpdi	cr1,r1,-INT_FRAME_SIZE;	/* check if r1 is in userspace	*/ \
--	blt+	cr1,3f;			/* abort if it is		*/ \
--	li	r1,(n);			/* will be reloaded later	*/ \
--	sth	r1,PACA_TRAP_SAVE(r13);					   \
--	std	r3,area+EX_R3(r13);					   \
--	addi	r3,r13,area;		/* r3 -> where regs are saved*/	   \
--	RESTORE_CTR(r1, area);						   \
--	b	bad_stack;						   \
+@@ -326,34 +326,6 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	std	r0,GPR0(r1);		/* save r0 in stackframe	*/ \
+ 	std	r10,GPR1(r1);		/* save r1 in stackframe	*/ \
+ 
+-
+-/*
+- * The common exception prolog is used for all except a few exceptions
+- * such as a segment miss on a kernel address.  We have to be prepared
+- * to take another exception from the point where we first touch the
+- * kernel stack onwards.
+- *
+- * On entry r13 points to the paca, r9-r13 are saved in the paca,
+- * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
+- * SRR1, and relocation is on.
+- */
+-#define EXCEPTION_PROLOG_COMMON(n, area)				   \
+-	andi.	r10,r12,MSR_PR;		/* See if coming from user	*/ \
+-	mr	r10,r1;			/* Save r1			*/ \
+-	subi	r1,r1,INT_FRAME_SIZE;	/* alloc frame on kernel stack	*/ \
+-	beq-	1f;							   \
+-	ld	r1,PACAKSAVE(r13);	/* kernel stack to use		*/ \
+-1:	tdgei	r1,-INT_FRAME_SIZE;	/* trap if r1 is in userspace	*/ \
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0;				   \
+-3:	EXCEPTION_PROLOG_COMMON_1();					   \
+-	kuap_save_amr_and_lock r9, r10, cr1, cr0;			   \
+-	beq	4f;			/* if from kernel mode		*/ \
+-	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10);				   \
+-	SAVE_PPR(area, r9);						   \
+-4:	EXCEPTION_PROLOG_COMMON_2(area)					   \
+-	EXCEPTION_PROLOG_COMMON_3(n)					   \
+-	ACCOUNT_STOLEN_TIME
+-
+ /* Save original regs values from save area to stack frame. */
+ #define EXCEPTION_PROLOG_COMMON_2(area)					   \
+ 	ld	r9,area+EX_R9(r13);	/* move r9, r10 to stackframe	*/ \
+@@ -373,7 +345,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66);			   \
+ 	GET_CTR(r10, area);						   \
+ 	std	r10,_CTR(r1);
+ 
+-#define EXCEPTION_PROLOG_COMMON_3(n)					   \
++#define EXCEPTION_PROLOG_COMMON_3(trap)					   \
+ 	std	r2,GPR2(r1);		/* save r2 in stackframe	*/ \
+ 	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe   */ \
+ 	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe	*/ \
+@@ -384,26 +356,38 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66);			   \
+ 	mfspr	r11,SPRN_XER;		/* save XER in stackframe	*/ \
+ 	std	r10,SOFTE(r1);						   \
+ 	std	r11,_XER(r1);						   \
+-	li	r9,(n)+1;						   \
++	li	r9,(trap)+1;						   \
+ 	std	r9,_TRAP(r1);		/* set trap number		*/ \
+ 	li	r10,0;							   \
+ 	ld	r11,exception_marker@toc(r2);				   \
+ 	std	r10,RESULT(r1);		/* clear regs->result		*/ \
+ 	std	r11,STACK_FRAME_OVERHEAD-16(r1); /* mark the frame	*/
+ 
+-#define RUNLATCH_ON				\
+-BEGIN_FTR_SECTION				\
+-	ld	r3, PACA_THREAD_INFO(r13);	\
+-	ld	r4,TI_LOCAL_FLAGS(r3);		\
+-	andi.	r0,r4,_TLF_RUNLATCH;		\
+-	beql	ppc64_runlatch_on_trampoline;	\
+-END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
+-
+-#define EXCEPTION_COMMON(area, trap)				\
+-	EXCEPTION_PROLOG_COMMON(trap, area);			\
++/*
++ * On entry r13 points to the paca, r9-r13 are saved in the paca,
++ * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
++ * SRR1, and relocation is on.
++ */
++#define EXCEPTION_COMMON(area, trap)					   \
++	andi.	r10,r12,MSR_PR;		/* See if coming from user	*/ \
++	mr	r10,r1;			/* Save r1			*/ \
++	subi	r1,r1,INT_FRAME_SIZE;	/* alloc frame on kernel stack	*/ \
++	beq-	1f;							   \
++	ld	r1,PACAKSAVE(r13);	/* kernel stack to use		*/ \
 +1:	tdgei	r1,-INT_FRAME_SIZE;	/* trap if r1 is in userspace	*/ \
 +	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0;				   \
- 3:	EXCEPTION_PROLOG_COMMON_1();					   \
- 	kuap_save_amr_and_lock r9, r10, cr1, cr0;			   \
- 	beq	4f;			/* if from kernel mode		*/ \
-@@ -1489,21 +1483,25 @@ EXC_COMMON_BEGIN(program_check_common)
- 	 * we switch to the emergency stack if we're taking a TM Bad Thing from
- 	 * the kernel.
++3:	EXCEPTION_PROLOG_COMMON_1();					   \
++	kuap_save_amr_and_lock r9, r10, cr1, cr0;			   \
++	beq	4f;			/* if from kernel mode		*/ \
++	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10);				   \
++	SAVE_PPR(area, r9);						   \
++4:	EXCEPTION_PROLOG_COMMON_2(area)					   \
++	EXCEPTION_PROLOG_COMMON_3(trap)					   \
++	ACCOUNT_STOLEN_TIME
+ 
+ /*
+- * Exception where stack is already set in r1, r1 is saved in r10
++ * Exception where stack is already set in r1, r1 is saved in r10.
++ * PPR save and CPU accounting is not done (for some reason).
+  */
+ #define EXCEPTION_COMMON_STACK(area, trap)			\
+ 	EXCEPTION_PROLOG_COMMON_1();				\
+@@ -411,6 +395,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
+ 	EXCEPTION_PROLOG_COMMON_2(area);			\
+ 	EXCEPTION_PROLOG_COMMON_3(trap)
+ 
++
++#define RUNLATCH_ON				\
++BEGIN_FTR_SECTION				\
++	ld	r3, PACA_THREAD_INFO(r13);	\
++	ld	r4,TI_LOCAL_FLAGS(r3);		\
++	andi.	r0,r4,_TLF_RUNLATCH;		\
++	beql	ppc64_runlatch_on_trampoline;	\
++END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
++
+ /*
+  * When the idle code in power4_idle puts the CPU into NAP mode,
+  * it has to do so in a loop, and relies on the external interrupt
+@@ -1042,7 +1035,7 @@ EXC_COMMON_BEGIN(machine_check_common)
+ 	std	r10,PACA_EXMC+EX_DAR(r13)
+ 	mfspr	r10,SPRN_DSISR
+ 	stw	r10,PACA_EXMC+EX_DSISR(r13)
+-	EXCEPTION_PROLOG_COMMON(0x200, PACA_EXMC)
++	EXCEPTION_COMMON(PACA_EXMC, 0x200)
+ 	FINISH_NAP
+ 	RECONCILE_IRQ_STATE(r10, r11)
+ 	ld	r3,PACA_EXMC+EX_DAR(r13)
+@@ -1293,7 +1286,7 @@ EXC_COMMON_BEGIN(data_access_common)
+ 	 * r9 - r13 are saved in paca->exgen.
+ 	 * EX_DAR and EX_DSISR have saved DAR/DSISR
  	 */
--	li	r10,MSR_PR		/* Build a mask of MSR_PR ..	*/
--	oris	r10,r10,0x200000@h	/* .. and SRR1_PROGTM		*/
--	and	r10,r10,r12		/* Mask SRR1 with that.		*/
--	srdi	r10,r10,8		/* Shift it so we can compare	*/
--	cmpldi	r10,(0x200000 >> 8)	/* .. with an immediate.	*/
--	bne 1f				/* If != go to normal path.	*/
--
--	/* SRR1 had PR=0 and SRR1_PROGTM=1, so use the emergency stack	*/
--	andi.	r10,r12,MSR_PR;		/* Set CR0 correctly for label	*/
-+
-+	andi.	r10,r12,MSR_PR
-+	bne	2f			/* If userspace, go normal path */
-+
-+	andis.	r10,r12,(SRR1_PROGTM)@h
-+	bne	1f			/* If TM, emergency		*/
-+
-+	cmpdi	r1,-INT_FRAME_SIZE	/* check if r1 is in userspace	*/
-+	blt	2f			/* normal path if not		*/
-+
-+	/* Use the emergency stack					*/
-+1:	andi.	r10,r12,MSR_PR		/* Set CR0 correctly for label	*/
- 					/* 3 in EXCEPTION_PROLOG_COMMON	*/
- 	mr	r10,r1			/* Save r1			*/
- 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack		*/
+-	EXCEPTION_PROLOG_COMMON(0x300, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0x300)
+ 	RECONCILE_IRQ_STATE(r10, r11)
+ 	ld	r12,_MSR(r1)
+ 	ld	r3,PACA_EXGEN+EX_DAR(r13)
+@@ -1332,7 +1325,7 @@ EXC_VIRT_END(data_access_slb, 0x4380, 0x80)
+ TRAMP_KVM_SKIP(PACA_EXSLB, 0x380)
+ 
+ EXC_COMMON_BEGIN(data_access_slb_common)
+-	EXCEPTION_PROLOG_COMMON(0x380, PACA_EXSLB)
++	EXCEPTION_COMMON(PACA_EXSLB, 0x380)
+ 	ld	r4,PACA_EXSLB+EX_DAR(r13)
+ 	std	r4,_DAR(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+@@ -1362,7 +1355,7 @@ EXC_VIRT(instruction_access, 0x4400, 0x80, 0x400)
+ TRAMP_KVM(PACA_EXGEN, 0x400)
+ 
+ EXC_COMMON_BEGIN(instruction_access_common)
+-	EXCEPTION_PROLOG_COMMON(0x400, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0x400)
+ 	RECONCILE_IRQ_STATE(r10, r11)
+ 	ld	r12,_MSR(r1)
+ 	ld	r3,_NIP(r1)
+@@ -1382,7 +1375,7 @@ __EXC_VIRT(instruction_access_slb, 0x4480, 0x80, 0x480, PACA_EXSLB)
+ TRAMP_KVM(PACA_EXSLB, 0x480)
+ 
+ EXC_COMMON_BEGIN(instruction_access_slb_common)
+-	EXCEPTION_PROLOG_COMMON(0x480, PACA_EXSLB)
++	EXCEPTION_COMMON(PACA_EXSLB, 0x480)
+ 	ld	r4,_NIP(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ BEGIN_MMU_FTR_SECTION
+@@ -1459,7 +1452,7 @@ EXC_VIRT_END(alignment, 0x4600, 0x100)
+ 
+ TRAMP_KVM(PACA_EXGEN, 0x600)
+ EXC_COMMON_BEGIN(alignment_common)
+-	EXCEPTION_PROLOG_COMMON(0x600, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0x600)
+ 	ld	r3,PACA_EXGEN+EX_DAR(r13)
+ 	lwz	r4,PACA_EXGEN+EX_DSISR(r13)
+ 	std	r3,_DAR(r1)
+@@ -1501,7 +1494,7 @@ EXC_COMMON_BEGIN(program_check_common)
  	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
  	b 3f				/* Jump into the macro !!	*/
--1:	EXCEPTION_PROLOG_COMMON(0x700, PACA_EXGEN)
-+2:
-+	EXCEPTION_PROLOG_COMMON(0x700, PACA_EXGEN)
+ 2:
+-	EXCEPTION_PROLOG_COMMON(0x700, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0x700)
  	bl	save_nvgprs
  	RECONCILE_IRQ_STATE(r10, r11)
  	addi	r3,r1,STACK_FRAME_OVERHEAD
-@@ -2474,67 +2472,6 @@ handle_dabr_fault:
- 	bl	bad_page_fault
- 	b	ret_from_except
- 
--/*
-- * Here we have detected that the kernel stack pointer is bad.
-- * R9 contains the saved CR, r13 points to the paca,
-- * r10 contains the (bad) kernel stack pointer,
-- * r11 and r12 contain the saved SRR0 and SRR1.
-- * We switch to using an emergency stack, save the registers there,
-- * and call kernel_bad_stack(), which panics.
-- */
--bad_stack:
--	ld	r1,PACAEMERGSP(r13)
--	subi	r1,r1,64+INT_FRAME_SIZE
--	std	r9,_CCR(r1)
--	std	r10,GPR1(r1)
--	std	r11,_NIP(r1)
--	std	r12,_MSR(r1)
--	mfspr	r11,SPRN_DAR
--	mfspr	r12,SPRN_DSISR
--	std	r11,_DAR(r1)
--	std	r12,_DSISR(r1)
--	mflr	r10
--	mfctr	r11
--	mfxer	r12
--	std	r10,_LINK(r1)
--	std	r11,_CTR(r1)
--	std	r12,_XER(r1)
--	SAVE_GPR(0,r1)
--	SAVE_GPR(2,r1)
--	ld	r10,EX_R3(r3)
--	std	r10,GPR3(r1)
--	SAVE_GPR(4,r1)
--	SAVE_4GPRS(5,r1)
--	ld	r9,EX_R9(r3)
--	ld	r10,EX_R10(r3)
--	SAVE_2GPRS(9,r1)
--	ld	r9,EX_R11(r3)
--	ld	r10,EX_R12(r3)
--	ld	r11,EX_R13(r3)
--	std	r9,GPR11(r1)
--	std	r10,GPR12(r1)
--	std	r11,GPR13(r1)
--BEGIN_FTR_SECTION
--	ld	r10,EX_CFAR(r3)
--	std	r10,ORIG_GPR3(r1)
--END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
--	SAVE_8GPRS(14,r1)
--	SAVE_10GPRS(22,r1)
--	lhz	r12,PACA_TRAP_SAVE(r13)
--	std	r12,_TRAP(r1)
--	addi	r11,r1,INT_FRAME_SIZE
--	std	r11,0(r1)
--	li	r12,0
--	std	r12,0(r11)
--	ld	r2,PACATOC(r13)
--	ld	r11,exception_marker@toc(r2)
--	std	r12,RESULT(r1)
--	std	r11,STACK_FRAME_OVERHEAD-16(r1)
--1:	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	kernel_bad_stack
--	b	1b
--_ASM_NOKPROBE_SYMBOL(bad_stack);
--
- /*
-  * When doorbell is triggered from system reset wakeup, the message is
-  * not cleared, so it would fire again when EE is enabled.
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d0620d762a5a..41c91f17e408 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -2448,7 +2448,9 @@ static void dump_one_paca(int cpu)
- 	DUMP(p, canary, "%#-*lx");
- #endif
- 	DUMP(p, saved_r1, "%#-*llx");
-+#ifdef CONFIG_PPC_BOOK3E
- 	DUMP(p, trap_save, "%#-*x");
-+#endif
- 	DUMP(p, irq_soft_mask, "%#-*x");
- 	DUMP(p, irq_happened, "%#-*x");
- #ifdef CONFIG_MMIOWB
+@@ -1513,7 +1506,7 @@ EXC_REAL(fp_unavailable, 0x800, 0x100)
+ EXC_VIRT(fp_unavailable, 0x4800, 0x100, 0x800)
+ TRAMP_KVM(PACA_EXGEN, 0x800)
+ EXC_COMMON_BEGIN(fp_unavailable_common)
+-	EXCEPTION_PROLOG_COMMON(0x800, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0x800)
+ 	bne	1f			/* if from user, just load it up */
+ 	bl	save_nvgprs
+ 	RECONCILE_IRQ_STATE(r10, r11)
+@@ -1726,7 +1719,7 @@ EXC_COMMON_BEGIN(h_data_storage_common)
+ 	std     r10,PACA_EXGEN+EX_DAR(r13)
+ 	mfspr   r10,SPRN_HDSISR
+ 	stw     r10,PACA_EXGEN+EX_DSISR(r13)
+-	EXCEPTION_PROLOG_COMMON(0xe00, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0xe00)
+ 	bl      save_nvgprs
+ 	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi    r3,r1,STACK_FRAME_OVERHEAD
+@@ -1858,7 +1851,7 @@ EXC_REAL_OOL(altivec_unavailable, 0xf20, 0x20)
+ EXC_VIRT_OOL(altivec_unavailable, 0x4f20, 0x20, 0xf20)
+ TRAMP_KVM(PACA_EXGEN, 0xf20)
+ EXC_COMMON_BEGIN(altivec_unavailable_common)
+-	EXCEPTION_PROLOG_COMMON(0xf20, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0xf20)
+ #ifdef CONFIG_ALTIVEC
+ BEGIN_FTR_SECTION
+ 	beq	1f
+@@ -1895,7 +1888,7 @@ EXC_REAL_OOL(vsx_unavailable, 0xf40, 0x20)
+ EXC_VIRT_OOL(vsx_unavailable, 0x4f40, 0x20, 0xf40)
+ TRAMP_KVM(PACA_EXGEN, 0xf40)
+ EXC_COMMON_BEGIN(vsx_unavailable_common)
+-	EXCEPTION_PROLOG_COMMON(0xf40, PACA_EXGEN)
++	EXCEPTION_COMMON(PACA_EXGEN, 0xf40)
+ #ifdef CONFIG_VSX
+ BEGIN_FTR_SECTION
+ 	beq	1f
 -- 
 2.20.1
 
