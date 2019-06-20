@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514534C902
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6374D4C907
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:10:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TvZp4RgVzDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:08:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Tvd24fvczDr0d
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:10:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,24 +18,25 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45TvXq2SDhzDqDL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:06:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TvXr5bCyzDq5W
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:06:36 +1000 (AEST)
 Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
  by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
- id 1hds5N-0002E7-Qu; Thu, 20 Jun 2019 16:06:21 +0800
+ id 1hds5S-0002ED-0a; Thu, 20 Jun 2019 16:06:26 +0800
 Received: from herbert by gondobar with local (Exim 4.89)
  (envelope-from <herbert@gondor.apana.org.au>)
- id 1hds5I-0007W7-Ja; Thu, 20 Jun 2019 16:06:16 +0800
-Date: Thu, 20 Jun 2019 16:06:16 +0800
+ id 1hds5R-0007aV-M2; Thu, 20 Jun 2019 16:06:25 +0800
+Date: Thu, 20 Jun 2019 16:06:25 +0800
 From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH] crypto: vmx - Document CTR mode counter width quirks
-Message-ID: <20190620080616.73fb2bq4yeeso4ia@gondor.apana.org.au>
-References: <20190611015431.26772-1-dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] crypto: talitos - fix max key size for sha384 and sha512
+Message-ID: <20190620080625.5q5sok7ihh4ell2y@gondor.apana.org.au>
+References: <5f1004d33b2347dcfbc677551bafc9d469bb079e.1560318544.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190611015431.26772-1-dja@axtens.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5f1004d33b2347dcfbc677551bafc9d469bb079e.1560318544.git.christophe.leroy@c-s.fr>
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -48,26 +49,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: leo.barbosa@canonical.com, Stephan Mueller <smueller@chronox.de>,
- nayna@linux.ibm.com, omosnacek@gmail.com, ebiggers@kernel.org,
- leitao@debian.org, pfsmorigo@gmail.com, linux-crypto@vger.kernel.org,
- marcelo.cerri@canonical.com, gcwilson@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, horia.geanta@nxp.com,
+ linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2019 at 11:54:31AM +1000, Daniel Axtens wrote:
-> The CTR code comes from OpenSSL, where it does a 32-bit counter.
-> The kernel has a 128-bit counter. This difference has lead to
-> issues.
+On Wed, Jun 12, 2019 at 05:49:50AM +0000, Christophe Leroy wrote:
+> Below commit came with a typo in the CONFIG_ symbol, leading
+> to a permanently reduced max key size regarless of the driver
+> capabilities.
 > 
-> Document it.
-> 
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> Reported-by: Horia Geantă <horia.geanta@nxp.com>
+> Fixes: b8fbdc2bc4e7 ("crypto: talitos - reduce max key size for SEC1")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 > ---
->  drivers/crypto/vmx/aesp8-ppc.pl | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
+>  drivers/crypto/talitos.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Patch applied.  Thanks.
 -- 
