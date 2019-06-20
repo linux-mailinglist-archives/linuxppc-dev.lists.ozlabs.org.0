@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C380D4CAD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:27:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D764CA9E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 11:21:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TxC31tHBzDrCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:21:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TxLd2JVDzDrCs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 19:27:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,43 +19,44 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tx6Q3FK1zDr5l
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:17:18 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5K9692V122435; Thu, 20 Jun 2019 05:17:13 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t871xrs45-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tx6d36QBzDrCC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 19:17:29 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5K94a1m146189; Thu, 20 Jun 2019 05:17:14 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2t85ymbm00-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Jun 2019 05:17:13 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5K94k2x024184;
- Thu, 20 Jun 2019 09:17:12 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 2t75r12xet-1
+ Thu, 20 Jun 2019 05:17:14 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5K94kWQ032608;
+ Thu, 20 Jun 2019 09:17:14 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 2t4ra70ntr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Jun 2019 09:17:12 +0000
+ Thu, 20 Jun 2019 09:17:14 +0000
 Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
  [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5K9HBam33227140
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5K9HDaN33489158
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Jun 2019 09:17:11 GMT
+ Thu, 20 Jun 2019 09:17:13 GMT
 Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9925AAE060;
- Thu, 20 Jun 2019 09:17:11 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 834BEAE062;
+ Thu, 20 Jun 2019 09:17:13 +0000 (GMT)
 Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18769AE05C;
- Thu, 20 Jun 2019 09:17:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0D4FCAE060;
+ Thu, 20 Jun 2019 09:17:12 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.124.35.143])
  by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 20 Jun 2019 09:17:09 +0000 (GMT)
+ Thu, 20 Jun 2019 09:17:11 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com
-Subject: [PATCH v4 1/6] nvdimm: Consider probe return -EOPNOTSUPP as success
-Date: Thu, 20 Jun 2019 14:46:21 +0530
-Message-Id: <20190620091626.31824-2-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 2/6] mm/nvdimm: Add page size and struct page size to pfn
+ superblock
+Date: Thu, 20 Jun 2019 14:46:22 +0530
+Message-Id: <20190620091626.31824-3-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
 References: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
@@ -66,7 +67,7 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-20_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1906200068
@@ -87,144 +88,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch add -EOPNOTSUPP as return from probe callback to
-indicate we were not able to initialize a namespace due to pfn superblock
-feature/version mismatch. We want to consider this a probe success so that
-we can create new namesapce seed and there by avoid marking the failed
-namespace as the seed namespace.
+This is needed so that we don't wrongly initialize a namespace
+which doesn't have enough space reserved for holding struct pages
+with the current kernel.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- drivers/nvdimm/bus.c         |  4 ++--
- drivers/nvdimm/nd-core.h     |  3 ++-
- drivers/nvdimm/pmem.c        | 26 ++++++++++++++++++++++----
- drivers/nvdimm/region_devs.c | 19 +++++++++++++++----
- 4 files changed, 41 insertions(+), 11 deletions(-)
+ drivers/nvdimm/pfn.h      |  5 ++++-
+ drivers/nvdimm/pfn_devs.c | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 2dca3034fee0..3b8ffb3966ab 100644
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -92,8 +92,8 @@ static int nvdimm_bus_probe(struct device *dev)
+diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
+index 7381673b7b70..acb19517f678 100644
+--- a/drivers/nvdimm/pfn.h
++++ b/drivers/nvdimm/pfn.h
+@@ -29,7 +29,10 @@ struct nd_pfn_sb {
+ 	/* minor-version-2 record the base alignment of the mapping */
+ 	__le32 align;
+ 	/* minor-version-3 guarantee the padding and flags are zero */
+-	u8 padding[4000];
++	/* minor-version-4 record the page size and struct page size */
++	__le32 page_size;
++	__le16 page_struct_size;
++	u8 padding[3994];
+ 	__le64 checksum;
+ };
  
- 	nvdimm_bus_probe_start(nvdimm_bus);
- 	rc = nd_drv->probe(dev);
--	if (rc == 0)
--		nd_region_probe_success(nvdimm_bus, dev);
-+	if (rc == 0 || rc == -EOPNOTSUPP)
-+		nd_region_probe_success(nvdimm_bus, dev, rc);
- 	else
- 		nd_region_disable(nvdimm_bus, dev);
- 	nvdimm_bus_probe_end(nvdimm_bus);
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index 391e88de3a29..4e6ffa0d89bb 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -126,7 +126,8 @@ int __init nvdimm_bus_init(void);
- void nvdimm_bus_exit(void);
- void nvdimm_devs_exit(void);
- void nd_region_devs_exit(void);
--void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev);
-+void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus,
-+			     struct device *dev, int ret);
- struct nd_region;
- void nd_region_create_ns_seed(struct nd_region *nd_region);
- void nd_region_create_btt_seed(struct nd_region *nd_region);
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 24d7fe7c74ed..422b11c01301 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -497,6 +497,7 @@ static int pmem_attach_disk(struct device *dev,
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 2537aa338bd0..cd722de0ae03 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -460,6 +460,15 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+ 	if (__le16_to_cpu(pfn_sb->version_minor) < 2)
+ 		pfn_sb->align = 0;
  
- static int nd_pmem_probe(struct device *dev)
- {
-+	int ret;
- 	struct nd_namespace_common *ndns;
- 
- 	ndns = nvdimm_namespace_common_probe(dev);
-@@ -512,12 +513,29 @@ static int nd_pmem_probe(struct device *dev)
- 	if (is_nd_pfn(dev))
- 		return pmem_attach_disk(dev, ndns);
- 
--	/* if we find a valid info-block we'll come back as that personality */
--	if (nd_btt_probe(dev, ndns) == 0 || nd_pfn_probe(dev, ndns) == 0
--			|| nd_dax_probe(dev, ndns) == 0)
-+	ret = nd_btt_probe(dev, ndns);
-+	if (ret == 0)
- 		return -ENXIO;
-+	else if (ret == -EOPNOTSUPP)
-+		return ret;
- 
--	/* ...otherwise we're just a raw pmem device */
-+	ret = nd_pfn_probe(dev, ndns);
-+	if (ret == 0)
-+		return -ENXIO;
-+	else if (ret == -EOPNOTSUPP)
-+		return ret;
-+
-+	ret = nd_dax_probe(dev, ndns);
-+	if (ret == 0)
-+		return -ENXIO;
-+	else if (ret == -EOPNOTSUPP)
-+		return ret;
-+	/*
-+	 * We have two failure conditions here, there is no
-+	 * info reserver block or we found a valid info reserve block
-+	 * but failed to initialize the pfn superblock.
-+	 * Don't create a raw pmem disk for the second case.
-+	 */
- 	return pmem_attach_disk(dev, ndns);
- }
- 
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index 4fed9ce9c2fe..1e74a1c9fdac 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -715,7 +715,7 @@ void nd_mapping_free_labels(struct nd_mapping *nd_mapping)
-  * disable the region.
-  */
- static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
--		struct device *dev, bool probe)
-+					   struct device *dev, bool probe, int ret)
- {
- 	struct nd_region *nd_region;
- 
-@@ -745,6 +745,16 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
- 			nd_region_create_ns_seed(nd_region);
- 		nvdimm_bus_unlock(dev);
- 	}
-+
-+	if (dev->parent && is_nd_region(dev->parent) &&
-+	    !probe && (ret == -EOPNOTSUPP)) {
-+		nd_region = to_nd_region(dev->parent);
-+		nvdimm_bus_lock(dev);
-+		if (nd_region->ns_seed == dev)
-+			nd_region_create_ns_seed(nd_region);
-+		nvdimm_bus_unlock(dev);
++	if (__le16_to_cpu(pfn_sb->version_minor) < 4) {
++		/*
++		 * For a large part we use PAGE_SIZE. But we
++		 * do have some accounting code using SZ_4K.
++		 */
++		pfn_sb->page_struct_size = cpu_to_le16(64);
++		pfn_sb->page_size = cpu_to_le32(PAGE_SIZE);
 +	}
 +
- 	if (is_nd_btt(dev) && probe) {
- 		struct nd_btt *nd_btt = to_nd_btt(dev);
+ 	switch (le32_to_cpu(pfn_sb->mode)) {
+ 	case PFN_MODE_RAM:
+ 	case PFN_MODE_PMEM:
+@@ -475,6 +484,20 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+ 		align = 1UL << ilog2(offset);
+ 	mode = le32_to_cpu(pfn_sb->mode);
  
-@@ -780,14 +790,15 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
- 	}
- }
++	if (le32_to_cpu(pfn_sb->page_size) != PAGE_SIZE) {
++		dev_err(&nd_pfn->dev,
++			"init failed, page size mismatch %d\n",
++			le32_to_cpu(pfn_sb->page_size));
++		return -EOPNOTSUPP;
++	}
++
++	if (le16_to_cpu(pfn_sb->page_struct_size) != sizeof(struct page)) {
++		dev_err(&nd_pfn->dev,
++			"init failed, struct page size mismatch %d\n",
++			le16_to_cpu(pfn_sb->page_struct_size));
++		return -EOPNOTSUPP;
++	}
++
+ 	if (!nd_pfn->uuid) {
+ 		/*
+ 		 * When probing a namepace via nd_pfn_probe() the uuid
+@@ -723,8 +746,10 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 	memcpy(pfn_sb->uuid, nd_pfn->uuid, 16);
+ 	memcpy(pfn_sb->parent_uuid, nd_dev_to_uuid(&ndns->dev), 16);
+ 	pfn_sb->version_major = cpu_to_le16(1);
+-	pfn_sb->version_minor = cpu_to_le16(3);
++	pfn_sb->version_minor = cpu_to_le16(4);
+ 	pfn_sb->align = cpu_to_le32(nd_pfn->align);
++	pfn_sb->page_struct_size = cpu_to_le16(sizeof(struct page));
++	pfn_sb->page_size = cpu_to_le32(PAGE_SIZE);
+ 	checksum = nd_sb_checksum((struct nd_gen_sb *) pfn_sb);
+ 	pfn_sb->checksum = cpu_to_le64(checksum);
  
--void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev)
-+void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus,
-+			     struct device *dev, int ret)
- {
--	nd_region_notify_driver_action(nvdimm_bus, dev, true);
-+	nd_region_notify_driver_action(nvdimm_bus, dev, true, ret);
- }
- 
- void nd_region_disable(struct nvdimm_bus *nvdimm_bus, struct device *dev)
- {
--	nd_region_notify_driver_action(nvdimm_bus, dev, false);
-+	nd_region_notify_driver_action(nvdimm_bus, dev, false, 0);
- }
- 
- static ssize_t mappingN(struct device *dev, char *buf, int n)
 -- 
 2.21.0
 
