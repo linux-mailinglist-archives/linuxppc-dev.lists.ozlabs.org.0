@@ -1,51 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CC64C958
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:22:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE764C930
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 10:15:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TvkV5SwPzDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:14:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Tvtb1y67zDrB5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 18:21:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=haiyanx.song@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.36.149; helo=4.mo179.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 4.mo179.mail-out.ovh.net (4.mo179.mail-out.ovh.net
+ [46.105.36.149])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tvf42tmkzDrFK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:11:05 +1000 (AEST)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2019 01:11:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,396,1557212400"; 
- d="out'?scan'208";a="150857738"
-Received: from haiyan.sh.intel.com ([10.239.48.70])
- by orsmga007.jf.intel.com with ESMTP; 20 Jun 2019 01:10:56 -0700
-Date: Thu, 20 Jun 2019 16:19:45 +0800
-From: Haiyan Song <haiyanx.song@intel.com>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH v12 00/31] Speculative page faults
-Message-ID: <20190620081945.hwj6ruqddefnxg6z@haiyan.sh.intel.com>
-References: <20190416134522.17540-1-ldufour@linux.ibm.com>
- <20190606065129.d5s3534p23twksgp@haiyan.sh.intel.com>
- <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
- <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TvrN2gXdzDqRr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 18:20:00 +1000 (AEST)
+Received: from player758.ha.ovh.net (unknown [10.108.35.240])
+ by mo179.mail-out.ovh.net (Postfix) with ESMTP id B97D01365EA
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 10:19:53 +0200 (CEST)
+Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
+ (Authenticated sender: clg@kaod.org)
+ by player758.ha.ovh.net (Postfix) with ESMTPSA id 50490713A45D;
+ Thu, 20 Jun 2019 08:19:49 +0000 (UTC)
+Subject: Re: [PATCH 3/3] KVM: PPC: Book3S HV: Clear pending decr exceptions on
+ nested guest entry
+To: Laurent Vivier <lvivier@redhat.com>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190620014651.7645-1-sjitindarsingh@gmail.com>
+ <20190620014651.7645-3-sjitindarsingh@gmail.com>
+ <30c02f09-8376-3dd0-e463-94d396df0240@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <31d62ffd-2d29-f314-dcff-0cc27919c58a@kaod.org>
+Date: Thu, 20 Jun 2019 10:19:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ghgds33dkojdyykr"
-Content-Disposition: inline
+In-Reply-To: <30c02f09-8376-3dd0-e463-94d396df0240@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-Ovh-Tracer-Id: 4731031409092824023
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrtdeggddtvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,172 +61,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, sergey.senozhatsky.work@gmail.com, peterz@infradead.org,
- Will Deacon <will.deacon@arm.com>, mhocko@kernel.org, linux-mm@kvack.org,
- paulus@samba.org, Punit Agrawal <punitagrawal@gmail.com>, hpa@zytor.com,
- Michel Lespinasse <walken@google.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andrea Arcangeli <aarcange@redhat.com>, ak@linux.intel.com,
- Minchan Kim <minchan@kernel.org>, aneesh.kumar@linux.ibm.com, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Ingo Molnar <mingo@redhat.com>,
- David Rientjes <rientjes@google.com>, paulmck@linux.vnet.ibm.com,
- npiggin@gmail.com, sj38.park@gmail.com, Jerome Glisse <jglisse@redhat.com>,
- dave@stgolabs.net, kemi.wang@intel.com, kirill@shutemov.name,
- Thomas Gleixner <tglx@linutronix.de>, zhong jiang <zhongjiang@huawei.com>,
- Ganesh Mahendran <opensource.ganesh@gmail.com>,
- Yang Shi <yang.shi@linux.alibaba.com>, Mike Rapoport <rppt@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- vinayak menon <vinayakm.list@gmail.com>, akpm@linux-foundation.org,
- Tim Chen <tim.c.chen@linux.intel.com>, haren@linux.vnet.ibm.com
+Cc: kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 20/06/2019 09:57, Laurent Vivier wrote:
+> On 20/06/2019 03:46, Suraj Jitindar Singh wrote:
+>> If we enter an L1 guest with a pending decrementer exception then this
+>> is cleared on guest exit if the guest has writtien a positive value into
+>> the decrementer (indicating that it handled the decrementer exception)
+>> since there is no other way to detect that the guest has handled the
+>> pending exception and that it should be dequeued. In the event that the
+>> L1 guest tries to run a nested (L2) guest immediately after this and the
+>> L2 guest decrementer is negative (which is loaded by L1 before making
+>> the H_ENTER_NESTED hcall), then the pending decrementer exception
+>> isn't cleared and the L2 entry is blocked since L1 has a pending
+>> exception, even though L1 may have already handled the exception and
+>> written a positive value for it's decrementer. This results in a loop of
+>> L1 trying to enter the L2 guest and L0 blocking the entry since L1 has
+>> an interrupt pending with the outcome being that L2 never gets to run
+>> and hangs.
+>>
+>> Fix this by clearing any pending decrementer exceptions when L1 makes
+>> the H_ENTER_NESTED hcall since it won't do this if it's decrementer has
+>> gone negative, and anyway it's decrementer has been communicated to L0
+>> in the hdec_expires field and L0 will return control to L1 when this
+>> goes negative by delivering an H_DECREMENTER exception.
+>>
+>> Fixes: 95a6432ce903 "KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix guests"
+>>
+>> Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+>> ---
+>>  arch/powerpc/kvm/book3s_hv.c | 11 +++++++++--
+>>  1 file changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 719fd2529eec..4a5eb29b952f 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -4128,8 +4128,15 @@ int kvmhv_run_single_vcpu(struct kvm_run *kvm_run,
+>>  
+>>  	preempt_enable();
+>>  
+>> -	/* cancel pending decrementer exception if DEC is now positive */
+>> -	if (get_tb() < vcpu->arch.dec_expires && kvmppc_core_pending_dec(vcpu))
+>> +	/*
+>> +	 * cancel pending decrementer exception if DEC is now positive, or if
+>> +	 * entering a nested guest in which case the decrementer is now owned
+>> +	 * by L2 and the L1 decrementer is provided in hdec_expires
+>> +	 */
+>> +	if (kvmppc_core_pending_dec(vcpu) &&
+>> +			((get_tb() < vcpu->arch.dec_expires) ||
+>> +			 (trap == BOOK3S_INTERRUPT_SYSCALL &&
+>> +			  kvmppc_get_gpr(vcpu, 3) == H_ENTER_NESTED)))
+>>  		kvmppc_core_dequeue_dec(vcpu);
+>>  
+>>  	trace_kvm_guest_exit(vcpu);
+>>
+> 
+> Patches 2 and 3: tested I can boot and run an L2 nested guest with qemu
+> v4.0.0 and caps-large-decr=on in the case we have had a hang previously.
+> 
+> Tested-by: Laurent Vivier <lvivier@redhat.com>
 
---ghgds33dkojdyykr
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+You beat me to it. All works fine on L0, L1, L2.
 
-Hi Laurent,
+  Tested-by: CÃ©dric Le Goater <clg@kaod.org>
 
-I downloaded your script and run it on Intel 2s skylake platform with spf-v12 patch
-serials.
-
-Here attached the output results of this script.
-
-The following comparison result is statistics from the script outputs.
-
-a). Enable THP
-                                            SPF_0          change       SPF_1
-will-it-scale.page_fault2.per_thread_ops    2664190.8      -11.7%       2353637.6      
-will-it-scale.page_fault3.per_thread_ops    4480027.2      -14.7%       3819331.9     
-
-
-b). Disable THP
-                                            SPF_0           change      SPF_1
-will-it-scale.page_fault2.per_thread_ops    2653260.7       -10%        2385165.8
-will-it-scale.page_fault3.per_thread_ops    4436330.1       -12.4%      3886734.2 
-
+With a QEMU-4.1. In this configuration, L2 runs with the XIVE (emulated) 
+interrupt mode by default now (kernel_irqchip=allowed, ic-mode=dual).
 
 Thanks,
-Haiyan Song
+
+C.
 
 
-On Fri, Jun 14, 2019 at 10:44:47AM +0200, Laurent Dufour wrote:
-> Le 14/06/2019 à 10:37, Laurent Dufour a écrit :
-> > Please find attached the script I run to get these numbers.
-> > This would be nice if you could give it a try on your victim node and share the result.
-> 
-> Sounds that the Intel mail fitering system doesn't like the attached shell script.
-> Please find it there: https://gist.github.com/ldu4/a5cc1a93f293108ea387d43d5d5e7f44
-> 
-> Thanks,
-> Laurent.
-> 
-
---ghgds33dkojdyykr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="page_fault2_threads.5.1.0-rc4-mm1-00300-g02c5a1f.out"
-
-#### THP always
-#### SPF 0
-average:2628818
-average:2732209
-average:2728392
-average:2550695
-average:2689873
-average:2691963
-average:2627612
-average:2558295
-average:2707877
-average:2726174
-#### SPF 1
-average:2426260
-average:2145674
-average:2117769
-average:2292502
-average:2350403
-average:2483327
-average:2467324
-average:2335393
-average:2437859
-average:2479865
-#### THP never
-#### SPF 0
-average:2712575
-average:2711447
-average:2672362
-average:2701981
-average:2668073
-average:2579296
-average:2662048
-average:2637422
-average:2579143
-average:2608260
-#### SPF 1
-average:2348782
-average:2203349
-average:2312960
-average:2402995
-average:2318914
-average:2543129
-average:2390337
-average:2490178
-average:2416798
-average:2424216
-
---ghgds33dkojdyykr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="page_fault3_threads.5.1.0-rc4-mm1-00300-g02c5a1f.out"
-
-#### THP always
-#### SPF 0
-average:4370143
-average:4245754
-average:4678884
-average:4665759
-average:4665809
-average:4639132
-average:4210755
-average:4330552
-average:4290469
-average:4703015
-#### SPF 1
-average:3810608
-average:3918890
-average:3758003
-average:3965024
-average:3578151
-average:3822748
-average:3687293
-average:3998701
-average:3915771
-average:3738130
-#### THP never
-#### SPF 0
-average:4505598
-average:4672023
-average:4701787
-average:4355885
-average:4338397
-average:4446350
-average:4360811
-average:4653767
-average:4016352
-average:4312331
-#### SPF 1
-average:3685383
-average:4029413
-average:4051615
-average:3747588
-average:4058557
-average:4042340
-average:3971295
-average:3752943
-average:3750626
-average:3777582
-
---ghgds33dkojdyykr--
