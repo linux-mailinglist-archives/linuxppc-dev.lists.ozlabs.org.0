@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC184C6F4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 07:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F95D4C6F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 07:58:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Trfc1m3DzDqmj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 15:56:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Trhv6WHFzDr3m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 15:58:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Iy1DNCxU"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="vZe+wwgj"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqlj6gZPzDqtp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:45 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id q10so956988pff.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqln0fFDzDqvh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:15:48 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id d126so978495pfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:15:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qN9ea9qxOQAFsfChjpNGHN1fNl5N2FGQcI0CFjKry54=;
- b=Iy1DNCxUHCk3B7iXcUx3uEgul2FccF27+j5GYlJj2h3lKNbgP8o0AgxH767ODFu5wW
- bxBQJYkTPkHrzzXS5xMy9h/suNERTpVk2xcrFtQ9PPh4/EbXIGVsrG41d/4VMcpBUHML
- nqXeKXjTQljIXoj+xBcDzXBtUhZk3ajMipSbjhU5GIlIX/cVTX3/Ztq17YdEps3oM/Yv
- jAWwwezJYpw52ZJHidMd8ueV3hPknGKkK9EV3T+BMdFZdHbbPbFWiwZ1g8BVP9jgbq5F
- C2Qqne+0w9SmWH/28Q7MFpd/J3y3BMbK+1CBOZ23VRmMim08AlE5040voiJC0UdzkH3E
- kwjQ==
+ bh=L9+GSvbLewhwBQ9VwuQjJbbBDMzqhgDBjoHx4ME7YxM=;
+ b=vZe+wwgjwY7TbBNAsD2EHAjaIY1yhc8gUWgRy/aE2Av2il+OGv4IpVwB69HzcjmTLv
+ yCWsEXF2cEco/3RRKss9FKZNJpH2OqPOGB4Ud33o2njyGqM4QGQ0YcAgT34udZm/17oW
+ +efpXvUAKdCB/kBLn+zZTNngI0/DGJuU4Fq0fd84U7nKGfONimw85un+n8sGTBTqwR7y
+ WacAOjJBMcNXdgXJT5DZ1Bf0AJ1KKE2xp9CQp1XIDTTcrxKKURTDqNdlCt5sq4fd3znF
+ SasiWZA7VPXLutGT3MZ5QJsupYwwpJnzOlv274wKnTENoRwwYX/HiVVSHGLvVZeS4sOj
+ PVUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qN9ea9qxOQAFsfChjpNGHN1fNl5N2FGQcI0CFjKry54=;
- b=Bij2rhzoDpi+8j+TTAwJuMzZYK4ri9c/XxlLRrL+vazMwpTZYJdAd+EWoarD8AbfFp
- nhStgU6IZx/8pwEk7awFfsKPMAUKpz6Gn9D+d8R0YkU3VjD1R2mKP+/5nD1FXP3L6h6x
- Yvow0o5OXucvwfe1hDMeb+bh21JfdARfKVCZ4bMsym3IQzIJSNumpEcDFplilG3TqVUc
- TqX91tpXYhBj4SsSDs5hAozWkIZvL65tQMpH4ZoZgSyx7JSBLjliqhHy4YaM7gWgD2Fr
- w7ZICDhY7VZrHLnFXP5PTPTZF5oWTi+IytbyuYOvDhvnw7LoieSaM7JCpA+d2UP6IQVI
- vHmg==
-X-Gm-Message-State: APjAAAXzBC2pyTeztgsvBGQib494nrOqFg+MIh5gC0OXZki1XdcrC2pF
- dn2V/dKx4vhmiMYQOKFoxipALBYK
-X-Google-Smtp-Source: APXvYqypMILgFpoaeiLxaGUwYnukl2c/0bS6XCZZ/zEtwNk99BY2SkGi7RG2yJNaO4/HBf2dqIhWfQ==
-X-Received: by 2002:a17:90a:9289:: with SMTP id
- n9mr1112533pjo.35.1561007742457; 
- Wed, 19 Jun 2019 22:15:42 -0700 (PDT)
+ bh=L9+GSvbLewhwBQ9VwuQjJbbBDMzqhgDBjoHx4ME7YxM=;
+ b=KeKNRvvVgHFrOxFBLmHCEIbexkyF/KbwlpHjkwc4ES4MzxolrEFt0IflS6G/MWZSWt
+ M46Xyhak8Fj8heXuRWNlSqOKFSPUyitagbokZiIdblNk0WeNYvwktkCt5Q/OIIZ7wwav
+ G15gNKgv+xQfR9XNNGEc69xs2sBy8bqU/oCVNL0IZLKKQnXvGlrY2R/HxKzquGB7VZ+l
+ VgwYg/h289BKS4NwxxbgxQb9eDLOdCdoebZvsL1IuSGks0JCpifC01GsF8+lRXQpljq5
+ XWG9l0xtdXzZwtH+7EwKyQUN4+30ChuC68oKiMKxiH+7XCq8lsSidUYdLhPZrl4GQjoM
+ 1kkA==
+X-Gm-Message-State: APjAAAWOFgUZqfoVn4TNUwCaMZJyECMX6T7bXE28mlmcStlx/dDvGAHX
+ fL7ZClUZ7ZSfVmBq86y3zq2Gng6K
+X-Google-Smtp-Source: APXvYqwZAtMi+n1ZrxKriwnz3g56+eex7B2/F6XSOV+rY950heMJfTIo1IseJWS76voS9w1MtMq5sA==
+X-Received: by 2002:a63:eb4f:: with SMTP id b15mr11250078pgk.418.1561007744488; 
+ Wed, 19 Jun 2019 22:15:44 -0700 (PDT)
 Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
  by smtp.gmail.com with ESMTPSA id
- h12sm8235847pje.12.2019.06.19.22.15.40
+ h12sm8235847pje.12.2019.06.19.22.15.42
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 22:15:42 -0700 (PDT)
+ Wed, 19 Jun 2019 22:15:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 20/52] powerpc/64s/exception: remove __BRANCH_TO_KVM
-Date: Thu, 20 Jun 2019 15:14:27 +1000
-Message-Id: <20190620051459.29573-21-npiggin@gmail.com>
+Subject: [PATCH v2 21/52] powerpc/64s/exception: remove unused BRANCH_TO_COMMON
+Date: Thu, 20 Jun 2019 15:14:28 +1000
+Message-Id: <20190620051459.29573-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190620051459.29573-1-npiggin@gmail.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
@@ -85,74 +84,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No generated code change.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 43 ++++++++++++----------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0a5a2d9dde90..87db0f5a67c4 100644
+index 87db0f5a67c4..f1f1278cb131 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -243,29 +243,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- #endif
+@@ -224,20 +224,12 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	bctr
  
- #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
--
--#ifdef CONFIG_RELOCATABLE
--/*
-- * KVM requires __LOAD_FAR_HANDLER.
-- *
-- * __BRANCH_TO_KVM_EXIT branches are also a special case because they
-- * explicitly use r9 then reload it from PACA before branching. Hence
-- * the double-underscore.
-- */
--#define __BRANCH_TO_KVM_EXIT(area, label)				\
--	mfctr	r9;							\
--	std	r9,HSTATE_SCRATCH1(r13);				\
--	__LOAD_FAR_HANDLER(r9, label);					\
--	mtctr	r9;							\
--	ld	r9,area+EX_R9(r13);					\
+ #ifdef CONFIG_RELOCATABLE
+-#define BRANCH_TO_COMMON(reg, label)					\
+-	__LOAD_HANDLER(reg, label);					\
+-	mtctr	reg;							\
 -	bctr
 -
--#else
--#define __BRANCH_TO_KVM_EXIT(area, label)				\
--	ld	r9,area+EX_R9(r13);					\
--	b	label
--#endif
--
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- /*
-  * If hv is possible, interrupts come into to the hv version
-@@ -311,8 +288,24 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	.else
- 	ori	r12,r12,(\n)
- 	.endif
--	/* This reloads r9 before branching to kvmppc_interrupt */
--	__BRANCH_TO_KVM_EXIT(\area, kvmppc_interrupt)
-+
-+#ifdef CONFIG_RELOCATABLE
-+	/*
-+	 * KVM requires __LOAD_FAR_HANDLER beause kvmppc_interrupt lives
-+	 * outside the head section. CONFIG_RELOCATABLE KVM expects CTR
-+	 * to be saved in HSTATE_SCRATCH1.
-+	 */
-+	mfctr	r9
-+	std	r9,HSTATE_SCRATCH1(r13)
-+	__LOAD_FAR_HANDLER(r9, kvmppc_interrupt)
-+	mtctr	r9
-+	ld	r9,\area+EX_R9(r13)
-+	bctr
-+#else
-+	ld	r9,\area+EX_R9(r13)
-+	b	kvmppc_interrupt
-+#endif
-+
+ #define BRANCH_LINK_TO_FAR(label)					\
+ 	__LOAD_FAR_HANDLER(r12, label);					\
+ 	mtctr	r12;							\
+ 	bctrl
  
- 	.if \skip
- 89:	mtocrf	0x80,r9
+ #else
+-#define BRANCH_TO_COMMON(reg, label)					\
+-	b	label
+-
+ #define BRANCH_LINK_TO_FAR(label)					\
+ 	bl	label
+ #endif
 -- 
 2.20.1
 
