@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755EF4C76B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:21:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BFB4C76E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 08:23:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45TsCT3XDhzDr2h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:21:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45TsFk4jmJzDqP9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 16:23:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="kQNtoi0K"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="fFrtkQ1o"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Tqm7720mzDqwF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:16:07 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id n2so910034pgp.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:16:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45TqmB6qNMzDqv8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 15:16:10 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id p184so964618pfp.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2019 22:16:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=t03VEl204PFNpttCp6vT/1z39lIzW+zNGEa58HI4nqE=;
- b=kQNtoi0KrAf6AN+tUPrMKPBx2C8Z2YEAnCLG4WpoB1EBs0YsrdGE8VZ3DWgCeTDc6R
- vc1oV1qF2xlvjQy3V5rJaABMF1tt+eb4hopTEGGfFwr35Wu2IWiRln6NOuKNTDEmiJnA
- fOnobSlh8EqwPSsIKqgS3s1r92u29I/SBFn9feB26Sd93vrHhdd1GoN8COCx3jc2TIJ+
- t7g/z5gNdo6qfF8Y0JjDB8O+9pDEMDDORutj4NL9F7Ayc9MI7MdSIW8blfKpSljOtxWH
- ECJjMYO79IAoBYvkVMPYxyvHAJW6L4g7HOc9bi0zjKh/a9vQIT1C811bb+01Lkf6M8eO
- 2CkA==
+ bh=XK0z2sodRjLiq0Py7J6ZCsmhyaz31IBp/GjjI92KHiQ=;
+ b=fFrtkQ1o/8YFQF05jHRttSmlbRNnkAgY//ZK9aT+4oIA7o5e0P3MQZL2RpWARMOxKx
+ M8MyWAwvtOikQMCjxtYI0D1aQrGb0eNi95mziKwKFesGfC8nJomXBBT+8Fk4X2+TEYw9
+ EqVRk6/D3ixHjoNKFv7bCLVMAOPAr1wNe0w62N5TuHxuMH7Y5IDLfVf/o7cqsSX/BXPT
+ 3wxwTkm34uK75DzpFgle4ZdTBP5cQKtRdPFD0uZ8x3bB0XSPeyr0qgi/m8Nvihjjjkit
+ 1ei6TtqW8msv0OXneUgq/0isuPy4JFry+Nsa7kUkFg4TjNR/aM9AKqq8tX054xCqTw7S
+ MsWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=t03VEl204PFNpttCp6vT/1z39lIzW+zNGEa58HI4nqE=;
- b=bBEo1v/yOnZIm88KacgjxjKcgJ3LjKrKMEa0zzzwCgkl0nGYsr1G4VVer417jaKsSz
- SodeNpfxhHIiPdk3beKn7zKQslKj16ULcGJOdQ6BYGTl0zZPbMr2H9pzBrfSwHd1VRUS
- txpIlEYpDEl+wc/IhqjxaHg2tp4ulsWzRLQLOMzDKaQG+0lZKsy9/37DeLqDPe+pIie0
- IHScduj4SX66DkfCSFqe4DIMM7OND2V5pNPtLG6OaCgF2goBWGYmhvntaG59wr++WUxx
- r7ixqtV/pvUqz+TVh+3kjw8IN31xAtODTUiMOOsYL0u7/PW1ymjJxtJCvpYi/s4nOUzd
- YwgQ==
-X-Gm-Message-State: APjAAAXbwY3nHoNlJN1QluZBd5wIy2BlYGa6Tw7q7gdWvKWr/gAh7xZo
- WSsfB1EDI1Ay29MmJ8xpGpepI2Fk
-X-Google-Smtp-Source: APXvYqx2TESYJnT/6TSVq4wdJgGsOVP3XZ609js8nbqfpUVXsmEQUDvOorEAPhNefUdtZAG7l5LQQQ==
-X-Received: by 2002:aa7:92d2:: with SMTP id k18mr29658614pfa.153.1561007765886; 
- Wed, 19 Jun 2019 22:16:05 -0700 (PDT)
+ bh=XK0z2sodRjLiq0Py7J6ZCsmhyaz31IBp/GjjI92KHiQ=;
+ b=AlDtiyPRuKdbLR/1uzM3FNpxvm5g2yjfGG9p8ckF7az6pDpabLPxS0sRbrCeOrFV3q
+ BU33Qjb9DhxhyD6kMJH5Dbv37V9PMbk/mbOD1tB9GJQ7LRrGks26IyiG+Bado58IhfZ4
+ 7y9uoN7pQV6viwq9spyfmcOLr77C6zH4CV++wVH7OFDTvyY6IfSLKTwOV+/ICCKXR76P
+ RLAfOeHMXE34WCkDyx8cCYjrsfqqYrt0ayVtBC4q9bi3ioJa44O+UHEqXv/Htyqi4F3U
+ jdj4WUXCpbLRc/xUJHzFAQ0/ALZle0ueA35x7++8QtoPBrGBChUOTN1Gy04VgqCDfrCj
+ CzsQ==
+X-Gm-Message-State: APjAAAWnzFS2CzkDzD0SVRE/1jVKxi+B51ia43gInpKMqPpieGzNO171
+ xheDPvFY/6k+xFMaRA8aH0NsTD6N
+X-Google-Smtp-Source: APXvYqx1NejjlGkne8QLvmOph+DXO0U1lhMYa4PZBbtbTaEaGJ2QbHQU51IP5uhhvC8avhTHTyKKWg==
+X-Received: by 2002:a63:f957:: with SMTP id q23mr11402510pgk.326.1561007767995; 
+ Wed, 19 Jun 2019 22:16:07 -0700 (PDT)
 Received: from bobo.local0.net (193-116-72-140.tpgi.com.au. [193.116.72.140])
  by smtp.gmail.com with ESMTPSA id
- h12sm8235847pje.12.2019.06.19.22.16.04
+ h12sm8235847pje.12.2019.06.19.22.16.06
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 19 Jun 2019 22:16:05 -0700 (PDT)
+ Wed, 19 Jun 2019 22:16:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 31/52] powerpc/64s/exception: mtmsrd L=1 cleanup
-Date: Thu, 20 Jun 2019 15:14:38 +1000
-Message-Id: <20190620051459.29573-32-npiggin@gmail.com>
+Subject: [PATCH v2 32/52] powerpc/64s/exception: windup use r9 consistently to
+ restore SPRs
+Date: Thu, 20 Jun 2019 15:14:39 +1000
+Message-Id: <20190620051459.29573-33-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190620051459.29573-1-npiggin@gmail.com>
 References: <20190620051459.29573-1-npiggin@gmail.com>
@@ -84,42 +85,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All supported 64s CPUs support mtmsrd L=1 instruction, so a cleanup
-can be made in sreset and mce handlers.
+Trivial code change, r3->r9.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index f582ae30f3f7..539bb1b83d90 100644
+index 539bb1b83d90..804438669454 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -887,11 +887,8 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	system_reset_exception
- 
--	/* This (and MCE) can be simplified with mtmsrd L=1 */
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */
--	li	r0,MSR_RI
--	mfmsr	r9
--	andc	r9,r9,r0
-+	li	r9,0
- 	mtmsrd	r9,1
- 
- 	/*
-@@ -1073,9 +1070,7 @@ EXC_COMMON_BEGIN(machine_check_common)
- 
- #define MACHINE_CHECK_HANDLER_WINDUP			\
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */\
--	li	r0,MSR_RI;				\
--	mfmsr	r9;		/* get MSR value */	\
--	andc	r9,r9,r0;				\
-+	li	r9,0;					\
- 	mtmsrd	r9,1;		/* Clear MSR_RI */	\
+@@ -914,8 +914,8 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	/* Move original SRR0 and SRR1 into the respective regs */
+ 	ld	r9,_MSR(r1)
+ 	mtspr	SPRN_SRR1,r9
+-	ld	r3,_NIP(r1)
+-	mtspr	SPRN_SRR0,r3
++	ld	r9,_NIP(r1)
++	mtspr	SPRN_SRR0,r9
+ 	ld	r9,_CTR(r1)
+ 	mtctr	r9
+ 	ld	r9,_XER(r1)
+@@ -1075,8 +1075,8 @@ EXC_COMMON_BEGIN(machine_check_common)
  	/* Move original SRR0 and SRR1 into the respective regs */	\
  	ld	r9,_MSR(r1);				\
+ 	mtspr	SPRN_SRR1,r9;				\
+-	ld	r3,_NIP(r1);				\
+-	mtspr	SPRN_SRR0,r3;				\
++	ld	r9,_NIP(r1);				\
++	mtspr	SPRN_SRR0,r9;				\
+ 	ld	r9,_CTR(r1);				\
+ 	mtctr	r9;					\
+ 	ld	r9,_XER(r1);				\
+@@ -1781,8 +1781,8 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	/* Move original HSRR0 and HSRR1 into the respective regs */
+ 	ld	r9,_MSR(r1)
+ 	mtspr	SPRN_HSRR1,r9
+-	ld	r3,_NIP(r1)
+-	mtspr	SPRN_HSRR0,r3
++	ld	r9,_NIP(r1)
++	mtspr	SPRN_HSRR0,r9
+ 	ld	r9,_CTR(r1)
+ 	mtctr	r9
+ 	ld	r9,_XER(r1)
 -- 
 2.20.1
 
