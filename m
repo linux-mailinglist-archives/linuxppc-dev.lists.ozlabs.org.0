@@ -1,55 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9514E03F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 08:07:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5744E018
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 07:38:17 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45VSCB5nDbzDqbs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 15:38:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45VSrV1xJZzDqdv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 16:07:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=perches.com
- (client-ip=216.40.44.132; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0132.hostedemail.com
- [216.40.44.132])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45VS9L3ClbzDqZH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 15:36:37 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay08.hostedemail.com (Postfix) with ESMTP id 63F0D182CED2A;
- Fri, 21 Jun 2019 05:36:32 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::,
- RULES_HIT:41:355:379:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:2895:3138:3139:3140:3141:3142:3354:3865:3866:3867:3868:3870:4419:4605:5007:6119:7903:8556:8603:9036:10004:10400:10848:11026:11473:11657:11658:11914:12043:12296:12297:12438:12555:12760:13255:13439:14181:14394:14659:14721:21080:21451:21627:30054:30070,
- 0,
- RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,
- CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
- MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:28,
- LUA_SUMMARY:none
-X-HE-Tag: crow71_38f2c0aecdf16
-X-Filterd-Recvd-Size: 3741
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
- (Authenticated sender: joe@perches.com)
- by omf02.hostedemail.com (Postfix) with ESMTPA;
- Fri, 21 Jun 2019 05:36:31 +0000 (UTC)
-Message-ID: <df3a7ca31d2002ca447ab062f5b5e32ced9bec85.camel@perches.com>
-Subject: [PATCH] powerpc/powernv: Rename pe_level_printk to pe_printk and
- embed KERN_LEVEL in format
-From: Joe Perches <joe@perches.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 20 Jun 2019 22:36:29 -0700
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45VSpb5VJLzDqbx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 16:05:26 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5L5ulhG126033
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 02:05:23 -0400
+Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t8p1cq1sh-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 02:05:22 -0400
+Received: from localhost
+ by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <nathanl@linux.ibm.com>;
+ Fri, 21 Jun 2019 07:05:22 +0100
+Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
+ by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 21 Jun 2019 07:05:20 +0100
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5L65JKK32113082
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Jun 2019 06:05:19 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EDBC4C6059;
+ Fri, 21 Jun 2019 06:05:18 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD97EC6055;
+ Fri, 21 Jun 2019 06:05:18 +0000 (GMT)
+Received: from localhost (unknown [9.85.146.224])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 21 Jun 2019 06:05:18 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/rtas: retry when cpu offline races with
+ suspend/migration
+Date: Fri, 21 Jun 2019 01:05:18 -0500
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19062106-0012-0000-0000-00001746A009
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011301; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01221045; UDB=6.00642381; IPR=6.01002184; 
+ MB=3.00027401; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-21 06:05:21
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062106-0013-0000-0000-000057C57C4C
+Message-Id: <20190621060518.29616-1-nathanl@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-21_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906210051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,89 +90,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: ego@linux.vnet.ibm.com, mmc@linux.vnet.ibm.com, julietk@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the separate KERN_<LEVEL> from each pe_level_printk and
-instead add the KERN_<LEVEL> to the format.
+The protocol for suspending or migrating an LPAR requires all present
+processor threads to enter H_JOIN. So if we have threads offline, we
+have to temporarily bring them up. This can race with administrator
+actions such as SMT state changes. As of dfd718a2ed1f ("powerpc/rtas:
+Fix a potential race between CPU-Offline & Migration"),
+rtas_ibm_suspend_me() accounts for this, but errors out with -EBUSY
+for what almost certainly is a transient condition in any reasonable
+scenario.
 
-pfix in pe_level_printk could also be used uninitialized so
-add a new else and set pfx to the hex value of pe->flags.
+Callers of rtas_ibm_suspend_me() already retry when -EAGAIN is
+returned, and it is typical during a migration for that to happen
+repeatedly for several minutes polling the H_VASI_STATE hcall result
+before proceeding to the next stage.
 
-Rename pe_level_printk to pe_printk and update the pe_<level>
-macros.
+So return -EAGAIN instead of -EBUSY when this race is
+encountered. Additionally: logging this event is still appropriate but
+use pr_info instead of pr_err; and remove use of unlikely() while here
+as this is not a hot path at all.
 
-Signed-off-by: Joe Perches <joe@perches.com>
+Fixes: dfd718a2ed1f ("powerpc/rtas: Fix a potential race between CPU-Offline & Migration")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 14 ++++++++++++--
- arch/powerpc/platforms/powernv/pci.h      | 11 +++++------
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/rtas.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 10cc42b9e541..60fc36ae626a 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -50,15 +50,23 @@
- static const char * const pnv_phb_names[] = { "IODA1", "IODA2", "NPU_NVLINK",
- 					      "NPU_OCAPI" };
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index fbc676160adf..9b4d2a2ffb4f 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -984,10 +984,9 @@ int rtas_ibm_suspend_me(u64 handle)
+ 	cpu_hotplug_disable();
  
--void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
--			    const char *fmt, ...)
-+void pe_printk(const struct pnv_ioda_pe *pe, const char *fmt, ...)
- {
- 	struct va_format vaf;
- 	va_list args;
- 	char pfix[32];
-+	char level[PRINTK_MAX_SINGLE_HEADER_LEN + 1] = "\0";
+ 	/* Check if we raced with a CPU-Offline Operation */
+-	if (unlikely(!cpumask_equal(cpu_present_mask, cpu_online_mask))) {
+-		pr_err("%s: Raced against a concurrent CPU-Offline\n",
+-		       __func__);
+-		atomic_set(&data.error, -EBUSY);
++	if (!cpumask_equal(cpu_present_mask, cpu_online_mask)) {
++		pr_info("%s: Raced against a concurrent CPU-Offline\n", __func__);
++		atomic_set(&data.error, -EAGAIN);
+ 		goto out_hotplug_enable;
+ 	}
  
- 	va_start(args, fmt);
- 
-+	while (printk_get_level(fmt)) {
-+		size_t size = printk_skip_level(fmt) - fmt;
-+
-+		memcpy(level, fmt,  size);
-+		level[size] = '\0';
-+		fmt += size;
-+	}
-+
- 	vaf.fmt = fmt;
- 	vaf.va = &args;
- 
-@@ -74,6 +82,8 @@ void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
- 			(pe->rid & 0xff00) >> 8,
- 			PCI_SLOT(pe->rid), PCI_FUNC(pe->rid));
- #endif /* CONFIG_PCI_IOV*/
-+	else
-+		sprintf(pfix, "(flags: 0x%lx)", pe->flags);
- 
- 	printk("%spci %s: [PE# %.2x] %pV",
- 	       level, pfix, pe->pe_number, &vaf);
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index be26ab3d99e0..870b21f55b3f 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -205,15 +205,14 @@ extern unsigned long pnv_pci_ioda2_get_table_size(__u32 page_shift,
- 		__u64 window_size, __u32 levels);
- extern int pnv_eeh_post_init(void);
- 
--__printf(3, 4)
--extern void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
--			    const char *fmt, ...);
-+__printf(2, 3)
-+extern void pe_printk(const struct pnv_ioda_pe *pe, const char *fmt, ...);
- #define pe_err(pe, fmt, ...)					\
--	pe_level_printk(pe, KERN_ERR, fmt, ##__VA_ARGS__)
-+	pe_printk(pe, KERN_ERR fmt, ##__VA_ARGS__)
- #define pe_warn(pe, fmt, ...)					\
--	pe_level_printk(pe, KERN_WARNING, fmt, ##__VA_ARGS__)
-+	pe_printk(pe, KERN_WARNING fmt, ##__VA_ARGS__)
- #define pe_info(pe, fmt, ...)					\
--	pe_level_printk(pe, KERN_INFO, fmt, ##__VA_ARGS__)
-+	pe_printk(pe, KERN_INFO fmt, ##__VA_ARGS__)
- 
- /* Nvlink functions */
- extern void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass);
-
+-- 
+2.20.1
 
