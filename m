@@ -1,47 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD1F4DE0C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 02:24:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADBB4D9B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2019 20:48:37 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45V9nY3N1xzDrMJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 04:48:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45VKDt5cqbzDrNY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 10:24:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45V9R63GqlzDrG3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 04:32:34 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45VKC72N8dzDrDD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 10:22:42 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5L0MWqo094890
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 20:22:38 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t8hsydebp-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2019 20:22:38 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 21 Jun 2019 01:22:36 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 21 Jun 2019 01:22:32 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5L0MVOF48169088
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Jun 2019 00:22:31 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 452AC5204F;
+ Fri, 21 Jun 2019 00:22:31 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9F0195204E;
+ Fri, 21 Jun 2019 00:22:30 +0000 (GMT)
+Received: from [9.81.215.199] (unknown [9.81.215.199])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id CFED74E90E;
- Thu, 20 Jun 2019 18:32:31 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-116-71.ams2.redhat.com [10.36.116.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EFF9419722;
- Thu, 20 Jun 2019 18:32:25 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 6/6] drivers/base/memory.c: Get rid of
- find_memory_block_hinted()
-Date: Thu, 20 Jun 2019 20:31:39 +0200
-Message-Id: <20190620183139.4352-7-david@redhat.com>
-In-Reply-To: <20190620183139.4352-1-david@redhat.com>
-References: <20190620183139.4352-1-david@redhat.com>
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A89F5A004E;
+ Fri, 21 Jun 2019 10:22:26 +1000 (AEST)
+Subject: Re: [PATCH v2] ocxl: Allow contexts to be attached with a NULL mm
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20190620041203.12274-1-alastair@au1.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 21 Jun 2019 10:22:26 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.38]); Thu, 20 Jun 2019 18:32:32 +0000 (UTC)
+In-Reply-To: <20190620041203.12274-1-alastair@au1.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19062100-4275-0000-0000-00000344378D
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062100-4276-0000-0000-0000385468AA
+Message-Id: <a4e6b156-0dce-53e3-786f-cc954ebe08fa@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-20_15:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=827 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906210000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,132 +92,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- David Hildenbrand <david@redhat.com>,
- "mike.travis@hpe.com" <mike.travis@hpe.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-mm@kvack.org,
- linux-acpi@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No longer needed, let's remove it. Also, drop the "hint" parameter
-completely from "find_memory_block_by_id", as nobody needs it anymore.
+On 20/6/19 2:12 pm, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> If an OpenCAPI context is to be used directly by a kernel driver, there
+> may not be a suitable mm to use.
+> 
+> The patch makes the mm parameter to ocxl_context_attach optional.
+> 
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/base/memory.c  | 37 +++++++++++--------------------------
- include/linux/memory.h |  2 --
- 2 files changed, 11 insertions(+), 28 deletions(-)
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 0204384b4d1d..195dbcb8e8a8 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -588,30 +588,13 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
- 	return 0;
- }
- 
--/*
-- * A reference for the returned object is held and the reference for the
-- * hinted object is released.
-- */
--static struct memory_block *find_memory_block_by_id(unsigned long block_id,
--						    struct memory_block *hint)
-+/* A reference for the returned memory block device is acquired. */
-+static struct memory_block *find_memory_block_by_id(unsigned long block_id)
- {
--	struct device *hintdev = hint ? &hint->dev : NULL;
- 	struct device *dev;
- 
--	dev = subsys_find_device_by_id(&memory_subsys, block_id, hintdev);
--	if (hint)
--		put_device(&hint->dev);
--	if (!dev)
--		return NULL;
--	return to_memory_block(dev);
--}
--
--struct memory_block *find_memory_block_hinted(struct mem_section *section,
--					      struct memory_block *hint)
--{
--	unsigned long block_id = base_memory_block_id(__section_nr(section));
--
--	return find_memory_block_by_id(block_id, hint);
-+	dev = subsys_find_device_by_id(&memory_subsys, block_id, NULL);
-+	return dev ? to_memory_block(dev) : NULL;
- }
- 
- /*
-@@ -624,7 +607,9 @@ struct memory_block *find_memory_block_hinted(struct mem_section *section,
-  */
- struct memory_block *find_memory_block(struct mem_section *section)
- {
--	return find_memory_block_hinted(section, NULL);
-+	unsigned long block_id = base_memory_block_id(__section_nr(section));
-+
-+	return find_memory_block_by_id(block_id);
- }
- 
- static struct attribute *memory_memblk_attrs[] = {
-@@ -675,7 +660,7 @@ static int init_memory_block(struct memory_block **memory,
- 	unsigned long start_pfn;
- 	int ret = 0;
- 
--	mem = find_memory_block_by_id(block_id, NULL);
-+	mem = find_memory_block_by_id(block_id);
- 	if (mem) {
- 		put_device(&mem->dev);
- 		return -EEXIST;
-@@ -755,7 +740,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size)
- 		end_block_id = block_id;
- 		for (block_id = start_block_id; block_id != end_block_id;
- 		     block_id++) {
--			mem = find_memory_block_by_id(block_id, NULL);
-+			mem = find_memory_block_by_id(block_id);
- 			mem->section_count = 0;
- 			unregister_memory(mem);
- 		}
-@@ -782,7 +767,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
- 
- 	mutex_lock(&mem_sysfs_mutex);
- 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (WARN_ON_ONCE(!mem))
- 			continue;
- 		mem->section_count = 0;
-@@ -882,7 +867,7 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
- 	int ret = 0;
- 
- 	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id, NULL);
-+		mem = find_memory_block_by_id(block_id);
- 		if (!mem)
- 			continue;
- 
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index b3b388775a30..02e633f3ede0 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -116,8 +116,6 @@ void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern int memory_dev_init(void);
- extern int memory_notify(unsigned long val, void *v);
- extern int memory_isolate_notify(unsigned long val, void *v);
--extern struct memory_block *find_memory_block_hinted(struct mem_section *,
--							struct memory_block *);
- extern struct memory_block *find_memory_block(struct mem_section *);
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
+> ---
+>   arch/powerpc/mm/book3s64/radix_tlb.c |  5 +++++
+>   drivers/misc/ocxl/context.c          |  9 ++++++---
+>   drivers/misc/ocxl/link.c             | 28 ++++++++++++++++++++++++----
+>   3 files changed, 35 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index bb9835681315..ce8a77fae6a7 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -666,6 +666,11 @@ EXPORT_SYMBOL(radix__flush_tlb_page);
+>   #define radix__flush_all_mm radix__local_flush_all_mm
+>   #endif /* CONFIG_SMP */
+>   
+> +/*
+> + * If kernel TLBIs ever become local rather than global, then
+> + * drivers/misc/ocxl/link.c:ocxl_link_add_pe will need some work, as it
+> + * assumes kernel TLBIs are global.
+> + */
+>   void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
+>   {
+>   	_tlbie_pid(0, RIC_FLUSH_ALL);
+> diff --git a/drivers/misc/ocxl/context.c b/drivers/misc/ocxl/context.c
+> index bab9c9364184..994563a078eb 100644
+> --- a/drivers/misc/ocxl/context.c
+> +++ b/drivers/misc/ocxl/context.c
+> @@ -69,6 +69,7 @@ static void xsl_fault_error(void *data, u64 addr, u64 dsisr)
+>   int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+>   {
+>   	int rc;
+> +	unsigned long pidr = 0;
+>   
+>   	// Locks both status & tidr
+>   	mutex_lock(&ctx->status_mutex);
+> @@ -77,9 +78,11 @@ int ocxl_context_attach(struct ocxl_context *ctx, u64 amr, struct mm_struct *mm)
+>   		goto out;
+>   	}
+>   
+> -	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid,
+> -			mm->context.id, ctx->tidr, amr, mm,
+> -			xsl_fault_error, ctx);
+> +	if (mm)
+> +		pidr = mm->context.id;
+> +
+> +	rc = ocxl_link_add_pe(ctx->afu->fn->link, ctx->pasid, pidr, ctx->tidr,
+> +			      amr, mm, xsl_fault_error, ctx);
+>   	if (rc)
+>   		goto out;
+>   
+> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+> index cce5b0d64505..58d111afd9f6 100644
+> --- a/drivers/misc/ocxl/link.c
+> +++ b/drivers/misc/ocxl/link.c
+> @@ -224,6 +224,17 @@ static irqreturn_t xsl_fault_handler(int irq, void *data)
+>   		ack_irq(spa, ADDRESS_ERROR);
+>   		return IRQ_HANDLED;
+>   	}
+> +
+> +	if (!pe_data->mm) {
+> +		/*
+> +		 * translation fault from a kernel context - an OpenCAPI
+> +		 * device tried to access a bad kernel address
+> +		 */
+> +		rcu_read_unlock();
+> +		pr_warn("Unresolved OpenCAPI xsl fault in kernel context\n");
+> +		ack_irq(spa, ADDRESS_ERROR);
+> +		return IRQ_HANDLED;
+> +	}
+>   	WARN_ON(pe_data->mm->context.id != pid);
+>   
+>   	if (mmget_not_zero(pe_data->mm)) {
+> @@ -523,7 +534,13 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+>   	pe->amr = cpu_to_be64(amr);
+>   	pe->software_state = cpu_to_be32(SPA_PE_VALID);
+>   
+> -	mm_context_add_copro(mm);
+> +	/*
+> +	 * For user contexts, register a copro so that TLBIs are seen
+> +	 * by the nest MMU. If we have a kernel context, TLBIs are
+> +	 * already global.
+> +	 */
+> +	if (mm)
+> +		mm_context_add_copro(mm);
+>   	/*
+>   	 * Barrier is to make sure PE is visible in the SPA before it
+>   	 * is used by the device. It also helps with the global TLBI
+> @@ -546,7 +563,8 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
+>   	 * have a reference on mm_users. Incrementing mm_count solves
+>   	 * the problem.
+>   	 */
+> -	mmgrab(mm);
+> +	if (mm)
+> +		mmgrab(mm);
+>   	trace_ocxl_context_add(current->pid, spa->spa_mem, pasid, pidr, tidr);
+>   unlock:
+>   	mutex_unlock(&spa->spa_lock);
+> @@ -652,8 +670,10 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
+>   	if (!pe_data) {
+>   		WARN(1, "Couldn't find pe data when removing PE\n");
+>   	} else {
+> -		mm_context_remove_copro(pe_data->mm);
+> -		mmdrop(pe_data->mm);
+> +		if (pe_data->mm) {
+> +			mm_context_remove_copro(pe_data->mm);
+> +			mmdrop(pe_data->mm);
+> +		}
+>   		kfree_rcu(pe_data, rcu);
+>   	}
+>   unlock:
+> 
+
 -- 
-2.21.0
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
