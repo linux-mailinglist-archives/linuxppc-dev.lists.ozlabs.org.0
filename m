@@ -1,80 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518694E1EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 10:31:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45VX2q5d6mzDqf8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 18:31:15 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6586B4E27B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 11:00:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45VXhl0NTzzDqfJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 19:00:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2a00:1450:4864:20::443; helo=mail-wr1-x443.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="fbj3ryUA"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="okEQYw/y"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45VX111QdjzDqd1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 18:29:40 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id z19so54612pgl.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 01:29:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45VXfm3wmCzDqdD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 18:58:56 +1000 (AEST)
+Received: by mail-wr1-x443.google.com with SMTP id d18so5765158wrs.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 01:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=yxfaAKL36iRBk7i3lJUt2q8lAl7GH2S2sjM2Bw2uPJs=;
- b=fbj3ryUASSI5WTeqBy+Hc5OEHWiPYdV7sIZyNqgV+qzFiANsZYBHP3eTFrdbgDPMqz
- +NZAYlBR+Dfy7yY9SJaByfth0oz38I9M0oFx0/PjpOVh4PwNfZ6TM2OYoTtOR9SENi8J
- c4JwUKiwqGhPWDDJTo19f+iyU8hDWG4ED1a79bBPnMbmzbrs+wX6NcAW3qliBAqn2Cz9
- cNxxEV7yL4Cgwr2k23ZRaqddTXmW7jlpNEyLek6w+pt1gX1BPnCgoRUSFo9HYLeo65pM
- jcwVL8KYaA8GxmgazJGRjU9ifPR/K7V+tvyC4gxu12oOVP2g9/tx3yANOSmbk/9lW3n7
- hoKQ==
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yFfPvkWjkkrjWmIO9mwmRCrRTqpdUG3kSxHSiTlM+a8=;
+ b=okEQYw/yOdLIiBcSL/MJhiUQ4KzzI4k0KswWUFAIRv4nTaOJl+uXH52wlUTTU7zJn6
+ LFF93u/LnNl5csBdDYw5HuXsXzVb/Zryc3h99C/Rt6y4KO2k00VXji4RoU4EsdwhiRm9
+ gvN5zgYdlZdLzFwBkF3MwQmSNGpWbdBew/jEu9MYaREdqB5z0h2tnl1UPM0E3BDrk3hy
+ cysbQKPnrhSlU5Gmqe+sp0zVpzmpdo6nsivWnpGK8zmvkmLWIVvl1cCh7FdhNpnvjMG0
+ /79YPwylaRi6XEGsbLsNbALUa0JTCzOGJ4hmpB/yzjMKaG7oi6jjtmCmGxl3dePP31h5
+ 3BzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=yxfaAKL36iRBk7i3lJUt2q8lAl7GH2S2sjM2Bw2uPJs=;
- b=i2Dcb46WQjq8JQruM6jXWKQEwvJk/lEPaheU9LWRndbAb8P14WTAeGPc47PvMZspyk
- rnEqGXMLemwr37iLNnAyQvCx+B9noi8tQZUWHfjL4SWT6K5k2itgJnWpMvUxJNrY+Tqk
- /JB1Ax9Kv52gh2UgUuxDxE4hgQYO99AM1VsmQrrysQOQSg29WWh6liYjclLIaIwbRGjh
- 4NTIXEfE3r9/tuuZ/cfv/82dWreKg9g7VnBb8Y7f+zcZVS7Wb3Xt9Dok43uUAxPimHaA
- BgXb+wc4Ec1XpgAZy/btsKIkdDfGMWEgbBMjee2Rb+I+mYpUzLlwfVF2EtW1GXBtde0H
- 7IgQ==
-X-Gm-Message-State: APjAAAVVYBott9ngrjvfOZffMj3UUKtlV2DCbY1+/KKvYWz44kFQRh9U
- es7SNqjk4Tosgj9U3mJ2uG4=
-X-Google-Smtp-Source: APXvYqw0+FZM5x3iJhEGb07mnJPrmGs4w362V6gxLaKrkfdj/o0PM7u+3QQXzswzUEdHsggmQOj3Bw==
-X-Received: by 2002:a17:90a:cb15:: with SMTP id
- z21mr5012050pjt.87.1561105777693; 
- Fri, 21 Jun 2019 01:29:37 -0700 (PDT)
-Received: from localhost ([1.144.138.41])
- by smtp.gmail.com with ESMTPSA id v185sm2443015pfb.14.2019.06.21.01.29.36
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 21 Jun 2019 01:29:36 -0700 (PDT)
-Date: Fri, 21 Jun 2019 18:29:27 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 16/16] mm: pass get_user_pages_fast iterator arguments in
- a structure
-To: Linus Torvalds <torvalds@linux-foundation.org>
-References: <20190611144102.8848-1-hch@lst.de>
- <20190611144102.8848-17-hch@lst.de>
- <1560300464.nijubslu3h.astroid@bobo.none>
- <CAHk-=wjSo+TzkvYnAqrp=eFgzzc058DhSMTPr4-2quZTbGLfnw@mail.gmail.com>
- <1561032202.0qfct43s2c.astroid@bobo.none>
- <CAHk-=wh46y3x5O0HkR=R4ETh6e5pDCrEsJ94CtC0fyQiYYAf6A@mail.gmail.com>
-In-Reply-To: <CAHk-=wh46y3x5O0HkR=R4ETh6e5pDCrEsJ94CtC0fyQiYYAf6A@mail.gmail.com>
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=yFfPvkWjkkrjWmIO9mwmRCrRTqpdUG3kSxHSiTlM+a8=;
+ b=e/rXyJAJRWcXd/lHi7hNdJMmjIS69MHwRP7L+IaLVfybCPULap+5DWkirx1sZTwOx2
+ LbKquXR+0nOSJNa7iiw9kpefaBOW2uOKVS+3zWc8yTK4WhCP5oaWZtDkto+lmOWL4ASA
+ au6HjwpUUEQo1PJCjoegCq427D6TfNIhB4MrV6P/97Vg1rRUxkBRZJlJOTVklbBzAu2/
+ gkfwmumB3W8/y1Nmk4PZdoJDI2fMvlv6F/G0vFvoeoN9aGSBzDoACcl3/sqNMvUR07n5
+ pf9KiH/ReQl/gr0UGn0rIcAeUIS/87jGy5Qr2deOdTq77OyM+aHjdoCGewmLqsQqHvje
+ NG5Q==
+X-Gm-Message-State: APjAAAVwjauoIqQuj6uq4G3eEZTGYab0Z4s7/PLImMEPnOFn5TwTiKRc
+ OlNhc1JeU7GPJZLL9Kf0cYs=
+X-Google-Smtp-Source: APXvYqwu3QJoLLix0JPme99XociPLUyVBqqIaJQwLHO3pMm10WMLt1XDSZpTcbpXbWyCXEyg7cJ/YA==
+X-Received: by 2002:a5d:6190:: with SMTP id j16mr1576725wru.49.1561107530600; 
+ Fri, 21 Jun 2019 01:58:50 -0700 (PDT)
+Received: from macbookpro.malat.net (bru31-1-78-225-224-134.fbx.proxad.net.
+ [78.225.224.134])
+ by smtp.gmail.com with ESMTPSA id z5sm2059189wrh.16.2019.06.21.01.58.49
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 21 Jun 2019 01:58:50 -0700 (PDT)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+ id 047AA11459C9; Fri, 21 Jun 2019 10:58:49 +0200 (CEST)
+From: Mathieu Malaterre <malat@debian.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/lib/xor_vmx: Relax frame size for clang
+Date: Fri, 21 Jun 2019 10:58:22 +0200
+Message-Id: <20190621085822.1527-1-malat@debian.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1561104674.cxm7sn77rx.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,66 +79,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Linux-sh list <linux-sh@vger.kernel.org>, James Hogan <jhogan@kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Linux-MM <linux-mm@kvack.org>,
- Khalid Aziz <khalid.aziz@oracle.com>, Paul Burton <paul.burton@mips.com>,
- Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: Mathieu Malaterre <malat@debian.org>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Torvalds's on June 21, 2019 3:21 am:
-> On Thu, Jun 20, 2019 at 5:19 AM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
->>
->> The processor aliasing problem happens because the struct will
->> be initialised with stores using one base register (e.g., stack
->> register), and then same memory is loaded using a different
->> register (e.g., parameter register).
->=20
-> Hmm. Honestly, I've never seen anything like that in any kernel profiles.
->=20
-> Compared to the problems I _do_ see (which is usually the obvious
-> cache misses, and locking), it must either be in the noise or it's
-> some problem specific to whatever CPU you are doing performance work
-> on?
+When building with clang-8 the frame size limit is hit:
 
-No you're right, the performance hit from these flushes is not a
-big hit that stands out in cycle counts. I just look at kernel code
-for various flushes. Branches not surprisingly are usually the main
-culprit, but they're normally not so interesting.
+  ../arch/powerpc/lib/xor_vmx.c:119:6: error: stack frame size of 1200 bytes in function '__xor_altivec_5' [-Werror,-Wframe-larger-than=]
 
-Static alias prediction seems to work well outside this case. It's
-interesting, you need both a store ; load sequence that does not
-predict well (e.g., using a different base register), and you also
-need that load to be executed ahead of the store.
+Follow the same approach as commit 9c87156cce5a ("powerpc/xmon: Relax
+frame size for clang") until a proper fix is implemented upstream in
+clang and relax requirement for clang.
 
-The small stack structure for arguments is the perfect case. Bad
-pattern, and load executed right after store. Even then you also need
-a reason to delay the store (e.g., source not ready or store queue
-full), but those hazards do show up.
+Link: https://github.com/ClangBuiltLinux/linux/issues/563
+Cc: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/powerpc/lib/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Now, even when all that goes wrong, there are dynamic heuristics that
-can take over. So if you run a repetitive microbenchmark you won't
-see it.
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index c55f9c27bf79..b3f7d64caaf0 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -58,5 +58,9 @@ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
+ 
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+ CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++ifdef CONFIG_CC_IS_CLANG
++# See https://github.com/ClangBuiltLinux/linux/issues/563
++CFLAGS_xor_vmx.o += -Wframe-larger-than=4096
++endif
+ 
+ obj-$(CONFIG_PPC64) += $(obj64-y)
+-- 
+2.20.1
 
-Some CPUs seem to be quite aggressive about giving up and turning off
-the alias prediction globally if you take misses (Intel x86 used to do
-that IIRC, not sure if they still do). So in that case you wouldn't
-even see it show up in one place, everything will just run slightly
-slower.
-
-What I worry about is high rate direct IO workloads that see single
-flushes in these paths as significant. Or if this thing creeps in to
-the kernel too much and just slightly raises global misses enough,
-then it will cause disambiguation to be significantly shut down.
-
-Thanks,
-Nick
-
-=
