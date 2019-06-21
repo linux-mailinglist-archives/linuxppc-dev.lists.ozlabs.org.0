@@ -1,97 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A774EC02
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 17:29:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45VjKY4JbRzDqdL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 01:29:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B664EC26
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 17:37:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45VjVf5lYvzDq9J
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 01:37:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=oracle.com
+ (client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=khalid.aziz@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.b="n7PC265D"; 
+ dkim-atps=neutral
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45VjGq1TGbzDqH6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 01:27:14 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id D9D3B3001839;
- Fri, 21 Jun 2019 15:26:49 +0000 (UTC)
-Received: from [10.36.118.55] (unknown [10.36.118.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 647E9196EA;
- Fri, 21 Jun 2019 15:26:41 +0000 (UTC)
-Subject: Re: [PATCH v3 5/6] mm/memory_hotplug: Move and simplify
- walk_memory_blocks()
-To: linux-kernel@vger.kernel.org
-References: <20190620183139.4352-1-david@redhat.com>
- <20190620183139.4352-6-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <fb2a4fc7-bf96-3703-db84-b1e5dd0986b8@redhat.com>
-Date: Fri, 21 Jun 2019 17:26:40 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45VjSc4mMvzDqSf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 01:35:44 +1000 (AEST)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5LFOCdN084301;
+ Fri, 21 Jun 2019 15:35:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=6t/T0oCX3FYtWnSX59C7RPueclXGYaVh3ih9FejJyy8=;
+ b=n7PC265Dn1bw/BeVQsMjARhjLsH2Q5nXXw5HrQQxZRruJV3Pk3wuDJoJppdU8WjTwsE5
+ IFOO4VQ1ALO3Tkqca1A1aKFr2myITmN65QxfOid1gg19CyyUUp5tW5p0gcveHhrEOhRp
+ bccPzjsBjxJ37TIq0DEoxTFJ3GSerzNRpyQgmcNIrgRZcWIJi6frNAUKxJQrh1B7Domg
+ h+0kFLkrc++e4VL6uWl+SqEVobF25+Aly2yk1RoVooheayqd01ChzxdKKr3O9if86pf1
+ 0CuQzsjTBC6fhX2gfPmrldWHTXgV8F98JdJPt1DFwiWomTWPOxESNbF+r+mTo403B7Bo dw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by userp2130.oracle.com with ESMTP id 2t7809q6yq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Jun 2019 15:35:20 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5LFZJQK100494;
+ Fri, 21 Jun 2019 15:35:19 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by aserp3030.oracle.com with ESMTP id 2t7rdxtbm7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Jun 2019 15:35:19 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5LFZDpA005218;
+ Fri, 21 Jun 2019 15:35:13 GMT
+Received: from [10.154.105.108] (/10.154.105.108)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 21 Jun 2019 08:35:13 -0700
+Subject: Re: [PATCH 01/16] mm: use untagged_addr() for get_user_pages_fast
+ addresses
+To: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>
+References: <20190611144102.8848-1-hch@lst.de>
+ <20190611144102.8848-2-hch@lst.de> <20190621133911.GL19891@ziepe.ca>
+From: Khalid Aziz <khalid.aziz@oracle.com>
+Organization: Oracle Corp
+Message-ID: <9a4e1485-4683-92b0-3d26-73f26896d646@oracle.com>
+Date: Fri, 21 Jun 2019 09:35:11 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190620183139.4352-6-david@redhat.com>
+In-Reply-To: <20190621133911.GL19891@ziepe.ca>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.40]); Fri, 21 Jun 2019 15:27:13 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=857
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906210125
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=897 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906210125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,101 +95,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oscar Salvador <osalvador@suse.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Michal Hocko <mhocko@suse.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
- "mike.travis@hpe.com" <mike.travis@hpe.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
- linux-acpi@vger.kernel.org, Andrew Banman <andrew.banman@hpe.com>,
- Arun KS <arunks@codeaurora.org>, Qian Cai <cai@lca.pw>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: x86@kernel.org, Rich Felker <dalias@libc.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ James Hogan <jhogan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20.06.19 20:31, David Hildenbrand wrote:
-> Let's move walk_memory_blocks() to the place where memory block logic
-> resides and simplify it. While at it, add a type for the callback function.
-> 
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Andrew Banman <andrew.banman@hpe.com>
-> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
-> Cc: Oscar Salvador <osalvador@suse.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Arun KS <arunks@codeaurora.org>
-> Cc: Qian Cai <cai@lca.pw>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/base/memory.c          | 42 ++++++++++++++++++++++++++
->  include/linux/memory.h         |  3 ++
->  include/linux/memory_hotplug.h |  2 --
->  mm/memory_hotplug.c            | 55 ----------------------------------
->  4 files changed, 45 insertions(+), 57 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index c54e80fd25a8..0204384b4d1d 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -44,6 +44,11 @@ static inline unsigned long pfn_to_block_id(unsigned long pfn)
->  	return base_memory_block_id(pfn_to_section_nr(pfn));
->  }
->  
-> +static inline unsigned long phys_to_block_id(unsigned long phys)
-> +{
-> +	return pfn_to_block_id(PFN_DOWN(phys));
-> +}
+On 6/21/19 7:39 AM, Jason Gunthorpe wrote:
+> On Tue, Jun 11, 2019 at 04:40:47PM +0200, Christoph Hellwig wrote:
+>> This will allow sparc64 to override its ADI tags for
+>> get_user_pages and get_user_pages_fast.
+>>
+>> Signed-off-by: Christoph Hellwig <hch@lst.de>
+>>  mm/gup.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index ddde097cf9e4..6bb521db67ec 100644
+>> +++ b/mm/gup.c
+>> @@ -2146,7 +2146,7 @@ int __get_user_pages_fast(unsigned long start, i=
+nt nr_pages, int write,
+>>  	unsigned long flags;
+>>  	int nr =3D 0;
+>> =20
+>> -	start &=3D PAGE_MASK;
+>> +	start =3D untagged_addr(start) & PAGE_MASK;
+>>  	len =3D (unsigned long) nr_pages << PAGE_SHIFT;
+>>  	end =3D start + len;
+>=20
+> Hmm, this function, and the other, goes on to do:
+>=20
+>         if (unlikely(!access_ok((void __user *)start, len)))
+>                 return 0;
+>=20
+> and I thought that access_ok takes in the tagged pointer?
+>=20
+> How about re-order it a bit?
+
+access_ok() can handle tagged or untagged pointers. It just strips the
+tag bits from the top bits. Current order doesn't really matter from
+functionality point of view. There might be minor gain in delaying
+untagging in __get_user_pages_fast() but I could go either way.
+
+--
+Khalid
+
+>=20
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ddde097cf9e410..f48747ced4723b 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2148,11 +2148,12 @@ int __get_user_pages_fast(unsigned long start, =
+int nr_pages, int write,
+> =20
+>  	start &=3D PAGE_MASK;
+>  	len =3D (unsigned long) nr_pages << PAGE_SHIFT;
+> -	end =3D start + len;
+> -
+>  	if (unlikely(!access_ok((void __user *)start, len)))
+>  		return 0;
+> =20
+> +	start =3D untagged_ptr(start);
+> +	end =3D start + len;
 > +
->  static int memory_subsys_online(struct device *dev);
->  static int memory_subsys_offline(struct device *dev);
->  
-> @@ -851,3 +856,40 @@ int __init memory_dev_init(void)
->  		printk(KERN_ERR "%s() failed: %d\n", __func__, ret);
->  	return ret;
->  }
-> +
-> +/**
-> + * walk_memory_blocks - walk through all present memory blocks overlapped
-> + *			by the range [start, start + size)
-> + *
-> + * @start: start address of the memory range
-> + * @size: size of the memory range
-> + * @arg: argument passed to func
-> + * @func: callback for each memory section walked
-> + *
-> + * This function walks through all present memory blocks overlapped by the
-> + * range [start, start + size), calling func on each memory block.
-> + *
-> + * In case func() returns an error, walking is aborted and the error is
-> + * returned.
-> + */
-> +int walk_memory_blocks(unsigned long start, unsigned long size,
-> +		       void *arg, walk_memory_blocks_func_t func)
-> +{
-> +	const unsigned long start_block_id = phys_to_block_id(start);
-> +	const unsigned long end_block_id = phys_to_block_id(start + size - 1);
-> +	struct memory_block *mem;
-> +	unsigned long block_id;
-> +	int ret = 0;
+>  	/*
+>  	 * Disable interrupts.  We use the nested form as we can already have=
 
-I *guess* the stall we are seeing is when size = 0.
+>  	 * interrupts disabled by get_futex_key.
+>=20
 
-(via ACPI, if info->length is 0)
 
-if (!size)
-	return 0;
-
-... but that is just a wild guess. Will have a look after my vacation.
-
--- 
-
-Thanks,
-
-David / dhildenb
