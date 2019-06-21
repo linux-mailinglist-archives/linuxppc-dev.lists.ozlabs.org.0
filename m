@@ -2,78 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF7B4EAE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 16:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 404BA4EAFE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2019 16:47:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45VhJb2QJTzDq6J
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 00:43:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45VhNZ4vzczDqHG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 00:47:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ziepe.ca
- (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
- envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.b="JBhYcKNb"; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="z8vJLfX+"; 
  dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45VhG738ldzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 00:41:34 +1000 (AEST)
-Received: by mail-qt1-x844.google.com with SMTP id d17so7089092qtj.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2019 07:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=iAefoNx0q/97YiPDebPSTk9gILnOd0FXIWcUIRJLLtA=;
- b=JBhYcKNbnw5KS/Bw3jUGnXGizAYOGrGCynlCyAlg63WK1n8IqOySZ1+bye3/YiT63n
- v8/sbGh4AD1MHRynheN2Dlq8lFKIq7z1NImXxzvLdoGCc7lemxe5AEO2L8rqLF3E00oD
- oaCz+g/xDkcmsm0KQgBXxPRK1i/pBAcltUXftd0yNlKSLRQGkTTISqj5EmoKiqW1z/7C
- xGMPI7hpBo4aEfjJYbvL1QdYdl0bqL8gAEgqgeQ8mr+Rnu3ZBMhGaV4qz/zk8iv9SFhb
- jZCzIqRVkaT3gufXwch0VFa0geY+UKfMoNAoGmczoezyVySF3//gJOB7bFyrvTarIu6t
- jP6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=iAefoNx0q/97YiPDebPSTk9gILnOd0FXIWcUIRJLLtA=;
- b=jfPh5K+mMOGh6TCosx1bIfJ1Hp6mYR/raq6HICw1MFcafLFzrgSE1+5dCtnWG6y9QI
- yy3h39EeXsWF+2bV7Ps1HxbmDUHz3y1uPqEOvjZo+//Sr5sg5UHK3MsQ1ntVpn5CL9x8
- TwAlqrupzkBUhoS2YenO3glF1omcbZYc2en+e6Zk/UDEGbbxfrgjVD+UrctqdmpyfhgE
- Vlr7OXfaTL3YJOZVlBx49glXBzBYm9hAew3WxogcKoDFKmra34jsztNIkjb+ee2tAD5U
- ed2/4tGcFPspVYPsTrPjNIbKN0zE+3OWe48iR7WhhhMQHBrkt29WP2x6BhtH0lfOOLJA
- BL0w==
-X-Gm-Message-State: APjAAAXb3pX4HbWZ54GEYxAIt8dNxXV//GUTp/B+5ekbBwtgRZ2Txpl2
- eUphb1be5fBU3PEIEdBQI0LdPg==
-X-Google-Smtp-Source: APXvYqwAiNjv+b7qPtfzYMe/a9zWSjQhOq9v3skvi7StNK2ILH/OsN4mGdlL0jsjEcF4n4D7/7paYA==
-X-Received: by 2002:a0c:b12b:: with SMTP id q40mr15375817qvc.0.1561128092068; 
- Fri, 21 Jun 2019 07:41:32 -0700 (PDT)
-Received: from ziepe.ca
- (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [156.34.55.100])
- by smtp.gmail.com with ESMTPSA id c55sm1767604qtk.53.2019.06.21.07.41.31
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 21 Jun 2019 07:41:31 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
- (envelope-from <jgg@ziepe.ca>)
- id 1heKjL-0000un-67; Fri, 21 Jun 2019 11:41:31 -0300
-Date: Fri, 21 Jun 2019 11:41:31 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 11/16] mm: consolidate the get_user_pages* implementations
-Message-ID: <20190621144131.GQ19891@ziepe.ca>
-References: <20190611144102.8848-1-hch@lst.de>
- <20190611144102.8848-12-hch@lst.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190611144102.8848-12-hch@lst.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45VhGL43DrzDqbr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 00:41:46 +1000 (AEST)
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5A2FF2089E;
+ Fri, 21 Jun 2019 14:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561128104;
+ bh=Zx8Cb3sL7YY/8HdLMmq9f5WsUHM/Py3MlcVld2ei5Jo=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=z8vJLfX+AQ0JZQfXq307TNp2IDXglTStolUHvFcBpgj1DxYpi4qD386PJeQeLg4TN
+ uND0xqA5PxXmC8Dtf8w1p0JZ6mGe+/8eVM/D6U797f+mt07uppsqnVP9Ly2cXalJGi
+ hptA7WUg5PQJ2Vt63iDJpgVvfw67y8nb/MnSvsRw=
+Date: Fri, 21 Jun 2019 23:41:40 +0900
+From: Masami Hiramatsu <mhiramat@kernel.org>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 6/7] kprobes/ftrace: Use ftrace_location() when
+ [dis]arming probes
+Message-Id: <20190621234140.5604fcd4ae5260b1020deccb@kernel.org>
+In-Reply-To: <4fedad69107b7fd81b9324315ce4fbf6287e5084.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+ <4fedad69107b7fd81b9324315ce4fbf6287e5084.1560868106.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,48 +59,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Rich Felker <dalias@libc.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
- James Hogan <jhogan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Khalid Aziz <khalid.aziz@oracle.com>, Nicholas Piggin <npiggin@gmail.com>,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
- Andrey Konovalov <andreyknvl@google.com>, sparclinux@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2019 at 04:40:57PM +0200, Christoph Hellwig wrote:
-> @@ -2168,7 +2221,7 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
->   */
->  static bool gup_fast_permitted(unsigned long start, unsigned long end)
+On Tue, 18 Jun 2019 20:17:05 +0530
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+
+> Ftrace location could include more than a single instruction in case of
+> some architectures (powerpc64, for now). In this case, kprobe is
+> permitted on any of those instructions, and uses ftrace infrastructure
+> for functioning.
+> 
+> However, [dis]arm_kprobe_ftrace() uses the kprobe address when setting
+> up ftrace filter IP. This won't work if the address points to any
+> instruction apart from the one that has a branch to _mcount(). To
+> resolve this, have [dis]arm_kprobe_ftrace() use ftrace_function() to
+> identify the filter IP.
+
+This looks good to me.
+
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+
+Thank you!
+
+> 
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+>  kernel/kprobes.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+> index 445337c107e0..282ee704e2d8 100644
+> --- a/kernel/kprobes.c
+> +++ b/kernel/kprobes.c
+> @@ -978,10 +978,10 @@ static int prepare_kprobe(struct kprobe *p)
+>  /* Caller must lock kprobe_mutex */
+>  static int arm_kprobe_ftrace(struct kprobe *p)
 >  {
-> -	return true;
-> +	return IS_ENABLED(CONFIG_HAVE_FAST_GUP) ? true : false;
-
-The ?: is needed with IS_ENABLED?
-
+> +	unsigned long ftrace_ip = ftrace_location((unsigned long)p->addr);
+>  	int ret = 0;
+>  
+> -	ret = ftrace_set_filter_ip(&kprobe_ftrace_ops,
+> -				   (unsigned long)p->addr, 0, 0);
+> +	ret = ftrace_set_filter_ip(&kprobe_ftrace_ops, ftrace_ip, 0, 0);
+>  	if (ret) {
+>  		pr_debug("Failed to arm kprobe-ftrace at %pS (%d)\n",
+>  			 p->addr, ret);
+> @@ -1005,13 +1005,14 @@ static int arm_kprobe_ftrace(struct kprobe *p)
+>  	 * non-empty filter_hash for IPMODIFY ops, we're safe from an accidental
+>  	 * empty filter_hash which would undesirably trace all functions.
+>  	 */
+> -	ftrace_set_filter_ip(&kprobe_ftrace_ops, (unsigned long)p->addr, 1, 0);
+> +	ftrace_set_filter_ip(&kprobe_ftrace_ops, ftrace_ip, 1, 0);
+>  	return ret;
 >  }
->  #endif
+>  
+>  /* Caller must lock kprobe_mutex */
+>  static int disarm_kprobe_ftrace(struct kprobe *p)
+>  {
+> +	unsigned long ftrace_ip = ftrace_location((unsigned long)p->addr);
+>  	int ret = 0;
+>  
+>  	if (kprobe_ftrace_enabled == 1) {
+> @@ -1022,8 +1023,7 @@ static int disarm_kprobe_ftrace(struct kprobe *p)
+>  
+>  	kprobe_ftrace_enabled--;
+>  
+> -	ret = ftrace_set_filter_ip(&kprobe_ftrace_ops,
+> -			   (unsigned long)p->addr, 1, 0);
+> +	ret = ftrace_set_filter_ip(&kprobe_ftrace_ops, ftrace_ip, 1, 0);
+>  	WARN_ONCE(ret < 0, "Failed to disarm kprobe-ftrace at %pS (%d)\n",
+>  		  p->addr, ret);
+>  	return ret;
+> -- 
+> 2.22.0
+> 
 
-Oh, you fixed the util.c this way instead of the headerfile
-#ifdef..
 
-I'd suggest to revise this block a tiny bit:
-
--#ifndef gup_fast_permitted
-+#if !IS_ENABLED(CONFIG_HAVE_FAST_GUP) || !defined(gup_fast_permitted)
- /*
-  * Check if it's allowed to use __get_user_pages_fast() for the range, or
-  * we need to fall back to the slow version:
-  */
--bool gup_fast_permitted(unsigned long start, int nr_pages)
-+static bool gup_fast_permitted(unsigned long start, int nr_pages)
- {
-
-Just in case some future arch code mismatches the header and kconfig..
-
-Regards,
-Jason
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
