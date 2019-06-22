@@ -2,34 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3964F58E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 13:53:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83034F5DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 15:19:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45WDV30s0MzDqDG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 21:53:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45WGPQ67HtzDqNs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 23:19:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Idr03b5b"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45WDS74nYrzDqZG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 21:52:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45WDS52D1hz9s3Z;
- Sat, 22 Jun 2019 21:52:05 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.2-5 tag
-Date: Sat, 22 Jun 2019 21:52:06 +1000
-Message-ID: <874l4halcp.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45WGKB2CL8zDqZw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 23:16:11 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id ay6so4320723plb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 06:16:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QL1uDgv4erMWTBmggilBBtmiw/GulpX5jeFU7R2cQYA=;
+ b=Idr03b5bxsC7ooc62sDFAiUK7kzRmf1X75r0AN3ObZMmMGxWz880G5zltctZzqvdGB
+ B8C7nE0FwmpibRcSUhOty7b1c7qAITfMTHiT0AuDuWeRjOijUrE8oA5aw+5e7umayPTh
+ w00r8FmIAGnErOxLLBhO6hZ9JRXIYeINczJT6tScUyFHwKl/TvqRYbu9fJIN5YTJO7Qs
+ j/DmCAJT8BFM141qVhKmKFwgPZ1qTs8KC3bbvnDAa+UcFRxc2LFRa8UjolfqjWU/b2C0
+ JY8o/j7xqiHftVMsufoeinpHA3/4YTMghxZWKaEiddmvKIE8TclsGa7BoZ6GUgvqDzCY
+ Wl4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QL1uDgv4erMWTBmggilBBtmiw/GulpX5jeFU7R2cQYA=;
+ b=jPDWkp3yN3BxXC9od0jhbC0w9I5Vw5OmjmwJ4hGGItXYgmYDJWD5zzkY9HdL8X5lz6
+ o4KwCAZ5E2u/I/8rsxOzmX58UWZVpVV9V+jZmR+oyeyha7J1fWJfHO9T0odfZ4v/AVLv
+ nF/JYnED5GsqhVLHtJnl8irsK6CEZTCXMMXP/c+LlLO24U5QklDOgTjEW01nFJu3U4s7
+ zkn+2Dp19KO3i2M2jL6mpFUcECg5ByfQMTq3I6j1WsF+32VcYwEah2S/3mF4AAzjMpXC
+ rhg9dPRFEp876MI2J9FY3X1Qz7gosiBfIQWBnlyPhd4y1y1/N7LP3V4LFCzboufIcLyE
+ 1hhw==
+X-Gm-Message-State: APjAAAVEe3seoFXciT2IOzqCoER1O9/tWoc5RpRq976yzmsd8quoLpj9
+ u2tggfvGnjfoSBGcSl/vCkrI4Zi9
+X-Google-Smtp-Source: APXvYqwM5UUNxiuPEDv1U9E2X21dbWh7ASHt1JyJF8yzcByiZumdnQwjAGPWThTN5aABAG+ds30Mrw==
+X-Received: by 2002:a17:902:148:: with SMTP id
+ 66mr128501283plb.143.1561209366556; 
+ Sat, 22 Jun 2019 06:16:06 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([1.144.136.2])
+ by smtp.gmail.com with ESMTPSA id n1sm5192471pgv.15.2019.06.22.06.16.03
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Sat, 22 Jun 2019 06:16:05 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 00/25] powerpc/64s interrupt handler cleanups, gasification
+Date: Sat, 22 Jun 2019 23:15:10 +1000
+Message-Id: <20190622131535.20996-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,106 +77,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, linux-kernel@vger.kernel.org, sjitindarsingh@gmail.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, Larry.Finger@lwfinger.net
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+One more try at this, sorry for the spam. To reduce the chance of more
+problems I've gone back the other way and actually pulled out almost
+all the patches that altered generated code, leaving just a couple of
+simple cases.
 
-Hi Linus,
+Thanks,
+Nick
 
-Please pull some more powerpc fixes for 5.2.
+Nicholas Piggin (25):
+  powerpc/64s/exception: remove H concatenation for EXC_HV variants
+  powerpc/64s/exception: consolidate EXCEPTION_PROLOG_2 with _NORI
+    variant
+  powerpc/64s/exception: move and tidy EXCEPTION_PROLOG_2 variants
+  powerpc/64s/exception: fix sreset KVM test code
+  powerpc/64s/exception: remove the "extra" macro parameter
+  powerpc/64s/exception: consolidate maskable and non-maskable prologs
+  powerpc/64s/exception: merge KVM handler and skip variants
+  powerpc/64s/exception: KVM handler can set the HSRR trap bit
+  powerpc/64s/exception: Make EXCEPTION_PROLOG_0 a gas macro for
+    consistency with others
+  powerpc/64s/exception: Move EXCEPTION_COMMON handler and return
+    branches into callers
+  powerpc/64s/exception: Move EXCEPTION_COMMON additions into callers
+  powerpc/64s/exception: unwind exception-64s.h macros
+  powerpc/64s/exception: improve 0x500 handler code
+  powerpc/64s/exception: move EXCEPTION_PROLOG_2* to a more logical
+    place
+  powerpc/64s/exception: remove STD_EXCEPTION_COMMON variants
+  powerpc/64s/exception: move KVM related code together
+  powerpc/64s/exception: move exception-64s.h code to exception-64s.S
+    where it is used
+  powerpc/64s/exception: move head-64.h code to exception-64s.S where it
+    is used
+  powerpc/64s/exception: remove __BRANCH_TO_KVM
+  powerpc/64s/exception: remove unused BRANCH_TO_COMMON
+  powerpc/64s/exception: use a gas macro for system call handler code
+  powerpc/64s/exception: fix indenting irregularities
+  powerpc/64s/exception: generate regs clear instructions using .rept
+  powerpc/64s/exception: remove pointless EXCEPTION_PROLOG macro
+    indirection
+  powerpc/64s/exception: move paca save area offsets into
+    exception-64s.S
 
-This is a frustratingly large batch at rc5. Some of these were sent earlier but
-were missed by me due to being distracted by other things, and some took a while
-to track down due to needing manual bisection on old hardware. But still we
-clearly need to improve our testing of KVM, and of 32-bit, so that we catch
-these earlier.
+ arch/powerpc/include/asm/exception-64s.h |  604 +----------
+ arch/powerpc/include/asm/head-64.h       |  202 ----
+ arch/powerpc/kernel/exceptions-64s.S     | 1170 +++++++++++++++++-----
+ 3 files changed, 941 insertions(+), 1035 deletions(-)
 
-cheers
+-- 
+2.20.1
 
-
-The following changes since commit c21f5a9ed85ca3e914ca11f421677ae9ae0d04b0:
-
-  powerpc/32s: fix booting with CONFIG_PPC_EARLY_DEBUG_BOOTX (2019-06-07 19:00:14 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.2-5
-
-for you to fetch changes up to 50087112592016a3fc10b394a55f1f1a1bde6908:
-
-  KVM: PPC: Book3S HV: Invalidate ERAT when flushing guest TLB entries (2019-06-20 22:11:25 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.2 #5
-
-Seven fixes, all for bugs introduced this cycle.
-
-The commit to add KASAN support broke booting on 32-bit SMP machines, due to a
-refactoring that moved some setup out of the secondary CPU path.
-
-A fix for another 32-bit SMP bug introduced by the fast syscall entry
-implementation for 32-bit BOOKE. And a build fix for the same commit.
-
-Our change to allow the DAWR to be force enabled on Power9 introduced a bug in
-KVM, where we clobber r3 leading to a host crash.
-
-The same commit also exposed a previously unreachable bug in the nested KVM
-handling of DAWR, which could lead to an oops in a nested host.
-
-One of the DMA reworks broke the b43legacy WiFi driver on some people's
-powermacs, fix it by enabling a 30-bit ZONE_DMA on 32-bit.
-
-A fix for TLB flushing in KVM introduced a new bug, as it neglected to also
-flush the ERAT, this could lead to memory corruption in the guest.
-
-Thanks to:
-  Aaro Koskinen, Christoph Hellwig, Christophe Leroy, Larry Finger, Michael
-  Neuling, Suraj Jitindar Singh.
-
-- ------------------------------------------------------------------
-Christoph Hellwig (1):
-      powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac
-
-Christophe Leroy (3):
-      powerpc/32s: fix initial setup of segment registers on secondary CPU
-      powerpc/booke: fix fast syscall entry on SMP
-      powerpc/32: fix build failure on book3e with KVM
-
-Michael Neuling (1):
-      KVM: PPC: Book3S HV: Fix r3 corruption in h_set_dabr()
-
-Suraj Jitindar Singh (2):
-      KVM: PPC: Book3S HV: Only write DAWR[X] when handling h_set_dawr in real mode
-      KVM: PPC: Book3S HV: Invalidate ERAT when flushing guest TLB entries
-
-
- arch/powerpc/include/asm/page.h         |  7 +++++++
- arch/powerpc/kernel/head_32.S           |  1 +
- arch/powerpc/kernel/head_booke.h        | 10 +++++-----
- arch/powerpc/kernel/head_fsl_booke.S    |  2 +-
- arch/powerpc/kvm/book3s_hv_builtin.c    |  1 +
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 15 +++++++++++++--
- arch/powerpc/mm/mem.c                   |  3 ++-
- arch/powerpc/platforms/powermac/Kconfig |  1 +
- 8 files changed, 31 insertions(+), 9 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIcBAEBAgAGBQJdDhYHAAoJEFHr6jzI4aWAe9MQALg4ximulK/aabpsUZ9VXvJG
-xGtfDYi41KQt73CdiE4nacx3RH7YlcqmZAoKU0JhcuLL2zbqqufhFYnKJNYPEHcG
-S2vHoEFfuVMR27B0Ba9FPHUwE1ND7dzPx8BGqjg4nUkoFd9rWV6xxQ5nYil3NBOi
-+O5jtKMJxkF2DvSonaUrE6qX34F8N7HfVb8s3ZQpLEdcuyuJt3r9Zne/fvR9GRJ8
-gDvjkQervuw0iA3BcJlRWnJqf5ch9iijd+YvkAIeAjO7M1yWXoGUdRbVK3M39iO7
-n7znfy7JSdcM/AaMP+qiK0KDUgUNlBbtm/bvC9TFMBsD/dBHlYE3crCUIoYXxCE8
-0bVyQL502J4Qd8vbIqK3WCZCprqQpp/q2SVYxgIj1jnk2enFn8kEVREVrdyVDuTJ
-LcBQEyUtZooS/ATrwPOzIAC/XsdnHP7tBSqU23J3Ba+W6GM/t8wuDkGwN7nhwoYE
-SU8p0AbAQ/G6Yi9JvgATbtSXAMQ2pPO3TCYkLVzD18KQLhfSYD4cbMs+gWvMCwVR
-/8lRkRi4uHurUk8eE4y/Sp4T7pRk4mwVxYighLbGLXLW/pj9RvfdTRA3i+E51j/U
-Wu1lZSTrKPRzNp7XYUOM5ZGfngptgO7istNkgeQz8zJsPu1S0aoxyK1ypCp1aUZ8
-flxdVv62fmt3H/8A0I3O
-=5RHe
------END PGP SIGNATURE-----
