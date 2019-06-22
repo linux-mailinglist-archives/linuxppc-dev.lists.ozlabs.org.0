@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3FB4F613
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 15:56:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901494F60E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 15:51:30 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45WH5r0DnSzDqSG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 23:51:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45WHC10fX0zDq9W
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2019 23:55:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="h89FeH4H"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="oagePwyZ"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45WGKc1MvTzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 23:16:36 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id s27so4696761pgl.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 06:16:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45WGKd4R1RzDqbf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 23:16:37 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id j2so4981483pfe.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2019 06:16:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=GcgjId7nEBkObXMZTKliIZ8a1G7X9U7UzSCtI3x7zkM=;
- b=h89FeH4HWfHwuR3fiJHqjRPZW7Pw7UIFgNH9YaiZcIKPQ4g2UagD83c/xtPKIN2qYX
- TfkhQcdBeCoA5nIR3eNXUGHyu3w4+/k2EeqbR8GTKDUdfmZME7nXY4IrhZ1uxh0NMamN
- xEDkHZHj/GSvti6NMWvzGyWAdonkw/Dpz8uQ7XdQMwjf+nTByR9OTepSO7AeSgsL+jZD
- zyREpfuy7vqU2KsH98cM+Gf8qRZFaIlhYIZXe+Hh1jOHMo1gkCznzAU6QVCzCc9jZW1t
- m7cFY5lab9Kuzwu3NCR1B3woGnarmKrdlGtmkRslZ0AByjT03/wQRCzG2nmdDXxZRavu
- NDiA==
+ bh=/5rITEA0kt/SZlUm7lTtGNllHPmnrOtaOHUk6eIzUGw=;
+ b=oagePwyZEsQoI5u8C0zykEAKErc2wl0VHQHSfk1NljyJGsh+aTdJtVe8qszdnSEE0q
+ IH3mHCf5jUYrp58UleXFxQ8LEzPqvD0sGLGeCaJPkhYqmefwb0kZT4C3DNZcz6VMp4AU
+ 2WvL1zOnfOyn38ulKg0WExSM3Dj8lHaqn9jdcdUdtJ/FvC8EDTQE77DANv2DiUbKcZ2p
+ ULnKsctGv5qTMjOV9o5FxOImJhhnpGJS9qFs9A/4GSn/CkjCaTLi/jpKev0xqWNquKp3
+ 98Lrbu8fn+gWSiOmqG5WqqVJz3pgxEZCJkU4kkNcAHqnbtSi0Y8Kn/sWiYN/5V2N8/QO
+ oodQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=GcgjId7nEBkObXMZTKliIZ8a1G7X9U7UzSCtI3x7zkM=;
- b=MJWh7dxn8PVx23kqhv9Q/75rr1BxbN3GZ8mEFF+m6Z/n6trjqKsQ+jSBJZMvEBXPW1
- /th3Bef/gOl4cF6cXGHMBg5wpfCHHWXuMJE0AnUHaCjZzz75jnCSuKcUe1NepIO/p9Vi
- FkMDTqT9XHU/aYsshXaOXqZz0ULmGL5CaZgRUwHTZEosBSXsLfu5NsEhKXoacswKYl3g
- 9POuyHYyo7QRU6tJ6kwgpGM1DHBFv9dWa59JDHFqPCV284IVK2EHIh1GQcWjtZo4C5NC
- jasGTnSzDImadOLaxu9IzFCcLYS7VW5MYWukO2eXsy5woDkqHwlyAf0GCru9+EVlUY7H
- 6nJA==
-X-Gm-Message-State: APjAAAUwMqR0pSebufRX54KZOpyAGl8Ln4aeRWwrvD/YonwuW8HaGvEi
- El6LNM3/Nw3GJ0Mo9TB67o+JyxnVSS8=
-X-Google-Smtp-Source: APXvYqwZQ0/CtN8POAt6cAbe5VnEwppsh3YCxxcm5ZWfmLsdYw/dLy210KfAqiT+4g8+7awvYhzzuA==
-X-Received: by 2002:a65:40cb:: with SMTP id u11mr24665514pgp.333.1561209392946; 
- Sat, 22 Jun 2019 06:16:32 -0700 (PDT)
+ bh=/5rITEA0kt/SZlUm7lTtGNllHPmnrOtaOHUk6eIzUGw=;
+ b=t2w3jS0riTBB5Gfv7EZajbwV2x+rML6fh9XesXClnP0Eu5Nj+rQNISDr0RIaquEf9M
+ NuKQZ+dgQVv8C4YiQXRe4vo+ND5HO3wJ0C6JGxZLnPk0DRERxAEMMBrlGLObJFCPgbcE
+ 8leCs//iCL/RhmKTX4+sg0Pmb0RtAOqeGT8ePnxi5v0cUtdLOdVHICjrYV3jDD2ArQmt
+ Y+2i4cw6HXFVUt6cGyG0Ch7Y5GIzated2nMq6vhca/hBYwbxDyn/+b5RWkRA50yABCba
+ hh3C/mK+7AfmRgED5nu320sBVf/doixV/QzLKwQ79jKZlmMlhf951zTs/KRNVjK7nCwv
+ Ubvw==
+X-Gm-Message-State: APjAAAUWHCnDBokenUs4STdSqt/PAN1nS3P1itniQsYLb+sA5gIvuTOc
+ W57HJQ8rZrX5/l8qrkCITgzRfTNLdeI=
+X-Google-Smtp-Source: APXvYqwXXazqH17D6PMoQuPweJ0q3jH3GZIAWpX2x9qOegJGnlQhaLpwCPie7QXuJ/BuPCpQ7zvgzg==
+X-Received: by 2002:a17:90a:ac13:: with SMTP id
+ o19mr13037892pjq.143.1561209395590; 
+ Sat, 22 Jun 2019 06:16:35 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([1.144.136.2])
- by smtp.gmail.com with ESMTPSA id n1sm5192471pgv.15.2019.06.22.06.16.30
+ by smtp.gmail.com with ESMTPSA id n1sm5192471pgv.15.2019.06.22.06.16.33
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sat, 22 Jun 2019 06:16:32 -0700 (PDT)
+ Sat, 22 Jun 2019 06:16:35 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 11/25] powerpc/64s/exception: Move EXCEPTION_COMMON
- additions into callers
-Date: Sat, 22 Jun 2019 23:15:21 +1000
-Message-Id: <20190622131535.20996-12-npiggin@gmail.com>
+Subject: [PATCH v3 12/25] powerpc/64s/exception: unwind exception-64s.h macros
+Date: Sat, 22 Jun 2019 23:15:22 +1000
+Message-Id: <20190622131535.20996-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190622131535.20996-1-npiggin@gmail.com>
 References: <20190622131535.20996-1-npiggin@gmail.com>
@@ -84,189 +84,405 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-More cases of code insertion via macros that does not add a great
-deal. All the additions have to be specified in the macro arguments,
-so they can just as well go after the macro.
+Many of these macros just specify 1-4 lines which are only called a
+few times each at most, and often just once. Remove this indirection.
 
 No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/exception-64s.h | 42 +++++++---------------
- arch/powerpc/include/asm/head-64.h       |  4 +--
- arch/powerpc/kernel/exceptions-64s.S     | 45 +++++++++++++-----------
- 3 files changed, 39 insertions(+), 52 deletions(-)
+ arch/powerpc/include/asm/exception-64s.h | 101 -----------------------
+ arch/powerpc/include/asm/head-64.h       |  76 ++++++++++++-----
+ arch/powerpc/kernel/exceptions-64s.S     |  44 +++++-----
+ 3 files changed, 82 insertions(+), 139 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-index cc65e87cff2f..24fc0104c9d3 100644
+index 24fc0104c9d3..0bb0310b794f 100644
 --- a/arch/powerpc/include/asm/exception-64s.h
 +++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -635,21 +635,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, bitmask ;	\
- 	EXCEPTION_PROLOG_2_VIRT label, EXC_HV
+@@ -226,17 +226,6 @@
+ #endif
+ .endm
  
 -/*
-- * Our exception common code can be passed various "additions"
-- * to specify the behaviour of interrupts, whether to kick the
-- * runlatch, etc...
+- * As EXCEPTION_PROLOG(), except we've already got relocation on so no need to
+- * rfid. Save CTR in case we're CONFIG_RELOCATABLE, in which case
+- * EXCEPTION_PROLOG_2_VIRT will be using CTR.
 - */
+-#define EXCEPTION_RELON_PROLOG(area, label, hsrr, kvm, vec)		\
+-	SET_SCRATCH0(r13);		/* save r13 */			\
+-	EXCEPTION_PROLOG_0 area ;					\
+-	EXCEPTION_PROLOG_1 hsrr, area, kvm, vec, 0 ;			\
+-	EXCEPTION_PROLOG_2_VIRT label, hsrr
 -
+ /* Exception register prefixes */
+ #define EXC_HV		1
+ #define EXC_STD		0
+@@ -346,12 +335,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	std	r10,\area\()+EX_R13(r13)
+ .endm
+ 
+-#define EXCEPTION_PROLOG(area, label, hsrr, kvm, vec)			\
+-	SET_SCRATCH0(r13);		/* save r13 */			\
+-	EXCEPTION_PROLOG_0 area	;					\
+-	EXCEPTION_PROLOG_1 hsrr, area, kvm, vec, 0 ;			\
+-	EXCEPTION_PROLOG_2_REAL label, hsrr, 1
+-
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ /*
+  * If hv is possible, interrupts come into to the hv version
+@@ -415,12 +398,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 
+ #endif
+ 
+-/* Do not enable RI */
+-#define EXCEPTION_PROLOG_NORI(area, label, hsrr, kvm, vec)		\
+-	EXCEPTION_PROLOG_0 area ;					\
+-	EXCEPTION_PROLOG_1 hsrr, area, kvm, vec, 0 ;			\
+-	EXCEPTION_PROLOG_2_REAL label, hsrr, 0
+-
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ .macro KVMTEST hsrr, n
+ 	lbz	r10,HSTATE_IN_GUEST(r13)
+@@ -557,84 +534,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	std	r10,RESULT(r1);		/* clear regs->result		*/ \
+ 	std	r11,STACK_FRAME_OVERHEAD-16(r1); /* mark the frame	*/
+ 
 -/*
-- * This addition reconciles our actual IRQ state with the various software
-- * flags that track it. This may call C code.
+- * Exception vectors.
 - */
--#define ADD_RECONCILE	RECONCILE_IRQ_STATE(r10,r11)
+-#define STD_EXCEPTION(vec, label)				\
+-	EXCEPTION_PROLOG(PACA_EXGEN, label, EXC_STD, 1, vec);
 -
--#define ADD_NVGPRS				\
--	bl	save_nvgprs
+-/* Version of above for when we have to branch out-of-line */
+-#define __OOL_EXCEPTION(vec, label, hdlr)			\
+-	SET_SCRATCH0(r13);					\
+-	EXCEPTION_PROLOG_0 PACA_EXGEN ;				\
+-	b hdlr
+-
+-#define STD_EXCEPTION_OOL(vec, label)				\
+-	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, vec, 0 ;	\
+-	EXCEPTION_PROLOG_2_REAL label, EXC_STD, 1
+-
+-#define STD_EXCEPTION_HV(loc, vec, label)			\
+-	EXCEPTION_PROLOG(PACA_EXGEN, label, EXC_HV, 1, vec)
+-
+-#define STD_EXCEPTION_HV_OOL(vec, label)			\
+-	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, 0 ;	\
+-	EXCEPTION_PROLOG_2_REAL label, EXC_HV, 1
+-
+-#define STD_RELON_EXCEPTION(loc, vec, label)		\
+-	/* No guest interrupts come through here */	\
+-	EXCEPTION_RELON_PROLOG(PACA_EXGEN, label, EXC_STD, 0, vec)
+-
+-#define STD_RELON_EXCEPTION_OOL(vec, label)			\
+-	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, vec, 0 ;	\
+-	EXCEPTION_PROLOG_2_VIRT label, EXC_STD
+-
+-#define STD_RELON_EXCEPTION_HV(loc, vec, label)			\
+-	EXCEPTION_RELON_PROLOG(PACA_EXGEN, label, EXC_HV, 1, vec)
+-
+-#define STD_RELON_EXCEPTION_HV_OOL(vec, label)			\
+-	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, 0 ;	\
+-	EXCEPTION_PROLOG_2_VIRT label, EXC_HV
+-
+-#define __MASKABLE_EXCEPTION(vec, label, hsrr, kvm, bitmask)		\
+-	SET_SCRATCH0(r13);    /* save r13 */				\
+-	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
+-	EXCEPTION_PROLOG_1 hsrr, PACA_EXGEN, kvm, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_REAL label, hsrr, 1
+-
+-#define MASKABLE_EXCEPTION(vec, label, bitmask)				\
+-	__MASKABLE_EXCEPTION(vec, label, EXC_STD, 1, bitmask)
+-
+-#define MASKABLE_EXCEPTION_OOL(vec, label, bitmask)			\
+-	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_REAL label, EXC_STD, 1
+-
+-#define MASKABLE_EXCEPTION_HV(vec, label, bitmask)			\
+-	__MASKABLE_EXCEPTION(vec, label, EXC_HV, 1, bitmask)
+-
+-#define MASKABLE_EXCEPTION_HV_OOL(vec, label, bitmask)			\
+-	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_REAL label, EXC_HV, 1
+-
+-#define __MASKABLE_RELON_EXCEPTION(vec, label, hsrr, kvm, bitmask)	\
+-	SET_SCRATCH0(r13);    /* save r13 */				\
+-	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
+-	EXCEPTION_PROLOG_1 hsrr, PACA_EXGEN, kvm, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_VIRT label, hsrr
+-
+-#define MASKABLE_RELON_EXCEPTION(vec, label, bitmask)			\
+-	__MASKABLE_RELON_EXCEPTION(vec, label, EXC_STD, 0, bitmask)
+-
+-#define MASKABLE_RELON_EXCEPTION_OOL(vec, label, bitmask)		\
+-	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_REAL label, EXC_STD, 1
+-
+-#define MASKABLE_RELON_EXCEPTION_HV(vec, label, bitmask)		\
+-	__MASKABLE_RELON_EXCEPTION(vec, label, EXC_HV, 1, bitmask)
+-
+-#define MASKABLE_RELON_EXCEPTION_HV_OOL(vec, label, bitmask)		\
+-	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, bitmask ;	\
+-	EXCEPTION_PROLOG_2_VIRT label, EXC_HV
 -
  #define RUNLATCH_ON				\
  BEGIN_FTR_SECTION				\
  	ld	r3, PACA_THREAD_INFO(r13);	\
-@@ -658,25 +643,22 @@ BEGIN_FTR_SECTION				\
- 	beql	ppc64_runlatch_on_trampoline;	\
- END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
- 
--#define EXCEPTION_COMMON(area, trap, label, additions)		\
-+#define EXCEPTION_COMMON(area, trap)				\
- 	EXCEPTION_PROLOG_COMMON(trap, area);			\
--	/* Volatile regs are potentially clobbered here */	\
--	additions
- 
- /*
-- * Exception where stack is already set in r1, r1 is saved in r10, and it
-- * continues rather than returns.
-+ * Exception where stack is already set in r1, r1 is saved in r10
-  */
--#define EXCEPTION_COMMON_NORET_STACK(area, trap, label, additions) \
-+#define EXCEPTION_COMMON_STACK(area, trap)			\
- 	EXCEPTION_PROLOG_COMMON_1();				\
- 	kuap_save_amr_and_lock r9, r10, cr1;			\
- 	EXCEPTION_PROLOG_COMMON_2(area);			\
--	EXCEPTION_PROLOG_COMMON_3(trap);			\
--	/* Volatile regs are potentially clobbered here */	\
--	additions
-+	EXCEPTION_PROLOG_COMMON_3(trap)
- 
--#define STD_EXCEPTION_COMMON(trap, label, hdlr)			\
--	EXCEPTION_COMMON(PACA_EXGEN, trap, label, ADD_NVGPRS;ADD_RECONCILE); \
-+#define STD_EXCEPTION_COMMON(trap, hdlr)			\
-+	EXCEPTION_COMMON(PACA_EXGEN, trap);			\
-+	bl	save_nvgprs;					\
-+	RECONCILE_IRQ_STATE(r10, r11);				\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
- 	bl	hdlr;						\
- 	b	ret_from_except
-@@ -686,9 +668,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
-  * in the idle task and therefore need the special idle handling
-  * (finish nap and runlatch)
-  */
--#define STD_EXCEPTION_COMMON_ASYNC(trap, label, hdlr)		\
--	EXCEPTION_COMMON(PACA_EXGEN, trap, label,		\
--		FINISH_NAP;ADD_RECONCILE;RUNLATCH_ON);		\
-+#define STD_EXCEPTION_COMMON_ASYNC(trap, hdlr)			\
-+	EXCEPTION_COMMON(PACA_EXGEN, trap);			\
-+	FINISH_NAP;						\
-+	RECONCILE_IRQ_STATE(r10, r11);				\
-+	RUNLATCH_ON;						\
- 	addi	r3,r1,STACK_FRAME_OVERHEAD;			\
- 	bl	hdlr;						\
- 	b	ret_from_except_lite
 diff --git a/arch/powerpc/include/asm/head-64.h b/arch/powerpc/include/asm/head-64.h
-index bdd67a26e959..acd94fcf9f40 100644
+index acd94fcf9f40..54db05afb80f 100644
 --- a/arch/powerpc/include/asm/head-64.h
 +++ b/arch/powerpc/include/asm/head-64.h
-@@ -403,11 +403,11 @@ end_##sname:
+@@ -258,44 +258,71 @@ end_##sname:
+ 	FIXED_SECTION_ENTRY_END_LOCATION(virt_vectors, exc_virt_##start##_##unused, start, size)
  
- #define EXC_COMMON(name, realvec, hdlr)					\
- 	EXC_COMMON_BEGIN(name);						\
--	STD_EXCEPTION_COMMON(realvec, name, hdlr)
-+	STD_EXCEPTION_COMMON(realvec, hdlr)
  
- #define EXC_COMMON_ASYNC(name, realvec, hdlr)				\
- 	EXC_COMMON_BEGIN(name);						\
--	STD_EXCEPTION_COMMON_ASYNC(realvec, name, hdlr)
-+	STD_EXCEPTION_COMMON_ASYNC(realvec, hdlr)
+-#define EXC_REAL(name, start, size)					\
++#define __EXC_REAL(name, start, size, area)				\
+ 	EXC_REAL_BEGIN(name, start, size);				\
+-	STD_EXCEPTION(start, name##_common);				\
++	SET_SCRATCH0(r13);		/* save r13 */			\
++	EXCEPTION_PROLOG_0 area ;					\
++	EXCEPTION_PROLOG_1 EXC_STD, area, 1, start, 0 ;			\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1 ;		\
+ 	EXC_REAL_END(name, start, size)
  
- #endif /* __ASSEMBLY__ */
+-#define EXC_VIRT(name, start, size, realvec)				\
++#define EXC_REAL(name, start, size)					\
++	__EXC_REAL(name, start, size, PACA_EXGEN)
++
++#define __EXC_VIRT(name, start, size, realvec, area)			\
+ 	EXC_VIRT_BEGIN(name, start, size);				\
+-	STD_RELON_EXCEPTION(start, realvec, name##_common);		\
++	SET_SCRATCH0(r13);    /* save r13 */				\
++	EXCEPTION_PROLOG_0 area ;					\
++	EXCEPTION_PROLOG_1 EXC_STD, area, 0, realvec, 0;		\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_STD ;		\
+ 	EXC_VIRT_END(name, start, size)
  
++#define EXC_VIRT(name, start, size, realvec)				\
++	__EXC_VIRT(name, start, size, realvec, PACA_EXGEN)
++
+ #define EXC_REAL_MASKABLE(name, start, size, bitmask)			\
+ 	EXC_REAL_BEGIN(name, start, size);				\
+-	MASKABLE_EXCEPTION(start, name##_common, bitmask);		\
++	SET_SCRATCH0(r13);    /* save r13 */				\
++	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, start, bitmask ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1 ;		\
+ 	EXC_REAL_END(name, start, size)
+ 
+ #define EXC_VIRT_MASKABLE(name, start, size, realvec, bitmask)		\
+ 	EXC_VIRT_BEGIN(name, start, size);				\
+-	MASKABLE_RELON_EXCEPTION(realvec, name##_common, bitmask);	\
++	SET_SCRATCH0(r13);    /* save r13 */				\
++	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, realvec, bitmask ;	\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_STD ;		\
+ 	EXC_VIRT_END(name, start, size)
+ 
+ #define EXC_REAL_HV(name, start, size)					\
+ 	EXC_REAL_BEGIN(name, start, size);				\
+-	STD_EXCEPTION_HV(start, start, name##_common);			\
++	SET_SCRATCH0(r13);		/* save r13 */			\
++	EXCEPTION_PROLOG_0 PACA_EXGEN;					\
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, start, 0 ;		\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_HV, 1 ;		\
+ 	EXC_REAL_END(name, start, size)
+ 
+ #define EXC_VIRT_HV(name, start, size, realvec)				\
+ 	EXC_VIRT_BEGIN(name, start, size);				\
+-	STD_RELON_EXCEPTION_HV(start, realvec, name##_common);		\
++	SET_SCRATCH0(r13);		/* save r13 */			\
++	EXCEPTION_PROLOG_0 PACA_EXGEN;					\
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, realvec, 0 ;		\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_HV ;			\
+ 	EXC_VIRT_END(name, start, size)
+ 
+ #define __EXC_REAL_OOL(name, start, size)				\
+ 	EXC_REAL_BEGIN(name, start, size);				\
+-	__OOL_EXCEPTION(start, label, tramp_real_##name);		\
++	SET_SCRATCH0(r13);						\
++	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
++	b	tramp_real_##name ;					\
+ 	EXC_REAL_END(name, start, size)
+ 
+ #define __TRAMP_REAL_OOL(name, vec)					\
+ 	TRAMP_REAL_BEGIN(tramp_real_##name);				\
+-	STD_EXCEPTION_OOL(vec, name##_common)
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, vec, 0 ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1
+ 
+ #define EXC_REAL_OOL(name, start, size)					\
+ 	__EXC_REAL_OOL(name, start, size);				\
+@@ -306,7 +333,8 @@ end_##sname:
+ 
+ #define __TRAMP_REAL_OOL_MASKABLE(name, vec, bitmask)			\
+ 	TRAMP_REAL_BEGIN(tramp_real_##name);				\
+-	MASKABLE_EXCEPTION_OOL(vec, name##_common, bitmask)
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, vec, bitmask ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1
+ 
+ #define EXC_REAL_OOL_MASKABLE(name, start, size, bitmask)		\
+ 	__EXC_REAL_OOL_MASKABLE(name, start, size);			\
+@@ -314,7 +342,9 @@ end_##sname:
+ 
+ #define __EXC_REAL_OOL_HV_DIRECT(name, start, size, handler)		\
+ 	EXC_REAL_BEGIN(name, start, size);				\
+-	__OOL_EXCEPTION(start, label, handler);				\
++	SET_SCRATCH0(r13);						\
++	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
++	b	handler;						\
+ 	EXC_REAL_END(name, start, size)
+ 
+ #define __EXC_REAL_OOL_HV(name, start, size)				\
+@@ -322,7 +352,8 @@ end_##sname:
+ 
+ #define __TRAMP_REAL_OOL_HV(name, vec)					\
+ 	TRAMP_REAL_BEGIN(tramp_real_##name);				\
+-	STD_EXCEPTION_HV_OOL(vec, name##_common)
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, 0 ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_HV, 1
+ 
+ #define EXC_REAL_OOL_HV(name, start, size)				\
+ 	__EXC_REAL_OOL_HV(name, start, size);				\
+@@ -333,7 +364,8 @@ end_##sname:
+ 
+ #define __TRAMP_REAL_OOL_MASKABLE_HV(name, vec, bitmask)		\
+ 	TRAMP_REAL_BEGIN(tramp_real_##name);				\
+-	MASKABLE_EXCEPTION_HV_OOL(vec, name##_common, bitmask)
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, vec, bitmask ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_HV, 1
+ 
+ #define EXC_REAL_OOL_MASKABLE_HV(name, start, size, bitmask)		\
+ 	__EXC_REAL_OOL_MASKABLE_HV(name, start, size);			\
+@@ -341,12 +373,15 @@ end_##sname:
+ 
+ #define __EXC_VIRT_OOL(name, start, size)				\
+ 	EXC_VIRT_BEGIN(name, start, size);				\
+-	__OOL_EXCEPTION(start, label, tramp_virt_##name);		\
++	SET_SCRATCH0(r13);						\
++	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
++	b	tramp_virt_##name;					\
+ 	EXC_VIRT_END(name, start, size)
+ 
+ #define __TRAMP_VIRT_OOL(name, realvec)					\
+ 	TRAMP_VIRT_BEGIN(tramp_virt_##name);				\
+-	STD_RELON_EXCEPTION_OOL(realvec, name##_common)
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, vec, 0 ;		\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_STD
+ 
+ #define EXC_VIRT_OOL(name, start, size, realvec)			\
+ 	__EXC_VIRT_OOL(name, start, size);				\
+@@ -357,7 +392,8 @@ end_##sname:
+ 
+ #define __TRAMP_VIRT_OOL_MASKABLE(name, realvec, bitmask)		\
+ 	TRAMP_VIRT_BEGIN(tramp_virt_##name);				\
+-	MASKABLE_RELON_EXCEPTION_OOL(realvec, name##_common, bitmask)
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, realvec, bitmask ;	\
++	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1
+ 
+ #define EXC_VIRT_OOL_MASKABLE(name, start, size, realvec, bitmask)	\
+ 	__EXC_VIRT_OOL_MASKABLE(name, start, size);			\
+@@ -368,7 +404,8 @@ end_##sname:
+ 
+ #define __TRAMP_VIRT_OOL_HV(name, realvec)				\
+ 	TRAMP_VIRT_BEGIN(tramp_virt_##name);				\
+-	STD_RELON_EXCEPTION_HV_OOL(realvec, name##_common)
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, realvec, 0 ;		\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_HV
+ 
+ #define EXC_VIRT_OOL_HV(name, start, size, realvec)			\
+ 	__EXC_VIRT_OOL_HV(name, start, size);				\
+@@ -379,7 +416,8 @@ end_##sname:
+ 
+ #define __TRAMP_VIRT_OOL_MASKABLE_HV(name, realvec, bitmask)		\
+ 	TRAMP_VIRT_BEGIN(tramp_virt_##name);				\
+-	MASKABLE_RELON_EXCEPTION_HV_OOL(realvec, name##_common, bitmask)
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, realvec, bitmask ;	\
++	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_HV
+ 
+ #define EXC_VIRT_OOL_MASKABLE_HV(name, start, size, realvec, bitmask)	\
+ 	__EXC_VIRT_OOL_MASKABLE_HV(name, start, size);			\
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 01c42d3935c8..04418519a761 100644
+index 04418519a761..8ccceaee51fa 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -164,21 +164,6 @@ EXC_COMMON_BEGIN(system_reset_idle_common)
- 	b	idle_return_gpr_loss
- #endif
- 
--/*
-- * Set IRQS_ALL_DISABLED unconditionally so arch_irqs_disabled does
-- * the right thing. We do not want to reconcile because that goes
-- * through irq tracing which we don't want in NMI.
-- *
-- * Save PACAIRQHAPPENED because some code will do a hard disable
-- * (e.g., xmon). So we want to restore this back to where it was
-- * when we return. DAR is unused in the stack, so save it there.
-- */
--#define ADD_RECONCILE_NMI						\
--	li	r10,IRQS_ALL_DISABLED;					\
--	stb	r10,PACAIRQSOFTMASK(r13);				\
--	lbz	r10,PACAIRQHAPPENED(r13);				\
--	std	r10,_DAR(r1)
--
- EXC_COMMON_BEGIN(system_reset_common)
- 	/*
- 	 * Increment paca->in_nmi then enable MSR_RI. SLB or MCE will be able
-@@ -195,8 +180,22 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	mr	r10,r1
- 	ld	r1,PACA_NMI_EMERG_SP(r13)
- 	subi	r1,r1,INT_FRAME_SIZE
--	EXCEPTION_COMMON_NORET_STACK(PACA_EXNMI, 0x100, system_reset,
--					ADD_NVGPRS;ADD_RECONCILE_NMI)
-+	EXCEPTION_COMMON_STACK(PACA_EXNMI, 0x100)
-+	bl	save_nvgprs
-+	/*
-+	 * Set IRQS_ALL_DISABLED unconditionally so arch_irqs_disabled does
-+	 * the right thing. We do not want to reconcile because that goes
-+	 * through irq tracing which we don't want in NMI.
-+	 *
-+	 * Save PACAIRQHAPPENED because some code will do a hard disable
-+	 * (e.g., xmon). So we want to restore this back to where it was
-+	 * when we return. DAR is unused in the stack, so save it there.
-+	 */
-+	li	r10,IRQS_ALL_DISABLED
-+	stb	r10,PACAIRQSOFTMASK(r13)
-+	lbz	r10,PACAIRQHAPPENED(r13)
-+	std	r10,_DAR(r1)
+@@ -254,9 +254,11 @@ EXC_COMMON_BEGIN(system_reset_common)
+  */
+ TRAMP_REAL_BEGIN(system_reset_fwnmi)
+ 	SET_SCRATCH0(r13)		/* save r13 */
+-	/* See comment at system_reset exception */
+-	EXCEPTION_PROLOG_NORI(PACA_EXNMI, system_reset_common, EXC_STD,
+-			      0, 0x100)
++	/* See comment at system_reset exception, don't turn on RI */
++	EXCEPTION_PROLOG_0 PACA_EXNMI
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXNMI, 0, 0x100, 0
++	EXCEPTION_PROLOG_2_REAL system_reset_common, EXC_STD, 0
 +
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	system_reset_exception
+ #endif /* CONFIG_PPC_PSERIES */
  
-@@ -1172,8 +1171,11 @@ hmi_exception_after_realmode:
- 	b	tramp_real_hmi_exception
  
- EXC_COMMON_BEGIN(hmi_exception_common)
--EXCEPTION_COMMON(PACA_EXGEN, 0xe60, hmi_exception_common,
--			FINISH_NAP;ADD_NVGPRS;ADD_RECONCILE;RUNLATCH_ON)
-+	EXCEPTION_COMMON(PACA_EXGEN, 0xe60)
-+	FINISH_NAP
-+	bl	save_nvgprs
-+	RECONCILE_IRQ_STATE(r10, r11)
-+	RUNLATCH_ON
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	handle_hmi_exception
- 	b	ret_from_except
-@@ -1471,8 +1473,9 @@ EXC_COMMON_BEGIN(soft_nmi_common)
- 	mr	r10,r1
- 	ld	r1,PACAEMERGSP(r13)
- 	subi	r1,r1,INT_FRAME_SIZE
--	EXCEPTION_COMMON_NORET_STACK(PACA_EXGEN, 0x900, system_reset,
--					ADD_NVGPRS;ADD_RECONCILE)
-+	EXCEPTION_COMMON_STACK(PACA_EXGEN, 0x900)
-+	bl	save_nvgprs
-+	RECONCILE_IRQ_STATE(r10, r11)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	soft_nmi_interrupt
- 	b	ret_from_except
+@@ -714,14 +716,8 @@ MMU_FTR_SECTION_ELSE
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 
+ 
+-EXC_REAL_BEGIN(instruction_access_slb, 0x480, 0x80)
+-EXCEPTION_PROLOG(PACA_EXSLB, instruction_access_slb_common, EXC_STD, 1, 0x480);
+-EXC_REAL_END(instruction_access_slb, 0x480, 0x80)
+-
+-EXC_VIRT_BEGIN(instruction_access_slb, 0x4480, 0x80)
+-EXCEPTION_RELON_PROLOG(PACA_EXSLB, instruction_access_slb_common, EXC_STD, 0, 0x480);
+-EXC_VIRT_END(instruction_access_slb, 0x4480, 0x80)
+-
++__EXC_REAL(instruction_access_slb, 0x480, 0x80, PACA_EXSLB)
++__EXC_VIRT(instruction_access_slb, 0x4480, 0x80, 0x480, PACA_EXSLB)
+ TRAMP_KVM(PACA_EXSLB, 0x480)
+ 
+ EXC_COMMON_BEGIN(instruction_access_slb_common)
+@@ -750,24 +746,34 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 
+ 
+ EXC_REAL_BEGIN(hardware_interrupt, 0x500, 0x100)
+-	.globl hardware_interrupt_hv;
++	.globl hardware_interrupt_hv
+ hardware_interrupt_hv:
+ 	BEGIN_FTR_SECTION
+-		MASKABLE_EXCEPTION_HV(0x500, hardware_interrupt_common, IRQS_DISABLED)
++		SET_SCRATCH0(r13)	/* save r13 */
++		EXCEPTION_PROLOG_0 PACA_EXGEN
++		EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, 0x500, IRQS_DISABLED
++		EXCEPTION_PROLOG_2_REAL hardware_interrupt_common, EXC_HV, 1
+ 	FTR_SECTION_ELSE
+-		MASKABLE_EXCEPTION(0x500, hardware_interrupt_common, IRQS_DISABLED)
++		SET_SCRATCH0(r13)	/* save r13 */
++		EXCEPTION_PROLOG_0 PACA_EXGEN
++		EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, 0x500, IRQS_DISABLED
++		EXCEPTION_PROLOG_2_REAL hardware_interrupt_common, EXC_STD, 1
+ 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
+ EXC_REAL_END(hardware_interrupt, 0x500, 0x100)
+ 
+ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
+-	.globl hardware_interrupt_relon_hv;
++	.globl hardware_interrupt_relon_hv
+ hardware_interrupt_relon_hv:
+ 	BEGIN_FTR_SECTION
+-		MASKABLE_RELON_EXCEPTION_HV(0x500, hardware_interrupt_common,
+-					    IRQS_DISABLED)
++		SET_SCRATCH0(r13)	/* save r13 */
++		EXCEPTION_PROLOG_0 PACA_EXGEN
++		EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, 0x500, IRQS_DISABLED
++		EXCEPTION_PROLOG_2_VIRT hardware_interrupt_common, EXC_HV
+ 	FTR_SECTION_ELSE
+-		__MASKABLE_RELON_EXCEPTION(0x500, hardware_interrupt_common,
+-					   EXC_STD, 1, IRQS_DISABLED)
++		SET_SCRATCH0(r13)	/* save r13 */
++		EXCEPTION_PROLOG_0 PACA_EXGEN
++		EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 1, 0x500, IRQS_DISABLED
++		EXCEPTION_PROLOG_2_VIRT hardware_interrupt_common, EXC_STD
+ 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
+ EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
+ 
 -- 
 2.20.1
 
