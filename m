@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DFF4FC07
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2019 16:16:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632B44FC01
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2019 16:12:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45WvWZ2TkrzDqWy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 00:12:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Wvbn4BvNzDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 00:16:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,45 +16,46 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=socionext.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="XT80z7eL"; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="2PB1Mez5"; 
  dkim-atps=neutral
 Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
  [210.131.2.80])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45WvSs43lxzDqV7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 00:10:04 +1000 (AEST)
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com
- [209.85.222.53]) (authenticated)
- by conssluserg-01.nifty.com with ESMTP id x5NE9i1G026136
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 23:09:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x5NE9i1G026136
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45WvW11n6yzDqX3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 00:11:56 +1000 (AEST)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com
+ [209.85.222.42]) (authenticated)
+ by conssluserg-01.nifty.com with ESMTP id x5NEBV6r026996
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 23:11:32 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x5NEBV6r026996
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1561298985;
- bh=7DrdzqGtK5Y7N0S66FZgjsMEvNefGAC5fLt9hgMKs4M=;
+ s=dec2015msa; t=1561299092;
+ bh=IAWEC1k7JmeweyFBrRKSY79vqZflSYuq0o8X6SeOK3A=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=XT80z7eLGgOQnrgsK30BjntfvHfVOaknd7EyGUqr6EGIdXf8bWKkk6ZT0juw2Q4cj
- 9kR3233maD9iRLPFQ1aaYRFEv1fc03KjZxLQicR4W8WsAf+YtwlBq5HSIWdNJs1wl0
- +5W+O0qseaoSezdRdKbJ2HunH0XqmntmnRjMsHf12tSIRDiVSYgzUOu/BoVcb722rM
- Q2u4JVp5eoPFGaYZxWOo/mjmpe1PMkgtYYzdI2u0GyKp0OqrVSEcigFXg9UfcUCUMn
- EmGQmMSR0zo2sGtpF7wxRW0Pce/PB9x7rnIu9ooVR/+GEpfsRJxLCtqWhDMOKMN8YP
- AN1DMRg4lyrGQ==
-X-Nifty-SrcIP: [209.85.222.53]
-Received: by mail-ua1-f53.google.com with SMTP id o2so4684929uae.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 07:09:44 -0700 (PDT)
-X-Gm-Message-State: APjAAAWGfkJGo/TYFI9Hg5y82xllRajEOdsQmmxr0Ggj4DFIo7ashrvw
- gOUM/GYEIGInq+JKBgUP8BZxzn59tblSFKAcx40=
-X-Google-Smtp-Source: APXvYqwLqOxLA12mww6wVSFtva4zQ7F/DVpEIq5zBS5i1DRrlXlbYvKX+Wt0iogyjnmX8slY85KwVV+l5bvhf+llGUg=
-X-Received: by 2002:a9f:25e9:: with SMTP id 96mr65484522uaf.95.1561298983528; 
- Sun, 23 Jun 2019 07:09:43 -0700 (PDT)
+ b=2PB1Mez515B6HihQQBQb8WCi8icDjimVH5dCRzYmYc/TOnguMs3KnV4K+DOss/ZEp
+ PoxzI8Wb8AT6+T2+yfcew3XlJj7tCAByH9z+yd3x3kaJ6YyW6W8aOjgiasd8HGVshu
+ xghLRo2vb6QdQ0ZwnaEUdoKZpBs5pFPezgo7h/AFZcwa5eNF1a6C2+n6M0S3iY3DjT
+ xzf37AJjG+JNHOWB2Y2Wra2cebb4s4XnTS72pTi+nmJBjM8q/qLq59OiFFLqN4iX7q
+ Byuk4YBpq50FFxjU41X/Qs7C3FghYyPCOHG/q09Dj+MOm8kdmqEzPfZzb7Wks2rX5R
+ eYIyTUDhAOq3Q==
+X-Nifty-SrcIP: [209.85.222.42]
+Received: by mail-ua1-f42.google.com with SMTP id o2so4685854uae.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 07:11:32 -0700 (PDT)
+X-Gm-Message-State: APjAAAUbLL+8/m9RdcTH/FIDEMwY8QgE6IbsxjJAkqpwk8ylCeVf4dWB
+ imypbOoI2UHo/4QPA6HamlPbqphYb1DEKQZAkyA=
+X-Google-Smtp-Source: APXvYqxxL9Fe1f4D+36OPQQYmIHaTRLbAeCCkDst90U/jbNKx6rUFrwQUHLg1/HA63wqrhcO/G2ISUlEKZcqaBy0/t0=
+X-Received: by 2002:ab0:234e:: with SMTP id h14mr28875617uao.25.1561299091313; 
+ Sun, 23 Jun 2019 07:11:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
-In-Reply-To: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
+References: <1557756964-13087-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <1557756964-13087-1-git-send-email-yamada.masahiro@socionext.com>
 From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Sun, 23 Jun 2019 23:09:07 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARoHtS0aqO9NCvwxAstJQxfeXhaWvh=1MQD3Wje8Pnmtw@mail.gmail.com>
-Message-ID: <CAK7LNARoHtS0aqO9NCvwxAstJQxfeXhaWvh=1MQD3Wje8Pnmtw@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/mm: mark more tlb functions as __always_inline
+Date: Sun, 23 Jun 2019 23:10:55 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARFYJo2mKAMsxrbLdyOrjFp5gJhq2ySUsDA-8jic3XpZQ@mail.gmail.com>
+Message-ID: <CAK7LNARFYJo2mKAMsxrbLdyOrjFp5gJhq2ySUsDA-8jic3XpZQ@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc/boot: pass CONFIG options in a simpler and
+ more robust way
 To: Michael Ellerman <mpe@ellerman.id.au>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -69,172 +70,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Rob Herring <robh@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Mark Greer <mgreer@animalcreek.com>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 21, 2019 at 10:19 PM Masahiro Yamada
+On Mon, May 13, 2019 at 11:24 PM Masahiro Yamada
 <yamada.masahiro@socionext.com> wrote:
 >
-> With CONFIG_OPTIMIZE_INLINING enabled, Laura Abbott reported error
-> with gcc 9.1.1:
+> Commit 5e9dcb6188a4 ("powerpc/boot: Expose Kconfig symbols to wrapper")
+> was wrong, but commit e41b93a6be57 ("powerpc/boot: Fix build failures
+> with -j 1") was also wrong.
 >
->   arch/powerpc/mm/book3s64/radix_tlb.c: In function '_tlbiel_pid':
->   arch/powerpc/mm/book3s64/radix_tlb.c:104:2: warning: asm operand 3 probably doesn't match constraints
->     104 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
->         |  ^~~
->   arch/powerpc/mm/book3s64/radix_tlb.c:104:2: error: impossible constraint in 'asm'
+> The correct dependency is:
 >
-> Fixing _tlbiel_pid() is enough to address the warning above, but I
-> inlined more functions to fix all potential issues.
+>   $(obj)/serial.o: $(obj)/autoconf.h
 >
-> To meet the "i" (immediate) constraint for the asm operands, functions
-> propagating "ric" must be always inlined.
+> However, I do not see the reason why we need to copy autoconf.h to
+> arch/power/boot/. Nor do I see consistency in the way of passing
+> CONFIG options.
 >
-> Fixes: 9012d011660e ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
-> Reported-by: Laura Abbott <labbott@redhat.com>
+> decompress.c references CONFIG_KERNEL_GZIP and CONFIG_KERNEL_XZ, which
+> are passed via the command line.
+>
+> serial.c includes autoconf.h to reference a couple of CONFIG options,
+> but this is fragile because we often forget to include "autoconf.h"
+> from source files.
+>
+> In fact, it is already broken.
+>
+> ppc_asm.h references CONFIG_PPC_8xx, but utils.S is not given any way
+> to access CONFIG options. So, CONFIG_PPC_8xx is never defined here.
+>
+> Pass $(LINUXINCLUDE) to make sure CONFIG options are accessible from
+> all .c and .S files in arch/powerpc/boot/.
+>
+> I also removed the -traditional flag to make include/linux/kconfig.h
+> work. This flag makes the preprocessor imitate the behavior of the
+> pre-standard C compiler, but I do not understand why it is necessary.
+>
 > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 > ---
+>
 
 Ping.
-This missed the recent PR, but
-I believe this should be fixed.
 
-Thanks.
 
->
+
 > Changes in v2:
->   - Do not split lines
+>  - reword commit log
 >
->  arch/powerpc/mm/book3s64/hash_native.c |  2 +-
->  arch/powerpc/mm/book3s64/radix_tlb.c   | 32 ++++++++++++++++----------------
->  2 files changed, 17 insertions(+), 17 deletions(-)
+>  arch/powerpc/boot/.gitignore |  2 --
+>  arch/powerpc/boot/Makefile   | 14 +++-----------
+>  arch/powerpc/boot/serial.c   |  1 -
+>  3 files changed, 3 insertions(+), 14 deletions(-)
 >
-> diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-> index aaa28fd..c854151 100644
-> --- a/arch/powerpc/mm/book3s64/hash_native.c
-> +++ b/arch/powerpc/mm/book3s64/hash_native.c
-> @@ -60,7 +60,7 @@ static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
->   * tlbiel instruction for hash, set invalidation
->   * i.e., r=1 and is=01 or is=10 or is=11
->   */
-> -static inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
-> +static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
->                                         unsigned int pid,
->                                         unsigned int ric, unsigned int prs)
+> diff --git a/arch/powerpc/boot/.gitignore b/arch/powerpc/boot/.gitignore
+> index 32034a0c..6610665 100644
+> --- a/arch/powerpc/boot/.gitignore
+> +++ b/arch/powerpc/boot/.gitignore
+> @@ -44,5 +44,3 @@ fdt_sw.c
+>  fdt_wip.c
+>  libfdt.h
+>  libfdt_internal.h
+> -autoconf.h
+> -
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index 73d1f35..b8a82be 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -20,9 +20,6 @@
+>
+>  all: $(obj)/zImage
+>
+> -compress-$(CONFIG_KERNEL_GZIP) := CONFIG_KERNEL_GZIP
+> -compress-$(CONFIG_KERNEL_XZ)   := CONFIG_KERNEL_XZ
+> -
+>  ifdef CROSS32_COMPILE
+>      BOOTCC := $(CROSS32_COMPILE)gcc
+>      BOOTAR := $(CROSS32_COMPILE)ar
+> @@ -34,7 +31,7 @@ endif
+>  BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>                  -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
+>                  -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
+> -                -D$(compress-y)
+> +                $(LINUXINCLUDE)
+>
+>  ifdef CONFIG_PPC64_BOOT_WRAPPER
+>  BOOTCFLAGS     += -m64
+> @@ -51,7 +48,7 @@ BOOTCFLAGS    += -mlittle-endian
+>  BOOTCFLAGS     += $(call cc-option,-mabi=elfv2)
+>  endif
+>
+> -BOOTAFLAGS     := -D__ASSEMBLY__ $(BOOTCFLAGS) -traditional -nostdinc
+> +BOOTAFLAGS     := -D__ASSEMBLY__ $(BOOTCFLAGS) -nostdinc
+>
+>  BOOTARFLAGS    := -cr$(KBUILD_ARFLAGS)
+>
+> @@ -202,14 +199,9 @@ $(obj)/empty.c:
+>  $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds : $(obj)/%: $(srctree)/$(src)/%.S
+>         $(Q)cp $< $@
+>
+> -$(srctree)/$(src)/serial.c: $(obj)/autoconf.h
+> -
+> -$(obj)/autoconf.h: $(obj)/%: $(objtree)/include/generated/%
+> -       $(Q)cp $< $@
+> -
+>  clean-files := $(zlib-) $(zlibheader-) $(zliblinuxheader-) \
+>                 $(zlib-decomp-) $(libfdt) $(libfdtheader) \
+> -               autoconf.h empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
+> +               empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
+>
+>  quiet_cmd_bootcc = BOOTCC  $@
+>        cmd_bootcc = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCFLAGS) -c -o $@ $<
+> diff --git a/arch/powerpc/boot/serial.c b/arch/powerpc/boot/serial.c
+> index b0491b8..9457863 100644
+> --- a/arch/powerpc/boot/serial.c
+> +++ b/arch/powerpc/boot/serial.c
+> @@ -18,7 +18,6 @@
+>  #include "stdio.h"
+>  #include "io.h"
+>  #include "ops.h"
+> -#include "autoconf.h"
+>
+>  static int serial_open(void)
 >  {
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-> index 4d84136..4d3dc10 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -29,7 +29,7 @@
->   * tlbiel instruction for radix, set invalidation
->   * i.e., r=1 and is=01 or is=10 or is=11
->   */
-> -static inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
-> +static __always_inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
->                                         unsigned int pid,
->                                         unsigned int ric, unsigned int prs)
->  {
-> @@ -150,8 +150,8 @@ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
->         trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
->  }
->
-> -static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
-> -                               unsigned long ric)
-> +static __always_inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
-> +                                               unsigned long ric)
->  {
->         unsigned long rb,rs,prs,r;
->
-> @@ -167,8 +167,8 @@ static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
->  }
->
->
-> -static inline void __tlbiel_va(unsigned long va, unsigned long pid,
-> -                              unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbiel_va(unsigned long va, unsigned long pid,
-> +                                       unsigned long ap, unsigned long ric)
->  {
->         unsigned long rb,rs,prs,r;
->
-> @@ -183,8 +183,8 @@ static inline void __tlbiel_va(unsigned long va, unsigned long pid,
->         trace_tlbie(0, 1, rb, rs, ric, prs, r);
->  }
->
-> -static inline void __tlbie_va(unsigned long va, unsigned long pid,
-> -                             unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
-> +                                      unsigned long ap, unsigned long ric)
->  {
->         unsigned long rb,rs,prs,r;
->
-> @@ -199,8 +199,8 @@ static inline void __tlbie_va(unsigned long va, unsigned long pid,
->         trace_tlbie(0, 0, rb, rs, ric, prs, r);
->  }
->
-> -static inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> -                             unsigned long ap, unsigned long ric)
-> +static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> +                                           unsigned long ap, unsigned long ric)
->  {
->         unsigned long rb,rs,prs,r;
->
-> @@ -239,7 +239,7 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
->  /*
->   * We use 128 set in radix mode and 256 set in hpt mode.
->   */
-> -static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
-> +static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
->  {
->         int set;
->
-> @@ -341,7 +341,7 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
->         asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
->
-> -static inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
-> +static __always_inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
->  {
->         int set;
->
-> @@ -381,8 +381,8 @@ static inline void __tlbiel_va_range(unsigned long start, unsigned long end,
->                 __tlbiel_va(addr, pid, ap, RIC_FLUSH_TLB);
->  }
->
-> -static inline void _tlbiel_va(unsigned long va, unsigned long pid,
-> -                             unsigned long psize, unsigned long ric)
-> +static __always_inline void _tlbiel_va(unsigned long va, unsigned long pid,
-> +                                      unsigned long psize, unsigned long ric)
->  {
->         unsigned long ap = mmu_get_ap(psize);
->
-> @@ -413,8 +413,8 @@ static inline void __tlbie_va_range(unsigned long start, unsigned long end,
->                 __tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
->  }
->
-> -static inline void _tlbie_va(unsigned long va, unsigned long pid,
-> -                             unsigned long psize, unsigned long ric)
-> +static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
-> +                                     unsigned long psize, unsigned long ric)
->  {
->         unsigned long ap = mmu_get_ap(psize);
->
-> @@ -424,7 +424,7 @@ static inline void _tlbie_va(unsigned long va, unsigned long pid,
->         asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
->
-> -static inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
-> +static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
->                               unsigned long psize, unsigned long ric)
->  {
->         unsigned long ap = mmu_get_ap(psize);
 > --
 > 2.7.4
 >
