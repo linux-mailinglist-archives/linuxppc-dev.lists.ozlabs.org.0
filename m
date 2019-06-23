@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8BB4FBF2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2019 15:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 632B44FC01
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2019 16:12:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45WtxB3GrYzDqWq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2019 23:46:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45WvWZ2TkrzDqWy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 00:12:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.80; helo=conssluserg-01.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=socionext.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="CM1bPRz2"; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="XT80z7eL"; 
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
+ [210.131.2.80])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45WttS2gc6zDqVK
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 23:43:41 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id a93so5383726pla.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 06:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=/fW8MyFzuj7NpV0pnJQQTOZMS5efeSM18R6T3FiLtho=;
- b=CM1bPRz2X0i/naPm2VcpNyRTqjDfDmxGu1UfLZ7nLPlfLW8ZZyD403D52hvjT9QI0L
- ckMK9prCK6WVB2/ET+hn33RHeVjyumjRuLSjUNccvdHDoDQ+tfMf6qvX/KAalbJA+sFI
- VMCIvraINSQGn+DzYkXYzvPXt2AUiwNalJE2TO8l/Tz3kleDI69cXhGuorYl9Z9/1Bew
- x6QW1/1X6oIsqhGRu0Kqi6R+G1j5CbtBVIbRoBKYo166e8DL5nvvVljZnRdnSPHt9tbN
- lq5ZbrGljK3zG/tdCjiVUMBPsoZ3yDQ/U+xsrNVmRydqSz36XI8HLgJznPJWMg4Hvl0x
- AOCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=/fW8MyFzuj7NpV0pnJQQTOZMS5efeSM18R6T3FiLtho=;
- b=nwqBrbugoZpC6d4LdgbpYwGWIyYd7NFIyWq7jFlleB7Mr6LgyJMDbDkcNk+mtmT41i
- +B7BzSNK35MRHRiqr8HSEGlmq1hcU3kt+b337xOm7kdW7/cz5knS1exrOk1EVwz8Tgbf
- uevFyl5Aa28VbrLWjNKNOHf6jp8FeBIUMb5/HWt4fIJNVKrS0hybsVZcGYk0O3++rNmd
- jnqS6ABRiGuPefUbHpKQcImsxcS9H5B/NzSjOHrdwU+9ZiFGc7fdhdEEe0MemNwfdl+n
- JXOfw/YYcSxxm7sKOB5sfFOADjCIaNPlKGUbQIw6DEm6zheNcMYcrMLNF3u8bq3CJJmw
- 9ZxA==
-X-Gm-Message-State: APjAAAVTw+/dy9TijJaSN8VJThPgClA/+XtFGPn6Yn7u5D7JAYoeJZaM
- hy5wI26Mfcmo8hDaoH0nKhA=
-X-Google-Smtp-Source: APXvYqxwBlq4iphRCZIKJytT6dxbOSH5x64lraSq1zOEZD9cvZ7O1/8tc/Wb4Clr4Nvi51PQZ/KLcw==
-X-Received: by 2002:a17:902:4222:: with SMTP id
- g31mr65518531pld.41.1561297415803; 
- Sun, 23 Jun 2019 06:43:35 -0700 (PDT)
-Received: from localhost ([1.129.243.157])
- by smtp.gmail.com with ESMTPSA id 1sm8238503pfe.102.2019.06.23.06.43.33
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 23 Jun 2019 06:43:34 -0700 (PDT)
-Date: Sun, 23 Jun 2019 23:42:59 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] powerpc/64s: Rename PPC_INVALIDATE_ERAT to
- PPC_ARCH_300_INVALIDATE_ERAT
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20190623104152.13173-1-npiggin@gmail.com>
- <20190623120332.GA7313@gate.crashing.org>
-In-Reply-To: <20190623120332.GA7313@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45WvSs43lxzDqV7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 00:10:04 +1000 (AEST)
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com
+ [209.85.222.53]) (authenticated)
+ by conssluserg-01.nifty.com with ESMTP id x5NE9i1G026136
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 23:09:44 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x5NE9i1G026136
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1561298985;
+ bh=7DrdzqGtK5Y7N0S66FZgjsMEvNefGAC5fLt9hgMKs4M=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=XT80z7eLGgOQnrgsK30BjntfvHfVOaknd7EyGUqr6EGIdXf8bWKkk6ZT0juw2Q4cj
+ 9kR3233maD9iRLPFQ1aaYRFEv1fc03KjZxLQicR4W8WsAf+YtwlBq5HSIWdNJs1wl0
+ +5W+O0qseaoSezdRdKbJ2HunH0XqmntmnRjMsHf12tSIRDiVSYgzUOu/BoVcb722rM
+ Q2u4JVp5eoPFGaYZxWOo/mjmpe1PMkgtYYzdI2u0GyKp0OqrVSEcigFXg9UfcUCUMn
+ EmGQmMSR0zo2sGtpF7wxRW0Pce/PB9x7rnIu9ooVR/+GEpfsRJxLCtqWhDMOKMN8YP
+ AN1DMRg4lyrGQ==
+X-Nifty-SrcIP: [209.85.222.53]
+Received: by mail-ua1-f53.google.com with SMTP id o2so4684929uae.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2019 07:09:44 -0700 (PDT)
+X-Gm-Message-State: APjAAAWGfkJGo/TYFI9Hg5y82xllRajEOdsQmmxr0Ggj4DFIo7ashrvw
+ gOUM/GYEIGInq+JKBgUP8BZxzn59tblSFKAcx40=
+X-Google-Smtp-Source: APXvYqwLqOxLA12mww6wVSFtva4zQ7F/DVpEIq5zBS5i1DRrlXlbYvKX+Wt0iogyjnmX8slY85KwVV+l5bvhf+llGUg=
+X-Received: by 2002:a9f:25e9:: with SMTP id 96mr65484522uaf.95.1561298983528; 
+ Sun, 23 Jun 2019 07:09:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1561297021.pyb7y0yjt7.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <1558444404-12254-1-git-send-email-yamada.masahiro@socionext.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Sun, 23 Jun 2019 23:09:07 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARoHtS0aqO9NCvwxAstJQxfeXhaWvh=1MQD3Wje8Pnmtw@mail.gmail.com>
+Message-ID: <CAK7LNARoHtS0aqO9NCvwxAstJQxfeXhaWvh=1MQD3Wje8Pnmtw@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc/mm: mark more tlb functions as __always_inline
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,28 +69,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+ Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool's on June 23, 2019 10:03 pm:
-> On Sun, Jun 23, 2019 at 08:41:51PM +1000, Nicholas Piggin wrote:
->> This makes it clear to the caller that it can only be used on POWER9
->> and later CPUs.
->=20
->> -#define PPC_INVALIDATE_ERAT	PPC_SLBIA(7)
->> +#define PPC_ARCH_300_INVALIDATE_ERAT	PPC_SLBIA(7)
->=20
-> The architecture version is 3.0 (or 3.0B), not "300".  This will work on
-> implementations of later architecture versions as well, so maybe the name
-> isn't so great anyway?
+On Tue, May 21, 2019 at 10:19 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
+>
+> With CONFIG_OPTIMIZE_INLINING enabled, Laura Abbott reported error
+> with gcc 9.1.1:
+>
+>   arch/powerpc/mm/book3s64/radix_tlb.c: In function '_tlbiel_pid':
+>   arch/powerpc/mm/book3s64/radix_tlb.c:104:2: warning: asm operand 3 probably doesn't match constraints
+>     104 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+>         |  ^~~
+>   arch/powerpc/mm/book3s64/radix_tlb.c:104:2: error: impossible constraint in 'asm'
+>
+> Fixing _tlbiel_pid() is enough to address the warning above, but I
+> inlined more functions to fix all potential issues.
+>
+> To meet the "i" (immediate) constraint for the asm operands, functions
+> propagating "ric" must be always inlined.
+>
+> Fixes: 9012d011660e ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
+> Reported-by: Laura Abbott <labbott@redhat.com>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
 
-Yeah... this is kernel convention for better or worse. ISA v3.0B
-feature support is called CPU_FTR_ARCH_300, and later architectures
-will advertise that support. For the most part we can use architected
-features (incompatible changes would require additional code).
+Ping.
+This missed the recent PR, but
+I believe this should be fixed.
 
-Thanks,
-Nick
-=
+Thanks.
+
+>
+> Changes in v2:
+>   - Do not split lines
+>
+>  arch/powerpc/mm/book3s64/hash_native.c |  2 +-
+>  arch/powerpc/mm/book3s64/radix_tlb.c   | 32 ++++++++++++++++----------------
+>  2 files changed, 17 insertions(+), 17 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+> index aaa28fd..c854151 100644
+> --- a/arch/powerpc/mm/book3s64/hash_native.c
+> +++ b/arch/powerpc/mm/book3s64/hash_native.c
+> @@ -60,7 +60,7 @@ static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
+>   * tlbiel instruction for hash, set invalidation
+>   * i.e., r=1 and is=01 or is=10 or is=11
+>   */
+> -static inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
+> +static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
+>                                         unsigned int pid,
+>                                         unsigned int ric, unsigned int prs)
+>  {
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index 4d84136..4d3dc10 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -29,7 +29,7 @@
+>   * tlbiel instruction for radix, set invalidation
+>   * i.e., r=1 and is=01 or is=10 or is=11
+>   */
+> -static inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
+> +static __always_inline void tlbiel_radix_set_isa300(unsigned int set, unsigned int is,
+>                                         unsigned int pid,
+>                                         unsigned int ric, unsigned int prs)
+>  {
+> @@ -150,8 +150,8 @@ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
+>         trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
+>  }
+>
+> -static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
+> -                               unsigned long ric)
+> +static __always_inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
+> +                                               unsigned long ric)
+>  {
+>         unsigned long rb,rs,prs,r;
+>
+> @@ -167,8 +167,8 @@ static inline void __tlbiel_lpid_guest(unsigned long lpid, int set,
+>  }
+>
+>
+> -static inline void __tlbiel_va(unsigned long va, unsigned long pid,
+> -                              unsigned long ap, unsigned long ric)
+> +static __always_inline void __tlbiel_va(unsigned long va, unsigned long pid,
+> +                                       unsigned long ap, unsigned long ric)
+>  {
+>         unsigned long rb,rs,prs,r;
+>
+> @@ -183,8 +183,8 @@ static inline void __tlbiel_va(unsigned long va, unsigned long pid,
+>         trace_tlbie(0, 1, rb, rs, ric, prs, r);
+>  }
+>
+> -static inline void __tlbie_va(unsigned long va, unsigned long pid,
+> -                             unsigned long ap, unsigned long ric)
+> +static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
+> +                                      unsigned long ap, unsigned long ric)
+>  {
+>         unsigned long rb,rs,prs,r;
+>
+> @@ -199,8 +199,8 @@ static inline void __tlbie_va(unsigned long va, unsigned long pid,
+>         trace_tlbie(0, 0, rb, rs, ric, prs, r);
+>  }
+>
+> -static inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
+> -                             unsigned long ap, unsigned long ric)
+> +static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
+> +                                           unsigned long ap, unsigned long ric)
+>  {
+>         unsigned long rb,rs,prs,r;
+>
+> @@ -239,7 +239,7 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
+>  /*
+>   * We use 128 set in radix mode and 256 set in hpt mode.
+>   */
+> -static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
+> +static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
+>  {
+>         int set;
+>
+> @@ -341,7 +341,7 @@ static inline void _tlbie_lpid(unsigned long lpid, unsigned long ric)
+>         asm volatile("eieio; tlbsync; ptesync": : :"memory");
+>  }
+>
+> -static inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
+> +static __always_inline void _tlbiel_lpid_guest(unsigned long lpid, unsigned long ric)
+>  {
+>         int set;
+>
+> @@ -381,8 +381,8 @@ static inline void __tlbiel_va_range(unsigned long start, unsigned long end,
+>                 __tlbiel_va(addr, pid, ap, RIC_FLUSH_TLB);
+>  }
+>
+> -static inline void _tlbiel_va(unsigned long va, unsigned long pid,
+> -                             unsigned long psize, unsigned long ric)
+> +static __always_inline void _tlbiel_va(unsigned long va, unsigned long pid,
+> +                                      unsigned long psize, unsigned long ric)
+>  {
+>         unsigned long ap = mmu_get_ap(psize);
+>
+> @@ -413,8 +413,8 @@ static inline void __tlbie_va_range(unsigned long start, unsigned long end,
+>                 __tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
+>  }
+>
+> -static inline void _tlbie_va(unsigned long va, unsigned long pid,
+> -                             unsigned long psize, unsigned long ric)
+> +static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
+> +                                     unsigned long psize, unsigned long ric)
+>  {
+>         unsigned long ap = mmu_get_ap(psize);
+>
+> @@ -424,7 +424,7 @@ static inline void _tlbie_va(unsigned long va, unsigned long pid,
+>         asm volatile("eieio; tlbsync; ptesync": : :"memory");
+>  }
+>
+> -static inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
+> +static __always_inline void _tlbie_lpid_va(unsigned long va, unsigned long lpid,
+>                               unsigned long psize, unsigned long ric)
+>  {
+>         unsigned long ap = mmu_get_ap(psize);
+> --
+> 2.7.4
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
