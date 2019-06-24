@@ -2,76 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB9351979
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 19:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0E51DC9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 23:59:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Xblp0KtczDqRH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 03:25:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45XjrV2WmSzDqTY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 07:59:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=imre.deak@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Xbjs1PN1zDqR1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 03:23:44 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5OHIJnc121033
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 13:23:41 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tb2t687ta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 13:23:41 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5OHFsOJ011069
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 17:23:41 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 2t9by6fads-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 17:23:41 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5OHNewX48038308
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Jun 2019 17:23:40 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B0377AC05F;
- Mon, 24 Jun 2019 17:23:40 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9527DAC05B;
- Mon, 24 Jun 2019 17:23:40 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.236])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 24 Jun 2019 17:23:40 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: mmc <mmc@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/rtas: retry when cpu offline races with
- suspend/migration
-In-Reply-To: <f3b54ef4394bdbf4887d2185bb951c80@linux.vnet.ibm.com>
-References: <20190621060518.29616-1-nathanl@linux.ibm.com>
- <f3b54ef4394bdbf4887d2185bb951c80@linux.vnet.ibm.com>
-Date: Mon, 24 Jun 2019 12:23:40 -0500
-Message-ID: <87h88eucbn.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Xbzs2qYDzDqRX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 03:35:39 +1000 (AEST)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2019 10:35:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,412,1557212400"; d="scan'208";a="187988905"
+Received: from ideak-desk.fi.intel.com ([10.237.72.204])
+ by fmsmga002.fm.intel.com with ESMTP; 24 Jun 2019 10:35:33 -0700
+Date: Mon, 24 Jun 2019 20:35:33 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH v4 1/4] lib/scatterlist: Fix mapping iterator when
+ sg->offset is greater than PAGE_SIZE
+Message-ID: <20190624173533.GA809@ideak-desk.fi.intel.com>
+References: <cover.1560805614.git.christophe.leroy@c-s.fr>
+ <f28c6b0e2f9510f42ca934f19c4315084e668c21.1560805614.git.christophe.leroy@c-s.fr>
+ <20190620060221.q4pbsqzsza3pxs42@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-24_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=997 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906240137
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190620060221.q4pbsqzsza3pxs42@gondor.apana.org.au>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailman-Approved-At: Tue, 25 Jun 2019 07:57:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,27 +56,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- julietk@linux.ibm.com
+Reply-To: imre.deak@intel.com
+Cc: horia.geanta@nxp.com, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mingming,
+Hi,
 
-mmc <mmc@linux.vnet.ibm.com> writes:
-> On 2019-06-21 00:05, Nathan Lynch wrote:
->> So return -EAGAIN instead of -EBUSY when this race is
->> encountered. Additionally: logging this event is still appropriate but
->> use pr_info instead of pr_err; and remove use of unlikely() while here
->> as this is not a hot path at all.
->
-> Looks good, since it's not a hot path anyway, so unlikely() should 
-> benefit from optimize compiler path, and should stay. No?
+On Thu, Jun 20, 2019 at 02:02:21PM +0800, Herbert Xu wrote:
+> On Mon, Jun 17, 2019 at 09:15:02PM +0000, Christophe Leroy wrote:
+> > All mapping iterator logic is based on the assumption that sg->offset
+> > is always lower than PAGE_SIZE.
+> > 
+> > But there are situations where sg->offset is such that the SG item
+> > is on the second page.
 
-The latency of this path in rtas_ibm_suspend_me() in the best case is
-around 2-3 seconds.
+could you explain how sg->offset becomes >= PAGE_SIZE?
 
-So I think not -- this is such a heavyweight and relatively
-seldom-executed path that the unlikely() cannot yield any discernible
-performance benefit, and its presence imposes a readability cost.
+--Imre
+
+
+> > In that case sg_copy_to_buffer() fails
+> > properly copying the data into the buffer. One of the reason is
+> > that the data will be outside the kmapped area used to access that
+> > data.
+> > 
+> > This patch fixes the issue by adjusting the mapping iterator
+> > offset and pgoffset fields such that offset is always lower than
+> > PAGE_SIZE.
+> > 
+> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> > Fixes: 4225fc8555a9 ("lib/scatterlist: use page iterator in the mapping iterator")
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  lib/scatterlist.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> Good catch.
+> 
+> > @@ -686,7 +686,12 @@ static bool sg_miter_get_next_page(struct sg_mapping_iter *miter)
+> >  		sg = miter->piter.sg;
+> >  		pgoffset = miter->piter.sg_pgoffset;
+> >  
+> > -		miter->__offset = pgoffset ? 0 : sg->offset;
+> > +		offset = pgoffset ? 0 : sg->offset;
+> > +		while (offset >= PAGE_SIZE) {
+> > +			miter->piter.sg_pgoffset = ++pgoffset;
+> > +			offset -= PAGE_SIZE;
+> > +		}
+> 
+> How about
+> 
+> 	miter->piter.sg_pgoffset += offset >> PAGE_SHIFT;
+> 	offset &= PAGE_SIZE - 1;
+> 
+> Thanks,
+> -- 
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
