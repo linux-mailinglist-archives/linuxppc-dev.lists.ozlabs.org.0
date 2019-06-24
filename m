@@ -1,52 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4841E518AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 18:28:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45XZV94LSfzDqSC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 02:28:33 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83FB51907
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2019 18:52:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Xb1d6YH4zDqPQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 02:52:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=178.33.111.180; helo=1.mo173.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 1797 seconds by postgrey-1.36 at bilbo;
- Tue, 25 Jun 2019 02:26:33 AEST
-Received: from 1.mo173.mail-out.ovh.net (1.mo173.mail-out.ovh.net
- [178.33.111.180])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mmc@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45XZRs6mP4zDqS3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 02:26:29 +1000 (AEST)
-Received: from player763.ha.ovh.net (unknown [10.108.54.217])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id 60C2910E915
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 17:50:31 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player763.ha.ovh.net (Postfix) with ESMTPSA id 7742B73131FF;
- Mon, 24 Jun 2019 15:50:26 +0000 (UTC)
-Date: Mon, 24 Jun 2019 17:50:25 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH] ocxl: Fix concurrent AFU open and device removal
-Message-ID: <20190624175025.35984b89@bahia.lan>
-In-Reply-To: <ea1295fe-d8ad-1e5f-54f7-a72a7149c5b7@linux.ibm.com>
-References: <20190624144148.32022-1-fbarrat@linux.ibm.com>
- <20190624172452.7e217596@bahia.lan>
- <ea1295fe-d8ad-1e5f-54f7-a72a7149c5b7@linux.ibm.com>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45XZzj4rMBzDqBW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 02:50:38 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5OGmXkJ078750
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 12:50:34 -0400
+Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tb1qda72x-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 12:50:34 -0400
+Received: from localhost
+ by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <mmc@linux.vnet.ibm.com>;
+ Mon, 24 Jun 2019 17:50:33 +0100
+Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
+ by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 24 Jun 2019 17:50:30 +0100
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5OGoT9352167054
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Jun 2019 16:50:29 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 459D17805C;
+ Mon, 24 Jun 2019 16:50:29 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1956E7805E;
+ Mon, 24 Jun 2019 16:50:29 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.16.170.189])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Jun 2019 16:50:29 +0000 (GMT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Ovh-Tracer-Id: 17385583412179081573
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddvgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Mon, 24 Jun 2019 10:52:18 -0600
+From: mmc <mmc@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/rtas: retry when cpu offline races with
+ suspend/migration
+In-Reply-To: <20190621060518.29616-1-nathanl@linux.ibm.com>
+References: <20190621060518.29616-1-nathanl@linux.ibm.com>
+X-Sender: mmc@linux.vnet.ibm.com
+User-Agent: Roundcube Webmail/1.0.1
+X-TM-AS-GCONF: 00
+x-cbid: 19062416-0036-0000-0000-00000ACF3FA4
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011321; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01222678; UDB=6.00643374; IPR=6.01003838; 
+ MB=3.00027447; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-24 16:50:32
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062416-0037-0000-0000-00004C570B1C
+Message-Id: <f3b54ef4394bdbf4887d2185bb951c80@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-24_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906240133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,158 +95,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clombard@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, alastair@au1.ibm.com,
- andrew.donnellan@au1.ibm.com
+Cc: ego@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ julietk@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 24 Jun 2019 17:39:26 +0200
-Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+On 2019-06-21 00:05, Nathan Lynch wrote:
+> The protocol for suspending or migrating an LPAR requires all present
+> processor threads to enter H_JOIN. So if we have threads offline, we
+> have to temporarily bring them up. This can race with administrator
+> actions such as SMT state changes. As of dfd718a2ed1f ("powerpc/rtas:
+> Fix a potential race between CPU-Offline & Migration"),
+> rtas_ibm_suspend_me() accounts for this, but errors out with -EBUSY
+> for what almost certainly is a transient condition in any reasonable
+> scenario.
+> 
+> Callers of rtas_ibm_suspend_me() already retry when -EAGAIN is
+> returned, and it is typical during a migration for that to happen
+> repeatedly for several minutes polling the H_VASI_STATE hcall result
+> before proceeding to the next stage.
+> 
+> So return -EAGAIN instead of -EBUSY when this race is
+> encountered. Additionally: logging this event is still appropriate but
+> use pr_info instead of pr_err; and remove use of unlikely() while here
+> as this is not a hot path at all.
+> 
 
-> Le 24/06/2019 =C3=A0 17:24, Greg Kurz a =C3=A9crit=C2=A0:
-> > On Mon, 24 Jun 2019 16:41:48 +0200
-> > Frederic Barrat <fbarrat@linux.ibm.com> wrote:
-> >  =20
-> >> If an ocxl device is unbound through sysfs at the same time its AFU is
-> >> being opened by a user process, the open code may dereference freed
-> >> stuctures, which can lead to kernel oops messages. You'd have to hit a
-> >> tiny time window, but it's possible. It's fairly easy to test by
-> >> making the time window bigger artificially.
-> >>
-> >> Fix it with a combination of 2 changes:
-> >> - when an AFU device is found in the IDR by looking for the device
-> >> minor number, we should hold a reference on the device until after the
-> >> context is allocated. A reference on the AFU structure is kept when
-> >> the context is allocated, so we can release the reference on the
-> >> device after the context allocation.
-> >> - with the fix above, there's still another even tinier window,
-> >> between the time the AFU device is found in the IDR and the reference
-> >> on the device is taken. We can fix this one by removing the IDR entry
-> >> earlier, when the device setup is removed, instead of waiting for the
-> >> 'release' device callback. With proper locking around the IDR.
-> >>
-> >> Fixes: 75ca758adbaf ("ocxl: Create a clear delineation between ocxl ba=
-ckend & frontend")
-> >> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> >> ---
-> >> mpe: this fixes a commit merged in v5.2-rc1. It's late, and I don't th=
-ink it's that important. If it's for the next merge window, I would add:
-> >> Cc: stable@vger.kernel.org      # v5.2
-> >>
-> >>
-> >> drivers/misc/ocxl/file.c | 23 +++++++++++------------
-> >>   1 file changed, 11 insertions(+), 12 deletions(-)
-> >>
-> >> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-> >> index 2870c25da166..4d1b44de1492 100644
-> >> --- a/drivers/misc/ocxl/file.c
-> >> +++ b/drivers/misc/ocxl/file.c
-> >> @@ -18,18 +18,15 @@ static struct class *ocxl_class;
-> >>   static struct mutex minors_idr_lock;
-> >>   static struct idr minors_idr;
-> >>  =20
-> >> -static struct ocxl_file_info *find_file_info(dev_t devno)
-> >> +static struct ocxl_file_info *find_and_get_file_info(dev_t devno)
-> >>   {
-> >>   	struct ocxl_file_info *info;
-> >>  =20
-> >> -	/*
-> >> -	 * We don't declare an RCU critical section here, as our AFU
-> >> -	 * is protected by a reference counter on the device. By the time the
-> >> -	 * info reference is removed from the idr, the ref count of
-> >> -	 * the device is already at 0, so no user API will access that AFU a=
-nd
-> >> -	 * this function can't return it.
-> >> -	 */
-> >> +	mutex_lock(&minors_idr_lock);
-> >>   	info =3D idr_find(&minors_idr, MINOR(devno));
-> >> +	if (info)
-> >> +		get_device(&info->dev);
-> >> +	mutex_unlock(&minors_idr_lock);
-> >>   	return info;
-> >>   }
-> >>  =20
-> >> @@ -58,14 +55,16 @@ static int afu_open(struct inode *inode, struct fi=
-le *file)
-> >>  =20
-> >>   	pr_debug("%s for device %x\n", __func__, inode->i_rdev);
-> >>  =20
-> >> -	info =3D find_file_info(inode->i_rdev);
-> >> +	info =3D find_and_get_file_info(inode->i_rdev);
-> >>   	if (!info)
-> >>   		return -ENODEV;
-> >>  =20
-> >>   	rc =3D ocxl_context_alloc(&ctx, info->afu, inode->i_mapping);
-> >> -	if (rc)
-> >> +	if (rc) {
-> >> +		put_device(&info->dev); =20
-> >=20
-> > You could have a single call site for put_device() since it's
-> > needed for both branches. No big deal. =20
->=20
->=20
-> Agreed. Will fix if I end up respinning, but won't if it's the only=20
-> complaint :-)
->=20
->=20
->=20
-> >>   		return rc;
-> >> -
-> >> +	}
-> >> +	put_device(&info->dev);
-> >>   	file->private_data =3D ctx;
-> >>   	return 0;
-> >>   }
-> >> @@ -487,7 +486,6 @@ static void info_release(struct device *dev)
-> >>   {
-> >>   	struct ocxl_file_info *info =3D container_of(dev, struct ocxl_file_=
-info, dev);
-> >>  =20
-> >> -	free_minor(info);
-> >>   	ocxl_afu_put(info->afu);
-> >>   	kfree(info);
-> >>   }
-> >> @@ -577,6 +575,7 @@ void ocxl_file_unregister_afu(struct ocxl_afu *afu)
-> >>  =20
-> >>   	ocxl_file_make_invisible(info);
-> >>   	ocxl_sysfs_unregister_afu(info);
-> >> +	free_minor(info); =20
-> >=20
-> > Since the IDR entry is added by ocxl_file_register_afu(), it seems to m=
-ake
-> > sense to undo that in ocxl_file_unregister_afu(). Out of curiosity, was=
- there
-> > any historical reason to do this in info_release() in the first place ?=
- =20
->=20
->=20
-> Yeah, it makes a lot of sense to remove the IDR entry in=20
-> ocxl_file_unregister_afu(), that's where we undo the device. I wish I=20
-> had noticed during the code reviews.
-> I don't think there was any good reason to have it in info_release() in=20
-> the first place. I remember the code went through many iterations to get=
-=20
-> the reference counting on the AFU structure and device done correctly,=20
-> but we let that one slip.
->=20
-> I now think the pre-5.2 ocxl code was also exposed to the 2nd window=20
-> mentioned in the commit log (but the first window is new with the=20
-> refactoring introduced in 5.2-rc1).
->=20
+Looks good, since it's not a hot path anyway, so unlikely() should 
+benefit from optimize compiler path, and should stay. No?
 
-This calls for two separate patches then IMHO.
-
->    Fred
->=20
->=20
->=20
-> >=20
-> > Reviewed-by: Greg Kurz <groug@kaod.org>
-> >  =20
-> >>   	device_unregister(&info->dev);
-> >>   }
-> >>    =20
-> >  =20
->=20
+Mingming
+> Fixes: dfd718a2ed1f ("powerpc/rtas: Fix a potential race between
+> CPU-Offline & Migration")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/rtas.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index fbc676160adf..9b4d2a2ffb4f 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -984,10 +984,9 @@ int rtas_ibm_suspend_me(u64 handle)
+>  	cpu_hotplug_disable();
+> 
+>  	/* Check if we raced with a CPU-Offline Operation */
+> -	if (unlikely(!cpumask_equal(cpu_present_mask, cpu_online_mask))) {
+> -		pr_err("%s: Raced against a concurrent CPU-Offline\n",
+> -		       __func__);
+> -		atomic_set(&data.error, -EBUSY);
+> +	if (!cpumask_equal(cpu_present_mask, cpu_online_mask)) {
+> +		pr_info("%s: Raced against a concurrent CPU-Offline\n", __func__);
+> +		atomic_set(&data.error, -EAGAIN);
+>  		goto out_hotplug_enable;
+>  	}
 
