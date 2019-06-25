@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7396155C51
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 01:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE81E55C52
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 01:32:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YMq36WnczDqTy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 09:30:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YMrz6DYrzDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 09:32:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
@@ -17,27 +17,27 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=os.amperecomputing.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=amperemail.onmicrosoft.com
- header.i=@amperemail.onmicrosoft.com header.b="tmug3Ut7"; 
+ header.i=@amperemail.onmicrosoft.com header.b="tl5kLG+F"; 
  dkim-atps=neutral
 Received: from NAM05-CO1-obe.outbound.protection.outlook.com
  (mail-eopbgr720105.outbound.protection.outlook.com [40.107.72.105])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YLTN4RfYzDqWf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 08:30:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YLTP35qjzDqWg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 08:30:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=amperemail.onmicrosoft.com; s=selector2-amperemail-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jbppUUAYT2AfIAmhAET+jY1XsjbiX6rRh2UHg2M9od0=;
- b=tmug3Ut725wpACc8ydAqEn/tFctxP9ckcgxYgKTDsO92sz7FdLTiIDzgtbCIkboN/JZ3tJaaJ5yIDahgJjqnJHpGJS95sWIzdPoGaaD1tXTIRrhqIbrJ49W7BcCdKiaRuMZuzm02YGl3B3WmSTUfXpn2o2b1H6EAJNX558j1hDY=
+ bh=Vt+HabkNi3oBlcwR9P0Dy5I9Fh4hEa8N26FlS1Wo8xA=;
+ b=tl5kLG+F/ZxeUncNApafR3A3hnieZCjtVi/r2CtMDWWD6Intf7mN7xpK1IbFnNVtPJKWLeD4x/s2qX1judL+pAK12YEoaZhKjyK5LvIs7ykvDRNNYWDHAzE3LcE+b82OaA2mameLRqNPDkPcPSGyexhDrpGK9x5b6ER51el9iDk=
 Received: from DM6PR01MB4090.prod.exchangelabs.com (20.176.104.151) by
  DM6PR01MB5308.prod.exchangelabs.com (20.177.220.85) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.16; Tue, 25 Jun 2019 22:30:29 +0000
+ 15.20.2008.16; Tue, 25 Jun 2019 22:30:32 +0000
 Received: from DM6PR01MB4090.prod.exchangelabs.com
  ([fe80::f0f2:16e1:1db7:ccb3]) by DM6PR01MB4090.prod.exchangelabs.com
  ([fe80::f0f2:16e1:1db7:ccb3%7]) with mapi id 15.20.2008.017; Tue, 25 Jun 2019
- 22:30:29 +0000
+ 22:30:32 +0000
 From: Hoan Tran OS <hoan@os.amperecomputing.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <will.deacon@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal
@@ -51,11 +51,11 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <hpa@zytor.com>, "David S . Miller" <davem@davemloft.net>, Heiko Carstens
  <heiko.carstens@de.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian
  Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
-Thread-Topic: [PATCH 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
-Thread-Index: AQHVK6WX71HRsQts10W3HaW79T6UPw==
-Date: Tue, 25 Jun 2019 22:30:29 +0000
-Message-ID: <1561501810-25163-4-git-send-email-Hoan@os.amperecomputing.com>
+Subject: [PATCH 4/5] sparc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Topic: [PATCH 4/5] sparc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Index: AQHVK6WZI7UguJlWOkuVRwnfzmC1hg==
+Date: Tue, 25 Jun 2019 22:30:31 +0000
+Message-ID: <1561501810-25163-5-git-send-email-Hoan@os.amperecomputing.com>
 References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
 In-Reply-To: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
 Accept-Language: en-US
@@ -71,29 +71,29 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.7.4
 x-originating-ip: [4.28.12.214]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 16a4bc1b-35a8-4854-ac90-08d6f9bcba32
+x-ms-office365-filtering-correlation-id: aaa15bc7-af34-4434-1e22-08d6f9bcbb9a
 x-microsoft-antispam: BCL:0; PCL:0;
  RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);
  SRVR:DM6PR01MB5308; 
 x-ms-traffictypediagnostic: DM6PR01MB5308:
-x-microsoft-antispam-prvs: <DM6PR01MB530883287863A748E182FE2DF1E30@DM6PR01MB5308.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3383;
+x-microsoft-antispam-prvs: <DM6PR01MB53087B96404675BB68A3EAC6F1E30@DM6PR01MB5308.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
 x-forefront-prvs: 0079056367
 x-forefront-antispam-report: SFV:NSPM;
- SFS:(10019020)(376002)(366004)(136003)(39840400004)(346002)(396003)(199004)(189003)(256004)(4326008)(53936002)(14454004)(4744005)(7736002)(52116002)(107886003)(50226002)(6486002)(81156014)(81166006)(64756008)(8936002)(66446008)(8676002)(6436002)(110136005)(26005)(5660300002)(99286004)(66946007)(73956011)(6506007)(76176011)(186003)(386003)(102836004)(66066001)(2906002)(446003)(305945005)(54906003)(2616005)(66556008)(66476007)(11346002)(316002)(476003)(6512007)(1511001)(478600001)(71190400001)(3846002)(71200400001)(7416002)(6116002)(86362001)(25786009)(68736007)(486006)(921003)(1121003);
+ SFS:(10019020)(979002)(376002)(366004)(136003)(39840400004)(346002)(396003)(199004)(189003)(256004)(4326008)(53936002)(14454004)(4744005)(7736002)(52116002)(107886003)(50226002)(6486002)(81156014)(81166006)(64756008)(8936002)(66446008)(8676002)(6436002)(110136005)(26005)(5660300002)(99286004)(66946007)(73956011)(6506007)(76176011)(186003)(386003)(102836004)(66066001)(2906002)(446003)(305945005)(54906003)(2616005)(66556008)(66476007)(11346002)(316002)(476003)(6512007)(1511001)(478600001)(71190400001)(3846002)(71200400001)(7416002)(6116002)(86362001)(25786009)(68736007)(486006)(921003)(1121003)(969003)(989001)(999001)(1009001)(1019001);
  DIR:OUT; SFP:1102; SCL:1; SRVR:DM6PR01MB5308;
  H:DM6PR01MB4090.prod.exchangelabs.com; FPR:; SPF:None; LANG:en;
  PTR:InfoNoRecords; A:0; MX:1; 
 received-spf: None (protection.outlook.com: os.amperecomputing.com does not
  designate permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: XGqFPyOpimu48tsAkwftSFmED4Px3bP5sV6qJN03m59v8RJn4jMS79/UnHNsZeW4EXKFHP9t9N+pO+r8hq1nOpwO+WsLfsVY6RolBd3Cpcn9CjAB4ohVNIM4ZlzUEtSrjp4K9fW+iSF2OgNm5h9iq2pmulMeD1GBeEcegNJMnJ6iGnz9byQWXpF+vOX358HRhwkj+yWXTeA/83kixGMdJK7ShMTo5eVkt0v6EdFm9PAnbnO8dtaVUBoOI3xYADSwKBqP7o0LCsH7fwuITmByyr0IXdx2VcNH49Qise8qi34VIhHl1acNnK0NR3WLMSQYAw50479HPnNcofF1HdIxTF3PSxhQgVrCRtXFYua39kh9rt6q4nzbW0cLdbS5aK8jcElQvH1KIs76zUukiOEf60CkY/O1mWJSvR17VGjDTF8=
+x-microsoft-antispam-message-info: xVN5X6GfoXI1AkvvztOtBh7q6qU8oXqwX6wXsFD1IQbj8Xwy1xEjVA4M3plf5iY3DguDYrwKS4Xcq79OZqyY9jJgMYAYDHziu82KSrPfw3Ey9B6F/Fghb8h8JPug+UTQyA+w+OnQj2SywtieJemv/ysVNDXTV6nggE/hZjCB8SWlInzpPjcwOQwTUbYnNmf6+bBUxZW5/fpvJzMDrE4przHy+UoJKKynh47q+imiV3KtL8YSm7ejcQgcTW4aIS7yOtZYEO/T97VLVi6Yy8LWBD9OiuEzpA7EM8SPy5unRNy+ARI0SuvxExAHJxjHiLhYMjZ7VDaOokWPgcqBc2UBceqNlx1Nc1xJRFlCtdyXQTuELtoRV4h0bpiRqN2J/6K9+tsoDLPlRIWpHQiuqByrZFV7DwHUMddAvXB7PMcw8y4=
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16a4bc1b-35a8-4854-ac90-08d6f9bcba32
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jun 2019 22:30:29.6312 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: aaa15bc7-af34-4434-1e22-08d6f9bcbb9a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jun 2019 22:30:31.9689 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
@@ -126,16 +126,18 @@ Sender: "Linuxppc-dev"
 
 VGhpcyBwYXRjaCByZW1vdmVzIENPTkZJR19OT0RFU19TUEFOX09USEVSX05PREVTIGFzIGl0J3MN
 CmVuYWJsZWQgYnkgZGVmYXVsdCB3aXRoIE5VTUEuDQoNClNpZ25lZC1vZmYtYnk6IEhvYW4gVHJh
-biA8SG9hbkBvcy5hbXBlcmVjb21wdXRpbmcuY29tPg0KLS0tDQogYXJjaC94ODYvS2NvbmZpZyB8
-IDkgLS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDkgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1n
-aXQgYS9hcmNoL3g4Ni9LY29uZmlnIGIvYXJjaC94ODYvS2NvbmZpZw0KaW5kZXggMmJiYmQ0ZC4u
-ZmE5MzE4YyAxMDA2NDQNCi0tLSBhL2FyY2gveDg2L0tjb25maWcNCisrKyBiL2FyY2gveDg2L0tj
-b25maWcNCkBAIC0xNTY3LDE1ICsxNTY3LDYgQEAgY29uZmlnIFg4Nl82NF9BQ1BJX05VTUENCiAJ
-LS0taGVscC0tLQ0KIAkgIEVuYWJsZSBBQ1BJIFNSQVQgYmFzZWQgbm9kZSB0b3BvbG9neSBkZXRl
-Y3Rpb24uDQogDQotIyBTb21lIE5VTUEgbm9kZXMgaGF2ZSBtZW1vcnkgcmFuZ2VzIHRoYXQgc3Bh
-bg0KLSMgb3RoZXIgbm9kZXMuICBFdmVuIHRob3VnaCBhIHBmbiBpcyB2YWxpZCBhbmQNCi0jIGJl
-dHdlZW4gYSBub2RlJ3Mgc3RhcnQgYW5kIGVuZCBwZm5zLCBpdCBtYXkgbm90DQotIyByZXNpZGUg
-b24gdGhhdCBub2RlLiAgU2VlIG1lbW1hcF9pbml0X3pvbmUoKQ0KLSMgZm9yIGRldGFpbHMuDQot
-Y29uZmlnIE5PREVTX1NQQU5fT1RIRVJfTk9ERVMNCi0JZGVmX2Jvb2wgeQ0KLQlkZXBlbmRzIG9u
-IFg4Nl82NF9BQ1BJX05VTUENCi0NCiBjb25maWcgTlVNQV9FTVUNCiAJYm9vbCAiTlVNQSBlbXVs
-YXRpb24iDQogCWRlcGVuZHMgb24gTlVNQQ0KLS0gDQoyLjcuNA0KDQo=
+biA8SG9hbkBvcy5hbXBlcmVjb21wdXRpbmcuY29tPg0KLS0tDQogYXJjaC9zcGFyYy9LY29uZmln
+IHwgOSAtLS0tLS0tLS0NCiAxIGZpbGUgY2hhbmdlZCwgOSBkZWxldGlvbnMoLSkNCg0KZGlmZiAt
+LWdpdCBhL2FyY2gvc3BhcmMvS2NvbmZpZyBiL2FyY2gvc3BhcmMvS2NvbmZpZw0KaW5kZXggMjZh
+YjZmNS4uMTM0NDllYSAxMDA2NDQNCi0tLSBhL2FyY2gvc3BhcmMvS2NvbmZpZw0KKysrIGIvYXJj
+aC9zcGFyYy9LY29uZmlnDQpAQCAtMjkxLDE1ICsyOTEsNiBAQCBjb25maWcgTk9ERVNfU0hJRlQN
+CiAJICBTcGVjaWZ5IHRoZSBtYXhpbXVtIG51bWJlciBvZiBOVU1BIE5vZGVzIGF2YWlsYWJsZSBv
+biB0aGUgdGFyZ2V0DQogCSAgc3lzdGVtLiAgSW5jcmVhc2VzIG1lbW9yeSByZXNlcnZlZCB0byBh
+Y2NvbW1vZGF0ZSB2YXJpb3VzIHRhYmxlcy4NCiANCi0jIFNvbWUgTlVNQSBub2RlcyBoYXZlIG1l
+bW9yeSByYW5nZXMgdGhhdCBzcGFuDQotIyBvdGhlciBub2Rlcy4gIEV2ZW4gdGhvdWdoIGEgcGZu
+IGlzIHZhbGlkIGFuZA0KLSMgYmV0d2VlbiBhIG5vZGUncyBzdGFydCBhbmQgZW5kIHBmbnMsIGl0
+IG1heSBub3QNCi0jIHJlc2lkZSBvbiB0aGF0IG5vZGUuICBTZWUgbWVtbWFwX2luaXRfem9uZSgp
+DQotIyBmb3IgZGV0YWlscy4NCi1jb25maWcgTk9ERVNfU1BBTl9PVEhFUl9OT0RFUw0KLQlkZWZf
+Ym9vbCB5DQotCWRlcGVuZHMgb24gTkVFRF9NVUxUSVBMRV9OT0RFUw0KLQ0KIGNvbmZpZyBBUkNI
+X1NFTEVDVF9NRU1PUllfTU9ERUwNCiAJZGVmX2Jvb2wgeSBpZiBTUEFSQzY0DQogDQotLSANCjIu
+Ny40DQoNCg==
