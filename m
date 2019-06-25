@@ -2,86 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464D252697
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 10:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2A8526F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 10:43:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45XznX66LYzDqQB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 18:28:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y07D505czDqNX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 18:43:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.46.122; helo=8.mo173.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 609 seconds by postgrey-1.36 at bilbo;
+ Tue, 25 Jun 2019 18:41:57 AEST
+Received: from 8.mo173.mail-out.ovh.net (8.mo173.mail-out.ovh.net
+ [46.105.46.122])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Xzg31VNwzDqKt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 18:22:38 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5P8MVN8122801
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 04:22:35 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tbe3fcnt1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 04:22:34 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 25 Jun 2019 09:22:09 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 25 Jun 2019 09:22:07 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5P8M5Px33947942
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Jun 2019 08:22:05 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A7AE64C046;
- Tue, 25 Jun 2019 08:22:05 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73F424C050;
- Tue, 25 Jun 2019 08:22:05 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.22.251])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Jun 2019 08:22:05 +0000 (GMT)
-Subject: Re: [PATCH] ocxl: Fix concurrent AFU open and device removal
-To: Greg Kurz <groug@kaod.org>
-References: <20190624144148.32022-1-fbarrat@linux.ibm.com>
- <20190624172452.7e217596@bahia.lan>
- <ea1295fe-d8ad-1e5f-54f7-a72a7149c5b7@linux.ibm.com>
- <20190624175025.35984b89@bahia.lan>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 25 Jun 2019 10:22:05 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y05K6Vy4zDqDf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 18:41:53 +1000 (AEST)
+Received: from player158.ha.ovh.net (unknown [10.109.143.18])
+ by mo173.mail-out.ovh.net (Postfix) with ESMTP id DCE9110A816
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 10:26:15 +0200 (CEST)
+Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
+ (Authenticated sender: clg@kaod.org)
+ by player158.ha.ovh.net (Postfix) with ESMTPSA id 6000D71B0092;
+ Tue, 25 Jun 2019 08:26:05 +0000 (UTC)
+Subject: Re: [PATCH 1/4] powerpc/powernv: remove the unused pnv_pci_set_p2p
+ function
+To: Christoph Hellwig <hch@lst.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20190625081512.16704-1-hch@lst.de>
+ <20190625081512.16704-2-hch@lst.de>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <113fb518-0f5a-8ced-8391-abe48869a0cb@kaod.org>
+Date: Tue, 25 Jun 2019 10:26:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190624175025.35984b89@bahia.lan>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-MC
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062508-0016-0000-0000-0000028C2073
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062508-0017-0000-0000-000032E9911E
-Message-Id: <a05c3118-a7e0-de14-bdff-9c780fa717dd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-25_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906250069
+In-Reply-To: <20190625081512.16704-2-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 15755561823041391383
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudeggddtfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,164 +62,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clombard@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, alastair@au1.ibm.com,
- andrew.donnellan@au1.ibm.com
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Christoph,
 
-
-Le 24/06/2019 à 17:50, Greg Kurz a écrit :
-> On Mon, 24 Jun 2019 17:39:26 +0200
-> Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+On 25/06/2019 10:15, Christoph Hellwig wrote:
+> This function has never been used anywhere in the kernel tree since it
+> was added to the tree.  We also now have proper PCIe P2P APIs in the core
+> kernel, and any new P2P support should be using those.
 > 
->> Le 24/06/2019 à 17:24, Greg Kurz a écrit :
->>> On Mon, 24 Jun 2019 16:41:48 +0200
->>> Frederic Barrat <fbarrat@linux.ibm.com> wrote:
->>>    
->>>> If an ocxl device is unbound through sysfs at the same time its AFU is
->>>> being opened by a user process, the open code may dereference freed
->>>> stuctures, which can lead to kernel oops messages. You'd have to hit a
->>>> tiny time window, but it's possible. It's fairly easy to test by
->>>> making the time window bigger artificially.
->>>>
->>>> Fix it with a combination of 2 changes:
->>>> - when an AFU device is found in the IDR by looking for the device
->>>> minor number, we should hold a reference on the device until after the
->>>> context is allocated. A reference on the AFU structure is kept when
->>>> the context is allocated, so we can release the reference on the
->>>> device after the context allocation.
->>>> - with the fix above, there's still another even tinier window,
->>>> between the time the AFU device is found in the IDR and the reference
->>>> on the device is taken. We can fix this one by removing the IDR entry
->>>> earlier, when the device setup is removed, instead of waiting for the
->>>> 'release' device callback. With proper locking around the IDR.
->>>>
->>>> Fixes: 75ca758adbaf ("ocxl: Create a clear delineation between ocxl backend & frontend")
->>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->>>> ---
->>>> mpe: this fixes a commit merged in v5.2-rc1. It's late, and I don't think it's that important. If it's for the next merge window, I would add:
->>>> Cc: stable@vger.kernel.org      # v5.2
->>>>
->>>>
->>>> drivers/misc/ocxl/file.c | 23 +++++++++++------------
->>>>    1 file changed, 11 insertions(+), 12 deletions(-)
->>>>
->>>> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
->>>> index 2870c25da166..4d1b44de1492 100644
->>>> --- a/drivers/misc/ocxl/file.c
->>>> +++ b/drivers/misc/ocxl/file.c
->>>> @@ -18,18 +18,15 @@ static struct class *ocxl_class;
->>>>    static struct mutex minors_idr_lock;
->>>>    static struct idr minors_idr;
->>>>    
->>>> -static struct ocxl_file_info *find_file_info(dev_t devno)
->>>> +static struct ocxl_file_info *find_and_get_file_info(dev_t devno)
->>>>    {
->>>>    	struct ocxl_file_info *info;
->>>>    
->>>> -	/*
->>>> -	 * We don't declare an RCU critical section here, as our AFU
->>>> -	 * is protected by a reference counter on the device. By the time the
->>>> -	 * info reference is removed from the idr, the ref count of
->>>> -	 * the device is already at 0, so no user API will access that AFU and
->>>> -	 * this function can't return it.
->>>> -	 */
->>>> +	mutex_lock(&minors_idr_lock);
->>>>    	info = idr_find(&minors_idr, MINOR(devno));
->>>> +	if (info)
->>>> +		get_device(&info->dev);
->>>> +	mutex_unlock(&minors_idr_lock);
->>>>    	return info;
->>>>    }
->>>>    
->>>> @@ -58,14 +55,16 @@ static int afu_open(struct inode *inode, struct file *file)
->>>>    
->>>>    	pr_debug("%s for device %x\n", __func__, inode->i_rdev);
->>>>    
->>>> -	info = find_file_info(inode->i_rdev);
->>>> +	info = find_and_get_file_info(inode->i_rdev);
->>>>    	if (!info)
->>>>    		return -ENODEV;
->>>>    
->>>>    	rc = ocxl_context_alloc(&ctx, info->afu, inode->i_mapping);
->>>> -	if (rc)
->>>> +	if (rc) {
->>>> +		put_device(&info->dev);
->>>
->>> You could have a single call site for put_device() since it's
->>> needed for both branches. No big deal.
->>
->>
->> Agreed. Will fix if I end up respinning, but won't if it's the only
->> complaint :-)
->>
->>
->>
->>>>    		return rc;
->>>> -
->>>> +	}
->>>> +	put_device(&info->dev);
->>>>    	file->private_data = ctx;
->>>>    	return 0;
->>>>    }
->>>> @@ -487,7 +486,6 @@ static void info_release(struct device *dev)
->>>>    {
->>>>    	struct ocxl_file_info *info = container_of(dev, struct ocxl_file_info, dev);
->>>>    
->>>> -	free_minor(info);
->>>>    	ocxl_afu_put(info->afu);
->>>>    	kfree(info);
->>>>    }
->>>> @@ -577,6 +575,7 @@ void ocxl_file_unregister_afu(struct ocxl_afu *afu)
->>>>    
->>>>    	ocxl_file_make_invisible(info);
->>>>    	ocxl_sysfs_unregister_afu(info);
->>>> +	free_minor(info);
->>>
->>> Since the IDR entry is added by ocxl_file_register_afu(), it seems to make
->>> sense to undo that in ocxl_file_unregister_afu(). Out of curiosity, was there
->>> any historical reason to do this in info_release() in the first place ?
->>
->>
->> Yeah, it makes a lot of sense to remove the IDR entry in
->> ocxl_file_unregister_afu(), that's where we undo the device. I wish I
->> had noticed during the code reviews.
->> I don't think there was any good reason to have it in info_release() in
->> the first place. I remember the code went through many iterations to get
->> the reference counting on the AFU structure and device done correctly,
->> but we let that one slip.
->>
->> I now think the pre-5.2 ocxl code was also exposed to the 2nd window
->> mentioned in the commit log (but the first window is new with the
->> refactoring introduced in 5.2-rc1).
->>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/powerpc/include/asm/opal.h            |  7 --
+>  arch/powerpc/include/asm/pnv-pci.h         |  2 -
+>  arch/powerpc/platforms/powernv/opal-call.c |  1 -
+>  arch/powerpc/platforms/powernv/pci.c       | 74 ----------------------
+>  arch/powerpc/platforms/powernv/pci.h       |  5 --
+>  5 files changed, 89 deletions(-)
 > 
-> This calls for two separate patches then IMHO.
+> diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+> index 4cc37e708bc7..7b0bc104a89c 100644
+> --- a/arch/powerpc/include/asm/opal.h
+> +++ b/arch/powerpc/include/asm/opal.h
+> @@ -280,13 +280,6 @@ int64_t opal_xive_allocate_irq(uint32_t chip_id);
+>  int64_t opal_xive_free_irq(uint32_t girq);
+>  int64_t opal_xive_sync(uint32_t type, uint32_t id);
+>  int64_t opal_xive_dump(uint32_t type, uint32_t id);
+> -int64_t opal_xive_get_queue_state(uint64_t vp, uint32_t prio,
+> -				  __be32 *out_qtoggle,
+> -				  __be32 *out_qindex);
+> -int64_t opal_xive_set_queue_state(uint64_t vp, uint32_t prio,
+> -				  uint32_t qtoggle,
+> -				  uint32_t qindex);
+> -int64_t opal_xive_get_vp_state(uint64_t vp, __be64 *out_w01);
 
-Well, splitting this patch in 2 wouldn't help, as the pre-5.2 code was 
-different enough that it wouldn't apply.
-I could send a different patch covering just the 2nd window to stable 
-and backport to distros. But considering the likelyhood of hitting the 
-problem, it's going to be low on my list.
 
-   Fred
+This hunk seems unrelated.
+
+These OPAL calls are new. They are used by the XIVE KVM device 
+to get/set the interrupt controller state of a guest. 
 
 
+>  int64_t opal_pci_set_p2p(uint64_t phb_init, uint64_t phb_target,
+>  			uint64_t desc, uint16_t pe_number);
 
-> 
->>     Fred
->>
->>
->>
->>>
->>> Reviewed-by: Greg Kurz <groug@kaod.org>
->>>    
->>>>    	device_unregister(&info->dev);
->>>>    }
->>>>      
->>>    
->>
+I suppose this is the one ^ you wanted to remove.
+
+Cheers,
+
+C. 
+
+
+
+>  
+> diff --git a/arch/powerpc/include/asm/pnv-pci.h b/arch/powerpc/include/asm/pnv-pci.h
+> index 630eb8b1b7ed..9fcb0bc462c6 100644
+> --- a/arch/powerpc/include/asm/pnv-pci.h
+> +++ b/arch/powerpc/include/asm/pnv-pci.h
+> @@ -26,8 +26,6 @@ extern int pnv_pci_get_presence_state(uint64_t id, uint8_t *state);
+>  extern int pnv_pci_get_power_state(uint64_t id, uint8_t *state);
+>  extern int pnv_pci_set_power_state(uint64_t id, uint8_t state,
+>  				   struct opal_msg *msg);
+> -extern int pnv_pci_set_p2p(struct pci_dev *initiator, struct pci_dev *target,
+> -			   u64 desc);
+>  
+>  extern int pnv_pci_enable_tunnel(struct pci_dev *dev, uint64_t *asnind);
+>  extern int pnv_pci_disable_tunnel(struct pci_dev *dev);
+> diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
+> index 36c8fa3647a2..29ca523c1c79 100644
+> --- a/arch/powerpc/platforms/powernv/opal-call.c
+> +++ b/arch/powerpc/platforms/powernv/opal-call.c
+> @@ -273,7 +273,6 @@ OPAL_CALL(opal_npu_map_lpar,			OPAL_NPU_MAP_LPAR);
+>  OPAL_CALL(opal_imc_counters_init,		OPAL_IMC_COUNTERS_INIT);
+>  OPAL_CALL(opal_imc_counters_start,		OPAL_IMC_COUNTERS_START);
+>  OPAL_CALL(opal_imc_counters_stop,		OPAL_IMC_COUNTERS_STOP);
+> -OPAL_CALL(opal_pci_set_p2p,			OPAL_PCI_SET_P2P);
+>  OPAL_CALL(opal_get_powercap,			OPAL_GET_POWERCAP);
+>  OPAL_CALL(opal_set_powercap,			OPAL_SET_POWERCAP);
+>  OPAL_CALL(opal_get_power_shift_ratio,		OPAL_GET_POWER_SHIFT_RATIO);
+> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+> index ef9448a907c6..8d28f2932c3b 100644
+> --- a/arch/powerpc/platforms/powernv/pci.c
+> +++ b/arch/powerpc/platforms/powernv/pci.c
+> @@ -38,7 +38,6 @@
+>  #include "powernv.h"
+>  #include "pci.h"
+>  
+> -static DEFINE_MUTEX(p2p_mutex);
+>  static DEFINE_MUTEX(tunnel_mutex);
+>  
+>  int pnv_pci_get_slot_id(struct device_node *np, uint64_t *id)
+> @@ -861,79 +860,6 @@ void pnv_pci_dma_bus_setup(struct pci_bus *bus)
+>  	}
+>  }
+>  
+> -int pnv_pci_set_p2p(struct pci_dev *initiator, struct pci_dev *target, u64 desc)
+> -{
+> -	struct pci_controller *hose;
+> -	struct pnv_phb *phb_init, *phb_target;
+> -	struct pnv_ioda_pe *pe_init;
+> -	int rc;
+> -
+> -	if (!opal_check_token(OPAL_PCI_SET_P2P))
+> -		return -ENXIO;
+> -
+> -	hose = pci_bus_to_host(initiator->bus);
+> -	phb_init = hose->private_data;
+> -
+> -	hose = pci_bus_to_host(target->bus);
+> -	phb_target = hose->private_data;
+> -
+> -	pe_init = pnv_ioda_get_pe(initiator);
+> -	if (!pe_init)
+> -		return -ENODEV;
+> -
+> -	/*
+> -	 * Configuring the initiator's PHB requires to adjust its
+> -	 * TVE#1 setting. Since the same device can be an initiator
+> -	 * several times for different target devices, we need to keep
+> -	 * a reference count to know when we can restore the default
+> -	 * bypass setting on its TVE#1 when disabling. Opal is not
+> -	 * tracking PE states, so we add a reference count on the PE
+> -	 * in linux.
+> -	 *
+> -	 * For the target, the configuration is per PHB, so we keep a
+> -	 * target reference count on the PHB.
+> -	 */
+> -	mutex_lock(&p2p_mutex);
+> -
+> -	if (desc & OPAL_PCI_P2P_ENABLE) {
+> -		/* always go to opal to validate the configuration */
+> -		rc = opal_pci_set_p2p(phb_init->opal_id, phb_target->opal_id,
+> -				      desc, pe_init->pe_number);
+> -
+> -		if (rc != OPAL_SUCCESS) {
+> -			rc = -EIO;
+> -			goto out;
+> -		}
+> -
+> -		pe_init->p2p_initiator_count++;
+> -		phb_target->p2p_target_count++;
+> -	} else {
+> -		if (!pe_init->p2p_initiator_count ||
+> -			!phb_target->p2p_target_count) {
+> -			rc = -EINVAL;
+> -			goto out;
+> -		}
+> -
+> -		if (--pe_init->p2p_initiator_count == 0)
+> -			pnv_pci_ioda2_set_bypass(pe_init, true);
+> -
+> -		if (--phb_target->p2p_target_count == 0) {
+> -			rc = opal_pci_set_p2p(phb_init->opal_id,
+> -					      phb_target->opal_id, desc,
+> -					      pe_init->pe_number);
+> -			if (rc != OPAL_SUCCESS) {
+> -				rc = -EIO;
+> -				goto out;
+> -			}
+> -		}
+> -	}
+> -	rc = 0;
+> -out:
+> -	mutex_unlock(&p2p_mutex);
+> -	return rc;
+> -}
+> -EXPORT_SYMBOL_GPL(pnv_pci_set_p2p);
+> -
+>  struct device_node *pnv_pci_get_phb_node(struct pci_dev *dev)
+>  {
+>  	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+> index be26ab3d99e0..4f11c077af62 100644
+> --- a/arch/powerpc/platforms/powernv/pci.h
+> +++ b/arch/powerpc/platforms/powernv/pci.h
+> @@ -79,9 +79,6 @@ struct pnv_ioda_pe {
+>  	struct pnv_ioda_pe	*master;
+>  	struct list_head	slaves;
+>  
+> -	/* PCI peer-to-peer*/
+> -	int			p2p_initiator_count;
+> -
+>  	/* Link in list of PE#s */
+>  	struct list_head	list;
+>  };
+> @@ -172,8 +169,6 @@ struct pnv_phb {
+>  	/* PHB and hub diagnostics */
+>  	unsigned int		diag_data_size;
+>  	u8			*diag_data;
+> -
+> -	int p2p_target_count;
+>  };
+>  
+>  extern struct pci_ops pnv_pci_ops;
 > 
 
