@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B3D54D0F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2676154D38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:07:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Y39d3CCVzDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 21:00:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y3Jf2JDlzDqD4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 21:06:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="LTfG5Okr"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="wCc/S002"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Y36Z4RK0zDqCG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:58:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y36Z5gJ5zDqDY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:58:14 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Y36R26s9z9v17h;
- Tue, 25 Jun 2019 12:58:07 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45Y36V2cfHz9v18M;
+ Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=LTfG5Okr; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=wCc/S002; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xshcch4t6e7f; Tue, 25 Jun 2019 12:58:07 +0200 (CEST)
+ with ESMTP id e_qvDbPCj_zQ; Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Y36R0wYTz9v17d;
- Tue, 25 Jun 2019 12:58:07 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45Y36V1bDgz9v18K;
+ Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1561460287; bh=WmP4bKhnfBYlSSGQ//frf/dAVmCAzNuL14conWVzh18=;
+ t=1561460290; bh=auZsk5+eXrNvOomMroEmyexOA4o1/bt7OLpPEQ8iQig=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=LTfG5OkrMJ3Ye1E4i+wFzYQEkzfCXKs9+oybS+JkhU4GxOF08mmXtYJAmkGO9WETA
- kv/IihAEV37RMJGIqNQqmjkYr3sDAf/Yx489fdm5y7fM65wD8XdIRdFbniAOLMNVxJ
- SXXUyiet9dr5wPjo9+nfC+V5i1oDUwYPjZyuOFFQ=
+ b=wCc/S002LSEYMxe9E5YjJfdXSaOQabgDCIWkB5YCkfxAXLNUYEpcF8IObxS7YmDfM
+ DBWzChnZV10lyhbc57Ow2bOo0PYWREixLvwsqtaUYybLUE2Nd3tLTVKXXVoZkepAvx
+ WxIPbLYvzc53ZQE4BEooA8R/ARPoJX20hSBQ+xtU=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 500658B879;
- Tue, 25 Jun 2019 12:58:08 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 608448B87B;
+ Tue, 25 Jun 2019 12:58:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id RJECN6eakLR5; Tue, 25 Jun 2019 12:58:08 +0200 (CEST)
+ with ESMTP id mHQJVfIzuIjk; Tue, 25 Jun 2019 12:58:11 +0200 (CEST)
 Received: from pc17473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F38F98B874;
- Tue, 25 Jun 2019 12:58:06 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F25EC8B874;
+ Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C114068E1B; Tue, 25 Jun 2019 10:58:06 +0000 (UTC)
-Message-Id: <b8a767a9e1ffc055768b7e0bba0f18b6229dfc94.1561459983.git.christophe.leroy@c-s.fr>
+ id DAB9F68E1C; Tue, 25 Jun 2019 10:58:07 +0000 (UTC)
+Message-Id: <80d3dfc4799faa2f173d88589a5c9cb4e586eda4.1561459983.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1561459983.git.christophe.leroy@c-s.fr>
 References: <cover.1561459983.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH v1 01/13] powerpc: move ptrace into a subdirectory.
+Subject: [RFC PATCH v1 02/13] powerpc/ptrace: drop unnecessary #ifdefs
+ CONFIG_PPC64
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  mikey@neuling.org
-Date: Tue, 25 Jun 2019 10:58:06 +0000 (UTC)
+Date: Tue, 25 Jun 2019 10:58:07 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,76 +81,167 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to allow splitting of ptrace depending on the
-different CONFIG_ options, create a subdirectory dedicated to
-ptrace and move ptrace.c and ptrace32.c into it.
+Drop a bunch of #ifdefs CONFIG_PPC64 that are not vital.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/Makefile                | 7 +++----
- arch/powerpc/kernel/ptrace/Makefile         | 9 +++++++++
- arch/powerpc/kernel/{ => ptrace}/ptrace.c   | 0
- arch/powerpc/kernel/{ => ptrace}/ptrace32.c | 0
- 4 files changed, 12 insertions(+), 4 deletions(-)
- create mode 100644 arch/powerpc/kernel/ptrace/Makefile
- rename arch/powerpc/kernel/{ => ptrace}/ptrace.c (100%)
- rename arch/powerpc/kernel/{ => ptrace}/ptrace32.c (100%)
+ arch/powerpc/include/asm/ptrace.h      |  9 ++++-----
+ arch/powerpc/include/uapi/asm/ptrace.h | 12 ++++--------
+ arch/powerpc/kernel/ptrace/ptrace.c    | 24 +++---------------------
+ 3 files changed, 11 insertions(+), 34 deletions(-)
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 0ea6c4aa3a20..c522464fa56a 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -3,8 +3,6 @@
- # Makefile for the linux kernel.
- #
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index faa5a338ac5a..1506a9c61d50 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -36,11 +36,10 @@ struct pt_regs
+ 			unsigned long link;
+ 			unsigned long xer;
+ 			unsigned long ccr;
+-#ifdef CONFIG_PPC64
+-			unsigned long softe;
+-#else
+-			unsigned long mq;
+-#endif
++			union {
++				unsigned long softe;
++				unsigned long mq;
++			};
+ 			unsigned long trap;
+ 			unsigned long dar;
+ 			unsigned long dsisr;
+diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
+index f5f1ccc740fc..37d7befbb8dc 100644
+--- a/arch/powerpc/include/uapi/asm/ptrace.h
++++ b/arch/powerpc/include/uapi/asm/ptrace.h
+@@ -43,12 +43,11 @@ struct pt_regs
+ 	unsigned long link;
+ 	unsigned long xer;
+ 	unsigned long ccr;
+-#ifdef __powerpc64__
+-	unsigned long softe;		/* Soft enabled/disabled */
+-#else
+-	unsigned long mq;		/* 601 only (not used at present) */
++	union {
++		unsigned long softe;	/* Soft enabled/disabled */
++		unsigned long mq;	/* 601 only (not used at present) */
+ 					/* Used on APUS to hold IPL value. */
+-#endif
++	};
+ 	unsigned long trap;		/* Reason for being here */
+ 	/* N.B. for critical exceptions on 4xx, the dar and dsisr
+ 	   fields are overloaded to hold srr0 and srr1. */
+@@ -105,11 +104,8 @@ struct pt_regs
+ #define PT_LNK	36
+ #define PT_XER	37
+ #define PT_CCR	38
+-#ifndef __powerpc64__
+ #define PT_MQ	39
+-#else
+ #define PT_SOFTE 39
+-#endif
+ #define PT_TRAP	40
+ #define PT_DAR	41
+ #define PT_DSISR 42
+diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+index 684b0b315c32..0afb223c4d57 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace.c
++++ b/arch/powerpc/kernel/ptrace/ptrace.c
+@@ -113,11 +113,8 @@ static const struct pt_regs_offset regoffset_table[] = {
+ 	REG_OFFSET_NAME(link),
+ 	REG_OFFSET_NAME(xer),
+ 	REG_OFFSET_NAME(ccr),
+-#ifdef CONFIG_PPC64
+ 	REG_OFFSET_NAME(softe),
+-#else
+ 	REG_OFFSET_NAME(mq),
+-#endif
+ 	REG_OFFSET_NAME(trap),
+ 	REG_OFFSET_NAME(dar),
+ 	REG_OFFSET_NAME(dsisr),
+@@ -289,17 +286,15 @@ int ptrace_get_reg(struct task_struct *task, int regno, unsigned long *data)
+ 	if (regno == PT_DSCR)
+ 		return get_user_dscr(task, data);
  
--CFLAGS_ptrace.o		+= -DUTS_MACHINE='"$(UTS_MACHINE)"'
--
- # Disable clang warning for using setjmp without setjmp.h header
- CFLAGS_crash.o		+= $(call cc-disable-warning, builtin-requires-header)
+-#ifdef CONFIG_PPC64
+ 	/*
+ 	 * softe copies paca->irq_soft_mask variable state. Since irq_soft_mask is
+ 	 * no more used as a flag, lets force usr to alway see the softe value as 1
+ 	 * which means interrupts are not soft disabled.
+ 	 */
+-	if (regno == PT_SOFTE) {
++	if (IS_ENABLED(CONFIG_PPC64) && regno == PT_SOFTE) {
+ 		*data = 1;
+ 		return  0;
+ 	}
+-#endif
  
-@@ -43,15 +41,16 @@ CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_btext.o += -DDISABLE_BRANCH_PROFILING
- endif
+ 	regs_max = sizeof(struct user_pt_regs) / sizeof(unsigned long);
+ 	if (regno < regs_max) {
+@@ -2013,7 +2008,6 @@ static const struct user_regset_view user_ppc_native_view = {
+ 	.regsets = native_regsets, .n = ARRAY_SIZE(native_regsets)
+ };
  
--obj-y				:= cputable.o ptrace.o syscalls.o \
-+obj-y				:= cputable.o syscalls.o \
- 				   irq.o align.o signal_32.o pmc.o vdso.o \
- 				   process.o systbl.o idle.o \
- 				   signal.o sysfs.o cacheinfo.o time.o \
- 				   prom.o traps.o setup-common.o \
- 				   udbg.o misc.o io.o misc_$(BITS).o \
- 				   of_platform.o prom_parse.o
-+obj-y				+= ptrace/
- obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
--				   signal_64.o ptrace32.o \
-+				   signal_64.o \
- 				   paca.o nvram_64.o firmware.o
- obj-$(CONFIG_VDSO32)		+= vdso32/
- obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
-diff --git a/arch/powerpc/kernel/ptrace/Makefile b/arch/powerpc/kernel/ptrace/Makefile
-new file mode 100644
-index 000000000000..02fb28eb3b55
---- /dev/null
-+++ b/arch/powerpc/kernel/ptrace/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for the linux kernel.
-+#
-+
-+CFLAGS_ptrace.o		+= -DUTS_MACHINE='"$(UTS_MACHINE)"'
-+
-+obj-y				+= ptrace.o
-+obj-$(CONFIG_PPC64)		+= ptrace32.o
-diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-similarity index 100%
-rename from arch/powerpc/kernel/ptrace.c
-rename to arch/powerpc/kernel/ptrace/ptrace.c
-diff --git a/arch/powerpc/kernel/ptrace32.c b/arch/powerpc/kernel/ptrace/ptrace32.c
-similarity index 100%
-rename from arch/powerpc/kernel/ptrace32.c
-rename to arch/powerpc/kernel/ptrace/ptrace32.c
+-#ifdef CONFIG_PPC64
+ #include <linux/compat.h>
+ 
+ static int gpr32_get_common(struct task_struct *target,
+@@ -2287,14 +2281,11 @@ static const struct user_regset_view user_ppc_compat_view = {
+ 	.name = "ppc", .e_machine = EM_PPC, .ei_osabi = ELF_OSABI,
+ 	.regsets = compat_regsets, .n = ARRAY_SIZE(compat_regsets)
+ };
+-#endif	/* CONFIG_PPC64 */
+ 
+ const struct user_regset_view *task_user_regset_view(struct task_struct *task)
+ {
+-#ifdef CONFIG_PPC64
+-	if (test_tsk_thread_flag(task, TIF_32BIT))
++	if (IS_ENABLED(CONFIG_PPC64) && test_tsk_thread_flag(task, TIF_32BIT))
+ 		return &user_ppc_compat_view;
+-#endif
+ 	return &user_ppc_native_view;
+ }
+ 
+@@ -3081,11 +3072,7 @@ long arch_ptrace(struct task_struct *child, long request,
+ 		else
+ 			dbginfo.num_data_bps = 0;
+ 		dbginfo.num_condition_regs = 0;
+-#ifdef CONFIG_PPC64
+-		dbginfo.data_bp_alignment = 8;
+-#else
+-		dbginfo.data_bp_alignment = 4;
+-#endif
++		dbginfo.data_bp_alignment = sizeof(long);
+ 		dbginfo.sizeof_condition = 0;
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ 		dbginfo.features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
+@@ -3322,12 +3309,10 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+ 		trace_sys_enter(regs, regs->gpr[0]);
+ 
+-#ifdef CONFIG_PPC64
+ 	if (!is_32bit_task())
+ 		audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
+ 				    regs->gpr[5], regs->gpr[6]);
+ 	else
+-#endif
+ 		audit_syscall_entry(regs->gpr[0],
+ 				    regs->gpr[3] & 0xffffffff,
+ 				    regs->gpr[4] & 0xffffffff,
+@@ -3382,13 +3367,10 @@ void __init pt_regs_check(void)
+ 		     offsetof(struct user_pt_regs, xer));
+ 	BUILD_BUG_ON(offsetof(struct pt_regs, ccr) !=
+ 		     offsetof(struct user_pt_regs, ccr));
+-#ifdef __powerpc64__
+ 	BUILD_BUG_ON(offsetof(struct pt_regs, softe) !=
+ 		     offsetof(struct user_pt_regs, softe));
+-#else
+ 	BUILD_BUG_ON(offsetof(struct pt_regs, mq) !=
+ 		     offsetof(struct user_pt_regs, mq));
+-#endif
+ 	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
+ 		     offsetof(struct user_pt_regs, trap));
+ 	BUILD_BUG_ON(offsetof(struct pt_regs, dar) !=
 -- 
 2.13.3
 
