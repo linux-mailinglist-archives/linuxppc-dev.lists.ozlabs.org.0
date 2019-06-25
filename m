@@ -2,68 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF0352057
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 03:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 763FE52148
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 05:40:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45XpPK3WJkzDqGW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 11:25:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45XsP735QvzDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:40:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="d4jnojcN"; 
- dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45XpMg6PlxzDq63
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 11:23:43 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id w25so657469ioc.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 18:23:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=vwUvKxXGRWl3fqmIX2VuGpqzVn8mxDBYkphC5dNoq9w=;
- b=d4jnojcNNc47khK9WrfxHN/Kjjppkp3B5789Vmz0p4eIh4UC9pNlAw1isRTb80pFlb
- geA2R4qLuVsJgQFmQNUL4LEkZNEm8jEsjMe8TEnas4OumWW4j0OelVmFH+zlrLJZAeGj
- pfiVyOSYY4LV+dNBQYggkbWJj04s0mr8Dyu5e9TbeaOPR3XhdTBEjTAbh6oNQSsXb+05
- DQ+ZS9Qxm/NPxPHbGAAo4/94mHqEbo+xBfHAAjX7ZfzyXkJ860vM3sPn7bQp3YsRfzJW
- JVvxY0kY+MrH138LicjOvb4eBNBQGLMDYsmirq72uqLHD2tk25q3yMkiHKRIn16RyxUJ
- JNuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=vwUvKxXGRWl3fqmIX2VuGpqzVn8mxDBYkphC5dNoq9w=;
- b=h+w+O8coTo3cjPS3bqKztz9FhosYjhRftzZhcRWOwY+uPvfOXQdes16GN/rgZtzde+
- cVwICVjJXdAZsjtRcyOJ1KSn5F/CuKkFdZ06KgbPKeHkPHnvxeC/wH/rF5222bdIRAoZ
- cm8+oBlvsVG64mUppmGXh7y/uumJg0f4D+9o3TJaxqPJiYwJlh6ZMQ7FyzUHhzZhW6Rd
- Wy20HPvITleU2HnBN5Kgavw1OPufSHfzidrMX+SNlbXY7jbiQF6ikI7EIXuL+iUqrloj
- 1SttEuZWOYIzbJdhm0C5OcF1U4fWYSpiVSc4u1ISWhcDX4Y6MaakLPJHo9S8IaTTHNRs
- 553Q==
-X-Gm-Message-State: APjAAAWHihimLGV0Ceu6vySlKvnUrnPbRO7jan2eSPQccqApgmTiu4wK
- Isoy8fwx6mKR8UbgugrOXwVSLulXfyWXrWqJltk=
-X-Google-Smtp-Source: APXvYqyZ91I+LQCdZ241kLdjonI/D3ZSf5FpqYkqBJdVxj4j/Euz5DhU0F9GHQLLNUEnm5oT8Pipyya4Gha0rbpsLOU=
-X-Received: by 2002:a05:6602:22cc:: with SMTP id
- e12mr39266628ioe.192.1561425821135; 
- Mon, 24 Jun 2019 18:23:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45XsMS29SxzDqFS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 13:38:43 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5P3WKJT019525
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 23:38:41 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tbaayu0hw-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2019 23:38:41 -0400
+Received: from localhost
+ by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
+ Tue, 25 Jun 2019 04:38:39 +0100
+Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
+ by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 25 Jun 2019 04:38:38 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5P3cbQb49742250
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 25 Jun 2019 03:38:37 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45521AE062;
+ Tue, 25 Jun 2019 03:38:37 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 04CBCAE05C;
+ Tue, 25 Jun 2019 03:38:36 +0000 (GMT)
+Received: from birb.localdomain (unknown [9.185.142.51])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 25 Jun 2019 03:38:36 +0000 (GMT)
+Received: by birb.localdomain (Postfix, from userid 1000)
+ id 9CD7A4EC62A; Tue, 25 Jun 2019 13:38:33 +1000 (AEST)
+From: Stewart Smith <stewart@linux.ibm.com>
+To: Michael Neuling <mikey@neuling.org>, mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc: Document xive=off option
+In-Reply-To: <20190513053910.19227-1-mikey@neuling.org>
+References: <20190513053910.19227-1-mikey@neuling.org>
+Date: Tue, 25 Jun 2019 13:38:33 +1000
 MIME-Version: 1.0
-References: <20190624145913.20122-1-vaibhav@linux.ibm.com>
- <20190624145913.20122-3-vaibhav@linux.ibm.com>
-In-Reply-To: <20190624145913.20122-3-vaibhav@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 25 Jun 2019 11:23:29 +1000
-Message-ID: <CAOSf1CE4SjuiyYkMgER2-Ndp50dbUmVjfhiGM-sX9ySVPkH3ww@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19062503-0064-0000-0000-000003F3568D
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011324; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01222887; UDB=6.00643503; IPR=6.01004055; 
+ MB=3.00027454; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-25 03:38:39
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062503-0065-0000-0000-00003E058AD4
+Message-Id: <875zou9vwm.fsf@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-25_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=857 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906250027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,114 +92,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?Q?C=C3=A9dri?= =?utf-8?Q?c?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 25, 2019 at 12:59 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+Michael Neuling <mikey@neuling.org> writes:
+> commit 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
+> interrupt controller") added an option to turn off Linux native XIVE
+> usage via the xive=off kernel command line option.
 >
-> In some cases initial bind of scm memory for an lpar can fail if
-> previously it wasn't released using a scm-unbind hcall. This situation
-> can arise due to panic of the previous kernel or forced lpar reset. In
-> such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
-
-What is a forced lpar reset? fadump?
-
-> To mitigate such cases the patch updates drc_pmem_bind() to force a
-> call to drc_pmem_unbind() in case the initial bind of scm memory fails
-> with H_OVERLAP error. In case scm-bind operation again fails after the
-> forced scm-unbind then we follow the existing error path.
+> This documents this option.
 >
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 23 ++++++++++++++++++++---
->  1 file changed, 20 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index d790e4e4ffb3..049d7927c0a4 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -44,19 +44,26 @@ struct papr_scm_priv {
->         struct nd_interleave_set nd_set;
->  };
+> Signed-off-by: Michael Neuling <mikey@neuling.org>
 
-> +/* Forward declaration */
-pointless comment.
+Acked-by: Stewart Smith <stewart@linux.ibm.com>
 
-> +static int drc_pmem_unbind(struct papr_scm_priv *);
->
->  static int drc_pmem_bind(struct papr_scm_priv *p)
->  {
->         unsigned long ret[PLPAR_HCALL_BUFSIZE];
->         uint64_t rc, token;
-> -       uint64_t saved = 0;
-> +       uint64_t saved;
-> +       bool tried_unbind = false;
+-- 
+Stewart Smith
+OPAL Architect, IBM.
 
-nit: kernel style uses reverse christmas tree declarations, so this should be:
-
-unsigned long ret[PLPAR_HCALL_BUFSIZE];
-bool tried_unbind = false;
-uint64_t rc, token;
-uint64_t saved;
-
-Come to think of it rc should probably be signed since the hcall
-return codes are negative. I'm surprised that's not causing a warning
-since we use %lld to print rc rather than %llu.
-
-> +       dev_dbg(&p->pdev->dev, "bind drc %x\n", p->drc_index);
->         /*
->          * When the hypervisor cannot map all the requested memory in a single
->          * hcall it returns H_BUSY and we call again with the token until
->          * we get H_SUCCESS. Aborting the retry loop before getting H_SUCCESS
->          * leave the system in an undefined state, so we wait.
->          */
-> +retry:
->         token = 0;
-> +       saved = 0;
->
->         do {
->                 rc = plpar_hcall(H_SCM_BIND_MEM, ret, p->drc_index, 0,
-> @@ -68,8 +75,18 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
->         } while (rc == H_BUSY);
->
->         if (rc) {
-> -               dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
-> -               return -ENXIO;
-
-> +               /* retry after unbinding */
-> +               if (rc == H_OVERLAP &&  !tried_unbind) {
-> +                       dev_warn(&p->pdev->dev, "Un-binding and retrying\n");
-> +                       /* Try unbind and ignore any errors */
-> +                       tried_unbind = true;
-> +                       drc_pmem_unbind(p);
-> +                       goto retry;
-
-I think It'd be cleaner if we put the unbind-and-retry logic into the
-probe function, e.g:
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c
-b/arch/powerpc/platforms/pseries/papr_scm.c
-index 96c53b23e58f..d113779fc27c 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -316,6 +316,14 @@ static int papr_scm_probe(struct platform_device *pdev)
-
-        /* request the hypervisor to bind this region to somewhere in memory */
-        rc = drc_pmem_bind(p);
-+       if (rc == -EBUSY) {
-+               /*
-+                * If we kexec()ed the previous kernel might have left the DRC
-+                * bound in memory. Unbind it and try again.
-+                */
-+               drc_pmem_unbind(p);
-+               rc = drc_pmem_bind(p);
-+       }
-        if (rc)
-                goto err;
-
-Up to you though.
