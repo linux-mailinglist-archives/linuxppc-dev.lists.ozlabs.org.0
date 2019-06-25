@@ -2,41 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491E7526AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 10:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39E154D47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:09:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Xzrt2JDNzDq8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 18:31:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y3MS0JftzDqCG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 21:09:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="lpQlvkR/"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Xzpg4Q7nzDq83
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 18:29:15 +1000 (AEST)
-Received: by newverein.lst.de (Postfix, from userid 2407)
- id F2E2768B02; Tue, 25 Jun 2019 10:28:40 +0200 (CEST)
-Date: Tue, 25 Jun 2019 10:28:40 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH 1/4] powerpc/powernv: remove the unused pnv_pci_set_p2p
- function
-Message-ID: <20190625082840.GA31969@lst.de>
-References: <20190625081512.16704-1-hch@lst.de>
- <20190625081512.16704-2-hch@lst.de>
- <113fb518-0f5a-8ced-8391-abe48869a0cb@kaod.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <113fb518-0f5a-8ced-8391-abe48869a0cb@kaod.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y36Z3BTbzDq9F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:58:12 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45Y36P3KFfz9v17f;
+ Tue, 25 Jun 2019 12:58:05 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=lpQlvkR/; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id qBNHEZMgdSYN; Tue, 25 Jun 2019 12:58:05 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45Y36P2Dfdz9v17d;
+ Tue, 25 Jun 2019 12:58:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1561460285; bh=p3eeTI+CLV4Cw6857FHqOMSwyRSfA6hKAcK47GIkkNM=;
+ h=From:Subject:To:Cc:Date:From;
+ b=lpQlvkR/CoE/ae6r+0T0Jo9g702yhrroizh8/5Tz0w/QsB5r150WhEt4jwdRFfk2g
+ B9ODTaVkDUiuFYojZjc2e4juyELFiQwMvMgr+W4M1xZLsgPFEKkhWSaTloa+2FQ3lS
+ 8cWc10TtgUtwT7lHaaZZnauFDaucfbzUReY2zAqU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6AB8A8B879;
+ Tue, 25 Jun 2019 12:58:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Er14fu8irgrt; Tue, 25 Jun 2019 12:58:06 +0200 (CEST)
+Received: from pc17473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 39E2C8B874;
+ Tue, 25 Jun 2019 12:58:06 +0200 (CEST)
+Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id DDB7F68E1B; Tue, 25 Jun 2019 10:58:05 +0000 (UTC)
+Message-Id: <cover.1561459983.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [RFC PATCH v1 00/13] Reduce ifdef mess in ptrace
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ mikey@neuling.org
+Date: Tue, 25 Jun 2019 10:58:05 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,38 +73,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 25, 2019 at 10:26:03AM +0200, Cédric Le Goater wrote:
-> > @@ -280,13 +280,6 @@ int64_t opal_xive_allocate_irq(uint32_t chip_id);
-> >  int64_t opal_xive_free_irq(uint32_t girq);
-> >  int64_t opal_xive_sync(uint32_t type, uint32_t id);
-> >  int64_t opal_xive_dump(uint32_t type, uint32_t id);
-> > -int64_t opal_xive_get_queue_state(uint64_t vp, uint32_t prio,
-> > -				  __be32 *out_qtoggle,
-> > -				  __be32 *out_qindex);
-> > -int64_t opal_xive_set_queue_state(uint64_t vp, uint32_t prio,
-> > -				  uint32_t qtoggle,
-> > -				  uint32_t qindex);
-> > -int64_t opal_xive_get_vp_state(uint64_t vp, __be64 *out_w01);
-> 
-> 
-> This hunk seems unrelated.
-> 
-> These OPAL calls are new. They are used by the XIVE KVM device 
-> to get/set the interrupt controller state of a guest. 
-> 
-> 
-> >  int64_t opal_pci_set_p2p(uint64_t phb_init, uint64_t phb_target,
-> >  			uint64_t desc, uint16_t pe_number);
-> 
-> I suppose this is the one ^ you wanted to remove.
+The purpose of this series is to reduce the amount of #ifdefs
+in ptrace.c
 
-Thanks.  I'm pretty sure I had this fixed up before due to a builtbot
-warning, but somehow the old version popped up again.
+This is a first try. Most of it is done, there are still some #ifdefs that
+could go away.
+
+Please comment and tell whether it is worth continuing in that direction.
+
+Christophe Leroy (13):
+  powerpc: move ptrace into a subdirectory.
+  powerpc/ptrace: drop unnecessary #ifdefs CONFIG_PPC64
+  powerpc/ptrace: drop PARAMETER_SAVE_AREA_OFFSET
+  powerpc/ptrace: split out VSX related functions.
+  powerpc/ptrace: split out ALTIVEC related functions.
+  powerpc/ptrace: split out SPE related functions.
+  powerpc/ptrace: split out TRANSACTIONAL_MEM related functions.
+  powerpc/ptrace: move register viewing functions out of ptrace.c
+  powerpc/ptrace: split out ADV_DEBUG_REGS related functions.
+  powerpc/ptrace: create ptrace_get_debugreg()
+  powerpc/ptrace: create ppc_gethwdinfo()
+  powerpc/ptrace: move ptrace_triggered() into hw_breakpoint.c
+  powerpc/hw_breakpoint: move instruction stepping out of
+    hw_breakpoint_handler()
+
+ arch/powerpc/include/asm/ptrace.h           |    9 +-
+ arch/powerpc/include/uapi/asm/ptrace.h      |   12 +-
+ arch/powerpc/kernel/Makefile                |    7 +-
+ arch/powerpc/kernel/hw_breakpoint.c         |   76 +-
+ arch/powerpc/kernel/ptrace.c                | 3402 ---------------------------
+ arch/powerpc/kernel/ptrace/Makefile         |   20 +
+ arch/powerpc/kernel/ptrace/ptrace-adv.c     |  511 ++++
+ arch/powerpc/kernel/ptrace/ptrace-altivec.c |  151 ++
+ arch/powerpc/kernel/ptrace/ptrace-decl.h    |  150 ++
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c   |  291 +++
+ arch/powerpc/kernel/ptrace/ptrace-novsx.c   |   83 +
+ arch/powerpc/kernel/ptrace/ptrace-spe.c     |   94 +
+ arch/powerpc/kernel/ptrace/ptrace-tm.c      |  877 +++++++
+ arch/powerpc/kernel/ptrace/ptrace-view.c    |  966 ++++++++
+ arch/powerpc/kernel/ptrace/ptrace-vsx.c     |  177 ++
+ arch/powerpc/kernel/ptrace/ptrace.c         |  430 ++++
+ arch/powerpc/kernel/{ => ptrace}/ptrace32.c |    0
+ 17 files changed, 3810 insertions(+), 3446 deletions(-)
+ delete mode 100644 arch/powerpc/kernel/ptrace.c
+ create mode 100644 arch/powerpc/kernel/ptrace/Makefile
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-adv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-altivec.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-decl.h
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-noadv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-novsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-spe.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-tm.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-view.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-vsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace.c
+ rename arch/powerpc/kernel/{ => ptrace}/ptrace32.c (100%)
+
+-- 
+2.13.3
+
