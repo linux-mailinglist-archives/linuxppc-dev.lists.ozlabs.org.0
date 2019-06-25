@@ -2,78 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2434F54F14
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 14:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8092A5502E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 15:24:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Y5Ph2xbczDqGJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 22:41:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y6M21t8WzDqMr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 23:24:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Y55Z0qZ9zDqKD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 22:27:29 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5PCMb08115583
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 08:27:27 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tbhmdnnvp-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 08:27:26 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Tue, 25 Jun 2019 13:27:24 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 25 Jun 2019 13:27:20 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5PCRJqJ51445784
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Jun 2019 12:27:19 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 569915204F;
- Tue, 25 Jun 2019 12:27:19 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.109.195.230])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E12BC52050;
- Tue, 25 Jun 2019 12:27:17 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 3/3] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-Date: Tue, 25 Jun 2019 17:57:09 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190625122709.11846-1-vaibhav@linux.ibm.com>
-References: <20190625122709.11846-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y6Hj4jBYzDqMk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 23:21:21 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id e8so17188350otl.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 06:21:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=GgVn9o2XMV2ez9jDzY+0llaXiVjr0qoFXFfqDt3jX2U=;
+ b=J+SIhCo+cEHqhJd6pjlJvaQsY83yOy2ueebExbm50jUu+kG2qHYEheypn19ZtdFIcD
+ FPKY2E5OllxaLDyQnhXWFT8nuIrvEgSrCkp3cCSC6DPnkRPgsmH4OyeFCyk/TqbFsZ6Y
+ 2mdSoyz2BTN4OSwnKC0bRABuYi8A9A+EJ3wVtUb0Rml6farASDuq4PNWhvmuBgoNZ1eE
+ dsta3LtVll03w0iDt3KauIxOvoX9kwdGspiMUu78pw2X+jqvS8seBRPdIIGKgZ8RTpNG
+ MV7bFi/s+muV2av+jwEZv0xLDmK0/JYs1EqDpId1OQtdBjM7i3sZJN+TcPXzZ2+h4V82
+ PRLA==
+X-Gm-Message-State: APjAAAV8loDO6BDqlJ95VB6I5b7fPRjr9fNnRujIOta9+AeEjTkc559t
+ mQ33z5AU7RI3OAv1+hPziuwxPUvapTP3N3RnEYA=
+X-Google-Smtp-Source: APXvYqxtTdkEuscypnU/zXHDBFVFEQQfPBzKSH4cOLu0kIQSsZem/FyWnB8vAkRTtysTKJpjYdQxucZzxLUC8tY+nHQ=
+X-Received: by 2002:a9d:4109:: with SMTP id o9mr5521556ote.353.1561468878433; 
+ Tue, 25 Jun 2019 06:21:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062512-4275-0000-0000-000003461825
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062512-4276-0000-0000-000038561954
-Message-Id: <20190625122709.11846-4-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-25_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=949 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906250099
+References: <cover.1561459983.git.christophe.leroy@c-s.fr>
+ <290a9673b0adac34f0008f2679efd5ab5a5c4478.1561459984.git.christophe.leroy@c-s.fr>
+In-Reply-To: <290a9673b0adac34f0008f2679efd5ab5a5c4478.1561459984.git.christophe.leroy@c-s.fr>
+From: Mathieu Malaterre <malat@debian.org>
+Date: Tue, 25 Jun 2019 15:21:05 +0200
+Message-ID: <CA+7wUsxL0OHvOn51hbJyAhpi=OJye=axKfVyauhEVXLqFuFqHA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 11/13] powerpc/ptrace: create ppc_gethwdinfo()
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,81 +61,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Michael Neuling <mikey@neuling.org>, LKML <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In some cases initial bind of scm memory for an lpar can fail if
-previously it wasn't released using a scm-unbind hcall. This situation
-can arise due to panic of the previous kernel or forced lpar
-fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
+On Tue, Jun 25, 2019 at 1:22 PM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
+>
+> Create ippc_gethwdinfo() to handle PPC_PTRACE_GETHWDBGINFO and
 
-To mitigate such cases the patch updates papr_scm_probe() to force a
-call to drc_pmem_unbind() in case the initial bind of scm memory fails
-with EBUSY error. In case scm-bind operation again fails after the
-forced scm-unbind then we follow the existing error path. We also
-update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
-and indicate it as a EBUSY error back to the caller.
+s/ippc_gethwdinfo/ppc_gethwdinfo/
 
-Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Change-log:
+> reduce ifdef mess
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  arch/powerpc/kernel/ptrace/ptrace-adv.c   | 15 +++++++++++++++
+>  arch/powerpc/kernel/ptrace/ptrace-decl.h  |  1 +
+>  arch/powerpc/kernel/ptrace/ptrace-noadv.c | 20 +++++++++++++++++++
+>  arch/powerpc/kernel/ptrace/ptrace.c       | 32 +------------------------------
+>  4 files changed, 37 insertions(+), 31 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-adv.c b/arch/powerpc/kernel/ptrace/ptrace-adv.c
+> index dcc765940344..f5f334484ebc 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-adv.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-adv.c
+> @@ -83,6 +83,21 @@ void user_disable_single_step(struct task_struct *task)
+>         clear_tsk_thread_flag(task, TIF_SINGLESTEP);
+>  }
+>
+> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
 
-v2:
-* Moved the retry code from drc_pmem_bind() to papr_scm_probe()
-  [Oliver]
-* Changed the type of variable 'rc' in drc_pmem_bind() to
-  int64_t. [Oliver]
----
- arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Would it be possible to rename it to `ppc_gethwdbginfo`, I find it
+easier to read.
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index a4e1674bb15c..2c90cbe88313 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -43,8 +43,9 @@ struct papr_scm_priv {
- static int drc_pmem_bind(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
--	uint64_t rc, token;
- 	uint64_t saved = 0;
-+	uint64_t token;
-+	int64_t rc;
- 
- 	/*
- 	 * When the hypervisor cannot map all the requested memory in a single
-@@ -64,6 +65,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
- 	} while (rc == H_BUSY);
- 
- 	if (rc) {
-+		/* H_OVERLAP needs a separate error path */
-+		if (rc == H_OVERLAP)
-+			return -EBUSY;
-+
- 		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
- 		return -ENXIO;
- 	}
-@@ -331,6 +336,14 @@ static int papr_scm_probe(struct platform_device *pdev)
- 
- 	/* request the hypervisor to bind this region to somewhere in memory */
- 	rc = drc_pmem_bind(p);
-+
-+	/* If phyp reports drc memory still bound the force unbound and retry */
-+	if (rc == -EBUSY) {
-+		dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
-+		drc_pmem_unbind(p);
-+		rc = drc_pmem_bind(p);
-+	}
-+
- 	if (rc)
- 		goto err;
- 
--- 
-2.21.0
-
+> +{
+> +       dbginfo->version = 1;
+> +       dbginfo->num_instruction_bps = CONFIG_PPC_ADV_DEBUG_IACS;
+> +       dbginfo->num_data_bps = CONFIG_PPC_ADV_DEBUG_DACS;
+> +       dbginfo->num_condition_regs = CONFIG_PPC_ADV_DEBUG_DVCS;
+> +       dbginfo->data_bp_alignment = 4;
+> +       dbginfo->sizeof_condition = 4;
+> +       dbginfo->features = PPC_DEBUG_FEATURE_INSN_BP_RANGE |
+> +                           PPC_DEBUG_FEATURE_INSN_BP_MASK;
+> +       if (IS_ENABLED(CONFIG_PPC_ADV_DEBUG_DAC_RANGE))
+> +               dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_RANGE |
+> +                                    PPC_DEBUG_FEATURE_DATA_BP_MASK;
+> +}
+> +
+>  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
+>                         unsigned long __user *datalp)
+>  {
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-decl.h b/arch/powerpc/kernel/ptrace/ptrace-decl.h
+> index cd5b8256ba56..2404b987b23c 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-decl.h
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-decl.h
+> @@ -141,6 +141,7 @@ int tm_cgpr32_set(struct task_struct *target, const struct user_regset *regset,
+>  extern const struct user_regset_view user_ppc_native_view;
+>
+>  /* ptrace-(no)adv */
+> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo);
+>  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
+>                         unsigned long __user *datalp);
+>  int ptrace_set_debugreg(struct task_struct *task, unsigned long addr, unsigned long data);
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> index 985cca136f85..426fedd7ab6c 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> @@ -64,6 +64,26 @@ void user_disable_single_step(struct task_struct *task)
+>         clear_tsk_thread_flag(task, TIF_SINGLESTEP);
+>  }
+>
+> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
+> +{
+> +       dbginfo->version = 1;
+> +       dbginfo->num_instruction_bps = 0;
+> +       if (ppc_breakpoint_available())
+> +               dbginfo->num_data_bps = 1;
+> +       else
+> +               dbginfo->num_data_bps = 0;
+> +       dbginfo->num_condition_regs = 0;
+> +       dbginfo->data_bp_alignment = sizeof(long);
+> +       dbginfo->sizeof_condition = 0;
+> +       if (IS_ENABLED(CONFIG_HAVE_HW_BREAKPOINT)) {
+> +               dbginfo->features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
+> +               if (dawr_enabled())
+> +                       dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR;
+> +       } else {
+> +               dbginfo->features = 0;
+> +       }
+> +}
+> +
+>  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
+>                         unsigned long __user *datalp)
+>  {
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+> index e789afae6f56..31e8c5a9171e 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
+> @@ -159,37 +159,7 @@ long arch_ptrace(struct task_struct *child, long request,
+>         case PPC_PTRACE_GETHWDBGINFO: {
+>                 struct ppc_debug_info dbginfo;
+>
+> -               dbginfo.version = 1;
+> -#ifdef CONFIG_PPC_ADV_DEBUG_REGS
+> -               dbginfo.num_instruction_bps = CONFIG_PPC_ADV_DEBUG_IACS;
+> -               dbginfo.num_data_bps = CONFIG_PPC_ADV_DEBUG_DACS;
+> -               dbginfo.num_condition_regs = CONFIG_PPC_ADV_DEBUG_DVCS;
+> -               dbginfo.data_bp_alignment = 4;
+> -               dbginfo.sizeof_condition = 4;
+> -               dbginfo.features = PPC_DEBUG_FEATURE_INSN_BP_RANGE |
+> -                                  PPC_DEBUG_FEATURE_INSN_BP_MASK;
+> -#ifdef CONFIG_PPC_ADV_DEBUG_DAC_RANGE
+> -               dbginfo.features |=
+> -                                  PPC_DEBUG_FEATURE_DATA_BP_RANGE |
+> -                                  PPC_DEBUG_FEATURE_DATA_BP_MASK;
+> -#endif
+> -#else /* !CONFIG_PPC_ADV_DEBUG_REGS */
+> -               dbginfo.num_instruction_bps = 0;
+> -               if (ppc_breakpoint_available())
+> -                       dbginfo.num_data_bps = 1;
+> -               else
+> -                       dbginfo.num_data_bps = 0;
+> -               dbginfo.num_condition_regs = 0;
+> -               dbginfo.data_bp_alignment = sizeof(long);
+> -               dbginfo.sizeof_condition = 0;
+> -#ifdef CONFIG_HAVE_HW_BREAKPOINT
+> -               dbginfo.features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
+> -               if (dawr_enabled())
+> -                       dbginfo.features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR;
+> -#else
+> -               dbginfo.features = 0;
+> -#endif /* CONFIG_HAVE_HW_BREAKPOINT */
+> -#endif /* CONFIG_PPC_ADV_DEBUG_REGS */
+> +               ppc_gethwdinfo(&dbginfo);
+>
+>                 if (copy_to_user(datavp, &dbginfo,
+>                                  sizeof(struct ppc_debug_info)))
+> --
+> 2.13.3
+>
