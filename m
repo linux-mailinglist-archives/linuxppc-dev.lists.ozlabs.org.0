@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D716854D18
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA12E54D4F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 13:14:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Y3Cd08xCzDqPC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 21:02:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y3Tq1StczDqQC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 21:14:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="KcVq464O"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="VIe/l6jM"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Y36Z3JpTzDqB9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:58:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y36g59RLzDqB9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:58:19 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45Y36T2HTdz9v17r;
- Tue, 25 Jun 2019 12:58:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45Y36V2cl9z9v18N;
+ Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=KcVq464O; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=VIe/l6jM; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0-LaWMKaFWz3; Tue, 25 Jun 2019 12:58:09 +0200 (CEST)
+ with ESMTP id FcjUiROpiEUK; Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45Y36T1D8Hz9v17d;
- Tue, 25 Jun 2019 12:58:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1561460289; bh=SydetvpPCfMSXdVGH0QYK0XPNANuOuYHy+FU+eGD4vs=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=KcVq464OBL6x85ZTKyzQ9XH4DaURVS5vAGvaIkxtt41pjtozgCCESShwE9kHMU5eY
- sPs+CbgfYncGv7JwaqmkTOtfefkt0wfX3w+E41+J+2BkI+jxYujBv8FN9kUUngFgKy
- SeT0Wu+RJNNYT1RLNp7OXTRPgsUQJAJaZFUpuWu8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 585D28B879;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45Y36V1YJFz9v17d;
  Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1561460290; bh=StjUch5P01PzFEUUOhMMbjBSfN9wcs3cPr5gebdfa+8=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=VIe/l6jMiLVslJR4MCXn/1Fs73YSBfMRl32z+ZsGmE3LLfSG1n20Lu0evKCfW31C6
+ 1sUE5H0DH+pCM8RqanCX8d5x/rzYev9eGah0998B/gUSnJXfeFZwKUFdwVRSxn4ytO
+ aZl2lWt4n8PrH+PGBOA8EeThyY91MCS6pa/UOgos=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F47B8B87A;
+ Tue, 25 Jun 2019 12:58:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pHHb_IJct9XM; Tue, 25 Jun 2019 12:58:10 +0200 (CEST)
+ with ESMTP id UGa8wxA1cLAX; Tue, 25 Jun 2019 12:58:11 +0200 (CEST)
 Received: from pc17473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F1E5E8B874;
- Tue, 25 Jun 2019 12:58:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 073038B879;
+ Tue, 25 Jun 2019 12:58:11 +0200 (CEST)
 Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E715368E1B; Tue, 25 Jun 2019 10:58:09 +0000 (UTC)
-Message-Id: <3dcf96f0422d463de274a57b63805b76faf67fcc.1561459984.git.christophe.leroy@c-s.fr>
+ id EE8C068E1B; Tue, 25 Jun 2019 10:58:10 +0000 (UTC)
+Message-Id: <c87868803da367b6424063c4dd9058a71a110ba6.1561459984.git.christophe.leroy@c-s.fr>
 In-Reply-To: <cover.1561459983.git.christophe.leroy@c-s.fr>
 References: <cover.1561459983.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH v1 04/13] powerpc/ptrace: split out VSX related functions.
+Subject: [RFC PATCH v1 05/13] powerpc/ptrace: split out ALTIVEC related
+ functions.
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  mikey@neuling.org
-Date: Tue, 25 Jun 2019 10:58:09 +0000 (UTC)
+Date: Tue, 25 Jun 2019 10:58:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,63 +81,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move CONFIG_VSX functions out of ptrace.c, into
-ptrace-vsx.c and ptrace-novsx.c
+Move CONFIG_ALTIVEC functions out of ptrace.c, into
+ptrace-altivec.c
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/ptrace/Makefile       |   4 +
- arch/powerpc/kernel/ptrace/ptrace-decl.h  |  18 +++
- arch/powerpc/kernel/ptrace/ptrace-novsx.c |  83 ++++++++++++++
- arch/powerpc/kernel/ptrace/ptrace-vsx.c   | 177 ++++++++++++++++++++++++++++++
- arch/powerpc/kernel/ptrace/ptrace.c       | 171 +----------------------------
- 5 files changed, 284 insertions(+), 169 deletions(-)
- create mode 100644 arch/powerpc/kernel/ptrace/ptrace-decl.h
- create mode 100644 arch/powerpc/kernel/ptrace/ptrace-novsx.c
- create mode 100644 arch/powerpc/kernel/ptrace/ptrace-vsx.c
+ arch/powerpc/kernel/ptrace/Makefile         |   1 +
+ arch/powerpc/kernel/ptrace/ptrace-altivec.c | 151 ++++++++++++++++++++++++++++
+ arch/powerpc/kernel/ptrace/ptrace-decl.h    |   9 ++
+ arch/powerpc/kernel/ptrace/ptrace.c         | 124 -----------------------
+ 4 files changed, 161 insertions(+), 124 deletions(-)
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-altivec.c
 
 diff --git a/arch/powerpc/kernel/ptrace/Makefile b/arch/powerpc/kernel/ptrace/Makefile
-index 02fb28eb3b55..238c27189078 100644
+index 238c27189078..522e6fd0b5b8 100644
 --- a/arch/powerpc/kernel/ptrace/Makefile
 +++ b/arch/powerpc/kernel/ptrace/Makefile
-@@ -7,3 +7,7 @@ CFLAGS_ptrace.o		+= -DUTS_MACHINE='"$(UTS_MACHINE)"'
- 
- obj-y				+= ptrace.o
- obj-$(CONFIG_PPC64)		+= ptrace32.o
-+obj-$(CONFIG_VSX)		+= ptrace-vsx.o
-+ifneq ($(CONFIG_VSX),y)
-+obj-y				+= ptrace-novsx.o
-+endif
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-decl.h b/arch/powerpc/kernel/ptrace/ptrace-decl.h
+@@ -11,3 +11,4 @@ obj-$(CONFIG_VSX)		+= ptrace-vsx.o
+ ifneq ($(CONFIG_VSX),y)
+ obj-y				+= ptrace-novsx.o
+ endif
++obj-$(CONFIG_ALTIVEC)		+= ptrace-altivec.o
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-altivec.c b/arch/powerpc/kernel/ptrace/ptrace-altivec.c
 new file mode 100644
-index 000000000000..fc4dc598bc1d
+index 000000000000..0cb749164269
 --- /dev/null
-+++ b/arch/powerpc/kernel/ptrace/ptrace-decl.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+/* ptrace-(no)vsx */
-+
-+int fpr_get(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf);
-+int fpr_set(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count,
-+	    const void *kbuf, const void __user *ubuf);
-+
-+/* ptrace-vsx */
-+
-+int vsr_active(struct task_struct *target, const struct user_regset *regset);
-+int vsr_get(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf);
-+int vsr_set(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count,
-+	    const void *kbuf, const void __user *ubuf);
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-novsx.c b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
-new file mode 100644
-index 000000000000..55fbbb4aa9d7
---- /dev/null
-+++ b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
-@@ -0,0 +1,83 @@
++++ b/arch/powerpc/kernel/ptrace/ptrace-altivec.c
+@@ -0,0 +1,151 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +#include <linux/kernel.h>
@@ -169,432 +140,273 @@ index 000000000000..55fbbb4aa9d7
 +#include <asm/debug.h>
 +#include <asm/hw_breakpoint.h>
 +
-+#include <kernel/ptrace/ptrace-decl.h>
-+
 +/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-+ * value of all FPR registers for the current transaction.
++ * Get/set all the altivec registers vr0..vr31, vscr, vrsave, in one go.
++ * The transfer totals 34 quadword.  Quadwords 0-31 contain the
++ * corresponding vector registers.  Quadword 32 contains the vscr as the
++ * last word (offset 12) within that quadword.  Quadword 33 contains the
++ * vrsave as the first word (offset 0) within the quadword.
 + *
-+ * Userspace interface buffer layout:
-+ *
-+ * struct data {
-+ *	u64	fpr[32];
-+ *	u64	fpscr;
-+ * };
-+ */
-+int fpr_get(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
-+{
-+	BUILD_BUG_ON(offsetof(struct thread_fp_state, fpscr) !=
-+		     offsetof(struct thread_fp_state, fpr[32]));
-+
-+	flush_fp_to_thread(target);
-+
-+	return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+				   &target->thread.fp_state, 0, -1);
-+}
-+
-+/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-+ * value of all FPR registers for the current transaction.
-+ *
-+ * Userspace interface buffer layout:
-+ *
-+ * struct data {
-+ *	u64	fpr[32];
-+ *	u64	fpscr;
-+ * };
-+ *
-+ */
-+int fpr_set(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count,
-+	    const void *kbuf, const void __user *ubuf)
-+{
-+	BUILD_BUG_ON(offsetof(struct thread_fp_state, fpscr) !=
-+		     offsetof(struct thread_fp_state, fpr[32]));
-+
-+	flush_fp_to_thread(target);
-+
-+	return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-+				  &target->thread.fp_state, 0, -1);
-+}
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-vsx.c b/arch/powerpc/kernel/ptrace/ptrace-vsx.c
-new file mode 100644
-index 000000000000..1d94210cdf63
---- /dev/null
-+++ b/arch/powerpc/kernel/ptrace/ptrace-vsx.c
-@@ -0,0 +1,177 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include <linux/kernel.h>
-+#include <linux/sched.h>
-+#include <linux/mm.h>
-+#include <linux/smp.h>
-+#include <linux/errno.h>
-+#include <linux/ptrace.h>
-+#include <linux/regset.h>
-+#include <linux/tracehook.h>
-+#include <linux/elf.h>
-+#include <linux/user.h>
-+#include <linux/security.h>
-+#include <linux/signal.h>
-+#include <linux/seccomp.h>
-+#include <linux/audit.h>
-+#include <trace/syscall.h>
-+#include <linux/hw_breakpoint.h>
-+#include <linux/perf_event.h>
-+#include <linux/context_tracking.h>
-+#include <linux/nospec.h>
-+
-+#include <linux/uaccess.h>
-+#include <linux/pkeys.h>
-+#include <asm/page.h>
-+#include <asm/pgtable.h>
-+#include <asm/switch_to.h>
-+#include <asm/tm.h>
-+#include <asm/asm-prototypes.h>
-+#include <asm/debug.h>
-+#include <asm/hw_breakpoint.h>
-+
-+#include <kernel/ptrace/ptrace-decl.h>
-+
-+/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-+ * value of all FPR registers for the current transaction.
-+ *
-+ * Userspace interface buffer layout:
-+ *
-+ * struct data {
-+ *	u64	fpr[32];
-+ *	u64	fpscr;
-+ * };
-+ */
-+int fpr_get(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
-+{
-+	u64 buf[33];
-+	int i;
-+
-+	flush_fp_to_thread(target);
-+
-+	/* copy to local buffer then write that out */
-+	for (i = 0; i < 32 ; i++)
-+		buf[i] = target->thread.TS_FPR(i);
-+	buf[32] = target->thread.fp_state.fpscr;
-+	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, buf, 0, -1);
-+}
-+
-+/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-+ * value of all FPR registers for the current transaction.
-+ *
-+ * Userspace interface buffer layout:
-+ *
-+ * struct data {
-+ *	u64	fpr[32];
-+ *	u64	fpscr;
-+ * };
-+ *
-+ */
-+int fpr_set(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count,
-+	    const void *kbuf, const void __user *ubuf)
-+{
-+	u64 buf[33];
-+	int i;
-+
-+	flush_fp_to_thread(target);
-+
-+	for (i = 0; i < 32 ; i++)
-+		buf[i] = target->thread.TS_FPR(i);
-+	buf[32] = target->thread.fp_state.fpscr;
-+
-+	/* copy to local buffer then write that out */
-+	i = user_regset_copyin(&pos, &count, &kbuf, &ubuf, buf, 0, -1);
-+	if (i)
-+		return i;
-+
-+	for (i = 0; i < 32 ; i++)
-+		target->thread.TS_FPR(i) = buf[i];
-+	target->thread.fp_state.fpscr = buf[32];
-+	return 0;
-+}
-+
-+/*
-+ * Currently to set and and get all the vsx state, you need to call
-+ * the fp and VMX calls as well.  This only get/sets the lower 32
-+ * 128bit VSX registers.
++ * This definition of the VMX state is compatible with the current PPC32
++ * ptrace interface.  This allows signal handling and ptrace to use the
++ * same structures.  This also simplifies the implementation of a bi-arch
++ * (combined (32- and 64-bit) gdb.
 + */
 +
-+int vsr_active(struct task_struct *target, const struct user_regset *regset)
++int vr_active(struct task_struct *target, const struct user_regset *regset)
 +{
-+	flush_vsx_to_thread(target);
-+	return target->thread.used_vsr ? regset->n : 0;
-+}
-+
-+/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last
-+ * checkpointed value of all FPR registers for the current
-+ * transaction.
-+ *
-+ * Userspace interface buffer layout:
-+ *
-+ * struct data {
-+ *	u64	vsx[32];
-+ * };
-+ */
-+int vsr_get(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
-+{
-+	u64 buf[32];
-+	int ret, i;
-+
-+	flush_tmregs_to_thread(target);
-+	flush_fp_to_thread(target);
 +	flush_altivec_to_thread(target);
-+	flush_vsx_to_thread(target);
++	return target->thread.used_vr ? regset->n : 0;
++}
 +
-+	for (i = 0; i < 32 ; i++)
-+		buf[i] = target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET];
++/*
++ * Regardless of transactions, 'vr_state' holds the current running
++ * value of all the VMX registers and 'ckvr_state' holds the last
++ * checkpointed value of all the VMX registers for the current
++ * transaction to fall back on in case it aborts.
++ *
++ * Userspace interface buffer layout:
++ *
++ * struct data {
++ *	vector128	vr[32];
++ *	vector128	vscr;
++ *	vector128	vrsave;
++ * };
++ */
++int vr_get(struct task_struct *target, const struct user_regset *regset,
++	   unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
++{
++	int ret;
++
++	flush_altivec_to_thread(target);
++
++	BUILD_BUG_ON(offsetof(struct thread_vr_state, vscr) !=
++		     offsetof(struct thread_vr_state, vr[32]));
 +
 +	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
-+				  buf, 0, 32 * sizeof(double));
++				  &target->thread.vr_state, 0,
++				  33 * sizeof(vector128));
++	if (!ret) {
++		/*
++		 * Copy out only the low-order word of vrsave.
++		 */
++		int start, end;
++		union {
++			elf_vrreg_t reg;
++			u32 word;
++		} vrsave;
++		memset(&vrsave, 0, sizeof(vrsave));
++
++		vrsave.word = target->thread.vrsave;
++
++		start = 33 * sizeof(vector128);
++		end = start + sizeof(vrsave);
++		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &vrsave,
++					  start, end);
++	}
 +
 +	return ret;
 +}
 +
 +/*
-+ * Regardless of transactions, 'fp_state' holds the current running
-+ * value of all FPR registers and 'ckfp_state' holds the last
-+ * checkpointed value of all FPR registers for the current
-+ * transaction.
++ * Regardless of transactions, 'vr_state' holds the current running
++ * value of all the VMX registers and 'ckvr_state' holds the last
++ * checkpointed value of all the VMX registers for the current
++ * transaction to fall back on in case it aborts.
 + *
 + * Userspace interface buffer layout:
 + *
 + * struct data {
-+ *	u64	vsx[32];
++ *	vector128	vr[32];
++ *	vector128	vscr;
++ *	vector128	vrsave;
 + * };
 + */
-+int vsr_set(struct task_struct *target, const struct user_regset *regset,
-+	    unsigned int pos, unsigned int count,
-+	    const void *kbuf, const void __user *ubuf)
++int vr_set(struct task_struct *target, const struct user_regset *regset,
++	   unsigned int pos, unsigned int count,
++	   const void *kbuf, const void __user *ubuf)
 +{
-+	u64 buf[32];
-+	int ret,i;
++	int ret;
 +
-+	flush_tmregs_to_thread(target);
-+	flush_fp_to_thread(target);
 +	flush_altivec_to_thread(target);
-+	flush_vsx_to_thread(target);
 +
-+	for (i = 0; i < 32 ; i++)
-+		buf[i] = target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET];
++	BUILD_BUG_ON(offsetof(struct thread_vr_state, vscr) !=
++		     offsetof(struct thread_vr_state, vr[32]));
 +
 +	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
-+				 buf, 0, 32 * sizeof(double));
-+	if (!ret)
-+		for (i = 0; i < 32 ; i++)
-+			target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = buf[i];
++				 &target->thread.vr_state, 0,
++				 33 * sizeof(vector128));
++	if (!ret && count > 0) {
++		/*
++		 * We use only the first word of vrsave.
++		 */
++		int start, end;
++		union {
++			elf_vrreg_t reg;
++			u32 word;
++		} vrsave;
++		memset(&vrsave, 0, sizeof(vrsave));
++
++		vrsave.word = target->thread.vrsave;
++
++		start = 33 * sizeof(vector128);
++		end = start + sizeof(vrsave);
++		ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &vrsave,
++					 start, end);
++		if (!ret)
++			target->thread.vrsave = vrsave.word;
++	}
 +
 +	return ret;
 +}
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-decl.h b/arch/powerpc/kernel/ptrace/ptrace-decl.h
+index fc4dc598bc1d..35c1d127fc64 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-decl.h
++++ b/arch/powerpc/kernel/ptrace/ptrace-decl.h
+@@ -16,3 +16,12 @@ int vsr_get(struct task_struct *target, const struct user_regset *regset,
+ int vsr_set(struct task_struct *target, const struct user_regset *regset,
+ 	    unsigned int pos, unsigned int count,
+ 	    const void *kbuf, const void __user *ubuf);
++
++/* ptrace-altivec */
++
++int vr_active(struct task_struct *target, const struct user_regset *regset);
++int vr_get(struct task_struct *target, const struct user_regset *regset,
++	   unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf);
++int vr_set(struct task_struct *target, const struct user_regset *regset,
++	   unsigned int pos, unsigned int count,
++	   const void *kbuf, const void __user *ubuf);
 diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index cc8efcb404d6..621a0181f6f7 100644
+index 621a0181f6f7..141dc0b8f502 100644
 --- a/arch/powerpc/kernel/ptrace/ptrace.c
 +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -48,6 +48,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/syscalls.h>
- 
-+#include <kernel/ptrace/ptrace-decl.h>
-+
- struct pt_regs_offset {
- 	const char *name;
- 	int offset;
-@@ -415,91 +417,6 @@ static int gpr_set(struct task_struct *target, const struct user_regset *regset,
+@@ -417,130 +417,6 @@ static int gpr_set(struct task_struct *target, const struct user_regset *regset,
  	return ret;
  }
  
+-#ifdef CONFIG_ALTIVEC
 -/*
-- * Regardless of transactions, 'fp_state' holds the current running
-- * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-- * value of all FPR registers for the current transaction.
+- * Get/set all the altivec registers vr0..vr31, vscr, vrsave, in one go.
+- * The transfer totals 34 quadword.  Quadwords 0-31 contain the
+- * corresponding vector registers.  Quadword 32 contains the vscr as the
+- * last word (offset 12) within that quadword.  Quadword 33 contains the
+- * vrsave as the first word (offset 0) within the quadword.
 - *
-- * Userspace interface buffer layout:
-- *
-- * struct data {
-- *	u64	fpr[32];
-- *	u64	fpscr;
-- * };
-- */
--static int fpr_get(struct task_struct *target, const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   void *kbuf, void __user *ubuf)
--{
--#ifdef CONFIG_VSX
--	u64 buf[33];
--	int i;
--
--	flush_fp_to_thread(target);
--
--	/* copy to local buffer then write that out */
--	for (i = 0; i < 32 ; i++)
--		buf[i] = target->thread.TS_FPR(i);
--	buf[32] = target->thread.fp_state.fpscr;
--	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, buf, 0, -1);
--#else
--	BUILD_BUG_ON(offsetof(struct thread_fp_state, fpscr) !=
--		     offsetof(struct thread_fp_state, fpr[32]));
--
--	flush_fp_to_thread(target);
--
--	return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
--				   &target->thread.fp_state, 0, -1);
--#endif
--}
--
--/*
-- * Regardless of transactions, 'fp_state' holds the current running
-- * value of all FPR registers and 'ckfp_state' holds the last checkpointed
-- * value of all FPR registers for the current transaction.
-- *
-- * Userspace interface buffer layout:
-- *
-- * struct data {
-- *	u64	fpr[32];
-- *	u64	fpscr;
-- * };
-- *
-- */
--static int fpr_set(struct task_struct *target, const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   const void *kbuf, const void __user *ubuf)
--{
--#ifdef CONFIG_VSX
--	u64 buf[33];
--	int i;
--
--	flush_fp_to_thread(target);
--
--	for (i = 0; i < 32 ; i++)
--		buf[i] = target->thread.TS_FPR(i);
--	buf[32] = target->thread.fp_state.fpscr;
--
--	/* copy to local buffer then write that out */
--	i = user_regset_copyin(&pos, &count, &kbuf, &ubuf, buf, 0, -1);
--	if (i)
--		return i;
--
--	for (i = 0; i < 32 ; i++)
--		target->thread.TS_FPR(i) = buf[i];
--	target->thread.fp_state.fpscr = buf[32];
--	return 0;
--#else
--	BUILD_BUG_ON(offsetof(struct thread_fp_state, fpscr) !=
--		     offsetof(struct thread_fp_state, fpr[32]));
--
--	flush_fp_to_thread(target);
--
--	return user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--				  &target->thread.fp_state, 0, -1);
--#endif
--}
--
- #ifdef CONFIG_ALTIVEC
- /*
-  * Get/set all the altivec registers vr0..vr31, vscr, vrsave, in one go.
-@@ -624,90 +541,6 @@ static int vr_set(struct task_struct *target, const struct user_regset *regset,
- }
- #endif /* CONFIG_ALTIVEC */
- 
--#ifdef CONFIG_VSX
--/*
-- * Currently to set and and get all the vsx state, you need to call
-- * the fp and VMX calls as well.  This only get/sets the lower 32
-- * 128bit VSX registers.
+- * This definition of the VMX state is compatible with the current PPC32
+- * ptrace interface.  This allows signal handling and ptrace to use the
+- * same structures.  This also simplifies the implementation of a bi-arch
+- * (combined (32- and 64-bit) gdb.
 - */
 -
--static int vsr_active(struct task_struct *target,
--		      const struct user_regset *regset)
+-static int vr_active(struct task_struct *target,
+-		     const struct user_regset *regset)
 -{
--	flush_vsx_to_thread(target);
--	return target->thread.used_vsr ? regset->n : 0;
--}
--
--/*
-- * Regardless of transactions, 'fp_state' holds the current running
-- * value of all FPR registers and 'ckfp_state' holds the last
-- * checkpointed value of all FPR registers for the current
-- * transaction.
-- *
-- * Userspace interface buffer layout:
-- *
-- * struct data {
-- *	u64	vsx[32];
-- * };
-- */
--static int vsr_get(struct task_struct *target, const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   void *kbuf, void __user *ubuf)
--{
--	u64 buf[32];
--	int ret, i;
--
--	flush_tmregs_to_thread(target);
--	flush_fp_to_thread(target);
 -	flush_altivec_to_thread(target);
--	flush_vsx_to_thread(target);
+-	return target->thread.used_vr ? regset->n : 0;
+-}
 -
--	for (i = 0; i < 32 ; i++)
--		buf[i] = target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET];
+-/*
+- * Regardless of transactions, 'vr_state' holds the current running
+- * value of all the VMX registers and 'ckvr_state' holds the last
+- * checkpointed value of all the VMX registers for the current
+- * transaction to fall back on in case it aborts.
+- *
+- * Userspace interface buffer layout:
+- *
+- * struct data {
+- *	vector128	vr[32];
+- *	vector128	vscr;
+- *	vector128	vrsave;
+- * };
+- */
+-static int vr_get(struct task_struct *target, const struct user_regset *regset,
+-		  unsigned int pos, unsigned int count,
+-		  void *kbuf, void __user *ubuf)
+-{
+-	int ret;
+-
+-	flush_altivec_to_thread(target);
+-
+-	BUILD_BUG_ON(offsetof(struct thread_vr_state, vscr) !=
+-		     offsetof(struct thread_vr_state, vr[32]));
 -
 -	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
--				  buf, 0, 32 * sizeof(double));
+-				  &target->thread.vr_state, 0,
+-				  33 * sizeof(vector128));
+-	if (!ret) {
+-		/*
+-		 * Copy out only the low-order word of vrsave.
+-		 */
+-		int start, end;
+-		union {
+-			elf_vrreg_t reg;
+-			u32 word;
+-		} vrsave;
+-		memset(&vrsave, 0, sizeof(vrsave));
+-
+-		vrsave.word = target->thread.vrsave;
+-
+-		start = 33 * sizeof(vector128);
+-		end = start + sizeof(vrsave);
+-		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &vrsave,
+-					  start, end);
+-	}
 -
 -	return ret;
 -}
 -
 -/*
-- * Regardless of transactions, 'fp_state' holds the current running
-- * value of all FPR registers and 'ckfp_state' holds the last
-- * checkpointed value of all FPR registers for the current
-- * transaction.
+- * Regardless of transactions, 'vr_state' holds the current running
+- * value of all the VMX registers and 'ckvr_state' holds the last
+- * checkpointed value of all the VMX registers for the current
+- * transaction to fall back on in case it aborts.
 - *
 - * Userspace interface buffer layout:
 - *
 - * struct data {
-- *	u64	vsx[32];
+- *	vector128	vr[32];
+- *	vector128	vscr;
+- *	vector128	vrsave;
 - * };
 - */
--static int vsr_set(struct task_struct *target, const struct user_regset *regset,
--		   unsigned int pos, unsigned int count,
--		   const void *kbuf, const void __user *ubuf)
+-static int vr_set(struct task_struct *target, const struct user_regset *regset,
+-		  unsigned int pos, unsigned int count,
+-		  const void *kbuf, const void __user *ubuf)
 -{
--	u64 buf[32];
--	int ret,i;
+-	int ret;
 -
--	flush_tmregs_to_thread(target);
--	flush_fp_to_thread(target);
 -	flush_altivec_to_thread(target);
--	flush_vsx_to_thread(target);
 -
--	for (i = 0; i < 32 ; i++)
--		buf[i] = target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET];
+-	BUILD_BUG_ON(offsetof(struct thread_vr_state, vscr) !=
+-		     offsetof(struct thread_vr_state, vr[32]));
 -
 -	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
--				 buf, 0, 32 * sizeof(double));
--	if (!ret)
--		for (i = 0; i < 32 ; i++)
--			target->thread.fp_state.fpr[i][TS_VSRLOWOFFSET] = buf[i];
+-				 &target->thread.vr_state, 0,
+-				 33 * sizeof(vector128));
+-	if (!ret && count > 0) {
+-		/*
+-		 * We use only the first word of vrsave.
+-		 */
+-		int start, end;
+-		union {
+-			elf_vrreg_t reg;
+-			u32 word;
+-		} vrsave;
+-		memset(&vrsave, 0, sizeof(vrsave));
+-
+-		vrsave.word = target->thread.vrsave;
+-
+-		start = 33 * sizeof(vector128);
+-		end = start + sizeof(vrsave);
+-		ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &vrsave,
+-					 start, end);
+-		if (!ret)
+-			target->thread.vrsave = vrsave.word;
+-	}
 -
 -	return ret;
 -}
--#endif /* CONFIG_VSX */
+-#endif /* CONFIG_ALTIVEC */
 -
  #ifdef CONFIG_SPE
  
