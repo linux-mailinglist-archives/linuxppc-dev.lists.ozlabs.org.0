@@ -1,55 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80497551A2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 16:26:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8092A5502E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 15:24:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Y6M21t8WzDqMr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2019 23:24:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Y7l82JHRzDqRG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 00:26:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=mathieu.malaterre@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=aarcange@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=debian.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Y6Hj4jBYzDqMk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 23:21:21 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id e8so17188350otl.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 06:21:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=GgVn9o2XMV2ez9jDzY+0llaXiVjr0qoFXFfqDt3jX2U=;
- b=J+SIhCo+cEHqhJd6pjlJvaQsY83yOy2ueebExbm50jUu+kG2qHYEheypn19ZtdFIcD
- FPKY2E5OllxaLDyQnhXWFT8nuIrvEgSrCkp3cCSC6DPnkRPgsmH4OyeFCyk/TqbFsZ6Y
- 2mdSoyz2BTN4OSwnKC0bRABuYi8A9A+EJ3wVtUb0Rml6farASDuq4PNWhvmuBgoNZ1eE
- dsta3LtVll03w0iDt3KauIxOvoX9kwdGspiMUu78pw2X+jqvS8seBRPdIIGKgZ8RTpNG
- MV7bFi/s+muV2av+jwEZv0xLDmK0/JYs1EqDpId1OQtdBjM7i3sZJN+TcPXzZ2+h4V82
- PRLA==
-X-Gm-Message-State: APjAAAV8loDO6BDqlJ95VB6I5b7fPRjr9fNnRujIOta9+AeEjTkc559t
- mQ33z5AU7RI3OAv1+hPziuwxPUvapTP3N3RnEYA=
-X-Google-Smtp-Source: APXvYqxtTdkEuscypnU/zXHDBFVFEQQfPBzKSH4cOLu0kIQSsZem/FyWnB8vAkRTtysTKJpjYdQxucZzxLUC8tY+nHQ=
-X-Received: by 2002:a9d:4109:: with SMTP id o9mr5521556ote.353.1561468878433; 
- Tue, 25 Jun 2019 06:21:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Y7hk6nN0zDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 00:24:38 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id A14AA30BB524;
+ Tue, 25 Jun 2019 14:17:35 +0000 (UTC)
+Received: from ultra.random (ovpn-120-252.rdu2.redhat.com [10.10.120.252])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C01A21001E8C;
+ Tue, 25 Jun 2019 14:17:29 +0000 (UTC)
+From: Andrea Arcangeli <aarcange@redhat.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 1/1] powerpc: fix off by one in max_zone_pfn initialization
+ for ZONE_DMA
+Date: Tue, 25 Jun 2019 10:17:27 -0400
+Message-Id: <20190625141727.2883-1-aarcange@redhat.com>
 MIME-Version: 1.0
-References: <cover.1561459983.git.christophe.leroy@c-s.fr>
- <290a9673b0adac34f0008f2679efd5ab5a5c4478.1561459984.git.christophe.leroy@c-s.fr>
-In-Reply-To: <290a9673b0adac34f0008f2679efd5ab5a5c4478.1561459984.git.christophe.leroy@c-s.fr>
-From: Mathieu Malaterre <malat@debian.org>
-Date: Tue, 25 Jun 2019 15:21:05 +0200
-Message-ID: <CA+7wUsxL0OHvOn51hbJyAhpi=OJye=axKfVyauhEVXLqFuFqHA@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 11/13] powerpc/ptrace: create ppc_gethwdinfo()
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.49]); Tue, 25 Jun 2019 14:17:47 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,146 +51,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, LKML <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 25, 2019 at 1:22 PM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
-> Create ippc_gethwdinfo() to handle PPC_PTRACE_GETHWDBGINFO and
+25078dc1f74be16b858e914f52cc8f4d03c2271a first introduced an off by
+one error in the ZONE_DMA initialization of PPC_BOOK3E_64=y and since
+9739ab7eda459f0669ec9807e0d9be5020bab88c the off by one applies to
+PPC32=y too. This simply corrects the off by one and should resolve
+crashes like below:
 
-s/ippc_gethwdinfo/ppc_gethwdinfo/
+[   65.179101] page 0x7fff outside node 0 zone DMA [ 0x0 - 0x7fff ]
 
-> reduce ifdef mess
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/kernel/ptrace/ptrace-adv.c   | 15 +++++++++++++++
->  arch/powerpc/kernel/ptrace/ptrace-decl.h  |  1 +
->  arch/powerpc/kernel/ptrace/ptrace-noadv.c | 20 +++++++++++++++++++
->  arch/powerpc/kernel/ptrace/ptrace.c       | 32 +------------------------------
->  4 files changed, 37 insertions(+), 31 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace-adv.c b/arch/powerpc/kernel/ptrace/ptrace-adv.c
-> index dcc765940344..f5f334484ebc 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace-adv.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace-adv.c
-> @@ -83,6 +83,21 @@ void user_disable_single_step(struct task_struct *task)
->         clear_tsk_thread_flag(task, TIF_SINGLESTEP);
->  }
->
-> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
+Unfortunately in various MM places "max" means a non inclusive end of
+range. free_area_init_nodes max_zone_pfn parameter is one case and
+MAX_ORDER is another one (unrelated) that comes by memory.
 
-Would it be possible to rename it to `ppc_gethwdbginfo`, I find it
-easier to read.
+Reported-by: Zorro Lang <zlang@redhat.com>
+Fixes: 25078dc1f74b ("powerpc: use mm zones more sensibly")
+Fixes: 9739ab7eda45 ("powerpc: enable a 30-bit ZONE_DMA for 32-bit pmac")
+Signed-off-by: Andrea Arcangeli <aarcange@redhat.com>
+---
+ arch/powerpc/mm/mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +{
-> +       dbginfo->version = 1;
-> +       dbginfo->num_instruction_bps = CONFIG_PPC_ADV_DEBUG_IACS;
-> +       dbginfo->num_data_bps = CONFIG_PPC_ADV_DEBUG_DACS;
-> +       dbginfo->num_condition_regs = CONFIG_PPC_ADV_DEBUG_DVCS;
-> +       dbginfo->data_bp_alignment = 4;
-> +       dbginfo->sizeof_condition = 4;
-> +       dbginfo->features = PPC_DEBUG_FEATURE_INSN_BP_RANGE |
-> +                           PPC_DEBUG_FEATURE_INSN_BP_MASK;
-> +       if (IS_ENABLED(CONFIG_PPC_ADV_DEBUG_DAC_RANGE))
-> +               dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_RANGE |
-> +                                    PPC_DEBUG_FEATURE_DATA_BP_MASK;
-> +}
-> +
->  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
->                         unsigned long __user *datalp)
->  {
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace-decl.h b/arch/powerpc/kernel/ptrace/ptrace-decl.h
-> index cd5b8256ba56..2404b987b23c 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace-decl.h
-> +++ b/arch/powerpc/kernel/ptrace/ptrace-decl.h
-> @@ -141,6 +141,7 @@ int tm_cgpr32_set(struct task_struct *target, const struct user_regset *regset,
->  extern const struct user_regset_view user_ppc_native_view;
->
->  /* ptrace-(no)adv */
-> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo);
->  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
->                         unsigned long __user *datalp);
->  int ptrace_set_debugreg(struct task_struct *task, unsigned long addr, unsigned long data);
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-> index 985cca136f85..426fedd7ab6c 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-> @@ -64,6 +64,26 @@ void user_disable_single_step(struct task_struct *task)
->         clear_tsk_thread_flag(task, TIF_SINGLESTEP);
->  }
->
-> +void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
-> +{
-> +       dbginfo->version = 1;
-> +       dbginfo->num_instruction_bps = 0;
-> +       if (ppc_breakpoint_available())
-> +               dbginfo->num_data_bps = 1;
-> +       else
-> +               dbginfo->num_data_bps = 0;
-> +       dbginfo->num_condition_regs = 0;
-> +       dbginfo->data_bp_alignment = sizeof(long);
-> +       dbginfo->sizeof_condition = 0;
-> +       if (IS_ENABLED(CONFIG_HAVE_HW_BREAKPOINT)) {
-> +               dbginfo->features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
-> +               if (dawr_enabled())
-> +                       dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR;
-> +       } else {
-> +               dbginfo->features = 0;
-> +       }
-> +}
-> +
->  int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
->                         unsigned long __user *datalp)
->  {
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-> index e789afae6f56..31e8c5a9171e 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> @@ -159,37 +159,7 @@ long arch_ptrace(struct task_struct *child, long request,
->         case PPC_PTRACE_GETHWDBGINFO: {
->                 struct ppc_debug_info dbginfo;
->
-> -               dbginfo.version = 1;
-> -#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> -               dbginfo.num_instruction_bps = CONFIG_PPC_ADV_DEBUG_IACS;
-> -               dbginfo.num_data_bps = CONFIG_PPC_ADV_DEBUG_DACS;
-> -               dbginfo.num_condition_regs = CONFIG_PPC_ADV_DEBUG_DVCS;
-> -               dbginfo.data_bp_alignment = 4;
-> -               dbginfo.sizeof_condition = 4;
-> -               dbginfo.features = PPC_DEBUG_FEATURE_INSN_BP_RANGE |
-> -                                  PPC_DEBUG_FEATURE_INSN_BP_MASK;
-> -#ifdef CONFIG_PPC_ADV_DEBUG_DAC_RANGE
-> -               dbginfo.features |=
-> -                                  PPC_DEBUG_FEATURE_DATA_BP_RANGE |
-> -                                  PPC_DEBUG_FEATURE_DATA_BP_MASK;
-> -#endif
-> -#else /* !CONFIG_PPC_ADV_DEBUG_REGS */
-> -               dbginfo.num_instruction_bps = 0;
-> -               if (ppc_breakpoint_available())
-> -                       dbginfo.num_data_bps = 1;
-> -               else
-> -                       dbginfo.num_data_bps = 0;
-> -               dbginfo.num_condition_regs = 0;
-> -               dbginfo.data_bp_alignment = sizeof(long);
-> -               dbginfo.sizeof_condition = 0;
-> -#ifdef CONFIG_HAVE_HW_BREAKPOINT
-> -               dbginfo.features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
-> -               if (dawr_enabled())
-> -                       dbginfo.features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR;
-> -#else
-> -               dbginfo.features = 0;
-> -#endif /* CONFIG_HAVE_HW_BREAKPOINT */
-> -#endif /* CONFIG_PPC_ADV_DEBUG_REGS */
-> +               ppc_gethwdinfo(&dbginfo);
->
->                 if (copy_to_user(datavp, &dbginfo,
->                                  sizeof(struct ppc_debug_info)))
-> --
-> 2.13.3
->
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 2540d3b2588c..2eda1ec36f55 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -249,7 +249,7 @@ void __init paging_init(void)
+ 
+ #ifdef CONFIG_ZONE_DMA
+ 	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+-			((1UL << ARCH_ZONE_DMA_BITS) - 1) >> PAGE_SHIFT);
++				      1UL << (ARCH_ZONE_DMA_BITS - PAGE_SHIFT));
+ #endif
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+ #ifdef CONFIG_HIGHMEM
