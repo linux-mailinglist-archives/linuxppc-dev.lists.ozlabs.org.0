@@ -2,41 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F805622A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 08:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B86056299
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 08:50:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YXlZ51x0zDqXD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 16:13:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YYZd2S84zDqJP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 16:50:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YXjY5T1HzDq7j
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 16:11:41 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 96E90AF25;
- Wed, 26 Jun 2019 06:11:36 +0000 (UTC)
-Date: Wed, 26 Jun 2019 08:11:34 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Hoan Tran OS <hoan@os.amperecomputing.com>
-Subject: Re: [PATCH 1/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default
- for NUMA
-Message-ID: <20190626061134.GD17798@dhcp22.suse.cz>
-References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
- <1561501810-25163-2-git-send-email-Hoan@os.amperecomputing.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YYXm3MZyzDqFK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 16:49:11 +1000 (AEST)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id 0462268B05; Wed, 26 Jun 2019 08:48:38 +0200 (CEST)
+Date: Wed, 26 Jun 2019 08:48:37 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Mark Greer <mgreer@animalcreek.com>
+Subject: Re: DMA coherency in drivers/tty/serial/mpsc.c
+Message-ID: <20190626064837.GA24531@lst.de>
+References: <20190625122641.GA4421@lst.de>
+ <20190625163722.GA18626@animalcreek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1561501810-25163-2-git-send-email-Hoan@os.amperecomputing.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190625163722.GA18626@animalcreek.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,64 +46,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Oscar Salvador <osalvador@suse.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Paul Gortmaker <paul.gortmaker@windriver.com>,
+ linux-serial@vger.kernel.org, Dale Farnsworth <dale@farnsworth.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 25-06-19 22:30:24, Hoan Tran OS wrote:
-> This patch enables CONFIG_NODES_SPAN_OTHER_NODES by default
-> for NUMA. As some NUMA nodes have memory ranges that span other
-> nodes. Even though a pfn is valid and between a node's start and
-> end pfns, it may not reside on that node.
-
-Please describe the problem more thoroughly. What is the layout, what
-doesn't work with the default configuration and why do we need this
-particular fix rather than enabling of the config option for the
-specific HW.
-
+On Tue, Jun 25, 2019 at 09:37:22AM -0700, Mark Greer wrote:
+> Yeah, the mpsc driver had lots of ugly cache related hacks because of
+> cache coherency bugs in the early version of the MV64x60 bridge chips
+> that it was embedded in.  That chip is pretty much dead now and I've
+> removed core support for it from the powerpc tree.  Removing the mpsc
+> driver is on my todo list but I've been busy and lazy.  So, to sum it
+> up, don't spend any more time worrying about it as it should be removed.
 > 
-> Signed-off-by: Hoan Tran <Hoan@os.amperecomputing.com>
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d66bc8a..6335505 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1413,7 +1413,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
->  }
->  #endif
->  
-> -#ifdef CONFIG_NODES_SPAN_OTHER_NODES
-> +#ifdef CONFIG_NUMA
->  /* Only safe to use early in boot when initialisation is single-threaded */
->  static inline bool __meminit early_pfn_in_nid(unsigned long pfn, int node)
->  {
-> -- 
-> 2.7.4
-> 
+> I'll post a patch to do that tonight and I'm sorry for any time you've
+> spent looking at it so far.
 
--- 
-Michal Hocko
-SUSE Labs
+No problem.  And if future such broken chips show up we now have
+support for per-device DMA coherency settings and could actually
+handle it in a reaѕonably clean way.
