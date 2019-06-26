@@ -2,44 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC3B55B8E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 00:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D368D55CEA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 02:30:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YLtN54dMzDqY3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 08:48:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YP7f372hzDqR5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 10:30:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tglx@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.b="YeX/xFTe"; dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YLrc0zbBzDqXR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 08:47:11 +1000 (AEST)
-Received: from p5b06daab.dip0.t-ipconnect.de ([91.6.218.171] helo=nanos)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1hfuC6-0002Ou-9G; Wed, 26 Jun 2019 00:45:42 +0200
-Date: Wed, 26 Jun 2019 00:45:41 +0200 (CEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Hoan Tran OS <hoan@os.amperecomputing.com>
-Subject: Re: [PATCH 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
-In-Reply-To: <1561501810-25163-4-git-send-email-Hoan@os.amperecomputing.com>
-Message-ID: <alpine.DEB.2.21.1906260032250.32342@nanos.tec.linutronix.de>
-References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
- <1561501810-25163-4-git-send-email-Hoan@os.amperecomputing.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YP5p1n1pzDqLS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 10:28:44 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id w25so1124032ioc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 17:28:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=T/uR/4PciUq//wm8VvTrYpqXShwr7/kFFKyCPyP8pcs=;
+ b=YeX/xFTe86cLjtEiwNDGr0CKTn6yvfRoFVYAyjGpJqcjyjOauh0oSms8qNpsPWv76x
+ eRvUUgmWL0+6wScBbr8rD2ZZ/RfhNpAX4UKm1peplkD8GmwmOk+8uVKUsB9hanwxe3Dm
+ H0krLG+sD5Fzr71HJU1x0kXlYQzuI9cWXt4LY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=T/uR/4PciUq//wm8VvTrYpqXShwr7/kFFKyCPyP8pcs=;
+ b=O1hiscYwB7ebfPQGyxjLusgaKVpRAYkweUBq0wc5vC6Y9UD+yPrLabId+zDKQoH5js
+ k46uvXDxr+Sm9tZbdR1wiswHhAjk8H5qLh7KPXJA6K6Q1mXJ3uH90LUNTfsCFekPB7a/
+ Xx2uvbNftn0LvTTY5iPWUVkYXtmWh41RkHrj0GEbSR9IrKWb/IHoeBqysNrH4L1ucipQ
+ 1SG09BPc07MIhzLhVpSAcqsQZF+UFb7KjyJAkECOOZEgRbJgpp7bEZzc17WuWf/mVLpO
+ YNtztQwCWpjQ6t++pyvFaAnSCKn/yJWlJuCU+t+71V43Jnk32cljdNh1HmkyFBgVy6es
+ 1rew==
+X-Gm-Message-State: APjAAAVY46ubppPGWdaO9f7ociCr0pEnxs9xn5Ia/6ralml8JS1V8fL6
+ 3ETf62v/8M57/j8pl7EkR4QKsfy58scV6X6nYNYNEQ==
+X-Google-Smtp-Source: APXvYqxX0Qrt909cJIALCW0svY89PQl3z7r/J2jSYrLO+BEo6+PoMkKF1jAWxKfLc2PBHctF8DPoeOKanHzXan7VOSY=
+X-Received: by 2002:a6b:6d07:: with SMTP id a7mr1751422iod.254.1561508921439; 
+ Tue, 25 Jun 2019 17:28:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
- SHORTCIRCUIT=-0.0001
+References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
+In-Reply-To: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 26 Jun 2019 08:28:30 +0800
+Message-ID: <CAADWXX8wdEPNZ26SFJUfwrhQson3HPTrZ7D2jju3RhEeMuc+QQ@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Enable CONFIG_NODES_SPAN_OTHER_NODES by default for
+ NUMA
+To: Hoan Tran OS <hoan@os.amperecomputing.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,7 +84,7 @@ Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
  Open Source Submission <patches@amperecomputing.com>,
  Pavel Tatashin <pavel.tatashin@microsoft.com>,
  Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
  "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
  Oscar Salvador <osalvador@suse.de>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -75,57 +95,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hoan,
+This is not a comment on the patch series itself, it is a comment on the emails.
 
-On Tue, 25 Jun 2019, Hoan Tran OS wrote:
+Your email is mis-configured and ends up all being marked as spam for
+me, because you go through the wrong smtp server (or maybe your smtp
+server itself is miconfigured)
 
-Please use 'x86/Kconfig: ' as prefix.
+All your emails fail dmarc, because the "From" header is
+os.amperecomputing.com, but the DKIM signature is for
+amperemail.onmicrosoft.com.
 
-> This patch removes CONFIG_NODES_SPAN_OTHER_NODES as it's
-> enabled by default with NUMA.
+End result: it wil all go into the spam box of anybody who checks DKIM.
 
-Please do not use 'This patch' in changelogs. It's pointless because we
-already know that this is a patch.
+                       Linus
 
-See also Documentation/process/submitting-patches.rst and search for 'This
-patch'
-
-Simply say:
-
-  Remove CONFIG_NODES_SPAN_OTHER_NODES as it's enabled by default with
-  NUMA.
-
-But .....
-
-> @@ -1567,15 +1567,6 @@ config X86_64_ACPI_NUMA
->  	---help---
->  	  Enable ACPI SRAT based node topology detection.
->  
-> -# Some NUMA nodes have memory ranges that span
-> -# other nodes.  Even though a pfn is valid and
-> -# between a node's start and end pfns, it may not
-> -# reside on that node.  See memmap_init_zone()
-> -# for details.
-> -config NODES_SPAN_OTHER_NODES
-> -	def_bool y
-> -	depends on X86_64_ACPI_NUMA
-
-the changelog does not mention that this lifts the dependency on
-X86_64_ACPI_NUMA and therefore enables that functionality for anything
-which has NUMA enabled including 32bit.
-
-The core mm change gives no helpful information either. You just copied the
-above comment text from some random Kconfig.
-
-This needs a bit more data in the changelogs and the cover letter:
-
-     - Why is it useful to enable it unconditionally
-
-     - Why is it safe to do so, even if the architecture had constraints on
-       it
-
-     - What's the potential impact
-
-Thanks,
-
-	tglx
+On Wed, Jun 26, 2019 at 6:30 AM Hoan Tran OS
+<hoan@os.amperecomputing.com> wrote:
+>
+> This patch set enables CONFIG_NODES_SPAN_OTHER_NODES by default
+> for NUMA. [...]
