@@ -2,156 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB4655D0F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 02:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EF6562CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 08:57:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YPVR4SKqzDqZN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 10:46:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YYkM0J9gzDqMT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 16:57:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="B6I8/oOV"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YPSK4lf1zDqXD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 10:44:45 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id n2so267257pgp.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 17:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=odaGd/vvFg6XWZRKxNSKSVH5fubUgqzMshzX0ZrLcAI=;
- b=B6I8/oOVHcgzODNvngKYekJN0ffpD1Hk/vo2QN+QsUbks/o0bfsbfgHIiQUKr5ln/e
- vBDS3JmANPTvXIHFjKEtOw3fAgpU05QQOf4xfIYJjGmQtgL92AYUQw6RBAU3rVdtFd/z
- 56k+GJhGVDNWgvGgls51J8kj9wb8LPgs5lXi4pyQ9SP6HtYzUlv0xcLsrMymIS3igw0e
- RbTS+icQocVpKV2DClYagiKGbUcDhybL57pTESZOhOHcaUSf95R/qtqj8VmHqEw/o2R1
- JtgFC8U1kljPYmBgYvkKng4NM/dgUG+W11m3wjIbwjkAlDbDe88wxjkkJvpo8WOW5ddr
- hqmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=odaGd/vvFg6XWZRKxNSKSVH5fubUgqzMshzX0ZrLcAI=;
- b=m58oBPFeum9MU31A6ippG9icXlWp8/KLgTUgjd+rAjCW4wBOa7/H83OeVvvlroo+UL
- A7W+V7pa9d6gOy5ldhWNuFwci2muVWkpuweU85okZBekDQy58ntqE0nxliQ6Nxp9H9kZ
- 6p7rIXq9vd+7Uej6NXes13OL45PzWUw8ZROk4xjqplIgMBrCKyQOILcSuOWK0E1AIqBy
- lU4CHsCoKS6PXrhYmBFQSOfsgfi8fkOP7IGGqlekk1AuuiKP2+Wy7IRdSF/5X5A5s3ZT
- IRs8kaxVx9iRPsXSXc3Njwx+0FFo7xSdmbnFTz7jwM/9svcB7PMjsDY7EhQPlyOBB19q
- Zv4Q==
-X-Gm-Message-State: APjAAAXkgESMfG7n/8/34s+mjQ9GwW5Dv20pTALJTbi28nZIfUny1kkM
- o0oFWAVIzhzMa7VJSovKk+74YORiao0=
-X-Google-Smtp-Source: APXvYqwae/oQRQjnGQDXqPvEKVDwAjaFkHL8H0qvfZLYBKqE3s4+ntnY/DDAvnIYS/3AxyeH1oZ/9w==
-X-Received: by 2002:a17:90a:dd42:: with SMTP id
- u2mr858234pjv.118.1561509883567; 
- Tue, 25 Jun 2019 17:44:43 -0700 (PDT)
-Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id b11sm13292625pfd.18.2019.06.25.17.44.40
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 25 Jun 2019 17:44:42 -0700 (PDT)
-Subject: Re: [PATCH 3/4] powerpc/powernv: remove unused NPU DMA code
-To: Christoph Hellwig <hch@lst.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20190625145239.2759-1-hch@lst.de>
- <20190625145239.2759-4-hch@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Openpgp: preference=signencrypt
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <7bde96e0-7bc5-d5fe-f151-52c29660633c@ozlabs.ru>
-Date: Wed, 26 Jun 2019 10:44:38 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ spf=none (mailfrom) smtp.mailfrom=telegraphics.com.au
+ (client-ip=98.124.60.144; helo=kvm5.telegraphics.com.au;
+ envelope-from=fthain@telegraphics.com.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=telegraphics.com.au
+Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
+ [98.124.60.144])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45YYh96HqczDqM5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 16:55:37 +1000 (AEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by kvm5.telegraphics.com.au (Postfix) with ESMTP id 69FD428F1B;
+ Tue, 25 Jun 2019 22:06:16 -0400 (EDT)
+Date: Wed, 26 Jun 2019 12:06:14 +1000 (AEST)
+From: Finn Thain <fthain@telegraphics.com.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Bisected regression in v5.1 on PowerBook G3 (Wallstreet)
+Message-ID: <alpine.LNX.2.21.1906261134540.121@nippy.intranet>
 MIME-Version: 1.0
-In-Reply-To: <20190625145239.2759-4-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,699 +40,364 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Oliver O'Halloran <oohall@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Stan <userm57@yahoo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
+
+I received a report of a regression between v5.0 and v5.1 which causes the 
+current release to crash during boot with a machine check exception. 
+Please see console log below.
+
+Stan (whom I've Cc'd) tells me that this happens on every attempt to boot. 
+I asked him to try 'git bisect'. The results are given below. Can you see 
+anything in commit 93c4a162b014 that might explain this?
+
+I can also provide the .config if it would help.
 
 
-On 26/06/2019 00:52, Christoph Hellwig wrote:
-> None of these routines were ever used anywhere in the kernel tree
-> since they were added to the kernel.
+$ cat bisect.log
+5.0.0-pmac-ide-03515-g3478588b5136 #2 worked
+5.0.0-pmac-ide-05504-gda2577fe63f8 #3 worked
+5.0.0-pmac-ide-06224-g67e79a6dc266 #4 worked
+5.0.0-pmac-ide-06622-g1fc1cd8399ab #5 worked
+5.0.0-rc2-pmac-ide-00215=g9580b71b5a78 #6 failed
+5.0.0-rc2-pmac-ide-00113-gfe1ef6bcdb4f #7 worked
+5.0.0-rc2-pmac-ide-00164-gd5f17ee96447 #8 failed
+5.0.0-rc2-pmac-ide-00138-g84de6ab0e904 #9 failed
+5.0.0-rc2-pmac-ide-00125-ge995265252fa #10 worked
+5.0.0-rc2-pmac-ide-00131-g93c4a162b014 #11 failed
+5.0.0-rc2-pmac-ide-00128-g36da5ff0bea2 #12 worked
 
 
-So none of my comments has been addressed. Nice.
+93c4a162b014d238a287f8264adb25c009c79e61 is the first bad commit
+commit 93c4a162b014d238a287f8264adb25c009c79e61
+Author: Christophe Leroy <christophe.leroy@c-s.fr>
+Date:   Thu Feb 21 10:37:55 2019 +0000
+
+    powerpc/6xx: Store PGDIR physical address in a SPRG
+
+    Use SPRN_SPRG2 to store the current thread PGDIR and
+    avoid reading thread_struct.pgdir at every TLB miss.
+
+    Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+:040000 040000 dcd7171dff5ba5bf895e4399d9d859c91c5a8293
+c51e7def7720499289420ace421cf755bf3bf37e M      arch
 
 
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/include/asm/book3s/64/mmu.h |   2 -
->  arch/powerpc/include/asm/powernv.h       |  22 -
->  arch/powerpc/mm/book3s64/mmu_context.c   |   1 -
->  arch/powerpc/platforms/powernv/npu-dma.c | 556 -----------------------
->  4 files changed, 581 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-> index 74d24201fc4f..23b83d3593e2 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -116,8 +116,6 @@ typedef struct {
->  	/* Number of users of the external (Nest) MMU */
->  	atomic_t copros;
->  
-> -	/* NPU NMMU context */
-> -	struct npu_context *npu_context;
->  	struct hash_mm_context *hash_context;
->  
->  	unsigned long vdso_base;
-> diff --git a/arch/powerpc/include/asm/powernv.h b/arch/powerpc/include/asm/powernv.h
-> index 05b552418519..40f868c5e93c 100644
-> --- a/arch/powerpc/include/asm/powernv.h
-> +++ b/arch/powerpc/include/asm/powernv.h
-> @@ -11,35 +11,13 @@
->  #define _ASM_POWERNV_H
->  
->  #ifdef CONFIG_PPC_POWERNV
-> -#define NPU2_WRITE 1
->  extern void powernv_set_nmmu_ptcr(unsigned long ptcr);
-> -extern struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			void (*cb)(struct npu_context *, void *),
-> -			void *priv);
-> -extern void pnv_npu2_destroy_context(struct npu_context *context,
-> -				struct pci_dev *gpdev);
-> -extern int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
-> -				unsigned long *flags, unsigned long *status,
-> -				int count);
->  
->  void pnv_program_cpu_hotplug_lpcr(unsigned int cpu, u64 lpcr_val);
->  
->  void pnv_tm_init(void);
->  #else
->  static inline void powernv_set_nmmu_ptcr(unsigned long ptcr) { }
-> -static inline struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			struct npu_context *(*cb)(struct npu_context *, void *),
-> -			void *priv) { return ERR_PTR(-ENODEV); }
-> -static inline void pnv_npu2_destroy_context(struct npu_context *context,
-> -					struct pci_dev *gpdev) { }
-> -
-> -static inline int pnv_npu2_handle_fault(struct npu_context *context,
-> -					uintptr_t *ea, unsigned long *flags,
-> -					unsigned long *status, int count) {
-> -	return -ENODEV;
-> -}
->  
->  static inline void pnv_tm_init(void) { }
->  #endif
-> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-> index cb2b08635508..0dd3e631cf3e 100644
-> --- a/arch/powerpc/mm/book3s64/mmu_context.c
-> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
-> @@ -140,7 +140,6 @@ static int radix__init_new_context(struct mm_struct *mm)
->  	 */
->  	asm volatile("ptesync;isync" : : : "memory");
->  
-> -	mm->context.npu_context = NULL;
->  	mm->context.hash_context = NULL;
->  
->  	return index;
-> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-> index dc1058efc24f..72b7441029ca 100644
-> --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> @@ -22,12 +22,6 @@
->  
->  #include "pci.h"
->  
-> -/*
-> - * spinlock to protect initialisation of an npu_context for a particular
-> - * mm_struct.
-> - */
-> -static DEFINE_SPINLOCK(npu_context_lock);
-> -
->  static struct pci_dev *get_pci_dev(struct device_node *dn)
->  {
->  	struct pci_dn *pdn = PCI_DN(dn);
-> @@ -375,15 +369,6 @@ struct npu_comp {
->  /* An NPU descriptor, valid for POWER9 only */
->  struct npu {
->  	int index;
-> -	__be64 *mmio_atsd_regs[NV_NMMU_ATSD_REGS];
-> -	unsigned int mmio_atsd_count;
-> -
-> -	/* Bitmask for MMIO register usage */
-> -	unsigned long mmio_atsd_usage;
-> -
-> -	/* Do we need to explicitly flush the nest mmu? */
-> -	bool nmmu_flush;
-> -
->  	struct npu_comp npucomp;
->  };
->  
-> @@ -640,534 +625,8 @@ struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
->  }
->  #endif /* CONFIG_IOMMU_API */
->  
-> -/* Maximum number of nvlinks per npu */
-> -#define NV_MAX_LINKS 6
-> -
-> -/* Maximum index of npu2 hosts in the system. Always < NV_MAX_NPUS */
-> -static int max_npu2_index;
-> -
-> -struct npu_context {
-> -	struct mm_struct *mm;
-> -	struct pci_dev *npdev[NV_MAX_NPUS][NV_MAX_LINKS];
-> -	struct mmu_notifier mn;
-> -	struct kref kref;
-> -	bool nmmu_flush;
-> -
-> -	/* Callback to stop translation requests on a given GPU */
-> -	void (*release_cb)(struct npu_context *context, void *priv);
-> -
-> -	/*
-> -	 * Private pointer passed to the above callback for usage by
-> -	 * device drivers.
-> -	 */
-> -	void *priv;
-> -};
-> -
-> -struct mmio_atsd_reg {
-> -	struct npu *npu;
-> -	int reg;
-> -};
-> -
-> -/*
-> - * Find a free MMIO ATSD register and mark it in use. Return -ENOSPC
-> - * if none are available.
-> - */
-> -static int get_mmio_atsd_reg(struct npu *npu)
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i < npu->mmio_atsd_count; i++) {
-> -		if (!test_bit(i, &npu->mmio_atsd_usage))
-> -			if (!test_and_set_bit_lock(i, &npu->mmio_atsd_usage))
-> -				return i;
-> -	}
-> -
-> -	return -ENOSPC;
-> -}
-> -
-> -static void put_mmio_atsd_reg(struct npu *npu, int reg)
-> -{
-> -	clear_bit_unlock(reg, &npu->mmio_atsd_usage);
-> -}
-> -
-> -/* MMIO ATSD register offsets */
-> -#define XTS_ATSD_LAUNCH 0
-> -#define XTS_ATSD_AVA    1
-> -#define XTS_ATSD_STAT   2
-> -
-> -static unsigned long get_atsd_launch_val(unsigned long pid, unsigned long psize)
-> -{
-> -	unsigned long launch = 0;
-> -
-> -	if (psize == MMU_PAGE_COUNT) {
-> -		/* IS set to invalidate entire matching PID */
-> -		launch |= PPC_BIT(12);
-> -	} else {
-> -		/* AP set to invalidate region of psize */
-> -		launch |= (u64)mmu_get_ap(psize) << PPC_BITLSHIFT(17);
-> -	}
-> -
-> -	/* PRS set to process-scoped */
-> -	launch |= PPC_BIT(13);
-> -
-> -	/* PID */
-> -	launch |= pid << PPC_BITLSHIFT(38);
-> -
-> -	/* Leave "No flush" (bit 39) 0 so every ATSD performs a flush */
-> -
-> -	return launch;
-> -}
-> -
-> -static void mmio_atsd_regs_write(struct mmio_atsd_reg
-> -			mmio_atsd_reg[NV_MAX_NPUS], unsigned long offset,
-> -			unsigned long val)
-> -{
-> -	struct npu *npu;
-> -	int i, reg;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		reg = mmio_atsd_reg[i].reg;
-> -		if (reg < 0)
-> -			continue;
-> -
-> -		npu = mmio_atsd_reg[i].npu;
-> -		__raw_writeq_be(val, npu->mmio_atsd_regs[reg] + offset);
-> -	}
-> -}
-> -
-> -static void mmio_invalidate_pid(struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS],
-> -				unsigned long pid)
-> -{
-> -	unsigned long launch = get_atsd_launch_val(pid, MMU_PAGE_COUNT);
-> -
-> -	/* Invalidating the entire process doesn't use a va */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_LAUNCH, launch);
-> -}
-> -
-> -static void mmio_invalidate_range(struct mmio_atsd_reg
-> -			mmio_atsd_reg[NV_MAX_NPUS], unsigned long pid,
-> -			unsigned long start, unsigned long psize)
-> -{
-> -	unsigned long launch = get_atsd_launch_val(pid, psize);
-> -
-> -	/* Write all VAs first */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_AVA, start);
-> -
-> -	/* Issue one barrier for all address writes */
-> -	eieio();
-> -
-> -	/* Launch */
-> -	mmio_atsd_regs_write(mmio_atsd_reg, XTS_ATSD_LAUNCH, launch);
-> -}
-> -
-> -#define mn_to_npu_context(x) container_of(x, struct npu_context, mn)
-> -
-> -static void mmio_invalidate_wait(
-> -	struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	struct npu *npu;
-> -	int i, reg;
-> -
-> -	/* Wait for all invalidations to complete */
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		if (mmio_atsd_reg[i].reg < 0)
-> -			continue;
-> -
-> -		/* Wait for completion */
-> -		npu = mmio_atsd_reg[i].npu;
-> -		reg = mmio_atsd_reg[i].reg;
-> -		while (__raw_readq(npu->mmio_atsd_regs[reg] + XTS_ATSD_STAT))
-> -			cpu_relax();
-> -	}
-> -}
-> -
-> -/*
-> - * Acquires all the address translation shootdown (ATSD) registers required to
-> - * launch an ATSD on all links this npu_context is active on.
-> - */
-> -static void acquire_atsd_reg(struct npu_context *npu_context,
-> -			struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	int i, j;
-> -	struct npu *npu;
-> -	struct pci_dev *npdev;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		mmio_atsd_reg[i].reg = -1;
-> -		for (j = 0; j < NV_MAX_LINKS; j++) {
-> -			/*
-> -			 * There are no ordering requirements with respect to
-> -			 * the setup of struct npu_context, but to ensure
-> -			 * consistent behaviour we need to ensure npdev[][] is
-> -			 * only read once.
-> -			 */
-> -			npdev = READ_ONCE(npu_context->npdev[i][j]);
-> -			if (!npdev)
-> -				continue;
-> -
-> -			npu = pci_bus_to_host(npdev->bus)->npu;
-> -			if (!npu)
-> -				continue;
-> -
-> -			mmio_atsd_reg[i].npu = npu;
-> -			mmio_atsd_reg[i].reg = get_mmio_atsd_reg(npu);
-> -			while (mmio_atsd_reg[i].reg < 0) {
-> -				mmio_atsd_reg[i].reg = get_mmio_atsd_reg(npu);
-> -				cpu_relax();
-> -			}
-> -			break;
-> -		}
-> -	}
-> -}
-> -
-> -/*
-> - * Release previously acquired ATSD registers. To avoid deadlocks the registers
-> - * must be released in the same order they were acquired above in
-> - * acquire_atsd_reg.
-> - */
-> -static void release_atsd_reg(struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS])
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i <= max_npu2_index; i++) {
-> -		/*
-> -		 * We can't rely on npu_context->npdev[][] being the same here
-> -		 * as when acquire_atsd_reg() was called, hence we use the
-> -		 * values stored in mmio_atsd_reg during the acquire phase
-> -		 * rather than re-reading npdev[][].
-> -		 */
-> -		if (mmio_atsd_reg[i].reg < 0)
-> -			continue;
-> -
-> -		put_mmio_atsd_reg(mmio_atsd_reg[i].npu, mmio_atsd_reg[i].reg);
-> -	}
-> -}
-> -
-> -/*
-> - * Invalidate a virtual address range
-> - */
-> -static void mmio_invalidate(struct npu_context *npu_context,
-> -			unsigned long start, unsigned long size)
-> -{
-> -	struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS];
-> -	unsigned long pid = npu_context->mm->context.id;
-> -	unsigned long atsd_start = 0;
-> -	unsigned long end = start + size - 1;
-> -	int atsd_psize = MMU_PAGE_COUNT;
-> -
-> -	/*
-> -	 * Convert the input range into one of the supported sizes. If the range
-> -	 * doesn't fit, use the next larger supported size. Invalidation latency
-> -	 * is high, so over-invalidation is preferred to issuing multiple
-> -	 * invalidates.
-> -	 *
-> -	 * A 4K page size isn't supported by NPU/GPU ATS, so that case is
-> -	 * ignored.
-> -	 */
-> -	if (size == SZ_64K) {
-> -		atsd_start = start;
-> -		atsd_psize = MMU_PAGE_64K;
-> -	} else if (ALIGN_DOWN(start, SZ_2M) == ALIGN_DOWN(end, SZ_2M)) {
-> -		atsd_start = ALIGN_DOWN(start, SZ_2M);
-> -		atsd_psize = MMU_PAGE_2M;
-> -	} else if (ALIGN_DOWN(start, SZ_1G) == ALIGN_DOWN(end, SZ_1G)) {
-> -		atsd_start = ALIGN_DOWN(start, SZ_1G);
-> -		atsd_psize = MMU_PAGE_1G;
-> -	}
-> -
-> -	if (npu_context->nmmu_flush)
-> -		/*
-> -		 * Unfortunately the nest mmu does not support flushing specific
-> -		 * addresses so we have to flush the whole mm once before
-> -		 * shooting down the GPU translation.
-> -		 */
-> -		flush_all_mm(npu_context->mm);
-> -
-> -	/*
-> -	 * Loop over all the NPUs this process is active on and launch
-> -	 * an invalidate.
-> -	 */
-> -	acquire_atsd_reg(npu_context, mmio_atsd_reg);
-> -
-> -	if (atsd_psize == MMU_PAGE_COUNT)
-> -		mmio_invalidate_pid(mmio_atsd_reg, pid);
-> -	else
-> -		mmio_invalidate_range(mmio_atsd_reg, pid, atsd_start,
-> -					atsd_psize);
-> -
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -
-> -	/*
-> -	 * The GPU requires two flush ATSDs to ensure all entries have been
-> -	 * flushed. We use PID 0 as it will never be used for a process on the
-> -	 * GPU.
-> -	 */
-> -	mmio_invalidate_pid(mmio_atsd_reg, 0);
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -	mmio_invalidate_pid(mmio_atsd_reg, 0);
-> -	mmio_invalidate_wait(mmio_atsd_reg);
-> -
-> -	release_atsd_reg(mmio_atsd_reg);
-> -}
-> -
-> -static void pnv_npu2_mn_release(struct mmu_notifier *mn,
-> -				struct mm_struct *mm)
-> -{
-> -	struct npu_context *npu_context = mn_to_npu_context(mn);
-> -
-> -	/* Call into device driver to stop requests to the NMMU */
-> -	if (npu_context->release_cb)
-> -		npu_context->release_cb(npu_context, npu_context->priv);
-> -
-> -	/*
-> -	 * There should be no more translation requests for this PID, but we
-> -	 * need to ensure any entries for it are removed from the TLB.
-> -	 */
-> -	mmio_invalidate(npu_context, 0, ~0UL);
-> -}
-> -
-> -static void pnv_npu2_mn_invalidate_range(struct mmu_notifier *mn,
-> -					struct mm_struct *mm,
-> -					unsigned long start, unsigned long end)
-> -{
-> -	struct npu_context *npu_context = mn_to_npu_context(mn);
-> -	mmio_invalidate(npu_context, start, end - start);
-> -}
-> -
-> -static const struct mmu_notifier_ops nv_nmmu_notifier_ops = {
-> -	.release = pnv_npu2_mn_release,
-> -	.invalidate_range = pnv_npu2_mn_invalidate_range,
-> -};
-> -
-> -/*
-> - * Call into OPAL to setup the nmmu context for the current task in
-> - * the NPU. This must be called to setup the context tables before the
-> - * GPU issues ATRs. pdev should be a pointed to PCIe GPU device.
-> - *
-> - * A release callback should be registered to allow a device driver to
-> - * be notified that it should not launch any new translation requests
-> - * as the final TLB invalidate is about to occur.
-> - *
-> - * Returns an error if there no contexts are currently available or a
-> - * npu_context which should be passed to pnv_npu2_handle_fault().
-> - *
-> - * mmap_sem must be held in write mode and must not be called from interrupt
-> - * context.
-> - */
-> -struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
-> -			unsigned long flags,
-> -			void (*cb)(struct npu_context *, void *),
-> -			void *priv)
-> -{
-> -	int rc;
-> -	u32 nvlink_index;
-> -	struct device_node *nvlink_dn;
-> -	struct mm_struct *mm = current->mm;
-> -	struct npu *npu;
-> -	struct npu_context *npu_context;
-> -	struct pci_controller *hose;
-> -
-> -	/*
-> -	 * At present we don't support GPUs connected to multiple NPUs and I'm
-> -	 * not sure the hardware does either.
-> -	 */
-> -	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
-> -
-> -	if (!npdev)
-> -		/* No nvlink associated with this GPU device */
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	/* We only support DR/PR/HV in pnv_npu2_map_lpar_dev() */
-> -	if (flags & ~(MSR_DR | MSR_PR | MSR_HV))
-> -		return ERR_PTR(-EINVAL);
-> -
-> -	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
-> -	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
-> -							&nvlink_index)))
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	if (!mm || mm->context.id == 0) {
-> -		/*
-> -		 * Kernel thread contexts are not supported and context id 0 is
-> -		 * reserved on the GPU.
-> -		 */
-> -		return ERR_PTR(-EINVAL);
-> -	}
-> -
-> -	hose = pci_bus_to_host(npdev->bus);
-> -	npu = hose->npu;
-> -	if (!npu)
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	/*
-> -	 * We store the npu pci device so we can more easily get at the
-> -	 * associated npus.
-> -	 */
-> -	spin_lock(&npu_context_lock);
-> -	npu_context = mm->context.npu_context;
-> -	if (npu_context) {
-> -		if (npu_context->release_cb != cb ||
-> -			npu_context->priv != priv) {
-> -			spin_unlock(&npu_context_lock);
-> -			return ERR_PTR(-EINVAL);
-> -		}
-> -
-> -		WARN_ON(!kref_get_unless_zero(&npu_context->kref));
-> -	}
-> -	spin_unlock(&npu_context_lock);
-> -
-> -	if (!npu_context) {
-> -		/*
-> -		 * We can set up these fields without holding the
-> -		 * npu_context_lock as the npu_context hasn't been returned to
-> -		 * the caller meaning it can't be destroyed. Parallel allocation
-> -		 * is protected against by mmap_sem.
-> -		 */
-> -		rc = -ENOMEM;
-> -		npu_context = kzalloc(sizeof(struct npu_context), GFP_KERNEL);
-> -		if (npu_context) {
-> -			kref_init(&npu_context->kref);
-> -			npu_context->mm = mm;
-> -			npu_context->mn.ops = &nv_nmmu_notifier_ops;
-> -			rc = __mmu_notifier_register(&npu_context->mn, mm);
-> -		}
-> -
-> -		if (rc) {
-> -			kfree(npu_context);
-> -			return ERR_PTR(rc);
-> -		}
-> -
-> -		mm->context.npu_context = npu_context;
-> -	}
-> -
-> -	npu_context->release_cb = cb;
-> -	npu_context->priv = priv;
-> -
-> -	/*
-> -	 * npdev is a pci_dev pointer setup by the PCI code. We assign it to
-> -	 * npdev[][] to indicate to the mmu notifiers that an invalidation
-> -	 * should also be sent over this nvlink. The notifiers don't use any
-> -	 * other fields in npu_context, so we just need to ensure that when they
-> -	 * deference npu_context->npdev[][] it is either a valid pointer or
-> -	 * NULL.
-> -	 */
-> -	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], npdev);
-> -
-> -	if (!npu->nmmu_flush) {
-> -		/*
-> -		 * If we're not explicitly flushing ourselves we need to mark
-> -		 * the thread for global flushes
-> -		 */
-> -		npu_context->nmmu_flush = false;
-> -		mm_context_add_copro(mm);
-> -	} else
-> -		npu_context->nmmu_flush = true;
-> -
-> -	return npu_context;
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_init_context);
-> -
-> -static void pnv_npu2_release_context(struct kref *kref)
-> -{
-> -	struct npu_context *npu_context =
-> -		container_of(kref, struct npu_context, kref);
-> -
-> -	if (!npu_context->nmmu_flush)
-> -		mm_context_remove_copro(npu_context->mm);
-> -
-> -	npu_context->mm->context.npu_context = NULL;
-> -}
-> -
-> -/*
-> - * Destroy a context on the given GPU. May free the npu_context if it is no
-> - * longer active on any GPUs. Must not be called from interrupt context.
-> - */
-> -void pnv_npu2_destroy_context(struct npu_context *npu_context,
-> -			struct pci_dev *gpdev)
-> -{
-> -	int removed;
-> -	struct npu *npu;
-> -	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
-> -	struct device_node *nvlink_dn;
-> -	u32 nvlink_index;
-> -	struct pci_controller *hose;
-> -
-> -	if (WARN_ON(!npdev))
-> -		return;
-> -
-> -	hose = pci_bus_to_host(npdev->bus);
-> -	npu = hose->npu;
-> -	if (!npu)
-> -		return;
-> -	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
-> -	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
-> -							&nvlink_index)))
-> -		return;
-> -	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], NULL);
-> -	spin_lock(&npu_context_lock);
-> -	removed = kref_put(&npu_context->kref, pnv_npu2_release_context);
-> -	spin_unlock(&npu_context_lock);
-> -
-> -	/*
-> -	 * We need to do this outside of pnv_npu2_release_context so that it is
-> -	 * outside the spinlock as mmu_notifier_destroy uses SRCU.
-> -	 */
-> -	if (removed) {
-> -		mmu_notifier_unregister(&npu_context->mn,
-> -					npu_context->mm);
-> -
-> -		kfree(npu_context);
-> -	}
-> -
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_destroy_context);
-> -
-> -/*
-> - * Assumes mmap_sem is held for the contexts associated mm.
-> - */
-> -int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
-> -			unsigned long *flags, unsigned long *status, int count)
-> -{
-> -	u64 rc = 0, result = 0;
-> -	int i, is_write;
-> -	struct page *page[1];
-> -	const char __user *u;
-> -	char c;
-> -
-> -	/* mmap_sem should be held so the struct_mm must be present */
-> -	struct mm_struct *mm = context->mm;
-> -
-> -	WARN_ON(!rwsem_is_locked(&mm->mmap_sem));
-> -
-> -	for (i = 0; i < count; i++) {
-> -		is_write = flags[i] & NPU2_WRITE;
-> -		rc = get_user_pages_remote(NULL, mm, ea[i], 1,
-> -					is_write ? FOLL_WRITE : 0,
-> -					page, NULL, NULL);
-> -
-> -		if (rc != 1) {
-> -			status[i] = rc;
-> -			result = -EFAULT;
-> -			continue;
-> -		}
-> -
-> -		/* Make sure partition scoped tree gets a pte */
-> -		u = page_address(page[0]);
-> -		if (__get_user(c, u))
-> -			result = -EFAULT;
-> -
-> -		status[i] = 0;
-> -		put_page(page[0]);
-> -	}
-> -
-> -	return result;
-> -}
-> -EXPORT_SYMBOL(pnv_npu2_handle_fault);
-> -
->  int pnv_npu2_init(struct pci_controller *hose)
->  {
-> -	unsigned int i;
-> -	u64 mmio_atsd;
->  	static int npu_index;
->  	struct npu *npu;
->  	int ret;
-> @@ -1176,33 +635,18 @@ int pnv_npu2_init(struct pci_controller *hose)
->  	if (!npu)
->  		return -ENOMEM;
->  
-> -	npu->nmmu_flush = of_property_read_bool(hose->dn, "ibm,nmmu-flush");
-> -
-> -	for (i = 0; i < ARRAY_SIZE(npu->mmio_atsd_regs) &&
-> -			!of_property_read_u64_index(hose->dn, "ibm,mmio-atsd",
-> -				i, &mmio_atsd); i++)
-> -		npu->mmio_atsd_regs[i] = ioremap(mmio_atsd, 32);
-> -
-> -	pr_info("NPU%d: Found %d MMIO ATSD registers", hose->global_number, i);
-> -	npu->mmio_atsd_count = i;
-> -	npu->mmio_atsd_usage = 0;
->  	npu_index++;
->  	if (WARN_ON(npu_index >= NV_MAX_NPUS)) {
->  		ret = -ENOSPC;
->  		goto fail_exit;
->  	}
-> -	max_npu2_index = npu_index;
->  	npu->index = npu_index;
->  	hose->npu = npu;
->  
->  	return 0;
->  
->  fail_exit:
-> -	for (i = 0; i < npu->mmio_atsd_count; ++i)
-> -		iounmap(npu->mmio_atsd_regs[i]);
-> -
->  	kfree(npu);
-> -
->  	return ret;
->  }
->  
-> 
+[    0.000000] printk: debug: ignoring loglevel setting.
+[    0.000000] Total memory = 512MB; using 1024kB for hash table (at (ptrval))
+[    0.000000] Linux version 5.1.0-pmac-ide (fthain@nippy) (gcc version 4.6.4 (btc)) #1 SMP Sun Jun 23 14:46:26 AEST 2019
+[    0.000000] Found a Gatwick mac-io controller, rev: 0, mapped at 0x(ptrval)
+[    0.000000] Found a Heathrow mac-io controller, rev: 0, mapped at 0x(ptrval)
+[    0.000000] PowerMac motherboard: PowerBook Wallstreet
+[    0.000000] PMU driver v2 initialized for PowerBook G3 Series, firmware: 0a
+[    0.000000] Using PowerMac machine description
+[    0.000000] printk: bootconsole [udbg0] enabled
+[    0.000000] CPU maps initialized for 1 thread per core
+[    0.000000]  (thread shift is 0)
+[    0.000000] -----------------------------------------------------
+[    0.000000] Hash_size         = 0x100000
+[    0.000000] phys_mem_size     = 0x20000000
+[    0.000000] dcache_bsize      = 0x20
+[    0.000000] icache_bsize      = 0x20
+[    0.000000] cpu_features      = 0x000000000501a008
+[    0.000000]   possible        = 0x000000002f7ff14b
+[    0.000000]   always          = 0x0000000001000000
+[    0.000000] cpu_user_features = 0x8c000001 0x00000000
+[    0.000000] mmu_features      = 0x00000001
+[    0.000000] Hash              = 0x(ptrval)
+[    0.000000] Hash_mask         = 0x3fff
+[    0.000000] -----------------------------------------------------
+[    0.000000] Found Grackle (MPC106) PCI host bridge at 0x0000000080000000. Firmware bus number: 0->0
+[    0.000000] PCI host bridge /pci (primary) ranges:
+[    0.000000]   IO 0x00000000fe000000..0x00000000fe7fffff -> 0x0000000000000000
+[    0.000000]  MEM 0x00000000fd000000..0x00000000fdffffff -> 0x0000000000000000 
+[    0.000000]  MEM 0x0000000080000000..0x00000000fcffffff -> 0x0000000080000000 
+[    0.000000] nvram: OF partition at 0x1800
+[    0.000000] nvram: XP partition at 0x1300
+[    0.000000] nvram: NR partition at 0x1400
+[    0.000000] Top of RAM: 0x20000000, Total RAM: 0x20000000
+[    0.000000] Memory hole size: 0MB
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x000000001fffffff]
+[    0.000000]   HighMem  empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x000000001fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x000000001fffffff]
+[    0.000000] On node 0 totalpages: 131072
+[    0.000000]   Normal zone: 1024 pages used for memmap
+[    0.000000]   Normal zone: 0 pages reserved
+[    0.000000]   Normal zone: 131072 pages, LIFO batch:31
+[    0.000000] percpu: Embedded 14 pages/cpu s24972 r8192 d24180 u57344
+[    0.000000] pcpu-alloc: s24972 r8192 d24180 u57344 alloc=14*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 130048
+[    0.000000] Kernel command line: root=/dev/hda11 video=atyfb:vmode:14,cmode:32 ignore_loglevel printk.time console=ttyS0,9600n8 console=tty
+[    0.000000] Dentry cache hash table entries: 65536 (order: 6, 262144 bytes)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 5, 131072 bytes)
+[    0.000000] Memory: 503332K/524288K available (5468K kernel code, 272K rwdata, 1364K rodata, 264K init, 182K bss, 20956K reserved, 0K cma-reserved, 0K highmem)
+[    0.000000] Kernel virtual memory layout:
+[    0.000000]   * 0xfffbf000..0xfffff000  : fixmap
+[    0.000000]   * 0xff800000..0xffc00000  : highmem PTEs
+[    0.000000]   * 0xfeefb000..0xff800000  : early ioremap
+[    0.000000]   * 0xe1000000..0xfeefb000  : vmalloc & ioremap
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+[    0.000000] irq: Found primary Apple PIC /pci/mac-io for 64 irqs
+[    0.000000] irq: Found slave Apple PIC /pci/mac-io for 64 irqs cascade: 27
+[    0.000000] irq: System has 128 possible interrupts
+[    0.000000] GMT Delta read from XPRAM: -360 minutes, DST: on
+[    0.000000] time_init: decrementer frequency = 16.671483 MHz
+[    0.000000] time_init: processor frequency   = 264.000000 MHz
+[    0.000064] clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 0x3d84ef27e, max_idle_ns: 440795202259 ns
+[    0.000100] clocksource: timebase mult[3bfb9003] shift[24] registered
+[    0.000195] clockevent: decrementer mult[4449512] shift[32] cpu[0]
+[    0.001150] Console: colour dummy device 80x25
+[    0.001193] printk: console [tty0] enabled
+[    0.001239] printk: bootconsole [udbg0] disabled
+[    0.001625] pmac_zilog: serial modem detected
+[    4.977278] printk: console [ttyS0] enabled
+[    5.027516] pid_max: default: 32768 minimum: 301
+[    5.083376] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    5.162419] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    5.248523] *** VALIDATE proc ***
+[    5.287109] *** VALIDATE cgroup1 ***
+[    5.329716] *** VALIDATE cgroup2 ***
+[    5.375172] rcu: Hierarchical SRCU implementation.
+[    5.431972] smp: Bringing up secondary CPUs ...
+[    5.484998] smp: Brought up 1 node, 1 CPU
+[    5.533075] Using standard scheduler topology
+[    5.586632] devtmpfs: initialized
+[    5.625731] Duplicate name in PowerPC,750, renamed to "l2-cache#1"
+[    5.702735] Duplicate name in pci, renamed to "mac-io#1"
+[    5.766262] Duplicate name in pci, renamed to "pccard#1"
+[    5.830071] random: get_random_u32 called from bucket_table_alloc+0x94/0x1c4 with crng_init=0
+[    5.932144] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    6.049531] futex hash table entries: 512 (order: 2, 16384 bytes)
+[    6.123224] NET: Registered protocol family 16
+[    6.181111] PMU i2c /pci/mac-io/via-pmu
+[    6.226470]  channel 1 bus <multibus>
+[    6.269024]  channel 2 bus <multibus>
+[    6.315157] PCI: Probing PCI hardware
+[    6.358004] PCI host bridge to bus 0000:00
+[    6.406370] pci_bus 0000:00: root bus resource [io  0x0000-0x7fffff]
+[    6.482602] pci_bus 0000:00: root bus resource [mem 0xfd000000-0xfdffffff] (bus address [0x00000000-0x00ffffff])
+[    6.604898] pci_bus 0000:00: root bus resource [mem 0x80000000-0xfcffffff]
+[    6.687515] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    6.753382] pci_bus 0000:00: busn_res: [bus 00-ff] end is updated to ff
+[    6.833106] pci 0000:00:00.0: [1057:0002] type 00 class 0x060000
+[    6.906583] pci 0000:00:0d.0: [106b:0017] type 00 class 0xff0000
+[    6.977163] pci 0000:00:0d.0: reg 0x10: [mem 0xf4000000-0xf407ffff]
+[    7.053429] pci 0000:00:10.0: [106b:0017] type 00 class 0xff0000
+[    7.124631] pci 0000:00:10.0: reg 0x10: [mem 0xf3000000-0xf307ffff]
+[    7.200827] pci 0000:00:11.0: [1002:4c50] type 00 class 0x038000
+[    7.272082] pci 0000:00:11.0: reg 0x10: [mem 0x82000000-0x82ffffff]
+[    7.347336] pci 0000:00:11.0: reg 0x14: [io  0x0400-0x04ff]
+[    7.414246] pci 0000:00:11.0: reg 0x18: [mem 0x82fff000-0x82ffffff]
+[    7.489567] pci 0000:00:11.0: reg 0x30: [mem 0xfd000000-0xfd01ffff pref]
+[    7.570113] pci 0000:00:11.0: supports D1 D2
+[    7.622206] pci 0000:00:13.0: [104c:ac15] type 02 class 0x060700
+[    7.693527] pci 0000:00:13.0: reg 0x10: [mem 0x81803000-0x81803fff]
+[    7.769592] pci 0000:00:13.1: [104c:ac15] type 02 class 0x060700
+[    7.841140] pci 0000:00:13.1: reg 0x10: [mem 0x81802000-0x81802fff]
+[    7.918261] pci_bus 0000:01: extended config space not accessible
+[    7.990055] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 04
+[    8.069175] pci_bus 0000:05: extended config space not accessible
+[    8.142536] pci_bus 0000:05: busn_res: [bus 05-ff] end is updated to 08
+[    8.221620] pci_bus 0000:00: busn_res: [bus 00-ff] end is updated to 08
+[    8.301308] PCI: Cannot allocate resource region 2 of device 0000:00:11.0, will remap
+[    8.395264] PCI 0000:00 Cannot reserve Legacy IO [io  0x0000-0x0fff]
+[    8.471672] pci 0000:00:13.0: BAR 9: assigned [mem 0x84000000-0x87ffffff pref]
+[    8.558317] pci 0000:00:13.0: BAR 10: assigned [mem 0x88000000-0x8bffffff]
+[    8.640898] pci 0000:00:13.1: BAR 9: assigned [mem 0x8c000000-0x8fffffff pref]
+[    8.727690] pci 0000:00:13.1: BAR 10: assigned [mem 0x90000000-0x93ffffff]
+[    8.810457] pci 0000:00:11.0: BAR 6: assigned [mem 0xfd000000-0xfd01ffff pref]
+[    8.897101] pci 0000:00:11.0: BAR 2: assigned [mem 0xfd020000-0xfd020fff]
+[    8.978667] pci 0000:00:13.0: BAR 7: assigned [io  0x1000-0x10ff]
+[    9.051864] pci 0000:00:13.0: BAR 8: assigned [io  0x1100-0x11ff]
+[    9.125064] pci 0000:00:13.1: BAR 7: assigned [io  0x1200-0x12ff]
+[    9.198269] pci 0000:00:13.1: BAR 8: assigned [io  0x1300-0x13ff]
+[    9.271483] pci 0000:00:13.0: CardBus bridge to [bus 01-04]
+[    9.338395] pci 0000:00:13.0:   bridge window [io  0x1000-0x10ff]
+[    9.411598] pci 0000:00:13.0:   bridge window [io  0x1100-0x11ff]
+[    9.484802] pci 0000:00:13.0:   bridge window [mem 0x84000000-0x87ffffff pref]
+[    9.571597] pci 0000:00:13.0:   bridge window [mem 0x88000000-0x8bffffff]
+[    9.653165] pci 0000:00:13.1: CardBus bridge to [bus 05-08]
+[    9.720086] pci 0000:00:13.1:   bridge window [io  0x1200-0x12ff]
+[    9.793366] pci 0000:00:13.1:   bridge window [io  0x1300-0x13ff]
+[    9.866498] pci 0000:00:13.1:   bridge window [mem 0x8c000000-0x8fffffff pref]
+[    9.953294] pci 0000:00:13.1:   bridge window [mem 0x90000000-0x93ffffff]
+[   10.034865] pci_bus 0000:00: resource 4 [io  0x0000-0x7fffff]
+[   10.103874] pci_bus 0000:00: resource 5 [mem 0xfd000000-0xfdffffff]
+[   10.179168] pci_bus 0000:00: resource 6 [mem 0x80000000-0xfcffffff]
+[   10.254461] pci_bus 0000:01: resource 0 [io  0x1000-0x10ff]
+[   10.321391] pci_bus 0000:01: resource 1 [io  0x1100-0x11ff]
+[   10.388316] pci_bus 0000:01: resource 2 [mem 0x84000000-0x87ffffff pref]
+[   10.468841] pci_bus 0000:01: resource 3 [mem 0x88000000-0x8bffffff]
+[   10.544134] pci_bus 0000:05: resource 0 [io  0x1200-0x12ff]
+[   10.611058] pci_bus 0000:05: resource 1 [io  0x1300-0x13ff]
+[   10.677989] pci_bus 0000:05: resource 2 [mem 0x8c000000-0x8fffffff pref]
+[   10.758507] pci_bus 0000:05: resource 3 [mem 0x90000000-0x93ffffff]
+[   10.898594] vgaarb: loaded
+[   10.931312] SCSI subsystem initialized
+[   10.975369] usbcore: registered new interface driver usbfs
+[   11.040901] usbcore: registered new interface driver hub
+[   11.104378] usbcore: registered new device driver usb
+[   11.170053] clocksource: Switched to clocksource timebase
+[   11.276916] NET: Registered protocol family 2
+[   11.330625] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 6144 bytes)
+[   11.420991] TCP established hash table entries: 4096 (order: 2, 16384 bytes)
+[   11.505653] TCP bind hash table entries: 4096 (order: 3, 32768 bytes)
+[   11.583095] TCP: Hash tables configured (established 4096 bind 4096)
+[   11.659434] UDP hash table entries: 256 (order: 1, 8192 bytes)
+[   11.729313] UDP-Lite hash table entries: 256 (order: 1, 8192 bytes)
+[   11.805155] NET: Registered protocol family 1
+[   11.857851] RPC: Registered named UNIX socket transport module.
+[   11.927797] RPC: Registered udp transport module.
+[   11.984240] RPC: Registered tcp transport module.
+[   12.040709] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[   12.118278] PCI: CLS 32 bytes, default 32
+[   12.167681] Thermal assist unit 
+[   12.167688] using timers, 
+[   12.204947] shrink_timer: 200 jiffies
+[   12.285360] Initialise system trusted keyrings
+[   12.338272] workingset: timestamp_bits=30 max_order=17 bucket_order=0
+[   12.415177] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[   24.651142] Key type asymmetric registered
+[   24.698347] Asymmetric key parser 'x509' registered
+[   24.757356] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+[   24.845895] io scheduler mq-deadline registered
+[   24.900069] io scheduler kyber registered
+[   24.949721] atyfb 0000:00:11.0: enabling device (0086 -> 0087)
+[   25.018669] atyfb: using auxiliary register aperture
+[   25.078882] atyfb: 3D RAGE LT PRO (Mach64 LP, PCI) [0x4c50 rev 0xdc]
+[   25.154242] atyfb: 4M SGRAM (1:1), 29.498928 MHz XTAL, 230 MHz PLL, 100 Mhz MCLK, 100 MHz XCLK
+[   25.311727] Console: switching to colour frame buffer device 128x48
+[   25.393746] atyfb: fb0: ATY Mach64 frame buffer device on PCI
+[   25.465544] pmac_zilog: 0.6 (Benjamin Herrenschmidt <benh@kernel.crashing.org>)
+[   25.553288] Non-volatile memory driver v1.3
+[   25.611564] brd: module loaded
+[   25.669889] loop: module loaded
+[   25.706428] MacIO PCI driver attached to Gatwick chipset
+[   25.769945] MacIO PCI driver attached to Heathrow chipset
+[   25.842400] swim3 0.00015000:floppy: [fd0] SWIM3 floppy controller in media bay
+[   25.932618] 0.00013020:ch-a: ttyS0 at MMIO 0xf3013020 (irq = 16, base_baud = 230400) is a Z85c30 ESCC - Serial port
+[   26.058459] 0.00013000:ch-b: ttyS1 at MMIO 0xf3013000 (irq = 17, base_baud = 230400) is a Z85c30 ESCC - Infrared port
+[   26.186786] macio: fixed media-bay irq on gatwick
+[   26.242712] macio: fixed left floppy irqs
+[   26.290523] swim3 1.00015000:floppy: [fd1] Couldn't request interrupt
+[   26.367458] swim3: probe of 1.00015000:floppy failed with error -16
+[   26.442501] macio: fixed left ide irqs
+[   26.487653] macio: fixed SCC irqs on gatwick
+[   26.539043] 1.00013020:ch-a: ttyS2 at MMIO 0xf4013020 (irq = 79, base_baud = 230400) is a Z85c30 ESCC - Internal modem
+[   26.668762] mediabay0: Registered Heathrow media-bay
+[   26.939422] mediabay1: Registered Heathrow media-bay
+[   26.997073] mediabay0: Bay contains an ATA device
+[   27.210473] PMU Backlight initialized (pmubl)
+[   27.262723] Uniform Multi-Platform E-IDE driver
+[   28.368835] ide-pmac: Found Apple Heathrow ATA controller (macio), bus ID 0, irq 30
+[   28.463347] Probing IDE interface ide0...
+[   28.869051] hda: SAMSUNG HM100JC, ATA DISK drive
+[   29.453887] random: fast init done
+[   29.570254] adb device [2]: 2 0xC3
+[   29.618380] adb device [3]: 3 0x1
+[   29.663900] adb device [7]: 7 0x1F
+[   29.720910] ADB keyboard at 2 has handler 0xC3
+[   29.776681] Detected ADB keyboard, type ANSI.
+[   29.831871] input: ADB keyboard as /devices/virtual/input/input0
+[   29.906693] hda: host max PIO4 wanted PIO255(auto-tune) selected PIO4
+[   29.986514] hda: MWDMA2 mode selected
+[   30.033814] input: ADB Powerbook buttons as /devices/virtual/input/input1
+[   30.118138] ide0 at 0xe1045000-0xe1045070,0xe1045160 on irq 30
+[   30.192469] ide-pmac: Found Apple Heathrow ATA controller (macio), bus ID 1 (mediabay), irq 36
+[   30.299391] Probing IDE interface ide1...
+[   30.412609] ADB mouse (trackpad) at 3 has handler 0x4
+[   30.476206] input: ADB mouse as /devices/virtual/input/input2
+[   30.889011] hdc: MATSHITADVD-ROM SR-8182, ATAPI CD/DVD-ROM drive
+[   31.379281] hdc: host max PIO4 wanted PIO255(auto-tune) selected PIO4
+[   31.459300] hdc: MWDMA2 mode selected
+[   31.506018] ide1 at 0xe104b000-0xe104b070,0xe104b160 on irq 36
+[   31.580403] ide-pmac: Found Apple Heathrow ATA controller (macio), bus ID 4 (mediabay), irq 36
+[   31.687369] genirq: Flags mismatch irq 36. 00000000 (ide2) vs. 00000000 (ide1)
+[   31.776841] ide2: disabled, unable to get IRQ 36
+[   31.834841] ide2: failed to initialize IDE interface
+[   31.897376] ide2: disabling port
+[   31.938867] ide-pmac: probe of 1.00021000:ata4 failed with error -1
+[   32.017021] ide-gd driver 1.18
+[   32.056731] hda: max request size: 1024KiB
+[   34.309043] hda: 195371568 sectors (100030 MB) w/8192KiB Cache, CHS=16383/255/63
+[   34.400766] hda: cache flushes supported
+[   34.463701]  hda: [mac] hda1 hda2 hda3 hda4 hda5 hda6 hda7 hda8 hda9 hda10 hda11 hda12 hda13 hda14 hda15
+[   34.589982] ide-cd driver 5.00
+[   34.633445] ide-cd: hdc: ATAPI 12X DVD-ROM drive, 512kB Cache
+[   34.705160] cdrom: Uniform CD-ROM driver Revision: 3.20
+[   34.777383] mesh: configured for synchronous 5 MB/s
+[   35.058944] mesh: performing initial bus reset...
+[   39.168977] scsi host0: MESH
+[   41.986409] eth0: BMAC at 00:05:02:07:5a:a6
+[   41.986423] 
+[   42.065206] aoe: cannot create debugfs directory
+[   42.124930] aoe: AoE v85 initialised.
+[   42.171200] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[   42.252472] ehci-pci: EHCI PCI platform driver
+[   42.308931] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[   42.386046] ohci-pci: OHCI PCI platform driver
+[   42.442614] usbcore: registered new interface driver uas
+[   42.509535] usbcore: registered new interface driver usb-storage
+[   42.587749] mousedev: PS/2 mouse device common for all mice
+[   42.661012] rtc-generic rtc-generic: registered as rtc0
+[   42.727259] i2c /dev entries driver
+[   42.773732] PowerMac i2c bus pmu 2 registered
+[   42.830093] PowerMac i2c bus pmu 1 registered
+[   42.891093] usbcore: registered new interface driver usbhid
+[   42.960484] usbhid: USB HID core driver
+[   43.012330] NET: Registered protocol family 17
+[   43.068724] drmem: No dynamic reconfiguration memory found
+[   43.138959] Loading compiled-in X.509 certificates
+[   43.637737] EXT4-fs (hda11): mounting ext3 file system using the ext4 subsystem
+[   43.759598] EXT4-fs (hda11): mounted filesystem with ordered data mode. Opts: (null)
+[   43.855814] VFS: Mounted root (ext3 filesystem) readonly on device 3:11.
+[   43.941974] Freeing unused kernel memory: 264K
+[   43.997598] This architecture does not have kernel memory protection.
+[   44.077215] Run /sbin/init as init process
+[   46.583096] Disabling lock debugging due to kernel taint
+[   46.649135] Machine check in kernel mode.
+[   46.699359] Caused by (from SRR1=41020): Transfer error ack signal
+[   46.776706] Oops: Machine check, sig: 7 [#1]
+[   46.830093] BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+[   46.899131] Modules linked in:
+[   46.937774] CPU: 0 PID: 1 Comm: init Tainted: G   M              5.1.0-pmac-ide #1
+[   47.030839] NIP:  c0018aa8 LR: c0018fcc CTR: 00000000
+[   47.093580] REGS: df437d40 TRAP: 0200   Tainted: G   M               (5.1.0-pmac-ide)
+[   47.189853] MSR:  00041020 <ME,IR>  CR: 42428084  XER: 00000000
+[   47.263133] DAR: 00000000 DSISR: dec05da0 
+[   47.263133] GPR00: 00000bbb df437df0 df435160 000043cb b7ad4000 1ec0cb50 00000001 00020768 
+[   47.263133] GPR08: 00000000 00739578 00009032 8021e59e 20424084 00000000 00000000 00000000 
+[   47.263133] GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 dec0c000 c0730000 
+[   47.263133] GPR24: dec0cb50 1fb21595 dec05da0 df437e18 dec07440 dffe13c0 1fb1e117 df437e18 
+[   47.733625] NIP [c0018aa8] flush_hash_pages+0x70/0x164
+[   47.797425] LR [c0018fcc] flush_tlb_page+0x54/0x78
+[   47.857012] Call Trace:
+[   47.888320] [df437df0] [dffe13c0] 0xdffe13c0 (unreliable)
+[   47.955245] [df437e00] [c00f9418] ptep_clear_flush+0x3c/0x58
+[   48.025313] [df437e10] [c00ecf34] wp_page_copy+0x198/0x530
+[   48.093280] [df437e50] [c00ef5e0] do_wp_page+0x188/0x604
+[   48.159151] [df437e90] [c00f0838] handle_mm_fault+0x2f8/0x99c
+[   48.230265] [df437f00] [c0016528] do_page_fault+0x2a0/0x6b8
+[   48.299289] [df437f40] [c0012314] handle_page_fault+0x14/0x40
+[   48.370397] --- interrupt: 301 at 0xb7ab6444
+[   48.370397]     LR = 0xb7ab634c
+[   48.465462] Instruction dump:
+[   48.502950] 38c6ffff 4bffffe0 1c633810 5480273e 1c000111 7c630214 546b3870 508b56be 
+[   48.598090] 656b8000 3d200074 39299578 8102009c <65080009> 7c004828 2c000000 4082000c 
+[   48.695375] ---[ end trace c4d36e2b09ab4631 ]---
+[   48.752918] 
 
 -- 
-Alexey
