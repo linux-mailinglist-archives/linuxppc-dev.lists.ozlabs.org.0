@@ -1,82 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F51356F38
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 19:00:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Yq6K0VZxzDqGb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 03:00:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5F35700E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 19:54:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YrHr3WNJzDqNN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 03:54:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="LZnYzW45"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Yq4P1GGvzDqGb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 02:59:00 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5QGwhZn155865
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 12:58:57 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tca1dqesu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 12:58:56 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 26 Jun 2019 17:58:52 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 26 Jun 2019 17:58:50 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5QGwdq037552468
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Jun 2019 16:58:39 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 04E274203F;
- Wed, 26 Jun 2019 16:58:49 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4A7742045;
- Wed, 26 Jun 2019 16:58:45 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.102.1.130])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Jun 2019 16:58:45 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 3/3] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-In-Reply-To: <20190626140404.27448-4-vaibhav@linux.ibm.com>
-References: <20190626140404.27448-1-vaibhav@linux.ibm.com>
- <20190626140404.27448-4-vaibhav@linux.ibm.com>
-Date: Wed, 26 Jun 2019 22:28:43 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YrFT5wrSzDqW4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 03:51:57 +1000 (AEST)
+Received: from localhost (c-67-164-175-55.hsd1.co.comcast.net [67.164.175.55])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id B046B216FD;
+ Wed, 26 Jun 2019 17:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561571514;
+ bh=Sca4Z3OaKtXYUI/5YyPbiGGtd0DSIOE2gztWP1tFwRg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=LZnYzW45b3DGtb+CSPIw9lW7eg1jZASAqQPgdDRKfJ/J8WWC8+6IG/TKWE9KqQEdV
+ 1qvhJ3wa+JEDaYDwsmK2m9ViNBpE+a6nXrW7LmK++vw19GHOw3SzLOY98opv9FCoEH
+ 8lOrIL5bqyp5EksDA0XqzgVxiLhcPXvGcyMNLcNo=
+Date: Wed, 26 Jun 2019 12:51:53 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [PATCHv2 2/2] PCI: layerscape: EP and RC drivers are compiled
+ separately
+Message-ID: <20190626175153.GC103694@google.com>
+References: <20190626111139.32878-1-xiaowei.bao@nxp.com>
+ <20190626111139.32878-2-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19062616-4275-0000-0000-000003467EFB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062616-4276-0000-0000-0000385684E2
-Message-Id: <87k1d8z3jw.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-26_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906260199
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190626111139.32878-2-xiaowei.bao@nxp.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,98 +59,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Oliver O'Halloran <oohall@gmail.com>
+Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.com,
+ arnd@arndb.de, devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
+ kstewart@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kishon@ti.com,
+ minghuan.Lian@nxp.com, robh+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, pombredanne@nexb.com, leoyang.li@nxp.com,
+ shawnguo@kernel.org, shawn.lin@rock-chips.com, mingkai.hu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+If you post another revision for any reason, please change the subject
+so it's worded as a command and mentions the new config options, e.g.,
 
-> In some cases initial bind of scm memory for an lpar can fail if
-> previously it wasn't released using a scm-unbind hcall. This situation
-> can arise due to panic of the previous kernel or forced lpar
-> fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
->
-> To mitigate such cases the patch updates papr_scm_probe() to force a
-> call to drc_pmem_unbind() in case the initial bind of scm memory fails
-> with EBUSY error. In case scm-bind operation again fails after the
-> forced scm-unbind then we follow the existing error path. We also
-> update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
-> and indicate it as a EBUSY error back to the caller.
->
-> Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+  PCI: layerscape: Add CONFIG_PCI_LAYERSCAPE_EP to build EP/RC separately
+
+On Wed, Jun 26, 2019 at 07:11:39PM +0800, Xiaowei Bao wrote:
+> Compile the EP and RC drivers separately with different configuration
+> options, this looks clearer.
+> 
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 > ---
-> Change-log:
-> v3:
-> * Minor update to a code comment. [Oliver]
->
 > v2:
-> * Moved the retry code from drc_pmem_bind() to papr_scm_probe()
->   [Oliver]
-> * Changed the type of variable 'rc' in drc_pmem_bind() to
->   int64_t. [Oliver]
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index c01a03fd3ee7..7c5e10c063a0 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -43,8 +43,9 @@ struct papr_scm_priv {
->  static int drc_pmem_bind(struct papr_scm_priv *p)
->  {
->  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> -	uint64_t rc, token;
->  	uint64_t saved = 0;
-> +	uint64_t token;
-> +	int64_t rc;
+>  - No change.
+> 
+>  drivers/pci/controller/dwc/Kconfig  |   20 ++++++++++++++++++--
+>  drivers/pci/controller/dwc/Makefile |    3 ++-
+>  2 files changed, 20 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> index a6ce1ee..a41ccf5 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -131,13 +131,29 @@ config PCI_KEYSTONE_EP
+>  	  DesignWare core functions to implement the driver.
 >  
->  	/*
->  	 * When the hypervisor cannot map all the requested memory in a single
-> @@ -64,6 +65,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
->  	} while (rc == H_BUSY);
->  
->  	if (rc) {
-> +		/* H_OVERLAP needs a separate error path */
-> +		if (rc == H_OVERLAP)
-> +			return -EBUSY;
+>  config PCI_LAYERSCAPE
+> -	bool "Freescale Layerscape PCIe controller"
+> +	bool "Freescale Layerscape PCIe controller - Host mode"
+>  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+>  	depends on PCI_MSI_IRQ_DOMAIN
+>  	select MFD_SYSCON
+>  	select PCIE_DW_HOST
+>  	help
+> -	  Say Y here if you want PCIe controller support on Layerscape SoCs.
+> +	  Say Y here if you want to enable PCIe controller support on Layerscape
+> +	  SoCs to work in Host mode.
+> +	  This controller can work either as EP or RC. The RCW[HOST_AGT_PEX]
+> +	  determines which PCIe controller works in EP mode and which PCIe
+> +	  controller works in RC mode.
 > +
->  		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
->  		return -ENXIO;
->  	}
-> @@ -331,6 +336,14 @@ static int papr_scm_probe(struct platform_device *pdev)
+> +config PCI_LAYERSCAPE_EP
+> +	bool "Freescale Layerscape PCIe controller - Endpoint mode"
+> +	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+> +	depends on PCI_ENDPOINT
+> +	select PCIE_DW_EP
+> +	help
+> +	  Say Y here if you want to enable PCIe controller support on Layerscape
+> +	  SoCs to work in Endpoint mode.
+> +	  This controller can work either as EP or RC. The RCW[HOST_AGT_PEX]
+> +	  determines which PCIe controller works in EP mode and which PCIe
+> +	  controller works in RC mode.
 >  
->  	/* request the hypervisor to bind this region to somewhere in memory */
->  	rc = drc_pmem_bind(p);
-> +
-> +	/* If phyp says drc memory still bound then force unbound and retry */
-> +	if (rc == -EBUSY) {
-> +		dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
-> +		drc_pmem_unbind(p);
-
-
-This should only be caused by kexec right? And considering kernel nor
-hypervisor won't change device binding details, can you check switching
-this to H_SCM_QUERY_BLOCK_MEM_BINDING?  Will that result in faster boot? 
-
-
-
-> +		rc = drc_pmem_bind(p);
-> +	}
-> +
->  	if (rc)
->  		goto err;
->  
-
-I am also not sure about the module reference count here. Should we
-increment the module reference count after a bind so that we can track
-failures in ubind and fail the module unload?
-
--aneesh
-
+>  config PCI_HISI
+>  	depends on OF && (ARM64 || COMPILE_TEST)
+> diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
+> index b085dfd..824fde7 100644
+> --- a/drivers/pci/controller/dwc/Makefile
+> +++ b/drivers/pci/controller/dwc/Makefile
+> @@ -8,7 +8,8 @@ obj-$(CONFIG_PCI_EXYNOS) += pci-exynos.o
+>  obj-$(CONFIG_PCI_IMX6) += pci-imx6.o
+>  obj-$(CONFIG_PCIE_SPEAR13XX) += pcie-spear13xx.o
+>  obj-$(CONFIG_PCI_KEYSTONE) += pci-keystone.o
+> -obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o pci-layerscape-ep.o
+> +obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o
+> +obj-$(CONFIG_PCI_LAYERSCAPE_EP) += pci-layerscape-ep.o
+>  obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o
+>  obj-$(CONFIG_PCIE_ARMADA_8K) += pcie-armada8k.o
+>  obj-$(CONFIG_PCIE_ARTPEC6) += pcie-artpec6.o
+> -- 
+> 1.7.1
+> 
