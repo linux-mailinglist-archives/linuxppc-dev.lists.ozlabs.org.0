@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234D655F77
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 05:26:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YT2Z3rJCzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 13:26:14 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C356078
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 05:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YTb13JsHzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 13:50:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="PcmKyoL0"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="b+3Ub9ic"; 
  dkim-atps=neutral
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
- [IPv6:2607:f8b0:4864:20::d42])
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YT0w4q7QzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 13:24:46 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id m24so1899666ioo.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:24:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YTWT1v63zDqQW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 13:47:49 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id u19so1875287ior.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=RFVV/GZBFi5Z35yAzLLpG00t2/wHBYPcJXuWxXp87bA=;
- b=PcmKyoL0B1rtAMXy+vOAar5cDGqzelaKNIE+GvVOflymg0N45VSWWYBbR0ZJA5ijFh
- bCl/B6uiYU2tBw7iv5ELE2p6FAo+48uTI5hcKU2R9qP+lYtgUiFHiePcip27y1Yeh2LT
- zuzE1xylvZw7wFaK0Oi+XDKaNtDxvXI7rLzoHzxJ8QJGRkkn8Fj7uR/JBsH6ljNLC068
- JHlAauIgcGDmNER4eRZBsE8KwtTPSpAl7E0g/R7/41UP4cgzrdMskdRKRR80pTuAQ6x8
- S0xBvwtDN5OLKQKHTJpEf8Q2S2wSvO3vdVTYvSQp2VFHpXfa5kpESFooZkoHL7aBtgsn
- h23A==
+ :cc; bh=fCoVRml/jv+g8lGjlexeAkszxKeEmBmE6BYcUGIfiXQ=;
+ b=b+3Ub9ic8cC4HMJjnOjtbtO0H+dev+W63rqcTtt1DHFYOZ7SPMKhubWgpEPSqFYXVR
+ P8e97yzSCF3hGGkKa48rZL996RuA8D9oBdmRtsktfWXqwrV/rjQvVqcmbGinM6b1fVoy
+ s4izAEzbrCMwhGlkxTUPrYMQsjA6AeFrTzqdA7K7/E/AJDAfNKCypSqYdd1YIo2YiK2h
+ 87noU/Xhd41mi7zgT9GIbHNOyHGLUTrngLDlVkaknOR4uqAtEnpDTlL3URPdACyKRq1X
+ /glWvsN2D/yZUaGjekSsg0fV9NOpJRr0Uy2r7M74wnkEqllPf5f0hcfhDx0wykngL/LS
+ ad4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=RFVV/GZBFi5Z35yAzLLpG00t2/wHBYPcJXuWxXp87bA=;
- b=jwuhORl9t0CwGyAv2ODs6K8LUT6uWZnqfYpYynT3NwWXi4nannZflG2sodZlPY1PDB
- /cFxGAqWcc+HQ2Ad/0KYoAlLtP1jtQsIlSsfite8cIA7+Lw50DuiTnBr8/wi1Nr034P4
- MrUsJbtmI8ZrYQoDOQ/bYzfswdm/jInZ/K/UAPdow7apc3BjdD3XUWYdj6v05c9zMzyN
- bsEBOc3NPrjutTGD/5s8RDsRqqOSimt3xKdzruahDcsyA3qi3LFjNfeZa6iMVYN5zVYF
- lAaZfZt+iXOlqQf04cpU1rk9idDLhauxIJF3/Q//lu9HTBwFfO4copj3HmwaxH5YrTNv
- RIiA==
-X-Gm-Message-State: APjAAAXi18NOzs3T6aZ2eXU6X5Y2CWu9q2syjWzuLllZpVo1rYzb6eyJ
- AbWWqZoDZxXo2CFe9DYf8rM+hvqaBuhJ8trtO/nGQw==
-X-Google-Smtp-Source: APXvYqzC2SI7+I8F//e9knNpgD/J5W3gIuvdTtJOcO56VitAeil58nQdvZjqVGoWLmjDtJzRFLn6+r2WEunGpX2b8nI=
-X-Received: by 2002:a5e:c70c:: with SMTP id f12mr2455412iop.293.1561519483184; 
- Tue, 25 Jun 2019 20:24:43 -0700 (PDT)
+ bh=fCoVRml/jv+g8lGjlexeAkszxKeEmBmE6BYcUGIfiXQ=;
+ b=C5bbirVpqckm3niX1ZnR1SlGaZLxUtusHAf2Jmf1+1FmJTRogpa0D3rofNQmrgGVAi
+ xXuHKJTfLHpexJHk3eZ11IRMx6dthx1Yj0pEjF2uldailPPmUiU2Dp5V1Hf9y6kdDn4I
+ pHBD7X0SjiiAvyvudPZEYhvELdBQov+i7IifdIKwzVkl5iT8p+AdZ9PVHHcHUjNdKpdV
+ uQaLso3e2u28hUA5jmhdxKqd4AKL5k9PUj9gxzWiW1EjtShHpBTMl+SpqSCP1b2zpPbw
+ GaW97GU3D4MDuBWdm3fyvf9rdMDukg4dRDHw/Y18M2ivNPYSy1l6BdxgCEgJUIW1GQfc
+ XkXQ==
+X-Gm-Message-State: APjAAAUjbU2RewLKh07bOalTx5nprU4Vey3dwAx/ozp824OQbHx/XyLU
+ B4DpYgZ6F1UkqwUJx3HRhXidlPsz140vAnkM/1I=
+X-Google-Smtp-Source: APXvYqygplaFPDhqCjB+kvDAe8dVXTv81perEQl/lDhSUg/RBDw0aC42uFsXOBpd7n77ySp6GH41hKk+eHK3CkTvtcI=
+X-Received: by 2002:a6b:fb10:: with SMTP id h16mr2431001iog.195.1561520865927; 
+ Tue, 25 Jun 2019 20:47:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190625122709.11846-1-vaibhav@linux.ibm.com>
- <20190625122709.11846-4-vaibhav@linux.ibm.com>
-In-Reply-To: <20190625122709.11846-4-vaibhav@linux.ibm.com>
+ <20190625122709.11846-3-vaibhav@linux.ibm.com>
+In-Reply-To: <20190625122709.11846-3-vaibhav@linux.ibm.com>
 From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 26 Jun 2019 13:24:32 +1000
-Message-ID: <CAOSf1CF81NS8E9WQJo+bWWzg8BdovWXKpURXqHarz8tt+XOiTA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
+Date: Wed, 26 Jun 2019 13:47:34 +1000
+Message-ID: <CAOSf1CGYP7NiaAJ=Pf+3UJzK35HRXRnO+woB2o6yHJikuERW0A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] powerpc/papr_scm: Update drc_pmem_unbind() to use
+ H_SCM_UNBIND_ALL
 To: Vaibhav Jain <vaibhav@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,71 +84,45 @@ Sender: "Linuxppc-dev"
 
 On Tue, Jun 25, 2019 at 10:27 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
 >
-> In some cases initial bind of scm memory for an lpar can fail if
-> previously it wasn't released using a scm-unbind hcall. This situation
-> can arise due to panic of the previous kernel or forced lpar
-> fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
+> The new hcall named H_SCM_UNBIND_ALL has been introduce that can
+> unbind all the memory drc memory-blocks assigned to an lpar.
+
+This is a little muddy. For normal memory each block has a DRC so you
+can add/remove individual blocks by configuring or deconfiguring the
+DRC for that block. For storage class memory the DRC refers to the SCM
+volume as a whole rather than an individual block so a "memory DRC"
+isn't really what you're taking about here.
+
+This is probably being a little pedantic, but I find the whole DRC
+system confusing enough as-is so it's good to be clear about these
+things.
+
+> more efficient than using H_SCM_UNBIND_MEM as currently we don't
+> support partial unbind of drc memory-blocks.
 >
-> To mitigate such cases the patch updates papr_scm_probe() to force a
-> call to drc_pmem_unbind() in case the initial bind of scm memory fails
-> with EBUSY error. In case scm-bind operation again fails after the
-> forced scm-unbind then we follow the existing error path. We also
-> update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
-> and indicate it as a EBUSY error back to the caller.
+> Hence this patch proposes following changes to drc_pmem_unbind():
 >
-> Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
+>     * Update drc_pmem_unbind() to replace hcall H_SCM_UNBIND_MEM to
+>       H_SCM_UNBIND_ALL.
+>
+>     * Update drc_pmem_unbind() to handles cases when PHYP asks the guest
+>       kernel to wait for specific amount of time before retrying the
+>       hcall via the 'LONG_BUSY' return value.
+>
+> * Ensure appropriate error code is returned back from the function
+>       in case of an error.
+>
 > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > ---
 > Change-log:
 >
 > v2:
-> * Moved the retry code from drc_pmem_bind() to papr_scm_probe()
->   [Oliver]
-> * Changed the type of variable 'rc' in drc_pmem_bind() to
->   int64_t. [Oliver]
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index a4e1674bb15c..2c90cbe88313 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -43,8 +43,9 @@ struct papr_scm_priv {
->  static int drc_pmem_bind(struct papr_scm_priv *p)
->  {
->         unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> -       uint64_t rc, token;
->         uint64_t saved = 0;
-> +       uint64_t token;
-> +       int64_t rc;
->
->         /*
->          * When the hypervisor cannot map all the requested memory in a single
-> @@ -64,6 +65,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
->         } while (rc == H_BUSY);
->
->         if (rc) {
-> +               /* H_OVERLAP needs a separate error path */
-> +               if (rc == H_OVERLAP)
-> +                       return -EBUSY;
-> +
->                 dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
->                 return -ENXIO;
->         }
-> @@ -331,6 +336,14 @@ static int papr_scm_probe(struct platform_device *pdev)
->
->         /* request the hypervisor to bind this region to somewhere in memory */
->         rc = drc_pmem_bind(p);
-> +
-> +       /* If phyp reports drc memory still bound the force unbound and retry */
+> * Added a dev_dbg when unbind operation succeeds [Oliver]
+> * Changed type of variable 'rc' to int64_t [Oliver]
+> * Removed the code that was logging a warning in case bind operation
+>   takes >1-seconds [Oliver]
+> * Spinned off changes to hvcall.h as a separate patch. [Oliver]
 
-"the force" should be "then force"?
-
-> +       if (rc == -EBUSY) {
-> +               dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
-
-
-Looks good otherwise,
+Looks good otherwise, when you respin feel free to add:
 
 Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
