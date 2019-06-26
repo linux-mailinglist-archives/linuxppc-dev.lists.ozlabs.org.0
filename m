@@ -1,36 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB5456B60
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 15:58:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E6456A57
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 15:24:34 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YkJt5GTlzDqb0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 23:24:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Yl4705ykzDqKS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 23:58:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 45YkFX1pW0zDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 23:21:33 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D595360;
- Wed, 26 Jun 2019 06:21:31 -0700 (PDT)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
- [10.162.40.140])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4550F3F71E;
- Wed, 26 Jun 2019 06:21:25 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH] powerpc/64s/radix: Define arch_ioremap_p4d_supported()
-Date: Wed, 26 Jun 2019 18:51:00 +0530
-Message-Id: <1561555260-17335-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Yl033YxBzDqWg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 23:54:58 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id D2ABDAE3F;
+ Wed, 26 Jun 2019 13:54:52 +0000 (UTC)
+Date: Wed, 26 Jun 2019 15:54:50 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Barret Rhoden <brho@google.com>
+Subject: Re: [PATCH 1/2] x86, numa: always initialize all possible nodes
+Message-ID: <20190626135450.GW17798@dhcp22.suse.cz>
+References: <20190212095343.23315-1-mhocko@kernel.org>
+ <20190212095343.23315-2-mhocko@kernel.org>
+ <34f96661-41c2-27cc-422d-5a7aab526f87@google.com>
+ <20190502130031.GC29835@dhcp22.suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190502130031.GC29835@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,61 +49,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-next@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+ Dave Hansen <dave.hansen@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ x86@kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Pingfan Liu <kernelfans@gmail.com>, linux-mm@kvack.org,
+ Ingo Molnar <mingo@elte.hu>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Recent core ioremap changes require HAVE_ARCH_HUGE_VMAP subscribing archs
-provide arch_ioremap_p4d_supported() failing which will result in a build
-failure like the following.
+On Thu 02-05-19 09:00:31, Michal Hocko wrote:
+> On Wed 01-05-19 15:12:32, Barret Rhoden wrote:
+> [...]
+> > A more elegant solution may be to avoid registering with sysfs during early
+> > boot, or something else entirely.  But I figured I'd ask for help at this
+> > point.  =)
+> 
+> Thanks for the report and an excellent analysis! This is really helpful.
+> I will think about this some more but I am traveling this week. It seems
+> really awkward to register a sysfs file for an empty range. That looks
+> like a bug to me.
 
-ld: lib/ioremap.o: in function `.ioremap_huge_init':
-ioremap.c:(.init.text+0x3c): undefined reference to
-`.arch_ioremap_p4d_supported'
+I am sorry, but I didn't get to this for a long time and I am still
+busy. The patch has been dropped from the mm tree (thus linux-next). I
+hope I can revisit this or somebody else will take over and finish this
+work. This is much more trickier than I anticipated unfortunately.
 
-This defines a stub implementation for arch_ioremap_p4d_supported() keeping
-it disabled for now to fix the build problem.
-
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org
-
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This has been just build tested and fixes the problem reported earlier.
-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 8904aa1..c81da88 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1124,6 +1124,11 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
- 	set_pte_at(mm, addr, ptep, pte);
- }
- 
-+int __init arch_ioremap_p4d_supported(void)
-+{
-+	return 0;
-+}
-+
- int __init arch_ioremap_pud_supported(void)
- {
- 	/* HPT does not cope with large pages in the vmalloc area */
 -- 
-2.7.4
-
+Michal Hocko
+SUSE Labs
