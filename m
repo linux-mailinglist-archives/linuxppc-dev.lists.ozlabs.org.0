@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 234D655F77
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 05:26:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEE655F75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 05:18:54 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45YSt33kWnzDqYq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 13:18:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45YT2Z3rJCzDqbf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2019 13:26:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Vn60NhOU"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="PcmKyoL0"; 
  dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45YSrH3NXTzDqXW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 13:17:19 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id k20so1756225ios.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:17:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45YT0w4q7QzDqRN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2019 13:24:46 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id m24so1899666ioo.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2019 20:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=iDaxZ2oDFXNBAYZ6jhw0j4lVi52hkng3WRc/YvzdVwE=;
- b=Vn60NhOUJkgNWfEmAKAdnlFhjODRzjbKpbVP1VYlTFROZS5HGKT47e1xysVPJIcfTA
- pZ4oCo8gN+pz4ZONVKQrOV74bbWTPYbMpvcCgCujIz5KoqV+7hPqHWDCWZPU2dnxigge
- dDsDktlVpKoRTtgK5vagMUZWgx6EksxkATpAOl2aeaO7EW4a3q5hZ5paqkdT89+uvnnH
- zliNq5bBESwmynHwLG7efjTFsVfyv2+szp6qdaUH/oVO/hpyPy5gQ7regezYb4cTS0cF
- mg42MkZlUWzjRv+iGnUAs7/oY0LqMWyvrdPrIwtNfyBMWdOsENfNp0CnT46+bjiP3Oa3
- ereg==
+ :cc; bh=RFVV/GZBFi5Z35yAzLLpG00t2/wHBYPcJXuWxXp87bA=;
+ b=PcmKyoL0B1rtAMXy+vOAar5cDGqzelaKNIE+GvVOflymg0N45VSWWYBbR0ZJA5ijFh
+ bCl/B6uiYU2tBw7iv5ELE2p6FAo+48uTI5hcKU2R9qP+lYtgUiFHiePcip27y1Yeh2LT
+ zuzE1xylvZw7wFaK0Oi+XDKaNtDxvXI7rLzoHzxJ8QJGRkkn8Fj7uR/JBsH6ljNLC068
+ JHlAauIgcGDmNER4eRZBsE8KwtTPSpAl7E0g/R7/41UP4cgzrdMskdRKRR80pTuAQ6x8
+ S0xBvwtDN5OLKQKHTJpEf8Q2S2wSvO3vdVTYvSQp2VFHpXfa5kpESFooZkoHL7aBtgsn
+ h23A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=iDaxZ2oDFXNBAYZ6jhw0j4lVi52hkng3WRc/YvzdVwE=;
- b=dJLznwShxuncNAg4BsEyj+wlCWUI2NYwNyI7um6MCximhhlTABkgslcvwLNwVPAZCV
- PMuGkLRjQPqmaoZdcUYhH+m4MB94fAa0s9l2hHspP5SzV9uPItIgWYejL+o8+y3IUBxu
- 16/vBAcNgRLbshj0DpOUoo3dZ+g+/jfWU7skFBKsrpyCJSaEhhE9nSrXvUZbD6LLGDD7
- 4lBXlONcHK0zV/BKt+RnH2ZF2d5cHHuRrwghxKc6FSZpiM2oXWfAm6fVbN2dwT2JWH0+
- IR8z9a6/CUFBK5XbZrjqxC8BWi/pwubVU84PSUvEal9A+1oVA1CKcAv6jgEixM8In0Iz
- Nv2g==
-X-Gm-Message-State: APjAAAVRePR/zB7fECwERAUl5LSlJtp1yRiyijSUVRurVtAS45jex5vk
- I3CSjSA/osQ4F+sZKycpALa/35rcT3NykSVgBy85IeWB
-X-Google-Smtp-Source: APXvYqxkhx0llAYDUIO95F4fr1oimPdUOJTrdli/3FZ3eNKt0/gubklpxc3X1vSLUfY5zGqgL/CBZU73MDVoteA/E8Q=
-X-Received: by 2002:a5d:8404:: with SMTP id i4mr2354620ion.146.1561519036262; 
- Tue, 25 Jun 2019 20:17:16 -0700 (PDT)
+ bh=RFVV/GZBFi5Z35yAzLLpG00t2/wHBYPcJXuWxXp87bA=;
+ b=jwuhORl9t0CwGyAv2ODs6K8LUT6uWZnqfYpYynT3NwWXi4nannZflG2sodZlPY1PDB
+ /cFxGAqWcc+HQ2Ad/0KYoAlLtP1jtQsIlSsfite8cIA7+Lw50DuiTnBr8/wi1Nr034P4
+ MrUsJbtmI8ZrYQoDOQ/bYzfswdm/jInZ/K/UAPdow7apc3BjdD3XUWYdj6v05c9zMzyN
+ bsEBOc3NPrjutTGD/5s8RDsRqqOSimt3xKdzruahDcsyA3qi3LFjNfeZa6iMVYN5zVYF
+ lAaZfZt+iXOlqQf04cpU1rk9idDLhauxIJF3/Q//lu9HTBwFfO4copj3HmwaxH5YrTNv
+ RIiA==
+X-Gm-Message-State: APjAAAXi18NOzs3T6aZ2eXU6X5Y2CWu9q2syjWzuLllZpVo1rYzb6eyJ
+ AbWWqZoDZxXo2CFe9DYf8rM+hvqaBuhJ8trtO/nGQw==
+X-Google-Smtp-Source: APXvYqzC2SI7+I8F//e9knNpgD/J5W3gIuvdTtJOcO56VitAeil58nQdvZjqVGoWLmjDtJzRFLn6+r2WEunGpX2b8nI=
+X-Received: by 2002:a5e:c70c:: with SMTP id f12mr2455412iop.293.1561519483184; 
+ Tue, 25 Jun 2019 20:24:43 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190625122709.11846-1-vaibhav@linux.ibm.com>
- <20190625122709.11846-2-vaibhav@linux.ibm.com>
-In-Reply-To: <20190625122709.11846-2-vaibhav@linux.ibm.com>
+ <20190625122709.11846-4-vaibhav@linux.ibm.com>
+In-Reply-To: <20190625122709.11846-4-vaibhav@linux.ibm.com>
 From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 26 Jun 2019 13:17:05 +1000
-Message-ID: <CAOSf1CFSne2QR+e5Sx9iWvCyaNLF4gc2gwntYDVK1=O1eCKVwg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] powerpc/pseries: Update SCM hcall op-codes in
- hvcall.h
+Date: Wed, 26 Jun 2019 13:24:32 +1000
+Message-ID: <CAOSf1CF81NS8E9WQJo+bWWzg8BdovWXKpURXqHarz8tt+XOiTA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] powerpc/papr_scm: Force a scm-unbind if initial
+ scm-bind fails
 To: Vaibhav Jain <vaibhav@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,45 +84,71 @@ Sender: "Linuxppc-dev"
 
 On Tue, Jun 25, 2019 at 10:27 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
 >
-> Update the hvcalls.h to include op-codes for new hcalls introduce to
-> manage SCM memory. Also update existing hcall definitions to reflect
-> current papr specification for SCM.
+> In some cases initial bind of scm memory for an lpar can fail if
+> previously it wasn't released using a scm-unbind hcall. This situation
+> can arise due to panic of the previous kernel or forced lpar
+> fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
 >
+> To mitigate such cases the patch updates papr_scm_probe() to force a
+> call to drc_pmem_unbind() in case the initial bind of scm memory fails
+> with EBUSY error. In case scm-bind operation again fails after the
+> forced scm-unbind then we follow the existing error path. We also
+> update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
+> and indicate it as a EBUSY error back to the caller.
+>
+> Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
 > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > ---
 > Change-log:
 >
 > v2:
-> * None new patch in this series.
+> * Moved the retry code from drc_pmem_bind() to papr_scm_probe()
+>   [Oliver]
+> * Changed the type of variable 'rc' in drc_pmem_bind() to
+>   int64_t. [Oliver]
 > ---
->  arch/powerpc/include/asm/hvcall.h | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+>  arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-> index 463c63a9fcf1..1f5f917dae8c 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -302,9 +302,14 @@
->  #define H_SCM_UNBIND_MEM        0x3F0
->  #define H_SCM_QUERY_BLOCK_MEM_BINDING 0x3F4
->  #define H_SCM_QUERY_LOGICAL_MEM_BINDING 0x3F8
-> -#define H_SCM_MEM_QUERY                0x3FC
-> +#define H_SCM_UNBIND_ALL        0x3FC
->  #define H_SCM_BLOCK_CLEAR       0x400
-
-The BLOCK_CLEAR hcall was removed from the spec and the 0x400 hcall
-number is now used by H_SCM_HEALTH.
-
-> -#define MAX_HCALL_OPCODE       H_SCM_BLOCK_CLEAR
-> +#define H_SCM_PERFORMANCE_STATS 0x418
-> +#define MAX_HCALL_OPCODE       H_SCM_PERFORMANCE_STATS
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index a4e1674bb15c..2c90cbe88313 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -43,8 +43,9 @@ struct papr_scm_priv {
+>  static int drc_pmem_bind(struct papr_scm_priv *p)
+>  {
+>         unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> -       uint64_t rc, token;
+>         uint64_t saved = 0;
+> +       uint64_t token;
+> +       int64_t rc;
+>
+>         /*
+>          * When the hypervisor cannot map all the requested memory in a single
+> @@ -64,6 +65,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
+>         } while (rc == H_BUSY);
+>
+>         if (rc) {
+> +               /* H_OVERLAP needs a separate error path */
+> +               if (rc == H_OVERLAP)
+> +                       return -EBUSY;
 > +
-> +/* Scope args for H_SCM_UNBIND_ALL */
-> +#define H_UNBIND_SCOPE_ALL (0x1)
-> +#define H_UNBIND_SCOPE_DRC (0x2)
+>                 dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
+>                 return -ENXIO;
+>         }
+> @@ -331,6 +336,14 @@ static int papr_scm_probe(struct platform_device *pdev)
 >
->  /* H_VIOCTL functions */
->  #define H_GET_VIOA_DUMP_SIZE   0x01
-> --
-> 2.21.0
->
+>         /* request the hypervisor to bind this region to somewhere in memory */
+>         rc = drc_pmem_bind(p);
+> +
+> +       /* If phyp reports drc memory still bound the force unbound and retry */
+
+"the force" should be "then force"?
+
+> +       if (rc == -EBUSY) {
+> +               dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
+
+
+Looks good otherwise,
+
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
