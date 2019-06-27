@@ -2,43 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D4E57C2F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 08:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A23C257D16
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 09:24:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Z91z6hZbzDqdk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 16:28:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZBHF6GlJzDqkK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 17:24:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gondor.apana.org.au
- (client-ip=216.24.177.18; helo=deadmen.hmeau.com;
- envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gondor.apana.org.au
-Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=newverein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Z9012knSzDqWJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 16:26:25 +1000 (AEST)
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
- by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
- id 1hgNrM-00057r-PX; Thu, 27 Jun 2019 14:26:16 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
- (envelope-from <herbert@gondor.apana.org.au>)
- id 1hgNrG-0005KA-L7; Thu, 27 Jun 2019 14:26:10 +0800
-Date: Thu, 27 Jun 2019 14:26:10 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Haren Myneni <haren@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] crypto/NX: Set receive window credits to max number
- of CRBs in RxFIFO
-Message-ID: <20190627062610.olw3ojckkwil4jlk@gondor.apana.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZBFd6ZZbzDqWj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 17:23:15 +1000 (AEST)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id DCFEF68B20; Thu, 27 Jun 2019 09:22:40 +0200 (CEST)
+Date: Thu, 27 Jun 2019 09:22:40 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH 3/4] powerpc/powernv: remove unused NPU DMA code
+Message-ID: <20190627072240.GA9916@lst.de>
+References: <20190625145239.2759-1-hch@lst.de>
+ <20190625145239.2759-4-hch@lst.de>
+ <7bde96e0-7bc5-d5fe-f151-52c29660633c@ozlabs.ru>
+ <20190626074935.GA25452@lst.de>
+ <027a5095-a22c-2799-8ff6-42d0bc4d2bc9@ozlabs.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1560884962.22818.9.camel@hbabu-laptop>
-X-Newsgroups: apana.lists.os.linux.cryptoapi
-Organization: Core
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <027a5095-a22c-2799-8ff6-42d0bc4d2bc9@ozlabs.ru>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,27 +48,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.vnet.ibm.com> wrote:
->    
-> System gets checkstop if RxFIFO overruns with more requests than the
-> maximum possible number of CRBs in FIFO at the same time. The max number
-> of requests per window is controlled by window credits. So find max
-> CRBs from FIFO size and set it to receive window credits.
+On Thu, Jun 27, 2019 at 10:21:55AM +1000, Alexey Kardashevskiy wrote:
+> > Which comment?  Last time I asked you complaint "it is still used in
+> > exactly the same way as before" which you later clarified that you
+> > have a hidden out of tree user somewhere, and you only objected to
 > 
-> Fixes: b0d6c9bab5e4 ("crypto/nx: Add P9 NX support for 842 compression engine")
-> CC: stable@vger.kernel.org # v4.14+   
-> Signed-off-by:Haren Myneni <haren@us.ibm.com>
+> It is not hidden, anyone can download and inspect that GPL driver.
 
-I presume this is being picked up by the powerpc tree?
+For one no one has ever posted a link.  And second as mentioned
+countless times it doesn't matter, it only matters if it is in mainline,
+or as a special exception actively trying to go mainline.
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+> > the word "dead".  That has been fixed and there were no further
+> > comments.
+> 
+> You still have it in the cover letter so at very least 3/4 is not a part
+> of this patchset then.
+> 
+> And I still want to see a formal statement about out-of-tree drivers
+> support/tolerance. If you manage to remove this code, I'll have to post
+> a revert (again and again) but I would rather know the exact list of
+> what we do and what we do not do about such drivers and if the list 1)
+> exists 2) is reasonable then I could try to come up with a better
+> solution or point others to the policy and push them to do the right
+> thing. Right now it is just you pretending that the nVidia driver does
+> not exist, this is not helping. Thanks,
+
+We had that discussion at kernel summit and it was reported.  Anyway,
+adding Greg, who usually has some pretty good prewritten letters for
+this kind of thing.
