@@ -1,76 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7678258AE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 21:20:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZV9B32mczDqX2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 05:20:30 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AC958AEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 21:23:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZVD112CszDqX0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 05:22:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
- envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="gecuNsfA"; 
- dkim-atps=neutral
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZV780ByzzDqWx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 05:18:43 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id p15so8148549eds.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 12:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=V9/DvrSm1tuMxgh9gCPc5feOBQeRzRI5OCgy1Wf79Gk=;
- b=gecuNsfA+4DkKar9EsBNVwySmvxGtn5QjxCfGe0pL3C8P5PP1Xy2qhhhZDcoqqpsMt
- o6a5PIeN7eNQMIhzmvUeQoUvUM6ihzgxXWIq70u7fu9iVoHK0FzMDxAxRgwfjJ4Y/0Np
- eAncgvXBOQ0xmiVv1lecus3bfWyVdHk5VwzGFxCT2/GbeqlKb/P18E1rbb80hy5diF/H
- 4YdJAru4bKV8H2mbVgheU4JQmdx7/dddyh73C9Mp5lr4a6BOUu8eCcrxqeIzo0SKJiFZ
- 5sPJgJAVAr2Bwv73DAJQk97UYRN7q89boMhZV+hgUVehyd/t4CV8IjUq7W/y3RK4iS23
- l2yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=V9/DvrSm1tuMxgh9gCPc5feOBQeRzRI5OCgy1Wf79Gk=;
- b=qACo/a7B2ULwaHhdf+P1cED+BsmveOm4dO1/vVo4qWl+Fmv9Y5cPA8ygtucWA2TWvF
- cr+QYwWnK+Z4za7VW4gW3Rqu6wTNUnbB0BL3yPeWIyr1PqCE/GpURh+2+MJ+YsW6PYpJ
- uxWFV487ar3adE7o8Z++HFF9HJsSy1Wzx7U2Y02ernDbXRNRwfoppuv7Fd0q6Y/Zz5/S
- Rwg59fekC84tjlW0p2OLLESixeIU6yjh0pNxhur51NOnVBvMMtBj0s/3w2TdSgEf9kpW
- HT6QOc9JO7xokaAzR0wQldnA54cilTyzLM6/WBSi5hcWVlOPt9P2MTfmUC3Kwfidj1NV
- J/iA==
-X-Gm-Message-State: APjAAAWbahnrxyPgwnAwn8hx3hMG5QZKp4j36hto+5wipdw/XZghJtlG
- YVuwyTg97g7jZbTHmBEu8lo=
-X-Google-Smtp-Source: APXvYqzo3o22jNRP11IR4sgG0M1LkCQD4a9v4DkJtwgfurt3ukcs5ifOVNN2Vcr8awUGY9pHnFRL3A==
-X-Received: by 2002:a50:a56d:: with SMTP id z42mr6430929edb.241.1561663119763; 
- Thu, 27 Jun 2019 12:18:39 -0700 (PDT)
-Received: from archlinux-epyc ([2a01:4f9:2b:2b15::2])
- by smtp.gmail.com with ESMTPSA id bs5sm575800ejb.10.2019.06.27.12.18.38
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 27 Jun 2019 12:18:39 -0700 (PDT)
-Date: Thu, 27 Jun 2019 12:18:37 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] PCI: rpaphp: Avoid a sometimes-uninitialized warning
-Message-ID: <20190627191837.GA111331@archlinux-epyc>
-References: <20190603174323.48251-1-natechancellor@gmail.com>
- <20190603221157.58502-1-natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZVBD2DvwzDqWn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 05:21:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45ZVBC48ggz8t3t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 05:21:23 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45ZVBC3hNLz9s3l; Fri, 28 Jun 2019 05:21:23 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45ZVBC05TNz9s7h
+ for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 05:21:22 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5RJGXOk044107
+ for <linuxppc-dev@ozlabs.org>; Thu, 27 Jun 2019 15:21:20 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2td3p38hsr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Thu, 27 Jun 2019 15:21:20 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Thu, 27 Jun 2019 20:21:18 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 27 Jun 2019 20:21:15 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x5RJL4o740304972
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 27 Jun 2019 19:21:04 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4EAD011C050;
+ Thu, 27 Jun 2019 19:21:14 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8447F11C058;
+ Thu, 27 Jun 2019 19:21:11 +0000 (GMT)
+Received: from hbathini.in.ibm.com (unknown [9.102.3.28])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 27 Jun 2019 19:21:11 +0000 (GMT)
+Subject: [PATCH 1/2] powerpc: reserve memory for capture kernel after
+ hugepages init
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Fri, 28 Jun 2019 00:51:09 +0530
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190603221157.58502-1-natechancellor@gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19062719-0016-0000-0000-0000028D1D89
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062719-0017-0000-0000-000032EA9D84
+Message-Id: <156166326909.13320.3330203549978146193.stgit@hbathini.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-27_13:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906270220
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,95 +101,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 03, 2019 at 03:11:58PM -0700, Nathan Chancellor wrote:
-> When building with -Wsometimes-uninitialized, clang warns:
-> 
-> drivers/pci/hotplug/rpaphp_core.c:243:14: warning: variable 'fndit' is
-> used uninitialized whenever 'for' loop exits because its condition is
-> false [-Wsometimes-uninitialized]
->         for (j = 0; j < entries; j++) {
->                     ^~~~~~~~~~~
-> drivers/pci/hotplug/rpaphp_core.c:256:6: note: uninitialized use occurs
-> here
->         if (fndit)
->             ^~~~~
-> drivers/pci/hotplug/rpaphp_core.c:243:14: note: remove the condition if
-> it is always true
->         for (j = 0; j < entries; j++) {
->                     ^~~~~~~~~~~
-> drivers/pci/hotplug/rpaphp_core.c:233:14: note: initialize the variable
-> 'fndit' to silence this warning
->         int j, fndit;
->                     ^
->                      = 0
-> 
-> fndit is only used to gate a sprintf call, which can be moved into the
-> loop to simplify the code and eliminate the local variable, which will
-> fix this warning.
-> 
-> Link: https://github.com/ClangBuiltLinux/linux/issues/504
-> Fixes: 2fcf3ae508c2 ("hotplug/drc-info: Add code to search ibm,drc-info property")
-> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
-> 
-> v1 -> v2:
-> 
-> * Eliminate fndit altogether by shuffling the sprintf call into the for
->   loop and changing the if conditional, as suggested by Nick.
-> 
->  drivers/pci/hotplug/rpaphp_core.c | 18 +++++++-----------
->  1 file changed, 7 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-> index bcd5d357ca23..c3899ee1db99 100644
-> --- a/drivers/pci/hotplug/rpaphp_core.c
-> +++ b/drivers/pci/hotplug/rpaphp_core.c
-> @@ -230,7 +230,7 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
->  	struct of_drc_info drc;
->  	const __be32 *value;
->  	char cell_drc_name[MAX_DRC_NAME_LEN];
-> -	int j, fndit;
-> +	int j;
->  
->  	info = of_find_property(dn->parent, "ibm,drc-info", NULL);
->  	if (info == NULL)
-> @@ -245,17 +245,13 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
->  
->  		/* Should now know end of current entry */
->  
-> -		if (my_index > drc.last_drc_index)
-> -			continue;
-> -
-> -		fndit = 1;
-> -		break;
-> +		/* Found it */
-> +		if (my_index <= drc.last_drc_index) {
-> +			sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix,
-> +				my_index);
-> +			break;
-> +		}
->  	}
-> -	/* Found it */
-> -
-> -	if (fndit)
-> -		sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix, 
-> -			my_index);
->  
->  	if (((drc_name == NULL) ||
->  	     (drc_name && !strcmp(drc_name, cell_drc_name))) &&
-> -- 
-> 2.22.0.rc3
-> 
+Sometimes, memory reservation for KDump/FADump can overlap with memory
+marked for hugepages. This overlap leads to error, hang in KDump case
+and copy error reported by f/w in case of FADump, while trying to
+capture dump. Report error while setting up memory for the capture
+kernel instead of running into issues while capturing dump, by moving
+KDump/FADump reservation below MMU early init and failing gracefully
+when hugepages memory overlaps with capture kernel memory.
 
-Gentle ping, can someone pick this up?
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
+ arch/powerpc/kernel/prom.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Cheers,
-Nathan
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 7159e79..454e19cf 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -731,14 +731,6 @@ void __init early_init_devtree(void *params)
+ 	if (PHYSICAL_START > MEMORY_START)
+ 		memblock_reserve(MEMORY_START, 0x8000);
+ 	reserve_kdump_trampoline();
+-#ifdef CONFIG_FA_DUMP
+-	/*
+-	 * If we fail to reserve memory for firmware-assisted dump then
+-	 * fallback to kexec based kdump.
+-	 */
+-	if (fadump_reserve_mem() == 0)
+-#endif
+-		reserve_crashkernel();
+ 	early_reserve_mem();
+ 
+ 	/* Ensure that total memory size is page-aligned. */
+@@ -777,6 +769,14 @@ void __init early_init_devtree(void *params)
+ #endif
+ 
+ 	mmu_early_init_devtree();
++#ifdef CONFIG_FA_DUMP
++	/*
++	 * If we fail to reserve memory for firmware-assisted dump then
++	 * fallback to kexec based kdump.
++	 */
++	if (fadump_reserve_mem() == 0)
++#endif
++		reserve_crashkernel();
+ 
+ #ifdef CONFIG_PPC_POWERNV
+ 	/* Scan and build the list of machine check recoverable ranges */
+
