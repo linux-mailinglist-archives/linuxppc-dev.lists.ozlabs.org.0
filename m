@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B6157605
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 02:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AE257648
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 02:38:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Z1CB66HbzDqSR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 10:35:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Z1GX27fxzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 10:38:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="iKolNvQh"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="o255pYHa"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Z185648BzDqSH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 10:32:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Z1861gmTzDqSR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 10:32:54 +1000 (AEST)
 Received: from sasha-vm.mshome.net (unknown [107.242.116.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C720A216E3;
- Thu, 27 Jun 2019 00:32:47 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 640492083B;
+ Thu, 27 Jun 2019 00:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561595569;
- bh=x0tnoCKzwMTbTEg97X/tWGRnfg/9tEHvhYDSiwOpIs8=;
+ s=default; t=1561595572;
+ bh=pQKQ339g9+kyf4YsJLcT9olQk5Ox9kkrT3p5Hx86/pQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iKolNvQhiTm1XqfpMo0hQSqXLhpsx5ozSaqbqMllXtC93Iue0yIy5W02DU9Wxfn8r
- oLDFfCjM0YfN7LDY9YyMheSodv+wVI/GJfh1isqwArj5Jh4AbYBMv67/GXmqYSryej
- 3Ccg14aeLo7aYiBwJPIRpfrJMdmMIDm8WgoYFfok=
+ b=o255pYHaBHMuc0FxUshFegjPHOA0czzNGgpfPMDo8mYS73m7dN9uDyqKm5NQ3m1Nd
+ YvReOBrgwuNOkcWfEZa+P3sqUZBjKhXoYjJ0IzYN9MiTSO1zlDo1F2BHoj8CZmymWj
+ AoTuzoV+Lh6AY/RejOOPTnNQGKcwl2MGHPqzv0lM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 43/95] ibmvnic: Do not close unopened driver
- during reset
-Date: Wed, 26 Jun 2019 20:29:28 -0400
-Message-Id: <20190627003021.19867-43-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 44/95] ibmvnic: Refresh device multicast list
+ after reset
+Date: Wed, 26 Jun 2019 20:29:29 -0400
+Message-Id: <20190627003021.19867-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190627003021.19867-1-sashal@kernel.org>
 References: <20190627003021.19867-1-sashal@kernel.org>
@@ -69,33 +69,33 @@ Sender: "Linuxppc-dev"
 
 From: Thomas Falcon <tlfalcon@linux.ibm.com>
 
-[ Upstream commit 1f94608b0ce141be5286dde31270590bdf35b86a ]
+[ Upstream commit be32a24372cf162e825332da1a7ccef058d4f20b ]
 
-Check driver state before halting it during a reset. If the driver is
-not running, do nothing. Otherwise, a request to deactivate a down link
-can cause an error and the reset will fail.
+It was observed that multicast packets were no longer received after
+a device reset.  The fix is to resend the current multicast list to
+the backing device after recovery.
 
 Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 3dfb2d131eb7..71bf895409a1 100644
+index 71bf895409a1..664e52fa7919 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1751,7 +1751,8 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+@@ -1851,6 +1851,9 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 		return 0;
+ 	}
  
- 	ibmvnic_cleanup(netdev);
- 
--	if (adapter->reset_reason != VNIC_RESET_MOBILITY &&
-+	if (reset_state == VNIC_OPEN &&
-+	    adapter->reset_reason != VNIC_RESET_MOBILITY &&
- 	    adapter->reset_reason != VNIC_RESET_FAILOVER) {
- 		rc = __ibmvnic_close(netdev);
- 		if (rc)
++	/* refresh device's multicast list */
++	ibmvnic_set_multi(netdev);
++
+ 	/* kick napi */
+ 	for (i = 0; i < adapter->req_rx_queues; i++)
+ 		napi_schedule(&adapter->napi[i]);
 -- 
 2.20.1
 
