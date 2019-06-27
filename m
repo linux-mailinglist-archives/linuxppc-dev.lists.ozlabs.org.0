@@ -1,51 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C55958462
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 16:22:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZMYS52TFzDqXK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 00:22:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D097B584A8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 16:39:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZMwQ0BBMzDqcY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 00:39:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=kernel.org
  (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=srs0=021e=u2=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="vuaBI8+R"; 
- dkim-atps=neutral
+ dmarc=none (p=none dis=none) header.from=goodmis.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZMTV2MGqzDqF1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 00:19:09 +1000 (AEST)
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZMsj3nYNzDqC8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 00:36:41 +1000 (AEST)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8E7C82085A;
- Thu, 27 Jun 2019 14:19:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561645147;
- bh=7l+G3OI0iTgTgknQe8KxTvPvTzZQhJrekFsGJa7hyYg=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=vuaBI8+RGyRA8VSmPV72RvBXWywSPtbT9Vo+BrkEqDUqYYOiMToYzu3B05OxLgjSA
- A4k/L1zJOW1anoyAmsHn+oh686egYKzYMeia7AUFamQ18WFYuEMXkrtBOVRxub9nDe
- WznU6i9/a3Y5YxGxGbvPJ1vk9Vv+8tdN9KAlG+0I=
-Date: Thu, 27 Jun 2019 23:19:03 +0900
-From: Masami Hiramatsu <mhiramat@kernel.org>
+ by mail.kernel.org (Postfix) with ESMTPSA id 66EC520828;
+ Thu, 27 Jun 2019 14:36:38 +0000 (UTC)
+Date: Thu, 27 Jun 2019 10:36:36 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
 To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 7/7] powerpc/kprobes: Allow probing on any ftrace
- address
-Message-Id: <20190627231903.79166dc2647c475de245b37d@kernel.org>
-In-Reply-To: <da4200e511f4863b153b0721f3913a75aa3bf80d.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 3/7] ftrace: Expose __ftrace_replace_code()
+Message-ID: <20190627103636.21122b0d@gandalf.local.home>
+In-Reply-To: <0d09c94f19332b13707109f41cd15b6e0c45d120.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
- <da4200e511f4863b153b0721f3913a75aa3bf80d.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+ <0d09c94f19332b13707109f41cd15b6e0c45d120.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,116 +50,79 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, linuxppc-dev@lists.ozlabs.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org,
  Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Jun 2019 16:53:55 +0530
+On Thu, 27 Jun 2019 16:53:51 +0530
 "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
 
-> With KPROBES_ON_FTRACE, kprobe is allowed to be inserted on instructions
-> that branch to _mcount (referred to as ftrace location). With
-> -mprofile-kernel, we now include the preceding 'mflr r0' as being part
-> of the ftrace location.
-> 
-> However, by default, probing on an instruction that is not actually the
-> branch to _mcount() is prohibited, as that is considered to not be at an
-> instruction boundary. This is not the case on powerpc, so allow the same
-> by overriding arch_check_ftrace_location()
-> 
-> In addition, we update kprobe_ftrace_handler() to detect this scenarios
-> and to pass the proper nip to the pre and post probe handlers.
+> While over-riding ftrace_replace_code(), we still want to reuse the
+> existing __ftrace_replace_code() function. Rename the function and
+> make it available for other kernel code.
 > 
 > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-
-Looks good to me.
-
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-
-Thank you!
-
 > ---
->  arch/powerpc/kernel/kprobes-ftrace.c | 32 +++++++++++++++++++++++++++-
->  1 file changed, 31 insertions(+), 1 deletion(-)
+>  include/linux/ftrace.h | 1 +
+>  kernel/trace/ftrace.c  | 8 ++++----
+>  2 files changed, 5 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
-> index 972cb28174b2..23c840748183 100644
-> --- a/arch/powerpc/kernel/kprobes-ftrace.c
-> +++ b/arch/powerpc/kernel/kprobes-ftrace.c
-> @@ -12,15 +12,35 @@
->  #include <linux/preempt.h>
->  #include <linux/ftrace.h>
+> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> index e97789c95c4e..fa653a561da5 100644
+> --- a/include/linux/ftrace.h
+> +++ b/include/linux/ftrace.h
+> @@ -456,6 +456,7 @@ ftrace_set_early_filter(struct ftrace_ops *ops, char *buf, int enable);
+>  /* defined in arch */
+>  extern int ftrace_ip_converted(unsigned long ip);
+>  extern int ftrace_dyn_arch_init(void);
+> +extern int ftrace_replace_code_rec(struct dyn_ftrace *rec, int enable);
+>  extern void ftrace_replace_code(int enable);
+>  extern int ftrace_update_ftrace_func(ftrace_func_t func);
+>  extern void ftrace_caller(void);
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index 5710a6b3edc1..21d8e201ee80 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -2351,8 +2351,8 @@ unsigned long ftrace_get_addr_curr(struct dyn_ftrace *rec)
+>  		return (unsigned long)FTRACE_ADDR;
+>  }
 >  
-> +/*
-> + * With -mprofile-kernel, we patch two instructions -- the branch to _mcount
-> + * as well as the preceding 'mflr r0'. Both these instructions are claimed
-> + * by ftrace and we should allow probing on either instruction.
-> + */
-> +int arch_check_ftrace_location(struct kprobe *p)
-> +{
-> +	if (ftrace_location((unsigned long)p->addr))
-> +		p->flags |= KPROBE_FLAG_FTRACE;
-> +	return 0;
-> +}
-> +
->  /* Ftrace callback handler for kprobes */
->  void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
->  			   struct ftrace_ops *ops, struct pt_regs *regs)
->  {
->  	struct kprobe *p;
-> +	int mflr_kprobe = 0;
->  	struct kprobe_ctlblk *kcb;
->  
->  	p = get_kprobe((kprobe_opcode_t *)nip);
-> -	if (unlikely(!p) || kprobe_disabled(p))
-> +	if (!p) {
-> +		p = get_kprobe((kprobe_opcode_t *)(nip - MCOUNT_INSN_SIZE));
-> +		if (unlikely(!p))
-> +			return;
-> +		mflr_kprobe = 1;
-> +	}
-> +
-> +	if (kprobe_disabled(p))
->  		return;
->  
->  	kcb = get_kprobe_ctlblk();
-> @@ -33,6 +53,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
->  		 */
->  		regs->nip -= MCOUNT_INSN_SIZE;
->  
-> +		if (mflr_kprobe)
-> +			regs->nip -= MCOUNT_INSN_SIZE;
-> +
->  		__this_cpu_write(current_kprobe, p);
->  		kcb->kprobe_status = KPROBE_HIT_ACTIVE;
->  		if (!p->pre_handler || !p->pre_handler(p, regs)) {
-> @@ -45,6 +68,8 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
->  				kcb->kprobe_status = KPROBE_HIT_SSDONE;
->  				p->post_handler(p, regs, 0);
->  			}
-> +			if (mflr_kprobe)
-> +				regs->nip += MCOUNT_INSN_SIZE;
->  		}
->  		/*
->  		 * If pre_handler returns !0, it changes regs->nip. We have to
-> @@ -57,6 +82,11 @@ NOKPROBE_SYMBOL(kprobe_ftrace_handler);
->  
->  int arch_prepare_kprobe_ftrace(struct kprobe *p)
->  {
-> +	if ((unsigned long)p->addr & 0x03) {
-> +		pr_err("Attempt to register kprobe at an unaligned address\n");
-> +		return -EILSEQ;
-> +	}
-> +
->  	p->ainsn.insn = NULL;
->  	p->ainsn.boostable = -1;
->  	return 0;
-> -- 
-> 2.22.0
-> 
+> -static int
+> -__ftrace_replace_code(struct dyn_ftrace *rec, int enable)
+> +int
+> +ftrace_replace_code_rec(struct dyn_ftrace *rec, int enable)
+
+Make this a single line, as it removes static and "__" which should
+keep it normal.
+
+Other than that,
+
+Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+-- Steve
 
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+>  {
+>  	unsigned long ftrace_old_addr;
+>  	unsigned long ftrace_addr;
+> @@ -2403,7 +2403,7 @@ void __weak ftrace_replace_code(int mod_flags)
+>  		if (rec->flags & FTRACE_FL_DISABLED)
+>  			continue;
+>  
+> -		failed = __ftrace_replace_code(rec, enable);
+> +		failed = ftrace_replace_code_rec(rec, enable);
+>  		if (failed) {
+>  			ftrace_bug(failed, rec);
+>  			/* Stop processing */
+> @@ -5827,7 +5827,7 @@ void ftrace_module_enable(struct module *mod)
+>  		rec->flags = cnt;
+>  
+>  		if (ftrace_start_up && cnt) {
+> -			int failed = __ftrace_replace_code(rec, 1);
+> +			int failed = ftrace_replace_code_rec(rec, 1);
+>  			if (failed) {
+>  				ftrace_bug(failed, rec);
+>  				goto out_loop;
+
