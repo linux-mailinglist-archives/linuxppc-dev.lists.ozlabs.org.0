@@ -1,73 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CA658D82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 00:01:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320DE58CF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 23:22:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZXtJ6rMDzDqmR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:22:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZYlM1TcbzDqfv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:01:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="NLu9PuPk"; 
- dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=julietk@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZXrZ2cPszDqjX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 07:21:16 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id y57so4114291qtk.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 14:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:mime-version
- :content-transfer-encoding;
- bh=BnGhhmLs0NKuNQcACyeoZ7fY58jMOrioFdYaVDGXO5k=;
- b=NLu9PuPkHBmYWLZ8E4QUHmn9nNhXAtdHQH82TM0Dr8TRjBFZZrOIqCUwNaxAIil5Le
- bVPEEnjZsAO3KxORiGQhnUYvPUseFp0QiGXaNMwrD8YiPBdOh+QkDBaWZQTLHDdtpM0F
- AgiMVtXg40Dff2IZgnkBNNcJUHbTsa1pcDIhzuV2PKkKQ3fw7U7Czpynfy+GOdskIaYY
- l4ij8bff1xzTpcA54AetcjD4kx8PXCEGhHLStIDWWVHoPrirTdn+4h3TXndV8F0KzqSp
- UfggSc+CgJuMY8KOnW8lKxSTwIxr5N346ljeAQD5bMpp7bH+Zpx7jnqSKbnhFtMhZoXb
- KuJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:mime-version
- :content-transfer-encoding;
- bh=BnGhhmLs0NKuNQcACyeoZ7fY58jMOrioFdYaVDGXO5k=;
- b=X/Pq46szxGjKuYgXFs+vij+awNYuG+WC7qrd4mQixbI44AVDlfbVKb8nVjzDwik5uY
- fX6jq7kruMEy13Kvoz5Gdwx1HldoXqwKdwLSkErtb0C9yL+wYPRpXOUKhfreL1vkaQmL
- Xs44HiWgAQumbGSAhuzWDwypNS0aXflmgqldUMbNe6KqkPepgdtJnZ1ukWs5o8xHzxBm
- lg8V7LZ7jdN6H6Yucbgm3LT6CSFH4Z9U5W44MAJc0GSlCzX0Jq4tgiv/sB0fkaDtWCJJ
- K5Aj59RPW4rTohSF5bVPon3A6JGZxmb9c5maaFsw39DwUTodIh6q76VC3AnvWi4SIbnF
- zsfg==
-X-Gm-Message-State: APjAAAWBe8YvZS40K1zQMBtJJRch1HU6xuI+lDmSepz0cbkwaqt3uC6z
- 6zICYaQL+GlQUOcFByQYByGXNQ==
-X-Google-Smtp-Source: APXvYqyucLMnFlL8PrwfSlv+M76FN5qa+AodHhkkhAM/WJtk3b6+nDqi+cN50FBmBZzV1nKbPYK+DQ==
-X-Received: by 2002:a0c:b521:: with SMTP id d33mr5116673qve.239.1561670474522; 
- Thu, 27 Jun 2019 14:21:14 -0700 (PDT)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id 16sm126561qkl.100.2019.06.27.14.21.13
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 27 Jun 2019 14:21:13 -0700 (PDT)
-Message-ID: <1561670472.5154.98.camel@lca.pw>
-Subject: power9 NUMA crash while reading debugfs imc_cmd
-From: Qian Cai <cai@lca.pw>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Date: Thu, 27 Jun 2019 17:21:12 -0400
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZYhn036NzDqZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 07:59:36 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5RLvD2O077537
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 17:59:31 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2td2gshc3n-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 17:59:31 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <julietk@linux.vnet.ibm.com>;
+ Thu, 27 Jun 2019 22:59:30 +0100
+Received: from b01cxnp23033.gho.pok.ibm.com (9.57.198.28)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 27 Jun 2019 22:59:28 +0100
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5RLxRoR52232452
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 27 Jun 2019 21:59:27 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 748B7124055;
+ Thu, 27 Jun 2019 21:59:27 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC564124054;
+ Thu, 27 Jun 2019 21:59:26 +0000 (GMT)
+Received: from Juliets-MacBook-Pro.local (unknown [9.85.141.228])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Thu, 27 Jun 2019 21:59:26 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/rtas: retry when cpu offline races with
+ suspend/migration
+To: Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>
+References: <20190621060518.29616-1-nathanl@linux.ibm.com>
+ <f3b54ef4394bdbf4887d2185bb951c80@linux.vnet.ibm.com>
+ <87h88eucbn.fsf@linux.ibm.com>
+ <5a825cec-234a-ee8a-a776-8ba305f9cb26@linux.vnet.ibm.com>
+ <877e99ts5f.fsf@linux.ibm.com>
+ <5614fafb-43c3-1dca-1853-51ff0940fb74@linux.vnet.ibm.com>
+ <875zortydg.fsf@concordia.ellerman.id.au>
+From: Juliet Kim <julietk@linux.vnet.ibm.com>
+Date: Thu, 27 Jun 2019 16:59:26 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <875zortydg.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19062721-0060-0000-0000-00000356621C
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011343; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01224184; UDB=6.00644296; IPR=6.01005372; 
+ MB=3.00027497; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-27 21:59:30
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062721-0061-0000-0000-000049EE7945
+Message-Id: <a079dc5c-9d48-370d-baed-d74eb9c4fd92@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-27_14:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906270252
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,106 +101,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ego@linux.vnet.ibm.com, mmc <mmc@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Read of debugfs imc_cmd file for a memory-less node will trigger a crash below
-on this power9 machine which has the following NUMA layout. I don't understand
-why I only saw it recently on linux-next where it was tested everyday. I can
-reproduce it back to 4.20 where 4.18 seems work fine.
 
-# cat /sys/kernel/debug/powerpc/imc/imc_cmd_252 (On a 4.18-based kernel)
-0x0000000000000000
+On 6/27/19 12:01 AM, Michael Ellerman wrote:
+> Juliet Kim <julietk@linux.vnet.ibm.com> writes:
+>> On 6/25/19 1:51 PM, Nathan Lynch wrote:
+>>> Juliet Kim <julietk@linux.vnet.ibm.com> writes:
+>>>
+>>>> There's some concern this could retry forever, resulting in live lock.
+>>> First of all the system will make progress in other areas even if there
+>>> are repeated retries; we're not indefinitely holding locks or anything
+>>> like that.
+>> For instance, system admin runs a script that picks and offlines CPUs in a
+>> loop to keep a certain rate of onlined CPUs for energy saving. If LPM keeps
+>> putting CPUs back online, that would never finish, and would keepgenerating
+>> new offline requests
+>>
+>>> Second, Linux checks the H_VASI_STATE result on every retry. If the
+>>> platform wants to terminate the migration (say, if it imposes a
+>>> timeout), Linux will abandon it when H_VASI_STATE fails to return
+>>> H_VASI_SUSPENDING. And it seems incorrect to bail out before that
+>>> happens, absent hard errors on the Linux side such as allocation
+>>> failures.
+>> I confirmed with the PHYP and HMC folks that they wouldn't time out the LPM
+>> request including H_VASI_STATE, so if the LPM retries were unlucky enough to
+>> encounter repeated CPU offline attempts (maybe some customer code retrying
+>> that), then the retries could continue indefinitely, or until some manual
+>> intervention.  And in the mean time, the LPM delay here would cause PHYP to
+>> block other operations.
+> That sounds like a PHYP bug to me.
+>
+> cheers
 
-# numactl -H
-available: 6 nodes (0,8,252-255)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52
-53 54 55 56 57 58 59 60 61 62 63
-node 0 size: 130210 MB
-node 0 free: 128406 MB
-node 8 cpus: 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85
-86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108
-109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127
-node 8 size: 130784 MB
-node 8 free: 130051 MB
-node 252 cpus:
-node 252 size: 0 MB
-node 252 free: 0 MB
-node 253 cpus:
-node 253 size: 0 MB
-node 253 free: 0 MB
-node 254 cpus:
-node 254 size: 0 MB
-node 254 free: 0 MB
-node 255 cpus:
-node 255 size: 0 MB
-node 255 free: 0 MB
-node distances:
-node   0   8  252  253  254  255 
-  0:  10  40  80  80  80  80 
-  8:  40  10  80  80  80  80 
- 252:  80  80  10  80  80  80 
- 253:  80  80  80  10  80  80 
- 254:  80  80  80  80  10  80 
- 255:  80  80  80  80  80  10
 
-# cat /sys/kernel/debug/powerpc/imc/imc_cmd_252
+PHYP doesn’t time out because they have no idea how long it will take for OS to
+get to the point that it suspends. Other OS allows application to prepare for LPM.
+They cannot predict the length of time that is appropriate in all cases and in any
+case, it’s unlikely they’d make a change to that would come in time to help with
+the current issue.
 
-[ 1139.415461][ T5301] Faulting instruction address: 0xc0000000000d0d58
-[ 1139.415492][ T5301] Oops: Kernel access of bad area, sig: 11 [#1]
-[ 1139.415509][ T5301] LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=256
-DEBUG_PAGEALLOC NUMA PowerNV
-[ 1139.415542][ T5301] Modules linked in: i2c_opal i2c_core ip_tables x_tables
-xfs sd_mod bnx2x mdio ahci libahci tg3 libphy libata firmware_class dm_mirror
-dm_region_hash dm_log dm_mod
-[ 1139.415595][ T5301] CPU: 67 PID: 5301 Comm: cat Not tainted 5.2.0-rc6-next-
-20190627+ #19
-[ 1139.415634][ T5301] NIP:  c0000000000d0d58 LR: c00000000049aa18 CTR:
-c0000000000d0d50
-[ 1139.415675][ T5301] REGS: c00020194548f9e0 TRAP: 0300   Not tainted  (5.2.0-
-rc6-next-20190627+)
-[ 1139.415705][ T5301] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR:
-28022822  XER: 00000000
-[ 1139.415777][ T5301] CFAR: c00000000049aa14 DAR: 000000000003fc08 DSISR:
-40000000 IRQMASK: 0 
-[ 1139.415777][ T5301] GPR00: c00000000049aa18 c00020194548fc70 c0000000016f8b00
-000000000003fc08 
-[ 1139.415777][ T5301] GPR04: c00020194548fcd0 0000000000000000 0000000014884e73
-ffffffff00011eaa 
-[ 1139.415777][ T5301] GPR08: 000000007eea5a52 c0000000000d0d50 0000000000000000
-0000000000000000 
-[ 1139.415777][ T5301] GPR12: c0000000000d0d50 c000201fff7f8c00 0000000000000000
-0000000000000000 
-[ 1139.415777][ T5301] GPR16: 000000000000000d 00007fffeb0c3368 ffffffffffffffff
-0000000000000000 
-[ 1139.415777][ T5301] GPR20: 0000000000000000 0000000000000000 0000000000000000
-0000000000020000 
-[ 1139.415777][ T5301] GPR24: 0000000000000000 0000000000000000 0000000000020000
-000000010ec90000 
-[ 1139.415777][ T5301] GPR28: c00020194548fdf0 c00020049a584ef8 0000000000000000
-c00020049a584ea8 
-[ 1139.416116][ T5301] NIP [c0000000000d0d58] imc_mem_get+0x8/0x20
-[ 1139.416143][ T5301] LR [c00000000049aa18] simple_attr_read+0x118/0x170
-[ 1139.416158][ T5301] Call Trace:
-[ 1139.416182][ T5301] [c00020194548fc70] [c00000000049a970]
-simple_attr_read+0x70/0x170 (unreliable)
-[ 1139.416255][ T5301] [c00020194548fd10] [c00000000054385c]
-debugfs_attr_read+0x6c/0xb0
-[ 1139.416305][ T5301] [c00020194548fd60] [c000000000454c1c]
-__vfs_read+0x3c/0x70
-[ 1139.416363][ T5301] [c00020194548fd80] [c000000000454d0c] vfs_read+0xbc/0x1a0
-[ 1139.416392][ T5301] [c00020194548fdd0] [c00000000045519c]
-ksys_read+0x7c/0x140
-[ 1139.416434][ T5301] [c00020194548fe20] [c00000000000b108]
-system_call+0x5c/0x70
-[ 1139.416473][ T5301] Instruction dump:
-[ 1139.416511][ T5301] 4e800020 60000000 7c0802a6 60000000 7c801d28 38600000
-4e800020 60000000 
-[ 1139.416572][ T5301] 60000000 60000000 7c0802a6 60000000 <7d201c28> 38600000
-f9240000 4e800020 
-[ 1139.416636][ T5301] ---[ end trace c44d1fb4ace04784 ]---
-[ 1139.520686][ T5301] 
-[ 1140.520820][ T5301] Kernel panic - not syncing: Fatal exception
