@@ -1,46 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F8D587B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 18:53:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8CC586CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 18:15:54 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZQ471JLxzDqdL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 02:15:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZQvH6HYzzDqgZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 02:53:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
  (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=021e=u2=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=goodmis.org
+ envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="mZ148xhh"; 
+ dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZQ1n3tVXzDqdG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 02:13:49 +1000 (AEST)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZQsC1wDVzDqgF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 02:51:26 +1000 (AEST)
+Received: from localhost (unknown [89.205.136.226])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 60B1A20659;
- Thu, 27 Jun 2019 16:13:46 +0000 (UTC)
-Date: Thu, 27 Jun 2019 12:13:44 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 4/7] powerpc/ftrace: Additionally nop out the
- preceding mflr with -mprofile-kernel
-Message-ID: <20190627121344.25b5449a@gandalf.local.home>
-In-Reply-To: <1561648598.uvetvkj39x.naveen@linux.ibm.com>
-References: <cover.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
- <841386feda429a1f0d4b7442c3ede1ed91466f92.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
- <20190627110819.4892780f@gandalf.local.home>
- <1561648598.uvetvkj39x.naveen@linux.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ by mail.kernel.org (Postfix) with ESMTPSA id 89D8C2054F;
+ Thu, 27 Jun 2019 16:51:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561654283;
+ bh=ZJeG6e/5ex7Oi3+NrkGCaYVu2coSPS31gk3u5jQWWjo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=mZ148xhhRuY36EaSXlOq2p/UuE2/te/REcS9lHEb28ZfBZTo1mpl3owe357ai8X+g
+ dMqgFdvIOf4atRjO1kkZ0Ze2AabPXt4HhkDiO1d16DWrBC6Md2kCSJOOd/tEoUzLqT
+ LKgTrlyB/AduI6aU7BnoiU6rwCqmu2NvJCH7m6oQ=
+Date: Fri, 28 Jun 2019 00:51:16 +0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH 3/4] powerpc/powernv: remove unused NPU DMA code
+Message-ID: <20190627165116.GA9855@kroah.com>
+References: <20190625145239.2759-1-hch@lst.de>
+ <20190625145239.2759-4-hch@lst.de>
+ <7bde96e0-7bc5-d5fe-f151-52c29660633c@ozlabs.ru>
+ <20190626074935.GA25452@lst.de>
+ <027a5095-a22c-2799-8ff6-42d0bc4d2bc9@ozlabs.ru>
+ <20190627072240.GA9916@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190627072240.GA9916@lst.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,121 +62,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Jun 2019 20:58:20 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
-
+On Thu, Jun 27, 2019 at 09:22:40AM +0200, Christoph Hellwig wrote:
+> On Thu, Jun 27, 2019 at 10:21:55AM +1000, Alexey Kardashevskiy wrote:
+> > > Which comment?  Last time I asked you complaint "it is still used in
+> > > exactly the same way as before" which you later clarified that you
+> > > have a hidden out of tree user somewhere, and you only objected to
+> > 
+> > It is not hidden, anyone can download and inspect that GPL driver.
 > 
-> > But interesting, I don't see a synchronize_rcu_tasks() call
-> > there.  
+> For one no one has ever posted a link.  And second as mentioned
+> countless times it doesn't matter, it only matters if it is in mainline,
+> or as a special exception actively trying to go mainline.
 > 
-> We felt we don't need it in this case. We patch the branch to ftrace 
-> with a nop first. Other cpus should see that first. But, now that I 
-> think about it, should we add a memory barrier to ensure the writes get 
-> ordered properly?
-
-Do you send an ipi to the other CPUs. I would just to be safe.
-
-> >> -	if (patch_instruction((unsigned int *)ip, pop)) {
-> >> +	/*
-> >> +	 * Our original call site looks like:
-> >> +	 *
-> >> +	 * bl <tramp>
-> >> +	 * ld r2,XX(r1)
-> >> +	 *
-> >> +	 * Milton Miller pointed out that we can not simply nop the branch.
-> >> +	 * If a task was preempted when calling a trace function, the nops
-> >> +	 * will remove the way to restore the TOC in r2 and the r2 TOC will
-> >> +	 * get corrupted.
-> >> +	 *
-> >> +	 * Use a b +8 to jump over the load.
-> >> +	 */
-> >> +	if (patch_instruction((unsigned int *)ip, PPC_INST_BRANCH | 8)) {
-> >>  		pr_err("Patching NOP failed.\n");
-> >>  		return -EPERM;
-> >>  	}
-> >> +#endif /* CONFIG_MPROFILE_KERNEL */
-> >>  
-> >>  	return 0;
-> >>  }
-> >> @@ -421,6 +429,26 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
-> >>  		return -EPERM;
-> >>  	}
-> >>  
-> >> +#ifdef CONFIG_MPROFILE_KERNEL  
+> > > the word "dead".  That has been fixed and there were no further
+> > > comments.
 > > 
-> > I would think you need to break this up into two parts as well, with a
-> > synchronize_rcu_tasks() in between.
+> > You still have it in the cover letter so at very least 3/4 is not a part
+> > of this patchset then.
 > > 
-> > Imagine this scenario:
-> > 
-> > 	<func>:
-> > 	nop <-- interrupt comes here, and preempts the task
-> > 	nop
-> > 
-> > First change.
-> > 
-> > 	<func>:
-> > 	mflr	r0
-> > 	nop
-> > 
-> > Second change.
-> > 
-> > 	<func>:
-> > 	mflr	r0
-> > 	bl	_mcount
-> > 
-> > Task returns from interrupt
-> > 
-> > 	<func>:
-> > 	mflr	r0
-> > 	bl	_mcount <-- executes here
-> > 
-> > It never did the mflr r0, because the last command that was executed
-> > was a nop before it was interrupted. And yes, it can be interrupted
-> > on a nop!  
+> > And I still want to see a formal statement about out-of-tree drivers
+> > support/tolerance. If you manage to remove this code, I'll have to post
+> > a revert (again and again) but I would rather know the exact list of
+> > what we do and what we do not do about such drivers and if the list 1)
+> > exists 2) is reasonable then I could try to come up with a better
+> > solution or point others to the policy and push them to do the right
+> > thing. Right now it is just you pretending that the nVidia driver does
+> > not exist, this is not helping. Thanks,
 > 
-> We are handling this through ftrace_replace_code() and 
-> __ftrace_make_call_prep() below. For FTRACE_UPDATE_MAKE_CALL, we patch 
-> in the mflr, followed by smp_call_function(isync) and 
-> synchronize_rcu_tasks() before we proceed to patch the branch to ftrace.
-> 
-> I don't see any other scenario where we end up in 
-> __ftrace_make_nop_kernel() without going through ftrace_replace_code().  
-> For kernel modules, this can happen during module load/init and so, I 
-> patch out both instructions in __ftrace_make_call() above without any 
-> synchronization.
-> 
-> Am I missing anything?
-> 
+> We had that discussion at kernel summit and it was reported.  Anyway,
+> adding Greg, who usually has some pretty good prewritten letters for
+> this kind of thing.
 
-No, I think I got confused ;-), it's the patch out that I was worried
-about, but when I was going through the scenario, I somehow turned it
-into the patching in (which I already audited :-p). I was going to
-reply with just the top part of this email, but then the confusion
-started :-/
+I used to have one but it's been so long since anyone tried to even
+think about defending the removal of functions that are not used in the
+kernel tree anymore, that I can't seem to find it anymore :)
 
-OK, yes, patching out should be fine, and you already covered the
-patching in. Sorry for the noise.
+Christoph is completely correct here, if it isn't in the tree, it
+doesn't matter.  We have made this "formal" statement again and again
+over the years, starting with the old "stable api nonsense" document
+that is in the kernel tree itself.
 
-Just to confirm and totally remove the confusion, the patch does:
+And he is also correct in that we talked about this specific issue, in
+detail, at the maintainers summit last year, see lwn.net for the details
+if you somehow missed it then.
 
-	<func>:
-	mflr	r0 <-- preempt here
-	bl	_mcount
+thanks,
 
-	<func>:
-	mflr	r0
-	nop
-
-And this is fine regardless.
-
-OK, Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-
--- Steve
+greg k-h
