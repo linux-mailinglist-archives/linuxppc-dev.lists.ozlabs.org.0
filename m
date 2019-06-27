@@ -2,36 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902BC57AD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 06:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF34057B15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 07:04:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Z6rJ59JvzDqW7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 14:49:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Z79S0rKmzDqZk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2019 15:04:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Z6pX0yDdzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 14:48:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Z76N3qYGzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 15:01:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45Z6pW1Pl7z9sCJ;
- Thu, 27 Jun 2019 14:48:02 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45Z76N2RfCz9sCJ;
+ Thu, 27 Jun 2019 15:01:48 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Subject: Re: [PATCH] powerpc/64s/radix: Define arch_ioremap_p4d_supported()
-In-Reply-To: <1561555260-17335-1-git-send-email-anshuman.khandual@arm.com>
-References: <1561555260-17335-1-git-send-email-anshuman.khandual@arm.com>
-Date: Thu, 27 Jun 2019 14:48:00 +1000
-Message-ID: <87d0iztz0f.fsf@concordia.ellerman.id.au>
+To: Juliet Kim <julietk@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/rtas: retry when cpu offline races with
+ suspend/migration
+In-Reply-To: <5614fafb-43c3-1dca-1853-51ff0940fb74@linux.vnet.ibm.com>
+References: <20190621060518.29616-1-nathanl@linux.ibm.com>
+ <f3b54ef4394bdbf4887d2185bb951c80@linux.vnet.ibm.com>
+ <87h88eucbn.fsf@linux.ibm.com>
+ <5a825cec-234a-ee8a-a776-8ba305f9cb26@linux.vnet.ibm.com>
+ <877e99ts5f.fsf@linux.ibm.com>
+ <5614fafb-43c3-1dca-1853-51ff0940fb74@linux.vnet.ibm.com>
+Date: Thu, 27 Jun 2019 15:01:47 +1000
+Message-ID: <875zortydg.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,72 +51,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-next@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: ego@linux.vnet.ibm.com, mmc <mmc@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> Recent core ioremap changes require HAVE_ARCH_HUGE_VMAP subscribing archs
-> provide arch_ioremap_p4d_supported() failing which will result in a build
-> failure like the following.
+Juliet Kim <julietk@linux.vnet.ibm.com> writes:
+> On 6/25/19 1:51 PM, Nathan Lynch wrote:
+>> Juliet Kim <julietk@linux.vnet.ibm.com> writes:
+>>
+>>> There's some concern this could retry forever, resulting in live lock.
+>> First of all the system will make progress in other areas even if there
+>> are repeated retries; we're not indefinitely holding locks or anything
+>> like that.
 >
-> ld: lib/ioremap.o: in function `.ioremap_huge_init':
-> ioremap.c:(.init.text+0x3c): undefined reference to
-> `.arch_ioremap_p4d_supported'
+> For instance, system admin runs a script that picks and offlines CPUs in a
+> loop to keep a certain rate of onlined CPUs for energy saving. If LPM kee=
+ps
+> putting CPUs back online, that would never finish, and would keepgenerati=
+ng
+> new offline requests
 >
-> This defines a stub implementation for arch_ioremap_p4d_supported() keeping
-> it disabled for now to fix the build problem.
+>> Second, Linux checks the H_VASI_STATE result on every retry. If the
+>> platform wants to terminate the migration (say, if it imposes a
+>> timeout), Linux will abandon it when H_VASI_STATE fails to return
+>> H_VASI_SUSPENDING. And it seems incorrect to bail out before that
+>> happens, absent hard errors on the Linux side such as allocation
+>> failures.
+> I confirmed with the PHYP and HMC folks that they wouldn't time out the L=
+PM
+> request including H_VASI_STATE, so if the LPM retries were unlucky enough=
+ to
+> encounter repeated CPU offline attempts (maybe some customer code retrying
+> that), then the retries could continue indefinitely, or until some manual
+> intervention.=C2=A0 And in the mean time, the LPM delay here would cause =
+PHYP to
+> block other operations.
 
-The easiest option is for this to be folded into your patch that creates
-the requirement for arch_ioremap_p4d_supported().
-
-Andrew might do that for you, or you could send a v2.
-
-This looks fine from a powerpc POV:
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+That sounds like a PHYP bug to me.
 
 cheers
-
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-next@vger.kernel.org
->
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This has been just build tested and fixes the problem reported earlier.
->
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index 8904aa1..c81da88 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -1124,6 +1124,11 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
->  	set_pte_at(mm, addr, ptep, pte);
->  }
->  
-> +int __init arch_ioremap_p4d_supported(void)
-> +{
-> +	return 0;
-> +}
-> +
->  int __init arch_ioremap_pud_supported(void)
->  {
->  	/* HPT does not cope with large pages in the vmalloc area */
-> -- 
-> 2.7.4
