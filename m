@@ -1,103 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DF759358
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:22:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B3E59317
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 06:56:55 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZkyD6tKVzDqpr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 14:56:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZlWQ4m9DzDqlw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 15:22:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zkwb6rT8zDqlp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 14:55:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45Zkwb3vdrz8wP9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 14:55:27 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45Zkwb1yT4z9s8m; Fri, 28 Jun 2019 14:55:27 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45ZkwZ3vV3z9s3l
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 14:55:26 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5S4rU7s039454
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 00:55:24 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tdbvj0mxc-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 00:55:23 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <stewart@linux.ibm.com>;
- Fri, 28 Jun 2019 05:55:22 +0100
-Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 28 Jun 2019 05:55:20 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5S4tJMt15795128
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Jun 2019 04:55:19 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FEECAC05B;
- Fri, 28 Jun 2019 04:55:19 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AD73AC05F;
- Fri, 28 Jun 2019 04:55:18 +0000 (GMT)
-Received: from birb.localdomain (unknown [9.81.203.70])
- by b01ledav006.gho.pok.ibm.com (Postfix) with SMTP;
- Fri, 28 Jun 2019 04:55:17 +0000 (GMT)
-Received: by birb.localdomain (Postfix, from userid 1000)
- id 565604EAE22; Fri, 28 Jun 2019 14:55:14 +1000 (AEST)
-From: Stewart Smith <stewart@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
-Subject: Re: [PATCH v3 01/16] powerpc/fadump: move internal fadump code to a
- new file
-In-Reply-To: <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
-References: <156149548694.9094.3211954809582123798.stgit@hbathini.in.ibm.com>
- <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
-Date: Fri, 28 Jun 2019 14:55:14 +1000
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19062804-0060-0000-0000-000003568F90
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011344; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01224319; UDB=6.00644379; IPR=6.01005511; 
- MB=3.00027500; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-28 04:55:22
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062804-0061-0000-0000-000049EF68C6
-Message-Id: <87sgru71hp.fsf@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-28_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906280053
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45ZlTl3DcFzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:20:41 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3800344;
+ Thu, 27 Jun 2019 22:20:38 -0700 (PDT)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
+ [10.162.40.144])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C89EE3F706;
+ Thu, 27 Jun 2019 22:22:23 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V2] mm/ioremap: Probe platform for p4d huge map support
+Date: Fri, 28 Jun 2019 10:50:31 +0530
+Message-Id: <1561699231-20991-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,38 +42,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, x86@kernel.org,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
+ Michal Hocko <mhocko@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/kernel/fadump-common.c b/arch/powerpc/kernel/fadump-common.c
-> new file mode 100644
-> index 0000000..0182886
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/fadump-common.c
-> @@ -0,0 +1,184 @@
-> +/*
-> + * Firmware-Assisted Dump internal code.
-> + *
-> + * Copyright 2018-2019, IBM Corp.
-> + * Author: Hari Bathini <hbathini@linux.vnet.ibm.com>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * as published by the Free Software Foundation; either version
-> + * 2 of the License, or (at your option) any later version.
-> + */
+Finishing up what the commit c2febafc67734a ("mm: convert generic code to
+5-level paging") started out while levelling up P4D huge mapping support
+at par with PUD and PMD. A new arch call back arch_ioremap_p4d_supported()
+is being added which just maintains status quo (P4D huge map not supported)
+on x86, arm64 and powerpc.
 
-This file takes a bunch of code from fadump.c, which has the (C) header
-showing (C) 2011, and author of Mahesh. We should probably preserve that
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will.deacon@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: x86@kernel.org
 
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+---
+Changes in V2:
 
+- Added arch_ioremap_p4d_supported() definition for powerpc
+- Changed commit message to add powerpc in the arch list
+- Added tags from Michael Ellerman
+
+Hello Andrew,
+
+This applies and builds on linux-next (next-20190627) which contains
+
+d909f9109c30 ("powerpc/64s/radix: Enable HAVE_ARCH_HUGE_VMAP")
+
+but after
+
+1. Reverting V1 of this patch
+
+   d31cf72b92ec ("mm/ioremap: probe platform for p4d huge map support")
+
+2. Removing arch_ioremap_p4d_supported() definition which was added with
+
+   153083a99fe431 ("Merge branch 'akpm-current/current'")
+
+- Anshuman
+
+ arch/arm64/mm/mmu.c                      | 5 +++++
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 5 +++++
+ arch/x86/mm/ioremap.c                    | 5 +++++
+ include/linux/io.h                       | 1 +
+ lib/ioremap.c                            | 2 ++
+ 5 files changed, 18 insertions(+)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 97ff0341..750a69d 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -942,6 +942,11 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys)
+ 	return dt_virt;
+ }
+ 
++int __init arch_ioremap_p4d_supported(void)
++{
++	return 0;
++}
++
+ int __init arch_ioremap_pud_supported(void)
+ {
+ 	/*
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 22c0637..60c8fca 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1120,6 +1120,11 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+ 	set_pte_at(mm, addr, ptep, pte);
+ }
+ 
++int __init arch_ioremap_p4d_supported(void)
++{
++	return 0;
++}
++
+ int __init arch_ioremap_pud_supported(void)
+ {
+ 	/* HPT does not cope with large pages in the vmalloc area */
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index e500f1d..63e99f1 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -459,6 +459,11 @@ void iounmap(volatile void __iomem *addr)
+ }
+ EXPORT_SYMBOL(iounmap);
+ 
++int __init arch_ioremap_p4d_supported(void)
++{
++	return 0;
++}
++
+ int __init arch_ioremap_pud_supported(void)
+ {
+ #ifdef CONFIG_X86_64
+diff --git a/include/linux/io.h b/include/linux/io.h
+index 9876e58..accac82 100644
+--- a/include/linux/io.h
++++ b/include/linux/io.h
+@@ -33,6 +33,7 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
+ 
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+ void __init ioremap_huge_init(void);
++int arch_ioremap_p4d_supported(void);
+ int arch_ioremap_pud_supported(void);
+ int arch_ioremap_pmd_supported(void);
+ #else
+diff --git a/lib/ioremap.c b/lib/ioremap.c
+index a95161d..0a2ffad 100644
+--- a/lib/ioremap.c
++++ b/lib/ioremap.c
+@@ -30,6 +30,8 @@ early_param("nohugeiomap", set_nohugeiomap);
+ void __init ioremap_huge_init(void)
+ {
+ 	if (!ioremap_huge_disabled) {
++		if (arch_ioremap_p4d_supported())
++			ioremap_p4d_capable = 1;
+ 		if (arch_ioremap_pud_supported())
+ 			ioremap_pud_capable = 1;
+ 		if (arch_ioremap_pmd_supported())
 -- 
-Stewart Smith
-OPAL Architect, IBM.
+2.7.4
 
