@@ -2,65 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D81F59D78
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E72035A014
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 17:57:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Zz9B56cLzDqLP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 00:07:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45b1cC3XKDzDq9T
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 01:57:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="F96K1IIC"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="U35KPiat"; 
  dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zz5h6Hs8zDqtV
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 00:04:08 +1000 (AEST)
-Received: by mail-qt1-x844.google.com with SMTP id d23so6403326qto.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 07:04:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id;
- bh=TtCBV3dv3lEbG+/Fl3MOz0T0TVohkkYJU98cwcixuvQ=;
- b=F96K1IICnsJfZn53/kwRm1vvbIo7q8vJIYhCCu2yi2d30Eq+0mjKuqbd4a8FDTuvtV
- Negyxz/Lb1dJrZQ7AAw0xmX7Szb810eOW9PgnsFaT00jtGVSWVOam+Vpbj7Edt5/DiID
- 9R0oQr9sCrD9pG+tjppcckcdPjmzzRJ3lto2wfwQ60IZgRubQVkPdfG6DOOm17g1lQ31
- OXBSXrpHLdn1O9afeOR5WUWH0EuLf1p3tHqhFqYev/WEDtHJm0lEUXzATje+mVMuk/AB
- 8d81bjziN1zLAPVYsOQP5KS/2Vwk3aiau8NcU84Evk+E1FljELYSd7N09bKp796Na0c0
- /5Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=TtCBV3dv3lEbG+/Fl3MOz0T0TVohkkYJU98cwcixuvQ=;
- b=rLwXTG4HSQ4gtYiBah9QdAnKUE3iDeFsAOZ7Sk60zDpbHdaXLApGLSoA0+HvH6rIJz
- Avx4zQ/FL5LcVWSUZEVeEUcmRNWCjpeViSB0/U/ZH1CxuzAQTaXviY1bzCICzO+gJgWg
- AK7GmaqnJbjIm6xHzHwWEWzsxksKssOIaFzy+OgwxqzCgHDvbyK+tvrgqlR1vqvLCCby
- tgggnezT+xXxL07YFbDk1G3nGBhdb5GIqfKI1MI/bbDRu621z7zlCnTXKK3muH92ooV5
- zU8qbO79ZpKPQJ5RIvcRCgx3VLEpFnHGay1z/uD1Xzn3i2xbuU5txCAr9E2t0E6hkOz6
- hNUA==
-X-Gm-Message-State: APjAAAU2+gVgE0bngb/84+fWbc0bg8Ic16IYLSOiaztWG7u0dzHAfoxS
- OHUdt9YyoNH3LsBEqvYRFDdO5w==
-X-Google-Smtp-Source: APXvYqyjeSciFcaL48I+xGOjSfb9/Tjy2YGnp7YoXOFLumU17Q7I47Wu9sCEP5Uc0iMXMHLJZ6pNyA==
-X-Received: by 2002:aed:3fb0:: with SMTP id s45mr8442028qth.136.1561730644147; 
- Fri, 28 Jun 2019 07:04:04 -0700 (PDT)
-Received: from qcai.nay.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id 139sm1076137qkg.127.2019.06.28.07.04.02
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 28 Jun 2019 07:04:03 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Subject: [PATCH v3] powerpc/setup_64: fix -Wempty-body warnings
-Date: Fri, 28 Jun 2019 10:03:49 -0400
-Message-Id: <1561730629-5025-1-git-send-email-cai@lca.pw>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45b1PV3tFXzDqth
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 01:47:56 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45b1PK5ffXzB09ZP;
+ Fri, 28 Jun 2019 17:47:49 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=U35KPiat; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id M7G8GO5ZVxxo; Fri, 28 Jun 2019 17:47:49 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45b1PK4RsqzB09ZN;
+ Fri, 28 Jun 2019 17:47:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1561736869; bh=OtgqE3CIuXfno8vKIOCfy9CK71bNHwOgFmM5CWrbuH0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=U35KPiat7UOwS9Ud+WYA0tb81Xp3wWVlM0UaCT8cLhnwNLiZuFIFxd91a/pgBqsVs
+ OsRHvfI0OHF/fKJuKVJXJLlskEj+Ixz8M5+Q1PK4efGjbfU5oboGY0+5MZ1XL8vk1P
+ PhrxVuNPZuG2cnQm9H/BX2u/aFKH18qb7Gp0vi5g=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ADF168B975;
+ Fri, 28 Jun 2019 17:47:50 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PNO5VCEVwrie; Fri, 28 Jun 2019 17:47:50 +0200 (CEST)
+Received: from localhost.localdomain (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EC50C8B955;
+ Fri, 28 Jun 2019 17:47:49 +0200 (CEST)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 9B11468DBC; Fri, 28 Jun 2019 15:47:49 +0000 (UTC)
+Message-Id: <cover.1561735587.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [RFC PATCH v2 00/12] Reduce ifdef mess in ptrace
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ mikey@neuling.org
+Date: Fri, 28 Jun 2019 15:47:49 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,63 +73,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, paulus@samba.org, tyreld@linux.vnet.ibm.com,
- joe@perches.com, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the beginning of setup_64.c, it has,
+The purpose of this series is to reduce the amount of #ifdefs
+in ptrace.c
 
-  #ifdef DEBUG
-  #define DBG(fmt...) udbg_printf(fmt)
-  #else
-  #define DBG(fmt...)
-  #endif
+This is a first try. Most of it is done, there are still some #ifdefs that
+could go away.
 
-where DBG() could be compiled away, and generate warnings,
+Please comment and tell whether it is worth continuing in that direction.
 
-arch/powerpc/kernel/setup_64.c: In function 'initialize_cache_info':
-arch/powerpc/kernel/setup_64.c:579:49: warning: suggest braces around
-empty body in an 'if' statement [-Wempty-body]
-    DBG("Argh, can't find dcache properties !\n");
-                                                 ^
-arch/powerpc/kernel/setup_64.c:582:49: warning: suggest braces around
-empty body in an 'if' statement [-Wempty-body]
-    DBG("Argh, can't find icache properties !\n");
+v2:
+- Fixed several build failures. Now builts cleanly on kisskb, see http://kisskb.ellerman.id.au/kisskb/head/840e53cf913d6096dd60181a085f102c85d6e526/
+- Droped last patch which is not related to ptrace and can be applies independently.
 
-Fix it by using the no_printk() macro, and make sure that format and
-argument are always verified by the compiler.
+Christophe Leroy (12):
+  powerpc: move ptrace into a subdirectory.
+  powerpc/ptrace: drop unnecessary #ifdefs CONFIG_PPC64
+  powerpc/ptrace: drop PARAMETER_SAVE_AREA_OFFSET
+  powerpc/ptrace: split out VSX related functions.
+  powerpc/ptrace: split out ALTIVEC related functions.
+  powerpc/ptrace: split out SPE related functions.
+  powerpc/ptrace: split out TRANSACTIONAL_MEM related functions.
+  powerpc/ptrace: move register viewing functions out of ptrace.c
+  powerpc/ptrace: split out ADV_DEBUG_REGS related functions.
+  powerpc/ptrace: create ptrace_get_debugreg()
+  powerpc/ptrace: create ppc_gethwdinfo()
+  powerpc/ptrace: move ptrace_triggered() into hw_breakpoint.c
 
-Suggested-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Suggested-by: Joe Perches <joe@perches.com>
-Signed-off-by: Qian Cai <cai@lca.pw>
----
+ arch/powerpc/include/asm/ptrace.h           |    9 +-
+ arch/powerpc/include/uapi/asm/ptrace.h      |   12 +-
+ arch/powerpc/kernel/Makefile                |    7 +-
+ arch/powerpc/kernel/hw_breakpoint.c         |   16 +
+ arch/powerpc/kernel/ptrace.c                | 3402 ---------------------------
+ arch/powerpc/kernel/ptrace/Makefile         |   20 +
+ arch/powerpc/kernel/ptrace/ptrace-adv.c     |  511 ++++
+ arch/powerpc/kernel/ptrace/ptrace-altivec.c |  151 ++
+ arch/powerpc/kernel/ptrace/ptrace-decl.h    |  184 ++
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c   |  291 +++
+ arch/powerpc/kernel/ptrace/ptrace-novsx.c   |   83 +
+ arch/powerpc/kernel/ptrace/ptrace-spe.c     |   92 +
+ arch/powerpc/kernel/ptrace/ptrace-tm.c      |  879 +++++++
+ arch/powerpc/kernel/ptrace/ptrace-view.c    |  953 ++++++++
+ arch/powerpc/kernel/ptrace/ptrace-vsx.c     |  177 ++
+ arch/powerpc/kernel/ptrace/ptrace.c         |  430 ++++
+ arch/powerpc/kernel/{ => ptrace}/ptrace32.c |    0
+ 17 files changed, 3798 insertions(+), 3419 deletions(-)
+ delete mode 100644 arch/powerpc/kernel/ptrace.c
+ create mode 100644 arch/powerpc/kernel/ptrace/Makefile
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-adv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-altivec.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-decl.h
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-noadv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-novsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-spe.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-tm.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-view.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-vsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace.c
+ rename arch/powerpc/kernel/{ => ptrace}/ptrace32.c (100%)
 
-v3: Use no_printk() macro, and make sure that format and argument are always
-    verified by the compiler using a more generic form ##__VA_ARGS__ per Joe.
-
-v2: Fix it by using a NOP while loop per Tyrel.
-
- arch/powerpc/kernel/setup_64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 44b4c432a273..cea933a43f0a 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -69,9 +69,9 @@
- #include "setup.h"
- 
- #ifdef DEBUG
--#define DBG(fmt...) udbg_printf(fmt)
-+#define DBG(fmt, ...) udbg_printf(fmt, ##__VA_ARGS__)
- #else
--#define DBG(fmt...)
-+#define DBG(fmt, ...) no_printk(fmt, ##__VA_ARGS__)
- #endif
- 
- int spinning_secondaries;
 -- 
-1.8.3.1
+2.13.3
 
