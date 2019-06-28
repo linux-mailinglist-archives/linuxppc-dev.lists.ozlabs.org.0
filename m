@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500D75944B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E18659450
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:41:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZnDW5r19zDqtd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:39:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZnGZ1YnBzDqrV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:41:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="MmiWrvi7"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="G0FzVLnm"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zn5b2QnFzDqjc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:33:23 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id m30so2445491pff.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 23:33:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Zn5d42r7zDqlF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:33:25 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id r1so2437309pfq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 23:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=oNsEmLEDi+BGKto2pOsSX7KyZxAMBcbKI0AUmIOi5o0=;
- b=MmiWrvi7nOlXQKQxMTTskYwR8/r/AYbF8Nw0YVrFy284dz2bD9dFzEF82OyAVV8FFJ
- AK84kgGntAzqtMT4cxsr36pgecGn9IDxEfwAqNsEnZD0f7Ya2mirIScAlvXWBZ+5rm+t
- E64ESktylxZcRmpWZMud+GqL9l5gXhB6OK62WiFfL6/ajh9Xl8HLkBNCALjY4EV8Rbbd
- EEYl71Ld3eGSnAybFXY7I+aTmyKIIgpFHqqIDymn7khViufKm9lVP5HWAbUQrX8X+KFb
- sOHDbs2ez23Nqx35ieuAXsN1Xde2QDLMgwC4uCWLSfR5vuYdMcKVRejxICl9+e2bMqyl
- YvRQ==
+ bh=7DF6ojBYAmHkDmYe6ocgC5T0eh+wo56rup2w+4XKrIE=;
+ b=G0FzVLnm5d9idLiIM405vfvutl1SZ7u9USB81LuJXCTNhpoIze2qfDcRIcfTG+euH1
+ Xmd3q3zJAyKwV+6MGg8k7VXQsGKHviIxJnO2qC6dJYZlx11vxqvz5SqEBM+GQZsXV+fz
+ g4NPvkYdMHWoLTuW7ke3viPU3Ty/CRIKGr3wvay7ZYDIakgTmvKEkrwOpwJS7uyCMQrj
+ AjCRIWe0g1I4UX74bT1zKFNwNtrDyUXAEK37rDfAlx9pNXk7eUxBOMP6lRw27H73MY13
+ qfPeaGHf97f/LhFZUVvFYTWbZIIaPgYgmBOgKXeBDi0Vz7nEVmdhbAifG9Jz7YR7qw8X
+ TJ1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=oNsEmLEDi+BGKto2pOsSX7KyZxAMBcbKI0AUmIOi5o0=;
- b=MZdY8BCj+JMEvoBFDgeOm3aUVUUYUQldV9vLOYTDnaUjgaJPEi/66ZwUyd+zJ+Fe9r
- hNGAUVHt7iPGDfcWNufase9VaTWTf6T354X8i0uTttbAXYiK++MYmitFdk4iTDqQKdUT
- MLzBl3KZWJ/rR2puu+Ghd2UnVI75x2NCsxjblLXUPNtgSggEbbOdwGO2Muf4PI0/BYXD
- gn24z+GDXElMkf5A1Qz7X5pdvck8iWIkAZz4P7Di1NR+r6gGmjGKVe//pXb2guW3uXuq
- uZFBDvYZTxSpf5LpLdOF+JF0UKU79Ja8aYNWaQhnDorsAMPahEC6O+eXYr18rOgdlJeN
- id4Q==
-X-Gm-Message-State: APjAAAXK4jeZ2w8lWhGiVrDLSdRnJHmmiO6bsQh5lCDQ5JSyaucekv8u
- 2JTkS2Ip+EPxdvYOJCcSJ/bJLPhY
-X-Google-Smtp-Source: APXvYqx8j5PYy5njnKFPjV4zfSgS73zWg1Rmue52qNGgGeTsv9+BUukC2t1PoqhDDQn17qJDKNfjwQ==
-X-Received: by 2002:a17:90a:ac14:: with SMTP id
- o20mr11184944pjq.114.1561703601538; 
- Thu, 27 Jun 2019 23:33:21 -0700 (PDT)
+ bh=7DF6ojBYAmHkDmYe6ocgC5T0eh+wo56rup2w+4XKrIE=;
+ b=qlpc6BZqtTmSdDKAocf0jlHDHFAS8/3LaW7t2Ox9FDEbDZLszRnkTQwv5zE0TmSMIE
+ t5xjIdd6FzkyThAve8CN6nbxGaf8PFNgJ+j/4giXgY/NY1JXf01mRhq6Fcb/8Cn7//C/
+ tKLiWs75gMnkxkgc+HoqAsbEq1Hg6uGqaawRD63I6FvWtRzKN0ehnbSB54s/7uWNTyUr
+ C2ZVVWdjMWcwPSLTmy6GjUFn0Aq6V0lIfuqIARSMat4Yrz4HMgVi5oW3hdux4/nP9deK
+ R7tTBbvqW+06p1XSUqDZzLGnF6/VRNMIw6jszq356uwxr1HbcfFeP+xW71KxU/tUrM1q
+ Pvyw==
+X-Gm-Message-State: APjAAAVUKM3LsHQ3G++aeXeGxMNnmKh/+9SrwIsaAWYJIA/Knytn6c76
+ 6136PJeA4bhNZm87JyiUwn/77lEn
+X-Google-Smtp-Source: APXvYqxrDKgFT4x+xLAudH6BaBP5YXVP51kY0dnT7fPORVTKT5HQhrGUnkdFoACkAO8snIZ25zXMMw==
+X-Received: by 2002:a17:90a:2506:: with SMTP id
+ j6mr11411337pje.129.1561703603456; 
+ Thu, 27 Jun 2019 23:33:23 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id h14sm1071500pfq.22.2019.06.27.23.33.19
+ by smtp.gmail.com with ESMTPSA id h14sm1071500pfq.22.2019.06.27.23.33.21
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 27 Jun 2019 23:33:21 -0700 (PDT)
+ Thu, 27 Jun 2019 23:33:23 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/5] powerpc/64s/exception: sreset move trampoline ahead of
- common code
-Date: Fri, 28 Jun 2019 16:33:20 +1000
-Message-Id: <20190628063322.11628-4-npiggin@gmail.com>
+Subject: [PATCH 4/5] powerpc/64s/exception: hmi remove special case macro
+Date: Fri, 28 Jun 2019 16:33:21 +1000
+Message-Id: <20190628063322.11628-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628063322.11628-1-npiggin@gmail.com>
 References: <20190628063322.11628-1-npiggin@gmail.com>
@@ -85,55 +84,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Follow convention and move tramp ahead of common.
+No code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 4b33aadd142c..89ea4f3b07cb 100644
+index 89ea4f3b07cb..23aba27b2f59 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -884,6 +884,18 @@ TRAMP_REAL_BEGIN(system_reset_idle_wake)
- 	BRANCH_TO_C000(r12, idle_return_gpr_loss)
- #endif
+@@ -519,11 +519,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
+  *
+  * There can be combinations, e.g., EXC_VIRT_OOL_MASKABLE_HV
+  *
+- * The one unusual case is __EXC_REAL_OOL_HV_DIRECT, which is
+- * an OOL vector that branches to a specified handler rather than the usual
+- * trampoline that goes to common. It, and other underscore macros, should
+- * be used with care.
+- *
+  * KVM handlers come in the following verieties:
+  * TRAMP_KVM
+  * TRAMP_KVM_SKIP
+@@ -614,12 +609,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
+ 	__EXC_REAL_OOL_MASKABLE(name, start, size);			\
+ 	__TRAMP_REAL_OOL_MASKABLE(name, start, bitmask)
  
-+#ifdef CONFIG_PPC_PSERIES
-+/*
-+ * Vectors for the FWNMI option.  Share common code.
-+ */
-+TRAMP_REAL_BEGIN(system_reset_fwnmi)
-+	/* See comment at system_reset exception, don't turn on RI */
-+	EXCEPTION_PROLOG_0 PACA_EXNMI
-+	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXNMI, 0, 0x100, 0, 0, 0
-+	EXCEPTION_PROLOG_2_REAL system_reset_common, EXC_STD, 0
-+
-+#endif /* CONFIG_PPC_PSERIES */
-+
- EXC_COMMON_BEGIN(system_reset_common)
- 	/*
- 	 * Increment paca->in_nmi then enable MSR_RI. SLB or MCE will be able
-@@ -941,18 +953,6 @@ EXC_COMMON_BEGIN(system_reset_common)
- 	EXCEPTION_RESTORE_REGS EXC_STD
- 	RFI_TO_USER_OR_KERNEL
- 
--#ifdef CONFIG_PPC_PSERIES
--/*
-- * Vectors for the FWNMI option.  Share common code.
-- */
--TRAMP_REAL_BEGIN(system_reset_fwnmi)
--	/* See comment at system_reset exception, don't turn on RI */
--	EXCEPTION_PROLOG_0 PACA_EXNMI
--	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXNMI, 0, 0x100, 0, 0, 0
--	EXCEPTION_PROLOG_2_REAL system_reset_common, EXC_STD, 0
+-#define __EXC_REAL_OOL_HV_DIRECT(name, start, size, handler)		\
+-	EXC_REAL_BEGIN(name, start, size);				\
+-	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
+-	b	handler;						\
+-	EXC_REAL_END(name, start, size)
 -
--#endif /* CONFIG_PPC_PSERIES */
--
+ #define __EXC_REAL_OOL_HV(name, start, size)				\
+ 	__EXC_REAL_OOL(name, start, size)
  
- EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
- 	/* This is moved out of line as it can be patched by FW, but
+@@ -1720,7 +1709,10 @@ EXC_COMMON(emulation_assist_common, 0xe40, emulation_assist_interrupt)
+  * first, and then eventaully from there to the trampoline to get into virtual
+  * mode.
+  */
+-__EXC_REAL_OOL_HV_DIRECT(hmi_exception, 0xe60, 0x20, hmi_exception_early)
++EXC_REAL_BEGIN(hmi_exception, 0xe60, 0x20)
++	EXCEPTION_PROLOG_0 PACA_EXGEN
++	b	hmi_exception_early
++EXC_REAL_END(hmi_exception, 0xe60, 0x20)
+ __TRAMP_REAL_OOL_MASKABLE_HV(hmi_exception, 0xe60, IRQS_DISABLED)
+ EXC_VIRT_NONE(0x4e60, 0x20)
+ TRAMP_KVM_HV(PACA_EXGEN, 0xe60)
 -- 
 2.20.1
 
