@@ -2,31 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6982959476
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3748C59478
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:56:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZnYv6kq3zDql5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:54:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Znbd3VSqzDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:55:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 45ZnXM0yZgzDqk7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:53:06 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 41744AE800AC;
- Fri, 28 Jun 2019 02:53:02 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] powerpc/powernv: Fix stale iommu table base after VFIO
-Date: Fri, 28 Jun 2019 16:53:00 +1000
-Message-Id: <20190628065300.41674-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aravinda@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZnYF2NvvzDqkk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:53:52 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5S6rhtN112765; Fri, 28 Jun 2019 02:53:47 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tddma8v2s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 Jun 2019 02:53:44 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5S6nO5D014631;
+ Fri, 28 Jun 2019 06:53:30 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 2t9by7bv9s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 Jun 2019 06:53:30 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5S6rUxB15729470
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Jun 2019 06:53:30 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1501C28058;
+ Fri, 28 Jun 2019 06:53:30 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9853628059;
+ Fri, 28 Jun 2019 06:53:28 +0000 (GMT)
+Received: from [127.0.1.1] (unknown [9.199.42.50])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 28 Jun 2019 06:53:27 +0000 (GMT)
+Subject: [PATCH v2] powerpc/pseries: Fix maximum memory value
+From: Aravinda Prasad <aravinda@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 28 Jun 2019 12:23:26 +0530
+Message-ID: <156170480663.26214.11212383510892156924.stgit@aravinda>
+User-Agent: StGit/0.17.1-dirty
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-28_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906280078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,70 +80,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Alistair Popple <alistair@popple.id.au>, Sam Bobroff <sbobroff@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: aravinda@linux.vnet.ibm.com, naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The powernv platform uses @dma_iommu_ops for non-bypass DMA. These ops
-need an iommu_table pointer which is stored in
-dev->archdata.iommu_table_base. It is initialized during
-pcibios_setup_device() which handles boot time devices. However when
-a device is taken from the system in order to pass it through, the default
-IOMMU table is destroyed but the pointer in a device is not updated;
-also when a device is returned back to the system, a new table pointer
-is not stored in dev->archdata.iommu_table_base either. So when a just
-returned device tries using IOMMU, it crashes on accessing stale
-iommu_table or its members.
+Calculating the maximum memory based on the number of lmbs
+and lmb size does not account for the RMA region. Hence
+use memory_hotplug_max(), which already accounts for the
+RMA region, to fetch the maximum memory value. Thanks to
+Nathan Lynch for suggesting the memory_hotplug_max()
+function.
 
-This calls set_iommu_table_base() when the default window is created.
-Note it used to be there before but was wrongly removed (see "fixes").
-It did not appear before as these days most devices simply use bypass.
-
-This adds set_iommu_table_base(NULL) when a device is taken from
-the system to make it clear that IOMMU DMA cannot be used past that point.
-
-Fixes: c4e9d3c1e65a ("powerpc/powernv/pseries: Rework device adding to IOMMU groups")
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Fixes: 772b039fd9a7: ("powerpc/pseries: Export maximum memory value")
+Signed-off-by: Aravinda Prasad <aravinda@linux.vnet.ibm.com>
 ---
+ arch/powerpc/platforms/pseries/lparcfg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This needs to be applied before
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=110810
-(discovered while testing this on POWER8)
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 10cc42b9e541..0f72c7484824 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2456,6 +2456,14 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 	if (!pnv_iommu_bypass_disabled)
- 		pnv_pci_ioda2_set_bypass(pe, true);
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index e33e8bc..010a41f 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -23,6 +23,7 @@
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+ #include <linux/hugetlb.h>
++#include <linux/memblock.h>
+ #include <asm/lppaca.h>
+ #include <asm/hvcall.h>
+ #include <asm/firmware.h>
+@@ -33,7 +34,6 @@
+ #include <asm/vio.h>
+ #include <asm/mmu.h>
+ #include <asm/machdep.h>
+-#include <asm/drmem.h>
  
-+	/*
-+	 * Set table base for the case of IOMMU DMA use. Usually this is done
-+	 * from dma_dev_setup() which is not called when a device is returned
-+	 * from VFIO so do it here.
-+	 */
-+	if (pe->pdev)
-+		set_iommu_table_base(&pe->pdev->dev, tbl);
-+
- 	return 0;
- }
+ #include "pseries.h"
  
-@@ -2543,6 +2551,8 @@ static void pnv_ioda2_take_ownership(struct iommu_table_group *table_group)
- 	pnv_pci_ioda2_unset_window(&pe->table_group, 0);
- 	if (pe->pbus)
- 		pnv_ioda_setup_bus_dma(pe, pe->pbus);
-+	else if (pe->pdev)
-+		set_iommu_table_base(&pe->pdev->dev, NULL);
- 	iommu_tce_table_put(tbl);
- }
+@@ -435,7 +435,7 @@ static void maxmem_data(struct seq_file *m)
+ {
+ 	unsigned long maxmem = 0;
  
--- 
-2.17.1
+-	maxmem += drmem_info->n_lmbs * drmem_info->lmb_size;
++	maxmem += memory_hotplug_max();
+ 	maxmem += hugetlb_total_pages() * PAGE_SIZE;
+ 
+ 	seq_printf(m, "MaxMem=%ld\n", maxmem);
 
