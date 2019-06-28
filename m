@@ -2,72 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A83D596AF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 11:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EE059706
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 11:13:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZrNb16p5zDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 19:01:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Zrdk1w3xzDqjp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 19:12:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::c41; helo=mail-yw1-xc41.google.com;
+ envelope-from=huangfq.daxian@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="hCseVWrz"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="StQri7Ff"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-xc41.google.com (mail-yw1-xc41.google.com
+ [IPv6:2607:f8b0:4864:20::c41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZrLh0XY4zDq5t
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 18:59:55 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45ZrLb32q7z9v1dq;
- Fri, 28 Jun 2019 10:59:51 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=hCseVWrz; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wg0kRk6LpBEP; Fri, 28 Jun 2019 10:59:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45ZrLb0JB7z9v1dW;
- Fri, 28 Jun 2019 10:59:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1561712391; bh=3PExFE1N6IiyQSDeWR2v89tJ9QeiWcAN1N4Hjay3PlI=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=hCseVWrzRRQQXlskmPHp+o3zZeA9GBRK4q98IdoDLwuXYMJZ0gqNOJzJu4lD6Mxqb
- cA/OiFk6yj7OXXXZDbS9ktAYJzXSFIfIfzeuxOXNEijxaOSJN+wsUKbnOH/ZnZ0Lmi
- Pgc6B8sCSvQ3DAwq+DJQJ9XYrlUTJvBjOpWEWRUQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 256308B966;
- Fri, 28 Jun 2019 10:59:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mul6Zychpueb; Fri, 28 Jun 2019 10:59:52 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E11848B961;
- Fri, 28 Jun 2019 10:59:51 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Zrbv5Mj3zDqW1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 19:11:23 +1000 (AEST)
+Received: by mail-yw1-xc41.google.com with SMTP id u141so615350ywe.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 02:11:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=NYW6PlEeaH367Jvr1ZMSoo3Aj5m51ktezngndfggtvY=;
+ b=StQri7FfBnbBGEumveJwe5nkZAxrnsl671ui5e4oGfnTsl6m3afqK8KoJktb7l92/5
+ npAV5CxaY7ELNtmAqoi55qQvXqnPFo4n9uX1BUNUb4t/dwYtyeQ/M7EXSrB/v0zRegJE
+ P8e0j9feRAtEl3LJ8zHZ7pplU8UWCoy5zEZKLE3lZFonv0QcEwAQCmBlTUpcPzCpORaU
+ KWr3K/480ZFGenmaWVLmNgEVOZh9JAXlLCQJS/VVNfNlmf9I31Ygk4UJv7rV/7N3txa1
+ fb3GUv4xRMJn7E6lc58vZ0lrTIQBrPETcl9F7RauB7UNsjwvdYHz6nVtH4zpR7o3zpzr
+ JYQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=NYW6PlEeaH367Jvr1ZMSoo3Aj5m51ktezngndfggtvY=;
+ b=Aop5BlQAcL1WlIonaHKmW190Eokjh8CkDN6E/FNQI11elKSX8LXjkWhsVdmHYjVq5y
+ LaaDGBkZdzt4TLaZJeavueK0Nj1Dti/uxPu3LOXLGObPjT6lQ7gXuWUPOhw7Z9KPWNkm
+ wF4oiENPVlnnQ9fv+omCoH5hu6VyC4H2Wv6K1VCn9lBRPL9DR1ZfbT5vJgdT3+G7PGtn
+ 9e1tnFpzokOnKld04st/SE1gOjXHARL8FjIZPkvleKS6QnBhwJ7REu1cZgD9ShoVUutY
+ 2BJecMNus2rIzym63pFibr80t8RNj1K+HwUDzgaKoaG5KYPnaE6wEHcZ+DazSVGHm4jZ
+ amRA==
+X-Gm-Message-State: APjAAAVONcR2q2qe2NIDnPYXmBfoTkfvjolIqx45V+h5AauBHPZl4l20
+ uWWPQTfw5g5V4iRKw8KJ5yYllPOLy4YqBfjH8yY=
+X-Google-Smtp-Source: APXvYqwdZqvPFf/v+xf0c8m2QQzjwkm9pBnQirbxjOXTyW1AetvGjdJMH0+2ZUJRnpOn1unVXGCt7KHq84C5BQbqQa4=
+X-Received: by 2002:a0d:e1d7:: with SMTP id k206mr5230972ywe.229.1561713079518; 
+ Fri, 28 Jun 2019 02:11:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190628025055.16242-1-huangfq.daxian@gmail.com>
+ <83108dee-72f7-e56f-95f6-26162c9a0ccc@c-s.fr>
+In-Reply-To: <83108dee-72f7-e56f-95f6-26162c9a0ccc@c-s.fr>
+From: Fuqian Huang <huangfq.daxian@gmail.com>
+Date: Fri, 28 Jun 2019 17:11:08 +0800
+Message-ID: <CABXRUiT6jSP2xL9JyqngS9KBx_=fZ13x0UGGFPnQPrfh-_N5xQ@mail.gmail.com>
 Subject: Re: [PATCH v2 27/27] sound: ppc: remove unneeded memset after
  dma_alloc_coherent
-To: Fuqian Huang <huangfq.daxian@gmail.com>
-References: <20190628025055.16242-1-huangfq.daxian@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Followup-To: Takashi Iwai <tiwai@suse.com>
-Message-ID: <83108dee-72f7-e56f-95f6-26162c9a0ccc@c-s.fr>
-Date: Fri, 28 Jun 2019 10:59:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <20190628025055.16242-1-huangfq.daxian@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,39 +85,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The merge commit log tells (dma-mapping: zero memory returned from
+dma_alloc_* and deprecating the dma_zalloc_coherent).
+I used this commit just want to say that dma_alloc_coherent  has
+zeroed the allocated memory.
+Sorry for this mistake.
 
+Maybe this commit 518a2f1925c3("dma-mapping: zero memory returned from
+dma_alloc_*") is correct.
 
-Le 28/06/2019 à 04:50, Fuqian Huang a écrit :
-> In commit af7ddd8a627c
-> ("Merge tag 'dma-mapping-4.21' of git://git.infradead.org/users/hch/dma-mapping"),
-> dma_alloc_coherent has already zeroed the memory.
-> So memset is not needed.
+Christophe Leroy <christophe.leroy@c-s.fr> =E6=96=BC 2019=E5=B9=B46=E6=9C=
+=8828=E6=97=A5=E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=884:59=E5=AF=AB=E9=81=93=
+=EF=BC=9A
 
-You are refering to a merge commit, is that correct ?
-
-I can't see anything related in that commit, can you please pinpoint it ?
-
-As far as I can see, on powerpc the memory has always been zeroized 
-(since 2005 at least).
-
-Christophe
-
-> 
-> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
-> ---
->   sound/ppc/pmac.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/sound/ppc/pmac.c b/sound/ppc/pmac.c
-> index 1b11e53f6a62..1ab12f4f8631 100644
-> --- a/sound/ppc/pmac.c
-> +++ b/sound/ppc/pmac.c
-> @@ -56,7 +56,6 @@ static int snd_pmac_dbdma_alloc(struct snd_pmac *chip, struct pmac_dbdma *rec, i
->   	if (rec->space == NULL)
->   		return -ENOMEM;
->   	rec->size = size;
-> -	memset(rec->space, 0, rsize);
->   	rec->cmds = (void __iomem *)DBDMA_ALIGN(rec->space);
->   	rec->addr = rec->dma_base + (unsigned long)((char *)rec->cmds - (char *)rec->space);
->   
-> 
+>
+>
+>
+> Le 28/06/2019 =C3=A0 04:50, Fuqian Huang a =C3=A9crit :
+> > In commit af7ddd8a627c
+> > ("Merge tag 'dma-mapping-4.21' of git://git.infradead.org/users/hch/dma=
+-mapping"),
+> > dma_alloc_coherent has already zeroed the memory.
+> > So memset is not needed.
+>
+> You are refering to a merge commit, is that correct ?
+>
+> I can't see anything related in that commit, can you please pinpoint it ?
+>
+> As far as I can see, on powerpc the memory has always been zeroized
+> (since 2005 at least).
+>
+> Christophe
+>
+> >
+> > Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+> > ---
+> >   sound/ppc/pmac.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> >
+> > diff --git a/sound/ppc/pmac.c b/sound/ppc/pmac.c
+> > index 1b11e53f6a62..1ab12f4f8631 100644
+> > --- a/sound/ppc/pmac.c
+> > +++ b/sound/ppc/pmac.c
+> > @@ -56,7 +56,6 @@ static int snd_pmac_dbdma_alloc(struct snd_pmac *chip=
+, struct pmac_dbdma *rec, i
+> >       if (rec->space =3D=3D NULL)
+> >               return -ENOMEM;
+> >       rec->size =3D size;
+> > -     memset(rec->space, 0, rsize);
+> >       rec->cmds =3D (void __iomem *)DBDMA_ALIGN(rec->space);
+> >       rec->addr =3D rec->dma_base + (unsigned long)((char *)rec->cmds -=
+ (char *)rec->space);
+> >
+> >
