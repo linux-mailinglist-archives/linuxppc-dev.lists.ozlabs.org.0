@@ -2,36 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9608358FD4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 03:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA658FD7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 03:47:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Zfhq3rZyzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 11:44:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZflP5QBSzDqSr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 11:47:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zffs0fbpzDqND
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 11:43:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZfjV22wVzDqNn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 11:45:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45Zffr6p0rz9s3Z;
- Fri, 28 Jun 2019 11:43:16 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45ZfjV0c69z9s3Z;
+ Fri, 28 Jun 2019 11:45:34 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- Haren Myneni <haren@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] crypto/NX: Set receive window credits to max number of
- CRBs in RxFIFO
-In-Reply-To: <20190627062610.olw3ojckkwil4jlk@gondor.apana.org.au>
-References: <20190627062610.olw3ojckkwil4jlk@gondor.apana.org.au>
-Date: Fri, 28 Jun 2019 11:43:16 +1000
-Message-ID: <87tvcascwb.fsf@concordia.ellerman.id.au>
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/configs: Disable /dev/port in skiroot defconfig
+In-Reply-To: <20190627053008.29315-1-dja@axtens.net>
+References: <20190627053008.29315-1-dja@axtens.net>
+Date: Fri, 28 Jun 2019 11:45:33 +1000
+Message-ID: <87r27escsi.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,28 +43,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- stable@vger.kernel.org
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Herbert Xu <herbert@gondor.apana.org.au> writes:
-> Haren Myneni <haren@linux.vnet.ibm.com> wrote:
->>    
->> System gets checkstop if RxFIFO overruns with more requests than the
->> maximum possible number of CRBs in FIFO at the same time. The max number
->> of requests per window is controlled by window credits. So find max
->> CRBs from FIFO size and set it to receive window credits.
->> 
->> Fixes: b0d6c9bab5e4 ("crypto/nx: Add P9 NX support for 842 compression engine")
->> CC: stable@vger.kernel.org # v4.14+   
->> Signed-off-by:Haren Myneni <haren@us.ibm.com>
+Daniel Axtens <dja@axtens.net> writes:
+> While reviewing lockdown patches, I discovered that we still enable
+> /dev/port (CONFIG_DEVPORT) in skiroot.
 >
-> I presume this is being picked up by the powerpc tree?
+> We don't need it. Deselect CONFIG_DEVPORT for skiroot.
 
-No. I assumed you'd take it because it's in drivers/crypto.
-
-If you want me to take it that's fine, just let me know.
+Why don't we need it? :)
 
 cheers
+
+> diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
+> index 5ba131c30f6b..b2e8f37156eb 100644
+> --- a/arch/powerpc/configs/skiroot_defconfig
+> +++ b/arch/powerpc/configs/skiroot_defconfig
+> @@ -212,6 +212,7 @@ CONFIG_IPMI_WATCHDOG=y
+>  CONFIG_HW_RANDOM=y
+>  CONFIG_TCG_TPM=y
+>  CONFIG_TCG_TIS_I2C_NUVOTON=y
+> +# CONFIG_DEVPORT is not set
+>  CONFIG_I2C=y
+>  # CONFIG_I2C_COMPAT is not set
+>  CONFIG_I2C_CHARDEV=y
+> -- 
+> 2.20.1
