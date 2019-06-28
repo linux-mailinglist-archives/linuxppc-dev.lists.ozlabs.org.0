@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E18659450
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:41:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZnGZ1YnBzDqrV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:41:10 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B92859454
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 08:42:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZnJF4FDLzDql5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 16:42:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="G0FzVLnm"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="if6Sop4w"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zn5d42r7zDqlF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:33:25 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id r1so2437309pfq.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 23:33:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Zn5h2bxwzDqkb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 16:33:28 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id i189so2439298pfg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 23:33:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=7DF6ojBYAmHkDmYe6ocgC5T0eh+wo56rup2w+4XKrIE=;
- b=G0FzVLnm5d9idLiIM405vfvutl1SZ7u9USB81LuJXCTNhpoIze2qfDcRIcfTG+euH1
- Xmd3q3zJAyKwV+6MGg8k7VXQsGKHviIxJnO2qC6dJYZlx11vxqvz5SqEBM+GQZsXV+fz
- g4NPvkYdMHWoLTuW7ke3viPU3Ty/CRIKGr3wvay7ZYDIakgTmvKEkrwOpwJS7uyCMQrj
- AjCRIWe0g1I4UX74bT1zKFNwNtrDyUXAEK37rDfAlx9pNXk7eUxBOMP6lRw27H73MY13
- qfPeaGHf97f/LhFZUVvFYTWbZIIaPgYgmBOgKXeBDi0Vz7nEVmdhbAifG9Jz7YR7qw8X
- TJ1w==
+ bh=DKQ28PsOrExIMvOIkgL8UCit8oSc6cjfhEUjb6eXWI0=;
+ b=if6Sop4wPrm5bxneGPAj4vz2EVaOBPBzs2hM2kf0Dct+1yDyb/wDZOf639EaSV/Lr8
+ aRYmrUkH2rpuLbMNc7xDXHxrScyL8+lXEc8syxOsbXJGqS02p9uuEk/5USC2R+6pn9WZ
+ V1KOoFGbnDDISvXlLfXMfjtV/Q2+Gv6OxcvUoO49GB6oZ8hW8r6Frgidh1o9GYdEKA0c
+ FIGhukgZ22YptqTmaemTjCPvvV9irwm7e3dU57xUB7dlf/XOMEL0bZjuuAXZeqQqwebi
+ ImY+V2adDNcIh7jKakKD0dWKvpdVdOAUdPHtjUS4HjFbDqm2UL8LVgeeYwfpaP2YG6HP
+ VhaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=7DF6ojBYAmHkDmYe6ocgC5T0eh+wo56rup2w+4XKrIE=;
- b=qlpc6BZqtTmSdDKAocf0jlHDHFAS8/3LaW7t2Ox9FDEbDZLszRnkTQwv5zE0TmSMIE
- t5xjIdd6FzkyThAve8CN6nbxGaf8PFNgJ+j/4giXgY/NY1JXf01mRhq6Fcb/8Cn7//C/
- tKLiWs75gMnkxkgc+HoqAsbEq1Hg6uGqaawRD63I6FvWtRzKN0ehnbSB54s/7uWNTyUr
- C2ZVVWdjMWcwPSLTmy6GjUFn0Aq6V0lIfuqIARSMat4Yrz4HMgVi5oW3hdux4/nP9deK
- R7tTBbvqW+06p1XSUqDZzLGnF6/VRNMIw6jszq356uwxr1HbcfFeP+xW71KxU/tUrM1q
- Pvyw==
-X-Gm-Message-State: APjAAAVUKM3LsHQ3G++aeXeGxMNnmKh/+9SrwIsaAWYJIA/Knytn6c76
- 6136PJeA4bhNZm87JyiUwn/77lEn
-X-Google-Smtp-Source: APXvYqxrDKgFT4x+xLAudH6BaBP5YXVP51kY0dnT7fPORVTKT5HQhrGUnkdFoACkAO8snIZ25zXMMw==
-X-Received: by 2002:a17:90a:2506:: with SMTP id
- j6mr11411337pje.129.1561703603456; 
- Thu, 27 Jun 2019 23:33:23 -0700 (PDT)
+ bh=DKQ28PsOrExIMvOIkgL8UCit8oSc6cjfhEUjb6eXWI0=;
+ b=Q1HhwMwhiwB/U9U4CZXWv7MHIDC23p/k4rndNdO+lOdyxOxL5o8jiTew6lVCt80aRr
+ 0aShevO5FWmy9cWCT/rCpZx/N0XQ1+Unio6L4wNBOkyjWQ9DqKuc8DaAUPSWj98hcgGR
+ k79Zz3zx+8UZ5SEGwNnB3t5jp3IymY/tP7KLEkau+nqh3tckmzScEJY+yINwLmiklF2x
+ 01gSf8Tu4Von9tlFPkpqHuLBKCuhi6pr5J2FQ0BDzJijuuUKLt5m+2D4YUl5nW4lwbP3
+ PmQc5+azL+KlwE3FYjtxlk91zdlhbOMSpLPdSFIGzpukRsb0EbknE7Iz/G87k1i4grZ9
+ qxsw==
+X-Gm-Message-State: APjAAAXt0TqcMQR4YDGAoaRQjn0JVUkB0KloPIA8iwE2POoEIYtHeUO+
+ ECs1BjHrHY90hHyw16GUaGjWFFbU
+X-Google-Smtp-Source: APXvYqwbjKrCJCQ898mmOPiqcu6/kHn/J9NA0rfMdxI/+VASxS/GycYK52FRoPyBw1+xiAIVTgguVQ==
+X-Received: by 2002:a65:5304:: with SMTP id m4mr7636095pgq.126.1561703605670; 
+ Thu, 27 Jun 2019 23:33:25 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id h14sm1071500pfq.22.2019.06.27.23.33.21
+ by smtp.gmail.com with ESMTPSA id h14sm1071500pfq.22.2019.06.27.23.33.23
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 27 Jun 2019 23:33:23 -0700 (PDT)
+ Thu, 27 Jun 2019 23:33:24 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/5] powerpc/64s/exception: hmi remove special case macro
-Date: Fri, 28 Jun 2019 16:33:21 +1000
-Message-Id: <20190628063322.11628-5-npiggin@gmail.com>
+Subject: [PATCH 5/5] powerpc/64s/exception: simplify hmi control flow
+Date: Fri, 28 Jun 2019 16:33:22 +1000
+Message-Id: <20190628063322.11628-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628063322.11628-1-npiggin@gmail.com>
 References: <20190628063322.11628-1-npiggin@gmail.com>
@@ -84,54 +83,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No code change.
+Branch to the relocated 0xc000 address early (still in real mode), to
+simplify subsequent branches. Have the virt mode handler avoid just
+'windup' and redo the exception from scratch, rather than branching
+back to the trampoline.
+
+Rearrange the stack setup instruction location to match the system
+reset handler (e.g., right before EXCEPTION_PROLOG_COMMON).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 89ea4f3b07cb..23aba27b2f59 100644
+index 23aba27b2f59..a91541956aa0 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -519,11 +519,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
-  *
-  * There can be combinations, e.g., EXC_VIRT_OOL_MASKABLE_HV
-  *
-- * The one unusual case is __EXC_REAL_OOL_HV_DIRECT, which is
-- * an OOL vector that branches to a specified handler rather than the usual
-- * trampoline that goes to common. It, and other underscore macros, should
-- * be used with care.
-- *
-  * KVM handlers come in the following verieties:
-  * TRAMP_KVM
-  * TRAMP_KVM_SKIP
-@@ -614,12 +609,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
- 	__EXC_REAL_OOL_MASKABLE(name, start, size);			\
- 	__TRAMP_REAL_OOL_MASKABLE(name, start, bitmask)
+@@ -260,17 +260,6 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	mtctr	reg;							\
+ 	bctr
  
--#define __EXC_REAL_OOL_HV_DIRECT(name, start, size, handler)		\
--	EXC_REAL_BEGIN(name, start, size);				\
--	EXCEPTION_PROLOG_0 PACA_EXGEN ;					\
--	b	handler;						\
--	EXC_REAL_END(name, start, size)
+-#ifdef CONFIG_RELOCATABLE
+-#define BRANCH_LINK_TO_FAR(label)					\
+-	__LOAD_FAR_HANDLER(r12, label);					\
+-	mtctr	r12;							\
+-	bctrl
 -
- #define __EXC_REAL_OOL_HV(name, start, size)				\
- 	__EXC_REAL_OOL(name, start, size)
- 
-@@ -1720,7 +1709,10 @@ EXC_COMMON(emulation_assist_common, 0xe40, emulation_assist_interrupt)
-  * first, and then eventaully from there to the trampoline to get into virtual
-  * mode.
-  */
--__EXC_REAL_OOL_HV_DIRECT(hmi_exception, 0xe60, 0x20, hmi_exception_early)
-+EXC_REAL_BEGIN(hmi_exception, 0xe60, 0x20)
-+	EXCEPTION_PROLOG_0 PACA_EXGEN
-+	b	hmi_exception_early
-+EXC_REAL_END(hmi_exception, 0xe60, 0x20)
- __TRAMP_REAL_OOL_MASKABLE_HV(hmi_exception, 0xe60, IRQS_DISABLED)
+-#else
+-#define BRANCH_LINK_TO_FAR(label)					\
+-	bl	label
+-#endif
+-
+ #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ /*
+@@ -1713,22 +1702,26 @@ EXC_REAL_BEGIN(hmi_exception, 0xe60, 0x20)
+ 	EXCEPTION_PROLOG_0 PACA_EXGEN
+ 	b	hmi_exception_early
+ EXC_REAL_END(hmi_exception, 0xe60, 0x20)
+-__TRAMP_REAL_OOL_MASKABLE_HV(hmi_exception, 0xe60, IRQS_DISABLED)
  EXC_VIRT_NONE(0x4e60, 0x20)
  TRAMP_KVM_HV(PACA_EXGEN, 0xe60)
+ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, 0xe60, 0, 0, 0
++	mfctr	r10			/* save ctr, even for !RELOCATABLE */
++	BRANCH_TO_C000(r11, hmi_exception_early_common)
++
++EXC_COMMON_BEGIN(hmi_exception_early_common)
++	mtctr	r10			/* Restore ctr */
++	mfspr	r11,SPRN_HSRR0		/* Save HSRR0 */
++	mfspr	r12,SPRN_HSRR1		/* Save HSRR1 */
+ 	mr	r10,r1			/* Save r1 */
+ 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack for realmode */
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
+-	mfspr	r11,SPRN_HSRR0		/* Save HSRR0 */
+-	mfspr	r12,SPRN_HSRR1		/* Save HSRR1 */
+ 	EXCEPTION_PROLOG_COMMON_1()
+ 	/* We don't touch AMR here, we never go to virtual mode */
+ 	EXCEPTION_PROLOG_COMMON_2(PACA_EXGEN)
+ 	EXCEPTION_PROLOG_COMMON_3(0xe60)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	BRANCH_LINK_TO_FAR(DOTSYM(hmi_exception_realmode)) /* Function call ABI */
++	bl	hmi_exception_realmode
+ 	cmpdi	cr0,r3,0
+ 	bne	1f
+ 
+@@ -1742,7 +1735,8 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	 */
+ 	EXCEPTION_RESTORE_REGS EXC_HV
+ 	EXCEPTION_PROLOG_0 PACA_EXGEN
+-	b	tramp_real_hmi_exception
++	EXCEPTION_PROLOG_1 EXC_HV, PACA_EXGEN, 1, 0xe60, 0, 0, IRQS_DISABLED
++	EXCEPTION_PROLOG_2_REAL hmi_exception_common, EXC_HV, 1
+ 
+ EXC_COMMON_BEGIN(hmi_exception_common)
+ 	EXCEPTION_COMMON(PACA_EXGEN, 0xe60)
 -- 
 2.20.1
 
