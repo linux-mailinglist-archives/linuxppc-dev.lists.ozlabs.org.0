@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A41859395
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:44:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF85E5938F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:42:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZlyY03TmzDq6B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 15:42:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45Zm0Y5n9mzDqyw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 15:43:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="pPxNhXxe"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="K4RrpQSr"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zlmd0FWDzDqnf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:33:36 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id d126so2381351pfd.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 22:33:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Zlmg0hZWzDqn2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:33:38 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id d126so2381397pfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 22:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=0kBWknKNxwM/+LkiYlUeRRHsmo+N12kLIAavTLAX1+Y=;
- b=pPxNhXxeUGVOliwFNX06hysCCksp7MaCUqGaDui8RrdwUNBEuq4cwoKnNH5Lihoi+y
- 2ZLNVkTJmJO+GHXV9gTQ1DfP1aySohUgHT7O9ELjcRS1lCrASJodFyg6+Y2jKNq1Muir
- 9Y5STZlUKlrnhkuXBpSoArS3JbUQrAivUI/fm6QxJdzz4OGJhZ2w/CuKwR6n0WoT4B4U
- sVr5GnxGPMIktqpkcR3r5U6kRWZBu08SpQ0bcgZz4AFtdWVYDUWpc/nYITZUe68MeVvY
- wrL1XJ7525ro93t3FXDg0b2LDJb03fLaJlgeUAec4y/kgUsK/QbWOCC9rDt5uN5s/kl5
- KzZg==
+ bh=wqlUyFcw+JOl/KKWGZq5OYd8Kcp9RD2eBB+OpUgpjtc=;
+ b=K4RrpQSrd5xDPiMgvIAK0ePJTrp/7ncNDhUWTPz7kt+Oxm4xJb8gAydgS0JbCb+ruJ
+ 7qmbuoNjrZmPNRygWXCyw+dEKW405Zf9+qSMBIM74wwU5bYRPLiy5UqoyKl6ETw0oGvX
+ bxSoO0DTwZSEUDXGky2VXIWtUWk6304m9+CMZWKG4U5Lq1Bq7qDe4XL9UNZjh+d1yLHl
+ Pa7+Wcli5fwRQPqyWIUWD2wxJkJ9DfVti2VIkDBAXC/IP+WxS2st1ijaBdna50hw7gJr
+ XNIOKxEnnIVblNbPSE5c6wniBj2v+NhpZadjPmoQZkikKzzhguzJC7DuPV2xYx+EsMi2
+ 40WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=0kBWknKNxwM/+LkiYlUeRRHsmo+N12kLIAavTLAX1+Y=;
- b=tSqyZyUIKgly7eJGrAuiw/RrJeUD2xJqXc/jHU8aYLUh4UGQs4CUdQsNug3EWMUyO1
- wNRKoBa8YZEvdEW9JEB4d5cQhCao/iyz45e86zzeR4o5tvjV2k5j3HhSQ72DoR7iIw4T
- cnZjq71w2r+s408hRVNFNuzc0QithPLRRDdtLZ7CJVbDrmKWo4WF/v0gtXHGEopk9HHF
- 2ZqLEOK+45rkHYG4nf+l2S4WdsxCbi5/zgxbGNbIZRrKk9Cr3jAAGgCr7sICOjzAx3D9
- iR5ulYcNh0iafrQXW0e6lKJaErAjYK3iQgTjpmx560jMWZLm0uVIXYValxBzWfmhIoN+
- FYhA==
-X-Gm-Message-State: APjAAAUbAqTPVsh1vuqxmsv+il/pFw5JtLFxxGIEI4v6KxiBYF278Cy4
- e76xyVs82ZtjPll6CJi6o9EzSYjz
-X-Google-Smtp-Source: APXvYqwu+UDbcYCQ0B3QeKw4AHyDzztavF4Ydycl6eC9XSzZgojcCUZ1hYIZvskVeHnkUcZ2YtmWiQ==
-X-Received: by 2002:a17:90a:26ef:: with SMTP id
- m102mr10720693pje.50.1561700014645; 
- Thu, 27 Jun 2019 22:33:34 -0700 (PDT)
+ bh=wqlUyFcw+JOl/KKWGZq5OYd8Kcp9RD2eBB+OpUgpjtc=;
+ b=k6fi3VkqsjCNUdrtYw4Gd74gwVKtMnu/0VvJcgs3dHqY616IXc+JrZn/wm0Dhd3Akj
+ GwxlVGwupWuncmnEh7M9+agTeQKWDqcDJFSLHhcDCKpTeo1kEThTBNTXDKdKZG97/ICt
+ 8Bk6z+ogUxsrPO29oXRBbB1TSpfLT7LyFw96durGFJQpy89EIj2pLTHWSpEirXi5Mklx
+ 3OEoq3YWe3psf7FP2F+IfcueFOo5FekLcOy77PSGsFgjclitgCChIeMRVxECfg8shjAw
+ jNImCVdlsh8xIWZxqPzraG+5NI9CvkPaRvwKRdosJZ9wKRiThbzemyMyyhqpIDggDsE3
+ ip9A==
+X-Gm-Message-State: APjAAAXPE5HeFUS4nbAITRagBV44IvB9Fseq4BsxhgcGS0Fc8HUtnGp8
+ RAqS38CnOKTUAInVAYy8ardkvKLX
+X-Google-Smtp-Source: APXvYqz9u+sGv9+T/u4qkI1eSI0/hBP0EgzDYqTUJlg4kyQ6vKrOVh2Fd0KC1RCL4hvJhkzIwWhx5w==
+X-Received: by 2002:a17:90a:5288:: with SMTP id
+ w8mr10838149pjh.61.1561700016563; 
+ Thu, 27 Jun 2019 22:33:36 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 125sm1272614pfg.23.2019.06.27.22.33.33
+ by smtp.gmail.com with ESMTPSA id 125sm1272614pfg.23.2019.06.27.22.33.34
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 27 Jun 2019 22:33:34 -0700 (PDT)
+ Thu, 27 Jun 2019 22:33:36 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 05/13] powerpc/64s/exception: move machine check windup
- in_mce handling
-Date: Fri, 28 Jun 2019 15:33:24 +1000
-Message-Id: <20190628053332.22366-6-npiggin@gmail.com>
+Subject: [PATCH v3 06/13] powerpc/64s/exception: simplify hmi windup code
+Date: Fri, 28 Jun 2019 15:33:25 +1000
+Message-Id: <20190628053332.22366-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628053332.22366-1-npiggin@gmail.com>
 References: <20190628053332.22366-1-npiggin@gmail.com>
@@ -85,40 +84,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move in_mce decrement earlier before registers are restored (but
-still after RI=0). This helps with later consolidation.
+Duplicate the hmi windup code for both cases, rather than to put a
+special case branch in the middle of it. Remove unused label. This
+helps with later code consolidation.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index b1dfd0af0120..c1d9ec5fe849 100644
+index c1d9ec5fe849..17bc0166e0e6 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1080,6 +1080,10 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	/* Clear MSR_RI before setting SRR0 and SRR1. */\
- 	li	r9,0;					\
- 	mtmsrd	r9,1;		/* Clear MSR_RI */	\
-+	/* Decrement paca->in_mce now RI is clear. */	\
-+	lhz	r12,PACA_IN_MCE(r13);			\
-+	subi	r12,r12,1;				\
-+	sth	r12,PACA_IN_MCE(r13);			\
- 	/* Move original SRR0 and SRR1 into the respective regs */	\
- 	ld	r9,_MSR(r1);				\
- 	mtspr	SPRN_SRR1,r9;				\
-@@ -1096,10 +1100,6 @@ EXC_COMMON_BEGIN(machine_check_common)
- 	REST_GPR(10, r1);				\
- 	ld	r11,_CCR(r1);				\
- 	mtcr	r11;					\
--	/* Decrement paca->in_mce. */			\
--	lhz	r12,PACA_IN_MCE(r13);			\
--	subi	r12,r12,1;				\
--	sth	r12,PACA_IN_MCE(r13);			\
- 	REST_GPR(11, r1);				\
- 	REST_2GPRS(12, r1);				\
- 	/* restore original r1. */			\
+@@ -1781,6 +1781,7 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	BRANCH_LINK_TO_FAR(DOTSYM(hmi_exception_realmode)) /* Function call ABI */
+ 	cmpdi	cr0,r3,0
++	bne	1f
+ 
+ 	/* Windup the stack. */
+ 	/* Move original HSRR0 and HSRR1 into the respective regs */
+@@ -1799,13 +1800,28 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	REST_GPR(10, r1)
+ 	ld	r11,_CCR(r1)
+ 	REST_2GPRS(12, r1)
+-	bne	1f
+ 	mtcr	r11
+ 	REST_GPR(11, r1)
+ 	ld	r1,GPR1(r1)
+ 	HRFI_TO_USER_OR_KERNEL
+ 
+-1:	mtcr	r11
++1:
++	ld	r9,_MSR(r1)
++	mtspr	SPRN_HSRR1,r9
++	ld	r9,_NIP(r1)
++	mtspr	SPRN_HSRR0,r9
++	ld	r9,_CTR(r1)
++	mtctr	r9
++	ld	r9,_XER(r1)
++	mtxer	r9
++	ld	r9,_LINK(r1)
++	mtlr	r9
++	REST_GPR(0, r1)
++	REST_8GPRS(2, r1)
++	REST_GPR(10, r1)
++	ld	r11,_CCR(r1)
++	REST_2GPRS(12, r1)
++	mtcr	r11
+ 	REST_GPR(11, r1)
+ 	ld	r1,GPR1(r1)
+ 
+@@ -1813,8 +1829,6 @@ TRAMP_REAL_BEGIN(hmi_exception_early)
+ 	 * Go to virtual mode and pull the HMI event information from
+ 	 * firmware.
+ 	 */
+-	.globl hmi_exception_after_realmode
+-hmi_exception_after_realmode:
+ 	SET_SCRATCH0(r13)
+ 	EXCEPTION_PROLOG_0 PACA_EXGEN
+ 	b	tramp_real_hmi_exception
 -- 
 2.20.1
 
