@@ -1,74 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14920593D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:56:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A92593D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 07:54:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ZmDx4wT3zDr6c
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 15:54:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZmGj6vL2zDq7h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 15:56:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="VU9lJQru"; 
- dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45Zlmv6MrPzDqnc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:33:51 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id e5so2561548pls.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 22:33:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Qi+gU4bdS1324GMD/HpQ+oVtyQ4HGJmZVo7c1VMCmPY=;
- b=VU9lJQru3aElWliW3XsuI76o4ZGv1ee0C0p7sWW5+9BpoqKRVB0JUrMc7aAhzSaQkY
- VLozNsgb2Bi/wnJSKcH4EB7Njqq0chgWjYdh0M18Ptjk1FFBwEaakWUOdoTBM+cec4X7
- +BU+rkVcOhgEOLXYLBCbhQkQvz614mHf9BrnwJ2kELjk2uiTJVmMW0KF8jooDA6qVNDU
- Mvi6PnlVbHIfDtR6WvISI97wfrnBWtOOCHMZRvFZFss+P98a+a+msF0p+KS+o29j1Qpd
- ni7e9R+++AJN37gOaSsOAFw1IvkOVb1BVpiZYQ/st7bL86HKiBdcTt6O7z6c7y77R0aM
- HRJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Qi+gU4bdS1324GMD/HpQ+oVtyQ4HGJmZVo7c1VMCmPY=;
- b=FvvF3xJFi6uDUek5vdqEdu17t4gpvrl75OqmGmFE6Y72z0ab8txNPlIllRIB+a2JAi
- DH0cW5BJdNlEu1Ob0PBeLW3F9DOkYvo4VC1tB0KAaa78b2tNWkB72aCu9+ch346ycfij
- znMgN7CTPQUFC4f3ycaGvuQB+6O9mJ8U2TXHaq+EieYKnzA0bwOglPVkQSYy4ZruDMf9
- L1ZQOxVfnZdkKRaj+L1VxWe3s8v4RkfJMOOQ7bBJPAyuGL/ljHOpCrCuQBPDzQ4wIDvK
- +OdaJdJR+QJZbcKjJaNJpOn0qMJbnON6hrJ3XzrIIJXPoaI0sl6PjEkL8KjF9XYH6uC7
- N4Ng==
-X-Gm-Message-State: APjAAAXVS9XxckNkcNjcM6KhlZY0iBiojehrNZtVQhp2oQ4x95djn2Rs
- kVcyC7kCvbO/ubw1Gt4XwjPzMAYR
-X-Google-Smtp-Source: APXvYqwuxrjVbk+uzzWW7OHVmsIFdLbT8YM9ORrDjHL9ksIjghtk/oIiEWKJzb91K2OMBlqhyGd9hA==
-X-Received: by 2002:a17:902:8a8a:: with SMTP id
- p10mr9496148plo.88.1561700030100; 
- Thu, 27 Jun 2019 22:33:50 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id 125sm1272614pfg.23.2019.06.27.22.33.48
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 27 Jun 2019 22:33:49 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 13/13] powerpc/tm: update comment about interrupt
- re-entrancy
-Date: Fri, 28 Jun 2019 15:33:32 +1000
-Message-Id: <20190628053332.22366-14-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190628053332.22366-1-npiggin@gmail.com>
-References: <20190628053332.22366-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45Zm993l05zDr3M
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:51:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45Zm9932gmz8sxT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 15:51:25 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45Zm9929DMz9s9G; Fri, 28 Jun 2019 15:51:25 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45Zm984ltSz9s8m
+ for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 15:51:24 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5S5lHEl136966
+ for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 01:51:21 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tdcumrh20-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 28 Jun 2019 01:51:20 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Fri, 28 Jun 2019 06:51:18 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 28 Jun 2019 06:51:15 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5S5pDYl60358842
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Jun 2019 05:51:13 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C3ACAA4053;
+ Fri, 28 Jun 2019 05:51:13 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48ECBA4051;
+ Fri, 28 Jun 2019 05:51:12 +0000 (GMT)
+Received: from [9.184.183.117] (unknown [9.184.183.117])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 28 Jun 2019 05:51:12 +0000 (GMT)
+Subject: Re: [PATCH v3 01/16] powerpc/fadump: move internal fadump code to a
+ new file
+To: Stewart Smith <stewart@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156149548694.9094.3211954809582123798.stgit@hbathini.in.ibm.com>
+ <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
+ <87sgru71hp.fsf@linux.vnet.ibm.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Date: Fri, 28 Jun 2019 11:21:11 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87sgru71hp.fsf@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19062805-0008-0000-0000-000002F7E497
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062805-0009-0000-0000-000022652042
+Message-Id: <288d63b5-ba33-cdb6-78ef-1059be17280b@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-28_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906280065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,45 +108,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since the system reset interrupt began to use its own stack, and
-machine check interrupts have done so for some time, r1 can be
-changed without clearing MSR[RI], provided no other interrupts
-(including SLB misses) are taken.
 
-MSR[RI] does have to be cleared when using SCRATCH0, however.
+On 28/06/19 10:25 AM, Stewart Smith wrote:
+> Hari Bathini <hbathini@linux.ibm.com> writes:
+>> diff --git a/arch/powerpc/kernel/fadump-common.c b/arch/powerpc/kernel/fadump-common.c
+>> new file mode 100644
+>> index 0000000..0182886
+>> --- /dev/null
+>> +++ b/arch/powerpc/kernel/fadump-common.c
+>> @@ -0,0 +1,184 @@
+>> +/*
+>> + * Firmware-Assisted Dump internal code.
+>> + *
+>> + * Copyright 2018-2019, IBM Corp.
+>> + * Author: Hari Bathini <hbathini@linux.vnet.ibm.com>
+>> + *
+>> + * This program is free software; you can redistribute it and/or
+>> + * modify it under the terms of the GNU General Public License
+>> + * as published by the Free Software Foundation; either version
+>> + * 2 of the License, or (at your option) any later version.
+>> + */
+> This file takes a bunch of code from fadump.c, which has the (C) header
+> showing (C) 2011, and author of Mahesh. We should probably preserve that
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/tm.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
-index 9fabdce255cd..6ba0fdd1e7f8 100644
---- a/arch/powerpc/kernel/tm.S
-+++ b/arch/powerpc/kernel/tm.S
-@@ -148,7 +148,7 @@ _GLOBAL(tm_reclaim)
- 	/* Stash the stack pointer away for use after reclaim */
- 	std	r1, PACAR1(r13)
- 
--	/* Clear MSR RI since we are about to change r1, EE is already off. */
-+	/* Clear MSR RI since we are about to use SCRATCH0, EE is already off */
- 	li	r5, 0
- 	mtmsrd	r5, 1
- 
-@@ -474,7 +474,7 @@ restore_gprs:
- 
- 	REST_GPR(7, r7)
- 
--	/* Clear MSR RI since we are about to change r1. EE is already off */
-+	/* Clear MSR RI since we are about to use SCRATCH0. EE is already off */
- 	li	r5, 0
- 	mtmsrd	r5, 1
- 
--- 
-2.20.1
+Right, Stewart.
+I did not thing that through. Will update.
+
+Thanks
+Hari
+
 
