@@ -2,78 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5AE5912A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 04:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288035911C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 04:24:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45Zgj56nb0zDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 12:30:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ZgZp4bMBzDqcw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2019 12:24:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ZgTd5C19zDql0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 12:20:21 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5S2GWVX098034; Thu, 27 Jun 2019 22:19:57 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2td9m2rwe4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Jun 2019 22:19:57 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x5S2Ge4p098387;
- Thu, 27 Jun 2019 22:19:56 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2td9m2rwdj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Jun 2019 22:19:56 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5S2JV5H031813;
- Fri, 28 Jun 2019 02:19:55 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 2t9by7anqc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jun 2019 02:19:55 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ZgTP2V8xzDqWJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2019 12:20:09 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5S2GY7j023874
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 22:20:06 -0400
+Received: from e16.ny.us.ibm.com (e16.ny.us.ibm.com [129.33.205.206])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2td695yr3m-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2019 22:20:06 -0400
+Received: from localhost
+ by e16.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Fri, 28 Jun 2019 03:20:05 +0100
+Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
+ by e16.ny.us.ibm.com (146.89.104.203) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 28 Jun 2019 03:20:00 +0100
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5S2Jt7i19398924
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5S2JxtH45482458
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Jun 2019 02:19:55 GMT
+ Fri, 28 Jun 2019 02:19:59 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18003112061;
+ by IMSVA (Postfix) with ESMTP id BE2BA112066;
+ Fri, 28 Jun 2019 02:19:59 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7EFB2112061;
  Fri, 28 Jun 2019 02:19:55 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E983F112062;
- Fri, 28 Jun 2019 02:19:50 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.218.134])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 28 Jun 2019 02:19:50 +0000 (GMT)
+ Fri, 28 Jun 2019 02:19:55 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linux-integrity@vger.kernel.org
-Subject: [PATCH v12 01/11] MODSIGN: Export module signature definitions
-Date: Thu, 27 Jun 2019 23:19:24 -0300
-Message-Id: <20190628021934.4260-2-bauerman@linux.ibm.com>
+Subject: [PATCH v12 02/11] PKCS#7: Refactor verify_pkcs7_signature()
+Date: Thu, 27 Jun 2019 23:19:25 -0300
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190628021934.4260-1-bauerman@linux.ibm.com>
 References: <20190628021934.4260-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
+x-cbid: 19062802-0072-0000-0000-0000044205B1
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011344; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01224269; UDB=6.00644347; IPR=6.01005459; 
+ MB=3.00027497; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-28 02:20:05
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062802-0073-0000-0000-00004CB234A2
+Message-Id: <20190628021934.4260-3-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-06-27_15:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1906280019
@@ -103,292 +106,138 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-IMA will use the module_signature format for append signatures, so export
-the relevant definitions and factor out the code which verifies that the
-appended signature trailer is valid.
-
-Also, create a CONFIG_MODULE_SIG_FORMAT option so that IMA can select it
-and be able to use mod_check_sig() without having to depend on either
-CONFIG_MODULE_SIG or CONFIG_MODULES.
+IMA will need to verify a PKCS#7 signature which has already been parsed.
+For this reason, factor out the code which does that from
+verify_pkcs7_signature() into a new function which takes a struct
+pkcs7_message instead of a data buffer.
 
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Jessica Yu <jeyu@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
 ---
- include/linux/module.h           |  3 --
- include/linux/module_signature.h | 44 +++++++++++++++++++++++++
- init/Kconfig                     |  6 +++-
- kernel/Makefile                  |  1 +
- kernel/module.c                  |  1 +
- kernel/module_signature.c        | 46 ++++++++++++++++++++++++++
- kernel/module_signing.c          | 56 +++++---------------------------
- scripts/Makefile                 |  2 +-
- 8 files changed, 106 insertions(+), 53 deletions(-)
+ certs/system_keyring.c       | 61 ++++++++++++++++++++++++++----------
+ include/linux/verification.h | 10 ++++++
+ 2 files changed, 55 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 188998d3dca9..aa56f531cf1e 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -25,9 +25,6 @@
- #include <linux/percpu.h>
- #include <asm/module.h>
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index c05c29ae4d5d..4ba82e52e4b4 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -194,33 +194,27 @@ late_initcall(load_system_certificate_list);
+ #ifdef CONFIG_SYSTEM_DATA_VERIFICATION
  
--/* In stripped ARM and x86-64 modules, ~ is surprisingly rare. */
--#define MODULE_SIG_STRING "~Module signature appended~\n"
+ /**
+- * verify_pkcs7_signature - Verify a PKCS#7-based signature on system data.
++ * verify_pkcs7_message_sig - Verify a PKCS#7-based signature on system data.
+  * @data: The data to be verified (NULL if expecting internal data).
+  * @len: Size of @data.
+- * @raw_pkcs7: The PKCS#7 message that is the signature.
+- * @pkcs7_len: The size of @raw_pkcs7.
++ * @pkcs7: The PKCS#7 message that is the signature.
+  * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
+  *					(void *)1UL for all trusted keys).
+  * @usage: The use to which the key is being put.
+  * @view_content: Callback to gain access to content.
+  * @ctx: Context for callback.
+  */
+-int verify_pkcs7_signature(const void *data, size_t len,
+-			   const void *raw_pkcs7, size_t pkcs7_len,
+-			   struct key *trusted_keys,
+-			   enum key_being_used_for usage,
+-			   int (*view_content)(void *ctx,
+-					       const void *data, size_t len,
+-					       size_t asn1hdrlen),
+-			   void *ctx)
++int verify_pkcs7_message_sig(const void *data, size_t len,
++			     struct pkcs7_message *pkcs7,
++			     struct key *trusted_keys,
++			     enum key_being_used_for usage,
++			     int (*view_content)(void *ctx,
++						 const void *data, size_t len,
++						 size_t asn1hdrlen),
++			     void *ctx)
+ {
+-	struct pkcs7_message *pkcs7;
+ 	int ret;
+ 
+-	pkcs7 = pkcs7_parse_message(raw_pkcs7, pkcs7_len);
+-	if (IS_ERR(pkcs7))
+-		return PTR_ERR(pkcs7);
 -
- /* Not Yet Implemented */
- #define MODULE_SUPPORTED_DEVICE(name)
+ 	/* The data should be detached - so we need to supply it. */
+ 	if (data && pkcs7_supply_detached_data(pkcs7, data, len) < 0) {
+ 		pr_err("PKCS#7 signature with non-detached data\n");
+@@ -273,6 +267,41 @@ int verify_pkcs7_signature(const void *data, size_t len,
+ 	}
  
-diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
-new file mode 100644
-index 000000000000..523617fc5b6a
---- /dev/null
-+++ b/include/linux/module_signature.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Module signature handling.
-+ *
-+ * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#ifndef _LINUX_MODULE_SIGNATURE_H
-+#define _LINUX_MODULE_SIGNATURE_H
-+
-+/* In stripped ARM and x86-64 modules, ~ is surprisingly rare. */
-+#define MODULE_SIG_STRING "~Module signature appended~\n"
-+
-+enum pkey_id_type {
-+	PKEY_ID_PGP,		/* OpenPGP generated key ID */
-+	PKEY_ID_X509,		/* X.509 arbitrary subjectKeyIdentifier */
-+	PKEY_ID_PKCS7,		/* Signature in PKCS#7 message */
-+};
-+
-+/*
-+ * Module signature information block.
-+ *
-+ * The constituents of the signature section are, in order:
-+ *
-+ *	- Signer's name
-+ *	- Key identifier
-+ *	- Signature data
-+ *	- Information block
-+ */
-+struct module_signature {
-+	u8	algo;		/* Public-key crypto algorithm [0] */
-+	u8	hash;		/* Digest algorithm [0] */
-+	u8	id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
-+	u8	signer_len;	/* Length of signer's name [0] */
-+	u8	key_id_len;	/* Length of key identifier [0] */
-+	u8	__pad[3];
-+	__be32	sig_len;	/* Length of signature data */
-+};
-+
-+int mod_check_sig(const struct module_signature *ms, size_t file_len,
-+		  const char *name);
-+
-+#endif /* _LINUX_MODULE_SIGNATURE_H */
-diff --git a/init/Kconfig b/init/Kconfig
-index 8b9ffe236e4f..c2286a3c74c5 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1852,6 +1852,10 @@ config BASE_SMALL
- 	default 0 if BASE_FULL
- 	default 1 if !BASE_FULL
- 
-+config MODULE_SIG_FORMAT
-+	def_bool n
-+	select SYSTEM_DATA_VERIFICATION
-+
- menuconfig MODULES
- 	bool "Enable loadable module support"
- 	option modules
-@@ -1929,7 +1933,7 @@ config MODULE_SRCVERSION_ALL
- config MODULE_SIG
- 	bool "Module signature verification"
- 	depends on MODULES
--	select SYSTEM_DATA_VERIFICATION
-+	select MODULE_SIG_FORMAT
- 	help
- 	  Check modules for valid signatures upon load: the signature
- 	  is simply appended to the module. For more information see
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 33824f0385b3..f29ae2997a43 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -58,6 +58,7 @@ endif
- obj-$(CONFIG_UID16) += uid16.o
- obj-$(CONFIG_MODULES) += module.o
- obj-$(CONFIG_MODULE_SIG) += module_signing.o
-+obj-$(CONFIG_MODULE_SIG_FORMAT) += module_signature.o
- obj-$(CONFIG_KALLSYMS) += kallsyms.o
- obj-$(CONFIG_BSD_PROCESS_ACCT) += acct.o
- obj-$(CONFIG_CRASH_CORE) += crash_core.o
-diff --git a/kernel/module.c b/kernel/module.c
-index 6e6712b3aaf5..2712f4d217f5 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -19,6 +19,7 @@
- #include <linux/export.h>
- #include <linux/extable.h>
- #include <linux/moduleloader.h>
-+#include <linux/module_signature.h>
- #include <linux/trace_events.h>
- #include <linux/init.h>
- #include <linux/kallsyms.h>
-diff --git a/kernel/module_signature.c b/kernel/module_signature.c
-new file mode 100644
-index 000000000000..4224a1086b7d
---- /dev/null
-+++ b/kernel/module_signature.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Module signature checker
-+ *
-+ * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#include <linux/errno.h>
-+#include <linux/printk.h>
-+#include <linux/module_signature.h>
-+#include <asm/byteorder.h>
+ error:
++	pr_devel("<==%s() = %d\n", __func__, ret);
++	return ret;
++}
 +
 +/**
-+ * mod_check_sig - check that the given signature is sane
-+ *
-+ * @ms:		Signature to check.
-+ * @file_len:	Size of the file to which @ms is appended.
-+ * @name:	What is being checked. Used for error messages.
++ * verify_pkcs7_signature - Verify a PKCS#7-based signature on system data.
++ * @data: The data to be verified (NULL if expecting internal data).
++ * @len: Size of @data.
++ * @raw_pkcs7: The PKCS#7 message that is the signature.
++ * @pkcs7_len: The size of @raw_pkcs7.
++ * @trusted_keys: Trusted keys to use (NULL for builtin trusted keys only,
++ *					(void *)1UL for all trusted keys).
++ * @usage: The use to which the key is being put.
++ * @view_content: Callback to gain access to content.
++ * @ctx: Context for callback.
 + */
-+int mod_check_sig(const struct module_signature *ms, size_t file_len,
-+		  const char *name)
++int verify_pkcs7_signature(const void *data, size_t len,
++			   const void *raw_pkcs7, size_t pkcs7_len,
++			   struct key *trusted_keys,
++			   enum key_being_used_for usage,
++			   int (*view_content)(void *ctx,
++					       const void *data, size_t len,
++					       size_t asn1hdrlen),
++			   void *ctx)
 +{
-+	if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
-+		return -EBADMSG;
-+
-+	if (ms->id_type != PKEY_ID_PKCS7) {
-+		pr_err("%s: Module is not signed with expected PKCS#7 message\n",
-+		       name);
-+		return -ENOPKG;
-+	}
-+
-+	if (ms->algo != 0 ||
-+	    ms->hash != 0 ||
-+	    ms->signer_len != 0 ||
-+	    ms->key_id_len != 0 ||
-+	    ms->__pad[0] != 0 ||
-+	    ms->__pad[1] != 0 ||
-+	    ms->__pad[2] != 0) {
-+		pr_err("%s: PKCS#7 signature info has unexpected non-zero params\n",
-+		       name);
-+		return -EBADMSG;
-+	}
-+
-+	return 0;
-+}
-diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-index 6b9a926fd86b..cdd04a6b8074 100644
---- a/kernel/module_signing.c
-+++ b/kernel/module_signing.c
-@@ -11,37 +11,13 @@
- 
- #include <linux/kernel.h>
- #include <linux/errno.h>
-+#include <linux/module.h>
-+#include <linux/module_signature.h>
- #include <linux/string.h>
- #include <linux/verification.h>
- #include <crypto/public_key.h>
- #include "module-internal.h"
- 
--enum pkey_id_type {
--	PKEY_ID_PGP,		/* OpenPGP generated key ID */
--	PKEY_ID_X509,		/* X.509 arbitrary subjectKeyIdentifier */
--	PKEY_ID_PKCS7,		/* Signature in PKCS#7 message */
--};
--
--/*
-- * Module signature information block.
-- *
-- * The constituents of the signature section are, in order:
-- *
-- *	- Signer's name
-- *	- Key identifier
-- *	- Signature data
-- *	- Information block
-- */
--struct module_signature {
--	u8	algo;		/* Public-key crypto algorithm [0] */
--	u8	hash;		/* Digest algorithm [0] */
--	u8	id_type;	/* Key identifier type [PKEY_ID_PKCS7] */
--	u8	signer_len;	/* Length of signer's name [0] */
--	u8	key_id_len;	/* Length of key identifier [0] */
--	u8	__pad[3];
--	__be32	sig_len;	/* Length of signature data */
--};
--
- /*
-  * Verify the signature on a module.
-  */
-@@ -49,6 +25,7 @@ int mod_verify_sig(const void *mod, struct load_info *info)
- {
- 	struct module_signature ms;
- 	size_t sig_len, modlen = info->len;
++	struct pkcs7_message *pkcs7;
 +	int ret;
- 
- 	pr_devel("==>%s(,%zu)\n", __func__, modlen);
- 
-@@ -56,32 +33,15 @@ int mod_verify_sig(const void *mod, struct load_info *info)
- 		return -EBADMSG;
- 
- 	memcpy(&ms, mod + (modlen - sizeof(ms)), sizeof(ms));
--	modlen -= sizeof(ms);
 +
-+	ret = mod_check_sig(&ms, modlen, info->name);
-+	if (ret)
-+		return ret;
++	pkcs7 = pkcs7_parse_message(raw_pkcs7, pkcs7_len);
++	if (IS_ERR(pkcs7))
++		return PTR_ERR(pkcs7);
++
++	ret = verify_pkcs7_message_sig(data, len, pkcs7, trusted_keys, usage,
++				       view_content, ctx);
++
+ 	pkcs7_free_message(pkcs7);
+ 	pr_devel("<==%s() = %d\n", __func__, ret);
+ 	return ret;
+diff --git a/include/linux/verification.h b/include/linux/verification.h
+index 018fb5f13d44..5e1d41f2b336 100644
+--- a/include/linux/verification.h
++++ b/include/linux/verification.h
+@@ -36,6 +36,7 @@ extern const char *const key_being_used_for[NR__KEY_BEING_USED_FOR];
+ #ifdef CONFIG_SYSTEM_DATA_VERIFICATION
  
- 	sig_len = be32_to_cpu(ms.sig_len);
--	if (sig_len >= modlen)
--		return -EBADMSG;
--	modlen -= sig_len;
-+	modlen -= sig_len + sizeof(ms);
- 	info->len = modlen;
+ struct key;
++struct pkcs7_message;
  
--	if (ms.id_type != PKEY_ID_PKCS7) {
--		pr_err("%s: Module is not signed with expected PKCS#7 message\n",
--		       info->name);
--		return -ENOPKG;
--	}
--
--	if (ms.algo != 0 ||
--	    ms.hash != 0 ||
--	    ms.signer_len != 0 ||
--	    ms.key_id_len != 0 ||
--	    ms.__pad[0] != 0 ||
--	    ms.__pad[1] != 0 ||
--	    ms.__pad[2] != 0) {
--		pr_err("%s: PKCS#7 signature info has unexpected non-zero params\n",
--		       info->name);
--		return -EBADMSG;
--	}
--
- 	return verify_pkcs7_signature(mod, modlen, mod + modlen, sig_len,
- 				      VERIFY_USE_SECONDARY_KEYRING,
- 				      VERIFYING_MODULE_SIGNATURE,
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 9d442ee050bd..52098b080ab7 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -17,7 +17,7 @@ hostprogs-$(CONFIG_VT)           += conmakehash
- hostprogs-$(BUILD_C_RECORDMCOUNT) += recordmcount
- hostprogs-$(CONFIG_BUILDTIME_EXTABLE_SORT) += sortextable
- hostprogs-$(CONFIG_ASN1)	 += asn1_compiler
--hostprogs-$(CONFIG_MODULE_SIG)	 += sign-file
-+hostprogs-$(CONFIG_MODULE_SIG_FORMAT) += sign-file
- hostprogs-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += extract-cert
- hostprogs-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE) += insert-sys-cert
+ extern int verify_pkcs7_signature(const void *data, size_t len,
+ 				  const void *raw_pkcs7, size_t pkcs7_len,
+@@ -45,6 +46,15 @@ extern int verify_pkcs7_signature(const void *data, size_t len,
+ 						      const void *data, size_t len,
+ 						      size_t asn1hdrlen),
+ 				  void *ctx);
++extern int verify_pkcs7_message_sig(const void *data, size_t len,
++				    struct pkcs7_message *pkcs7,
++				    struct key *trusted_keys,
++				    enum key_being_used_for usage,
++				    int (*view_content)(void *ctx,
++							const void *data,
++							size_t len,
++							size_t asn1hdrlen),
++				    void *ctx);
  
+ #ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
+ extern int verify_pefile_signature(const void *pebuf, unsigned pelen,
+
