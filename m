@@ -1,86 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C9B5A99F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 10:39:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45bRrw1lNMzDqww
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 18:39:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D845A9BA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 10:57:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45bSFP0ZKKzDqw8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 18:57:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="wbFeNt/i"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bRnc0F4MzDqtQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 18:36:51 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5T8aYEY063650
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 04:36:48 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2te25638as-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 04:36:47 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Sat, 29 Jun 2019 09:36:47 +0100
-Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 29 Jun 2019 09:36:43 +0100
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5T8ahh853084620
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 29 Jun 2019 08:36:43 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01EBB124052;
- Sat, 29 Jun 2019 08:36:43 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6313124053;
- Sat, 29 Jun 2019 08:36:40 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.87.55])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat, 29 Jun 2019 08:36:40 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: ["RFC PATCH" 2/2] powerpc/mm: Conslidate numa_enable check and
- min_common_depth check
-Date: Sat, 29 Jun 2019 14:06:29 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190629083629.29037-1-aneesh.kumar@linux.ibm.com>
-References: <20190629083629.29037-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45bSCD5LFGzDqdZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 18:55:34 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45bSC36CB0z9tyqc;
+ Sat, 29 Jun 2019 10:55:27 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=wbFeNt/i; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id KJo6eItEOV_v; Sat, 29 Jun 2019 10:55:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45bSC3573Mz9tyqZ;
+ Sat, 29 Jun 2019 10:55:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1561798527; bh=Q75FSvifmMAIn3mjImofXODYfiXjM9UjZwWRyVhwEYI=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=wbFeNt/i4lpW1Oe4JyGbdqlGEvBy+FIkelGsv+DMz72m/llC4j4HI870psZKo8Ps+
+ 9RcpqYdnmBNTyLONQNmeLk+DzWEsEJBVGjWBzN/+Xsx70k4JBnhaXB6VKlTnJVz/qe
+ LoApox98R1y78nNgWcfMghdNHcienCi2355X351c=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CCD768B761;
+ Sat, 29 Jun 2019 10:55:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6iNoFwR1tQMm; Sat, 29 Jun 2019 10:55:28 +0200 (CEST)
+Received: from [192.168.232.53] (unknown [192.168.232.53])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B1478B74C;
+ Sat, 29 Jun 2019 10:55:28 +0200 (CEST)
+Subject: Re: [PATCH 08/13] powerpc/memcpy: Add memcpy_mcsafe for pmem
+To: Santosh Sivaraj <santosh@fossix.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <cover.1561020760.git.santosh@fossix.org>
+ <59489457d4ad9073b46075e90bd845ed510a7218.1561020760.git.santosh@fossix.org>
+From: christophe leroy <christophe.leroy@c-s.fr>
+Message-ID: <9db08bd4-598a-7391-aef2-f72c8ec61bc1@c-s.fr>
+Date: Sat, 29 Jun 2019 10:55:28 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
+In-Reply-To: <59489457d4ad9073b46075e90bd845ed510a7218.1561020760.git.santosh@fossix.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062908-0060-0000-0000-00000356FFAC
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011350; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01224863; UDB=6.00644711; IPR=6.01006065; 
- MB=3.00027520; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-29 08:36:45
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062908-0061-0000-0000-000049F2FF67
-Message-Id: <20190629083629.29037-2-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-29_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906290108
+X-Antivirus: Avast (VPS 190629-0, 29/06/2019), Outbound message
+X-Antivirus-Status: Clean
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,67 +82,295 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+ Chandan Rajendra <chandan@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update min_common_depth = -1 if numa is disabled. This
-help us to avoid checking for both in different code paths.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+Le 21/06/2019 à 06:55, Santosh Sivaraj a écrit :
+> From: Balbir Singh <bsingharora@gmail.com>
+> 
+> The pmem infrastructure uses memcpy_mcsafe in the pmem
+> layer so as to convert machine check exceptions into
+> a return value on failure in case a machine check
+> exception is encountered during the memcpy.
+> 
+> This patch largely borrows from the copyuser_power7
+> logic and does not add the VMX optimizations, largely
+> to keep the patch simple. If needed those optimizations
+> can be folded in.
+
+Could we avoid duplicating source code by using GAS macros to share 
+source code between copyuser_power7 and memcpy_mcsafe ?
+
+Christophe
+
+> 
+> Signed-off-by: Balbir Singh <bsingharora@gmail.com>
+> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+> [arbab@linux.ibm.com: Added symbol export]
+> ---
+>   arch/powerpc/include/asm/string.h   |   2 +
+>   arch/powerpc/lib/Makefile           |   2 +-
+>   arch/powerpc/lib/memcpy_mcsafe_64.S | 215 ++++++++++++++++++++++++++++
+>   3 files changed, 218 insertions(+), 1 deletion(-)
+>   create mode 100644 arch/powerpc/lib/memcpy_mcsafe_64.S
+> 
+> diff --git a/arch/powerpc/include/asm/string.h b/arch/powerpc/include/asm/string.h
+> index 9bf6dffb4090..b72692702f35 100644
+> --- a/arch/powerpc/include/asm/string.h
+> +++ b/arch/powerpc/include/asm/string.h
+> @@ -53,7 +53,9 @@ void *__memmove(void *to, const void *from, __kernel_size_t n);
+>   #ifndef CONFIG_KASAN
+>   #define __HAVE_ARCH_MEMSET32
+>   #define __HAVE_ARCH_MEMSET64
+> +#define __HAVE_ARCH_MEMCPY_MCSAFE
+>   
+> +extern int memcpy_mcsafe(void *dst, const void *src, __kernel_size_t sz);
+>   extern void *__memset16(uint16_t *, uint16_t v, __kernel_size_t);
+>   extern void *__memset32(uint32_t *, uint32_t v, __kernel_size_t);
+>   extern void *__memset64(uint64_t *, uint64_t v, __kernel_size_t);
+> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+> index c55f9c27bf79..529d6536eb4a 100644
+> --- a/arch/powerpc/lib/Makefile
+> +++ b/arch/powerpc/lib/Makefile
+> @@ -39,7 +39,7 @@ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+>   			       memcpy_power7.o
+>   
+>   obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
+> -	   memcpy_64.o pmem.o
+> +	   memcpy_64.o pmem.o memcpy_mcsafe_64.o
+>   
+>   obj64-$(CONFIG_SMP)	+= locks.o
+>   obj64-$(CONFIG_ALTIVEC)	+= vmx-helper.o
+> diff --git a/arch/powerpc/lib/memcpy_mcsafe_64.S b/arch/powerpc/lib/memcpy_mcsafe_64.S
+> new file mode 100644
+> index 000000000000..50f865db0338
+> --- /dev/null
+> +++ b/arch/powerpc/lib/memcpy_mcsafe_64.S
+> @@ -0,0 +1,215 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) IBM Corporation, 2011
+> + * Derived from copyuser_power7.s by Anton Blanchard <anton@au.ibm.com>
+> + * Author - Balbir Singh <bsingharora@gmail.com>
+> + */
+> +#include <asm/ppc_asm.h>
+> +#include <asm/errno.h>
+> +#include <asm/export.h>
+> +
+> +	.macro err1
+> +100:
+> +	EX_TABLE(100b,.Ldo_err1)
+> +	.endm
+> +
+> +	.macro err2
+> +200:
+> +	EX_TABLE(200b,.Ldo_err2)
+> +	.endm
+> +
+> +.Ldo_err2:
+> +	ld	r22,STK_REG(R22)(r1)
+> +	ld	r21,STK_REG(R21)(r1)
+> +	ld	r20,STK_REG(R20)(r1)
+> +	ld	r19,STK_REG(R19)(r1)
+> +	ld	r18,STK_REG(R18)(r1)
+> +	ld	r17,STK_REG(R17)(r1)
+> +	ld	r16,STK_REG(R16)(r1)
+> +	ld	r15,STK_REG(R15)(r1)
+> +	ld	r14,STK_REG(R14)(r1)
+> +	addi	r1,r1,STACKFRAMESIZE
+> +.Ldo_err1:
+> +	li	r3,-EFAULT
+> +	blr
+> +
+> +
+> +_GLOBAL(memcpy_mcsafe)
+> +	cmpldi	r5,16
+> +	blt	.Lshort_copy
+> +
+> +.Lcopy:
+> +	/* Get the source 8B aligned */
+> +	neg	r6,r4
+> +	mtocrf	0x01,r6
+> +	clrldi	r6,r6,(64-3)
+> +
+> +	bf	cr7*4+3,1f
+> +err1;	lbz	r0,0(r4)
+> +	addi	r4,r4,1
+> +err1;	stb	r0,0(r3)
+> +	addi	r3,r3,1
+> +
+> +1:	bf	cr7*4+2,2f
+> +err1;	lhz	r0,0(r4)
+> +	addi	r4,r4,2
+> +err1;	sth	r0,0(r3)
+> +	addi	r3,r3,2
+> +
+> +2:	bf	cr7*4+1,3f
+> +err1;	lwz	r0,0(r4)
+> +	addi	r4,r4,4
+> +err1;	stw	r0,0(r3)
+> +	addi	r3,r3,4
+> +
+> +3:	sub	r5,r5,r6
+> +	cmpldi	r5,128
+> +	blt	5f
+> +
+> +	mflr	r0
+> +	stdu	r1,-STACKFRAMESIZE(r1)
+> +	std	r14,STK_REG(R14)(r1)
+> +	std	r15,STK_REG(R15)(r1)
+> +	std	r16,STK_REG(R16)(r1)
+> +	std	r17,STK_REG(R17)(r1)
+> +	std	r18,STK_REG(R18)(r1)
+> +	std	r19,STK_REG(R19)(r1)
+> +	std	r20,STK_REG(R20)(r1)
+> +	std	r21,STK_REG(R21)(r1)
+> +	std	r22,STK_REG(R22)(r1)
+> +	std	r0,STACKFRAMESIZE+16(r1)
+> +
+> +	srdi	r6,r5,7
+> +	mtctr	r6
+> +
+> +	/* Now do cacheline (128B) sized loads and stores. */
+> +	.align	5
+> +4:
+> +err2;	ld	r0,0(r4)
+> +err2;	ld	r6,8(r4)
+> +err2;	ld	r7,16(r4)
+> +err2;	ld	r8,24(r4)
+> +err2;	ld	r9,32(r4)
+> +err2;	ld	r10,40(r4)
+> +err2;	ld	r11,48(r4)
+> +err2;	ld	r12,56(r4)
+> +err2;	ld	r14,64(r4)
+> +err2;	ld	r15,72(r4)
+> +err2;	ld	r16,80(r4)
+> +err2;	ld	r17,88(r4)
+> +err2;	ld	r18,96(r4)
+> +err2;	ld	r19,104(r4)
+> +err2;	ld	r20,112(r4)
+> +err2;	ld	r21,120(r4)
+> +	addi	r4,r4,128
+> +err2;	std	r0,0(r3)
+> +err2;	std	r6,8(r3)
+> +err2;	std	r7,16(r3)
+> +err2;	std	r8,24(r3)
+> +err2;	std	r9,32(r3)
+> +err2;	std	r10,40(r3)
+> +err2;	std	r11,48(r3)
+> +err2;	std	r12,56(r3)
+> +err2;	std	r14,64(r3)
+> +err2;	std	r15,72(r3)
+> +err2;	std	r16,80(r3)
+> +err2;	std	r17,88(r3)
+> +err2;	std	r18,96(r3)
+> +err2;	std	r19,104(r3)
+> +err2;	std	r20,112(r3)
+> +err2;	std	r21,120(r3)
+> +	addi	r3,r3,128
+> +	bdnz	4b
+> +
+> +	clrldi	r5,r5,(64-7)
+> +
+> +	ld	r14,STK_REG(R14)(r1)
+> +	ld	r15,STK_REG(R15)(r1)
+> +	ld	r16,STK_REG(R16)(r1)
+> +	ld	r17,STK_REG(R17)(r1)
+> +	ld	r18,STK_REG(R18)(r1)
+> +	ld	r19,STK_REG(R19)(r1)
+> +	ld	r20,STK_REG(R20)(r1)
+> +	ld	r21,STK_REG(R21)(r1)
+> +	ld	r22,STK_REG(R22)(r1)
+> +	addi	r1,r1,STACKFRAMESIZE
+> +
+> +	/* Up to 127B to go */
+> +5:	srdi	r6,r5,4
+> +	mtocrf	0x01,r6
+> +
+> +6:	bf	cr7*4+1,7f
+> +err1;	ld	r0,0(r4)
+> +err1;	ld	r6,8(r4)
+> +err1;	ld	r7,16(r4)
+> +err1;	ld	r8,24(r4)
+> +err1;	ld	r9,32(r4)
+> +err1;	ld	r10,40(r4)
+> +err1;	ld	r11,48(r4)
+> +err1;	ld	r12,56(r4)
+> +	addi	r4,r4,64
+> +err1;	std	r0,0(r3)
+> +err1;	std	r6,8(r3)
+> +err1;	std	r7,16(r3)
+> +err1;	std	r8,24(r3)
+> +err1;	std	r9,32(r3)
+> +err1;	std	r10,40(r3)
+> +err1;	std	r11,48(r3)
+> +err1;	std	r12,56(r3)
+> +	addi	r3,r3,64
+> +
+> +	/* Up to 63B to go */
+> +7:	bf	cr7*4+2,8f
+> +err1;	ld	r0,0(r4)
+> +err1;	ld	r6,8(r4)
+> +err1;	ld	r7,16(r4)
+> +err1;	ld	r8,24(r4)
+> +	addi	r4,r4,32
+> +err1;	std	r0,0(r3)
+> +err1;	std	r6,8(r3)
+> +err1;	std	r7,16(r3)
+> +err1;	std	r8,24(r3)
+> +	addi	r3,r3,32
+> +
+> +	/* Up to 31B to go */
+> +8:	bf	cr7*4+3,9f
+> +err1;	ld	r0,0(r4)
+> +err1;	ld	r6,8(r4)
+> +	addi	r4,r4,16
+> +err1;	std	r0,0(r3)
+> +err1;	std	r6,8(r3)
+> +	addi	r3,r3,16
+> +
+> +9:	clrldi	r5,r5,(64-4)
+> +
+> +	/* Up to 15B to go */
+> +.Lshort_copy:
+> +	mtocrf	0x01,r5
+> +	bf	cr7*4+0,12f
+> +err1;	lwz	r0,0(r4)	/* Less chance of a reject with word ops */
+> +err1;	lwz	r6,4(r4)
+> +	addi	r4,r4,8
+> +err1;	stw	r0,0(r3)
+> +err1;	stw	r6,4(r3)
+> +	addi	r3,r3,8
+> +
+> +12:	bf	cr7*4+1,13f
+> +err1;	lwz	r0,0(r4)
+> +	addi	r4,r4,4
+> +err1;	stw	r0,0(r3)
+> +	addi	r3,r3,4
+> +
+> +13:	bf	cr7*4+2,14f
+> +err1;	lhz	r0,0(r4)
+> +	addi	r4,r4,2
+> +err1;	sth	r0,0(r3)
+> +	addi	r3,r3,2
+> +
+> +14:	bf	cr7*4+3,15f
+> +err1;	lbz	r0,0(r4)
+> +err1;	stb	r0,0(r3)
+> +
+> +15:	li	r3,0
+> +	blr
+> +
+> +EXPORT_SYMBOL_GPL(memcpy_mcsafe);
+> 
+
 ---
- arch/powerpc/mm/numa.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index f6d68baeaa96..c84062a390cc 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -212,7 +212,7 @@ static int associativity_to_nid(const __be32 *associativity)
- {
- 	int nid = NUMA_NO_NODE;
- 
--	if (min_common_depth == -1 || !numa_enabled)
-+	if (min_common_depth == -1)
- 		goto out;
- 
- 	if (of_read_number(associativity, 1) >= min_common_depth)
-@@ -625,6 +625,7 @@ static int __init parse_numa_properties(void)
- 
- 	if (numa_enabled == 0) {
- 		printk(KERN_WARNING "NUMA disabled by user\n");
-+		min_common_depth = -1;
- 		return -1;
- 	}
- 
-@@ -747,7 +748,7 @@ void __init dump_numa_cpu_topology(void)
- 	unsigned int node;
- 	unsigned int cpu, count;
- 
--	if (min_common_depth == -1 || !numa_enabled)
-+	if (min_common_depth == -1)
- 		return;
- 
- 	for_each_online_node(node) {
-@@ -812,7 +813,7 @@ static void __init find_possible_nodes(void)
- 	struct device_node *rtas;
- 	u32 numnodes, i;
- 
--	if (min_common_depth <= 0 || !numa_enabled)
-+	if (min_common_depth <= 0)
- 		return;
- 
- 	rtas = of_find_node_by_path("/rtas");
-@@ -1014,7 +1015,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
- 	struct device_node *memory = NULL;
- 	int nid;
- 
--	if (!numa_enabled || (min_common_depth < 0))
-+	if (min_common_depth < 0)
- 		return first_online_node;
- 
- 	memory = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
--- 
-2.21.0
+L'absence de virus dans ce courrier électronique a été vérifiée par le logiciel antivirus Avast.
+https://www.avast.com/antivirus
 
