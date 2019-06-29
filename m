@@ -1,58 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6BA5AAE5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 14:27:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD425AE4D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 06:30:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45byGK2BYWzDqmd
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 14:30:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45bXvY6zCszDqv3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 22:27:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=scram.de
- (client-ip=2a01:4f8:130:2201::3; helo=mail.scram.de;
- envelope-from=jochen@scram.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=permerror header.from=scram.de
-X-Greylist: delayed 178 seconds by postgrey-1.36 at bilbo;
- Sat, 29 Jun 2019 21:44:28 AEST
-Received: from mail.scram.de (mail0.scram.de [IPv6:2a01:4f8:130:2201::3])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bWy42pRPzDqcc
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 21:44:26 +1000 (AEST)
-Received: from localhost (mail0.scram.de [78.47.204.202])
- by localhost (Postfix) with ESMTP id 0BC5256D91;
- Sat, 29 Jun 2019 13:41:17 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at scram.de
-X-Spam-Flag: NO
-X-Spam-Score: -0.972
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.972 required=5 tests=[AWL=-1.428, BAYES_00=-2.599, 
- GENERIC_IXHASH=1.5, HTML_MESSAGE=0.001,
- HTML_MIME_NO_HTML_TAG=0.097, 
- MIME_HTML_ONLY=1.457, MISSING_MIMEOLE=0.001, NO_RELAYS=-0.001]
-Received: from mail.scram.de ([78.47.204.202])
- by localhost (mail.scram.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id PW2IwdcdJtpO; Sat, 29 Jun 2019 13:41:04 +0200 (CEST)
-Received: (using TLSv1 with cipher AES128-SHA (128/128 bits))
- (Client did not present a certificate) (Authenticated sender)
- by mail.scram.de (Postfix) with ESMTPSA id 0752F551A6;
- Sat, 29 Jun 2019 13:41:03 +0200 (CEST)
-Date: Sat, 29 Jun 2019 13:41:02 +0200
-Subject: Re: [PATCH] i2c: remove casting dma_alloc
-Message-ID: <7ae3d130-b835-4966-b21d-3ad7dac86046@email.android.com>
-X-Android-Message-ID: <7ae3d130-b835-4966-b21d-3ad7dac86046@email.android.com>
-In-Reply-To: <20190629113424.GH1685@kunai>
-From: Jochen Friedrich <jochen@scram.de>
-To: Wolfram Sang <wsa@the-dreams.de>
-Importance: Normal
-X-Priority: 3
-X-MSMail-Priority: Normal
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45bXsM1zx2zDqtZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 22:25:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45bXsF2lhBz9s3C;
+ Sat, 29 Jun 2019 22:25:21 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/64s/exception: Fix machine check early corrupting
+ AMR
+In-Reply-To: <20190621225554.1913-1-npiggin@gmail.com>
+References: <20190621225554.1913-1-npiggin@gmail.com>
+Date: Sat, 29 Jun 2019 22:25:18 +1000
+Message-ID: <874l48k28h.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
-X-Mailman-Approved-At: Sun, 30 Jun 2019 14:28:43 +1000
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,49 +44,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasyl Gomonovych <gomonovych@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PGRpdiBkaXI9J2F1dG8nPkhpIFdvbGZyYW0sPGRpdiBkaXI9ImF1dG8iPjxicj48L2Rpdj48ZGl2
-IGRpcj0iYXV0byI+eWVzLCBJJ20gc3RpbGwgaGVyZS4gSG93ZXZlciwgSSBkb24ndCBoYXZlIHRo
-ZSBoYXJkd2FyZSBhbnltb3JlIHRvIHRlc3QgdGhlIHBhdGNoLjwvZGl2PjxkaXYgZGlyPSJhdXRv
-Ij48YnI+PC9kaXY+PGRpdiBkaXI9ImF1dG8iPlRoYW5rcywgSm9jaGVuJm5ic3A7PC9kaXY+PC9k
-aXY+PGRpdiBjbGFzcz0iZ21haWxfZXh0cmEiPjxicj48ZGl2IGNsYXNzPSJnbWFpbF9xdW90ZSI+
-QW0gMjkuMDYuMjAxOSAxMzozNCBzY2hyaWViIFdvbGZyYW0gU2FuZyAmbHQ7d3NhQHRoZS1kcmVh
-bXMuZGUmZ3Q7OjxiciB0eXBlPSJhdHRyaWJ1dGlvbiIgLz48YmxvY2txdW90ZSBjbGFzcz0icXVv
-dGUiIHN0eWxlPSJtYXJnaW46MCAwIDAgLjhleDtib3JkZXItbGVmdDoxcHggI2NjYyBzb2xpZDtw
-YWRkaW5nLWxlZnQ6MWV4Ij48cCBkaXI9Imx0ciI+T24gU3VuLCBKdW4gMjMsIDIwMTkgYXQgMTE6
-MTM6NTNQTSArMDIwMCwgVmFzeWwgR29tb25vdnljaCB3cm90ZTomIzEzOzxicj4KJmd0OyBGcm9t
-OiBWYXN5bCAmbHQ7Z29tb25vdnljaEBnbWFpbC5jb20mZ3Q7JiMxMzs8YnI+CiZndDsgJiMxMzs8
-YnI+CiZndDsgR2VuZXJhdGVkIGJ5OiZuYnNwOyBhbGxvY19jYXN0LmNvY2NpJiMxMzs8YnI+CiZn
-dDsgJiMxMzs8YnI+CiZndDsgU2lnbmVkLW9mZi1ieTogVmFzeWwgJmx0O2dvbW9ub3Z5Y2hAZ21h
-aWwuY29tJmd0OyYjMTM7PGJyPgomIzEzOzxicj4KWW91ciBvdGhlciBwYXRjaGVzIGluIGdpdCBo
-aXN0b3J5IGhhdmUgeW91ciBmdWxsIG5hbWUuIFdoeSBub3QgdGhpcyBvbmU/JiMxMzs8YnI+CiYj
-MTM7PGJyPgpASm9jaGVuOiBhcmUgeW91IHN0aWxsIHRoZXJlLCB5b3VyIGFjayB3b3VsZCBiZSB2
-ZXJ5IHdlbGNvbWUuJiMxMzs8YnI+CiYjMTM7PGJyPgomZ3Q7IC0tLSYjMTM7PGJyPgomZ3Q7Jm5i
-c3A7IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtY3BtLmMgfCA0ICsrKy0mIzEzOzxicj4KJmd0OyZu
-YnNwOyAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pJiMxMzs8
-YnI+CiZndDsgJiMxMzs8YnI+CiZndDsgZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9p
-MmMtY3BtLmMgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWNwbS5jJiMxMzs8YnI+CiZndDsgaW5k
-ZXggMTg3OTAwNTk0ZTNkLi4xMjEzZTE5MzJjY2IgMTAwNjQ0JiMxMzs8YnI+CiZndDsgLS0tIGEv
-ZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1jcG0uYyYjMTM7PGJyPgomZ3Q7ICsrKyBiL2RyaXZlcnMv
-aTJjL2J1c3Nlcy9pMmMtY3BtLmMmIzEzOzxicj4KJmd0OyBAQCAtNTMxLDcgKzUzMSw5IEBAIHN0
-YXRpYyBpbnQgY3BtX2kyY19zZXR1cChzdHJ1Y3QgY3BtX2kyYyAqY3BtKSYjMTM7PGJyPgomZ3Q7
-Jm5ic3A7ICYjOTsmIzk7fSYjMTM7PGJyPgomZ3Q7Jm5ic3A7ICYjOTsmIzk7b3V0X2JlMzIoJmFt
-cDtyYmRmW2ldLmNiZF9idWZhZGRyLCAoKGNwbS0mZ3Q7cnhkbWFbaV0gKyAxKSAmYW1wOyB+MSkp
-OyYjMTM7PGJyPgomZ3Q7Jm5ic3A7ICYjMTM7PGJyPgomZ3Q7IC0mIzk7JiM5O2NwbS0mZ3Q7dHhi
-dWZbaV0gPSAodW5zaWduZWQgY2hhciAqKWRtYV9hbGxvY19jb2hlcmVudCgmYW1wO2NwbS0mZ3Q7
-b2ZkZXYtJmd0O2RldiwgQ1BNX01BWF9SRUFEICsgMSwgJmFtcDtjcG0tJmd0O3R4ZG1hW2ldLCBH
-RlBfS0VSTkVMKTsmIzEzOzxicj4KJmd0OyArJiM5OyYjOTtjcG0tJmd0O3R4YnVmW2ldID0gZG1h
-X2FsbG9jX2NvaGVyZW50KCZhbXA7Y3BtLSZndDtvZmRldi0mZ3Q7ZGV2LCYjMTM7PGJyPgomZ3Q7
-ICsmIzk7JiM5OyYjOTsmIzk7JiM5OyYjOTsmbmJzcDsmbmJzcDsgQ1BNX01BWF9SRUFEICsgMSwm
-IzEzOzxicj4KJmd0OyArJiM5OyYjOTsmIzk7JiM5OyYjOTsmIzk7Jm5ic3A7Jm5ic3A7ICZhbXA7
-Y3BtLSZndDt0eGRtYVtpXSwgR0ZQX0tFUk5FTCk7JiMxMzs8YnI+CiZndDsmbmJzcDsgJiM5OyYj
-OTtpZiAoIWNwbS0mZ3Q7dHhidWZbaV0pIHsmIzEzOzxicj4KJmd0OyZuYnNwOyAmIzk7JiM5OyYj
-OTtyZXQgPSAtRU5PTUVNOyYjMTM7PGJyPgomZ3Q7Jm5ic3A7ICYjOTsmIzk7JiM5O2dvdG8gb3V0
-X211cmFtOyYjMTM7PGJyPgomZ3Q7IC0tICYjMTM7PGJyPgomZ3Q7IDIuMTcuMSYjMTM7PGJyPgom
-Z3Q7ICYjMTM7PGJyPgo8L3A+CjwvYmxvY2txdW90ZT48L2Rpdj48YnI+PC9kaXY+
+Nicholas Piggin <npiggin@gmail.com> writes:
 
+> The early machine check runs in real mode, so locking is unnecessary.
+> Worse, the windup does not restore AMR, so this can result in a false
+> KUAP fault after a recoverable machine check hits inside a user copy
+> operation.
+>
+> Fix this similarly to HMI by just avoiding the kuap lock in the
+> early machine check handler (it will be set by the late handler that
+> runs in virtual mode if that runs). If the virtual mode handler is
+> reached, it will lock and restore the AMR.
+
+For the archives, this is how I tested this.
+
+Build with KUAP enabled, disassemble load_elf_binary(), in there is a
+call to __copy_tofrom_user(), preceded by a write to AMR, eg:
+
+c00000000045eec8:	a6 03 3d 7d 	mtspr   29,r9
+c00000000045eecc:	2c 01 00 4c 	isync
+c00000000045eed0:	78 93 44 7e 	mr      r4,r18
+c00000000045eed4:	78 e3 83 7f 	mr      r3,r28
+c00000000045eed8:	b1 c1 c3 4b 	bl      c00000000009b088 <__copy_tofrom_user+0x8>
+
+
+Boot mambo using skiboot.tcl, break into the mambo shell. Add a
+breakpoint at the branch to __copy_tofrom_user():
+
+  systemsim % b 0xc00000000045eed8
+  breakpoint set at [0:0:0]: 0xc00000000045eed8 (0xC00000000045EED8) Enc:0x00000000 : INVALID
+
+Continue, run `ls` in the system shell and it should break at your breakpoint:
+
+  systemsim % c
+  4439260000000: [0:0]: (PC:0x00007FFFB43B2F00) :      2.1 Mega-Inst/Sec :      2.1 Mega-Cycles/Sec [1 Zaps  0 PA-Zaps] *ON*  [0:0] pri=4 extra=0
+  4440009381609: (7208208132): # ls
+  [0:0:0]: 0xC00000000045EED8 (0x000000000045EED8) Enc:0xB1C1C34B : bl      $-0x3C3E50
+  INFO: 4440936223969: (8135050536): ** Execution stopped: user (tcl),  **
+  4440936223969: ** finished running 8135050536 instructions **
+
+Print the AMR, it has been cleared:
+
+  systemsim % p amr
+  0x0000000000000000
+
+Then inject a machine check exception, and continue:
+  systemsim % exc_mce
+  systemsim % c
+  4440936231861: (8135058428): [ 8673.510176] Disabling lock debugging due to kernel taint
+  4440936246871: (8135073438): [ 8673.510205] MCE: CPU0: machine check (Warning) Host TLB Multihit [Recovered]
+  4440936266680: (8135093247): [ 8673.510244] MCE: CPU0: NIP: [c00000000045eed8] load_elf_binary+0xef8/0x1970
+  4440936282657: (8135109224): [ 8673.510275] MCE: CPU0: Probable Software error (some chance of hardware cause)
+  [0:0:0]: 0xC00000000045EED8 (0x000000000045EED8) Enc:0xB1C1C34B : bl      $-0x3C3E50
+  INFO: 4440936296116: (8135122683): ** Execution stopped: user (tcl),  **
+  4440936296116: ** finished running 8135122683 instructions **
+
+Now we're back at our breakpoint. Continue again and we should get an
+oops due to a bad AMR fault:
+
+  systemsim % c
+  4440936301692: (8135128259): [ 8673.510312] ------------[ cut here ]------------
+  4440936321016: (8135147583): [ 8673.510336] Bug: Write fault blocked by AMR!
+  4440936331347: (8135157914): [ 8673.510350] WARNING: CPU: 0 PID: 95 at arch/powerpc/include/asm/book3s/64/kup-radix.h:102 __do_page_fault+0x604/0xe60
+  4440936352510: (8135179077): [ 8673.510410] Modules linked in:
+  4440936365222: (8135191789): [ 8673.510436] CPU: 0 PID: 95 Comm: ls Tainted: G   M              5.2.0-rc2-gcc-8.2.0 #273
+  4440936383775: (8135210342): [ 8673.510473] NIP:  c0000000000716b4 LR: c0000000000716b0 CTR: c000000000ca88b0
+  4440936401995: (8135228562): [ 8673.510508] REGS: c0000000ec883530 TRAP: 0700   Tainted: G   M               (5.2.0-rc2-gcc-8.2.0)
+  4440936430641: (8135257208): [ 8673.510545] MSR:  9000000000021033 <SF,HV,ME,IR,DR,RI,LE>  CR: 28002422  XER: 20040000
+  4440936498754: (8135325321): [ 8673.510597] CFAR: c00000000011b8e4 IRQMASK: 1 
+  4440936505159: (8135331726): [ 8673.510597] GPR00: c0000000000716b0 c0000000ec8837c0 c0000000015f4900 0000000000000020 
+  4440936515814: (8135342381): [ 8673.510597] GPR04: c000000001824550 0000000000000000 746c756166206574 64656b636f6c6220 
+  4440936528594: (8135355161): [ 8673.510597] GPR08: 00000000fed30000 c000000001130de8 0000000000000000 9000000030001033 
+  4440936541374: (8135367941): [ 8673.510597] GPR12: 0000000000002000 c0000000018e0000 0000000080000000 00007fffe2e3de09 
+  4440936554154: (8135380721): [ 8673.510597] GPR16: c000000000ed2c50 0000000010000000 c000000000ed2c50 00000000100d3648 
+  4440936564809: (8135391376): [ 8673.510597] GPR20: c0000000f0968b00 00000000100e3648 00007fff930a0000 0000000002000000 
+  4440936577589: (8135404156): [ 8673.510597] GPR24: 0000000002000000 c0000000ee830600 0000000000000301 00007fffe2e3de09 
+  4440936590369: (8135416936): [ 8673.510597] GPR28: 0000000000000000 000000000a000000 0000000000000000 c0000000ec883900 
+  4440936611699: (8135438266): [ 8673.510918] NIP [c0000000000716b4] __do_page_fault+0x604/0xe60
+  4440936628747: (8135455314): [ 8673.510951] LR [c0000000000716b0] __do_page_fault+0x600/0xe60
+  4440936642325: (8135468892): [ 8673.510978] Call Trace:
+  4440936655614: (8135482181): [ 8673.511000] [c0000000ec8837c0] [c0000000000716b0] __do_page_fault+0x600/0xe60 (unreliable)
+  4440936677874: (8135504441): [ 8673.511045] [c0000000ec883890] [c00000000000b0d4] handle_page_fault+0x18/0x38
+  4440936700658: (8135527225): [ 8673.511091] --- interrupt: 301 at __copy_tofrom_user_power7+0x230/0x7ac
+  4440936709188: (8135535755): [ 8673.511091]     LR = load_elf_binary+0xefc/0x1970
+  4440936728082: (8135554649): [ 8673.511142] [c0000000ec883b90] [c00000000045ee80] load_elf_binary+0xea0/0x1970 (unreliable)
+  4440936750368: (8135576935): [ 8673.511187] [c0000000ec883c90] [c0000000003d2f88] search_binary_handler.part.12+0xb8/0x2b0
+  4440936772446: (8135599013): [ 8673.511230] [c0000000ec883d20] [c0000000003d3934] __do_execve_file.isra.14+0x684/0xa10
+  4440936793891: (8135620458): [ 8673.511272] [c0000000ec883df0] [c0000000003d41b8] sys_execve+0x38/0x50
+  4440936813829: (8135640396): [ 8673.511311] [c0000000ec883e20] [c00000000000bdf4] system_call+0x5c/0x70
+  4440936828817: (8135655384): [ 8673.511340] Instruction dump:
+  4440936848134: (8135674701): [ 8673.511361] 60000000 2fb70000 e93f0168 419e0620 2fa90000 409cfba4 3c82ff8e 38846b88 
+  4440936874244: (8135700811): [ 8673.511412] 3c62ff8e 38636c98 480aa1d1 60000000 <0fe00000> e80100e0 3b80000b eae10088 
+  4440936891327: (8135717894): [ 8673.511464] ---[ end trace 0698ac8ff1068918 ]---
+  4440938377906: (8137204473): Segmentation fault
+
+
+Apply the fix, retest, and no oops is seen.
+
+cheers
