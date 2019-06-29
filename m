@@ -2,89 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF575A9C5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 11:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F63E5AA63
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 13:24:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45bSTl2qg3zDqvl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 19:08:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45bWWD3GwLzDqwF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 21:24:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bSRc4vYWzDq5b
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 19:06:20 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5T91PBn068833
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 05:06:17 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2te42ns9a2-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 05:06:17 -0400
-Received: from localhost
- by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Sat, 29 Jun 2019 10:06:16 +0100
-Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
- by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 29 Jun 2019 10:06:14 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5T96D5I7405882
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 29 Jun 2019 09:06:13 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B70B112061;
- Sat, 29 Jun 2019 09:06:13 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC782112063;
- Sat, 29 Jun 2019 09:06:11 +0000 (GMT)
-Received: from [9.85.87.55] (unknown [9.85.87.55])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat, 29 Jun 2019 09:06:11 +0000 (GMT)
-Subject: Re: ["RFC PATCH" 2/2] powerpc/mm: Conslidate numa_enable check and
- min_common_depth check
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-References: <20190629083629.29037-1-aneesh.kumar@linux.ibm.com>
- <20190629083629.29037-2-aneesh.kumar@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Sat, 29 Jun 2019 14:36:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45bWTN1LF1zDqvW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 21:23:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45bWTL6bJsz9s3l;
+ Sat, 29 Jun 2019 21:23:02 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Qian Cai <cai@lca.pw>, Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Subject: Re: power9 NUMA crash while reading debugfs imc_cmd
+In-Reply-To: <1561726853.5154.100.camel@lca.pw>
+References: <1561670472.5154.98.camel@lca.pw>
+ <87lfxms8r3.fsf@concordia.ellerman.id.au>
+ <715A934D-EE3A-478B-BA77-589C539FC52D@lca.pw>
+ <9c87dc72-54f8-8510-c400-1e89779cc88b@linux.vnet.ibm.com>
+ <1561726853.5154.100.camel@lca.pw>
+Date: Sat, 29 Jun 2019 21:22:53 +1000
+Message-ID: <87ef3ck54i.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20190629083629.29037-2-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062909-0064-0000-0000-000003F52CBD
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011350; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01224873; UDB=6.00644717; IPR=6.01006075; 
- MB=3.00027520; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-29 09:06:15
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062909-0065-0000-0000-00003E1314A4
-Message-Id: <a64b13da-d879-e6b2-e8cd-ada8e9b8a5a0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-29_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906290114
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,90 +48,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Reza Arbab <arbab@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/29/19 2:06 PM, Aneesh Kumar K.V wrote:
-> Update min_common_depth = -1 if numa is disabled. This
-> help us to avoid checking for both in different code paths.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   arch/powerpc/mm/numa.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index f6d68baeaa96..c84062a390cc 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -212,7 +212,7 @@ static int associativity_to_nid(const __be32 *associativity)
->   {
->   	int nid = NUMA_NO_NODE;
->   
-> -	if (min_common_depth == -1 || !numa_enabled)
-> +	if (min_common_depth == -1)
->   		goto out;
->   
->   	if (of_read_number(associativity, 1) >= min_common_depth)
-> @@ -625,6 +625,7 @@ static int __init parse_numa_properties(void)
->   
->   	if (numa_enabled == 0) {
->   		printk(KERN_WARNING "NUMA disabled by user\n");
-> +		min_common_depth = -1;
->   		return -1;
->   	}
->   
-> @@ -747,7 +748,7 @@ void __init dump_numa_cpu_topology(void)
->   	unsigned int node;
->   	unsigned int cpu, count;
->   
-> -	if (min_common_depth == -1 || !numa_enabled)
-> +	if (min_common_depth == -1)
->   		return;
->   
->   	for_each_online_node(node) {
-> @@ -812,7 +813,7 @@ static void __init find_possible_nodes(void)
->   	struct device_node *rtas;
->   	u32 numnodes, i;
->   
-> -	if (min_common_depth <= 0 || !numa_enabled)
-> +	if (min_common_depth <= 0)
->   		return;
->   
->   	rtas = of_find_node_by_path("/rtas");
-> @@ -1014,7 +1015,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
->   	struct device_node *memory = NULL;
->   	int nid;
->   
-> -	if (!numa_enabled || (min_common_depth < 0))
-> +	if (min_common_depth < 0)
->   		return first_online_node;
->   
->   	memory = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
-> 
+Qian Cai <cai@lca.pw> writes:
+> On Fri, 2019-06-28 at 17:19 +0530, Anju T Sudhakar wrote:
+>> On 6/28/19 9:04 AM, Qian Cai wrote:
+>> >=20
+>> > > On Jun 27, 2019, at 11:12 PM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
+>> > >=20
+>> > > Qian Cai <cai@lca.pw> writes:
+>> > > > Read of debugfs imc_cmd file for a memory-less node will trigger a=
+ crash
+>> > > > below
+>> > > > on this power9 machine which has the following NUMA layout.
+>> > >=20
+>> > > What type of machine is it?
+>> >=20
+>> > description: PowerNV
+>> > product: 8335-GTH (ibm,witherspoon)
+>> > vendor: IBM
+>> > width: 64 bits
+>> > capabilities: smp powernv opal
+>>=20
+>>=20
+>> Hi Qian Cai,
+>>=20
+>> Could you please try with this patch:=C2=A0
+>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-June/192803.html
+>>=20
+>> and see if the issue is resolved?
+>
+> It works fine.
+>
+> Just feel a bit silly that a node without CPU and memory is still online =
+by
+> default during boot at the first place on powerpc, but that is probably a
+> different issue. For example,
 
-I was not sure whether a reverse switch if better so that we have
+Those are there to represent the memory on your attached GPUs. It's not
+onlined by default.
 
-if (!numa_enabled) check every where and we do the below
+I don't really love that they show up like that, but I think that's
+working as expected.
 
-@@ -625,14 +624,15 @@ static int __init parse_numa_properties(void)
+cheers
 
-  	if (numa_enabled == 0) {
-  		printk(KERN_WARNING "NUMA disabled by user\n");
--		min_common_depth = -1;
-  		return -1;
-  	}
-
-  	min_common_depth = find_min_common_depth();
-
--	if (min_common_depth < 0)
-+	if (min_common_depth < 0) {
-+		numa_enabled = false;
-  		return min_common_depth;
-+	}
-
-
--aneesh
-
+> # numactl -H
+> available: 6 nodes (0,8,252-255)
+> node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 2=
+3 24 25
+> 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 5=
+0 51 52
+> 53 54 55 56 57 58 59 60 61 62 63
+> node 0 size: 126801 MB
+> node 0 free: 123199 MB
+> node 8 cpus: 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 =
+84 85
+> 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107=
+ 108
+> 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 1=
+27
+> node 8 size: 130811 MB
+> node 8 free: 128436 MB
+> node 252 cpus:
+> node 252 size: 0 MB
+> node 252 free: 0 MB
+> node 253 cpus:
+> node 253 size: 0 MB
+> node 253 free: 0 MB
+> node 254 cpus:
+> node 254 size: 0 MB
+> node 254 free: 0 MB
+> node 255 cpus:
+> node 255 size: 0 MB
+> node 255 free: 0 MB
+> node distances:
+> node=C2=A0=C2=A0=C2=A00=C2=A0=C2=A0=C2=A08=C2=A0=C2=A0252=C2=A0=C2=A0253=
+=C2=A0=C2=A0254=C2=A0=C2=A0255=C2=A0
+> =C2=A0 0:=C2=A0=C2=A010=C2=A0=C2=A040=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=
+=C2=A080=C2=A0=C2=A080=C2=A0
+> =C2=A0 8:=C2=A0=C2=A040=C2=A0=C2=A010=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=
+=C2=A080=C2=A0=C2=A080=C2=A0
+> =C2=A0252:=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A010=C2=A0=C2=A080=C2=A0=
+=C2=A080=C2=A0=C2=A080=C2=A0
+> =C2=A0253:=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A010=C2=A0=
+=C2=A080=C2=A0=C2=A080=C2=A0
+> =C2=A0254:=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=
+=C2=A010=C2=A0=C2=A080=C2=A0
+> =C2=A0255:=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=C2=A080=C2=A0=
+=C2=A080=C2=A0=C2=A010=C2=A0
+>
+> # cat /sys/devices/system/node/online=C2=A0
+> 0,8,252-255
