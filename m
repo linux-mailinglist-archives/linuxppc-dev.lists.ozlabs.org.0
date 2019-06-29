@@ -1,83 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1315A98C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 10:06:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128645A978
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 09:41:25 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45bQYY43tNzDqtQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 17:41:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45bR6862gXzDqv4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 18:06:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+47088bf090978edb542c+5788+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="IFVrOqg2"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bQVT3qZhzDqwl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 17:38:41 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5T7b8Ef003281
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 03:38:38 -0400
-Received: from e16.ny.us.ibm.com (e16.ny.us.ibm.com [129.33.205.206])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2te3a70jnv-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 03:38:38 -0400
-Received: from localhost
- by e16.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Sat, 29 Jun 2019 08:38:37 +0100
-Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
- by e16.ny.us.ibm.com (146.89.104.203) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 29 Jun 2019 08:38:34 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5T7cX3q54067496
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 29 Jun 2019 07:38:33 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7DF5AC060;
- Sat, 29 Jun 2019 07:38:33 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9703EAC05E;
- Sat, 29 Jun 2019 07:38:31 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.87.55])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat, 29 Jun 2019 07:38:31 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm/radix: Use the right page size for vmemmap mapping
-Date: Sat, 29 Jun 2019 13:08:29 +0530
-X-Mailer: git-send-email 2.21.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45bR3s6D7YzDqtQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 18:04:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=fyDgEJSSVfeo/rhxp2C0OHVjUsyHNQM4qw/R4ZApdQY=; b=IFVrOqg2Wg4+b+FilOSB52Ahu
+ IqHDA0iOtemW6x2oYylDfDt0NiBfQZLAOCrjtYnykk8eu6xFjqTNprX7PRPWg86qAazglem8dvTQM
+ tVAWPNf2eWv/H/kTrWT6SnujY+Wf2Sr2RvrSjrjpQtTs4XR4FA0wABpWt7jTrW0aKwxyJ9Ikz9WmR
+ uqZKh/UzvMpiw7Wt/gZemJb1dxkwsQky4BAovC/DgvEAFjlFYEbO96Stp9Bn9LDCW1vIpwgyRHvK4
+ evGlg2g7jYYAe2cL70buGTnOdtFFletuOvb7TbZZhxECOw1f162KAXxyNAV++IrJxrYsCRF27kUdo
+ 24fwNgDQw==;
+Received: from 089144214055.atnat0023.highway.a1.net ([89.144.214.55]
+ helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hh8L3-0004F7-1z; Sat, 29 Jun 2019 08:04:01 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: paulus@samba.org,
+	mpe@ellerman.id.au
+Subject: [PATCH] powerpc: remove device_to_mask
+Date: Sat, 29 Jun 2019 10:03:59 +0200
+Message-Id: <20190629080359.23182-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19062907-0072-0000-0000-000004427BCB
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011350; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01224844; UDB=6.00644699; IPR=6.01006045; 
- MB=3.00027519; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-29 07:38:36
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062907-0073-0000-0000-00004CB2AD96
-Message-Id: <20190629073829.13095-1-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-29_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906290095
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,72 +64,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Also on hash with 4K PAGE_SIZE make sure we use 4K page size for
-vmemmap.
+Use the dma_get_mask helper from dma-mapping.h instead.
 
-Fixes: 2bfd65e45e87 ("powerpc/mm/radix: Add radix callbacks for early init routines")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c    |  4 +---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 16 +++++++---------
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/iommu.h     | 8 --------
+ arch/powerpc/kernel/dma-iommu.c      | 4 ++--
+ arch/powerpc/platforms/pseries/vio.c | 4 ++--
+ 3 files changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 49f8c8940bd9..54013bbc60aa 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -686,10 +686,8 @@ static void __init htab_init_page_sizes(void)
- 	if (mmu_psize_defs[MMU_PAGE_16M].shift &&
- 	    memblock_phys_mem_size() >= 0x40000000)
- 		mmu_vmemmap_psize = MMU_PAGE_16M;
--	else if (mmu_psize_defs[MMU_PAGE_64K].shift)
--		mmu_vmemmap_psize = MMU_PAGE_64K;
- 	else
--		mmu_vmemmap_psize = MMU_PAGE_4K;
-+		mmu_vmemmap_psize = mmu_virtual_psize;
- #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index 0ac52392ed99..f98f2864b66a 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -327,13 +327,5 @@ extern bool iommu_fixed_is_weak;
  
- 	printk(KERN_DEBUG "Page orders: linear mapping = %d, "
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 60d97fab4de2..03d804a0dc8c 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -529,14 +529,6 @@ void __init radix__early_init_devtree(void)
- 	mmu_psize_defs[MMU_PAGE_64K].shift = 16;
- 	mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
- found:
--#ifdef CONFIG_SPARSEMEM_VMEMMAP
--	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
--		/*
--		 * map vmemmap using 2M if available
--		 */
--		mmu_vmemmap_psize = MMU_PAGE_2M;
--	}
--#endif /* CONFIG_SPARSEMEM_VMEMMAP */
- 	return;
+ extern const struct dma_map_ops dma_iommu_ops;
+ 
+-static inline unsigned long device_to_mask(struct device *dev)
+-{
+-	if (dev->dma_mask && *dev->dma_mask)
+-		return *dev->dma_mask;
+-	/* Assume devices without mask can take 32 bit addresses */
+-	return 0xfffffffful;
+-}
+-
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_IOMMU_H */
+diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+index 09231ef06d01..168af3a5b4b1 100644
+--- a/arch/powerpc/kernel/dma-iommu.c
++++ b/arch/powerpc/kernel/dma-iommu.c
+@@ -71,7 +71,7 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
+ 		return dma_direct_map_page(dev, page, offset, size, direction,
+ 				attrs);
+ 	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
+-			      size, device_to_mask(dev), direction, attrs);
++			      size, dma_get_mask(dev), direction, attrs);
  }
  
-@@ -601,7 +593,13 @@ void __init radix__early_init_mmu(void)
  
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
- 	/* vmemmap mapping */
--	mmu_vmemmap_psize = mmu_virtual_psize;
-+	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
-+		/*
-+		 * map vmemmap using 2M if available
-+		 */
-+		mmu_vmemmap_psize = MMU_PAGE_2M;
-+	} else
-+		mmu_vmemmap_psize = mmu_virtual_psize;
- #endif
- 	/*
- 	 * initialize page table size
+@@ -92,7 +92,7 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	if (dma_iommu_map_bypass(dev, attrs))
+ 		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
+ 	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
+-				device_to_mask(dev), direction, attrs);
++				dma_get_mask(dev), direction, attrs);
+ }
+ 
+ static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
+diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+index 141795275ccb..97c0e3e5eae5 100644
+--- a/arch/powerpc/platforms/pseries/vio.c
++++ b/arch/powerpc/platforms/pseries/vio.c
+@@ -524,7 +524,7 @@ static dma_addr_t vio_dma_iommu_map_page(struct device *dev, struct page *page,
+ 
+ 	if (vio_cmo_alloc(viodev, roundup(size, IOMMU_PAGE_SIZE(tbl))))
+ 		goto out_fail;
+-	ret = iommu_map_page(dev, tbl, page, offset, size, device_to_mask(dev),
++	ret = iommu_map_page(dev, tbl, page, offset, size, dma_get_mask(dev),
+ 			direction, attrs);
+ 	if (unlikely(ret == DMA_MAPPING_ERROR))
+ 		goto out_deallocate;
+@@ -564,7 +564,7 @@ static int vio_dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+ 
+ 	if (vio_cmo_alloc(viodev, alloc_size))
+ 		goto out_fail;
+-	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, device_to_mask(dev),
++	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, dma_get_mask(dev),
+ 			direction, attrs);
+ 	if (unlikely(!ret))
+ 		goto out_deallocate;
 -- 
-2.21.0
+2.20.1
 
