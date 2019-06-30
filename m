@@ -1,50 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11695AE01
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 05:31:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45bwz7680VzDqD0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 13:31:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE475AE58
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 06:42:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45byXg0ZzZzDqsG
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 14:42:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="c1r4R03c"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bwxC52sXzDq5k
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 13:30:07 +1000 (AEST)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.2-7 tag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561865404;
- bh=3b74WRVQXzGp4BVfAyzWmsR3Ltcrfo3jqtH6iCngZPw=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=c1r4R03cgt7Ju5W+12EOz6slVHoSqRIv9tyalaGLpimh3ZtQ+YxT5RGFcxAtCSpHR
- 0z6ZIEKduU9Ba7G4KGYL4afNTB03mRKZWSTMqWvGT4t62BDHqJ/b/bl7TTGzzNdVik
- GWH8XXZU4U36hhSphvMrE+nCGe+j0bRR4jxeATTk=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <871rzck26l.fsf@concordia.ellerman.id.au>
-References: <871rzck26l.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <871rzck26l.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.2-7
-X-PR-Tracked-Commit-Id: e13e7cd4c0c1cc9984d9b6a8663e10d76b53f2aa
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 39132f746eceed6beecb16c7b79600fb54eb8b2b
-Message-Id: <156186540453.13728.17300214218625596433.pr-tracker-bot@kernel.org>
-Date: Sun, 30 Jun 2019 03:30:04 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45byVr1mYdzDqp7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 14:40:50 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8E728;
+ Sat, 29 Jun 2019 21:40:47 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5ECD73F706;
+ Sat, 29 Jun 2019 21:40:37 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To: Guenter Roeck <linux@roeck-us.net>
+References: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
+ <20190629145009.GA28613@roeck-us.net>
+Message-ID: <78863cd0-8cb5-c4fd-ed06-b1136bdbb6ef@arm.com>
+Date: Sun, 30 Jun 2019 10:11:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190629145009.GA28613@roeck-us.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,22 +50,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, James Hogan <jhogan@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-snps-arc@lists.infradead.org, Fenghua Yu <fenghua.yu@intel.com>,
+ linux-s390@vger.kernel.org, Andrey Konovalov <andreyknvl@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+ Paul Burton <paul.burton@mips.com>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 29 Jun 2019 22:26:26 +1000:
+Hello Guenter,
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.2-7
+On 06/29/2019 08:20 PM, Guenter Roeck wrote:
+> Hi,
+> 
+> On Thu, Jun 13, 2019 at 03:37:24PM +0530, Anshuman Khandual wrote:
+>> Architectures which support kprobes have very similar boilerplate around
+>> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
+>> them, based on the x86 code.
+>>
+>> This changes the behaviour for other architectures when preemption is
+>> enabled. Previously, they would have disabled preemption while calling the
+>> kprobe handler. However, preemption would be disabled if this fault was
+>> due to a kprobe, so we know the fault was not due to a kprobe handler and
+>> can simply return failure.
+>>
+>> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
+>> Refactor kprobes_fault() like kprobe_exceptions_notify()")
+>>
+> 
+> With this patch applied, parisc:allmodconfig images no longer build.
+> 
+> In file included from arch/parisc/mm/fixmap.c:8:
+> include/linux/kprobes.h: In function 'kprobe_page_fault':
+> include/linux/kprobes.h:477:9: error:
+> 	implicit declaration of function 'kprobe_fault_handler'; did you mean 'kprobe_page_fault'?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/39132f746eceed6beecb16c7b79600fb54eb8b2b
+Yikes.. Arch parisc does not even define (unlike mips which did but never exported)
+now required function kprobe_fault_handler() when CONFIG_KPROBES is enabled.
 
-Thank you!
+I believe rather than defining one stub version only for parsic it would be better
+to have an weak symbol generic stub definition for kprobe_fault_handler() in file
+include/linux/kprobes.h when CONFIG_KPROBES is enabled along side the other stub
+definition when !CONFIG_KPROBES. But arch which wants to use kprobe_page_fault()
+cannot use stub kprobe_fault_handler() definition and will have to provide one.
+I will probably add a comment regarding this.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+> 
+> Reverting the patch fixes the problem.
+> 
+> Guenter
+> 
+
+Thanks for reporting the problem.
