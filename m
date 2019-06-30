@@ -1,88 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11695AE01
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 05:31:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330A35AC78
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2019 18:13:53 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45bdwt50J7zDq7w
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 02:13:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45bwz7680VzDqD0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2019 13:31:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="c1r4R03c"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45bdr33YsLzDqxW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 02:09:39 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5TFv3fR066806
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 12:09:37 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2te2ackuf7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2019 12:09:36 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Sat, 29 Jun 2019 17:09:34 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 29 Jun 2019 17:09:23 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x5TG9CcF28115304
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 29 Jun 2019 16:09:12 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7F45EA4054;
- Sat, 29 Jun 2019 16:09:22 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D67D2A405B;
- Sat, 29 Jun 2019 16:09:19 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.70.170])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Sat, 29 Jun 2019 16:09:19 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Sat, 29 Jun 2019 21:39:18 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- "Oliver O'Halloran" <oohall@gmail.com>
-Subject: Re: [PATCH v3 1/3] powerpc/pseries: Update SCM hcall op-codes in
- hvcall.h
-In-Reply-To: <87a7e0k4rf.fsf@concordia.ellerman.id.au>
-References: <20190626140404.27448-1-vaibhav@linux.ibm.com>
- <20190626140404.27448-2-vaibhav@linux.ibm.com>
- <87h88as7iy.fsf@concordia.ellerman.id.au>
- <CAOSf1CHS98Y9gwEUTkAmzjnWSW=yz89DWdXUnr1QijrvMTWvkQ@mail.gmail.com>
- <87a7e0k4rf.fsf@concordia.ellerman.id.au>
-Date: Sat, 29 Jun 2019 21:39:18 +0530
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19062916-4275-0000-0000-000003478B03
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062916-4276-0000-0000-000038579AAD
-Message-Id: <87ef3cs79t.fsf@vajain21.in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-29_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906290200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45bwxC52sXzDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 13:30:07 +1000 (AEST)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.2-7 tag
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561865404;
+ bh=3b74WRVQXzGp4BVfAyzWmsR3Ltcrfo3jqtH6iCngZPw=;
+ h=From:In-Reply-To:References:Date:To:Cc:From;
+ b=c1r4R03cgt7Ju5W+12EOz6slVHoSqRIv9tyalaGLpimh3ZtQ+YxT5RGFcxAtCSpHR
+ 0z6ZIEKduU9Ba7G4KGYL4afNTB03mRKZWSTMqWvGT4t62BDHqJ/b/bl7TTGzzNdVik
+ GWH8XXZU4U36hhSphvMrE+nCGe+j0bRR4jxeATTk=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <871rzck26l.fsf@concordia.ellerman.id.au>
+References: <871rzck26l.fsf@concordia.ellerman.id.au>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <871rzck26l.fsf@concordia.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.2-7
+X-PR-Tracked-Commit-Id: e13e7cd4c0c1cc9984d9b6a8663e10d76b53f2aa
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 39132f746eceed6beecb16c7b79600fb54eb8b2b
+Message-Id: <156186540453.13728.17300214218625596433.pr-tracker-bot@kernel.org>
+Date: Sun, 30 Jun 2019 03:30:04 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,50 +56,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for reviewing this patch Mpe.
+The pull request you sent on Sat, 29 Jun 2019 22:26:26 +1000:
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.2-7
 
-> "Oliver O'Halloran" <oohall@gmail.com> writes:
->> On Fri, Jun 28, 2019 at 1:39 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>>
->>> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->>> > *snip*
->>>
->>> How can we be changing the meaning of HCALL numbers without breaking all
->>> existing usages?
->>
->> The changed one being changed here were never used by linux or
->> implemented by either hypervisor.
->
-> OK. Please say so in the change log so that it's clear it's not a
-> behaviour change.
-I have respinned this patchset to v4 updating this patch's
-description mentioning the hcall opcodes that are removed.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/39132f746eceed6beecb16c7b79600fb54eb8b2b
 
->
->>> Where are these hypervisor calls documented?
->>
->> In an internal spec from one the phyp guys. I have been complaining
->> about it not being open (or merged into PAPR at the very least), but
->> it doesn't look like there's been any movement there.
->
-> Please send a patch for Documentation/powerpc/ describing the API for
-> the hypercalls we're using.
-Sure will send a separate patch documenting this.
-
-> cheers
->
+Thank you!
 
 -- 
-Vaibhav Jain <vaibhav@linux.ibm.com>
-Linux Technology Center, IBM India Pvt. Ltd.
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
