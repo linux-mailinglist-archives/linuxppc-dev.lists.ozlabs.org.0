@@ -1,95 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1B85BE3C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:27:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105E95BDED
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:17:50 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cqG31GcrzDqX6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:17:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cqTG5RCgzDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:27:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.85.160.196; helo=mail-qt1-f196.google.com;
+ envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mail-qt1-f196.google.com (mail-qt1-f196.google.com
+ [209.85.160.196])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cq8S0ndKzDqBd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:12:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45cq8K0Ywqz8tD1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:12:49 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45cq8J5Lm4z9sPQ; Tue,  2 Jul 2019 00:12:48 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45cq8J0DLVz9sPF;
- Tue,  2 Jul 2019 00:12:47 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x61E8Ppi180503; Mon, 1 Jul 2019 10:12:46 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tfkmb8gs3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Jul 2019 10:12:45 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x61E9lH8014210;
- Mon, 1 Jul 2019 14:12:45 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma01dal.us.ibm.com with ESMTP id 2tdym6qcbx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Jul 2019 14:12:44 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x61ECgvJ49480050
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 14:12:43 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8150C6061;
- Mon,  1 Jul 2019 14:12:42 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E301BC605A;
- Mon,  1 Jul 2019 14:12:39 +0000 (GMT)
-Received: from [9.80.232.19] (unknown [9.80.232.19])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 14:12:39 +0000 (GMT)
-Subject: Re: [PATCH v3 3/9] powerpc: Introduce FW_FEATURE_ULTRAVISOR
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
- <20190606173614.32090-4-cclaudio@linux.ibm.com>
- <20190615073600.GA24709@blackberry>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Message-ID: <990dd9d3-441a-229c-a007-817d1dd856be@linux.ibm.com>
-Date: Mon, 1 Jul 2019 11:12:38 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cqQp1t5DzDqRf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:25:18 +1000 (AEST)
+Received: by mail-qt1-f196.google.com with SMTP id d23so14837574qto.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 07:25:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=OmUFyqrNN9sq0ZRrSpIxJ5BWTUOqPUb104pbuNvBMyo=;
+ b=DGv/Kl+y9QZO6bw7grZEOifTRT9KQTsmyitAYylXo72eEVnCvcZAlLZn9oUaZJrpjZ
+ eWT7/fLiqzbLkGwukVleONOf8ntIe69a+0Gl4/kyeRhbPy++RTqmrQ4XlfNk7tZPRSpo
+ G/3SLkXKosuq6qvKqtkQenbDfVboPPzSlvspP/oesUhu57ZOlCwhRqCUZCdOlNktDX6R
+ un7GOI4rzR/3YkjpiwDfiiAH8n+hB+lWFvY/POFXHe3QumVabDSts7EVInnN3fufejvJ
+ OVcFkZCXuxQUCb6gO0TO75S5OrPN3Gr85KjF+la22XGAl5g7o2J39mTVdKnYEvmSvcJy
+ AjEw==
+X-Gm-Message-State: APjAAAVcZCl6iTduWiMrMZ7ubQtpqPz+SlzW/BN3BvrROijs++Kv9mVb
+ lNK8gnS3oxawUChUXyzkbSuB4Q==
+X-Google-Smtp-Source: APXvYqztU+rrvBg2COujrfs5dvhOsWNrkGwA5oSm17/fSAfVJk0yP87nIwCfT9SyHEU4ES7CV30Tdw==
+X-Received: by 2002:a0c:acfb:: with SMTP id n56mr21744226qvc.87.1561990645035; 
+ Mon, 01 Jul 2019 07:17:25 -0700 (PDT)
+Received: from redhat.com ([185.120.125.12])
+ by smtp.gmail.com with ESMTPSA id 18sm4904132qke.131.2019.07.01.07.17.19
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Mon, 01 Jul 2019 07:17:23 -0700 (PDT)
+Date: Mon, 1 Jul 2019 10:17:11 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Subject: Re: [RFC PATCH] virtio_ring: Use DMA API if guest memory is encrypted
+Message-ID: <20190701092212-mutt-send-email-mst@kernel.org>
+References: <20190204144048-mutt-send-email-mst@kernel.org>
+ <87ef71seve.fsf@morokweng.localdomain>
+ <20190320171027-mutt-send-email-mst@kernel.org>
+ <87tvfvbwpb.fsf@morokweng.localdomain>
+ <20190323165456-mutt-send-email-mst@kernel.org>
+ <87a7go71hz.fsf@morokweng.localdomain>
+ <20190520090939-mutt-send-email-mst@kernel.org>
+ <877ea26tk8.fsf@morokweng.localdomain>
+ <20190603211528-mutt-send-email-mst@kernel.org>
+ <877e96qxm7.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20190615073600.GA24709@blackberry>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-01_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907010175
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877e96qxm7.fsf@morokweng.localdomain>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,50 +74,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Mike Anderson <andmike@linux.ibm.com>,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+ Jason Wang <jasowang@redhat.com>, Alexey Kardashevskiy <aik@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jun 27, 2019 at 10:58:40PM -0300, Thiago Jung Bauermann wrote:
+> 
+> Michael S. Tsirkin <mst@redhat.com> writes:
+> 
+> > On Mon, Jun 03, 2019 at 10:13:59PM -0300, Thiago Jung Bauermann wrote:
+> >>
+> >>
+> >> Michael S. Tsirkin <mst@redhat.com> writes:
+> >>
+> >> > On Wed, Apr 17, 2019 at 06:42:00PM -0300, Thiago Jung Bauermann wrote:
+> >> >> I rephrased it in terms of address translation. What do you think of
+> >> >> this version? The flag name is slightly different too:
+> >> >>
+> >> >>
+> >> >> VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION This feature has the same
+> >> >>     meaning as VIRTIO_F_ACCESS_PLATFORM both when set and when not set,
+> >> >>     with the exception that address translation is guaranteed to be
+> >> >>     unnecessary when accessing memory addresses supplied to the device
+> >> >>     by the driver. Which is to say, the device will always use physical
+> >> >>     addresses matching addresses used by the driver (typically meaning
+> >> >>     physical addresses used by the CPU) and not translated further. This
+> >> >>     flag should be set by the guest if offered, but to allow for
+> >> >>     backward-compatibility device implementations allow for it to be
+> >> >>     left unset by the guest. It is an error to set both this flag and
+> >> >>     VIRTIO_F_ACCESS_PLATFORM.
+> >> >
+> >> >
+> >> >
+> >> >
+> >> > OK so VIRTIO_F_ACCESS_PLATFORM is designed to allow unpriveledged
+> >> > drivers. This is why devices fail when it's not negotiated.
+> >>
+> >> Just to clarify, what do you mean by unprivileged drivers? Is it drivers
+> >> implemented in guest userspace such as with VFIO? Or unprivileged in
+> >> some other sense such as needing to use bounce buffers for some reason?
+> >
+> > I had drivers in guest userspace in mind.
+> 
+> Great. Thanks for clarifying.
+> 
+> I don't think this flag would work for guest userspace drivers. Should I
+> add a note about that in the flag definition?
 
-On 6/15/19 4:36 AM, Paul Mackerras wrote:
-> On Thu, Jun 06, 2019 at 02:36:08PM -0300, Claudio Carvalho wrote:
->> This feature tells if the ultravisor firmware is available to handle
->> ucalls.
-> Everything in this patch that depends on CONFIG_PPC_UV should just
-> depend on CONFIG_PPC_POWERNV instead.  The reason is that every host
-> kernel needs to be able to do the ultracall to set partition table
-> entry 0, in case it ends up being run on a machine with an ultravisor.
-> Otherwise we will have the situation where a host kernel may crash
-> early in boot just because the machine it's booted on happens to have
-> an ultravisor running.  The crash will be a particularly nasty one
-> because it will happen before we have probed the machine type and
-> initialized the console; therefore it will just look like the machine
-> hangs for no discernable reason.
+I think you need to clarify access protection rules. Is it only
+translation that is bypassed or is any platform-specific
+protection mechanism bypassed too?
 
-> We also need to think about how to provide a way for petitboot to know
-> whether the kernel it is booting knows how to do a ucall to set its
-> partition table entry.  One suggestion would be to modify
-> vmlinux.lds.S to add a new PT_NOTE entry in the program header of the
-> binary with (say) a 64-bit doubleword which is a bitmap indicating
-> capabilities of the binary.  We would define the first bit as
-> indicating that the kernel knows how to run under an ultravisor.
-> When running under an ultravisor, petitboot could then look for the
-> PT_NOTE and the ultravisor-capable bit in it, and if the PT_NOTE is
-> not there or the bit is zero, put up a dialog warning the user that
-> the kernel will probably crash early in boot, and asking for explicit
-> confirmation that the user wants to proceed.
+> >> > This confuses me.
+> >> > If driver is unpriveledged then what happens with this flag?
+> >> > It can supply any address it wants. Will that corrupt kernel
+> >> > memory?
+> >>
+> >> Not needing address translation doesn't necessarily mean that there's no
+> >> IOMMU. On powerpc we don't use VIRTIO_F_ACCESS_PLATFORM but there's
+> >> always an IOMMU present. And we also support VFIO drivers. The VFIO API
+> >> for pseries (sPAPR section in Documentation/vfio.txt) has extra ioctls
+> >> to program the IOMMU.
+> >>
+> >> For our use case, we don't need address translation because we set up an
+> >> identity mapping in the IOMMU so that the device can use guest physical
+> >> addresses.
+
+OK so I think I am beginning to see it in a different light.  Right now the specific
+platform creates an identity mapping. That in turn means DMA API can be
+fast - it does not need to do anything.  What you are looking for is a
+way to tell host it's an identity mapping - just as an optimization.
+
+Is that right?  So this is what I would call this option:
+
+VIRTIO_F_ACCESS_PLATFORM_IDENTITY_ADDRESS
+
+and the explanation should state that all device
+addresses are translated by the platform to identical
+addresses.
+
+In fact this option then becomes more, not less restrictive
+than VIRTIO_F_ACCESS_PLATFORM - it's a promise
+by guest to only create identity mappings,
+and only before driver_ok is set.
+This option then would always be negotiated together with
+VIRTIO_F_ACCESS_PLATFORM.
+
+Host then must verify that
+1. full 1:1 mappings are created before driver_ok
+    or can we make sure this happens before features_ok?
+    that would be ideal as we could require that features_ok fails
+2. mappings are not modified between driver_ok and reset
+    i guess attempts to change them will fail -
+    possibly by causing a guest crash
+    or some other kind of platform-specific error
+
+So far so good, but now a question:
+
+how are we handling guest address width limitations?
+Is VIRTIO_F_ACCESS_PLATFORM_IDENTITY_ADDRESS subject to
+guest address width limitations?
+I am guessing we can make them so ...
+This needs to be documented.
 
 
-I just posted a separated RFC patch for the ELF note.
-
-Thanks, Claudio.
 
 
->
-> Paul.
->
+> >
+> > And can it access any guest physical address?
+> 
+> Sorry, I was mistaken. We do support VFIO in guests but not for virtio
+> devices, only for regular PCI devices. In which case they will use
+> address translation.
+
+Not sure how this answers the question.
+
+
+> >> If the guest kernel is concerned that an unprivileged driver could
+> >> jeopardize its integrity it should not negotiate this feature flag.
+> >
+> > Unfortunately flag negotiation is done through config space
+> > and so can be overwritten by the driver.
+> 
+> Ok, so the guest kernel has to forbid VFIO access on devices where this
+> flag is advertised.
+
+That's possible in theory but in practice we did not yet teach VFIO not
+to attach to legacy devices without VIRTIO_F_ACCESS_PLATFORM.  So all
+security relies on host denying driver_ok without
+VIRTIO_F_ACCESS_PLATFORM.  New options that bypass guest security are
+thus tricky as they can create security holes for existing guests.
+I'm open to ideas about how to do this in a safe way,
+
+
+> >> Perhaps there should be a note about this in the flag definition? This
+> >> concern is platform-dependant though. I don't believe it's an issue in
+> >> pseries.
+> >
+> > Again ACCESS_PLATFORM has a pretty open definition. It does actually
+> > say it's all up to the platform.
+> >
+> > Specifically how will VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION be
+> > implemented portably? virtio has no portable way to know
+> > whether DMA API bypasses translation.
+> 
+> The fact that VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION is set
+> communicates that knowledge to virtio. There is a shared understanding
+> between the guest and the host about what this flag being set means.
+
+Right but I wonder how are you going to *actually* implement it on Linux?
+Are you adding a new set of DMA APIs that do everything except
+translation?
+
+> --
+> Thiago Jung Bauermann
+> IBM Linux Technology Center
