@@ -1,87 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050035B73A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 10:53:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ch3P2qxXzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 18:53:05 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6A65B745
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 10:54:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ch595JflzDqXC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 18:54:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ch1b0wHMzDqGB
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 18:51:30 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x618ln6Y010968
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 1 Jul 2019 04:51:27 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tfe97tme7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 04:51:27 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Mon, 1 Jul 2019 09:51:25 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 1 Jul 2019 09:51:20 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x618pJ1I50266294
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 08:51:20 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD34042042;
- Mon,  1 Jul 2019 08:51:19 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E56F42041;
- Mon,  1 Jul 2019 08:51:19 +0000 (GMT)
-Received: from localhost (unknown [9.124.35.147])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 08:51:19 +0000 (GMT)
-Date: Mon, 01 Jul 2019 14:21:17 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 4/7] powerpc/ftrace: Additionally nop out the preceding
- mflr with -mprofile-kernel
-To: Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
- <841386feda429a1f0d4b7442c3ede1ed91466f92.1561634177.git.naveen.n.rao@linux.vnet.ibm.com>
- <20190627110819.4892780f@gandalf.local.home>
- <1561648598.uvetvkj39x.naveen@linux.ibm.com>
- <20190627121344.25b5449a@gandalf.local.home>
-In-Reply-To: <20190627121344.25b5449a@gandalf.local.home>
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ch1x35mszDqSQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 18:51:48 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 6455EAD23;
+ Mon,  1 Jul 2019 08:51:45 +0000 (UTC)
+Date: Mon, 1 Jul 2019 10:51:44 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
+ unregister_memory_block_under_nodes() never fail
+Message-ID: <20190701085144.GJ6376@dhcp22.suse.cz>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-11-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 19070108-0020-0000-0000-0000034F14D6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070108-0021-0000-0000-000021A29D96
-Message-Id: <1561970917.6b4f6qppo3.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-01_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=932 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907010110
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190527111152.16324-11-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,76 +48,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+ linux-mm@kvack.org, "David S. Miller" <davem@davemloft.net>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Igor Mammedov <imammedo@redhat.com>,
+ akpm@linux-foundation.org, Chris Wilson <chris@chris-wilson.co.uk>,
+ linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
+ linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Steven Rostedt wrote:
-> On Thu, 27 Jun 2019 20:58:20 +0530
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
->=20
->>=20
->> > But interesting, I don't see a synchronize_rcu_tasks() call
->> > there. =20
->>=20
->> We felt we don't need it in this case. We patch the branch to ftrace=20
->> with a nop first. Other cpus should see that first. But, now that I=20
->> think about it, should we add a memory barrier to ensure the writes get=20
->> ordered properly?
->=20
-> Do you send an ipi to the other CPUs. I would just to be safe.
->=20
+On Mon 27-05-19 13:11:51, David Hildenbrand wrote:
+> We really don't want anything during memory hotunplug to fail.
+> We always pass a valid memory block device, that check can go. Avoid
+> allocating memory and eventually failing. As we are always called under
+> lock, we can use a static piece of memory. This avoids having to put
+> the structure onto the stack, having to guess about the stack size
+> of callers.
+> 
+> Patch inspired by a patch from Oscar Salvador.
+> 
+> In the future, there might be no need to iterate over nodes at all.
+> mem->nid should tell us exactly what to remove. Memory block devices
+> with mixed nodes (added during boot) should properly fenced off and never
+> removed.
 
-<snip>
+Yeah, we do not allow to offline multi zone (node) ranges so the current
+code seems to be over engineered.
 
->>=20
->> We are handling this through ftrace_replace_code() and=20
->> __ftrace_make_call_prep() below. For FTRACE_UPDATE_MAKE_CALL, we patch=20
->> in the mflr, followed by smp_call_function(isync) and=20
->> synchronize_rcu_tasks() before we proceed to patch the branch to ftrace.
->>=20
->> I don't see any other scenario where we end up in=20
->> __ftrace_make_nop_kernel() without going through ftrace_replace_code(). =
-=20
->> For kernel modules, this can happen during module load/init and so, I=20
->> patch out both instructions in __ftrace_make_call() above without any=20
->> synchronization.
->>=20
->> Am I missing anything?
->>=20
->=20
-> No, I think I got confused ;-), it's the patch out that I was worried
-> about, but when I was going through the scenario, I somehow turned it
-> into the patching in (which I already audited :-p). I was going to
-> reply with just the top part of this email, but then the confusion
-> started :-/
->=20
-> OK, yes, patching out should be fine, and you already covered the
-> patching in. Sorry for the noise.
->=20
-> Just to confirm and totally remove the confusion, the patch does:
->=20
-> 	<func>:
-> 	mflr	r0 <-- preempt here
-> 	bl	_mcount
->=20
-> 	<func>:
-> 	mflr	r0
-> 	nop
->=20
-> And this is fine regardless.
->=20
-> OK, Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Anyway, I am wondering why do we have to strictly check for already
+removed nodes links. Is the sysfs code going to complain we we try to
+remove again?
+ 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Thanks for confirming! We do need an IPI to be sure, as you pointed out=20
-above. I will have the patching out take the same path to simplify=20
-things.
+Anyway
+Acked-by: Michal Hocko <mhocko@suse.com>
 
+> ---
+>  drivers/base/node.c  | 18 +++++-------------
+>  include/linux/node.h |  5 ++---
+>  2 files changed, 7 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index 04fdfa99b8bc..9be88fd05147 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -803,20 +803,14 @@ int register_mem_sect_under_node(struct memory_block *mem_blk, void *arg)
+>  
+>  /*
+>   * Unregister memory block device under all nodes that it spans.
+> + * Has to be called with mem_sysfs_mutex held (due to unlinked_nodes).
+>   */
+> -int unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+> +void unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+>  {
+> -	NODEMASK_ALLOC(nodemask_t, unlinked_nodes, GFP_KERNEL);
+>  	unsigned long pfn, sect_start_pfn, sect_end_pfn;
+> +	static nodemask_t unlinked_nodes;
+>  
+> -	if (!mem_blk) {
+> -		NODEMASK_FREE(unlinked_nodes);
+> -		return -EFAULT;
+> -	}
+> -	if (!unlinked_nodes)
+> -		return -ENOMEM;
+> -	nodes_clear(*unlinked_nodes);
+> -
+> +	nodes_clear(unlinked_nodes);
+>  	sect_start_pfn = section_nr_to_pfn(mem_blk->start_section_nr);
+>  	sect_end_pfn = section_nr_to_pfn(mem_blk->end_section_nr);
+>  	for (pfn = sect_start_pfn; pfn <= sect_end_pfn; pfn++) {
+> @@ -827,15 +821,13 @@ int unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+>  			continue;
+>  		if (!node_online(nid))
+>  			continue;
+> -		if (node_test_and_set(nid, *unlinked_nodes))
+> +		if (node_test_and_set(nid, unlinked_nodes))
+>  			continue;
+>  		sysfs_remove_link(&node_devices[nid]->dev.kobj,
+>  			 kobject_name(&mem_blk->dev.kobj));
+>  		sysfs_remove_link(&mem_blk->dev.kobj,
+>  			 kobject_name(&node_devices[nid]->dev.kobj));
+>  	}
+> -	NODEMASK_FREE(unlinked_nodes);
+> -	return 0;
+>  }
+>  
+>  int link_mem_sections(int nid, unsigned long start_pfn, unsigned long end_pfn)
+> diff --git a/include/linux/node.h b/include/linux/node.h
+> index 02a29e71b175..548c226966a2 100644
+> --- a/include/linux/node.h
+> +++ b/include/linux/node.h
+> @@ -139,7 +139,7 @@ extern int register_cpu_under_node(unsigned int cpu, unsigned int nid);
+>  extern int unregister_cpu_under_node(unsigned int cpu, unsigned int nid);
+>  extern int register_mem_sect_under_node(struct memory_block *mem_blk,
+>  						void *arg);
+> -extern int unregister_memory_block_under_nodes(struct memory_block *mem_blk);
+> +extern void unregister_memory_block_under_nodes(struct memory_block *mem_blk);
+>  
+>  extern int register_memory_node_under_compute_node(unsigned int mem_nid,
+>  						   unsigned int cpu_nid,
+> @@ -175,9 +175,8 @@ static inline int register_mem_sect_under_node(struct memory_block *mem_blk,
+>  {
+>  	return 0;
+>  }
+> -static inline int unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+> +static inline void unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+>  {
+> -	return 0;
+>  }
+>  
+>  static inline void register_hugetlbfs_with_node(node_registration_func_t reg,
+> -- 
+> 2.20.1
 
-- Naveen
-
-=
-
+-- 
+Michal Hocko
+SUSE Labs
