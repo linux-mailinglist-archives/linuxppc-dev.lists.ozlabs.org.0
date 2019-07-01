@@ -2,72 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CB65B54C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 08:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DA45B550
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 08:49:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cdHQ5LdVzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:48:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cdK34d5HzDqQG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:49:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bizikAVg"; 
- dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cd744VSgzDqKD
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 16:41:04 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id w24so6797719plp.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 23:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=smDmHv6fTQfEC2Xw13QJ3CuxW2VIYrqrjOiGuS7E8nY=;
- b=bizikAVg98c+yn3J0ciWcHUsmX+eyH5Ec+Sx1ENDwBE32Rx/0lg8b1PCfc37WCUEDP
- jvLHutEpkCjCeKIF+3OCxCQD2xwfD1eqZv22X/0xYJQ2gfkR6T5h9U/i3UGWyxnopCfA
- Lc9xD+81BMSV0KJwxT6Zl8kgkeypStm0C7tCePD/8Phv4vhKKMSzIoSCKbqq4aQcXAk2
- zSivyt8fYuQ9m/IJ5Iloms2K0emcTQysfKlLQHpo7SvscAXV2YkufHhBN7FSL1dpYBzJ
- hW4BMvvO1kSJHQ22hVPW5au0hnygWqK2g/+kZgrcqWqf4S6z9Rb8Swfe1cQTUPSpss9b
- XiSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=smDmHv6fTQfEC2Xw13QJ3CuxW2VIYrqrjOiGuS7E8nY=;
- b=HBXUL5lpM7Ro+eXV9rFszJifEGjHtMJOTIfP1AWBKN18cjZl2XBAQTBHhf2D9mF7/9
- wlbMR3XWAuILl8z6a7IdxIDZ1T1TKpyY2w/kGEbIqeYKJa3tjHW3SQ8akWsQY5I7bwkC
- vXqD/L6vd2F780IpmqPgLnX+Ww9PHoY67rorzTFqtAcpAGnGIPVEOcT0I8GvA1soFAPM
- 38UYI4iXJUFZ/35QUckQU1h1sDTy16unslfOpJj1t9ilsrb2ly3dTN1/E8tjYCM3Et/2
- AluY4KxpMBaNqEdgTRCuMfCDB9rmhZnAOtqvtcVR0HScecqVA+NnroRS7/kqj8vQbaXw
- nSoQ==
-X-Gm-Message-State: APjAAAVxOw0O4wpXvkY4GCdRJlqn6+6fF4DGv7az6XF4fU2YjwYbzmUV
- Z2Ip91/KyFhD2Te9ALnU3bTuqalf
-X-Google-Smtp-Source: APXvYqxC3bQxXqpIe85UilgRlX3q9ASs816UdqitUsnjCUP/RYiNALnXskGWa2IYqd1xwqXJJ9Kx/Q==
-X-Received: by 2002:a17:902:d887:: with SMTP id
- b7mr27095942plz.28.1561963261105; 
- Sun, 30 Jun 2019 23:41:01 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id x128sm24238285pfd.17.2019.06.30.23.40.57
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 30 Jun 2019 23:41:00 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: "linux-mm @ kvack . org" <linux-mm@kvack.org>
-Subject: [PATCH v2 3/3] mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
-Date: Mon,  1 Jul 2019 16:40:26 +1000
-Message-Id: <20190701064026.970-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190701064026.970-1-npiggin@gmail.com>
-References: <20190701064026.970-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cdFv1YwMzDqT4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 16:46:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45cdFt6V0rz8swG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 16:46:58 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45cdFt67Ytz9sPM; Mon,  1 Jul 2019 16:46:58 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=us.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=linuxram@us.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45cdFt1Lwrz9sPB
+ for <linuxppc-dev@ozlabs.org>; Mon,  1 Jul 2019 16:46:57 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x616kimL003415
+ for <linuxppc-dev@ozlabs.org>; Mon, 1 Jul 2019 02:46:56 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tfapv5tvx-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 01 Jul 2019 02:46:55 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <linuxram@us.ibm.com>;
+ Mon, 1 Jul 2019 07:46:53 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 1 Jul 2019 07:46:50 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x616knRb47054894
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 1 Jul 2019 06:46:49 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CBF4AE055;
+ Mon,  1 Jul 2019 06:46:49 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3F10AE045;
+ Mon,  1 Jul 2019 06:46:45 +0000 (GMT)
+Received: from ram.ibm.com (unknown [9.80.225.192])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon,  1 Jul 2019 06:46:45 +0000 (GMT)
+Date: Sun, 30 Jun 2019 23:46:42 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
+ <20190628200825.31049-7-cclaudio@linux.ibm.com>
+ <f153b6bf-4661-9dc0-c28f-076fc8fe598e@ozlabs.ru>
+ <1e7f702a-c0cd-393d-934e-9e1a1234fe28@linux.vnet.ibm.com>
+ <abe23edf-e593-ca98-8047-39ecb6cf16b5@ozlabs.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <abe23edf-e593-ca98-8047-39ecb6cf16b5@ozlabs.ru>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 19070106-0008-0000-0000-000002F8AC11
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070106-0009-0000-0000-00002265EF11
+Message-Id: <20190701064642.GA5009@ram.ibm.com>
+Subject: Re:  Re: [PATCH v4 6/8] KVM: PPC: Ultravisor: Restrict LDBAR access
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-01_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=18 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907010085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,121 +107,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel @ lists . infradead . org"
- <linux-arm-kernel@lists.infradead.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: maddy <maddy@linux.vnet.ibm.com>, Michael Anderson <andmike@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ Ryan Grimm <grimm@linux.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Thiago Bauermann <bauerman@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
-Whether or not a vmap is huge depends on the architecture details,
-alignments, boot options, etc., which the caller can not be expected
-to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
+On Mon, Jul 01, 2019 at 04:30:55PM +1000, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 01/07/2019 16:17, maddy wrote:
+> > 
+> > On 01/07/19 11:24 AM, Alexey Kardashevskiy wrote:
+> >>
+> >> On 29/06/2019 06:08, Claudio Carvalho wrote:
+> >>> When the ultravisor firmware is available, it takes control over the
+> >>> LDBAR register. In this case, thread-imc updates and save/restore
+> >>> operations on the LDBAR register are handled by ultravisor.
+> >> What does LDBAR do? "Power ISA™ Version 3.0 B" or "User’s Manual POWER9
+> >> Processor" do not tell.
+> > LDBAR is a per-thread SPR used by thread-imc pmu to dump the counter
+> > data into memory.
+> > LDBAR contains memory address along with few other configuration bits
+> > (it is populated
+> > by the thread-imc pmu driver). It is populated and enabled only when any
+> > of the thread
+> > imc pmu events are monitored.
+> 
+> 
+> I was actually looking for a spec for this register, what is the
+> document name?
 
-This change teaches vmalloc_to_page about larger pages, and returns
-the struct page that corresponds to the offset within the large page.
-This makes the API agnostic to mapping implementation details.
+  Its not a architected register. Its documented in the Power9
+  workbook.
 
-[*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
-    fail gracefully on unexpected huge vmap mappings")
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- include/asm-generic/4level-fixup.h |  1 +
- include/asm-generic/5level-fixup.h |  1 +
- mm/vmalloc.c                       | 37 +++++++++++++++++++-----------
- 3 files changed, 26 insertions(+), 13 deletions(-)
-
-diff --git a/include/asm-generic/4level-fixup.h b/include/asm-generic/4level-fixup.h
-index e3667c9a33a5..3cc65a4dd093 100644
---- a/include/asm-generic/4level-fixup.h
-+++ b/include/asm-generic/4level-fixup.h
-@@ -20,6 +20,7 @@
- #define pud_none(pud)			0
- #define pud_bad(pud)			0
- #define pud_present(pud)		1
-+#define pud_large(pud)			0
- #define pud_ERROR(pud)			do { } while (0)
- #define pud_clear(pud)			pgd_clear(pud)
- #define pud_val(pud)			pgd_val(pud)
-diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
-index bb6cb347018c..c4377db09a4f 100644
---- a/include/asm-generic/5level-fixup.h
-+++ b/include/asm-generic/5level-fixup.h
-@@ -22,6 +22,7 @@
- #define p4d_none(p4d)			0
- #define p4d_bad(p4d)			0
- #define p4d_present(p4d)		1
-+#define p4d_large(p4d)			0
- #define p4d_ERROR(p4d)			do { } while (0)
- #define p4d_clear(p4d)			pgd_clear(p4d)
- #define p4d_val(p4d)			pgd_val(p4d)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 0f76cca32a1c..09a283866368 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -36,6 +36,7 @@
- #include <linux/rbtree_augmented.h>
- 
- #include <linux/uaccess.h>
-+#include <asm/pgtable.h>
- #include <asm/tlbflush.h>
- #include <asm/shmparam.h>
- 
-@@ -284,25 +285,35 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
- 
- 	if (pgd_none(*pgd))
- 		return NULL;
-+
- 	p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d))
- 		return NULL;
--	pud = pud_offset(p4d, addr);
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (p4d_large(*p4d))
-+		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(p4d_bad(*p4d)))
-+		return NULL;
- 
--	/*
--	 * Don't dereference bad PUD or PMD (below) entries. This will also
--	 * identify huge mappings, which we may encounter on architectures
--	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
--	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
--	 * not [unambiguously] associated with a struct page, so there is
--	 * no correct value to return for them.
--	 */
--	WARN_ON_ONCE(pud_bad(*pud));
--	if (pud_none(*pud) || pud_bad(*pud))
-+	pud = pud_offset(p4d, addr);
-+	if (pud_none(*pud))
-+		return NULL;
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (pud_large(*pud))
-+		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(pud_bad(*pud)))
- 		return NULL;
-+
- 	pmd = pmd_offset(pud, addr);
--	WARN_ON_ONCE(pmd_bad(*pmd));
--	if (pmd_none(*pmd) || pmd_bad(*pmd))
-+	if (pmd_none(*pmd))
-+		return NULL;
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-+	if (pmd_large(*pmd))
-+		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+#endif
-+	if (WARN_ON_ONCE(pmd_bad(*pmd)))
- 		return NULL;
- 
- 	ptep = pte_offset_map(pmd, addr);
--- 
-2.20.1
+RP
 
