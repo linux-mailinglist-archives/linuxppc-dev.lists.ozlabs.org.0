@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171D45BDD9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:14:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cq9v2YF3zDqXQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:14:11 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105E95BDED
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:17:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cqG31GcrzDqX6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:17:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cq562HXMzDq6K
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:10:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cq8S0ndKzDqBd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:12:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45cq541WHqz8t9Z
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:10:00 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45cq8K0Ywqz8tD1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:12:49 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45cq5360qFz9sPb; Tue,  2 Jul 2019 00:09:59 +1000 (AEST)
+ id 45cq8J5Lm4z9sPQ; Tue,  2 Jul 2019 00:12:48 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
@@ -33,62 +33,60 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45cq5325L3z9sPY
- for <linuxppc-dev@ozlabs.org>; Tue,  2 Jul 2019 00:09:59 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x61E8tVa003442
- for <linuxppc-dev@ozlabs.org>; Mon, 1 Jul 2019 10:09:56 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tfjreukd9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 01 Jul 2019 10:09:56 -0400
-Received: from localhost
- by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <cclaudio@linux.ibm.com>;
- Mon, 1 Jul 2019 15:09:55 +0100
-Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
- by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 1 Jul 2019 15:09:53 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x61E9qkG38863262
+ by ozlabs.org (Postfix) with ESMTPS id 45cq8J0DLVz9sPF;
+ Tue,  2 Jul 2019 00:12:47 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x61E8Ppi180503; Mon, 1 Jul 2019 10:12:46 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tfkmb8gs3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jul 2019 10:12:45 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x61E9lH8014210;
+ Mon, 1 Jul 2019 14:12:45 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma01dal.us.ibm.com with ESMTP id 2tdym6qcbx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jul 2019 14:12:44 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x61ECgvJ49480050
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 14:09:52 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4522EAC066;
- Mon,  1 Jul 2019 14:09:52 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDB3EAC05B;
- Mon,  1 Jul 2019 14:09:49 +0000 (GMT)
-Received: from rino.ibm.com (unknown [9.80.232.19])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 14:09:49 +0000 (GMT)
+ Mon, 1 Jul 2019 14:12:43 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D8150C6061;
+ Mon,  1 Jul 2019 14:12:42 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E301BC605A;
+ Mon,  1 Jul 2019 14:12:39 +0000 (GMT)
+Received: from [9.80.232.19] (unknown [9.80.232.19])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  1 Jul 2019 14:12:39 +0000 (GMT)
+Subject: Re: [PATCH v3 3/9] powerpc: Introduce FW_FEATURE_ULTRAVISOR
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <20190606173614.32090-1-cclaudio@linux.ibm.com>
+ <20190606173614.32090-4-cclaudio@linux.ibm.com>
+ <20190615073600.GA24709@blackberry>
 From: Claudio Carvalho <cclaudio@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [RFC PATCH] powerpc: Add the ppc_capabilities ELF note
-Date: Mon,  1 Jul 2019 11:09:48 -0300
-X-Mailer: git-send-email 2.20.1
+Message-ID: <990dd9d3-441a-229c-a007-817d1dd856be@linux.ibm.com>
+Date: Mon, 1 Jul 2019 11:12:38 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190615073600.GA24709@blackberry>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-TM-AS-GCONF: 00
-x-cbid: 19070114-0064-0000-0000-000003F5BE4C
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011359; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01225922; UDB=6.00645354; IPR=6.01007135; 
- MB=3.00027534; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-01 14:09:54
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070114-0065-0000-0000-00003E196B74
-Message-Id: <20190701140948.26775-1-cclaudio@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-01_09:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1907010175
@@ -103,81 +101,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Thiago Bauermann <bauerman@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add the ppc_capabilities ELF note to the powerpc kernel binary. It is a
-bitmap that can be used to advertise kernel capabilities to userland.
 
-This patch also defines PPCCAP_ULTRAVISOR_BIT as being the bit zero.
+On 6/15/19 4:36 AM, Paul Mackerras wrote:
+> On Thu, Jun 06, 2019 at 02:36:08PM -0300, Claudio Carvalho wrote:
+>> This feature tells if the ultravisor firmware is available to handle
+>> ucalls.
+> Everything in this patch that depends on CONFIG_PPC_UV should just
+> depend on CONFIG_PPC_POWERNV instead.  The reason is that every host
+> kernel needs to be able to do the ultracall to set partition table
+> entry 0, in case it ends up being run on a machine with an ultravisor.
+> Otherwise we will have the situation where a host kernel may crash
+> early in boot just because the machine it's booted on happens to have
+> an ultravisor running.  The crash will be a particularly nasty one
+> because it will happen before we have probed the machine type and
+> initialized the console; therefore it will just look like the machine
+> hangs for no discernable reason.
 
-Suggested-by: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
----
- arch/powerpc/kernel/Makefile |  2 +-
- arch/powerpc/kernel/note.S   | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/kernel/note.S
+> We also need to think about how to provide a way for petitboot to know
+> whether the kernel it is booting knows how to do a ucall to set its
+> partition table entry.  One suggestion would be to modify
+> vmlinux.lds.S to add a new PT_NOTE entry in the program header of the
+> binary with (say) a 64-bit doubleword which is a bitmap indicating
+> capabilities of the binary.  We would define the first bit as
+> indicating that the kernel knows how to run under an ultravisor.
+> When running under an ultravisor, petitboot could then look for the
+> PT_NOTE and the ultravisor-capable bit in it, and if the PT_NOTE is
+> not there or the bit is zero, put up a dialog warning the user that
+> the kernel will probably crash early in boot, and asking for explicit
+> confirmation that the user wants to proceed.
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 0ea6c4aa3a20..4ec36fe4325b 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -49,7 +49,7 @@ obj-y				:= cputable.o ptrace.o syscalls.o \
- 				   signal.o sysfs.o cacheinfo.o time.o \
- 				   prom.o traps.o setup-common.o \
- 				   udbg.o misc.o io.o misc_$(BITS).o \
--				   of_platform.o prom_parse.o
-+				   of_platform.o prom_parse.o note.o
- obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
- 				   signal_64.o ptrace32.o \
- 				   paca.o nvram_64.o firmware.o
-diff --git a/arch/powerpc/kernel/note.S b/arch/powerpc/kernel/note.S
-new file mode 100644
-index 000000000000..721bf8ce9eb7
---- /dev/null
-+++ b/arch/powerpc/kernel/note.S
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * PowerPC ELF notes.
-+ *
-+ * Copyright 2019, IBM Corporation
-+ */
-+#include <linux/elfnote.h>
-+
-+/*
-+ * Ultravisor-capable bit (PowerNV only).
-+ *
-+ * Indicate that the powerpc kernel binary knows how to run in an
-+ * ultravisor-enabled system.
-+ *
-+ * In an ultravisor-enabled system, some machine resources are now controlled
-+ * by the ultravisor. If the kernel is not ultravisor-capable, but it ends up
-+ * being run on a machine with ultravisor, the kernel will probably crash
-+ * trying to access ultravisor resources. For instance, it may crash in early
-+ * boot trying to set the partition table entry 0.
-+ *
-+ * In an ultravisor-enabled system, petitboot can warn the user or prevent the
-+ * kernel from being run if the ppc_capabilities doesn't exist or the
-+ * Ultravisor-capable bit is not set.
-+ */
-+#if defined(CONFIG_PPC_POWERNV)
-+#define PPCCAP_ULTRAVISOR_BIT		(1 << 0)
-+#else
-+#define PPCCAP_ULTRAVISOR_BIT		0
-+#endif
-+
-+/*
-+ * Add the ppc_capabilities ELF note to the powerpc kernel binary. It is a
-+ * bitmap that can be used to advertise kernel capabilities to userland.
-+ */
-+ELFNOTE(ppc_capabilities, 3,
-+	.long PPCCAP_ULTRAVISOR_BIT)
--- 
-2.20.1
 
+I just posted a separated RFC patch for the ELF note.
+
+Thanks, Claudio.
+
+
+>
+> Paul.
+>
