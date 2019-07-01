@@ -2,89 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF73E5B2B4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 03:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914B25B2E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 04:19:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cV4n56sjzDqTb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 11:23:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cWJw01SMzDqVD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 12:19:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="HOkM7uUB"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cV3H3Q8CzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 11:22:17 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x611Ljhi003890
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 21:22:13 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2texjwq0fb-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 21:22:13 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Mon, 1 Jul 2019 02:22:11 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 1 Jul 2019 02:22:08 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x611M7fK56492262
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 01:22:07 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C580B4203F;
- Mon,  1 Jul 2019 01:22:07 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7190D42049;
- Mon,  1 Jul 2019 01:22:07 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 01:22:07 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2FDB1A0194;
- Mon,  1 Jul 2019 11:22:06 +1000 (AEST)
-Subject: Re: [PATCH 22/39] docs: ocxl.rst: add it to the uAPI book
-To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>
-References: <cover.1561724493.git.mchehab+samsung@kernel.org>
- <ee63ec4412f2f8c87da877f67f693f2cd85c1a37.1561724493.git.mchehab+samsung@kernel.org>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Mon, 1 Jul 2019 11:21:58 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cWHF3b2vzDqQF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 12:17:44 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id 81so5726389pfy.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 19:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=VBA2GtoG6Dte3kaikORSGJ3wczAlTPnz7XIiNbM/Zdc=;
+ b=HOkM7uUBvlOhEIPY9n1kkHhVD/PwkjY2d6lyJmFk6r0TegwQpFBapaDIRFZdm6i4ZW
+ Cgl6/ObphiITWGYnf+HKOyJhjX23NyLe2vBQaHw1zaqrZrY0T6Pr49m7x8HOocbC9kif
+ cGj70/GYgBuT8HKFYm370lGD7YTjDTo0OgTfx66tJO/rasH87KFMc9ZTdX0wgEaXw94b
+ dLp8P8rEk1jKMG0JWR8R/bqibg6lF1jlOo1gDrEvyhMRm+hJu1/Tvf84ElvpkCniYAdp
+ iTEkZSFAIctnruCZ4zLcCqUbYVTdwcOxgS0+GU75ooofIKSUmseIYw8iKC7gp9Q3nD1N
+ L5Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=VBA2GtoG6Dte3kaikORSGJ3wczAlTPnz7XIiNbM/Zdc=;
+ b=hY6AdlhHInth0pUN3sat4EgWygE/K6dOhHTDQll6Os/rPwJea39DhR95DUKXOHzRhP
+ R/rVQdAhV90BX4vFJqYzVFfQlg5NvhMV4RhrBP3eb9QHp0qT665Ilpm8HB/c9IrvMuR+
+ KhFzsGrL/OG+CX883O425QMZ0fpFSRoce93zMKZO3AIiNW5CzPfNsVjVFDu0NUMICy9K
+ cLEU35Oly9k31ZtBfSLVknwKa8UtID6hTs0MoNDno3YibGdmd4M0CJ2D/fRv6OSbZPW6
+ m67Z9KAZw0OT7koK6nEGz8zlf6nU8X7lv2MU1LtnoFT2XjFQKmPcd8iXJVP1SU14BNBD
+ diqg==
+X-Gm-Message-State: APjAAAXE/Y32l0A6GbyVgJLAqin4pbEbAlYkcGV3K2rfXlZv8SZ1y1wX
+ LClvXNW7jPmWaYfzKwporcc=
+X-Google-Smtp-Source: APXvYqz57mclmnTH2o4zEbMrswuqvMS7qDMILfhIV0H4o9E7hACWc+VkzF9NqFMZMhygXSDqO+TUnw==
+X-Received: by 2002:a63:4d05:: with SMTP id a5mr20546203pgb.19.1561947461418; 
+ Sun, 30 Jun 2019 19:17:41 -0700 (PDT)
+Received: from localhost ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id w132sm9743907pfd.78.2019.06.30.19.17.39
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Sun, 30 Jun 2019 19:17:40 -0700 (PDT)
+Date: Mon, 01 Jul 2019 12:17:26 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/mm/radix: Use the right page size for vmemmap
+ mapping
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
+ paulus@samba.org
+References: <20190629073829.13095-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190629073829.13095-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <ee63ec4412f2f8c87da877f67f693f2cd85c1a37.1561724493.git.mchehab+samsung@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070101-0028-0000-0000-0000037F25DE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070101-0029-0000-0000-0000243F590A
-Message-Id: <7ac03678-3395-cdcf-6401-7856da4287c7@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-30_13:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907010016
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1561947331.l5nlocglj3.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,68 +81,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28/6/19 10:30 pm, Mauro Carvalho Chehab wrote:
-> The content of this file is user-faced.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Aneesh Kumar K.V's on June 29, 2019 5:38 pm:
+> Also on hash with 4K PAGE_SIZE make sure we use 4K page size for
+> vmemmap.
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Can you add a line in the changelog to describe the radix problem
+you fixed?
 
+Also I would say the also could be a separate patch?
+
+Thanks,
+Nick
+
+>=20
+> Fixes: 2bfd65e45e87 ("powerpc/mm/radix: Add radix callbacks for early ini=
+t routines")
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->   Documentation/{ => userspace-api}/accelerators/ocxl.rst | 2 --
->   Documentation/userspace-api/index.rst                   | 1 +
->   MAINTAINERS                                             | 2 +-
->   3 files changed, 2 insertions(+), 3 deletions(-)
->   rename Documentation/{ => userspace-api}/accelerators/ocxl.rst (99%)
-> 
-> diff --git a/Documentation/accelerators/ocxl.rst b/Documentation/userspace-api/accelerators/ocxl.rst
-> similarity index 99%
-> rename from Documentation/accelerators/ocxl.rst
-> rename to Documentation/userspace-api/accelerators/ocxl.rst
-> index b1cea19a90f5..14cefc020e2d 100644
-> --- a/Documentation/accelerators/ocxl.rst
-> +++ b/Documentation/userspace-api/accelerators/ocxl.rst
-> @@ -1,5 +1,3 @@
-> -:orphan:
-> -
->   ========================================================
->   OpenCAPI (Open Coherent Accelerator Processor Interface)
->   ========================================================
-> diff --git a/Documentation/userspace-api/index.rst b/Documentation/userspace-api/index.rst
-> index a3233da7fa88..ad494da40009 100644
-> --- a/Documentation/userspace-api/index.rst
-> +++ b/Documentation/userspace-api/index.rst
-> @@ -20,6 +20,7 @@ place where this information is gathered.
->      seccomp_filter
->      unshare
->      spec_ctrl
-> +   accelerators/ocxl
->   
->   .. only::  subproject and html
->   
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 29d1498ad39d..f723371dccd0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11483,7 +11483,7 @@ F:	arch/powerpc/include/asm/pnv-ocxl.h
->   F:	drivers/misc/ocxl/
->   F:	include/misc/ocxl*
->   F:	include/uapi/misc/ocxl.h
-> -F:	Documentation/accelerators/ocxl.rst
-> +F:	Documentation/userspace-api/accelerators/ocxl.rst
->   
->   OMAP AUDIO SUPPORT
->   M:	Peter Ujfalusi <peter.ujfalusi@ti.com>
-> 
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+>  arch/powerpc/mm/book3s64/hash_utils.c    |  4 +---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 16 +++++++---------
+>  2 files changed, 8 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book=
+3s64/hash_utils.c
+> index 49f8c8940bd9..54013bbc60aa 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -686,10 +686,8 @@ static void __init htab_init_page_sizes(void)
+>  	if (mmu_psize_defs[MMU_PAGE_16M].shift &&
+>  	    memblock_phys_mem_size() >=3D 0x40000000)
+>  		mmu_vmemmap_psize =3D MMU_PAGE_16M;
+> -	else if (mmu_psize_defs[MMU_PAGE_64K].shift)
+> -		mmu_vmemmap_psize =3D MMU_PAGE_64K;
+>  	else
+> -		mmu_vmemmap_psize =3D MMU_PAGE_4K;
+> +		mmu_vmemmap_psize =3D mmu_virtual_psize;
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+> =20
+>  	printk(KERN_DEBUG "Page orders: linear mapping =3D %d, "
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
+ook3s64/radix_pgtable.c
+> index 60d97fab4de2..03d804a0dc8c 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -529,14 +529,6 @@ void __init radix__early_init_devtree(void)
+>  	mmu_psize_defs[MMU_PAGE_64K].shift =3D 16;
+>  	mmu_psize_defs[MMU_PAGE_64K].ap =3D 0x5;
+>  found:
+> -#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> -	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
+> -		/*
+> -		 * map vmemmap using 2M if available
+> -		 */
+> -		mmu_vmemmap_psize =3D MMU_PAGE_2M;
+> -	}
+> -#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>  	return;
+>  }
+> =20
+> @@ -601,7 +593,13 @@ void __init radix__early_init_mmu(void)
+> =20
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>  	/* vmemmap mapping */
+> -	mmu_vmemmap_psize =3D mmu_virtual_psize;
+> +	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
+> +		/*
+> +		 * map vmemmap using 2M if available
+> +		 */
+> +		mmu_vmemmap_psize =3D MMU_PAGE_2M;
+> +	} else
+> +		mmu_vmemmap_psize =3D mmu_virtual_psize;
+>  #endif
+>  	/*
+>  	 * initialize page table size
+> --=20
+> 2.21.0
+>=20
+>=20
+=
