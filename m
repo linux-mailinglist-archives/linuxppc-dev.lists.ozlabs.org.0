@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12EB5B53E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 08:44:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cdBf0lbjzDqSk
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:44:10 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AA15B545
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 08:46:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cdFC01WszDqQn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:46:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Yv7ONmA4"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ouq5FzdI"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cd6x1tSczDqSJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 16:40:57 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id d126so6047321pfd.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 23:40:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cd6z1QDszDqQ6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 16:40:59 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id g15so3624664pgi.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 23:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=pKOh82x9P2FXMy8MB5i8VNrUUku24zVBdhYruM45v1s=;
- b=Yv7ONmA4HXrBg5Z7fqXzGOQbgQwuhlK4G2llLAPL9hd//uUhAJCdLP1gC4MiqhQmS1
- PV4CZ1/6GPjUs6tQxXSl9GVwIuOpYlj0kPjLUd5KNaZDhIEToxG1Sa+JbI0gqbWYCnK1
- nlIT45EuZA6x+yj65DFrpUmE+ukUb3brmWRiJ0sEST0egchnVhKD3wf61QoTZodMZhmy
- k4LLY0TR+zKUetQRGdhUpKeJcCk0KpXMV/eM/4aPeAhRmDX3A00d0snpwA3wONNLJH4u
- fRpP7dt48AfYD+D5tlNpsUuYik0uEhm3cuSW3WNaRLnnooak0yNkr7b21OrBtbTM1gge
- bOuA==
+ bh=6Zlw/hCGICkGVg8omOyX/d2u3HngLNHtlfTr8g+whbg=;
+ b=ouq5FzdIf9rNySj7b3zWVPcAwWspCJDbKnSjFCLmfjwBeC3LJPB34aIN0+a7wQ8McC
+ p1Txuhs4kMtY+16Cqhhps3AA30X2hrE5mj6QueTPMfgLdP9ZAL77JuJMAafKBj8Wct8b
+ QjxaYZ1kTJ5UE+4AUmDCQjs7UUTxxBoXRQu5Wj84zOrGTJ8ez4CMlZFv3/c0+r5SCFqa
+ UrMNuge9PYhXovbwW/X9u2mXxujZnpVUsInRSBgusFGBG9eoHqQ+JcLGdPYGoL91mbVG
+ Yu1phLwtKP+clAkHJhLFNUWD84oz9qvm0JbedtUx+FFMqCYLfFmH0zttRDXk8AY+NjND
+ E4nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=pKOh82x9P2FXMy8MB5i8VNrUUku24zVBdhYruM45v1s=;
- b=gA043sXpGZzXcLxPlMBnd4Qv1agLf3D2X34vBbTlXVro+hC+0udOqlHbh9okSPHUUG
- yxDYj9MCaSTMwigdg3PtBXHO9VCDItro6a51A8SVqEsBcAvS6QPz8TVnuT9fEpvKkbrk
- +YUqNT7eiF1oSC3IR/ICugcf/imIq/sa2VOThQq1oqK9jojnssu5mm1PDn5kgJ72Zif3
- KRZBdX8L6Q5xdaJrLab3/HpdwMXueReQie7TeSf1un/FuEs8F/K+e9iYVLZba6C7QP/J
- Zd5Dq0trhCFhQ0pn693hoeOicqGdpQN2dx+qRWGJRRdND3XoPvxjHfJI/TAtU2CFLQ3G
- pGCg==
-X-Gm-Message-State: APjAAAXL5y/NBMKxhAPhUSG7/bizak4W8Z7llErKPqQtqycRvLsG73f/
- bH71CC4uKxfMDTAPY9ZbIxk=
-X-Google-Smtp-Source: APXvYqyuG0y2ZSl0o0Y8HuBhNNVpR47p1znHr/GTjxdAJLwOfhhJ0EB9nOQKOhPc/GH1Qv7SUWLDfA==
-X-Received: by 2002:a17:90a:eb08:: with SMTP id
- j8mr14461754pjz.72.1561963253877; 
- Sun, 30 Jun 2019 23:40:53 -0700 (PDT)
+ bh=6Zlw/hCGICkGVg8omOyX/d2u3HngLNHtlfTr8g+whbg=;
+ b=Ja/XUk23fE3ycdgt4qA8bXe8AGreeS50cqu6KD9o1AaoLnElpOvzTPqA9+pQalt7Jz
+ i9NFtUiPVwGZI0npDWiNK98NyXr5P/3TjzzZuGNmOw8BtQw357wCZKcLh9wJLkKzXM5U
+ 4LtjLX+ORDZ2nL+Cv5QcUZpfRWkMDafAIyhH1HzMXVfiXaE0rHKqQoCxWi0nIHgvHJOR
+ qlrawRrN2VgY6s4fIuRMht4dvGe+gAmRZoWxSlEp644cB0T2dcjiJD3rXIecIqPej9z+
+ odKwrjHcXNRJNHYvyr4n0TNVVzBSkc379JXeWRrXbJanX9xK3MLWd2R/uhZ7QYhuex70
+ zCkg==
+X-Gm-Message-State: APjAAAUaLUHyhgjlaz9t1I3Yfo4f0wzlxJTXwzXu7rwvvOpB7Pd7Ipnf
+ yicXV5xOnyC1OmYuyQp0LX4=
+X-Google-Smtp-Source: APXvYqx98EZ/1NGwoXYug6FXGMmAdVT2/AyL1LfX+2sBRIhK5AVZczoBxviaDZiO/22AP1OmmeXKEg==
+X-Received: by 2002:a17:90a:ac11:: with SMTP id
+ o17mr29589490pjq.134.1561963257515; 
+ Sun, 30 Jun 2019 23:40:57 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id x128sm24238285pfd.17.2019.06.30.23.40.49
+ by smtp.gmail.com with ESMTPSA id x128sm24238285pfd.17.2019.06.30.23.40.54
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 30 Jun 2019 23:40:53 -0700 (PDT)
+ Sun, 30 Jun 2019 23:40:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: "linux-mm @ kvack . org" <linux-mm@kvack.org>
-Subject: [PATCH v2 1/3] arm64: mm: Add p?d_large() definitions
-Date: Mon,  1 Jul 2019 16:40:24 +1000
-Message-Id: <20190701064026.970-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/3] powerpc/64s: Add p?d_large definitions
+Date: Mon,  1 Jul 2019 16:40:25 +1000
+Message-Id: <20190701064026.970-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190701064026.970-1-npiggin@gmail.com>
 References: <20190701064026.970-1-npiggin@gmail.com>
@@ -81,10 +81,8 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mark Rutland <mark.rutland@arm.com>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, Will Deacon <will.deacon@arm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Steven Price <steven.price@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
  "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
  "linux-arm-kernel @ lists . infradead . org"
  <linux-arm-kernel@lists.infradead.org>
@@ -92,49 +90,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-walk_page_range() is going to be allowed to walk page tables other than
-those of user space. For this it needs to know when it has reached a
-'leaf' entry in the page tables. This information will be provided by the
-p?d_large() functions/macros.
+The subsequent patch to fix vmalloc_to_page with huge vmap requires
+HUGE_VMAP archs to provide p?d_large definitions for the non-pgd page
+table levels they support.
 
-For arm64, we already have p?d_sect() macros which we can reuse for
-p?d_large().
-
-pud_sect() is defined as a dummy function when CONFIG_PGTABLE_LEVELS < 3
-or CONFIG_ARM64_64K_PAGES is defined. However when the kernel is
-configured this way then architecturally it isn't allowed to have a
-large page that this level, and any code using these page walking macros
-is implicitly relying on the page size/number of levels being the same as
-the kernel. So it is safe to reuse this for p?d_large() as it is an
-architectural restriction.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/arm64/include/asm/pgtable.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 24 ++++++++++++--------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index fca26759081a..0e973201bc16 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -417,6 +417,7 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- 				 PMD_TYPE_TABLE)
- #define pmd_sect(pmd)		((pmd_val(pmd) & PMD_TYPE_MASK) == \
- 				 PMD_TYPE_SECT)
-+#define pmd_large(pmd)		pmd_sect(pmd)
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index ccf00a8b98c6..c19c8396a1bd 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -915,6 +915,11 @@ static inline int pud_present(pud_t pud)
+ 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PRESENT));
+ }
  
- #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
- #define pud_sect(pud)		(0)
-@@ -499,6 +500,7 @@ static inline void pte_unmap(pte_t *pte) { }
- #define pud_none(pud)		(!pud_val(pud))
- #define pud_bad(pud)		(!(pud_val(pud) & PUD_TABLE_BIT))
- #define pud_present(pud)	pte_present(pud_pte(pud))
-+#define pud_large(pud)		pud_sect(pud)
- #define pud_valid(pud)		pte_valid(pud_pte(pud))
++static inline int pud_large(pud_t pud)
++{
++	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
++}
++
+ extern struct page *pud_page(pud_t pud);
+ extern struct page *pmd_page(pmd_t pmd);
+ static inline pte_t pud_pte(pud_t pud)
+@@ -958,6 +963,11 @@ static inline int pgd_present(pgd_t pgd)
+ 	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PRESENT));
+ }
  
- static inline void set_pud(pud_t *pudp, pud_t pud)
++static inline int pgd_large(pgd_t pgd)
++{
++	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ static inline pte_t pgd_pte(pgd_t pgd)
+ {
+ 	return __pte_raw(pgd_raw(pgd));
+@@ -1083,6 +1093,11 @@ static inline pte_t *pmdp_ptep(pmd_t *pmd)
+ #define pmd_mk_savedwrite(pmd)	pte_pmd(pte_mk_savedwrite(pmd_pte(pmd)))
+ #define pmd_clear_savedwrite(pmd)	pte_pmd(pte_clear_savedwrite(pmd_pte(pmd)))
+ 
++static inline int pmd_large(pmd_t pmd)
++{
++	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+ #define pmd_soft_dirty(pmd)    pte_soft_dirty(pmd_pte(pmd))
+ #define pmd_mksoft_dirty(pmd)  pte_pmd(pte_mksoft_dirty(pmd_pte(pmd)))
+@@ -1151,15 +1166,6 @@ pmd_hugepage_update(struct mm_struct *mm, unsigned long addr, pmd_t *pmdp,
+ 	return hash__pmd_hugepage_update(mm, addr, pmdp, clr, set);
+ }
+ 
+-/*
+- * returns true for pmd migration entries, THP, devmap, hugetlb
+- * But compile time dependent on THP config
+- */
+-static inline int pmd_large(pmd_t pmd)
+-{
+-	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+-}
+-
+ static inline pmd_t pmd_mknotpresent(pmd_t pmd)
+ {
+ 	return __pmd(pmd_val(pmd) & ~_PAGE_PRESENT);
 -- 
 2.20.1
 
