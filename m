@@ -2,89 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5395BD3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 15:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF935BD41
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 15:48:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cpWX2z0pzDqWg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 23:44:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cpbs2J0gzDqXQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 23:48:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=teo-en-ming-corp.com
- (client-ip=40.107.132.55; helo=apc01-pu1-obe.outbound.protection.outlook.com;
- envelope-from=ceo@teo-en-ming-corp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=teo-en-ming-corp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=teoenmingcorp.onmicrosoft.com
- header.i=@teoenmingcorp.onmicrosoft.com header.b="hLGn5b+w"; 
- dkim-atps=neutral
-Received: from APC01-PU1-obe.outbound.protection.outlook.com
- (mail-eopbgr1320055.outbound.protection.outlook.com [40.107.132.55])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cpQR3K1HzDq67
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 23:39:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=teoenmingcorp.onmicrosoft.com; s=selector1-teoenmingcorp-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=96O5MXNkh4e/qcijD4c6DJjt+tR9hQRZiGJBSeoSjto=;
- b=hLGn5b+whvT1gcH1+ZIjz3VPQmwoo0TnEyibQvUMM2WXGovHMTmhxK2YTrOks3e8ghp/cbesZ0/+SwW9C4n+DS3i5ZOZLTFckAxyU9klswf9h5pjPZEzepjLpFAhpbucd1JjIXoIa0S6Z1yYLqWGOnmTfAtwjGERt/sKuKUncBU=
-Received: from SG2PR01MB2141.apcprd01.prod.exchangelabs.com (10.170.143.19) by
- SG2PR01MB2758.apcprd01.prod.exchangelabs.com (20.177.169.76) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2032.20; Mon, 1 Jul 2019 13:39:53 +0000
-Received: from SG2PR01MB2141.apcprd01.prod.exchangelabs.com
- ([fe80::d503:3d71:ce06:19d2]) by SG2PR01MB2141.apcprd01.prod.exchangelabs.com
- ([fe80::d503:3d71:ce06:19d2%6]) with mapi id 15.20.2032.019; Mon, 1 Jul 2019
- 13:39:53 +0000
-From: Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Can I compile Linux Kernel 5.2-rc7 for PowerPC on Intel/AMD x86
- hardware?
-Thread-Topic: Can I compile Linux Kernel 5.2-rc7 for PowerPC on Intel/AMD x86
- hardware?
-Thread-Index: AdUwEWXcSp8oXCNpSyC6tLAQx0KDlw==
-Date: Mon, 1 Jul 2019 13:39:52 +0000
-Message-ID: <SG2PR01MB2141EE2AEA0C727527DAC4B087F90@SG2PR01MB2141.apcprd01.prod.exchangelabs.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ceo@teo-en-ming-corp.com; 
-x-originating-ip: [118.189.211.120]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a7806ff5-866e-468b-77b7-08d6fe2998d9
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);
- SRVR:SG2PR01MB2758; 
-x-ms-traffictypediagnostic: SG2PR01MB2758:
-x-ms-exchange-purlcount: 4
-x-microsoft-antispam-prvs: <SG2PR01MB27588AD691C6C0FAE5961EC387F90@SG2PR01MB2758.apcprd01.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 00851CA28B
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(366004)(376002)(396003)(39830400003)(346002)(136003)(189003)(199004)(966005)(53936002)(76116006)(14454004)(73956011)(66946007)(186003)(256004)(81166006)(68736007)(7696005)(8676002)(26005)(486006)(476003)(25786009)(55016002)(64756008)(66066001)(6436002)(66556008)(2906002)(81156014)(66446008)(6506007)(6306002)(66476007)(4326008)(9686003)(5640700003)(508600001)(71200400001)(99286004)(86362001)(74316002)(33656002)(2351001)(7736002)(305945005)(52536014)(3846002)(6116002)(4744005)(2501003)(5660300002)(107886003)(316002)(6916009)(102836004)(8936002)(71190400001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:SG2PR01MB2758;
- H:SG2PR01MB2141.apcprd01.prod.exchangelabs.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: teo-en-ming-corp.com does not
- designate permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: KS5npNGPiKySEiWfh8WX3e2MeE14J5cB4jS3wIdfRmqACMbrI/seAx3K9HvzBN7wHeWPB8v0bVof1GWZmPu+kArInOsR5BWzlnESdGk6dIcZ3zmfwLi6fpeiVGWtkJWuRTiZUCm3c6ibrJQuypZ8uycclMs13M1uYjIMTHx78APlSz9smw9CzYM8Wjr3kCTsuJidL8Tx1UoJMgXp5u5BjnJ9YXYVGkfv4/Z3dobQU7pM2K2M+YhhkM2JHqGjEiuvN/9vXNU/lZQKOgTFnpqyaASBu3em0QVw8fv22PlMCD9VcSCx8dxFUf5rR2PJnk56yAPnyTF8X8NNBeuy6RHNiQ7Lk/UzZRJ2Pho7B3tG2P+l7WgzHJeE2KlCBC/RHORIZ2K4ppSm/ZFySRfCzgcs3mMQSFvi/IJoyfmMsIsRG4k=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cpRc2H2gzDqDB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 23:40:59 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x61Db0kZ140919
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 1 Jul 2019 09:40:55 -0400
+Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tfhwd5dfg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 09:40:54 -0400
+Received: from localhost
+ by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Mon, 1 Jul 2019 14:40:53 +0100
+Received: from b01cxnp23034.gho.pok.ibm.com (9.57.198.29)
+ by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 1 Jul 2019 14:40:49 +0100
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x61DemPZ30540184
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 1 Jul 2019 13:40:48 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6EBCAC060;
+ Mon,  1 Jul 2019 13:40:48 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 84695AC059;
+ Mon,  1 Jul 2019 13:40:46 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.81.231])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon,  1 Jul 2019 13:40:46 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com, akpm@linux-foundation.org
+Subject: [PATCH] mm/nvdimm: Add is_ioremap_addr and use that to check ioremap
+ address
+Date: Mon,  1 Jul 2019 19:10:38 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-OriginatorOrg: teo-en-ming-corp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7806ff5-866e-468b-77b7-08d6fe2998d9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2019 13:39:52.9098 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 23b3f6ae-c453-4b93-aec9-f17508e5885c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ceo@teo-en-ming-corp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR01MB2758
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070113-0064-0000-0000-000003F5BBF2
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011359; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01225913; UDB=6.00645348; IPR=6.01007125; 
+ MB=3.00027534; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-01 13:40:51
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070113-0065-0000-0000-00003E195962
+Message-Id: <20190701134038.14165-1-aneesh.kumar@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-01_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=933 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907010168
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,41 +90,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Good evening from Singapore,
+Architectures like powerpc use different address range to map ioremap
+and vmalloc range. The memunmap() check used by the nvdimm layer was
+wrongly using is_vmalloc_addr() to check for ioremap range which fails for
+ppc64. This result in ppc64 not freeing the ioremap mapping. The side effect
+of this is an unbind failure during module unload with papr_scm nvdimm driver
 
-Can I compile Linux Kernel 5.2-rc7 for PowerPC on Intel/AMD x86 hardware, f=
-or example, AMD Ryzen 9 3950X, with 16 CPU cores and 32 threads?
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/pgtable.h | 14 ++++++++++++++
+ include/linux/mm.h                 |  5 +++++
+ kernel/iomem.c                     |  2 +-
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
-Is it called cross-compiling?
-
-Thank you.
-
------BEGIN EMAIL SIGNATURE-----
-
-The Gospel for all Targeted Individuals (TIs):
-
-[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
-U.S. Embassy Workers
-
-Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwav=
-e.html
-
-***************************************************************************=
-*****************
-
-Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
-Qualifications as at 14 Feb 2019
-
-[1] https://tdtemcerts.wordpress.com/
-
-[2] https://tdtemcerts.blogspot.sg/
-
-[3] https://www.scribd.com/user/270125049/Teo-En-Ming
-
------END EMAIL SIGNATURE-----
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+index 3f53be60fb01..64145751b2fd 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -140,6 +140,20 @@ static inline void pte_frag_set(mm_context_t *ctx, void *p)
+ }
+ #endif
+ 
++#ifdef CONFIG_PPC64
++#define is_ioremap_addr is_ioremap_addr
++static inline bool is_ioremap_addr(const void *x)
++{
++#ifdef CONFIG_MMU
++	unsigned long addr = (unsigned long)x;
++
++	return addr >= IOREMAP_BASE && addr < IOREMAP_END;
++#else
++	return false;
++#endif
++}
++#endif /* CONFIG_PPC64 */
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* _ASM_POWERPC_PGTABLE_H */
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 973ebf71f7b6..65b2eb6c9f0a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -633,6 +633,11 @@ static inline bool is_vmalloc_addr(const void *x)
+ 	return false;
+ #endif
+ }
++
++#ifndef is_ioremap_addr
++#define is_ioremap_addr(x) is_vmalloc_addr(x)
++#endif
++
+ #ifdef CONFIG_MMU
+ extern int is_vmalloc_or_module_addr(const void *x);
+ #else
+diff --git a/kernel/iomem.c b/kernel/iomem.c
+index 93c264444510..62c92e43aa0d 100644
+--- a/kernel/iomem.c
++++ b/kernel/iomem.c
+@@ -121,7 +121,7 @@ EXPORT_SYMBOL(memremap);
+ 
+ void memunmap(void *addr)
+ {
+-	if (is_vmalloc_addr(addr))
++	if (is_ioremap_addr(addr))
+ 		iounmap((void __iomem *) addr);
+ }
+ EXPORT_SYMBOL(memunmap);
+-- 
+2.21.0
 
