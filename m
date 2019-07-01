@@ -1,88 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E5E5B46C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 07:57:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0A55B469
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 07:55:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cc6j4f5QzDqTK
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 15:55:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cc8Q6S5KzDqSq
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 15:57:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cc5413SHzDqSW
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 15:54:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cc5665tnzDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 15:54:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="NHWgXpJm"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="FTYR690R"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45cc5373gzz8sxT
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 15:54:15 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45cc561NQyz8sxT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 15:54:18 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45cc536vwjz9sPT; Mon,  1 Jul 2019 15:54:15 +1000 (AEST)
+ id 45cc560FCzz9s4Y; Mon,  1 Jul 2019 15:54:18 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="NHWgXpJm"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="FTYR690R"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45cc534nMHz9s4Y
- for <linuxppc-dev@ozlabs.org>; Mon,  1 Jul 2019 15:54:13 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id r1so5965530pfq.12
- for <linuxppc-dev@ozlabs.org>; Sun, 30 Jun 2019 22:54:13 -0700 (PDT)
+ by ozlabs.org (Postfix) with ESMTPS id 45cc555Hf8z9sPZ
+ for <linuxppc-dev@ozlabs.org>; Mon,  1 Jul 2019 15:54:17 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id cl9so6708912plb.10
+ for <linuxppc-dev@ozlabs.org>; Sun, 30 Jun 2019 22:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=EusdwECv3FSYGfl0QnviOkJqhLYRClZ95P0kHIs/+W0=;
- b=NHWgXpJmgLLrVOzoDyWwSHBTSkE5HZSfgLp1Y2viMYZjvSliquTdnrcPTNFAkgzBCO
- pQja2uYsxWPzpStmvPSWBar706fcalig1KmhybImqDPpis0/cJgn9W/cvEytUyInParZ
- +UEIFTeVJkuxNdYImMw0cnFBxWpMnCyEMI0xO+6P1tunKRlr8rulvOugkammv98i/fD4
- l1+H1x0EGgjMlrwc2h4zfevGgcV3leaqRTGUMo/095fgpCGGAx+Gxy2VJNt95nHOXLhY
- BY2/gsxVY0c1CrzpxF8OvXP5SKJphmNhbC841xdJ9OMa12w4z2q2NXSzcE//V5xaa3x1
- cMZw==
+ bh=eceiVhMCm2jzMjMZWUfBDWQDfNbbCoL/myYhskQ11u8=;
+ b=FTYR690RsdJyOvbuJatVKkrCgcrQ51eXwtQTV+L5LQ6OhMwgxPqResopzpjDk5Xn5S
+ Ik9F+qGexTmezEzXZSUl/kVxwzDhkA51THD4EsMrCXXRj7n/9JWpyukfMFH8MW1LovkZ
+ 5j3ZocrGXI8FqfSAAqvuCwPW6IylBXhDybmZagUvAfyrlIt8ee2nGW9elLmkUpF6jriu
+ Q234NObKni5vNrcPYKLvf61E3iELH4DNKsmckAe2L7p/kCjhpqui7ShazPJVMYrfyQni
+ yqtJwnIrfuwQyEQy1WqcXQsE4zN0fikoIHil+AbG6Zt63UobO53iRDRsI0WeeYdAioye
+ hBPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=EusdwECv3FSYGfl0QnviOkJqhLYRClZ95P0kHIs/+W0=;
- b=BHjEwFoq7570m5bOvfDJnJQ4m7pVrlfvtoCjW9eIjrgXYjAMv0fc4r2B/rdTszHfud
- xR9vs4RbtDc04p1Sb4+nrPjg6fZph83takiHc0FRtCb2Ys0NX+Pd/GWMRsqN9gAZT2rO
- 6ZgFbjpGA4JTV9VDeTaZkC1dfT6hX+OFB+qGlx5aNyQ6zxYtjKzL8CiNCQd19A+TRe3h
- Y/gmyqVytmzI/pgGXvIUbpOqZVz6+o+b01ZRRp2dcjsvhYeLADvyAt4ASJBsTqO6fskj
- I0BbIv1+qV+BWosCd+HY1ik6jQH3IZFoB4bsCoFuZzl6hTvaSTvM7uKb8eI5S55Owugp
- IzoQ==
-X-Gm-Message-State: APjAAAXvol9oFG0un/Fqug5lwW8RywwswAryfG85UdmNOcwozqvyA7E7
- pfPS1gO/buGZ9ouOvbSLpwpTUA==
-X-Google-Smtp-Source: APXvYqwnFgKI41TVsyhJ5NjLLOcS2MWODhhgt3AhXnE1yYC1RZkIeetdbf1nMapOb/SDHGUtLInnrw==
-X-Received: by 2002:a17:90a:8a84:: with SMTP id
- x4mr28501511pjn.105.1561960450743; 
- Sun, 30 Jun 2019 22:54:10 -0700 (PDT)
+ bh=eceiVhMCm2jzMjMZWUfBDWQDfNbbCoL/myYhskQ11u8=;
+ b=DZaZ4QnCSFFlwhk5rp/wg4/GnvWpjxoxMfV17axtg3tT9qfBVicrhpPKZpA/EVcdwq
+ w+/A2tOzXSH0JX4fB0I1yUOJ6VjSjHkYAfytnf0HcCTao9JVDFPA4Kwe7QpTDIGyJTTL
+ Yo2yfQajPQCtpW5scHMOXsGxeaslN3TIXMLn/FaH2I35LbWjW7lYWUzb2Y4CDqzeTSIC
+ Z+3V8aH6qhgOhC7zUit8K2DqFNcCINb59o0Vydqu4sF3azps5dBSr0nZ88C8mQxnt+Eo
+ tK7cwsr2oGbqk8FwJkh/EhObgmTZd9gbryBxA2MG9kNmRal+RwHQYOd0REDwQ+6yBfDV
+ vq+A==
+X-Gm-Message-State: APjAAAXZvTEk6GpmLyixEGh/kDo2QkMSghw+1QwNW+qw2H95yzzenzKa
+ /aDDmPJf5rqM4Odelywu2ze8cA==
+X-Google-Smtp-Source: APXvYqzWn0Z6rO+JtgNuBidGaMXV6UHD4dCNXf6dZyMISiziV2P25THDIeIu8IkdMKoPVWJXQJ8ptg==
+X-Received: by 2002:a17:902:9a49:: with SMTP id
+ x9mr15583196plv.282.1561960455096; 
+ Sun, 30 Jun 2019 22:54:15 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id bg3sm2929930pjb.9.2019.06.30.22.54.06
+ by smtp.gmail.com with ESMTPSA id i9sm6403893pgo.46.2019.06.30.22.54.10
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 30 Jun 2019 22:54:10 -0700 (PDT)
-Subject: Re: [PATCH v4 6/8] KVM: PPC: Ultravisor: Restrict LDBAR access
+ Sun, 30 Jun 2019 22:54:14 -0700 (PDT)
+Subject: Re: [PATCH v4 5/8] KVM: PPC: Ultravisor: Restrict flush of the
+ partition tlb cache
 To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
 References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-7-cclaudio@linux.ibm.com>
+ <20190628200825.31049-6-cclaudio@linux.ibm.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Openpgp: preference=signencrypt
 Autocrypt: addr=aik@ozlabs.ru; keydata=
@@ -158,15 +159,15 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <f153b6bf-4661-9dc0-c28f-076fc8fe598e@ozlabs.ru>
-Date: Mon, 1 Jul 2019 15:54:03 +1000
+Message-ID: <bd65a80e-c935-d612-bbbd-9ef7cc68d7e3@ozlabs.ru>
+Date: Mon, 1 Jul 2019 15:54:08 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190628200825.31049-7-cclaudio@linux.ibm.com>
+In-Reply-To: <20190628200825.31049-6-cclaudio@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -192,80 +193,80 @@ Sender: "Linuxppc-dev"
 
 
 On 29/06/2019 06:08, Claudio Carvalho wrote:
-> When the ultravisor firmware is available, it takes control over the
-> LDBAR register. In this case, thread-imc updates and save/restore
-> operations on the LDBAR register are handled by ultravisor.
-
-What does LDBAR do? "Power ISA™ Version 3.0 B" or "User’s Manual POWER9
-Processor" do not tell.
-
-
+> From: Ram Pai <linuxram@us.ibm.com>
 > 
+> Ultravisor is responsible for flushing the tlb cache, since it manages
+> the PATE entries. Hence skip tlb flush, if the ultravisor firmware is
+> available.
+> 
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Reviewed-by: Ram Pai <linuxram@us.ibm.com>
-> Reviewed-by: Ryan Grimm <grimm@linux.ibm.com>
-> Acked-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-> Acked-by: Paul Mackerras <paulus@ozlabs.org>
 > ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 2 ++
->  arch/powerpc/platforms/powernv/idle.c     | 6 ++++--
->  arch/powerpc/platforms/powernv/opal-imc.c | 4 ++++
->  3 files changed, 10 insertions(+), 2 deletions(-)
+>  arch/powerpc/mm/book3s64/pgtable.c | 33 +++++++++++++++++-------------
+>  1 file changed, 19 insertions(+), 14 deletions(-)
 > 
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index f9b2620fbecd..cffb365d9d02 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -375,8 +375,10 @@ BEGIN_FTR_SECTION
->  	mtspr	SPRN_RPR, r0
->  	ld	r0, KVM_SPLIT_PMMAR(r6)
->  	mtspr	SPRN_PMMAR, r0
-> +BEGIN_FW_FTR_SECTION_NESTED(70)
->  	ld	r0, KVM_SPLIT_LDBAR(r6)
->  	mtspr	SPRN_LDBAR, r0
-> +END_FW_FTR_SECTION_NESTED(FW_FEATURE_ULTRAVISOR, 0, 70)
->  	isync
->  FTR_SECTION_ELSE
->  	/* On P9 we use the split_info for coordinating LPCR changes */
-> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-> index 77f2e0a4ee37..5593a2d55959 100644
-> --- a/arch/powerpc/platforms/powernv/idle.c
-> +++ b/arch/powerpc/platforms/powernv/idle.c
-> @@ -679,7 +679,8 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
->  		sprs.ptcr	= mfspr(SPRN_PTCR);
->  		sprs.rpr	= mfspr(SPRN_RPR);
->  		sprs.tscr	= mfspr(SPRN_TSCR);
-> -		sprs.ldbar	= mfspr(SPRN_LDBAR);
-> +		if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
-> +			sprs.ldbar	= mfspr(SPRN_LDBAR);
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 224c5c7c2e3d..bc8eb2bf9810 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -224,6 +224,23 @@ void __init mmu_partition_table_init(void)
+>  	powernv_set_nmmu_ptcr(ptcr);
+>  }
 >  
->  		sprs_saved = true;
->  
-> @@ -762,7 +763,8 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
->  	mtspr(SPRN_PTCR,	sprs.ptcr);
->  	mtspr(SPRN_RPR,		sprs.rpr);
->  	mtspr(SPRN_TSCR,	sprs.tscr);
-> -	mtspr(SPRN_LDBAR,	sprs.ldbar);
-> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
-> +		mtspr(SPRN_LDBAR,	sprs.ldbar);
->  
->  	if (pls >= pnv_first_tb_loss_level) {
->  		/* TB loss */
-> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-> index 1b6932890a73..5fe2d4526cbc 100644
-> --- a/arch/powerpc/platforms/powernv/opal-imc.c
-> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
-> @@ -254,6 +254,10 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
->  	bool core_imc_reg = false, thread_imc_reg = false;
->  	u32 type;
->  
-> +	/* Disable IMC devices, when Ultravisor is enabled. */
-> +	if (firmware_has_feature(FW_FEATURE_ULTRAVISOR))
-> +		return -EACCES;
+> +static void flush_partition(unsigned int lpid, unsigned long dw0)
+> +{
+> +	if (dw0 & PATB_HR) {
+> +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 0, 1) : :
+> +			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 1, 1) : :
+> +			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> +		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 1);
+> +	} else {
+> +		asm volatile(PPC_TLBIE_5(%0, %1, 2, 0, 0) : :
+> +			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> +		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 0);
+> +	}
+> +	/* do we need fixup here ?*/
+> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+> +}
 > +
->  	/*
->  	 * Check whether this is kdump kernel. If yes, force the engines to
->  	 * stop and return.
+>  static void __mmu_partition_table_set_entry(unsigned int lpid,
+>  					    unsigned long dw0,
+>  					    unsigned long dw1)
+> @@ -238,20 +255,8 @@ static void __mmu_partition_table_set_entry(unsigned int lpid,
+>  	 * The type of flush (hash or radix) depends on what the previous
+>  	 * use of this partition ID was, not the new use.
+>  	 */
+> -	asm volatile("ptesync" : : : "memory");
+> -	if (old & PATB_HR) {
+> -		asm volatile(PPC_TLBIE_5(%0,%1,2,0,1) : :
+> -			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> -		asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
+> -			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> -		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 1);
+> -	} else {
+> -		asm volatile(PPC_TLBIE_5(%0,%1,2,0,0) : :
+> -			     "r" (TLBIEL_INVAL_SET_LPID), "r" (lpid));
+> -		trace_tlbie(lpid, 0, TLBIEL_INVAL_SET_LPID, lpid, 2, 0, 0);
+> -	}
+> -	/* do we need fixup here ?*/
+> -	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+> +	if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))
+
+
+__mmu_partition_table_set_entry() checks for UV and
+mmu_partition_table_set_entry() (the caller) checks for UV and the whole
+point of having separate flush_partition() and
+__mmu_partition_table_set_entry() is not really clear.
+
+
+4/8 and 5/8 make more sense as one patch imho.
+
+
+> +		flush_partition(lpid, old);
+>  }
+>  
+>  void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,
 > 
 
 -- 
