@@ -1,42 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5165B930
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 12:43:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1ED5B752
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 10:58:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ch9P4FvfzDqWZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 18:58:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ckVp27nRzDqWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 20:43:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="Wbfy/UDn"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ch2p4pp1zDqWc
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 18:52:34 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id AE529AD23;
- Mon,  1 Jul 2019 08:52:31 +0000 (UTC)
-Date: Mon, 1 Jul 2019 10:52:31 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 11/11] mm/memory_hotplug: Remove "zone" parameter from
- sparse_remove_one_section
-Message-ID: <20190701085231.GK6376@dhcp22.suse.cz>
-References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-12-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45chqn43bjzDqT9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 19:28:04 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 50ACF2089C;
+ Mon,  1 Jul 2019 09:28:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561973282;
+ bh=vGGhLIH0q7yG4i6ZhfftLCHdchxHJ/vmrYRS0LXQQIw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Wbfy/UDnFu7AV7EVkBeEbTEFUi7+cuNIjsKmOymazsu3SH1OX8v5r5szm5MXCfGmu
+ RH2qxtH1DohcNqBOMBm/SXfrp+lwiclFgsHSKwXOefDBanFU9uYc17ezhL9NTuw0cM
+ zF4ZrwabN0rIsBtgDIHHd3RIrWasEIQkBmhR+8nk=
+Date: Mon, 1 Jul 2019 10:27:57 +0100
+From: Will Deacon <will@kernel.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/3] arm64: mm: Add p?d_large() definitions
+Message-ID: <20190701092756.s4u5rdjr7gazvu66@willie-the-truck>
+References: <20190623094446.28722-1-npiggin@gmail.com>
+ <20190623094446.28722-2-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190527111152.16324-12-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190623094446.28722-2-npiggin@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Mailman-Approved-At: Mon, 01 Jul 2019 20:42:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,76 +59,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Igor Mammedov <imammedo@redhat.com>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Will Deacon <will.deacon@arm.com>, Steven Price <steven.price@arm.com>,
+ linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 27-05-19 13:11:52, David Hildenbrand wrote:
-> The parameter is unused, so let's drop it. Memory removal paths should
-> never care about zones. This is the job of memory offlining and will
-> require more refactorings.
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Hi Nick,
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+On Sun, Jun 23, 2019 at 07:44:44PM +1000, Nicholas Piggin wrote:
+> walk_page_range() is going to be allowed to walk page tables other than
+> those of user space. For this it needs to know when it has reached a
+> 'leaf' entry in the page tables. This information will be provided by the
+> p?d_large() functions/macros.
 
-> ---
->  include/linux/memory_hotplug.h | 2 +-
->  mm/memory_hotplug.c            | 2 +-
->  mm/sparse.c                    | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 2f1f87e13baa..1a4257c5f74c 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -346,7 +346,7 @@ extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  extern bool is_memblock_offlined(struct memory_block *mem);
->  extern int sparse_add_one_section(int nid, unsigned long start_pfn,
->  				  struct vmem_altmap *altmap);
-> -extern void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
-> +extern void sparse_remove_one_section(struct mem_section *ms,
->  		unsigned long map_offset, struct vmem_altmap *altmap);
->  extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
->  					  unsigned long pnum);
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 82136c5b4c5f..e48ec7b9dee2 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -524,7 +524,7 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
->  	start_pfn = section_nr_to_pfn((unsigned long)scn_nr);
->  	__remove_zone(zone, start_pfn);
->  
-> -	sparse_remove_one_section(zone, ms, map_offset, altmap);
-> +	sparse_remove_one_section(ms, map_offset, altmap);
->  }
->  
->  /**
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index d1d5e05f5b8d..1552c855d62a 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -800,8 +800,8 @@ static void free_section_usemap(struct page *memmap, unsigned long *usemap,
->  		free_map_bootmem(memmap);
->  }
->  
-> -void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
-> -		unsigned long map_offset, struct vmem_altmap *altmap)
-> +void sparse_remove_one_section(struct mem_section *ms, unsigned long map_offset,
-> +			       struct vmem_altmap *altmap)
->  {
->  	struct page *memmap = NULL;
->  	unsigned long *usemap = NULL;
-> -- 
-> 2.20.1
+I can't remember whether or not I asked this before, but why not call
+this macro p?d_leaf() if that's what it's identifying? "Large" and "huge"
+are usually synonymous, so I find this naming needlessly confusing based
+on this patch in isolation.
 
--- 
-Michal Hocko
-SUSE Labs
+Will
