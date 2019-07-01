@@ -1,75 +1,154 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F4D5B303
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 05:08:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914B25B2E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 04:19:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cWJw01SMzDqVD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 12:19:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cXPY74mszDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 13:08:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="HOkM7uUB"; 
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="dxpgJWlv"; 
  dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cWHF3b2vzDqQF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 12:17:44 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 81so5726389pfy.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 19:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=VBA2GtoG6Dte3kaikORSGJ3wczAlTPnz7XIiNbM/Zdc=;
- b=HOkM7uUBvlOhEIPY9n1kkHhVD/PwkjY2d6lyJmFk6r0TegwQpFBapaDIRFZdm6i4ZW
- Cgl6/ObphiITWGYnf+HKOyJhjX23NyLe2vBQaHw1zaqrZrY0T6Pr49m7x8HOocbC9kif
- cGj70/GYgBuT8HKFYm370lGD7YTjDTo0OgTfx66tJO/rasH87KFMc9ZTdX0wgEaXw94b
- dLp8P8rEk1jKMG0JWR8R/bqibg6lF1jlOo1gDrEvyhMRm+hJu1/Tvf84ElvpkCniYAdp
- iTEkZSFAIctnruCZ4zLcCqUbYVTdwcOxgS0+GU75ooofIKSUmseIYw8iKC7gp9Q3nD1N
- L5Dg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cXMp5FtTzDqRt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 13:06:43 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id w24so6528683plp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 20:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=YbAPyqbMVgkO20qQ1uV33T3CJxisNgghpGCjyrKMcVg=;
+ b=dxpgJWlvZmmauap44XH908G6Udzwy9qKyXQtjQYad8GGTclMK0m+2on2kkJH8f/Wg6
+ em+9L8r5udjfPWUE56zLGUQuwg++dETocCIpvFnmUsFf9g/MR0lpGnOiUHBwS7pYLKQV
+ kRQUkiYdrxoD7FHCqjOmNy/oYeiocu+ESHXBJGZ1FJWHCCpfrkakM6H7kFa9GYXGjakT
+ aZ+sBZPKrybq1SUKJtTAmQg8uqZ/jfH5Occ34heN/Hu3ZOBs8Up7lokN+Vw0ZvRxlPse
+ YTICzre5zIYin7oHBOGUxAVOdh7qja/6AZO18AOFfb7fX5AkP+VxCvQfp1CG1+FCahCP
+ yudg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=VBA2GtoG6Dte3kaikORSGJ3wczAlTPnz7XIiNbM/Zdc=;
- b=hY6AdlhHInth0pUN3sat4EgWygE/K6dOhHTDQll6Os/rPwJea39DhR95DUKXOHzRhP
- R/rVQdAhV90BX4vFJqYzVFfQlg5NvhMV4RhrBP3eb9QHp0qT665Ilpm8HB/c9IrvMuR+
- KhFzsGrL/OG+CX883O425QMZ0fpFSRoce93zMKZO3AIiNW5CzPfNsVjVFDu0NUMICy9K
- cLEU35Oly9k31ZtBfSLVknwKa8UtID6hTs0MoNDno3YibGdmd4M0CJ2D/fRv6OSbZPW6
- m67Z9KAZw0OT7koK6nEGz8zlf6nU8X7lv2MU1LtnoFT2XjFQKmPcd8iXJVP1SU14BNBD
- diqg==
-X-Gm-Message-State: APjAAAXE/Y32l0A6GbyVgJLAqin4pbEbAlYkcGV3K2rfXlZv8SZ1y1wX
- LClvXNW7jPmWaYfzKwporcc=
-X-Google-Smtp-Source: APXvYqz57mclmnTH2o4zEbMrswuqvMS7qDMILfhIV0H4o9E7hACWc+VkzF9NqFMZMhygXSDqO+TUnw==
-X-Received: by 2002:a63:4d05:: with SMTP id a5mr20546203pgb.19.1561947461418; 
- Sun, 30 Jun 2019 19:17:41 -0700 (PDT)
-Received: from localhost ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id w132sm9743907pfd.78.2019.06.30.19.17.39
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 30 Jun 2019 19:17:40 -0700 (PDT)
-Date: Mon, 01 Jul 2019 12:17:26 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/mm/radix: Use the right page size for vmemmap
- mapping
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au,
- paulus@samba.org
-References: <20190629073829.13095-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20190629073829.13095-1-aneesh.kumar@linux.ibm.com>
+ h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=YbAPyqbMVgkO20qQ1uV33T3CJxisNgghpGCjyrKMcVg=;
+ b=qATOyO9iCtH6lLNnGkqTq2sdgXffb1gXOQv7kRw9A+OuWpxjvQAhPpbYPPFM0suIua
+ 7E+UghW9ZhJaM2sWnqNkLCOI5X7Emj/kd092XHCBRC5zJai08Yw30bkD09yV+CNqQ4KP
+ jqVCLOo2dq7lNH/YCn/eh4GNiNFplPbeKMpsLHag5hRHOGlrQFcTSPvOxU2AuE36hz+o
+ vYnEWyJucCs2yICyOs1RG3nvEeRLwvu+kr1MsINBDIcgjiuNfvXl/tAj0XH3KAKv1Ys/
+ PKuMFBPljdIVRedUGilAV605d5EwvazbMIuVsBY8UxsZOjyV51+l2WtFmyAEIH4jhyml
+ XQsA==
+X-Gm-Message-State: APjAAAUnDxsgRuQ9b9YJh8K4aF5ehMQzy8B3rBzDdZqT60uHgaEzXbiv
+ u0Rthde99I0y0GkqesrXGpJNbo0Y9tU=
+X-Google-Smtp-Source: APXvYqwqkW44kEQxzp1pBpJrvFWnBnTaxleYzW5ua/iHPXnCZlNldwf9mTCOB2dHaF7EcuNg8QdxUQ==
+X-Received: by 2002:a17:902:e2:: with SMTP id
+ a89mr26374725pla.210.1561950400473; 
+ Sun, 30 Jun 2019 20:06:40 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id y8sm10375004pfn.52.2019.06.30.20.06.38
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 30 Jun 2019 20:06:39 -0700 (PDT)
+Subject: Re: [PATCH] powerpc: remove device_to_mask
+To: Christoph Hellwig <hch@lst.de>, paulus@samba.org, mpe@ellerman.id.au
+References: <20190629080359.23182-1-hch@lst.de>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Openpgp: preference=signencrypt
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <7ace6732-d1cd-3783-8ead-c9f262a78a3a@ozlabs.ru>
+Date: Mon, 1 Jul 2019 13:06:36 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1561947331.l5nlocglj3.astroid@bobo.none>
+In-Reply-To: <20190629080359.23182-1-hch@lst.de>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,81 +165,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aneesh Kumar K.V's on June 29, 2019 5:38 pm:
-> Also on hash with 4K PAGE_SIZE make sure we use 4K page size for
-> vmemmap.
 
-Can you add a line in the changelog to describe the radix problem
-you fixed?
 
-Also I would say the also could be a separate patch?
+On 29/06/2019 18:03, Christoph Hellwig wrote:
+> Use the dma_get_mask helper from dma-mapping.h instead.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Thanks,
-Nick
 
->=20
-> Fixes: 2bfd65e45e87 ("powerpc/mm/radix: Add radix callbacks for early ini=
-t routines")
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+
 > ---
->  arch/powerpc/mm/book3s64/hash_utils.c    |  4 +---
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 16 +++++++---------
->  2 files changed, 8 insertions(+), 12 deletions(-)
->=20
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book=
-3s64/hash_utils.c
-> index 49f8c8940bd9..54013bbc60aa 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -686,10 +686,8 @@ static void __init htab_init_page_sizes(void)
->  	if (mmu_psize_defs[MMU_PAGE_16M].shift &&
->  	    memblock_phys_mem_size() >=3D 0x40000000)
->  		mmu_vmemmap_psize =3D MMU_PAGE_16M;
-> -	else if (mmu_psize_defs[MMU_PAGE_64K].shift)
-> -		mmu_vmemmap_psize =3D MMU_PAGE_64K;
->  	else
-> -		mmu_vmemmap_psize =3D MMU_PAGE_4K;
-> +		mmu_vmemmap_psize =3D mmu_virtual_psize;
->  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
-> =20
->  	printk(KERN_DEBUG "Page orders: linear mapping =3D %d, "
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
-ook3s64/radix_pgtable.c
-> index 60d97fab4de2..03d804a0dc8c 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -529,14 +529,6 @@ void __init radix__early_init_devtree(void)
->  	mmu_psize_defs[MMU_PAGE_64K].shift =3D 16;
->  	mmu_psize_defs[MMU_PAGE_64K].ap =3D 0x5;
->  found:
-> -#ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
-> -		/*
-> -		 * map vmemmap using 2M if available
-> -		 */
-> -		mmu_vmemmap_psize =3D MMU_PAGE_2M;
-> -	}
-> -#endif /* CONFIG_SPARSEMEM_VMEMMAP */
->  	return;
+>  arch/powerpc/include/asm/iommu.h     | 8 --------
+>  arch/powerpc/kernel/dma-iommu.c      | 4 ++--
+>  arch/powerpc/platforms/pseries/vio.c | 4 ++--
+>  3 files changed, 4 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+> index 0ac52392ed99..f98f2864b66a 100644
+> --- a/arch/powerpc/include/asm/iommu.h
+> +++ b/arch/powerpc/include/asm/iommu.h
+> @@ -327,13 +327,5 @@ extern bool iommu_fixed_is_weak;
+>  
+>  extern const struct dma_map_ops dma_iommu_ops;
+>  
+> -static inline unsigned long device_to_mask(struct device *dev)
+> -{
+> -	if (dev->dma_mask && *dev->dma_mask)
+> -		return *dev->dma_mask;
+> -	/* Assume devices without mask can take 32 bit addresses */
+> -	return 0xfffffffful;
+> -}
+> -
+>  #endif /* __KERNEL__ */
+>  #endif /* _ASM_IOMMU_H */
+> diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+> index 09231ef06d01..168af3a5b4b1 100644
+> --- a/arch/powerpc/kernel/dma-iommu.c
+> +++ b/arch/powerpc/kernel/dma-iommu.c
+> @@ -71,7 +71,7 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
+>  		return dma_direct_map_page(dev, page, offset, size, direction,
+>  				attrs);
+>  	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
+> -			      size, device_to_mask(dev), direction, attrs);
+> +			      size, dma_get_mask(dev), direction, attrs);
 >  }
-> =20
-> @@ -601,7 +593,13 @@ void __init radix__early_init_mmu(void)
-> =20
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->  	/* vmemmap mapping */
-> -	mmu_vmemmap_psize =3D mmu_virtual_psize;
-> +	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
-> +		/*
-> +		 * map vmemmap using 2M if available
-> +		 */
-> +		mmu_vmemmap_psize =3D MMU_PAGE_2M;
-> +	} else
-> +		mmu_vmemmap_psize =3D mmu_virtual_psize;
->  #endif
->  	/*
->  	 * initialize page table size
-> --=20
-> 2.21.0
->=20
->=20
-=
+>  
+>  
+> @@ -92,7 +92,7 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+>  	if (dma_iommu_map_bypass(dev, attrs))
+>  		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
+>  	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
+> -				device_to_mask(dev), direction, attrs);
+> +				dma_get_mask(dev), direction, attrs);
+>  }
+>  
+>  static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
+> diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+> index 141795275ccb..97c0e3e5eae5 100644
+> --- a/arch/powerpc/platforms/pseries/vio.c
+> +++ b/arch/powerpc/platforms/pseries/vio.c
+> @@ -524,7 +524,7 @@ static dma_addr_t vio_dma_iommu_map_page(struct device *dev, struct page *page,
+>  
+>  	if (vio_cmo_alloc(viodev, roundup(size, IOMMU_PAGE_SIZE(tbl))))
+>  		goto out_fail;
+> -	ret = iommu_map_page(dev, tbl, page, offset, size, device_to_mask(dev),
+> +	ret = iommu_map_page(dev, tbl, page, offset, size, dma_get_mask(dev),
+>  			direction, attrs);
+>  	if (unlikely(ret == DMA_MAPPING_ERROR))
+>  		goto out_deallocate;
+> @@ -564,7 +564,7 @@ static int vio_dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+>  
+>  	if (vio_cmo_alloc(viodev, alloc_size))
+>  		goto out_fail;
+> -	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, device_to_mask(dev),
+> +	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, dma_get_mask(dev),
+>  			direction, attrs);
+>  	if (unlikely(!ret))
+>  		goto out_deallocate;
+> 
+
+-- 
+Alexey
