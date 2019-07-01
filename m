@@ -2,69 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F4D5B303
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 05:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573EC5B30A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 05:14:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cXPY74mszDqTb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 13:08:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cXY86RPGzDqSv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 13:14:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="dxpgJWlv"; 
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="qC88D4Em"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cXMp5FtTzDqRt
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 13:06:43 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id w24so6528683plp.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 20:06:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cXWl57xyzDqSk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 13:13:37 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id z75so5285633pgz.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2019 20:13:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=YbAPyqbMVgkO20qQ1uV33T3CJxisNgghpGCjyrKMcVg=;
- b=dxpgJWlvZmmauap44XH908G6Udzwy9qKyXQtjQYad8GGTclMK0m+2on2kkJH8f/Wg6
- em+9L8r5udjfPWUE56zLGUQuwg++dETocCIpvFnmUsFf9g/MR0lpGnOiUHBwS7pYLKQV
- kRQUkiYdrxoD7FHCqjOmNy/oYeiocu+ESHXBJGZ1FJWHCCpfrkakM6H7kFa9GYXGjakT
- aZ+sBZPKrybq1SUKJtTAmQg8uqZ/jfH5Occ34heN/Hu3ZOBs8Up7lokN+Vw0ZvRxlPse
- YTICzre5zIYin7oHBOGUxAVOdh7qja/6AZO18AOFfb7fX5AkP+VxCvQfp1CG1+FCahCP
- yudg==
+ bh=kVkjGGqt9wojni4rTKt7M3GknPat6w4KsGam7lc3LbM=;
+ b=qC88D4EmW5gzz7MBB72BbrxJkVXMN+FdkQN5WF8/32XSd1hG3gZzzm4tZck4mmSz+I
+ 58AM91vcxLWEx4ISKBfNRFrBunRHNyjycJJmCQ7ijsXA0zz7pPmtqgvy1qQNbwy88qdv
+ cL4WyMU4HJ5X4ChUrtRtcWVyrcvMjKWLlGATLwNRerNzZDUpgS5kfu2kYm5eOps7zaK4
+ 5Ru5m7rsS8IuUXPPBT43sIxHyRogzv9RfTuRq2NFGQPfdH7GHSOLzX45BGfvzd/D0Bok
+ k2T8W8pbWFuq4FAeGelN0i/Q8z9JGiw/zJgcItW8UpLCE4/HEtlib/oMGmnnU5oJM3G9
+ PKGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=YbAPyqbMVgkO20qQ1uV33T3CJxisNgghpGCjyrKMcVg=;
- b=qATOyO9iCtH6lLNnGkqTq2sdgXffb1gXOQv7kRw9A+OuWpxjvQAhPpbYPPFM0suIua
- 7E+UghW9ZhJaM2sWnqNkLCOI5X7Emj/kd092XHCBRC5zJai08Yw30bkD09yV+CNqQ4KP
- jqVCLOo2dq7lNH/YCn/eh4GNiNFplPbeKMpsLHag5hRHOGlrQFcTSPvOxU2AuE36hz+o
- vYnEWyJucCs2yICyOs1RG3nvEeRLwvu+kr1MsINBDIcgjiuNfvXl/tAj0XH3KAKv1Ys/
- PKuMFBPljdIVRedUGilAV605d5EwvazbMIuVsBY8UxsZOjyV51+l2WtFmyAEIH4jhyml
- XQsA==
-X-Gm-Message-State: APjAAAUnDxsgRuQ9b9YJh8K4aF5ehMQzy8B3rBzDdZqT60uHgaEzXbiv
- u0Rthde99I0y0GkqesrXGpJNbo0Y9tU=
-X-Google-Smtp-Source: APXvYqwqkW44kEQxzp1pBpJrvFWnBnTaxleYzW5ua/iHPXnCZlNldwf9mTCOB2dHaF7EcuNg8QdxUQ==
-X-Received: by 2002:a17:902:e2:: with SMTP id
- a89mr26374725pla.210.1561950400473; 
- Sun, 30 Jun 2019 20:06:40 -0700 (PDT)
+ bh=kVkjGGqt9wojni4rTKt7M3GknPat6w4KsGam7lc3LbM=;
+ b=gEqiqYtNRq7GtFfwtK1Tg9574YIBbELfnNxgOWsa+meAbQlafjMwQ05vcjZ51ykbPx
+ NxGf3Yx5sWGJOIMyCAzRsVCIw0OvMkpqywjMB7blAYptrlCd/qHDb3roZ+r4ZIp9tYkA
+ ZE9APYfdKjjh3snDWuH08lWbdLSphe1h9iDR9O7DwR4PCkghKbN/9VkZ+oa0C7aUqDqv
+ MRfi4ndI0jLbwZ5dFQX99UZChJk9BD5eW2fmpj/H65Y3lL9bZ71KQfndHcEcKwM12YmX
+ UBoiSClK/tf2chA9Tac5DC4svF6p4DXR3cVCBgS3+AuPp5WNyrEuFvfBTP8C/eBdr7Od
+ TNeg==
+X-Gm-Message-State: APjAAAW4Ipp8F0QHd6T9kGp4dvtAfCNfNJ6sUEiWcOZB/WLQW45pQNxy
+ q66wkAluc6VUkTtPJpwAchECBw==
+X-Google-Smtp-Source: APXvYqyhgGAOaMmlMYxGC8nTRkUx/vLDR1Cx/i1vdP7xhLKYO7noIsWUZ/7g17PhVF0dLrKaEmu36g==
+X-Received: by 2002:a63:e015:: with SMTP id e21mr21803573pgh.172.1561950815570; 
+ Sun, 30 Jun 2019 20:13:35 -0700 (PDT)
 Received: from [10.61.2.175] ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id y8sm10375004pfn.52.2019.06.30.20.06.38
+ by smtp.gmail.com with ESMTPSA id b8sm19072723pff.20.2019.06.30.20.13.31
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 30 Jun 2019 20:06:39 -0700 (PDT)
-Subject: Re: [PATCH] powerpc: remove device_to_mask
-To: Christoph Hellwig <hch@lst.de>, paulus@samba.org, mpe@ellerman.id.au
-References: <20190629080359.23182-1-hch@lst.de>
+ Sun, 30 Jun 2019 20:13:34 -0700 (PDT)
+Subject: Re: [RFC PATCH 03/12] powerpc/prom_init: Add the ESM call to prom_init
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+References: <20190521044912.1375-1-bauerman@linux.ibm.com>
+ <20190521044912.1375-4-bauerman@linux.ibm.com>
+ <3b45cc84-273b-b333-831c-85c501b7e78e@ozlabs.ru>
+ <87mui1732j.fsf@morokweng.localdomain>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Openpgp: preference=signencrypt
 Autocrypt: addr=aik@ozlabs.ru; keydata=
@@ -140,12 +142,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <7ace6732-d1cd-3783-8ead-c9f262a78a3a@ozlabs.ru>
-Date: Mon, 1 Jul 2019 13:06:36 +1000
+Message-ID: <d53256fe-678b-12d8-ca7e-6a5beea0c155@ozlabs.ru>
+Date: Mon, 1 Jul 2019 13:13:29 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190629080359.23182-1-hch@lst.de>
+In-Reply-To: <87mui1732j.fsf@morokweng.localdomain>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -160,92 +162,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+ Mike Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ linux-kernel@vger.kernel.org, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 29/06/2019 18:03, Christoph Hellwig wrote:
-> Use the dma_get_mask helper from dma-mapping.h instead.
+On 29/06/2019 08:33, Thiago Jung Bauermann wrote:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-> ---
->  arch/powerpc/include/asm/iommu.h     | 8 --------
->  arch/powerpc/kernel/dma-iommu.c      | 4 ++--
->  arch/powerpc/platforms/pseries/vio.c | 4 ++--
->  3 files changed, 4 insertions(+), 12 deletions(-)
+> Hello Alexey,
 > 
-> diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-> index 0ac52392ed99..f98f2864b66a 100644
-> --- a/arch/powerpc/include/asm/iommu.h
-> +++ b/arch/powerpc/include/asm/iommu.h
-> @@ -327,13 +327,5 @@ extern bool iommu_fixed_is_weak;
->  
->  extern const struct dma_map_ops dma_iommu_ops;
->  
-> -static inline unsigned long device_to_mask(struct device *dev)
-> -{
-> -	if (dev->dma_mask && *dev->dma_mask)
-> -		return *dev->dma_mask;
-> -	/* Assume devices without mask can take 32 bit addresses */
-> -	return 0xfffffffful;
-> -}
-> -
->  #endif /* __KERNEL__ */
->  #endif /* _ASM_IOMMU_H */
-> diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-> index 09231ef06d01..168af3a5b4b1 100644
-> --- a/arch/powerpc/kernel/dma-iommu.c
-> +++ b/arch/powerpc/kernel/dma-iommu.c
-> @@ -71,7 +71,7 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
->  		return dma_direct_map_page(dev, page, offset, size, direction,
->  				attrs);
->  	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
-> -			      size, device_to_mask(dev), direction, attrs);
-> +			      size, dma_get_mask(dev), direction, attrs);
->  }
->  
->  
-> @@ -92,7 +92,7 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
->  	if (dma_iommu_map_bypass(dev, attrs))
->  		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
->  	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
-> -				device_to_mask(dev), direction, attrs);
-> +				dma_get_mask(dev), direction, attrs);
->  }
->  
->  static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
-> diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-> index 141795275ccb..97c0e3e5eae5 100644
-> --- a/arch/powerpc/platforms/pseries/vio.c
-> +++ b/arch/powerpc/platforms/pseries/vio.c
-> @@ -524,7 +524,7 @@ static dma_addr_t vio_dma_iommu_map_page(struct device *dev, struct page *page,
->  
->  	if (vio_cmo_alloc(viodev, roundup(size, IOMMU_PAGE_SIZE(tbl))))
->  		goto out_fail;
-> -	ret = iommu_map_page(dev, tbl, page, offset, size, device_to_mask(dev),
-> +	ret = iommu_map_page(dev, tbl, page, offset, size, dma_get_mask(dev),
->  			direction, attrs);
->  	if (unlikely(ret == DMA_MAPPING_ERROR))
->  		goto out_deallocate;
-> @@ -564,7 +564,7 @@ static int vio_dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
->  
->  	if (vio_cmo_alloc(viodev, alloc_size))
->  		goto out_fail;
-> -	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, device_to_mask(dev),
-> +	ret = ppc_iommu_map_sg(dev, tbl, sglist, nelems, dma_get_mask(dev),
->  			direction, attrs);
->  	if (unlikely(!ret))
->  		goto out_deallocate;
+> Thanks for reviewing this patch!
+> 
+> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> 
+>> On 21/05/2019 14:49, Thiago Jung Bauermann wrote:
+>>> @@ -1707,6 +1723,43 @@ static void __init prom_close_stdin(void)
+>>>  	}
+>>>  }
+>>>  
+>>> +#ifdef CONFIG_PPC_SVM
+>>> +static int prom_rtas_os_term_hcall(uint64_t args)
+>>
+>>
+>> This is just an rtas hcall, nothing special about "os-term".
+> 
+> Sorry, unfortunately I don't understand how we're treating os-term
+> especially. Do you mean that we should inline this function directly
+> into prom_rtas_os_term()?
+
+I meant the function name - prom_rtas_os_term_hcall - should rather be
+prom_rtas_hcall.
+
+
+
+> 
+>>> +{
+>>> +	register uint64_t arg1 asm("r3") = 0xf000;
+>>> +	register uint64_t arg2 asm("r4") = args;
+>>> +
+>>> +	asm volatile("sc 1\n" : "=r" (arg1) :
+>>> +			"r" (arg1),
+>>> +			"r" (arg2) :);
+>>> +	return arg1;
+>>> +}
+>>> +
+>>> +static struct rtas_args __prombss os_term_args;
+>>> +
+>>> +static void __init prom_rtas_os_term(char *str)
+>>> +{
+>>> +	phandle rtas_node;
+>>> +	__be32 val;
+>>> +	u32 token;
+>>> +
+>>> +	prom_printf("%s: start...\n", __func__);
+>>> +	rtas_node = call_prom("finddevice", 1, 1, ADDR("/rtas"));
+>>> +	prom_printf("rtas_node: %x\n", rtas_node);
+>>> +	if (!PHANDLE_VALID(rtas_node))
+>>> +		return;
+>>> +
+>>> +	val = 0;
+>>> +	prom_getprop(rtas_node, "ibm,os-term", &val, sizeof(val));
+>>> +	token = be32_to_cpu(val);
+>>> +	prom_printf("ibm,os-term: %x\n", token);
+>>> +	if (token == 0)
+>>> +		prom_panic("Could not get token for ibm,os-term\n");
+>>> +	os_term_args.token = cpu_to_be32(token);
+>>> +	prom_rtas_os_term_hcall((uint64_t)&os_term_args);
+>>> +}
+>>> +#endif /* CONFIG_PPC_SVM */
+>>> +
+>>>  /*
+>>>   * Allocate room for and instantiate RTAS
+>>>   */
 > 
 
 -- 
