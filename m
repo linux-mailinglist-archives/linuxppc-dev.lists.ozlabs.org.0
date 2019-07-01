@@ -2,54 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0B85B937
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 12:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE8E5B8FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 12:29:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ckXZ2sktzDqW4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 20:45:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ckBP5T9FzDqXK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 20:29:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="sP19+PAp"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cjtG5rNczDqSW
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 20:15:18 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E4D9B2089F;
- Mon,  1 Jul 2019 10:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561976116;
- bh=BmE0pK+B/9WbeNo5hd8jhUkYwvz6tMUWGRtqHWxTqgc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=sP19+PAprJCKT1vB2Suu5r3ulKn8GQeG57tpiJg4Kq6zGPN+/cs009iqz4lq9XT8P
- aS/2Xw+qDBagxlS3Sg9TyU3BpqemUimAwUvQ74vmxYe9LmJI/U6wQXOt9has6j0+4+
- jlBkGuGr5Sr7XbAj39iTiIYD3i4UfJv49TwVkpuU=
-Date: Mon, 1 Jul 2019 11:15:10 +0100
-From: Will Deacon <will@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Subject: Re: Re: [PATCH 1/3] arm64: mm: Add p?d_large() definitions
-Message-ID: <20190701101510.qup3nd6vm6cbdgjv@willie-the-truck>
-References: <20190623094446.28722-1-npiggin@gmail.com>
- <20190623094446.28722-2-npiggin@gmail.com>
- <20190701092756.s4u5rdjr7gazvu66@willie-the-truck>
- <3d002af8-d8cd-f750-132e-12109e1e3039@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ck8y3Fj8zDqJt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 20:28:01 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id EE62EAF32;
+ Mon,  1 Jul 2019 10:27:57 +0000 (UTC)
+Date: Mon, 1 Jul 2019 12:27:56 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
+ unregister_memory_block_under_nodes() never fail
+Message-ID: <20190701102756.GO6376@dhcp22.suse.cz>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-11-david@redhat.com>
+ <20190701085144.GJ6376@dhcp22.suse.cz>
+ <20190701093640.GA17349@linux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3d002af8-d8cd-f750-132e-12109e1e3039@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Mailman-Approved-At: Mon, 01 Jul 2019 20:42:20 +1000
+In-Reply-To: <20190701093640.GA17349@linux>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,40 +50,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, Will Deacon <will.deacon@arm.com>,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+Cc: linux-s390@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
+ linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mark Brown <broonie@kernel.org>, linux-sh@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
+ linux-mm@kvack.org, "David S. Miller" <davem@davemloft.net>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Igor Mammedov <imammedo@redhat.com>,
+ akpm@linux-foundation.org, Chris Wilson <chris@chris-wilson.co.uk>,
+ linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2019 at 11:03:51AM +0100, Steven Price wrote:
-> On 01/07/2019 10:27, Will Deacon wrote:
-> > On Sun, Jun 23, 2019 at 07:44:44PM +1000, Nicholas Piggin wrote:
-> >> walk_page_range() is going to be allowed to walk page tables other than
-> >> those of user space. For this it needs to know when it has reached a
-> >> 'leaf' entry in the page tables. This information will be provided by the
-> >> p?d_large() functions/macros.
+On Mon 01-07-19 11:36:44, Oscar Salvador wrote:
+> On Mon, Jul 01, 2019 at 10:51:44AM +0200, Michal Hocko wrote:
+> > Yeah, we do not allow to offline multi zone (node) ranges so the current
+> > code seems to be over engineered.
 > > 
-> > I can't remember whether or not I asked this before, but why not call
-> > this macro p?d_leaf() if that's what it's identifying? "Large" and "huge"
-> > are usually synonymous, so I find this naming needlessly confusing based
-> > on this patch in isolation.
+> > Anyway, I am wondering why do we have to strictly check for already
+> > removed nodes links. Is the sysfs code going to complain we we try to
+> > remove again?
 > 
-> You replied to my posting of this patch before[1], to which you said:
+> No, sysfs will silently "fail" if the symlink has already been removed.
+> At least that is what I saw last time I played with it.
 > 
-> > I've have thought p?d_leaf() might match better with your description
-> > above, but I'm not going to quibble on naming.
+> I guess the question is what if sysfs handling changes in the future
+> and starts dropping warnings when trying to remove a symlink is not there.
+> Maybe that is unlikely to happen?
 
-That explains the sense of deja vu.
-
-> Have you changed your mind about quibbling? ;)
-
-Ha, I suppose I have! If it's not loads of effort to use p?d_leaf() instead
-of p?d_large, then I'd certainly prefer that.
-
-Will
+And maybe we handle it then rather than have a static allocation that
+everybody with hotremove configured has to pay for.
+-- 
+Michal Hocko
+SUSE Labs
