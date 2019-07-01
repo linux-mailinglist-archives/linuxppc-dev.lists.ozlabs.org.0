@@ -1,75 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CAD45C58B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:14:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45d1qb2GKbzDqY3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:14:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62965C610
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 01:53:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45d42D22JyzDqXQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 09:53:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=linux-foundation.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="tEEn9+dr"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45d1ny1strzDqXP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 08:12:37 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x61MBaE2059015; Mon, 1 Jul 2019 18:12:32 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tft3w9c9t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Jul 2019 18:12:31 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x61M9WtX031073;
- Mon, 1 Jul 2019 22:12:30 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 2tdym6ssmm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Jul 2019 22:12:30 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x61MCUl121430776
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 22:12:30 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D523AC0B8;
- Mon,  1 Jul 2019 22:12:30 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFC49AC0B7;
- Mon,  1 Jul 2019 22:12:29 +0000 (GMT)
-Received: from localhost (unknown [9.85.167.162])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 22:12:29 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/rtas: retry when cpu offline races with
- suspend/migration
-In-Reply-To: <20190621060518.29616-1-nathanl@linux.ibm.com>
-References: <20190621060518.29616-1-nathanl@linux.ibm.com>
-Date: Mon, 01 Jul 2019 17:12:29 -0500
-Message-ID: <87blyds8tu.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-01_13:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907010257
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45d40X16VtzDqJW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 09:51:55 +1000 (AEST)
+Received: from localhost.localdomain (c-73-223-200-170.hsd1.ca.comcast.net
+ [73.223.200.170])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9CACB21473;
+ Mon,  1 Jul 2019 23:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1562025112;
+ bh=m49J8QUAIUGzLQ10Pk7MDlm3F9FEcvjOwjEaylX3Yg0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=tEEn9+drzZeoB0fZ7R/AqFp9Wzc7N8ww7Vx902mD+h3w9UbMjzy9+UZPaIV+7VP8V
+ NDsRCIHliWNtovAnQoKH8EnUvaYKwMZYlGBgh1p6MTymacyx+u8OdvNZ2Wd/9kx4jf
+ Qr+rVz9DGogNzkjQgju1/GWOVyi6riVhx3LtcqkM=
+Date: Mon, 1 Jul 2019 16:51:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] mm/nvdimm: Add is_ioremap_addr and use that to check
+ ioremap address
+Message-Id: <20190701165152.7a55299eb670b0ca326f24dd@linux-foundation.org>
+In-Reply-To: <20190701134038.14165-1-aneesh.kumar@linux.ibm.com>
+References: <20190701134038.14165-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,28 +59,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, mmc@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, julietk@linux.ibm.com
+Cc: linux-mm@kvack.org, dan.j.williams@intel.com, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Mon,  1 Jul 2019 19:10:38 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> The protocol for suspending or migrating an LPAR requires all present
-> processor threads to enter H_JOIN. So if we have threads offline, we
-> have to temporarily bring them up. This can race with administrator
-> actions such as SMT state changes. As of dfd718a2ed1f ("powerpc/rtas:
-> Fix a potential race between CPU-Offline & Migration"),
+> Architectures like powerpc use different address range to map ioremap
+> and vmalloc range. The memunmap() check used by the nvdimm layer was
+> wrongly using is_vmalloc_addr() to check for ioremap range which fails for
+> ppc64. This result in ppc64 not freeing the ioremap mapping. The side effect
+> of this is an unbind failure during module unload with papr_scm nvdimm driver
 
-snowpatch/checkpatch flagged an error in my commit message here:
-
-  ERROR:GIT_COMMIT_ID: Please use git commit description style 'commit
-  <12+ chars of sha1> ("<title line>")' - ie: 'commit dfd718a2ed1f
-  ("powerpc/rtas: Fix a potential race between CPU-Offline &
-  Migration")'
-
-I see this is in your next-test branch though. Should I fix the commit
-message and resend?
+The patch applies to 5.1.  Does it need a Fixes: and a Cc:stable?
 
