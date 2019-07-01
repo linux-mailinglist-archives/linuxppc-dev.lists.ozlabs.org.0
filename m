@@ -1,42 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4E65B82A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 11:38:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cj3T1JzNzDqXK
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 19:38:13 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E575B849
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 11:46:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cjDW5cfgzDqW2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 19:46:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cj1x3Kf5zDqT9
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 19:36:51 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 6E628AB87;
- Mon,  1 Jul 2019 09:36:48 +0000 (UTC)
-Date: Mon, 1 Jul 2019 11:36:44 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
- unregister_memory_block_under_nodes() never fail
-Message-ID: <20190701093640.GA17349@linux>
-References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-11-david@redhat.com>
- <20190701085144.GJ6376@dhcp22.suse.cz>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45cjBk4ps8zDqTG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2019 19:44:25 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1E752B;
+ Mon,  1 Jul 2019 02:44:20 -0700 (PDT)
+Received: from arrakis.emea.arm.com (arrakis.cambridge.arm.com [10.1.196.78])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 727AD3F718; Mon,  1 Jul 2019 02:44:19 -0700 (PDT)
+Date: Mon, 1 Jul 2019 10:44:17 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/3] arm64: mm: Add p?d_large() definitions
+Message-ID: <20190701094417.GB21774@arrakis.emea.arm.com>
+References: <20190701064026.970-1-npiggin@gmail.com>
+ <20190701064026.970-2-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190701085144.GJ6376@dhcp22.suse.cz>
+In-Reply-To: <20190701064026.970-2-npiggin@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,36 +47,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
- linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, "David S. Miller" <davem@davemloft.net>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Igor Mammedov <imammedo@redhat.com>,
- akpm@linux-foundation.org, Chris Wilson <chris@chris-wilson.co.uk>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, Will Deacon <will.deacon@arm.com>,
+ Steven Price <steven.price@arm.com>,
+ "linux-mm @ kvack . org" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel @ lists . infradead . org"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2019 at 10:51:44AM +0200, Michal Hocko wrote:
-> Yeah, we do not allow to offline multi zone (node) ranges so the current
-> code seems to be over engineered.
+On Mon, Jul 01, 2019 at 04:40:24PM +1000, Nicholas Piggin wrote:
+> walk_page_range() is going to be allowed to walk page tables other than
+> those of user space. For this it needs to know when it has reached a
+> 'leaf' entry in the page tables. This information will be provided by the
+> p?d_large() functions/macros.
 > 
-> Anyway, I am wondering why do we have to strictly check for already
-> removed nodes links. Is the sysfs code going to complain we we try to
-> remove again?
+> For arm64, we already have p?d_sect() macros which we can reuse for
+> p?d_large().
+> 
+> pud_sect() is defined as a dummy function when CONFIG_PGTABLE_LEVELS < 3
+> or CONFIG_ARM64_64K_PAGES is defined. However when the kernel is
+> configured this way then architecturally it isn't allowed to have a
+> large page that this level, and any code using these page walking macros
+> is implicitly relying on the page size/number of levels being the same as
+> the kernel. So it is safe to reuse this for p?d_large() as it is an
+> architectural restriction.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will.deacon@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
 
-No, sysfs will silently "fail" if the symlink has already been removed.
-At least that is what I saw last time I played with it.
-
-I guess the question is what if sysfs handling changes in the future
-and starts dropping warnings when trying to remove a symlink is not there.
-Maybe that is unlikely to happen?
-
--- 
-Oscar Salvador
-SUSE L3
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
