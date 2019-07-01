@@ -1,55 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D3B5C0FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 18:19:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F403A5C07D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 17:42:55 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cs881jX8zDqZp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 01:42:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45csy414CqzDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 02:19:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.160.193; helo=mail-qt1-f193.google.com;
- envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com
- [209.85.160.193])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="PLoMI9e7"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cs6N52R3zDqHv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 01:41:16 +1000 (AEST)
-Received: by mail-qt1-f193.google.com with SMTP id m29so15146546qtu.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 08:41:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=QX/9XC0DeimGVTmEjV3E87RMFjV7Hn7tB/e6eJ8Xuyo=;
- b=HtFQncg2LWnI3miz2EgwOhkxH8Vm1zi+8iyxo9YsyP13Nled2rIw53lZUuLX4uM1SK
- 4XpEddUmKq06A78kMARsz5YlFPPduK3OlsnhgsJZ57l3qHbTDbzCa18eeJ/1bOAIc+Mi
- PJ2nDt+mlF82ZrhouNIscAfj9sPcdtED43StPEENMD9HJ9ubRII1kEIjZVeHwk9OWXqJ
- ZrDMyrKEHJGufyCa5oJfDi6MiLqNwMzgTVn4pAlBF7NCoUMnoGxaepeeya56Y+G04MR7
- h+namZ1C+t6iT9jfv7dBV9xitEk9pyLLxGC7XucHmoVy1Yixq+zY2IsIH1w2pXKlNdz/
- 7kgQ==
-X-Gm-Message-State: APjAAAUFxq1Twctli9zsPSw3HVDAmiS+7U7Vvvy+U7DspoN2JoqOZUwk
- 5OqhCCpykXUq49m0C1sbh4LTR4w+QJzy9doDFZs=
-X-Google-Smtp-Source: APXvYqxGHBFa8P5vpjbVLPEama12INy2Pt2H83NHNiep+1vxl9TlwguBVZ4KnSLAGXloUkCXunz2yug6gKdinLc2iX0=
-X-Received: by 2002:ac8:3485:: with SMTP id w5mr20305367qtb.142.1561995673724; 
- Mon, 01 Jul 2019 08:41:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45csw96m9szDqY0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 02:17:28 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45csw26sBCz9tyqt;
+ Mon,  1 Jul 2019 18:17:22 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=PLoMI9e7; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 9JGwoCBLnlI6; Mon,  1 Jul 2019 18:17:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45csw25Kqhz9tyqs;
+ Mon,  1 Jul 2019 18:17:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1561997842; bh=zW0G/HFfBmagzmdo02rkmdpv+xYMQUMXSlQ5sEgDVKs=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=PLoMI9e7SG6tGJBtwPMLWVpyY5ehunr9diVbESr6712ttaO7VWkqJWLu5Qp3Dyv7I
+ e5HSEcsR/9js0h8Yl2MS8M/4q/oucsFUPLyAZlxEw8pO1uwrHQ3XCB550WRn2zf6Ql
+ K1zu6Dpo8fDjw7Xm3MBa1q0rJi9w8Uo3BP+zjVr4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 72F558B7B1;
+ Mon,  1 Jul 2019 18:17:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id OQiJZ4JnsADM; Mon,  1 Jul 2019 18:17:23 +0200 (CEST)
+Received: from [172.25.230.107] (po15451.idsi0.si.c-s.fr [172.25.230.107])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 56BE08B7AF;
+ Mon,  1 Jul 2019 18:17:23 +0200 (CEST)
+Subject: Re: Can I compile Linux Kernel 5.2-rc7 for PowerPC on Intel/AMD x86
+ hardware?
+To: Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <SG2PR01MB2141EE2AEA0C727527DAC4B087F90@SG2PR01MB2141.apcprd01.prod.exchangelabs.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <da969d6f-d5cb-88d7-77b5-54d804a067d7@c-s.fr>
+Date: Mon, 1 Jul 2019 18:17:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-References: <20190624054728.30966-1-hch@lst.de>
- <alpine.DEB.2.21.1906240922420.32342@nanos.tec.linutronix.de>
-In-Reply-To: <alpine.DEB.2.21.1906240922420.32342@nanos.tec.linutronix.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 1 Jul 2019 17:40:57 +0200
-Message-ID: <CAK8P3a3YHstHAs9OsWNHTtXjHnWtQfqr=WUZTpK+bONLTWLj+w@mail.gmail.com>
-Subject: Re: remove asm-generic/ptrace.h v3
-To: Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <SG2PR01MB2141EE2AEA0C727527DAC4B087F90@SG2PR01MB2141.apcprd01.prod.exchangelabs.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,32 +79,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>, linux-mips@vger.kernel.org,
- Oleg Nesterov <oleg@redhat.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 24, 2019 at 9:23 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> On Mon, 24 Jun 2019, Christoph Hellwig wrote:
-> >
-> > asm-generic/ptrace.h is a little weird in that it doesn't actually
-> > implement any functionality, but it provided multiple layers of macros
-> > that just implement trivial inline functions.  We implement those
-> > directly in the few architectures and be off with a much simpler
-> > design.
-> >
-> > I'm not sure which tree is the right place, but may this can go through
-> > the asm-generic tree since it removes an asm-generic header?
->
-> Makes sense.
 
-Applied and pushed to asm-generic.git/master now, sorry for the delay.
 
-     Arnd
+Le 01/07/2019 à 15:39, Turritopsis Dohrnii Teo En Ming a écrit :
+> Good evening from Singapore,
+
+Good evening afternoon from Paris,
+
+> 
+> Can I compile Linux Kernel 5.2-rc7 for PowerPC on Intel/AMD x86 hardware, for example, AMD Ryzen 9 3950X, with 16 CPU cores and 32 threads?
+
+Yes you can
+
+> 
+> Is it called cross-compiling?
+
+
+Yes it is, you can get cross compilers at 
+https://mirrors.edge.kernel.org/pub/tools/crosstool/
+
+Thanks
+Christophe
+
+> 
+> Thank you.
+> 
+> -----BEGIN EMAIL SIGNATURE-----
+> 
+> The Gospel for all Targeted Individuals (TIs):
+> 
+> [The New York Times] Microwave Weapons Are Prime Suspect in Ills of
+> U.S. Embassy Workers
+> 
+> Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwave.html
+> 
+> ********************************************************************************************
+> 
+> Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
+> Qualifications as at 14 Feb 2019
+> 
+> [1] https://tdtemcerts.wordpress.com/
+> 
+> [2] https://tdtemcerts.blogspot.sg/
+> 
+> [3] https://www.scribd.com/user/270125049/Teo-En-Ming
+> 
+> -----END EMAIL SIGNATURE-----
+> 
