@@ -2,75 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56475BE66
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC6E5BE6F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2019 16:38:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45cqgV05PdzDqT9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:36:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45cqk65PZqzDqYL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 00:38:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45cqcZ62D3zDqSK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:33:50 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x61ERmpI063239
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 1 Jul 2019 10:33:47 -0400
-Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tfhnn1939-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 10:33:47 -0400
-Received: from localhost
- by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Mon, 1 Jul 2019 15:33:46 +0100
-Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
- by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 1 Jul 2019 15:33:44 +0100
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x61EXhJS59900394
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45cqdx4P8JzDqNK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 00:35:01 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x61EYCWX083751; Mon, 1 Jul 2019 10:34:56 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tfm2600u9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jul 2019 10:34:55 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x61EYtq0090370;
+ Mon, 1 Jul 2019 10:34:55 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tfm2600tc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jul 2019 10:34:55 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x61EYoV4028883;
+ Mon, 1 Jul 2019 14:34:54 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma01wdc.us.ibm.com with ESMTP id 2tdym6fg7p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jul 2019 14:34:54 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x61EYr3n50921832
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jul 2019 14:33:43 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6B046E04C;
- Mon,  1 Jul 2019 14:33:43 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14A4B6E04E;
- Mon,  1 Jul 2019 14:33:40 +0000 (GMT)
+ Mon, 1 Jul 2019 14:34:53 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76E7FAE06F;
+ Mon,  1 Jul 2019 14:34:53 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 573EFAE05F;
+ Mon,  1 Jul 2019 14:34:51 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.81.231])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jul 2019 14:33:40 +0000 (GMT)
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon,  1 Jul 2019 14:34:50 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/mm/nvdimm: Add an informative message if we fail
- to allocate altmap block
-Date: Mon,  1 Jul 2019 20:03:38 +0530
+Subject: [PATCH v2 1/2] powerpc/mm/hash/4k: Don't use 64K page size for
+ vmemmap with 4K pagesize
+Date: Mon,  1 Jul 2019 20:04:41 +0530
+Message-Id: <20190701143442.17174-1-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19070114-0036-0000-0000-00000AD279EF
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011360; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01225930; UDB=6.00645358; IPR=6.01007143; 
- MB=3.00027534; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-01 14:33:45
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070114-0037-0000-0000-00004C6DE2B8
-Message-Id: <20190701143338.16824-1-aneesh.kumar@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-01_09:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -90,42 +87,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Allocation from altmap area can fail based on vmemmap page size used. Add kernel
-info message to indicate the failure. That allows the user to identify whether they
-are really using persistent memory reserved space for per-page metadata.
-
-The message looks like:
-[  136.587212] altmap block allocation failed, falling back to system memory
+With hash translation and 4K PAGE_SIZE config, we need to make sure we don't
+use 64K page size for vmemmap.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/init_64.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index a4e17a979e45..f3b64f49082b 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -194,8 +194,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		 * fail due to alignment issues when using 16MB hugepages, so
- 		 * fall back to system memory if the altmap allocation fail.
- 		 */
--		if (altmap)
-+		if (altmap) {
- 			p = altmap_alloc_block_buf(page_size, altmap);
-+			if (!p)
-+				pr_debug("altmap block allocation failed, " \
-+					"falling back to system memory");
-+		}
- 		if (!p)
- 			p = vmemmap_alloc_block_buf(page_size, node);
- 		if (!p)
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 28ced26f2a00..a8cc40d2a9ed 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -684,10 +684,8 @@ static void __init htab_init_page_sizes(void)
+ 	if (mmu_psize_defs[MMU_PAGE_16M].shift &&
+ 	    memblock_phys_mem_size() >= 0x40000000)
+ 		mmu_vmemmap_psize = MMU_PAGE_16M;
+-	else if (mmu_psize_defs[MMU_PAGE_64K].shift)
+-		mmu_vmemmap_psize = MMU_PAGE_64K;
+ 	else
+-		mmu_vmemmap_psize = MMU_PAGE_4K;
++		mmu_vmemmap_psize = mmu_virtual_psize;
+ #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ 
+ 	printk(KERN_DEBUG "Page orders: linear mapping = %d, "
 -- 
 2.21.0
 
