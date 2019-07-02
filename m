@@ -1,76 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0AA5C937
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:21:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dDdW10x2zDqSk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 16:21:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5F65C940
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:23:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dDgt5zr7zDqKK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 16:23:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="KkqJZOpf"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dDbl4X3hzDqQ5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 16:19:31 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id 196so7155150pgc.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 23:19:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=5mRd6FQHcgCnSqT2g/bRGXaiKnjHcLrey9U3bhNY2RM=;
- b=KkqJZOpflqhCj9arHhSkXN2You+pOPuwJNiVuyz35vWGulfmZtlkvuIKPPp4zGu3Oh
- 1sb8ihw0bzpUHy0/E+L/J3+JXQQynOk5JXClB5SMnM7PyuryoaiQbKZiCVMOmoORGgWC
- mAAUS+c+T3tA8o/CbmkSGKa+tXcbvwMk0M6a9yBCieH6v/6V3T+kJYn4auG5u6GdCjot
- AbxMER/nm8cdunpWdud1olXVoWD2Rcd4IpIr+1+7s7jz87yt82cd4ajJEywxqZGZLeLp
- uoc+A8m/JFLa9M76/P+VIoBF79ulT8DN/6pB62V54kD6uC1plqJN/l4Y0t9BYQevYUvr
- c5iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=5mRd6FQHcgCnSqT2g/bRGXaiKnjHcLrey9U3bhNY2RM=;
- b=XJ3UuXmebf+V+KdZXZwptq6HdwgvCEGG8SKeNLB9P1zbePEuG88LatMlRkYFd3uqoN
- EfMNnJ6JGMno/5/BGjGfGn6wBjDZ0WzIobsvEqHOHdRqFv2wBCgKB7NSQ+9mceFwDM0F
- tFd419K+v7pbOeG3amzaby/2fclBhGXv2z7B24A2V9kqw4LYMl3RhfVYawnA5D9+xpUE
- hjmLYfRmETfIz48cxaoHlQ7KtA0Xe7/uZDIABaOxUPMEktxb3eOg14t5dJ7lP62vKAyh
- eTOvBdDpQVYgdF38pGaoAMIwbeKaGGPl2It1kQA+8fkePZFSipnOBQoDUoeEa/e1Dg0b
- N4JQ==
-X-Gm-Message-State: APjAAAW8btMGY35k43NHQ8t0iZ9g7d/aZzIHpWerYfctrXs0wAjhPhzO
- 32TzJn8du662ivPzSSByC2ZM73PF
-X-Google-Smtp-Source: APXvYqy2mxxBWEMCKswjPaShPzn6iOJAkTZtfMjZm1iaRnTk1cmy0MwnXmGRjvkXFdy2Bh9tc9F5TA==
-X-Received: by 2002:a17:90a:9604:: with SMTP id
- v4mr3605117pjo.66.1562048369395; 
- Mon, 01 Jul 2019 23:19:29 -0700 (PDT)
-Received: from localhost ([175.45.73.101])
- by smtp.gmail.com with ESMTPSA id x65sm14526091pfd.139.2019.07.01.23.19.28
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 23:19:29 -0700 (PDT)
-Date: Tue, 02 Jul 2019 16:19:04 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [v2 12/12] powerpc/64s: Save r13 in machine_check_common_early
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Santosh Sivaraj
- <santosh@fossix.org>
-References: <20190702051932.511-1-santosh@fossix.org>
- <20190702051932.511-13-santosh@fossix.org>
-In-Reply-To: <20190702051932.511-13-santosh@fossix.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dDfB4vgWzDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 16:21:38 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x626HAaA014325
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 02:21:35 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tfxgqxp38-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 02:21:34 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 2 Jul 2019 07:21:32 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 2 Jul 2019 07:21:29 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x626LGbU33096046
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Jul 2019 06:21:17 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0E14AE055;
+ Tue,  2 Jul 2019 06:21:27 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4DE81AE045;
+ Tue,  2 Jul 2019 06:21:27 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jul 2019 06:21:27 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2C969A01EB;
+ Tue,  2 Jul 2019 16:21:24 +1000 (AEST)
+Subject: Re: [RFC 02/11] powerpc/powernv/ioda: Protect PE list
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ andrew.donnellan@au1.ibm.com, clombard@linux.ibm.com
+References: <20190619132840.27634-1-fbarrat@linux.ibm.com>
+ <20190619132840.27634-3-fbarrat@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Tue, 2 Jul 2019 16:21:23 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1562048251.j2f6zct1ph.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190619132840.27634-3-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070206-0008-0000-0000-000002F90251
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070206-0009-0000-0000-0000226649D4
+Message-Id: <803f58d1-bf79-9994-a9b4-3e3a6d8ecd12@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-02_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907020072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,80 +97,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+Cc: aik@ozlabs.ru, arbab@linux.ibm.com, oohall@gmail.com, groug@kaod.org,
+ alastair@au1.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Santosh Sivaraj's on July 2, 2019 3:19 pm:
-> From: Reza Arbab <arbab@linux.ibm.com>
->=20
-> Testing my memcpy_mcsafe() work in progress with an injected UE, I get
-> an error like this immediately after the function returns:
->=20
-> BUG: Unable to handle kernel data access at 0x7fff84dec8f8
-> Faulting instruction address: 0xc0080000009c00b0
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=3D64K MMU=3DRadix MMU=3DHash SMP NR_CPUS=3D2048 NUMA PowerNV
-> Modules linked in: mce(O+) vmx_crypto crc32c_vpmsum
-> CPU: 0 PID: 1375 Comm: modprobe Tainted: G           O      5.1.0-rc6 #26=
-7
-> NIP:  c0080000009c00b0 LR: c0080000009c00a8 CTR: c000000000095f90
-> REGS: c0000000ee197790 TRAP: 0300   Tainted: G           O       (5.1.0-r=
-c6)
-> MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 88002826=
-  XER: 00040000
-> CFAR: c000000000095f8c DAR: 00007fff84dec8f8 DSISR: 40000000 IRQMASK: 0
-> GPR00: 000000006c6c6568 c0000000ee197a20 c0080000009c8400 fffffffffffffff=
-2
-> GPR04: c0080000009c02e0 0000000000000006 0000000000000000 c000000003c834c=
-8
-> GPR08: 0080000000000000 776a6681b7fb5100 0000000000000000 c0080000009c01c=
-8
-> GPR12: c000000000095f90 00007fff84debc00 000000004d071440 000000000000000=
-0
-> GPR16: 0000000100000601 c0080000009e0000 c000000000c98dd8 c000000000c98d9=
-8
-> GPR20: c000000003bba970 c0080000009c04d0 c0080000009c0618 c0000000001e582=
-0
-> GPR24: 0000000000000000 0000000000000100 0000000000000001 c000000003bba95=
-8
-> GPR28: c0080000009c02e8 c0080000009c0318 c0080000009c02e0 000000000000000=
-0
-> NIP [c0080000009c00b0] cause_ue+0xa8/0xe8 [mce]
-> LR [c0080000009c00a8] cause_ue+0xa0/0xe8 [mce]
->=20
-> To fix, ensure that r13 is properly restored after an MCE.
->=20
-> This commit is needed for testing this series, this is a possible simulat=
-or
-> bug.
+On 19/6/19 11:28 pm, Frederic Barrat wrote:
+> Protect the PHB's list of PE. Probably not needed as long as it was
+> populated during PHB creation, but it feels right and will become
+> required once we can add/remove opencapi devices on hotplug.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-This introduces a bug, of course -- MCE occurring when r13 !=3D PACA
-will corrupt r13.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
 > ---
->  arch/powerpc/kernel/exceptions-64s.S | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/e=
-xceptions-64s.S
-> index 311f1392a2ec..932d8d05892c 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -265,6 +265,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
->  EXC_REAL_END(machine_check, 0x200, 0x100)
->  EXC_VIRT_NONE(0x4200, 0x100)
->  TRAMP_REAL_BEGIN(machine_check_common_early)
-> +	SET_SCRATCH0(r13)		/* save r13 */
->  	EXCEPTION_PROLOG_1(PACA_EXMC, NOTEST, 0x200)
->  	/*
->  	 * Register contents:
-> --=20
-> 2.20.1
->=20
->=20
-=
+>   arch/powerpc/platforms/powernv/pci-ioda.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 3082912e2600..2c063b05bb64 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -1078,8 +1078,9 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+>   	}
+>   
+>   	/* Put PE to the list */
+> +	mutex_lock(&phb->ioda.pe_list_mutex);
+>   	list_add_tail(&pe->list, &phb->ioda.pe_list);
+> -
+> +	mutex_unlock(&phb->ioda.pe_list_mutex);
+>   	return pe;
+>   }
+>   
+> @@ -3501,7 +3502,10 @@ static void pnv_ioda_release_pe(struct pnv_ioda_pe *pe)
+>   	struct pnv_phb *phb = pe->phb;
+>   	struct pnv_ioda_pe *slave, *tmp;
+>   
+> +	mutex_lock(&phb->ioda.pe_list_mutex);
+>   	list_del(&pe->list);
+> +	mutex_unlock(&phb->ioda.pe_list_mutex);
+> +
+>   	switch (phb->type) {
+>   	case PNV_PHB_IODA1:
+>   		pnv_pci_ioda1_release_pe_dma(pe);
+> 
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
+
