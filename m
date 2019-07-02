@@ -1,77 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737375C7DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 05:35:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5755C792
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 05:09:23 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45d8NJ4M1KzDqT7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 13:09:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45d8yn4NDyzDqVm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 13:35:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Al5//5gO"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45d8LK5M9LzDqSx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 13:07:34 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id j2so7513180pfe.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 20:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=JEjj/PPo3yxC7A/OXv38wkR3+utyXU9OEcFxU+K+Oro=;
- b=Al5//5gOeoq+S2jUF4fWN70LRFW/gTgt2BAn2B0baRvM15+mvep+e5s4otLVXnFidS
- xBIE1sEHhvdBjGVQNKvZJxJgS3UdF4SDPQWO2bZ1qZ6vVx4wQIRlG/Q0PHTSe7GdH1CN
- 9cMVFo4aSiPy+/dKIODZEmbH7MLbzA/dmpvmep3x/AmEilTks2v/Y+pWLjIn9LQ0PH9R
- y3GTlAck0dxdUgSPhIuZPl2WokIMtkaDzckYgT3LAIei69JVQwqvYIY52W+nZxNG0pqj
- e8Okec5QN1hZ74rwLSruZokYUZf+wjNVH5HrnYrKVrKxKFTKrXBjDp1EUoQxYsO+hF7X
- 1bMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=JEjj/PPo3yxC7A/OXv38wkR3+utyXU9OEcFxU+K+Oro=;
- b=PnN6GuSIvkdHNZSzkSrtKWWgKekQoklFna74/otAFcULP1lzvFRiV5JKnc3yvW3Ro5
- HPRGyM7/ayq1bTmtQNnrxLzEDkH+25GDFOg2vmlpPQKEtYVPW6NNyfGXeZLpPhsr1riH
- htv6Ko2FVoNN/H0HrxTI6cDID4wIT5txaOuUosGUtcGzdiNNQdw2h4OCIBDjHB3BGwCU
- SDEl5HkQPKLT0UglGUI0oNoL2L4UG1ZybvB3llBMgiFmx6s8H+z2bDW1laMhX6ndr3kv
- j6KbVhGabY7rZygaBk0wbWVc+uohkssdLzm4i6D6qmw3z90ZfF+tCGqiRZxZ3mxxZqWR
- Ug+Q==
-X-Gm-Message-State: APjAAAWrIb6Cb1KA8GgrkveQ+RUmGo+eJR5spYS2j5B0XY0S2wcHE3Te
- /JuRXyEJWrb28zu3Mxc5n84=
-X-Google-Smtp-Source: APXvYqxOVg0HFcmLKK0QMTMU/kWLAUMGqHvjW+x4ulftF7VETnHP5SSk6O+UdayEdNaJVHGmMdn0Lw==
-X-Received: by 2002:a65:6102:: with SMTP id z2mr27238296pgu.194.1562036851675; 
- Mon, 01 Jul 2019 20:07:31 -0700 (PDT)
-Received: from localhost ([175.45.73.101])
- by smtp.gmail.com with ESMTPSA id f11sm10274123pga.59.2019.07.01.20.07.30
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 20:07:30 -0700 (PDT)
-Date: Tue, 02 Jul 2019 13:07:11 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: Re: [PATCH 1/3] arm64: mm: Add p?d_large() definitions
-To: Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>
-References: <20190623094446.28722-1-npiggin@gmail.com>
- <20190623094446.28722-2-npiggin@gmail.com>
- <20190701092756.s4u5rdjr7gazvu66@willie-the-truck>
- <3d002af8-d8cd-f750-132e-12109e1e3039@arm.com>
- <20190701101510.qup3nd6vm6cbdgjv@willie-the-truck>
-In-Reply-To: <20190701101510.qup3nd6vm6cbdgjv@willie-the-truck>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45d8ww1x7nzDqTj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 13:34:06 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x623XTdP105584
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 1 Jul 2019 23:34:03 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tfwyrayhh-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 23:34:03 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Tue, 2 Jul 2019 04:34:02 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 2 Jul 2019 04:33:58 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x623Xk7G33030492
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Jul 2019 03:33:46 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 763C64C046;
+ Tue,  2 Jul 2019 03:33:57 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2857A4C044;
+ Tue,  2 Jul 2019 03:33:56 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.91.212])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jul 2019 03:33:55 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/nvdimm: Add is_ioremap_addr and use that to check
+ ioremap address
+In-Reply-To: <20190701165152.7a55299eb670b0ca326f24dd@linux-foundation.org>
+References: <20190701134038.14165-1-aneesh.kumar@linux.ibm.com>
+ <20190701165152.7a55299eb670b0ca326f24dd@linux-foundation.org>
+Date: Tue, 02 Jul 2019 09:03:54 +0530
 MIME-Version: 1.0
-User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1562036522.cz5nnz6ri2.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19070203-0008-0000-0000-000002F8F824
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070203-0009-0000-0000-000022663F0B
+Message-Id: <87r2792jq5.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-02_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=711 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907020036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,39 +89,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Will Deacon <will.deacon@arm.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-mm@kvack.org, dan.j.williams@intel.com, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Will Deacon's on July 1, 2019 8:15 pm:
-> On Mon, Jul 01, 2019 at 11:03:51AM +0100, Steven Price wrote:
->> On 01/07/2019 10:27, Will Deacon wrote:
->> > On Sun, Jun 23, 2019 at 07:44:44PM +1000, Nicholas Piggin wrote:
->> >> walk_page_range() is going to be allowed to walk page tables other th=
-an
->> >> those of user space. For this it needs to know when it has reached a
->> >> 'leaf' entry in the page tables. This information will be provided by=
- the
->> >> p?d_large() functions/macros.
->> >=20
->> > I can't remember whether or not I asked this before, but why not call
->> > this macro p?d_leaf() if that's what it's identifying? "Large" and "hu=
-ge"
->> > are usually synonymous, so I find this naming needlessly confusing bas=
-ed
->> > on this patch in isolation.
+Andrew Morton <akpm@linux-foundation.org> writes:
 
-Those page table macro names are horrible. Large, huge, leaf, wtf?
-They could do with a sensible renaming. But this series just follows
-naming that's alreay there on x86.
+> On Mon,  1 Jul 2019 19:10:38 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+>
+>> Architectures like powerpc use different address range to map ioremap
+>> and vmalloc range. The memunmap() check used by the nvdimm layer was
+>> wrongly using is_vmalloc_addr() to check for ioremap range which fails for
+>> ppc64. This result in ppc64 not freeing the ioremap mapping. The side effect
+>> of this is an unbind failure during module unload with papr_scm nvdimm driver
+>
+> The patch applies to 5.1.  Does it need a Fixes: and a Cc:stable?
 
-Thanks,
-Nick
-=
+Actually, we want it to be backported to an older kernel possibly one
+that added papr-scm driver, b5beae5e224f ("powerpc/pseries: Add driver
+for PAPR SCM regions"). But that doesn't apply easily. It does apply
+without conflicts to 5.0
+
+-aneesh
+
