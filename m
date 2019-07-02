@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335A85C8E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 07:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3E65C8E5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 07:41:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dCjt4QnZzDqKM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:39:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dClp06f7zDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:41:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,54 +19,55 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dCQh5SvCzDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:26:36 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x625NTtV094793
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 01:26:32 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tfxgbn5hc-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dCQk6lM0zDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:26:38 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x625NVKt179748
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 01:26:36 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tfx8y5rq5-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 01:26:32 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 01:26:35 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Tue, 2 Jul 2019 06:26:30 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Tue, 2 Jul 2019 06:26:34 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 2 Jul 2019 06:26:27 +0100
+ Tue, 2 Jul 2019 06:26:29 +0100
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x625QQl925166006
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x625QSSt44040200
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jul 2019 05:26:26 GMT
+ Tue, 2 Jul 2019 05:26:28 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C54534C04A;
- Tue,  2 Jul 2019 05:26:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C0A844C04E;
+ Tue,  2 Jul 2019 05:26:28 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AF9B4C050;
- Tue,  2 Jul 2019 05:26:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 168344C04A;
+ Tue,  2 Jul 2019 05:26:27 +0000 (GMT)
 Received: from bangoria.in.ibm.com (unknown [9.124.31.195])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  2 Jul 2019 05:26:24 +0000 (GMT)
+ Tue,  2 Jul 2019 05:26:26 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v2 1/2] Powerpc/Watchpoint: Fix length calculation for
- unaligned target
-Date: Tue,  2 Jul 2019 10:56:13 +0530
+Subject: [PATCH v2 2/2] Powerpc/Watchpoint: Rewrite ptrace-hwbreak.c selftest
+Date: Tue,  2 Jul 2019 10:56:14 +0530
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190702052614.10408-1-ravi.bangoria@linux.ibm.com>
+References: <20190702052614.10408-1-ravi.bangoria@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19070205-0008-0000-0000-000002F8FEC7
+x-cbid: 19070205-0028-0000-0000-0000037F893D
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070205-0009-0000-0000-000022664613
-Message-Id: <20190702052614.10408-1-ravi.bangoria@linux.ibm.com>
+x-cbparentid: 19070205-0029-0000-0000-0000243FC157
+Message-Id: <20190702052614.10408-2-ravi.bangoria@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-02_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -93,342 +94,697 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Watchpoint match range is always doubleword(8 bytes) aligned on
-powerpc. If the given range is crossing doubleword boundary, we
-need to increase the length such that next doubleword also get
-covered. Ex,
+ptrace-hwbreak.c selftest is logically broken. On powerpc, when
+watchpoint is created with ptrace, signals are generated before
+executing the instruction and user has to manually singlestep
+the instruction with watchpoint disabled, which selftest never
+does and thus it keeps on getting the signal at the same
+instruction. If we fix it, selftest fails because the logical
+connection between tracer(parent) and tracee(child) is also
+broken. Rewrite the selftest and add new tests for unaligned
+access.
 
-          address   len = 6 bytes
-                |=========.
-   |------------v--|------v--------|
-   | | | | | | | | | | | | | | | | |
-   |---------------|---------------|
-    <---8 bytes--->
-
-In such case, current code configures hw as:
-  start_addr = address & ~HW_BREAKPOINT_ALIGN
-  len = 8 bytes
-
-And thus read/write in last 4 bytes of the given range is ignored.
-Fix this by including next doubleword in the length. Watchpoint
-exception handler already ignores extraneous exceptions, so no
-changes required for that.
+With patch:
+  $ ./tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak
+  test: ptrace-hwbreak
+  tags: git_version:v5.2-rc2-33-ga247a75f90a9-dirty
+  PTRACE_SET_DEBUGREG, WO, len: 1: Ok
+  PTRACE_SET_DEBUGREG, WO, len: 2: Ok
+  PTRACE_SET_DEBUGREG, WO, len: 4: Ok
+  PTRACE_SET_DEBUGREG, WO, len: 8: Ok
+  PTRACE_SET_DEBUGREG, RO, len: 1: Ok
+  PTRACE_SET_DEBUGREG, RO, len: 2: Ok
+  PTRACE_SET_DEBUGREG, RO, len: 4: Ok
+  PTRACE_SET_DEBUGREG, RO, len: 8: Ok
+  PTRACE_SET_DEBUGREG, RW, len: 1: Ok
+  PTRACE_SET_DEBUGREG, RW, len: 2: Ok
+  PTRACE_SET_DEBUGREG, RW, len: 4: Ok
+  PTRACE_SET_DEBUGREG, RW, len: 8: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RO, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, RW, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, WO, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, RO, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED, RW, len: 6: Ok
+  PPC_PTRACE_SETHWDEBUG, DAWR_MAX_LEN, RW, len: 512: Ok
+  success: ptrace-hwbreak
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
-v1->v2:
- - v1: https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-June/192162.html 
- - No cosmetic patches.
- - v1 fixed unaligned issue in core hw-breakpoint code only. But 
-   ptrace was still messing up with address/len. Fix that in v2. 
+ .../selftests/powerpc/ptrace/ptrace-hwbreak.c | 535 +++++++++++-------
+ 1 file changed, 325 insertions(+), 210 deletions(-)
 
- arch/powerpc/include/asm/debug.h         |  1 +
- arch/powerpc/include/asm/hw_breakpoint.h |  9 ++++-
- arch/powerpc/kernel/hw_breakpoint.c      | 26 +++---------
- arch/powerpc/kernel/process.c            | 50 +++++++++++++++++++++++-
- arch/powerpc/kernel/ptrace.c             | 37 ++++++++++--------
- arch/powerpc/xmon/xmon.c                 |  3 +-
- 6 files changed, 83 insertions(+), 43 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
-index 7756026b95ca..9c1b4aaa374b 100644
---- a/arch/powerpc/include/asm/debug.h
-+++ b/arch/powerpc/include/asm/debug.h
-@@ -45,6 +45,7 @@ static inline int debugger_break_match(struct pt_regs *regs) { return 0; }
- static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
- #endif
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
+index 3066d310f32b..fb1e05d7f77c 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
+@@ -22,318 +22,433 @@
+ #include <sys/wait.h>
+ #include "ptrace.h"
  
-+int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw);
- void __set_breakpoint(struct arch_hw_breakpoint *brk);
- bool ppc_breakpoint_available(void);
- #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index 0fe8c1e46bbc..ca2877be7f79 100644
---- a/arch/powerpc/include/asm/hw_breakpoint.h
-+++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -28,6 +28,7 @@ struct arch_hw_breakpoint {
- 	unsigned long	address;
- 	u16		type;
- 	u16		len; /* length of the target data symbol */
-+	u16		hw_len; /* length programmed in hw */
- };
- 
- /* Note: Don't change the the first 6 bits below as they are in the same order
-@@ -47,6 +48,11 @@ struct arch_hw_breakpoint {
- #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
- 				 HW_BRK_TYPE_HYP)
- 
-+#define HW_BREAKPOINT_ALIGN 0x7
-+
-+#define DABR_MAX_LEN	8
-+#define DAWR_MAX_LEN	512
-+
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- #include <linux/kdebug.h>
- #include <asm/reg.h>
-@@ -58,8 +64,6 @@ struct pmu;
- struct perf_sample_data;
- struct task_struct;
- 
--#define HW_BREAKPOINT_ALIGN 0x7
+-/* Breakpoint access modes */
+-enum {
+-	BP_X = 1,
+-	BP_RW = 2,
+-	BP_W = 4,
+-};
 -
- extern int hw_breakpoint_slots(int type);
- extern int arch_bp_generic_fields(int type, int *gen_bp_type);
- extern int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw);
-@@ -84,6 +88,7 @@ static inline void hw_breakpoint_disable(void)
- 	brk.address = 0;
- 	brk.type = 0;
- 	brk.len = 0;
-+	brk.hw_len = 0;
- 	if (ppc_breakpoint_available())
- 		__set_breakpoint(&brk);
- }
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index da307dd93ee3..a61a1266089a 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -147,9 +147,9 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
- 			     const struct perf_event_attr *attr,
- 			     struct arch_hw_breakpoint *hw)
- {
--	int ret = -EINVAL, length_max;
-+	int ret = -EINVAL;
- 
--	if (!bp)
-+	if (!bp || !attr->bp_len)
- 		return ret;
- 
- 	hw->type = HW_BRK_TYPE_TRANSLATE;
-@@ -169,26 +169,10 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
- 	hw->address = attr->bp_addr;
- 	hw->len = attr->bp_len;
- 
--	/*
--	 * Since breakpoint length can be a maximum of HW_BREAKPOINT_LEN(8)
--	 * and breakpoint addresses are aligned to nearest double-word
--	 * HW_BREAKPOINT_ALIGN by rounding off to the lower address, the
--	 * 'symbolsize' should satisfy the check below.
--	 */
- 	if (!ppc_breakpoint_available())
- 		return -ENODEV;
--	length_max = 8; /* DABR */
--	if (dawr_enabled()) {
--		length_max = 512 ; /* 64 doublewords */
--		/* DAWR region can't cross 512 boundary */
--		if ((attr->bp_addr >> 9) !=
--		    ((attr->bp_addr + attr->bp_len - 1) >> 9))
--			return -EINVAL;
+-static pid_t child_pid;
+-static struct ppc_debug_info dbginfo;
+-
+-static void get_dbginfo(void)
+-{
+-	int ret;
+-
+-	ret = ptrace(PPC_PTRACE_GETHWDBGINFO, child_pid, NULL, &dbginfo);
+-	if (ret) {
+-		perror("Can't get breakpoint info\n");
+-		exit(-1);
 -	}
--	if (hw->len >
--	    (length_max - (hw->address & HW_BREAKPOINT_ALIGN)))
--		return -EINVAL;
--	return 0;
-+
-+	return hw_breakpoint_validate_len(hw);
- }
- 
- /*
-@@ -388,7 +372,7 @@ static ssize_t dawr_write_file_bool(struct file *file,
- 				    const char __user *user_buf,
- 				    size_t count, loff_t *ppos)
- {
--	struct arch_hw_breakpoint null_brk = {0, 0, 0};
-+	struct arch_hw_breakpoint null_brk = {0, 0, 0, 0};
- 	size_t rc;
- 
- 	/* Send error to user if they hypervisor won't allow us to write DAWR */
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 87da40129927..97383c4e505e 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -732,6 +732,8 @@ static void set_debug_reg_defaults(struct thread_struct *thread)
- {
- 	thread->hw_brk.address = 0;
- 	thread->hw_brk.type = 0;
-+	thread->hw_brk.len = 0;
-+	thread->hw_brk.hw_len = 0;
- 	if (ppc_breakpoint_available())
- 		set_breakpoint(&thread->hw_brk);
- }
-@@ -797,6 +799,49 @@ static inline int set_dabr(struct arch_hw_breakpoint *brk)
- 	return __set_dabr(dabr, dabrx);
- }
- 
+-}
+-
+-static bool hwbreak_present(void)
+-{
+-	return (dbginfo.num_data_bps != 0);
+-}
 +/*
-+ * Watchpoint match range is always doubleword(8 bytes) aligned on
-+ * powerpc. If the given range is crossing doubleword boundary, we
-+ * need to increase the length such that next doubleword also get
-+ * covered. Ex,
-+ *
-+ *          address   len = 6 bytes
-+ *                |=========.
-+ *   |------------v--|------v--------|
-+ *   | | | | | | | | | | | | | | | | |
-+ *   |---------------|---------------|
-+ *    <---8 bytes--->
-+ *
-+ * In this case, we should configure hw as:
-+ *   start_addr = address & ~HW_BREAKPOINT_ALIGN
-+ *   len = 16 bytes
-+ *
-+ * @start_addr and @end_addr are inclusive.
++ * Use volatile on all global var so that compiler doesn't
++ * optimise their load/stores. Otherwise selftest can fail.
 + */
-+int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
-+{
-+	u16 max_len = DABR_MAX_LEN;
-+	u16 hw_len;
-+	unsigned long start_addr, end_addr;
-+
-+	start_addr = hw->address & ~HW_BREAKPOINT_ALIGN;
-+	end_addr = (hw->address + hw->len - 1) | HW_BREAKPOINT_ALIGN;
-+	hw_len = end_addr - start_addr + 1;
-+
-+	if (dawr_enabled()) {
-+		max_len = DAWR_MAX_LEN;
-+		/* DAWR region can't cross 512 bytes boundary */
-+		if ((start_addr >> 9) != (end_addr >> 9))
-+			return -EINVAL;
-+	}
-+
-+	if (hw_len > max_len)
-+		return -EINVAL;
-+
-+	hw->hw_len = hw_len;
-+	return 0;
-+}
-+
- int set_dawr(struct arch_hw_breakpoint *brk)
- {
- 	unsigned long dawr, dawrx, mrd;
-@@ -812,10 +857,10 @@ int set_dawr(struct arch_hw_breakpoint *brk)
- 	/* dawr length is stored in field MDR bits 48:53.  Matches range in
- 	   doublewords (64 bits) baised by -1 eg. 0b000000=1DW and
- 	   0b111111=64DW.
--	   brk->len is in bytes.
-+	   brk->hw_len is in bytes.
- 	   This aligns up to double word size, shifts and does the bias.
- 	*/
--	mrd = ((brk->len + 7) >> 3) - 1;
-+	mrd = ((brk->hw_len + 7) >> 3) - 1;
- 	dawrx |= (mrd & 0x3f) << (63 - 53);
++static volatile __u64 glvar;
  
- 	if (ppc_md.set_dawr)
-@@ -861,6 +906,7 @@ static inline bool hw_brk_match(struct arch_hw_breakpoint *a,
- 		return false;
- 	if (a->len != b->len)
- 		return false;
-+	/* no need to check hw_len. it's calculated from address and len */
- 	return true;
+-static bool dawr_present(void)
+-{
+-	return !!(dbginfo.features & PPC_DEBUG_FEATURE_DATA_BP_DAWR);
+-}
++#define DAWR_MAX_LEN 512
++static volatile __u8 big_var[DAWR_MAX_LEN] __attribute__((aligned(512)));
+ 
+-static void set_breakpoint_addr(void *addr)
+-{
+-	int ret;
++#define A_LEN 6
++#define B_LEN 6
++struct gstruct {
++	__u8 a[A_LEN]; /* double word aligned */
++	__u8 b[B_LEN]; /* double word unaligned */
++};
++static volatile struct gstruct gstruct __attribute__((aligned(512)));
+ 
+-	ret = ptrace(PTRACE_SET_DEBUGREG, child_pid, 0, addr);
+-	if (ret) {
+-		perror("Can't set breakpoint addr\n");
+-		exit(-1);
+-	}
+-}
+ 
+-static int set_hwbreakpoint_addr(void *addr, int range)
++static void get_dbginfo(pid_t child_pid, struct ppc_debug_info *dbginfo)
+ {
+-	int ret;
+-
+-	struct ppc_hw_breakpoint info;
+-
+-	info.version = 1;
+-	info.trigger_type = PPC_BREAKPOINT_TRIGGER_RW;
+-	info.addr_mode = PPC_BREAKPOINT_MODE_EXACT;
+-	if (range > 0)
+-		info.addr_mode = PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE;
+-	info.condition_mode = PPC_BREAKPOINT_CONDITION_NONE;
+-	info.addr = (__u64)addr;
+-	info.addr2 = (__u64)addr + range;
+-	info.condition_value = 0;
+-
+-	ret = ptrace(PPC_PTRACE_SETHWDEBUG, child_pid, 0, &info);
+-	if (ret < 0) {
+-		perror("Can't set breakpoint\n");
++	if (ptrace(PPC_PTRACE_GETHWDBGINFO, child_pid, NULL, dbginfo)) {
++		perror("Can't get breakpoint info");
+ 		exit(-1);
+ 	}
+-	return ret;
  }
  
-diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-index 684b0b315c32..fc52c078d921 100644
---- a/arch/powerpc/kernel/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace.c
-@@ -2425,7 +2425,8 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
- 		return -EIO;
- 	hw_brk.address = data & (~HW_BRK_TYPE_DABR);
- 	hw_brk.type = (data & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
--	hw_brk.len = 8;
-+	hw_brk.len = DABR_MAX_LEN;
-+	hw_brk.hw_len = DABR_MAX_LEN;
- 	set_bp = (data) && (hw_brk.type & HW_BRK_TYPE_RDWR);
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- 	bp = thread->ptrace_bps[0];
-@@ -2439,6 +2440,7 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
- 	if (bp) {
- 		attr = bp->attr;
- 		attr.bp_addr = hw_brk.address;
-+		attr.bp_len = DABR_MAX_LEN;
- 		arch_bp_generic_fields(hw_brk.type, &attr.bp_type);
- 
- 		/* Enable breakpoint */
-@@ -2456,7 +2458,7 @@ static int ptrace_set_debugreg(struct task_struct *task, unsigned long addr,
- 	/* Create a new breakpoint request if one doesn't exist already */
- 	hw_breakpoint_init(&attr);
- 	attr.bp_addr = hw_brk.address;
--	attr.bp_len = 8;
-+	attr.bp_len = DABR_MAX_LEN;
- 	arch_bp_generic_fields(hw_brk.type,
- 			       &attr.bp_type);
- 
-@@ -2827,13 +2829,13 @@ static long ppc_set_hwdebug(struct task_struct *child,
- 		     struct ppc_hw_breakpoint *bp_info)
+-static int del_hwbreakpoint_addr(int watchpoint_handle)
++static bool dawr_present(struct ppc_debug_info *dbginfo)
  {
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
--	int len = 0;
- 	struct thread_struct *thread = &(child->thread);
- 	struct perf_event *bp;
- 	struct perf_event_attr attr;
- #endif /* CONFIG_HAVE_HW_BREAKPOINT */
- #ifndef CONFIG_PPC_ADV_DEBUG_REGS
- 	struct arch_hw_breakpoint brk;
-+	int ret = 0;
- #endif
+-	int ret;
+-
+-	ret = ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, watchpoint_handle);
+-	if (ret < 0) {
+-		perror("Can't delete hw breakpoint\n");
+-		exit(-1);
+-	}
+-	return ret;
++	return !!(dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_DAWR);
+ }
  
- 	if (bp_info->version != 1)
-@@ -2881,32 +2883,33 @@ static long ppc_set_hwdebug(struct task_struct *child,
- 	if ((unsigned long)bp_info->addr >= TASK_SIZE)
- 		return -EIO;
+-#define DAWR_LENGTH_MAX 512
+-
+-/* Dummy variables to test read/write accesses */
+-static unsigned long long
+-	dummy_array[DAWR_LENGTH_MAX / sizeof(unsigned long long)]
+-	__attribute__((aligned(512)));
+-static unsigned long long *dummy_var = dummy_array;
+-
+ static void write_var(int len)
+ {
+-	long long *plval;
+-	char *pcval;
+-	short *psval;
+-	int *pival;
++	__u8 *pcvar;
++	__u16 *psvar;
++	__u32 *pivar;
++	__u64 *plvar;
  
--	brk.address = bp_info->addr & ~7UL;
-+	brk.address = bp_info->addr;
- 	brk.type = HW_BRK_TYPE_TRANSLATE;
--	brk.len = 8;
-+
-+	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE)
-+		brk.len = bp_info->addr2 - bp_info->addr;
-+	else if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
-+		brk.len = 1;
-+	else
-+		return -EINVAL;
-+
-+	ret = hw_breakpoint_validate_len(&brk);
-+	if (ret)
-+		return ret;
-+
- 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_READ)
- 		brk.type |= HW_BRK_TYPE_READ;
- 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_WRITE)
- 		brk.type |= HW_BRK_TYPE_WRITE;
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
--	/*
--	 * Check if the request is for 'range' breakpoints. We can
--	 * support it if range < 8 bytes.
--	 */
--	if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE)
--		len = bp_info->addr2 - bp_info->addr;
--	else if (bp_info->addr_mode == PPC_BREAKPOINT_MODE_EXACT)
--		len = 1;
--	else
--		return -EINVAL;
- 	bp = thread->ptrace_bps[0];
- 	if (bp)
- 		return -ENOSPC;
+ 	switch (len) {
+ 	case 1:
+-		pcval = (char *)dummy_var;
+-		*pcval = 0xff;
++		pcvar = (__u8 *)&glvar;
++		*pcvar = 0xff;
+ 		break;
+ 	case 2:
+-		psval = (short *)dummy_var;
+-		*psval = 0xffff;
++		psvar = (__u16 *)&glvar;
++		*psvar = 0xffff;
+ 		break;
+ 	case 4:
+-		pival = (int *)dummy_var;
+-		*pival = 0xffffffff;
++		pivar = (__u32 *)&glvar;
++		*pivar = 0xffffffff;
+ 		break;
+ 	case 8:
+-		plval = (long long *)dummy_var;
+-		*plval = 0xffffffffffffffffLL;
++		plvar = (__u64 *)&glvar;
++		*plvar = 0xffffffffffffffffLL;
+ 		break;
+ 	}
+ }
  
- 	/* Create a new breakpoint request if one doesn't exist already */
- 	hw_breakpoint_init(&attr);
--	attr.bp_addr = (unsigned long)bp_info->addr & ~HW_BREAKPOINT_ALIGN;
--	attr.bp_len = len;
-+	attr.bp_addr = (unsigned long)bp_info->addr;
-+	attr.bp_len = brk.len;
- 	arch_bp_generic_fields(brk.type, &attr.bp_type);
+ static void read_var(int len)
+ {
+-	char cval __attribute__((unused));
+-	short sval __attribute__((unused));
+-	int ival __attribute__((unused));
+-	long long lval __attribute__((unused));
++	__u8 cvar __attribute__((unused));
++	__u16 svar __attribute__((unused));
++	__u32 ivar __attribute__((unused));
++	__u64 lvar __attribute__((unused));
  
- 	thread->ptrace_bps[0] = bp = register_user_hw_breakpoint(&attr,
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 1b0149b2bb6c..6069b32e4087 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -886,7 +886,8 @@ static void insert_cpu_bpts(void)
- 	if (dabr.enabled) {
- 		brk.address = dabr.address;
- 		brk.type = (dabr.enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
--		brk.len = 8;
-+		brk.len = DABR_MAX_LEN;
-+		brk.hw_len = DABR_MAX_LEN;
- 		__set_breakpoint(&brk);
+ 	switch (len) {
+ 	case 1:
+-		cval = *(char *)dummy_var;
++		cvar = (__u8)glvar;
+ 		break;
+ 	case 2:
+-		sval = *(short *)dummy_var;
++		svar = (__u16)glvar;
+ 		break;
+ 	case 4:
+-		ival = *(int *)dummy_var;
++		ivar = (__u32)glvar;
+ 		break;
+ 	case 8:
+-		lval = *(long long *)dummy_var;
++		lvar = (__u64)glvar;
+ 		break;
+ 	}
+ }
+ 
+-/*
+- * Do the r/w accesses to trigger the breakpoints. And run
+- * the usual traps.
+- */
+-static void trigger_tests(void)
++static void test_workload(void)
+ {
+-	int len, ret;
++	__u8 cvar __attribute__((unused));
++	int len = 0;
+ 
+-	ret = ptrace(PTRACE_TRACEME, 0, NULL, 0);
+-	if (ret) {
+-		perror("Can't be traced?\n");
+-		return;
++	if (ptrace(PTRACE_TRACEME, 0, NULL, 0)) {
++		perror("Child can't be traced?");
++		exit(-1);
  	}
  
+ 	/* Wake up father so that it sets up the first test */
+ 	kill(getpid(), SIGUSR1);
+ 
+-	/* Test write watchpoints */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
++	/* PTRACE_SET_DEBUGREG. WO test */
++	for (len = 1; len <= sizeof(glvar); len <<= 1)
+ 		write_var(len);
+ 
+-	/* Test read/write watchpoints (on read accesses) */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
++	/* PTRACE_SET_DEBUGREG. RO test */
++	for (len = 1; len <= sizeof(glvar); len <<= 1)
+ 		read_var(len);
+ 
+-	/* Test when breakpoint is unset */
++	/* PTRACE_SET_DEBUGREG. RW test */
++	for (len = 1; len <= sizeof(glvar); len <<= 1) {
++		if (rand() % 2)
++			read_var(len);
++		else
++			write_var(len);
++	}
+ 
+-	/* Test write watchpoints */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
+-		write_var(len);
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. WO test */
++	write_var(1);
+ 
+-	/* Test read/write watchpoints (on read accesses) */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
+-		read_var(len);
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. RO test */
++	read_var(1);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. RW test */
++	if (rand() % 2)
++		write_var(1);
++	else
++		read_var(1);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. WO test */
++	gstruct.a[rand() % A_LEN] = 'a';
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. RO test */
++	cvar = gstruct.a[rand() % A_LEN];
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. RW test */
++	if (rand() % 2)
++		gstruct.a[rand() % A_LEN] = 'a';
++	else
++		cvar = gstruct.a[rand() % A_LEN];
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. WO test */
++	gstruct.b[rand() % B_LEN] = 'b';
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. RO test */
++	cvar = gstruct.b[rand() % B_LEN];
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. RW test */
++	if (rand() % 2)
++		gstruct.b[rand() % B_LEN] = 'b';
++	else
++		cvar = gstruct.b[rand() % B_LEN];
++
++	/* PPC_PTRACE_SETHWDEBUG. DAWR_MAX_LEN. RW test */
++	if (rand() % 2)
++		big_var[rand() % DAWR_MAX_LEN] = 'a';
++	else
++		cvar = big_var[rand() % DAWR_MAX_LEN];
+ }
+ 
+-static void check_success(const char *msg)
++static void
++check_success(pid_t child_pid, const char *name, const char *type, int len)
+ {
+-	const char *msg2;
+ 	int status;
+ 
+ 	/* Wait for the child to SIGTRAP */
+ 	wait(&status);
++	if (!WIFSTOPPED(status) || WSTOPSIG(status) != SIGTRAP) {
++		printf("%s, %s, len: %d: Fail\n", name, type, len);
++		exit(-1);
++	}
++	printf("%s, %s, len: %d: Ok\n", name, type, len);
+ 
+-	msg2 = "Failed";
++	/*
++	 * For ptrace registered watchpoint, signal is generated
++	 * before executing load/store. Singlestep the instruction
++	 * and then continue the test.
++	 */
++	ptrace(PTRACE_SINGLESTEP, child_pid, NULL, 0);
++	wait(NULL);
++}
+ 
+-	if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP) {
+-		msg2 = "Child process hit the breakpoint";
++static void ptrace_set_debugreg(pid_t child_pid, unsigned long wp_addr)
++{
++	if (ptrace(PTRACE_SET_DEBUGREG, child_pid, 0, wp_addr)) {
++		perror("PTRACE_SET_DEBUGREG failed");
++		exit(-1);
+ 	}
++}
++
++static int ptrace_sethwdebug(pid_t child_pid, struct ppc_hw_breakpoint *info)
++{
++	int wh = ptrace(PPC_PTRACE_SETHWDEBUG, child_pid, 0, info);
+ 
+-	printf("%s Result: [%s]\n", msg, msg2);
++	if (wh <= 0) {
++		perror("PPC_PTRACE_SETHWDEBUG failed");
++		exit(-1);
++	}
++	return wh;
+ }
+ 
+-static void launch_watchpoints(char *buf, int mode, int len,
+-			       struct ppc_debug_info *dbginfo, bool dawr)
++static void ptrace_delhwdebug(pid_t child_pid, int wh)
+ {
+-	const char *mode_str;
+-	unsigned long data = (unsigned long)(dummy_var);
+-	int wh, range;
+-
+-	data &= ~0x7UL;
+-
+-	if (mode == BP_W) {
+-		data |= (1UL << 1);
+-		mode_str = "write";
+-	} else {
+-		data |= (1UL << 0);
+-		data |= (1UL << 1);
+-		mode_str = "read";
++	if (ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, wh) < 0) {
++		perror("PPC_PTRACE_DELHWDEBUG failed");
++		exit(-1);
+ 	}
++}
+ 
+-	/* Set DABR_TRANSLATION bit */
+-	data |= (1UL << 2);
++#define DABR_READ_SHIFT		0
++#define DABR_WRITE_SHIFT	1
++#define DABR_TRANSLATION_SHIFT	2
+ 
+-	/* use PTRACE_SET_DEBUGREG breakpoints */
+-	set_breakpoint_addr((void *)data);
+-	ptrace(PTRACE_CONT, child_pid, NULL, 0);
+-	sprintf(buf, "Test %s watchpoint with len: %d ", mode_str, len);
+-	check_success(buf);
+-	/* Unregister hw brkpoint */
+-	set_breakpoint_addr(NULL);
++static int test_set_debugreg(pid_t child_pid)
++{
++	unsigned long wp_addr = (unsigned long)&glvar;
++	char *name = "PTRACE_SET_DEBUGREG";
++	int len;
++
++	/* PTRACE_SET_DEBUGREG. WO test*/
++	wp_addr &= ~0x7UL;
++	wp_addr |= (1UL << DABR_WRITE_SHIFT);
++	wp_addr |= (1UL << DABR_TRANSLATION_SHIFT);
++	for (len = 1; len <= sizeof(glvar); len <<= 1) {
++		ptrace_set_debugreg(child_pid, wp_addr);
++		ptrace(PTRACE_CONT, child_pid, NULL, 0);
++		check_success(child_pid, name, "WO", len);
++	}
++
++	/* PTRACE_SET_DEBUGREG. RO test */
++	wp_addr &= ~0x7UL;
++	wp_addr |= (1UL << DABR_READ_SHIFT);
++	wp_addr |= (1UL << DABR_TRANSLATION_SHIFT);
++	for (len = 1; len <= sizeof(glvar); len <<= 1) {
++		ptrace_set_debugreg(child_pid, wp_addr);
++		ptrace(PTRACE_CONT, child_pid, NULL, 0);
++		check_success(child_pid, name, "RO", len);
++	}
+ 
+-	data = (data & ~7); /* remove dabr control bits */
++	/* PTRACE_SET_DEBUGREG. RW test */
++	wp_addr &= ~0x7UL;
++	wp_addr |= (1Ul << DABR_READ_SHIFT);
++	wp_addr |= (1UL << DABR_WRITE_SHIFT);
++	wp_addr |= (1UL << DABR_TRANSLATION_SHIFT);
++	for (len = 1; len <= sizeof(glvar); len <<= 1) {
++		ptrace_set_debugreg(child_pid, wp_addr);
++		ptrace(PTRACE_CONT, child_pid, NULL, 0);
++		check_success(child_pid, name, "RW", len);
++	}
+ 
+-	/* use PPC_PTRACE_SETHWDEBUG breakpoint */
+-	if (!(dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_RANGE))
+-		return; /* not supported */
+-	wh = set_hwbreakpoint_addr((void *)data, 0);
+-	ptrace(PTRACE_CONT, child_pid, NULL, 0);
+-	sprintf(buf, "Test %s watchpoint with len: %d ", mode_str, len);
+-	check_success(buf);
+-	/* Unregister hw brkpoint */
+-	del_hwbreakpoint_addr(wh);
+-
+-	/* try a wider range */
+-	range = 8;
+-	if (dawr)
+-		range = 512 - ((int)data & (DAWR_LENGTH_MAX - 1));
+-	wh = set_hwbreakpoint_addr((void *)data, range);
+-	ptrace(PTRACE_CONT, child_pid, NULL, 0);
+-	sprintf(buf, "Test %s watchpoint with len: %d ", mode_str, len);
+-	check_success(buf);
+-	/* Unregister hw brkpoint */
+-	del_hwbreakpoint_addr(wh);
++	ptrace_set_debugreg(child_pid, 0);
++	return 0;
+ }
+ 
+-/* Set the breakpoints and check the child successfully trigger them */
+-static int launch_tests(bool dawr)
++static void get_ppc_hw_breakpoint(struct ppc_hw_breakpoint *info, int type,
++				  unsigned long addr, int len)
+ {
+-	char buf[1024];
+-	int len, i, status;
++	info->version = 1;
++	info->trigger_type = type;
++	info->condition_mode = PPC_BREAKPOINT_CONDITION_NONE;
++	info->addr = (__u64)addr;
++	info->addr2 = (__u64)addr + len;
++	info->condition_value = 0;
++	if (!len)
++		info->addr_mode = PPC_BREAKPOINT_MODE_EXACT;
++	else
++		info->addr_mode = PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE;
++}
+ 
+-	struct ppc_debug_info dbginfo;
++static void test_sethwdebug_exact(pid_t child_pid)
++{
++	struct ppc_hw_breakpoint info;
++	unsigned long wp_addr = (unsigned long)&glvar;
++	char *name = "PPC_PTRACE_SETHWDEBUG, MODE_EXACT";
++	int len = 1; /* hardcoded in kernel */
++	int wh;
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. WO test */
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_WRITE, wp_addr, 0);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "WO", len);
++	ptrace_delhwdebug(child_pid, wh);
+ 
+-	i = ptrace(PPC_PTRACE_GETHWDBGINFO, child_pid, NULL, &dbginfo);
+-	if (i) {
+-		perror("Can't set breakpoint info\n");
+-		exit(-1);
+-	}
+-	if (!(dbginfo.features & PPC_DEBUG_FEATURE_DATA_BP_RANGE))
+-		printf("WARNING: Kernel doesn't support PPC_PTRACE_SETHWDEBUG\n");
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. RO test */
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_READ, wp_addr, 0);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RO", len);
++	ptrace_delhwdebug(child_pid, wh);
+ 
+-	/* Write watchpoint */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
+-		launch_watchpoints(buf, BP_W, len, &dbginfo, dawr);
++	/* PPC_PTRACE_SETHWDEBUG. MODE_EXACT. RW test */
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_RW, wp_addr, 0);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RW", len);
++	ptrace_delhwdebug(child_pid, wh);
++}
+ 
+-	/* Read-Write watchpoint */
+-	for (len = 1; len <= sizeof(long); len <<= 1)
+-		launch_watchpoints(buf, BP_RW, len, &dbginfo, dawr);
++static void test_sethwdebug_range_aligned(pid_t child_pid)
++{
++	struct ppc_hw_breakpoint info;
++	unsigned long wp_addr;
++	char *name = "PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED";
++	int len;
++	int wh;
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. WO test */
++	wp_addr = (unsigned long)&gstruct.a;
++	len = A_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_WRITE, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "WO", len);
++	ptrace_delhwdebug(child_pid, wh);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. RO test */
++	wp_addr = (unsigned long)&gstruct.a;
++	len = A_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_READ, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RO", len);
++	ptrace_delhwdebug(child_pid, wh);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW ALIGNED. RW test */
++	wp_addr = (unsigned long)&gstruct.a;
++	len = A_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_RW, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RW", len);
++	ptrace_delhwdebug(child_pid, wh);
++}
+ 
++static void test_sethwdebug_range_unaligned(pid_t child_pid)
++{
++	struct ppc_hw_breakpoint info;
++	unsigned long wp_addr;
++	char *name = "PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW UNALIGNED";
++	int len;
++	int wh;
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. WO test */
++	wp_addr = (unsigned long)&gstruct.b;
++	len = B_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_WRITE, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "WO", len);
++	ptrace_delhwdebug(child_pid, wh);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. RO test */
++	wp_addr = (unsigned long)&gstruct.b;
++	len = B_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_READ, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RO", len);
++	ptrace_delhwdebug(child_pid, wh);
++
++	/* PPC_PTRACE_SETHWDEBUG. MODE_RANGE. DW UNALIGNED. RW test */
++	wp_addr = (unsigned long)&gstruct.b;
++	len = B_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_RW, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
+ 	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RW", len);
++	ptrace_delhwdebug(child_pid, wh);
+ 
+-	/*
+-	 * Now we have unregistered the breakpoint, access by child
+-	 * should not cause SIGTRAP.
+-	 */
++}
+ 
+-	wait(&status);
++static void test_sethwdebug_dawr_max_range(pid_t child_pid)
++{
++	struct ppc_hw_breakpoint info;
++	unsigned long wp_addr;
++	char *name = "PPC_PTRACE_SETHWDEBUG, DAWR_MAX_LEN";
++	int len;
++	int wh;
++
++	/* PPC_PTRACE_SETHWDEBUG. DAWR_MAX_LEN. RW test */
++	wp_addr = (unsigned long)big_var;
++	len = DAWR_MAX_LEN;
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_RW, wp_addr, len);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "RW", len);
++	ptrace_delhwdebug(child_pid, wh);
++}
+ 
+-	if (WIFSTOPPED(status) && WSTOPSIG(status) == SIGTRAP) {
+-		printf("FAIL: Child process hit the breakpoint, which is not expected\n");
+-		ptrace(PTRACE_CONT, child_pid, NULL, 0);
+-		return TEST_FAIL;
++/* Set the breakpoints and check the child successfully trigger them */
++static void
++run_tests(pid_t child_pid, struct ppc_debug_info *dbginfo, bool dawr)
++{
++	test_set_debugreg(child_pid);
++	if (dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_RANGE) {
++		test_sethwdebug_exact(child_pid);
++		test_sethwdebug_range_aligned(child_pid);
++		test_sethwdebug_range_unaligned(child_pid);
++
++		if (dawr)
++			test_sethwdebug_dawr_max_range(child_pid);
+ 	}
+-
+-	if (WIFEXITED(status))
+-		printf("Child exited normally\n");
+-
+-	return TEST_PASS;
+ }
+ 
+ static int ptrace_hwbreak(void)
+ {
+-	pid_t pid;
+-	int ret;
++	pid_t child_pid;
++	struct ppc_debug_info dbginfo;
+ 	bool dawr;
+ 
+-	pid = fork();
+-	if (!pid) {
+-		trigger_tests();
++	child_pid = fork();
++	if (!child_pid) {
++		test_workload();
+ 		return 0;
+ 	}
+ 
+ 	wait(NULL);
+ 
+-	child_pid = pid;
+-
+-	get_dbginfo();
+-	SKIP_IF(!hwbreak_present());
+-	dawr = dawr_present();
++	get_dbginfo(child_pid, &dbginfo);
++	SKIP_IF(dbginfo.num_data_bps == 0);
+ 
+-	ret = launch_tests(dawr);
++	dawr = dawr_present(&dbginfo);
++	run_tests(child_pid, &dbginfo, dawr);
+ 
++	/* Let the child exit first. */
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
+ 	wait(NULL);
+ 
+-	return ret;
++	/*
++	 * Testcases exits immediately with -1 on any failure. If
++	 * it has reached here, it means all tests were successful.
++	 */
++	return TEST_PASS;
+ }
+ 
+ int main(int argc, char **argv, char **envp)
 -- 
 2.20.1
 
