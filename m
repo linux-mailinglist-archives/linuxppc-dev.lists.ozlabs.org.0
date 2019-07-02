@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307E15C780
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 04:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5755C792
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 05:09:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45d8644XrjzDqY5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 12:57:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45d8NJ4M1KzDqT7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 13:09:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OQloBSmL"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Al5//5gO"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45d84R43h8zDqSt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 12:55:35 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id e5so8310847pls.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 19:55:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45d8LK5M9LzDqSx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 13:07:34 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id j2so7513180pfe.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 20:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=yh72SMFSBekrHMHAzJEsEH43qcxL2exqJGEt88fMstM=;
- b=OQloBSmLK7yZ68Nmhh3ZNo6BLX04mI8FD6n8AeTw37MNwj0uMNbWidDAheX5FJ/Znt
- FRzI3+hb/f6xTgs8hr0qR9TZ9OHETLisz4gXDouc1TOgihYQlbeV4GUgK1BwxOdpvGMc
- hGQj+HGKUJUHtHB1LSlUfu6YD9ajCK+Jq5Giva1slXFpNcXTmhPFtFKvyolKV+VnvwCs
- +mcnr4ORNAQD3T8DPa0Izny+94iWrnftJZ5i+foB8mwBago8ICdTU4o6YjGfQgtq2Gjs
- 0fIyhWwDKZdJk7d3KDG2qYX7D/1tuC7vaBUyAchhzuMG+JtMHLXqu3nFv+R8NsJW09zS
- 9omA==
+ bh=JEjj/PPo3yxC7A/OXv38wkR3+utyXU9OEcFxU+K+Oro=;
+ b=Al5//5gOeoq+S2jUF4fWN70LRFW/gTgt2BAn2B0baRvM15+mvep+e5s4otLVXnFidS
+ xBIE1sEHhvdBjGVQNKvZJxJgS3UdF4SDPQWO2bZ1qZ6vVx4wQIRlG/Q0PHTSe7GdH1CN
+ 9cMVFo4aSiPy+/dKIODZEmbH7MLbzA/dmpvmep3x/AmEilTks2v/Y+pWLjIn9LQ0PH9R
+ y3GTlAck0dxdUgSPhIuZPl2WokIMtkaDzckYgT3LAIei69JVQwqvYIY52W+nZxNG0pqj
+ e8Okec5QN1hZ74rwLSruZokYUZf+wjNVH5HrnYrKVrKxKFTKrXBjDp1EUoQxYsO+hF7X
+ 1bMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=yh72SMFSBekrHMHAzJEsEH43qcxL2exqJGEt88fMstM=;
- b=AtOxJAC6p9LITv78oEn9mcBowFdHZQX0sXu5M+y9t+MM218YinsuRpakMs9ofRyVX8
- LizzFpmPiiRy96mFXyKVzjcfvPQYAgaQhA7XWTVycCBtgrUtYn6EO/LKesQoTwPwtlel
- +h0B6MMyf73FNJ7Nrcxsoyb0uRjCnN9lGDCVcNcHC8IpFT6uvIXe1ntaDB0DbhhYcywL
- YBfYBwVnx5QC9N4nYEUrHzAqw07n+iLB1MKquN4L0rBBQd8QVLJYSeHzFabLHrFN4PZG
- 9whRKF0uFYNS+Ru/PDWgHVzYzHZ83i2YWBYHNlPR+2GrmrOG5eQ8J6Brhd+y2lT0dF7a
- gfGw==
-X-Gm-Message-State: APjAAAX/h4kiFD47EDW0ys9RXQ/4cCp2WcO6sjECpJM42Ln0ZD40sBb0
- RIq0pK06U+jCxt9GkvoJWK0=
-X-Google-Smtp-Source: APXvYqx4btuHxQBeOFukhSzSKKwHsk18ZBVKxKzevK0qIIRUp7DmMiBws+GtDKL9X7ZhzyJrivZoIg==
-X-Received: by 2002:a17:902:f204:: with SMTP id
- gn4mr32852271plb.3.1562036132165; 
- Mon, 01 Jul 2019 19:55:32 -0700 (PDT)
+ bh=JEjj/PPo3yxC7A/OXv38wkR3+utyXU9OEcFxU+K+Oro=;
+ b=PnN6GuSIvkdHNZSzkSrtKWWgKekQoklFna74/otAFcULP1lzvFRiV5JKnc3yvW3Ro5
+ HPRGyM7/ayq1bTmtQNnrxLzEDkH+25GDFOg2vmlpPQKEtYVPW6NNyfGXeZLpPhsr1riH
+ htv6Ko2FVoNN/H0HrxTI6cDID4wIT5txaOuUosGUtcGzdiNNQdw2h4OCIBDjHB3BGwCU
+ SDEl5HkQPKLT0UglGUI0oNoL2L4UG1ZybvB3llBMgiFmx6s8H+z2bDW1laMhX6ndr3kv
+ j6KbVhGabY7rZygaBk0wbWVc+uohkssdLzm4i6D6qmw3z90ZfF+tCGqiRZxZ3mxxZqWR
+ Ug+Q==
+X-Gm-Message-State: APjAAAWrIb6Cb1KA8GgrkveQ+RUmGo+eJR5spYS2j5B0XY0S2wcHE3Te
+ /JuRXyEJWrb28zu3Mxc5n84=
+X-Google-Smtp-Source: APXvYqxOVg0HFcmLKK0QMTMU/kWLAUMGqHvjW+x4ulftF7VETnHP5SSk6O+UdayEdNaJVHGmMdn0Lw==
+X-Received: by 2002:a65:6102:: with SMTP id z2mr27238296pgu.194.1562036851675; 
+ Mon, 01 Jul 2019 20:07:31 -0700 (PDT)
 Received: from localhost ([175.45.73.101])
- by smtp.gmail.com with ESMTPSA id cq4sm769147pjb.23.2019.07.01.19.55.30
+ by smtp.gmail.com with ESMTPSA id f11sm10274123pga.59.2019.07.01.20.07.30
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 19:55:31 -0700 (PDT)
-Date: Tue, 02 Jul 2019 12:55:12 +1000
+ Mon, 01 Jul 2019 20:07:30 -0700 (PDT)
+Date: Tue, 02 Jul 2019 13:07:11 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/3] arm64: mm: Add p?d_large() definitions
-To: "linux-mm @ kvack . org" <linux-mm@kvack.org>, Steven Price
- <steven.price@arm.com>
-References: <20190701064026.970-1-npiggin@gmail.com>
- <20190701064026.970-2-npiggin@gmail.com>
- <0a3e0833-908d-b7eb-e6e7-6413b2e37094@arm.com>
-In-Reply-To: <0a3e0833-908d-b7eb-e6e7-6413b2e37094@arm.com>
+Subject: Re: Re: [PATCH 1/3] arm64: mm: Add p?d_large() definitions
+To: Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>
+References: <20190623094446.28722-1-npiggin@gmail.com>
+ <20190623094446.28722-2-npiggin@gmail.com>
+ <20190701092756.s4u5rdjr7gazvu66@willie-the-truck>
+ <3d002af8-d8cd-f750-132e-12109e1e3039@arm.com>
+ <20190701101510.qup3nd6vm6cbdgjv@willie-the-truck>
+In-Reply-To: <20190701101510.qup3nd6vm6cbdgjv@willie-the-truck>
 MIME-Version: 1.0
 User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1562035876.apiyxfrmrw.astroid@bobo.none>
+Message-Id: <1562036522.cz5nnz6ri2.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,62 +87,35 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>,
  Catalin Marinas <catalin.marinas@arm.com>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
- Will Deacon <will.deacon@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel @ lists . infradead . org"
- <linux-arm-kernel@lists.infradead.org>
+ Will Deacon <will.deacon@arm.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Steven Price's on July 1, 2019 7:57 pm:
-> On 01/07/2019 07:40, Nicholas Piggin wrote:
->> walk_page_range() is going to be allowed to walk page tables other than
->> those of user space. For this it needs to know when it has reached a
->> 'leaf' entry in the page tables. This information will be provided by th=
-e
->> p?d_large() functions/macros.
->>=20
->> For arm64, we already have p?d_sect() macros which we can reuse for
->> p?d_large().
->>=20
->> pud_sect() is defined as a dummy function when CONFIG_PGTABLE_LEVELS < 3
->> or CONFIG_ARM64_64K_PAGES is defined. However when the kernel is
->> configured this way then architecturally it isn't allowed to have a
->> large page that this level, and any code using these page walking macros
->> is implicitly relying on the page size/number of levels being the same a=
-s
->> the kernel. So it is safe to reuse this for p?d_large() as it is an
->> architectural restriction.
->>=20
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will.deacon@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->=20
-> Hi Nicolas,
->=20
-> This appears to my patch which I originally posted as part of converting
-> x86/arm64 to use a generic page walk code[1].
+Will Deacon's on July 1, 2019 8:15 pm:
+> On Mon, Jul 01, 2019 at 11:03:51AM +0100, Steven Price wrote:
+>> On 01/07/2019 10:27, Will Deacon wrote:
+>> > On Sun, Jun 23, 2019 at 07:44:44PM +1000, Nicholas Piggin wrote:
+>> >> walk_page_range() is going to be allowed to walk page tables other th=
+an
+>> >> those of user space. For this it needs to know when it has reached a
+>> >> 'leaf' entry in the page tables. This information will be provided by=
+ the
+>> >> p?d_large() functions/macros.
+>> >=20
+>> > I can't remember whether or not I asked this before, but why not call
+>> > this macro p?d_leaf() if that's what it's identifying? "Large" and "hu=
+ge"
+>> > are usually synonymous, so I find this naming needlessly confusing bas=
+ed
+>> > on this patch in isolation.
 
-Hey, yeah it is, I'd intended to mark you as the author but must have
-forgot to change it in git.
-
-> I'm not sure that this
-> patch makes much sense on its own, in particular it was working up to
-> having a generic macro[2] which means the _large() macros could be used
-> across all architectures.
-
-It goes with this series which makes _large macros usable for archs
-that define HUGE_VMAP. I posted the same thing earlier and Anshuman
-noted you'd done it too so I deferred to yours (I thought it would
-go via arm64 tree and that this would just allow Andrew to easily
-reconcile the merge).
-
-If your series is not going upstream this time then the changelog
-probably doesn't make so much sense, so I could just send my version
-to the arm64 tree.
+Those page table macro names are horrible. Large, huge, leaf, wtf?
+They could do with a sensible renaming. But this series just follows
+naming that's alreay there on x86.
 
 Thanks,
 Nick
-
 =
