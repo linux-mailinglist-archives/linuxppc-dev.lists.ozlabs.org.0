@@ -1,70 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351EE5C96B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:40:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6E15C96A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:38:54 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dF241LhNzDqTQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 16:38:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dF3w4thyzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 16:40:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="NJweHnYS"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="uLwrvlss"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dCGy3vprzDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:19:54 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id b7so8515780pls.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 22:19:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dCH224n5zDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:19:58 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id m4so7097646pgk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 22:19:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=VGnUeOD9q4vdMF4DDLffBmI8X+bOtxV4zPtktuX2RWM=;
- b=NJweHnYSIJq0SALdEp1MHA7qgiorGjdQflvjVrvtUcDvTzBx7EGXprCrdujLBdNM70
- cPUyXs3lVbcrk8q+gYgTfvq+TH+0jZrI2A0OAUmkN5hJDllmWF9d04XuQ+0oyddEBnbP
- zIcJ8o5aJ7MiOG9Oh+71CeF/cDRoh6EkD7d09cp+oNH5tn5ckM9v7hOGDXeg23vizJiN
- oekYkcAfFseqtoiqLkcZvhqQ5QPV8ITJDqCq2B7AJ8mfm4mucjQLBOmfjync+HER94Nm
- s0eJLU4fs5b4kYO2g8UAh/11hFFV5V2MtAy7qSLRUiPzujBEDG6hoAG3yYdcTj8JvNgn
- 0nhg==
+ bh=XB8JDWrvxOU6U9PteJneZ99ibbyNeJLhwtOQI5zxxaE=;
+ b=uLwrvlssgRZUCY1wQG4PVSd/VBD/UwP2wv6Ug5qyOaZW4qipGf6CQU9n6s5+kRzh/W
+ LqxWTUIwTNTB3jZN2oI8grq23pisVKzcxRYvojdE+jtfdZmDKKhkXDjS93FMJOeJYrwb
+ 1ej4gUnWk2uXfBUihQxS5+hPhZa4eUFYtcB8dsxFjSpGskob/ARWnA/jJOiWTV+JKIw4
+ 5p70GXH4mZPUkhdIR5ZhydaemcnrEPSKqG87UUfi1KpGBhEw3wFH5bizg9rIeuAV+DZS
+ 9DiwPf251WGQizLdexk7Rv5M9GklUS3iRjqGM0wo6m4VRmks/4hGFLHZOinHv7y6Pbth
+ ZHgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=VGnUeOD9q4vdMF4DDLffBmI8X+bOtxV4zPtktuX2RWM=;
- b=YRtug/fHBV2EC1vtae8AinCxtmbedmpFjC5nReupwRgTUbGXCVX+Pg8zpVU5BYCHak
- n+nH872s+6KT5cbkOY9j10T4S3s4fCT0hXCDw/F13/9hzq4bxUa4C/4SrivCggMBsM06
- OM/rjYpw8qNVwPdEpmZGUM2IfIwk8yLIeecB9ptQHJOQRsXAeg4FRV22O4u0ZNgtRY1F
- 6eUzr0r6e4wPyieYp07yM6Y/DzjIilmyPEd6dyQNryAgUA5hB4VZYMUp1bHhvqTFS5+F
- WDi4O0G0+VZSN5jsd9+1A8CR+rpB+ZwGLivilqZMJi8GwSOnkQcWLnPX+ySa5bZ5ty3K
- jolw==
-X-Gm-Message-State: APjAAAXgb0PyPr+rZudr/R8a4YwPaDXRtAw+ckxQXQ9tRmEP1Qt0VRCb
- kbeU87Z6JAZUPXBdPzslKSH7e4wN2Nr7lg==
-X-Google-Smtp-Source: APXvYqwQtc+D6UgmbzkRLzocEyL+HaYjS/NpkAZcsImE375e5hZz0yWqyiL4k8b0kzbzJqGkSaZqOw==
-X-Received: by 2002:a17:902:29a7:: with SMTP id
- h36mr33957559plb.158.1562044792613; 
- Mon, 01 Jul 2019 22:19:52 -0700 (PDT)
+ bh=XB8JDWrvxOU6U9PteJneZ99ibbyNeJLhwtOQI5zxxaE=;
+ b=ObPY/XeMyKCXZtjHm7UuANMR5Gf7n7sqEy+5Gd5NRxTt7n3gew2TAzdHblVZkswLRo
+ WTHmnU8adyp4kWzxxK/odosyJzUmq+Up40kWbrnRWbwSvHUkiMgp5/rXzDr3wNMFcOkN
+ Y3YwnJYQGqZAXyQylyQWIHJJ7Vhwqt7sLkxeEDq9i4G/JbS6kUGyNgH1p02q8RJvmWtZ
+ +3Iop/ngxQ0yAN8P5hWRrnl+xgPOwl0Hovjk5gkOMY1AZgdbw5tBVCztCOEk5ts9KeaK
+ s5YBJQSYk3bDCMRiQjx4VF4GMKOlX1zy3zz4IZyABPGYW41xQuhMW1QqOG+bnLwSdgCo
+ J0Kg==
+X-Gm-Message-State: APjAAAWX2UUYK27dJZZSXSqUi/hB8P6H12OLL297ItUAljOSdX+WF3Ts
+ doIhI+bkcCuvZJ12wQRM3KBXeCTQWJ8lIw==
+X-Google-Smtp-Source: APXvYqxDXxLz5GXJiALnMOWknaYdHpPL80OSU5ZijvTCgheKQnHqmIaqACP4QagdQLIxY40gWghH3g==
+X-Received: by 2002:a63:18d:: with SMTP id 135mr28749774pgb.62.1562044796233; 
+ Mon, 01 Jul 2019 22:19:56 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([129.41.84.67])
- by smtp.gmail.com with ESMTPSA id t9sm1106898pji.18.2019.07.01.22.19.49
+ by smtp.gmail.com with ESMTPSA id t9sm1106898pji.18.2019.07.01.22.19.52
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 22:19:52 -0700 (PDT)
+ Mon, 01 Jul 2019 22:19:55 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [v2 03/12] powerpc/mce: Add MCE notification chain
-Date: Tue,  2 Jul 2019 10:49:23 +0530
-Message-Id: <20190702051932.511-4-santosh@fossix.org>
+Subject: [v2 04/12] powerpc/mce: Move machine_check_ue_event() call
+Date: Tue,  2 Jul 2019 10:49:24 +0530
+Message-Id: <20190702051932.511-5-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190702051932.511-1-santosh@fossix.org>
 References: <20190702051932.511-1-santosh@fossix.org>
@@ -91,91 +90,36 @@ Sender: "Linuxppc-dev"
 
 From: Reza Arbab <arbab@linux.ibm.com>
 
+Move the call site of machine_check_ue_event() slightly later in the MCE
+codepath. No functional change intended--this is prep for a later patch
+to conditionally skip the call.
+
 Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
 ---
- arch/powerpc/include/asm/asm-prototypes.h |  1 +
- arch/powerpc/include/asm/mce.h            |  4 ++++
- arch/powerpc/kernel/exceptions-64s.S      |  4 ++++
- arch/powerpc/kernel/mce.c                 | 22 ++++++++++++++++++++++
- 4 files changed, 31 insertions(+)
+ arch/powerpc/kernel/mce.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index ec1c97a8e8cb..f66f26ef3ce0 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -72,6 +72,7 @@ void machine_check_exception(struct pt_regs *regs);
- void emulation_assist_interrupt(struct pt_regs *regs);
- long do_slb_fault(struct pt_regs *regs, unsigned long ea);
- void do_bad_slb_fault(struct pt_regs *regs, unsigned long ea, long err);
-+void machine_check_notify(struct pt_regs *regs);
- 
- /* signals, syscalls and interrupts */
- long sys_swapcontext(struct ucontext __user *old_ctx,
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index 94888a7025b3..948bef579086 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -214,4 +214,8 @@ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr,
- #ifdef CONFIG_PPC_BOOK3S_64
- void flush_and_reload_slb(void);
- #endif /* CONFIG_PPC_BOOK3S_64 */
-+
-+int mce_register_notifier(struct notifier_block *nb);
-+int mce_unregister_notifier(struct notifier_block *nb);
-+
- #endif /* __ASM_PPC64_MCE_H__ */
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6b86055e5251..2e56014fca21 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -457,6 +457,10 @@ EXC_COMMON_BEGIN(machine_check_handle_early)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	machine_check_early
- 	std	r3,RESULT(r1)	/* Save result */
-+
-+	addi	r3,r1,STACK_FRAME_OVERHEAD
-+	bl	machine_check_notify
-+
- 	ld	r12,_MSR(r1)
- BEGIN_FTR_SECTION
- 	b	4f
 diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index e78c4f18ea0a..24d350a934e4 100644
+index 24d350a934e4..0ab171b41ede 100644
 --- a/arch/powerpc/kernel/mce.c
 +++ b/arch/powerpc/kernel/mce.c
-@@ -42,6 +42,18 @@ static struct irq_work mce_event_process_work = {
+@@ -156,7 +156,6 @@ void save_mce_event(struct pt_regs *regs, long handled,
+ 		if (phys_addr != ULONG_MAX) {
+ 			mce->u.ue_error.physical_address_provided = true;
+ 			mce->u.ue_error.physical_address = phys_addr;
+-			machine_check_ue_event(mce);
+ 		}
+ 	}
+ 	return;
+@@ -656,4 +655,8 @@ void machine_check_notify(struct pt_regs *regs)
+ 		return;
  
- DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
- 
-+static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
+ 	blocking_notifier_call_chain(&mce_notifier_list, 0, &evt);
 +
-+int mce_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&mce_notifier_list, nb);
-+}
-+
-+int mce_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&mce_notifier_list, nb);
-+}
-+
- static void mce_set_error_info(struct machine_check_event *mce,
- 			       struct mce_error_info *mce_err)
- {
-@@ -635,3 +647,13 @@ long hmi_exception_realmode(struct pt_regs *regs)
- 
- 	return 1;
++	if (evt.error_type == MCE_ERROR_TYPE_UE &&
++	    evt.u.ue_error.physical_address_provided)
++		machine_check_ue_event(&evt);
  }
-+
-+void machine_check_notify(struct pt_regs *regs)
-+{
-+	struct machine_check_event evt;
-+
-+	if (!get_mce_event(&evt, MCE_EVENT_DONTRELEASE))
-+		return;
-+
-+	blocking_notifier_call_chain(&mce_notifier_list, 0, &evt);
-+}
 -- 
 2.20.1
 
