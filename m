@@ -2,84 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DE15CCB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 11:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1685CD6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 12:21:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dJxg51n7zDqJf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 19:35:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dKz80WZKzDqc1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 20:21:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dJvZ5VLCzDqFS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 19:33:29 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x629WqfS116441
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 05:33:27 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tg45chh2d-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dKxG67qRzDqWd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 20:19:56 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x62AH9NF143573
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 06:19:52 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tg3j0mmeg-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 05:33:26 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 06:19:52 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Tue, 2 Jul 2019 10:33:24 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
+ Tue, 2 Jul 2019 11:19:50 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 2 Jul 2019 10:33:22 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x629XLSQ61145166
+ Tue, 2 Jul 2019 11:19:49 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x62AJmCh48955590
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jul 2019 09:33:21 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB35752057;
- Tue,  2 Jul 2019 09:33:20 +0000 (GMT)
-Received: from [9.193.100.20] (unknown [9.193.100.20])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id CED775204E;
- Tue,  2 Jul 2019 09:33:18 +0000 (GMT)
-Subject: Re: [v2 09/12] powerpc/mce: Enable MCE notifiers in external modules
-To: Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Santosh Sivaraj <santosh@fossix.org>
-References: <20190702051932.511-1-santosh@fossix.org>
- <20190702051932.511-10-santosh@fossix.org>
- <1562047959.5y756f60wn.astroid@bobo.none>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Tue, 2 Jul 2019 15:03:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <1562047959.5y756f60wn.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+ Tue, 2 Jul 2019 10:19:48 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4836D4C040;
+ Tue,  2 Jul 2019 10:19:48 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D09D4C044;
+ Tue,  2 Jul 2019 10:19:47 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.122.211.52])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jul 2019 10:19:47 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+Subject: [PATCH] powerpc: Use nid as fallback for chip_id
+Date: Tue,  2 Jul 2019 15:49:25 +0530
+X-Mailer: git-send-email 2.7.4
 X-TM-AS-GCONF: 00
-x-cbid: 19070209-0008-0000-0000-000002F910D1
+x-cbid: 19070210-0020-0000-0000-0000034F7272
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070209-0009-0000-0000-000022665922
-Message-Id: <5d1ea43b-6c8c-86d1-3646-c3e298725442@linux.vnet.ibm.com>
+x-cbparentid: 19070210-0021-0000-0000-000021A3023B
+Message-Id: <1562062765-31104-1-git-send-email-srikar@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-02_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=543 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907020110
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907020121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,47 +84,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/2/19 11:47 AM, Nicholas Piggin wrote:
-> Santosh Sivaraj's on July 2, 2019 3:19 pm:
->> From: Reza Arbab <arbab@linux.ibm.com>
->>
->> Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/exceptions-64s.S | 6 ++++++
->>  arch/powerpc/kernel/mce.c            | 2 ++
->>  2 files changed, 8 insertions(+)
->>
->> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
->> index c83e38a403fd..311f1392a2ec 100644
->> --- a/arch/powerpc/kernel/exceptions-64s.S
->> +++ b/arch/powerpc/kernel/exceptions-64s.S
->> @@ -458,6 +458,12 @@ EXC_COMMON_BEGIN(machine_check_handle_early)
->>  	bl	machine_check_early
->>  	std	r3,RESULT(r1)	/* Save result */
->>  
->> +	/* Notifiers may be in a module, so enable virtual addressing. */
->> +	mfmsr	r11
->> +	ori	r11,r11,MSR_IR
->> +	ori	r11,r11,MSR_DR
->> +	mtmsr	r11
-> 
-> Can't do this, we could take a machine check somewhere the MMU is
-> not sane (in fact the guest early mce handling that was added recently
-> should not be enabling virtual mode either, which needs to be fixed).
+One of the uses of chip_id is to find out all cores that are part of the same
+chip. However ibm,chip_id property is not present in device-tree of PowerVM
+Lpars. Hence lscpu output shows one core per socket and multiple cores.
 
-Looks like they need this to be able to run notifier chain which may
-fail in real mode.
+Before the patch.
+# lscpu
+Architecture:        ppc64le
+Byte Order:          Little Endian
+CPU(s):              128
+On-line CPU(s) list: 0-127
+Thread(s) per core:  8
+Core(s) per socket:  1
+Socket(s):           16
+NUMA node(s):        2
+Model:               2.2 (pvr 004e 0202)
+Model name:          POWER9 (architected), altivec supported
+Hypervisor vendor:   pHyp
+Virtualization type: para
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            512K
+L3 cache:            10240K
+NUMA node0 CPU(s):   0-63
+NUMA node1 CPU(s):   64-127
 
-> 
-> Thanks,
-> Nick
-> 
+# cat /sys/devices/system/cpu/cpu0/topology/physical_package_id
+-1
+
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+ arch/powerpc/kernel/prom.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 7159e791a70d..0b8918b43580 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -867,18 +867,24 @@ EXPORT_SYMBOL(of_get_ibm_chip_id);
+  * @cpu: The logical cpu number.
+  *
+  * Return the value of the ibm,chip-id property corresponding to the given
+- * logical cpu number. If the chip-id can not be found, returns -1.
++ * logical cpu number. If the chip-id can not be found, return nid.
++ *
+  */
+ int cpu_to_chip_id(int cpu)
+ {
+ 	struct device_node *np;
++	int chip_id = -1;
+ 
+ 	np = of_get_cpu_node(cpu, NULL);
+ 	if (!np)
+ 		return -1;
+ 
++	chip_id = of_get_ibm_chip_id(np);
++	if (chip_id == -1)
++		chip_id = of_node_to_nid(np);
++
+ 	of_node_put(np);
+-	return of_get_ibm_chip_id(np);
++	return chip_id;
+ }
+ EXPORT_SYMBOL(cpu_to_chip_id);
+ 
+-- 
+2.18.1
 
