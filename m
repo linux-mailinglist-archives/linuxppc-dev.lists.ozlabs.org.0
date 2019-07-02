@@ -1,71 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A145C8F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 07:58:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dD6s6VlDzDqWq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:57:57 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E85AF5C931
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 08:19:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dDbF1mBQzDqTL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 16:19:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OeyxLYqU"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Kk22fyJZ"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dD5F46n9zDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:56:33 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id z75so7136572pgz.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 22:56:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dDYc4mq9zDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 16:17:40 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id z75so7162044pgz.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 23:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=N4Yi0JwBC/ApCOxvQsLAdkd8qy2U4gWbK9Poc7semBk=;
- b=OeyxLYqU9uzpLEv7tQ0xA6XMgrNaKkNGIkI+X+6cjp5YB3TXnn6huHB+axZseoBBgU
- U6lBcAxPsJRa5P1RGzaPSyk0VSg+sB9NxgQ6yJmpmS3Ab26WrTlBgQOcKh/JuO93TnsW
- jWAfeIdmJd/OOTD89F5f1Loq5mt+A/fG8wq83SPEJMgLaCMCC4911z+M5wiCLYrxfP1E
- mgHoo4sHicSns5oWSSpJEm0Dp5hXld0sPRJyJiu8AYCLgj3BQJijR9sgEn5D7VbYoyrF
- GgSobnv621NXrhdGm9zBJAMPw6ffGzUJFF2JaKpSyNoj6yxvXt+Ff+3g3uPJt3eTS+xC
- hd1Q==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=tahqKokLQSqrkRrE9L0X7qmXfUa77t7mVWb1xcT7Gyc=;
+ b=Kk22fyJZ9Qt84T61s51H5DDQKrsscUoeSf9N0nnrFqSDXAV014z9uUqKklEz9YcOZR
+ OIfhxDNSllxvlIGvfo8+gZbV+IRbmvOvcFnUIhWUVBI3ZqJl5+OBipY/6ku/g/qPb5nZ
+ 1O90iOP/W9SfP30iLgp22+IyeoNxxYVpyjMcYbhtMG7Myv/wpQRAAa522JiWAD8E5ax0
+ wwYilcFKtvEQ3VZoG0wrOKGhmzN3Zxiu+BczbAZwRgVljL/4Q1krYixfZ7JgeanOBxW1
+ VWFK9e6b2I/Z0Tc45dTK1i83bDppM28MYFMPcuae19Qt/0Xh3j1dU/O18IsrGfrRzyYH
+ BEvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=N4Yi0JwBC/ApCOxvQsLAdkd8qy2U4gWbK9Poc7semBk=;
- b=ppzb16luPVyz9dIzK4CAcCkWMjLPLMf+HaYVOiUU/AlFZNBEahHyvB8V47Jm/0Y0lW
- DfI3o3WLOjAbkt81B1+4m7ZY0PjNE/l8T9+Jn0ZuqEXSqcl/o4PWAaMiaH/OP6KTbvZy
- oNSBqS85A9QV+MKDdjOusZl0q/Lj4iqyKdJlIgKe2u9GLqq+WrtcV+zozI9XAira7nfD
- 102Sq1ckPHQN8q8NgDxFs0TbDaPB6PtsGV7/M7HrxcdJFASLkZi5NpQOvKIQQ2VWAOnI
- ifXD9mFwCb20cecZsP4g0HqcZU1i8aI6yZjRHd8x1qFg0sDYH+8JMAb1yhnY1I6jCuBz
- dnaA==
-X-Gm-Message-State: APjAAAVxuZMmpI4CcnCE/UuvtYEBgINnrV18gVyzE5YLay0NlLRFq1wI
- NOATxTenqK6b+xf/fuaYEoI7M1xV
-X-Google-Smtp-Source: APXvYqy3X3jvtfZHabX+ucjJW9qGgAUKDnHbP308zi9KgVUZftFIMrufhh55kLCoQKV31CMQQvffZQ==
-X-Received: by 2002:a63:34c3:: with SMTP id
- b186mr28642420pga.294.1562046989890; 
- Mon, 01 Jul 2019 22:56:29 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([175.45.73.101])
- by smtp.gmail.com with ESMTPSA id u5sm11231250pgp.19.2019.07.01.22.56.27
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=tahqKokLQSqrkRrE9L0X7qmXfUa77t7mVWb1xcT7Gyc=;
+ b=O4uadLsKf2yHxLp+slnw7B8JgZSKCX11qbaQ4RRoj+yOy0o3LNMttuD5l8P2g5nR61
+ LObYSUlluviRyW8D+2ceJE9X/x6RYuRODfuABxxUpW3KdLcQAqaZ2VayS6TQrLSTKL2E
+ US7sVUBjPA6xEQth4lrFJMYfpNZwAhxD8Za1VAGMlIfc/hdSn0ObeW8sQjEC1dCSMdWY
+ X1G2ug7sxAxhEUzMXFzYI2SiVvtnXCWzP6/5ZdIpGFwGCe1eGr9mnasBUgAzAe6HDreV
+ I45gtsN24uPDAefyQR+SU+vp5ZihCufjtQFaHgC8pGyojtGriOntrJ+A5YAFFXiA2Tjo
+ 71yA==
+X-Gm-Message-State: APjAAAW5QlZ1CAUOOK7Vszvc7+O+kTseOsuyTCWASO4FU9Qg4r005HIc
+ 4E5MyQe7J8gVQhJGfBxlWwMEzEud
+X-Google-Smtp-Source: APXvYqyN8gFEkHWarXFAtokUDkAUHbni1g/z+LIGRskwgKhvyDU2Ce6WQePGcmg2ONtuxcloW9Oqgg==
+X-Received: by 2002:a65:63d1:: with SMTP id n17mr17756024pgv.382.1562048257221; 
+ Mon, 01 Jul 2019 23:17:37 -0700 (PDT)
+Received: from localhost ([175.45.73.101])
+ by smtp.gmail.com with ESMTPSA id br18sm1196808pjb.20.2019.07.01.23.17.36
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 22:56:29 -0700 (PDT)
+ Mon, 01 Jul 2019 23:17:36 -0700 (PDT)
+Date: Tue, 02 Jul 2019 16:17:11 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/64s: Make boot look nicer
-Date: Tue,  2 Jul 2019 15:56:03 +1000
-Message-Id: <20190702055603.9716-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
+Subject: Re: [v2 09/12] powerpc/mce: Enable MCE notifiers in external modules
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Santosh Sivaraj
+ <santosh@fossix.org>
+References: <20190702051932.511-1-santosh@fossix.org>
+ <20190702051932.511-10-santosh@fossix.org>
+In-Reply-To: <20190702051932.511-10-santosh@fossix.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1562047959.5y756f60wn.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,86 +81,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Chandan Rajendra <chandan@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radix boot looks like this:
+Santosh Sivaraj's on July 2, 2019 3:19 pm:
+> From: Reza Arbab <arbab@linux.ibm.com>
+>=20
+> Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/exceptions-64s.S | 6 ++++++
+>  arch/powerpc/kernel/mce.c            | 2 ++
+>  2 files changed, 8 insertions(+)
+>=20
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/e=
+xceptions-64s.S
+> index c83e38a403fd..311f1392a2ec 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -458,6 +458,12 @@ EXC_COMMON_BEGIN(machine_check_handle_early)
+>  	bl	machine_check_early
+>  	std	r3,RESULT(r1)	/* Save result */
+> =20
+> +	/* Notifiers may be in a module, so enable virtual addressing. */
+> +	mfmsr	r11
+> +	ori	r11,r11,MSR_IR
+> +	ori	r11,r11,MSR_DR
+> +	mtmsr	r11
 
- -----------------------------------------------------
- phys_mem_size     = 0x200000000
- dcache_bsize      = 0x80
- icache_bsize      = 0x80
- cpu_features      = 0x0000c06f8f5fb1a7
-   possible        = 0x0000fbffcf5fb1a7
-   always          = 0x00000003800081a1
- cpu_user_features = 0xdc0065c2 0xaee00000
- mmu_features      = 0xbc006041
- firmware_features = 0x0000000010000000
- hash-mmu: ppc64_pft_size    = 0x0
- hash-mmu: kernel vmalloc start   = 0xc008000000000000
- hash-mmu: kernel IO start        = 0xc00a000000000000
- hash-mmu: kernel vmemmap start   = 0xc00c000000000000
- -----------------------------------------------------
+Can't do this, we could take a machine check somewhere the MMU is
+not sane (in fact the guest early mce handling that was added recently
+should not be enabling virtual mode either, which needs to be fixed).
 
-It's misleading to see hash-mmu there. After fix:
-
- -----------------------------------------------------
- phys_mem_size     = 0x200000000
- dcache_bsize      = 0x80
- icache_bsize      = 0x80
- cpu_features      = 0x0000c06f8f5fb1a7
-   possible        = 0x0000fbffcf5fb1a7
-   always          = 0x00000003800081a1
- cpu_user_features = 0xdc0065c2 0xaee00000
- mmu_features      = 0xbc006041
- firmware_features = 0x0000000010000000
- vmalloc start     = 0xc008000000000000
- IO start          = 0xc00a000000000000
- vmemmap start     = 0xc00c000000000000
- -----------------------------------------------------
-
-Hash has the same text misalignment problem which is also corrected.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-v2: avoid adding an ifdef to generic code.
-
- arch/powerpc/mm/book3s64/hash_utils.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 28ced26f2a00..54f2d6acf6da 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1946,11 +1946,20 @@ machine_device_initcall(pseries, hash64_debugfs);
- 
- void __init print_system_hash_info(void)
- {
--	pr_info("ppc64_pft_size    = 0x%llx\n", ppc64_pft_size);
-+#undef pr_fmt
-+#define pr_fmt(fmt) fmt
- 
--	if (htab_hash_mask)
--		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
--	pr_info("kernel vmalloc start   = 0x%lx\n", KERN_VIRT_START);
--	pr_info("kernel IO start        = 0x%lx\n", KERN_IO_START);
--	pr_info("kernel vmemmap start   = 0x%lx\n", (unsigned long)vmemmap);
-+	if (!early_radix_enabled()) {
-+		pr_info("ppc64_pft_size    = 0x%llx\n", ppc64_pft_size);
-+
-+		if (htab_hash_mask)
-+			pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
-+	}
-+
-+	pr_info("vmalloc start     = 0x%lx\n", KERN_VIRT_START);
-+	pr_info("IO start          = 0x%lx\n", KERN_IO_START);
-+	pr_info("vmemmap start     = 0x%lx\n", (unsigned long)vmemmap);
-+
-+#undef pr_fmt
-+#define pr_fmt(fmt) "hash-mmu: " fmt
- }
--- 
-2.20.1
-
+Thanks,
+Nick
+=
