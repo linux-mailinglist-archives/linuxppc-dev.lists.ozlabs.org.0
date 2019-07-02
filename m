@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847895C8D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 07:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0C85C8D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 07:35:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dCZk1yMPzDqK5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:33:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dCdC1KF2zDqK9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:35:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="YeDpXFu4"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="nDrzgl7A"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dCHP4Pq8zDqLL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:20:17 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id f25so7084754pgv.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 22:20:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dCHS5cpGzDqGq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 15:20:20 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id t16so7644506pfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2019 22:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=2eKySy+ofP39yUhvXO65KjBrDTXu6io+eKrLabYiJKM=;
- b=YeDpXFu4gedkfulYzdQ5LLfnlppsJe6PNZ+30EPI+ryRaQmIfE3bVkJNtUrvSlsnLE
- jSc2b/Uqi2YBCDtfNtOpi5llQHmUeFkdDKieIDjYFjgGxolDrPztwBv2tFN7W6gO6dcj
- 9G0ln6bLHdqQ1mI+DD40OeSb6tDkvAXYsH3zV0J3nZkBfTQ5s6gI0VhKfurjCj/WCORn
- 2A4NHnTJFe7XlHegrUvCd9lqEyYFMepMq4HYG8OF2pxeeB+ixNeuKlUiunNY12sQtNlU
- Ecwj+1K/Of0xj9cLgm3OWNG2gEaMoZ2I/YgCFi/ZIBejcibUI58f4q5kzYAQKPQzBR15
- f5Ag==
+ bh=O0RpxuR45dwfhoqht7ZB55QWMjctg/I39pbBZLVMTYI=;
+ b=nDrzgl7Ac58CidsaQ6PIuy197jcO/z/YiU0EKRLMa7gawFXcHfSPFVjyFV8bA8fzfX
+ kbLVE7fihyQybCu62Pav6Ya5wh6zD01MAR/KID6uPmcS9VRuCMfYWLAjFKhIvcR3CcG/
+ riARMXG16twAGfsI3P74kuVEFzLiu/+6KfT/EBoJe/6Bl2nB+2+f/7o+ZXdXeh4h5iWo
+ 0N9O1l0gl2/jdhYmL5PGJXKF6YqSbUuAUPlxjZ0c3wXXDGHgR0j5oAvFl98EadkrS2BS
+ h3qC+JJeGjH9kr/4fdbCXqA/rbgrbm+7z/3/2ctHY5yimPi5TSqzbyJHPIq1Vd94mcvY
+ +jEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=2eKySy+ofP39yUhvXO65KjBrDTXu6io+eKrLabYiJKM=;
- b=OsW1p4wQP1tTdeUIbKSjU+GQrJG+pVnF4XCHXrNBDFOyw1uknEqBHKQ+xfV9/gGtK6
- rq+pBJLu5XCskEMedeC+XH7bCAY2dbt6+R02J5bfOOeqmyjgxBtwvYba388DMEyuhPZK
- R6gi/0qjdXEXQZLPPtrXXcNeoyBdlPuke2XfDryKYytKmks94xKMg/88hquiYUmsP4Zf
- IaWFdn1hD2eMu9SnQUwkChZ38LDm3uwJVTIojkgwWTZotp4kW3KDUWWWGKogSjzw425R
- x+RHJCHTIBukYxMPHkWNKq8dnAIJofjiC9i1+AJ+kua9Tyu7BgA4v6BeJcz0qsG9fjEs
- JgLg==
-X-Gm-Message-State: APjAAAUSkpZyQ0FZy5qA4nEzEae3MjRcJ4CzdHxD+2Od/gbbqhpG8BQv
- r8v662xxo5nzi37nFYJPBr4lBMltT9c=
-X-Google-Smtp-Source: APXvYqyZ4sJCBnDW6zCtn4sDgkiROnog1cNShryXOCEum41LkpwqnS/iJ8+MkzcT6hrEtIfSV/y6uQ==
-X-Received: by 2002:a17:90a:2385:: with SMTP id
- g5mr3571804pje.12.1562044815682; 
- Mon, 01 Jul 2019 22:20:15 -0700 (PDT)
+ bh=O0RpxuR45dwfhoqht7ZB55QWMjctg/I39pbBZLVMTYI=;
+ b=hIgv70E29RE5Fks0GjIRBARro610rUu3JMUazCou+tW0zFnyiyAgXCV6rHWZBoMckM
+ WJocJIdLYkU8XYie5RMYuM5YklWfN6AnIbDzqFhTep1Y2HTt+eVybDBjnkHZvIx2sgOt
+ a724bLC5Q4CtkwmKGVSDuQr6+IKCendJKHCo1zNbg4NHjnIpwf7yRNLLa6hZ9pM+kkM1
+ ZumoqQYJgyMnO1GxwieEAt5vFU4UnUdszsfwwYvxmgOhHp2udo3BySHk/jEGocu8I/LV
+ YjsYsnh2m4STecbWIqJkU4Dy3DbIzAM6Xu/fAaDeypDwGjHzbrVwR3DHhp18az8PXWFY
+ zb2Q==
+X-Gm-Message-State: APjAAAVdhWBbHJKCKoiyXdMibCFuY24DY1+UcH6mxnpjuD14iVu+aVwC
+ apIzafVhzTE8e6cdZnhtK0LLt9Vn3theHg==
+X-Google-Smtp-Source: APXvYqx+WjAPSmdYr9tmqlIfaV8PP52y742alvV7T95gT3Ie/XgUFvMPPYbYDWTUWvnNcfaOhxiuIQ==
+X-Received: by 2002:a65:6541:: with SMTP id a1mr28266774pgw.409.1562044818857; 
+ Mon, 01 Jul 2019 22:20:18 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([129.41.84.67])
- by smtp.gmail.com with ESMTPSA id t9sm1106898pji.18.2019.07.01.22.20.12
+ by smtp.gmail.com with ESMTPSA id t9sm1106898pji.18.2019.07.01.22.20.15
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 01 Jul 2019 22:20:15 -0700 (PDT)
+ Mon, 01 Jul 2019 22:20:18 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [v2 10/12] powerpc/memcpy_mcsafe: return remaining bytes
-Date: Tue,  2 Jul 2019 10:49:30 +0530
-Message-Id: <20190702051932.511-11-santosh@fossix.org>
+Subject: [v2 11/12] powerpc: add machine check safe copy_to_user
+Date: Tue,  2 Jul 2019 10:49:31 +0530
+Message-Id: <20190702051932.511-12-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190702051932.511-1-santosh@fossix.org>
 References: <20190702051932.511-1-santosh@fossix.org>
@@ -89,233 +88,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-memcpy_mcsafe currently return -EFAULT on a machine check exception, change
-it to return the remaining bytes that needs to be copied, so that machine
-check safe copy_to_user can maintain the same behavior as copy_to_user.
+Use  memcpy_mcsafe() implementation to define copy_to_user_mcsafe()
 
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- arch/powerpc/lib/memcpy_mcsafe_64.S | 129 +++++++++++++++-------------
- 1 file changed, 70 insertions(+), 59 deletions(-)
+ arch/powerpc/Kconfig               |  1 +
+ arch/powerpc/include/asm/uaccess.h | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/arch/powerpc/lib/memcpy_mcsafe_64.S b/arch/powerpc/lib/memcpy_mcsafe_64.S
-index 50f865db0338..566c664aa640 100644
---- a/arch/powerpc/lib/memcpy_mcsafe_64.S
-+++ b/arch/powerpc/lib/memcpy_mcsafe_64.S
-@@ -30,11 +30,12 @@
- 	ld	r14,STK_REG(R14)(r1)
- 	addi	r1,r1,STACKFRAMESIZE
- .Ldo_err1:
--	li	r3,-EFAULT
-+	mr	r3,r7
- 	blr
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636308c8..a173b392c272 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -134,6 +134,7 @@ config PPC
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
++	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 76f34346b642..f8fcaab4c5bc 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -386,6 +386,18 @@ static inline unsigned long raw_copy_to_user(void __user *to,
+ 	return ret;
+ }
  
- 
- _GLOBAL(memcpy_mcsafe)
-+	mr	r7,r5
- 	cmpldi	r5,16
- 	blt	.Lshort_copy
- 
-@@ -49,18 +50,21 @@ err1;	lbz	r0,0(r4)
- 	addi	r4,r4,1
- err1;	stb	r0,0(r3)
- 	addi	r3,r3,1
-+	subi	r7,r7,1
- 
- 1:	bf	cr7*4+2,2f
- err1;	lhz	r0,0(r4)
- 	addi	r4,r4,2
- err1;	sth	r0,0(r3)
- 	addi	r3,r3,2
-+	subi	r7,r7,2
- 
- 2:	bf	cr7*4+1,3f
- err1;	lwz	r0,0(r4)
- 	addi	r4,r4,4
- err1;	stw	r0,0(r3)
- 	addi	r3,r3,4
-+	subi	r7,r7,4
- 
- 3:	sub	r5,r5,r6
- 	cmpldi	r5,128
-@@ -87,43 +91,69 @@ err1;	stw	r0,0(r3)
- 4:
- err2;	ld	r0,0(r4)
- err2;	ld	r6,8(r4)
--err2;	ld	r7,16(r4)
--err2;	ld	r8,24(r4)
--err2;	ld	r9,32(r4)
--err2;	ld	r10,40(r4)
--err2;	ld	r11,48(r4)
--err2;	ld	r12,56(r4)
--err2;	ld	r14,64(r4)
--err2;	ld	r15,72(r4)
--err2;	ld	r16,80(r4)
--err2;	ld	r17,88(r4)
--err2;	ld	r18,96(r4)
--err2;	ld	r19,104(r4)
--err2;	ld	r20,112(r4)
--err2;	ld	r21,120(r4)
-+err2;	ld	r8,16(r4)
-+err2;	ld	r9,24(r4)
-+err2;	ld	r10,32(r4)
-+err2;	ld	r11,40(r4)
-+err2;	ld	r12,48(r4)
-+err2;	ld	r14,56(r4)
-+err2;	ld	r15,64(r4)
-+err2;	ld	r16,72(r4)
-+err2;	ld	r17,80(r4)
-+err2;	ld	r18,88(r4)
-+err2;	ld	r19,96(r4)
-+err2;	ld	r20,104(r4)
-+err2;	ld	r21,112(r4)
-+err2;	ld	r22,120(r4)
- 	addi	r4,r4,128
- err2;	std	r0,0(r3)
- err2;	std	r6,8(r3)
--err2;	std	r7,16(r3)
--err2;	std	r8,24(r3)
--err2;	std	r9,32(r3)
--err2;	std	r10,40(r3)
--err2;	std	r11,48(r3)
--err2;	std	r12,56(r3)
--err2;	std	r14,64(r3)
--err2;	std	r15,72(r3)
--err2;	std	r16,80(r3)
--err2;	std	r17,88(r3)
--err2;	std	r18,96(r3)
--err2;	std	r19,104(r3)
--err2;	std	r20,112(r3)
--err2;	std	r21,120(r3)
-+err2;	std	r8,16(r3)
-+err2;	std	r9,24(r3)
-+err2;	std	r10,32(r3)
-+err2;	std	r11,40(r3)
-+err2;	std	r12,48(r3)
-+err2;	std	r14,56(r3)
-+err2;	std	r15,64(r3)
-+err2;	std	r16,72(r3)
-+err2;	std	r17,80(r3)
-+err2;	std	r18,88(r3)
-+err2;	std	r19,96(r3)
-+err2;	std	r20,104(r3)
-+err2;	std	r21,112(r3)
-+err2;	std	r22,120(r3)
- 	addi	r3,r3,128
-+	subi	r7,r7,128
- 	bdnz	4b
- 
- 	clrldi	r5,r5,(64-7)
- 
--	ld	r14,STK_REG(R14)(r1)
-+	/* Up to 127B to go */
-+5:	srdi	r6,r5,4
-+	mtocrf	0x01,r6
++static __always_inline unsigned long __must_check
++copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
++{
++	if (likely(check_copy_size(from, n, true))) {
++		allow_write_to_user(to, n);
++		n = memcpy_mcsafe(to, from, n);
++		prevent_write_to_user(to, n);
++	}
 +
-+6:	bf	cr7*4+1,7f
-+err2;	ld	r0,0(r4)
-+err2;	ld	r6,8(r4)
-+err2;	ld	r8,16(r4)
-+err2;	ld	r9,24(r4)
-+err2;	ld	r10,32(r4)
-+err2;	ld	r11,40(r4)
-+err2;	ld	r12,48(r4)
-+err2;	ld	r14,56(r4)
-+	addi	r4,r4,64
-+err2;	std	r0,0(r3)
-+err2;	std	r6,8(r3)
-+err2;	std	r8,16(r3)
-+err2;	std	r9,24(r3)
-+err2;	std	r10,32(r3)
-+err2;	std	r11,40(r3)
-+err2;	std	r12,48(r3)
-+err2;	std	r14,56(r3)
-+	addi	r3,r3,64
-+	subi	r7,r7,64
++	return n;
++}
 +
-+7:	ld	r14,STK_REG(R14)(r1)
- 	ld	r15,STK_REG(R15)(r1)
- 	ld	r16,STK_REG(R16)(r1)
- 	ld	r17,STK_REG(R17)(r1)
-@@ -134,42 +164,19 @@ err2;	std	r21,120(r3)
- 	ld	r22,STK_REG(R22)(r1)
- 	addi	r1,r1,STACKFRAMESIZE
+ extern unsigned long __clear_user(void __user *addr, unsigned long size);
  
--	/* Up to 127B to go */
--5:	srdi	r6,r5,4
--	mtocrf	0x01,r6
--
--6:	bf	cr7*4+1,7f
--err1;	ld	r0,0(r4)
--err1;	ld	r6,8(r4)
--err1;	ld	r7,16(r4)
--err1;	ld	r8,24(r4)
--err1;	ld	r9,32(r4)
--err1;	ld	r10,40(r4)
--err1;	ld	r11,48(r4)
--err1;	ld	r12,56(r4)
--	addi	r4,r4,64
--err1;	std	r0,0(r3)
--err1;	std	r6,8(r3)
--err1;	std	r7,16(r3)
--err1;	std	r8,24(r3)
--err1;	std	r9,32(r3)
--err1;	std	r10,40(r3)
--err1;	std	r11,48(r3)
--err1;	std	r12,56(r3)
--	addi	r3,r3,64
--
- 	/* Up to 63B to go */
--7:	bf	cr7*4+2,8f
-+	bf	cr7*4+2,8f
- err1;	ld	r0,0(r4)
- err1;	ld	r6,8(r4)
--err1;	ld	r7,16(r4)
--err1;	ld	r8,24(r4)
-+err1;	ld	r8,16(r4)
-+err1;	ld	r9,24(r4)
- 	addi	r4,r4,32
- err1;	std	r0,0(r3)
- err1;	std	r6,8(r3)
--err1;	std	r7,16(r3)
--err1;	std	r8,24(r3)
-+err1;	std	r8,16(r3)
-+err1;	std	r9,24(r3)
- 	addi	r3,r3,32
-+	subi	r7,r7,32
- 
- 	/* Up to 31B to go */
- 8:	bf	cr7*4+3,9f
-@@ -179,6 +186,7 @@ err1;	ld	r6,8(r4)
- err1;	std	r0,0(r3)
- err1;	std	r6,8(r3)
- 	addi	r3,r3,16
-+	subi	r7,r7,16
- 
- 9:	clrldi	r5,r5,(64-4)
- 
-@@ -192,18 +200,21 @@ err1;	lwz	r6,4(r4)
- err1;	stw	r0,0(r3)
- err1;	stw	r6,4(r3)
- 	addi	r3,r3,8
-+	subi	r7,r7,8
- 
- 12:	bf	cr7*4+1,13f
- err1;	lwz	r0,0(r4)
- 	addi	r4,r4,4
- err1;	stw	r0,0(r3)
- 	addi	r3,r3,4
-+	subi	r7,r7,4
- 
- 13:	bf	cr7*4+2,14f
- err1;	lhz	r0,0(r4)
- 	addi	r4,r4,2
- err1;	sth	r0,0(r3)
- 	addi	r3,r3,2
-+	subi	r7,r7,2
- 
- 14:	bf	cr7*4+3,15f
- err1;	lbz	r0,0(r4)
+ static inline unsigned long clear_user(void __user *addr, unsigned long size)
 -- 
 2.20.1
 
