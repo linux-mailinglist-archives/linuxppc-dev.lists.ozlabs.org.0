@@ -1,77 +1,123 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B13B5CE0D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 13:00:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dLr438fJzDqbw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 21:00:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C565D024
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 15:07:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dPfF2qRbzDqD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2019 23:07:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=maddy@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=web.de
+ (client-ip=212.227.15.3; helo=mout.web.de; envelope-from=markus.elfring@web.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.b="gWI13cK9"; 
+ dkim-atps=neutral
+X-Greylist: delayed 362 seconds by postgrey-1.36 at bilbo;
+ Tue, 02 Jul 2019 23:03:29 AEST
+Received: from mout.web.de (mout.web.de [212.227.15.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dLpF4CT1zDqPc
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 20:59:01 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x62AsLtg088156
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 06:58:58 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tg5as1gju-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 06:58:58 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.vnet.ibm.com>;
- Tue, 2 Jul 2019 11:58:56 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 2 Jul 2019 11:58:54 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x62AwrjT50790632
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jul 2019 10:58:53 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC57152054;
- Tue,  2 Jul 2019 10:58:53 +0000 (GMT)
-Received: from Srihari-Srinidhi.in.ibm.com (unknown [9.126.30.145])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 73BC55204E;
- Tue,  2 Jul 2019 10:58:52 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/powernv/idle: Fix restore of SPRN_LDBAR for POWER9
- stop state.
-Date: Tue,  2 Jul 2019 16:28:36 +0530
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dPYs1SvXzDqD3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2019 23:03:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1562072575;
+ bh=pVAuHARMLI90BQfldqhr/7I5PIxe6kQyhlRsdBPrcFM=;
+ h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+ b=gWI13cK9c7wkkcc+axnID5t9H1O3vp5RWnub1PZwQbLb0fiaOcCcTRp+EJtr851e8
+ aSf9cCHPLIZCLK4dAwgX4DJsKNTty3TjGmFGgC8dcmdXZJdFZoVK8K8NCkKdU68y9Q
+ MWTfDQhkY+IGf9SGCazybpTbmKQ0SoN/J00/Yj4k=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MbyJ4-1i0NBo0f2c-00JJS7; Tue, 02
+ Jul 2019 14:57:02 +0200
+To: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] powerpc/setup: Adjust six seq_printf() calls in show_cpuinfo()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <5b62379e-a35f-4f56-f1b5-6350f76007e7@web.de>
+Date: Tue, 2 Jul 2019 14:56:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070210-0028-0000-0000-0000037FA24A
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070210-0029-0000-0000-0000243FDBAC
-Message-Id: <20190702105836.26695-1-maddy@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-02_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=634 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907020128
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:CHSj/T2I1H2IUKUbSut3k3betOz9ySJnjr+q1z0JO5FzO6JDPNu
+ YDIvH23ZFoLROOrSMAWSsuESAfamBVNo1CIY8kllwqdngkMAdNN12HGClZZqq/Fh87OlHZ+
+ kL5yC/NEbuUmHz0kMrBbr/hNXzKXEng4g5YHU6GXIT+9/HsOrFkPvArm2gP21g55giFp2S9
+ TxQNt+sMrJecvThy62wng==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:r3rOcbfgVwg=:RMCqK8HEhLADnGxfA4Z3KN
+ XhqGaOpSO6Ck8vcDzLvScMz2bGGIlNRoe1BwWUYS3GtHW/X3q1St9+1Dql+EhYdfxRZ+IjXu7
+ 0FmoCiJOgypR7bwZKGsndVKnmyqCdQv2kDwANg5lPmoFx9NDgm+mypsJPHMcEdUTbFpLU7eYv
+ XsGLWRIbr6ImUqg4+UApz/XJaG3fJv2RBIST6N+rru6De5+Z7jMe50SYjBybIDiy/Zom1DpAA
+ rn/LvKj80R0YfMH9d5zC1W5IIL9df9iNlMZB6YXO5zS7WyJVdNZSSPA6SqF9x0LqAfXppN0It
+ UdjJGlf38jhh3tgmTTcexnZ48itPC31gMkteh4MhDG3Dsqj2OQi00Gb8hOSZk43Vfyu60lWsN
+ qBhRd6C+P1bvV2rW+r3QDvhDknrKi/xH6iHrZ4y54nOY4V429Q0ebQkCMrBAAju0mXIDpU7SZ
+ qdwF7cHmvb/1qYsLv750+B3y9nVdWWGN2z3AfPGdXKHmxHD7tdZY0dqwsk9qi+6vRz2xaYjNk
+ 3Ldny0siwAMz2Eh3ZjdeYp8hGjDYEIpJBtZ4gDxI5Y5kOAvKnWlPPQRqRjWyiQ4ETcdeCkJcJ
+ 1/CtHeLYrWckwYKcO9AktocR0X/NB8F1i8DoSHn6aSTIwktqC76An8l2Rrh5a0NobPGoasJNn
+ TouIy/mT0cuxTxGQ9liWbsaN7L9QBeJLcL9rJGwSHow1HfZA4pUkYepoNf5iwzybhXJ7LHFfh
+ ZPxUc7WIUoPQiqDRT8DvMiY8hUNgsH+QOnP41Qvp3ejVck2cnvLFd26YHLBR9R5SAkLBgSq9b
+ j2JuOJK3SAKaIAC4qj4gA9eXlS7FFtRIKmh+345Tkvct+GK27+Yl35wzkEeUm6mAG3MWXRvve
+ mWR7SYWCsSaBl1pXtvCk834xZx/mfQj1Wrd1JPmjUXN/44yaKtzc36f9tX4BfQN3QmynBR4o0
+ 7HuBp8DbxQXmzRpPoIY3GPB+aBk97sTvzQQsuKIUscN6FOQoGtCScd2SLd8QRM7wyTWVLI6RO
+ /nncdE/iEjSQK5Eed1t8t6y3y6Ma34Ivm4mh3v3n5V1yMi/HgnOOP4VOCFlddIeMLFSqzXMB3
+ HqWzcsNbE+RgYU/NmCx+cCdL9t4eUrKFrsC
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,47 +129,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Cc: kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 2 Jul 2019 14:41:42 +0200
 
-commit 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
-reimplemented book3S code to pltform/powernv/idle.c. But when doing so
-missed to add the per-thread LDBAR update in the core_woken path of
-the power9_idle_stop(). Patch fixes the same.
+A bit of information should be put into a sequence.
+Thus improve the execution speed for this data output by better usage
+of corresponding functions.
 
-Fixes: 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/powernv/idle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This issue was detected by using the Coccinelle software.
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 2f4479b94ac3..fd14a6237954 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -758,7 +758,6 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 	mtspr(SPRN_PTCR,	sprs.ptcr);
- 	mtspr(SPRN_RPR,		sprs.rpr);
- 	mtspr(SPRN_TSCR,	sprs.tscr);
--	mtspr(SPRN_LDBAR,	sprs.ldbar);
- 
- 	if (pls >= pnv_first_tb_loss_level) {
- 		/* TB loss */
-@@ -790,6 +789,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 	mtspr(SPRN_MMCR0,	sprs.mmcr0);
- 	mtspr(SPRN_MMCR1,	sprs.mmcr1);
- 	mtspr(SPRN_MMCR2,	sprs.mmcr2);
-+	mtspr(SPRN_LDBAR,	sprs.ldbar);
- 
- 	mtspr(SPRN_SPRG3,	local_paca->sprg_vdso);
- 
--- 
-2.20.1
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ arch/powerpc/kernel/setup-common.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setu=
+p-common.c
+index 1f8db666468d..a381723b11bd 100644
+=2D-- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -239,18 +239,17 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	maj =3D (pvr >> 8) & 0xFF;
+ 	min =3D pvr & 0xFF;
+
+-	seq_printf(m, "processor\t: %lu\n", cpu_id);
+-	seq_printf(m, "cpu\t\t: ");
++	seq_printf(m, "processor\t: %lu\ncpu\t\t: ", cpu_id);
+
+ 	if (cur_cpu_spec->pvr_mask && cur_cpu_spec->cpu_name)
+-		seq_printf(m, "%s", cur_cpu_spec->cpu_name);
++		seq_puts(m, cur_cpu_spec->cpu_name);
+ 	else
+ 		seq_printf(m, "unknown (%08x)", pvr);
+
+ 	if (cpu_has_feature(CPU_FTR_ALTIVEC))
+-		seq_printf(m, ", altivec supported");
++		seq_puts(m, ", altivec supported");
+
+-	seq_printf(m, "\n");
++	seq_putc(m, '\n');
+
+ #ifdef CONFIG_TAU
+ 	if (cpu_has_feature(CPU_FTR_TAU)) {
+@@ -332,7 +331,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 		seq_printf(m, "bogomips\t: %lu.%02lu\n", loops_per_jiffy / (500000 / HZ=
+),
+ 			   (loops_per_jiffy / (5000 / HZ)) % 100);
+
+-	seq_printf(m, "\n");
++	seq_putc(m, '\n');
+
+ 	/* If this is the last cpu, print the summary */
+ 	if (cpumask_next(cpu_id, cpu_online_mask) >=3D nr_cpu_ids)
+=2D-
+2.22.0
 
