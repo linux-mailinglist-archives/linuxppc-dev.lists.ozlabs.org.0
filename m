@@ -1,34 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE5F5E6D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 16:35:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B67D5E6C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 16:31:19 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45f3Sf1bWxzDqRq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 00:31:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45f3YW5BtkzDqPF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 00:35:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45f3Mn4N6NzDqRc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2019 00:27:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45f3Mp1n3PzDq9J
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2019 00:27:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45f3Mn0SQ5z9s4V; Thu,  4 Jul 2019 00:27:00 +1000 (AEST)
+ id 45f3Mp0LgZz9s4Y; Thu,  4 Jul 2019 00:27:01 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: f079bb3c5f2978b2c1a13098ab2a8c32e5d1ee3d
-In-Reply-To: <4464516c0b6835b42acc65e088b6d7f88fe886f2.1557235811.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
+X-powerpc-patch-commit: ba45cff610a4223ce3ad98a700a820e3d60e3f7c
+In-Reply-To: <20190513053910.19227-1-mikey@neuling.org>
+To: Michael Neuling <mikey@neuling.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/ftrace: Enable C Version of recordmcount
-Message-Id: <45f3Mn0SQ5z9s4V@ozlabs.org>
-Date: Thu,  4 Jul 2019 00:27:00 +1000 (AEST)
+Subject: Re: [PATCH] powerpc: Document xive=off option
+Message-Id: <45f3Mp0LgZz9s4Y@ozlabs.org>
+Date: Thu,  4 Jul 2019 00:27:01 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,22 +38,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org,
+ =?utf-8?b?Q8OpZHJp?= =?utf-8?q?c_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-05-07 at 13:31:38 UTC, Christophe Leroy wrote:
-> Selects HAVE_C_RECORDMCOUNT to use the C version of the recordmcount
-> intead of the old Perl Version of recordmcount.
+On Mon, 2019-05-13 at 05:39:10 UTC, Michael Neuling wrote:
+> commit 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
+> interrupt controller") added an option to turn off Linux native XIVE
+> usage via the xive=off kernel command line option.
 > 
-> This should improve build time. It also seems like the old Perl Version
-> misses some calls to _mcount that the C version finds.
+> This documents this option.
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Acked-by: Stewart Smith <stewart@linux.ibm.com>
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/f079bb3c5f2978b2c1a13098ab2a8c32e5d1ee3d
+https://git.kernel.org/powerpc/c/ba45cff610a4223ce3ad98a700a820e3d60e3f7c
 
 cheers
