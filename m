@@ -1,89 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE635DD44
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 06:06:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8604B5DD02
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 05:31:47 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dmqj0gxtzDqS2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 13:31:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dnbx5F9KzDqSt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 14:06:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dmp25BTvzDqN2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dnZ04SyHzDqRc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="nRjt+a2S"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tc798DR9"; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45dmp22SVZz8xD3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45dnZ03PpBz8swt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45dmp22Fv7z9s8m; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+ id 45dnZ03DJFz9sBp; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="nRjt+a2S"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tc798DR9"; 
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45dmp15sRXz9s3Z
- for <linuxppc-dev@ozlabs.org>; Wed,  3 Jul 2019 13:30:16 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id b7so411703pls.6
- for <linuxppc-dev@ozlabs.org>; Tue, 02 Jul 2019 20:30:16 -0700 (PDT)
+ by ozlabs.org (Postfix) with ESMTPS id 45dnYz5RnXz9s4V
+ for <linuxppc-dev@ozlabs.org>; Wed,  3 Jul 2019 14:04:55 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id r1so508335pfq.12
+ for <linuxppc-dev@ozlabs.org>; Tue, 02 Jul 2019 21:04:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=message-id:subject:from:to:cc:date:in-reply-to:references
  :user-agent:mime-version:content-transfer-encoding;
- bh=MVLDXqQRcdyFTbrjx+tYpHiLe/KpOcxmbHPx54X9ZVs=;
- b=nRjt+a2Sd4duikxK3b1OcFdhn5nbpwsnbVselGgYouBCJJOAK7UUXh6MU9JQ+4KA1l
- qEKaf87z0yR49UI9/x4sAcZ/5Frnl1M1pc+AxM5tjv54ewGe2GHNFehyprDDj+dkWAe+
- u6GrU5RTyhNnT+m21P8a8KKB/gtUqfw0sGblpfYlRiF4qy1CWEyvTTFtHg3AJroyFWcF
- tRUwRJ27WRQ9oxvFCq7sPLyQ/cwkxTHBdkm/m4qPzyPckqwdOGL4gm2rplausI1L2Ykg
- fG/jP3pzJ7rajZyUsWWTb+HW3cneOTwr9xnQtb6u5NbHuRZ/SNIcTVjWrGgztsJn2VO1
- xQnA==
+ bh=tylYDS6kDRxuvNQuW4yVmheFFIrPCY1pJ+1IZjAYM7Y=;
+ b=Tc798DR9qGpH1dWSzACd2ATsW5T56VPrRfPptW75wayXd8malwsWEwm8jl7251+Zdf
+ uMaHuGwSSLqwejfwHP29SxLv/12xeLpwcJ74vCrInsrHL+Rkrw/NnNWl/O4stwBU5hDm
+ re3SW6CF7yRH5sKC/I0U6YXmEz8K9xY0dB+wgZco5MO1uaWfBgKuVbFdm92CIWhfn6y6
+ 15H+e7FJYNdcaDu+vxJg6e6uYCL5C8SVjNic+dOwMgU/R2AHheUbTMhhIv4HRnY7itzE
+ /uVxihw/03Hkx6K5ghJ2X0uniSLXGyr9lCReey7ai9N+gFoYA96yFYz/RIDDklfFb1r3
+ 2jdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
  :references:user-agent:mime-version:content-transfer-encoding;
- bh=MVLDXqQRcdyFTbrjx+tYpHiLe/KpOcxmbHPx54X9ZVs=;
- b=uIJFs4Un8I9qbbXEwzu7bfurrPDU7SoUA3F+kmFh7Q6U2HAh6EPfugk+1eFnyiPZEu
- kzasVa3nDK5O1ahOsDZkjQamBR+vXKPFRvNuCx0743h62TvLdwNhI1wLRxD2ChpwzbXk
- h/6JzVaXrEyLD1fPqRiX23oM+qNp7IT2Kgh2KRx5O2zSRSV6xGLhvPer/87jCcERiyEk
- PqvLj3uUmvDg+fXyE1MhHS2nwiEZVPIAygsDn/PSM/KnmM/DVh5zbwPXlLFbPtGzFPbm
- pPzh37LAkzWfT//Uum8oup8MMtJgIBeqcTU3Y2pG+gZJXxJESHUHdtUtRkqL4G5hoLhG
- i2ew==
-X-Gm-Message-State: APjAAAWqe4Wr4OZ014FmfPaBOOOOrO3k4KUp6hzxl82BWySarTx5Kdng
- 60DriVs5bKCOiE2WI9VEZwA=
-X-Google-Smtp-Source: APXvYqwSowNWrTAzm5BTc1aI4v4tZSlO/Co0EpESubDd1+iBiLPdXQuy4KmHYxUFKsoivkwGdH7EYw==
-X-Received: by 2002:a17:902:3225:: with SMTP id
- y34mr38481872plb.135.1562124613795; 
- Tue, 02 Jul 2019 20:30:13 -0700 (PDT)
+ bh=tylYDS6kDRxuvNQuW4yVmheFFIrPCY1pJ+1IZjAYM7Y=;
+ b=h1uo5EmtnBuyBcOJlCRMxe0onmFRuybOaiD+p4bxeH0unv/+R62470SFNmU1y5EsS1
+ AU8aaV9awsT1JBnpTHXtEhJQUK0sIcPvWkRSx71q17XIpAz3i3+9BmJs9Q/wYlZMc/pr
+ OpVUNp3fiCzd2C8XtCZWNJFlXvSCoABgaN4yRDrwLHs77AWtkI2h9FTQJyHvOXKMTvij
+ G8bHZXZ9nPVRbOyqIo9oZNnc2zKuEkTjikUp4Bfl43KUEphJT3kanJvShveYwWrqYFun
+ q1febEOpxiIasS+GSWbnHZQbp3zU+34piVigmv54Z+ZdAAQOX38Imp80Sv7Vjgw1pYtH
+ z1wg==
+X-Gm-Message-State: APjAAAVD46njZrUffSMRaNUUPfXdqbipomPXpOih/20K+YchpmuFkAlj
+ 1is2Z96yeDo2kZcwOxmga/M=
+X-Google-Smtp-Source: APXvYqwxEEmtP7h4uErRIoTEmpS4m1WqFEb3++nXZQdYIXbjaIHll6wJXaW22IT1jJbxeSdoNtyDvg==
+X-Received: by 2002:a63:c508:: with SMTP id f8mr3628727pgd.48.1562126692024;
+ Tue, 02 Jul 2019 21:04:52 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.googlemail.com with ESMTPSA id q4sm420264pjq.27.2019.07.02.20.30.10
+ by smtp.googlemail.com with ESMTPSA id h26sm780990pfq.64.2019.07.02.21.04.48
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 02 Jul 2019 20:30:13 -0700 (PDT)
-Message-ID: <5f4b28e4df2049506a9fa03eead6cfbad9d7cdf3.camel@gmail.com>
-Subject: Re: [PATCH v3 01/16] powerpc/fadump: move internal fadump code to a
- new file
+ Tue, 02 Jul 2019 21:04:51 -0700 (PDT)
+Message-ID: <8a779e216bb088b33b022cd026bdb647e05aa338.camel@gmail.com>
+Subject: Re: [PATCH v3 03/16] pseries/fadump: move out platform specific
+ support from generic code
 From: Oliver O'Halloran <oohall@gmail.com>
 To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
  <linuxppc-dev@ozlabs.org>
-Date: Wed, 03 Jul 2019 13:30:07 +1000
-In-Reply-To: <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
+Date: Wed, 03 Jul 2019 14:04:46 +1000
+In-Reply-To: <156149556436.9094.15834897273683011518.stgit@hbathini.in.ibm.com>
 References: <156149548694.9094.3211954809582123798.stgit@hbathini.in.ibm.com>
- <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
+ <156149556436.9094.15834897273683011518.stgit@hbathini.in.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.32.3 (3.32.3-1.fc30) 
 MIME-Version: 1.0
@@ -107,12 +106,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-06-26 at 02:15 +0530, Hari Bathini wrote:
-> Refactoring fadump code means internal fadump code is referenced from
-> different places. For ease, move internal code to a new file.
+On Wed, 2019-06-26 at 02:16 +0530, Hari Bathini wrote:
+> Introduce callbacks for platform specific operations like register,
+> unregister, invalidate & such, and move pseries specific code into
+> platform code.
 
-Can you elaborate a bit? I don't really get what the difference between
-fadump and fadump-internal code is supposed to be. Why can't all this
-just live in fadump.c?
+Please don't move around large blocks of code *and* change the code in
+a single patch. It makes reviewing the changes extremely tedious since
+the changes are mixed in with hundreds of lines of nothing.
+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/fadump.h            |   75 ----
+>  arch/powerpc/kernel/fadump-common.h          |   38 ++
+>  arch/powerpc/kernel/fadump.c                 |  500 ++-----------------------
+>  arch/powerpc/platforms/pseries/Makefile      |    1 
+>  arch/powerpc/platforms/pseries/rtas-fadump.c |  529 ++++++++++++++++++++++++++
+>  arch/powerpc/platforms/pseries/rtas-fadump.h |   96 +++++
+>  6 files changed, 700 insertions(+), 539 deletions(-)
+>  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
+>  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.h
+> 
+
+> +static struct fadump_ops pseries_fadump_ops = {
+> +	.init_fadump_mem_struct	= pseries_init_fadump_mem_struct,
+> +	.register_fadump	= pseries_register_fadump,
+
+I realise you are just translating the existing interface, but why is
+init_fadump_mem_struct() done as a seperate step and not as a part of
+the registration function? The struct doesn't seem to be necessary
+until the actual registration happens.
+
+> +	.unregister_fadump	= pseries_unregister_fadump,
+> +	.invalidate_fadump	= pseries_invalidate_fadump,
+> +	.process_fadump		= pseries_process_fadump,
+> +	.fadump_region_show	= pseries_fadump_region_show,
+
+> +	.crash_fadump		= pseries_crash_fadump,
+
+Rename this to fadump_trigger or something, it's not clear what it
+does.
+
 
 
