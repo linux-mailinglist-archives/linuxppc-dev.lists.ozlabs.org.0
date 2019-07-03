@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9325DF4E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:08:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C9A5DF49
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:06:43 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dtww6Lq0zDqKK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:06:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dtyr2Q1fzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:08:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="XsqxA+Ax"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="oTY04i6I"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
+ [IPv6:2607:f8b0:4864:20::436])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dthW5hD2zDqRZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:55:55 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id i8so769377pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:55:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dthb23H8zDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:55:59 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id y15so830063pfn.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:55:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=p+jjIAIMslx172lTxJVoXHhGXL+fIcfc+rKiQb14IpE=;
- b=XsqxA+AxSxb+gc3v9rxi1g3CAeFEyFmfavtaw1oZ1PrDsfqUM5squDr6THXvD0SgrR
- 4k6ujXrbz3g0TVDAe37VwM10dAKCPbozvBxiRxT14yxQm1jm4b6p+d/3eziKX/AmCJJ4
- lN3Ag+Kyk7+vUVVwMeYnA031yTE1WjOFU7Q8bHFFhu8007TM6umq3O9LJyl8WBGXkV0L
- xm/IS08k/IXIdBLr6xIVgfpNb6YL96hA2GCcVPdP5vzJ3LQh+fN44aLt/B57tZKqwU8M
- VOCFSquyG668Ouspr8jReZEYi2h/ACIxU9VefXfOEfkKchpsVCt3kt/WsrbkkqSoawJz
- p4Fw==
+ bh=Q5nzEZzoD8r4bBmmvSx3fN5G38mG8QhyHILVVojissE=;
+ b=oTY04i6ItiXYlzkQsyT+mPp/DaCiDiU7HfnXHY5AQRk+nVIQ2d3EpBq8KRsNN+fDma
+ rbcXXB75VFM6D7Zzih70hacFAQvNJ9BvPfZXCz79yqdzFI9qxWNj48oKXfx87C0hysQN
+ Eo8IfNxpk6HDFWFgpiHZsIBChjtPQP9x+tDUZ5KuYm5l1+5UZvZ5MYWMabGp7a5GTMJC
+ yGpRZQRUSN68ZIDaTykI6vfZl0stbNY8g0f5p3BgxUDqSXkhF3W7zkoOfrGjAfviha4j
+ sxKEbZRTPnv5FifBG1ImbEU01ettgCcbzU02hJl9Bb+8IOwctnoXQmZSKeVdwetdIbC5
+ PEhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=p+jjIAIMslx172lTxJVoXHhGXL+fIcfc+rKiQb14IpE=;
- b=tT7S8OWu0tsEC0kK++Bom7H8mkKub5Kkzp6FYcI5fdibP6wtdJm+S9LT2hLy7AQ6h7
- OaBQJdn5MVAbtgrwRV3DFhw6iGJWw/5znq3IkgF6JHY828I4U9zsGIZ3u8X3J9qlvJIA
- HlcHMHoGQ/Pi/uClrPXDYTadpzjU3wY6MFP3xt7MvEnk4Ue/PNvi7b6Fd4m7lx1sZ6oX
- g7hAWK+sfQGquVghgaMTZS8p4Ceha+JF3YWQRp6OQ2CBXDTKTHmGCAoUWBoz3fwMGgw5
- cv0yY1vWo/LPqhh+KDEGJUf3PenNQGnn6F/N33EkHSnblPjuzBveOP/8/1ct9Dme9E3P
- GyUw==
-X-Gm-Message-State: APjAAAVezqU/pZ5t7yvHFZK5iz6ABwAzEPLjHSm9YDG+jpTT2pJUID6L
- hB1OWyok4op3PuMBU+XSRiU1eDzJ
-X-Google-Smtp-Source: APXvYqwAFMSzKzGb2l6VySMBkSqmSHu6QCZ+KgQZAjFHt7adkoO7NUZYO5WG2vN/OBUmwgfTKwiVyA==
-X-Received: by 2002:a17:90a:2506:: with SMTP id
- j6mr11381803pje.129.1562140553529; 
- Wed, 03 Jul 2019 00:55:53 -0700 (PDT)
+ bh=Q5nzEZzoD8r4bBmmvSx3fN5G38mG8QhyHILVVojissE=;
+ b=beGP3dBjpNQadfePtDEiMRZrBru3hYLbZ0arCg8M1/yluqCTyEhq0GnX3DP7EJQFlj
+ 1gzGbr+4EOiCnIhx9NwyjMnUVkssM3oVkj05fbMmItI8EUHhcuxpkG1O0J//xOV8Jcdf
+ OYfU3VPdDJPFJr06nzdfoi73ZhVV68EfDxt/4K2GEvvuZZyRkb9iQ1aAVw9ibfxAXbGX
+ cmsOeECEQ/Q2AU9s068vr2t/J58k89HgR96k8/6s2n2Dbjwr86wzHATFGSex9I4b0pbu
+ cjjpKYxYTrC4nz2nXLPRmZe2Fw+fig0ByQeBX6/NwxqGUOr6H0Tqrl17KVp1iV5ixUWr
+ UECA==
+X-Gm-Message-State: APjAAAUwOvIvKE3BGKeKioHIy/zSZbUOdMSE+F35w3aKDBwjSHgyCKnM
+ YgVFvEmECXmyJt5baV44sBE+IqeN
+X-Google-Smtp-Source: APXvYqxJFAOJlR55il4Itt1GDshtFCSEr57MGBBEvlMHi6Hdr8eNK5b12YVqc3kwGpuemTm8dV734g==
+X-Received: by 2002:a65:538d:: with SMTP id x13mr35825390pgq.190.1562140556152; 
+ Wed, 03 Jul 2019 00:55:56 -0700 (PDT)
 Received: from bobo.local0.net (193-116-88-34.tpgi.com.au. [193.116.88.34])
- by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.55.51
+ by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.55.53
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 03 Jul 2019 00:55:53 -0700 (PDT)
+ Wed, 03 Jul 2019 00:55:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 05/14] powerpc/64s/exception: machine check pseries should
- always run the early handler
-Date: Wed,  3 Jul 2019 17:54:35 +1000
-Message-Id: <20190703075444.19005-6-npiggin@gmail.com>
+Subject: [PATCH 06/14] powerpc/64s/exception: machine check remove
+ machine_check_pSeries_0 branch
+Date: Wed,  3 Jul 2019 17:54:36 +1000
+Message-Id: <20190703075444.19005-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190703075444.19005-1-npiggin@gmail.com>
 References: <20190703075444.19005-1-npiggin@gmail.com>
@@ -86,34 +85,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that pseries with fwnmi registered runs the early machine check
-handler, there is no good reason to special case the non-fwnmi case
-and skip the early handler. Reducing the code and number of paths is
-a top priority for asm code, it's better to handle this in C where
-possible (and the pseries early handler is a no-op if fwnmi is not
-registered).
+This label has only one caller, so unwind the branch and move it
+inline. The location of the comment is adjusted to match similar
+one in system reset.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0186a44bb981..a69ceb28cf4c 100644
+index a69ceb28cf4c..54ca2b189d43 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -934,11 +934,7 @@ EXC_COMMON_BEGIN(system_reset_common)
+@@ -1014,20 +1014,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+ 	b	1b
+ 	b	.	/* prevent speculative execution */
  
- EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
+-TRAMP_REAL_BEGIN(machine_check_pSeries)
+-	.globl machine_check_fwnmi
+-machine_check_fwnmi:
++#ifdef CONFIG_PPC_PSERIES
++TRAMP_REAL_BEGIN(machine_check_fwnmi)
  	EXCEPTION_PROLOG_0 PACA_EXMC
--BEGIN_FTR_SECTION
  	b	machine_check_common_early
--FTR_SECTION_ELSE
+-
+-machine_check_pSeries_0:
+-	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 1, 0x200, 1, 1, 0
+-	/*
+-	 * MSR_RI is not enabled, because PACA_EXMC is being used, so a
+-	 * nested machine check corrupts it. machine_check_common enables
+-	 * MSR_RI.
+-	 */
+-	EXCEPTION_PROLOG_2_REAL machine_check_common, EXC_STD, 0
++#endif
+ 
+ TRAMP_KVM_SKIP(PACA_EXMC, 0x200)
+ 
+@@ -1197,7 +1188,13 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
+ 	/* Deliver the machine check to host kernel in V mode. */
+ 	MACHINE_CHECK_HANDLER_WINDUP
+ 	EXCEPTION_PROLOG_0 PACA_EXMC
 -	b	machine_check_pSeries_0
--ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
- EXC_REAL_END(machine_check, 0x200, 0x100)
- EXC_VIRT_NONE(0x4200, 0x100)
- TRAMP_REAL_BEGIN(machine_check_common_early)
++	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 1, 0x200, 1, 1, 0
++	EXCEPTION_PROLOG_2_REAL machine_check_common, EXC_STD, 0
++	/*
++	 * MSR_RI is not enabled, because PACA_EXMC is being used, so a
++	 * nested machine check corrupts it. machine_check_common enables
++	 * MSR_RI.
++	 */
+ 
+ EXC_COMMON_BEGIN(unrecover_mce)
+ 	/* Invoke machine_check_exception to print MCE event and panic. */
 -- 
 2.20.1
 
