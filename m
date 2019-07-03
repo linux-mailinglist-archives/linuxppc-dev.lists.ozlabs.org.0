@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C8F5E529
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 15:17:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45f1qR1X5tzDqGJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 23:17:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F145E54A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 15:21:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45f1w41mxSzDqGx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 23:21:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=huangfq.daxian@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="dr0lsFRi"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="lfIH0IUL"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45f1l73MW4zDqFL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 23:13:38 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id q4so1231903pgj.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 06:13:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45f1ml5cNpzDqRt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 23:15:03 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id q10so1264591pff.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 06:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id;
- bh=/SnzKzwbJwdsQHXwXFz/daj/8JZPIhirrV+rjMpDDQs=;
- b=dr0lsFRiXjQ5piksHRyi/X873mKA7ZcleDGYjHaXJ5f6LYS/VE0e/SYvGVFJWfoKkj
- 0cIiNUXi+RTrlmuHHb0sHzMy7BgSWHdi7jb4wBHHl8UZ1HqJK/ft+gWm2y3SQNXfk+XU
- QbUh0VxZr8zCCGesslE6GDDmJaE54z/Phatgo8UNnCbnhSTSgINB4WBtiG4VNVbws4wp
- 9efLTJd/Fg82mtSy6ys1sDKZ3wzwr9O7A9JUj+nYaABvtOXSQpRzlMxlNwi3iaaP7qbG
- xgLdBcsi5QTE4TgK7Ikoudh1E04otuVlSb2U/SgRB07q5j6vqwTgTMLD5BvhHZQWDB3R
- W7lA==
+ bh=TOAiuu/wlD5D7o5/mqIHnTG4uZtldrOoIUofef28WiU=;
+ b=lfIH0IUL8bnlFMDRimVxIwkNQ/20moehxMR8XeG6e1vo0CHjFIa7S4/IFzeJrzgJlU
+ q2EJ1FOEjXJguDQSyMFXH7k3X9n1scvRb7MkJjtKkRBfWxe8gnqZdhJTTVtiiemk1hZ8
+ JEsWEwZyeYK5LrcZYxqtxqYOB84MaPfNmB0WpIoCWpbsKR17eWSZ/DL4BpVsMdWBspi3
+ XBGVX5QsFJ2A9jlFpjBiIrBKWiWS6s+R4q4WHhiK4NP1F7C+nhehr4iK/vSnZH9RFSc2
+ eCufZv73Y0MyVNOl+ObekcnzpEHus2zpOUjXEVq9ou6kVad7pijQPkngK46W9dWsm/zJ
+ axEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=/SnzKzwbJwdsQHXwXFz/daj/8JZPIhirrV+rjMpDDQs=;
- b=RgI6ohK1fKLmkbb7f/CUEJ6aSS88R/l1LouHzADsAzBoLu8SQnUB+lj1ivmn8OVcQ4
- CoL0oOsgqba07K6nKPSEZVfHwG04y9mBZf0UFzDXvuriOIi5T8xx9viVJ+r5olwWVzh2
- dHEgytMClzaJC9B5Os1JTdz/nvVwZN25V+4ApXb8ojsnbL8AdYvZL+kTF3aeJ7P/vc3l
- RrZPoiUsX0Db/q9sAWSD4I89tt/eu6iOyeng8tGQMChrST4F+q37o4DKShe1LasN67r5
- ieaykRRULTt1LULZEwk3yMRIQ32OBF/jrXaf5ZnKzw6V+OTqraTKx2NdFkT++jk4huOk
- lYyQ==
-X-Gm-Message-State: APjAAAWhnpXSEebLSqOICJYOWkV2FmhOzA2LqPdxwtmga6YVhhK6au9r
- Pdg9+CA8W95xUyPr4alTf/A=
-X-Google-Smtp-Source: APXvYqzOfbchVfF3/6U0IzeocYcLu5dgpAA7P9Hm0M9qWQAd0ah06QF4dndiPFX5GsPWDHOl3mweYg==
-X-Received: by 2002:a17:90a:b115:: with SMTP id
- z21mr12775207pjq.64.1562159615496; 
- Wed, 03 Jul 2019 06:13:35 -0700 (PDT)
+ bh=TOAiuu/wlD5D7o5/mqIHnTG4uZtldrOoIUofef28WiU=;
+ b=IjeKZFAXV53mfVy2FH74dQzKwU0Ccy3LTK61qTTyyrK4efI59OyCeVgLbWkoZuY0RE
+ bV8KazzhaG9oKJROv9MIIQPe9L1voUJQ/WSh85phXZ0tRLKUGkYQMmoT1xDJaW6ytsd0
+ NDibKpNdKzGB9HYWfg6PyldX8cz2gZyFqdbQzAAUx1I6wh/V3mlNpHGV0+ZsRSOutgWr
+ +yto4P+fEa9pfe5HVwLDNJ5oGUdDEUScAzxpNj+/Tucf9SeZgFczGsvNbxD1nH6k1fWs
+ zmsuX1MWi8+pykbTtcx+yoYjQeg60fH0ZoK+HmKL2E84RDovwUWT5BnTxxT1b4Rw8gAU
+ 3+hw==
+X-Gm-Message-State: APjAAAX74lKOqPTNW/AUj8bpiSLqDn5kzee6RyN781iom6YpmZG7R5w1
+ yD5BjrZnY7OTn9Yw98OQONE=
+X-Google-Smtp-Source: APXvYqyiVfU9tnl97ooPeC5zImq20DdkMsp/940AfLqBE2Jk+gaxyNTMhh6g4w5deJAwDI1B1gTb8A==
+X-Received: by 2002:a63:f510:: with SMTP id w16mr37865515pgh.0.1562159700244; 
+ Wed, 03 Jul 2019 06:15:00 -0700 (PDT)
 Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
- by smtp.googlemail.com with ESMTPSA id n89sm10811597pjc.0.2019.07.03.06.13.33
+ by smtp.googlemail.com with ESMTPSA id j14sm2877028pfn.120.2019.07.03.06.14.58
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 03 Jul 2019 06:13:35 -0700 (PDT)
+ Wed, 03 Jul 2019 06:14:59 -0700 (PDT)
 From: Fuqian Huang <huangfq.daxian@gmail.com>
 To: 
-Subject: [PATCH 02/30] powerpc: Use kmemdup rather than duplicating its
+Subject: [PATCH 09/30] macintosh: Use kmemdup rather than duplicating its
  implementation
-Date: Wed,  3 Jul 2019 21:13:27 +0800
-Message-Id: <20190703131327.24762-1-huangfq.daxian@gmail.com>
+Date: Wed,  3 Jul 2019 21:14:52 +0800
+Message-Id: <20190703131452.25085-1-huangfq.daxian@gmail.com>
 X-Mailer: git-send-email 2.11.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,8 +73,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Fuqian Huang <huangfq.daxian@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Fuqian Huang <huangfq.daxian@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -86,30 +85,34 @@ write the size twice (sometimes lead to mistakes), kmemdup improves
 readability, leads to smaller code and also reduce the chances of mistakes.
 Suggestion to use kmemdup rather than using kmalloc/kzalloc + memset.
 
-Add an allocation failure check.
-
 Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
 ---
- arch/powerpc/platforms/pseries/dlpar.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/macintosh/adbhid.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 437a74173db2..20fe7b79e09e 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -383,9 +383,10 @@ void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog)
- 	struct pseries_hp_work *work;
- 	struct pseries_hp_errorlog *hp_errlog_copy;
+diff --git a/drivers/macintosh/adbhid.c b/drivers/macintosh/adbhid.c
+index 75482eeab2c4..5d14bebfb58f 100644
+--- a/drivers/macintosh/adbhid.c
++++ b/drivers/macintosh/adbhid.c
+@@ -789,7 +789,8 @@ adbhid_input_register(int id, int default_id, int original_handler_id,
  
--	hp_errlog_copy = kmalloc(sizeof(struct pseries_hp_errorlog),
-+	hp_errlog_copy = kmemdup(hp_errlog, sizeof(struct pseries_hp_errorlog),
- 				 GFP_KERNEL);
--	memcpy(hp_errlog_copy, hp_errlog, sizeof(struct pseries_hp_errorlog));
-+	if (!hp_errlog_copy)
-+		return;
+ 	switch (default_id) {
+ 	case ADB_KEYBOARD:
+-		hid->keycode = kmalloc(sizeof(adb_to_linux_keycodes), GFP_KERNEL);
++		hid->keycode = kmemdup(adb_to_linux_keycodes,
++			sizeof(adb_to_linux_keycodes), GFP_KERNEL);
+ 		if (!hid->keycode) {
+ 			err = -ENOMEM;
+ 			goto fail;
+@@ -797,8 +798,6 @@ adbhid_input_register(int id, int default_id, int original_handler_id,
  
- 	work = kmalloc(sizeof(struct pseries_hp_work), GFP_KERNEL);
- 	if (work) {
+ 		sprintf(hid->name, "ADB keyboard");
+ 
+-		memcpy(hid->keycode, adb_to_linux_keycodes, sizeof(adb_to_linux_keycodes));
+-
+ 		switch (original_handler_id) {
+ 		default:
+ 			keyboard_type = "<unknown>";
 -- 
 2.11.0
 
