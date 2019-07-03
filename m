@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110C35DF8B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B3B5DF96
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:19:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dv8v67Z7zDqKH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:17:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dvCD6X8RzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:19:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="dEGsuLIW"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="L1kDHBv9"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dthp1bnBzDqQM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:56:10 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id i8so769681pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:56:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dthq5CwDzDqQB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:56:11 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id d126so839206pfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=aH9Od/uGcopCsR+aSiuxuN3b+LlKfbwQOdrrN08mV8E=;
- b=dEGsuLIWDBUb478R2DHVHUdUJV5763bWpth0Njb9Sx18jBNw5SV+li7ZOiKTbzVyvJ
- zy3AMwIR7lbw4tnOQzwo6sEM3VHF66+P7wCqRptZntjQzt4P7KI3CBgLD3HzKBVdHBUj
- Cu4lUVViCBozGm18VTtFkEA47XGqcW8TkMfs45zVA7lVEp9Mah+ZXkjMBubtOwRQiG7R
- Re/nYMsa3oXMlEVCzocHGSChuzUCqw2YOj38irOsoO4GY7w/ylqHNZq5rLsY3+ajpcf0
- RIMVB7b8NGs7YkCpBkuQCPoAdiRrWKno23ddZLw7xkp3TJqinw8WKBr9da8l/rpzRtii
- rKuw==
+ bh=PhemTXFBg1IxE39/94nLrNA81QUuZG2uBfW/TSvVahM=;
+ b=L1kDHBv9tzvZfDcK6z1n8PkZ2sbzlLKe/wFEt3VdrsDD/lxMRQgfxlMVNEnPZwWKfZ
+ HQtQmlr02qyVVi/vDnZFTdq6SmEkmc0AiUvqj7srhZ9Dlc45KOG4N8zhi6V06npSFflg
+ O20MxBxM4DsIJCHJekQGcKxBcTd1tg8frJd4Kgdk/jWglNrGYfIXuNPSPV03+HhoipNu
+ IG89DAp/FmFafh7qZw8K6KYlMALdASxjZXE8v9tqln7E8Kt4lVTbfVGh2iLIk58TmXo8
+ V1g7LAwGlY+z9aNjCLhDUYvxnuJVx+JczNVzQnggQDwMh9i6j/mzAE/gjRFUb/HKFZt5
+ wLpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=aH9Od/uGcopCsR+aSiuxuN3b+LlKfbwQOdrrN08mV8E=;
- b=c+BfB034tGZ1gOWLn7K0pujeud9iDO9TzP+VR6b3A2SdxyVKLG+fvYhG8FyTzCf27s
- QNK4CzWdqHH15BV5Q++vA73up3Tfp4ldQmncX1aI5zDAz4CzvC8juMDpcXd1C8TixAam
- dxNCv2GSDe5F9KGe9YiaaVTlP9DM8RlHowtKB7aKvjeolMbFmnG+dlfvMC/28bItPwIy
- GP1eVjbNVLTfk70E8PgFmLIaUKjOIx5ilxI5bjlvZeNpEVhLnmOxFuERLzq7LRgOqscO
- to5k3LKvFtYv3zL7e58dBdOM+ys7bn1HoXEVkdd9IgdY8nM86VnNvInc53yrncG6iELF
- sI4g==
-X-Gm-Message-State: APjAAAUcO2+jTkxKZZY17S8nrLX1akFuoBMTOO9RkaxpRDMwlEu71nlA
- IbZWJihq6+wvvintYeoJUABwy2u3
-X-Google-Smtp-Source: APXvYqx18SknUDBd4QCPDSezvxk7Hc0uzD38MyryD7fRhd2kRsMMn0YyeGQsTjreabNvwl1HbETDRA==
-X-Received: by 2002:a63:f746:: with SMTP id f6mr35365257pgk.56.1562140567006; 
- Wed, 03 Jul 2019 00:56:07 -0700 (PDT)
+ bh=PhemTXFBg1IxE39/94nLrNA81QUuZG2uBfW/TSvVahM=;
+ b=qmhdnyuccmb4DR65Oo9nSuWSDBUvp6Pwvt5NI/+DVvxYoaNTIaU2G9ItlcpC2s2zFX
+ 28mhOWNsbKvPoiWrdQVEoavfU/RSeb/L5KpLsIOs0U5zFQMIhQtTtgY9y2Ro+zr1CvLh
+ Ref3bhs/Xm8B3r6RXdnf/ffucqhla6iwZp6puECfxVTEBjQ3Sd9gkXNvu9KK7iGvCcZq
+ ThDUnN0AxmVgmAHNa/LICb98KaS9ds6VVQidk2kLJQjcm3Sr9jtaQDv6SWMdQGXq+b3Q
+ 5uH5Auoqe9E26hGHKSHUuc/qOVeflYrpUMt02k0E8UPcN8/x4wzwwKqeuUpcP0SyHR9v
+ iHhA==
+X-Gm-Message-State: APjAAAWMJ/s7dJ8Qp8j4uzma6CgRfl3cIxkPJO0e+Y/RvXCtM7B9UAUl
+ 6giUvPQG9DN/tAGZ1YYKrwY8bdd9
+X-Google-Smtp-Source: APXvYqysuN+QMR9d3ESYIRFQrRSefIzN66pGaG8i2/YihgQlVEl2nHsNjn7kw4P1DLko9MzIsKD4TQ==
+X-Received: by 2002:a63:5463:: with SMTP id e35mr11576390pgm.451.1562140569720; 
+ Wed, 03 Jul 2019 00:56:09 -0700 (PDT)
 Received: from bobo.local0.net (193-116-88-34.tpgi.com.au. [193.116.88.34])
- by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.56.04
+ by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.56.07
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 03 Jul 2019 00:56:06 -0700 (PDT)
+ Wed, 03 Jul 2019 00:56:09 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 10/14] powerpc/64s/exception: machine check move tramp code
-Date: Wed,  3 Jul 2019 17:54:40 +1000
-Message-Id: <20190703075444.19005-11-npiggin@gmail.com>
+Subject: [PATCH 11/14] powerpc/64s/exception: simplify machine check early path
+Date: Wed,  3 Jul 2019 17:54:41 +1000
+Message-Id: <20190703075444.19005-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190703075444.19005-1-npiggin@gmail.com>
 References: <20190703075444.19005-1-npiggin@gmail.com>
@@ -84,54 +84,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Following convention, move the tramp code (unrelocated) above the
-common handlers (relocated).
+machine_check_handle_early_common can reach machine_check_handle_early
+directly now that it runs at the relocated address, so just branch
+directly.
+
+The rfi sequence is required to enable MSR[ME] but that step is moved
+into a helper function, making the code easier to follow.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 30 +++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 3cc5ee6e4b56..9bb8c89e9e77 100644
+index 9bb8c89e9e77..fcc3e6d5807f 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -945,6 +945,17 @@ EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
- EXC_REAL_END(machine_check, 0x200, 0x100)
- EXC_VIRT_NONE(0x4200, 0x100)
+@@ -1006,16 +1006,13 @@ EXC_COMMON_BEGIN(machine_check_early_common)
+ 	std	r3,_DAR(r1)
+ 	std	r4,_DSISR(r1)
  
-+#ifdef CONFIG_PPC_PSERIES
-+TRAMP_REAL_BEGIN(machine_check_fwnmi)
-+	/* See comment at machine_check exception, don't turn on RI */
-+	EXCEPTION_PROLOG_0 PACA_EXMC
-+	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 0, 0x200, 1, 1, 0
-+	mfctr	r10		/* save ctr */
-+	BRANCH_TO_C000(r11, machine_check_early_common)
-+#endif
+-	mfmsr	r11			/* get MSR value */
++	li	r10,MSR_RI
++	mtmsrd	r10,1
+ BEGIN_FTR_SECTION
+-	ori	r11,r11,MSR_ME		/* turn on ME bit */
++	bl	enable_machine_check
+ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+-	ori	r11,r11,MSR_RI		/* turn on RI bit */
+-	LOAD_HANDLER(r12, machine_check_handle_early)
+-1:	mtspr	SPRN_SRR0,r12
+-	mtspr	SPRN_SRR1,r11
+-	RFI_TO_KERNEL
+-	b	.	/* prevent speculative execution */
++	b	machine_check_handle_early
 +
-+TRAMP_KVM_SKIP(PACA_EXMC, 0x200)
-+
- EXC_COMMON_BEGIN(machine_check_early_common)
- 	mtctr	r10			/* Restore ctr */
- 	mfspr	r11,SPRN_SRR0
-@@ -1018,17 +1029,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	b	1b
+ 2:
+ 	/* Stack overflow. Stay on emergency stack and panic.
+ 	 * Keep the ME bit off while panic-ing, so that if we hit
+@@ -1026,7 +1023,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+ 	LOAD_HANDLER(r12, unrecover_mce)
+ 	li	r10,MSR_ME
+ 	andc	r11,r11,r10		/* Turn off MSR_ME */
+-	b	1b
++	mtspr	SPRN_SRR0,r12
++	mtspr	SPRN_SRR1,r11
++	RFI_TO_KERNEL
  	b	.	/* prevent speculative execution */
  
--#ifdef CONFIG_PPC_PSERIES
--TRAMP_REAL_BEGIN(machine_check_fwnmi)
--	/* See comment at machine_check exception, don't turn on RI */
--	EXCEPTION_PROLOG_0 PACA_EXMC
--	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 0, 0x200, 1, 1, 0
--	mfctr	r10		/* save ctr */
--	BRANCH_TO_C000(r11, machine_check_early_common)
--#endif
--
--TRAMP_KVM_SKIP(PACA_EXMC, 0x200)
--
  EXC_COMMON_BEGIN(machine_check_common)
- 	/*
- 	 * Machine check is different because we use a different
+@@ -2270,6 +2269,19 @@ CLOSE_FIXED_SECTION(virt_trampolines);
+ 
+ USE_TEXT_SECTION()
+ 
++enable_machine_check:
++	mflr	r0
++	bcl	20,31,$+4
++0:	mflr	r3
++	addi	r3,r3,(1f - 0b)
++	mtspr	SPRN_SRR0,r3
++	mfmsr	r3
++	ori	r3,r3,MSR_ME
++	mtspr	SPRN_SRR1,r3
++	RFI_TO_KERNEL
++1:	mtlr	r0
++	blr
++
+ /*
+  * Hash table stuff
+  */
 -- 
 2.20.1
 
