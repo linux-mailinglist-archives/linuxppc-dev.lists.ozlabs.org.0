@@ -1,76 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B075E119
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 11:34:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dwsh4kzHzDqQf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 19:34:00 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7995E203
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 12:26:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dy2R2glFzDqQL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 20:26:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="mEzXQP7R"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sachinp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dwqq68hRzDq9H
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 19:32:23 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id w10so927371pgj.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 02:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=/0Sf7T61uUKW8C8wXwdWCRDXeImdhIeyIR/3laF3HyM=;
- b=mEzXQP7R1V8XIbe8Lr0s+G/4kNC5xNjBNZzmeTIBTzqFw5xaqVNElsXEEOYrMq1Eni
- V689Dl9KTZ6Hwpmn83oe5KBFfg7l/UtnBW5mqkwD3Elx30bWLTsHJM+fhDLK6XcJgG0K
- LmWi9ed8LgLEYQ9jKpZ44X3z6fM/VSLiRcfAjJslpRWN/YZ4ly0HSbA/AA6MoBM41MsB
- Zzeg9cgwhS8XLGxOjG52x/uWYE+TOSegRwu6eJ01dy0Z9yzGY9VuROJIgUFFXgr8j4/2
- v/AXHf1AO+csh1CN22EISwqC7PLlEn7z5y4615Fo7pVFDGx+no3x62CVNajF3F1xLEXy
- iQNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=/0Sf7T61uUKW8C8wXwdWCRDXeImdhIeyIR/3laF3HyM=;
- b=hRwFOJddFeyOOF4vJx3vA1NwD8EtOcstvhEXyKPGnUWZOXRPCaRQRi6oFiCMH16Vh8
- IXG16gtbldi8RGANedbwTch01hBhZ8MXBwmhkVcnsE9bKjeHHudtAINl6fdlZNZs0h5o
- p9MCoPBCphv9lWXjNU8QvG+K3EmAPgv31P6YfL3oiLzFkFz0ME3bBU2ff6T9KSgMkoxY
- kDre0pqvVhs8pP1wiWfOg1BfAj8oJNjsHTG/6NJCvKdtwcW9H05GlypP20RFAkoNSaz+
- Hh/AfrHwgpmUucDUyxCpkcQT/8RwkhFwTsrLuXXYj1pvanJGG7jj1FqnE0tqSR4aTH3A
- PV7A==
-X-Gm-Message-State: APjAAAU54trTwDgGBDIZyJHR8TJdC3tlLyUEsF8Se5PpLXqECuqdP5AM
- PjEzuifJqNnqaEV2SN7nH3s=
-X-Google-Smtp-Source: APXvYqxuYgiPEMSSeAJFu6CoA4QkEN5zm/N5GCJXbzOHPuioaAvpMm82K79rki3FzM3p31TVnAtxXw==
-X-Received: by 2002:a17:90a:9f08:: with SMTP id
- n8mr11713529pjp.102.1562146338970; 
- Wed, 03 Jul 2019 02:32:18 -0700 (PDT)
-Received: from Asurada (c-98-248-47-108.hsd1.ca.comcast.net. [98.248.47.108])
- by smtp.gmail.com with ESMTPSA id
- a3sm2234049pfi.63.2019.07.03.02.32.18
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 03 Jul 2019 02:32:18 -0700 (PDT)
-Date: Wed, 3 Jul 2019 02:32:10 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: shengjiu.wang@nxp.com
-Subject: Re: [PATCH V2 2/2] ASoC: fsl_esai: recover the channel swap after xrun
-Message-ID: <20190703093209.GB8764@Asurada>
-References: <cover.1562136119.git.shengjiu.wang@nxp.com>
- <c29639336b6b32fa781bdddad30287f8b76d5e0b.1562136119.git.shengjiu.wang@nxp.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c29639336b6b32fa781bdddad30287f8b76d5e0b.1562136119.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dy0p44SgzDqPm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 20:25:13 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x63AKdwj102886
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 3 Jul 2019 06:25:08 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tgqxyxuxd-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 06:25:08 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sachinp@linux.vnet.ibm.com>;
+ Wed, 3 Jul 2019 11:25:06 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 3 Jul 2019 11:25:03 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x63AP1Oc36700160
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Jul 2019 10:25:01 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F5F7A4062;
+ Wed,  3 Jul 2019 10:25:01 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB3A2A4060;
+ Wed,  3 Jul 2019 10:25:00 +0000 (GMT)
+Received: from [9.109.244.53] (unknown [9.109.244.53])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  3 Jul 2019 10:25:00 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Kernel Bug/oops during boot (PowerVM LPAR w/vTPM)
+Date: Wed, 3 Jul 2019 15:54:59 +0530
+To: linuxppc-dev@lists.ozlabs.org
+X-Mailer: Apple Mail (2.3445.104.11)
+X-TM-AS-GCONF: 00
+x-cbid: 19070310-0016-0000-0000-0000028EBFF9
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070310-0017-0000-0000-000032EC5844
+Message-Id: <49B804EE-726B-4EB4-9BED-116F8FB5B374@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-03_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=761 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907030125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,101 +87,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- festevam@gmail.com, linux-kernel@vger.kernel.org, broonie@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: nayna@linux.ibm.com, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 03, 2019 at 02:42:05PM +0800, shengjiu.wang@nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
-> 
-> There is chip errata ERR008000, the reference doc is
-> (https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf),
-> 
-> The issue is "While using ESAI transmit or receive and
-> an underrun/overrun happens, channel swap may occur.
-> The only recovery mechanism is to reset the ESAI."
-> 
-> This issue exist in imx3/imx5/imx6(partial) series.
-> 
-> In this commit add a tasklet to handle reset of ESAI
-> after xrun happens to recover the channel swap.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/fsl_esai.c | 76 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 76 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-> index 20039ae9893b..8c92e49ad6d8 100644
-> --- a/sound/soc/fsl/fsl_esai.c
-> +++ b/sound/soc/fsl/fsl_esai.c
+Booting mainline kernel on PowerVM LPAR with vTPM enabled results
+into a kernel crash.
 
-> +static void fsl_esai_reset(unsigned long arg)
+[    0.365989] BUG: Kernel NULL pointer dereference at 0x00000012
+[    0.365995] Faulting instruction address: 0xc00000000073dd80
+[    0.366000] Oops: Kernel access of bad area, sig: 11 [#1]
+[    0.366005] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA =
+pSeries
+[    0.366010] Modules linked in:
+[    0.366015] CPU: 1 PID: 1 Comm: swapper/0 Not tainted =
+5.2.0-rc7-autotest-autotest #1
+[    0.366020] NIP:  c00000000073dd80 LR: c00000000073dcd0 CTR: =
+0000000000000000
+[    0.366026] REGS: c0000018ed8e7550 TRAP: 0380   Not tainted  =
+(5.2.0-rc7-autotest-autotest)
+[    0.366031] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
+28002448  XER: 20040001
+[    0.366038] CFAR: c000000000b6d1c4 IRQMASK: 0
+[    0.366038] GPR00: c00000000073dcd0 c0000018ed8e77e0 c000000001524a00 =
+0000000000000000
+[    0.366038] GPR04: 0000000000000003 0000000000000000 0000000000010000 =
+000000000000000e
+[    0.366038] GPR08: 0000000000000022 0000000000010000 c0000018e5510000 =
+00000000883bfecd
+[    0.366038] GPR12: 0000000048002448 c00000001ec6ee00 c0000000000107a8 =
+0000000000000000
+[    0.366038] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000
+[    0.366038] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000
+[    0.366038] GPR24: c0000018eb9eaaa0 0000000000000000 c000000000bce810 =
+c000000000e2ed28
+[    0.366038] GPR28: c0000018e70a4000 000000000000000a 0000000000000012 =
+c0000018e5510000
+[    0.366085] NIP [c00000000073dd80] tpm1_pcr_extend+0x130/0x230
+[    0.366090] LR [c00000000073dcd0] tpm1_pcr_extend+0x80/0x230
+[    0.366094] Call Trace:
+[    0.366098] [c0000018ed8e77e0] [c00000000073dcd0] =
+tpm1_pcr_extend+0x80/0x230 (unreliable)
+[    0.366105] [c0000018ed8e7890] [c00000000073c8c4] =
+tpm_pcr_extend+0xd4/0x180
+[    0.366111] [c0000018ed8e78d0] [c0000000005745f8] =
+ima_add_template_entry+0x198/0x320
+[    0.366117] [c0000018ed8e79b0] [c000000000577058] =
+ima_store_template+0xc8/0x160
+[    0.366124] [c0000018ed8e7a30] [c000000000f6081c] =
+ima_add_boot_aggregate+0xf8/0x184
+[    0.366130] [c0000018ed8e7b30] [c000000000f6093c] ima_init+0x94/0xbc
+[    0.366135] [c0000018ed8e7b90] [c000000000f60aac] init_ima+0x44/0xe8
+[    0.366140] [c0000018ed8e7c10] [c000000000010448] =
+do_one_initcall+0x68/0x2c0
+[    0.366146] [c0000018ed8e7ce0] [c000000000f14738] =
+kernel_init_freeable+0x318/0x47c
+[    0.366152] [c0000018ed8e7db0] [c0000000000107c4] =
+kernel_init+0x24/0x150
+[    0.366158] [c0000018ed8e7e20] [c00000000000ba54] =
+ret_from_kernel_thread+0x5c/0x68
+[    0.366163] Instruction dump:
+[    0.366167] 7d404d2c 81210068 792a07e1 e9410070 392a0002 7d004c2c =
+79070020 40c20048
+[    0.366174] 39080014 3d200001 7f884840 419d00a4 <807e0000> 809e0004 =
+80be0008 80de000c
+[    0.366182] ---[ end trace ec40127c4fe87b2c ]=E2=80=94
 
-Similarly fsl_esai_hw_reset? This one isn't really that bad though,
-yet it feels better to have function naming in a similar style.
+Thanks
+-Sachin=
 
-> +{
-> +	struct fsl_esai *esai_priv = (struct fsl_esai *)arg;
-> +	u32 saisr, tfcr, rfcr;
-> +
-> +	/* save the registers */
-> +	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
-> +	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-
-Instead of having this implicit comments, we could have:
-+	bool tx = true, rx = false, enabled[2];
-+
-+	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-+	enabled[tx] = tfcr & ESAI_xFCR_xFEN;
-+	enabled[rx] = rfcr & ESAI_xFCR_xFEN;
-
-> +
-> +	/* stop the tx & rx */
-> +	fsl_esai_trigger_stop(esai_priv, 1);
-> +	fsl_esai_trigger_stop(esai_priv, 0);
-
-And we could reuse the boolean 'tx' and 'rx' here.
-
-> +
-> +	/* reset the esai, and restore the registers */
-> +	fsl_esai_init(esai_priv);
-> +
-
-[...]
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-> +			   ESAI_xCR_xPR_MASK,
-> +			   ESAI_xCR_xPR);
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-> +			   ESAI_xCR_xPR_MASK,
-> +			   ESAI_xCR_xPR);
-
-Mask and value might fit into one line?
-
-> +
-> +	/* restore registers by regcache_sync */
-> +	fsl_esai_register_restore(esai_priv);
-> +
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-> +			   ESAI_xCR_xPR_MASK, 0);
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-> +			   ESAI_xCR_xPR_MASK, 0);
-
-And just for curious, can (or shall) we stuff this personal reset
-to the reset() function? I found this one is a part of the reset
-routine being mentioned in the RM -- it was done after ESAI reset
-is done via ECR register.
-
-[...]
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_PRRC,
-> +			   ESAI_PRRC_PDC_MASK,
-> +			   ESAI_PRRC_PDC(ESAI_GPIO));
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_PCRC,
-> +			   ESAI_PCRC_PC_MASK,
-> +			   ESAI_PCRC_PC(ESAI_GPIO));
-
-Mask and value might fit into one line?
