@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B3B5DF96
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:19:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dvCD6X8RzDqTR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:19:04 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 354235DFAB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 10:21:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dvFw4ht2zDqKH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 18:21:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="L1kDHBv9"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="TF6OCDLX"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dthq5CwDzDqQB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:56:11 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id d126so839206pfd.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:56:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dthx1jVFzDqQD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:56:17 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id o13so772545pgp.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=PhemTXFBg1IxE39/94nLrNA81QUuZG2uBfW/TSvVahM=;
- b=L1kDHBv9tzvZfDcK6z1n8PkZ2sbzlLKe/wFEt3VdrsDD/lxMRQgfxlMVNEnPZwWKfZ
- HQtQmlr02qyVVi/vDnZFTdq6SmEkmc0AiUvqj7srhZ9Dlc45KOG4N8zhi6V06npSFflg
- O20MxBxM4DsIJCHJekQGcKxBcTd1tg8frJd4Kgdk/jWglNrGYfIXuNPSPV03+HhoipNu
- IG89DAp/FmFafh7qZw8K6KYlMALdASxjZXE8v9tqln7E8Kt4lVTbfVGh2iLIk58TmXo8
- V1g7LAwGlY+z9aNjCLhDUYvxnuJVx+JczNVzQnggQDwMh9i6j/mzAE/gjRFUb/HKFZt5
- wLpg==
+ bh=aJfeZxs8A84mS88gXKSLtBP2zP9JHxYu9Z3nIQ2WYS4=;
+ b=TF6OCDLXI1upcKl6OCpqbgJNUIWhU4o6j7aTtptQnQ0/PGwuEZY9zPUH/LrZ0BUJ7H
+ 39fGKDC8fw0Kp9jwZ5HLhznS8I0iPaWUb+5FD5D/CJTEBUH0kFbvrwS2zQ8r/W9r1z3L
+ 23rximW8Ur8A2jeZyOPBcAyrNux/d/5bJLknzfgeafBWK+DWhz8Nnm6AKiRq7VXHr66X
+ GB6BBJYgqFnS+iZJeUajMm7HiZPhw5hG/IxFudDPlTBh43rWX4iNkr6pCH0p5ga4YMP7
+ CdmgekwwF+I5gLbdrESYEzHU4sijtZXr0cHXpUUwfKO+x5QaMQ369pY3/e5MuhkRjksv
+ x/7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=PhemTXFBg1IxE39/94nLrNA81QUuZG2uBfW/TSvVahM=;
- b=qmhdnyuccmb4DR65Oo9nSuWSDBUvp6Pwvt5NI/+DVvxYoaNTIaU2G9ItlcpC2s2zFX
- 28mhOWNsbKvPoiWrdQVEoavfU/RSeb/L5KpLsIOs0U5zFQMIhQtTtgY9y2Ro+zr1CvLh
- Ref3bhs/Xm8B3r6RXdnf/ffucqhla6iwZp6puECfxVTEBjQ3Sd9gkXNvu9KK7iGvCcZq
- ThDUnN0AxmVgmAHNa/LICb98KaS9ds6VVQidk2kLJQjcm3Sr9jtaQDv6SWMdQGXq+b3Q
- 5uH5Auoqe9E26hGHKSHUuc/qOVeflYrpUMt02k0E8UPcN8/x4wzwwKqeuUpcP0SyHR9v
- iHhA==
-X-Gm-Message-State: APjAAAWMJ/s7dJ8Qp8j4uzma6CgRfl3cIxkPJO0e+Y/RvXCtM7B9UAUl
- 6giUvPQG9DN/tAGZ1YYKrwY8bdd9
-X-Google-Smtp-Source: APXvYqysuN+QMR9d3ESYIRFQrRSefIzN66pGaG8i2/YihgQlVEl2nHsNjn7kw4P1DLko9MzIsKD4TQ==
-X-Received: by 2002:a63:5463:: with SMTP id e35mr11576390pgm.451.1562140569720; 
- Wed, 03 Jul 2019 00:56:09 -0700 (PDT)
+ bh=aJfeZxs8A84mS88gXKSLtBP2zP9JHxYu9Z3nIQ2WYS4=;
+ b=ahQXVrhoX/an4zOWK5e9CAxjxuAQuoJH5x8/JWRZ/GuWrkVrqFq5sNB+Snnctcxzhc
+ lkUjEYC90ucjHESNe/ltOhgrdNaLd1LkWQW8FHEjnn7MLcUohvBwFuTII0DAdhZGB2Cw
+ azxBg0qJavWPvDytSbhN2WJ8gSVjAR/cbE+/JI8qNSDAzSPJbfdtGL9jj0rV/r3TOhMd
+ 535BK+gXFC18RKFDM761uRb+iS+VXPkk6I5TWmSg4Zq9c1/qGhjKRn9GQO0Ylu6lICUE
+ ea05tFVn5Zm12vqZ9vR9DCdcM/CTa48RvioQsbWsACYRwUxZWG2xegmKziQPDudLE5Zu
+ wAtA==
+X-Gm-Message-State: APjAAAWYj2peKIQieYNgTcDZ9ipFsFOxKr9U9rL/fwACdxhWleDpIjUh
+ m/2WSTdyk/lZQx+4mKooqdqyOTwB
+X-Google-Smtp-Source: APXvYqywIQvOmyJP3GlPjIHowncWIgukzNqqrT78WHftlem44TAO5X3ezUgOmSQ20c6D+wDtjZDN5w==
+X-Received: by 2002:a63:2b0c:: with SMTP id r12mr4825951pgr.206.1562140572596; 
+ Wed, 03 Jul 2019 00:56:12 -0700 (PDT)
 Received: from bobo.local0.net (193-116-88-34.tpgi.com.au. [193.116.88.34])
- by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.56.07
+ by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.56.10
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 03 Jul 2019 00:56:09 -0700 (PDT)
+ Wed, 03 Jul 2019 00:56:12 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 11/14] powerpc/64s/exception: simplify machine check early path
-Date: Wed,  3 Jul 2019 17:54:41 +1000
-Message-Id: <20190703075444.19005-12-npiggin@gmail.com>
+Subject: [PATCH 12/14] powerpc/64s/exception: machine check move unrecoverable
+ handling out of line
+Date: Wed,  3 Jul 2019 17:54:42 +1000
+Message-Id: <20190703075444.19005-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190703075444.19005-1-npiggin@gmail.com>
 References: <20190703075444.19005-1-npiggin@gmail.com>
@@ -84,67 +85,144 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-machine_check_handle_early_common can reach machine_check_handle_early
-directly now that it runs at the relocated address, so just branch
-directly.
+Similarly to the previous change, all callers of the unrecoverable
+handler run relocated so can reach it with a direct branch. This makes
+it easy to move out of line, which makes the "normal" path less
+cluttered and easier to follow.
 
-The rfi sequence is required to enable MSR[ME] but that step is moved
-into a helper function, making the code easier to follow.
+MSR[ME] manipulation still requires the rfi, so that is moved out of
+line to its own function.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 30 +++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 82 +++++++++++++---------------
+ 1 file changed, 39 insertions(+), 43 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 9bb8c89e9e77..fcc3e6d5807f 100644
+index fcc3e6d5807f..88bcdd5b2dc7 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1006,16 +1006,13 @@ EXC_COMMON_BEGIN(machine_check_early_common)
- 	std	r3,_DAR(r1)
- 	std	r4,_DSISR(r1)
+@@ -992,9 +992,9 @@ EXC_COMMON_BEGIN(machine_check_early_common)
+ 	bne	1f
+ 	/* First machine check entry */
+ 	ld	r1,PACAMCEMERGSP(r13)	/* Use MC emergency stack */
+-1:	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame */
+-	/* Limit nested MCE to level 4 to avoid stack overflow */
+-	bge	cr1,2f			/* Check if we hit limit of 4 */
++1:	/* Limit nested MCE to level 4 to avoid stack overflow */
++	bgt	cr1,unrecoverable_mce	/* Check if we hit limit of 4 */
++	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame */
  
--	mfmsr	r11			/* get MSR value */
-+	li	r10,MSR_RI
-+	mtmsrd	r10,1
- BEGIN_FTR_SECTION
--	ori	r11,r11,MSR_ME		/* turn on ME bit */
-+	bl	enable_machine_check
+ 	EXCEPTION_PROLOG_COMMON_1()
+ 	/* We don't touch AMR here, we never go to virtual mode */
+@@ -1013,21 +1013,6 @@ BEGIN_FTR_SECTION
  END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
--	ori	r11,r11,MSR_RI		/* turn on RI bit */
--	LOAD_HANDLER(r12, machine_check_handle_early)
--1:	mtspr	SPRN_SRR0,r12
+ 	b	machine_check_handle_early
+ 
+-2:
+-	/* Stack overflow. Stay on emergency stack and panic.
+-	 * Keep the ME bit off while panic-ing, so that if we hit
+-	 * another machine check we checkstop.
+-	 */
+-	addi	r1,r1,INT_FRAME_SIZE	/* go back to previous stack frame */
+-	ld	r11,PACAKMSR(r13)
+-	LOAD_HANDLER(r12, unrecover_mce)
+-	li	r10,MSR_ME
+-	andc	r11,r11,r10		/* Turn off MSR_ME */
+-	mtspr	SPRN_SRR0,r12
 -	mtspr	SPRN_SRR1,r11
 -	RFI_TO_KERNEL
 -	b	.	/* prevent speculative execution */
-+	b	machine_check_handle_early
-+
- 2:
- 	/* Stack overflow. Stay on emergency stack and panic.
- 	 * Keep the ME bit off while panic-ing, so that if we hit
-@@ -1026,7 +1023,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	LOAD_HANDLER(r12, unrecover_mce)
- 	li	r10,MSR_ME
- 	andc	r11,r11,r10		/* Turn off MSR_ME */
--	b	1b
-+	mtspr	SPRN_SRR0,r12
-+	mtspr	SPRN_SRR1,r11
-+	RFI_TO_KERNEL
- 	b	.	/* prevent speculative execution */
- 
+-
  EXC_COMMON_BEGIN(machine_check_common)
-@@ -2270,6 +2269,19 @@ CLOSE_FIXED_SECTION(virt_trampolines);
+ 	/*
+ 	 * Machine check is different because we use a different
+@@ -1141,32 +1126,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
+ 	 * If yes, then stay on emergency stack and panic.
+ 	 */
+ 	andi.	r11,r12,MSR_RI
+-	bne	2f
+-1:	mfspr	r11,SPRN_SRR0
+-	LOAD_HANDLER(r10,unrecover_mce)
+-	mtspr	SPRN_SRR0,r10
+-	ld	r10,PACAKMSR(r13)
+-	/*
+-	 * We are going down. But there are chances that we might get hit by
+-	 * another MCE during panic path and we may run into unstable state
+-	 * with no way out. Hence, turn ME bit off while going down, so that
+-	 * when another MCE is hit during panic path, system will checkstop
+-	 * and hypervisor will get restarted cleanly by SP.
+-	 */
+-	li	r3,MSR_ME
+-	andc	r10,r10,r3		/* Turn off MSR_ME */
+-	mtspr	SPRN_SRR1,r10
+-	RFI_TO_KERNEL
+-	b	.
+-2:
++	beq	unrecoverable_mce
++
+ 	/*
+ 	 * Check if we have successfully handled/recovered from error, if not
+ 	 * then stay on emergency stack and panic.
+ 	 */
+ 	ld	r3,RESULT(r1)	/* Load result */
+ 	cmpdi	r3,0		/* see if we handled MCE successfully */
+-
+-	beq	1b		/* if !handled then panic */
++	beq	unrecoverable_mce /* if !handled then panic */
  
- USE_TEXT_SECTION()
+ 	/*
+ 	 * Return from MC interrupt.
+@@ -1189,17 +1157,31 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXMC, 1, 0x200, 1, 1, 0
+ 	EXCEPTION_PROLOG_2_REAL machine_check_common, EXC_STD, 0
  
-+enable_machine_check:
+-EXC_COMMON_BEGIN(unrecover_mce)
++EXC_COMMON_BEGIN(unrecoverable_mce)
++	/*
++	 * We are going down. But there are chances that we might get hit by
++	 * another MCE during panic path and we may run into unstable state
++	 * with no way out. Hence, turn ME bit off while going down, so that
++	 * when another MCE is hit during panic path, system will checkstop
++	 * and hypervisor will get restarted cleanly by SP.
++	 */
++	bl	disable_machine_check
++	ld	r10,PACAKMSR(r13)
++	li	r3,MSR_ME
++	andc	r10,r10,r3
++	mtmsrd	r10
++
+ 	/* Invoke machine_check_exception to print MCE event and panic. */
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	machine_check_exception
++
+ 	/*
+-	 * We will not reach here. Even if we did, there is no way out. Call
+-	 * unrecoverable_exception and die.
++	 * We will not reach here. Even if we did, there is no way out.
++	 * Call unrecoverable_exception and die.
+ 	 */
+-1:	addi	r3,r1,STACK_FRAME_OVERHEAD
++	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	unrecoverable_exception
+-	b	1b
++	b	.
+ 
+ 
+ EXC_REAL_BEGIN(data_access, 0x300, 0x80)
+@@ -2282,6 +2264,20 @@ enable_machine_check:
+ 1:	mtlr	r0
+ 	blr
+ 
++disable_machine_check:
 +	mflr	r0
 +	bcl	20,31,$+4
 +0:	mflr	r3
 +	addi	r3,r3,(1f - 0b)
 +	mtspr	SPRN_SRR0,r3
 +	mfmsr	r3
-+	ori	r3,r3,MSR_ME
++	li	r4,MSR_ME
++	andc	r3,r3,r4
 +	mtspr	SPRN_SRR1,r3
 +	RFI_TO_KERNEL
 +1:	mtlr	r0
