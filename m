@@ -1,85 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42025DCD4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 05:20:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dmb534RwzDqSN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 13:20:49 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8604B5DD02
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 05:31:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dmqj0gxtzDqS2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 13:31:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dmXF5RmPzDqLY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 13:18:20 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x633HJQQ037104
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jul 2019 23:18:18 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tgfb8s2eu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 23:18:18 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Wed, 3 Jul 2019 04:18:16 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 3 Jul 2019 04:18:12 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x633ICfc60948496
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 3 Jul 2019 03:18:12 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0501AE04D;
- Wed,  3 Jul 2019 03:18:11 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B7CAAE051;
- Wed,  3 Jul 2019 03:18:09 +0000 (GMT)
-Received: from [9.85.75.18] (unknown [9.85.75.18])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  3 Jul 2019 03:18:09 +0000 (GMT)
-Subject: Re: [RFC PATCH v2 11/12] powerpc/ptrace: create ppc_gethwdinfo()
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-References: <cover.1561735587.git.christophe.leroy@c-s.fr>
- <b25d2a4c5d6ea848b9b4e434bc4c67833c8e9268.1561735588.git.christophe.leroy@c-s.fr>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Wed, 3 Jul 2019 08:48:08 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dmp25BTvzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nRjt+a2S"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45dmp22SVZz8xD3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45dmp22Fv7z9s8m; Wed,  3 Jul 2019 13:30:18 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nRjt+a2S"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45dmp15sRXz9s3Z
+ for <linuxppc-dev@ozlabs.org>; Wed,  3 Jul 2019 13:30:16 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id b7so411703pls.6
+ for <linuxppc-dev@ozlabs.org>; Tue, 02 Jul 2019 20:30:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=MVLDXqQRcdyFTbrjx+tYpHiLe/KpOcxmbHPx54X9ZVs=;
+ b=nRjt+a2Sd4duikxK3b1OcFdhn5nbpwsnbVselGgYouBCJJOAK7UUXh6MU9JQ+4KA1l
+ qEKaf87z0yR49UI9/x4sAcZ/5Frnl1M1pc+AxM5tjv54ewGe2GHNFehyprDDj+dkWAe+
+ u6GrU5RTyhNnT+m21P8a8KKB/gtUqfw0sGblpfYlRiF4qy1CWEyvTTFtHg3AJroyFWcF
+ tRUwRJ27WRQ9oxvFCq7sPLyQ/cwkxTHBdkm/m4qPzyPckqwdOGL4gm2rplausI1L2Ykg
+ fG/jP3pzJ7rajZyUsWWTb+HW3cneOTwr9xnQtb6u5NbHuRZ/SNIcTVjWrGgztsJn2VO1
+ xQnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=MVLDXqQRcdyFTbrjx+tYpHiLe/KpOcxmbHPx54X9ZVs=;
+ b=uIJFs4Un8I9qbbXEwzu7bfurrPDU7SoUA3F+kmFh7Q6U2HAh6EPfugk+1eFnyiPZEu
+ kzasVa3nDK5O1ahOsDZkjQamBR+vXKPFRvNuCx0743h62TvLdwNhI1wLRxD2ChpwzbXk
+ h/6JzVaXrEyLD1fPqRiX23oM+qNp7IT2Kgh2KRx5O2zSRSV6xGLhvPer/87jCcERiyEk
+ PqvLj3uUmvDg+fXyE1MhHS2nwiEZVPIAygsDn/PSM/KnmM/DVh5zbwPXlLFbPtGzFPbm
+ pPzh37LAkzWfT//Uum8oup8MMtJgIBeqcTU3Y2pG+gZJXxJESHUHdtUtRkqL4G5hoLhG
+ i2ew==
+X-Gm-Message-State: APjAAAWqe4Wr4OZ014FmfPaBOOOOrO3k4KUp6hzxl82BWySarTx5Kdng
+ 60DriVs5bKCOiE2WI9VEZwA=
+X-Google-Smtp-Source: APXvYqwSowNWrTAzm5BTc1aI4v4tZSlO/Co0EpESubDd1+iBiLPdXQuy4KmHYxUFKsoivkwGdH7EYw==
+X-Received: by 2002:a17:902:3225:: with SMTP id
+ y34mr38481872plb.135.1562124613795; 
+ Tue, 02 Jul 2019 20:30:13 -0700 (PDT)
+Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.googlemail.com with ESMTPSA id q4sm420264pjq.27.2019.07.02.20.30.10
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 02 Jul 2019 20:30:13 -0700 (PDT)
+Message-ID: <5f4b28e4df2049506a9fa03eead6cfbad9d7cdf3.camel@gmail.com>
+Subject: Re: [PATCH v3 01/16] powerpc/fadump: move internal fadump code to a
+ new file
+From: Oliver O'Halloran <oohall@gmail.com>
+To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
+ <linuxppc-dev@ozlabs.org>
+Date: Wed, 03 Jul 2019 13:30:07 +1000
+In-Reply-To: <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
+References: <156149548694.9094.3211954809582123798.stgit@hbathini.in.ibm.com>
+ <156149554689.9094.13274886908174068943.stgit@hbathini.in.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.3 (3.32.3-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <b25d2a4c5d6ea848b9b4e434bc4c67833c8e9268.1561735588.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070303-0012-0000-0000-0000032EAEF1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070303-0013-0000-0000-00002167FF34
-Message-Id: <eef5961b-220a-30ca-2a78-22e25331f024@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-03_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=865 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907030038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,21 +99,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 2019-06-26 at 02:15 +0530, Hari Bathini wrote:
+> Refactoring fadump code means internal fadump code is referenced from
+> different places. For ease, move internal code to a new file.
 
+Can you elaborate a bit? I don't really get what the difference between
+fadump and fadump-internal code is supposed to be. Why can't all this
+just live in fadump.c?
 
-On 6/28/19 9:18 PM, Christophe Leroy wrote:
-> Create ippc_gethwdinfo() to handle PPC_PTRACE_GETHWDBGINFO and
-> reduce ifdef mess
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
-
-Reviewed-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
