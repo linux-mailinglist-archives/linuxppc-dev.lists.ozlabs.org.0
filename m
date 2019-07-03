@@ -1,71 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A9B5DAC8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 03:26:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dk3Q0Tx9zDqYj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 11:26:42 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 817DA5DB30
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 03:55:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dkhx27qkzDqTV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 11:55:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=sjitindarsingh@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="RH/3iLds"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="aBIP8ADu"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45djwV4pqQzDqQV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 11:20:42 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id w24so257150plp.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 18:20:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dkg16ZtWzDqSl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 11:54:05 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id u13so1072755iop.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2019 18:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=q3fFTelOhqkb1Mwuc5eMY9x9ha5lfJs2EAbdT9hPUxk=;
- b=RH/3iLdsxo433D8bqQwGL/9FPB5yF+k0fcF0uDWNdIqHFwBKMirdOH4am3QXNHJYSn
- rY4r/pfbR+HzWOa8YVSKaFR9ZO0LQC9H7zOEQB9tnIzDUuqEI0/DOQsr96nFf1b3qFyb
- 6cXV24+vc/1EXm/XtkVqszJoIDg37R/TAYjbci2YtuwMMmUMcIx/WTBbAXc0Ia8zjZxb
- KlYMd6yImr8TLShte/YqPNUQ7PxXlM4kt6sNtxgzIpCoFrcMPe1vGPasbGwY0djwAzlE
- a+iINADzJwNendu1TCWNzcYc0hmoerC/E8aEh16OQx+UthQ07cWtau49tHUp+PXjmr6E
- MQ3Q==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=YWCrwQskLP6RChv1RaVNEBI2BeG77zwA1QgqRtTN23s=;
+ b=aBIP8ADuc/6oC8jziky1yr08FAMyMuZ7yyFFj4XoaRVp8tWjPbVgPApgVzR4yYT2wt
+ mrKleIC9B1100CEYzHt39tLCsA0Drsykyh0civ3HsiHigFZxP4sLal95HWMDqbkKhmsf
+ DVkXPUnAMrZjATXncbCSMiShvD9NYLHjpd0RYwD58ulOLBRoTJsfSuswG0MINbg/LVQu
+ AETuxo2ASD5uV9ngWN/d1iZII9PS5/gfz7pwFkgfJYvGZHybH+adT7ybw0IASFs47hiP
+ jp0tXLEo95W1v4QR29qtJGDDcnlo9v6ROgHuI539mCuBMnwaNgO1+sDM8nO9kew8T2h9
+ sSYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=q3fFTelOhqkb1Mwuc5eMY9x9ha5lfJs2EAbdT9hPUxk=;
- b=XtvsYkIjJH5y0qFlNFB1ZrTQOX9t9Rn8ElV/wqT1rni7zNlDDbuFDVQmyq5unhtzTO
- uyoIBxoA7YRMiU9vhSXVsC3VfX3Hw4l84ismiEGAEHglWFaqGB+hn9jN2n0AtKrTLTge
- DBNcr0cWczEwmBMAgE0pAhIARjxjx6Glrd3rfe5RAoh13Ur8iuK8/sjEcVFTOudtJLdD
- Er11NEyNm6BSm6WYMJXPeFXtEyQc7eAVAKfH6l32nLGTjCAzCrEg8Q77BkfFwysjh7Qp
- 35KJiGM/8NNX0/hssxOydQdteRJoVKwX22BQy4jaHY/jdbYjrdJAts2zBhwUIgPthbvj
- jKlA==
-X-Gm-Message-State: APjAAAUEToovagtfVdKcDV0vK1bWN5RfRtLaJW2Hf3Kh2ei4aaiqIrkK
- y1GWmwEEVGTiF5HttPa066pkC/Zm
-X-Google-Smtp-Source: APXvYqzkt5g7kNg6hKYTqsIuNXDzDhDUtUgqHARyXeeseHu6TWKvRfxy1H2TSr3uJ1aWKFKC5zKorA==
-X-Received: by 2002:a17:902:684:: with SMTP id
- 4mr38647623plh.138.1562116840189; 
- Tue, 02 Jul 2019 18:20:40 -0700 (PDT)
-Received: from surajjs2.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id j11sm318058pfa.2.2019.07.02.18.20.37
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 02 Jul 2019 18:20:39 -0700 (PDT)
-From: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] KVM: PPC: Book3S HV: Save and restore guest visible PSSCR
- bits on pseries
-Date: Wed,  3 Jul 2019 11:20:22 +1000
-Message-Id: <20190703012022.15644-3-sjitindarsingh@gmail.com>
-X-Mailer: git-send-email 2.13.6
-In-Reply-To: <20190703012022.15644-1-sjitindarsingh@gmail.com>
-References: <20190703012022.15644-1-sjitindarsingh@gmail.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=YWCrwQskLP6RChv1RaVNEBI2BeG77zwA1QgqRtTN23s=;
+ b=fIJ9NH6ylV0QLtSf/WaTIB4pNIgT3KJAkzR9qE0YbtVFXpDGkjrcPAyCl6su/96rlR
+ th+k2oRS2MRHN7bQma22dn9FU01BgCPVmvLQC/1lsC6oySIV/wsOznzYiX2Q4JNOfyDK
+ EAMmaIObzYyLYVONhh0dWhrnGxRIXi8fKskzAXzUwfy4uPEWvocYo8BT1tITfBA0cjEj
+ 9XzdxPwLcowJkCOvJ93YNJ49vwQ9wOmzOKzY8jFiw04pSSzPpqarsaal9+GPIzXV+0Pj
+ m920VR8wGqGxvc+dzIhOlLihZxlLRrVrMttBQeRkXWXLzTXvExucFzhadmT9xrp0n3Bt
+ j5tA==
+X-Gm-Message-State: APjAAAWxZd37McRgsVLPYdJrLVOYnfhZmtdt84bTIKrS9TQrtH94BlvI
+ ZH5ean12AlHvym2GEAg1Li1UVBuXSqGcxyP2HAQ=
+X-Google-Smtp-Source: APXvYqxXCaoGnSrggcZ0XfGAo1zUZWN/ii/2LviSBEPaLcDUQeCzvmiRNgAOjeTCTC3jEOKjPvBrLva/1kFATjw6vUQ=
+X-Received: by 2002:a02:a90a:: with SMTP id n10mr38280201jam.61.1562118842128; 
+ Tue, 02 Jul 2019 18:54:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190701143338.16824-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190701143338.16824-1-aneesh.kumar@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 3 Jul 2019 11:53:50 +1000
+Message-ID: <CAOSf1CGb7nDTekX5zJJBexuGh+HsicL_F6B6TRMLJRXogTomPw@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc/mm/nvdimm: Add an informative message if we
+ fail to allocate altmap block
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,80 +73,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sjitindarsingh@gmail.com, kvm-ppc@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The performance stop status and control register (PSSCR) is used to
-control the power saving facilities of the processor. This register has
-various fields, some of which can be modified only in hypervisor state,
-and others which can be modified in both hypervisor and priviledged
-non-hypervisor state. The bits which can be modified in priviledged
-non-hypervisor state are referred to as guest visible.
+On Tue, Jul 2, 2019 at 12:33 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Allocation from altmap area can fail based on vmemmap page size used. Add kernel
+> info message to indicate the failure. That allows the user to identify whether they
+> are really using persistent memory reserved space for per-page metadata.
+>
+> The message looks like:
+> [  136.587212] altmap block allocation failed, falling back to system memory
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/init_64.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index a4e17a979e45..f3b64f49082b 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -194,8 +194,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>                  * fail due to alignment issues when using 16MB hugepages, so
+>                  * fall back to system memory if the altmap allocation fail.
+>                  */
+> -               if (altmap)
+> +               if (altmap) {
+>                         p = altmap_alloc_block_buf(page_size, altmap);
+> +                       if (!p)
+> +                               pr_debug("altmap block allocation failed, " \
+> +                                       "falling back to system memory");
+> +               }
+>                 if (!p)
+>                         p = vmemmap_alloc_block_buf(page_size, node);
+>                 if (!p)
+> --
+> 2.21.0
+>
 
-Currently the L0 hypervisor saves and restores both it's own host value
-as well as the guest value of the psscr when context switching between
-the hypervisor and guest. However a nested hypervisor running it's own
-nested guests (as indicated by kvmhv_on_pseries()) doesn't context
-switch the psscr register. This means that if a nested (L2) guest
-modified the psscr that the L1 guest hypervisor will run with this
-value, and if the L1 guest hypervisor modified this value and then goes
-to run the nested (L2) guest again that the L2 psscr value will be lost.
+I'll let mpe decide if he cares about the split line thing :)
 
-Fix this by having the (L1) nested hypervisor save and restore both its
-host and the guest psscr value when entering and exiting a nested (L2)
-guest. Note that only the guest visible parts of the psscr are context
-switched since this is all the L1 nested hypervisor can access, this is
-fine however as these are the only fields the L0 hypervisor provides
-guest control of anyway and so all other fields are ignored.
-
-This could also have been implemented by adding the psscr register to
-the hv_regs passed to the L0 hypervisor as input to the H_ENTER_NESTED
-hcall, however this would have meant updating the structure layout and
-thus required modifications to both the L0 and L1 kernels. Whereas the
-approach used doesn't require L0 kernel modifications while achieving
-the same result.
-
-Fixes: 95a6432ce903 "KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix guests"
-
-Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
----
- arch/powerpc/kvm/book3s_hv.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index b682a429f3ef..cde3f5a4b3e4 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3569,9 +3569,18 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	mtspr(SPRN_DEC, vcpu->arch.dec_expires - mftb());
- 
- 	if (kvmhv_on_pseries()) {
-+		/*
-+		 * We need to save and restore the guest visible part of the
-+		 * psscr (i.e. using SPRN_PSSCR_PR) since the hypervisor
-+		 * doesn't do this for us. Note only required if pseries since
-+		 * this is done in kvmhv_load_hv_regs_and_go() below otherwise.
-+		 */
-+		unsigned long host_psscr;
- 		/* call our hypervisor to load up HV regs and go */
- 		struct hv_guest_state hvregs;
- 
-+		host_psscr = mfspr(SPRN_PSSCR_PR);
-+		mtspr(SPRN_PSSCR_PR, vcpu->arch.psscr);
- 		kvmhv_save_hv_regs(vcpu, &hvregs);
- 		hvregs.lpcr = lpcr;
- 		vcpu->arch.regs.msr = vcpu->arch.shregs.msr;
-@@ -3590,6 +3599,8 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 		vcpu->arch.shregs.msr = vcpu->arch.regs.msr;
- 		vcpu->arch.shregs.dar = mfspr(SPRN_DAR);
- 		vcpu->arch.shregs.dsisr = mfspr(SPRN_DSISR);
-+		vcpu->arch.psscr = mfspr(SPRN_PSSCR_PR);
-+		mtspr(SPRN_PSSCR_PR, host_psscr);
- 
- 		/* H_CEDE has to be handled now, not later */
- 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
--- 
-2.13.6
-
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
