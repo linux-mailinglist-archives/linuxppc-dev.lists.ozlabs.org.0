@@ -2,39 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB935E2BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 13:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C8F5E529
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 15:17:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dzCD4y0PzDqSS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 21:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45f1qR1X5tzDqGJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 23:17:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=huangfq.daxian@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="dr0lsFRi"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dz9716VDzDqSJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 21:17:22 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id C5F9EADEF;
- Wed,  3 Jul 2019 11:17:18 +0000 (UTC)
-Date: Wed, 3 Jul 2019 13:17:16 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Subject: Re: Kernel Bug/oops during boot (PowerVM LPAR w/vTPM)
-Message-ID: <20190703131716.7e16d840@naga>
-In-Reply-To: <49B804EE-726B-4EB4-9BED-116F8FB5B374@linux.vnet.ibm.com>
-References: <49B804EE-726B-4EB4-9BED-116F8FB5B374@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45f1l73MW4zDqFL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 23:13:38 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id q4so1231903pgj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 06:13:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=/SnzKzwbJwdsQHXwXFz/daj/8JZPIhirrV+rjMpDDQs=;
+ b=dr0lsFRiXjQ5piksHRyi/X873mKA7ZcleDGYjHaXJ5f6LYS/VE0e/SYvGVFJWfoKkj
+ 0cIiNUXi+RTrlmuHHb0sHzMy7BgSWHdi7jb4wBHHl8UZ1HqJK/ft+gWm2y3SQNXfk+XU
+ QbUh0VxZr8zCCGesslE6GDDmJaE54z/Phatgo8UNnCbnhSTSgINB4WBtiG4VNVbws4wp
+ 9efLTJd/Fg82mtSy6ys1sDKZ3wzwr9O7A9JUj+nYaABvtOXSQpRzlMxlNwi3iaaP7qbG
+ xgLdBcsi5QTE4TgK7Ikoudh1E04otuVlSb2U/SgRB07q5j6vqwTgTMLD5BvhHZQWDB3R
+ W7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=/SnzKzwbJwdsQHXwXFz/daj/8JZPIhirrV+rjMpDDQs=;
+ b=RgI6ohK1fKLmkbb7f/CUEJ6aSS88R/l1LouHzADsAzBoLu8SQnUB+lj1ivmn8OVcQ4
+ CoL0oOsgqba07K6nKPSEZVfHwG04y9mBZf0UFzDXvuriOIi5T8xx9viVJ+r5olwWVzh2
+ dHEgytMClzaJC9B5Os1JTdz/nvVwZN25V+4ApXb8ojsnbL8AdYvZL+kTF3aeJ7P/vc3l
+ RrZPoiUsX0Db/q9sAWSD4I89tt/eu6iOyeng8tGQMChrST4F+q37o4DKShe1LasN67r5
+ ieaykRRULTt1LULZEwk3yMRIQ32OBF/jrXaf5ZnKzw6V+OTqraTKx2NdFkT++jk4huOk
+ lYyQ==
+X-Gm-Message-State: APjAAAWhnpXSEebLSqOICJYOWkV2FmhOzA2LqPdxwtmga6YVhhK6au9r
+ Pdg9+CA8W95xUyPr4alTf/A=
+X-Google-Smtp-Source: APXvYqzOfbchVfF3/6U0IzeocYcLu5dgpAA7P9Hm0M9qWQAd0ah06QF4dndiPFX5GsPWDHOl3mweYg==
+X-Received: by 2002:a17:90a:b115:: with SMTP id
+ z21mr12775207pjq.64.1562159615496; 
+ Wed, 03 Jul 2019 06:13:35 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+ by smtp.googlemail.com with ESMTPSA id n89sm10811597pjc.0.2019.07.03.06.13.33
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 03 Jul 2019 06:13:35 -0700 (PDT)
+From: Fuqian Huang <huangfq.daxian@gmail.com>
+To: 
+Subject: [PATCH 02/30] powerpc: Use kmemdup rather than duplicating its
+ implementation
+Date: Wed,  3 Jul 2019 21:13:27 +0800
+Message-Id: <20190703131327.24762-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,86 +74,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Fuqian Huang <huangfq.daxian@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 3 Jul 2019 15:54:59 +0530
-Sachin Sant <sachinp@linux.vnet.ibm.com> wrote:
+kmemdup is introduced to duplicate a region of memory in a neat way.
+Rather than kmalloc/kzalloc + memset, which the programmer needs to
+write the size twice (sometimes lead to mistakes), kmemdup improves
+readability, leads to smaller code and also reduce the chances of mistakes.
+Suggestion to use kmemdup rather than using kmalloc/kzalloc + memset.
 
-> Booting mainline kernel on PowerVM LPAR with vTPM enabled results
-> into a kernel crash.
->=20
-> [    0.365989] BUG: Kernel NULL pointer dereference at 0x00000012
-> [    0.365995] Faulting instruction address: 0xc00000000073dd80
-> [    0.366000] Oops: Kernel access of bad area, sig: 11 [#1]
-> [    0.366005] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSer=
-ies
-> [    0.366010] Modules linked in:
-> [    0.366015] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.2.0-rc7-autote=
-st-autotest #1
-> [    0.366020] NIP:  c00000000073dd80 LR: c00000000073dcd0 CTR: 000000000=
-0000000
-> [    0.366026] REGS: c0000018ed8e7550 TRAP: 0380   Not tainted  (5.2.0-rc=
-7-autotest-autotest)
-> [    0.366031] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2800244=
-8  XER: 20040001
-> [    0.366038] CFAR: c000000000b6d1c4 IRQMASK: 0
-> [    0.366038] GPR00: c00000000073dcd0 c0000018ed8e77e0 c000000001524a00 =
-0000000000000000
-> [    0.366038] GPR04: 0000000000000003 0000000000000000 0000000000010000 =
-000000000000000e
-> [    0.366038] GPR08: 0000000000000022 0000000000010000 c0000018e5510000 =
-00000000883bfecd
-> [    0.366038] GPR12: 0000000048002448 c00000001ec6ee00 c0000000000107a8 =
-0000000000000000
-> [    0.366038] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000
-> [    0.366038] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000
-> [    0.366038] GPR24: c0000018eb9eaaa0 0000000000000000 c000000000bce810 =
-c000000000e2ed28
-> [    0.366038] GPR28: c0000018e70a4000 000000000000000a 0000000000000012 =
-c0000018e5510000
-> [    0.366085] NIP [c00000000073dd80] tpm1_pcr_extend+0x130/0x230
-> [    0.366090] LR [c00000000073dcd0] tpm1_pcr_extend+0x80/0x230
-> [    0.366094] Call Trace:
-> [    0.366098] [c0000018ed8e77e0] [c00000000073dcd0] tpm1_pcr_extend+0x80=
-/0x230 (unreliable)
-> [    0.366105] [c0000018ed8e7890] [c00000000073c8c4] tpm_pcr_extend+0xd4/=
-0x180
-> [    0.366111] [c0000018ed8e78d0] [c0000000005745f8] ima_add_template_ent=
-ry+0x198/0x320
-> [    0.366117] [c0000018ed8e79b0] [c000000000577058] ima_store_template+0=
-xc8/0x160
-> [    0.366124] [c0000018ed8e7a30] [c000000000f6081c] ima_add_boot_aggrega=
-te+0xf8/0x184
-> [    0.366130] [c0000018ed8e7b30] [c000000000f6093c] ima_init+0x94/0xbc
-> [    0.366135] [c0000018ed8e7b90] [c000000000f60aac] init_ima+0x44/0xe8
-> [    0.366140] [c0000018ed8e7c10] [c000000000010448] do_one_initcall+0x68=
-/0x2c0
-> [    0.366146] [c0000018ed8e7ce0] [c000000000f14738] kernel_init_freeable=
-+0x318/0x47c
-> [    0.366152] [c0000018ed8e7db0] [c0000000000107c4] kernel_init+0x24/0x1=
-50
-> [    0.366158] [c0000018ed8e7e20] [c00000000000ba54] ret_from_kernel_thre=
-ad+0x5c/0x68
-> [    0.366163] Instruction dump:
-> [    0.366167] 7d404d2c 81210068 792a07e1 e9410070 392a0002 7d004c2c 7907=
-0020 40c20048
-> [    0.366174] 39080014 3d200001 7f884840 419d00a4 <807e0000> 809e0004 80=
-be0008 80de000c
-> [    0.366182] ---[ end trace ec40127c4fe87b2c ]=E2=80=94
->=20
-> Thanks
-> -Sachin
+Add an allocation failure check.
 
-You need to revert (or fix up) commit 0b6cf6b97b7e ("tpm: pass an array
-of tpm_extend_digest structures to tpm_pcr_extend()". At least
-reverting it fixes the issue for me.
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+ arch/powerpc/platforms/pseries/dlpar.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Thanks
-
-Michal
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 437a74173db2..20fe7b79e09e 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -383,9 +383,10 @@ void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog)
+ 	struct pseries_hp_work *work;
+ 	struct pseries_hp_errorlog *hp_errlog_copy;
+ 
+-	hp_errlog_copy = kmalloc(sizeof(struct pseries_hp_errorlog),
++	hp_errlog_copy = kmemdup(hp_errlog, sizeof(struct pseries_hp_errorlog),
+ 				 GFP_KERNEL);
+-	memcpy(hp_errlog_copy, hp_errlog, sizeof(struct pseries_hp_errorlog));
++	if (!hp_errlog_copy)
++		return;
+ 
+ 	work = kmalloc(sizeof(struct pseries_hp_work), GFP_KERNEL);
+ 	if (work) {
+-- 
+2.11.0
 
