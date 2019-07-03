@@ -2,46 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8905F5DE53
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 08:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF31E5DF31
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 09:57:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dsP40Hx2zDqMH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 16:57:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45dtkQ08krzDqRq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 17:57:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="u44syaUO"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dsG96vvQzDqQP
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 16:51:21 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id ACEC2200351;
- Wed,  3 Jul 2019 08:51:18 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 19643200349;
- Wed,  3 Jul 2019 08:51:14 +0200 (CEST)
-Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id DED2D402EB;
- Wed,  3 Jul 2019 14:51:08 +0800 (SGT)
-From: shengjiu.wang@nxp.com
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH V2 2/2] ASoC: fsl_esai: recover the channel swap after xrun
-Date: Wed,  3 Jul 2019 14:42:05 +0800
-Message-Id: <c29639336b6b32fa781bdddad30287f8b76d5e0b.1562136119.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.14.1
-In-Reply-To: <cover.1562136119.git.shengjiu.wang@nxp.com>
-References: <cover.1562136119.git.shengjiu.wang@nxp.com>
-In-Reply-To: <cover.1562136119.git.shengjiu.wang@nxp.com>
-References: <cover.1562136119.git.shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45dthG03bKzDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 17:55:41 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id t16so816452pfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 00:55:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ul09Xz0PvEslS31XaHwkqPs/q07h4+4TOFh9kvfSRXg=;
+ b=u44syaUOiu34twBYR3c8ZaXHPTb/eDhGobwX3pNRko+0QR79owHHQ/z7gaxTYIb/3v
+ cj19e27coGLoZi0NgcGQiH6Rns9/FlbvNV/CQswdL0unv2Y46qOij9T2/z/NXpvKSDDy
+ 88BmqAHPdoEOpl/E25FMAgqmBgVYAuHd9DYhKS88+gJDJhzcL5sBYX2yA/gqaZhKbDoC
+ hjwlRPw0mqjc/dWl3XUhbjkoRFYPZkFMy8OPaF9PGrS4H2pf/VYcy6iaCxI67J+LsJOI
+ Dn3u3JYJefUm1xVXqe+trTeqWghNaV6ZWhthdXql6lFVRkYFdjvT/lbDUJEXhywqPKxQ
+ uIjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ul09Xz0PvEslS31XaHwkqPs/q07h4+4TOFh9kvfSRXg=;
+ b=WcDUDtEs/KdQKt2TtDdwe67e/s4seTsGG3N8UYondg2qSe3yp1dw8nAhinggG5dns8
+ B9kwRWLYxEzPrp2FeUhzqgKac22YP+QFPSRAIbW46oJnsfKvXXTL/cTPFEw7H4wNykt7
+ EvDtajpLQPDXaH2zBx7D9FXlLWQJiFaSpbMqc0r/6slYGsiS3lJkeEV577p3QKoHKCfz
+ FBDf/Sw4ZOKC1UVS4yV7a0kHfRmoivyBfsbZxp45J/++lVb5j0CDyVmQmKYSyELgEHve
+ CFYn5ED4aD9OoNzk4b+3PyGgaQeOCwuSOg/ylIIY4X5wM8TiLJHu6gqkBRR32sKI0SfO
+ bzqg==
+X-Gm-Message-State: APjAAAUtzQr+POgkhrFensZn7LvcbGYJxmvv2mxsWQuPwDbchiFsvKDN
+ y+9LL4NSk13c+TfsKQENOJ5JJKc+
+X-Google-Smtp-Source: APXvYqzHDF/VZ5llzJX+YkhTnNcNOdOOiheOIKq3xspiFHq8BMeEqSMT9VqwKWJfqibzFvgeuKs6Hw==
+X-Received: by 2002:a63:1046:: with SMTP id 6mr16724866pgq.111.1562140539375; 
+ Wed, 03 Jul 2019 00:55:39 -0700 (PDT)
+Received: from bobo.local0.net (193-116-88-34.tpgi.com.au. [193.116.88.34])
+ by smtp.gmail.com with ESMTPSA id p68sm2955849pfb.80.2019.07.03.00.55.36
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 03 Jul 2019 00:55:38 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 00/14] powerpc/64s/exception: machine check cleanup series
+Date: Wed,  3 Jul 2019 17:54:30 +1000
+Message-Id: <20190703075444.19005-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,187 +76,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+This ended up blowing out a bit because of some fixes and changes
+to the way pseries works, and machine check is the trickiest and most
+custom handler.
 
-There is chip errata ERR008000, the reference doc is
-(https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf),
+After this series it's almost understandable, and uses more of the
+standard interrupt handler macros, which will make it more amenable
+to consolidation in the next round of changes (which won't be in this
+merge window).
 
-The issue is "While using ESAI transmit or receive and
-an underrun/overrun happens, channel swap may occur.
-The only recovery mechanism is to reset the ESAI."
+Thanks,
+Nick
 
-This issue exist in imx3/imx5/imx6(partial) series.
+Nicholas Piggin (14):
+  powerpc/64s/exception: machine check fwnmi remove HV case
+  powerpc/64s/exception: machine check remove bitrotted comment
+  powerpc/64s/exception: machine check fix KVM guest test
+  powerpc/64s/exception: machine check adjust RFI target
+  powerpc/64s/exception: machine check pseries should always run the
+    early handler
+  powerpc/64s/exception: machine check remove machine_check_pSeries_0
+    branch
+  powerpc/64s/exception: machine check use correct cfar for late handler
+  powerpc/64s/exception: machine check pseries should skip the late
+    handler for host kernel MCEs
+  powerpc/64s/exception: machine check restructure to reuse common
+    macros
+  powerpc/64s/exception: machine check move tramp code
+  powerpc/64s/exception: simplify machine check early path
+  powerpc/64s/exception: machine check move unrecoverable handling out
+    of line
+  powerpc/64s/exception: untangle early machine check handler branch
+  powerpc/64s/exception: machine check improve labels and comments
 
-In this commit add a tasklet to handle reset of ESAI
-after xrun happens to recover the channel swap.
+ arch/powerpc/kernel/exceptions-64s.S | 367 +++++++++++++--------------
+ 1 file changed, 172 insertions(+), 195 deletions(-)
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_esai.c | 76 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
-
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index 20039ae9893b..8c92e49ad6d8 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -32,6 +32,7 @@
-  * @extalclk: esai clock source to derive HCK, SCK and FS
-  * @fsysclk: system clock source to derive HCK, SCK and FS
-  * @spbaclk: SPBA clock (optional, depending on SoC design)
-+ * @task: tasklet to handle the reset operation
-  * @fifo_depth: depth of tx/rx FIFO
-  * @slot_width: width of each DAI slot
-  * @slots: number of slots
-@@ -42,6 +43,7 @@
-  * @sck_div: if using PSR/PM dividers for SCKx clock
-  * @slave_mode: if fully using DAI slave mode
-  * @synchronous: if using tx/rx synchronous mode
-+ * @reset_at_xrun: flags for enable reset operaton
-  * @name: driver name
-  */
- struct fsl_esai {
-@@ -53,6 +55,7 @@ struct fsl_esai {
- 	struct clk *extalclk;
- 	struct clk *fsysclk;
- 	struct clk *spbaclk;
-+	struct tasklet_struct task;
- 	u32 fifo_depth;
- 	u32 slot_width;
- 	u32 slots;
-@@ -65,6 +68,7 @@ struct fsl_esai {
- 	bool sck_div[2];
- 	bool slave_mode;
- 	bool synchronous;
-+	bool reset_at_xrun;
- 	char name[32];
- };
- 
-@@ -73,8 +77,16 @@ static irqreturn_t esai_isr(int irq, void *devid)
- 	struct fsl_esai *esai_priv = (struct fsl_esai *)devid;
- 	struct platform_device *pdev = esai_priv->pdev;
- 	u32 esr;
-+	u32 saisr;
- 
- 	regmap_read(esai_priv->regmap, REG_ESAI_ESR, &esr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_SAISR, &saisr);
-+
-+	if ((saisr & (ESAI_SAISR_TUE | ESAI_SAISR_ROE)) &&
-+	    esai_priv->reset_at_xrun) {
-+		dev_dbg(&pdev->dev, "reset module for xrun\n");
-+		tasklet_schedule(&esai_priv->task);
-+	}
- 
- 	if (esr & ESAI_ESR_TINIT_MASK)
- 		dev_dbg(&pdev->dev, "isr: Transmission Initialized\n");
-@@ -634,10 +646,17 @@ static void fsl_esai_trigger_start(struct fsl_esai *esai_priv, bool tx)
- 			   ESAI_xSMB_xS_MASK, ESAI_xSMB_xS(mask));
- 	regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
- 			   ESAI_xSMA_xS_MASK, ESAI_xSMA_xS(mask));
-+
-+	/* Enable Exception interrupt */
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-+			   ESAI_xCR_xEIE_MASK, ESAI_xCR_xEIE);
- }
- 
- static void fsl_esai_trigger_stop(struct fsl_esai *esai_priv, bool tx)
- {
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-+			   ESAI_xCR_xEIE_MASK, 0);
-+
- 	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
- 			   tx ? ESAI_xCR_TE_MASK : ESAI_xCR_RE_MASK, 0);
- 	regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
-@@ -652,6 +671,53 @@ static void fsl_esai_trigger_stop(struct fsl_esai *esai_priv, bool tx)
- 			   ESAI_xFCR_xFR, 0);
- }
- 
-+static void fsl_esai_reset(unsigned long arg)
-+{
-+	struct fsl_esai *esai_priv = (struct fsl_esai *)arg;
-+	u32 saisr, tfcr, rfcr;
-+
-+	/* save the registers */
-+	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
-+	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-+
-+	/* stop the tx & rx */
-+	fsl_esai_trigger_stop(esai_priv, 1);
-+	fsl_esai_trigger_stop(esai_priv, 0);
-+
-+	/* reset the esai, and restore the registers */
-+	fsl_esai_init(esai_priv);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+			   ESAI_xCR_xPR_MASK,
-+			   ESAI_xCR_xPR);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+			   ESAI_xCR_xPR_MASK,
-+			   ESAI_xCR_xPR);
-+
-+	/* restore registers by regcache_sync */
-+	fsl_esai_register_restore(esai_priv);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+			   ESAI_xCR_xPR_MASK, 0);
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+			   ESAI_xCR_xPR_MASK, 0);
-+
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PRRC,
-+			   ESAI_PRRC_PDC_MASK,
-+			   ESAI_PRRC_PDC(ESAI_GPIO));
-+	regmap_update_bits(esai_priv->regmap, REG_ESAI_PCRC,
-+			   ESAI_PCRC_PC_MASK,
-+			   ESAI_PCRC_PC(ESAI_GPIO));
-+
-+	regmap_read(esai_priv->regmap, REG_ESAI_SAISR, &saisr);
-+
-+	/* restart tx / rx, if they already enabled */
-+	if (tfcr & ESAI_xFCR_xFEN)
-+		fsl_esai_trigger_start(esai_priv, 1);
-+	if (rfcr & ESAI_xFCR_xFEN)
-+		fsl_esai_trigger_start(esai_priv, 0);
-+}
-+
- static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
- 			    struct snd_soc_dai *dai)
- {
-@@ -856,6 +922,10 @@ static int fsl_esai_probe(struct platform_device *pdev)
- 	esai_priv->pdev = pdev;
- 	snprintf(esai_priv->name, sizeof(esai_priv->name), "%pOFn", np);
- 
-+	if (of_device_is_compatible(np, "fsl,vf610-esai") ||
-+	    of_device_is_compatible(np, "fsl,imx35-esai"))
-+		esai_priv->reset_at_xrun = true;
-+
- 	/* Get the addresses and IRQ */
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	regs = devm_ioremap_resource(&pdev->dev, res);
-@@ -955,6 +1025,9 @@ static int fsl_esai_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	tasklet_init(&esai_priv->task, fsl_esai_reset,
-+		     (unsigned long)esai_priv);
-+
- 	pm_runtime_enable(&pdev->dev);
- 
- 	regcache_cache_only(esai_priv->regmap, true);
-@@ -968,7 +1041,10 @@ static int fsl_esai_probe(struct platform_device *pdev)
- 
- static int fsl_esai_remove(struct platform_device *pdev)
- {
-+	struct fsl_esai *esai_priv = platform_get_drvdata(pdev);
-+
- 	pm_runtime_disable(&pdev->dev);
-+	tasklet_kill(&esai_priv->task);
- 
- 	return 0;
- }
 -- 
-2.21.0
+2.20.1
 
