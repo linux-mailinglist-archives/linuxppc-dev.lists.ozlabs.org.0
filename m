@@ -2,91 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE635DD44
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 06:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CFE5DDFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 08:22:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45dnbx5F9KzDqSt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 14:06:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45drcN38hNzDqQX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2019 16:22:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45dnZ04SyHzDqRc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tc798DR9"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45dnZ03PpBz8swt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45dnZ03DJFz9sBp; Wed,  3 Jul 2019 14:04:56 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tc798DR9"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45dnYz5RnXz9s4V
- for <linuxppc-dev@ozlabs.org>; Wed,  3 Jul 2019 14:04:55 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id r1so508335pfq.12
- for <linuxppc-dev@ozlabs.org>; Tue, 02 Jul 2019 21:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=tylYDS6kDRxuvNQuW4yVmheFFIrPCY1pJ+1IZjAYM7Y=;
- b=Tc798DR9qGpH1dWSzACd2ATsW5T56VPrRfPptW75wayXd8malwsWEwm8jl7251+Zdf
- uMaHuGwSSLqwejfwHP29SxLv/12xeLpwcJ74vCrInsrHL+Rkrw/NnNWl/O4stwBU5hDm
- re3SW6CF7yRH5sKC/I0U6YXmEz8K9xY0dB+wgZco5MO1uaWfBgKuVbFdm92CIWhfn6y6
- 15H+e7FJYNdcaDu+vxJg6e6uYCL5C8SVjNic+dOwMgU/R2AHheUbTMhhIv4HRnY7itzE
- /uVxihw/03Hkx6K5ghJ2X0uniSLXGyr9lCReey7ai9N+gFoYA96yFYz/RIDDklfFb1r3
- 2jdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=tylYDS6kDRxuvNQuW4yVmheFFIrPCY1pJ+1IZjAYM7Y=;
- b=h1uo5EmtnBuyBcOJlCRMxe0onmFRuybOaiD+p4bxeH0unv/+R62470SFNmU1y5EsS1
- AU8aaV9awsT1JBnpTHXtEhJQUK0sIcPvWkRSx71q17XIpAz3i3+9BmJs9Q/wYlZMc/pr
- OpVUNp3fiCzd2C8XtCZWNJFlXvSCoABgaN4yRDrwLHs77AWtkI2h9FTQJyHvOXKMTvij
- G8bHZXZ9nPVRbOyqIo9oZNnc2zKuEkTjikUp4Bfl43KUEphJT3kanJvShveYwWrqYFun
- q1febEOpxiIasS+GSWbnHZQbp3zU+34piVigmv54Z+ZdAAQOX38Imp80Sv7Vjgw1pYtH
- z1wg==
-X-Gm-Message-State: APjAAAVD46njZrUffSMRaNUUPfXdqbipomPXpOih/20K+YchpmuFkAlj
- 1is2Z96yeDo2kZcwOxmga/M=
-X-Google-Smtp-Source: APXvYqwxEEmtP7h4uErRIoTEmpS4m1WqFEb3++nXZQdYIXbjaIHll6wJXaW22IT1jJbxeSdoNtyDvg==
-X-Received: by 2002:a63:c508:: with SMTP id f8mr3628727pgd.48.1562126692024;
- Tue, 02 Jul 2019 21:04:52 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.googlemail.com with ESMTPSA id h26sm780990pfq.64.2019.07.02.21.04.48
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 02 Jul 2019 21:04:51 -0700 (PDT)
-Message-ID: <8a779e216bb088b33b022cd026bdb647e05aa338.camel@gmail.com>
-Subject: Re: [PATCH v3 03/16] pseries/fadump: move out platform specific
- support from generic code
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@ozlabs.org>
-Date: Wed, 03 Jul 2019 14:04:46 +1000
-In-Reply-To: <156149556436.9094.15834897273683011518.stgit@hbathini.in.ibm.com>
-References: <156149548694.9094.3211954809582123798.stgit@hbathini.in.ibm.com>
- <156149556436.9094.15834897273683011518.stgit@hbathini.in.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.3 (3.32.3-1.fc30) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45drZQ4nJdzDqJW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2019 16:20:29 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x636HEDj067835
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 3 Jul 2019 02:20:26 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tgnx025d2-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2019 02:20:26 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Wed, 3 Jul 2019 07:20:24 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 3 Jul 2019 07:20:22 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x636KLda59965480
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Jul 2019 06:20:21 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD62EAE04D;
+ Wed,  3 Jul 2019 06:20:21 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FE4DAE061;
+ Wed,  3 Jul 2019 06:20:19 +0000 (GMT)
+Received: from [9.85.75.18] (unknown [9.85.75.18])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  3 Jul 2019 06:20:18 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/hw_breakpoint: move instruction stepping out of
+ hw_breakpoint_handler()
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+References: <f8cdc3f1c66ad3c43ebc568abcc6c39ed4676284.1561737231.git.christophe.leroy@c-s.fr>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date: Wed, 3 Jul 2019 11:50:17 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <f8cdc3f1c66ad3c43ebc568abcc6c39ed4676284.1561737231.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070306-0020-0000-0000-0000034FB580
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070306-0021-0000-0000-000021A34A66
+Message-Id: <57148696-b9a5-d3c1-1e29-82673c558927@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-03_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=667 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907030076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,54 +91,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-06-26 at 02:16 +0530, Hari Bathini wrote:
-> Introduce callbacks for platform specific operations like register,
-> unregister, invalidate & such, and move pseries specific code into
-> platform code.
 
-Please don't move around large blocks of code *and* change the code in
-a single patch. It makes reviewing the changes extremely tedious since
-the changes are mixed in with hundreds of lines of nothing.
 
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/fadump.h            |   75 ----
->  arch/powerpc/kernel/fadump-common.h          |   38 ++
->  arch/powerpc/kernel/fadump.c                 |  500 ++-----------------------
->  arch/powerpc/platforms/pseries/Makefile      |    1 
->  arch/powerpc/platforms/pseries/rtas-fadump.c |  529 ++++++++++++++++++++++++++
->  arch/powerpc/platforms/pseries/rtas-fadump.h |   96 +++++
->  6 files changed, 700 insertions(+), 539 deletions(-)
->  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
->  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.h
+On 6/28/19 9:25 PM, Christophe Leroy wrote:
+> On 8xx, breakpoints stop after executing the instruction, so
+> stepping/emulation is not needed. Move it into a sub-function and
+> remove the #ifdefs.
 > 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
 
-> +static struct fadump_ops pseries_fadump_ops = {
-> +	.init_fadump_mem_struct	= pseries_init_fadump_mem_struct,
-> +	.register_fadump	= pseries_register_fadump,
+Reviewed-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 
-I realise you are just translating the existing interface, but why is
-init_fadump_mem_struct() done as a seperate step and not as a part of
-the registration function? The struct doesn't seem to be necessary
-until the actual registration happens.
+Just one neat below...
 
-> +	.unregister_fadump	= pseries_unregister_fadump,
-> +	.invalidate_fadump	= pseries_invalidate_fadump,
-> +	.process_fadump		= pseries_process_fadump,
-> +	.fadump_region_show	= pseries_fadump_region_show,
+[...]
 
-> +	.crash_fadump		= pseries_crash_fadump,
+> -#ifndef CONFIG_PPC_8xx
+> -	/* Do not emulate user-space instructions, instead single-step them */
+> -	if (user_mode(regs)) {
+> -		current->thread.last_hit_ubp = bp;
+> -		regs->msr |= MSR_SE;
+> +	if (!IS_ENABLED(CONFIG_PPC_8xx) && !stepping_handler(regs, bp, info->address))
 
-Rename this to fadump_trigger or something, it's not clear what it
-does.
+May be split this line. It's 86 chars long and checkpatch.pl is warning
+about this:
 
-
+WARNING: line over 80 characters
+#257: FILE: arch/powerpc/kernel/hw_breakpoint.c:282:
++	if (!IS_ENABLED(CONFIG_PPC_8xx) && !stepping_handler(regs, bp, info->address))
 
