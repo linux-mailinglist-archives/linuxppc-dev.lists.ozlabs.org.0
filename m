@@ -1,86 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDB05F726
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 13:14:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132755F6E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 12:56:46 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45fZfd6hZKzDqbD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 20:56:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45fb3h40WkzDqZw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 21:14:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=prudo@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45fZcL4kltzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2019 20:54:41 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x64ApvqE009746
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 4 Jul 2019 06:54:37 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2thetr35b9-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jul 2019 06:54:37 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <prudo@linux.ibm.com>;
- Thu, 4 Jul 2019 11:54:35 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 4 Jul 2019 11:54:30 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x64AsSpq35455354
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 4 Jul 2019 10:54:28 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B9AC8AE045;
- Thu,  4 Jul 2019 10:54:28 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33C7FAE053;
- Thu,  4 Jul 2019 10:54:28 +0000 (GMT)
-Received: from laptop-ibm (unknown [9.152.212.73])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  4 Jul 2019 10:54:28 +0000 (GMT)
-Date: Thu, 4 Jul 2019 12:54:27 +0200
-From: Philipp Rudo <prudo@linux.ibm.com>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [PATCH v12 01/11] MODSIGN: Export module signature definitions
-In-Reply-To: <87lfxel2q6.fsf@morokweng.localdomain>
-References: <20190628021934.4260-1-bauerman@linux.ibm.com>
- <20190628021934.4260-2-bauerman@linux.ibm.com>
- <20190701144752.GC25484@linux-8ccs>
- <87lfxel2q6.fsf@morokweng.localdomain>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45fb226MhKzDqRG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2019 21:13:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45fb223WXvz9sNf;
+ Thu,  4 Jul 2019 21:13:30 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Aravinda Prasad <aravinda@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/pseries: Fix maximum memory value
+In-Reply-To: <1561743225.hrre8pgw6j.naveen@linux.ibm.com>
+References: <156170480663.26214.11212383510892156924.stgit@aravinda>
+ <87tvc9sjrb.fsf@linux.ibm.com> <1561743225.hrre8pgw6j.naveen@linux.ibm.com>
+Date: Thu, 04 Jul 2019 21:13:26 +1000
+Message-ID: <871rz6qch5.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070410-0008-0000-0000-000002F9D612
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070410-0009-0000-0000-000022672778
-Message-Id: <20190704125427.31146026@laptop-ibm>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-04_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907040141
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,92 +46,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-doc@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, James Morris <jmorris@namei.org>,
- David Howells <dhowells@redhat.com>, "AKASHI, 
- Takahiro" <takahiro.akashi@linaro.org>, linux-security-module@vger.kernel.org,
- keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- Jessica Yu <jeyu@kernel.org>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw2@infradead.org>,
- "Serge E. Hallyn" <serge@hallyn.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Thiago,
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Nathan Lynch wrote:
+>> Aravinda Prasad <aravinda@linux.vnet.ibm.com> writes:
+>>> Calculating the maximum memory based on the number of lmbs
+>>> and lmb size does not account for the RMA region. Hence
+>>> use memory_hotplug_max(), which already accounts for the
+>>> RMA region, to fetch the maximum memory value. Thanks to
+>>> Nathan Lynch for suggesting the memory_hotplug_max()
+>>> function.
+>> 
+>> Well, I hope I haven't led you astray... will it give you the desired
+>> result on a kernel configured without memory hotplug support, booted in
+>> an LPAR with some huge pages configured?
+>> 
+>> If so, then
+>> Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
+>> 
+>> It would likely help with review and future maintenance if the semantics
+>> and intended use of the MaxMem field are made a little more
+>> explicit. For example, is it supposed to include persistent memory?
+>> Perhaps a follow-up patch could address this. Or maybe I'm overthinking
+>> it.
+>
+> This was primarily aimed to replicate what AIX lparstat does and 
+> documentation (*) just says:
+>
+>   Maximum Memory
+>       Maximum possible amount of Memory.
+>
+> I think this mirrors the maximum memory value set in the LPAR profile, 
+> and this provides a way to obtain that value from within the LPAR.
+
+But the doc string for memory_hotplug_max() says:
+
+ * memory_hotplug_max - return max address of memory that may be added
 
 
-On Thu, 04 Jul 2019 03:42:57 -0300
-Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
+ie. maximum *address* not maximum *amount*.
 
-> Jessica Yu <jeyu@kernel.org> writes:
-> 
-> > +++ Thiago Jung Bauermann [27/06/19 23:19 -0300]:  
-> >>IMA will use the module_signature format for append signatures, so export
-> >>the relevant definitions and factor out the code which verifies that the
-> >>appended signature trailer is valid.
-> >>
-> >>Also, create a CONFIG_MODULE_SIG_FORMAT option so that IMA can select it
-> >>and be able to use mod_check_sig() without having to depend on either
-> >>CONFIG_MODULE_SIG or CONFIG_MODULES.
-> >>
-> >>Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> >>Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> >>Cc: Jessica Yu <jeyu@kernel.org>
-> >>---
-> >> include/linux/module.h           |  3 --
-> >> include/linux/module_signature.h | 44 +++++++++++++++++++++++++
-> >> init/Kconfig                     |  6 +++-
-> >> kernel/Makefile                  |  1 +
-> >> kernel/module.c                  |  1 +
-> >> kernel/module_signature.c        | 46 ++++++++++++++++++++++++++
-> >> kernel/module_signing.c          | 56 +++++---------------------------
-> >> scripts/Makefile                 |  2 +-
-> >> 8 files changed, 106 insertions(+), 53 deletions(-)
-> >>
-> >>diff --git a/include/linux/module.h b/include/linux/module.h
-> >>index 188998d3dca9..aa56f531cf1e 100644
-> >>--- a/include/linux/module.h
-> >>+++ b/include/linux/module.h
-> >>@@ -25,9 +25,6 @@
-> >> #include <linux/percpu.h>
-> >> #include <asm/module.h>
-> >>
-> >>-/* In stripped ARM and x86-64 modules, ~ is surprisingly rare. */
-> >>-#define MODULE_SIG_STRING "~Module signature appended~\n"
-> >>-  
-> >
-> > Hi Thiago, apologies for the delay.  
-> 
-> Hello Jessica, thanks for reviewing the patch!
-> 
-> > It looks like arch/s390/kernel/machine_kexec_file.c also relies on
-> > MODULE_SIG_STRING being defined, so module_signature.h will need to be
-> > included there too, otherwise we'll run into a compilation error.  
-> 
-> Indeed. Thanks for spotting that. The patch below fixes it. It's
-> identical to the previous version except for the changes in 
-> arch/s390/kernel/machine_kexec_file.c and their description in the
-> commit message. I'm also copying some s390 people in this email.
+Possibly it turns out to be the same value, but that is just because you
+have no holes in your layout.
 
-to me the s390 part looks good but for one minor nit.
+So I don't think this patch is correct.
 
-In arch/s390/Kconfig KEXEC_VERIFY_SIG currently depends on
-SYSTEM_DATA_VERIFICATION. I'd prefer when you update this to the new
-MODULE_SIG_FORMAT. It shouldn't make any difference right now, as we don't
-use mod_check_sig in our code path. But it could cause problems in the future,
-when more code might be shared.
-
-Thanks
-Philipp
-
-> > Other than that, the module-related changes look good to me:
-> >
-> > Acked-by: Jessica Yu <jeyu@kernel.org>  
-> 
-> Thank you very much!
-> 
-
+cheers
