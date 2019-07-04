@@ -2,42 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649405FAD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 17:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE665FAEB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 17:34:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45fhh83DdZzDqby
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 01:28:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45fhpn6CpXzDqDS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 01:34:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 45fhdp2xBLzDqZC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 01:26:19 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8316F2B;
- Thu,  4 Jul 2019 08:26:17 -0700 (PDT)
-Received: from [10.162.40.119] (p8cg001049571a15.blr.arm.com [10.162.40.119])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
- 3B3A43F703; Thu,  4 Jul 2019 08:26:13 -0700 (PDT)
-Subject: Re: [PATCH V2] mm/ioremap: Probe platform for p4d huge map support
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <1561699231-20991-1-git-send-email-anshuman.khandual@arm.com>
- <20190702160630.25de5558e9fe2d7d845f3472@linux-foundation.org>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <fbc147c7-bec2-daed-b828-c4ae170010a9@arm.com>
-Date: Thu, 4 Jul 2019 20:56:40 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45fhn147dczDqDS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 01:32:36 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 66563AF81;
+ Thu,  4 Jul 2019 15:32:32 +0000 (UTC)
+Date: Thu, 4 Jul 2019 17:32:31 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tpm: fixes uninitialized allocated banks for IBM vtpm
+ driver
+Message-ID: <20190704173231.27365b51@kitsune.suse.cz>
+In-Reply-To: <0EDE02C7-3716-47A2-B7B0-007025F28567@linux.vnet.ibm.com>
+References: <1562211121-2188-1-git-send-email-nayna@linux.ibm.com>
+ <1562241547.6165.81.camel@linux.ibm.com>
+ <0EDE02C7-3716-47A2-B7B0-007025F28567@linux.vnet.ibm.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190702160630.25de5558e9fe2d7d845f3472@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,34 +50,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, x86@kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ linux-integrity@vger.kernel.org, George Wilson <gcwilson@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 4 Jul 2019 19:26:36 +0530
+Sachin Sant <sachinp@linux.vnet.ibm.com> wrote:
 
+> > On 04-Jul-2019, at 5:29 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >=20
+> > On Wed, 2019-07-03 at 23:32 -0400, Nayna Jain wrote: =20
+> >> The nr_allocated_banks and allocated banks are initialized as part of
+> >> tpm_chip_register. Currently, this is done as part of auto startup
+> >> function. However, some drivers, like the ibm vtpm driver, do not run
+> >> auto startup during initialization. This results in uninitialized memo=
+ry
+> >> issue and causes a kernel panic during boot.
+> >>=20
+> >> This patch moves the pcr allocation outside the auto startup function
+> >> into tpm_chip_register. This ensures that allocated banks are initiali=
+zed
+> >> in any case.
+> >>=20
+> >> Fixes: 879b589210a9 ("tpm: retrieve digest size of unknown algorithms =
+with
+> >> PCR read")
+> >> Signed-off-by: Nayna Jain <nayna@linux.ibm.com> =20
+> > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com> =20
+>=20
+> Thanks for the fix. Kernel boots fine with this fix.
+>=20
+> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+>=20
 
-On 07/03/2019 04:36 AM, Andrew Morton wrote:
-> On Fri, 28 Jun 2019 10:50:31 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> 
->> Finishing up what the commit c2febafc67734a ("mm: convert generic code to
->> 5-level paging") started out while levelling up P4D huge mapping support
->> at par with PUD and PMD. A new arch call back arch_ioremap_p4d_supported()
->> is being added which just maintains status quo (P4D huge map not supported)
->> on x86, arm64 and powerpc.
-> 
-> Does this have any runtime effects?  If so, what are they and why?  If
-> not, what's the actual point?
+Tested-by: Michal Such=C3=A1nek <msuchanek@suse.de>
 
-It just finishes up what the previous commit c2febafc67734a ("mm: convert
-generic code to 5-level paging") left off with respect p4d based huge page
-enablement for ioremap. When HAVE_ARCH_HUGE_VMAP is enabled its just a simple
-check from the arch about the support, hence runtime effects are minimal.
+Thanks
+
+Michal
