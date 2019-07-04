@@ -2,40 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201095FA2A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 16:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8D65FA32
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 16:39:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45fgVl5XqkzDqJM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 00:35:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45fgbb3w2jzDqcq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 00:39:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45fgRp6yzbzDqQ6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 00:32:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45fgRp1ZJ1z9sPH;
- Fri,  5 Jul 2019 00:32:38 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>
-Subject: Re: [PATCH] powerpc/mm/nvdimm: Add an informative message if we fail
- to allocate altmap block
-In-Reply-To: <874l46nhtj.fsf@linux.ibm.com>
-References: <20190629073813.12973-1-aneesh.kumar@linux.ibm.com>
- <CAOSf1CH_X7TG7Cato4hBt+U5=5HHHwR3hXQYC-z_GiBQiWnB1w@mail.gmail.com>
- <874l46nhtj.fsf@linux.ibm.com>
-Date: Fri, 05 Jul 2019 00:32:36 +1000
-Message-ID: <874l413m63.fsf@concordia.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45fgVZ1tMTzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 00:35:01 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x64EPPKI078913
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 4 Jul 2019 10:34:58 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2thgacq0vm-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jul 2019 10:34:58 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Thu, 4 Jul 2019 15:34:54 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 4 Jul 2019 15:34:53 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x64EYf3X39321864
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Jul 2019 14:34:41 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 537B3AE053;
+ Thu,  4 Jul 2019 14:34:52 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23DC6AE051;
+ Thu,  4 Jul 2019 14:34:51 +0000 (GMT)
+Received: from naverao1-tp.ibmuc.com (unknown [9.85.70.183])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  4 Jul 2019 14:34:50 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 0/2] ftrace: two fixes with func_probes handling
+Date: Thu,  4 Jul 2019 20:04:40 +0530
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070414-0012-0000-0000-0000032F4446
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070414-0013-0000-0000-000021689B54
+Message-Id: <cover.1562249521.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-04_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=733 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907040181
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,66 +85,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> "Oliver O'Halloran" <oohall@gmail.com> writes:
->
->> On Sat, Jun 29, 2019 at 5:39 PM Aneesh Kumar K.V
->> <aneesh.kumar@linux.ibm.com> wrote:
->>>
->>> Allocation from altmap area can fail based on vmemmap page size used. Add kernel
->>> info message to indicate the failure. That allows the user to identify whether they
->>> are really using persistent memory reserved space for per-page metadata.
->>>
->>> The message looks like:
->>> [  136.587212] altmap block allocation failed, falling back to system memory
->>>
->>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> ---
->>>  arch/powerpc/mm/init_64.c | 6 +++++-
->>>  1 file changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
->>> index a4e17a979e45..57c0573650dc 100644
->>> --- a/arch/powerpc/mm/init_64.c
->>> +++ b/arch/powerpc/mm/init_64.c
->>> @@ -194,8 +194,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>>                  * fail due to alignment issues when using 16MB hugepages, so
->>>                  * fall back to system memory if the altmap allocation fail.
->>>                  */
->>> -               if (altmap)
->>> +               if (altmap) {
->>>                         p = altmap_alloc_block_buf(page_size, altmap);
->>> +                       if (!p)
->>
->>> +                               pr_info("altmap block allocation failed, " \
->>> +                                       "falling back to system memory");
->>
->> I think this is kind of misleading. If you're mapping a large amount
->> of memory you can have most of the vmemmap backing allocated from the
->> altmap and one extra block allocated from normal memory. E.g. If you
->> have 32MB of altmap space, one 16MB block will be allocated from the
->> altmap, but the 2nd 16MB block is probably unusable due to the
->> reserved pages at the start of the altmap. Maybe this should be a
->> pr_debug() so it's only printed along with the "vmemmap_populate ..."
->> message above?
->
-> Will switch to pr_debug. What I really wanted was an indication of which
-> pfn device failed to allocate  per page meata data in the device. But
-> we really don't have device details here and we don't end up calling
-> this function if there is already a 16MB mapping in DRAM for this area.
->
->>
->> Also, isn't kernel style to keep printf()s, even long ones, on one line?
->
-> I was not sure. It do print to kernel log in one line.
+Two patches addressing bugs in ftrace function probe handling. The first 
+patch addresses a NULL pointer dereference reported by LTP tests, while 
+the second one is a trivial patch to address a missing check for return 
+value, found by code inspection.
 
-It should be one line so it's easy to grep for the error string.
+- Naveen
 
-cheers
+
+Naveen N. Rao (2):
+  ftrace: Fix NULL pointer dereference in t_probe_next()
+  ftrace: Check for successful allocation of hash
+
+ kernel/trace/ftrace.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+-- 
+2.22.0
+
