@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB0F5FB50
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 17:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AEF5FB4E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2019 17:58:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45fjNW3kJRzDqcS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 01:59:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45fjLY0D1mzDqSS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 01:58:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45fjDL0WftzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 01:52:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45fjDJ23sfzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 01:52:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45fjDK1zccz9sPD; Fri,  5 Jul 2019 01:52:48 +1000 (AEST)
+ id 45fjDJ12xvz9sPJ; Fri,  5 Jul 2019 01:52:48 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: fe7946ce0808eb0e43711f5db7d2d1599b362d02
-In-Reply-To: <20190623104152.13173-1-npiggin@gmail.com>
+X-powerpc-patch-commit: 4508a74a63154fea5c2d36d8ad064273c5ea9608
+In-Reply-To: <20190622131535.20996-2-npiggin@gmail.com>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/64s: Rename PPC_INVALIDATE_ERAT to
- PPC_ARCH_300_INVALIDATE_ERAT
-Message-Id: <45fjDK1zccz9sPD@ozlabs.org>
+Subject: Re: [PATCH v3 01/25] powerpc/64s/exception: remove H concatenation
+ for EXC_HV variants
+Message-Id: <45fjDJ12xvz9sPJ@ozlabs.org>
 Date: Fri,  5 Jul 2019 01:52:48 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -39,19 +39,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2019-06-23 at 10:41:51 UTC, Nicholas Piggin wrote:
-> This makes it clear to the caller that it can only be used on POWER9
-> and later CPUs.
+On Sat, 2019-06-22 at 13:15:11 UTC, Nicholas Piggin wrote:
+> Replace all instances of this with gas macros that test the hsrr
+> parameter and use the appropriate register names / labels.
+> 
+> No generated code change.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/fe7946ce0808eb0e43711f5db7d2d1599b362d02
+https://git.kernel.org/powerpc/c/4508a74a63154fea5c2d36d8ad064273c5ea9608
 
 cheers
