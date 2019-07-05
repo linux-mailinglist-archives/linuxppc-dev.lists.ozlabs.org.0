@@ -1,64 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742A5603BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 12:01:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45g9Nt1Ks1zDqd3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 20:01:50 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 395A7603BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 12:03:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45g9R74ssnzDq6k
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 20:03:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.90; helo=conssluserg-05.nifty.com;
+ (client-ip=210.131.2.75; helo=conuserg-08.nifty.com;
  envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=socionext.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="drq8MaMb"; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="DAJtJ4z1"; 
  dkim-atps=neutral
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
- [210.131.2.90])
+Received: from conuserg-08.nifty.com (conuserg-08.nifty.com [210.131.2.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45g9M05KRKzDqZQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 20:00:10 +1000 (AEST)
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com
- [209.85.217.54]) (authenticated)
- by conssluserg-05.nifty.com with ESMTP id x659xmLi010239
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 5 Jul 2019 18:59:48 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x659xmLi010239
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45g9PV2VyBzDq67
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 20:02:22 +1000 (AEST)
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp
+ [153.142.97.92]) (authenticated)
+ by conuserg-08.nifty.com with ESMTP id x65A1j3L018855;
+ Fri, 5 Jul 2019 19:01:45 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-08.nifty.com x65A1j3L018855
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1562320788;
- bh=7vo4tVVjFp2kF3CCv5uSappoveKorG1+DyG5PCqC1mo=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=drq8MaMbdGESVV4jgCedEiZm6fgkjP+o5bmM0K9cOYi9ZwIVTd+iZfK2wFELQfdFC
- 3WQ9Y8bSjaL3K4DNSYE6U+9pH49/yvNX4Wc5fFfUeFsnUexvpwQ/4XvMLvMduoD3QJ
- 80IumNwsZg1SARySsPtcLCMlEsm6IYzLRHDS8Or9zOxzUtHowKUe235BAQ9JnhmB4y
- dq+fUaULEbCGZx5p6TgacoqjHJQfOVua4lVbFd6Vcohdo9tK5QaBp9SuyiU+Ybatqg
- 31zCY2tAq3x8JrUrvXukE1b3C3R67GWUjZ2MwW5aBdZst2q4mn4Mim98GGVKVYkgRS
- Vr/OBAbNQlICw==
-X-Nifty-SrcIP: [209.85.217.54]
-Received: by mail-vs1-f54.google.com with SMTP id j26so3487342vsn.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Jul 2019 02:59:48 -0700 (PDT)
-X-Gm-Message-State: APjAAAWvKpuh9RHBWbnPEV2knRezUD2AB/JPrpwXsz5xX7ofLbkVM+XS
- MHEFnrTHvpEClZagss5IuIqDmV+ujym+Hs9KTrk=
-X-Google-Smtp-Source: APXvYqw/AUFCUUd5jXpPkprJCwIFt7JAmja2F/erzSFp296eLvhPJ66gWzHHWXgUX0GCg6HvO6LlFAxsNEuazgKizc0=
-X-Received: by 2002:a67:fc45:: with SMTP id p5mr1635301vsq.179.1562320787446; 
- Fri, 05 Jul 2019 02:59:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <1557756964-13087-1-git-send-email-yamada.masahiro@socionext.com>
- <87v9wibq5z.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87v9wibq5z.fsf@concordia.ellerman.id.au>
+ s=dec2015msa; t=1562320906;
+ bh=Xti9N2uoikpsP8LMl2xLbOM7UsUpmVEcrDR7xeNals8=;
+ h=From:To:Cc:Subject:Date:From;
+ b=DAJtJ4z1GTHt6BCACcdqmOamV5V5SCo5vNWy4ncAZHidFuIEhuzka6OGUSkwOu1Rn
+ 8Ib1TzBZB6lXOpxml2+M4wZIQlfzrwXKvJDM/KITBGora5Z8FvtYKo4567a3bD62Ap
+ O9rniDQ0MA+5JMQvwvSKf9bECEs0+qogaJF8waoB6DnKdKj0UkGms4NW+7+2EyUDTW
+ TJv77oI63cvToCdMr9UtjF3yh/DIzWVwmzNheqcCEFPACM5XGYGfioGGp3ajqNe2K8
+ Q0Skp4Gv8ES120HlXJtLG5hvo9PZ7GjF6dUXxL8yPAo7soUaef8+MVcWZxs0w61oBc
+ qqLQfO8q5oXQQ==
+X-Nifty-SrcIP: [153.142.97.92]
 From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 5 Jul 2019 18:59:11 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASK=z68pqPcPw8OGM1Y9SGSHOAMDygsbmNvOW1oOsQFRA@mail.gmail.com>
-Message-ID: <CAK7LNASK=z68pqPcPw8OGM1Y9SGSHOAMDygsbmNvOW1oOsQFRA@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/boot: pass CONFIG options in a simpler and
- more robust way
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v3 1/2] powerpc/boot: add {get,
+ put}_unaligned_be32 to xz_config.h
+Date: Fri,  5 Jul 2019 19:01:43 +0900
+Message-Id: <20190705100144.28785-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,70 +57,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Mark Greer <mgreer@animalcreek.com>,
- Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 4, 2019 at 9:26 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Masahiro Yamada <yamada.masahiro@socionext.com> writes:
->
-> > Commit 5e9dcb6188a4 ("powerpc/boot: Expose Kconfig symbols to wrapper")
-> > was wrong, but commit e41b93a6be57 ("powerpc/boot: Fix build failures
-> > with -j 1") was also wrong.
-> >
-> > The correct dependency is:
-> >
-> >   $(obj)/serial.o: $(obj)/autoconf.h
-> >
-> > However, I do not see the reason why we need to copy autoconf.h to
-> > arch/power/boot/. Nor do I see consistency in the way of passing
-> > CONFIG options.
-> >
-> > decompress.c references CONFIG_KERNEL_GZIP and CONFIG_KERNEL_XZ, which
-> > are passed via the command line.
-> >
-> > serial.c includes autoconf.h to reference a couple of CONFIG options,
-> > but this is fragile because we often forget to include "autoconf.h"
-> > from source files.
-> >
-> > In fact, it is already broken.
-> >
-> > ppc_asm.h references CONFIG_PPC_8xx, but utils.S is not given any way
-> > to access CONFIG options. So, CONFIG_PPC_8xx is never defined here.
-> >
-> > Pass $(LINUXINCLUDE) to make sure CONFIG options are accessible from
-> > all .c and .S files in arch/powerpc/boot/.
->
-> This breaks our skiroot_defconfig, I don't know why yet:
->
->   In file included from /kisskb/src/arch/powerpc/boot/../../../lib/decompress_unxz.c:236:0,
->                    from /kisskb/src/arch/powerpc/boot/decompress.c:42:
->   /kisskb/src/arch/powerpc/boot/../../../lib/xz/xz_dec_bcj.c: In function 'bcj_powerpc':
->   /kisskb/src/arch/powerpc/boot/../../../lib/xz/xz_dec_bcj.c:166:11: warning: implicit declaration of function 'get_unaligned_be32' [-Wimplicit-function-declaration]
->      instr = get_unaligned_be32(buf + i);
+The next commit will make the way of passing CONFIG options more robust.
+Unfortunately, it would uncover another hidden issue; without this
+commit, skiroot_defconfig would be broken like this:
 
+|   WRAP    arch/powerpc/boot/zImage.pseries
+| arch/powerpc/boot/wrapper.a(decompress.o): In function `bcj_powerpc.isra.10':
+| decompress.c:(.text+0x720): undefined reference to `get_unaligned_be32'
+| decompress.c:(.text+0x7a8): undefined reference to `put_unaligned_be32'
+| make[1]: *** [arch/powerpc/boot/Makefile;383: arch/powerpc/boot/zImage.pseries] Error 1
+| make: *** [arch/powerpc/Makefile;295: zImage] Error 2
 
-OK, now I see the cause of the error.
+skiroot_defconfig is the only defconfig that enables CONFIG_KERNEL_XZ
+for ppc, which has never been correctly built before.
 
-I will insert a new patch in v3.
+I figured out the root cause in lib/decompress_unxz.c:
 
-Thanks.
+| #ifdef CONFIG_PPC
+| #      define XZ_DEC_POWERPC
+| #endif
 
+CONFIG_PPC is undefined here in the ppc bootwrapper because autoconf.h
+is not included except by arch/powerpc/boot/serial.c
 
->
-> http://kisskb.ellerman.id.au/kisskb/buildresult/13862914/
->
-> cheers
+XZ_DEC_POWERPC is not defined, therefore, bcj_powerpc() is not compiled
+for the bootwrapper.
 
+With the next commit passing CONFIG_PPC correctly, we would realize that
+{get,put}_unaligned_be32 was missing.
 
+Unlike the other decompressors, the ppc bootwrapper duplicates all the
+necessary helpers in arch/powerpc/boot/.
 
+The other architectures define __KERNEL__ and pull in helpers for
+building the decompressors.
+
+If ppc bootwrapper had defined __KERNEL__, lib/xz/xz_private.h would
+have included <asm/unaligned.h>:
+
+| #ifdef __KERNEL__
+| #       include <linux/xz.h>
+| #       include <linux/kernel.h>
+| #       include <asm/unaligned.h>
+
+However, doing so would cause tons of definition conflicts since the
+bootwrapper has duplicated everything.
+
+I just added copies of {get,put}_unaligned_be32, following the
+bootwrapper coding convention.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+Changes in v3:
+ - New patch to fix the potential issue of skiroot_defconfig
+
+Changes in v2: None
+
+ arch/powerpc/boot/xz_config.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/powerpc/boot/xz_config.h b/arch/powerpc/boot/xz_config.h
+index e22e5b3770dd..ebfadd39e192 100644
+--- a/arch/powerpc/boot/xz_config.h
++++ b/arch/powerpc/boot/xz_config.h
+@@ -20,10 +20,30 @@ static inline uint32_t swab32p(void *p)
+ 
+ #ifdef __LITTLE_ENDIAN__
+ #define get_le32(p) (*((uint32_t *) (p)))
++#define cpu_to_be32(x) swab32(x)
++static inline u32 be32_to_cpup(const u32 *p)
++{
++	return swab32p((u32 *)p);
++}
+ #else
+ #define get_le32(p) swab32p(p)
++#define cpu_to_be32(x) (x)
++static inline u32 be32_to_cpup(const u32 *p)
++{
++	return *p;
++}
+ #endif
+ 
++static inline uint32_t get_unaligned_be32(const void *p)
++{
++	return be32_to_cpup(p);
++}
++
++static inline void put_unaligned_be32(u32 val, void *p)
++{
++	*((u32 *)p) = cpu_to_be32(val);
++}
++
+ #define memeq(a, b, size) (memcmp(a, b, size) == 0)
+ #define memzero(buf, size) memset(buf, 0, size)
+ 
 -- 
-Best Regards
-Masahiro Yamada
+2.17.1
+
