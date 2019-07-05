@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7066960D37
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 23:42:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB92D60D36
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 23:40:54 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45gSvS004yzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 07:40:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45gSxf2FWTzDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 07:42:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="YGmWU9DG"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="ueW/6hnI"; 
  dkim-atps=neutral
 Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
  [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45gSbm5jdVzDqfZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 07:27:16 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id cl9so5100050plb.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Jul 2019 14:27:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45gSbp71TfzDqfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 07:27:18 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id cl9so5100107plb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Jul 2019 14:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=O0RpxuR45dwfhoqht7ZB55QWMjctg/I39pbBZLVMTYI=;
- b=YGmWU9DGSv5zjvV6AL9F/VEzAaDLhVCfnHZiJiUGNn4QRC1DVY8F2hCRVBBOpyZuQR
- L3jtPtD+lvZFQfmpXPLMd7/dTx9K0L83k/aKpoRRZ5lZEahcUZBU5NB3Dp3amKNKTDR0
- B5VEtMgiKw7FaubMsbd/mVbV6Alb+44JzyLdLsu+SgASc2xTJ3p5rGiQCQbLCKFLvE5z
- q4C9ZyfbNpUL5RYj+i/miIYC9SW5NxYOoNuB9kzeu93TrWce4La+Yp6KqXFXCPTch9ua
- 7oVc1VaHUfzWw+cehU1uf7/eKG0j1Ry0ly/5PoINNlb5KaLZDWOiRutnWeqI61rbozCP
- /k+A==
+ bh=axYWSsfHOMfaO2yOVtRa+b2+I5xlDCKGZqyLe1hpOGQ=;
+ b=ueW/6hnIfsmUUgH/fRZbFjX9Y7mp9bhRbTfhCJjvQ5TeduQVwfDHiG6DgSUi8Npi0B
+ cjZfQ8zhSAqgMeBOsv8D+nQKmNSaFjGiLHvzrJtg27zJbCzFfxT1tN7NdadcDdDzcTFK
+ 1Otvzy9gdEM/mVToLE9p4kHv3VtbVUjGa4dTKkabkyNNGdn9YeFI+Un7ss1tLsHPXWPx
+ AEdB8JRhRfOOrSScNJnVEUFFW2W8+7z6CU6pLhZNTqnmfbqxDyDxBzZtDEF7kCo6hNsv
+ fhVw966BBvRQT9YuUCAGSEu2To0xeSgyp3PYYQ7vpFjkJBV8eLvoHA1tO9e4HaAr5v7F
+ 3iPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=O0RpxuR45dwfhoqht7ZB55QWMjctg/I39pbBZLVMTYI=;
- b=SgL2vjhUpW4tH5B1PqHBQ4Wcq1Kw/MzUq28kAJphBJT/rMSb8btw18/rNvx5cwA1nk
- 5Xbgg2Iw+0iaYVcm39LR/86RJjj4brfKVB5kiRjxoqbSAVgQ/hSUh9hNXXPjGjD6GboY
- zdvkOxrRcsCrMV+ETI7lpmIfWLF2cJ1B3pIUAglTMXy+AtWz+brXVwSIQe/g+cPTqAn9
- 6unlNX4KCC8KrLuBmt+wKJ+D4g8bjpqApM2tl36HqvK0rN1Z+IX5GKjxvdAxXbiWiesp
- wRmWK6xgFs09svS+qmpbSSRBAZY0JdO/GeoD2qAmoGT4JFf1Nx7ufKu3XUgEOdR+wJWC
- lE/g==
-X-Gm-Message-State: APjAAAVUBS4bl0Huc7fjJ896pbUz++0Mo/i3Kv+CKJPUbpp0fIsMa8o9
- 5h8rBnJqR7MW3rd0DS/GT7fIxw0dXU2cLA==
-X-Google-Smtp-Source: APXvYqzj2Slb+QlEs/jYCO2McbxUwTjEPUCb/0Mzz1GoysbGbTA7nKlDd1cHY+8/mnakS8asEFzM0A==
-X-Received: by 2002:a17:902:fe14:: with SMTP id
- g20mr7510836plj.54.1562362034046; 
- Fri, 05 Jul 2019 14:27:14 -0700 (PDT)
+ bh=axYWSsfHOMfaO2yOVtRa+b2+I5xlDCKGZqyLe1hpOGQ=;
+ b=ZkT21xW1icPiz79IqkLumzbbO2qNRTI0090HqhJZV6h3lX3fYde2iqJRjmdfydXv/w
+ wWL3qY+WduJLf+aLmeA9Y6LnzSDn5b1pBf3YAGMpHj5atZlGXUpod+weu8WY/UR9yjPg
+ 22secJQVgJC031QADGR7S5plfG7UwsPhw/F2gihB0Txwf8wsA9Uwbm7rRQ8UPWYtoNFm
+ CoemJpngE3Gx3TgPaX0Q3YTt1VUNjBFYrEnY/EGwRwmzmjjvl0YdKwdICs5d1CWpWKKd
+ QN/ltxPib2qnJ90IdzNjFg/+TUDixCNTKx+7r7YVkBJVOWYkt4VBR6V83lNJZJTXxJWN
+ KB1g==
+X-Gm-Message-State: APjAAAXv3qJC9/rZMkf5zfgRmULMl4lJmPmfPvIum2MH/f961swFFwGj
+ GaH2m3BTNtRBrAF3JKyUFYFKmp7wzBE1nA==
+X-Google-Smtp-Source: APXvYqwbyGMt0K9SNiXl5mKM9MXzShkZmNSe1NT2RO3Y6uRb6BLqJxKfIk4eEo/iHX2QQuHfxnCDHA==
+X-Received: by 2002:a17:902:2868:: with SMTP id
+ e95mr7383480plb.319.1562362036934; 
+ Fri, 05 Jul 2019 14:27:16 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([49.205.217.222])
- by smtp.gmail.com with ESMTPSA id o13sm9321389pje.28.2019.07.05.14.27.11
+ by smtp.gmail.com with ESMTPSA id o13sm9321389pje.28.2019.07.05.14.27.14
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 05 Jul 2019 14:27:13 -0700 (PDT)
+ Fri, 05 Jul 2019 14:27:16 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [v3 6/7] powerpc: add machine check safe copy_to_user
-Date: Sat,  6 Jul 2019 02:56:46 +0530
-Message-Id: <20190705212647.21750-7-santosh@fossix.org>
+Subject: [v3 7/7] powerpc/64s: save r13 in MCE handler (simulator workaroud)
+Date: Sat,  6 Jul 2019 02:56:47 +0530
+Message-Id: <20190705212647.21750-8-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190705212647.21750-1-santosh@fossix.org>
 References: <20190705212647.21750-1-santosh@fossix.org>
@@ -89,49 +89,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use  memcpy_mcsafe() implementation to define copy_to_user_mcsafe()
+From: Reza Arbab <arbab@linux.ibm.com>
 
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Testing my memcpy_mcsafe() work in progress with an injected UE, I get
+an error like this immediately after the function returns:
+
+BUG: Unable to handle kernel data access at 0x7fff84dec8f8
+Faulting instruction address: 0xc0080000009c00b0
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
+Modules linked in: mce(O+) vmx_crypto crc32c_vpmsum
+CPU: 0 PID: 1375 Comm: modprobe Tainted: G           O      5.1.0-rc6 #267
+NIP:  c0080000009c00b0 LR: c0080000009c00a8 CTR: c000000000095f90
+REGS: c0000000ee197790 TRAP: 0300   Tainted: G           O       (5.1.0-rc6)
+MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 88002826  XER: 00040000
+CFAR: c000000000095f8c DAR: 00007fff84dec8f8 DSISR: 40000000 IRQMASK: 0
+GPR00: 000000006c6c6568 c0000000ee197a20 c0080000009c8400 fffffffffffffff2
+GPR04: c0080000009c02e0 0000000000000006 0000000000000000 c000000003c834c8
+GPR08: 0080000000000000 776a6681b7fb5100 0000000000000000 c0080000009c01c8
+GPR12: c000000000095f90 00007fff84debc00 000000004d071440 0000000000000000
+GPR16: 0000000100000601 c0080000009e0000 c000000000c98dd8 c000000000c98d98
+GPR20: c000000003bba970 c0080000009c04d0 c0080000009c0618 c0000000001e5820
+GPR24: 0000000000000000 0000000000000100 0000000000000001 c000000003bba958
+GPR28: c0080000009c02e8 c0080000009c0318 c0080000009c02e0 0000000000000000
+NIP [c0080000009c00b0] cause_ue+0xa8/0xe8 [mce]
+LR [c0080000009c00a8] cause_ue+0xa0/0xe8 [mce]
+
+After debugging we see that the first instruction at vector 200 is skipped by
+the simulator, due to which r13 is not saved. Adding a nop at 0x200 fixes the
+issue.
+
+(This commit is needed for testing this series. This should not be taken
+into the tree)
 ---
- arch/powerpc/Kconfig               |  1 +
- arch/powerpc/include/asm/uaccess.h | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ arch/powerpc/kernel/exceptions-64s.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8c1c636308c8..a173b392c272 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -134,6 +134,7 @@ config PPC
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
-+	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 76f34346b642..f8fcaab4c5bc 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -386,6 +386,18 @@ static inline unsigned long raw_copy_to_user(void __user *to,
- 	return ret;
- }
- 
-+static __always_inline unsigned long __must_check
-+copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
-+{
-+	if (likely(check_copy_size(from, n, true))) {
-+		allow_write_to_user(to, n);
-+		n = memcpy_mcsafe(to, from, n);
-+		prevent_write_to_user(to, n);
-+	}
-+
-+	return n;
-+}
-+
- extern unsigned long __clear_user(void __user *addr, unsigned long size);
- 
- static inline unsigned long clear_user(void __user *addr, unsigned long size)
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 73ba246ca11d..8e43abb2a744 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -255,6 +255,7 @@ EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
+ 	 * some code path might still want to branch into the original
+ 	 * vector
+ 	 */
++	nop
+ 	SET_SCRATCH0(r13)		/* save r13 */
+ 	EXCEPTION_PROLOG_0(PACA_EXMC)
+ BEGIN_FTR_SECTION
 -- 
 2.20.1
 
