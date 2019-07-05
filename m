@@ -1,94 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E33D600A8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 07:32:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6C95FF94
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 04:52:24 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45fzsK4xCxzDqdp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 12:52:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45g3QF4vm2zDqSg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 15:32:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=arbab@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="j0kXVusR"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45fzqf0GBkzDqcq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 12:50:53 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x652lAEZ022873
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 4 Jul 2019 22:50:49 -0400
-Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2thr79repr-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jul 2019 22:50:49 -0400
-Received: from localhost
- by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <arbab@linux.ibm.com>;
- Fri, 5 Jul 2019 03:50:48 +0100
-Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
- by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 5 Jul 2019 03:50:46 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x652oj5915336360
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Jul 2019 02:50:45 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5DBC5112062;
- Fri,  5 Jul 2019 02:50:45 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DBF9112061;
- Fri,  5 Jul 2019 02:50:45 +0000 (GMT)
-Received: from arbab-vm.localdomain (unknown [9.85.182.131])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  5 Jul 2019 02:50:45 +0000 (GMT)
-Received: from arbab-vm (localhost [IPv6:::1])
- by arbab-vm.localdomain (Postfix) with ESMTP id 08944100235;
- Thu,  4 Jul 2019 21:50:42 -0500 (CDT)
-Date: Thu, 4 Jul 2019 21:50:42 -0500
-From: Reza Arbab <arbab@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45g3NY64VdzDqNH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 15:31:09 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id r1so3770990pfq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jul 2019 22:31:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=qpBjxF0ZBUXgG0nB1OqStakBMQBdIcy+GceNtT2cyM4=;
+ b=j0kXVusRHns+xJp6OnwHEe7uiP6tG5SaSUmt725Lx2LvQAA0lyD7ohNdkBQOvtnF+b
+ NXLYdMFH0A21mixzJA+ihW9i+z5P+tNjYi/c0FjlIEoX8JZ+m8gM4IkkWFBCsoBYC/LB
+ nyTJ8JjjAIuWxkWFXS2e2JSBU7UJOKyCfE/hPwN+U+N9XBr75RMONhg2Pkb12YTnIycq
+ bWgfUL7Ud9Tu9y1ePvCVc5E1JzPZFLi8+1MarXlk4TKt3MnlzZNd+Ww4nhsVzIrwULRg
+ ZYAXK4UP/xVeBMS83dPrbA4QG34h8/gK/YciJp7MHfXHNere2M6Z/JQFa5zA5qmM57gv
+ EveQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=qpBjxF0ZBUXgG0nB1OqStakBMQBdIcy+GceNtT2cyM4=;
+ b=s40rsOuNaI0RwpZfxQlS8jxkS7Ki5V9o8UIm17mm6hyZ9athqahKV6iSuCff1uEZQ/
+ tzMuIGB/Kk9lTI/NwIxXt7VxPYvGrCcd1cXZCFCnMkgDw/ZdpjbvwO/Idur2HYLiG2Cs
+ IegPROdzVZ+WLdPiAvfRDL2YP2WKKlgknGNRXRuY+cGXWnt4/5PRbprIlktp+rd9tCPo
+ vAlE5p6Wj3vfhlA3XOPntfaQT6axOtw2VZ1eVFpCGvl3i9C2sz958ZcO9WJl0hwAncgv
+ rszGWd1biE7luMNDubVTDLHUj1Eqc3vaT5jWUCb4UJ97kIQgQIZtP2qhb38cLa4RvmmJ
+ a8PQ==
+X-Gm-Message-State: APjAAAVLm/YpSFDvljrZ++lOtbnsiXyDNiA9jzik+HdBfvAYk0BsbbpF
+ Qj919Luaj0xjlXTuhun9MJQ=
+X-Google-Smtp-Source: APXvYqwL3IdGs45NsJEMCpGR0tjmiNLoTsJfPQj/HnKSqPCgA9yTvvJasFxpjcfto7chGT21s5itCg==
+X-Received: by 2002:a17:90a:fa07:: with SMTP id
+ cm7mr2451752pjb.115.1562304665771; 
+ Thu, 04 Jul 2019 22:31:05 -0700 (PDT)
+Received: from localhost (193-116-88-34.tpgi.com.au. [193.116.88.34])
+ by smtp.gmail.com with ESMTPSA id i1sm10283640pjt.3.2019.07.04.22.31.04
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 04 Jul 2019 22:31:05 -0700 (PDT)
+Date: Fri, 05 Jul 2019 15:29:39 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [v2 09/12] powerpc/mce: Enable MCE notifiers in external modules
+To: Reza Arbab <arbab@linux.ibm.com>
 References: <20190702051932.511-1-santosh@fossix.org>
  <20190702051932.511-10-santosh@fossix.org>
  <1562047959.5y756f60wn.astroid@bobo.none>
  <20190703172008.aiyofnhqgbzi6ckw@arbab-vm>
  <1562207031.05iwu5t2xm.astroid@bobo.none>
+ <20190705025042.nnov5s45jc4jd5ld@arbab-vm>
+In-Reply-To: <20190705025042.nnov5s45jc4jd5ld@arbab-vm>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <1562207031.05iwu5t2xm.astroid@bobo.none>
-Organization: IBM Linux Technology Center
-User-Agent: NeoMutt/20180716
-X-TM-AS-GCONF: 00
-x-cbid: 19070502-2213-0000-0000-000003A993D7
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011381; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01227588; UDB=6.00646368; IPR=6.01008826; 
- MB=3.00027593; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-05 02:50:48
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070502-2214-0000-0000-00005F1CCF68
-Message-Id: <20190705025042.nnov5s45jc4jd5ld@arbab-vm>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-04_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=835 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907050036
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1562304274.ecukc5yx4t.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,46 +94,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 04, 2019 at 12:36:18PM +1000, Nicholas Piggin wrote:
->Reza Arbab's on July 4, 2019 3:20 am:
->> Since the notifier chain is actually part of the decision between (1)
->> and (2), it's a hard limitation then that callbacks be in real address
->> space. Is there any way to structure things so that's not the case?
->
->If we tested for KVM guest first, and went through and marked (maybe
->in a paca flag) everywhere else that put the MMU into a bad / non-host
->state, and had the notifiers use the machine check stack, then it
->would be possible to enable MMU here.
->
->Hmm, testing for IR|DR after testing for KVM guest might actually be
->enough without requiring changes outside the machine check handler...
->Actually no that may not quite work because the handler could take a
->SLB miss and it might have been triggered inside the SLB miss handler.
->
->All in all I'm pretty against turning on MMU in the MCE handler
->anywhere.
+Reza Arbab's on July 5, 2019 12:50 pm:
+> On Thu, Jul 04, 2019 at 12:36:18PM +1000, Nicholas Piggin wrote:
+>>Reza Arbab's on July 4, 2019 3:20 am:
+>>> Since the notifier chain is actually part of the decision between (1)
+>>> and (2), it's a hard limitation then that callbacks be in real address
+>>> space. Is there any way to structure things so that's not the case?
+>>
+>>If we tested for KVM guest first, and went through and marked (maybe
+>>in a paca flag) everywhere else that put the MMU into a bad / non-host
+>>state, and had the notifiers use the machine check stack, then it
+>>would be possible to enable MMU here.
+>>
+>>Hmm, testing for IR|DR after testing for KVM guest might actually be
+>>enough without requiring changes outside the machine check handler...
+>>Actually no that may not quite work because the handler could take a
+>>SLB miss and it might have been triggered inside the SLB miss handler.
+>>
+>>All in all I'm pretty against turning on MMU in the MCE handler
+>>anywhere.
+>=20
+> Hey, fair enough. Just making sure there really isnt't any room to make=20
+> things work the way I was trying.
 
-Hey, fair enough. Just making sure there really isnt't any room to make 
-things work the way I was trying.
+Understand.
 
->> Luckily this patch isn't really necessary for memcpy_mcsafe(), but we
->> have a couple of other potential users of the notifier from external
->> modules (so their callbacks would require virtual mode).
->
->What users are there? Do they do any significant amount of logic that
->can not be moved to vmlinux?
+>=20
+>>> Luckily this patch isn't really necessary for memcpy_mcsafe(), but we
+>>> have a couple of other potential users of the notifier from external
+>>> modules (so their callbacks would require virtual mode).
+>>
+>>What users are there? Do they do any significant amount of logic that
+>>can not be moved to vmlinux?
+>=20
+> One I had in mind was the NVIDIA driver. When taking a UE from defective=20
+> GPU memory, it could use the notifier to save the bad address to a=20
+> blacklist in their nvram. Not so much recovering the machine check, just=20
+> logging before the system reboots.
+>=20
+> The other user is a prototype driver for the IBM Research project we had=20
+> a talk about offline a while back.
 
-One I had in mind was the NVIDIA driver. When taking a UE from defective 
-GPU memory, it could use the notifier to save the bad address to a 
-blacklist in their nvram. Not so much recovering the machine check, just 
-logging before the system reboots.
+Okay. It might be possible to save the address in the kernel and
+then notify the driver afterward. For user-mode and any non-atomic
+user copy AFAIK the irq_work should practically run synchronously
+after the machine check returns so it might be enough to have a
+notifier in the irq work processing.
 
-The other user is a prototype driver for the IBM Research project we had 
-a talk about offline a while back.
+> We can make this patchset work for memcpy_mcsafe(), but I think it's=20
+> back to the drawing board for the others.
 
-We can make this patchset work for memcpy_mcsafe(), but I think it's 
-back to the drawing board for the others.
+For the first stage that would be preferable.
 
--- 
-Reza Arbab
-
+Thanks,
+Nick
+=
