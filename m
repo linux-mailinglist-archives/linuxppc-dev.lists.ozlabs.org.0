@@ -2,36 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7308600A9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 07:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E687600B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 07:57:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45g3Rq3WXRzDqgS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 15:33:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45g3ym6SgPzDqXR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2019 15:57:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=dyoung@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 45g3Nm14rgzDqdd
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 15:31:18 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D37028;
- Thu,  4 Jul 2019 22:31:15 -0700 (PDT)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com
- [10.162.41.127])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 978163F246;
- Thu,  4 Jul 2019 22:32:57 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH] mm/kprobes: Add generic kprobe_fault_handler() fallback
- definition
-Date: Fri,  5 Jul 2019 11:00:29 +0530
-Message-Id: <1562304629-29376-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45g3xH39WtzDqSK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2019 15:55:59 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 8C622307CDEA;
+ Fri,  5 Jul 2019 05:55:56 +0000 (UTC)
+Received: from localhost.localdomain (ovpn-12-83.pek2.redhat.com [10.72.12.83])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8204B86420;
+ Fri,  5 Jul 2019 05:55:44 +0000 (UTC)
+Date: Fri, 5 Jul 2019 13:55:40 +0800
+From: Dave Young <dyoung@redhat.com>
+To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: Re: [PATCH 18/39] docs: admin-guide: add kdump documentation into it
+Message-ID: <20190705055540.GA2790@localhost.localdomain>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
+ <654e7591c044632c06257e0f069a52c0bb993554.1561724493.git.mchehab+samsung@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <654e7591c044632c06257e0f069a52c0bb993554.1561724493.git.mchehab+samsung@kernel.org>
+User-Agent: Mutt/1.9.1 (2017-09-22)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.49]); Fri, 05 Jul 2019 05:55:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,307 +56,254 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- linux-snps-arc@lists.infradead.org, Guenter Roeck <linux@roeck-us.net>,
- Fenghua Yu <fenghua.yu@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, linuxppc-dev@lists.ozlabs.org,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
- Tony Luck <tony.luck@intel.com>, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- Paul Burton <paul.burton@mips.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>, Enrico Weigelt <info@metux.net>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Rich Felker <dalias@libc.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jerry Hoemann <jerry.hoemann@hpe.com>, Harry Wei <harryxiyou@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Alex Shi <alex.shi@linux.alibaba.com>, Will Deacon <will@kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-watchdog@vger.kernel.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Wim Van Sebroeck <wim@linux-watchdog.org>,
+ linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Architectures like parisc enable CONFIG_KROBES without having a definition
-for kprobe_fault_handler() which results in a build failure. Arch needs to
-provide kprobe_fault_handler() as it is platform specific and cannot have
-a generic working alternative. But in the event when platform lacks such a
-definition there needs to be a fallback.
+On 06/28/19 at 09:30am, Mauro Carvalho Chehab wrote:
+> The Kdump documentation describes procedures with admins use
+> in order to solve issues on their systems.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> ---
+>  Documentation/admin-guide/bug-hunting.rst            | 4 ++--
+>  Documentation/admin-guide/index.rst                  | 1 +
+>  Documentation/{ => admin-guide}/kdump/gdbmacros.txt  | 0
+>  Documentation/{ => admin-guide}/kdump/index.rst      | 1 -
+>  Documentation/{ => admin-guide}/kdump/kdump.rst      | 0
+>  Documentation/{ => admin-guide}/kdump/vmcoreinfo.rst | 0
+>  Documentation/admin-guide/kernel-parameters.txt      | 6 +++---
+>  Documentation/powerpc/firmware-assisted-dump.rst     | 2 +-
+>  Documentation/translations/zh_CN/oops-tracing.txt    | 4 ++--
+>  Documentation/watchdog/hpwdt.rst                     | 2 +-
+>  MAINTAINERS                                          | 2 +-
+>  arch/arm/Kconfig                                     | 2 +-
+>  arch/arm64/Kconfig                                   | 2 +-
+>  arch/sh/Kconfig                                      | 2 +-
+>  arch/x86/Kconfig                                     | 4 ++--
+>  15 files changed, 16 insertions(+), 16 deletions(-)
+>  rename Documentation/{ => admin-guide}/kdump/gdbmacros.txt (100%)
+>  rename Documentation/{ => admin-guide}/kdump/index.rst (97%)
+>  rename Documentation/{ => admin-guide}/kdump/kdump.rst (100%)
+>  rename Documentation/{ => admin-guide}/kdump/vmcoreinfo.rst (100%)
+> 
+> diff --git a/Documentation/admin-guide/bug-hunting.rst b/Documentation/admin-guide/bug-hunting.rst
+> index b761aa2a51d2..44b8a4edd348 100644
+> --- a/Documentation/admin-guide/bug-hunting.rst
+> +++ b/Documentation/admin-guide/bug-hunting.rst
+> @@ -90,9 +90,9 @@ the disk is not available then you have three options:
+>      run a null modem to a second machine and capture the output there
+>      using your favourite communication program.  Minicom works well.
+>  
+> -(3) Use Kdump (see Documentation/kdump/kdump.rst),
+> +(3) Use Kdump (see Documentation/admin-guide/kdump/kdump.rst),
+>      extract the kernel ring buffer from old memory with using dmesg
+> -    gdbmacro in Documentation/kdump/gdbmacros.txt.
+> +    gdbmacro in Documentation/admin-guide/kdump/gdbmacros.txt.
+>  
+>  Finding the bug's location
+>  --------------------------
+> diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+> index 9899b78dbe50..65e821a03aca 100644
+> --- a/Documentation/admin-guide/index.rst
+> +++ b/Documentation/admin-guide/index.rst
+> @@ -39,6 +39,7 @@ problems and bugs in particular.
+>     ramoops
+>     dynamic-debug-howto
+>     init
+> +   kdump/index
+>     perf/index
+>  
+>  This is the beginning of a section with information of interest to
+> diff --git a/Documentation/kdump/gdbmacros.txt b/Documentation/admin-guide/kdump/gdbmacros.txt
+> similarity index 100%
+> rename from Documentation/kdump/gdbmacros.txt
+> rename to Documentation/admin-guide/kdump/gdbmacros.txt
+> diff --git a/Documentation/kdump/index.rst b/Documentation/admin-guide/kdump/index.rst
+> similarity index 97%
+> rename from Documentation/kdump/index.rst
+> rename to Documentation/admin-guide/kdump/index.rst
+> index 2b17fcf6867a..8e2ebd0383cd 100644
+> --- a/Documentation/kdump/index.rst
+> +++ b/Documentation/admin-guide/kdump/index.rst
+> @@ -1,4 +1,3 @@
+> -:orphan:
+>  
+>  ================================================================
+>  Documentation for Kdump - The kexec-based Crash Dumping Solution
+> diff --git a/Documentation/kdump/kdump.rst b/Documentation/admin-guide/kdump/kdump.rst
+> similarity index 100%
+> rename from Documentation/kdump/kdump.rst
+> rename to Documentation/admin-guide/kdump/kdump.rst
+> diff --git a/Documentation/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+> similarity index 100%
+> rename from Documentation/kdump/vmcoreinfo.rst
+> rename to Documentation/admin-guide/kdump/vmcoreinfo.rst
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index e38b96d061f4..9b535c0e22f3 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -708,14 +708,14 @@
+>  			[KNL, x86_64] select a region under 4G first, and
+>  			fall back to reserve region above 4G when '@offset'
+>  			hasn't been specified.
+> -			See Documentation/kdump/kdump.rst for further details.
+> +			See Documentation/admin-guide/kdump/kdump.rst for further details.
+>  
+>  	crashkernel=range1:size1[,range2:size2,...][@offset]
+>  			[KNL] Same as above, but depends on the memory
+>  			in the running system. The syntax of range is
+>  			start-[end] where start and end are both
+>  			a memory unit (amount[KMG]). See also
+> -			Documentation/kdump/kdump.rst for an example.
+> +			Documentation/admin-guide/kdump/kdump.rst for an example.
+>  
+>  	crashkernel=size[KMG],high
+>  			[KNL, x86_64] range could be above 4G. Allow kernel
+> @@ -1207,7 +1207,7 @@
+>  			Specifies physical address of start of kernel core
+>  			image elf header and optionally the size. Generally
+>  			kexec loader will pass this option to capture kernel.
+> -			See Documentation/kdump/kdump.rst for details.
+> +			See Documentation/admin-guide/kdump/kdump.rst for details.
+>  
+>  	enable_mtrr_cleanup [X86]
+>  			The kernel tries to adjust MTRR layout from continuous
+> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
+> index d7fa7c35dd12..9ca12830a48e 100644
+> --- a/Documentation/powerpc/firmware-assisted-dump.rst
+> +++ b/Documentation/powerpc/firmware-assisted-dump.rst
+> @@ -61,7 +61,7 @@ as follows:
+>           the default calculated size. Use this option if default
+>           boot memory size is not sufficient for second kernel to
+>           boot successfully. For syntax of crashkernel= parameter,
+> -         refer to Documentation/kdump/kdump.rst. If any offset is
+> +         refer to Documentation/admin-guide/kdump/kdump.rst. If any offset is
+>           provided in crashkernel= parameter, it will be ignored
+>           as fadump uses a predefined offset to reserve memory
+>           for boot memory dump preservation in case of a crash.
+> diff --git a/Documentation/translations/zh_CN/oops-tracing.txt b/Documentation/translations/zh_CN/oops-tracing.txt
+> index 368ddd05b304..c5f3bda7abcb 100644
+> --- a/Documentation/translations/zh_CN/oops-tracing.txt
+> +++ b/Documentation/translations/zh_CN/oops-tracing.txt
+> @@ -53,8 +53,8 @@ cat /proc/kmsg > file， 然而你必须介入中止传输， kmsg是一个“
+>  （2）用串口终端启动（请参看Documentation/admin-guide/serial-console.rst），运行一个null
+>  modem到另一台机器并用你喜欢的通讯工具获取输出。Minicom工作地很好。
+>  
+> -（3）使用Kdump（请参看Documentation/kdump/kdump.rst），
+> -使用在Documentation/kdump/gdbmacros.txt中定义的dmesg gdb宏，从旧的内存中提取内核
+> +（3）使用Kdump（请参看Documentation/admin-guide/kdump/kdump.rst），
+> +使用在Documentation/admin-guide/kdump/gdbmacros.txt中定义的dmesg gdb宏，从旧的内存中提取内核
+>  环形缓冲区。
+>  
+>  完整信息
+> diff --git a/Documentation/watchdog/hpwdt.rst b/Documentation/watchdog/hpwdt.rst
+> index 94a96371113e..49c647dba8aa 100644
+> --- a/Documentation/watchdog/hpwdt.rst
+> +++ b/Documentation/watchdog/hpwdt.rst
+> @@ -59,7 +59,7 @@ Last reviewed: 08/20/2018
+>   and loop forever.  This is generally not what a watchdog user wants.
+>  
+>   For those wishing to learn more please see:
+> -	Documentation/kdump/kdump.rst
+> +	Documentation/admin-guide/kdump/kdump.rst
+>  	Documentation/admin-guide/kernel-parameters.txt (panic=)
+>  	Your Linux Distribution specific documentation.
+>  
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d35ff73f718a..4c622a19ab7d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8622,7 +8622,7 @@ R:	Vivek Goyal <vgoyal@redhat.com>
+>  L:	kexec@lists.infradead.org
+>  W:	http://lse.sourceforge.net/kdump/
+>  S:	Maintained
+> -F:	Documentation/kdump/
+> +F:	Documentation/admin-guide/kdump/
+>  
+>  KEENE FM RADIO TRANSMITTER DRIVER
+>  M:	Hans Verkuil <hverkuil@xs4all.nl>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 8bf8985ec667..d5bd4350fcbd 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -2025,7 +2025,7 @@ config CRASH_DUMP
+>  	  kdump/kexec. The crash dump kernel must be compiled to a
+>  	  memory address not used by the main kernel
+>  
+> -	  For more details see Documentation/kdump/kdump.rst
+> +	  For more details see Documentation/admin-guide/kdump/kdump.rst
+>  
+>  config AUTO_ZRELADDR
+>  	bool "Auto calculation of the decompressed kernel image address"
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index accb045997c6..e1ea69994e0f 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -997,7 +997,7 @@ config CRASH_DUMP
+>  	  reserved region and then later executed after a crash by
+>  	  kdump/kexec.
+>  
+> -	  For more details see Documentation/kdump/kdump.rst
+> +	  For more details see Documentation/admin-guide/kdump/kdump.rst
+>  
+>  config XEN_DOM0
+>  	def_bool y
+> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+> index 31a7d12db705..c2858ac6a46a 100644
+> --- a/arch/sh/Kconfig
+> +++ b/arch/sh/Kconfig
+> @@ -626,7 +626,7 @@ config CRASH_DUMP
+>  	  to a memory address not used by the main kernel using
+>  	  PHYSICAL_START.
+>  
+> -	  For more details see Documentation/kdump/kdump.rst
+> +	  For more details see Documentation/admin-guide/kdump/kdump.rst
+>  
+>  config KEXEC_JUMP
+>  	bool "kexec jump (EXPERIMENTAL)"
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index c9d59ca5e3ac..489fd833b980 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -2057,7 +2057,7 @@ config CRASH_DUMP
+>  	  to a memory address not used by the main kernel or BIOS using
+>  	  PHYSICAL_START, or it must be built as a relocatable image
+>  	  (CONFIG_RELOCATABLE=y).
+> -	  For more details see Documentation/kdump/kdump.rst
+> +	  For more details see Documentation/admin-guide/kdump/kdump.rst
+>  
+>  config KEXEC_JUMP
+>  	bool "kexec jump"
+> @@ -2094,7 +2094,7 @@ config PHYSICAL_START
+>  	  the reserved region.  In other words, it can be set based on
+>  	  the "X" value as specified in the "crashkernel=YM@XM"
+>  	  command line boot parameter passed to the panic-ed
+> -	  kernel. Please take a look at Documentation/kdump/kdump.rst
+> +	  kernel. Please take a look at Documentation/admin-guide/kdump/kdump.rst
+>  	  for more details about crash dumps.
+>  
+>  	  Usage of bzImage for capturing the crash dump is recommended as
+> -- 
+> 2.21.0
+> 
 
-This adds a stub kprobe_fault_handler() definition which not only prevents
-a build failure but also makes sure that kprobe_page_fault() if called will
-always return negative in absence of a sane platform specific alternative.
+Acked-by: Dave Young <dyoung@redhat.com>
 
-While here wrap kprobe_page_fault() in CONFIG_KPROBES. This enables stud
-definitions for generic kporbe_fault_handler() and kprobes_built_in() can
-just be dropped. Only on x86 it needs to be added back locally as it gets
-used in a !CONFIG_KPROBES function do_general_protection().
-
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Paul Burton <paul.burton@mips.com>
-Cc: James Hogan <jhogan@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Cc: Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Allison Randal <allison@lohutok.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Enrico Weigelt <info@metux.net>
-Cc: Richard Fontana <rfontana@redhat.com>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: x86@kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arc/include/asm/kprobes.h     |  1 +
- arch/arm/include/asm/kprobes.h     |  1 +
- arch/arm64/include/asm/kprobes.h   |  1 +
- arch/ia64/include/asm/kprobes.h    |  1 +
- arch/mips/include/asm/kprobes.h    |  1 +
- arch/powerpc/include/asm/kprobes.h |  1 +
- arch/s390/include/asm/kprobes.h    |  1 +
- arch/sh/include/asm/kprobes.h      |  1 +
- arch/sparc/include/asm/kprobes.h   |  1 +
- arch/x86/include/asm/kprobes.h     |  6 ++++++
- include/linux/kprobes.h            | 32 ++++++++++++++++++------------
- 11 files changed, 34 insertions(+), 13 deletions(-)
-
-diff --git a/arch/arc/include/asm/kprobes.h b/arch/arc/include/asm/kprobes.h
-index 2134721dce44..ee8efe256675 100644
---- a/arch/arc/include/asm/kprobes.h
-+++ b/arch/arc/include/asm/kprobes.h
-@@ -45,6 +45,7 @@ struct kprobe_ctlblk {
- 	struct prev_kprobe prev_kprobe;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- int kprobe_fault_handler(struct pt_regs *regs, unsigned long cause);
- void kretprobe_trampoline(void);
- void trap_is_kprobe(unsigned long address, struct pt_regs *regs);
-diff --git a/arch/arm/include/asm/kprobes.h b/arch/arm/include/asm/kprobes.h
-index 213607a1f45c..660f877b989f 100644
---- a/arch/arm/include/asm/kprobes.h
-+++ b/arch/arm/include/asm/kprobes.h
-@@ -38,6 +38,7 @@ struct kprobe_ctlblk {
- 	struct prev_kprobe prev_kprobe;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- void arch_remove_kprobe(struct kprobe *);
- int kprobe_fault_handler(struct pt_regs *regs, unsigned int fsr);
- int kprobe_exceptions_notify(struct notifier_block *self,
-diff --git a/arch/arm64/include/asm/kprobes.h b/arch/arm64/include/asm/kprobes.h
-index 97e511d645a2..667773f75616 100644
---- a/arch/arm64/include/asm/kprobes.h
-+++ b/arch/arm64/include/asm/kprobes.h
-@@ -42,6 +42,7 @@ struct kprobe_ctlblk {
- 	struct kprobe_step_ctx ss_ctx;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- void arch_remove_kprobe(struct kprobe *);
- int kprobe_fault_handler(struct pt_regs *regs, unsigned int fsr);
- int kprobe_exceptions_notify(struct notifier_block *self,
-diff --git a/arch/ia64/include/asm/kprobes.h b/arch/ia64/include/asm/kprobes.h
-index c5cf5e4fb338..c321e8585089 100644
---- a/arch/ia64/include/asm/kprobes.h
-+++ b/arch/ia64/include/asm/kprobes.h
-@@ -106,6 +106,7 @@ struct arch_specific_insn {
- 	unsigned short slot;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- extern int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
- extern int kprobe_exceptions_notify(struct notifier_block *self,
- 				    unsigned long val, void *data);
-diff --git a/arch/mips/include/asm/kprobes.h b/arch/mips/include/asm/kprobes.h
-index 68b1e5d458cf..d1efe991ea22 100644
---- a/arch/mips/include/asm/kprobes.h
-+++ b/arch/mips/include/asm/kprobes.h
-@@ -40,6 +40,7 @@ do {									\
- 
- #define kretprobe_blacklist_size 0
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- void arch_remove_kprobe(struct kprobe *p);
- int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
- 
-diff --git a/arch/powerpc/include/asm/kprobes.h b/arch/powerpc/include/asm/kprobes.h
-index 66b3f2983b22..c94f375ec957 100644
---- a/arch/powerpc/include/asm/kprobes.h
-+++ b/arch/powerpc/include/asm/kprobes.h
-@@ -84,6 +84,7 @@ struct arch_optimized_insn {
- 	kprobe_opcode_t *insn;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- extern int kprobe_exceptions_notify(struct notifier_block *self,
- 					unsigned long val, void *data);
- extern int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
-diff --git a/arch/s390/include/asm/kprobes.h b/arch/s390/include/asm/kprobes.h
-index b106aa29bf55..0ecaebb78092 100644
---- a/arch/s390/include/asm/kprobes.h
-+++ b/arch/s390/include/asm/kprobes.h
-@@ -73,6 +73,7 @@ struct kprobe_ctlblk {
- void arch_remove_kprobe(struct kprobe *p);
- void kretprobe_trampoline(void);
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
- int kprobe_exceptions_notify(struct notifier_block *self,
- 	unsigned long val, void *data);
-diff --git a/arch/sh/include/asm/kprobes.h b/arch/sh/include/asm/kprobes.h
-index 6171682f7798..637a698393c0 100644
---- a/arch/sh/include/asm/kprobes.h
-+++ b/arch/sh/include/asm/kprobes.h
-@@ -45,6 +45,7 @@ struct kprobe_ctlblk {
- 	struct prev_kprobe prev_kprobe;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- extern int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
- extern int kprobe_exceptions_notify(struct notifier_block *self,
- 				    unsigned long val, void *data);
-diff --git a/arch/sparc/include/asm/kprobes.h b/arch/sparc/include/asm/kprobes.h
-index bfcaa6326c20..9aa4d25a45a8 100644
---- a/arch/sparc/include/asm/kprobes.h
-+++ b/arch/sparc/include/asm/kprobes.h
-@@ -47,6 +47,7 @@ struct kprobe_ctlblk {
- 	struct prev_kprobe prev_kprobe;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- int kprobe_exceptions_notify(struct notifier_block *self,
- 			     unsigned long val, void *data);
- int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
-diff --git a/arch/x86/include/asm/kprobes.h b/arch/x86/include/asm/kprobes.h
-index 5dc909d9ad81..1af2b6db13bd 100644
---- a/arch/x86/include/asm/kprobes.h
-+++ b/arch/x86/include/asm/kprobes.h
-@@ -101,11 +101,17 @@ struct kprobe_ctlblk {
- 	struct prev_kprobe prev_kprobe;
- };
- 
-+#define kprobe_fault_handler kprobe_fault_handler
- extern int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
- extern int kprobe_exceptions_notify(struct notifier_block *self,
- 				    unsigned long val, void *data);
- extern int kprobe_int3_handler(struct pt_regs *regs);
- extern int kprobe_debug_handler(struct pt_regs *regs);
-+#else
-+static inline int kprobe_fault_handler(struct pt_regs *regs, int trapnr)
-+{
-+	return 0;
-+}
- 
- #endif /* CONFIG_KPROBES */
- #endif /* _ASM_X86_KPROBES_H */
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 04bdaf01112c..e106f3018804 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -182,11 +182,19 @@ DECLARE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
- /*
-  * For #ifdef avoidance:
-  */
--static inline int kprobes_built_in(void)
-+
-+/*
-+ * Architectures need to override this with their own implementation
-+ * if they care to call kprobe_page_fault(). This will just ensure
-+ * that kprobe_page_fault() returns false when called without having
-+ * a proper platform specific definition for kprobe_fault_handler().
-+ */
-+#ifndef kprobe_fault_handler
-+static inline int kprobe_fault_handler(struct pt_regs *regs, int trapnr)
- {
--	return 1;
-+	return 0;
- }
--
-+#endif
- #ifdef CONFIG_KRETPROBES
- extern void arch_prepare_kretprobe(struct kretprobe_instance *ri,
- 				   struct pt_regs *regs);
-@@ -375,14 +383,6 @@ void free_insn_page(void *page);
- 
- #else /* !CONFIG_KPROBES: */
- 
--static inline int kprobes_built_in(void)
--{
--	return 0;
--}
--static inline int kprobe_fault_handler(struct pt_regs *regs, int trapnr)
--{
--	return 0;
--}
- static inline struct kprobe *get_kprobe(void *addr)
- {
- 	return NULL;
-@@ -458,12 +458,11 @@ static inline bool is_kprobe_optinsn_slot(unsigned long addr)
- }
- #endif
- 
-+#ifdef CONFIG_KPROBES
- /* Returns true if kprobes handled the fault */
- static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
- 					      unsigned int trap)
- {
--	if (!kprobes_built_in())
--		return false;
- 	if (user_mode(regs))
- 		return false;
- 	/*
-@@ -476,5 +475,12 @@ static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
- 		return false;
- 	return kprobe_fault_handler(regs, trap);
- }
-+#else
-+static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
-+					      unsigned int trap)
-+{
-+	return false;
-+}
-+#endif
- 
- #endif /* _LINUX_KPROBES_H */
--- 
-2.20.1
-
+Thanks
+Dave
