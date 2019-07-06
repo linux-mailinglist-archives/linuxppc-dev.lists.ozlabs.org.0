@@ -1,71 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BCB60FAA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 11:49:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45gn3l08ZKzDqbm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 19:49:07 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F5060FAB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 11:50:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45gn5P6ryrzDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 19:50:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="lC7aIym2"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="mBEzBj8v"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45gn1M0rgbzDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 19:47:02 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id g15so5319808pgi.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Jul 2019 02:47:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45gn1Q2bJhzDqQj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 19:47:06 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id i8so5295158pgm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Jul 2019 02:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=SD1HO9bA5bz7qXyxlfc0od+HuDhwW47hZC2wcYEnJgM=;
- b=lC7aIym2BpLHAXIEZDuZBkPSWQlN8pdAa5nPc3/v3qVRdClqD0MDbP+Yb+Y7O0FHOn
- 50zz6VweP4hyFq9RXIblFBAPlHIdHhjek2mTG+uzBjlhv8wzSvJWBSU6ky+Xe+HJeY3I
- mVhiJHm+Jp4Udu1HYWrmdpyVBgX/dI/hQoNCXYQNHPaGtICGptqClGA7Yw3T/92cAyiQ
- McefuKeNsQhos1grGnL20aS/zc4PaIJ30rCP7PHrGeXFasI3r7mQHDxdf4KkNoD1VGXY
- +RaRGvlNEgT/ULjeS3iS3qo8C4XJqds4prkeMKOAFh67RyMuZs9QqsyPQ4aq1xRa4jjM
- BU5Q==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=QEGm5RO370+1d5IRbqWLncN9g8dMNoXOhptUJSSSVGY=;
+ b=mBEzBj8vbsKdbvW0Zx1Dn8jQ/u53rs+b5W1ysLxVy0a4mt07Z055jidmPi5vWNZi14
+ Z/usFKXwVCfIgpC83pZcACXZFqqufwWn1wgW1FaGiCoLHDG06AqX2hvK2QyJ7VvtIqE1
+ aMDpa0DFVmgkr9OOM+i8RDwWEwrsktnIRrwzXRc/iyjLUcv8CTIJYR094smOXDOLO/SI
+ 0pdQ/xdxd+DhayzpveGvoqbFS5YRsgqpgojxg1ROEWWpklTNLXWy8fCoONbl2KRABWKc
+ QHZXdlrLDv01b+l1JnMHUYQf1qjJjXp67cegxrACcyysTxTMwCD4G/DfPuL524oeMkDN
+ fFZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=SD1HO9bA5bz7qXyxlfc0od+HuDhwW47hZC2wcYEnJgM=;
- b=qasq0F134QnLafyU7gngCk1cE17T5uIJ6886t0xf7DlkYRSuTX9f051T9/2+N/Cyxv
- WSUyi3ovtVrzsPn4QuFEWeBhWwxsGM4d6PtnzgYkzdcRlL4yInIMHHgaKw6oZIhkOLEz
- qQ/Re3Pi4EfO9Odq3F9lAI+KpZ5EJ//zh9VflZ0pxzdrJv3LaiZZzDGKX04Mv9j3Gxdl
- sgyrgSRYvRbHrduWTSMwB/B5M1T0NaRbHU6o9xoJQt1Rjt3cLaro9Zh6HbzsGEpEFg2n
- tdZzhuzbNJsC3Hkr/MSvWiAZt/o6pSNjT6j9g75crSkFRaKgoq9MOe5uPRjH36vV19zY
- ApcQ==
-X-Gm-Message-State: APjAAAVnb9SkN0C3+YHOqIPQENkXwIymFZ4r2L2AGkaoOEW28hGFiLgF
- RZyoC/UcQhNpHzMm+hvYBZ9Eyw/2fZU87Q==
-X-Google-Smtp-Source: APXvYqw0vZgiPZU0gDoisDzX/jpxi3Uf2Zx4XBUvysvbz3mktM6AA1LJzwHs8EFXi8vzG5oE4GY7zw==
-X-Received: by 2002:a63:6cc9:: with SMTP id
- h192mr10054753pgc.339.1562406419023; 
- Sat, 06 Jul 2019 02:46:59 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=QEGm5RO370+1d5IRbqWLncN9g8dMNoXOhptUJSSSVGY=;
+ b=f1PKYBEnTsw0dxiQWrG8PwgrjOn3tJ/mYIeNQirTAaRG5xcgU7fPG536GBtwEoOus+
+ gL2wK6O2+02ZVNfV6b6qHybsmtOWuvcw316hxPqAuUbU5Wli8CI5ho9jh/+vr3oiDxWi
+ nSZR7szRS+jEb5Q7eeo9EQtE3l3Jw9bFoxNB8BPPVTBqVD23dellEckwtyvfAe8KQQla
+ Dgy1pQpAUuJizf2wl4EmrjRYLA/uV+31F6Urm/btpQr6W0HMA01RSAVZHUwchTkeHKbs
+ CvMlH3Adjykt5xI/5MYy4lRkWUM+klrOsUEXvW1iDcm2CQ92KbuBRqO9zAXxnbD72SiT
+ n34Q==
+X-Gm-Message-State: APjAAAVE9kZ48nxeLmcsK6hZpGG5WsGmaYR76yNp+LsrpMLRRB3IkcL6
+ EL6e9FuFOIQhxBYaAuMHX0WkivsmUpwVow==
+X-Google-Smtp-Source: APXvYqyC+Rnoihd7omNGzRD/l5Dv0DvyEPJDRKpeK/tLtYjn3pRMCtIseNPHtJGkiKEpjCXcTFeNmQ==
+X-Received: by 2002:a63:1356:: with SMTP id 22mr10397706pgt.160.1562406421918; 
+ Sat, 06 Jul 2019 02:47:01 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([49.205.217.222])
- by smtp.gmail.com with ESMTPSA id p23sm13493091pfn.10.2019.07.06.02.46.55
+ by smtp.gmail.com with ESMTPSA id p23sm13493091pfn.10.2019.07.06.02.46.59
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sat, 06 Jul 2019 02:46:57 -0700 (PDT)
+ Sat, 06 Jul 2019 02:47:01 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [v4 0/6] powerpc: implement machine check safe memcpy
-Date: Sat,  6 Jul 2019 15:16:41 +0530
-Message-Id: <20190706094647.15427-1-santosh@fossix.org>
+Subject: [v4 1/6] powerpc/mce: Make machine_check_ue_event() static
+Date: Sat,  6 Jul 2019 15:16:42 +0530
+Message-Id: <20190706094647.15427-2-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190706094647.15427-1-santosh@fossix.org>
+References: <20190706094647.15427-1-santosh@fossix.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,100 +88,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During a memcpy from a pmem device, if a machine check exception is
-generated we end up in a panic. In case of fsdax read, this should
-only result in a -EIO. Avoid MCE by implementing memcpy_mcsafe.
+From: Reza Arbab <arbab@linux.ibm.com>
 
-Before this patch series:
+The function doesn't get used outside this file, so make it static.
 
-```
-bash-4.4# mount -o dax /dev/pmem0 /mnt/pmem/
-[ 7621.714094] Disabling lock debugging due to kernel taint
-[ 7621.714099] MCE: CPU0: machine check (Severe) Host UE Load/Store [Not recovered]
-[ 7621.714104] MCE: CPU0: NIP: [c000000000088978] memcpy_power7+0x418/0x7e0
-[ 7621.714107] MCE: CPU0: Hardware error
-[ 7621.714112] opal: Hardware platform error: Unrecoverable Machine Check exception
-[ 7621.714118] CPU: 0 PID: 1368 Comm: mount Tainted: G   M              5.2.0-rc5-00239-g241e39004581 #50
-[ 7621.714123] NIP:  c000000000088978 LR: c0000000008e16f8 CTR: 00000000000001de
-[ 7621.714129] REGS: c0000000fffbfd70 TRAP: 0200   Tainted: G   M               (5.2.0-rc5-00239-g241e39004581)
-[ 7621.714131] MSR:  9000000002209033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 24428840  XER: 00040000
-[ 7621.714160] CFAR: c0000000000889a8 DAR: deadbeefdeadbeef DSISR: 00008000 IRQMASK: 0
-[ 7621.714171] GPR00: 000000000e000000 c0000000f0b8b1e0 c0000000012cf100 c0000000ed8e1100 
-[ 7621.714186] GPR04: c000020000001100 0000000000010000 0000000000000200 03fffffff1272000 
-[ 7621.714201] GPR08: 0000000080000000 0000000000000010 0000000000000020 0000000000000030 
-[ 7621.714216] GPR12: 0000000000000040 00007fffb8c6d390 0000000000000050 0000000000000060 
-[ 7621.714232] GPR16: 0000000000000070 0000000000000000 0000000000000001 c0000000f0b8b960 
-[ 7621.714247] GPR20: 0000000000000001 c0000000f0b8b940 0000000000000001 0000000000010000 
-[ 7621.714262] GPR24: c000000001382560 c00c0000003b6380 c00c0000003b6380 0000000000010000 
-[ 7621.714277] GPR28: 0000000000000000 0000000000010000 c000020000000000 0000000000010000 
-[ 7621.714294] NIP [c000000000088978] memcpy_power7+0x418/0x7e0
-[ 7621.714298] LR [c0000000008e16f8] pmem_do_bvec+0xf8/0x430
-... <snip> ...
-```
-
-After this patch series:
-
-```
-bash-4.4# mount -o dax /dev/pmem0 /mnt/pmem/
-[25302.883978] Buffer I/O error on dev pmem0, logical block 0, async page read
-[25303.020816] EXT4-fs (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
-[25303.021236] EXT4-fs (pmem0): Can't read superblock on 2nd try
-[25303.152515] EXT4-fs (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
-[25303.284031] EXT4-fs (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
-[25304.084100] UDF-fs: bad mount option "dax" or missing value
-mount: /mnt/pmem: wrong fs type, bad option, bad superblock on /dev/pmem0, missing codepage or helper program, or other error.
-```
-
-MCE is injected on a pmem address using mambo. The last patch which adds a nop
-is only for testing on mambo, where r13 is not restored upon hitting vector 200.
-
-The memcpy code can be optimised by adding VMX optimizations and GAS macros can
-be used to enable code reusablity, which I will send as another series.
-
+Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Change-log:
+ arch/powerpc/kernel/mce.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v4:
-* Squash return remaining bytes patch to memcpy_mcsafe implemtation patch [christophe]
-* Access ok should be checked for copy_to_user_mcsafe() [christophe]
-
-v3:
-* Drop patch which enables DR/IR for external modules
-* Drop notifier call chain, we don't want to do that in real mode
-* Return remaining bytes from memcpy_mcsafe correctly
-* We no longer restore r13 for simulator tests, rather use a nop at 
-  vector 0x200 [workaround for simulator; not to be merged]
-
-v2:
-* Don't set RI bit explicitly [mahesh]
-* Re-ordered series to get r13 workaround as the last patch
-
----
-Balbir Singh (2):
-  powerpc/mce: Bug fixes for MCE handling in kernel space
-  powerpc/memcpy: Add memcpy_mcsafe for pmem
-
-Reza Arbab (2):
-  powerpc/mce: Make machine_check_ue_event() static
-  powerpc/64s: save r13 in MCE handler (simulator workaroud)
-
-Santosh Sivaraj (2):
-  powerpc/mce: Handle UE event for memcpy_mcsafe
-  powerpc: add machine check safe copy_to_user
-
- arch/powerpc/Kconfig                 |   1 +
- arch/powerpc/include/asm/mce.h       |   7 +-
- arch/powerpc/include/asm/string.h    |   2 +
- arch/powerpc/include/asm/uaccess.h   |  14 ++
- arch/powerpc/kernel/exceptions-64s.S |   1 +
- arch/powerpc/kernel/mce.c            |  11 +-
- arch/powerpc/kernel/mce_power.c      |  41 +++--
- arch/powerpc/lib/Makefile            |   2 +-
- arch/powerpc/lib/memcpy_mcsafe_64.S  | 239 +++++++++++++++++++++++++++
- arch/powerpc/platforms/pseries/ras.c |   6 +-
- 10 files changed, 304 insertions(+), 20 deletions(-)
- create mode 100644 arch/powerpc/lib/memcpy_mcsafe_64.S
-
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index b18df633eae9..e78c4f18ea0a 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -33,7 +33,7 @@ static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT],
+ 					mce_ue_event_queue);
+ 
+ static void machine_check_process_queued_event(struct irq_work *work);
+-void machine_check_ue_event(struct machine_check_event *evt);
++static void machine_check_ue_event(struct machine_check_event *evt);
+ static void machine_process_ue_event(struct work_struct *work);
+ 
+ static struct irq_work mce_event_process_work = {
+@@ -203,7 +203,7 @@ void release_mce_event(void)
+ /*
+  * Queue up the MCE event which then can be handled later.
+  */
+-void machine_check_ue_event(struct machine_check_event *evt)
++static void machine_check_ue_event(struct machine_check_event *evt)
+ {
+ 	int index;
+ 
 -- 
 2.20.1
 
