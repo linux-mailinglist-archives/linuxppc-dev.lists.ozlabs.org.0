@@ -1,73 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1C360FD3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 12:19:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45gnkd1PpjzDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 20:19:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AA561099
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 13:49:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45gqkD2wmYzDqT3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2019 21:49:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=permerror (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mchehab+samsung@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="QQlrzXjs"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45gnhx07rmzDqDt
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 20:17:50 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45gnhn6jjKz9vBLK;
- Sat,  6 Jul 2019 12:17:45 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=QQlrzXjs; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id mr_lAJsSHtA4; Sat,  6 Jul 2019 12:17:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45gnhn5Tpmz9vBL2;
- Sat,  6 Jul 2019 12:17:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1562408265; bh=pywBShbqsEelU8k/p2Hw+ePRCD+ryl3vI419zE+0SUo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=QQlrzXjsFgNCZbSQhVHD2l7QDabweGwWJPIt2qTQaoLNRFhucTiSpdC4o9kKgfxX8
- LG0W79tL3gFrhnk+yDl0rCHpAdFtlact0FJOyhxb56y+Kd1Pj9Oa3hnE8nhT90952H
- jZslSOLwE92stenRxEjkqX3LGDoGttveW0iloRmc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D4EFA8B768;
- Sat,  6 Jul 2019 12:17:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id D297ZC6n5O2m; Sat,  6 Jul 2019 12:17:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1CF948B74C;
- Sat,  6 Jul 2019 12:17:46 +0200 (CEST)
-Subject: Re: [v4 5/6] powerpc: add machine check safe copy_to_user
-To: Santosh Sivaraj <santosh@fossix.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20190706094647.15427-1-santosh@fossix.org>
- <20190706094647.15427-6-santosh@fossix.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <97247052-fb1e-f66f-25b6-c58c8741e5e3@c-s.fr>
-Date: Sat, 6 Jul 2019 12:17:45 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45gqhc2Ty3zDqDd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2019 21:47:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+ From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=j6y676QYR/iHJJ649Hu4pguKBc+26wcukAE46ESMMlo=; b=dOTYigO14yG8pQxnEPFBC19DX
+ /Ww8mAJLwcfe1SJqp/NylfCiIiI9REBU4NBiWe4dYMw9xdQP6lV0y+pUltL/gztWxW7BxkiF1kRXE
+ w6XA7g9pa5LjIsiEu0S8st2kB2gzhI15q6uEUzs4XQgoqkyabISla1WvfKEt7LUVcsysRFNZryzy2
+ Vt4rLjvEjd+OfhIGQpJR1++ZVceLUOM/+IRXvzm2znfchAZwwCauZYISTmjywQAOsgIR2YmU3+vzt
+ 0KvSoXLLqm4bOXutzWmOhE1jpX4jFMrPYVTRcXNwmtfs/ro27ahj9vrDH17GltUK57PchaGmotAd6
+ Zh3YctvFg==;
+Received: from 177.205.70.5.dynamic.adsl.gvt.net.br ([177.205.70.5]
+ helo=coco.lan)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hjj9S-0002M7-Qh; Sat, 06 Jul 2019 11:46:47 +0000
+Date: Sat, 6 Jul 2019 08:46:38 -0300
+From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+To: Dave Young <dyoung@redhat.com>
+Subject: Re: [PATCH 18/39] docs: admin-guide: add kdump documentation into it
+Message-ID: <20190706084638.7dc875f2@coco.lan>
+In-Reply-To: <20190705055904.GB2790@localhost.localdomain>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
+ <654e7591c044632c06257e0f069a52c0bb993554.1561724493.git.mchehab+samsung@kernel.org>
+ <6911b74c-848f-0060-3db5-b5d7e8061cb5@linux.alibaba.com>
+ <20190705055904.GB2790@localhost.localdomain>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190706094647.15427-6-santosh@fossix.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,70 +63,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jerry Hoemann <jerry.hoemann@hpe.com>, Harry Wei <harryxiyou@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Alex Shi <alex.shi@linux.alibaba.com>, Will Deacon <will@kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-watchdog@vger.kernel.org, Mauro Carvalho Chehab <mchehab@infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Wim Van Sebroeck <wim@linux-watchdog.org>,
+ linux-arm-kernel@lists.infradead.org, Baoquan He <bhe@redhat.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Em Fri, 5 Jul 2019 13:59:04 +0800
+Dave Young <dyoung@redhat.com> escreveu:
 
+> On 07/05/19 at 11:43am, Alex Shi wrote:
+> >=20
+> >=20
+> > =E5=9C=A8 2019/6/28 =E4=B8=8B=E5=8D=888:30, Mauro Carvalho Chehab =E5=
+=86=99=E9=81=93: =20
+> > > The Kdump documentation describes procedures with admins use
+> > > in order to solve issues on their systems.
+> > >=20
+> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+> > > ---
+> > >  Documentation/admin-guide/bug-hunting.rst            | 4 ++--
+> > >  Documentation/admin-guide/index.rst                  | 1 +
+> > >  Documentation/{ =3D> admin-guide}/kdump/gdbmacros.txt  | 0
+> > >  Documentation/{ =3D> admin-guide}/kdump/index.rst      | 1 -
+> > >  Documentation/{ =3D> admin-guide}/kdump/kdump.rst      | 0
+> > >  Documentation/{ =3D> admin-guide}/kdump/vmcoreinfo.rst | 0 =20
+> >=20
+> > I am not sure if it's convenience for people to have more levels in doc=
+s.
+> >=20
+> > But I guess, move archs into a Documentation/arch/ dir should be fine. =
+like Documentation/arch/{x86,arm,arm64,ia64,m68k,s390,powerpc,...} =20
+>=20
+> Alex, moving kdump to admin-guide sounds reasonable to me.  I also agree
+> with you for those arch dependent files can be moved to
+> Documentation/arch/, maybe you are talking about some other patches in
+> the series for the arch/?=20
 
-Le 06/07/2019 à 11:46, Santosh Sivaraj a écrit :
-> Use  memcpy_mcsafe() implementation to define copy_to_user_mcsafe()
-> 
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->   arch/powerpc/Kconfig               |  1 +
->   arch/powerpc/include/asm/uaccess.h | 14 ++++++++++++++
->   2 files changed, 15 insertions(+)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 8c1c636308c8..a173b392c272 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -134,6 +134,7 @@ config PPC
->   	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
->   	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
->   	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
-> +	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
->   	select ARCH_HAS_UBSAN_SANITIZE_ALL
->   	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
->   	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 76f34346b642..8899864a5552 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -386,6 +386,20 @@ static inline unsigned long raw_copy_to_user(void __user *to,
->   	return ret;
->   }
->   
-> +static __always_inline unsigned long __must_check
-> +copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
-> +{
-> +	if (likely(check_copy_size(from, n, true))) {
-> +		if (access_ok(to, n)) {
+Alex,
 
-After looking once more, it looks like copy_to_user_mcsafe() is only 
-called from copyout_mcsafe(), so maybe this access_ok() check is 
-superfluous.
+It makes sense for me to have a Documentation/arch directory, and place
+the arch-specific docs over there.
 
-> +			allow_write_to_user(to, n);
-> +			n = memcpy_mcsafe((void *)to, from, n);
-> +			prevent_write_to_user(to, n);
-> +		}
-> +	}
-> +
-> +	return n;
+There's actually a technical advantage on doing that: Sphinx is dumb
+with regards to PDF/LaTeX output: it requires all top documents to be
+listed at Documentation/conf.py, under this var:
 
-Shouldn't it return 0 when check_copy_size() fails ?
+	latex_documents =3D [
+		...
+	]
 
-Christophe
+As it creates one runtime Makefile at Documentation/output per listed
+document there. So, the more we group such documents, the less merge
+conflicts we'll have at Documentation/conf.py.
 
-> +}
-> +
->   extern unsigned long __clear_user(void __user *addr, unsigned long size);
->   
->   static inline unsigned long clear_user(void __user *addr, unsigned long size)
-> 
+Btw, there's a [TECH TOPIC] proposal for KS/2019 meant to discuss=20
+Documentation.
+
+I suspect we could discuss the pros/cons of doing such change there.
+
+My personal view is that we should keep the Documentation/ root dir as
+clean as possible as a long term goal.
+
+On the other hand, it makes the path bigger and harder to rename.
+
+On a side note, last time we discussed documentation at KS I remember
+I proposed to shortcut "Documentation/" to just "docs/". The consensus
+on that time were to keep the big name. I still think that a shorter
+one could help people to remind where documentation will be located.
+
+Thanks,
+Mauro
