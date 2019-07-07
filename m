@@ -1,95 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66F7614A6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2019 12:16:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4859E6135B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2019 02:27:07 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45h8Xm5ZrFzDqbv
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2019 10:27:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45hPcx5lB3zDqSD
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2019 20:16:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="UUVurbNo"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45h8WM6yKMzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jul 2019 10:25:50 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x670LVCR050730
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 6 Jul 2019 20:25:48 -0400
-Received: from e33.co.us.ibm.com (e33.co.us.ibm.com [32.97.110.151])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tjt04gxp7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 06 Jul 2019 20:25:48 -0400
-Received: from localhost
- by e33.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.vnet.ibm.com>;
- Sun, 7 Jul 2019 01:25:47 +0100
-Received: from b03cxnp07029.gho.boulder.ibm.com (9.17.130.16)
- by e33.co.us.ibm.com (192.168.1.133) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 7 Jul 2019 01:25:43 +0100
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x670Pglg61866240
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 7 Jul 2019 00:25:42 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40D20BE054;
- Sun,  7 Jul 2019 00:25:42 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14528BE051;
- Sun,  7 Jul 2019 00:25:39 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.80.232.154])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sun,  7 Jul 2019 00:25:39 +0000 (GMT)
-Subject: Re: [PATCH] tpm: fixes uninitialized allocated banks for IBM vtpm
- driver
-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Stefan Berger <stefanb@linux.ibm.com>,
- Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <1562211121-2188-1-git-send-email-nayna@linux.ibm.com>
- <1998ebcf-1521-778f-2c80-55ad2c855023@linux.ibm.com>
- <164b9c6e-9b6d-324d-9df8-d2f7d1ac8cfc@linux.vnet.ibm.com>
- <1270cd6ab2ceae1ad01e4b83b75fc4c6fc70027d.camel@linux.intel.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-Date: Sat, 6 Jul 2019 20:25:39 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45hPb922bnzDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jul 2019 20:14:59 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id i189so6155752pfg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Jul 2019 03:14:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=9b1EGXOx4NeF4JTA7eM5HskbqythmMpkxkl1a4JGzA0=;
+ b=UUVurbNoPqHqrmeUuvp4JhwWnf7tIMiogR4wNFWQy2Yg9s0VDKYMOBYp0alcm7xqmy
+ prWWl/SDvlnKeuMa3qIGX7xJhsnZD5ZGIl+UlAOi160yk/UEHKohpIEmKZ3npBPCrX+O
+ ChPr9CSJ3Wbe89Qg2S2hpHTW7IF1PzJiilIeJaqgAQDCB2LJulNX7jAVvnMa6t/1LiAI
+ iM1IFlpvK+lxOvAKnW1POkq5CLL5gNZGa3UPh59xMtXfATagAZIu0Nlw5nTGCUAoSV4B
+ 9hrJ2bI5CAbD7NOn8VQJEvw6TgykLcOf8/OryLjdATYGQCEEPLduB8OwesvLFxmnoFOV
+ 3Jjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=9b1EGXOx4NeF4JTA7eM5HskbqythmMpkxkl1a4JGzA0=;
+ b=DHpfmnH706qi/gffT/UIYbUw7r0O5l34eu8r+euylpX7WfJO+3TH82W5BkB2DVGAlV
+ Q+qklxScHcHpZy455xyEDEMImV4cTDtQEwyAM/asBaIFpyB48doLSa0wngfJgFTXzDZZ
+ Uom1eoPCtUZhuzJmqgQh0j+S6GHJbeYmef6LNbGksFuXmY1TCzFWPdKBm2AE6+bbAmoo
+ XXkaj/6IxvXNi7LmsfPx8V39EH0uVDviAQsws35qqZ0OHBVovLi6o/bLt5fDpRfda4ZF
+ z+6MbMd1fpTVBB9x/LMGiGXEgrmOGepPXbldD2j413yUDIY5iKF6gdCc41efjKvDG7eN
+ ohgw==
+X-Gm-Message-State: APjAAAVyuqQODhRdGtQySpjd2yPK+V7sDVrxzyIQoz1rA04fCGt0HmHO
+ jxNUDBHOxx+gtYRlOoQKNyw=
+X-Google-Smtp-Source: APXvYqw7+g7XXTJSX6Asjijq/vU5Vo5FyhGnvQSw6y6Wxkp4QA/7+N00beHz2HuLJBcfPMN/BdiKhw==
+X-Received: by 2002:a17:90a:290b:: with SMTP id
+ g11mr16776527pjd.122.1562494495653; 
+ Sun, 07 Jul 2019 03:14:55 -0700 (PDT)
+Received: from localhost ([203.111.179.197])
+ by smtp.gmail.com with ESMTPSA id u137sm14324745pgc.91.2019.07.07.03.14.53
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Sun, 07 Jul 2019 03:14:54 -0700 (PDT)
+Date: Sun, 07 Jul 2019 20:13:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 1/3] cpuidle-powernv : forced wakeup for stop states
+To: Abhishek Goel <huntbag@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20190704091827.19555-1-huntbag@linux.vnet.ibm.com>
+ <20190704091827.19555-2-huntbag@linux.vnet.ibm.com>
+In-Reply-To: <20190704091827.19555-2-huntbag@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <1270cd6ab2ceae1ad01e4b83b75fc4c6fc70027d.camel@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19070700-0036-0000-0000-00000AD46E87
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011389; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01228488; UDB=6.00646913; IPR=6.01009737; 
- MB=3.00027615; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-07 00:25:45
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070700-0037-0000-0000-00004C7EBA69
-Message-Id: <bd961ef2-baed-8fc3-7f21-566bbcf9da8b@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-06_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=971 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907070004
+User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1562493994.wseoth6w1s.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,65 +82,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Michal Suchanek <msuchanek@suse.de>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Peter Huewe <peterhuewe@gmx.de>, George Wilson <gcwilson@linux.ibm.com>
+Cc: ego@linux.vnet.ibm.com, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Abhishek Goel's on July 4, 2019 7:18 pm:
+> Currently, the cpuidle governors determine what idle state a idling CPU
+> should enter into based on heuristics that depend on the idle history on
+> that CPU. Given that no predictive heuristic is perfect, there are cases
+> where the governor predicts a shallow idle state, hoping that the CPU wil=
+l
+> be busy soon. However, if no new workload is scheduled on that CPU in the
+> near future, the CPU may end up in the shallow state.
+>=20
+> This is problematic, when the predicted state in the aforementioned
+> scenario is a shallow stop state on a tickless system. As we might get
+> stuck into shallow states for hours, in absence of ticks or interrupts.
+>=20
+> To address this, We forcefully wakeup the cpu by setting the
+> decrementer. The decrementer is set to a value that corresponds with the
+> residency of the next available state. Thus firing up a timer that will
+> forcefully wakeup the cpu. Few such iterations will essentially train the
+> governor to select a deeper state for that cpu, as the timer here
+> corresponds to the next available cpuidle state residency. Thus, cpu will
+> eventually end up in the deepest possible state.
+>=20
+> Signed-off-by: Abhishek Goel <huntbag@linux.vnet.ibm.com>
+> ---
+>=20
+> Auto-promotion
+>  v1 : started as auto promotion logic for cpuidle states in generic
+> driver
+>  v2 : Removed timeout_needed and rebased the code to upstream kernel
+> Forced-wakeup
+>  v1 : New patch with name of forced wakeup started
+>  v2 : Extending the forced wakeup logic for all states. Setting the
+> decrementer instead of queuing up a hrtimer to implement the logic.
+>  v3 : Cleanly handle setting/resetting of decrementer so as to not break
+> irq work=20
+>=20
+>  arch/powerpc/include/asm/time.h   |  2 ++
+>  arch/powerpc/kernel/time.c        | 40 +++++++++++++++++++++++++++++++
+>  drivers/cpuidle/cpuidle-powernv.c | 32 +++++++++++++++++++++++++
+>  3 files changed, 74 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/t=
+ime.h
+> index 54f4ec1f9..a3bd4f3c0 100644
+> --- a/arch/powerpc/include/asm/time.h
+> +++ b/arch/powerpc/include/asm/time.h
+> @@ -188,6 +188,8 @@ static inline unsigned long tb_ticks_since(unsigned l=
+ong tstamp)
+>  extern u64 mulhdu(u64, u64);
+>  #endif
+> =20
+> +extern int set_dec_before_idle(u64 timeout);
+> +extern void reset_dec_after_idle(void);
+>  extern void div128_by_32(u64 dividend_high, u64 dividend_low,
+>  			 unsigned divisor, struct div_result *dr);
+> =20
+> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+> index 694522308..814de3469 100644
+> --- a/arch/powerpc/kernel/time.c
+> +++ b/arch/powerpc/kernel/time.c
+> @@ -576,6 +576,46 @@ void arch_irq_work_raise(void)
+> =20
+>  #endif /* CONFIG_IRQ_WORK */
+> =20
+> +/*
+> + * Returns 1 if we have reprogrammed the decrementer for idle.
+> + * Returns 0 if the decrementer is unchanged.
+> + */
+> +int set_dec_before_idle(u64 timeout)
+> +{
+> +	u64 *next_tb =3D this_cpu_ptr(&decrementers_next_tb);
+> +	u64 now =3D get_tb_or_rtc();
+> +
+> +	/*
+> +	 * Ensure that the timeout is at least one microsecond
+> +	 * before the current decrement value. Else, we will
+> +	 * unnecesarily wakeup again within a microsecond.
+> +	 */
+> +	if (now + timeout + 512 > *next_tb)
 
+I would pass this 512 in as a parameter and put the comment in the
+idle code. Timer code does not know/care.
 
-On 07/05/2019 01:50 PM, Jarkko Sakkinen wrote:
-> On Fri, 2019-07-05 at 11:32 -0400, Nayna wrote:
->> I am not sure of the purpose of tpm_stop_chip(), so I have left it as it
->> is. Jarkko, what do you think about the change ?
-> Stefan right. Your does not work, or will randomly work or not work
-> depending on the chip.
->
-> You need to turn the TPM on with tpm_chip_start() and turn it off with
-> tpm_chip_stop() once you are done. This is done in tpm_chip_register()
-> before calling tpm_auto_startup().
->
-> TPM power management was once in tpm_transmit() but not anymore after my
-> patch set that removed nested tpm_transmit() calls.
->
-> While you're on it please take into account my earlier feedback.
->
-> Also, short summary could be "tpm: tpm_ibm_vtpm: Fix unallocated banks"
->
-> Some oddballs in your patch that I have to ask.
->
-> if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> 	rc = tpm2_get_pcr_allocation(chip);
-> 	if (rc)
-> 		goto out;
-> }
->
-> chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
-> 		GFP_KERNEL);
-> if (!chip->allocated_banks) {
-> 	rc = -ENOMEM;
-> 	goto out;
-> }
->
-> Why you don't return on site and instead jump somewhere? Also the
-> 2nd line for kcalloc() is misaligned.
->
-> out:
-> 	if (rc < 0)
-> 		rc = -ENODEV;
->
-> This will cause a new regression i.e. you let TPM error codes
-> through.
->
-> To summarize this patch fixes one regression and introduces two
-> completely new ones...
+Maybe return bool and call it try_set_dec_before_idle.
 
-Thanks Jarkko. I just now posted the v2 version that includes your and 
-Stefan's feedbacks.
+> +		return 0;
+> +
+> +	set_dec(timeout);
 
-Thanks & Regards,
-        - Nayna
+This needs to have
 
+  if (test_irq_work_pending())
+      set_dec(1);
+
+here AFAIKS
+
+> +
+> +	return 1;
+> +}
+> +
+> +void reset_dec_after_idle(void)
+> +{
+> +	u64 now;
+> +	u64 *next_tb;
+> +
+> +	if (test_irq_work_pending())
+> +		return;
+> +
+> +	now =3D get_tb_or_rtc();
+> +	next_tb =3D this_cpu_ptr(&decrementers_next_tb);
+> +	if (now >=3D *next_tb)
+> +		return;
+
+Are you sure it's okay to escape early in this case?
+
+Thanks,
+Nick
+=
