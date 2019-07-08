@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B42E61AD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 09:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A5761ADD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 09:04:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45hxHH5bzLzDqWT
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 17:03:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45hxKL0K34zDqXB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 17:04:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45hxF95W0rzDqD1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 17:01:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45hxFK3sy3zDqS6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 17:01:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45hxF92Lx9z9s3Z;
- Mon,  8 Jul 2019 17:01:17 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45hxFK2ddCz9s3Z;
+ Mon,  8 Jul 2019 17:01:25 +1000 (AEST)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date: Mon, 08 Jul 2019 17:01:16 +1000
+Date: Mon, 08 Jul 2019 17:01:25 +1000
 From: alistair@popple.id.au
 To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v3 2/3] powerpc/powernv/ioda2: Allocate TCE table
- levels on demand for default DMA window
-In-Reply-To: <20190530070355.121802-3-aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v3 3/3] powerpc/powernv/ioda2: Create bigger
+ default window with 64k IOMMU pages
+In-Reply-To: <20190530070355.121802-4-aik@ozlabs.ru>
 References: <20190530070355.121802-1-aik@ozlabs.ru>
- <20190530070355.121802-3-aik@ozlabs.ru>
-Message-ID: <2426198.tIkMplZ83h@townsend>
+ <20190530070355.121802-4-aik@ozlabs.ru>
+Message-ID: <2908012.2rHUNcR828@townsend>
 X-Sender: alistair@popple.id.au
 User-Agent: Roundcube Webmail/1.3.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -54,160 +54,145 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It seems this is mostly just enabling already existing code used by KVM 
-for
-on-demand TCE level allocation on baremetal as well. Given that I 
-suppose the
-implementation of the on-demand allocation itself is already used and
-therefore somewhat tested by KVM. I took a look at pnv_tce() which does 
-the
-on-demand allocation and the changes here seem like they should work 
-with that
-so:
+Hi Alexey,
 
-Reviewed-by: Alistair Popple <alistair@popple.id.au>
+Couple of comment/questions below.
 
-On Thursday, 30 May 2019 5:03:54 PM AEST Alexey Kardashevskiy wrote:
-> We allocate only the first level of multilevel TCE tables for KVM
-> already (alloc_userspace_copy==true), and the rest is allocated on 
-> demand.
-> This is not enabled though for baremetal.
+> -	/*
+> -	 * Reserve page 0 so it will not be used for any mappings.
+> -	 * This avoids buggy drivers that consider page 0 to be invalid
+> -	 * to crash the machine or even lose data.
+> -	 */
+> -	if (tbl->it_offset == 0)
+> -		set_bit(0, tbl->it_map);
+> +	tbl->it_reserved_start = res_start;
+> +	tbl->it_reserved_end = res_end;
+> +	iommu_table_reserve_pages(tbl);
+
+Personally I think it would be cleaner to set tbl->it_reserved_start/end 
+in
+iommu_table_reserve_pages() rather than separating the setup like this.
+
 > 
-> This removes the KVM limitation (implicit, via the alloc_userspace_copy
-> parameter) and always allocates just the first level. The on-demand
-> allocation of missing levels is already implemented.
-> 
-> As from now on DMA map might happen with disabled interrupts, this
-> allocates TCEs with GFP_ATOMIC.
-> 
-> To save time when creating a new clean table, this skips non-allocated
-> indirect TCE entries in pnv_tce_free just like we already do in
-> the VFIO IOMMU TCE driver.
-> 
-> This changes the default level number from 1 to 2 to reduce the amount
-> of memory required for the default 32bit DMA window at the boot time.
-> The default window size is up to 2GB which requires 4MB of TCEs which 
-> is
-> unlikely to be used entirely or at all as most devices these days are
-> 64bit capable so by switching to 2 levels by default we save 4032KB of
-> RAM per a device.
-> 
-> While at this, add __GFP_NOWARN to alloc_pages_node() as the userspace
-> can trigger this path via VFIO, see the failure and try creating a 
-> table
-> again with different parameters which might succeed.
-> 
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
-> Changes:
-> v2:
-> * added __GFP_NOWARN to alloc_pages_node
-> ---
->  arch/powerpc/platforms/powernv/pci.h          |  2 +-
->  arch/powerpc/platforms/powernv/pci-ioda-tce.c | 20 +++++++++----------
->  2 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci.h
-> b/arch/powerpc/platforms/powernv/pci.h index 1a51e7bfc541..a55dabc8d057
-> 100644
-> --- a/arch/powerpc/platforms/powernv/pci.h
-> +++ b/arch/powerpc/platforms/powernv/pci.h
-> @@ -225,7 +225,7 @@ extern struct iommu_table_group
-> *pnv_npu_compound_attach( struct pnv_ioda_pe *pe);
-> 
->  /* pci-ioda-tce.c */
-> -#define POWERNV_IOMMU_DEFAULT_LEVELS	1
-> +#define POWERNV_IOMMU_DEFAULT_LEVELS	2
->  #define POWERNV_IOMMU_MAX_LEVELS	5
-> 
->  extern int pnv_tce_build(struct iommu_table *tbl, long index, long 
-> npages,
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-> b/arch/powerpc/platforms/powernv/pci-ioda-tce.c index
-> e28f03e1eb5e..c75ec37bf0cd 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-> @@ -36,7 +36,8 @@ static __be64 *pnv_alloc_tce_level(int nid, unsigned 
-> int
-> shift) struct page *tce_mem = NULL;
->  	__be64 *addr;
-> 
-> -	tce_mem = alloc_pages_node(nid, GFP_KERNEL, shift - PAGE_SHIFT);
-> +	tce_mem = alloc_pages_node(nid, GFP_ATOMIC | __GFP_NOWARN,
-> +			shift - PAGE_SHIFT);
->  	if (!tce_mem) {
->  		pr_err("Failed to allocate a TCE memory, level shift=%d\n",
->  				shift);
-> @@ -161,6 +162,9 @@ void pnv_tce_free(struct iommu_table *tbl, long 
-> index,
-> long npages)
-> 
->  		if (ptce)
->  			*ptce = cpu_to_be64(0);
-> +		else
-> +			/* Skip the rest of the level */
-> +			i |= tbl->it_level_size - 1;
+>  	/* We only split the IOMMU table if we have 1GB or more of space */
+>  	if ((tbl->it_size << tbl->it_page_shift) >= (1UL * 1024 * 1024 * 
+> 1024))
+> @@ -727,12 +755,7 @@ static void iommu_table_free(struct kref *kref)
+>  		return;
 >  	}
->  }
 > 
-> @@ -260,7 +264,6 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64
-> bus_offset, unsigned int table_shift = max_t(unsigned int, 
-> entries_shift +
-> 3, PAGE_SHIFT);
->  	const unsigned long tce_table_size = 1UL << table_shift;
-> -	unsigned int tmplevels = levels;
+> -	/*
+> -	 * In case we have reserved the first bit, we should not emit
+> -	 * the warning below.
+> -	 */
+> -	if (tbl->it_offset == 0)
+> -		clear_bit(0, tbl->it_map);
+> +	iommu_table_release_pages(tbl);
 > 
->  	if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS))
->  		return -EINVAL;
-> @@ -268,9 +271,6 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64
-> bus_offset, if (!is_power_of_2(window_size))
->  		return -EINVAL;
+>  	/* verify that table contains no entries */
+>  	if (!bitmap_empty(tbl->it_map, tbl->it_size))
+> @@ -1037,8 +1060,7 @@ int iommu_take_ownership(struct iommu_table *tbl)
+>  	for (i = 0; i < tbl->nr_pools; i++)
+>  		spin_lock(&tbl->pools[i].lock);
 > 
-> -	if (alloc_userspace_copy && (window_size > (1ULL << 32)))
-> -		tmplevels = 1;
-> -
->  	/* Adjust direct table size from window_size and levels */
->  	entries_shift = (entries_shift + levels - 1) / levels;
->  	level_shift = entries_shift + 3;
-> @@ -281,7 +281,7 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64
-> bus_offset,
+> -	if (tbl->it_offset == 0)
+> -		clear_bit(0, tbl->it_map);
+> +	iommu_table_reserve_pages(tbl);
 > 
->  	/* Allocate TCE table */
->  	addr = pnv_pci_ioda2_table_do_alloc_pages(nid, level_shift,
-> -			tmplevels, tce_table_size, &offset, &total_allocated);
-> +			1, tce_table_size, &offset, &total_allocated);
+>  	if (!bitmap_empty(tbl->it_map, tbl->it_size)) {
+>  		pr_err("iommu_tce: it_map is not empty");
+> @@ -1068,9 +1090,7 @@ void iommu_release_ownership(struct iommu_table 
+> *tbl)
 > 
->  	/* addr==NULL means that the first level allocation failed */
->  	if (!addr)
-> @@ -292,18 +292,18 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, 
-> __u64
-> bus_offset, * we did not allocate as much as we wanted,
->  	 * release partially allocated table.
+>  	memset(tbl->it_map, 0, sz);
+> 
+> -	/* Restore bit#0 set by iommu_init_table() */
+> -	if (tbl->it_offset == 0)
+> -		set_bit(0, tbl->it_map);
+> +	iommu_table_release_pages(tbl);
+
+Are the above two changes correct? From the perspective of code 
+behaviour this
+seems to swap the set/clear_bit() calls. For example above you are 
+replacing
+set_bit(0, tbl->it_map) with a call to iommu_table_release_pages() which 
+does
+clear_bit(0, tbl->it_map) instead.
+
+- Alistair
+
+>  	for (i = 0; i < tbl->nr_pools; i++)
+>  		spin_unlock(&tbl->pools[i].lock);
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c
+> b/arch/powerpc/platforms/powernv/pci-ioda.c index
+> 126602b4e399..ce2efdb3900d 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -2422,6 +2422,7 @@ static long 
+> pnv_pci_ioda2_setup_default_config(struct
+> pnv_ioda_pe *pe) {
+>  	struct iommu_table *tbl = NULL;
+>  	long rc;
+> +	unsigned long res_start, res_end;
+> 
+>  	/*
+>  	 * crashkernel= specifies the kdump kernel's maximum memory at
+> @@ -2435,19 +2436,46 @@ static long
+> pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe) * DMA window 
+> can
+> be larger than available memory, which will
+>  	 * cause errors later.
 >  	 */
-> -	if (tmplevels == levels && offset < tce_table_size)
-> +	if (levels == 1 && offset < tce_table_size)
->  		goto free_tces_exit;
+> -	const u64 window_size = min((u64)pe->table_group.tce32_size, 
+> max_memory);
+> +	const u64 maxblock = 1UL << (PAGE_SHIFT + MAX_ORDER - 1);
 > 
->  	/* Allocate userspace view of the TCE table */
->  	if (alloc_userspace_copy) {
->  		offset = 0;
->  		uas = pnv_pci_ioda2_table_do_alloc_pages(nid, level_shift,
-> -				tmplevels, tce_table_size, &offset,
-> +				1, tce_table_size, &offset,
->  				&total_allocated_uas);
->  		if (!uas)
->  			goto free_tces_exit;
-> -		if (tmplevels == levels && (offset < tce_table_size ||
-> +		if (levels == 1 && (offset < tce_table_size ||
->  				total_allocated_uas != total_allocated))
->  			goto free_uas_exit;
+> -	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0,
+> -			IOMMU_PAGE_SHIFT_4K,
+> -			window_size,
+> -			POWERNV_IOMMU_DEFAULT_LEVELS, false, &tbl);
+> +	/*
+> +	 * We create the default window as big as we can. The constraint is
+> +	 * the max order of allocation possible. The TCE tableis likely to
+> +	 * end up being multilevel and with on-demand allocation in place,
+> +	 * the initial use is not going to be huge as the default window aims
+> +	 * to support cripplied devices (i.e. not fully 64bit DMAble) only.
+> +	 */
+> +	/* iommu_table::it_map uses 1 bit per IOMMU page, hence 8 */
+> +	const u64 window_size = min((maxblock * 8) << PAGE_SHIFT, 
+> max_memory);
+> +	/* Each TCE level cannot exceed maxblock so go multilevel if needed 
+> */
+> +	unsigned long tces_order = ilog2(window_size >> PAGE_SHIFT);
+> +	unsigned long tcelevel_order = ilog2(maxblock >> 3);
+> +	unsigned int levels = tces_order / tcelevel_order;
+> +
+> +	if (tces_order % tcelevel_order)
+> +		levels += 1;
+> +	/*
+> +	 * We try to stick to default levels (which is >1 at the moment) in
+> +	 * order to save memory by relying on on-demain TCE level allocation.
+> +	 */
+> +	levels = max_t(unsigned int, levels, POWERNV_IOMMU_DEFAULT_LEVELS);
+> +
+> +	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0, PAGE_SHIFT,
+> +			window_size, levels, false, &tbl);
+>  	if (rc) {
+>  		pe_err(pe, "Failed to create 32-bit TCE table, err %ld",
+>  				rc);
+>  		return rc;
 >  	}
-> @@ -318,7 +318,7 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64
-> bus_offset,
 > 
->  	pr_debug("Created TCE table: ws=%08llx ts=%lx @%08llx base=%lx uas=%p
-> levels=%d/%d\n", window_size, tce_table_size, bus_offset, tbl->it_base,
-> -			tbl->it_userspace, tmplevels, levels);
-> +			tbl->it_userspace, 1, levels);
+> -	iommu_init_table(tbl, pe->phb->hose->node);
+> +	/* We use top part of 32bit space for MMIO so exclude it from DMA */
+> +	res_start = 0;
+> +	res_end = 0;
+> +	if (window_size > pe->phb->ioda.m32_pci_base) {
+> +		res_start = pe->phb->ioda.m32_pci_base >> tbl->it_page_shift;
+> +		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
+> +	}
+> +	iommu_init_table_res(tbl, pe->phb->hose->node, res_start, res_end);
 > 
->  	return 0;
+>  	rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
+>  	if (rc) {
+
