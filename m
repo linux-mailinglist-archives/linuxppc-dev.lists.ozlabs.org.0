@@ -1,74 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A28861B5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 09:46:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45hyFR59HdzDqW5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 17:46:35 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A08C61BA4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 10:24:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45hz5Q5qbPzDqWw
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 18:24:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linaro.org
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=viresh.kumar@linaro.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="jrhAt7QH"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45hyCH5vWMzDqPj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 17:44:40 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id i189so7160213pfg.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jul 2019 00:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=6yYLvyLEBI35unTfoBpTYZgBgYmEeKFbJbiIi6+Pm18=;
- b=jrhAt7QHn1hfUTP3COeeH51Er61boYoW+oDIVMrr9COFzd9Upo4q27t48s4EWqhesa
- KU35Ls9UQB0G45UVMerTSq1UJtXZFQ0YLdfSQ85nM3K3OTu4UzbX3fAjwNHPwxiF6i22
- VWG+UdqpRCKTCF9pdkdySwfX2u8PuvZQNWb46wVpftzUmWNaBcyYsyf345kYKJBb/m28
- FzLoPFg2ZkEOGzujoHE7dbijdRbLwq5RDamzdQv7GxV1z1Bbw2MxdeLiX9zp2SJpSxb+
- 1rNtxFARtLOqF4CLByMmOpiZIC/Ax2w4yn8VwnjE6QtO5m/DWsujGLML9vga4AY+jYyd
- YXxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=6yYLvyLEBI35unTfoBpTYZgBgYmEeKFbJbiIi6+Pm18=;
- b=KWPKAz7IOgjr6ZzopLxAPkip5G11ndX0BElOBv0vutWhcVWHkXtY+wsjd1ohoeu0sc
- xER1BpvAcRm9EEzKUrENS0jZPACCGdHbAl1lIkjtTG++7k++KGP1L8SWumXdcaDvQkXu
- RH2IYza0tTA6Psgo9EBpT4VMfVWr6rDQ+PLGvOKvuzjrmcA2JoWL21OniBqLUDQMiL/5
- aMDRs9Q2kBC9SZWBY0qgyb/ksL6FJ23r+dxIeB2CT+YMTEvdZVYMvzBW+rG1VbBe1FkO
- nQvJYLReNyMfWs5BZnk23o74BU7qQpjLr4ifW8oARAp+LP/m+VXmKGyQcdpaFXDUC9HC
- wtGg==
-X-Gm-Message-State: APjAAAW4+Q4vyGqEvBlebgNYkFT5mwaBNX/eb44DcRXGZJLTVT7yVLHw
- dg8Wuj2kEUQ5GW5kUQ9oG292dA==
-X-Google-Smtp-Source: APXvYqwZWf9LLc+ir3bbSRqwnYrobSk3zS9QKp8UXA6ZaA547Hc+q9BjEik4iR2j0FZUtVmgXY79Og==
-X-Received: by 2002:a65:42c3:: with SMTP id l3mr21652248pgp.372.1562571875771; 
- Mon, 08 Jul 2019 00:44:35 -0700 (PDT)
-Received: from localhost ([122.172.28.117])
- by smtp.gmail.com with ESMTPSA id p13sm46332015pjb.30.2019.07.08.00.44.34
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 08 Jul 2019 00:44:34 -0700 (PDT)
-Date: Mon, 8 Jul 2019 13:14:32 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Wen Yang <wen.yang99@zte.com.cn>
-Subject: Re: [PATCH v2] cpufreq/pasemi: fix an use-after-free in
- pas_cpufreq_cpu_init()
-Message-ID: <20190708074432.56q2e3ig5ehiee5f@vireshk-i7>
-References: <1562570393-8684-1-git-send-email-wen.yang99@zte.com.cn>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45hz3y4YrZzDqHK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 18:23:26 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x688MS9w138062
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Jul 2019 04:23:21 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tm1qn98qv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jul 2019 04:23:21 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
+ Mon, 8 Jul 2019 09:23:19 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 8 Jul 2019 09:23:17 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x688NFn460358834
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Jul 2019 08:23:16 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1EB752052;
+ Mon,  8 Jul 2019 08:23:15 +0000 (GMT)
+Received: from [9.109.198.212] (unknown [9.109.198.212])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4D0B252067;
+ Mon,  8 Jul 2019 08:23:13 +0000 (GMT)
+Subject: Re: [v3 4/7] powerpc/mce: Handle UE event for memcpy_mcsafe
+To: Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Santosh Sivaraj <santosh@fossix.org>
+References: <20190705212647.21750-1-santosh@fossix.org>
+ <20190705212647.21750-5-santosh@fossix.org>
+ <1562406379.9eh1e6edgk.astroid@bobo.none>
+From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
+Date: Mon, 8 Jul 2019 13:53:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1562570393-8684-1-git-send-email-wen.yang99@zte.com.cn>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <1562406379.9eh1e6edgk.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070808-0008-0000-0000-000002FADA08
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070808-0009-0000-0000-000022683529
+Message-Id: <b32144b5-c97b-0292-cab6-7290c906e9e2@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-08_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907080110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,82 +91,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Chandan Rajendra <chandan@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08-07-19, 15:19, Wen Yang wrote:
-> The cpu variable is still being used in the of_get_property() call
-> after the of_node_put() call, which may result in use-after-free.
+On 7/6/19 3:23 PM, Nicholas Piggin wrote:
+> Santosh Sivaraj's on July 6, 2019 7:26 am:
+>> If we take a UE on one of the instructions with a fixup entry, set nip
+>> to continue exucution at the fixup entry. Stop processing the event
+>> further or print it.
 > 
-> Fixes: a9acc26b75f ("cpufreq/pasemi: fix possible object reference leak")
-> Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
-> v2: clean up the code according to the advice of viresh.
+> Minor nit, but can you instead a field in the mce data structure that
+> describes the property of the event, and then the code that intends to
+> ignore such events can test for it (with an appropriate comment).
 > 
->  drivers/cpufreq/pasemi-cpufreq.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> So it would be has_fixup_handler or similar. Then queue_event can have
+> the logic
 > 
-> diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-> index 6b1e4ab..c6d464b 100644
-> --- a/drivers/cpufreq/pasemi-cpufreq.c
-> +++ b/drivers/cpufreq/pasemi-cpufreq.c
-> @@ -128,20 +128,18 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  	int cur_astate, idx;
->  	struct resource res;
->  	struct device_node *cpu, *dn;
-> -	int err = -ENODEV;
-> +	int err;
->  
->  	cpu = of_get_cpu_node(policy->cpu, NULL);
-> -
-> -	of_node_put(cpu);
->  	if (!cpu)
-> -		goto out;
-> +		return -ENODEV;
->  
+> /*
+>  * Don't report this machine check because the caller has a fixup 
+>  * handler which will do the appropriate error handling and reporting.
+>  */
+> 
+> 
+>> @@ -565,9 +567,18 @@ static int mce_handle_derror(struct pt_regs *regs,
+>>  	return 0;
+>>  }
+>>  
+>> -static long mce_handle_ue_error(struct pt_regs *regs)
+>> +static long mce_handle_ue_error(struct pt_regs *regs,
+>> +				struct mce_error_info *mce_err)
+>>  {
+>>  	long handled = 0;
+>> +	const struct exception_table_entry *entry;
+>> +
+>> +	entry = search_exception_tables(regs->nip);
+> 
+> Uh oh, this searches module exception tables too... we can't do that
+> in real mode, can we?
 
+Yeah, we can not do that in real mode.  Should we directly call
+search_extable() for kernel exception table ?
 
->  	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
->  	if (!dn)
->  		dn = of_find_compatible_node(NULL, NULL,
->  					     "pasemi,pwrficient-sdc");
->  	if (!dn)
-> -		goto out;
-> +		return -ENODEV;
+> 
+> Thanks,
+> Nick
+> 
 
-This change looks incorrect. You still need to drop reference to cpu ?
-
->  	err = of_address_to_resource(dn, 0, &res);
->  	of_node_put(dn);
->  	if (err)
-> @@ -196,6 +194,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  	policy->cur = pas_freqs[cur_astate].frequency;
->  	ppc_proc_freq = policy->cur * 1000ul;
->  
-> +	of_node_put(cpu);
->  	return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
->  
->  out_unmap_sdcpwr:
-> @@ -204,6 +203,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  out_unmap_sdcasr:
->  	iounmap(sdcasr_mapbase);
->  out:
-> +	of_node_put(cpu);
->  	return err;
->  }
->  
-> -- 
-> 2.9.5
-
--- 
-viresh
