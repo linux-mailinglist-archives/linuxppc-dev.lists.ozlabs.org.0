@@ -1,85 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C4461BB4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 10:29:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A08C61BA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 10:24:46 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45hz5Q5qbPzDqWw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 18:24:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45hzBX4gt8zDqLd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 18:29:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
+ (client-ip=63.217.80.70; helo=mxhk.zte.com.cn;
+ envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=zte.com.cn
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.217.80.70])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45hz3y4YrZzDqHK
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 18:23:26 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x688MS9w138062
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Jul 2019 04:23:21 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tm1qn98qv-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jul 2019 04:23:21 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Mon, 8 Jul 2019 09:23:19 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 8 Jul 2019 09:23:17 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x688NFn460358834
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jul 2019 08:23:16 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1EB752052;
- Mon,  8 Jul 2019 08:23:15 +0000 (GMT)
-Received: from [9.109.198.212] (unknown [9.109.198.212])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4D0B252067;
- Mon,  8 Jul 2019 08:23:13 +0000 (GMT)
-Subject: Re: [v3 4/7] powerpc/mce: Handle UE event for memcpy_mcsafe
-To: Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Santosh Sivaraj <santosh@fossix.org>
-References: <20190705212647.21750-1-santosh@fossix.org>
- <20190705212647.21750-5-santosh@fossix.org>
- <1562406379.9eh1e6edgk.astroid@bobo.none>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Mon, 8 Jul 2019 13:53:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <1562406379.9eh1e6edgk.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19070808-0008-0000-0000-000002FADA08
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070808-0009-0000-0000-000022683529
-Message-Id: <b32144b5-c97b-0292-cab6-7290c906e9e2@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-08_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907080110
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45hz8M716lzDqBv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 18:27:09 +1000 (AEST)
+Received: from mse-fl1.zte.com.cn (unknown [10.30.14.238])
+ by Forcepoint Email with ESMTPS id A522752D760905790219;
+ Mon,  8 Jul 2019 16:27:06 +0800 (CST)
+Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
+ by mse-fl1.zte.com.cn with SMTP id x688QGhj087223;
+ Mon, 8 Jul 2019 16:26:16 +0800 (GMT-8)
+ (envelope-from wen.yang99@zte.com.cn)
+Received: from mapi (kjyxapp04[null]) by mapi (Zmail) with MAPI id mid14;
+ Mon, 8 Jul 2019 16:26:15 +0800 (CST)
+Date: Mon, 8 Jul 2019 16:26:15 +0800 (CST)
+X-Zmail-TransId: 2b065d22fe276a48d4af
+X-Mailer: Zmail v1.0
+Message-ID: <201907081626159718896@zte.com.cn>
+In-Reply-To: <20190708074432.56q2e3ig5ehiee5f@vireshk-i7>
+References: 1562570393-8684-1-git-send-email-wen.yang99@zte.com.cn,
+ 20190708074432.56q2e3ig5ehiee5f@vireshk-i7
+Mime-Version: 1.0
+From: <wen.yang99@zte.com.cn>
+To: <viresh.kumar@linaro.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gY3B1ZnJlcS9wYXNlbWk6IGZpeCBhbiB1c2UtYWZ0ZXItZnJlZSBpbnBhc19jcHVmcmVxX2NwdV9pbml0KCk=?=
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL: mse-fl1.zte.com.cn x688QGhj087223
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,54 +54,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/6/19 3:23 PM, Nicholas Piggin wrote:
-> Santosh Sivaraj's on July 6, 2019 7:26 am:
->> If we take a UE on one of the instructions with a fixup entry, set nip
->> to continue exucution at the fixup entry. Stop processing the event
->> further or print it.
-> 
-> Minor nit, but can you instead a field in the mce data structure that
-> describes the property of the event, and then the code that intends to
-> ignore such events can test for it (with an appropriate comment).
-> 
-> So it would be has_fixup_handler or similar. Then queue_event can have
-> the logic
-> 
-> /*
->  * Don't report this machine check because the caller has a fixup 
->  * handler which will do the appropriate error handling and reporting.
->  */
-> 
-> 
->> @@ -565,9 +567,18 @@ static int mce_handle_derror(struct pt_regs *regs,
->>  	return 0;
->>  }
->>  
->> -static long mce_handle_ue_error(struct pt_regs *regs)
->> +static long mce_handle_ue_error(struct pt_regs *regs,
->> +				struct mce_error_info *mce_err)
->>  {
->>  	long handled = 0;
->> +	const struct exception_table_entry *entry;
->> +
->> +	entry = search_exception_tables(regs->nip);
-> 
-> Uh oh, this searches module exception tables too... we can't do that
-> in real mode, can we?
 
-Yeah, we can not do that in real mode.  Should we directly call
-search_extable() for kernel exception table ?
 
-> 
-> Thanks,
-> Nick
-> 
+--=====_001_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
+
+
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PiA+IFRoZSBjcHUgdmFyaWFibGUgaXMgc3RpbGwgYmVpbmcgdXNlZCBpbiB0aGUgb2ZfZ2V0X3By
+b3BlcnR5KCkgY2FsbAo+ID4gYWZ0ZXIgdGhlIG9mX25vZGVfcHV0KCkgY2FsbCwgd2hpY2ggbWF5
+IHJlc3VsdCBpbiB1c2UtYWZ0ZXItZnJlZS4KPiA+Cj4gPiBGaXhlczogYTlhY2MyNmI3NWYgKCJj
+cHVmcmVxL3Bhc2VtaTogZml4IHBvc3NpYmxlIG9iamVjdCByZWZlcmVuY2UgbGVhayIpCj4gPiBT
+aWduZWQtb2ZmLWJ5OiBXZW4gWWFuZyA8d2VuLnlhbmc5OUB6dGUuY29tLmNuPgo+ID4gQ2M6ICJS
+YWZhZWwgSi4gV3lzb2NraSIgPHJqd0Byand5c29ja2kubmV0Pgo+ID4gQ2M6IFZpcmVzaCBLdW1h
+ciA8dmlyZXNoLmt1bWFyQGxpbmFyby5vcmc+Cj4gPiBDYzogbGludXhwcGMtZGV2QGxpc3RzLm96
+bGFicy5vcmcKPiA+IENjOiBsaW51eC1wbUB2Z2VyLmtlcm5lbC5vcmcKPiA+IENjOiBsaW51eC1r
+ZXJuZWxAdmdlci5rZXJuZWwub3JnCj4gPiAtLS0KPiA+IHYyOiBjbGVhbiB1cCB0aGUgY29kZSBh
+Y2NvcmRpbmcgdG8gdGhlIGFkdmljZSBvZiB2aXJlc2guCj4gPgo+ID4gIGRyaXZlcnMvY3B1ZnJl
+cS9wYXNlbWktY3B1ZnJlcS5jIHwgMTAgKysrKystLS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1
+IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvY3B1ZnJlcS9wYXNlbWktY3B1ZnJlcS5jIGIvZHJpdmVycy9jcHVmcmVxL3Bhc2VtaS1jcHVm
+cmVxLmMKPiA+IGluZGV4IDZiMWU0YWIuLmM2ZDQ2NGIgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJz
+L2NwdWZyZXEvcGFzZW1pLWNwdWZyZXEuYwo+ID4gKysrIGIvZHJpdmVycy9jcHVmcmVxL3Bhc2Vt
+aS1jcHVmcmVxLmMKPiA+IEBAIC0xMjgsMjAgKzEyOCwxOCBAQCBzdGF0aWMgaW50IHBhc19jcHVm
+cmVxX2NwdV9pbml0KHN0cnVjdCBjcHVmcmVxX3BvbGljeSAqcG9saWN5KQo+ID4gICAgICBpbnQg
+Y3VyX2FzdGF0ZSwgaWR4Owo+ID4gICAgICBzdHJ1Y3QgcmVzb3VyY2UgcmVzOwo+ID4gICAgICBz
+dHJ1Y3QgZGV2aWNlX25vZGUgKmNwdSwgKmRuOwo+ID4gLSAgICBpbnQgZXJyID0gLUVOT0RFVjsK
+PiA+ICsgICAgaW50IGVycjsKPiA+Cj4gPiAgICAgIGNwdSA9IG9mX2dldF9jcHVfbm9kZShwb2xp
+Y3ktPmNwdSwgTlVMTCk7Cj4gPiAtCj4gPiAtICAgIG9mX25vZGVfcHV0KGNwdSk7Cj4gPiAgICAg
+IGlmICghY3B1KQo+ID4gLSAgICAgICAgZ290byBvdXQ7Cj4gPiArICAgICAgICByZXR1cm4gLUVO
+T0RFVjsKPiA+Cj4gCj4gCj4gPiAgICAgIGRuID0gb2ZfZmluZF9jb21wYXRpYmxlX25vZGUoTlVM
+TCwgTlVMTCwgIjE2ODJtLXNkYyIpOwo+ID4gICAgICBpZiAoIWRuKQo+ID4gICAgICAgICAgZG4g
+PSBvZl9maW5kX2NvbXBhdGlibGVfbm9kZShOVUxMLCBOVUxMLAo+ID4gICAgICAgICAgICAgICAg
+ICAgICAgICAgICAicGFzZW1pLHB3cmZpY2llbnQtc2RjIik7Cj4gPiAgICAgIGlmICghZG4pCj4g
+PiAtICAgICAgICBnb3RvIG91dDsKPiA+ICsgICAgICAgIHJldHVybiAtRU5PREVWOwo+IAo+IFRo
+aXMgY2hhbmdlIGxvb2tzIGluY29ycmVjdC4gWW91IHN0aWxsIG5lZWQgdG8gZHJvcCByZWZlcmVu
+Y2UgdG8gY3B1ID8KPgoKVGhhbmtzIQpXZSB3aWxsIGZpeCBpdCBpbW1lZGlhdGVseS4KCi0tClRo
+YW5rcyBhbmQgcmVnYXJkcywKV2Vu
+
+
+--=====_003_next=====--
+
+--=====_001_next=====--
 
