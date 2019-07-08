@@ -2,95 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A176275E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 19:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 452B562779
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 19:47:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jCPc3rS9zDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 03:39:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jCZk61pkzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 03:47:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jCN347h5zDqQJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 03:38:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45jCN33GqVz8x1B
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 03:38:11 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45jCN32yZkz9sMr; Tue,  9 Jul 2019 03:38:11 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=janani@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=web.de
+ (client-ip=212.227.15.4; helo=mout.web.de; envelope-from=markus.elfring@web.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.b="p1pbDkyB"; 
+ dkim-atps=neutral
+Received: from mout.web.de (mout.web.de [212.227.15.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45jCN26srBz9sMQ;
- Tue,  9 Jul 2019 03:38:10 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x68Hc14M008361; Mon, 8 Jul 2019 13:38:08 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tm8gmcac0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jul 2019 13:38:08 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x68HXprM023048;
- Mon, 8 Jul 2019 17:37:43 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01wdc.us.ibm.com with ESMTP id 2tjk967pp0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jul 2019 17:37:43 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x68HbfCa52691396
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jul 2019 17:37:41 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8A53136055;
- Mon,  8 Jul 2019 17:37:41 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 493E2136053;
- Mon,  8 Jul 2019 17:37:41 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.16.170.189])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  8 Jul 2019 17:37:41 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jCXx63jJzDqG9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 03:45:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1562607924;
+ bh=/ocw3rGinAIDYS+MLc8v0ILHw8w4guyq+ttXWZ1+zYs=;
+ h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+ b=p1pbDkyB91MxJgyalMe9w8E+dHe3fthIY62t5I4p7q6NE4BxV41pm9GUCeYNLP9QL
+ 7uO8EAan/8yGKbhRmz1tl0Nt+aVqlPU3LRLUvDdJtoMpZ600qMRgdyZ+BwYbilNMpf
+ 5FjHsksnv0d7cXyzCe47k3soyphyK8A2BO8cuqGQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.165.233]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M5bEe-1ihteO18eG-00xf0c; Mon, 08
+ Jul 2019 19:45:24 +0200
+References: <1562575726-17438-1-git-send-email-wen.yang99@zte.com.cn>
+Subject: Re: [PATCH v3] cpufreq/pasemi: fix an use-after-free in
+ pas_cpufreq_cpu_init()
+To: Wen Yang <wen.yang99@zte.com.cn>, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+From: Markus Elfring <Markus.Elfring@web.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <1af4a5c6-b0f1-5ea1-d311-951dc80455f1@web.de>
+Date: Mon, 8 Jul 2019 19:45:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 08 Jul 2019 12:40:06 -0500
-From: janani <janani@linux.ibm.com>
-To: Claudio Carvalho <cclaudio@linux.ibm.com>
-Subject: Re: [PATCH v4 2/8] powerpc: Introduce FW_FEATURE_ULTRAVISOR
-Organization: IBM
-Mail-Reply-To: janani@linux.ibm.com
-In-Reply-To: <20190628200825.31049-3-cclaudio@linux.ibm.com>
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-3-cclaudio@linux.ibm.com>
-Message-ID: <c585a5370f578d2ce7322eebf0496265@linux.vnet.ibm.com>
-X-Sender: janani@linux.ibm.com
-User-Agent: Roundcube Webmail/1.0.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-08_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907080217
+In-Reply-To: <1562575726-17438-1-git-send-email-wen.yang99@zte.com.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3LEP3HMdhu1lN7mB5iYIWOfS9NazuaAM3Ok9b9J2TvLCpvb3cZZ
+ fnggkL0kSoeH9U0I36MxWGpMSCRTCDlIu0nRWFNr1IMjtyDgJoJdP38n05bL+vGB78MuRPK
+ Fdc024DBRLaEygO+GcS0KRr4xcNzDfPNW8rKZb+H+2tpUbm3KpLykAZW3QvpedKL6VKClrW
+ mn5iI76mLX2O/8oo0UBRA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9pdpswlNcJM=:llTp7AEIUCVlDnEP2ujq4U
+ rulsu5W3biyfbl/6wP7cnsjRsbIIhltlogy6yOgWhCSj73lSU7xrlVJ9hiJjFBV2bwzSd9ygX
+ o88uiQFSXWDTwc7vxL3hsdl8btANL52fKzh1sSyg2xSsAPQ/1eUAsv008JK6jc7+H/bYJ7RAb
+ iyKDwfeFgyEN6lFRZ1FMAC8ZVJknj1dadbG/J3EFvfArKo7XNI4EOudmm+eUwwsXcyfRtyA8L
+ Kk/FrX1v50P7YN+R/OfHvRc+TZCADXGJ2hr4xjdhz55mHnVipYcbE6u5TQY6fn4GTROzDu/hR
+ ONO62yM8gf8/S2pAwuKHUra8MXMW+8Bbm737zv9pV59Ukc/GS3OJ3/+t9u603ZUr2vMFoVrdv
+ TWdTefE88Sec0lFzqfrQb/8Vb4TzwOQp0MzzGTbjJGQoJrAaKlBmVJ0z8j3l611JSb5v8nkA1
+ MFJsSMCLf66xU5TQh4mjqG92Sus3ZguubidFBUGZ6D5M2nhCjkBo/fQ1Exj7lLXC2y+6SgpjL
+ AMSnIFycmSPzBt10S2QYTRirLt+9N8TOP35SjBqNSoCvxYCJV0+RRliVi/LwJ9Wm9clrcJlDr
+ 6pmJ0zCzOwzMOnb7Ap79QANUl5x5GmWxFO4iMxts4WZBSeIKzoMrU6LzKhvsnziC//+FQ5yWF
+ knf52j6lPqLNQzVAcZSb1JtjOPJE7NibihJXIkNMOW8YabdL2moGMdk87UeY3NKmI8tAavgjK
+ wIWnlp1dLQjcyL+hNcy5g4q+fGH4xm5/YAXl6I6yCsfD0h8cXH+SddNhtQ8dGSWBkTbaAJUqR
+ fN/sGWdA8ee0PDQ5cgAlcINjiM8jda/xLdM8HWCAx3jkhaBMxd5grd/SaNYqyz7x/tSdtJfqk
+ p61++nECpuKeiB7PFKriEFiLbmXZX9djPMeU8gw4d+f1udAfPfB7HCK1E0PApI/KkQ0qHRYfd
+ DJBYH9RjtUuLxUANxQUTARCVTn35HaK+vXuWLdbVDPK7rtUa1jZHSR6QWjQ92Y9oIMgTt//YB
+ IqfsDJIWsFikK5HsY2br/xcALS81VbL0q96zbFto8ixT5BfbpB2J+DC+xspXNX+H8o+wxcQNt
+ 456Lke+oiufUj4lw7932PC7rsQiIQbjm4Rl
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,149 +126,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: janani@linux.ibm.com
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- linuxppc-dev@ozlabs.org, Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Yi Wang <wang.yi59@zte.com.cn>, kernel-janitors@vger.kernel.org,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Xue Zhihong <xue.zhihong@zte.com.cn>, Cheng Shengyu <cheng.shengyu@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019-06-28 15:08, Claudio Carvalho wrote:
-> This feature tells if the ultravisor firmware is available to handle
-> ucalls.
-> 
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> [ Device node name to "ibm,ultravisor" ]
-> Signed-off-by: Michael Anderson <andmike@linux.ibm.com>
-  Reviewed-by: Janani Janakiraman <janani@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/firmware.h   |  5 +++--
->  arch/powerpc/include/asm/ultravisor.h | 15 +++++++++++++++
->  arch/powerpc/kernel/Makefile          |  1 +
->  arch/powerpc/kernel/prom.c            |  4 ++++
->  arch/powerpc/kernel/ultravisor.c      | 24 ++++++++++++++++++++++++
->  5 files changed, 47 insertions(+), 2 deletions(-)
->  create mode 100644 arch/powerpc/include/asm/ultravisor.h
->  create mode 100644 arch/powerpc/kernel/ultravisor.c
-> 
-> diff --git a/arch/powerpc/include/asm/firmware.h
-> b/arch/powerpc/include/asm/firmware.h
-> index 00bc42d95679..43b48c4d3ca9 100644
-> --- a/arch/powerpc/include/asm/firmware.h
-> +++ b/arch/powerpc/include/asm/firmware.h
-> @@ -54,6 +54,7 @@
->  #define FW_FEATURE_DRC_INFO	ASM_CONST(0x0000000800000000)
->  #define FW_FEATURE_BLOCK_REMOVE ASM_CONST(0x0000001000000000)
->  #define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
-> +#define FW_FEATURE_ULTRAVISOR	ASM_CONST(0x0000004000000000)
-> 
->  #ifndef __ASSEMBLY__
-> 
-> @@ -72,9 +73,9 @@ enum {
->  		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
->  		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
->  		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
-> -		FW_FEATURE_PAPR_SCM,
-> +		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR,
->  	FW_FEATURE_PSERIES_ALWAYS = 0,
-> -	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL,
-> +	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | 
-> FW_FEATURE_ULTRAVISOR,
->  	FW_FEATURE_POWERNV_ALWAYS = 0,
->  	FW_FEATURE_PS3_POSSIBLE = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
->  	FW_FEATURE_PS3_ALWAYS = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
-> diff --git a/arch/powerpc/include/asm/ultravisor.h
-> b/arch/powerpc/include/asm/ultravisor.h
-> new file mode 100644
-> index 000000000000..e5009b0d84ea
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/ultravisor.h
-> @@ -0,0 +1,15 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Ultravisor definitions
-> + *
-> + * Copyright 2019, IBM Corporation.
-> + *
-> + */
-> +#ifndef _ASM_POWERPC_ULTRAVISOR_H
-> +#define _ASM_POWERPC_ULTRAVISOR_H
-> +
-> +/* Internal functions */
-> +extern int early_init_dt_scan_ultravisor(unsigned long node, const 
-> char *uname,
-> +					 int depth, void *data);
-> +
-> +#endif	/* _ASM_POWERPC_ULTRAVISOR_H */
-> diff --git a/arch/powerpc/kernel/Makefile 
-> b/arch/powerpc/kernel/Makefile
-> index 0ea6c4aa3a20..f0caa302c8c0 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -154,6 +154,7 @@ endif
-> 
->  obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
->  obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
-> +obj-$(CONFIG_PPC_POWERNV)	+= ultravisor.o
-> 
->  # Disable GCOV, KCOV & sanitizers in odd or sensitive code
->  GCOV_PROFILE_prom_init.o := n
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 4221527b082f..67a2c1b39252 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -59,6 +59,7 @@
->  #include <asm/firmware.h>
->  #include <asm/dt_cpu_ftrs.h>
->  #include <asm/drmem.h>
-> +#include <asm/ultravisor.h>
-> 
->  #include <mm/mmu_decl.h>
-> 
-> @@ -706,6 +707,9 @@ void __init early_init_devtree(void *params)
->  #ifdef CONFIG_PPC_POWERNV
->  	/* Some machines might need OPAL info for debugging, grab it now. */
->  	of_scan_flat_dt(early_init_dt_scan_opal, NULL);
-> +
-> +	/* Scan tree for ultravisor feature */
-> +	of_scan_flat_dt(early_init_dt_scan_ultravisor, NULL);
->  #endif
-> 
->  #ifdef CONFIG_FA_DUMP
-> diff --git a/arch/powerpc/kernel/ultravisor.c 
-> b/arch/powerpc/kernel/ultravisor.c
-> new file mode 100644
-> index 000000000000..dc6021f63c97
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/ultravisor.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Ultravisor high level interfaces
-> + *
-> + * Copyright 2019, IBM Corporation.
-> + *
-> + */
-> +#include <linux/init.h>
-> +#include <linux/printk.h>
-> +#include <linux/string.h>
-> +
-> +#include <asm/ultravisor.h>
-> +#include <asm/firmware.h>
-> +
-> +int __init early_init_dt_scan_ultravisor(unsigned long node, const 
-> char *uname,
-> +					 int depth, void *data)
-> +{
-> +	if (depth != 1 || strcmp(uname, "ibm,ultravisor") != 0)
-> +		return 0;
-> +
-> +	powerpc_firmware_features |= FW_FEATURE_ULTRAVISOR;
-> +	pr_debug("Ultravisor detected!\n");
-> +	return 1;
-> +}
+> @@ -204,6 +205,7 @@  static int pas_cpufreq_cpu_init(struct cpufreq_poli=
+cy *policy)
+
+>  out_unmap_sdcasr:
+
+>  	iounmap(sdcasr_mapbase);
+
+>  out:
+
+> +	of_node_put(cpu);
+
+
+I would find the usage of a jump label like =E2=80=9Cput_node=E2=80=9D nic=
+er at such
+a source code place.
+
+Regards,
+Markus
