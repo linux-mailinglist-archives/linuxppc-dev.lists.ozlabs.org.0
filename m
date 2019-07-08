@@ -1,35 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3EE618DC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 03:33:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45hnym3MzxzDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 11:33:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6CC618D6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 03:30:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45hnv10PVhzDq6K
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2019 11:30:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45hnfr6FrLzDqQ8
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 11:19:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45hnfq4gyjzDqQ6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2019 11:19:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45hnfq75mmz9sNF; Mon,  8 Jul 2019 11:19:31 +1000 (AEST)
+ id 45hnfq2846z9sNy; Mon,  8 Jul 2019 11:19:31 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 1cfb725fb1899dc6fdc88f8b5354a65e8ad260c6
-In-Reply-To: <239d1c8f15b8bedc161a234f9f1a22a07160dbdf.1557824379.git.christophe.leroy@c-s.fr>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>,
- Segher Boessenkool <segher@kernel.crashing.org>
+X-powerpc-patch-commit: d6eacedd1f0ebf00bdf1c77715d194f7c1036fd4
+In-Reply-To: <20190514060302.21505-1-aneesh.kumar@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
+ paulus@samba.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/4] powerpc/64: flush_inval_dcache_range() becomes
- flush_dcache_range()
-Message-Id: <45hnfq75mmz9sNF@ozlabs.org>
+Subject: Re: [PATCH 1/3] powerpc/book3s: Use config independent helpers for
+ page table walk
+Message-Id: <45hnfq2846z9sNy@ozlabs.org>
 Date: Mon,  8 Jul 2019 11:19:31 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -42,28 +40,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2019-05-14 at 09:05:13 UTC, Christophe Leroy wrote:
-> On most arches having function flush_dcache_range(), including PPC32,
-> this function does a writeback and invalidation of the cache bloc.
+On Tue, 2019-05-14 at 06:03:00 UTC, "Aneesh Kumar K.V" wrote:
+> Even when we have HugeTLB and THP disabled, kernel linear map can still be
+> mapped with hugepages. This is only an issue with radix translation because hash
+> MMU doesn't map kernel linear range in linux page table and other kernel
+> map areas are not mapped using hugepage.
 > 
-> On PPC64, flush_dcache_range() only does a writeback while
-> flush_inval_dcache_range() does the invalidation in addition.
+> Add config independent helpers and put WARN_ON() when we don't expect things
+> to be mapped via hugepages.
 > 
-> In addition it looks like within arch/powerpc/, there are no PPC64
-> platforms using flush_dcache_range()
-> 
-> This patch drops the existing 64 bits version of flush_dcache_range()
-> and renames flush_inval_dcache_range() into flush_dcache_range().
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Applied to powerpc next, thanks.
+Series applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/1cfb725fb1899dc6fdc88f8b5354a65e8ad260c6
+https://git.kernel.org/powerpc/c/d6eacedd1f0ebf00bdf1c77715d194f7c1036fd4
 
 cheers
