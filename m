@@ -1,74 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFBE62FD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 07:06:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jVfL6zY2zDqTW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 15:06:34 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F0163001
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 07:31:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jWCT0mQpzDqSQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 15:31:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZpzLMaKe"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="bi5Qyysv"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jVcL1JZyzDqR1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 15:04:49 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45jVcC5PPgz9txvr;
- Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ZpzLMaKe; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id NtE2ogjVIdW2; Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45jVcC4Fgfz9txvj;
- Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1562648683; bh=InD1pggxj7L0oiLqVKw9lp4Lo1SOo1AoAub535aBZZM=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ZpzLMaKeSsTH4l510UePhhSoJco41Adi8YKLtLj6kN1YJ3QaPifONfn9FoZgvJA5n
- nbn8J/K4v7W00iUT46j4RlPBFpK0PxwkA6vDPCtndy5SRTJj3OszjRUYDSJIOpVNZA
- S+XYnOoBUltwCHlbP6pHRMdQW0VRN4BCE1F1j9FY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 60CFC8B7C1;
- Tue,  9 Jul 2019 07:04:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LtvkpDjRKwoA; Tue,  9 Jul 2019 07:04:44 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 984448B756;
- Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
-To: Nathan Chancellor <natechancellor@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Segher Boessenkool <segher@kernel.crashing.org>
-References: <c6ff2faba7fbb56a7f5b5f08cd3453f89fc0aaf4.1557480165.git.christophe.leroy@c-s.fr>
- <45hnfp6SlLz9sP0@ozlabs.org> <20190708191416.GA21442@archlinux-threadripper>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
-Date: Tue, 9 Jul 2019 07:04:43 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jW9J6nsqzDqQx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 15:29:56 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id f4so24994311ioh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jul 2019 22:29:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ekTBrm84eDXWp2v27vp/vaf2aZ34u1Aceu1+v4AGHdQ=;
+ b=bi5Qyysv+BTUf6UfpIP1DBNvpEfxu1eIX6ZN3ZtCABgoI3gVIc9Ab6nbbW7wMIp9+v
+ NrhtR0tF4ki2WZZSh2W7XrGRwvXyWHbRvMBA1uI9u9Ii5NX91Uk3PEvFxiX45AL1ay6I
+ z2Cvk3ksOY48Fa3QlisSHncdSRaJfsaKkzFb84oyBTRnv7YXSLZwK7ikVQIh3U7aiRWG
+ JFRisGdvze06cdteG8b1YUE3eWYC70EQMeZSrnecXX2eG0/jZo6MOcBbv2VmLbL/Q7di
+ 1mw5UqYdTPloGP1qsP2UPsQcnDJ7YQvQz0DMrGZwB5KvfaTyuSx4Cswh+tQrHXuhwJa0
+ LVFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ekTBrm84eDXWp2v27vp/vaf2aZ34u1Aceu1+v4AGHdQ=;
+ b=O30shQuIpl6hYu8cXixUjeCecRO9qa0LNc/w//yPliJE+f1AbnEPdt6Gg0Kv5Skcbu
+ IX30wy1YO2wwqOD/kpQmSH4vuL9XBTIJGhztG5dkd71ve+tH4DPd0bKll94li/cT6Qwy
+ u9RS+FdYLNnAWBN+3nkVcd49D2bnIQPueHcOXSVDxxzxDrswJQI+4a0PdV/+pta779x1
+ a1R/PcHheGkxOD3R1dwpz2zpOv3YCvlgu4bR6rIssuTu8MpispHaxJ8Gv9qiqZKj2Ow9
+ t8x4FkRkBfdvCQZTS6ZW6Fs/zFuhzKvjidVxYQdbQkixt+jxCvuODUxamHze0w/Hxy1D
+ DbnA==
+X-Gm-Message-State: APjAAAUr9yiNls0WAfFRt8+Pr6bGL9rohlTy1ft/hi1O/22aOMnvKFXO
+ kuIVNrgyzBtM8A52zIblJ0fGFgDEhtP0kWAmZM8=
+X-Google-Smtp-Source: APXvYqwlS6XUTtj022vlunepvujabK/y+bpHegMJ9IVb5gwkEqD17jg6eAVvZb3eDYVISpiQtcZhOGdsmj+f1PHg5V0=
+X-Received: by 2002:a02:9004:: with SMTP id w4mr26522994jaf.111.1562650194327; 
+ Mon, 08 Jul 2019 22:29:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190708191416.GA21442@archlinux-threadripper>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <239d1c8f15b8bedc161a234f9f1a22a07160dbdf.1557824379.git.christophe.leroy@c-s.fr>
+ <d6f628ffdeb9c7863da722a8f6ef2949e57bb360.1557824379.git.christophe.leroy@c-s.fr>
+ <87y318d2th.fsf@linux.ibm.com>
+ <CAOSf1CG-oxpSDsAPw8xHV5367MrMn2Ty_yDpPY9TvA6wMrMZHA@mail.gmail.com>
+ <c0461069-8ef8-cb56-6807-71cc79793ac4@linux.ibm.com>
+In-Reply-To: <c0461069-8ef8-cb56-6807-71cc79793ac4@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 9 Jul 2019 15:29:43 +1000
+Message-ID: <CAOSf1CHYdUXOrxrnEgnF0QXWJ3At=x_70FOhr-9nyuXcgsYk3Q@mail.gmail.com>
+Subject: Re: [PATCH 4/4] powerpc/64: reuse PPC32 static inline
+ flush_dcache_range()
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,47 +77,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jul 9, 2019 at 12:52 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 7/9/19 7:50 AM, Oliver O'Halloran wrote:
+> > On Tue, Jul 9, 2019 at 12:22 AM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> >>
+> >>> *snip*
+> >>> +     if (IS_ENABLED(CONFIG_PPC64))
+> >>> +             isync();
+> >>>   }
+> >>
+> >>
+> >> Was checking with Michael about why we need that extra isync. Michael
+> >> pointed this came via
+> >>
+> >> https://github.com/mpe/linux-fullhistory/commit/faa5ee3743ff9b6df9f9a03600e34fdae596cfb2#diff-67c7ffa8e420c7d4206cae4a9e888e14
+> >>
+> >> for 970 which doesn't have coherent icache. So possibly isync there is
+> >> to flush the prefetch instructions? But even so we would need an icbi
+> >> there before that isync.
+> >
+> > I don't think it's that, there's some magic in flush_icache_range() to
+> > handle dropping prefetched instructions on 970.
+> >
+> >> So overall wondering why we need that extra barriers there.
+> >
+> > I think the isync is needed there because the architecture only
+> > requires sync to provide ordering. A sync alone doesn't guarantee the
+> > dcbfs have actually completed so the isync is necessary to ensure the
+> > flushed cache lines are back in memory. That said, as far as I know
+> > all the IBM book3s chips from power4 onwards will wait for pending
+> > dcbfs when they hit a sync, but that might change in the future.
+> >
+>
+> ISA doesn't list that as the sequence. Only place where isync was
+> mentioned was w.r.t  icbi where want to discards the prefetch.
 
+doesn't list that as the sequence for what?
 
-Le 08/07/2019 à 21:14, Nathan Chancellor a écrit :
-> On Mon, Jul 08, 2019 at 11:19:30AM +1000, Michael Ellerman wrote:
->> On Fri, 2019-05-10 at 09:24:48 UTC, Christophe Leroy wrote:
->>> Cache instructions (dcbz, dcbi, dcbf and dcbst) take two registers
->>> that are summed to obtain the target address. Using 'Z' constraint
->>> and '%y0' argument gives GCC the opportunity to use both registers
->>> instead of only one with the second being forced to 0.
->>>
->>> Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>
->> Applied to powerpc next, thanks.
->>
->> https://git.kernel.org/powerpc/c/6c5875843b87c3adea2beade9d1b8b3d4523900a
->>
->> cheers
-> 
-> This patch causes a regression with clang:
+> > If it's a problem we could add a cpu-feature section around the isync
+> > to no-op it in the common case. However, when I had a look with perf
+> > it always showed that the sync was the hotspot so I don't think it'll
+> > help much.
+> >
+>
+> What about the preceding barriers (sync; isync;) before dcbf? Why are
+> they needed?
 
-Is that a Clang bug ?
+Dunno, the sync might just be to ensure ordering between prior stores
+and the dcbf.
 
-Do you have a disassembly of the code both with and without this patch 
-in order to compare ?
-
-Segher, any idea ?
-
-Christophe
-
-> 
-> https://travis-ci.com/ClangBuiltLinux/continuous-integration/jobs/213944668
-> 
-> I've attached my local bisect/build log.
-> 
-> Cheers,
-> Nathan
-> 
+>
+> -aneesh
