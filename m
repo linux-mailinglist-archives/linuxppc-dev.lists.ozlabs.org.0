@@ -2,37 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DB062FBF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 06:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFBE62FD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 07:06:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jVFL2bPwzDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 14:48:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jVfL6zY2zDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 15:06:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="ZpzLMaKe"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jVCr0nR8zDqQQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 14:47:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45jVCq5LvKz9sMQ;
- Tue,  9 Jul 2019 14:47:03 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Wen Yang <wen.yang99@zte.com.cn>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] cpufreq/pasemi: fix an use-after-free in
- pas_cpufreq_cpu_init()
-In-Reply-To: <1562575726-17438-1-git-send-email-wen.yang99@zte.com.cn>
-References: <1562575726-17438-1-git-send-email-wen.yang99@zte.com.cn>
-Date: Tue, 09 Jul 2019 14:47:03 +1000
-Message-ID: <87muhnhl14.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jVcL1JZyzDqR1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 15:04:49 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45jVcC5PPgz9txvr;
+ Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ZpzLMaKe; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id NtE2ogjVIdW2; Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45jVcC4Fgfz9txvj;
+ Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1562648683; bh=InD1pggxj7L0oiLqVKw9lp4Lo1SOo1AoAub535aBZZM=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ZpzLMaKeSsTH4l510UePhhSoJco41Adi8YKLtLj6kN1YJ3QaPifONfn9FoZgvJA5n
+ nbn8J/K4v7W00iUT46j4RlPBFpK0PxwkA6vDPCtndy5SRTJj3OszjRUYDSJIOpVNZA
+ S+XYnOoBUltwCHlbP6pHRMdQW0VRN4BCE1F1j9FY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 60CFC8B7C1;
+ Tue,  9 Jul 2019 07:04:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LtvkpDjRKwoA; Tue,  9 Jul 2019 07:04:44 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 984448B756;
+ Tue,  9 Jul 2019 07:04:43 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+To: Nathan Chancellor <natechancellor@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Segher Boessenkool <segher@kernel.crashing.org>
+References: <c6ff2faba7fbb56a7f5b5f08cd3453f89fc0aaf4.1557480165.git.christophe.leroy@c-s.fr>
+ <45hnfp6SlLz9sP0@ozlabs.org> <20190708191416.GA21442@archlinux-threadripper>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+Date: Tue, 9 Jul 2019 07:04:43 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20190708191416.GA21442@archlinux-threadripper>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,131 +80,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, xue.zhihong@zte.com.cn,
- cheng.shengyu@zte.com.cn, linuxppc-dev@lists.ozlabs.org,
- Wen Yang <wen.yang99@zte.com.cn>
+Cc: clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Wen Yang <wen.yang99@zte.com.cn> writes:
 
-> The cpu variable is still being used in the of_get_property() call
-> after the of_node_put() call, which may result in use-after-free.
->
-> Fixes: a9acc26b75f ("cpufreq/pasemi: fix possible object reference leak")
-> Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Viresh Kumar <viresh.kumar@linaro.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
-> v3: fix a leaked reference.
-> v2: clean up the code according to the advice of viresh.
->
->  drivers/cpufreq/pasemi-cpufreq.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-> index 6b1e4ab..9dc5163 100644
-> --- a/drivers/cpufreq/pasemi-cpufreq.c
-> +++ b/drivers/cpufreq/pasemi-cpufreq.c
-> @@ -128,20 +128,20 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  	int cur_astate, idx;
->  	struct resource res;
->  	struct device_node *cpu, *dn;
-> -	int err = -ENODEV;
-> +	int err;
->  
->  	cpu = of_get_cpu_node(policy->cpu, NULL);
-> -
-> -	of_node_put(cpu);
->  	if (!cpu)
-> -		goto out;
-> +		return -ENODEV;
 
-I don't think introducing another exit path is an improvement.
+Le 08/07/2019 à 21:14, Nathan Chancellor a écrit :
+> On Mon, Jul 08, 2019 at 11:19:30AM +1000, Michael Ellerman wrote:
+>> On Fri, 2019-05-10 at 09:24:48 UTC, Christophe Leroy wrote:
+>>> Cache instructions (dcbz, dcbi, dcbf and dcbst) take two registers
+>>> that are summed to obtain the target address. Using 'Z' constraint
+>>> and '%y0' argument gives GCC the opportunity to use both registers
+>>> instead of only one with the second being forced to 0.
+>>>
+>>> Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>
+>> Applied to powerpc next, thanks.
+>>
+>> https://git.kernel.org/powerpc/c/6c5875843b87c3adea2beade9d1b8b3d4523900a
+>>
+>> cheers
+> 
+> This patch causes a regression with clang:
 
->  	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
->  	if (!dn)
->  		dn = of_find_compatible_node(NULL, NULL,
->  					     "pasemi,pwrficient-sdc");
-> -	if (!dn)
-> +	if (!dn) {
-> +		err = -ENODEV;
->  		goto out;
-> +	}
->  	err = of_address_to_resource(dn, 0, &res);
->  	of_node_put(dn);
->  	if (err)
-> @@ -196,6 +196,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  	policy->cur = pas_freqs[cur_astate].frequency;
->  	ppc_proc_freq = policy->cur * 1000ul;
->  
-> +	of_node_put(cpu);
->  	return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
->  
->  out_unmap_sdcpwr:
-> @@ -204,6 +205,7 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
->  out_unmap_sdcasr:
->  	iounmap(sdcasr_mapbase);
->  out:
-> +	of_node_put(cpu);
->  	return err;
->  }
+Is that a Clang bug ?
 
-Notice that cpu is only used for the max_freq calculation, so we could
-instead do:
+Do you have a disassembly of the code both with and without this patch 
+in order to compare ?
 
-diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-index 6b1e4abe3248..42a0a4b8e87d 100644
---- a/drivers/cpufreq/pasemi-cpufreq.c
-+++ b/drivers/cpufreq/pasemi-cpufreq.c
-@@ -131,11 +131,20 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	int err = -ENODEV;
- 
- 	cpu = of_get_cpu_node(policy->cpu, NULL);
--
--	of_node_put(cpu);
- 	if (!cpu)
- 		goto out;
- 
-+	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
-+	if (!max_freqp) {
-+		of_node_put(cpu);
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	/* we need the freq in kHz */
-+	max_freq = *max_freqp / 1000;
-+	of_node_put(cpu);
-+
- 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
- 	if (!dn)
- 		dn = of_find_compatible_node(NULL, NULL,
-@@ -172,15 +181,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 
- 	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
- 
--	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
--	if (!max_freqp) {
--		err = -EINVAL;
--		goto out_unmap_sdcpwr;
--	}
--
--	/* we need the freq in kHz */
--	max_freq = *max_freqp / 1000;
--
- 	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
- 	pr_debug("initializing frequency table\n");
- 
+Segher, any idea ?
 
-Though arguably this function should hold a reference to cpu anyway,
-because it doesn't want the CPU to removed out from under it. It's a
-CPUfreq driver after all.
+Christophe
 
-cheers
+> 
+> https://travis-ci.com/ClangBuiltLinux/continuous-integration/jobs/213944668
+> 
+> I've attached my local bisect/build log.
+> 
+> Cheers,
+> Nathan
+> 
