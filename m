@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77EF63C25
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 21:49:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CA163C2B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 21:51:13 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jtH24zTdzDq9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 05:51:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jtDZ2F0rzDqWS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 05:49:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,28 +17,28 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=stackframe.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=duncanthrax.net header.i=@duncanthrax.net
- header.b="lNrf/lm9"; dkim-atps=neutral
+ header.b="gpZhV18H"; dkim-atps=neutral
 Received: from smtp.duncanthrax.net (smtp.duncanthrax.net
  [IPv6:2001:470:70c5:1111::170])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jt6T1v7vzDqTv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 05:43:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jt6T0vnBzDq9n
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 05:43:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From;
- bh=rotB+XcnPPjzDnjy7a5EzIxeSb36d8H4EqIuyWQqzZk=; b=lNrf/lm9y+vyZiiSDIEh/n0bMN
- SLH+3JlMdMN6ZXglvW86+GUToKU8dBKirU6hC2S70jkIGbWaTvDSCGAAbEJ8iqnPLC90geCQA1vU0
- vLReKcoKcVqPbdFcSVLV4edk+QKCxs0OeBIswKzKRHd+WfxKCop+1JMv0uIo+HpeethI=;
+ bh=Vkxm0H9rDcCAwVn3U4wp8JZAu0mqfV7kPwynX7pUS7w=; b=gpZhV18H4LUsdb1hSDsQmNjDnX
+ Pb+5HBtfdM+Ws2IOxkCraERq7X7ffKw3/tnE99P04Lmqz3X1I8CrUabTkv6FPlIQPbNkS6HEtpJAz
+ 9kDah4IEOZvO5WPmrUYcTgjN/XfbrvB3N8qtM81lEeSByh4cXZzz//n6m+rCxQZiCNv4=;
 Received: from [134.3.44.134] (helo=t470p.stackframe.org)
  by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.86_2) (envelope-from <svens@stackframe.org>)
- id 1hkw1Z-0007pP-Bh; Tue, 09 Jul 2019 21:43:37 +0200
+ id 1hkw1Z-0007pP-JQ; Tue, 09 Jul 2019 21:43:37 +0200
 From: Sven Schnelle <svens@stackframe.org>
 To: kexec@lists.infradead.org
-Subject: [PATCH v2 4/7] kexec_elf: remove PURGATORY_STACK_SIZE
-Date: Tue,  9 Jul 2019 21:43:25 +0200
-Message-Id: <20190709194328.16991-5-svens@stackframe.org>
+Subject: [PATCH v2 5/7] kexec_elf: remove elf_addr_to_cpu macro
+Date: Tue,  9 Jul 2019 21:43:26 +0200
+Message-Id: <20190709194328.16991-6-svens@stackframe.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190709194328.16991-1-svens@stackframe.org>
 References: <20190709194328.16991-1-svens@stackframe.org>
@@ -61,26 +61,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's not used anywhere so just drop it.
+It had only one definition, so just use the function directly.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- kernel/kexec_elf.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/kexec_elf.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
 diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-index effe9dc0b055..70d31b8feeae 100644
+index 70d31b8feeae..99e6d63b5dfc 100644
 --- a/kernel/kexec_elf.c
 +++ b/kernel/kexec_elf.c
 @@ -8,8 +8,6 @@
  #include <linux/slab.h>
  #include <linux/types.h>
  
--#define PURGATORY_STACK_SIZE	(16 * 1024)
+-#define elf_addr_to_cpu	elf64_to_cpu
 -
- #define elf_addr_to_cpu	elf64_to_cpu
- 
  #ifndef Elf_Rel
+ #define Elf_Rel		Elf64_Rel
+ #endif /* Elf_Rel */
+@@ -143,9 +141,9 @@ static int elf_read_ehdr(const char *buf, size_t len, struct elfhdr *ehdr)
+ 	ehdr->e_type      = elf16_to_cpu(ehdr, buf_ehdr->e_type);
+ 	ehdr->e_machine   = elf16_to_cpu(ehdr, buf_ehdr->e_machine);
+ 	ehdr->e_version   = elf32_to_cpu(ehdr, buf_ehdr->e_version);
+-	ehdr->e_entry     = elf_addr_to_cpu(ehdr, buf_ehdr->e_entry);
+-	ehdr->e_phoff     = elf_addr_to_cpu(ehdr, buf_ehdr->e_phoff);
+-	ehdr->e_shoff     = elf_addr_to_cpu(ehdr, buf_ehdr->e_shoff);
++	ehdr->e_entry     = elf64_to_cpu(ehdr, buf_ehdr->e_entry);
++	ehdr->e_phoff     = elf64_to_cpu(ehdr, buf_ehdr->e_phoff);
++	ehdr->e_shoff     = elf64_to_cpu(ehdr, buf_ehdr->e_shoff);
+ 	ehdr->e_flags     = elf32_to_cpu(ehdr, buf_ehdr->e_flags);
+ 	ehdr->e_phentsize = elf16_to_cpu(ehdr, buf_ehdr->e_phentsize);
+ 	ehdr->e_phnum     = elf16_to_cpu(ehdr, buf_ehdr->e_phnum);
+@@ -190,18 +188,18 @@ static int elf_read_phdr(const char *buf, size_t len,
+ 	buf_phdr = (struct elf_phdr *) pbuf;
+ 
+ 	phdr->p_type   = elf32_to_cpu(elf_info->ehdr, buf_phdr->p_type);
+-	phdr->p_offset = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_offset);
+-	phdr->p_paddr  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_paddr);
+-	phdr->p_vaddr  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_vaddr);
++	phdr->p_offset = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_offset);
++	phdr->p_paddr  = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_paddr);
++	phdr->p_vaddr  = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_vaddr);
+ 	phdr->p_flags  = elf32_to_cpu(elf_info->ehdr, buf_phdr->p_flags);
+ 
+ 	/*
+ 	 * The following fields have a type equivalent to Elf_Addr
+ 	 * both in 32 bit and 64 bit ELF.
+ 	 */
+-	phdr->p_filesz = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_filesz);
+-	phdr->p_memsz  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_memsz);
+-	phdr->p_align  = elf_addr_to_cpu(elf_info->ehdr, buf_phdr->p_align);
++	phdr->p_filesz = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_filesz);
++	phdr->p_memsz  = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_memsz);
++	phdr->p_align  = elf64_to_cpu(elf_info->ehdr, buf_phdr->p_align);
+ 
+ 	return elf_is_phdr_sane(phdr, len) ? 0 : -ENOEXEC;
+ }
 -- 
 2.20.1
 
