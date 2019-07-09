@@ -1,48 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34847632B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 10:10:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACD6632A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 10:08:57 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jZhk1d2YzDqSr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 18:08:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jZkv0wLlzDqS8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 18:10:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jZhP6DdpzDqT7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 18:08:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
- (client-ip=63.217.80.70; helo=mxhk.zte.com.cn;
- envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=zte.com.cn
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.217.80.70])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45jZhP45VQz8swq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 18:08:37 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45jZhP3s94z9sN1; Tue,  9 Jul 2019 18:08:37 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jZfy68yczDqRh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 18:07:19 +1000 (AEST)
-Received: from mse-fl2.zte.com.cn (unknown [10.30.14.239])
- by Forcepoint Email with ESMTPS id BC8EBA91E0D4F0C49203;
- Tue,  9 Jul 2019 16:07:15 +0800 (CST)
-Received: from notes_smtp.zte.com.cn ([10.30.1.239])
- by mse-fl2.zte.com.cn with ESMTP id x6985tGw071272;
- Tue, 9 Jul 2019 16:05:55 +0800 (GMT-8)
- (envelope-from wen.yang99@zte.com.cn)
-Received: from fox-host8.localdomain ([10.74.120.8])
- by szsmtp06.zte.com.cn (Lotus Domino Release 8.5.3FP6)
- with ESMTP id 2019070916060818-2196810 ;
- Tue, 9 Jul 2019 16:06:08 +0800 
-From: Wen Yang <wen.yang99@zte.com.cn>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v5] cpufreq/pasemi: fix an use-after-free in
- pas_cpufreq_cpu_init()
-Date: Tue, 9 Jul 2019 16:04:07 +0800
-Message-Id: <1562659447-39989-1-git-send-email-wen.yang99@zte.com.cn>
-X-Mailer: git-send-email 1.8.3.1
-X-MIMETrack: Itemize by SMTP Server on SZSMTP06/server/zte_ltd(Release
- 8.5.3FP6|November 21, 2013) at 2019-07-09 16:06:08,
- Serialize by Router on notes_smtp/zte_ltd(Release 9.0.1FP7|August  17, 2016) at
- 2019-07-09 16:05:58, Serialize complete at 2019-07-09 16:05:58
-X-MAIL: mse-fl2.zte.com.cn x6985tGw071272
+ by ozlabs.org (Postfix) with ESMTPS id 45jZhN5xR2z9sML
+ for <linuxppc-dev@ozlabs.org>; Tue,  9 Jul 2019 18:08:36 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6982BFA129014
+ for <linuxppc-dev@ozlabs.org>; Tue, 9 Jul 2019 04:08:34 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tmkxbps07-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 09 Jul 2019 04:08:34 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <ajd@linux.ibm.com>;
+ Tue, 9 Jul 2019 09:08:31 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 9 Jul 2019 09:08:29 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6988T4r52625656
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jul 2019 08:08:29 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E24C74C059;
+ Tue,  9 Jul 2019 08:08:28 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E0D44C063;
+ Tue,  9 Jul 2019 08:08:28 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jul 2019 08:08:28 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 781FAA023B;
+ Tue,  9 Jul 2019 18:08:27 +1000 (AEST)
+Subject: Re: [PATCH v5] powerpc/64s: support nospectre_v2 cmdline option
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
+References: <20190524024647.381-1-cmr@informatik.wtf>
+ <98c47360-c89c-5f4d-1c32-f6ac0ddd7f1e@linux.ibm.com>
+Date: Tue, 9 Jul 2019 18:08:24 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <98c47360-c89c-5f4d-1c32-f6ac0ddd7f1e@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070908-0008-0000-0000-000002FB3060
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070908-0009-0000-0000-000022688F80
+Message-Id: <2690a0cf-4d41-badf-d5c2-c8937ad804cd@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-09_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907090097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,76 +110,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, xue.zhihong@zte.com.cn,
- cheng.shengyu@zte.com.cn, linuxppc-dev@lists.ozlabs.org,
- Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The cpu variable is still being used in the of_get_property() call
-after the of_node_put() call, which may result in use-after-free.
+On 5/6/19 5:42 pm, Andrew Donnellan wrote:
+> On 24/5/19 12:46 pm, Christopher M. Riedl wrote:
+>> Add support for disabling the kernel implemented spectre v2 mitigation
+>> (count cache flush on context switch) via the nospectre_v2 and
+>> mitigations=off cmdline options.
+>>
+>> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+>> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> 
+> snowpatch is whinging about this breaking the build for some reason... 
+> https://patchwork.ozlabs.org/patch/1104583/
 
-Fixes: a9acc26b75f ("cpufreq/pasemi: fix possible object reference leak")
-Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-pm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
-v5: put together the code to get, use, and release cpu device_node.
-v4: restore the blank line.
-v3: fix a leaked reference.
-v2: clean up the code according to the advice of viresh.
+Upon further inspection, it appears this was bogus, and now snowpatch is 
+passing it happily.
 
- drivers/cpufreq/pasemi-cpufreq.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-index 6b1e4ab..1f0beb7 100644
---- a/drivers/cpufreq/pasemi-cpufreq.c
-+++ b/drivers/cpufreq/pasemi-cpufreq.c
-@@ -131,10 +131,17 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	int err = -ENODEV;
- 
- 	cpu = of_get_cpu_node(policy->cpu, NULL);
--
--	of_node_put(cpu);
- 	if (!cpu)
- 		goto out;
-+	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
-+	of_node_put(cpu);
-+	if (!max_freqp) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
-+	/* we need the freq in kHz */
-+	max_freq = *max_freqp / 1000;
- 
- 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
- 	if (!dn)
-@@ -171,16 +178,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 	}
- 
- 	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
--
--	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
--	if (!max_freqp) {
--		err = -EINVAL;
--		goto out_unmap_sdcpwr;
--	}
--
--	/* we need the freq in kHz */
--	max_freq = *max_freqp / 1000;
--
- 	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
- 	pr_debug("initializing frequency table\n");
- 
 -- 
-2.9.5
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
