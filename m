@@ -2,81 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6506262EFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 05:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D5862F02
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 05:40:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jSgF3c52zDqRf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 13:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jSkj4kywzDqRC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 13:40:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jSdf6DdqzDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 13:35:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="CJiBwLV5"; 
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.0.67; helo=eur02-am5-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="ZMEHdqxb"; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45jSdf2D28z8t7D
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 13:35:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45jSdd6Pgmz9sNH; Tue,  9 Jul 2019 13:35:49 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="CJiBwLV5"; 
- dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com
+ (mail-eopbgr00067.outbound.protection.outlook.com [40.107.0.67])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45jSdd3hlWz9sMQ;
- Tue,  9 Jul 2019 13:35:48 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id i10so40022553iol.13;
- Mon, 08 Jul 2019 20:35:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JaoS/xwrcMjIyr9vgUEMUpK0WXNWdCfn6nTIH2BE7qQ=;
- b=CJiBwLV5d+8M2nDN0l29OD9oOwFkZvQoIR4HUnv0UQ4NohKFOo1RKAcFeHlwOYMO9i
- f6jwhMx3F1p5VQOg0l1HpNW5pOO7dcJ95KmvIfsWjS12lEJmmeaV4T6XbSLmUzunL7Z4
- +zW6MwPB7bI6z6pSHSxdr0dEEsvafIfdE572BvarSbTMr+XUWVUTehcJG0/L1fcQ/Ci8
- olUrOBTiavU0DFXo41r7uzix7DUCrJbRzks//xpgHwAqMzeOJfoZ84MZH+HZfFd1nb6i
- gW/yDvsfm4d0/VKYH2AHJBhgTI9H8xG4tWym6ofLZUfHXD8+K2ifPy+8LRyVrq/DKF56
- QHYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JaoS/xwrcMjIyr9vgUEMUpK0WXNWdCfn6nTIH2BE7qQ=;
- b=pLdbktQgcRCiafEsVQspvDYXhl8Ctt3cPDnqOkFSfq4RHhYSKTvIskmWPBYTzaGxml
- yQa950yRetUDHNhEeQ2lufTLHj0e3pFDF2ufa1nBZzR5m1/vRbMFImmSseP7TOAk9PU6
- ok6Lt4lKSRlaEcG7Zbp2xQIqYgKy3de21ikxqT0OWRxGGdBbCRoFbWmyM+YcWtjKCHth
- 6HdFV1uObEaF282UXhk4f9OZHf9IuBzUXaQnavhGVFx9nNjgreZOPvhn6kQMXOYltd5w
- CUSqimNJIz1nfYIPfbqzlA9nfB9meq8ABKowEmjbZk6uwSyxZR/2fVue7eUKhrBjvDY8
- sYig==
-X-Gm-Message-State: APjAAAV6u6e6sJh2fMG/ZNqp7oLmNNx+OvYRHfS4AIFc71PnqeVwgrcU
- 9AQ30fWRw/np8z7R+jM4DC7RLBpzmf+v4sNlHlw=
-X-Google-Smtp-Source: APXvYqw7JnmTFV0p9XmcusnvRmMRsnItsAf/xkVOhqmIsHhlm0im+EMiWG47Gg3GvkqR0idBrlfL2NC7mAiMrglhHsE=
-X-Received: by 2002:a5d:8404:: with SMTP id i4mr8929682ion.146.1562643345658; 
- Mon, 08 Jul 2019 20:35:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jSj21zjgzDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 13:38:41 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OX4rKEGLdam9UCJUPoJejNFiKqVs/jmJB0trusfsHI1ZkPBO4T6itYcuY2kAXkwGSqKVE+0ScVMtlg7MED1CznAfQi+cTvIDiGqijBICqovhpIxDgy9tFoPzZuzLtPT6wCYo3v7dTg/Qz4rbF+iuNCCV6U63uqHZfCvKG1IkaarLzR0tEDb1PKTs4nCb1QRfasAdH6sVNHTBMroYAnAiJ8Jje0NyRYfb5OLcgsLwp7BpWMJlJzbn1JGAOnTBhuPAaZI7CV1IUOlcSkO3N0Uk6luQlT+Qmynt/h0nGMimbVORKgqc4jhHzeHxoMPXw7WInk+kQ3jnm1dSTqlzE7Nlmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=huOkNqQOkNf6RW6RjMupOGnDJsrlFbyhC+whMPQAauQ=;
+ b=CSsP88CyhAE20u3AG19tVjDVTNRFpJe50F9Fsjs9eTnDAVePoRQZ7+W1aA2kaqQCAVI+l/MwfUpgxTzXP6854RGXij9MDJsXsdUI6huS1qw61SgV6JINYviqrGjcmxfNqfl7MZdXG844/EmwFGrpCkPq2hWHD163rGRHvYF4VvqIEirsRXtqt7uqBkLFuDIw45AFFAHIOsK9UKTW1x9suFKNRLmSpfTtKh2CClOEdB5JM9l5An03ak4zww8QG79PxPLVQBfa06iYGbfDHdPzMLoCPPvLZsQwoWE+0Ml8RWHrRmcrorE83RPnk+qQG6yc7wbVzEtEcU39DeiDuCdZFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=nxp.com;dmarc=pass action=none header.from=nxp.com;dkim=pass
+ header.d=nxp.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=huOkNqQOkNf6RW6RjMupOGnDJsrlFbyhC+whMPQAauQ=;
+ b=ZMEHdqxbQDIeXs3XL+z3x1u0PwbquukEdLIQCm58r3ycjR6ArJlYBIiEhJrLl2gOC+/9zwiiXr0JQAgyOafCHy2BE43TCH1r6nW3CDzPGnN3RFfVqud6VWMuu8lzky94xRLN439lf0nYbDUxbC78N9r1pd18JEeuSp2nWuYnt1k=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
+ VE1SPR01MB0007.eurprd04.prod.outlook.com (20.179.193.160) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2073.10; Tue, 9 Jul 2019 03:38:36 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::218e:ee37:1e81:e157]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::218e:ee37:1e81:e157%3]) with mapi id 15.20.2052.019; Tue, 9 Jul 2019
+ 03:38:36 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: Re: [PATCH V2 2/2] ASoC: fsl_esai: recover the channel swap after xrun
+Thread-Topic: [PATCH V2 2/2] ASoC: fsl_esai: recover the channel swap after
+ xrun
+Thread-Index: AdU2B0WWYdAyRfftRKe3kHbe3589Jg==
+Date: Tue, 9 Jul 2019 03:38:36 +0000
+Message-ID: <VE1PR04MB64797B5172DB5EC9EBA8232BE3F10@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [119.31.174.66]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 4a88d812-30ba-4402-14d6-08d7041eecad
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VE1SPR01MB0007; 
+x-ms-traffictypediagnostic: VE1SPR01MB0007:
+x-microsoft-antispam-prvs: <VE1SPR01MB0007B4D85981DDDCE2999FCBE3F10@VE1SPR01MB0007.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 0093C80C01
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(366004)(136003)(396003)(346002)(39860400002)(199004)(189003)(478600001)(7736002)(1411001)(6506007)(4326008)(6436002)(5660300002)(99286004)(2906002)(66066001)(52536014)(229853002)(74316002)(8936002)(186003)(26005)(54906003)(14444005)(256004)(7696005)(316002)(305945005)(102836004)(9686003)(6246003)(81166006)(81156014)(33656002)(486006)(55016002)(25786009)(86362001)(6116002)(3846002)(53936002)(8676002)(68736007)(476003)(6916009)(73956011)(76116006)(66446008)(66476007)(66556008)(64756008)(14454004)(66946007)(71190400001)(71200400001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1SPR01MB0007;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: fAQ1lR7BTNuLiwG/an5SbhBxMlFnnxWvWLDDc56aHop6NRQZ75/n21L46B+hyREojhWrBtjLQ/NFQrcIMfeSyvnsWQMBZjcGmLgEvQzuO/Y/ccFNL+vEWTE2FIak+BOtj0R9IpdA8l65OCQsf8asEhaUeGiSBDiuV+SShTQUPFBPyyfmQp+dkLeDlyniuEWeihK37RJ1kXroTJoHyRdT1C0M7kVj0Ph3dC3Xtm/nBp/NsxoyK3SGCh4EWC5Yn51w5+7JzEGU1jZI85BVvnRVtNcvHIlMgIl69osViUMhT3sCtRtLgY+ic07p68MUOllI7ZaIRfqWMi8oQ8Wwtrq+Nsaehb1H2v1ouBcXd0x+JK1lg58I8+2PtR2SELkeuHXBo88ij38SkNuUSc3td3WJ0CAh8Eyp4qVxGOi2MTvCYvg=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20190708201249.29649-1-cclaudio@linux.ibm.com>
-In-Reply-To: <20190708201249.29649-1-cclaudio@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 9 Jul 2019 13:35:34 +1000
-Message-ID: <CAOSf1CHmvvKHn4oHD28HcUHPh579ZjxQc50kBEMtrn60QiX1BA@mail.gmail.com>
-Subject: Re: [RFC PATCH] powerpc/powernv: Add ultravisor message log interface
-To: Claudio Carvalho <cclaudio@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a88d812-30ba-4402-14d6-08d7041eecad
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2019 03:38:36.0761 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: shengjiu.wang@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1SPR01MB0007
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,209 +102,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Ryan Grimm <grimm@linux.ibm.com>, Joel Stanley <joel@jms.id.au>
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 9, 2019 at 6:12 AM Claudio Carvalho <cclaudio@linux.ibm.com> wrote:
->
-> From: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
->
-> Ultravisor provides an in-memory circular buffer containing a message
-> log populated with various runtime message produced by firmware.
->
-> Based on "powernv/opal-msglog.c", this patch provides a sysfs interface
-> /sys/firmware/opal/uv_msglog for userspace to view the messages.
 
-No, it's a copy and paste of the existing memcons code with "uv"
-sprinked around the place. I don't mind stuff being c+p since it's
-occasionally justified, but be honest about it.
+> > > > +
+> > > > +     /* restore registers by regcache_sync */
+> > > > +     fsl_esai_register_restore(esai_priv);
+> > > > +
+> > > > +     regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
+> > > > +                        ESAI_xCR_xPR_MASK, 0);
+> > > > +     regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
+> > > > +                        ESAI_xCR_xPR_MASK, 0);
+> > >
+> > > And just for curious, can (or shall) we stuff this personal reset to
+> > > the reset() function? I found this one is a part of the reset
+> > > routine being mentioned in the RM -- it was done after ESAI reset is
+> done via ECR register.
+> > >
+> >
+> > There is a problem to do this, TPR/RPR need to be clear after
+> > configure the control register. (TCCR, TCR). So it seems not only one
+> > place (reset function) need to be changed.
+>=20
+> Do you know (or remember) why we suddenly involve this TPR/PRP?
+> The driver has no problem so far, even if we don't have them.
+>=20
+> The "personal reset" sounds like a feature that we would use to reset TX =
+or
+> RX individually, while this hw_reset() does a full reset for both TX and =
+RX.
+> So I wonder whether they're necessary.
 
-> diff --git a/arch/powerpc/platforms/powernv/opal-uv-msglog.c b/arch/powerpc/platforms/powernv/opal-uv-msglog.c
-> new file mode 100644
-> index 000000000000..87d665d7e6ad
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/powernv/opal-uv-msglog.c
-> @@ -0,0 +1,141 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * PowerNV OPAL in-memory ultravisor console interface
-> + *
-> + * Copyright 2018 IBM Corp.
-> + */
-> +#include <asm/io.h>
-> +#include <asm/opal.h>
-> +#include <linux/debugfs.h>
-> +#include <linux/of.h>
-> +#include <linux/types.h>
-> +#include <asm/barrier.h>
-> +
-> +/* OPAL in-memory console. Defined in OPAL source at core/console.c */
-> +struct memcons {
-> +       __be64 magic;
-> +#define MEMCONS_MAGIC  0x6630696567726173L
-> +       __be64 obuf_phys;
-> +       __be64 ibuf_phys;
-> +       __be32 obuf_size;
-> +       __be32 ibuf_size;
-> +       __be32 out_pos;
-> +#define MEMCONS_OUT_POS_WRAP   0x80000000u
-> +#define MEMCONS_OUT_POS_MASK   0x00ffffffu
-> +       __be32 in_prod;
-> +       __be32 in_cons;
-> +};
-> +
-> +static struct memcons *opal_uv_memcons;
-> +
-> +ssize_t opal_uv_msglog_copy(char *to, loff_t pos, size_t count)
-> +{
-> +       const char *conbuf;
-> +       ssize_t ret;
-> +       size_t first_read = 0;
-> +       uint32_t out_pos, avail;
-> +
-> +       if (!opal_uv_memcons)
-> +               return -ENODEV;
-> +
-> +       out_pos = be32_to_cpu(READ_ONCE(opal_uv_memcons->out_pos));
-> +
-> +       /*
-> +        * Now we've read out_pos, put a barrier in before reading the new data
-> +        * it points to in conbuf.
-> +        */
-> +       smp_rmb();
-> +
-> +       conbuf = phys_to_virt(be64_to_cpu(opal_uv_memcons->obuf_phys));
-> +
-> +       /*
-> +        * When the buffer has wrapped, read from the out_pos marker to the end
-> +        * of the buffer, and then read the remaining data as in the un-wrapped
-> +        * case.
-> +        */
-> +       if (out_pos & MEMCONS_OUT_POS_WRAP) {
-> +
-> +               out_pos &= MEMCONS_OUT_POS_MASK;
-> +               avail = be32_to_cpu(opal_uv_memcons->obuf_size) - out_pos;
-> +
-> +               ret = memory_read_from_buffer(to, count, &pos,
-> +                               conbuf + out_pos, avail);
-> +
-> +               if (ret < 0)
-> +                       goto out;
-> +
-> +               first_read = ret;
-> +               to += first_read;
-> +               count -= first_read;
-> +               pos -= avail;
-> +
-> +               if (count <= 0)
-> +                       goto out;
-> +       }
-> +
-> +       /* Sanity check. The firmware should not do this to us. */
-> +       if (out_pos > be32_to_cpu(opal_uv_memcons->obuf_size)) {
-> +               pr_err("OPAL: memory console corruption. Aborting read.\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret = memory_read_from_buffer(to, count, &pos, conbuf, out_pos);
-> +
-> +       if (ret < 0)
-> +               goto out;
-> +
-> +       ret += first_read;
-> +out:
-> +       return ret;
-> +}
-Make this take an struct memcons as an argument and use the same
-function for the opal and UV consoles. Two copies of the same code
-with tricky barrier crap in them is not a good idea.
+The hw_reset flow is suggested by design team, so involve TRP/RPP is from
+them, I don't know the detail.
 
-> +static struct bin_attribute opal_uv_msglog_attr = {
-> +       .attr = {.name = "uv_msglog", .mode = 0444},
-We made the OPAL console only readable to root recently, so the mode
-should be 0400.
-> +       .read = opal_uv_msglog_read
-> +};
-> +
-
-> +void __init opal_uv_msglog_init(void)
-> +{
-> +       u64 mcaddr;
-> +       struct memcons *mc;
-Declarations are reverse-christmas-tree, so these should be the other
-way around.
-
-> +
-> +       if (of_property_read_u64(opal_node, "ibm,opal-uv-memcons", &mcaddr)) {
-> +               pr_warn("OPAL: Property ibm,opal-uv-memcons not found\n");
-> +               return;
-> +       }
-> +
-> +       mc = phys_to_virt(mcaddr);
-> +       if (!mc) {
-> +               pr_warn("OPAL: uv memory console address is invalid\n");
-> +               return;
-> +       }
-> +
-> +       if (be64_to_cpu(mc->magic) != MEMCONS_MAGIC) {
-> +               pr_warn("OPAL: uv memory console version is invalid\n");
-> +               return;
-> +       }
-> +
-> +       /* Report maximum size */
-> +       opal_uv_msglog_attr.size =  be32_to_cpu(mc->ibuf_size) +
-> +               be32_to_cpu(mc->obuf_size);
-> +
-> +       opal_uv_memcons = mc;
-> +}
-
-You can probably share this too if you make it take the DT property
-name of the memcons address as an argument, e.g:
-
-struct memcons *opal_uv_msglog_init(const char *dt_prop_name)
-
-> +
-> +void __init opal_uv_msglog_sysfs_init(void)
-> +{
-> +       if (!opal_uv_memcons) {
-> +               pr_warn("OPAL: message log initialisation failed, not creating sysfs entry\n");
-> +               return;
-> +       }
-> +
-> +       if (sysfs_create_bin_file(opal_kobj, &opal_uv_msglog_attr) != 0)
-> +               pr_warn("OPAL: sysfs file creation failed\n");
-> +}
-
-> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-> index 89b6ddc3ed38..ed000a788456 100644
-> --- a/arch/powerpc/platforms/powernv/opal.c
-> +++ b/arch/powerpc/platforms/powernv/opal.c
-> @@ -946,6 +946,7 @@ static int __init opal_init(void)
->
->         /* Initialise OPAL message log interface */
->         opal_msglog_init();
-> +       opal_uv_msglog_init();
-
-Gate this behind a FW_FEATURE_ULTRAVISOR (or whatever it is) check.
-The opal_uv_msglog_init() prints errors at pr_warn() which is going to
-be spurious for non-uv systems.
-
->         /* Create "opal" kobject under /sys/firmware */
->         rc = opal_sysfs_init();
-> @@ -964,6 +965,7 @@ static int __init opal_init(void)
->                 opal_sys_param_init();
->                 /* Setup message log sysfs interface. */
->                 opal_msglog_sysfs_init();
-> +               opal_uv_msglog_sysfs_init();
-Also gate this.
-
-Basicly, fold this all into the existing memcons code and ifdef the UV
-specific bits. They're just not different enough to justify doing
-otherwise.
-
-Oliver
+Best regards
+Wang shengjiu =20
