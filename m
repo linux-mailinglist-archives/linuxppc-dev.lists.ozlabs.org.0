@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186C6635E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 14:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7BA63605
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 14:35:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jhV31QxmzDqWw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 22:30:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45jhbw4yg5zDqWf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 22:35:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="WEJjn3sL"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="emMR6dBl"; 
  dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jh9x3VrTzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 22:16:05 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id b7so10013779pls.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jul 2019 05:16:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45jhB51mz9zDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2019 22:16:11 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id z75so9357613pgz.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jul 2019 05:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=/D6q9IqqnCEzUrYRXPENA3CK9dVtXBM9qraf2QWS3cw=;
- b=WEJjn3sLVMMM3G8F3q0pi5X+7zVo+wy1uS2MncY8uprFUFCsiDqJn7M0uGznLEo9k1
- zTWo+dAv6u+rHQ4QFhWqEAEKtkPFA5bxtJ1kmTL6PVrfjoDjGnOpwZBu+UcLaES1NRuh
- jp4rGE4KUTOIVMa9e+XvozV5BvHS/2k5bBSW85BmmIBbfmnk7NInLhR2SLvCyeTWzoWD
- ZTbFqdJajckNS54NRHSMJKq0VZ3cK4JUqET1JUmUqRs1HUaefEkP0LasrySTbpnFg6FJ
- pSmjS1GiBLfd1kD82Lco3aQyd2FeOHcB8o0pj9a0dKmK2zr0UV0qoVqgOCcCu1M8SIcD
- +7Tw==
+ bh=62HM2vq6tYD24jSG4prB86KqqNJmUygRjGMJaSfwLY4=;
+ b=emMR6dBlBkE4Jv1qP9rgX/blh+CxtnFKjdxACA6vogdi+c0r1UmojQ0W4JDgQuO5o/
+ SinF/XmZjpblp9NGZohGA+OYJzrb1ohgudKzxgdmHkuoOe46I2jfSCQpb/N3VYslWhfA
+ AhurRSIBcGbEU2HdSo4tZwd+nWf628gX01L5+s4wCCXFRByRzsBTWKi4irdzhMFsA6FU
+ qbvyg0xhBNjL99sReY/mKCrOtVEyFFlJV5QzwLmY27Wpyal1deG3GS10Z+eEfrUNtaTA
+ LCdwbjB/A/MFz0iudfYDxGgmPgYYfUgxtXLZPZE/dLku75rOpe579nhkp4KEz3GmOVZo
+ pasA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=/D6q9IqqnCEzUrYRXPENA3CK9dVtXBM9qraf2QWS3cw=;
- b=uCzGqk3oC+ut5NbQ+r/owXFvsR193q06VzlyxI5f+yw7nfmhxN2zDzXHwAFzBOdF/8
- aUbvB/XTnElcUvbK461NjeJ4hVhLrDemD04tJePEO+zxsjgWdHQjGHojYX4N3HcbhWo2
- VJ0jEThorWCUXbCDuerTtNUfDceBede5vpZrRScMQfht+yZY42vEXC0cj6QRogQBeoLa
- ixIvo99Qcy+T655BYSHyHn84bo0UqDV2eUbM2+x5aHuksTi+P3rTphSsyqB/2OTy52/j
- l5b/sY5SSIaBJOVovmXnPmAp8ZBQAFh0b7FnO3VjZ7NqWkzYgcnxoXnIzUGFR2/E/vZG
- xq/Q==
-X-Gm-Message-State: APjAAAVSP+JCK/X3Rm74YE3piuL5UymCBicZqyWeECZAmv/sIM416sHY
- 0cQ7NGqOFbtGpFjd28pBds0h3XM+CJ5R2nN2
-X-Google-Smtp-Source: APXvYqxLH/fsm+5ph64L/SdYOrJ1SjqBJSSYJsWOK2/V2bl4VN5e1fFMneN0NSUGDoXmU6TsAaIQkA==
-X-Received: by 2002:a17:902:204:: with SMTP id
- 4mr31128589plc.178.1562674563091; 
- Tue, 09 Jul 2019 05:16:03 -0700 (PDT)
+ bh=62HM2vq6tYD24jSG4prB86KqqNJmUygRjGMJaSfwLY4=;
+ b=WtjovD1gv9hzURarKO8VNrJLl4H0M0qob0nwrjFNOS3AhBnn+Ze2d4G5sGOJuosV5a
+ R0taEaZt4/lhULgli1Jg92SzzMpOd4PCZ78eSu8tAgPVp+WCcDo5epVXmx32UriGh/WZ
+ UP4D4XmW+VZxSEHCFMw9gYmIkX/NmHPmuYH155ZCrU3qAO2xh1KwIcixba3fDks9RzTY
+ sj0WXYKT90VLd/YTl9qE8NHvcXXwTi4BPIjT862L/ZzlCNCUd9WzBk8U9T5t0vkuu+Lj
+ 3dqwQrQ1AmPKZHigUIlUuUb4EV73GBQfWDGQXOhpnOduPNL+isnAP6HZnmxOKm1RkKOz
+ UDgw==
+X-Gm-Message-State: APjAAAUemuncIFv0PlTPfdgudjV7VBGV1eM5Yb3L5+mZ7Dor91WJOj9g
+ f7k0MIwM3Hoj/A/NxT41Cvz0kFENKzVtunoV
+X-Google-Smtp-Source: APXvYqyFc6JsuXYQGzcr2Z8+Og5MviTLjlV/G1/wixU9eskEO7AczpYsY6pnwPNTZJ3kXPRYVd0x7A==
+X-Received: by 2002:a63:f4e:: with SMTP id 14mr30451043pgp.58.1562674568932;
+ Tue, 09 Jul 2019 05:16:08 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([223.186.121.175])
- by smtp.gmail.com with ESMTPSA id o15sm21243933pgj.18.2019.07.09.05.15.56
+ by smtp.gmail.com with ESMTPSA id o15sm21243933pgj.18.2019.07.09.05.16.03
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 09 Jul 2019 05:16:02 -0700 (PDT)
+ Tue, 09 Jul 2019 05:16:08 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org
-Subject: [v5 4/6] extable: Add function to search only kernel exception table
-Date: Tue,  9 Jul 2019 17:45:22 +0530
-Message-Id: <20190709121524.18762-5-santosh@fossix.org>
+Subject: [v5 5/6] powerpc/mce: Handle UE event for memcpy_mcsafe
+Date: Tue,  9 Jul 2019 17:45:23 +0530
+Message-Id: <20190709121524.18762-6-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190709121524.18762-1-santosh@fossix.org>
 References: <20190709121524.18762-1-santosh@fossix.org>
@@ -84,69 +83,133 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
  Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
- Ingo Molnar <mingo@kernel.org>
+ Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In real mode, the search_exception tables cannot be called because
-it also searches the module exception tables if entry is not found
-in the kernel exception tables.
+If we take a UE on one of the instructions with a fixup entry, set nip
+to continue execution at the fixup entry. Stop processing the event
+further or print it.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Based-on-patch-by: Reza Arbab <arbab@linux.ibm.com>
+Cc: Reza Arbab <arbab@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- include/linux/extable.h |  2 ++
- kernel/extable.c        | 16 +++++++++++++---
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/mce.h  |  4 +++-
+ arch/powerpc/kernel/mce.c       | 12 +++++++++++-
+ arch/powerpc/kernel/mce_power.c | 15 +++++++++++++--
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/extable.h b/include/linux/extable.h
-index 41c5b3a25f67..0c2819ba67f0 100644
---- a/include/linux/extable.h
-+++ b/include/linux/extable.h
-@@ -19,6 +19,8 @@ void trim_init_extable(struct module *m);
+Nick, I didn't add has_fixup_handler in mce_event structure; if we do so we wil
+have to access the mce_event from ue_handler code also. That is because Mahesh
+did not want mce_event to be accessed outside of save_mce_event, get_mce_event
+and remove_mce_event; that is why I added ignore_event in mce_err also.
+
+I have added the comment you mentioned in your reply.
+
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index 94888a7025b3..f74257eb013b 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -122,7 +122,8 @@ struct machine_check_event {
+ 			enum MCE_UeErrorType ue_error_type:8;
+ 			u8		effective_address_provided;
+ 			u8		physical_address_provided;
+-			u8		reserved_1[5];
++			u8		ignore_event;
++			u8		reserved_1[4];
+ 			u64		effective_address;
+ 			u64		physical_address;
+ 			u8		reserved_2[8];
+@@ -193,6 +194,7 @@ struct mce_error_info {
+ 	enum MCE_Initiator	initiator:8;
+ 	enum MCE_ErrorClass	error_class:8;
+ 	bool			sync_error;
++	bool			ignore_event;
+ };
  
- /* Given an address, look for it in the exception tables */
- const struct exception_table_entry *search_exception_tables(unsigned long add);
-+const struct
-+exception_table_entry *search_kernel_exception_table(unsigned long addr);
- 
- #ifdef CONFIG_MODULES
- /* For extable.c to search modules' exception tables. */
-diff --git a/kernel/extable.c b/kernel/extable.c
-index e23cce6e6092..6d544cb79fff 100644
---- a/kernel/extable.c
-+++ b/kernel/extable.c
-@@ -40,13 +40,23 @@ void __init sort_main_extable(void)
+ #define MAX_MC_EVT	100
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index e78c4f18ea0a..092e6bbc603f 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -144,7 +144,9 @@ void save_mce_event(struct pt_regs *regs, long handled,
+ 		if (phys_addr != ULONG_MAX) {
+ 			mce->u.ue_error.physical_address_provided = true;
+ 			mce->u.ue_error.physical_address = phys_addr;
+-			machine_check_ue_event(mce);
++			mce->u.ue_error.ignore_event = mce_err->ignore_event;
++			if (!mce->u.ue_error.ignore_event)
++				machine_check_ue_event(mce);
+ 		}
  	}
+ 	return;
+@@ -230,6 +232,14 @@ void machine_check_queue_event(void)
+ 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+ 		return;
+ 
++	/*
++	 * Don't report this machine check because the caller has a asked us
++	 * to ignore the event, it has a fixup handler which will do the
++	 * appropriate error handling and reporting.
++	 */
++	if (evt.error_type == MCE_ERROR_TYPE_UE && evt.u.ue_error.ignore_event)
++		return;
++
+ 	index = __this_cpu_inc_return(mce_queue_count) - 1;
+ 	/* If queue is full, just return for now. */
+ 	if (index >= MAX_MC_EVT) {
+diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+index 04666c0b40a8..582a22b1acfb 100644
+--- a/arch/powerpc/kernel/mce_power.c
++++ b/arch/powerpc/kernel/mce_power.c
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/ptrace.h>
++#include <linux/extable.h>
+ #include <asm/mmu.h>
+ #include <asm/mce.h>
+ #include <asm/machdep.h>
+@@ -18,6 +19,7 @@
+ #include <asm/pte-walk.h>
+ #include <asm/sstep.h>
+ #include <asm/exception-64s.h>
++#include <asm/extable.h>
+ 
+ /*
+  * Convert an address related to an mm to a PFN. NOTE: we are in real
+@@ -565,9 +567,18 @@ static int mce_handle_derror(struct pt_regs *regs,
+ 	return 0;
  }
  
--/* Given an address, look for it in the exception tables. */
-+/* For the given address, look for it in the kernel exception table */
-+const
-+struct exception_table_entry *search_kernel_exception_table(unsigned long addr)
-+{
-+	return search_extable(__start___ex_table,
-+			      __stop___ex_table - __start___ex_table, addr);
-+}
-+
-+/*
-+ * Given an address, look for it in the kernel and the module exception
-+ * tables.
-+ */
- const struct exception_table_entry *search_exception_tables(unsigned long addr)
+-static long mce_handle_ue_error(struct pt_regs *regs)
++static long mce_handle_ue_error(struct pt_regs *regs,
++				struct mce_error_info *mce_err)
  {
- 	const struct exception_table_entry *e;
+ 	long handled = 0;
++	const struct exception_table_entry *entry;
++
++	entry = search_kernel_exception_table(regs->nip);
++	if (entry) {
++		mce_err->ignore_event = true;
++		regs->nip = extable_fixup(entry);
++		return 1;
++	}
  
--	e = search_extable(__start___ex_table,
--			   __stop___ex_table - __start___ex_table, addr);
-+	e = search_kernel_exception_table(addr);
- 	if (!e)
- 		e = search_module_extables(addr);
- 	return e;
+ 	/*
+ 	 * On specific SCOM read via MMIO we may get a machine check
+@@ -600,7 +611,7 @@ static long mce_handle_error(struct pt_regs *regs,
+ 				&phys_addr);
+ 
+ 	if (!handled && mce_err.error_type == MCE_ERROR_TYPE_UE)
+-		handled = mce_handle_ue_error(regs);
++		handled = mce_handle_ue_error(regs, &mce_err);
+ 
+ 	save_mce_event(regs, handled, &mce_err, regs->nip, addr, phys_addr);
+ 
 -- 
 2.20.1
 
