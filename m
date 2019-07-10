@@ -2,61 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C3C63C63
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2019 22:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8FA63EA6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 02:36:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45jtYx01WKzDqYt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 06:04:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45k0bn41bBzDqbs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 10:36:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
+ smtp.mailfrom=os.amperecomputing.com (client-ip=40.107.82.107;
+ helo=nam01-sn1-obe.outbound.protection.outlook.com;
+ envelope-from=hoan@os.amperecomputing.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
+ header.from=os.amperecomputing.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="PpnMFYsh"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com
+ header.b="XjQCg58D"; dkim-atps=neutral
+Received: from NAM01-SN1-obe.outbound.protection.outlook.com
+ (mail-eopbgr820107.outbound.protection.outlook.com [40.107.82.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45jtXB0K6PzDqBK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 06:02:33 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0499D2080C;
- Tue,  9 Jul 2019 20:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1562702551;
- bh=3ujcdhvP8y1FxfDxwS7Ewl3LQij9HGitLlSZ+d74+mI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=PpnMFYshe0qf9LevFM1qAKcJPpp72I997HDkYj+pKZzsm0L5EgmyjAlI+Ix+zfg4J
- GLvS6tEIUGfdhyvj2DxhaO+4oaIoZNZjlOrYG07m3Y0TypBHE26Yx2YkPf9AmcU253
- ucIqQLyZt1qU3gNzzVFaQEuEcwOjn6YMzwjHRozo=
-Date: Tue, 9 Jul 2019 22:02:29 +0200
-From: "'gregkh@linuxfoundation.org'" <gregkh@linuxfoundation.org>
-To: Max Gurtovoy <maxg@mellanox.com>
-Subject: Re: [PATCH 1/3] powerpc/powernv: remove the unused pnv_pci_set_p2p
- function
-Message-ID: <20190709200229.GB22280@kroah.com>
-References: <20190426124917.23789-2-hch@lst.de>
- <99c4c4a9-8a18-61ed-174a-9ffaec3d2e44@linux.ibm.com>
- <20190523075253.GA12946@lst.de>
- <AM0PR05MB5810FF3B4A45B3CA722489EEB6F10@AM0PR05MB5810.eurprd05.prod.outlook.com>
- <20190709135935.GA2511@lst.de>
- <ec1f8638-d97d-bfc7-23e1-9af555654562@mellanox.com>
- <20190709143251.GA3222@lst.de>
- <d9430488-e4ef-7d1f-6b74-c2b8158e4a59@mellanox.com>
- <20190709144049.GA3364@lst.de>
- <14dee448-94bc-aaea-3661-baa92ac8c2f8@mellanox.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45k0Yv1VDTzDqVv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 10:34:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2DXeYGwDAu8XiBRuIFYeU35G8ERKcDs4TKxSlAcuhhQ=;
+ b=XjQCg58DJh5OWvBF27jHXcjJdIs9et5RPAEB96GUpfBPzRiOvqRix5m2vwihDnxYPRuHYwHpSTSgym0Gi69ZOB1lZQf8TekQ7pemn07PYtvKlW87mISqtx/adYE+YrVW0oIo7oqtHdU2emat+85KTeXBzVtefhwY0aGA/TFXvfU=
+Received: from SN6PR01MB4094.prod.exchangelabs.com (52.135.119.23) by
+ SN6PR01MB3790.prod.exchangelabs.com (52.132.123.140) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2052.18; Wed, 10 Jul 2019 00:34:19 +0000
+Received: from SN6PR01MB4094.prod.exchangelabs.com
+ ([fe80::b958:7797:c21b:5725]) by SN6PR01MB4094.prod.exchangelabs.com
+ ([fe80::b958:7797:c21b:5725%5]) with mapi id 15.20.2052.020; Wed, 10 Jul 2019
+ 00:34:19 +0000
+From: Hoan Tran OS <hoan@os.amperecomputing.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Topic: [PATCH 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Index: AQHVK6WX71HRsQts10W3HaW79T6UP6as+COAgBYe74A=
+Date: Wed, 10 Jul 2019 00:34:19 +0000
+Message-ID: <1c5bc3a8-0c6f-dce3-95a2-8aec765408a2@os.amperecomputing.com>
+References: <1561501810-25163-1-git-send-email-Hoan@os.amperecomputing.com>
+ <1561501810-25163-4-git-send-email-Hoan@os.amperecomputing.com>
+ <alpine.DEB.2.21.1906260032250.32342@nanos.tec.linutronix.de>
+In-Reply-To: <alpine.DEB.2.21.1906260032250.32342@nanos.tec.linutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: CY4PR06CA0048.namprd06.prod.outlook.com
+ (2603:10b6:903:77::34) To SN6PR01MB4094.prod.exchangelabs.com
+ (2603:10b6:805:a4::23)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=hoan@os.amperecomputing.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [27.68.67.201]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: bb0fe928-c6f4-4bc5-9d58-08d704ce5894
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);
+ SRVR:SN6PR01MB3790; 
+x-ms-traffictypediagnostic: SN6PR01MB3790:
+x-microsoft-antispam-prvs: <SN6PR01MB37900B4D5DBABBA819D47E45F1F00@SN6PR01MB3790.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0094E3478A
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10019020)(4636009)(346002)(366004)(376002)(39840400004)(136003)(396003)(189003)(199004)(54534003)(68736007)(66066001)(486006)(2616005)(186003)(6116002)(76176011)(54906003)(31696002)(11346002)(446003)(6246003)(3846002)(316002)(8676002)(107886003)(6916009)(25786009)(478600001)(14454004)(86362001)(6512007)(52116002)(476003)(81156014)(81166006)(66476007)(7736002)(64756008)(66946007)(66556008)(229853002)(256004)(6486002)(386003)(6506007)(26005)(7416002)(66446008)(5660300002)(305945005)(99286004)(53546011)(71200400001)(31686004)(4326008)(53936002)(71190400001)(102836004)(6436002)(2906002)(8936002);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:SN6PR01MB3790;
+ H:SN6PR01MB4094.prod.exchangelabs.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:0; 
+received-spf: None (protection.outlook.com: os.amperecomputing.com does not
+ designate permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: S5KyvRHNyHX690M0L8U8FPmcFEGo8JmEPvSX3mb2MAyMU4SIUy55UM7YxwWRYqXNW9DlK1BZeqtX15DF7S83MUVw8KM7/Yh5EwxXNAMZIm2aMteWKVBaiAblNLmqY1P+Hkp1/VBaD1dpfJQBUSIKQ9tNVy++Z/b/Eti+XW4HJiYpXWeynUnxFYbihmOwnJB6jMc+yn2lU3Ym5/qoXasQl2FoQqO7bpv7Cu16BR4XTsBO+m7zpf2IPIQYqM8UpuX3YtsLENYIZzML7TZck88G/vihyLzH7dtDC23Gyinj0Rg0I3m+KhkcOI+/UxigbgpXaMK6QgWdr+d0npL58N7rbE975vRD4m8DUElXDHHO2QwdAxt4oceP9lvtViM78BBUKdTsy/SoeH283AO3R8CevORbimUO56jsuo+6fLlJY6k=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <856DBE6A98D2C64F9203DA2E92E3CCD6@prod.exchangelabs.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14dee448-94bc-aaea-3661-baa92ac8c2f8@mellanox.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb0fe928-c6f4-4bc5-9d58-08d704ce5894
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2019 00:34:19.5061 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Hoan@os.amperecomputing.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR01MB3790
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,42 +100,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shlomi Nimrodi <shlomin@mellanox.com>, Paul Mackerras <paulus@samba.org>,
- Bodong Wang <bodong@mellanox.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Oren Duer <oren@mellanox.com>, Idan Werpoler <Idanw@mellanox.com>,
+Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Open Source Submission <patches@amperecomputing.com>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
+ Borislav Petkov <bp@alien8.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 09, 2019 at 06:06:54PM +0300, Max Gurtovoy wrote:
-> 
-> On 7/9/2019 5:40 PM, Christoph Hellwig wrote:
-> > On Tue, Jul 09, 2019 at 05:37:18PM +0300, Max Gurtovoy wrote:
-> > > On 7/9/2019 5:32 PM, Christoph Hellwig wrote:
-> > > > On Tue, Jul 09, 2019 at 05:31:37PM +0300, Max Gurtovoy wrote:
-> > > > > Are we ok with working on a solution during kernel-5.3 cycle ?
-> > > > You can start working on it any time, no need to ask for permission.
-> > > I just want to make sure we don't remove it from the kernel before we send
-> > > a general API solution.
-> > The code is gone in this merge window.
-> 
-> Ok, so we must fix it to kernel-5.3 to make sure we're covered.
-> 
-> Understood.
-> 
-> > 
-> > > This way we'll make sure that all the kernel versions has this
-> > > functionality...
-> > Again, we do not provide functionality for out of tree modules.  We've
-> > had the p2p API for about a year now, its not like you didn't have
-> > plenty of time.
-> 
-> I didn't know about the intention to remove this code...
-
-The original email you responded to in this thread was received by you
-back in May.  It is now July, 5.3 will not be out for 8-9 weeks.  There
-has been plenty of time here...
-
-greg k-h
+SGkgVGhvbWFzLA0KDQpUaGFua3MgZm9yIHlvdSBjb21tZW50cw0KDQpPbiA2LzI1LzE5IDM6NDUg
+UE0sIFRob21hcyBHbGVpeG5lciB3cm90ZToNCj4gSG9hbiwNCj4gDQo+IE9uIFR1ZSwgMjUgSnVu
+IDIwMTksIEhvYW4gVHJhbiBPUyB3cm90ZToNCj4gDQo+IFBsZWFzZSB1c2UgJ3g4Ni9LY29uZmln
+OiAnIGFzIHByZWZpeC4NCj4gDQo+PiBUaGlzIHBhdGNoIHJlbW92ZXMgQ09ORklHX05PREVTX1NQ
+QU5fT1RIRVJfTk9ERVMgYXMgaXQncw0KPj4gZW5hYmxlZCBieSBkZWZhdWx0IHdpdGggTlVNQS4N
+Cj4gDQo+IFBsZWFzZSBkbyBub3QgdXNlICdUaGlzIHBhdGNoJyBpbiBjaGFuZ2Vsb2dzLiBJdCdz
+IHBvaW50bGVzcyBiZWNhdXNlIHdlDQo+IGFscmVhZHkga25vdyB0aGF0IHRoaXMgaXMgYSBwYXRj
+aC4NCj4gDQo+IFNlZSBhbHNvIERvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNo
+ZXMucnN0IGFuZCBzZWFyY2ggZm9yICdUaGlzDQo+IHBhdGNoJw0KPiANCj4gU2ltcGx5IHNheToN
+Cj4gDQo+ICAgIFJlbW92ZSBDT05GSUdfTk9ERVNfU1BBTl9PVEhFUl9OT0RFUyBhcyBpdCdzIGVu
+YWJsZWQgYnkgZGVmYXVsdCB3aXRoDQo+ICAgIE5VTUEuDQo+IA0KDQpHb3QgaXQsIHdpbGwgZml4
+DQoNCj4gQnV0IC4uLi4uDQo+IA0KPj4gQEAgLTE1NjcsMTUgKzE1NjcsNiBAQCBjb25maWcgWDg2
+XzY0X0FDUElfTlVNQQ0KPj4gICAJLS0taGVscC0tLQ0KPj4gICAJICBFbmFibGUgQUNQSSBTUkFU
+IGJhc2VkIG5vZGUgdG9wb2xvZ3kgZGV0ZWN0aW9uLg0KPj4gICANCj4+IC0jIFNvbWUgTlVNQSBu
+b2RlcyBoYXZlIG1lbW9yeSByYW5nZXMgdGhhdCBzcGFuDQo+PiAtIyBvdGhlciBub2Rlcy4gIEV2
+ZW4gdGhvdWdoIGEgcGZuIGlzIHZhbGlkIGFuZA0KPj4gLSMgYmV0d2VlbiBhIG5vZGUncyBzdGFy
+dCBhbmQgZW5kIHBmbnMsIGl0IG1heSBub3QNCj4+IC0jIHJlc2lkZSBvbiB0aGF0IG5vZGUuICBT
+ZWUgbWVtbWFwX2luaXRfem9uZSgpDQo+PiAtIyBmb3IgZGV0YWlscy4NCj4+IC1jb25maWcgTk9E
+RVNfU1BBTl9PVEhFUl9OT0RFUw0KPj4gLQlkZWZfYm9vbCB5DQo+PiAtCWRlcGVuZHMgb24gWDg2
+XzY0X0FDUElfTlVNQQ0KPiANCj4gdGhlIGNoYW5nZWxvZyBkb2VzIG5vdCBtZW50aW9uIHRoYXQg
+dGhpcyBsaWZ0cyB0aGUgZGVwZW5kZW5jeSBvbg0KPiBYODZfNjRfQUNQSV9OVU1BIGFuZCB0aGVy
+ZWZvcmUgZW5hYmxlcyB0aGF0IGZ1bmN0aW9uYWxpdHkgZm9yIGFueXRoaW5nDQo+IHdoaWNoIGhh
+cyBOVU1BIGVuYWJsZWQgaW5jbHVkaW5nIDMyYml0Lg0KPiANCg0KSSB0aGluayB0aGlzIGNvbmZp
+ZyBpcyB1c2VkIGZvciBhIE5VTUEgbGF5b3V0IHdoaWNoIE5VTUEgbm9kZXMgYWRkcmVzc2VzIA0K
+YXJlIHNwYW5uZWQgdG8gb3RoZXIgbm9kZXMuIEkgdGhpbmsgMzJiaXQgTlVNQSBhbHNvIGhhdmUg
+dGhlIHNhbWUgaXNzdWUgDQp3aXRoIHRoYXQgbGF5b3V0LiBQbGVhc2UgY29ycmVjdCBtZSBpZiBJ
+J20gd3JvbmcuDQoNCj4gVGhlIGNvcmUgbW0gY2hhbmdlIGdpdmVzIG5vIGhlbHBmdWwgaW5mb3Jt
+YXRpb24gZWl0aGVyLiBZb3UganVzdCBjb3BpZWQgdGhlDQo+IGFib3ZlIGNvbW1lbnQgdGV4dCBm
+cm9tIHNvbWUgcmFuZG9tIEtjb25maWcuDQoNClllcywgYXMgaXQncyBhIGNvcnJlY3QgY29tbWVu
+dCBhbmQgaXMgdXNlZCBhdCBtdWx0aXBsZSBwbGFjZXMuDQoNClRoYW5rcw0KSG9hbg0KDQo+IA0K
+PiBUaGlzIG5lZWRzIGEgYml0IG1vcmUgZGF0YSBpbiB0aGUgY2hhbmdlbG9ncyBhbmQgdGhlIGNv
+dmVyIGxldHRlcjoNCj4gDQo+ICAgICAgIC0gV2h5IGlzIGl0IHVzZWZ1bCB0byBlbmFibGUgaXQg
+dW5jb25kaXRpb25hbGx5DQo+IA0KPiAgICAgICAtIFdoeSBpcyBpdCBzYWZlIHRvIGRvIHNvLCBl
+dmVuIGlmIHRoZSBhcmNoaXRlY3R1cmUgaGFkIGNvbnN0cmFpbnRzIG9uDQo+ICAgICAgICAgaXQN
+Cj4gDQo+ICAgICAgIC0gV2hhdCdzIHRoZSBwb3RlbnRpYWwgaW1wYWN0DQo+IA0KPiBUaGFua3Ms
+DQo+IA0KPiAJdGdseA0KPiANCg==
