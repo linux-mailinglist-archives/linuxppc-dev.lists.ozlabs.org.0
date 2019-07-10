@@ -2,116 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2830464282
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 09:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB6A642F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 09:33:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45k9br1lnJzDqfX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:21:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45k9ss1t03zDqLp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:33:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=web.de
- (client-ip=212.227.17.12; helo=mout.web.de;
- envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=web.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=web.de header.i=@web.de header.b="RiPUu7Ii"; 
- dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sathnaga@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45k9Z574WqzDqZF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 17:20:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1562743163;
- bh=h5OkycrU5plWknw63C5d7xmKYmZSpCR9aUVQMfr8lSM=;
- h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
- b=RiPUu7IijBml8y0P8fSOFZGvmgVjS3dJ1s72pwCUqxEuOaY0c3ommk3/DHDTQvsrH
- yVfbtt3T7L3tgmszrIUrMxF8mTn4HFYq6qqnF/WfIBObEyRieuW7+7vELsVA4VIGrH
- /1XI+mx37klY5DmdTghxuiht6owlTuHdPr46J2fE=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.42.76]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lr2Zb-1iOpTs0Hx5-00eZvv; Wed, 10
- Jul 2019 09:19:23 +0200
-References: <1562670768-23178-2-git-send-email-wen.yang99@zte.com.cn>
-Subject: Re: [1/2] powerpc/83xx: fix use-after-free in mpc831x_usb_cfg()
-To: Wen Yang <wen.yang99@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
-From: Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <3138c2fa-1e99-f672-2108-33dd1cf25ca2@web.de>
-Date: Wed, 10 Jul 2019 09:19:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45k9r44w8jzDqbw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 17:32:19 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6A7VU25054102
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 03:32:16 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tnb4nhg05-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 03:32:15 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sathnaga@linux.vnet.ibm.com>;
+ Wed, 10 Jul 2019 08:32:14 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 10 Jul 2019 08:32:12 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6A7WBhK58261716
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 10 Jul 2019 07:32:11 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45D4EA4060;
+ Wed, 10 Jul 2019 07:32:11 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9343A405F;
+ Wed, 10 Jul 2019 07:32:09 +0000 (GMT)
+Received: from sathnaga86.in.ibm.com (unknown [9.193.110.61])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 10 Jul 2019 07:32:09 +0000 (GMT)
+Date: Wed, 10 Jul 2019 13:02:07 +0530
+From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+To: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+Subject: Re: [PATCH] powerpc: mm: Limit rma_size to 1TB when running without
+ HV mode
+References: <20190710052018.14628-1-sjitindarsingh@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1562670768-23178-2-git-send-email-wen.yang99@zte.com.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Provags-ID: V03:K1:WOL4ndwtR55k7/yyYs0ws1jNPe9T0eilcyr9y7SFiQlZv+hdwVj
- dph1524PokCJAnCbLMDs1ddKjchhyFq8BsH1QTPdm9SLI4ofVtOOrFuImrcHNAh3+3y9bDF
- La+AISI7OTq2qWO/mKsuDB1ebUffuJMGRJ8VoitxnDemCPLuA+22lskQRU7lh25Gfe1Bbcw
- nPbVc3stuA9nerCcTqBTw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NJvKKKwoGo0=:+R9cBfGMqIz/JCq3XDbWdX
- /zGbRV03AEPb8kscgMUAUnd0VW3Ziy0juKyq0UPmHE2MHlgo6ZBz6xke6byMd9RxHRxpZ13uJ
- 1Q6bsxPWUZ6f85EhVYsTMFnhywBm4mNZ78CnA2Wz6gh8+IfQE/MdbkI0XzPCltP8IclFDGEMj
- IW1xBvPJR+G+/bN98X0jMzL6E+tH2JuBi615tMD51RCWqMHUThjBGg3ug++/JtIW10Oyd0v71
- CLhWchlB4cdx1uYMx7/WKyQzCm7xvoUxspxXo7QxMf8C7Szs5x13LaMn6WeZM8nx+NbiSEDKh
- v1ZkzOEVHr5FbVWzcJknPc7Fi/Kg/PJr1FPzvp3b9T9g+hvLDmGT0z94hFt384Almh6U5PrkW
- Ci1t+LPPjWZKq5aUqqpYUdzx2BMqCnX2XlU6CwkdfdbCkIfljMsN5mbzq8sayBHWhdaNdAjPp
- 2pkmzGO/JmFy0qNCVpFVnzpL3o0SROqL+3lATiKamb/DVOsJsNHffBOgJ0AwDDVxBBPMubvQv
- bq2IbcrxpkGLzRdDM2hGHSLGBy5w9LIchsY99fKyDbq5VbcTPUCCWpUe9P/3xD1OE31ucS67o
- 49DIXhtC44mL7PjJeco5dX+/Q136Jju0ppOHQKu7Aj1QxXYwCKy/oV6nEP2Xug/Q6L/KZr/SG
- n7yIayzT74I16HEJDTmpnbtU65aMuKe/oNBUYZC4w7uC0LrFEhyzKam7p5q71qmmXhaaqQxUY
- SPDtOX5x60p39edzBSyLN/+vqb2i3xD/heg9lFmwkMBxI8tFV1Cufd0iKld5mgIFGtZiGqQEZ
- 1l15jBrBpyrIqcSrMRgKVlYhtK0GP/DpjQu7VDwhiJ0rdWWLz7RbqVUyfA8v3N04/2UDqJp6b
- +NQtLw4pzqz9Mnn67XaVQiOHCq5LqpR3oWIJ22yED2wFmt524bkQq/DzocOUoIq3tQYPeJFEi
- l4B96snDAZeN1p/1ic4P4aTM95ONU1rJBAJ/xWjWokD8LRcUfff9ewYUu+r1JufOWUaas4sJ2
- JY9b3fvcr4JnQE8kqylxd21Vxhxgkc429qiwTP8ZhSS78i0V8PKjuK06cqOwLTsOS3REQqVhx
- MLAXqjiu/USARvx1GxrYbrWmoyxZvNHtjhj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190710052018.14628-1-sjitindarsingh@gmail.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-TM-AS-GCONF: 00
+x-cbid: 19071007-0012-0000-0000-00000330E3AD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071007-0013-0000-0000-0000216A4B47
+Message-Id: <20190710073207.GA29386@sathnaga86.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-10_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907100093
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,20 +89,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yi Wang <wang.yi59@zte.com.cn>, Cheng Shengyu <cheng.shengyu@zte.com.cn>,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, Markus.Elfring@web.de,
- Xue Zhihong <xue.zhihong@zte.com.cn>, Paul Mackerras <paulus@samba.org>
+Reply-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> The immr_node variable is still being used after the of_node_put() call,
-> which may result in use-after-free.
+On Wed, Jul 10, 2019 at 03:20:18PM +1000, Suraj Jitindar Singh wrote:
+> The virtual real mode addressing (VRMA) mechanism is used when a
+> partition is using HPT (Hash Page Table) translation and performs
+> real mode accesses (MSR[IR|DR] = 0) in non-hypervisor mode. In this
+> mode effective address bits 0:23 are treated as zero (i.e. the access
+> is aliased to 0) and the access is performed using an implicit 1TB SLB
+> entry.
+> 
+> The size of the RMA (Real Memory Area) is communicated to the guest as
+> the size of the first memory region in the device tree. And because of
+> the mechanism described above can be expected to not exceed 1TB. In the
+> event that the host erroneously represents the RMA as being larger than
+> 1TB, guest accesses in real mode to memory addresses above 1TB will be
+> aliased down to below 1TB. This means that a memory access performed in
+> real mode may differ to one performed in virtual mode for the same memory
+> address, which would likely have unintended consequences.
+> 
+> To avoid this outcome have the guest explicitly limit the size of the
+> RMA to the current maximum, which is 1TB. This means that even if the
+> first memory block is larger than 1TB, only the first 1TB should be
+> accessed in real mode.
+> 
+> Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+> ---
+>  arch/powerpc/mm/book3s64/hash_utils.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Was any known source code analysis tool involved to point such
-a questionable implementation detail out for further software
-development considerations?
+Hi,
+
+Tested this patch and now Power8 compat guest boots fine with mem >1024G on 
+Power9 host.
+
+Tested-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+
+Host: P9; kernel: 5.2.0-00915-g5ad18b2e60b7
+
+Before this patch:
+Guest crashes..
+[0.000000] BUG: Kernel NULL pointer dereference at 0x00000028
+[0.000000] Faulting instruction address: 0xc00000000102caa0
+[0.000000] Oops: Kernel access of bad area, sig: 11 [#1]
+[0.000000] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+[0.000000] Modules linked in:
+[0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.2.0-03135-ge9a83bd23220 #24
+[0.000000] NIP:  c00000000102caa0 LR: c00000000102ca84 CTR: 0000000000000000
+[0.000000] REGS: c000000001603ba0 TRAP: 0380   Not tainted  (5.2.0-03135-ge9a83bd23220)
+[0.000000] MSR:  8000000000001033 <SF,ME,IR,DR,RI,LE>  CR: 24000428  XER: 20000000
+[0.000000] CFAR: c00000000102c1d8 IRQMASK: 1 
+[0.000000] GPR00: c00000000102ca84 c000000001603e30 c000000001605300 0000010000000000 
+[0.000000] GPR04: 0000000000000000 0000000000000000 c00000ffffff8000 c000000001863dc8 
+[0.000000] GPR08: 0000000000002028 0000000000000000 c00000ffffff8000 0000000000000009 
+[0.000000] GPR12: 0000000000000000 c0000000018f0000 000000007dc5fef0 00000000012e1220 
+[0.000000] GPR16: 00000000012e10a0 fffffffffffffffd 000000007dc5fef0 000000000130fcc0 
+[0.000000] GPR20: 0000000000000014 0000000001a80000 000000002fff0000 fffffffffffffffd 
+[0.000000] GPR24: 0000000001d0000c c000000000000000 c000000001641ed8 c000000001641b78 
+[0.000000] GPR28: 0000000000000000 0000000000000000 0000010000000000 0000000000000000 
+[0.000000] NIP [c00000000102caa0] emergency_stack_init+0xb8/0x118
+[0.000000] LR [c00000000102ca84] emergency_stack_init+0x9c/0x118
+[0.000000] Call Trace:
+[0.000000] [c000000001603e30] [c00000000102ca84] emergency_stack_init+0x9c/0x118 (unreliable)
+[0.000000] [c000000001603e80] [c00000000102bd54] setup_arch+0x2fc/0x388
+[0.000000] [c000000001603ef0] [c000000001023ccc] start_kernel+0xa4/0x660
+[0.000000] [c000000001603f90] [c00000000000b774] start_here_common+0x1c/0x528
+[0.000000] Instruction dump:
+[0.000000] 7ffc07b4 7fc3f378 7bfd1f24 7f84e378 4bfff6e9 3f620004 3b7bc878 7f84e378 
+[0.000000] 39434000 7fc3f378 e93b0000 7d29e82a <f9490028> 4bfff6c5 e93b0000 7f84e378 
+[0.000000] random: get_random_bytes called from print_oops_end_marker+0x6c/0xa0 with crng_init=0
+[0.000000] ---[ end trace 0000000000000000 ]---
+[0.000000] 
+[0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+
+-------------------------
+With this patch:
+# virsh start --console p8
+Domain p8 started
+Connected to domain p8
+..
+..
+Fedora 27 (Twenty Seven)
+Kernel 5.2.0-03136-gf709b0494ad9 on an ppc64le (hvc0)
+
+atest-guest login: 
+# free -g
+              total        used        free      shared  buff/cache   available
+Mem:           1028       0        1027           0           0        1025
+Swap:         0           0     
 
 Regards,
-Markus
+-Satheesh.
+
+> 
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 28ced26f2a00..4d0e2cce9cd5 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -1901,11 +1901,19 @@ void hash__setup_initial_memory_limit(phys_addr_t first_memblock_base,
+>  	 *
+>  	 * For guests on platforms before POWER9, we clamp the it limit to 1G
+>  	 * to avoid some funky things such as RTAS bugs etc...
+> +	 * On POWER9 we limit to 1TB in case the host erroneously told us that
+> +	 * the RMA was >1TB. Effective address bits 0:23 are treated as zero
+> +	 * (meaning the access is aliased to zero i.e. addr = addr % 1TB)
+> +	 * for virtual real mode addressing and so it doesn't make sense to
+> +	 * have an area larger than 1TB as it can't be addressed.
+>  	 */
+>  	if (!early_cpu_has_feature(CPU_FTR_HVMODE)) {
+>  		ppc64_rma_size = first_memblock_size;
+>  		if (!early_cpu_has_feature(CPU_FTR_ARCH_300))
+>  			ppc64_rma_size = min_t(u64, ppc64_rma_size, 0x40000000);
+> +		else
+> +			ppc64_rma_size = min_t(u64, ppc64_rma_size,
+> +					       1UL << SID_SHIFT_1T);
+> 
+>  		/* Finally limit subsequent allocations */
+>  		memblock_set_current_limit(ppc64_rma_size);
+> -- 
+> 2.13.6
+> 
+
