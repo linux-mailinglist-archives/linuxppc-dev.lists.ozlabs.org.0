@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48C164A9A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 18:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0498364AA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 18:22:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kPTj6dspzDqQK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 02:17:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kPc33KHRzDqv5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 02:22:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kP3S36CvzDqpJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 01:57:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kPL42p05zDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 02:10:36 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id BCDEC28908
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 15:57:53 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id A271B2878E
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 16:01:17 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id AFBC328936; Wed, 10 Jul 2019 15:57:53 +0000 (UTC)
+ id 93BEC2897E; Wed, 10 Jul 2019 16:01:17 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -35,7 +35,7 @@ From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204125] FTBFS on ppc64 big endian and gcc9 because of
  -mcall-aixdesc and missing __linux__
-Date: Wed, 10 Jul 2019 15:57:53 +0000
+Date: Wed, 10 Jul 2019 16:01:17 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -44,14 +44,14 @@ X-Bugzilla-Component: PPC-64
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: high
-X-Bugzilla-Who: linux@octaforge.org
+X-Bugzilla-Who: segher@kernel.crashing.org
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204125-206035-pqLCUfVU02@https.bugzilla.kernel.org/>
+Message-ID: <bug-204125-206035-pE5GhyPvRU@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204125-206035@https.bugzilla.kernel.org/>
 References: <bug-204125-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,10 +77,11 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204125
 
---- Comment #3 from Daniel Kolesa (linux@octaforge.org) ---
-Also, reported in gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D91135
+--- Comment #4 from Segher Boessenkool (segher@kernel.crashing.org) ---
+I meant GNU userland.  I don't know any project that officially support
+BE ELFv2.  No BE ELFv2 Linux ABI is defined, either, as far as I know.
 
-Let's see what the compiler people have to say...
+It's great to hear that a lot of it works fine though :-)
 
 --=20
 You are receiving this mail because:
