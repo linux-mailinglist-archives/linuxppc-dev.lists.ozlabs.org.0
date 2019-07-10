@@ -2,47 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E75642F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 09:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CF16432A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 09:57:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45k9wd3zThzDqLt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:36:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kBPX4x3zzDqgW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:57:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
- (client-ip=202.103.147.172; helo=mxct.zte.com.cn;
- envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
+ spf=pass (helo) smtp.helo=mo6-p00-ob.smtp.rzone.de
+ (client-ip=2a01:238:20a:202:5300::5; helo=mo6-p00-ob.smtp.rzone.de;
+ envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=zte.com.cn
-Received: from mxct.zte.com.cn (out1.zte.com.cn [202.103.147.172])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45k9v10MQfzDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 17:34:47 +1000 (AEST)
-Received: from mse-fl1.zte.com.cn (unknown [10.30.14.238])
- by Forcepoint Email with ESMTPS id 8BA30BED63CF384E6B11;
- Wed, 10 Jul 2019 15:34:41 +0800 (CST)
-Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
- by mse-fl1.zte.com.cn with SMTP id x6A7Xinr026714;
- Wed, 10 Jul 2019 15:33:44 +0800 (GMT-8)
- (envelope-from wen.yang99@zte.com.cn)
-Received: from mapi (kjyxapp03[null]) by mapi (Zmail) with MAPI id mid14;
- Wed, 10 Jul 2019 15:33:44 +0800 (CST)
-Date: Wed, 10 Jul 2019 15:33:44 +0800 (CST)
-X-Zmail-TransId: 2b055d2594d8e0b288e8
-X-Mailer: Zmail v1.0
-Message-ID: <201907101533443009168@zte.com.cn>
-In-Reply-To: <3138c2fa-1e99-f672-2108-33dd1cf25ca2@web.de>
-References: 1562670768-23178-2-git-send-email-wen.yang99@zte.com.cn,
- 3138c2fa-1e99-f672-2108-33dd1cf25ca2@web.de
-Mime-Version: 1.0
-From: <wen.yang99@zte.com.cn>
-To: <Markus.Elfring@web.de>
-Subject: =?UTF-8?B?UmU6IFsxLzJdIHBvd2VycGMvODN4eDogZml4IHVzZS1hZnRlci1mcmVlIGluIG1wYzgzMXhfdXNiX2NmZygp?=
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL: mse-fl1.zte.com.cn x6A7Xinr026714
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.b="auvFnbbF"; 
+ dkim-atps=neutral
+Received: from mo6-p00-ob.smtp.rzone.de (mo6-p00-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5300::5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kBMx1dktzDqQW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2019 17:56:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1562745376;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=L4p4B2iUo/5zhgLYvS5YlOgcGDvoyf0lT1HWf6lgos8=;
+ b=auvFnbbF+JdvHpMGItf2UNtz/+d2O6cKL1vDpU8MJCxnaD5G1iYTi+WZm9OhrTtGQU
+ QYWXK3j7q4K23MsZ0leZY4dkmvKfM1JYYrn9YZPhmD2zMmxrU8dQ+ce4iAh8eI/LzpE7
+ iE8GIaqv7t3navIEnnZ+v1pxqBvzV6ZJsMKzYAiQy7oeaMixavHxEB+YFPBbk73pnj+y
+ dt1wqnrmrPSPqrayTdDKk/ReOGwzgy007k85oDxVyAR7TJaoqVp7qjG2RAGtI0IRmTUL
+ /r5Eatfl8SqpBdqBJi3wyvuEyp+Xc9CLwf7rCvYpFXv3z1gfzvWlp58/VZskjF0bWM1n
+ zBeg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgGLoYnXJxg669q60jyrLIz5LGVnA=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:e822:8ba9:ed65:5a5c]
+ by smtp.strato.de (RZmta 44.24 AUTH) with ESMTPSA id U0b154v6A7tsFEy
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with
+ 521 ECDH bits, eq. 15360 bits RSA))
+ (Client did not present a certificate);
+ Wed, 10 Jul 2019 09:55:54 +0200 (CEST)
+Subject: [PATCH v3] cpufreq/pasemi: fix an use-after-free
+ inpas_cpufreq_cpu_init()
+To: wen.yang99@zte.com.cn, linuxppc-dev@lists.ozlabs.org
+References: <201907090939164296374@zte.com.cn>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <98d26400-ceab-ffd9-aea5-9bdf613bd5dc@xenosoft.de>
+Date: Wed, 10 Jul 2019 09:55:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <201907090939164296374@zte.com.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,38 +69,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org, oss@buserror.net, Markus.Elfring@web.de,
- xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Is a final patch available for testing? Please do not release it without 
+testing.
 
+- Christian
 
---=====_001_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+On 09-07-19, 16:04, Wen Yang wrote:
+ > The cpu variable is still being used in the of_get_property() call
+ > after the of_node_put() call, which may result in use-after-free.
+ >
+ > Fixes: a9acc26b75f ("cpufreq/pasemi: fix possible object reference leak")
+ > Signed-off-by: Wen Yang <wen.yang99 at zte.com.cn>
+ > Cc: "Rafael J. Wysocki" <rjw at rjwysocki.net>
+ > Cc: Viresh Kumar <viresh.kumar at linaro.org>
+ > Cc: Michael Ellerman <mpe at ellerman.id.au>
+ > Cc: linuxppc-dev at lists.ozlabs.org
+ > Cc: linux-pm at vger.kernel.org
+ > Cc: linux-kernel at vger.kernel.org
+ > ---
+ > v5: put together the code to get, use, and release cpu device_node.
+ > v4: restore the blank line.
+ > v3: fix a leaked reference.
+ > v2: clean up the code according to the advice of viresh.
+ >
+ >  drivers/cpufreq/pasemi-cpufreq.c | 21 +++++++++------------
+ >  1 file changed, 9 insertions(+), 12 deletions(-)
+ >
+ > diff --git a/drivers/cpufreq/pasemi-cpufreq.c 
+b/drivers/cpufreq/pasemi-cpufreq.c
+ > index 6b1e4ab..1f0beb7 100644
+ > --- a/drivers/cpufreq/pasemi-cpufreq.c
+ > +++ b/drivers/cpufreq/pasemi-cpufreq.c
+ > @@ -131,10 +131,17 @@ static int pas_cpufreq_cpu_init(struct 
+cpufreq_policy *policy)
+ >      int err = -ENODEV;
+ >
+ >      cpu = of_get_cpu_node(policy->cpu, NULL);
+ > -
+ > -    of_node_put(cpu);
+ >      if (!cpu)
+ >          goto out;
 
+I would have loved a blank line here :)
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+ > +    max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+ > +    of_node_put(cpu);
+ > +    if (!max_freqp) {
+ > +        err = -EINVAL;
+ > +        goto out;
+ > +    }
+ > +
+ > +    /* we need the freq in kHz */
+ > +    max_freq = *max_freqp / 1000;
+ >
+ >      dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
+ >      if (!dn)
+ > @@ -171,16 +178,6 @@ static int pas_cpufreq_cpu_init(struct 
+cpufreq_policy *policy)
+ >      }
+ >
+ >      pr_debug("init cpufreq on CPU %d\n", policy->cpu);
+ > -
+ > -    max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+ > -    if (!max_freqp) {
+ > -        err = -EINVAL;
+ > -        goto out_unmap_sdcpwr;
+ > -    }
+ > -
+ > -    /* we need the freq in kHz */
+ > -    max_freq = *max_freqp / 1000;
+ > -
+ >      pr_debug("max clock-frequency is at %u kHz\n", max_freq);
+ >      pr_debug("initializing frequency table\n");
 
-PiA+IFRoZSBpbW1yX25vZGUgdmFyaWFibGUgaXMgc3RpbGwgYmVpbmcgdXNlZCBhZnRlciB0aGUg
-b2Zfbm9kZV9wdXQoKSBjYWxsLAo+ID4gd2hpY2ggbWF5IHJlc3VsdCBpbiB1c2UtYWZ0ZXItZnJl
-ZS4KPiAKPiBXYXMgYW55IGtub3duIHNvdXJjZSBjb2RlIGFuYWx5c2lzIHRvb2wgaW52b2x2ZWQg
-dG8gcG9pbnQgc3VjaAo+IGEgcXVlc3Rpb25hYmxlIGltcGxlbWVudGF0aW9uIGRldGFpbCBvdXQg
-Zm9yIGZ1cnRoZXIgc29mdHdhcmUKPiBkZXZlbG9wbWVudCBjb25zaWRlcmF0aW9ucz8KCkhpIE1h
-cmt1cywgCndlIGRldmVsb3BlZCBhIGNvY2NpbmVsbGUgc2NyaXB0IHRvIGRldGVjdCBzdWNoIHBy
-b2JsZW1zLiAKVGhpcyBzY3JpcHQgaXMgc3RpbGwgYmVpbmcgaW1wcm92ZWQuCkFmdGVyIGEgcGVy
-aW9kIG9mIHRlc3RpbmcsIHdlIHdpbGwgc2VuZCBpdCB0byB0aGUgTE1LTCBtYWlsaW5nIGxpc3Qg
-bGF0ZXIuCgotLQpSZWdhcmRzLApXZW4=
+Though, enough versions have happened now.
 
+Acked-by: Viresh Kumar <viresh.kumar at linaro.org>
 
---=====_003_next=====--
-
---=====_001_next=====--
-
+-- 
+viresh
