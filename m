@@ -2,33 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514686495E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841026496B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 17:16:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kN1c6QtpzDqM7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 01:11:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kN824cWmzDq7k
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 01:16:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kMty29R8zDqhK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 01:05:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kMv02g79zDqLx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 01:05:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 45kMty4JD6z9sPp; Thu, 11 Jul 2019 01:05:30 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45kMtx2lmXz9sPj; Thu, 11 Jul 2019 01:05:29 +1000 (AEST)
+ id 45kMty2sWcz9sP3; Thu, 11 Jul 2019 01:05:30 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 9e005b761e7ad153dcf40a6cba1d681fe0830ac6
-In-Reply-To: <20190705100144.28785-1-yamada.masahiro@socionext.com>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>,
- linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 0fc12c022ad25532b66bf6f6c818ee1c1d63e702
+In-Reply-To: <20190708061046.7075-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3 1/2] powerpc/boot: add {get,
- put}_unaligned_be32 to xz_config.h
-Message-Id: <45kMtx2lmXz9sPj@ozlabs.org>
-Date: Thu, 11 Jul 2019 01:05:29 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/irq: Don't WARN continuously in
+ arch_local_irq_restore()
+Message-Id: <45kMty2sWcz9sP3@ozlabs.org>
+Date: Thu, 11 Jul 2019 01:05:30 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,66 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
- Paul Mackerras <paulus@samba.org>, linux-kernel@vger.kernel.org
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2019-07-05 at 10:01:43 UTC, Masahiro Yamada wrote:
-> The next commit will make the way of passing CONFIG options more robust.
-> Unfortunately, it would uncover another hidden issue; without this
-> commit, skiroot_defconfig would be broken like this:
+On Mon, 2019-07-08 at 06:10:46 UTC, Michael Ellerman wrote:
+> When CONFIG_PPC_IRQ_SOFT_MASK_DEBUG is enabled (uncommon), we have a
+> series of WARN_ON's in arch_local_irq_restore().
 > 
-> |   WRAP    arch/powerpc/boot/zImage.pseries
-> | arch/powerpc/boot/wrapper.a(decompress.o): In function `bcj_powerpc.isra.10':
-> | decompress.c:(.text+0x720): undefined reference to `get_unaligned_be32'
-> | decompress.c:(.text+0x7a8): undefined reference to `put_unaligned_be32'
-> | make[1]: *** [arch/powerpc/boot/Makefile;383: arch/powerpc/boot/zImage.pseries] Error 1
-> | make: *** [arch/powerpc/Makefile;295: zImage] Error 2
+> These are "should never happen" conditions, but if they do happen they
+> can flood the console and render the system unusable. So switch them
+> to WARN_ON_ONCE().
 > 
-> skiroot_defconfig is the only defconfig that enables CONFIG_KERNEL_XZ
-> for ppc, which has never been correctly built before.
-> 
-> I figured out the root cause in lib/decompress_unxz.c:
-> 
-> | #ifdef CONFIG_PPC
-> | #      define XZ_DEC_POWERPC
-> | #endif
-> 
-> CONFIG_PPC is undefined here in the ppc bootwrapper because autoconf.h
-> is not included except by arch/powerpc/boot/serial.c
-> 
-> XZ_DEC_POWERPC is not defined, therefore, bcj_powerpc() is not compiled
-> for the bootwrapper.
-> 
-> With the next commit passing CONFIG_PPC correctly, we would realize that
-> {get,put}_unaligned_be32 was missing.
-> 
-> Unlike the other decompressors, the ppc bootwrapper duplicates all the
-> necessary helpers in arch/powerpc/boot/.
-> 
-> The other architectures define __KERNEL__ and pull in helpers for
-> building the decompressors.
-> 
-> If ppc bootwrapper had defined __KERNEL__, lib/xz/xz_private.h would
-> have included <asm/unaligned.h>:
-> 
-> | #ifdef __KERNEL__
-> | #       include <linux/xz.h>
-> | #       include <linux/kernel.h>
-> | #       include <asm/unaligned.h>
-> 
-> However, doing so would cause tons of definition conflicts since the
-> bootwrapper has duplicated everything.
-> 
-> I just added copies of {get,put}_unaligned_be32, following the
-> bootwrapper coding convention.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Fixes: e2b36d591720 ("powerpc/64: Don't trace code that runs with the soft irq mask unreconciled")
+> Fixes: 9b81c0211c24 ("powerpc/64s: make PACA_IRQ_HARD_DIS track MSR[EE] closely")
+> Fixes: 7c0482e3d055 ("powerpc/irq: Fix another case of lazy IRQ state getting out of sync")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Series applied to powerpc next, thanks.
+Applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/9e005b761e7ad153dcf40a6cba1d681fe0830ac6
+https://git.kernel.org/powerpc/c/0fc12c022ad25532b66bf6f6c818ee1c1d63e702
 
 cheers
