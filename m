@@ -2,46 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1321E64855
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 16:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3FF64859
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2019 16:29:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kM2w67lqzDqZn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 00:27:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kM5n5jH2zDqfY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 00:29:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kLvr4gtfzDqHr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 00:21:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=stackframe.org
+ (client-ip=2001:470:70c5:1111::170; helo=smtp.duncanthrax.net;
+ envelope-from=svens@stackframe.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
+ header.from=stackframe.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.b="Rrb7mKSJ"; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 45kLvp65xbz9sML; Thu, 11 Jul 2019 00:21:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1562768470;
- bh=sI/DH+2qaA00u9gLOeXhABtLZGyr1KrwFk1UKAd0av0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Rrb7mKSJYp9FZP7ypfXBRYjnss/Z2OSi0QR4liiY+jS9NciIXcMG1wAeb+QDTIGUW
- DUlIkRF3IBf6YBOcqagQ3nWxd3yWcJg1I50neWRRaHPc8kVOKYShODhJetFh402ejG
- lxktRQr7pR4FwWlRIrY4M5NH2nc/WQhkxxmSc6hs=
-Date: Thu, 11 Jul 2019 00:21:03 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
-Subject: Re: [PATCH] powerpc: mm: Limit rma_size to 1TB when running without
- HV mode
-Message-ID: <20190710142103.GB3360@umbus.fritz.box>
-References: <20190710052018.14628-1-sjitindarsingh@gmail.com>
+ unprotected) header.d=duncanthrax.net header.i=@duncanthrax.net
+ header.b="bkZVcuul"; dkim-atps=neutral
+Received: from smtp.duncanthrax.net (smtp.duncanthrax.net
+ [IPv6:2001:470:70c5:1111::170])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kM0b2sC5zDq75
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 00:25:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=duncanthrax.net; s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References
+ :Message-ID:Subject:Cc:To:From:Date;
+ bh=AF9TbuWmrW1CqKM/1yWsmA/ovj9LMicONWkNU/F2Xb8=; b=bkZVcuulQ9ra/XYBykfCSpCnRz
+ ScftP6j7275ilEmMjM11dHEXGYLMIP7gmTnqtyIpLuKQmAC/Zy37Ntsl9r64/T7SV3KmeoSnsTdlY
+ e/fV+jwwE1KQdaaHWrdpDdhWGoegFiVHUBJC1ubJyq059QRR0D76MF6/EFaHQxbcAvmI=;
+Received: from [134.3.44.134] (helo=t470p.stackframe.org)
+ by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.86_2) (envelope-from <svens@stackframe.org>)
+ id 1hlDWn-0004O1-5C; Wed, 10 Jul 2019 16:25:01 +0200
+Date: Wed, 10 Jul 2019 16:24:59 +0200
+From: Sven Schnelle <svens@stackframe.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v2 1/7] kexec: add KEXEC_ELF
+Message-ID: <20190710142459.GA31679@t470p.stackframe.org>
+References: <20190709194328.16991-1-svens@stackframe.org>
+ <20190709194328.16991-2-svens@stackframe.org>
+ <64306f6c-0a0d-a6ea-537c-5e72deaba1c0@c-s.fr>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="JP+T4n/bALQSJXh8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190710052018.14628-1-sjitindarsingh@gmail.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+In-Reply-To: <64306f6c-0a0d-a6ea-537c-5e72deaba1c0@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,104 +58,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, deller@gmx.de, kexec@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
 
---JP+T4n/bALQSJXh8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 10, 2019 at 01:19:13PM +0000, Christophe Leroy wrote:
+> Hi Sven,
+> 
+> On 07/09/2019 07:43 PM, Sven Schnelle wrote:
+> > Right now powerpc provides an implementation to read elf files
+> > with the kexec_file() syscall. Make that available as a public
+> > kexec interface so it can be re-used on other architectures.
+> > 
+> > Signed-off-by: Sven Schnelle <svens@stackframe.org>
+> > ---
+> >   arch/Kconfig                       |   3 +
+> >   arch/powerpc/Kconfig               |   1 +
+> >   arch/powerpc/kernel/kexec_elf_64.c | 551 +----------------------------
+> >   include/linux/kexec.h              |  24 ++
+> >   kernel/Makefile                    |   1 +
+> >   kernel/kexec_elf.c                 | 537 ++++++++++++++++++++++++++++
+> >   6 files changed, 576 insertions(+), 541 deletions(-)
+> >   create mode 100644 kernel/kexec_elf.c
+> 
+> Why are you persisting at not using -C when creating your patch ? Do you
+> want to hide the changes you did while copying
+> arch/powerpc/kernel/kexec_elf_64.c to kernel/kexec_elf.c ?
+> Or you want to make life harder for the reviewers ?
 
-On Wed, Jul 10, 2019 at 03:20:18PM +1000, Suraj Jitindar Singh wrote:
-> The virtual real mode addressing (VRMA) mechanism is used when a
-> partition is using HPT (Hash Page Table) translation and performs
-> real mode accesses (MSR[IR|DR] =3D 0) in non-hypervisor mode. In this
-> mode effective address bits 0:23 are treated as zero (i.e. the access
-> is aliased to 0) and the access is performed using an implicit 1TB SLB
-> entry.
->=20
-> The size of the RMA (Real Memory Area) is communicated to the guest as
-> the size of the first memory region in the device tree. And because of
-> the mechanism described above can be expected to not exceed 1TB. In the
-> event that the host erroneously represents the RMA as being larger than
-> 1TB, guest accesses in real mode to memory addresses above 1TB will be
-> aliased down to below 1TB. This means that a memory access performed in
-> real mode may differ to one performed in virtual mode for the same memory
-> address, which would likely have unintended consequences.
->=20
-> To avoid this outcome have the guest explicitly limit the size of the
-> RMA to the current maximum, which is 1TB. This means that even if the
-> first memory block is larger than 1TB, only the first 1TB should be
-> accessed in real mode.
->=20
-> Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+Sorry, never used -C before. I used:
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+git send-email --annotate -v2 -7 --to kexec@lists.infradead.org --cc deller@gmx.de,linuxppc-dev@lists.ozlabs.org -v --format-patch -C -M
 
-Although I'd really like to also see some comments added in
-allocate_paca_ptrs() explaining the constraints there.
+However, it looks like it only works when started this way:
 
-Oh, also, basing this on the non-compat PVR is bogus, but it's still
-better than what we had.
+git send-email --format-patch -M -C --annotate -v2 -7 --to kexec@lists.infradead.org --cc deller@gmx.de,linuxppc-dev@lists.ozlabs.org -v
 
-> ---
->  arch/powerpc/mm/book3s64/hash_utils.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book=
-3s64/hash_utils.c
-> index 28ced26f2a00..4d0e2cce9cd5 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -1901,11 +1901,19 @@ void hash__setup_initial_memory_limit(phys_addr_t=
- first_memblock_base,
->  	 *
->  	 * For guests on platforms before POWER9, we clamp the it limit to 1G
->  	 * to avoid some funky things such as RTAS bugs etc...
-> +	 * On POWER9 we limit to 1TB in case the host erroneously told us that
-> +	 * the RMA was >1TB. Effective address bits 0:23 are treated as zero
-> +	 * (meaning the access is aliased to zero i.e. addr =3D addr % 1TB)
-> +	 * for virtual real mode addressing and so it doesn't make sense to
-> +	 * have an area larger than 1TB as it can't be addressed.
->  	 */
->  	if (!early_cpu_has_feature(CPU_FTR_HVMODE)) {
->  		ppc64_rma_size =3D first_memblock_size;
->  		if (!early_cpu_has_feature(CPU_FTR_ARCH_300))
->  			ppc64_rma_size =3D min_t(u64, ppc64_rma_size, 0x40000000);
-> +		else
-> +			ppc64_rma_size =3D min_t(u64, ppc64_rma_size,
-> +					       1UL << SID_SHIFT_1T);
-> =20
->  		/* Finally limit subsequent allocations */
->  		memblock_set_current_limit(ppc64_rma_size);
+I'll resend v2.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---JP+T4n/bALQSJXh8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl0l9E8ACgkQbDjKyiDZ
-s5IFWA//TbXp2jHT0NBL9otaSEjTz+MMPoqimPeOEE7+whNl6AfJDpInMoQEmLNT
-sc6j5UFW8jmr+3E8ftnWfpsRpcvdpksvROn7knfR3GoxcecOupQ8o+GMOL/xfkL/
-UHF03iiwu3/oBFJiKYMHJ/g4d0YtkZKHopZ9fsy0avUl1BtHzB4MKpZH1fx4mlSx
-amyZ9A8nNIno7Yxo4igZA1XPlSgD6kozJe5GvCTLs3RoGUyZHA8nzMpp9h2C0Vfs
-H3vIOFWiHP/EvQrPetjhu7e6HokixKFo3w7dQvGY5S48y7coV8ZDQMFh31MBFKUT
-7FmSTAbGis4kFghOQRlx/eA7rNI4zuvdvil0By27fSUM9EJMiLY9unsAAc+m9wFF
-MfxRPOgZy+XXhGtb+lzxETUKbydf+OOvg4c14nonsg/4ADyhwENKLr3b5pZryzDg
-9JQyyReXjWXJw7jNcOeO9XOaFer7Gr4a14ruyyfDYzQnfHBOBSbc+m1pXtPd/wMz
-e+u5NhnYemlJtl1s+5CP7s+n/p+7oPPkf8f9njjJ7OYu5ULsRAEkr6h57dyzJCx0
-mWTyKc0+iKFrOio+ZQ2NGekwYjkNXpPXoHKBKHyATk9Vo5lroG8gXyx5i4jg74VE
-WGGosHiDDJqQnDTZrY2bsFFQLJEXT+cGITVsgYwR+ByfEWC21Ig=
-=x96O
------END PGP SIGNATURE-----
-
---JP+T4n/bALQSJXh8--
+Best Regards,
+Sven
