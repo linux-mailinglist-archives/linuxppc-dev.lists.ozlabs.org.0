@@ -2,41 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F6D657CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 15:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E803658AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 16:21:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kxTk2V1LzDqkP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 23:19:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kysf2WXNzDqjV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 00:21:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kx184XThzDqgH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 22:57:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 45kx180fqwz9sNm; Thu, 11 Jul 2019 22:57:48 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45kx151mswz9sNT;
- Thu, 11 Jul 2019 22:57:45 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v4 8/8] KVM: PPC: Ultravisor: Check for MSR_S during
- hv_reset_msr
-In-Reply-To: <20190628200825.31049-9-cclaudio@linux.ibm.com>
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-9-cclaudio@linux.ibm.com>
-Date: Thu, 11 Jul 2019 22:57:43 +1000
-Message-ID: <87ef2wg248.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kypt4TjfzDqjH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 00:18:58 +1000 (AEST)
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 50C1B3222C970C39F9BC;
+ Thu, 11 Jul 2019 22:18:52 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Thu, 11 Jul 2019
+ 22:18:45 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <benh@kernel.crashing.org>, <paulus@samba.org>, <mpe@ellerman.id.au>,
+ <aik@ozlabs.ru>, <david@gibson.dropbear.id.au>
+Subject: [PATCH -next] powerpc/powernv/ioda: using kfree_rcu() to simplify the
+ code
+Date: Thu, 11 Jul 2019 22:18:18 +0800
+Message-ID: <20190711141818.18044-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,51 +49,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Claudio Carvalho <cclaudio@linux.ibm.com> writes:
-> From: Michael Anderson <andmike@linux.ibm.com>
->
->  - Check for MSR_S so that kvmppc_set_msr will include it. Prior to this
->    change return to guest would not have the S bit set.
+The callback function of call_rcu() just calls a kfree(), so we
+can use kfree_rcu() instead of call_rcu() + callback function.
 
-That sounds like it would be bad?
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ arch/powerpc/platforms/powernv/pci-ioda-tce.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-Please spell out what the practical impact of the patch is, ie.
-somewhere on the spectrum from "without this patch everything catches
-fire", to "this is not a bug but makes things clearer because ..."
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+index e28f03e..05f80b1 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+@@ -332,14 +332,6 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 	return -ENOMEM;
+ }
+ 
+-static void pnv_iommu_table_group_link_free(struct rcu_head *head)
+-{
+-	struct iommu_table_group_link *tgl = container_of(head,
+-			struct iommu_table_group_link, rcu);
+-
+-	kfree(tgl);
+-}
+-
+ void pnv_pci_unlink_table_and_group(struct iommu_table *tbl,
+ 		struct iommu_table_group *table_group)
+ {
+@@ -355,7 +347,7 @@ void pnv_pci_unlink_table_and_group(struct iommu_table *tbl,
+ 	list_for_each_entry_rcu(tgl, &tbl->it_group_list, next) {
+ 		if (tgl->table_group == table_group) {
+ 			list_del_rcu(&tgl->next);
+-			call_rcu(&tgl->rcu, pnv_iommu_table_group_link_free);
++			kfree_rcu(tgl, rcu);
+ 			found = true;
+ 			break;
+ 		}
+-- 
+2.7.4
 
-cheers
 
->  - Patch based on comment from Paul Mackerras <pmac@au1.ibm.com>
->
-> Signed-off-by: Michael Anderson <andmike@linux.ibm.com>
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Acked-by: Paul Mackerras <paulus@ozlabs.org>
-> ---
->  arch/powerpc/kvm/book3s_64_mmu_hv.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> index ab3d484c5e2e..ab62a66f9b4e 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> @@ -295,6 +295,7 @@ static void kvmppc_mmu_book3s_64_hv_reset_msr(struct kvm_vcpu *vcpu)
->  		msr |= MSR_TS_S;
->  	else
->  		msr |= vcpu->arch.shregs.msr & MSR_TS_MASK;
-> +	msr |= vcpu->arch.shregs.msr & MSR_S;
->  	kvmppc_set_msr(vcpu, msr);
->  }
->  
-> -- 
-> 2.20.1
