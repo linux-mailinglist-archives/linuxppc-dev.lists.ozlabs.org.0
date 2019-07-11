@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DA366241
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 01:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDD966243
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 01:35:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lC6h1JgrzDqgS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:33:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lC8h70FjzDqWH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:35:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
@@ -17,20 +17,20 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=os.amperecomputing.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com
- header.b="RCSyljDi"; dkim-atps=neutral
+ header.b="dn+tbk6F"; dkim-atps=neutral
 Received: from NAM01-BN3-obe.outbound.protection.outlook.com
  (mail-eopbgr740135.outbound.protection.outlook.com [40.107.74.135])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lBxt4ltWzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 09:25:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lBxw0H2lzDqf5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 09:25:55 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nR5+TqydjcMHq22Z3jsKQcuLdcIdCmw84S6kSj9pXnL/xsCuR3PwCHPywFGkEFnYpehSaSUbw/rmX+JQFDgIW195hafOs8SoVaDfC5ieZC1XQs+hcB9MI+hLE1gN24k6LlngXzMbjSOABDqNOEdMhOr6gjCDmV4CLYMAyuG/6pls3GQ2KmBIFgAtj3s7v7hQqZOLbTBuaj17eYACF4ySIc66HYie1+W6KRP9XYcq9BalHXJY4uqzk9kGhpi1Z02O3ZOKF391HHHGBNhTF5lN1hPC7Anc2IPoGSUcLSBqqTFV0GhxaXHN/7rrODwzA3VrmLr+QLnBv7+FFqmNYvvwoQ==
+ b=H72uxq60xQjxq2IdSa5bZbSJObgIQOUna8KyrK3a2PMGAZ1lJLmU32kEKLmRvjZ6BcCA4oK7BV949voioNbrWkvbb7TDmnFfeWV3y8QHqafn5x5rLSFwxenyayi55+s4Te+Ul7VhLeWvTt4CV79H99YDEJiCASYID8znWvw9MwUHhw5sxU0F8CjmNVLTBingo63tqf+3WWJ+38i0EXzjZMIEZEk9nouzGVGVzDTwH9F6nRRj4/8QM+fldBJZoNJ9bN+fGY5stdFreNgu5g4eXjHoCJ1OWQLTtwl+FMBIW/KViaigVPirxx5k54tXrtrDIaSW1pMpVQ4ARsSfQT7lJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qWV1MOUNxiDDw+u8HgB9VwvU/aKqnCn2F/F6C9LIbhY=;
- b=Wvxz9J5qCCU9HqOY8DrUx/SN7DYqL9g3g4kdo0e/uIgqQjl9KviDQD90ZlykgjXlpd7tkSA9AQzZCEECyxIQkgsB0q96SSgmnnWfd098auHShkalM4OWxCRtYVoE+0Sn4K99/1SAdwF2fXgTniW+Vt75tqxFHCy8k/VItT9A/4ToA5/4x9qopeYUbSn/NHYwiVD/niCtLa00gGQNG6T6C0ZKuv+qruETD3CJSC8JrAVW7Pb/Pz5fjagQvPgTkaOrLHdvK6P+pWM6tPt+3XUlswxx5Cg4CbLRpFQqmPBf59tImOLyAJ81OEX1b53CxogmFoMdgLpvREdGuB2MWAP7jw==
+ bh=luzPCoCoJwdLxcuGKQo5XegVYEzzGjOGacJDRS1Q7fg=;
+ b=IsdKFaKC5ln+tGjwimrm2xPSfegyQBUmjFsQHuhSImRzU+HgpJBzsqAAc8AzK05yVtPKPQcTKkwvOCja3uX25sVUnrw4okt5TonONdPyC67P0Rh99vBfDvDVJkUKe2jtCAYinmlJxuCw0TWFBUckMSmLrQCKqErsc//1YDRhLo3E7X5+dWmfEHv1Ghp9YfPZrA/FvJr/9osjhhPhtiltv5/1sxoGDWILhMtidlMfqW8SYDiO0xfi9JKvMl5JpVasr2DfSeoxmKUBYNw3CSWc/ZvOK5j7zAAI/kh68m8+1HS2MkUpVjfYzd9MvrKDFngmXHWNcr31jnmEVUhk7yxwDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
  smtp.mailfrom=os.amperecomputing.com;dmarc=pass action=none
  header.from=os.amperecomputing.com;dkim=pass
@@ -38,16 +38,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qWV1MOUNxiDDw+u8HgB9VwvU/aKqnCn2F/F6C9LIbhY=;
- b=RCSyljDiR/TMyiVIyYNiUkKu406+E574hzvAZMQ7e2IDGkIn5xe6bFqNC6GXeBc1/R2bhrqt8ySEVkgzwm3cJ7S6ndKzHR6FOHiNRmRQ/lNY912cKV5Tjvv5yaaXDHJ4GU30QhLUWcoCBJu9+EMAmwROIpMWCQNzQQVweqgmtCU=
+ bh=luzPCoCoJwdLxcuGKQo5XegVYEzzGjOGacJDRS1Q7fg=;
+ b=dn+tbk6FURLivSfjybA3IHPzwg3paVCzK+/WVoZI8ByeAWsuyNB5l/lO3aVA+VTxTpem8yUY/WaHp0DyUggUanfFd5WRz2Vxm3lXyjPXUlD/a6NECF/JJKpH8n/GgSo7CTdCLCxj5cVr+BKKtaOA4Q/iQVW30E3cB5voDv62JVE=
 Received: from BYAPR01MB4085.prod.exchangelabs.com (52.135.237.22) by
  BYAPR01MB5557.prod.exchangelabs.com (20.179.88.205) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2073.10; Thu, 11 Jul 2019 23:25:52 +0000
+ 15.20.2073.10; Thu, 11 Jul 2019 23:25:54 +0000
 Received: from BYAPR01MB4085.prod.exchangelabs.com
  ([fe80::9dbb:1b4c:bace:ef80]) by BYAPR01MB4085.prod.exchangelabs.com
  ([fe80::9dbb:1b4c:bace:ef80%7]) with mapi id 15.20.2052.020; Thu, 11 Jul 2019
- 23:25:51 +0000
+ 23:25:54 +0000
 From: Hoan Tran OS <hoan@os.amperecomputing.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <will.deacon@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal
@@ -61,11 +61,12 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <hpa@zytor.com>, "David S . Miller" <davem@davemloft.net>, Heiko Carstens
  <heiko.carstens@de.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian
  Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH v2 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
-Thread-Topic: [PATCH v2 3/5] x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
-Thread-Index: AQHVOD/6mMbG4b3xtkKwY5B+a64Pmg==
-Date: Thu, 11 Jul 2019 23:25:51 +0000
-Message-ID: <1562887528-5896-4-git-send-email-Hoan@os.amperecomputing.com>
+Subject: [PATCH v2 4/5] sparc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Topic: [PATCH v2 4/5] sparc: Kconfig: Remove
+ CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Index: AQHVOD/8WEih1KGuo0+kPmIjHrQcVQ==
+Date: Thu, 11 Jul 2019 23:25:54 +0000
+Message-ID: <1562887528-5896-5-git-send-email-Hoan@os.amperecomputing.com>
 References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
 In-Reply-To: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
 Accept-Language: en-US
@@ -81,13 +82,13 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.7.4
 x-originating-ip: [4.28.12.214]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 60e6bd66-cb09-4bd8-7c4e-08d706571cf4
+x-ms-office365-filtering-correlation-id: 77216daf-75a9-4c89-f972-08d706571e5e
 x-microsoft-antispam: BCL:0; PCL:0;
  RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);
  SRVR:BYAPR01MB5557; 
 x-ms-traffictypediagnostic: BYAPR01MB5557:
-x-microsoft-antispam-prvs: <BYAPR01MB5557239AD4D7113B3B7ADD13F1F30@BYAPR01MB5557.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3383;
+x-microsoft-antispam-prvs: <BYAPR01MB555745D520353EADC00AB9FEF1F30@BYAPR01MB5557.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
 x-forefront-prvs: 0095BCF226
 x-forefront-antispam-report: SFV:NSPM;
  SFS:(10019020)(4636009)(346002)(376002)(39840400004)(136003)(396003)(366004)(189003)(199004)(52116002)(66476007)(66556008)(66946007)(64756008)(66446008)(14454004)(5660300002)(1511001)(6506007)(386003)(71190400001)(71200400001)(6436002)(53936002)(66066001)(4744005)(102836004)(25786009)(68736007)(6512007)(86362001)(3846002)(11346002)(2616005)(186003)(81166006)(26005)(2906002)(446003)(478600001)(4326008)(76176011)(6486002)(7736002)(305945005)(54906003)(8936002)(110136005)(7416002)(6116002)(99286004)(476003)(316002)(8676002)(107886003)(81156014)(486006)(256004)(50226002)(921003)(1121003);
@@ -97,13 +98,13 @@ x-forefront-antispam-report: SFV:NSPM;
 received-spf: None (protection.outlook.com: os.amperecomputing.com does not
  designate permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: +yD719DBgEH8rntLj0mGEtqpmWqARyiJM3JmReTrowtXLYcEkce3BJ+Tbd8hXmVF8TIDhHZ80KU1sC4uoLl7ZNHxc+Pqdw+J88LRaDtq0nHrmLM0Cn1nKNiS3589Xvar6n6GbAvvJLxPKKQ8pKcrK3Si6Lv7VhB+GUJTE1NyokRYTutBsj7Hv6kqhv7u1jtY3cvwJ0PPV05AikvwNjhsladmz394WfVMPSpnPaKrIujOgi0/ERXzvu53KywSzCJlQlkwtY3cs+oyb/xonwlfFLGtj6ki8sBbJvmdoYus+98UewK4fmG79RHNYRxaDKh2giGUarUOwVWbuGUuSWnIBE6W44Myl9zRNHbg4Moun1fzPdpOl94U3xF5L49W56OEtJUajSMJue12CuCucmItSAnK9UXqNdg5VvPjksaaiLc=
+x-microsoft-antispam-message-info: 0nwmbw+iMbUDY/4qjNSaddHS50JkaRduORIoyilAFYbU08UhPt0cW0WCLUK9BK3fRcrt+svD6MI5ooWlKMuuMtAc13hvSW8UGY7tVikY4IQNXtUFtWG0/HsV/ckhfo1pipvvd5s3pVUZbVq9uPZXT5R2hDyK3uqdB1+F2xwKKOO6xWP5xKhhiOLEwFeaTDVHF6MCtLR3jDzu0bVPC1vYzsecWDX68xTaFJtaDs5TCtQB0AVSCqI18bkaZGbEndNxBCs7dCu1QjqKmvIqPTYy3apuQyEbCjDQ5ZjiNXLHsR8qWS0sqTg+ZEh9ZTR2YyKFAjsRh5k+5xnVxBH96pI81XAUkJV0ZhuI6CGCfT8HtgEOyzj3Fzjew01+1PmcbO+KSn9DgLNSBfY7rJX41s4TXm7D93y3yO6lhVq1Gjuhdbs=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60e6bd66-cb09-4bd8-7c4e-08d706571cf4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2019 23:25:51.7318 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77216daf-75a9-4c89-f972-08d706571e5e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2019 23:25:54.1124 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
@@ -138,16 +139,16 @@ by default with NUMA.
 
 Signed-off-by: Hoan Tran <Hoan@os.amperecomputing.com>
 ---
- arch/x86/Kconfig | 9 ---------
+ arch/sparc/Kconfig | 9 ---------
  1 file changed, 9 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2bbbd4d..fa9318c 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1567,15 +1567,6 @@ config X86_64_ACPI_NUMA
- 	---help---
- 	  Enable ACPI SRAT based node topology detection.
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 26ab6f5..13449ea 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -291,15 +291,6 @@ config NODES_SHIFT
+ 	  Specify the maximum number of NUMA Nodes available on the target
+ 	  system.  Increases memory reserved to accommodate various tables.
 =20
 -# Some NUMA nodes have memory ranges that span
 -# other nodes.  Even though a pfn is valid and
@@ -156,11 +157,11 @@ index 2bbbd4d..fa9318c 100644
 -# for details.
 -config NODES_SPAN_OTHER_NODES
 -	def_bool y
--	depends on X86_64_ACPI_NUMA
+-	depends on NEED_MULTIPLE_NODES
 -
- config NUMA_EMU
- 	bool "NUMA emulation"
- 	depends on NUMA
+ config ARCH_SELECT_MEMORY_MODEL
+ 	def_bool y if SPARC64
+=20
 --=20
 2.7.4
 
