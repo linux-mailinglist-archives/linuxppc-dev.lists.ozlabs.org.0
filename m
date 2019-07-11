@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C55765434
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 11:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D9965440
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 11:58:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kryQ67BjzDqKg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 19:55:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ks203gHTzDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 19:58:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com;
+ (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Z2Y9bC61"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="SIh85Idm"; 
  dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45krw20cLGzDqd7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 19:53:05 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id k8so2760838plt.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 02:53:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45krzP3MyTzDq77
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 19:56:01 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id q4so2683052pgj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 02:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=6NtT6DZ7mBm/hq/33Gk2DQ42P0ZV+m78SQV6jVayLo8=;
- b=Z2Y9bC61KNVqyZKEhedmB5wwt4BD/sH6nP68A2fdBC05YFOlOPgvObOfNMhx87D0mV
- NXqLmNH0r4NdnSRf0VlgVQHSe5wiAtYwIFPUWEYSHT7xccDkxM4D4xMgLd/k3RI+glcV
- fgUlxNimfcOH+iJtp3bccl3mzx/N44IzqAcWN+QaPfETpYbucW9IwitcwsXVzJ3M5vlv
- 0W5RaNBNSzTsokzHGxQH08p31GqJJM7sZGqRMx4td2iF475UNCFVMm3L9OPU7+01KS4Z
- siYaFh01HaplwBThr9IQkVYt5XbM5TjnZOfgm/WNY4DwXV+Jnfb1A68f5Ak4RB+kbkur
- /ECQ==
+ bh=q4aTVXnmJvx0+ZI6UEfBVpgkZHcZDIxsB4G/ZiMf9pM=;
+ b=SIh85Idmmnmu84Er31UhNLbVafgqi0UkV82OpvVm7rtrxdNqU0AhgtRNEDYXqq1Rnd
+ ugoF2aZF4eWlgQOGXYnlVOibsauiHFEV10Ne5Io7r7KiKdqT4/Zbq/e97dKABlp2y/JK
+ rim13rddkbLQIxqq6Ue2WPkqomeZg+m1Umlth521X+2g4GgLgREy/079n7cdVwiRR8kE
+ CP+XnaBtURhybFsdjMQjhtImN2cnppq3JBkuHelKJSc0HRvYBnYEg6DBuEMzbtug3iS0
+ SCZ8IVEyQcU3kuZdSkRE9cPSfELrqMZY3JoiNNYaRHuJ0Sil5qisb5/bBUcP7Bwi6jBD
+ FNWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=6NtT6DZ7mBm/hq/33Gk2DQ42P0ZV+m78SQV6jVayLo8=;
- b=TDvYWrQ6CRNWUHqxuvjEMNnqP8Of38jBjNx3NTzt+VficVe9YjbCqXKnspo6+4YvRQ
- DPr/6f8kezdcvMOQpAexBy9LHOTk5L8zaOZt/DB3aS9U6TB3mHf+Iv9G8TOHWJ1UjbWA
- j+RIn4jNmSAIppq5twI0JWTRwyuK+nDZiVGEzjNH9F4adjekx+o0ve6NaEdRxVhlrxeI
- rxaPid3fpCnzFXU8ZrZpVsSpkZ2UtYk9J1GWIb+Wrlq6YC93Cb2vnK9QKLHfn6lvMHHC
- ny8Z69VOqqEiLuy0rE6xzgX2f33W4UwXcW7H3BkSFQM54GWxXmDOT37nfWna9S20TG4x
- dLHA==
-X-Gm-Message-State: APjAAAU+8Bedcv+II9bv45gPefHHedEuptN0VcTWheuP+irQb7UzWpRt
- mwOGXGg4k4Zzl/+FsPq86ko=
-X-Google-Smtp-Source: APXvYqxwj8f3cqPOLxu+gRyG5fvLWKETGlbpKXGYJFLFIGvk8Xz3Dgr/RmnZ4HUIN6hy+IAAZYpkoQ==
-X-Received: by 2002:a17:902:b603:: with SMTP id b3mr3687188pls.9.1562838783694; 
- Thu, 11 Jul 2019 02:53:03 -0700 (PDT)
+ bh=q4aTVXnmJvx0+ZI6UEfBVpgkZHcZDIxsB4G/ZiMf9pM=;
+ b=hwKibFK/zubneX8CIRDHxZ7fCAJKsjJr6uqb68v1GBExQVebq70pYx+CX8W0+2Vaf7
+ EnVvBINjTtKzhwA6nPHvhs4JdvlIq9ff1IIAXHvJqStgCVdZKGF/qxPAkVNkKpzT3emh
+ cXXgu+bWgGQGYuNzyTRZFpH+lNDaPQxRxbxRFtPsrx+K9jJKf3NKs06PjP+twQbvHVEC
+ LLRGo+6syKUUx3FRNV+fuv/rhI+wQIZiRUM49mpIRL0wTEUbR+iOPmdKOu74dOD0zQNh
+ ZTcx7+DE4zGHhRQ3MgappRQNNFykill5KODgyB3vRtITR+xPFzxh5lbaAdwRKk8mjrep
+ 2Jnw==
+X-Gm-Message-State: APjAAAX8osJj+WZkNRG/VhcmdOXFiszls8aZKbG0BB/KvdKlUMjqqq1m
+ d6aBCTD8DYVLhHGgu407+RQ=
+X-Google-Smtp-Source: APXvYqwvy8CZPo/ZKAxkPcg+J1VB346XgSM3stuTnmFgdJfcOxtjIO4tApyo1mgLo+tzQKgwBPC0UA==
+X-Received: by 2002:a63:181:: with SMTP id 123mr3550274pgb.63.1562838958158;
+ Thu, 11 Jul 2019 02:55:58 -0700 (PDT)
 Received: from localhost (193-116-118-149.tpgi.com.au. [193.116.118.149])
- by smtp.gmail.com with ESMTPSA id 131sm7518856pfx.57.2019.07.11.02.53.02
+ by smtp.gmail.com with ESMTPSA id f3sm6828140pfg.165.2019.07.11.02.55.56
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 11 Jul 2019 02:53:02 -0700 (PDT)
-Date: Thu, 11 Jul 2019 19:50:05 +1000
+ Thu, 11 Jul 2019 02:55:57 -0700 (PDT)
+Date: Thu, 11 Jul 2019 19:52:59 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [v5 3/6] powerpc/memcpy: Add memcpy_mcsafe for pmem
+Subject: Re: [v5 5/6] powerpc/mce: Handle UE event for memcpy_mcsafe
 To: linux-kernel@vger.kernel.org, linuxppc-dev
  <linuxppc-dev@lists.ozlabs.org>, Santosh Sivaraj <santosh@fossix.org>
 References: <20190709121524.18762-1-santosh@fossix.org>
- <20190709121524.18762-4-santosh@fossix.org>
-In-Reply-To: <20190709121524.18762-4-santosh@fossix.org>
+ <20190709121524.18762-6-santosh@fossix.org>
+In-Reply-To: <20190709121524.18762-6-santosh@fossix.org>
 MIME-Version: 1.0
 User-Agent: astroid/0.14.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1562838505.oes5qb0f1o.astroid@bobo.none>
+Message-Id: <1562838616.xzrha67fy6.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,21 +90,18 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Santosh Sivaraj's on July 9, 2019 10:15 pm:
-> From: Balbir Singh <bsingharora@gmail.com>
->=20
-> The pmem infrastructure uses memcpy_mcsafe in the pmem layer so as to
-> convert machine check exceptions into a return value on failure in case
-> a machine check exception is encountered during the memcpy. The return
-> value is the number of bytes remaining to be copied.
->=20
-> This patch largely borrows from the copyuser_power7 logic and does not ad=
-d
-> the VMX optimizations, largely to keep the patch simple. If needed those
-> optimizations can be folded in.
+> If we take a UE on one of the instructions with a fixup entry, set nip
+> to continue execution at the fixup entry. Stop processing the event
+> further or print it.
 
-Shouldn't this patch go after the exception table stuff now if you
-squashed them together?
+So... what happens if we take a machine check while we happen to be
+executing some other kernel operation with a fixup entry?
+
+Or the other way around, what happens if memcpy_mcsafe takes a page
+fault for some reason (e.g., kernel bug it tries to access unmapped
+memory).
 
 Thanks,
 Nick
+
 =
