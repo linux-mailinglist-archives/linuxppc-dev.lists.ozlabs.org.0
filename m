@@ -1,76 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A8B65E0D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 18:56:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45l2JN3NYYzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 02:56:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F54465F46
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 20:01:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45l3lw18XmzDqlL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 04:01:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="LA7j/cO4"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45l2GH0wtCzDqLS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 02:54:30 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id s27so3235729pgl.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 09:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=fq6WHQqIPWVCMU7ZkFfC4oSgGVvcorBZ3Dq6pBzcxHo=;
- b=LA7j/cO4M89kcVx3e6n4nfhoFhINbRv6vd7JT7WJFzQOUPxwSckcJ2rYqU0v25WI5S
- Nyu5P+fdvPArJtJiIRE4OtkE0R1mRE53Oy+cJ7vQhTEvC5EcUfIVHjn5ivS0d3IMVvSn
- H5paRse+u29OFk6/lI0zgNuYMtXB+YcG+hOn+ogRkN85B2ldAtfhs7Su1fS9QqNyRq2I
- Cg9cDAGjAy34fvB0WMKnUbGuLtm5YeIehXbJbqyRZYJ7yRXHl6WAjgPk+i22kMxSv12N
- vaaJdmrwDM30Ly4SACH6+d0qgs1QMUEif0V+ygVHgVxTGla7U5Vtfnfqy3l5MiRbjsOj
- wyGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=fq6WHQqIPWVCMU7ZkFfC4oSgGVvcorBZ3Dq6pBzcxHo=;
- b=J3eXkK1s6nJrNKMN5KBtCLBWDUrgZGEF0GyXNPERmIyGPNpZd8jV1GF4mdj9Vnkqv8
- fTtV5g5XMTpC7tnN3DTeYpS3bdIgQ6ru8NB5hwUYZAAJHiBtw48nbFR9eEllpzDsTDxu
- CePBvBaYSi7bn57eXnMBkU4HfofvEaP17QX2yJgpXQ0oYa6P5aL8Qm1DHxIR4elkg5+h
- SQuKhKQ4dsgUa6cVwcLX1tpUaNeBWK2KKRgp6uMwY+a9vuC2xGA8UpABG6P+rSdNeEvs
- aWYSDJdtg63H7kGm1z/xwmqbJagf6x4quH/BsC9kAlKCSNO5yYEkPLGIgt/hoGsetVwu
- o2LA==
-X-Gm-Message-State: APjAAAXr4kN5aPhNfh1YKMJgxtjZsCkZGsuMUi276W+Jw644eGnlLXmM
- NNASXlAETQxmK+61JIg0gvI=
-X-Google-Smtp-Source: APXvYqyC06UAsgjIIOFjc1j8lXIWIQBK1kitqWKAvKUudWZ44wALY9Iy7uk5Az9zegjynRwH9ESbRw==
-X-Received: by 2002:a17:90a:f488:: with SMTP id
- bx8mr5899804pjb.91.1562864067277; 
- Thu, 11 Jul 2019 09:54:27 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id h26sm6256695pfq.64.2019.07.11.09.54.26
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 11 Jul 2019 09:54:27 -0700 (PDT)
-Date: Thu, 11 Jul 2019 09:54:58 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: shengjiu.wang@nxp.com
-Subject: Re: [PATCH V4 2/2] ASoC: fsl_esai: recover the channel swap after xrun
-Message-ID: <20190711165458.GA17728@Asurada-Nvidia.nvidia.com>
-References: <cover.1562842206.git.shengjiu.wang@nxp.com>
- <326035cb99975361699d9ed748054b08bc06a341.1562842206.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45l3jx0mQNzDqhm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 04:00:04 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6BHwllB026432
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 14:00:00 -0400
+Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tp8sjtw89-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 14:00:00 -0400
+Received: from localhost
+ by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.vnet.ibm.com>;
+ Thu, 11 Jul 2019 18:59:59 +0100
+Received: from b03cxnp08027.gho.boulder.ibm.com (9.17.130.19)
+ by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 11 Jul 2019 18:59:57 +0100
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6BHxtwO53543170
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Jul 2019 17:59:55 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6EED3136051;
+ Thu, 11 Jul 2019 17:59:55 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4506913604F;
+ Thu, 11 Jul 2019 17:59:54 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.41.99.131])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Jul 2019 17:59:54 +0000 (GMT)
+Subject: Re: [PATCH v2] tpm: tpm_ibm_vtpm: Fix unallocated banks
+To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Michal Suchanek <msuchanek@suse.de>
+References: <1562458725-15999-1-git-send-email-nayna@linux.ibm.com>
+ <586c629b6d3c718f0c1585d77fe175fe007b27b1.camel@linux.intel.com>
+ <1562624644.11461.66.camel@linux.ibm.com>
+ <20190708224304.GA25838@infradead.org>
+ <20190709163827.2u6jeflrhg44q7dy@linux.intel.com>
+From: Nayna <nayna@linux.vnet.ibm.com>
+Date: Thu, 11 Jul 2019 13:59:53 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <326035cb99975361699d9ed748054b08bc06a341.1562842206.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190709163827.2u6jeflrhg44q7dy@linux.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19071117-0016-0000-0000-000009CCE165
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011410; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01230730; UDB=6.00648275; IPR=6.01012006; 
+ MB=3.00027681; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-11 17:59:59
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071117-0017-0000-0000-000043F9EA3D
+Message-Id: <0b705972-c483-a469-562c-f0d26aaa0471@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-11_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907110197
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,194 +100,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, lgirdwood@gmail.com,
- linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, tiwai@suse.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>, Christoph Hellwig <hch@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-integrity@vger.kernel.org,
+ George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Peter Huewe <peterhuewe@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 11, 2019 at 06:49:46PM +0800, shengjiu.wang@nxp.com wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
-> 
-> There is chip errata ERR008000, the reference doc is
-> (https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf),
-> 
-> The issue is "While using ESAI transmit or receive and
-> an underrun/overrun happens, channel swap may occur.
-> The only recovery mechanism is to reset the ESAI."
-> 
-> This issue exist in imx3/imx5/imx6(partial) series.
-> 
-> In this commit add a tasklet to handle reset of ESAI
-> after xrun happens to recover the channel swap.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Hi Jarkko,
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-Thanks
+On 07/09/2019 12:38 PM, Jarkko Sakkinen wrote:
+> On Mon, Jul 08, 2019 at 03:43:04PM -0700, Christoph Hellwig wrote:
+>> On Mon, Jul 08, 2019 at 06:24:04PM -0400, Mimi Zohar wrote:
+>>>> static int tpm_get_pcr_allocation(struct tpm_chip *chip)
+>>>> {
+>>>> 	int rc;
+>>>>
+>>>> 	rc = (chip->flags & TPM_CHIP_FLAG_TPM2) ?
+>>>>       	     tpm2_get_pcr_allocation(chip) :
+>>>>       	     tpm1_get_pcr_allocation(chip);
+>>>> 	return rc > 0 ? -ENODEV : rc;
+>>>> }
+>>>>
+>>>> This addresses the issue that Stefan also pointed out. You have to
+>>>> deal with the TPM error codes.
+>>> Hm, in the past I was told by Christoph not to use the ternary
+>>> operator.  Have things changed?  Other than removing the comment, the
+>>> only other difference is the return.
+>> In the end it is a matter of personal preference, but I find the
+>> quote version above using the ternary horribly obsfucated.
+> I fully agree that the return statement is an obsfucated mess and
+> not a good place at all for using ternary operator.
 
-> ---
->  sound/soc/fsl/fsl_esai.c | 74 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 74 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-> index ab460d6d7432..4ce8ac769244 100644
-> --- a/sound/soc/fsl/fsl_esai.c
-> +++ b/sound/soc/fsl/fsl_esai.c
-> @@ -32,6 +32,7 @@
->   * @extalclk: esai clock source to derive HCK, SCK and FS
->   * @fsysclk: system clock source to derive HCK, SCK and FS
->   * @spbaclk: SPBA clock (optional, depending on SoC design)
-> + * @task: tasklet to handle the reset operation
->   * @fifo_depth: depth of tx/rx FIFO
->   * @slot_width: width of each DAI slot
->   * @slots: number of slots
-> @@ -42,6 +43,7 @@
->   * @sck_div: if using PSR/PM dividers for SCKx clock
->   * @slave_mode: if fully using DAI slave mode
->   * @synchronous: if using tx/rx synchronous mode
-> + * @reset_at_xrun: flags for enable reset operaton
->   * @name: driver name
->   */
->  struct fsl_esai {
-> @@ -53,6 +55,7 @@ struct fsl_esai {
->  	struct clk *extalclk;
->  	struct clk *fsysclk;
->  	struct clk *spbaclk;
-> +	struct tasklet_struct task;
->  	u32 fifo_depth;
->  	u32 slot_width;
->  	u32 slots;
-> @@ -65,6 +68,7 @@ struct fsl_esai {
->  	bool sck_div[2];
->  	bool slave_mode;
->  	bool synchronous;
-> +	bool reset_at_xrun;
->  	char name[32];
->  };
->  
-> @@ -73,8 +77,16 @@ static irqreturn_t esai_isr(int irq, void *devid)
->  	struct fsl_esai *esai_priv = (struct fsl_esai *)devid;
->  	struct platform_device *pdev = esai_priv->pdev;
->  	u32 esr;
-> +	u32 saisr;
->  
->  	regmap_read(esai_priv->regmap, REG_ESAI_ESR, &esr);
-> +	regmap_read(esai_priv->regmap, REG_ESAI_SAISR, &saisr);
-> +
-> +	if ((saisr & (ESAI_SAISR_TUE | ESAI_SAISR_ROE)) &&
-> +	    esai_priv->reset_at_xrun) {
-> +		dev_dbg(&pdev->dev, "reset module for xrun\n");
-> +		tasklet_schedule(&esai_priv->task);
-> +	}
->  
->  	if (esr & ESAI_ESR_TINIT_MASK)
->  		dev_dbg(&pdev->dev, "isr: Transmission Initialized\n");
-> @@ -635,10 +647,17 @@ static void fsl_esai_trigger_start(struct fsl_esai *esai_priv, bool tx)
->  			   ESAI_xSMB_xS_MASK, ESAI_xSMB_xS(mask));
->  	regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
->  			   ESAI_xSMA_xS_MASK, ESAI_xSMA_xS(mask));
-> +
-> +	/* Enable Exception interrupt */
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-> +			   ESAI_xCR_xEIE_MASK, ESAI_xCR_xEIE);
->  }
->  
->  static void fsl_esai_trigger_stop(struct fsl_esai *esai_priv, bool tx)
->  {
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
-> +			   ESAI_xCR_xEIE_MASK, 0);
-> +
->  	regmap_update_bits(esai_priv->regmap, REG_ESAI_xCR(tx),
->  			   tx ? ESAI_xCR_TE_MASK : ESAI_xCR_RE_MASK, 0);
->  	regmap_update_bits(esai_priv->regmap, REG_ESAI_xSMA(tx),
-> @@ -653,6 +672,51 @@ static void fsl_esai_trigger_stop(struct fsl_esai *esai_priv, bool tx)
->  			   ESAI_xFCR_xFR, 0);
->  }
->  
-> +static void fsl_esai_hw_reset(unsigned long arg)
-> +{
-> +	struct fsl_esai *esai_priv = (struct fsl_esai *)arg;
-> +	bool tx = true, rx = false, enabled[2];
-> +	u32 tfcr, rfcr;
-> +
-> +	/* Save the registers */
-> +	regmap_read(esai_priv->regmap, REG_ESAI_TFCR, &tfcr);
-> +	regmap_read(esai_priv->regmap, REG_ESAI_RFCR, &rfcr);
-> +	enabled[tx] = tfcr & ESAI_xFCR_xFEN;
-> +	enabled[rx] = rfcr & ESAI_xFCR_xFEN;
-> +
-> +	/* Stop the tx & rx */
-> +	fsl_esai_trigger_stop(esai_priv, tx);
-> +	fsl_esai_trigger_stop(esai_priv, rx);
-> +
-> +	/* Reset the esai, and ignore return value */
-> +	fsl_esai_hw_init(esai_priv);
-> +
-> +	/* Enforce ESAI personal resets for both TX and RX */
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-> +			   ESAI_xCR_xPR_MASK, ESAI_xCR_xPR);
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-> +			   ESAI_xCR_xPR_MASK, ESAI_xCR_xPR);
-> +
-> +	/* Restore registers by regcache_sync, and ignore return value */
-> +	fsl_esai_register_restore(esai_priv);
-> +
-> +	/* Remove ESAI personal resets by configuring PCRC and PRRC also */
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-> +			   ESAI_xCR_xPR_MASK, 0);
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-> +			   ESAI_xCR_xPR_MASK, 0);
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_PRRC,
-> +			   ESAI_PRRC_PDC_MASK, ESAI_PRRC_PDC(ESAI_GPIO));
-> +	regmap_update_bits(esai_priv->regmap, REG_ESAI_PCRC,
-> +			   ESAI_PCRC_PC_MASK, ESAI_PCRC_PC(ESAI_GPIO));
-> +
-> +	/* Restart tx / rx, if they already enabled */
-> +	if (enabled[tx])
-> +		fsl_esai_trigger_start(esai_priv, tx);
-> +	if (enabled[rx])
-> +		fsl_esai_trigger_start(esai_priv, rx);
-> +}
-> +
->  static int fsl_esai_trigger(struct snd_pcm_substream *substream, int cmd,
->  			    struct snd_soc_dai *dai)
->  {
-> @@ -857,6 +921,10 @@ static int fsl_esai_probe(struct platform_device *pdev)
->  	esai_priv->pdev = pdev;
->  	snprintf(esai_priv->name, sizeof(esai_priv->name), "%pOFn", np);
->  
-> +	if (of_device_is_compatible(np, "fsl,vf610-esai") ||
-> +	    of_device_is_compatible(np, "fsl,imx35-esai"))
-> +		esai_priv->reset_at_xrun = true;
-> +
->  	/* Get the addresses and IRQ */
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	regs = devm_ioremap_resource(&pdev->dev, res);
-> @@ -956,6 +1024,9 @@ static int fsl_esai_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> +	tasklet_init(&esai_priv->task, fsl_esai_hw_reset,
-> +		     (unsigned long)esai_priv);
-> +
->  	pm_runtime_enable(&pdev->dev);
->  
->  	regcache_cache_only(esai_priv->regmap, true);
-> @@ -969,7 +1040,10 @@ static int fsl_esai_probe(struct platform_device *pdev)
->  
->  static int fsl_esai_remove(struct platform_device *pdev)
->  {
-> +	struct fsl_esai *esai_priv = platform_get_drvdata(pdev);
-> +
->  	pm_runtime_disable(&pdev->dev);
-> +	tasklet_kill(&esai_priv->task);
->  
->  	return 0;
->  }
-> -- 
-> 2.21.0
-> 
+I have posted the v3 version that includes the suggested corrections by 
+you and Stefan. Sorry for some delay.
+
+Michal and Sachin, I would appreciate if you can test the v3 version, 
+please ?
+
+Thanks & Regards,
+      - Nayna
+
