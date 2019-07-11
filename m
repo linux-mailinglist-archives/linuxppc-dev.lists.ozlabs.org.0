@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAAA6623C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 01:29:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lC2H5dgMzDqf4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:29:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEF26623F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 01:31:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lC4h4NvgzDqf4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:31:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
@@ -17,20 +17,20 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=os.amperecomputing.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com
- header.b="J5IL3kXT"; dkim-atps=neutral
+ header.b="ReMtk1NS"; dkim-atps=neutral
 Received: from NAM01-BN3-obe.outbound.protection.outlook.com
  (mail-eopbgr740135.outbound.protection.outlook.com [40.107.74.135])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lBxs0dvWzDqf5
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lBxs5jVNzDqf5
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 09:25:53 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VVwuPvrojSRmAiT4oLyUVqHSTETqikuopjbwqP0KV+gG7Ze31El33noCMUbHCTkUp4CmMid0WKLWbYyDrWZaat7ZgG4eokZUIRG11lF4oaDke9JQ84gqG26X3enLrYSuZChsG0cZcNjZUfCxzbE4qnJCkkVNJ6o7A2ohBhoSxXCXNEL9VdxO26fCZ6bqd0ewg1NYAZxa8+R8hsoJTUKA0MartPLewiumiEcnHXjNl/3YJ9DRtNfmMwAEliBiAwxki7vPGS6KdCi8B54o8LmFUteG2tT+OUlpqddyOxOtScp8fH2g/uurXHefkq2XrOc9Ml7wwmrUB3VPQXrbLO/wcQ==
+ b=X4vXsban/ZKB+8ROlk9ZJVQf010WgWSTIcMznQStaiLD6SK7boxTUQnZxashxZ+Ba3SC+AGLWALrBXlBrlUj3FsobSoe7byYBPqk5JkXZvv9T/mnyeJGgfY0ZymtWt95ohuieZNyZVElf9jwpFAEnwzeoDeRh0E641K0KljLm6YjCHWlbuTmKSz4CH15D71eM5i+6cX0xbbNs5aFVty+Hk0vCHgX0iPEbjFRrw2c5+jMTAYTeQJP4i6aircSknSObn28qL2NdaToJwUg2LbYPVZW/PzsgMJJGuHp298Q/R96qy18/ZSGUC55V3eoS8nBFs+ezPottZcDlOEtApAUyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aAkwAUXFcJwgbrCQk1P/5UfnEYvBvi1WIDIoJ7eF/sg=;
- b=iS6wPtkfnItopB3uWlkR/fuLKUB29lXBH6XZrWItLeRJreFnmyy9Ygtpt7QKvFwr0HHFub8NXHQgn/zeeZkY2R9z9MjSJnwKUe10E5VeIE3TQYyG9SI2wtUO89sC0VhhaxUQTgd4m6HR35ExwXH7HaICt6OxD36aHrO6mgkGr2sud2RDznKZwgbpr88PQhDPcix7U++zQj6XfULeSuicWyOrG+5dSANjapUEYiBRz0tn/MfBahPenrfs5ofoky6vkaS9MP98s0q6kqxa2PKD/k9p4drUXSydHiTWcI9OesAA/Go5HMYc9ifQFORPAzDgHfr2DorTnPx8wiohMa2/lA==
+ bh=nv9Pvxp/gDaeRKsmwNevq52lzFBVsYZWQfbDDaOzjpI=;
+ b=I/H/AS8orDud9iDIzKy/EZrnn33RmZMJcBW+KvjPhWeozEk6OyvYRKnucB3zHSYBSptEoQ9CueSanl5aYr8POdnSCID0DKjikfYu31Xb7T5uZJ0bBM0OV9kFL5H64ZMQK5skP17R89ZOqOMEQzIMHxoOOURuuGQqu+kAbfcVv/M6XutXvG78gz/nVVuYpuGA2qtf2JYplIbf4+WjpSJQFOprE42Dw5udQUsMnppebnIJg8Pvqlo6HQBueuocae5FCG5EROlNq5SCmhenJE4cs/ITNwGNX7AYpENW5xKwVln5kjqL8iTyyDn2U1Y3aDJ7QqUR+Tuap5UBetL4Ff/1Yw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
  smtp.mailfrom=os.amperecomputing.com;dmarc=pass action=none
  header.from=os.amperecomputing.com;dkim=pass
@@ -38,16 +38,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aAkwAUXFcJwgbrCQk1P/5UfnEYvBvi1WIDIoJ7eF/sg=;
- b=J5IL3kXT5B/vWbnmJm5M/jH9Yk0XQ66ap3/Wtjqh3TCEQYVwn2PtWHoLfdVscRm+1lFVqQF6WzC/8bOI7rmbSkeZ1/53gsfIbzKG1DQ0xQgl8CcrqfCX5iH9ZXZJIrrCeHcUTdYsDh4aTkmeVakEEosmz1iO0oeD9B39+VJ169c=
+ bh=nv9Pvxp/gDaeRKsmwNevq52lzFBVsYZWQfbDDaOzjpI=;
+ b=ReMtk1NSKkckNw209I1pj6PpDd206QLAoZuUccoQ+U9xLEuTKf2c2lNtPoIJa7bbNMibSCca/DVQvHIYZr39u5AUNsWGjVVAsqKiEtWh4Fydz4R7TEKMh2zMIzyWBSdGyIL6J43K+1dnXo0A9ttoD4OINMN9vib9lnQYX99KjUs=
 Received: from BYAPR01MB4085.prod.exchangelabs.com (52.135.237.22) by
  BYAPR01MB5557.prod.exchangelabs.com (20.179.88.205) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2073.10; Thu, 11 Jul 2019 23:25:47 +0000
+ 15.20.2073.10; Thu, 11 Jul 2019 23:25:49 +0000
 Received: from BYAPR01MB4085.prod.exchangelabs.com
  ([fe80::9dbb:1b4c:bace:ef80]) by BYAPR01MB4085.prod.exchangelabs.com
  ([fe80::9dbb:1b4c:bace:ef80%7]) with mapi id 15.20.2052.020; Thu, 11 Jul 2019
- 23:25:47 +0000
+ 23:25:49 +0000
 From: Hoan Tran OS <hoan@os.amperecomputing.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <will.deacon@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Michal
@@ -61,13 +61,12 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
  <hpa@zytor.com>, "David S . Miller" <davem@davemloft.net>, Heiko Carstens
  <heiko.carstens@de.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian
  Borntraeger <borntraeger@de.ibm.com>
-Subject: [PATCH v2 1/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default
- for NUMA
-Thread-Topic: [PATCH v2 1/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Thread-Index: AQHVOD/336vwo048FEmmzwG+DxzWnQ==
-Date: Thu, 11 Jul 2019 23:25:46 +0000
-Message-ID: <1562887528-5896-2-git-send-email-Hoan@os.amperecomputing.com>
+Subject: [PATCH v2 2/5] powerpc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Topic: [PATCH v2 2/5] powerpc: Kconfig: Remove
+ CONFIG_NODES_SPAN_OTHER_NODES
+Thread-Index: AQHVOD/57/uJcWsU4EKBP/fxzyJHWw==
+Date: Thu, 11 Jul 2019 23:25:49 +0000
+Message-ID: <1562887528-5896-3-git-send-email-Hoan@os.amperecomputing.com>
 References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
 In-Reply-To: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
 Accept-Language: en-US
@@ -83,29 +82,29 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.7.4
 x-originating-ip: [4.28.12.214]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: afb7b246-2fa9-41ed-0b23-08d7065719fd
+x-ms-office365-filtering-correlation-id: dc67312c-bd1d-4ac6-2268-08d706571b83
 x-microsoft-antispam: BCL:0; PCL:0;
  RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);
  SRVR:BYAPR01MB5557; 
 x-ms-traffictypediagnostic: BYAPR01MB5557:
-x-microsoft-antispam-prvs: <BYAPR01MB5557067FB5EFEF0F4FDE9887F1F30@BYAPR01MB5557.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-microsoft-antispam-prvs: <BYAPR01MB55570D96BF58823729B3BA1FF1F30@BYAPR01MB5557.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3383;
 x-forefront-prvs: 0095BCF226
 x-forefront-antispam-report: SFV:NSPM;
- SFS:(10019020)(4636009)(346002)(376002)(39840400004)(136003)(396003)(366004)(189003)(199004)(52116002)(66476007)(66556008)(66946007)(64756008)(66446008)(14454004)(5660300002)(1511001)(6506007)(386003)(71190400001)(71200400001)(6436002)(53936002)(66066001)(102836004)(25786009)(68736007)(6512007)(86362001)(3846002)(11346002)(14444005)(2616005)(186003)(81166006)(26005)(2906002)(446003)(478600001)(4326008)(76176011)(6486002)(7736002)(305945005)(54906003)(8936002)(110136005)(7416002)(6116002)(99286004)(476003)(316002)(8676002)(107886003)(81156014)(486006)(256004)(50226002)(921003)(1121003);
+ SFS:(10019020)(4636009)(346002)(376002)(39840400004)(136003)(396003)(366004)(189003)(199004)(52116002)(66476007)(66556008)(66946007)(64756008)(66446008)(14454004)(5660300002)(1511001)(6506007)(386003)(71190400001)(71200400001)(6436002)(53936002)(66066001)(4744005)(102836004)(25786009)(68736007)(6512007)(86362001)(3846002)(11346002)(2616005)(186003)(81166006)(26005)(2906002)(446003)(478600001)(4326008)(76176011)(6486002)(7736002)(305945005)(54906003)(8936002)(110136005)(7416002)(6116002)(99286004)(476003)(316002)(8676002)(107886003)(81156014)(486006)(256004)(50226002)(921003)(1121003);
  DIR:OUT; SFP:1102; SCL:1; SRVR:BYAPR01MB5557;
  H:BYAPR01MB4085.prod.exchangelabs.com; FPR:; SPF:None; LANG:en;
  PTR:InfoNoRecords; MX:1; A:0; 
 received-spf: None (protection.outlook.com: os.amperecomputing.com does not
  designate permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: L/8qjgkjroZ4Y9kYzJhXFihMxdIQJ2dAIy2Gdh3Ev8QQUx4j7mI+megk/B0mNCOeECpsTmH/FE4qvcPGr6D8LNSEJz3aA8SgHc2k7ChVUDIccI/VmWZ9iW/Px52xGajn0uss0BTbWRWnGL4ryxxpDtoHegY2B0F7xkkJp4/9ygiB4pBXeGdx7i+N55tKQodwy6XsQ2GIawBuOK3LVLKsYc53Qb0+zKsP44UyEvZKlL6JxiUZJlY/lFHGL2XY+ofA0iTz3NDs8lu7epwxwZ1L+yL/kPzr6FhqyDuyHIb7AmRcAl14KPRGEijQNpD59EFzYJP8AgCOVbVBzzg7wqDoR0uhg/eZqqzqx+HVRcSlq3JcIgd9UHS0vXO2pGkYMG379ONHcLrVA8RsY30ctrkASOdkY7OUzwzk06FBY+fJ1d0=
+x-microsoft-antispam-message-info: izT+63HRnUuAKD5eGQE8YKlxJrqgWZx0flLjKl/QWe6GzX9REGSnQmtmPQEHM+Nb7SoECE7IHtcSR/0MAmMRDwAqNOJomwkyv8FLL1J2BX2KQSmTEoXofPO43EwIMPbl2dEGPQJ2bdnlbA/u/D+U0iZAVdoIDLDMP2a93+1SIMSSeVKLE5AFoI8dKv5oIkRhidLD3R0KGJX2ZslNvRF5ULYgNZxwyQxPuatZw+KuS2J24LSK6WbmSwfnPvnfQ2oEI8RHlikLOL2wkTPFlmdjjzXsZ7sBC1I6get/tead9+DbSFP8sRhTXA6sUCv9LJs6Z0vPUqxS8bJiDfwxpivxFm38e/ZR5AjUUI512L3kodi4FaZHfbUzHHYn+zB0kLMs2okuu/Iyn/MQ/fXHY+vUlaH1tjB+IWfRuA6MeCfCx/U=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afb7b246-2fa9-41ed-0b23-08d7065719fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2019 23:25:46.9016 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc67312c-bd1d-4ac6-2268-08d706571b83
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2019 23:25:49.3382 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
@@ -135,48 +134,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In NUMA layout which nodes have memory ranges that span across other nodes,
-the mm driver can detect the memory node id incorrectly.
-
-For example, with layout below
-Node 0 address: 0000 xxxx 0000 xxxx
-Node 1 address: xxxx 1111 xxxx 1111
-
-Note:
- - Memory from low to high
- - 0/1: Node id
- - x: Invalid memory of a node
-
-When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
-config, mm only checks the memory validity but not the node id.
-Because of that, Node 1 also detects the memory from node 0 as below
-when it scans from the start address to the end address of node 1.
-
-Node 0 address: 0000 xxxx xxxx xxxx
-Node 1 address: xxxx 1111 1111 1111
-
-This layout could occur on any architecture. This patch enables
-CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA to fix this issue.
+Remove CONFIG_NODES_SPAN_OTHER_NODES as it's enabled by
+default with NUMA.
 
 Signed-off-by: Hoan Tran <Hoan@os.amperecomputing.com>
 ---
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Kconfig | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d66bc8a..6335505 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1413,7 +1413,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
- }
- #endif
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8c1c636..bdde8bc 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -629,15 +629,6 @@ config ARCH_MEMORY_PROBE
+ 	def_bool y
+ 	depends on MEMORY_HOTPLUG
 =20
--#ifdef CONFIG_NODES_SPAN_OTHER_NODES
-+#ifdef CONFIG_NUMA
- /* Only safe to use early in boot when initialisation is single-threaded *=
-/
- static inline bool __meminit early_pfn_in_nid(unsigned long pfn, int node)
- {
+-# Some NUMA nodes have memory ranges that span
+-# other nodes.  Even though a pfn is valid and
+-# between a node's start and end pfns, it may not
+-# reside on that node.  See memmap_init_zone()
+-# for details.
+-config NODES_SPAN_OTHER_NODES
+-	def_bool y
+-	depends on NEED_MULTIPLE_NODES
+-
+ config STDBINUTILS
+ 	bool "Using standard binutils settings"
+ 	depends on 44x
 --=20
 2.7.4
 
