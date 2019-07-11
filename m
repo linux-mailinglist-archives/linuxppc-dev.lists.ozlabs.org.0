@@ -1,39 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46FA657C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 15:15:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFDC657B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 15:10:38 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kxHt3nCMzDqR2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 23:10:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45kxP61HXFzDqL8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 23:15:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kx0v5V4PzDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 22:57:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45kx0z3dJfzDqgq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 22:57:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 45kx0r64SKz9sNk; Thu, 11 Jul 2019 22:57:32 +1000 (AEST)
+ id 45kx0z15HZz9sP3; Thu, 11 Jul 2019 22:57:39 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45kx0r37S2z9sNH;
- Thu, 11 Jul 2019 22:57:32 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45kx0y2l7Kz9sNk;
+ Thu, 11 Jul 2019 22:57:38 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v4 6/8] KVM: PPC: Ultravisor: Restrict LDBAR access
-In-Reply-To: <20190628200825.31049-7-cclaudio@linux.ibm.com>
+Subject: Re: [PATCH v4 7/8] KVM: PPC: Ultravisor: Enter a secure guest
+In-Reply-To: <20190628200825.31049-8-cclaudio@linux.ibm.com>
 References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-7-cclaudio@linux.ibm.com>
-Date: Thu, 11 Jul 2019 22:57:31 +1000
-Message-ID: <87h87sg24k.fsf@concordia.ellerman.id.au>
+ <20190628200825.31049-8-cclaudio@linux.ibm.com>
+Date: Thu, 11 Jul 2019 22:57:37 +1000
+Message-ID: <87ftncg24e.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,41 +59,139 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Claudio Carvalho <cclaudio@linux.ibm.com> writes:
-> When the ultravisor firmware is available, it takes control over the
-> LDBAR register. In this case, thread-imc updates and save/restore
-> operations on the LDBAR register are handled by ultravisor.
+> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+>
+> To enter a secure guest, we have to go through the ultravisor, therefore
+> we do a ucall when we are entering a secure guest.
+>
+> This change is needed for any sort of entry to the secure guest from the
+> hypervisor, whether it is a return from an hcall, a return from a
+> hypervisor interrupt, or the first time that a secure guest vCPU is run.
+>
+> If we are returning from an hcall, the results are already in the
+> appropriate registers R3:12, except for R3, R6 and R7. R3 has the status
+> of the reflected hcall, therefore we move it to R0 for the ultravisor and
+> set R3 to the UV_RETURN ucall number. R6,7 were used as temporary
+> registers, hence we restore them.
 
-Please roll up the replies to Alexey's question about LDBAR into the
-change log.
+This is another case where some documentation would help people to
+review the code.
 
+> Have fast_guest_return check the kvm_arch.secure_guest field so that a
+> new CPU enters UV when started (in response to a RTAS start-cpu call).
+>
+> Thanks to input from Paul Mackerras, Ram Pai and Mike Anderson.
+>
+> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> [ Pass SRR1 in r11 for UV_RETURN, fix kvmppc_msr_interrupt to preserve
+>   the MSR_S bit ]
+> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+> [ Fix UV_RETURN ucall number and arch.secure_guest check ]
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> [ Save the actual R3 in R0 for the ultravisor and use R3 for the
+>   UV_RETURN ucall number. Update commit message and ret_to_ultra comment ]
+> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kvm_host.h       |  1 +
+>  arch/powerpc/include/asm/ultravisor-api.h |  1 +
+>  arch/powerpc/kernel/asm-offsets.c         |  1 +
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 40 +++++++++++++++++++----
+>  4 files changed, 37 insertions(+), 6 deletions(-)
+>
 > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index f9b2620fbecd..cffb365d9d02 100644
+> index cffb365d9d02..89813ca987c2 100644
 > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
 > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -375,8 +375,10 @@ BEGIN_FTR_SECTION
->  	mtspr	SPRN_RPR, r0
->  	ld	r0, KVM_SPLIT_PMMAR(r6)
->  	mtspr	SPRN_PMMAR, r0
-> +BEGIN_FW_FTR_SECTION_NESTED(70)
->  	ld	r0, KVM_SPLIT_LDBAR(r6)
->  	mtspr	SPRN_LDBAR, r0
-> +END_FW_FTR_SECTION_NESTED(FW_FEATURE_ULTRAVISOR, 0, 70)
-
-That's in Power8 code isn't it? Which will never have an ultravisor.
-
-> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-> index 1b6932890a73..5fe2d4526cbc 100644
-> --- a/arch/powerpc/platforms/powernv/opal-imc.c
-> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
-> @@ -254,6 +254,10 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
->  	bool core_imc_reg = false, thread_imc_reg = false;
->  	u32 type;
+> @@ -36,6 +36,7 @@
+>  #include <asm/asm-compat.h>
+>  #include <asm/feature-fixups.h>
+>  #include <asm/cpuidle.h>
+> +#include <asm/ultravisor-api.h>
 >  
-> +	/* Disable IMC devices, when Ultravisor is enabled. */
-> +	if (firmware_has_feature(FW_FEATURE_ULTRAVISOR))
-> +		return -EACCES;
+>  /* Sign-extend HDEC if not on POWER9 */
+>  #define EXTEND_HDEC(reg)			\
+> @@ -1092,16 +1093,12 @@ BEGIN_FTR_SECTION
+>  END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>  
+>  	ld	r5, VCPU_LR(r4)
+> -	ld	r6, VCPU_CR(r4)
+>  	mtlr	r5
+> -	mtcr	r6
+>  
+>  	ld	r1, VCPU_GPR(R1)(r4)
+>  	ld	r2, VCPU_GPR(R2)(r4)
+>  	ld	r3, VCPU_GPR(R3)(r4)
+>  	ld	r5, VCPU_GPR(R5)(r4)
+> -	ld	r6, VCPU_GPR(R6)(r4)
+> -	ld	r7, VCPU_GPR(R7)(r4)
+>  	ld	r8, VCPU_GPR(R8)(r4)
+>  	ld	r9, VCPU_GPR(R9)(r4)
+>  	ld	r10, VCPU_GPR(R10)(r4)
+> @@ -1119,10 +1116,38 @@ BEGIN_FTR_SECTION
+>  	mtspr	SPRN_HDSISR, r0
+>  END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+>  
+> +	ld	r6, VCPU_KVM(r4)
+> +	lbz	r7, KVM_SECURE_GUEST(r6)
+> +	cmpdi	r7, 0
 
-I don't mind taking this change. But at the same time should the IMC
-stuff just be omitted from the device tree when we're in ultravisor mode?
+You could hoist the load of r6 and r7 to here?
+
+> +	bne	ret_to_ultra
+> +
+> +	lwz	r6, VCPU_CR(r4)
+> +	mtcr	r6
+> +
+> +	ld	r7, VCPU_GPR(R7)(r4)
+> +	ld	r6, VCPU_GPR(R6)(r4)
+>  	ld	r0, VCPU_GPR(R0)(r4)
+>  	ld	r4, VCPU_GPR(R4)(r4)
+>  	HRFI_TO_GUEST
+>  	b	.
+> +/*
+> + * We are entering a secure guest, so we have to invoke the ultravisor to do
+> + * that. If we are returning from a hcall, the results are already in the
+> + * appropriate registers R3:12, except for R3, R6 and R7. R3 has the status of
+> + * the reflected hcall, therefore we move it to R0 for the ultravisor and set
+> + * R3 to the UV_RETURN ucall number. R6,7 were used as temporary registers
+> + * above, hence we restore them.
+> + */
+> +ret_to_ultra:
+> +	lwz	r6, VCPU_CR(r4)
+> +	mtcr	r6
+> +	mfspr	r11, SPRN_SRR1
+> +	mr	r0, r3
+> +	LOAD_REG_IMMEDIATE(r3, UV_RETURN)
+
+Worth open coding to save three instructions?
+
+> +	ld	r7, VCPU_GPR(R7)(r4)
+> +	ld	r6, VCPU_GPR(R6)(r4)
+> +	ld	r4, VCPU_GPR(R4)(r4)
+> +	sc	2
+>  
+>  /*
+>   * Enter the guest on a P9 or later system where we have exactly
+> @@ -3318,13 +3343,16 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
+>   *   r0 is used as a scratch register
+>   */
+>  kvmppc_msr_interrupt:
+> +	andis.	r0, r11, MSR_S@h
+>  	rldicl	r0, r11, 64 - MSR_TS_S_LG, 62
+> -	cmpwi	r0, 2 /* Check if we are in transactional state..  */
+> +	cmpwi	cr1, r0, 2 /* Check if we are in transactional state..  */
+>  	ld	r11, VCPU_INTR_MSR(r9)
+> -	bne	1f
+> +	bne	cr1, 1f
+>  	/* ... if transactional, change to suspended */
+>  	li	r0, 1
+>  1:	rldimi	r11, r0, MSR_TS_S_LG, 63 - MSR_TS_T_LG
+> +	beqlr
+> +	oris	r11, r11, MSR_S@h		/* preserve MSR_S bit setting */
+>  	blr
+
+I don't see this part mentioned in the change log?
+
+It's also pretty subtle, a comment might be helpful.
 
 cheers
