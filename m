@@ -2,42 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506B465380
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 11:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCD3653E9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 11:36:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45kqtn6rfdzDqS1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 19:06:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45krXT0sTrzDqfj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2019 19:36:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=web.de
- (client-ip=212.227.15.14; helo=mout.web.de;
- envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
+ (client-ip=212.227.15.3; helo=mout.web.de; envelope-from=markus.elfring@web.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=web.de header.i=@web.de header.b="aiM75+U/"; 
+ secure) header.d=web.de header.i=@web.de header.b="BIrf/49k"; 
  dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45kqrh0gcFzDqJQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 19:05:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45krVQ342XzDqG9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2019 19:34:22 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1562835861;
- bh=0tLRWbT8bBxRaR5RfH0jviIDBAhhwCwmVOO3QefF65g=;
+ s=dbaedf251592; t=1562837617;
+ bh=QMVNj5fg+/7lPtHz1QND/Mzp+oXxlM2TSpezOk+oacA=;
  h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
- b=aiM75+U/I6OU4nxzNdtQyavDvKVLyANEjks/WZJV8BmPd+9QaBL/F3jwhAU86RA3x
- eka3SIk5iF9J4Uq90onC6Mq66mCpjUu3DrSoOAuMuTjZ9qswFQe0K5ohSG27VPPZM+
- s6bTsk+eVMlgLiQsf6t3bsDRvVqBOWDcoZTL0GH0=
+ b=BIrf/49kJehFww3FgmPUBhIlupe6E8wfnMm0rP93UdTfgan+9nAz3Do+9bixtk9pN
+ k/NJkynyNymuUy5z59p06M3+rXd+YrTwNcpx0qvZIsLOr6+tIcN/pwoxKEXqnilWpq
+ c/UdopFZvdnIiX6zz0LXGfeE/cduiE0nxOXpvW5o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.182.165]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LegAQ-1iGeQV0dXa-00qTZk; Thu, 11
- Jul 2019 11:04:21 +0200
+Received: from [192.168.1.2] ([93.132.182.165]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MT8cQ-1hslEN1gFa-00S8yH; Thu, 11
+ Jul 2019 11:33:37 +0200
 Subject: Re: Coccinelle: Checking of_node_put() calls with SmPL
-To: Wen Yang <wen.yang99@zte.com.cn>, linux-pm@vger.kernel.org,
+To: Julia Lawall <julia.lawall@lip6.fr>, Wen Yang <wen.yang99@zte.com.cn>,
  kernel-janitors@vger.kernel.org
 References: <201907111435459627761@zte.com.cn>
+ <alpine.DEB.2.20.1907110845551.3626@hadrien>
 From: Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -83,37 +84,36 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <90e538ac-a1d8-8c21-34a8-830dd9a07a7b@web.de>
-Date: Thu, 11 Jul 2019 11:04:13 +0200
+Message-ID: <e0e19253-afbc-3576-fcc3-22deea4db674@web.de>
+Date: Thu, 11 Jul 2019 11:33:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <201907111435459627761@zte.com.cn>
+In-Reply-To: <alpine.DEB.2.20.1907110845551.3626@hadrien>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9RNU8qY6xcsR+ujnesLnOasysSPpyrZB+HpnaqUCNo04Re6ran2
- ir2NEuvVxBQdimmcXV7fgs+Ffh+wvC3eRjsWOZmujoGT/L3dhH58rJ9R/G0zu79fTRoMEFw
- m1PVrkVpvChyobpWT0PosOG/xjvoQgtEQFXPOWtjfHW7VgGuleI+4DEpMtCAtthKaMciJ8C
- ntu6uxD1Ul2w1/Jg1ZbRw==
+Content-Language: en-US
+X-Provags-ID: V03:K1:vF7Ayn7m0WSIGgJ8Iz9/UhW4AwGPyUxCenUfU3dLIOT0/YlM2tW
+ TfiTE33m7hhXEzvlTZjY+0WbZCPqk2LVjXiX8ZvhzrOReIBnAAHee9bmNwL823cApnuMiis
+ 5suxy/KPx4ULhHsul/FMH6/QRTp9A8zmLPOXBEBRW3gcERlnf3lwVjVfRtShRvv7k/l8kZk
+ MNe4pFPkBA7oyeq61s6vw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5VucwHuFbjU=:0dFnGsejHk/MbQPs3dcOSO
- TM7ob4pb4ZpHEkTuyHHrFON3e2A4LuW5B2XyqvoDXetsPUHgye19xdYM3gX6zVyRpuHbSll2J
- NpmL6kym89LL7C+1iO3yAebAByOfOa+cc+hBBjnKIG8ZaVCAMoVD5IBo4PiEdtewU4M4IWAv1
- iFVhMn8FM1jTYiMXH2v4/pxi8Wxi3dMALGe8dFiUPXlPDhDn//n7PCCZHiHo991XTe35h49Hq
- wovGUX+7ymm21FEfyzjdb2pLpbAUn8wcD+GatsDNSnGVpZPmMk6W5dW+y61LdcjIyqfWqUvHB
- BVB5JhTbEPBZLYYHwVjUfLhCebKYXJz+v6DqQ2vEppnK93omHFyF59eSOZ1lE1ao4X61PDEBf
- l/wmIMNNUF/F+irE7re+WFhB3ysgbLtYjBYTvwIJoBwjlhkYO2mxFc+vuYisT1BHOjiULt/ra
- Y9f5p88k35n8V9gzETGEWapbuL9d2xAN+JEFVvJ1BD0kKysF6bJCQQPq2eQ4Ar3e+O6oa2Gjv
- 63HfTSKxEx+8OPQkQzXWQOpBbjJ9UKfKuzPPvyJqlEzrgbKm8uk31Me5Vf/r1nbLF6W5thoFe
- azoW1MVjPH5/aw0Ceob1L9QO21IaQTgQkT/BkkGX7/EApHn4gKDNZ4WFShD1ynwa2r4RI4YU4
- 87rSP2wcWwcI+ntuROz4aWP+TEphC8B2jTRx8z88m7Pzyb9/y3ifC4hl+SbTmvPjywSC69dHR
- ktd24WWuMXCLXvKM8v1EQSCNdH8yptjCj66DTqiqZ4gH5pFbdANqqMLA7c/6w4xUMnx+tzBAp
- Cl/XvFZm5osg/YiDHmATWl+XtIBoLIFjwHe/NTWnd4CEEHa/Dgw2lSR3YkulxDBiRGB5RU7Zi
- rCqKfSUUPAyXXd1XYReNUD78v6dJ6lXKsj4oxHczhmTq3O/wN9m1K1VvvX6zhpYZGy91954Nl
- whtzN9L44tFHHW41nllIvgJ/sYfcjn46VCPBpwJn+0JzSHqysbU2uYU5nA2WeXVn1xA+sve4v
- 0QxuGO0rHeRTSTnzEiLGfVT/9fkYe+LSQM2mi4NWlWg23y0FkwruiPLLE88MnbFmzyPUWQ2ta
- eEagrkYDzYZDcLnXu0sFlEp6rnoL1Ggw229
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CKzj7shNjl0=:ik0J8kqkgDqG/J3jlfZIgV
+ +DymDWKBDTwr4BlrQQ3jYCmOYQsx4dN9HZBuAXWbaCkroRiepiNB+/AQu264uYs2hAQNPwhSf
+ 0RfIa5YzUzhppN/OhuwFPL/1ezyFc0JnF1xSa1ezp0Oy/4k/4y5FEczxdHL+uVFpjgzrGBIGW
+ gxhvcV4+OGF2svvnFl5ZJKRetHfJ0ObAAFTUjF7m0IQDDbL0NrgFWbU/QWe4VmNlrBwJOhsg9
+ nmGSca7QZITK5/K191rI6KLYwijy0e8vezEEOlxXhYqA5bn4jgwlk2V0TPm3QrMZRzcw41RXc
+ CrTyybBWctNLDRINNQE4GemryLPzB4zqnBFyEbuRlmqp1AVQn7U0CjL85Hf6XWzGflW4gk2Ww
+ su0/erP3NfY1slyp+kNlXfPUYhrwb2zr/QIqsBXCSoGcadu3sYTEM+dUBUibtuw/s7dVo06s7
+ EEZft3bm99ZWRwwAqOuVtWuvDSG7kewNGkud3aC+clYD5zXSQ3fWK5kSrg3NEwtWIvZwTos5e
+ qXGinA4IetcSVdb9FVLZXXwIU6GatEhkr8EgWtt6MK3eUw4ctao2J/zObZISbURwh+9TWpCp0
+ xo3uuTIWJM+9/lyv4NQUikRKgKuzfXthRrmlKkPubJBYdkuhk7l/GjV9liIqM87jrufSjSLOQ
+ weXCvZQ8jBPYN5T56+3yRE2zy7gqhT8jqObX6v907lwWfi2uTFzuCl1JE2+Vo9bwhb7vX2dZK
+ TW9sjgMnhAD6wKf21CDPv6QvlpdqYd6KEX28v4brYVafJNdN5aQ92vsvQ/HtL2VsoCQEn5GNU
+ fDV1alc4m67crVqRtO8H209OfoY0YImHrBhs6PxeyJColvOIRpw5y7LZTQ19EPMw/hKoseXNY
+ dOBHuYKOJH3UIlc4wVt961g1yKDoSkoCISlXTMC6fSBQhzvq7NjShBkTbf9cZaNa5wauj2c8p
+ /o/D5CcClilZsuA92J2FgvjILErCMtHLxIMnOi3Atee4FYAvRj0uPMptnApyq8OHvkKR6g2z2
+ HJCu80cCQhR1wzQQ/iydeRz091QrH6dCv0CcKWMwP8TiOov04tHWoPflxpqiJa9Mqlu0r3L+G
+ RoMvQirUhdrHzsl/6CELsgyjXEWuLYM2tQq
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,63 +125,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yi Wang <wang.yi59@zte.com.cn>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Yi Wang <wang.yi59@zte.com.cn>, linux-pm@vger.kernel.org,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
  "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, Julia Lawall <julia.lawall@lip6.fr>,
- Paul Mackerras <paulus@samba.org>, Xue Zhihong <xue.zhihong@zte.com.cn>,
- Cheng Shengyu <cheng.shengyu@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+ Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
+ Xue Zhihong <xue.zhihong@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
+ Cheng Shengyu <cheng.shengyu@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> 180                         break;                         --->  Jump ou=
-t of the loop without releasing it
+> In my experience, when you start looking at these of_node_put things,
+> all sorts of strange things appear...
 
-The device node reference is released behind this for loop.
-
-
-> 183                 if (!of_device_is_available(state_node)) {
-> 184                         of_node_put(state_node);
-
-This function call was added by the commit =E2=80=9Ccpuidle: dt: Add missi=
-ng 'of_node_put()'=E2=80=9D
-on 2017-06-12.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-drivers/cpuidle/dt_idle_states.c?id=3Db2cdd8e1b54849477a32d820acc2e87828a3=
-8f3d
-
-
-> 185                         continue;                    --->  Release t=
-he object references within a loop
-
-I became curious on the applicability of an other coding style
-(for a software refactoring) at this place.
-How do you think about to achieve the same effect by using a goto statemen=
-t
-instead of two statements in such an if branch?
-
-
-> 208                 of_node_put(state_node);  -->  Release the object re=
-ferences within a loop
-> 209         }
-> 210
-> 211         of_node_put(state_node);       -->    There may be double fr=
-ee here.
-
-This information points a recurring challenge out for safe source code ana=
-lysis.
-How would you like to exclude the detection of false positives finally?
-
-
-> This code pattern is very interesting
-
-Thanks that you think also in this direction.
-
-
-> and the coccinelle software should also recognize this pattern.
-
-There are some open issues to consider for available analysis tools.
-How will corresponding details be clarified then?
+How much will this situation influence the achievement of further improvements
+also for your software?
 
 Regards,
 Markus
