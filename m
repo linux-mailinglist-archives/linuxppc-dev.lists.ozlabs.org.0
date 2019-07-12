@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D5A66A14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 11:39:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A18866949
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 10:43:45 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lRKT6mFlzDqmj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 18:43:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lSYj5K3wzDqwF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 19:39:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="frv/pNxf"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lRHR28fqzDqtd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 18:41:55 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="WuNZwoFg"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45lRHM60K8z9s00;
- Fri, 12 Jul 2019 18:41:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1562920914;
- bh=XMy057h7tEqUdteK4IfiKdKfqoRVIuXrEgiej/z+E30=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=WuNZwoFgEMQjylkarzZqrwhJHJfSfAndylVc8H1asf7TwExA9LFB1MP3+Srbny6Ng
- WSOf0n3AGT7y5G3JbpPC5b/mZ1C+DUsSqZu8IRGsEcnmyrsyAKBnQEKj4bgiElRZJ7
- FoBTUDC/NS1IYvTwzIJ9nJtfCb1GFOG1F2t+x70/3PAABZxkHw5+Gr1JNHW9Ux6FuE
- 6pubM+Y4ILGevkpkgO+O3xxhqCWmEFgSZGWQnJhEF+G0ywFrnmk65nKWC5h+HNMV4f
- zPAiyDMVfCPFVcfNcYKaAYG1IvEWh2eax1FXdUMu87XijfMykOVdQPEgxtc/b03FFc
- eef1WUOMABWmg==
-Date: Fri, 12 Jul 2019 18:40:55 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH V2] mm/ioremap: Probe platform for p4d huge map support
-Message-ID: <20190712184055.47a7a54b@canb.auug.org.au>
-In-Reply-To: <87tvbrennf.fsf@concordia.ellerman.id.au>
-References: <1561699231-20991-1-git-send-email-anshuman.khandual@arm.com>
- <20190702160630.25de5558e9fe2d7d845f3472@linux-foundation.org>
- <fbc147c7-bec2-daed-b828-c4ae170010a9@arm.com>
- <87tvbrennf.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lSWW4Rj9zDqtk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 19:37:27 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id i2so4521701plt.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 02:37:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=ujRqYBQxkT2Rt+tGbZXrv9adgkqY160eJFoMO4qa73g=;
+ b=frv/pNxfU0LZBqNyqXX3ySNQ7MFW1Om2Lao1KvhT19yJOS9UVwmjn4c9tFqMGC5wkH
+ KagrQmJm8SHowofMM3zVB1uFuIOfVnZPJdUbHINj1EvZsX9DDf3yocGeN1F94ydQ+E6t
+ mEUl2CEgz2e/F7POdPqncLRqXVC94agGFzCqY/SDLiH9l+tPY7/O93iV2RCIqwS7fFnq
+ 4NmMuWsV4Uk0jU1oOolXbMLrMGtoAx55NLqSnzSXNpn9Cfs0T7iQfnkakTkFbzxT4cpS
+ N5W52bDxbsWmW7+e7RrBI+0Bji3HG4U9+1dx+tMfyhAm/CcY1iw6YBOTPuFYrSbITS93
+ reBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=ujRqYBQxkT2Rt+tGbZXrv9adgkqY160eJFoMO4qa73g=;
+ b=JFInOH/WLlCMd7R4xO5hY0GY7xjZeU9OUb++hh321DkVCZ48P9pXhGIbGExvY0TqMF
+ Z+bxTUM9m175lam5ydpZXzDp8Uqc4M66FR50rN/Wiw6jcvBwMhrZ9AHoZIetwP1kHpho
+ Lsj3KsVIgE+3vPxflQ4t+k56Ujdbct8j0Np+DNDzsd1h/nPMDEHWNkI5E0NO/4VvbEM6
+ Na64I5gQVHiUZLtnt1R2jsxf5Qtt7QsQsni5kDtq+8vyFKdcY6gsqwJLcSt7JRUn7pVJ
+ Go3E8J6jREGa70TNKo5ffOrRuqRcAIR/BMWMJc71AmAd0ve8acHatrQ9sfycw9vBNb8Z
+ vHog==
+X-Gm-Message-State: APjAAAUUSRnAzXwtuu4hEq3nIyj/tG7FUpcStFYFIKoc8rK/bnOrCYlP
+ GftG07Y6uDz6823PqP3GUH4=
+X-Google-Smtp-Source: APXvYqyzqvqv+ximCn+x0FOxTxr/3WSkijQuae9tlaoPQhWN1ORuASn1qwQoxmOrE0ARuMFqaGxBxA==
+X-Received: by 2002:a17:902:ac1:: with SMTP id
+ 59mr10424332plp.168.1562924242998; 
+ Fri, 12 Jul 2019 02:37:22 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id p13sm23158800pjb.30.2019.07.12.02.37.18
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 12 Jul 2019 02:37:21 -0700 (PDT)
+Subject: Re: [RFC PATCH kernel] powerpc/xive: Drop deregistered irqs
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190712082036.40440-1-aik@ozlabs.ru>
+ <abbee9db2fa0abdaa2e01bb92bab920773a2ad8d.camel@kernel.crashing.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <3a34190f-560e-0b42-af38-0e39cef0beea@ozlabs.ru>
+Date: Fri, 12 Jul 2019 19:37:16 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/gEMDf8pJbcBsPcmqhs4eMy2"; protocol="application/pgp-signature"
+In-Reply-To: <abbee9db2fa0abdaa2e01bb92bab920773a2ad8d.camel@kernel.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,62 +87,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Will Deacon <will.deacon@arm.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Alistair Popple <alistair@popple.id.au>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/gEMDf8pJbcBsPcmqhs4eMy2
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
 
-On Fri, 12 Jul 2019 17:07:48 +1000 Michael Ellerman <mpe@ellerman.id.au> wr=
-ote:
->
-> The return value of arch_ioremap_p4d_supported() is stored in the
-> variable ioremap_p4d_capable which is then returned by
-> ioremap_p4d_enabled().
->=20
-> That is used by ioremap_try_huge_p4d() called from ioremap_p4d_range()
-> from ioremap_page_range().
+On 12/07/2019 18:29, Benjamin Herrenschmidt wrote:
+> On Fri, 2019-07-12 at 18:20 +1000, Alexey Kardashevskiy wrote:
+>>
+>> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+>> index 082c7e1c20f0..65742e280337 100644
+>> --- a/arch/powerpc/sysdev/xive/common.c
+>> +++ b/arch/powerpc/sysdev/xive/common.c
+>> @@ -148,8 +148,12 @@ static u32 xive_scan_interrupts(struct xive_cpu *xc, bool just_peek)
+>>   		irq = xive_read_eq(&xc->queue[prio], just_peek);
+>>   
+>>   		/* Found something ? That's it */
+>> -		if (irq)
+>> -			break;
+>> +		if (irq) {
+>> +			/* Another CPU may have shut this irq down, check it */
+>> +			if (irq_to_desc(irq))
+> 
+> What if it gets deregistered here .... ?
 
-When I first saw this, I wondered if we expect
-arch_ioremap_p4d_supported() to ever return something that is not
-computable at compile time.  If not, why do we have this level of
-redirection?  Why not just make it a static inline functions defined in
-an arch specific include file (or even just a CONFIG_ option)?
+Yeah that is the problem.
 
-In particular, ioremap_p4d_enabled() either returns ioremap_p4d_capable
-or 0 and is static to one file and has one call site ...  The same is
-true of ioremap_pud_enabled() and ioremap_pmd_enabled().
---=20
-Cheers,
-Stephen Rothwell
+> 
+>> +				break;
+>> +			irq = 0;
+>> +		}
+>>   
+>>   		/* Clear pending bits */
+>>   		xc->pending_prio &= ~(1 << prio);
+> 
+> Wouldn't it be better to check the return value from generic_handle_irq
+> instead ?
 
---Sig_/gEMDf8pJbcBsPcmqhs4eMy2
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Where exactly, here?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/kernel/irq.c#n614
 
------BEGIN PGP SIGNATURE-----
+If so, then in order to do EOI, I'll need the desc which is gone, or I 
+am missing the point?
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0oR5cACgkQAVBC80lX
-0Gzspwf/VrAAnMW4h6ldvfqp7zGCa4zwIPADkPvWSNBoahsOMNPdBxKy/NjSosk4
-9HSdh6ediokUaf9wY3ZTNacC8wlg5LRk8g9FZlcT4de4qSx5Fk7sIy4rXY7HrhBZ
-uTyxqI19f8AlG3JCzfxBuA+/xgKl7/KctQC70jAWFGItK0DM0V08dkWVJ1MUBAra
-QwXtOIFA2TNMFleSAM19/lvZiKG8mkWjrv1wBZtDPbVPg87UfSPLcS9XplOVd1in
-FnI2Zz/xDu5853kJFQl1ERorfRDMqnUXGRHNl3L+6+KZoeVp8pHBoS5pYC/6B/Er
-APSpYNV5gTnvKd8cpVJEw/3uUmEJgw==
-=5AC8
------END PGP SIGNATURE-----
 
---Sig_/gEMDf8pJbcBsPcmqhs4eMy2--
+-- 
+Alexey
