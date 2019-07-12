@@ -1,96 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620816761C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 23:09:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45llsZ5y6XzDqfb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 07:09:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D8467656
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 23:57:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lmxf6twDzDqxf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 07:57:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45llqg0Gd2zDr09
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 07:07:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45llqf3Z7fz8wGQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 07:07:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45llqf2grsz9sNf; Sat, 13 Jul 2019 07:07:26 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45llqd6Plcz9sNF
- for <linuxppc-dev@ozlabs.org>; Sat, 13 Jul 2019 07:07:24 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lmvs3PPtzDqxX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 07:56:08 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6CL6wMg099024
- for <linuxppc-dev@ozlabs.org>; Fri, 12 Jul 2019 17:07:20 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tpyhuvb6q-1
+ x6CLqfup016795
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:56:04 -0400
+Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tq0fw4nwr-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 12 Jul 2019 17:07:20 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:56:04 -0400
 Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <cclaudio@linux.ibm.com>;
- Fri, 12 Jul 2019 22:07:19 +0100
-Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Fri, 12 Jul 2019 22:56:02 +0100
+Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
+ by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized
  Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 12 Jul 2019 22:07:16 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6CL7Fup50594120
+ Fri, 12 Jul 2019 22:55:57 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6CLtupx10814168
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jul 2019 21:07:15 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8604B112066;
- Fri, 12 Jul 2019 21:07:15 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB3E2112064;
- Fri, 12 Jul 2019 21:07:13 +0000 (GMT)
-Received: from [9.18.235.77] (unknown [9.18.235.77])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 12 Jul 2019 21:07:13 +0000 (GMT)
-Subject: Re: [PATCH v4 1/8] KVM: PPC: Ultravisor: Introduce the MSR_S bit
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@ozlabs.org
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-2-cclaudio@linux.ibm.com>
- <1562892336.boqkwvamhq.astroid@bobo.none>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Date: Fri, 12 Jul 2019 18:07:12 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+ Fri, 12 Jul 2019 21:55:56 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 95FB3AE062;
+ Fri, 12 Jul 2019 21:55:56 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0522EAE05F;
+ Fri, 12 Jul 2019 21:55:51 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.135.203])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 12 Jul 2019 21:55:51 +0000 (GMT)
+References: <20190712053631.9814-1-bauerman@linux.ibm.com>
+ <20190712053631.9814-4-bauerman@linux.ibm.com>
+ <20190712150912.3097215e.pasic@linux.ibm.com>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH 3/3] fs/core/vmcore: Move sev_active() reference to x86
+ arch code
+In-reply-to: <20190712150912.3097215e.pasic@linux.ibm.com>
+Date: Fri, 12 Jul 2019 18:55:47 -0300
 MIME-Version: 1.0
-In-Reply-To: <1562892336.boqkwvamhq.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
-x-cbid: 19071221-0060-0000-0000-0000035DE00F
+x-cbid: 19071221-2213-0000-0000-000003ADCDAE
 X-IBM-SpamModules-Scores: 
 X-IBM-SpamModules-Versions: BY=3.00011417; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01231263; UDB=6.00648600; IPR=6.01012548; 
- MB=3.00027695; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-12 21:07:18
+ PH=3.00000004; SC=3.00000286; SDB=6.01231280; UDB=6.00648610; IPR=6.01012564; 
+ MB=3.00027695; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-12 21:56:01
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071221-0061-0000-0000-00004A1DDFDE
-Message-Id: <de2448a0-291f-a293-6021-05d4492b3563@linux.ibm.com>
+x-cbparentid: 19071221-2214-0000-0000-00005F35B676
+Message-Id: <87tvbqgboc.fsf@morokweng.localdomain>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-12_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -98,7 +82,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907120217
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907120224
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,101 +94,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Alexey Dobriyan <adobriyan@gmail.com>, iommu@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "Lendacky,
+ Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-fsdevel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 7/11/19 9:57 PM, Nicholas Piggin wrote:
-> Claudio Carvalho's on June 29, 2019 6:08 am:
->> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+[ Cc'ing Tom Lendacky which I forgot to do earlier. Sorry about that. ]
+
+Hello Halil,
+
+Thanks for the quick review.
+
+Halil Pasic <pasic@linux.ibm.com> writes:
+
+> On Fri, 12 Jul 2019 02:36:31 -0300
+> Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
+>
+>> Secure Encrypted Virtualization is an x86-specific feature, so it shouldn't
+>> appear in generic kernel code because it forces non-x86 architectures to
+>> define the sev_active() function, which doesn't make a lot of sense.
+>
+> sev_active() might be just bad (too specific) name for a general
+> concept. s390 code defines it drives the right behavior in
+> kernel/dma/direct.c (which uses it).
+
+I thought about that but couldn't put my finger on a general concept.
+Is it "guest with memory inaccessible to the host"?
+
+Since your proposed definiton for force_dma_unencrypted() is simply to
+make it equivalent to sev_active(), I thought it was more
+straightforward to make each arch define force_dma_unencrypted()
+directly.
+
+Also, does sev_active() drive the right behavior for s390 in
+elfcorehdr_read() as well?
+
+>> To solve this problem, add an x86 elfcorehdr_read() function to override
+>> the generic weak implementation. To do that, it's necessary to make
+>> read_from_oldmem() public so that it can be used outside of vmcore.c.
 >>
->> The ultravisor processor mode is introduced in POWER platforms that
->> supports the Protected Execution Facility (PEF). Ultravisor is higher
->> privileged than hypervisor mode.
->>
->> In PEF enabled platforms, the MSR_S bit is used to indicate if the
->> thread is in secure state. With the MSR_S bit, the privilege state of
->> the thread is now determined by MSR_S, MSR_HV and MSR_PR, as follows:
->>
->> S   HV  PR
->> -----------------------
->> 0   x   1   problem
->> 1   0   1   problem
->> x   x   0   privileged
->> x   1   0   hypervisor
->> 1   1   0   ultravisor
->> 1   1   1   reserved
-> What does this table mean? I thought 'x' meant either
-
-
-Yes, it means either. The table was arranged that way to say that:
-- hypervisor state is also a privileged state,
-- ultravisor state is also a hypervisor state.
-
-
-> , but in that
-> case there are several states that can apply to the same
-> combination of bits.
->
-> Would it be clearer to rearrange the table so the columns are the HV
-> and PR bits we know and love, plus the effect of S=1 on each of them?
->
->       HV  PR  S=0         S=1
->       ---------------------------------------------
->       0   0   privileged  privileged (secure guest kernel)
->       0   1   problem     problem (secure guest userspace)
->       1   0   hypervisor  ultravisor
->       1   1   problem     reserved
->
-> Is that accurate?
-
-Yes, it is. I also like this format. I will consider it.
-
-
->
->
->> The hypervisor doesn't (and can't) run with the MSR_S bit set, but a
->> secure guest and the ultravisor firmware do.
->>
->> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
->> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
->> [ Update the commit message ]
->> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+>> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 >> ---
->>  arch/powerpc/include/asm/reg.h | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
->> index 10caa145f98b..39b4c0a519f5 100644
->> --- a/arch/powerpc/include/asm/reg.h
->> +++ b/arch/powerpc/include/asm/reg.h
->> @@ -38,6 +38,7 @@
->>  #define MSR_TM_LG	32		/* Trans Mem Available */
->>  #define MSR_VEC_LG	25	        /* Enable AltiVec */
->>  #define MSR_VSX_LG	23		/* Enable VSX */
->> +#define MSR_S_LG	22		/* Secure VM bit */
->>  #define MSR_POW_LG	18		/* Enable Power Management */
->>  #define MSR_WE_LG	18		/* Wait State Enable */
->>  #define MSR_TGPR_LG	17		/* TLB Update registers in use */
->> @@ -71,11 +72,13 @@
->>  #define MSR_SF		__MASK(MSR_SF_LG)	/* Enable 64 bit mode */
->>  #define MSR_ISF		__MASK(MSR_ISF_LG)	/* Interrupt 64b mode valid on 630 */
->>  #define MSR_HV 		__MASK(MSR_HV_LG)	/* Hypervisor state */
->> +#define MSR_S		__MASK(MSR_S_LG)	/* Secure state */
-> This is a real nitpick, but why two different comments for the bit 
-> number and the mask?
+>>  arch/x86/kernel/crash_dump_64.c |  5 +++++
+>>  fs/proc/vmcore.c                |  8 ++++----
+>>  include/linux/crash_dump.h      | 14 ++++++++++++++
+>>  include/linux/mem_encrypt.h     |  1 -
+>>  4 files changed, 23 insertions(+), 5 deletions(-)
+>
+> Does not seem to apply to today's or yesterdays master.
 
-Fixed for the next version. Both comments will be /* Secure state */
+It assumes the presence of the two patches I mentioned in the cover
+letter. Only one of them is in master.
 
-Thanks
-Claudio
+I hadn't realized the s390 virtio patches were on their way to upstream.
+I was keeping an eye on the email thread but didn't see they were picked
+up in the s390 pull request. I'll add a new patch to this series making
+the corresponding changes to s390's <asm/mem_encrypt.h> as well.
 
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
