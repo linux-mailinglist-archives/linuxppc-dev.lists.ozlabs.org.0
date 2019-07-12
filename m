@@ -1,48 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E0766D60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 14:30:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECECB66CE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 14:24:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lXDT6sWjzDq5n
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 22:24:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lXLr57hrzDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 22:30:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=80.241.60.215; helo=mx2.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx2.mailbox.org (mx2.mailbox.org [80.241.60.215])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lX7t3GszzDqq7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 22:20:41 +1000 (AEST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id 2AA0EA217D;
- Fri, 12 Jul 2019 14:20:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
- by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de
- [80.241.56.115]) (amavisd-new, port 10030)
- with ESMTP id Fg_RUaFCSZVH; Fri, 12 Jul 2019 14:20:26 +0200 (CEST)
-Date: Fri, 12 Jul 2019 22:20:17 +1000
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v9 01/10] namei: obey trailing magic-link DAC permissions
-Message-ID: <20190712122017.xkowq2cjreylpotm@yavin>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-2-cyphar@cyphar.com>
- <20190712041454.GG17978@ZenIV.linux.org.uk>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lX9Y0L6tzDqq7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 22:22:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45lX9X2f0Cz9sPX;
+ Fri, 12 Jul 2019 22:22:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com,
+ paulus@samba.org
+Subject: Re: [PATCH v2] powerpc/book3s/mm: Update Oops message to print the
+ correct translation in use
+In-Reply-To: <a9efab7b-0c61-5224-f936-82db1039d159@c-s.fr>
+References: <20190711145814.17970-1-aneesh.kumar@linux.ibm.com>
+ <8736jbg46p.fsf@concordia.ellerman.id.au>
+ <a9efab7b-0c61-5224-f936-82db1039d159@c-s.fr>
+Date: Fri, 12 Jul 2019 22:22:07 +1000
+Message-ID: <87r26ve93k.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="zhpexfjxcruxolbk"
-Content-Disposition: inline
-In-Reply-To: <20190712041454.GG17978@ZenIV.linux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,105 +49,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Le 12/07/2019 =C3=A0 08:25, Michael Ellerman a =C3=A9crit=C2=A0:
+>> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+...
+>>> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+>>> index 11caa0291254..b181d6860f28 100644
+>>> --- a/arch/powerpc/kernel/traps.c
+>>> +++ b/arch/powerpc/kernel/traps.c
+>>> @@ -250,15 +250,22 @@ static void oops_end(unsigned long flags, struct =
+pt_regs *regs,
+>>>   }
+>>>   NOKPROBE_SYMBOL(oops_end);
+>>>=20=20=20
+>>> +static char *get_mmu_str(void)
+>>> +{
+>>> +	if (early_radix_enabled())
+>>> +		return " MMU=3DRadix";
+>>> +	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE))
+>>> +		return " MMU=3DHash";
+>>> +	return "";
+>>> +}
+>>=20
+>> We don't change MMU once we're up, so just do this logic once and stash
+>> it into a static string, rather than rechecking on every oops.
+>
+> Do we really have oops so often that we have to worry about that ?
 
---zhpexfjxcruxolbk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sometimes :)
 
-On 2019-07-12, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Sun, Jul 07, 2019 at 12:57:28AM +1000, Aleksa Sarai wrote:
-> > @@ -514,7 +516,14 @@ static void set_nameidata(struct nameidata *p, int=
- dfd, struct filename *name)
-> >  	p->stack =3D p->internal;
-> >  	p->dfd =3D dfd;
-> >  	p->name =3D name;
-> > -	p->total_link_count =3D old ? old->total_link_count : 0;
-> > +	p->total_link_count =3D 0;
-> > +	p->acc_mode =3D 0;
-> > +	p->opath_mask =3D FMODE_PATH_READ | FMODE_PATH_WRITE;
-> > +	if (old) {
-> > +		p->total_link_count =3D old->total_link_count;
-> > +		p->acc_mode =3D old->acc_mode;
-> > +		p->opath_mask =3D old->opath_mask;
-> > +	}
->=20
-> Huh?  Could somebody explain why traversals of NFS4 referrals should inhe=
-rit
-> ->acc_mode and ->opath_mask?
+But no I don't mean it's a performance issue, it just seems simpler to
+compute the value once and store it. In fact for most platforms it can
+just be a static string at compile time, it's only 64-bit Book3S that
+needs to do anything at runtime.
 
-I'll be honest -- I don't understand what set_nameidata() did so I just
-did what I thought would be an obvious change (to just copy the
-contents). I thought it was related to some aspect of the symlink stack
-handling.
-
-In that case, should they both be set to 0 on set_nameidata()? This will
-mean that fd re-opening (or magic-link opening) through a
-set_nameidata() would always fail.
-
-> >  static __always_inline
-> > -const char *get_link(struct nameidata *nd)
-> > +const char *get_link(struct nameidata *nd, bool trailing)
-> >  {
-> >  	struct saved *last =3D nd->stack + nd->depth - 1;
-> >  	struct dentry *dentry =3D last->link.dentry;
-> > @@ -1081,6 +1134,44 @@ const char *get_link(struct nameidata *nd)
-> >  		} else {
-> >  			res =3D get(dentry, inode, &last->done);
-> >  		}
-> > +		/* If we just jumped it was because of a magic-link. */
-> > +		if (unlikely(nd->flags & LOOKUP_JUMPED)) {
-> [...]
-> In any case, this "bool trailing" is completely wrong; whether that
-> check belongs in trailing_symlink() or (some of) its callers, putting
-> it into get_link() is a mistake, forced by kludgy check for procfs-style
-> symlinks.
-
-The error path for LOOKUP_JUMPED comes from the old O_BENEATH patchset,
-but all of the "bool trailing" logic is definitely my gaff (I was
-quietly hoping you'd have a much better solution than the whole
-get_link() thing -- it definitely felt very kludgey to write).
-
-I will work on the suggestion in your follow-up email. Thanks!
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---zhpexfjxcruxolbk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSh6/QAKCRCdlLljIbnQ
-EjDMAQCLRtfrI0y8gA2T7fw18G0cU799E+TMMczEIjU79f+8jQD/UcfSgUsZT0h6
-7dVpliYNzOl4Uou0Y4Kln5It6iq5aAc=
-=74oH
------END PGP SIGNATURE-----
-
---zhpexfjxcruxolbk--
+cheers
