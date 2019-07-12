@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EC767264
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A4767290
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:37:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lcP00dY1zDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:32:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lcWC4rjpzDqdR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:37:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,40 +18,39 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="Ns5vEMek"; dkim-atps=neutral
+ header.b="GwvBCJth"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lcFX2BSZzDqwF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:25:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lcJ24vyRzDqwT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:28:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=qSFwUfQ+/H50jlv9nC2NcDEpesXFjoOMJCpOF9y1rU8=; b=Ns5vEMekqvqVASg++S1r7oq4J
- 7/rOrIoU7hOUTkq0bAywv3EwyHUOVa/BcnhdBkvxMncCbhtSMRJLyEh+0Nq2/0M1j17sCDvBKVKgK
- zXTVHoS0lwQ3aK9YV5QgljfYUQTLWukfG62npYmDUIjpwfOVGyW8ozVT/Wz9z1vTTS83sRhtVovxz
- mHkiieslliO1/4hMVrCuL+F4SeoZ4WEgzvJjtbwunmLaUMrDMbIhM988im1q8JEsl0RSZR56DxUAB
- 0y6rmBDYfYJu4CjPhklOmfvajjknk5WqIPnZOXJ8sKJoPZ3LZg3RGynwaf6QXN0jGrhak/rbBe9i3
- HVyQWq0vA==;
+ bh=NtsbKnnxGPRRGtpsBkhigsx98hQ7c1/J+GaNPOUonEw=; b=GwvBCJthEMA2kf6sB68t63v+6
+ Xz+Oe8+P5a1Y5sNKIZrYG5KfZNCTAvJADgjTaPnEKmGGaf6v6FAgHhDf/LZSnVmYCnssI3zpqyF1e
+ Hau0yzUI6C6WBXTT0GFxHd24tq7rWn9RPqLHPQes+itQqWU3bkEZT8CnW0Ffz4mLRbfDYYa2UT+Jb
+ FmsSBG5rSS9WKAUyXoIJtnQ0c0AixTxq9Js07I40pWuEhFHpRGvwz0SyWemlQEmmZxftxFsryDhiv
+ TPZN85lk/8zeUyI/CQc1/kk42WK4b5+l/tvl3o+CsHw9+C2BctBzTRj4ca39+Q3iTjad5jrhscxay
+ t4OQO6Wow==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hlxQj-000423-J9; Fri, 12 Jul 2019 15:25:49 +0000
-Date: Fri, 12 Jul 2019 08:25:49 -0700
+ Linux)) id 1hlxSq-0004AR-88; Fri, 12 Jul 2019 15:28:00 +0000
+Date: Fri, 12 Jul 2019 08:28:00 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v4 4/4] powerpc/powernv/ioda2: Create bigger
- default window with 64k IOMMU pages
-Message-ID: <20190712152549.GB3061@infradead.org>
+Subject: Re: [PATCH kernel v4 0/4 repost] powerpc/ioda2: Yet another attempt
+ to allow DMA masks between 32 and 59
+Message-ID: <20190712152800.GC3061@infradead.org>
 References: <20190712094509.56695-1-aik@ozlabs.ru>
- <20190712094509.56695-5-aik@ozlabs.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712094509.56695-5-aik@ozlabs.ru>
+In-Reply-To: <20190712094509.56695-1-aik@ozlabs.ru>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -73,21 +72,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -extern struct iommu_table *iommu_init_table(struct iommu_table * tbl,
-> -					    int nid);
-> +extern struct iommu_table *iommu_init_table_res(struct iommu_table *tbl,
-> +		int nid, unsigned long res_start, unsigned long res_end);
-> +#define iommu_init_table(tbl, nid) iommu_init_table_res((tbl), (nid), 0, 0)
+On Fri, Jul 12, 2019 at 07:45:05PM +1000, Alexey Kardashevskiy wrote:
+> This is an attempt to allow DMA masks between 32..59 which are not large
+> enough to use either a PHB3 bypass mode or a sketchy bypass. Depending
+> on the max order, up to 40 is usually available.
 
-I'd just pass the two additional paramters to iommu_init_table, there
-are only 10 callers of it.
+Can you elaborate what you man with supported in detail?  In the end
+a DMA devices DMA capability is only really interesting as a lower
+bound.
 
-> +	 * the max order of allocation possible. The TCE tableis likely to
-
-Missing whitespace between tabke and is.
-
-> +	 * end up being multilevel and with on-demand allocation in place,
-> +	 * the initial use is not going to be huge as the default window aims
-> +	 * to support cripplied devices (i.e. not fully 64bit DMAble) only.
-
-s/cripplied/crippled/
+e.g. if you have a DMA that supports 40-bit DMA addressing we could
+always treat it as if supports 32-bit addressing, and I thought the
+powerpc code does that, as the DMA API now relies on that.  Did I miss
+something and it explicitly rejected that (in which case I didn't spot
+the fix in this series), or is this just an optimization to handle these
+devices more optimally, in which case maybe the changelog could be
+improved a bit.
