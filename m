@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F9866F62
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 14:59:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA8166F18
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 14:44:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lXgL3225zDqSr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 22:44:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lY0c35n0zDqxW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 22:59:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,24 @@ Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lXZL3VQ1zDqgs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 22:40:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lXx52fp0zDqwF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 22:56:25 +1000 (AEST)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hlupg-0006xX-Tg; Fri, 12 Jul 2019 12:39:25 +0000
-Date: Fri, 12 Jul 2019 13:39:24 +0100
+ Linux)) id 1hlv5c-0007Pc-Mt; Fri, 12 Jul 2019 12:55:52 +0000
+Date: Fri, 12 Jul 2019 13:55:52 +0100
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Aleksa Sarai <cyphar@cyphar.com>
 Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190712123924.GK17978@ZenIV.linux.org.uk>
+Message-ID: <20190712125552.GL17978@ZenIV.linux.org.uk>
 References: <20190706145737.5299-1-cyphar@cyphar.com>
  <20190706145737.5299-6-cyphar@cyphar.com>
  <20190712043341.GI17978@ZenIV.linux.org.uk>
  <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712105745.nruaftgeat6irhzr@yavin>
+In-Reply-To: <20190712123924.GK17978@ZenIV.linux.org.uk>
 User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,31 +72,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 12, 2019 at 08:57:45PM +1000, Aleksa Sarai wrote:
-
-> > > @@ -2350,9 +2400,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
-> > >  			s = ERR_PTR(error);
-> > >  		return s;
-> > >  	}
-> > > -	error = dirfd_path_init(nd);
-> > > -	if (unlikely(error))
-> > > -		return ERR_PTR(error);
-> > > +	if (likely(!nd->path.mnt)) {
-> > 
-> > Is that a weird way of saying "if we hadn't already called dirfd_path_init()"?
+On Fri, Jul 12, 2019 at 01:39:24PM +0100, Al Viro wrote:
+> On Fri, Jul 12, 2019 at 08:57:45PM +1000, Aleksa Sarai wrote:
 > 
-> Yes. I did it to be more consistent with the other "have we got the
-> root" checks elsewhere. Is there another way you'd prefer I do it?
+> > > > @@ -2350,9 +2400,11 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+> > > >  			s = ERR_PTR(error);
+> > > >  		return s;
+> > > >  	}
+> > > > -	error = dirfd_path_init(nd);
+> > > > -	if (unlikely(error))
+> > > > -		return ERR_PTR(error);
+> > > > +	if (likely(!nd->path.mnt)) {
+> > > 
+> > > Is that a weird way of saying "if we hadn't already called dirfd_path_init()"?
+> > 
+> > Yes. I did it to be more consistent with the other "have we got the
+> > root" checks elsewhere. Is there another way you'd prefer I do it?
+> 
+> "Have we got the root" checks are inevitable evil; here you are making the
+> control flow in a single function hard to follow.
+> 
+> I *think* what you are doing is
+> 	absolute pathname, no LOOKUP_BENEATH:
+> 		set_root
+> 		error = nd_jump_root(nd)
+> 	else
+> 		error = dirfd_path_init(nd)
+> 	return unlikely(error) ? ERR_PTR(error) : s;
+> which should be a lot easier to follow (not to mention shorter), but I might
+> be missing something in all of that.
 
-"Have we got the root" checks are inevitable evil; here you are making the
-control flow in a single function hard to follow.
-
-I *think* what you are doing is
-	absolute pathname, no LOOKUP_BENEATH:
-		set_root
-		error = nd_jump_root(nd)
-	else
-		error = dirfd_path_init(nd)
-	return unlikely(error) ? ERR_PTR(error) : s;
-which should be a lot easier to follow (not to mention shorter), but I might
-be missing something in all of that.
+PS: if that's what's going on, I would be tempted to turn the entire
+path_init() part into this:
+	if (flags & LOOKUP_BENEATH)
+		while (*s == '/')
+			s++;
+in the very beginning (plus the handling of nd_jump_root() prototype
+change, but that belongs with nd_jump_root() change itself, obviously).
+Again, I might be missing something here...
