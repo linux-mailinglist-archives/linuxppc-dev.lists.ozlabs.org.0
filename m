@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A6066A80
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 11:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015E466A82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 11:55:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lStc0ZjxzDqmK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 19:54:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lSwl15f0zDqmj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 19:55:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,16 +16,17 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 45lSjF2gmNzDqt0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 19:45:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 45lSjG5ng4zDqv3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 19:45:54 +1000 (AEST)
 Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 4A723AE805A5;
- Fri, 12 Jul 2019 05:45:18 -0400 (EDT)
+ by ozlabs.ru (Postfix) with ESMTP id 6B024AE807DD;
+ Fri, 12 Jul 2019 05:45:20 -0400 (EDT)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v4 2/4] powerpc/iommu: Allow bypass-only for DMA
-Date: Fri, 12 Jul 2019 19:45:07 +1000
-Message-Id: <20190712094509.56695-3-aik@ozlabs.ru>
+Subject: [PATCH kernel v4 3/4] powerpc/powernv/ioda2: Allocate TCE table
+ levels on demand for default DMA window
+Date: Fri, 12 Jul 2019 19:45:08 +1000
+Message-Id: <20190712094509.56695-4-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190712094509.56695-1-aik@ozlabs.ru>
 References: <20190712094509.56695-1-aik@ozlabs.ru>
@@ -48,50 +49,261 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-POWER8 and newer support a bypass mode which maps all host memory to
-PCI buses so an IOMMU table is not always required. However if we fail to
-create such a table, the DMA setup fails and the kernel does not boot.
+We allocate only the first level of multilevel TCE tables for KVM
+already (alloc_userspace_copy==true), and the rest is allocated on demand.
+This is not enabled though for bare metal.
 
-This skips the 32bit DMA setup check if the bypass is can be selected.
+This removes the KVM limitation (implicit, via the alloc_userspace_copy
+parameter) and always allocates just the first level. The on-demand
+allocation of missing levels is already implemented.
+
+As from now on DMA map might happen with disabled interrupts, this
+allocates TCEs with GFP_ATOMIC; otherwise lockdep reports errors 1].
+In practice just a single page is allocated there so chances for failure
+are quite low.
+
+To save time when creating a new clean table, this skips non-allocated
+indirect TCE entries in pnv_tce_free just like we already do in
+the VFIO IOMMU TCE driver.
+
+This changes the default level number from 1 to 2 to reduce the amount
+of memory required for the default 32bit DMA window at the boot time.
+The default window size is up to 2GB which requires 4MB of TCEs which is
+unlikely to be used entirely or at all as most devices these days are
+64bit capable so by switching to 2 levels by default we save 4032KB of
+RAM per a device.
+
+While at this, add __GFP_NOWARN to alloc_pages_node() as the userspace
+can trigger this path via VFIO, see the failure and try creating a table
+again with different parameters which might succeed.
+
+[1]:
+===
+BUG: sleeping function called from invalid context at mm/page_alloc.c:4596
+in_atomic(): 1, irqs_disabled(): 1, pid: 1038, name: scsi_eh_1
+2 locks held by scsi_eh_1/1038:
+ #0: 000000005efd659a (&host->eh_mutex){+.+.}, at: ata_eh_acquire+0x34/0x80
+ #1: 0000000006cf56a6 (&(&host->lock)->rlock){....}, at: ata_exec_internal_sg+0xb0/0x5c0
+irq event stamp: 500
+hardirqs last  enabled at (499): [<c000000000cb8a74>] _raw_spin_unlock_irqrestore+0x94/0xd0
+hardirqs last disabled at (500): [<c000000000cb85c4>] _raw_spin_lock_irqsave+0x44/0x120
+softirqs last  enabled at (0): [<c000000000101120>] copy_process.isra.4.part.5+0x640/0x1a80
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+CPU: 73 PID: 1038 Comm: scsi_eh_1 Not tainted 5.2.0-rc6-le_nv2_aikATfstn1-p1 #634
+Call Trace:
+[c000003d064cef50] [c000000000c8e6c4] dump_stack+0xe8/0x164 (unreliable)
+[c000003d064cefa0] [c00000000014ed78] ___might_sleep+0x2f8/0x310
+[c000003d064cf020] [c0000000003ca084] __alloc_pages_nodemask+0x2a4/0x1560
+[c000003d064cf220] [c0000000000c2530] pnv_alloc_tce_level.isra.0+0x90/0x130
+[c000003d064cf290] [c0000000000c2888] pnv_tce+0x128/0x3b0
+[c000003d064cf360] [c0000000000c2c00] pnv_tce_build+0xb0/0xf0
+[c000003d064cf3c0] [c0000000000bbd9c] pnv_ioda2_tce_build+0x3c/0xb0
+[c000003d064cf400] [c00000000004cfe0] ppc_iommu_map_sg+0x210/0x550
+[c000003d064cf510] [c00000000004b7a4] dma_iommu_map_sg+0x74/0xb0
+[c000003d064cf530] [c000000000863944] ata_qc_issue+0x134/0x470
+[c000003d064cf5b0] [c000000000863ec4] ata_exec_internal_sg+0x244/0x5c0
+[c000003d064cf700] [c0000000008642d0] ata_exec_internal+0x90/0xe0
+[c000003d064cf780] [c0000000008650ac] ata_dev_read_id+0x2ec/0x640
+[c000003d064cf8d0] [c000000000878e28] ata_eh_recover+0x948/0x16d0
+[c000003d064cfa10] [c00000000087d760] sata_pmp_error_handler+0x480/0xbf0
+[c000003d064cfbc0] [c000000000884624] ahci_error_handler+0x74/0xe0
+[c000003d064cfbf0] [c000000000879fa8] ata_scsi_port_error_handler+0x2d8/0x7c0
+[c000003d064cfca0] [c00000000087a544] ata_scsi_error+0xb4/0x100
+[c000003d064cfd00] [c000000000802450] scsi_error_handler+0x120/0x510
+[c000003d064cfdb0] [c000000000140c48] kthread+0x1b8/0x1c0
+[c000003d064cfe20] [c00000000000bd8c] ret_from_kernel_thread+0x5c/0x70
+ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+irq event stamp: 2305
+
+========================================================
+hardirqs last  enabled at (2305): [<c00000000000e4c8>] fast_exc_return_irq+0x28/0x34
+hardirqs last disabled at (2303): [<c000000000cb9fd0>] __do_softirq+0x4a0/0x654
+WARNING: possible irq lock inversion dependency detected
+5.2.0-rc6-le_nv2_aikATfstn1-p1 #634 Tainted: G        W
+softirqs last  enabled at (2304): [<c000000000cba054>] __do_softirq+0x524/0x654
+softirqs last disabled at (2297): [<c00000000010f278>] irq_exit+0x128/0x180
+--------------------------------------------------------
+swapper/0/0 just changed the state of lock:
+0000000006cf56a6 (&(&host->lock)->rlock){-...}, at: ahci_single_level_irq_intr+0xac/0x120
+but this lock took another, HARDIRQ-unsafe lock in the past:
+ (fs_reclaim){+.+.}
+
+
+and interrupts could create inverse lock ordering between them.
+
+
+other info that might help us debug this:
+ Possible interrupt unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(fs_reclaim);
+                               local_irq_disable();
+                               lock(&(&host->lock)->rlock);
+                               lock(fs_reclaim);
+  <Interrupt>
+    lock(&(&host->lock)->rlock);
+
+ *** DEADLOCK ***
+
+no locks held by swapper/0/0.
+
+the shortest dependencies between 2nd lock and 1st lock:
+ -> (fs_reclaim){+.+.} ops: 167579 {
+    HARDIRQ-ON-W at:
+                      lock_acquire+0xf8/0x2a0
+                      fs_reclaim_acquire.part.23+0x44/0x60
+                      kmem_cache_alloc_node_trace+0x80/0x590
+                      alloc_desc+0x64/0x270
+                      __irq_alloc_descs+0x2e4/0x3a0
+                      irq_domain_alloc_descs+0xb0/0x150
+                      irq_create_mapping+0x168/0x2c0
+                      xics_smp_probe+0x2c/0x98
+                      pnv_smp_probe+0x40/0x9c
+                      smp_prepare_cpus+0x524/0x6c4
+                      kernel_init_freeable+0x1b4/0x650
+                      kernel_init+0x2c/0x148
+                      ret_from_kernel_thread+0x5c/0x70
+    SOFTIRQ-ON-W at:
+                      lock_acquire+0xf8/0x2a0
+                      fs_reclaim_acquire.part.23+0x44/0x60
+                      kmem_cache_alloc_node_trace+0x80/0x590
+                      alloc_desc+0x64/0x270
+                      __irq_alloc_descs+0x2e4/0x3a0
+                      irq_domain_alloc_descs+0xb0/0x150
+                      irq_create_mapping+0x168/0x2c0
+                      xics_smp_probe+0x2c/0x98
+                      pnv_smp_probe+0x40/0x9c
+                      smp_prepare_cpus+0x524/0x6c4
+                      kernel_init_freeable+0x1b4/0x650
+                      kernel_init+0x2c/0x148
+                      ret_from_kernel_thread+0x5c/0x70
+    INITIAL USE at:
+                     lock_acquire+0xf8/0x2a0
+                     fs_reclaim_acquire.part.23+0x44/0x60
+                     kmem_cache_alloc_node_trace+0x80/0x590
+                     alloc_desc+0x64/0x270
+                     __irq_alloc_descs+0x2e4/0x3a0
+                     irq_domain_alloc_descs+0xb0/0x150
+                     irq_create_mapping+0x168/0x2c0
+                     xics_smp_probe+0x2c/0x98
+                     pnv_smp_probe+0x40/0x9c
+                     smp_prepare_cpus+0x524/0x6c4
+                     kernel_init_freeable+0x1b4/0x650
+                     kernel_init+0x2c/0x148
+                     ret_from_kernel_thread+0x5c/0x70
+  }
+===
 
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Reviewed-by: Alistair Popple <alistair@popple.id.au>
 ---
+Changes:
+v4:
+* added lockdep output to the commit log to justify ATOMIC in alloc_pages_node
 
-This minor thing helped me debugging next 2 patches so it can help
-somebody else too.
+v2:
+* added __GFP_NOWARN to alloc_pages_node
 ---
- arch/powerpc/kernel/dma-iommu.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/powernv/pci.h          |  2 +-
+ arch/powerpc/platforms/powernv/pci-ioda-tce.c | 20 +++++++++----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-index a0879674a9c8..c963d704fa31 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -122,18 +122,17 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
- {
- 	struct iommu_table *tbl = get_iommu_table_base(dev);
+diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+index 469c24463247..f914f0b14e4e 100644
+--- a/arch/powerpc/platforms/powernv/pci.h
++++ b/arch/powerpc/platforms/powernv/pci.h
+@@ -219,7 +219,7 @@ extern struct iommu_table_group *pnv_npu_compound_attach(
+ 		struct pnv_ioda_pe *pe);
  
--	if (!tbl) {
--		dev_info(dev, "Warning: IOMMU dma not supported: mask 0x%08llx"
--			", table unavailable\n", mask);
--		return 0;
--	}
--
- 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
- 		dev->archdata.iommu_bypass = true;
- 		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
- 		return 1;
+ /* pci-ioda-tce.c */
+-#define POWERNV_IOMMU_DEFAULT_LEVELS	1
++#define POWERNV_IOMMU_DEFAULT_LEVELS	2
+ #define POWERNV_IOMMU_MAX_LEVELS	5
+ 
+ extern int pnv_tce_build(struct iommu_table *tbl, long index, long npages,
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+index 8d6569590161..a0b9c0c23ed2 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+@@ -36,7 +36,8 @@ static __be64 *pnv_alloc_tce_level(int nid, unsigned int shift)
+ 	struct page *tce_mem = NULL;
+ 	__be64 *addr;
+ 
+-	tce_mem = alloc_pages_node(nid, GFP_KERNEL, shift - PAGE_SHIFT);
++	tce_mem = alloc_pages_node(nid, GFP_ATOMIC | __GFP_NOWARN,
++			shift - PAGE_SHIFT);
+ 	if (!tce_mem) {
+ 		pr_err("Failed to allocate a TCE memory, level shift=%d\n",
+ 				shift);
+@@ -169,6 +170,9 @@ void pnv_tce_free(struct iommu_table *tbl, long index, long npages)
+ 
+ 		if (ptce)
+ 			*ptce = cpu_to_be64(0);
++		else
++			/* Skip the rest of the level */
++			i |= tbl->it_level_size - 1;
  	}
+ }
  
-+	if (!tbl) {
-+		dev_err(dev, "Warning: IOMMU dma not supported: mask 0x%08llx, table unavailable\n", mask);
-+		return 0;
-+	}
-+
- 	if (tbl->it_offset > (mask >> tbl->it_page_shift)) {
- 		dev_info(dev, "Warning: IOMMU offset too big for device mask\n");
- 		dev_info(dev, "mask: 0x%08llx, table offset: 0x%08lx\n",
+@@ -268,7 +272,6 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 	unsigned int table_shift = max_t(unsigned int, entries_shift + 3,
+ 			PAGE_SHIFT);
+ 	const unsigned long tce_table_size = 1UL << table_shift;
+-	unsigned int tmplevels = levels;
+ 
+ 	if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS))
+ 		return -EINVAL;
+@@ -276,9 +279,6 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 	if (!is_power_of_2(window_size))
+ 		return -EINVAL;
+ 
+-	if (alloc_userspace_copy && (window_size > (1ULL << 32)))
+-		tmplevels = 1;
+-
+ 	/* Adjust direct table size from window_size and levels */
+ 	entries_shift = (entries_shift + levels - 1) / levels;
+ 	level_shift = entries_shift + 3;
+@@ -289,7 +289,7 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 
+ 	/* Allocate TCE table */
+ 	addr = pnv_pci_ioda2_table_do_alloc_pages(nid, level_shift,
+-			tmplevels, tce_table_size, &offset, &total_allocated);
++			1, tce_table_size, &offset, &total_allocated);
+ 
+ 	/* addr==NULL means that the first level allocation failed */
+ 	if (!addr)
+@@ -300,18 +300,18 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 	 * we did not allocate as much as we wanted,
+ 	 * release partially allocated table.
+ 	 */
+-	if (tmplevels == levels && offset < tce_table_size)
++	if (levels == 1 && offset < tce_table_size)
+ 		goto free_tces_exit;
+ 
+ 	/* Allocate userspace view of the TCE table */
+ 	if (alloc_userspace_copy) {
+ 		offset = 0;
+ 		uas = pnv_pci_ioda2_table_do_alloc_pages(nid, level_shift,
+-				tmplevels, tce_table_size, &offset,
++				1, tce_table_size, &offset,
+ 				&total_allocated_uas);
+ 		if (!uas)
+ 			goto free_tces_exit;
+-		if (tmplevels == levels && (offset < tce_table_size ||
++		if (levels == 1 && (offset < tce_table_size ||
+ 				total_allocated_uas != total_allocated))
+ 			goto free_uas_exit;
+ 	}
+@@ -326,7 +326,7 @@ long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
+ 
+ 	pr_debug("Created TCE table: ws=%08llx ts=%lx @%08llx base=%lx uas=%p levels=%d/%d\n",
+ 			window_size, tce_table_size, bus_offset, tbl->it_base,
+-			tbl->it_userspace, tmplevels, levels);
++			tbl->it_userspace, 1, levels);
+ 
+ 	return 0;
+ 
 -- 
 2.17.1
 
