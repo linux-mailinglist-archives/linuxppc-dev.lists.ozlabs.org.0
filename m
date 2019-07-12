@@ -1,43 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB866769
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:04:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F3A6675F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:02:06 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lP4B4jshzDqqD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:02:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lP7J2hb1zDqc7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:04:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lP2225MSzDqnp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:00:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45lP2107h2z9s00;
- Fri, 12 Jul 2019 17:00:09 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v3 3/3] powerpc/module64: Use symbolic instructions names.
-In-Reply-To: <9bc00fb4-379a-e19b-4d27-32fff8f9781b@c-s.fr>
-References: <298f344bdb21ab566271f5d18c6782ed20f072b7.1556865423.git.christophe.leroy@c-s.fr>
- <6fb61d1c9104b0324d4a9c445f431c0928c7ea25.1556865423.git.christophe.leroy@c-s.fr>
- <87bly5ibsd.fsf@concordia.ellerman.id.au>
- <9bc00fb4-379a-e19b-4d27-32fff8f9781b@c-s.fr>
-Date: Fri, 12 Jul 2019 17:00:08 +1000
-Message-ID: <87wogneo07.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lP5C2cBlzDqp5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:02:54 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 21758AFF9;
+ Fri, 12 Jul 2019 07:02:50 +0000 (UTC)
+Date: Fri, 12 Jul 2019 09:02:47 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Hoan Tran OS <hoan@os.amperecomputing.com>
+Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+Message-ID: <20190712070247.GM29483@dhcp22.suse.cz>
+References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,54 +47,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulirch Weigand <Ulrich.Weigand@de.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Open Source Submission <patches@amperecomputing.com>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Le 08/07/2019 =C3=A0 02:56, Michael Ellerman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->>> To increase readability/maintainability, replace hard coded
->>> instructions values by symbolic names.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>> ---
->>> v3: fixed warning by adding () in an 'if' around X | Y (unlike said in =
-v2 history, this change was forgotten in v2)
->>> v2: rearranged comments
->>>
->>>   arch/powerpc/kernel/module_64.c | 53 +++++++++++++++++++++++++++-----=
----------
->>>   1 file changed, 35 insertions(+), 18 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/modu=
-le_64.c
->>> index c2e1b06253b8..b33a5d5e2d35 100644
->>> --- a/arch/powerpc/kernel/module_64.c
->>> +++ b/arch/powerpc/kernel/module_64.c
->>> @@ -704,18 +711,21 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
->> ...
->>>   			/*
->>>   			 * If found, replace it with:
->>>   			 *	addis r2, r12, (.TOC.-func)@ha
->>>   			 *	addi r2, r12, (.TOC.-func)@l
->>>   			 */
->>> -			((uint32_t *)location)[0] =3D 0x3c4c0000 + PPC_HA(value);
->>> -			((uint32_t *)location)[1] =3D 0x38420000 + PPC_LO(value);
->>> +			((uint32_t *)location)[0] =3D PPC_INST_ADDIS | __PPC_RT(R2) |
->>> +						    __PPC_RA(R12) | PPC_HA(value);
->>> +			((uint32_t *)location)[1] =3D PPC_INST_ADDI | __PPC_RT(R2) |
->>> +						    __PPC_RA(R12) | PPC_LO(value);
->>>   			break;
->>=20
->> This was crashing and it's amazing how long you can stare at a
->> disassembly and not see the difference between `r2` and `r12` :)
->
-> Argh, yes. I was misleaded by the comment I guess. Sorry for that and=20
-> thanks for fixing.
+On Thu 11-07-19 23:25:44, Hoan Tran OS wrote:
+> In NUMA layout which nodes have memory ranges that span across other nodes,
+> the mm driver can detect the memory node id incorrectly.
+> 
+> For example, with layout below
+> Node 0 address: 0000 xxxx 0000 xxxx
+> Node 1 address: xxxx 1111 xxxx 1111
+> 
+> Note:
+>  - Memory from low to high
+>  - 0/1: Node id
+>  - x: Invalid memory of a node
+> 
+> When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
+> config, mm only checks the memory validity but not the node id.
+> Because of that, Node 1 also detects the memory from node 0 as below
+> when it scans from the start address to the end address of node 1.
+> 
+> Node 0 address: 0000 xxxx xxxx xxxx
+> Node 1 address: xxxx 1111 1111 1111
+> 
+> This layout could occur on any architecture. This patch enables
+> CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA to fix this issue.
 
-No worries, yes the comment was the problem. I fixed that as well.
+Yes it can occur on any arch but most sane platforms simply do not
+overlap physical ranges. So I do not really see any reason to
+unconditionally enable the config for everybody. What is an advantage?
 
-cheers
+-- 
+Michal Hocko
+SUSE Labs
