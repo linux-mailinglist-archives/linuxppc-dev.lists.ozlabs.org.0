@@ -2,40 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB866769
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EED266778
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 09:08:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lP7J2hb1zDqc7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:04:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lPCJ6fDPzDqpd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:08:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=huntbag@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lP5C2cBlzDqp5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:02:54 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 21758AFF9;
- Fri, 12 Jul 2019 07:02:50 +0000 (UTC)
-Date: Fri, 12 Jul 2019 09:02:47 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Hoan Tran OS <hoan@os.amperecomputing.com>
-Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20190712070247.GM29483@dhcp22.suse.cz>
-References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lP8C0DLNzDqpK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 17:05:30 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6C74jtd126286
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 03:05:27 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tpngg8175-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 03:05:27 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <huntbag@linux.vnet.ibm.com>;
+ Fri, 12 Jul 2019 08:05:25 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 12 Jul 2019 08:05:22 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6C75Lax48693436
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 12 Jul 2019 07:05:21 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 255AA52052;
+ Fri, 12 Jul 2019 07:05:21 +0000 (GMT)
+Received: from boston16h.aus.stglabs.ibm.com (unknown [9.3.23.78])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A2FEC52054;
+ Fri, 12 Jul 2019 07:05:19 +0000 (GMT)
+From: Abhishek Goel <huntbag@linux.vnet.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pm@vger.kernel.org
+Subject: [PATCH v4 0/3]  Forced-wakeup for stop states on Powernv
+Date: Fri, 12 Jul 2019 02:04:54 -0500
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 19071207-4275-0000-0000-0000034C64FA
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071207-4276-0000-0000-0000385C6E06
+Message-Id: <20190712070457.55242-1-huntbag@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-12_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907120072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,58 +81,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Oscar Salvador <osalvador@suse.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: ego@linux.vnet.ibm.com, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+ npiggin@gmail.com, Abhishek Goel <huntbag@linux.vnet.ibm.com>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 11-07-19 23:25:44, Hoan Tran OS wrote:
-> In NUMA layout which nodes have memory ranges that span across other nodes,
-> the mm driver can detect the memory node id incorrectly.
-> 
-> For example, with layout below
-> Node 0 address: 0000 xxxx 0000 xxxx
-> Node 1 address: xxxx 1111 xxxx 1111
-> 
-> Note:
->  - Memory from low to high
->  - 0/1: Node id
->  - x: Invalid memory of a node
-> 
-> When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
-> config, mm only checks the memory validity but not the node id.
-> Because of that, Node 1 also detects the memory from node 0 as below
-> when it scans from the start address to the end address of node 1.
-> 
-> Node 0 address: 0000 xxxx xxxx xxxx
-> Node 1 address: xxxx 1111 1111 1111
-> 
-> This layout could occur on any architecture. This patch enables
-> CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA to fix this issue.
+Currently, the cpuidle governors determine what idle state a idling CPU
+should enter into based on heuristics that depend on the idle history on
+that CPU. Given that no predictive heuristic is perfect, there are cases
+where the governor predicts a shallow idle state, hoping that the CPU will
+be busy soon. However, if no new workload is scheduled on that CPU in the
+near future, the CPU will end up in the shallow state.
 
-Yes it can occur on any arch but most sane platforms simply do not
-overlap physical ranges. So I do not really see any reason to
-unconditionally enable the config for everybody. What is an advantage?
+Motivation
+----------
+In case of POWER, this is problematic, when the predicted state in the
+aforementioned scenario is a shallow stop state on a tickless system. As
+we might get stuck into shallow states even for hours, in absence of ticks
+or interrupts.
+
+To address this, We forcefully wakeup the cpu by setting the decrementer.
+The decrementer is set to a value that corresponds with the residency of
+the next available state. Thus firing up a timer that will forcefully
+wakeup the cpu. Few such iterations will essentially train the governor to
+select a deeper state for that cpu, as the timer here corresponds to the
+next available cpuidle state residency. Thus, cpu will eventually end up
+in the deepest possible state and we won't get stuck in a shallow state
+for long duration.
+
+Experiment
+----------
+For earlier versions when this feature was meat to be only for shallow lite
+states, I performed experiments for three scenarios to collect some data.
+
+case 1 :
+Without this patch and without tick retained, i.e. in a upstream kernel,
+It would spend more than even a second to get out of stop0_lite.
+
+case 2 : With tick retained in a upstream kernel -
+
+Generally, we have a sched tick at 4ms(CONF_HZ = 250). Ideally I expected
+it to take 8 sched tick to get out of stop0_lite. Experimentally,
+observation was
+
+=========================================================
+sample          min            max           99percentile
+20              4ms            12ms          4ms
+=========================================================
+
+It would take atleast one sched tick to get out of stop0_lite.
+
+case 2 :  With this patch (not stopping tick, but explicitly queuing a
+          timer)
+
+============================================================
+sample          min             max             99percentile
+============================================================
+20              144us           192us           144us
+============================================================
+
+
+Description of current implementation
+-------------------------------------
+
+We calculate timeout for the current idle state as the residency value
+of the next available idle state. If the decrementer is set to be
+greater than this timeout, we update the decrementer value with the
+residency of next available idle state. Thus, essentially training the
+governor to select the next available deeper state until we reach the
+deepest state. Hence, we won't get stuck unnecessarily in shallow states
+for longer duration.
+
+--------------------------------
+v1 of auto-promotion : https://lkml.org/lkml/2019/3/22/58 This patch was
+implemented only for shallow lite state in generic cpuidle driver.
+
+v2 : Removed timeout_needed and rebased to current
+upstream kernel
+
+Then,
+v1 of forced-wakeup : Moved the code to cpuidle powernv driver and started
+as forced wakeup instead of auto-promotion
+
+v2 : Extended the forced wakeup logic for all states.
+Setting the decrementer instead of queuing up a hrtimer to implement the
+logic.
+
+v3 : 1) Cleanly handle setting the decrementer after exiting out of stop
+       states.
+     2) Added a disable_callback feature to compute timeout whenever a
+        state is enbaled or disabled instead of computing everytime in fast
+        idle path.
+     3) Use disable callback to recompute timeout whenever state usage
+        is changed for a state. Also, cleaned up the get_snooze_timeout
+        function.
+
+v4 :	Changed the type and name of set/reset decrementer function.
+	Handled irq work pending in try_set_dec_before_idle.
+	No change in patch 2 and 3.
+
+Abhishek Goel (3):
+  cpuidle-powernv : forced wakeup for stop states
+  cpuidle : Add callback whenever a state usage is enabled/disabled
+  cpuidle-powernv : Recompute the idle-state timeouts when state usage
+    is enabled/disabled
+
+ arch/powerpc/include/asm/time.h   |  2 ++
+ arch/powerpc/kernel/time.c        | 43 ++++++++++++++++++++++++
+ drivers/cpuidle/cpuidle-powernv.c | 55 +++++++++++++++++++++++--------
+ drivers/cpuidle/sysfs.c           | 15 ++++++++-
+ include/linux/cpuidle.h           |  5 +++
+ 5 files changed, 106 insertions(+), 14 deletions(-)
 
 -- 
-Michal Hocko
-SUSE Labs
+2.17.1
+
