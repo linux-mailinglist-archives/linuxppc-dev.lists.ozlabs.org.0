@@ -1,42 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD3367215
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:13:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lbzN24KnzDqSJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:13:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE08F6723E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:22:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lc9x47bbzDqxD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:22:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+957344792e76119913ac+5801+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="P+1zkLQU"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lbx30SjMzDqKZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:11:33 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 7887F227A81; Fri, 12 Jul 2019 17:11:29 +0200 (CEST)
-Date: Fri, 12 Jul 2019 17:11:29 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH 3/3] fs/core/vmcore: Move sev_active() reference to x86
- arch code
-Message-ID: <20190712151129.GA30636@lst.de>
-References: <20190712053631.9814-1-bauerman@linux.ibm.com>
- <20190712053631.9814-4-bauerman@linux.ibm.com>
- <20190712150912.3097215e.pasic@linux.ibm.com> <20190712140812.GA29628@lst.de>
- <20190712165153.78d49095.pasic@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lc7j2q80zDqJM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:20:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=A98RIwMn+nGQFCpoIyLPqEezS1FPTC2pHqHY35SB5pU=; b=P+1zkLQUhrAFfaTtq9v6k1bZh
+ FcM9tnh1rGbCglLDgXKKTrkg/NGSWXwfqrzLVi8p0leJwq59ZLS7tyKPDC0LrxffKTFhVRxXACstH
+ Mc/4X+ZMnD9qiOmvyl/My5lpi/+VoHeu8sSGW72hRrNzIyowD8EulYlZ6JkAgg1O/nqQcl/dt+Q9n
+ rBb+dJlxcDl5ZIF+FdwSxbnKO+/ZNULx6m1xA3vNC0ECzpAzu5/TWzeWtbODz6PVYBVtSfD6BloOs
+ wMtZCd5yqeGX1vlSqD+DNNH/1XSSxG33Lp12jNhHHXDYAsmLmzKwoUCOQ0I01AHwZW0WjKmHaf4ZG
+ UE+uJR6GA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hlxLp-0002DO-1T; Fri, 12 Jul 2019 15:20:45 +0000
+Date: Fri, 12 Jul 2019 08:20:45 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v4 2/4] powerpc/iommu: Allow bypass-only for DMA
+Message-ID: <20190712152044.GA3061@infradead.org>
+References: <20190712094509.56695-1-aik@ozlabs.ru>
+ <20190712094509.56695-3-aik@ozlabs.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712165153.78d49095.pasic@linux.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20190712094509.56695-3-aik@ozlabs.ru>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,30 +65,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Alexey Dobriyan <adobriyan@gmail.com>, iommu@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-fsdevel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 12, 2019 at 04:51:53PM +0200, Halil Pasic wrote:
-> Thank you very much! I will have another look, but it seems to me,
-> without further measures taken, this would break protected virtualization
-> support on s390. The effect of the che for s390 is that
-> force_dma_unencrypted() will always return false instead calling into
-> the platform code like it did before the patch, right?
-> 
-> Should I send a  Fixes: e67a5ed1f86f "dma-direct: Force unencrypted DMA
-> under SME for certain DMA masks" (Tom Lendacky, 2019-07-10) patch that
-> rectifies things for s390 or how do we want handle this?
+> This skips the 32bit DMA setup check if the bypass is can be selected.
 
-Yes, please do.  I hadn't noticed the s390 support had landed in
-mainline already.
+That sentence does not parse.  I think you need to dop the "can be"
+based on the actual patch.
