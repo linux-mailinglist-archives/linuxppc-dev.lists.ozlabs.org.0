@@ -2,52 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD978664A0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 04:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBB8664A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 04:50:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lHRF2ntHzDqlF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 12:48:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lHTn05nwzDqkw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 12:50:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
+ (client-ip=202.103.147.169; helo=mxct.zte.com.cn;
+ envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=zte.com.cn
+Received: from mxct.zte.com.cn (mx7.zte.com.cn [202.103.147.169])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lHPB4gjzzDqkp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 12:46:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=CE9lRDNR3rg1yz6aah5KMfonhpsYj2jNZxnH84MyUXA=; b=Wwvuit121V9ZexPPxKanwzYwi
- ddflUWN9v4CPX9+H9bPbsvo6jxG2wAC3BBUGG9cauFnrXCTSOlPmcxTfJ4cy1SoI/qV0rZFfQ8wXK
- twKXl0uRqWh6MZCEQ4HqlEM/PWywXXcbt23O50K/7l8UCi6eUz+0WWlTABE3X/EmQ8vMCNgrdJOUI
- XmrxItz1Xzoi+k4KF8fMeEEpmheizoVHxyVD+cHZm12cjh4pB42mf75Kc1mH4q1gaP9QIS4uoV1m1
- wCsORVvxaufFYS8GiSdvH5t76Q0DsCgP2JngRttI2f6/InFGOA/gWbNVKK/mNSfIwMK1nlVEdHuym
- hVorcePaw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
- Hat Linux)) id 1hllYv-0001rK-Qf; Fri, 12 Jul 2019 02:45:29 +0000
-Date: Thu, 11 Jul 2019 19:45:29 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Hoan Tran OS <hoan@os.amperecomputing.com>
-Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20190712024529.GU32320@bombadil.infradead.org>
-References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lHPt3z0zzDqmR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 12:46:55 +1000 (AEST)
+Received: from mse-fl1.zte.com.cn (unknown [10.30.14.238])
+ by Forcepoint Email with ESMTPS id 02851B7E4E108A4CE88C;
+ Fri, 12 Jul 2019 10:46:50 +0800 (CST)
+Received: from notes_smtp.zte.com.cn ([10.30.1.239])
+ by mse-fl1.zte.com.cn with ESMTP id x6C2kBEq014401;
+ Fri, 12 Jul 2019 10:46:11 +0800 (GMT-8)
+ (envelope-from wen.yang99@zte.com.cn)
+Received: from fox-host8.localdomain ([10.74.120.8])
+ by szsmtp06.zte.com.cn (Lotus Domino Release 8.5.3FP6)
+ with ESMTP id 2019071210464634-2302204 ;
+ Fri, 12 Jul 2019 10:46:46 +0800 
+From: Wen Yang <wen.yang99@zte.com.cn>
+To: rjw@rjwysocki.net
+Subject: [PATCH v6] cpufreq/pasemi: fix an use-after-free in
+ pas_cpufreq_cpu_init()
+Date: Fri, 12 Jul 2019 10:44:21 +0800
+Message-Id: <1562899461-24045-1-git-send-email-wen.yang99@zte.com.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-MIMETrack: Itemize by SMTP Server on SZSMTP06/server/zte_ltd(Release
+ 8.5.3FP6|November 21, 2013) at 2019-07-12 10:46:46,
+ Serialize by Router on notes_smtp/zte_ltd(Release 9.0.1FP7|August  17, 2016) at
+ 2019-07-12 10:46:17, Serialize complete at 2019-07-12 10:46:17
+X-MAIL: mse-fl1.zte.com.cn x6C2kBEq014401
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,53 +54,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Oscar Salvador <osalvador@suse.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org, viresh.kumar@linaro.org,
+ linux-kernel@vger.kernel.org, xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn,
+ linuxppc-dev@lists.ozlabs.org, Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 11, 2019 at 11:25:44PM +0000, Hoan Tran OS wrote:
-> In NUMA layout which nodes have memory ranges that span across other nodes,
-> the mm driver can detect the memory node id incorrectly.
-> 
-> For example, with layout below
-> Node 0 address: 0000 xxxx 0000 xxxx
-> Node 1 address: xxxx 1111 xxxx 1111
-> 
-> Note:
->  - Memory from low to high
->  - 0/1: Node id
->  - x: Invalid memory of a node
-> 
-> When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
-> config, mm only checks the memory validity but not the node id.
-> Because of that, Node 1 also detects the memory from node 0 as below
-> when it scans from the start address to the end address of node 1.
-> 
-> Node 0 address: 0000 xxxx xxxx xxxx
-> Node 1 address: xxxx 1111 1111 1111
-> 
-> This layout could occur on any architecture. This patch enables
-> CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA to fix this issue.
+The cpu variable is still being used in the of_get_property() call
+after the of_node_put() call, which may result in use-after-free.
 
-How do you know it could occur on any architecture?  Surely you should
-just enable this for the architecture where you've noticed the problem.
+Fixes: a9acc26b75f6 ("cpufreq/pasemi: fix possible object reference leak")
+Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+v6: keep the blank line and fix warning: label 'out_unmap_sdcpwr' defined but not used.
+v5: put together the code to get, use, and release cpu device_node.
+v4: restore the blank line.
+v3: fix a leaked reference.
+v2: clean up the code according to the advice of viresh.
+
+ drivers/cpufreq/pasemi-cpufreq.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
+index 6b1e4ab..7d557f9 100644
+--- a/drivers/cpufreq/pasemi-cpufreq.c
++++ b/drivers/cpufreq/pasemi-cpufreq.c
+@@ -131,10 +131,18 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	int err = -ENODEV;
+ 
+ 	cpu = of_get_cpu_node(policy->cpu, NULL);
++	if (!cpu)
++		goto out;
+ 
++	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+ 	of_node_put(cpu);
+-	if (!cpu)
++	if (!max_freqp) {
++		err = -EINVAL;
+ 		goto out;
++	}
++
++	/* we need the freq in kHz */
++	max_freq = *max_freqp / 1000;
+ 
+ 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
+ 	if (!dn)
+@@ -171,16 +179,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	}
+ 
+ 	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
+-
+-	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+-	if (!max_freqp) {
+-		err = -EINVAL;
+-		goto out_unmap_sdcpwr;
+-	}
+-
+-	/* we need the freq in kHz */
+-	max_freq = *max_freqp / 1000;
+-
+ 	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
+ 	pr_debug("initializing frequency table\n");
+ 
+@@ -196,7 +194,11 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	policy->cur = pas_freqs[cur_astate].frequency;
+ 	ppc_proc_freq = policy->cur * 1000ul;
+ 
+-	return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
++	err = cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
++	if (err)
++		goto out_unmap_sdcpwr;
++
++	return 0;
+ 
+ out_unmap_sdcpwr:
+ 	iounmap(sdcpwr_mapbase);
+-- 
+2.9.5
+
