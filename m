@@ -2,42 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410CA66705
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 08:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3FE66736
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 08:49:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lNP25zYvzDqYn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 16:31:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lNnG4kL1zDqQH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 16:49:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lNL63pP3zDqP5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 16:29:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 45lNL62xp2z9s8m; Fri, 12 Jul 2019 16:29:02 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45lNL629bjz9s4Y;
- Fri, 12 Jul 2019 16:29:02 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v4 1/8] KVM: PPC: Ultravisor: Introduce the MSR_S bit
-In-Reply-To: <1562892336.boqkwvamhq.astroid@bobo.none>
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-2-cclaudio@linux.ibm.com>
- <1562892336.boqkwvamhq.astroid@bobo.none>
-Date: Fri, 12 Jul 2019 16:29:01 +1000
-Message-ID: <87zhljepg2.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lNWF0KsmzDqf4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 16:36:54 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hlpAI-0006Xe-68; Fri, 12 Jul 2019 06:36:18 +0000
+Date: Fri, 12 Jul 2019 07:36:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v9 01/10] namei: obey trailing magic-link DAC permissions
+Message-ID: <20190712063617.GJ17978@ZenIV.linux.org.uk>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-2-cyphar@cyphar.com>
+ <20190712041454.GG17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190712041454.GG17978@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,55 +47,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Fri, Jul 12, 2019 at 05:14:54AM +0100, Al Viro wrote:
 
-> Claudio Carvalho's on June 29, 2019 6:08 am:
->> From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
->> 
->> The ultravisor processor mode is introduced in POWER platforms that
->> supports the Protected Execution Facility (PEF). Ultravisor is higher
->> privileged than hypervisor mode.
->> 
->> In PEF enabled platforms, the MSR_S bit is used to indicate if the
->> thread is in secure state. With the MSR_S bit, the privilege state of
->> the thread is now determined by MSR_S, MSR_HV and MSR_PR, as follows:
->> 
->> S   HV  PR
->> -----------------------
->> 0   x   1   problem
->> 1   0   1   problem
->> x   x   0   privileged
->> x   1   0   hypervisor
->> 1   1   0   ultravisor
->> 1   1   1   reserved
->
-> What does this table mean? I thought 'x' meant either, but in that
-> case there are several states that can apply to the same
-> combination of bits.
->
-> Would it be clearer to rearrange the table so the columns are the HV
-> and PR bits we know and love, plus the effect of S=1 on each of them?
->
->       HV  PR  S=0         S=1
->       ---------------------------------------------
->       0   0   privileged  privileged (secure guest kernel)
->       0   1   problem     problem (secure guest userspace)
->       1   0   hypervisor  ultravisor
->       1   1   problem     reserved
->
-> Is that accurate?
+> That's not quite guaranteed (it is possible to bind a symlink on top
+> of a regular file, and you will get LOOKUP_JUMPED on the entry into
+> trailing_symlink() when looking the result up).  Moreover, why bother
+> with LOOKUP_JUMPED here?  See that
+> 	nd->last_type = LAST_BIND;
+> several lines prior?  That's precisely to be able to recognize those
+> suckers.
 
-I like that format.
+... except that this won't work these days (once upon a time it used
+to, but that had been a long time ago).  However, that doesn't change
+the fact that the test is really wrong.  So let's do it right:
 
-cheers
+* set a new flag along with LOOKUP_JUMPED in nd_jump_link()
+* clear it in get_link() right before
+	res = READ_ONCE(inode->i_link);
+* check it in trailing_symlink() (or callers thereof)
+
+The rest of comments stand, AFAICS.
