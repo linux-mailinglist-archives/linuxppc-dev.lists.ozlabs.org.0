@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEE4672FC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 18:06:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ld8Y2S4jzDr0v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 02:06:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE3D67316
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 18:12:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ldH6562lzDqtS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 02:12:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,20 +19,20 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45ld6T3zk7zDqRX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:04:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ldDX6KHmzDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:10:04 +1000 (AEST)
 Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tglx@linutronix.de>)
- id 1hly2F-0004Jo-Pr; Fri, 12 Jul 2019 18:04:35 +0200
-Date: Fri, 12 Jul 2019 18:04:35 +0200 (CEST)
+ id 1hly7R-0004TK-VG; Fri, 12 Jul 2019 18:09:58 +0200
+Date: Fri, 12 Jul 2019 18:09:57 +0200 (CEST)
 From: Thomas Gleixner <tglx@linutronix.de>
 To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [PATCH 1/3] x86/Kconfig: Move ARCH_HAS_MEM_ENCRYPT to arch/Kconfig
-In-Reply-To: <20190712053631.9814-2-bauerman@linux.ibm.com>
-Message-ID: <alpine.DEB.2.21.1907121804230.1788@nanos.tec.linutronix.de>
+Subject: Re: [PATCH 2/3] DMA mapping: Move SME handling to x86-specific files
+In-Reply-To: <20190712053631.9814-3-bauerman@linux.ibm.com>
+Message-ID: <alpine.DEB.2.21.1907121806160.1788@nanos.tec.linutronix.de>
 References: <20190712053631.9814-1-bauerman@linux.ibm.com>
- <20190712053631.9814-2-bauerman@linux.ibm.com>
+ <20190712053631.9814-3-bauerman@linux.ibm.com>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,10 +61,24 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri, 12 Jul 2019, Thiago Jung Bauermann wrote:
+> diff --git a/include/linux/mem_encrypt.h b/include/linux/mem_encrypt.h
+> index b310a9c18113..f2e399fb626b 100644
+> --- a/include/linux/mem_encrypt.h
+> +++ b/include/linux/mem_encrypt.h
+> @@ -21,23 +21,11 @@
+>  
+>  #else	/* !CONFIG_ARCH_HAS_MEM_ENCRYPT */
+>  
+> -#define sme_me_mask	0ULL
+> -
+> -static inline bool sme_active(void) { return false; }
+>  static inline bool sev_active(void) { return false; }
 
-> powerpc and s390 are going to use this feature as well, so put it in a
-> generic location.
-> 
-> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+You want to move out sev_active as well, the only relevant thing is
+mem_encrypt_active(). Everything SME/SEV is an architecture detail.
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+> +static inline bool mem_encrypt_active(void) { return false; }
+
+Thanks,
+
+	tglx
