@@ -1,74 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F45672A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:44:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E716729E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:42:08 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lccF5JJpzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lcfT3R1zzDqDM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:44:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.212; helo=mx1.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.b="QmSMDI80"; 
- dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx1.mailbox.org (mx1.mailbox.org [80.241.60.212])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lcLy170WzDqnB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:30:34 +1000 (AEST)
-Received: by mail-qt1-x841.google.com with SMTP id w17so8465098qto.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2019 08:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Wu702WptAOAhsxDRfP3OXS4FEoD+D5sZm3CKh3FTjwY=;
- b=QmSMDI806K6oU8ImCzb9JsLwsO8VSznuzhbhIDV1OvlMdLb3JkZBbJ/92Ivdqv3Sew
- Z7Qe0Qq26NaeD2qR8Fom58E7VVaxDBDNK6Ue8HqwD5jRuFPeODklvM9ELlDLdLZIZCXG
- OE9SJg4v5yylzl+TWHxfSy3bhDW9prX77jVrXENwP3cPaOOkhGNGJVt2DRwhHngMMrDk
- jMr9uk4HYyhrLQzuZWlghtw4gINRA4kGP/nhSFxCJ92nq0mYCMnBHi6bpdi8T9aJqWrO
- 5PBWovYV0fHThDmg/54NNq+oeEivOXzli/38ZrhBS+qOUucmtpVA4PzYIaRHvXQ9IMg7
- c8uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Wu702WptAOAhsxDRfP3OXS4FEoD+D5sZm3CKh3FTjwY=;
- b=UNC0hMA4Xdg+UAXxNkq1dzJwDoqIHVY7SoRGCD2R4/3/IOuMGPOw5tMtZwRwiX/4tF
- QlhIGfuVmSqzaKbN70k21Rid2R2MX+7ZUjVqLkmsye40C7AcmzT7ysoCaLUOsJQnS+ck
- nLYSW9zWTGuP0xgYQfV5FruYTUXz9KOVPXg5//Rk6k6zpYndTLOHabMOCEMHHXJd6y/a
- qGwrAOHCAar7f9YUqsAtazUnC6ZDkHnrPuO1Sv0qpMAQv+o36BRo2/qb1xDDmdAiGqCl
- SmPBVBUiw3xv8n5Odx1X04akPSs+uKZ2k9f7Hoosu9UI64USyR8dP63ziTzYUU17XEbl
- +CKg==
-X-Gm-Message-State: APjAAAUvB3NCeD+DPVC7z7rofqu8p8EK9RfD9SDxgymYo186O6ZAD6vN
- i5v0RFjkz5K1RvQ++C0VG9HNTg==
-X-Google-Smtp-Source: APXvYqxlBvzD3wvRDrKYL7X7wGaNLInLmH+c+gXqWIYDX/FawG5w8l/m+Xmsh8f0lfeZ4uCTw2dEaQ==
-X-Received: by 2002:ac8:32c8:: with SMTP id a8mr6715382qtb.47.1562945428748;
- Fri, 12 Jul 2019 08:30:28 -0700 (PDT)
-Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
- [66.187.233.206])
- by smtp.gmail.com with ESMTPSA id w62sm3649817qkd.30.2019.07.12.08.30.27
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 12 Jul 2019 08:30:28 -0700 (PDT)
-Message-ID: <1562945427.8510.28.camel@lca.pw>
-Subject: Re: [PATCH v3] powerpc/setup_64: fix -Wempty-body warnings
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Date: Fri, 12 Jul 2019 11:30:27 -0400
-In-Reply-To: <1561730629-5025-1-git-send-email-cai@lca.pw>
-References: <1561730629-5025-1-git-send-email-cai@lca.pw>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lcQV259TzDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:33:34 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:2:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx1.mailbox.org (Postfix) with ESMTPS id A1467511F2;
+ Fri, 12 Jul 2019 17:33:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter03.heinlein-hosting.de (spamfilter03.heinlein-hosting.de
+ [80.241.56.117]) (amavisd-new, port 10030)
+ with ESMTP id QDRC6RVdbb1k; Fri, 12 Jul 2019 17:33:19 +0200 (CEST)
+Date: Sat, 13 Jul 2019 01:32:27 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v9 00/10] namei: openat2(2) path resolution restrictions
+Message-ID: <20190712153227.owkjmx47lzrggweo@yavin>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190712151118.GP17978@ZenIV.linux.org.uk>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="whm56wbfs3ehouyz"
+Content-Disposition: inline
+In-Reply-To: <20190712151118.GP17978@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,63 +54,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, paulus@samba.org, tyreld@linux.vnet.ibm.com,
- joe@perches.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, containers@lists.linux-foundation.org,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Chanho Min <chanho.min@lge.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ping.
 
-On Fri, 2019-06-28 at 10:03 -0400, Qian Cai wrote:
-> At the beginning of setup_64.c, it has,
-> 
->   #ifdef DEBUG
->   #define DBG(fmt...) udbg_printf(fmt)
->   #else
->   #define DBG(fmt...)
->   #endif
-> 
-> where DBG() could be compiled away, and generate warnings,
-> 
-> arch/powerpc/kernel/setup_64.c: In function 'initialize_cache_info':
-> arch/powerpc/kernel/setup_64.c:579:49: warning: suggest braces around
-> empty body in an 'if' statement [-Wempty-body]
->     DBG("Argh, can't find dcache properties !\n");
->                                                  ^
-> arch/powerpc/kernel/setup_64.c:582:49: warning: suggest braces around
-> empty body in an 'if' statement [-Wempty-body]
->     DBG("Argh, can't find icache properties !\n");
-> 
-> Fix it by using the no_printk() macro, and make sure that format and
-> argument are always verified by the compiler.
-> 
-> Suggested-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-> Suggested-by: Joe Perches <joe@perches.com>
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> 
-> v3: Use no_printk() macro, and make sure that format and argument are always
->     verified by the compiler using a more generic form ##__VA_ARGS__ per Joe.
-> 
-> v2: Fix it by using a NOP while loop per Tyrel.
-> 
->  arch/powerpc/kernel/setup_64.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index 44b4c432a273..cea933a43f0a 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -69,9 +69,9 @@
->  #include "setup.h"
->  
->  #ifdef DEBUG
-> -#define DBG(fmt...) udbg_printf(fmt)
-> +#define DBG(fmt, ...) udbg_printf(fmt, ##__VA_ARGS__)
->  #else
-> -#define DBG(fmt...)
-> +#define DBG(fmt, ...) no_printk(fmt, ##__VA_ARGS__)
->  #endif
->  
->  int spinning_secondaries;
+--whm56wbfs3ehouyz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 2019-07-12, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Sun, Jul 07, 2019 at 12:57:27AM +1000, Aleksa Sarai wrote:
+> > Patch changelog:
+> >   v9:
+> >     * Replace resolveat(2) with openat2(2). [Linus]
+> >     * Output a warning to dmesg if may_open_magiclink() is violated.
+> >     * Add an openat2(O_CREAT) testcase.
+>=20
+> One general note for the future, BTW: for such series it's generally
+> a good idea to put it into a public git tree somewhere and mention that
+> in the announcement...
+
+Sure, I'll mention it next time. For the record the tree is
+  <https://github.com/cyphar/linux/tree/resolveat/master>
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--whm56wbfs3ehouyz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSioAwAKCRCdlLljIbnQ
+EgzkAQChn28FqDC8mwoRBSpKSsYawQ4zVuMzbt7zKNknJNg7nQD/cmJDlKpmnt40
+Jbd8FP1RPFVHA8Y7yVeIE+cOpg3nbw4=
+=RciL
+-----END PGP SIGNATURE-----
+
+--whm56wbfs3ehouyz--
