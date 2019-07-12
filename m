@@ -2,44 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53654671EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4F1671F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2019 17:06:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lbly08ddzDqX9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:03:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lbqC0sStzDqdl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 01:06:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lbgz6W3BzDqvZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:00:14 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id C4457ABE9;
- Fri, 12 Jul 2019 15:00:09 +0000 (UTC)
-Date: Fri, 12 Jul 2019 17:00:07 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20190712150007.GU29483@dhcp22.suse.cz>
-References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
- <20190712070247.GM29483@dhcp22.suse.cz>
- <586ae736-a429-cf94-1520-1a94ffadad88@os.amperecomputing.com>
- <20190712121223.GR29483@dhcp22.suse.cz>
- <20190712143730.au3662g4ua2tjudu@willie-the-truck>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lbhx6ndPzDqvp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:01:04 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hlx2B-000201-9w; Fri, 12 Jul 2019 15:00:27 +0000
+Date: Fri, 12 Jul 2019 16:00:27 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190712150026.GO17978@ZenIV.linux.org.uk>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190712143730.au3662g4ua2tjudu@willie-the-truck>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190712132553.GN17978@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,66 +51,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, willy@infradead.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran OS <hoan@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 12-07-19 15:37:30, Will Deacon wrote:
-> Hi all,
-> 
-> On Fri, Jul 12, 2019 at 02:12:23PM +0200, Michal Hocko wrote:
-> > On Fri 12-07-19 10:56:47, Hoan Tran OS wrote:
-> > [...]
-> > > It would be good if we can enable it by-default. Otherwise, let arch 
-> > > enables it by them-self. Do you have any suggestions?
-> > 
-> > I can hardly make any suggestions when it is not really clear _why_ you
-> > want to remove this config option in the first place. Please explain
-> > what motivated you to make this change.
-> 
-> Sorry, I think this confusion might actually be my fault and Hoan has just
-> been implementing my vague suggestion here:
-> 
-> https://lore.kernel.org/linux-arm-kernel/20190625101245.s4vxfosoop52gl4e@willie-the-truck/
-> 
-> If the preference of the mm folks is to leave CONFIG_NODES_SPAN_OTHER_NODES
-> as it is, then we can define it for arm64. I just find it a bit weird that
-> the majority of NUMA-capable architectures have to add a symbol in the arch
-> Kconfig file, for what appears to be a performance optimisation applicable
-> only to ia64, mips and sh.
-> 
-> At the very least we could make the thing selectable.
+On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
 
-Hmm, I thought this was selectable. But I am obviously wrong here.
-Looking more closely, it seems that this is indeed only about
-__early_pfn_to_nid and as such not something that should add a config
-symbol. This should have been called out in the changelog though.
+> 	if (flags & LOOKUP_BENEATH) {
+> 		nd->root = nd->path;
+> 		if (!(flags & LOOKUP_RCU))
+> 			path_get(&nd->root);
+> 		else
+> 			nd->root_seq = nd->seq;
 
-Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-bucket? Do we have any NUMA architecture that doesn't enable it?
+BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+you are pretty much guaranteed that lazy pathwalk will fail,
+when it comes to complete_walk().
 
-Thanks!
--- 
-Michal Hocko
-SUSE Labs
+Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+combination would someday get passed?
