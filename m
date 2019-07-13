@@ -2,104 +2,158 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D3767960
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 10:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED34A67963
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 10:55:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45m3SP5kBbzDqvp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 18:51:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45m3X51CQyzDqXG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 18:55:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="zmrmNl3Z"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lgjx3Qg8zDr0L
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 04:02:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45lgjw3cV2z8vhn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 04:02:12 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45lgjw2PY9z9sDQ; Sat, 13 Jul 2019 04:02:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45lgjt6TFjz9sBt
- for <linuxppc-dev@ozlabs.org>; Sat, 13 Jul 2019 04:02:10 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6CI27Gi083686
- for <linuxppc-dev@ozlabs.org>; Fri, 12 Jul 2019 14:02:09 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tpw8y4ebs-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 12 Jul 2019 14:02:07 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <cclaudio@linux.ibm.com>;
- Fri, 12 Jul 2019 19:02:02 +0100
-Received: from b01cxnp22034.gho.pok.ibm.com (9.57.198.24)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 12 Jul 2019 19:02:00 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6CI1xEo43975034
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 12 Jul 2019 18:01:59 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F13E112064;
- Fri, 12 Jul 2019 18:01:59 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD2A0112061;
- Fri, 12 Jul 2019 18:01:57 +0000 (GMT)
-Received: from [9.18.235.77] (unknown [9.18.235.77])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 12 Jul 2019 18:01:57 +0000 (GMT)
-Subject: Re: [PATCH v4 2/8] powerpc: Introduce FW_FEATURE_ULTRAVISOR
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-3-cclaudio@linux.ibm.com>
- <87k1cog250.fsf@concordia.ellerman.id.au>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Date: Fri, 12 Jul 2019 15:01:56 -0300
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45m3V54dKMzDq9T
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 18:53:16 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id k8so5935420plt.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 01:53:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=kBBxk4/7wzB2gG6DQP8QC+JX4JkuLjYT7RghC5HtA70=;
+ b=zmrmNl3ZvIeBfAU0mHeKyGHFCQJMUWSzSkowIKOtyqg18H+Wn4NJBOAfmRJ5dzGpP7
+ BHRVjTxg2ewty03FYzkzRf3Ls9idb5ZRTvKI8vge8/eifVFpS/mXqueXMTr5ZoQc/KR2
+ XT4RpnSCql0+X2NGQF40ZuzB5zzrLlMuymRVRasHd86ja1dDE0zCYYNmPsxbVOf/R3DG
+ 5rr/haDEk7h8LlCoPetawsn+IVHOT5Z9yVWJytEMtVZPQSNzcj964oZBhv+nnr4kVBMM
+ 3tZ58MzvJR8TpBnLYR8CQKOt/XlBlBFo7Wpi+HjnBSrIExqWel1a1nhLMY/HNb+pXyfE
+ Jpxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=kBBxk4/7wzB2gG6DQP8QC+JX4JkuLjYT7RghC5HtA70=;
+ b=EymqVc5uCXTz8n9CjNISorgx53pdbcvD/izJHipjPCpoYBv7Bss9yPJP+1RLAmHCf6
+ 8s3H87/2NmgqOynChiDUKSz8vscwLsgnNeNESHiAsJsCIkehNKbp2QC05P4Ucz1DsJDT
+ NKu6SrV9LmU8MUrPNuj8jfSag2/67wlfekReBPSXUILC6lYSYvyXHxpU1M7Yn4QPy4i3
+ h2cSnVq6guwNOgUQoLS47FWD1q/HDkWE/aEqUNojYo23679kqXUWHjpb9diKKebI6kOF
+ qd51LYUnZxUwnfYQ3gWH9rd39qMphvjHwKgS9aGYeYVxOn0AzhF7TY8OCgsWZQTs/9af
+ 79Wg==
+X-Gm-Message-State: APjAAAWv0bNopMqc6JtwQKWXutShf+my4m/bbLzIXY3HH6R4pL9KZmPm
+ quh3uAGCbyDfPB4Q4AzQigk=
+X-Google-Smtp-Source: APXvYqwCYfraY7E6VS6q2YjumDdeg+hYfaTzz3jXg2RH5iJmXwuft7bYqQ5DjR89UQ8bJKB/1NrPug==
+X-Received: by 2002:a17:902:8d97:: with SMTP id
+ v23mr16161763plo.157.1563007991872; 
+ Sat, 13 Jul 2019 01:53:11 -0700 (PDT)
+Received: from [192.168.10.152] (ppp121-45-220-93.bras1.cbr2.internode.on.net.
+ [121.45.220.93])
+ by smtp.gmail.com with ESMTPSA id b136sm327999pfb.73.2019.07.13.01.53.06
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 13 Jul 2019 01:53:09 -0700 (PDT)
+Subject: Re: [RFC PATCH kernel] powerpc/xive: Drop deregistered irqs
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190712082036.40440-1-aik@ozlabs.ru>
+ <abbee9db2fa0abdaa2e01bb92bab920773a2ad8d.camel@kernel.crashing.org>
+ <3a34190f-560e-0b42-af38-0e39cef0beea@ozlabs.ru>
+ <d735f761b3d1cc1cd6df5fd566c75cae661fe4e7.camel@kernel.crashing.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Openpgp: preference=signencrypt
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <9b1fbde4-0884-223e-446c-373f73c366e0@ozlabs.ru>
+Date: Sat, 13 Jul 2019 18:53:03 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <87k1cog250.fsf@concordia.ellerman.id.au>
-Content-Type: multipart/alternative;
- boundary="------------553B7B98B64F8622D881B133"
+In-Reply-To: <d735f761b3d1cc1cd6df5fd566c75cae661fe4e7.camel@kernel.crashing.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19071218-0060-0000-0000-0000035DD20F
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011416; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01231202; UDB=6.00648563; IPR=6.01012486; 
- MB=3.00027694; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-12 18:02:01
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071218-0061-0000-0000-00004A1D7136
-Message-Id: <4da093e5-14ea-963b-9e8d-a6ba2aa4678f@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-12_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907120183
-X-Mailman-Approved-At: Sat, 13 Jul 2019 18:44:20 +1000
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,219 +165,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Alistair Popple <alistair@popple.id.au>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------553B7B98B64F8622D881B133
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
 
 
-On 7/11/19 9:57 AM, Michael Ellerman wrote:
-> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
->> diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
->> new file mode 100644
->> index 000000000000..e5009b0d84ea
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/ultravisor.h
->> @@ -0,0 +1,15 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * Ultravisor definitions
->> + *
->> + * Copyright 2019, IBM Corporation.
->> + *
->> + */
->> +#ifndef _ASM_POWERPC_ULTRAVISOR_H
->> +#define _ASM_POWERPC_ULTRAVISOR_H
->> +
->> +/* Internal functions */
->> +extern int early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
->> +					 int depth, void *data);
-> Please don't use extern in new headers.
->
->> diff --git a/arch/powerpc/kernel/ultravisor.c b/arch/powerpc/kernel/ultravisor.c
->> new file mode 100644
->> index 000000000000..dc6021f63c97
->> --- /dev/null
->> +++ b/arch/powerpc/kernel/ultravisor.c
-> Is there a reason this (and other later files) aren't in platforms/powernv ?
+On 13/07/2019 09:47, Benjamin Herrenschmidt wrote:
+> On Fri, 2019-07-12 at 19:37 +1000, Alexey Kardashevskiy wrote:
+>>
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/kernel/irq.c#n614
+>>
+>> If so, then in order to do EOI, I'll need the desc which is gone, or
+>> I am missing the point?
+> 
+> All you need is drop the local CPU priority.
 
-Yes, there is.
-https://www.spinics.net/lists/kvm-ppc/msg14998.html
-
-We also need to do ucalls from a secure guest and its kernel may not have CONFIG_PPC_POWERNV=y. I can make it clear in the commit message.
+I know that, the question was how. I cannot use irq_chip in
+arch/powerpc/kernel/irq.c and I do not want to add ppc_md.enable_irqs().
 
 
->
->> @@ -0,0 +1,24 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Ultravisor high level interfaces
->> + *
->> + * Copyright 2019, IBM Corporation.
->> + *
->> + */
->> +#include <linux/init.h>
->> +#include <linux/printk.h>
->> +#include <linux/string.h>
->> +
->> +#include <asm/ultravisor.h>
->> +#include <asm/firmware.h>
->> +
->> +int __init early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
->> +					 int depth, void *data)
->> +{
->> +	if (depth != 1 || strcmp(uname, "ibm,ultravisor") != 0)
->> +		return 0;
-> I know you're following the example of OPAL, but this is not the best
-> way to search for the ultravisor node.
->
-> It makes the location and name of the node part of the ABI, when there's
-> no need for it to be.
->
-> If instead you just scan the tree for a node that is *compatible* with
-> "ibm,ultravisor" (or whatever compatible string) then the node can be
-> placed any where in the tree and have any name, which gives us the most
-> flexibility in future to change the location of the device tree node.
 
-I will do that in the next version.
-
-Thanks,
-Claudio
-
-
->
-> cheers
->
-
---------------553B7B98B64F8622D881B133
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 7/11/19 9:57 AM, Michael Ellerman
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:87k1cog250.fsf@concordia.ellerman.id.au">
-      <pre class="moz-quote-pre" wrap="">Claudio Carvalho <a class="moz-txt-link-rfc2396E" href="mailto:cclaudio@linux.ibm.com">&lt;cclaudio@linux.ibm.com&gt;</a> writes:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-new file mode 100644
-index 000000000000..e5009b0d84ea
---- /dev/null
-+++ b/arch/powerpc/include/asm/ultravisor.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Ultravisor definitions
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ *
-+ */
-+#ifndef _ASM_POWERPC_ULTRAVISOR_H
-+#define _ASM_POWERPC_ULTRAVISOR_H
-+
-+/* Internal functions */
-+extern int early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
-+					 int depth, void *data);
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Please don't use extern in new headers.
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">diff --git a/arch/powerpc/kernel/ultravisor.c b/arch/powerpc/kernel/ultravisor.c
-new file mode 100644
-index 000000000000..dc6021f63c97
---- /dev/null
-+++ b/arch/powerpc/kernel/ultravisor.c
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Is there a reason this (and other later files) aren't in platforms/powernv ?</pre>
-    </blockquote>
-    <pre style="white-space: pre-wrap; color: rgb(0, 0, 0); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;">Yes, there is.
-<a href="https://www.spinics.net/lists/kvm-ppc/msg14998.html">https://www.spinics.net/lists/kvm-ppc/msg14998.html</a>
-
-We also need to do ucalls from a secure guest and its kernel may not have CONFIG_PPC_POWERNV=y. I can make it clear in the commit message.
-
-
-</pre>
-    <blockquote type="cite"
-      cite="mid:87k1cog250.fsf@concordia.ellerman.id.au">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Ultravisor high level interfaces
-+ *
-+ * Copyright 2019, IBM Corporation.
-+ *
-+ */
-+#include &lt;linux/init.h&gt;
-+#include &lt;linux/printk.h&gt;
-+#include &lt;linux/string.h&gt;
-+
-+#include &lt;asm/ultravisor.h&gt;
-+#include &lt;asm/firmware.h&gt;
-+
-+int __init early_init_dt_scan_ultravisor(unsigned long node, const char *uname,
-+					 int depth, void *data)
-+{
-+	if (depth != 1 || strcmp(uname, "ibm,ultravisor") != 0)
-+		return 0;
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-I know you're following the example of OPAL, but this is not the best
-way to search for the ultravisor node.
-
-It makes the location and name of the node part of the ABI, when there's
-no need for it to be.
-
-If instead you just scan the tree for a node that is *compatible* with
-"ibm,ultravisor" (or whatever compatible string) then the node can be
-placed any where in the tree and have any name, which gives us the most
-flexibility in future to change the location of the device tree node.</pre>
-    </blockquote>
-    <p>I will do that in the next version.</p>
-    <p>Thanks,<br>
-      Claudio<br>
-    </p>
-    <p><br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:87k1cog250.fsf@concordia.ellerman.id.au">
-      <pre class="moz-quote-pre" wrap="">
-
-cheers
-
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------553B7B98B64F8622D881B133--
-
+-- 
+Alexey
