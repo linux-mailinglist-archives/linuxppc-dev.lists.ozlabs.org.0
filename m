@@ -2,77 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C48B678B8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 08:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62002678C0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 08:08:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lzp25jdLzDqx2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 16:06:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lzrN2ddKzDqxB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 16:08:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lzg96YDbzDqtW
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 16:00:53 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6D5uRWV138509
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:00:51 -0400
-Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tq8wxh2cn-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lzgD2yHmzDqv1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 16:00:56 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6D5uORt011852
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:00:54 -0400
+Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tq1q2vrqb-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:00:51 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 02:00:54 -0400
 Received: from localhost
- by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Sat, 13 Jul 2019 07:00:50 +0100
-Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
- by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
+ Sat, 13 Jul 2019 07:00:53 +0100
+Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
+ by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
  Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 13 Jul 2019 07:00:47 +0100
+ Sat, 13 Jul 2019 07:00:51 +0100
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6D60jC253543246
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6D60njk58392966
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 13 Jul 2019 06:00:45 GMT
+ Sat, 13 Jul 2019 06:00:49 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A63EDC6059;
- Sat, 13 Jul 2019 06:00:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EEABCC6059;
+ Sat, 13 Jul 2019 06:00:48 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E3EFAC605B;
- Sat, 13 Jul 2019 06:00:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1870CC6057;
+ Sat, 13 Jul 2019 06:00:46 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.135.203])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sat, 13 Jul 2019 06:00:42 +0000 (GMT)
+ Sat, 13 Jul 2019 06:00:45 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v2 02/13] powerpc: Add support for adding an ESM blob to
- the zImage wrapper
-Date: Sat, 13 Jul 2019 03:00:12 -0300
+Subject: [PATCH v2 03/13] powerpc/prom_init: Add the ESM call to prom_init
+Date: Sat, 13 Jul 2019 03:00:13 -0300
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190713060023.8479-1-bauerman@linux.ibm.com>
 References: <20190713060023.8479-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19071306-0012-0000-0000-0000174F2C8A
+x-cbid: 19071306-0004-0000-0000-00001526F176
 X-IBM-SpamModules-Scores: 
 X-IBM-SpamModules-Versions: BY=3.00011419; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01231434; UDB=6.00648705; IPR=6.01012726; 
- MB=3.00027699; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-13 06:00:49
+ PH=3.00000004; SC=3.00000286; SDB=6.01231433; UDB=6.00648705; IPR=6.01012726; 
+ MB=3.00027699; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-13 06:00:53
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071306-0013-0000-0000-0000580BC6AC
-Message-Id: <20190713060023.8479-3-bauerman@linux.ibm.com>
+x-cbparentid: 19071306-0005-0000-0000-00008C6EF4D3
+Message-Id: <20190713060023.8479-4-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-13_01:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -101,191 +100,193 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+From: Ram Pai <linuxram@us.ibm.com>
 
-For secure VMs, the signing tool will create a ticket called the "ESM blob"
-for the Enter Secure Mode ultravisor call with the signatures of the kernel
-and initrd among other things.
+Make the Enter-Secure-Mode (ESM) ultravisor call to switch the VM to secure
+mode. Add "svm=" command line option to turn on switching to secure mode.
 
-This adds support to the wrapper script for adding that blob via the "-e"
-option to the zImage.pseries.
-
-It also adds code to the zImage wrapper itself to retrieve and if necessary
-relocate the blob, and pass its address to Linux via the device-tree, to be
-later consumed by prom_init.
-
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-[ bauerman: Minor adjustments to some comments. ]
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+[ andmike: Generate an RTAS os-term hcall when the ESM ucall fails. ]
+Signed-off-by: Michael Anderson <andmike@linux.ibm.com>
+[ bauerman: Cleaned up the code a bit. ]
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/boot/main.c       | 41 ++++++++++++++++++++++++++++++++++
- arch/powerpc/boot/ops.h        |  2 ++
- arch/powerpc/boot/wrapper      | 24 +++++++++++++++++---
- arch/powerpc/boot/zImage.lds.S |  8 +++++++
- 4 files changed, 72 insertions(+), 3 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  5 +
+ arch/powerpc/include/asm/ultravisor-api.h     |  1 +
+ arch/powerpc/kernel/prom_init.c               | 99 +++++++++++++++++++
+ 3 files changed, 105 insertions(+)
 
-diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
-index 78aaf4ffd7ab..ca612efd3e81 100644
---- a/arch/powerpc/boot/main.c
-+++ b/arch/powerpc/boot/main.c
-@@ -150,6 +150,46 @@ static struct addr_range prep_initrd(struct addr_range vmlinux, void *chosen,
- 	return (struct addr_range){(void *)initrd_addr, initrd_size};
- }
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 7b15abf7db21..c611891b5992 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4585,6 +4585,11 @@
+ 			/sys/power/pm_test). Only available when CONFIG_PM_DEBUG
+ 			is set. Default value is 5.
  
-+#ifdef __powerpc64__
-+static void prep_esm_blob(struct addr_range vmlinux, void *chosen)
-+{
-+	unsigned long esm_blob_addr, esm_blob_size;
++	svm=		[PPC]
++			Format: { on | off | y | n | 1 | 0 }
++			This parameter controls use of the Protected
++			Execution Facility on pSeries.
 +
-+	/* Do we have an ESM (Enter Secure Mode) blob? */
-+	if (_esm_blob_end <= _esm_blob_start)
-+		return;
-+
-+	printf("Attached ESM blob at 0x%p-0x%p\n\r",
-+	       _esm_blob_start, _esm_blob_end);
-+	esm_blob_addr = (unsigned long)_esm_blob_start;
-+	esm_blob_size = _esm_blob_end - _esm_blob_start;
-+
-+	/*
-+	 * If the ESM blob is too low it will be clobbered when the
-+	 * kernel relocates to its final location.  In this case,
-+	 * allocate a safer place and move it.
-+	 */
-+	if (esm_blob_addr < vmlinux.size) {
-+		void *old_addr = (void *)esm_blob_addr;
-+
-+		printf("Allocating 0x%lx bytes for esm_blob ...\n\r",
-+		       esm_blob_size);
-+		esm_blob_addr = (unsigned long)malloc(esm_blob_size);
-+		if (!esm_blob_addr)
-+			fatal("Can't allocate memory for ESM blob !\n\r");
-+		printf("Relocating ESM blob 0x%lx <- 0x%p (0x%lx bytes)\n\r",
-+		       esm_blob_addr, old_addr, esm_blob_size);
-+		memmove((void *)esm_blob_addr, old_addr, esm_blob_size);
-+	}
-+
-+	/* Tell the kernel ESM blob address via device tree. */
-+	setprop_val(chosen, "linux,esm-blob-start", (u32)(esm_blob_addr));
-+	setprop_val(chosen, "linux,esm-blob-end", (u32)(esm_blob_addr + esm_blob_size));
-+}
-+#else
-+static inline void prep_esm_blob(struct addr_range vmlinux, void *chosen) { }
+ 	swapaccount=[0|1]
+ 			[KNL] Enable accounting of swap in memory resource
+ 			controller if no parameter or 1 is given or disable
+diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
+index c8180427fa01..fe9a0d8d7673 100644
+--- a/arch/powerpc/include/asm/ultravisor-api.h
++++ b/arch/powerpc/include/asm/ultravisor-api.h
+@@ -19,6 +19,7 @@
+ 
+ /* opcodes */
+ #define UV_WRITE_PATE			0xF104
++#define UV_ESM				0xF110
+ #define UV_RETURN			0xF11C
+ #define UV_REGISTER_MEM_SLOT		0xF120
+ #define UV_UNREGISTER_MEM_SLOT		0xF124
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index a3fb90bb5a39..6389a992451b 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -44,6 +44,7 @@
+ #include <asm/sections.h>
+ #include <asm/machdep.h>
+ #include <asm/asm-prototypes.h>
++#include <asm/ultravisor-api.h>
+ 
+ #include <linux/linux_logo.h>
+ 
+@@ -175,6 +176,10 @@ static bool __prombss prom_radix_disable;
+ static bool __prombss prom_xive_disable;
+ #endif
+ 
++#ifdef CONFIG_PPC_SVM
++static bool __prombss prom_svm_enable;
 +#endif
 +
- /* A buffer that may be edited by tools operating on a zImage binary so as to
-  * edit the command line passed to vmlinux (by setting /chosen/bootargs).
-  * The buffer is put in it's own section so that tools may locate it easier.
-@@ -218,6 +258,7 @@ void start(void)
- 	vmlinux = prep_kernel();
- 	initrd = prep_initrd(vmlinux, chosen,
- 			     loader_info.initrd_addr, loader_info.initrd_size);
-+	prep_esm_blob(vmlinux, chosen);
- 	prep_cmdline(chosen);
- 
- 	printf("Finalizing device tree...");
-diff --git a/arch/powerpc/boot/ops.h b/arch/powerpc/boot/ops.h
-index cd043726ed88..e0606766480f 100644
---- a/arch/powerpc/boot/ops.h
-+++ b/arch/powerpc/boot/ops.h
-@@ -251,6 +251,8 @@ extern char _initrd_start[];
- extern char _initrd_end[];
- extern char _dtb_start[];
- extern char _dtb_end[];
-+extern char _esm_blob_start[];
-+extern char _esm_blob_end[];
- 
- static inline __attribute__((const))
- int __ilog2_u32(u32 n)
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 4ed18d63d892..ddb62b5b5b7a 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -14,6 +14,7 @@
- # -i initrd	specify initrd file
- # -d devtree	specify device-tree blob
- # -s tree.dts	specify device-tree source file (needs dtc installed)
-+# -e esm_blob   specify ESM blob for secure images
- # -c		cache $kernel.strip.gz (use if present & newer, else make)
- # -C prefix	specify command prefix for cross-building tools
- #		(strip, objcopy, ld)
-@@ -38,6 +39,7 @@ platform=of
- initrd=
- dtb=
- dts=
-+esm_blob=
- cacheit=
- binary=
- compression=.gz
-@@ -61,9 +63,9 @@ tmpdir=.
- 
- usage() {
-     echo 'Usage: wrapper [-o output] [-p platform] [-i initrd]' >&2
--    echo '       [-d devtree] [-s tree.dts] [-c] [-C cross-prefix]' >&2
--    echo '       [-D datadir] [-W workingdir] [-Z (gz|xz|none)]' >&2
--    echo '       [--no-compression] [vmlinux]' >&2
-+    echo '       [-d devtree] [-s tree.dts] [-e esm_blob]' >&2
-+    echo '       [-c] [-C cross-prefix] [-D datadir] [-W workingdir]' >&2
-+    echo '       [-Z (gz|xz|none)] [--no-compression] [vmlinux]' >&2
-     exit 1
+ struct platform_support {
+ 	bool hash_mmu;
+ 	bool radix_mmu;
+@@ -816,6 +821,17 @@ static void __init early_cmdline_parse(void)
+ 		prom_debug("XIVE disabled from cmdline\n");
+ 	}
+ #endif /* CONFIG_PPC_PSERIES */
++
++#ifdef CONFIG_PPC_SVM
++	opt = prom_strstr(prom_cmd_line, "svm=");
++	if (opt) {
++		bool val;
++
++		opt += sizeof("svm=") - 1;
++		if (!prom_strtobool(opt, &val))
++			prom_svm_enable = val;
++	}
++#endif /* CONFIG_PPC_SVM */
  }
  
-@@ -106,6 +108,11 @@ while [ "$#" -gt 0 ]; do
- 	[ "$#" -gt 0 ] || usage
- 	dtb="$1"
- 	;;
-+    -e)
-+	shift
-+	[ "$#" -gt 0 ] || usage
-+	esm_blob="$1"
-+	;;
-     -s)
- 	shift
- 	[ "$#" -gt 0 ] || usage
-@@ -219,9 +226,16 @@ objflags=-S
- tmp=$tmpdir/zImage.$$.o
- ksection=.kernel:vmlinux.strip
- isection=.kernel:initrd
-+esection=.kernel:esm_blob
- link_address='0x400000'
- make_space=y
+ #ifdef CONFIG_PPC_PSERIES
+@@ -1716,6 +1732,43 @@ static void __init prom_close_stdin(void)
+ 	}
+ }
  
++#ifdef CONFIG_PPC_SVM
++static int prom_rtas_hcall(uint64_t args)
++{
++	register uint64_t arg1 asm("r3") = H_RTAS;
++	register uint64_t arg2 asm("r4") = args;
 +
-+if [ -n "$esm_blob" -a "$platform" != "pseries" ]; then
-+    echo "ESM blob not support on non-pseries platforms" >&2
-+    exit 1
-+fi
++	asm volatile("sc 1\n" : "=r" (arg1) :
++			"r" (arg1),
++			"r" (arg2) :);
++	return arg1;
++}
 +
- case "$platform" in
- of)
-     platformo="$object/of.o $object/epapr.o"
-@@ -478,6 +492,10 @@ if [ -n "$dtb" ]; then
-     fi
- fi
++static struct rtas_args __prombss os_term_args;
++
++static void __init prom_rtas_os_term(char *str)
++{
++	phandle rtas_node;
++	__be32 val;
++	u32 token;
++
++	prom_debug("%s: start...\n", __func__);
++	rtas_node = call_prom("finddevice", 1, 1, ADDR("/rtas"));
++	prom_debug("rtas_node: %x\n", rtas_node);
++	if (!PHANDLE_VALID(rtas_node))
++		return;
++
++	val = 0;
++	prom_getprop(rtas_node, "ibm,os-term", &val, sizeof(val));
++	token = be32_to_cpu(val);
++	prom_debug("ibm,os-term: %x\n", token);
++	if (token == 0)
++		prom_panic("Could not get token for ibm,os-term\n");
++	os_term_args.token = cpu_to_be32(token);
++	prom_rtas_hcall((uint64_t)&os_term_args);
++}
++#endif /* CONFIG_PPC_SVM */
++
+ /*
+  * Allocate room for and instantiate RTAS
+  */
+@@ -3172,6 +3225,49 @@ static void unreloc_toc(void)
+ #endif
+ #endif
  
-+if [ -n "$esm_blob" ]; then
-+    addsec $tmp "$esm_blob" $esection
-+fi
++#ifdef CONFIG_PPC_SVM
++/*
++ * Perform the Enter Secure Mode ultracall.
++ */
++static int enter_secure_mode(unsigned long kbase, unsigned long fdt)
++{
++	register uint64_t func asm("r3") = UV_ESM;
++	register uint64_t arg1 asm("r4") = (uint64_t)kbase;
++	register uint64_t arg2 asm("r5") = (uint64_t)fdt;
 +
- if [ "$platform" != "miboot" ]; then
-     if [ -n "$link_address" ] ; then
-         text_start="-Ttext $link_address"
-diff --git a/arch/powerpc/boot/zImage.lds.S b/arch/powerpc/boot/zImage.lds.S
-index 4ac1e36edfe7..a21f3a76e06f 100644
---- a/arch/powerpc/boot/zImage.lds.S
-+++ b/arch/powerpc/boot/zImage.lds.S
-@@ -68,6 +68,14 @@ SECTIONS
-     _initrd_end =  .;
-   }
++	asm volatile("sc 2\n"
++		     : "=r"(func)
++		     : "0"(func), "r"(arg1), "r"(arg2)
++		     :);
++
++	return (int)func;
++}
++
++/*
++ * Call the Ultravisor to transfer us to secure memory if we have an ESM blob.
++ */
++static void setup_secure_guest(unsigned long kbase, unsigned long fdt)
++{
++	int ret;
++
++	if (!prom_svm_enable)
++		return;
++
++	/* Switch to secure mode. */
++	prom_printf("Switching to secure mode.\n");
++
++	ret = enter_secure_mode(kbase, fdt);
++	if (ret != U_SUCCESS) {
++		prom_printf("Returned %d from switching to secure mode.\n", ret);
++		prom_rtas_os_term("Switch to secure mode failed.\n");
++	}
++}
++#else
++static void setup_secure_guest(unsigned long kbase, unsigned long fdt)
++{
++}
++#endif /* CONFIG_PPC_SVM */
++
+ /*
+  * We enter here early on, when the Open Firmware prom is still
+  * handling exceptions and the MMU hash table for us.
+@@ -3370,6 +3466,9 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
+ 	unreloc_toc();
+ #endif
  
-+  . = ALIGN(4096);
-+  .kernel:esm_blob :
-+  {
-+    _esm_blob_start =  .;
-+    *(.kernel:esm_blob)
-+    _esm_blob_end =  .;
-+  }
++	/* Move to secure memory if we're supposed to be secure guests. */
++	setup_secure_guest(kbase, hdr);
 +
- #ifdef CONFIG_PPC64_BOOT_WRAPPER
-   . = ALIGN(256);
-   .got :
+ 	__start(hdr, kbase, 0, 0, 0, 0, 0);
+ 
+ 	return 0;
 
