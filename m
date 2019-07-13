@@ -2,45 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90F8677AE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 04:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5AC677C7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 05:24:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45lvJD5hDBzDqsm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 12:44:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45lwBB5hQdzDqcF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 13:24:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
- (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
- envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.77; helo=conuserg-10.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=socionext.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="H+3dgelz"; 
+ dkim-atps=neutral
+Received: from conuserg-10.nifty.com (conuserg-10.nifty.com [210.131.2.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45lvGL4jSmzDqg3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 12:42:31 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hm7yz-0001A3-CY; Sat, 13 Jul 2019 02:41:53 +0000
-Date: Sat, 13 Jul 2019 03:41:53 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190713024153.GA3817@ZenIV.linux.org.uk>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
- <20190712132553.GN17978@ZenIV.linux.org.uk>
- <20190712150026.GO17978@ZenIV.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190712150026.GO17978@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45lw802FVbzDqn1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 13:22:07 +1000 (AEST)
+Received: from grover.flets-west.jp (softbank126026094249.bbtec.net
+ [126.26.94.249]) (authenticated)
+ by conuserg-10.nifty.com with ESMTP id x6D3LCS2001105;
+ Sat, 13 Jul 2019 12:21:13 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com x6D3LCS2001105
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1562988073;
+ bh=1IdPDx4QX0euUr4uIRn/uQ11mnE9aURyo1Zm0ZEzzSs=;
+ h=From:To:Cc:Subject:Date:From;
+ b=H+3dgelzRhySedQpLwoncmnFJlhOAC6smKw42tgxGW66g4TX+fG+zinNh4AGqdkBV
+ sDGCcJP/3jlpIUG+9H4jbL5ashVrZTqBN9PoDIP1bG9kY/0MaTaWYJ4vBpWTxX4Omf
+ RqW5HPyA59GEjvtFZ1wcuentYVv5NNZkFEWlYZ9ZehokwLXXZUshr7g+PqbMuvcy50
+ SzPi5sTmajRUbguE4yWfcNru+V6pjhCXQaux7lpKlKU9UnUp/SKGF9Fj6AQYfpeOG8
+ YIUYRITsvVlb8B8NQYEZJcn7roPqrgX41eu2sOvXQ7hqe6g0yNBm2702TTuTtq5KU+
+ bWX8tcpizGxbg==
+X-Nifty-SrcIP: [126.26.94.249]
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
+Date: Sat, 13 Jul 2019 12:21:06 +0900
+Message-Id: <20190713032106.8509-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,50 +56,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
-> On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
-> 
-> > 	if (flags & LOOKUP_BENEATH) {
-> > 		nd->root = nd->path;
-> > 		if (!(flags & LOOKUP_RCU))
-> > 			path_get(&nd->root);
-> > 		else
-> > 			nd->root_seq = nd->seq;
-> 
-> BTW, this assignment is needed for LOOKUP_RCU case.  Without it
-> you are pretty much guaranteed that lazy pathwalk will fail,
-> when it comes to complete_walk().
-> 
-> Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
-> combination would someday get passed?
+The KBUILD_ARFLAGS addition in arch/powerpc/Makefile has never worked
+in a useful way because it is always overridden by the following code
+in the top Makefile:
 
-I don't understand what's going on with ->r_seq in there - your
-call of path_is_under() is after having (re-)sampled rename_lock,
-but if that was the only .. in there, who's going to recheck
-the value?  For that matter, what's to guarantee that the thing
-won't get moved just as you are returning from handle_dots()?
+  # use the deterministic mode of AR if available
+  KBUILD_ARFLAGS := $(call ar-option,D)
 
-IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
+The code in the top Makefile was added in 2011, by commit 40df759e2b9e
+("kbuild: Fix build with binutils <= 2.19").
+
+The KBUILD_ARFLAGS addition for ppc has always been dead code from the
+beginning.
+
+Nobody has reported a problem since 43c9127d94d6 ("powerpc: Add option
+to use thin archives"), so this code was unneeded.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+
+ arch/powerpc/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index c345b79414a9..46ed198a3aa3 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -112,7 +112,6 @@ ifeq ($(HAS_BIARCH),y)
+ KBUILD_CFLAGS	+= -m$(BITS)
+ KBUILD_AFLAGS	+= -m$(BITS) -Wl,-a$(BITS)
+ KBUILD_LDFLAGS	+= -m elf$(BITS)$(LDEMULATION)
+-KBUILD_ARFLAGS	+= --target=elf$(BITS)-$(GNUTARGET)
+ endif
+ 
+ cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard=tls
+-- 
+2.17.1
+
