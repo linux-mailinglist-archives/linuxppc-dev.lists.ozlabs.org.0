@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0950A678FE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 09:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7575567903
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 09:31:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45m1cx29zyzDqv6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 17:29:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45m1gM6qZHzDqZG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2019 17:31:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,22 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45m1b21ldrzDqVT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 17:27:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45m1d1423kzDqnF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2019 17:29:09 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 241B668B02; Sat, 13 Jul 2019 09:27:18 +0200 (CEST)
-Date: Sat, 13 Jul 2019 09:27:17 +0200
+ id 72E3268B05; Sat, 13 Jul 2019 09:29:05 +0200 (CEST)
+Date: Sat, 13 Jul 2019 09:29:04 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [PATCH 1/3] x86,s390: Move ARCH_HAS_MEM_ENCRYPT definition to
- arch/Kconfig
-Message-ID: <20190713072717.GB17589@lst.de>
+Subject: Re: [PATCH 2/3] DMA mapping: Move SME handling to x86-specific files
+Message-ID: <20190713072904.GC17589@lst.de>
 References: <20190713044554.28719-1-bauerman@linux.ibm.com>
- <20190713044554.28719-2-bauerman@linux.ibm.com>
+ <20190713044554.28719-3-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190713044554.28719-2-bauerman@linux.ibm.com>
+In-Reply-To: <20190713044554.28719-3-bauerman@linux.ibm.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,12 +59,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 13, 2019 at 01:45:52AM -0300, Thiago Jung Bauermann wrote:
-> powerpc is also going to use this feature, so put it in a generic location.
+While this looks generally good to me, I think we want to split this
+into three patches:
 
-Looks good,
+ 1) update the swiotlb printk
+ 2) removing the dma-mapping check and printk
+ 3) clean up the mem_encrypt.h interface.
 
-even without a third arch using it we should never habe symbols defined
-under arch/$(ARCH) that are used in common code to start with.
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
