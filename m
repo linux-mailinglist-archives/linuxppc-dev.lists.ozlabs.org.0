@@ -1,48 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABA567F62
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 16:39:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mq6X3w7dzDqWn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 00:39:00 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31AA67FD0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 17:22:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45mr594VcVzDqYK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 01:22:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
- (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
- envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.alibaba.com
+ (client-ip=47.88.44.37; helo=out4437.biz.mail.alibaba.com;
+ envelope-from=alex.shi@linux.alibaba.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ header.from=linux.alibaba.com
+Received: from out4437.biz.mail.alibaba.com (out4437.biz.mail.alibaba.com
+ [47.88.44.37])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mq4K3SrDzDqWj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 00:37:02 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hmfbz-00010j-Kc; Sun, 14 Jul 2019 14:36:23 +0000
-Date: Sun, 14 Jul 2019 15:36:23 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
-Message-ID: <20190714143623.GR17978@ZenIV.linux.org.uk>
-References: <20190706145737.5299-1-cyphar@cyphar.com>
- <20190706145737.5299-6-cyphar@cyphar.com>
- <20190712043341.GI17978@ZenIV.linux.org.uk>
- <20190712105745.nruaftgeat6irhzr@yavin>
- <20190712123924.GK17978@ZenIV.linux.org.uk>
- <20190712125552.GL17978@ZenIV.linux.org.uk>
- <20190712132553.GN17978@ZenIV.linux.org.uk>
- <20190712150026.GO17978@ZenIV.linux.org.uk>
- <20190713024153.GA3817@ZenIV.linux.org.uk>
- <20190714070029.m53etvm3y4etidxt@yavin>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mr3D0w6KzDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 01:21:08 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
+ FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=alex.shi@linux.alibaba.com; NM=1;
+ PH=DS; RN=17; SR=0; TI=SMTPD_---0TWrpoRa_1563117663; 
+Received: from IT-FVFX43SYHV2H.lan(mailfrom:alex.shi@linux.alibaba.com
+ fp:SMTPD_---0TWrpoRa_1563117663) by smtp.aliyun-inc.com(127.0.0.1);
+ Sun, 14 Jul 2019 23:21:03 +0800
+Subject: Re: [PATCH 01/12] Documentation: move architectures together
+To: Jonathan Corbet <corbet@lwn.net>
+References: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
+ <20190712113427.62fa7ffc@lwn.net>
+From: Alex Shi <alex.shi@linux.alibaba.com>
+Message-ID: <36c522c5-975e-e38e-daad-0f3d9f93b186@linux.alibaba.com>
+Date: Sun, 14 Jul 2019 23:21:03 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190714070029.m53etvm3y4etidxt@yavin>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190712113427.62fa7ffc@lwn.net>
+Content-Type: text/plain; charset=gbk
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,42 +51,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
- sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
- linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: linux-s390@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jul 14, 2019 at 05:00:29PM +1000, Aleksa Sarai wrote:
+Hi Jon,
 
-> The basic property being guaranteed by LOOKUP_IN_ROOT is that it will
-> not result in resolution of a path component which was not inside the
-> root of the dirfd tree at some point during resolution (and that all
-> absolute symlink and ".." resolution will be done relative to the
-> dirfd). This may smell slightly of chroot(2), because unfortunately it
-> is a similar concept -- the reason for this is to allow for a more
-> efficient way to safely resolve paths inside a rootfs than spawning a
-> separate process to then pass back the fd to the caller.
+Thanks for quick response!
 
-IDGI...  If attacker can modify your subtree, you have already lost -
-after all, they can make anything appear inside that tree just before
-your syscall is made and bring it back out immediately afterwards.
-And if they can't, what is the race you are trying to protect against?
-Confused...
+ÔÚ 2019/7/13 ÉÏÎç1:34, Jonathan Corbet Ð´µÀ:
+> On Fri, 12 Jul 2019 10:20:07 +0800
+> Alex Shi <alex.shi@linux.alibaba.com> wrote:
+> 
+>> There are many different archs in Documentation/ dir, it's better to
+>> move them together in 'Documentation/arch' which follows from kernel source.
+> 
+> So this seems certain to collide badly with Mauro's RST-conversion monster
+> patch set.
+
+I don't mean that, sorry, and we can figure out if both of them are worthy to be picked up.
+
+> 
+> More to the point, though...if we are going to thrash up things this
+> badly, we want to be sure that we're doing it right so we don't end up
+> renaming everything again.  Grouping stuff into a new arch/ subdirectory
+> adds a bit of order, but it doesn't do much toward trying to organize our
+> documentation for its readers, and it doesn't help us to modernize the
+> docs and get rid of the old, useless stuff.  A quick check shows that many
+> of these files have seen no changes other than typo fixes since the
+> beginning of the Git era.
+
+Right, there is some docs which need to be update or even drop, and a reorder would be a timing to push each of arch maintainer to do something, isn't it? Anyway, reordering  documents like kernel source dir could be one of choices. :)
+
+> 
+> So, in my mind, this needs some thought.  Maybe we want a
+> Documentation/arch in the end, but I'm not convinced that we should just
+> create it and fill it with a snow shovel.  This might be a good thing to
+> discuss at the kernel summit in September.
+
+Thanks for considering, anyway, it could be a good start to get hands dirty whether the arch dir is needed. 
+
+Thanks
+Alex
