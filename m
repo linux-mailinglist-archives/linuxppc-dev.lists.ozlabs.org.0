@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3FA67EAA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 12:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 609D167EAB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 12:53:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mk3l4RwSzDqN2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 20:51:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45mk5n1PZyzDqfq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 20:53:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mk0m6f29zDqX9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 20:48:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mk1g6KCvzDqcc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 20:49:27 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 68C1227FB0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 10:48:38 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id A599B281F9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 10:49:25 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 57F44283B0; Sun, 14 Jul 2019 10:48:38 +0000 (UTC)
+ id 96B16283AF; Sun, 14 Jul 2019 10:49:25 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -35,7 +35,7 @@ From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 200055] WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:3214
  .__lockdep_init_map+0x260/0x270
-Date: Sun, 14 Jul 2019 10:48:37 +0000
+Date: Sun, 14 Jul 2019 10:49:25 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -50,8 +50,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-200055-206035-dKRJzOOpRn@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
+Message-ID: <bug-200055-206035-vmqUOLMOie@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-200055-206035@https.bugzilla.kernel.org/>
 References: <bug-200055-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,10 +77,17 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D200055
 
---- Comment #17 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 283679
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283679&action=3Dedit
-4.9.184 kernel .config (G5 11,2)
+Erhard F. (erhard_f@mailbox.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Attachment #281901|0                           |1
+        is obsolete|                            |
+
+--- Comment #18 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 283681
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283681&action=3Dedit
+4.14.132 kernel .config (G5 11,2)
 
 --=20
 You are receiving this mail because:
