@@ -1,43 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1E367CEC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 06:02:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFCF67CA1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 03:33:43 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mThN1q29zDqf9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 11:33:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45mY052xz1zDqf4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 14:02:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
+ (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
+ envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mTfb3CsWzDqhF
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 11:32:07 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6E1Vikx009138;
- Sat, 13 Jul 2019 20:31:45 -0500
-Message-ID: <67befaf7d091ff684534e027bd303d80c752466d.camel@kernel.crashing.org>
-Subject: Re: [RFC PATCH kernel] powerpc/xive: Drop deregistered irqs
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Date: Sun, 14 Jul 2019 11:31:43 +1000
-In-Reply-To: <9b1fbde4-0884-223e-446c-373f73c366e0@ozlabs.ru>
-References: <20190712082036.40440-1-aik@ozlabs.ru>
- <abbee9db2fa0abdaa2e01bb92bab920773a2ad8d.camel@kernel.crashing.org>
- <3a34190f-560e-0b42-af38-0e39cef0beea@ozlabs.ru>
- <d735f761b3d1cc1cd6df5fd566c75cae661fe4e7.camel@kernel.crashing.org>
- <9b1fbde4-0884-223e-446c-373f73c366e0@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mXxz4sgqzDqcY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 14:00:37 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hmVej-000695-Co; Sun, 14 Jul 2019 03:58:41 +0000
+Date: Sun, 14 Jul 2019 04:58:33 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190714035826.GQ17978@ZenIV.linux.org.uk>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
+ <20190713024153.GA3817@ZenIV.linux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190713024153.GA3817@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,40 +53,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Alistair Popple <alistair@popple.id.au>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>, raven@themaw.net,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, paul@paul-moore.com,
+ Aleksa Sarai <asarai@suse.de>, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, David Drysdale <drysdale@google.com>,
+ Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ rgb@redhat.com, linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2019-07-13 at 18:53 +1000, Alexey Kardashevskiy wrote:
+On Sat, Jul 13, 2019 at 03:41:53AM +0100, Al Viro wrote:
+> On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
+> > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
+> > 
+> > > 	if (flags & LOOKUP_BENEATH) {
+> > > 		nd->root = nd->path;
+> > > 		if (!(flags & LOOKUP_RCU))
+> > > 			path_get(&nd->root);
+> > > 		else
+> > > 			nd->root_seq = nd->seq;
+> > 
+> > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+> > you are pretty much guaranteed that lazy pathwalk will fail,
+> > when it comes to complete_walk().
+> > 
+> > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+> > combination would someday get passed?
 > 
-> On 13/07/2019 09:47, Benjamin Herrenschmidt wrote:
-> > On Fri, 2019-07-12 at 19:37 +1000, Alexey Kardashevskiy wrote:
-> > > 
-> > 
-> > 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/kernel/irq.c#n614
-> > > 
-> > > If so, then in order to do EOI, I'll need the desc which is gone,
-> > > or
-> > > I am missing the point?
-> > 
-> > All you need is drop the local CPU priority.
+> I don't understand what's going on with ->r_seq in there - your
+> call of path_is_under() is after having (re-)sampled rename_lock,
+> but if that was the only .. in there, who's going to recheck
+> the value?  For that matter, what's to guarantee that the thing
+> won't get moved just as you are returning from handle_dots()?
 > 
-> I know that, the question was how. I cannot use irq_chip in
-> arch/powerpc/kernel/irq.c and I do not want to add
-> ppc_md.enable_irqs().
+> IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
 
-Well, best is probably to do just that though, but call it something
-like ppc_md.orphan_irq() or something like that instead. Another option
-as you mention is to try to scrub queues, but that's trickier to do due
-to the lockless nature of the queue handling.
+Sigh...  Usual effects of trying to document things:
 
-Cheers,
-Ben.
+1) LOOKUP_NO_EVAL looks bogus.  It had been introduced by commit 57d4657716ac
+(audit: ignore fcaps on umount) and AFAICS it's crap.  It is set in
+ksys_umount() and nowhere else.  It's ignored by everything except
+filename_mountpoint().  The thing is, call graph for filename_mountpoint()
+is
+	filename_mountpoint()
+		<- user_path_mountpoint_at()
+			<- ksys_umount()
+		<- kern_path_mountpoint()
+			<- autofs_dev_ioctl_ismountpoint()
+			<- find_autofs_mount()
+				<- autofs_dev_ioctl_open_mountpoint()
+				<- autofs_dev_ioctl_requester()
+				<- autofs_dev_ioctl_ismountpoint()
+In other words, that flag is basically "was filename_mountpoint()
+been called by umount(2) or has it come from an autofs ioctl?".
+And looking at the rationale in that commit, autofs ioctls need
+it just as much as umount(2) does.  Why is it not set for those
+as well?  And why is it conditional at all?
 
+1b) ... because audit_inode() wants LOOKUP_... as the last argument,
+only to remap it into AUDIT_..., that's why.  So audit needs something
+guaranteed not to conflict with LOOKUP_PARENT (another flag getting
+remapped).  So why do we bother with remapping those, anyway?  Let's look
+at the callers:
 
+fs/namei.c:933: audit_inode(nd->name, nd->stack[0].link.dentry, 0);
+fs/namei.c:2353:                audit_inode(name, path->dentry, flags & LOOKUP_PARENT);
+fs/namei.c:2394:                audit_inode(name, parent->dentry, LOOKUP_PARENT);
+fs/namei.c:2721:                audit_inode(name, path->dentry, flags & LOOKUP_NO_EVAL);
+fs/namei.c:3302:                audit_inode(nd->name, dir, LOOKUP_PARENT);
+fs/namei.c:3336:                audit_inode(nd->name, file->f_path.dentry, 0);
+fs/namei.c:3371:        audit_inode(nd->name, path.dentry, 0);
+fs/namei.c:3389:        audit_inode(nd->name, nd->path.dentry, 0);
+fs/namei.c:3490:        audit_inode(nd->name, child, 0);
+fs/namei.c:3509:                audit_inode(nd->name, path.dentry, 0);
+ipc/mqueue.c:788:       audit_inode(name, dentry, 0);
+
+In all but two of those we have a nice constant value - 0 or AUDIT_INODE_PARENT.
+One of two exceptions is in filename_mountpoint(), and there we want
+unconditional AUDIT_INODE_NOEVAL (see above).  What of the other?  It's
+        if (likely(!retval))
+                audit_inode(name, path->dentry, flags & LOOKUP_PARENT);
+in filename_lookup().  And that is bogus as well.  filename_lookupat() would
+better *NOT* get LOOKUP_PARENT in flags.  And it doesn't - not since
+commit 8bcb77fabd7c (namei: split off filename_lookupat() with LOOKUP_PARENT)
+back in 2015.  In filename_parentat() introduced there we have
+                audit_inode(name, parent->dentry, LOOKUP_PARENT);
+and at the same point the call in filename_lookupat() should've become
+                audit_inode(name, path->dentry, 0);
+It hadn't; my fault.  And after fixing that everything becomes nice and
+unconditional - the last argument of audit_inode() is always an AUDIT_...
+constant or zero.  Moving AUDIT_... definitions outside of ifdef on
+CONFIG_AUDITSYSCALL, getting rid of remapping in audit_inode() and
+passing the right values in 3 callers that don't pass 0 and LOOKUP_NO_EVAL
+can go to hell.
+
+Any objections from audit folks?
+
+2) comment in namei.h is seriously out of sync with reality.  To quote:
+ *  - follow links at the end
+OK, that's LOOKUP_FOLLOW (1)
+ *  - require a directory
+... and LOOKUP_DIRECTORY (2)
+ *  - ending slashes ok even for nonexistent files
+... used to be about LOOKUP_CONTINUE (eight years dead now)
+ *  - internal "there are more path components" flag
+... LOOKUP_PARENT (16)
+ *  - dentry cache is untrusted; force a real lookup
+... LOOKUP_REVAL (32)
+ *  - suppress terminal automount
+... used to be LOOKUP_NO_AUTOMOUNT (128), except that it's been
+replaced with LOOKUP_AUTOMOUNT (at 4) almost eight years ago.  And
+the meaning of LOOKUP_AUTOMOUNT is opposite to the comment,
+of course.
+ *  - skip revalidation
+... LOOKUP_NO_REVAL (128)
+ *  - don't fetch xattrs on audit_inode
+... and that's about soon-to-be dead LOOKUP_NO_EVAL (256)
+
+Note that LOOKUP_RCU (at 64) is quietly skipped and so's the tail
+of the list.  If not for "suppress terminal automount" bit, I wouldn't
+really care, but that one makes for a really nasty trap for readers.
+I'm going to convert that to (accurate) comments next to actual defines...
+
+3) while looking through LOOKUP_AUTOMOUNT users,
+in aa_bind_mount() we have
+        error = kern_path(dev_name, LOOKUP_FOLLOW|LOOKUP_AUTOMOUNT, &old_path);
+matching do_loopback(), while tomoyo_mount_acl() has
+                if (!dev_name || kern_path(dev_name, LOOKUP_FOLLOW, &path)) {
+And yes, that *is* hit on mount --bind.  As well as on new mounts, where
+apparmor (and bdev_lookup()) has plain LOOKUP_FOLLOW.
+
+->sb_mount() is garbage by design (not the least because of the need to
+have pathname lookups in the first place, as well as having to duplicate the
+demultiplexing parts of do_mount() without fucking it up)...
