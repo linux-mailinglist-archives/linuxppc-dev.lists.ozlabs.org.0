@@ -1,47 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B62367C83
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 01:56:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mRX93YJhzDqnD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 09:56:25 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFCF67CA1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 03:33:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45mThN1q29zDqf9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 11:33:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
  smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
  (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mRVB6NjyzDqKw
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 09:54:42 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6DNsWTI006207;
- Sat, 13 Jul 2019 18:54:32 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id x6DNsUHe006206;
- Sat, 13 Jul 2019 18:54:30 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Sat, 13 Jul 2019 18:54:30 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
-Message-ID: <20190713235430.GZ14074@gate.crashing.org>
-References: <20190713032106.8509-1-yamada.masahiro@socionext.com>
- <20190713124744.GS14074@gate.crashing.org>
- <20190713131642.GU14074@gate.crashing.org>
- <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mTfb3CsWzDqhF
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 11:32:07 +1000 (AEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6E1Vikx009138;
+ Sat, 13 Jul 2019 20:31:45 -0500
+Message-ID: <67befaf7d091ff684534e027bd303d80c752466d.camel@kernel.crashing.org>
+Subject: Re: [RFC PATCH kernel] powerpc/xive: Drop deregistered irqs
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Date: Sun, 14 Jul 2019 11:31:43 +1000
+In-Reply-To: <9b1fbde4-0884-223e-446c-373f73c366e0@ozlabs.ru>
+References: <20190712082036.40440-1-aik@ozlabs.ru>
+ <abbee9db2fa0abdaa2e01bb92bab920773a2ad8d.camel@kernel.crashing.org>
+ <3a34190f-560e-0b42-af38-0e39cef0beea@ozlabs.ru>
+ <d735f761b3d1cc1cd6df5fd566c75cae661fe4e7.camel@kernel.crashing.org>
+ <9b1fbde4-0884-223e-446c-373f73c366e0@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,63 +49,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
  Paul Mackerras <paulus@samba.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Alistair Popple <alistair@popple.id.au>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jul 14, 2019 at 07:45:15AM +0900, Masahiro Yamada wrote:
-> On Sat, Jul 13, 2019 at 10:17 PM Segher Boessenkool
-> <segher@kernel.crashing.org> wrote:
-> > On Sat, Jul 13, 2019 at 07:47:44AM -0500, Segher Boessenkool wrote:
-> > > On Sat, Jul 13, 2019 at 12:21:06PM +0900, Masahiro Yamada wrote:
-> > > > The KBUILD_ARFLAGS addition in arch/powerpc/Makefile has never worked
-> > > > in a useful way because it is always overridden by the following code
-> > > > in the top Makefile:
-> > > >
-> > > >   # use the deterministic mode of AR if available
-> > > >   KBUILD_ARFLAGS := $(call ar-option,D)
-> > > >
-> > > > The code in the top Makefile was added in 2011, by commit 40df759e2b9e
-> > > > ("kbuild: Fix build with binutils <= 2.19").
-> > > >
-> > > > The KBUILD_ARFLAGS addition for ppc has always been dead code from the
-> > > > beginning.
-> > >
-> > > That was added in 43c9127d94d6 to replace my 8995ac870273 from 2007.
-> > >
-> > > Is it no longer supported to build a 64-bit kernel with a toolchain
-> > > that defaults to 32-bit, or the other way around?  And with non-native
-> > > toolchains (this one didn't run on Linux, even).
-> >
-> > It was an --enable-targets=all toolchain, somewhat common for crosses,
-> > if that matters.
+On Sat, 2019-07-13 at 18:53 +1000, Alexey Kardashevskiy wrote:
 > 
-> I always use the same toolchain
-> for compile-testing PPC32/64.
+> On 13/07/2019 09:47, Benjamin Herrenschmidt wrote:
+> > On Fri, 2019-07-12 at 19:37 +1000, Alexey Kardashevskiy wrote:
+> > > 
+> > 
+> > 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/kernel/irq.c#n614
+> > > 
+> > > If so, then in order to do EOI, I'll need the desc which is gone,
+> > > or
+> > > I am missing the point?
+> > 
+> > All you need is drop the local CPU priority.
 > 
-> I have never been hit by the issue you mention.
-> Somebody would have reported it if it were still a problem.
+> I know that, the question was how. I cannot use irq_chip in
+> arch/powerpc/kernel/irq.c and I do not want to add
+> ppc_md.enable_irqs().
 
-But did you use --enable-targets=all?
+Well, best is probably to do just that though, but call it something
+like ppc_md.orphan_irq() or something like that instead. Another option
+as you mention is to try to scrub queues, but that's trickier to do due
+to the lockless nature of the queue handling.
 
-The problem was empty archives IIRC.  Not a problem anymore with thin
-archives, maybe?
-
-> Moreover, commit 43c9127d94d6
-> translated the environment variable "GNUTARGET"
-> into the command option "--target="
-> 
-> My powerpc-linux-ar does not know it:
-> 
-> powerpc-linux-ar: -t: No such file or directory
-
-Yes, that is why I used the environment variable, all binutils work
-with that.  There was no --target option in GNU ar before 2.22.
+Cheers,
+Ben.
 
 
-Segher
