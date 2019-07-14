@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605E567EA6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 12:47:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mjzg5cM1zDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 20:47:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2822D67EA7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 12:49:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45mk1g2C0FzDqck
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 20:49:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mjxx2GyQzDqSw
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 20:46:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mjz62dDCzDqcX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 20:47:14 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id F056827FB0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 10:46:10 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 0006F27FB0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 10:47:11 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id E42CB283AF; Sun, 14 Jul 2019 10:46:10 +0000 (UTC)
+ id E8424283B0; Sun, 14 Jul 2019 10:47:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -35,7 +35,7 @@ From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 200055] WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:3214
  .__lockdep_init_map+0x260/0x270
-Date: Sun, 14 Jul 2019 10:46:08 +0000
+Date: Sun, 14 Jul 2019 10:47:11 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -51,7 +51,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-200055-206035-KsIYST9c7z@https.bugzilla.kernel.org/>
+Message-ID: <bug-200055-206035-LNyKJikX5H@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-200055-206035@https.bugzilla.kernel.org/>
 References: <bug-200055-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,19 +77,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D200055
 
---- Comment #15 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 283675
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283675&action=3Dedit
-dmesg.txt (G5 11,2 + kernel 4.9.184)
-
-By running some older kernels from the stable series I noticed that 4.4.x a=
-nd
-4.9.x are not affected by this lockdep issue. First stable series it shows =
-up=20
-is 4.14.x.
-
-I am rather curious what a bisect will throw up when I have time to do it. =
-;)
+--- Comment #16 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 283677
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D283677&action=3Dedit
+dmesg.txt (G5 11,2 + kernel 4.14.132)
 
 --=20
 You are receiving this mail because:
