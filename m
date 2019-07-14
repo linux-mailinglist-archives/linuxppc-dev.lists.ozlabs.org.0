@@ -2,85 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDCD467D91
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 07:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BA767DE6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 09:03:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45mbSC0q1mzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 15:53:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45md0v2BwVzDqQY
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2019 17:03:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=80.241.60.212; helo=mx1.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx1.mailbox.org (mx1.mailbox.org [80.241.60.212])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45mbQL4fgszDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 15:51:54 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6E5lJwb118984; Sun, 14 Jul 2019 01:51:33 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tqvhyubqg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 14 Jul 2019 01:51:33 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6E5oH2C013431;
- Sun, 14 Jul 2019 05:51:32 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 2tq6x6py4w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 14 Jul 2019 05:51:32 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6E5pUo553608944
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 14 Jul 2019 05:51:30 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 753387805F;
- Sun, 14 Jul 2019 05:51:30 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4AD967805C;
- Sun, 14 Jul 2019 05:51:26 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.191.219])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Sun, 14 Jul 2019 05:51:25 +0000 (GMT)
-References: <20190204144048-mutt-send-email-mst@kernel.org>
- <87ef71seve.fsf@morokweng.localdomain>
- <20190320171027-mutt-send-email-mst@kernel.org>
- <87tvfvbwpb.fsf@morokweng.localdomain>
- <20190323165456-mutt-send-email-mst@kernel.org>
- <87a7go71hz.fsf@morokweng.localdomain>
- <20190520090939-mutt-send-email-mst@kernel.org>
- <877ea26tk8.fsf@morokweng.localdomain>
- <20190603211528-mutt-send-email-mst@kernel.org>
- <877e96qxm7.fsf@morokweng.localdomain>
- <20190701092212-mutt-send-email-mst@kernel.org>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [RFC PATCH] virtio_ring: Use DMA API if guest memory is encrypted
-In-reply-to: <20190701092212-mutt-send-email-mst@kernel.org>
-Date: Sun, 14 Jul 2019 02:51:18 -0300
-Message-ID: <87d0id9nah.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45mcyq3wXzzDqfF
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 17:01:35 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx1.mailbox.org (Postfix) with ESMTPS id DAD124EEE5;
+ Sun, 14 Jul 2019 09:01:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de
+ [80.241.56.123]) (amavisd-new, port 10030)
+ with ESMTP id 83Wg7f6TIzf1; Sun, 14 Jul 2019 09:01:20 +0200 (CEST)
+Date: Sun, 14 Jul 2019 17:00:29 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v9 05/10] namei: O_BENEATH-style path resolution flags
+Message-ID: <20190714070029.m53etvm3y4etidxt@yavin>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-6-cyphar@cyphar.com>
+ <20190712043341.GI17978@ZenIV.linux.org.uk>
+ <20190712105745.nruaftgeat6irhzr@yavin>
+ <20190712123924.GK17978@ZenIV.linux.org.uk>
+ <20190712125552.GL17978@ZenIV.linux.org.uk>
+ <20190712132553.GN17978@ZenIV.linux.org.uk>
+ <20190712150026.GO17978@ZenIV.linux.org.uk>
+ <20190713024153.GA3817@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-14_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907140073
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="33fhorotybcq4qkp"
+Content-Disposition: inline
+In-Reply-To: <20190713024153.GA3817@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,216 +60,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mike Anderson <andmike@linux.ibm.com>,
- Michael Roth <mdroth@linux.vnet.ibm.com>,
- Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
- Jason Wang <jasowang@redhat.com>, Alexey Kardashevskiy <aik@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org, iommu@lists.linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--33fhorotybcq4qkp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Michael S. Tsirkin <mst@redhat.com> writes:
+On 2019-07-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Fri, Jul 12, 2019 at 04:00:26PM +0100, Al Viro wrote:
+> > On Fri, Jul 12, 2019 at 02:25:53PM +0100, Al Viro wrote:
+> >=20
+> > > 	if (flags & LOOKUP_BENEATH) {
+> > > 		nd->root =3D nd->path;
+> > > 		if (!(flags & LOOKUP_RCU))
+> > > 			path_get(&nd->root);
+> > > 		else
+> > > 			nd->root_seq =3D nd->seq;
+> >=20
+> > BTW, this assignment is needed for LOOKUP_RCU case.  Without it
+> > you are pretty much guaranteed that lazy pathwalk will fail,
+> > when it comes to complete_walk().
+> >=20
+> > Speaking of which, what would happen if LOOKUP_ROOT/LOOKUP_BENEATH
+> > combination would someday get passed?
+>=20
+> I don't understand what's going on with ->r_seq in there - your
+> call of path_is_under() is after having (re-)sampled rename_lock,
+> but if that was the only .. in there, who's going to recheck
+> the value?  For that matter, what's to guarantee that the thing
+> won't get moved just as you are returning from handle_dots()?
+>=20
+> IOW, what does LOOKUP_IN_ROOT guarantee for caller (openat2())?
 
-> On Thu, Jun 27, 2019 at 10:58:40PM -0300, Thiago Jung Bauermann wrote:
->>
->> Michael S. Tsirkin <mst@redhat.com> writes:
->>
->> > On Mon, Jun 03, 2019 at 10:13:59PM -0300, Thiago Jung Bauermann wrote:
->> >>
->> >>
->> >> Michael S. Tsirkin <mst@redhat.com> writes:
->> >>
->> >> > On Wed, Apr 17, 2019 at 06:42:00PM -0300, Thiago Jung Bauermann wrote:
->> >> >> I rephrased it in terms of address translation. What do you think of
->> >> >> this version? The flag name is slightly different too:
->> >> >>
->> >> >>
->> >> >> VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION This feature has the same
->> >> >>     meaning as VIRTIO_F_ACCESS_PLATFORM both when set and when not set,
->> >> >>     with the exception that address translation is guaranteed to be
->> >> >>     unnecessary when accessing memory addresses supplied to the device
->> >> >>     by the driver. Which is to say, the device will always use physical
->> >> >>     addresses matching addresses used by the driver (typically meaning
->> >> >>     physical addresses used by the CPU) and not translated further. This
->> >> >>     flag should be set by the guest if offered, but to allow for
->> >> >>     backward-compatibility device implementations allow for it to be
->> >> >>     left unset by the guest. It is an error to set both this flag and
->> >> >>     VIRTIO_F_ACCESS_PLATFORM.
->> >> >
->> >> >
->> >> >
->> >> >
->> >> > OK so VIRTIO_F_ACCESS_PLATFORM is designed to allow unpriveledged
->> >> > drivers. This is why devices fail when it's not negotiated.
->> >>
->> >> Just to clarify, what do you mean by unprivileged drivers? Is it drivers
->> >> implemented in guest userspace such as with VFIO? Or unprivileged in
->> >> some other sense such as needing to use bounce buffers for some reason?
->> >
->> > I had drivers in guest userspace in mind.
->>
->> Great. Thanks for clarifying.
->>
->> I don't think this flag would work for guest userspace drivers. Should I
->> add a note about that in the flag definition?
->
-> I think you need to clarify access protection rules. Is it only
-> translation that is bypassed or is any platform-specific
-> protection mechanism bypassed too?
+I tried to explain this in the commit message for "namei: aggressively
+check for nd->root escape on ".." resolution", but I probably could've
+explained it better.
 
-It is only translation. In a secure guest, if the device tries to access
-a memory address that wasn't provided by the driver then the
-architecture will deny that access. If the device accesses addresses
-provided to it by the driver, then there's no protection mechanism or
-translation to get in the way.
+The basic property being guaranteed by LOOKUP_IN_ROOT is that it will
+not result in resolution of a path component which was not inside the
+root of the dirfd tree at some point during resolution (and that all
+absolute symlink and ".." resolution will be done relative to the
+dirfd). This may smell slightly of chroot(2), because unfortunately it
+is a similar concept -- the reason for this is to allow for a more
+efficient way to safely resolve paths inside a rootfs than spawning a
+separate process to then pass back the fd to the caller.
 
->> >> > This confuses me.
->> >> > If driver is unpriveledged then what happens with this flag?
->> >> > It can supply any address it wants. Will that corrupt kernel
->> >> > memory?
->> >>
->> >> Not needing address translation doesn't necessarily mean that there's no
->> >> IOMMU. On powerpc we don't use VIRTIO_F_ACCESS_PLATFORM but there's
->> >> always an IOMMU present. And we also support VFIO drivers. The VFIO API
->> >> for pseries (sPAPR section in Documentation/vfio.txt) has extra ioctls
->> >> to program the IOMMU.
->> >>
->> >> For our use case, we don't need address translation because we set up an
->> >> identity mapping in the IOMMU so that the device can use guest physical
->> >> addresses.
->
-> OK so I think I am beginning to see it in a different light.  Right now the specific
-> platform creates an identity mapping. That in turn means DMA API can be
-> fast - it does not need to do anything.  What you are looking for is a
-> way to tell host it's an identity mapping - just as an optimization.
->
-> Is that right?
+We don't want to do a path_is_under() check for every ".." (otherwise
+lookups have a quadratic slowdown when doing many ".."s), so I instead
+only do a check after a rename or a mount (which are the only operations
+which could change what ".." points to). And since we do the
+path_is_under() check if m_seq or r_seq need a retry, we can re-take
+them[+].
 
-Almost. Theoretically it is just an optimization. But in practice the
-pseries boot firmware (SLOF) doesn't support IOMMU_PLATFORM so it's not
-possible to boot a guest from a device with that flag set.
+The main reason why I don't re-check path_is_under() after handle_dots()
+is that there is no way to be sure that a racing rename didn't happen
+after your last path_is_under() check. The rename could happen after the
+syscall returns, after all.
 
-> So this is what I would call this option:
->
-> VIRTIO_F_ACCESS_PLATFORM_IDENTITY_ADDRESS
->
-> and the explanation should state that all device
-> addresses are translated by the platform to identical
-> addresses.
->
-> In fact this option then becomes more, not less restrictive
-> than VIRTIO_F_ACCESS_PLATFORM - it's a promise
-> by guest to only create identity mappings,
-> and only before driver_ok is set.
-> This option then would always be negotiated together with
-> VIRTIO_F_ACCESS_PLATFORM.
->
-> Host then must verify that
-> 1. full 1:1 mappings are created before driver_ok
->     or can we make sure this happens before features_ok?
->     that would be ideal as we could require that features_ok fails
-> 2. mappings are not modified between driver_ok and reset
->     i guess attempts to change them will fail -
->     possibly by causing a guest crash
->     or some other kind of platform-specific error
+So, the main purpose of the check is to make sure that a ".."s after a
+rename doesn't result in an escape. If the rename happens after we've
+traversed through a ".." that means that the ".." was inside the root in
+the first place (a root ".." is handled by follow_dotdot). If the rename
+happens after we've gone through handle_dots() and there is no
+subsequent ".." then to userspace it looks identical to the rename
+occurring after the syscall has returned. If there is a subsequent ".."
+after a racing rename then we may have moved into a path that wasn't
+path_is_under() and so we have to check it.
 
-I think VIRTIO_F_ACCESS_PLATFORM_IDENTITY_ADDRESS is good, but requiring
-it to be accompanied by ACCESS_PLATFORM can be a problem. One reason is
-SLOF as I mentioned above, another is that we would be requiring all
-guests running on the machine (secure guests or not, since we would use
-the same configuration for all guests) to support it. But
-ACCESS_PLATFORM is relatively recent so it's a bit early for that. For
-instance, Ubuntu 16.04 LTS (which is still supported) doesn't know about
-it and wouldn't be able to use the device.
+The only way I could see you could solve the race completely is if you
+had a way for userspace to lock things from being able to be renamed (or
+MS_MOVE'd). And that feels like a really bad idea to me.
 
-> So far so good, but now a question:
->
-> how are we handling guest address width limitations?
-> Is VIRTIO_F_ACCESS_PLATFORM_IDENTITY_ADDRESS subject to
-> guest address width limitations?
-> I am guessing we can make them so ...
-> This needs to be documented.
+[+]: You asked why don't I re-take m_seq. The reason is that I don't
+	 fully understand all the other m_seq checks being done during
+	 resolution, and we aren't definitely doing them all in
+	 handle_dots(). So I assumed re-taking it could result in me
+	 breaking RCU-walk which obviously would be bad. Since I am the only
+	 thing using nd->r_seq, I can re-take it without issue.
 
-I'm not sure. I will get back to you on this.
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
 
->> > And can it access any guest physical address?
->>
->> Sorry, I was mistaken. We do support VFIO in guests but not for virtio
->> devices, only for regular PCI devices. In which case they will use
->> address translation.
->
-> Not sure how this answers the question.
+--33fhorotybcq4qkp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Because I had said that we had VFIO virtio drivers, you asked:
+-----BEGIN PGP SIGNATURE-----
 
-> >> > This confuses me.
-> >> > If driver is unpriveledged then what happens with this flag?
-> >> > It can supply any address it wants. Will that corrupt kernel
-> >> > memory?
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXSrTCAAKCRCdlLljIbnQ
+EpwpAQD9KgKhzC1YZRQyynlFOIyKp8VXEUfhiNokL0RBBx4G5AD7BovFdb8KzxSf
+QrrP/0Vq6p6AFs4sMQbjc9M6I/5gzQ8=
+=fUib
+-----END PGP SIGNATURE-----
 
-Since we can't actually have VFIO virtio drivers, there's nothing to
-corrupt the kernel memory.
-
->> >> If the guest kernel is concerned that an unprivileged driver could
->> >> jeopardize its integrity it should not negotiate this feature flag.
->> >
->> > Unfortunately flag negotiation is done through config space
->> > and so can be overwritten by the driver.
->>
->> Ok, so the guest kernel has to forbid VFIO access on devices where this
->> flag is advertised.
->
-> That's possible in theory but in practice we did not yet teach VFIO not
-> to attach to legacy devices without VIRTIO_F_ACCESS_PLATFORM.  So all
-> security relies on host denying driver_ok without
-> VIRTIO_F_ACCESS_PLATFORM.  New options that bypass guest security are
-> thus tricky as they can create security holes for existing guests.
-> I'm open to ideas about how to do this in a safe way,
-
-If the new flag isn't coupled with ACCESS_PLATFORM then the existing
-mechanism of the host denying driver_ok when ACCESS_PLATFORM isn't set
-will be enough.
-
->> >> Perhaps there should be a note about this in the flag definition? This
->> >> concern is platform-dependant though. I don't believe it's an issue in
->> >> pseries.
->> >
->> > Again ACCESS_PLATFORM has a pretty open definition. It does actually
->> > say it's all up to the platform.
->> >
->> > Specifically how will VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION be
->> > implemented portably? virtio has no portable way to know
->> > whether DMA API bypasses translation.
->>
->> The fact that VIRTIO_F_ACCESS_PLATFORM_NO_TRANSLATION is set
->> communicates that knowledge to virtio. There is a shared understanding
->> between the guest and the host about what this flag being set means.
->
-> Right but I wonder how are you going to *actually* implement it on Linux?
-> Are you adding a new set of DMA APIs that do everything except
-> translation?
-
-Actually it's the opposite. There's nothing to do in the guest besides
-setting up SWIOTLB and sharing its buffer with the host.
-
-Normally on pseries, devices use the dma_iommu_ops defined in
-arch/powerpc/kernel/dma-iommu.c. I have a patch which changes the
-device's dma_ops to NULL so that the default DMA path will be used:
-
-https://lore.kernel.org/linuxppc-dev/20190713060023.8479-12-bauerman@linux.ibm.com/
-
-Then another patch forces use of SWIOTLB and defines the
-set_memory_{encrypted,decrypted} functions so that SWIOTLB can make its
-buffer be shared with the host:
-
-https://lore.kernel.org/linuxppc-dev/20190713060023.8479-13-bauerman@linux.ibm.com/
-
---
-Thiago Jung Bauermann
-IBM Linux Technology Center
+--33fhorotybcq4qkp--
