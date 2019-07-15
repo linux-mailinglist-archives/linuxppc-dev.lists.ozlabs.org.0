@@ -1,42 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8F6683DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 09:07:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nF363pnNzDqV2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 17:07:30 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E65683E8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 09:13:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nFBT1rFJzDqTL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 17:13:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nF0w5z0tzDqSg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 17:05:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45nF0t693bz9sPK;
- Mon, 15 Jul 2019 17:05:34 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
-In-Reply-To: <20190713235430.GZ14074@gate.crashing.org>
-References: <20190713032106.8509-1-yamada.masahiro@socionext.com>
- <20190713124744.GS14074@gate.crashing.org>
- <20190713131642.GU14074@gate.crashing.org>
- <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
- <20190713235430.GZ14074@gate.crashing.org>
-Date: Mon, 15 Jul 2019 17:05:34 +1000
-Message-ID: <87v9w393r5.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45nF8R6Q70zDqSw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 17:12:07 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 8E6EFAE80037;
+ Mon, 15 Jul 2019 03:11:30 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2] powerpc/xive: Drop deregistered irqs
+Date: Mon, 15 Jul 2019 17:11:31 +1000
+Message-Id: <20190715071131.86173-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,73 +38,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Paul Mackerras <paulus@samba.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Alistair Popple <alistair@popple.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Paul Mackerras <paulus@samba.org>, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> On Sun, Jul 14, 2019 at 07:45:15AM +0900, Masahiro Yamada wrote:
->> On Sat, Jul 13, 2019 at 10:17 PM Segher Boessenkool
->> <segher@kernel.crashing.org> wrote:
->> > On Sat, Jul 13, 2019 at 07:47:44AM -0500, Segher Boessenkool wrote:
->> > > On Sat, Jul 13, 2019 at 12:21:06PM +0900, Masahiro Yamada wrote:
->> > > > The KBUILD_ARFLAGS addition in arch/powerpc/Makefile has never worked
->> > > > in a useful way because it is always overridden by the following code
->> > > > in the top Makefile:
->> > > >
->> > > >   # use the deterministic mode of AR if available
->> > > >   KBUILD_ARFLAGS := $(call ar-option,D)
->> > > >
->> > > > The code in the top Makefile was added in 2011, by commit 40df759e2b9e
->> > > > ("kbuild: Fix build with binutils <= 2.19").
->> > > >
->> > > > The KBUILD_ARFLAGS addition for ppc has always been dead code from the
->> > > > beginning.
->> > >
->> > > That was added in 43c9127d94d6 to replace my 8995ac870273 from 2007.
->> > >
->> > > Is it no longer supported to build a 64-bit kernel with a toolchain
->> > > that defaults to 32-bit, or the other way around?  And with non-native
->> > > toolchains (this one didn't run on Linux, even).
->> >
->> > It was an --enable-targets=all toolchain, somewhat common for crosses,
->> > if that matters.
->> 
->> I always use the same toolchain
->> for compile-testing PPC32/64.
->> 
->> I have never been hit by the issue you mention.
->> Somebody would have reported it if it were still a problem.
->
-> But did you use --enable-targets=all?
+There is a race between releasing an irq on one cpu and fetching it
+from XIVE on another cpu as there does not seem to be any locking between
+these, probably because xive_irq_chip::irq_shutdown() is supposed to
+remove the irq from all queues in the system which it does not do.
 
-I do. And I don't see any errors with this patch applied.
+As a result, when such released irq appears in a queue, we take it
+from the queue but we do not change the current priority on that cpu and
+since there is no handler for the irq, EOI is never called and the cpu
+current priority remains elevated (7 vs. 0xff==unmasked). If another irq
+is assigned to the same cpu, then that device stops working until irq
+is moved to another cpu or the device is reset.
 
-> The problem was empty archives IIRC.  Not a problem anymore with thin
-> archives, maybe?
+This adds a new ppc_md.orphan_irq callback which is called if no irq
+descriptor is found. The XIVE implementation drops the current priority
+to 0xff which effectively unmasks interrupts in a current CPU.
 
-Maybe? Though I can't get it to break even before we switched to them.
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+Changes:
+v2:
+* added ppc_md.orphan_irq
 
->> Moreover, commit 43c9127d94d6
->> translated the environment variable "GNUTARGET"
->> into the command option "--target="
->> 
->> My powerpc-linux-ar does not know it:
->> 
->> powerpc-linux-ar: -t: No such file or directory
->
-> Yes, that is why I used the environment variable, all binutils work
-> with that.  There was no --target option in GNU ar before 2.22.
+---
 
-Yeah, we're not very good at testing with really old binutils, so I
-guess we broke that.
+Found it on P9 system with:
+- a host with 8 cpus online
+- a boot disk on ahci with its msix on cpu#0
+- a guest with 2xGPUs + 6xNVLink + 4 cpus
+- GPU#0 from the guest is bound to the same cpu#0.
 
-I'm inclined to merge this, it doesn't seem to break anything, and it
-fixes using --target on old binutils that don't have it.
+Killing a guest killed ahci and therefore the host because of the race.
+Note that VFIO masks interrupts first and only then resets the device.
+---
+ arch/powerpc/include/asm/machdep.h |  3 +++
+ arch/powerpc/kernel/irq.c          |  9 ++++++---
+ arch/powerpc/sysdev/xive/common.c  | 10 ++++++++++
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-cheers
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index c43d6eca9edd..6cc14e28e89a 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -59,6 +59,9 @@ struct machdep_calls {
+ 	/* Return an irq, or 0 to indicate there are none pending. */
+ 	unsigned int	(*get_irq)(void);
+ 
++	/* Drops irq if it does not have a valid descriptor */
++	void		(*orphan_irq)(unsigned int irq);
++
+ 	/* PCI stuff */
+ 	/* Called after allocating resources */
+ 	void		(*pcibios_fixup)(void);
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index bc68c53af67c..b4e06d05bdba 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -632,10 +632,13 @@ void __do_irq(struct pt_regs *regs)
+ 	may_hard_irq_enable();
+ 
+ 	/* And finally process it */
+-	if (unlikely(!irq))
++	if (unlikely(!irq)) {
+ 		__this_cpu_inc(irq_stat.spurious_irqs);
+-	else
+-		generic_handle_irq(irq);
++	} else if (generic_handle_irq(irq)) {
++		if (ppc_md.orphan_irq)
++			ppc_md.orphan_irq(irq);
++		__this_cpu_inc(irq_stat.spurious_irqs);
++	}
+ 
+ 	trace_irq_exit(regs);
+ 
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 082c7e1c20f0..b4054091999a 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -283,6 +283,15 @@ static unsigned int xive_get_irq(void)
+ 	return irq;
+ }
+ 
++static void xive_orphan_irq(unsigned int irq)
++{
++	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
++
++	xc->cppr = 0xff;
++	out_8(xive_tima + xive_tima_offset + TM_CPPR, 0xff);
++	DBG_VERBOSE("orphan_irq: irq %d, adjusting CPPR to 0xff\n", irq);
++}
++
+ /*
+  * After EOI'ing an interrupt, we need to re-check the queue
+  * to see if another interrupt is pending since multiple
+@@ -1419,6 +1428,7 @@ bool __init xive_core_init(const struct xive_ops *ops, void __iomem *area, u32 o
+ 	xive_irq_priority = max_prio;
+ 
+ 	ppc_md.get_irq = xive_get_irq;
++	ppc_md.orphan_irq = xive_orphan_irq;
+ 	__xive_enabled = true;
+ 
+ 	pr_devel("Initializing host..\n");
+-- 
+2.17.1
+
