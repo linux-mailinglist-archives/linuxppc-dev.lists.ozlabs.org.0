@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027EB68751
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 12:48:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nKxs5D89zDqY7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 20:48:17 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 368A668761
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 12:53:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nL3c4243zDqYB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 20:53:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,22 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nKvC53HDzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 20:45:59 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nL1d4glWzDqNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 20:51:33 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 3A70B85376;
- Mon, 15 Jul 2019 10:45:56 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id D41E9307D910;
+ Mon, 15 Jul 2019 10:51:31 +0000 (UTC)
 Received: from [10.36.117.137] (ovpn-117-137.ams2.redhat.com [10.36.117.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CAB404505;
- Mon, 15 Jul 2019 10:45:52 +0000 (UTC)
-Subject: Re: [PATCH v3 03/11] s390x/mm: Implement arch_remove_memory()
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A77F31001B17;
+ Mon, 15 Jul 2019 10:51:28 +0000 (UTC)
+Subject: Re: [PATCH v3 02/11] s390x/mm: Fail when an altmap is used for
+ arch_add_memory()
 To: Michal Hocko <mhocko@kernel.org>
 References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-4-david@redhat.com>
- <20190701074503.GD6376@dhcp22.suse.cz> <20190701124717.GU6376@dhcp22.suse.cz>
+ <20190527111152.16324-3-david@redhat.com>
+ <20190701074306.GC6376@dhcp22.suse.cz> <20190701124628.GT6376@dhcp22.suse.cz>
 From: David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -80,18 +81,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <556f2941-4c76-37f2-cac1-91eca48cc0e9@redhat.com>
-Date: Mon, 15 Jul 2019 12:45:52 +0200
+Message-ID: <86f3ff3d-d035-a806-88b7-b8c7b77c206e@redhat.com>
+Date: Mon, 15 Jul 2019 12:51:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190701124717.GU6376@dhcp22.suse.cz>
+In-Reply-To: <20190701124628.GT6376@dhcp22.suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.25]); Mon, 15 Jul 2019 10:45:56 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.48]); Mon, 15 Jul 2019 10:51:32 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,72 +117,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01.07.19 14:47, Michal Hocko wrote:
-> On Mon 01-07-19 09:45:03, Michal Hocko wrote:
->> On Mon 27-05-19 13:11:44, David Hildenbrand wrote:
->>> Will come in handy when wanting to handle errors after
->>> arch_add_memory().
+On 01.07.19 14:46, Michal Hocko wrote:
+> On Mon 01-07-19 09:43:06, Michal Hocko wrote:
+>> On Mon 27-05-19 13:11:43, David Hildenbrand wrote:
+>>> ZONE_DEVICE is not yet supported, fail if an altmap is passed, so we
+>>> don't forget arch_add_memory()/arch_remove_memory() when unlocking
+>>> support.
 >>
->> I do not understand this. Why do you add a code for something that is
->> not possible on this HW (based on the comment - is it still valid btw?)
+>> Why do we need this? Sure ZONE_DEVICE is not supported for s390 and so
+>> might be the case for other arches which support hotplug. I do not see
+>> much point in adding warning to each of them.
 > 
-> Same as the previous patch (drop it).
-
-No. As the description says, this will be needed to handle errors in
-patch 6 cleanly.
-
-And BTW, with paravirtualied devices like virtio-pmem and virtio-mem,
-this will also see some other users in the future.
-
-Thanks.
-
-> 
->>> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
->>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: Michal Hocko <mhocko@suse.com>
->>> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
->>> Cc: David Hildenbrand <david@redhat.com>
->>> Cc: Vasily Gorbik <gor@linux.ibm.com>
->>> Cc: Oscar Salvador <osalvador@suse.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>  arch/s390/mm/init.c | 13 +++++++------
->>>  1 file changed, 7 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
->>> index d552e330fbcc..14955e0a9fcf 100644
->>> --- a/arch/s390/mm/init.c
->>> +++ b/arch/s390/mm/init.c
->>> @@ -243,12 +243,13 @@ int arch_add_memory(int nid, u64 start, u64 size,
->>>  void arch_remove_memory(int nid, u64 start, u64 size,
->>>  			struct vmem_altmap *altmap)
->>>  {
->>> -	/*
->>> -	 * There is no hardware or firmware interface which could trigger a
->>> -	 * hot memory remove on s390. So there is nothing that needs to be
->>> -	 * implemented.
->>> -	 */
->>> -	BUG();
->>> +	unsigned long start_pfn = start >> PAGE_SHIFT;
->>> +	unsigned long nr_pages = size >> PAGE_SHIFT;
->>> +	struct zone *zone;
->>> +
->>> +	zone = page_zone(pfn_to_page(start_pfn));
->>> +	__remove_pages(zone, start_pfn, nr_pages, altmap);
->>> +	vmem_remove_mapping(start, size);
->>>  }
->>>  #endif
->>>  #endif /* CONFIG_MEMORY_HOTPLUG */
->>> -- 
->>> 2.20.1
->>>
->>
->> -- 
->> Michal Hocko
->> SUSE Labs
+> I would drop this one. If there is a strong reason to have something
+> like that it should come with a better explanation and it can be done on
+> top.
 > 
 
+This was requested by Dan and I agree it is the right thing to do. In
+the context of paravirtualized devices (e.g., virtio-pmem), it makes
+sense to block functionality an arch does not support.
+
+I'll leave the decision to Andrew.
 
 -- 
 
