@@ -1,83 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB44B6838F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 08:28:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899D768385
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 08:24:10 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nD5371QfzDqHm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 16:24:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nDBD5R8rzDqVd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 16:28:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=maddy@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nD382lMMzDqRt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 16:22:27 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6F6M9eh046556
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 02:22:23 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2trj8qbv8b-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 02:22:23 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.vnet.ibm.com>;
- Mon, 15 Jul 2019 07:22:21 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 15 Jul 2019 07:22:19 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x6F6MISp39911886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jul 2019 06:22:18 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9601952057;
- Mon, 15 Jul 2019 06:22:18 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.126.30.134])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EDF7152059;
- Mon, 15 Jul 2019 06:22:17 +0000 (GMT)
-Subject: Re: [PATCH v2] powerpc/imc: Dont create debugfs files for cpu-less
- nodes
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20190702092112.4015-1-maddy@linux.vnet.ibm.com>
- <87d0ihgojp.fsf@concordia.ellerman.id.au>
-From: maddy <maddy@linux.vnet.ibm.com>
-Date: Mon, 15 Jul 2019 11:52:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nD8R5NzGzDqQb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 16:27:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45nD8R095bz9sND;
+ Mon, 15 Jul 2019 16:27:02 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH v3] powerpc/setup_64: fix -Wempty-body warnings
+In-Reply-To: <1561730629-5025-1-git-send-email-cai@lca.pw>
+References: <1561730629-5025-1-git-send-email-cai@lca.pw>
+Date: Mon, 15 Jul 2019 16:27:00 +1000
+Message-ID: <871ryrak3v.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87d0ihgojp.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19071506-4275-0000-0000-0000034D07A4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071506-4276-0000-0000-0000385D14F2
-Message-Id: <cfb89a0b-8f70-8a19-2b14-c93d46b2b900@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-15_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907150074
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,57 +43,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, paulus@samba.org, tyreld@linux.vnet.ibm.com,
+ joe@perches.com, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Qian Cai <cai@lca.pw> writes:
+> At the beginning of setup_64.c, it has,
+>
+>   #ifdef DEBUG
+>   #define DBG(fmt...) udbg_printf(fmt)
+>   #else
+>   #define DBG(fmt...)
+>   #endif
+>
+> where DBG() could be compiled away, and generate warnings,
+>
+> arch/powerpc/kernel/setup_64.c: In function 'initialize_cache_info':
+> arch/powerpc/kernel/setup_64.c:579:49: warning: suggest braces around
+> empty body in an 'if' statement [-Wempty-body]
+>     DBG("Argh, can't find dcache properties !\n");
+>                                                  ^
+> arch/powerpc/kernel/setup_64.c:582:49: warning: suggest braces around
+> empty body in an 'if' statement [-Wempty-body]
+>     DBG("Argh, can't find icache properties !\n");
 
-On 7/11/19 10:23 AM, Michael Ellerman wrote:
-> Hi Maddy,
->
-> Madhavan Srinivasan <maddy@linux.vnet.ibm.com> writes:
->> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
->> index 186109bdd41b..e04b20625cb9 100644
->> --- a/arch/powerpc/platforms/powernv/opal-imc.c
->> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
->> @@ -69,20 +69,20 @@ static void export_imc_mode_and_cmd(struct device_node *node,
->>   	if (of_property_read_u32(node, "cb_offset", &cb_offset))
->>   		cb_offset = IMC_CNTL_BLK_OFFSET;
->>   
->> -	for_each_node(nid) {
->> -		loc = (u64)(pmu_ptr->mem_info[chip].vbase) + cb_offset;
->> +	while (ptr->vbase != NULL) {
-> This means you'll bail out as soon as you find a node with no vbase, but
-> it's possible we could have a CPU-less node intermingled with other
-> nodes.
-Nice catch. Thanks for the review, will fix it.
+Neither of those sites should use DBG(), that's not really early boot
+code, they should just use pr_warn().
 
-Maddy
+And the other uses of DBG() in initialize_cache_info() should just be
+removed.
 
->
-> So I think you want to keep the for loop, but continue if you see a NULL
-> vbase?
->
->
->> +		loc = (u64)(ptr->vbase) + cb_offset;
->>   		imc_mode_addr = (u64 *)(loc + IMC_CNTL_BLK_MODE_OFFSET);
->> -		sprintf(mode, "imc_mode_%d", nid);
->> +		sprintf(mode, "imc_mode_%d", (u32)(ptr->id));
->>   		if (!imc_debugfs_create_x64(mode, 0600, imc_debugfs_parent,
->>   					    imc_mode_addr))
->>   			goto err;
->>   
->>   		imc_cmd_addr = (u64 *)(loc + IMC_CNTL_BLK_CMD_OFFSET);
->> -		sprintf(cmd, "imc_cmd_%d", nid);
->> +		sprintf(cmd, "imc_cmd_%d", (u32)(ptr->id));
->>   		if (!imc_debugfs_create_x64(cmd, 0600, imc_debugfs_parent,
->>   					    imc_cmd_addr))
->>   			goto err;
->> -		chip++;
->> +		ptr++;
->>   	}
->>   	return;
-> cheers
->
+In smp_release_cpus() the entry/exit DBG's should just be removed, and
+the spinning_secondaries line should just be pr_debug().
 
+That would just leave the two calls in early_setup(). If we taught
+udbg_printf() to return early when udbg_putc is NULL, then we could just
+call udbg_printf() unconditionally and get rid of the DBG macro entirely.
+
+cheers
