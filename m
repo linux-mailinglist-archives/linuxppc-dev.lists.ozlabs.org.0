@@ -2,125 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8611D68DE2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 16:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C71A68E99
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 16:08:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nQFl08c0zDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 00:02:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nQNv6wD2zDqQG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 00:08:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=de.ibm.com
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=borntraeger@de.ibm.com; receiver=<UNKNOWN>)
+ envelope-from=pasic@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nQ6v488bzDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 23:56:16 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nQH84bn5zDqGF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 00:03:32 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6FDrTim094863
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 09:56:13 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2trt84adcc-1
+ x6FDwRCs053136
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 10:03:28 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2trt5p3c5g-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 09:56:13 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 10:03:28 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <borntraeger@de.ibm.com>;
- Mon, 15 Jul 2019 14:56:10 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <pasic@linux.ibm.com>;
+ Mon, 15 Jul 2019 15:03:25 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 15 Jul 2019 14:56:06 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6FDu5P539649366
+ Mon, 15 Jul 2019 15:03:20 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6FE3JR555574606
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jul 2019 13:56:05 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CA535204E;
- Mon, 15 Jul 2019 13:56:05 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.152.224.118])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 086875204F;
- Mon, 15 Jul 2019 13:56:05 +0000 (GMT)
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-To: Christian Brauner <christian@brauner.io>, linux-kernel@vger.kernel.org
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- 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
- syiRa+UVlsKmx1hsEg==
-Date: Mon, 15 Jul 2019 15:56:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ Mon, 15 Jul 2019 14:03:19 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1F3BCA4053;
+ Mon, 15 Jul 2019 14:03:19 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8BB8AA404D;
+ Mon, 15 Jul 2019 14:03:18 +0000 (GMT)
+Received: from oc2783563651 (unknown [9.152.224.43])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Jul 2019 14:03:18 +0000 (GMT)
+Date: Mon, 15 Jul 2019 16:03:17 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>
+Subject: Re: [PATCH 3/3] fs/core/vmcore: Move sev_active() reference to x86
+ arch code
+In-Reply-To: <87tvbqgboc.fsf@morokweng.localdomain>
+References: <20190712053631.9814-1-bauerman@linux.ibm.com>
+ <20190712053631.9814-4-bauerman@linux.ibm.com>
+ <20190712150912.3097215e.pasic@linux.ibm.com>
+ <87tvbqgboc.fsf@morokweng.localdomain>
+Organization: IBM
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190714192205.27190-2-christian@brauner.io>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19071513-0028-0000-0000-0000038468BE
+x-cbid: 19071514-4275-0000-0000-0000034D26BA
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071513-0029-0000-0000-00002444867C
-Message-Id: <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
+x-cbparentid: 19071514-4276-0000-0000-0000385D35C5
+Message-Id: <20190715160317.7e3dfb33.pasic@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-15_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=915 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907150166
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907150167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,153 +94,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, arnd@arndb.de,
- linux-sh@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Vasily Gorbik <gor@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Alexey Dobriyan <adobriyan@gmail.com>, iommu@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "Lendacky,
+ Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-fsdevel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I think Vasily already has a clone3 patch for s390x with 435. 
+On Fri, 12 Jul 2019 18:55:47 -0300
+Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
 
+> 
+> [ Cc'ing Tom Lendacky which I forgot to do earlier. Sorry about that. ]
+> 
+> Hello Halil,
+> 
+> Thanks for the quick review.
+> 
+> Halil Pasic <pasic@linux.ibm.com> writes:
+> 
+> > On Fri, 12 Jul 2019 02:36:31 -0300
+> > Thiago Jung Bauermann <bauerman@linux.ibm.com> wrote:
+> >
+> >> Secure Encrypted Virtualization is an x86-specific feature, so it shouldn't
+> >> appear in generic kernel code because it forces non-x86 architectures to
+> >> define the sev_active() function, which doesn't make a lot of sense.
+> >
+> > sev_active() might be just bad (too specific) name for a general
+> > concept. s390 code defines it drives the right behavior in
+> > kernel/dma/direct.c (which uses it).
+> 
+> I thought about that but couldn't put my finger on a general concept.
+> Is it "guest with memory inaccessible to the host"?
+> 
 
-On 14.07.19 21:22, Christian Brauner wrote:
-> A while ago Arnd made it possible to give new system calls the same
-> syscall number on all architectures (except alpha). To not break this
-> nice new feature let's mark 435 for clone3 as reserved on all
-> architectures that do not yet implement it.
-> Even if an architecture does not plan to implement it this ensures that
-> new system calls coming after clone3 will have the same number on all
-> architectures.
+Well, force_dma_unencrypted() is a much better name thatn sev_active():
+s390 has no AMD SEV, that is sure, but for virtio to work we do need to
+make our dma accessible to the hypervisor. Yes, your "guest with memory
+inaccessible to the host" shows into the right direction IMHO.
+Unfortunately I don't have too many cycles to spend on this right now.
+
+> Since your proposed definiton for force_dma_unencrypted() is simply to
+> make it equivalent to sev_active(), I thought it was more
+> straightforward to make each arch define force_dma_unencrypted()
+> directly.
+
+I did not mean to propose equivalence. I intended to say the name
+sev_active() is not suitable for a common concept. On the other hand
+we do have a common concept -- as common code needs to do or not do
+things depending on whether "memory is protected/encrypted" or not. I'm
+fine with the name force_dma_unencrypted(), especially because I don't
+have a better name.
+
 > 
-> Signed-off-by: Christian Brauner <christian@brauner.io>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl    | 1 +
->  arch/ia64/kernel/syscalls/syscall.tbl     | 1 +
->  arch/m68k/kernel/syscalls/syscall.tbl     | 1 +
->  arch/mips/kernel/syscalls/syscall_n32.tbl | 1 +
->  arch/mips/kernel/syscalls/syscall_n64.tbl | 1 +
->  arch/mips/kernel/syscalls/syscall_o32.tbl | 1 +
->  arch/parisc/kernel/syscalls/syscall.tbl   | 1 +
->  arch/powerpc/kernel/syscalls/syscall.tbl  | 1 +
->  arch/s390/kernel/syscalls/syscall.tbl     | 1 +
->  arch/sh/kernel/syscalls/syscall.tbl       | 1 +
->  arch/sparc/kernel/syscalls/syscall.tbl    | 1 +
->  11 files changed, 11 insertions(+)
+> Also, does sev_active() drive the right behavior for s390 in
+> elfcorehdr_read() as well?
 > 
-> diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-> index 1db9bbcfb84e..728fe028c02c 100644
-> --- a/arch/alpha/kernel/syscalls/syscall.tbl
-> +++ b/arch/alpha/kernel/syscalls/syscall.tbl
-> @@ -474,3 +474,4 @@
->  542	common	fsmount				sys_fsmount
->  543	common	fspick				sys_fspick
->  544	common	pidfd_open			sys_pidfd_open
-> +# 545 reserved for clone3
-> diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-> index ecc44926737b..36d5faf4c86c 100644
-> --- a/arch/ia64/kernel/syscalls/syscall.tbl
-> +++ b/arch/ia64/kernel/syscalls/syscall.tbl
-> @@ -355,3 +355,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-> index 9a3eb2558568..a88a285a0e5f 100644
-> --- a/arch/m68k/kernel/syscalls/syscall.tbl
-> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
-> @@ -434,3 +434,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> index 97035e19ad03..c9c879ec9b6d 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-> @@ -373,3 +373,4 @@
->  432	n32	fsmount				sys_fsmount
->  433	n32	fspick				sys_fspick
->  434	n32	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> index d7292722d3b0..bbce9159caa1 100644
-> --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-> @@ -349,3 +349,4 @@
->  432	n64	fsmount				sys_fsmount
->  433	n64	fspick				sys_fspick
->  434	n64	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> index dba084c92f14..9653591428ec 100644
-> --- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-> +++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-> @@ -422,3 +422,4 @@
->  432	o32	fsmount				sys_fsmount
->  433	o32	fspick				sys_fspick
->  434	o32	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-> index 5022b9e179c2..c7aadfef5386 100644
-> --- a/arch/parisc/kernel/syscalls/syscall.tbl
-> +++ b/arch/parisc/kernel/syscalls/syscall.tbl
-> @@ -431,3 +431,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index f2c3bda2d39f..3331749aab20 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -516,3 +516,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-> index 6ebacfeaf853..a90d3e945445 100644
-> --- a/arch/s390/kernel/syscalls/syscall.tbl
-> +++ b/arch/s390/kernel/syscalls/syscall.tbl
-> @@ -437,3 +437,4 @@
->  432  common	fsmount			sys_fsmount			sys_fsmount
->  433  common	fspick			sys_fspick			sys_fspick
->  434  common	pidfd_open		sys_pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-> index 834c9c7d79fa..b5ed26c4c005 100644
-> --- a/arch/sh/kernel/syscalls/syscall.tbl
-> +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> @@ -437,3 +437,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
-> diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-> index c58e71f21129..8c8cc7537fb2 100644
-> --- a/arch/sparc/kernel/syscalls/syscall.tbl
-> +++ b/arch/sparc/kernel/syscalls/syscall.tbl
-> @@ -480,3 +480,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +# 435 reserved for clone3
+
+AFAIU, since s390 does not override it boils down to the same, whether
+sev_active() returns true or false. I'm no expert in that area, but I
+strongly hope that is the right behavior. @Janosch: can you help me
+out with this one?
+
+> >> To solve this problem, add an x86 elfcorehdr_read() function to override
+> >> the generic weak implementation. To do that, it's necessary to make
+> >> read_from_oldmem() public so that it can be used outside of vmcore.c.
+> >>
+> >> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> >> ---
+> >>  arch/x86/kernel/crash_dump_64.c |  5 +++++
+> >>  fs/proc/vmcore.c                |  8 ++++----
+> >>  include/linux/crash_dump.h      | 14 ++++++++++++++
+> >>  include/linux/mem_encrypt.h     |  1 -
+> >>  4 files changed, 23 insertions(+), 5 deletions(-)
+> >
+> > Does not seem to apply to today's or yesterdays master.
 > 
+> It assumes the presence of the two patches I mentioned in the cover
+> letter. Only one of them is in master.
+> 
+> I hadn't realized the s390 virtio patches were on their way to upstream.
+> I was keeping an eye on the email thread but didn't see they were picked
+> up in the s390 pull request. I'll add a new patch to this series making
+> the corresponding changes to s390's <asm/mem_encrypt.h> as well.
+> 
+
+Being on cc for your patch made me realize that things got broken on
+s390. Thanks! I've sent out a patch that fixes protvirt, but we are going
+to benefit from your cleanups. I think with your cleanups and that patch
+of mine both sev_active() and sme_active() can be removed. Feel free to
+do so. If not, I can attend to it as well.
+
+Regards,
+Halil
 
