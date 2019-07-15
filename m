@@ -2,98 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEACE687F9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 13:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA57A6888C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 14:07:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nLVV3pB2zDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 21:13:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nMj11NklzDqZ9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 22:07:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ spf=softfail (mailfrom) smtp.mailfrom=socionext.com
+ (client-ip=210.131.2.90; helo=conssluserg-05.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=none (p=none dis=none) header.from=socionext.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.b="w00yTOzI"; 
+ dkim-atps=neutral
+Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
+ [210.131.2.90])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nLRh4VyLzDqV2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 21:10:40 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id B4EAA308427C;
- Mon, 15 Jul 2019 11:10:38 +0000 (UTC)
-Received: from [10.36.117.137] (ovpn-117-137.ams2.redhat.com [10.36.117.137])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F17431001B18;
- Mon, 15 Jul 2019 11:10:34 +0000 (UTC)
-Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
- unregister_memory_block_under_nodes() never fail
-To: Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>
-References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-11-david@redhat.com>
- <20190701085144.GJ6376@dhcp22.suse.cz> <20190701093640.GA17349@linux>
- <20190701102756.GO6376@dhcp22.suse.cz>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <d450488d-7a82-f7a9-c8d3-b69a0bca48c6@redhat.com>
-Date: Mon, 15 Jul 2019 13:10:33 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nMf13FtkzDqTX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 22:04:39 +1000 (AEST)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com
+ [209.85.217.51]) (authenticated)
+ by conssluserg-05.nifty.com with ESMTP id x6FC4NRL010678
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 21:04:24 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x6FC4NRL010678
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1563192264;
+ bh=7Onnwj4Aol7vBEfdqH7wYkCIRDkp83Cer5+EmKQdOFE=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=w00yTOzIaj5vl2FtI+QcSJXcMye06NqSFvXFLwxK6Xa5KcQPEG/PP3Kqv0UoFuuX+
+ y12fzYi1JP/P8qGSihacuSJ6KEvFmiIp76xAtOUCxidESiXiqWy1MHGbchMGlZVciU
+ hdfOOz/NSNlV/Uh7QxM8iROXSzRF8uMWxEJTGx0BO1LCR7G1AENoJx4Pv1c3fZYgpf
+ UQKK8Mp52j3xI+Xer660ENag//H+hmP/BNbAPaosbDTgL6epk8+OK44rt7KE7/t/6y
+ WFLXdA51u/LWT8zTQnGVh8fPD6v/FgmcwQ7TBuG7Okv4pNMYYnAjgMMVoJKHIML2EU
+ A/1mh4sdcHKnQ==
+X-Nifty-SrcIP: [209.85.217.51]
+Received: by mail-vs1-f51.google.com with SMTP id m23so11169591vso.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 05:04:23 -0700 (PDT)
+X-Gm-Message-State: APjAAAUHlUVJQbA/ZWmdaABvuoBjrmK9CGzrIn2eNOqTVOveuu+t9uIY
+ s3g0hBkIrdsQlIoTrApm18ZlA4AjNF2iHMypzi8=
+X-Google-Smtp-Source: APXvYqyfxSL5TnyJM5fr7O8sQTCclOIa1SfvEyoOE8HnRW8P/3ts/cp1Og/3hK/v5vJ9PY5O3OefkCqQJGfEon2W6l8=
+X-Received: by 2002:a67:fc45:: with SMTP id p5mr15874928vsq.179.1563192262732; 
+ Mon, 15 Jul 2019 05:04:22 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190701102756.GO6376@dhcp22.suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.40]); Mon, 15 Jul 2019 11:10:39 +0000 (UTC)
+References: <20190713032106.8509-1-yamada.masahiro@socionext.com>
+ <20190713124744.GS14074@gate.crashing.org>
+ <20190713131642.GU14074@gate.crashing.org>
+ <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
+ <20190713235430.GZ14074@gate.crashing.org>
+ <87v9w393r5.fsf@concordia.ellerman.id.au>
+ <20190715072959.GB20882@gate.crashing.org>
+In-Reply-To: <20190715072959.GB20882@gate.crashing.org>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Mon, 15 Jul 2019 21:03:46 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATGEK9wxz87J3sTNOYPdtAFXaegQU9EctEBGULQL-ZC4w@mail.gmail.com>
+Message-ID: <CAK7LNATGEK9wxz87J3sTNOYPdtAFXaegQU9EctEBGULQL-ZC4w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,49 +74,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, "David S. Miller" <davem@davemloft.net>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alex Deucher <alexander.deucher@amd.com>, Igor Mammedov <imammedo@redhat.com>,
- akpm@linux-foundation.org, Chris Wilson <chris@chris-wilson.co.uk>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01.07.19 12:27, Michal Hocko wrote:
-> On Mon 01-07-19 11:36:44, Oscar Salvador wrote:
->> On Mon, Jul 01, 2019 at 10:51:44AM +0200, Michal Hocko wrote:
->>> Yeah, we do not allow to offline multi zone (node) ranges so the current
->>> code seems to be over engineered.
->>>
->>> Anyway, I am wondering why do we have to strictly check for already
->>> removed nodes links. Is the sysfs code going to complain we we try to
->>> remove again?
->>
->> No, sysfs will silently "fail" if the symlink has already been removed.
->> At least that is what I saw last time I played with it.
->>
->> I guess the question is what if sysfs handling changes in the future
->> and starts dropping warnings when trying to remove a symlink is not there.
->> Maybe that is unlikely to happen?
-> 
-> And maybe we handle it then rather than have a static allocation that
-> everybody with hotremove configured has to pay for.
-> 
+On Mon, Jul 15, 2019 at 4:30 PM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> On Mon, Jul 15, 2019 at 05:05:34PM +1000, Michael Ellerman wrote:
+> > Segher Boessenkool <segher@kernel.crashing.org> writes:
+> > > Yes, that is why I used the environment variable, all binutils work
+> > > with that.  There was no --target option in GNU ar before 2.22.
 
-So what's the suggestion? Dropping the nodemask_t completely and calling
-sysfs_remove_link() on already potentially removed links?
+I use binutils 2.30
+It does not understand --target option.
 
-Of course, we can also just use mem_blk->nid and rest assured that it
-will never be called for memory blocks belonging to multiple nodes.
+$ powerpc-linux-ar --version
+GNU ar (GNU Binutils) 2.30
+Copyright (C) 2018 Free Software Foundation, Inc.
+This program is free software; you may redistribute it under the terms of
+the GNU General Public License version 3 or (at your option) any later version.
+This program has absolutely no warranty.
+
+If I give --target=elf$(BITS)-$(GNUTARGET) option, I see this:
+powerpc-linux-ar: -t: No such file or directory
+
+
+
+> > Yeah, we're not very good at testing with really old binutils, so I
+> > guess we broke that.
+> >
+> > I'm inclined to merge this, it doesn't seem to break anything, and it
+> > fixes using --target on old binutils that don't have it.
+>
+> But we don't set the target any other way either.  I don't think this
+> will work with a 32-bit toolchain (default target 32 bit) and a 64-bit
+> kernel, or the other way around.
+>
+> Then again, does that work at *all* nowadays?  Do we even consider that
+> important, *should* it work?
+
+
+Let me confirm if I understood this discussion.
+
+
+[1] KBUILD_ARFLAGS += --target=elf$(BITS)-$(GNUTARGET)
+    is pointless since it is always overridden by another
+    KBUILD_ARFLAGS assignment.
+
+[2] If we stop overriding it, it would cause build errors.
+    So, --target is not only useless, but it is rather harmful.
+
+
+So, we all agreed with this patch, right?
+
+
+We are discussing whether or not to revive
+GNUTARGET=elf$(BITS)-$(GNUTARGET)
+in a *separate* patch, correct?
+
 
 -- 
-
-Thanks,
-
-David / dhildenb
+Best Regards
+Masahiro Yamada
