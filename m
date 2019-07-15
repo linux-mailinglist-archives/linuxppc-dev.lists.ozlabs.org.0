@@ -1,49 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A829E685A4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 10:40:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nH5z0DfDzDqQJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 18:40:07 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7AB685AF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 10:46:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nHFF6V4BzDq9H
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 18:46:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=stackframe.org
- (client-ip=2001:470:70c5:1111::170; helo=smtp.duncanthrax.net;
- envelope-from=svens@stackframe.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=stackframe.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=duncanthrax.net header.i=@duncanthrax.net
- header.b="Y914hyBV"; dkim-atps=neutral
-Received: from smtp.duncanthrax.net (smtp.duncanthrax.net
- [IPv6:2001:470:70c5:1111::170])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.b="p2L8qy60"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nGqZ03ylzDqWR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 18:27:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=duncanthrax.net; s=dkim; h=Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From;
- bh=S7LDnDqrF+KRwhMpZ7TCJEdQWTb51YB0cy9i1jicEGQ=; b=Y914hyBVIqqf8ztXezEbW6gDg5
- +t2qKenSoFQFDb2DpXqAN7OpHNvO4dlYhKJ0nym/7l1SFevTXs4gw8YqLiHk1oY3D4LKZplkvhoXD
- AV5g0iOJHLalqsEWcJ6mcJHW/fjVtqmm0Gg3lwFo2sq1RmCbJZoYCg2wMxxWkuANmpfA=;
-Received: from frobwit.duncanthrax.net ([89.31.1.178] helo=t470p.intern)
- by smtp.eurescom.eu with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.86_2) (envelope-from <svens@stackframe.org>)
- id 1hmwKZ-0005LV-Ni; Mon, 15 Jul 2019 10:27:31 +0200
-From: Sven Schnelle <svens@stackframe.org>
-To: kexec@lists.infradead.org
-Subject: [PATCH v4 3/7] kexec_elf: remove parsing of section headers
-Date: Mon, 15 Jul 2019 10:26:58 +0200
-Message-Id: <20190715082702.27308-4-svens@stackframe.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715082702.27308-1-svens@stackframe.org>
-References: <20190715082702.27308-1-svens@stackframe.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nGxw6XJRzDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 18:33:08 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id t132so7351944pgb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 01:33:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=akvymdxgXwZ4Gkh0YWtLHlMVQ+ba1wF2b4/H3QIPWMU=;
+ b=p2L8qy60QB7k6t08eaJEWXoj+MYTbd+17uWWvP3KbKlQre/cCOIhvo2KuXpr1Smknn
+ FQLvQXEFAiWY5VnIc4XF9JaiaR4giXJic8/sechNj4y/R2GjKCue0tngg29vDDA//s/9
+ ImXwqlezlEb04CrbIqoce8MnlQqL4hFe+RvxYsrcb7V4TerhNcTB08AOzXdTcmZYlf7K
+ Bqo11zSO7w26j6xNeeuQ4NdRaMIbRlEcKDbEVtFgKNgRwEbPJfCF0FVAb38onQdBdfVr
+ 2bBBoqgu4NOfqb94DkxMbWLCP5nRc86DOCjmuM1UI5uhFSDnHNCDwELpL3tTz49WqtUl
+ 91cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=akvymdxgXwZ4Gkh0YWtLHlMVQ+ba1wF2b4/H3QIPWMU=;
+ b=DQMHJCab2hHF4KtoPN0KoNrW1ygIzY16g4VrNn57FvbE7ped+kqj4EQPjgMBFtIpCO
+ 8KiuJ792fle1uRuI8I9w3b6GwBpVQTvuLOJcp51AEXj4HoFFM7nUtXiXDtn+XmLejhaH
+ TMvLamx7cQoxDkqLwv9910u1l8eEIXqqe5vKOfFf/V3lSESMCkYR2GfN3kTN5CpAQIId
+ VzSF1UFmI3fTDIgO2AgFTUT3lcprrE8m0WOpGGa2qhUNdUtGJ84KUkRVAe60HyX2BJxq
+ uICU9DpkvPA4H9EPXZXP+9+A6wtKQuZ0D/d2N0yTkIPjJAflvtSCr3TsWcSufvkMLEdd
+ BqDw==
+X-Gm-Message-State: APjAAAXY1wndsU2F3LglSoei/HyM848xLJlJEXAr0brssvp5wRzPr53/
+ qaeyNkhjyYJe7BPpAj8+P50=
+X-Google-Smtp-Source: APXvYqw1/DIUzsmdQ0Kdr6XI5pI/tuoSPv+KhvD2u+bTr04g+stzjsQXoAhOfkvyPH+bCIYchc6cMw==
+X-Received: by 2002:a65:500d:: with SMTP id f13mr25246188pgo.151.1563179585439; 
+ Mon, 15 Jul 2019 01:33:05 -0700 (PDT)
+Received: from [10.61.2.175] ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id r6sm25253551pjb.22.2019.07.15.01.33.02
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 15 Jul 2019 01:33:04 -0700 (PDT)
+Subject: Re: [PATCH kernel v4 2/4] powerpc/iommu: Allow bypass-only for DMA
+To: Christoph Hellwig <hch@infradead.org>
+References: <20190712094509.56695-1-aik@ozlabs.ru>
+ <20190712094509.56695-3-aik@ozlabs.ru> <20190712152044.GA3061@infradead.org>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <1e9d2b30-015d-130e-4d83-c222f87afdc1@ozlabs.ru>
+Date: Mon, 15 Jul 2019 18:33:00 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190712152044.GA3061@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,194 +85,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Schnelle <svens@stackframe.org>, deller@gmx.de,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We're not using them, so we can drop the parsing.
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
----
- include/linux/kexec.h |   1 -
- kernel/kexec_elf.c    | 137 ------------------------------------------
- 2 files changed, 138 deletions(-)
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index da2a6b1d69e7..f0b809258ed3 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -226,7 +226,6 @@ struct kexec_elf_info {
- 
- 	const struct elfhdr *ehdr;
- 	const struct elf_phdr *proghdrs;
--	struct elf_shdr *sechdrs;
- };
- 
- int kexec_build_elf_info(const char *buf, size_t len, struct elfhdr *ehdr,
-diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-index 76e7df64d715..effe9dc0b055 100644
---- a/kernel/kexec_elf.c
-+++ b/kernel/kexec_elf.c
-@@ -244,134 +244,6 @@ static int elf_read_phdrs(const char *buf, size_t len,
- 	return 0;
- }
- 
--/**
-- * elf_is_shdr_sane - check that it is safe to use the section header
-- * @buf_len:	size of the buffer in which the ELF file is loaded.
-- */
--static bool elf_is_shdr_sane(const struct elf_shdr *shdr, size_t buf_len)
--{
--	bool size_ok;
--
--	/* SHT_NULL headers have undefined values, so we can't check them. */
--	if (shdr->sh_type == SHT_NULL)
--		return true;
--
--	/* Now verify sh_entsize */
--	switch (shdr->sh_type) {
--	case SHT_SYMTAB:
--		size_ok = shdr->sh_entsize == sizeof(Elf_Sym);
--		break;
--	case SHT_RELA:
--		size_ok = shdr->sh_entsize == sizeof(Elf_Rela);
--		break;
--	case SHT_DYNAMIC:
--		size_ok = shdr->sh_entsize == sizeof(Elf_Dyn);
--		break;
--	case SHT_REL:
--		size_ok = shdr->sh_entsize == sizeof(Elf_Rel);
--		break;
--	case SHT_NOTE:
--	case SHT_PROGBITS:
--	case SHT_HASH:
--	case SHT_NOBITS:
--	default:
--		/*
--		 * This is a section whose entsize requirements
--		 * I don't care about.  If I don't know about
--		 * the section I can't care about it's entsize
--		 * requirements.
--		 */
--		size_ok = true;
--		break;
--	}
--
--	if (!size_ok) {
--		pr_debug("ELF section with wrong entry size.\n");
--		return false;
--	} else if (shdr->sh_addr + shdr->sh_size < shdr->sh_addr) {
--		pr_debug("ELF section address wraps around.\n");
--		return false;
--	}
--
--	if (shdr->sh_type != SHT_NOBITS) {
--		if (shdr->sh_offset + shdr->sh_size < shdr->sh_offset) {
--			pr_debug("ELF section location wraps around.\n");
--			return false;
--		} else if (shdr->sh_offset + shdr->sh_size > buf_len) {
--			pr_debug("ELF section not in file.\n");
--			return false;
--		}
--	}
--
--	return true;
--}
--
--static int elf_read_shdr(const char *buf, size_t len,
--			 struct kexec_elf_info *elf_info,
--			 int idx)
--{
--	struct elf_shdr *shdr = &elf_info->sechdrs[idx];
--	const struct elfhdr *ehdr = elf_info->ehdr;
--	const char *sbuf;
--	struct elf_shdr *buf_shdr;
--
--	sbuf = buf + ehdr->e_shoff + idx * sizeof(*buf_shdr);
--	buf_shdr = (struct elf_shdr *) sbuf;
--
--	shdr->sh_name      = elf32_to_cpu(ehdr, buf_shdr->sh_name);
--	shdr->sh_type      = elf32_to_cpu(ehdr, buf_shdr->sh_type);
--	shdr->sh_addr      = elf_addr_to_cpu(ehdr, buf_shdr->sh_addr);
--	shdr->sh_offset    = elf_addr_to_cpu(ehdr, buf_shdr->sh_offset);
--	shdr->sh_link      = elf32_to_cpu(ehdr, buf_shdr->sh_link);
--	shdr->sh_info      = elf32_to_cpu(ehdr, buf_shdr->sh_info);
--
--	/*
--	 * The following fields have a type equivalent to Elf_Addr
--	 * both in 32 bit and 64 bit ELF.
--	 */
--	shdr->sh_flags     = elf_addr_to_cpu(ehdr, buf_shdr->sh_flags);
--	shdr->sh_size      = elf_addr_to_cpu(ehdr, buf_shdr->sh_size);
--	shdr->sh_addralign = elf_addr_to_cpu(ehdr, buf_shdr->sh_addralign);
--	shdr->sh_entsize   = elf_addr_to_cpu(ehdr, buf_shdr->sh_entsize);
--
--	return elf_is_shdr_sane(shdr, len) ? 0 : -ENOEXEC;
--}
--
--/**
-- * elf_read_shdrs - read the section headers from the buffer
-- *
-- * This function assumes that the section header table was checked for sanity.
-- * Use elf_is_ehdr_sane() if it wasn't.
-- */
--static int elf_read_shdrs(const char *buf, size_t len,
--			  struct kexec_elf_info *elf_info)
--{
--	size_t shdr_size, i;
--
--	/*
--	 * e_shnum is at most 65536 so calculating
--	 * the size of the section header cannot overflow.
--	 */
--	shdr_size = sizeof(struct elf_shdr) * elf_info->ehdr->e_shnum;
--
--	elf_info->sechdrs = kzalloc(shdr_size, GFP_KERNEL);
--	if (!elf_info->sechdrs)
--		return -ENOMEM;
--
--	for (i = 0; i < elf_info->ehdr->e_shnum; i++) {
--		int ret;
--
--		ret = elf_read_shdr(buf, len, elf_info, i);
--		if (ret) {
--			kfree(elf_info->sechdrs);
--			elf_info->sechdrs = NULL;
--			return ret;
--		}
--	}
--
--	return 0;
--}
--
- /**
-  * elf_read_from_buffer - read ELF file and sets up ELF header and ELF info
-  * @buf:	Buffer to read ELF file from.
-@@ -404,14 +276,6 @@ static int elf_read_from_buffer(const char *buf, size_t len,
- 		if (ret)
- 			return ret;
- 	}
--	if (ehdr->e_shoff > 0 && ehdr->e_shnum > 0) {
--		ret = elf_read_shdrs(buf, len, elf_info);
--		if (ret) {
--			kfree(elf_info->proghdrs);
--			return ret;
--		}
--	}
--
- 	return 0;
- }
- 
-@@ -421,7 +285,6 @@ static int elf_read_from_buffer(const char *buf, size_t len,
- void kexec_free_elf_info(struct kexec_elf_info *elf_info)
- {
- 	kfree(elf_info->proghdrs);
--	kfree(elf_info->sechdrs);
- 	memset(elf_info, 0, sizeof(*elf_info));
- }
- /**
+On 13/07/2019 01:20, Christoph Hellwig wrote:
+>> This skips the 32bit DMA setup check if the bypass is can be selected.
+> 
+> That sentence does not parse.  I think you need to dop the "can be"
+> based on the actual patch.
+
+
+"the 32bit DMA setup check" is
+"if (!(tbl = get_iommu_table_base(dev)))".
+
+I can rephrase though.
+
+
 -- 
-2.20.1
-
+Alexey
