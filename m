@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDB2685E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 11:02:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nHbg642MzDqRw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 19:02:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 961F5685ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 11:04:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nHdx1lYDzDqQN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 19:04:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="JtzeVjUl"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="iwHnF4Tv"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nHSs6ygVzDqQT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 18:56:29 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id b3so7958476plr.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 01:56:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nHSv4wKgzDqQT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 18:56:31 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id t16so7093125pfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 01:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=nLAi09/WQzIs/j8bJLFsma1ombGiigM6qxBcnWHiUEs=;
- b=JtzeVjUlQbRW8Q7PknryB7pEHdIkY1Bz/6jv6aMtX9KfBK3SV/9khE595AiDnqAObZ
- pxECD0GU6C/sC8khHtsVvrNV2jcYU1AbQu4w5NRU7UMM0fjl2MrA784CsyDxW+XZr0tg
- ogs7MAS1J5bfZ5bmbB2Dh49jJTUK96I9yrgx5gHBuIjrXzhvLRnHJuhHeULxBFppYtQJ
- p3qIN3zKz2yBi0KW+MSwusmPpUi62ai3xtARiskArT5GjqG6BFcLky1vkjFI/ny+KiEa
- hQEluL80ThcWFN8HZnndo3UVOpCu2Z4ygEkMBCcFRC3jXjA8VwAxxh+8YGBY1cdt/l6Z
- cSfQ==
+ bh=zdiFcOQdpxvyzMoMOi7bPjgrBc4m1TxaTwRnN2L23Fs=;
+ b=iwHnF4Tvyz/EIsstgDUUqlbgf4VBeTsI7VIDEZt1DUdKikIpuu+84UW9mNNWJe+o+o
+ RTBRJE0BA1h9rivXUCpA1p1J46t+x5qK7KBizauNs7gDkKXMBWueF0WTqqbI/XvS6aOn
+ hyRLfyWHwd2ZRSHOfgxmZ6dtTZkogg+yWqi4m1Wp3Ng2NO7AOAaV/Fm1JnvYmmFsyJv3
+ /L9U+N9ej8v05lbinT4FyMRhpxU5vmAvGGaRYeMJYwT5ek0UKDgChZ1WTWHSNqSaGKob
+ 24z6qRHn4jK4PMkxSbFkloEWmNhQVk/G6QwLdCi2szupB8mmLnB+ULqrl7gGcKJ8yZYm
+ lxsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=nLAi09/WQzIs/j8bJLFsma1ombGiigM6qxBcnWHiUEs=;
- b=CDlbYdadZNWk8oxyW/jUUitrs2g+m6HOijYqJdV+rIuINTKi6gmjWVfCo1x6vlMz8I
- 3vlNxCL+5Dq+eaB67L/R5nkUo9k/ryqfahcyqyWSPg+uErMqwI2FiCMxQXi3RKPk9Imj
- 5VrcKVkCx47qSNX+qfOQ6NsgGkAfXaeOaalvCCMSZrdsXHceL7TRNYSXehmrQWgMBWxp
- o5cj0MlBTTlF/JAnC23CWXWXaIvZgOcIF1jg/d6I2WhBxKhh53cxn8dFZxwIAwQqp8kQ
- 7nECnyuAR6jaBSZ27bHocSOohS1ixkQYoOWiP6wQNG9sml2Y4n07gQpWsUMS1ZX8Ta4Y
- Hv6Q==
-X-Gm-Message-State: APjAAAXsald59gA9F148jlZ4Nn2HNDAkjHHUS2YVVvpSWAM7Y5d53+ip
- JmIxMJ+tI2vPoDUx6tp1OkpeYxcX1DM=
-X-Google-Smtp-Source: APXvYqz/g+jKFEhfSc+DXR4ag1cKhI3NH6OKNaiSChiK3wXoLIgobAqRQJAPOKWFwPZWMUXweg7q8Q==
-X-Received: by 2002:a17:902:b612:: with SMTP id b18mr953796pls.8.1563180987318; 
- Mon, 15 Jul 2019 01:56:27 -0700 (PDT)
+ bh=zdiFcOQdpxvyzMoMOi7bPjgrBc4m1TxaTwRnN2L23Fs=;
+ b=m2L0cdGNMsVQcRGL8mRi9GARI+yBAwHVtl+wM1ejeflJUP5LNtjt6eT3o16KA0BIeU
+ eqQXZ4udD9F8mWmHYmFvICjI6IWz9OqBBHVtB5sxpEAZiqk+MkLDGKlhPozfx6uuXwvX
+ 74PE6NPLCQBp3QQwvfYhKINi0CUm6vNwyoKDUrjRW9PjDBsZe0L4FI9m8Xmbw3OWI9bs
+ tH/iNMGcx3SyN3iDLFHM3SGn4esoq7VN1Cn2TyuFytVw9DU/03mKunSTL5Eqm+ecY19U
+ A7HGT4jJr61gezEViNXAo5N3KoKM5w11msN8exFN4e+lsq/g8wdq9l4iBzm63GxAZ8Xp
+ Hdtw==
+X-Gm-Message-State: APjAAAXDNByrjD+FgvNHylQezx6AvQVwzOtQXdjapIT3HexWcOKfZONi
+ Bjxmt0B3sl5W+/PT0hfj/bfB0gRbWU4=
+X-Google-Smtp-Source: APXvYqw38CWQ/zvMSVqnehzFfCUWmMsluGFer5nDDJVosG9A5dBeo5uGKFAhklptr3dA9CZNc1ILCg==
+X-Received: by 2002:a17:90a:30e4:: with SMTP id
+ h91mr26930773pjb.37.1563180989505; 
+ Mon, 15 Jul 2019 01:56:29 -0700 (PDT)
 Received: from wafer.ozlabs.ibm.com.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id d14sm22514815pfo.154.2019.07.15.01.56.25
+ by smtp.gmail.com with ESMTPSA id d14sm22514815pfo.154.2019.07.15.01.56.27
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 15 Jul 2019 01:56:26 -0700 (PDT)
+ Mon, 15 Jul 2019 01:56:29 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/5] powerpc/eeh_sysfs: Fix incorrect comment
-Date: Mon, 15 Jul 2019 18:56:09 +1000
-Message-Id: <20190715085612.8802-3-oohall@gmail.com>
+Subject: [PATCH 3/5] powerpc/eeh_sysfs: ifdef pseries sr-iov sysfs properties
+Date: Mon, 15 Jul 2019 18:56:10 +1000
+Message-Id: <20190715085612.8802-4-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190715085612.8802-1-oohall@gmail.com>
 References: <20190715085612.8802-1-oohall@gmail.com>
@@ -83,27 +84,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EEH_ATTR_SHOW() helper is used to display fields from struct eeh_dev
-not struct pci_dn.
+There are several EEH sysfs properties that only exists when the
+"ibm,is-open-sriov-pf" property appears in the device tree node of the PCI
+device. This used on pseries to indicate to the guest that the hypervisor
+allows the guest to configure the SR-IOV capability. Doing this requires
+some handshaking between the guest, hypervisor and userspace when a VF is
+EEH frozen which is why these properties exist.
+
+This is all dead code on non-pseries platforms so wrap it in an #ifdef
+CONFIG_PPC_PSERIES to make the dependency clearer.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/kernel/eeh_sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/eeh_sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/eeh_sysfs.c b/arch/powerpc/kernel/eeh_sysfs.c
-index 3fa04dd..6a2c2886f 100644
+index 6a2c2886f..3adf8cd 100644
 --- a/arch/powerpc/kernel/eeh_sysfs.c
 +++ b/arch/powerpc/kernel/eeh_sysfs.c
-@@ -30,7 +30,7 @@
- /**
-  * EEH_SHOW_ATTR -- Create sysfs entry for eeh statistic
-  * @_name: name of file in sysfs directory
-- * @_memb: name of member in struct pci_dn to access
-+ * @_memb: name of member in struct eeh_dev to access
-  * @_format: printf format for display
-  *
-  * All of the attributes look very similar, so just
+@@ -91,7 +91,7 @@ static ssize_t eeh_pe_state_store(struct device *dev,
+ 
+ static DEVICE_ATTR_RW(eeh_pe_state);
+ 
+-#ifdef CONFIG_PCI_IOV
++#if defined(CONFIG_PCI_IOV) && defined(CONFIG_PPC_PSERIES)
+ static ssize_t eeh_notify_resume_show(struct device *dev,
+ 				      struct device_attribute *attr, char *buf)
+ {
+@@ -148,7 +148,7 @@ static void eeh_notify_resume_remove(struct pci_dev *pdev)
+ #else
+ static inline int eeh_notify_resume_add(struct pci_dev *pdev) { return 0; }
+ static inline void eeh_notify_resume_remove(struct pci_dev *pdev) { }
+-#endif /* CONFIG_PCI_IOV */
++#endif /* CONFIG_PCI_IOV && CONFIG PPC_PSERIES*/
+ 
+ void eeh_sysfs_add_device(struct pci_dev *pdev)
+ {
 -- 
 2.9.5
 
