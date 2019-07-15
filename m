@@ -1,104 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F48681F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 02:41:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45n4TB03R4zDqVP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 10:41:02 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B062B68220
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 04:00:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45n6DP1JvyzDqT3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2019 12:00:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=sjitindarsingh@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nE0METqh"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45n4Qv1755zDqTX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 10:39:03 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45n4Qs5Fs3z8wFF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 10:39:01 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45n4Qs4fZ0z9sPW; Mon, 15 Jul 2019 10:39:01 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=cclaudio@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45n4Qs0tzWz9sP7
- for <linuxppc-dev@ozlabs.org>; Mon, 15 Jul 2019 10:39:00 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6F0asEH092717
- for <linuxppc-dev@ozlabs.org>; Sun, 14 Jul 2019 20:38:58 -0400
-Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tr9nh8avq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sun, 14 Jul 2019 20:38:58 -0400
-Received: from localhost
- by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <cclaudio@linux.ibm.com>;
- Mon, 15 Jul 2019 01:38:57 +0100
-Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
- by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 15 Jul 2019 01:38:53 +0100
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6F0cqxJ46465418
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jul 2019 00:38:52 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF611AC05B;
- Mon, 15 Jul 2019 00:38:52 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9774AC059;
- Mon, 15 Jul 2019 00:38:49 +0000 (GMT)
-Received: from [9.85.138.185] (unknown [9.85.138.185])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jul 2019 00:38:49 +0000 (GMT)
-Subject: Re: [PATCH v4 6/8] KVM: PPC: Ultravisor: Restrict LDBAR access
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-7-cclaudio@linux.ibm.com>
- <87h87sg24k.fsf@concordia.ellerman.id.au>
-From: Claudio Carvalho <cclaudio@linux.ibm.com>
-Date: Sun, 14 Jul 2019 21:38:48 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.0
-MIME-Version: 1.0
-In-Reply-To: <87h87sg24k.fsf@concordia.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45n6Bc6VBZzDqNS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 11:58:31 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id u17so6925055pgi.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2019 18:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=g0zyhxh4ks1ak56xEA2lEhz+tyGZV7cQskN34O5j4OQ=;
+ b=nE0METqhxjmhBEfyXwCVsWIUJOj6dIweZWcGREMFX59UaGPo3X9fR6Emdyb7AlPd2U
+ sXg3TtOYP14V48gYKEvYE4BkmvCoKPcAYEvKcbeZT+pGzWwrnzAmFEuYKv1QvC+wCj9m
+ UwI1lAxz8DyAhoNXfj+HU2jvfELg/sTEheZSuePhBRNXbTAvBEhuUTkTGVEITaQ1fXSV
+ yzktriO0SK9nR825fNZgbzgTwn53ofLDrs7DV9UGAAe+q2DSAvJncTP7hkNKJ62BUUwu
+ mmrkaYUGcN5lIsEBqkUHxbJi1AQW/xd1R/8H0PzHvwkSteXAUXxuxKl7/kE8fEW/5ibK
+ PiqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=g0zyhxh4ks1ak56xEA2lEhz+tyGZV7cQskN34O5j4OQ=;
+ b=FGK+ftleSYC594o7RUn5OQI0/82ZykBrrZdAknCMaJEv/vbJWjncn0d72nWCWnZWMw
+ /afwhZjNmjkRZZr6jcAJLCZzMdzJb1vwcXcp67i+F3TiAGXPY+FSc0mLXMJzDlG0k360
+ GpkMVpeR7ggqhZzcQqPUsvm0L+AZmBjWGLxDd+EJEL9cXwlO/pBtadPhMuJEyFcQYQMp
+ 87oerf3FjJtaa8DRfJJgrO0xnl0EBdS3VbWDvHpje/FnMLyy3jyQCAH7pL0QSaKNnwuS
+ kQrHBwzkWDGdLf80tbLah4kNpkacr/1tTwahTTHfHrKXutONku9qCyb65qcOavFvI1j+
+ Ealg==
+X-Gm-Message-State: APjAAAWfJeWbMar3ipUl4tWA6xbWWG3eh/PwyUTccgGlov8vwPMak8RL
+ REfV+vamcgTzPoZkvxi8CQQ=
+X-Google-Smtp-Source: APXvYqwypHVqJSzNP6RDRYofw+mVtX+lsRxHONry5ynalPnbbOOX5tuRRJ4VOk9SUIaLaUhUkkW4WA==
+X-Received: by 2002:a63:9249:: with SMTP id s9mr23468299pgn.356.1563155909708; 
+ Sun, 14 Jul 2019 18:58:29 -0700 (PDT)
+Received: from surajjs2.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.googlemail.com with ESMTPSA id r1sm17597451pfq.100.2019.07.14.18.58.27
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Sun, 14 Jul 2019 18:58:28 -0700 (PDT)
+Message-ID: <1563155904.2145.1.camel@gmail.com>
+Subject: Re: [PATCH] powerpc: mm: Limit rma_size to 1TB when running without
+ HV mode
+From: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 15 Jul 2019 11:58:24 +1000
+In-Reply-To: <87o91ze6wx.fsf@concordia.ellerman.id.au>
+References: <20190710052018.14628-1-sjitindarsingh@gmail.com>
+ <87o91ze6wx.fsf@concordia.ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.24.6 (3.24.6-1.fc26) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19071500-2213-0000-0000-000003AE51E5
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011429; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01232277; UDB=6.00649216; IPR=6.01013578; 
- MB=3.00027718; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-15 00:38:55
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071500-2214-0000-0000-00005F3BDD86
-Message-Id: <f2361f73-531c-c00a-c55d-52e570ef1bed@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-14_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907150006
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,71 +81,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: kvm-ppc@vger.kernel.org, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, 2019-07-12 at 23:09 +1000, Michael Ellerman wrote:
+> Suraj Jitindar Singh <sjitindarsingh@gmail.com> writes:
+> > The virtual real mode addressing (VRMA) mechanism is used when a
+> > partition is using HPT (Hash Page Table) translation and performs
+> > real mode accesses (MSR[IR|DR] = 0) in non-hypervisor mode. In this
+> > mode effective address bits 0:23 are treated as zero (i.e. the
+> > access
+> > is aliased to 0) and the access is performed using an implicit 1TB
+> > SLB
+> > entry.
+> > 
+> > The size of the RMA (Real Memory Area) is communicated to the guest
+> > as
+> > the size of the first memory region in the device tree. And because
+> > of
+> > the mechanism described above can be expected to not exceed 1TB. In
+> > the
+> > event that the host erroneously represents the RMA as being larger
+> > than
+> > 1TB, guest accesses in real mode to memory addresses above 1TB will
+> > be
+> > aliased down to below 1TB. This means that a memory access
+> > performed in
+> > real mode may differ to one performed in virtual mode for the same
+> > memory
+> > address, which would likely have unintended consequences.
+> > 
+> > To avoid this outcome have the guest explicitly limit the size of
+> > the
+> > RMA to the current maximum, which is 1TB. This means that even if
+> > the
+> > first memory block is larger than 1TB, only the first 1TB should be
+> > accessed in real mode.
+> > 
+> > Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+> 
+> I added:
+> 
+> Fixes: c3ab300ea555 ("powerpc: Add POWER9 cputable entry")
+> Cc: stable@vger.kernel.org # v4.6+
+> 
+> 
+> Which is not exactly correct, but probably good enough?
 
-On 7/11/19 9:57 AM, Michael Ellerman wrote:
-> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
->> When the ultravisor firmware is available, it takes control over the
->> LDBAR register. In this case, thread-imc updates and save/restore
->> operations on the LDBAR register are handled by ultravisor.
-> Please roll up the replies to Alexey's question about LDBAR into the
-> change log.
->
->> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> index f9b2620fbecd..cffb365d9d02 100644
->> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> @@ -375,8 +375,10 @@ BEGIN_FTR_SECTION
->>  	mtspr	SPRN_RPR, r0
->>  	ld	r0, KVM_SPLIT_PMMAR(r6)
->>  	mtspr	SPRN_PMMAR, r0
->> +BEGIN_FW_FTR_SECTION_NESTED(70)
->>  	ld	r0, KVM_SPLIT_LDBAR(r6)
->>  	mtspr	SPRN_LDBAR, r0
->> +END_FW_FTR_SECTION_NESTED(FW_FEATURE_ULTRAVISOR, 0, 70)
-> That's in Power8 code isn't it? Which will never have an ultravisor.
+I think we actually want:
+Fixes: c610d65c0ad0 ("powerpc/pseries: lift RTAS limit for hash")
 
-IIUC, it might be executed in Power9 as well, but I can double check that.
+Which is what actually caused it to break and for the issue to present
+itself.
 
-
->
->> diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
->> index 1b6932890a73..5fe2d4526cbc 100644
->> --- a/arch/powerpc/platforms/powernv/opal-imc.c
->> +++ b/arch/powerpc/platforms/powernv/opal-imc.c
->> @@ -254,6 +254,10 @@ static int opal_imc_counters_probe(struct platform_device *pdev)
->>  	bool core_imc_reg = false, thread_imc_reg = false;
->>  	u32 type;
->>  
->> +	/* Disable IMC devices, when Ultravisor is enabled. */
->> +	if (firmware_has_feature(FW_FEATURE_ULTRAVISOR))
->> +		return -EACCES;
-> I don't mind taking this change. But at the same time should the IMC
-> stuff just be omitted from the device tree when we're in ultravisor mode?
-
-Yes. Maddy said that he will patch skiboot to remove the IMC nodes if
-ultravisor is present.
-
-I added this check just to protect the kernel in case skiboot is not in the
-right level for some
-reason.
-
-Thanks,
-Claudio
-
-
-
->
+> 
 > cheers
->
-
+> 
+> > diff --git a/arch/powerpc/mm/book3s64/hash_utils.c
+> > b/arch/powerpc/mm/book3s64/hash_utils.c
+> > index 28ced26f2a00..4d0e2cce9cd5 100644
+> > --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> > +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> > @@ -1901,11 +1901,19 @@ void
+> > hash__setup_initial_memory_limit(phys_addr_t first_memblock_base,
+> >  	 *
+> >  	 * For guests on platforms before POWER9, we clamp the it
+> > limit to 1G
+> >  	 * to avoid some funky things such as RTAS bugs etc...
+> > +	 * On POWER9 we limit to 1TB in case the host erroneously
+> > told us that
+> > +	 * the RMA was >1TB. Effective address bits 0:23 are
+> > treated as zero
+> > +	 * (meaning the access is aliased to zero i.e. addr = addr
+> > % 1TB)
+> > +	 * for virtual real mode addressing and so it doesn't make
+> > sense to
+> > +	 * have an area larger than 1TB as it can't be addressed.
+> >  	 */
+> >  	if (!early_cpu_has_feature(CPU_FTR_HVMODE)) {
+> >  		ppc64_rma_size = first_memblock_size;
+> >  		if (!early_cpu_has_feature(CPU_FTR_ARCH_300))
+> >  			ppc64_rma_size = min_t(u64,
+> > ppc64_rma_size, 0x40000000);
+> > +		else
+> > +			ppc64_rma_size = min_t(u64,
+> > ppc64_rma_size,
+> > +					       1UL <<
+> > SID_SHIFT_1T);
+> >  
+> >  		/* Finally limit subsequent allocations */
+> >  		memblock_set_current_limit(ppc64_rma_size);
+> > -- 
+> > 2.13.6
