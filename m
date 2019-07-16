@@ -2,77 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EC56A79F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5036A7A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:47:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nz9p2Cj2zDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:45:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nzCq660WzDqk9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:47:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nytq3rRQzDqY7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:32:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nyv41DwvzDqWt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:33:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45nytp2s6rz8wGk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:32:50 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45nyv36jS6z8t9P
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:33:03 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 45nytp0nZSz9sNC; Tue, 16 Jul 2019 21:32:50 +1000 (AEST)
+ id 45nyv35dnLz9sNf; Tue, 16 Jul 2019 21:33:03 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45nytn3WMCz9sN4
- for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 21:32:49 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6GBMH4s112957
- for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:32:47 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tsd0gj3qh-1
+ by ozlabs.org (Postfix) with ESMTPS id 45nyv307jsz9sN4
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 21:33:02 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6GBN8GH066392
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:33:00 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tscphaxkv-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:32:47 -0400
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:33:00 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Tue, 16 Jul 2019 12:32:45 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Tue, 16 Jul 2019 12:32:59 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 16 Jul 2019 12:32:42 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6GBWeib48103432
+ Tue, 16 Jul 2019 12:32:57 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x6GBWgcw34275700
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Jul 2019 11:32:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9106FAE057;
- Tue, 16 Jul 2019 11:32:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E296CAE056;
- Tue, 16 Jul 2019 11:32:38 +0000 (GMT)
+ Tue, 16 Jul 2019 11:32:42 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7CA2652050;
+ Tue, 16 Jul 2019 11:32:55 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.184.183.117])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 16 Jul 2019 11:32:38 +0000 (GMT)
-Subject: [PATCH v4 06/25] pseries/fadump: define register/un-register
- callback functions
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 151BC52054;
+ Tue, 16 Jul 2019 11:32:53 +0000 (GMT)
+Subject: [PATCH v4 08/25] powerpc/fadump: use FADump instead of fadump for
+ how it is pronounced
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Tue, 16 Jul 2019 17:02:38 +0530
+Date: Tue, 16 Jul 2019 17:02:53 +0530
 In-Reply-To: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
 References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -80,15 +77,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19071611-0020-0000-0000-00000354051F
+x-cbid: 19071611-0016-0000-0000-00000292FE6F
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071611-0021-0000-0000-000021A7D101
-Message-Id: <156327675811.27462.1334913873575448846.stgit@hbathini.in.ibm.com>
+x-cbparentid: 19071611-0017-0000-0000-000032F0CEC7
+Message-Id: <156327677337.27462.1468860873380619220.stgit@hbathini.in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-16_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1810050000 definitions=main-1907160145
@@ -112,481 +109,186 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make RTAS calls to register and un-register for FADump. Also, update
-how fadump_region contents are diplayed to provide more information.
+fadump is pronounced f-a-dump. Update documentation accordingly. Also,
+update how fadump_region contents look like with recent changes.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
- arch/powerpc/kernel/fadump-common.h          |    2 
- arch/powerpc/kernel/fadump.c                 |  164 ++------------------------
- arch/powerpc/platforms/pseries/rtas-fadump.c |  163 +++++++++++++++++++++++++-
- 3 files changed, 176 insertions(+), 153 deletions(-)
+ Documentation/powerpc/firmware-assisted-dump.txt |   71 ++++++++++++----------
+ 1 file changed, 39 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
-index 020d582..273247d 100644
---- a/arch/powerpc/kernel/fadump-common.h
-+++ b/arch/powerpc/kernel/fadump-common.h
-@@ -108,6 +108,8 @@ struct fw_dump {
- 	unsigned long	cpu_notes_buf;
- 	unsigned long	cpu_notes_buf_size;
+diff --git a/Documentation/powerpc/firmware-assisted-dump.txt b/Documentation/powerpc/firmware-assisted-dump.txt
+index e9b4e3c..0c6a28c 100644
+--- a/Documentation/powerpc/firmware-assisted-dump.txt
++++ b/Documentation/powerpc/firmware-assisted-dump.txt
+@@ -8,18 +8,18 @@ a crashed system, and to do so from a fully-reset system, and
+ to minimize the total elapsed time until the system is back
+ in production use.
  
-+	unsigned long	boot_mem_dest_addr;
-+
- 	int		ibm_configure_kernel_dump;
+-- Firmware assisted dump (fadump) infrastructure is intended to replace
++- Firmware-Assisted Dump (FADump) infrastructure is intended to replace
+   the existing phyp assisted dump.
+ - Fadump uses the same firmware interfaces and memory reservation model
+   as phyp assisted dump.
+-- Unlike phyp dump, fadump exports the memory dump through /proc/vmcore
++- Unlike phyp dump, FADump exports the memory dump through /proc/vmcore
+   in the ELF format in the same way as kdump. This helps us reuse the
+   kdump infrastructure for dump capture and filtering.
+ - Unlike phyp dump, userspace tool does not need to refer any sysfs
+   interface while reading /proc/vmcore.
+-- Unlike phyp dump, fadump allows user to release all the memory reserved
++- Unlike phyp dump, FADump allows user to release all the memory reserved
+   for dump, with a single operation of echo 1 > /sys/kernel/fadump_release_mem.
+-- Once enabled through kernel boot parameter, fadump can be
++- Once enabled through kernel boot parameter, FADump can be
+   started/stopped through /sys/kernel/fadump_registered interface (see
+   sysfs files section below) and can be easily integrated with kdump
+   service start/stop init scripts.
+@@ -33,7 +33,7 @@ dump offers several strong, practical advantages:
+    in a clean, consistent state.
+ -- Once the dump is copied out, the memory that held the dump
+    is immediately available to the running kernel. And therefore,
+-   unlike kdump, fadump doesn't need a 2nd reboot to get back
++   unlike kdump, FADump doesn't need a 2nd reboot to get back
+    the system to the production configuration.
  
- 	unsigned long	fadump_enabled:1;
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index a901ca1..650ebf8 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -36,7 +36,6 @@
- #include "../platforms/pseries/rtas-fadump.h"
+ The above can only be accomplished by coordination with,
+@@ -61,7 +61,7 @@ as follows:
+          boot successfully. For syntax of crashkernel= parameter,
+          refer to Documentation/kdump/kdump.rst. If any offset is
+          provided in crashkernel= parameter, it will be ignored
+-         as fadump uses a predefined offset to reserve memory
++         as FADump uses a predefined offset to reserve memory
+          for boot memory dump preservation in case of a crash.
  
- static struct fw_dump fw_dump;
--static struct rtas_fadump_mem_struct fdm;
- static const struct rtas_fadump_mem_struct *fdm_active;
+ -- After the low memory (boot memory) area has been saved, the
+@@ -120,7 +120,7 @@ blocking this significant chunk of memory from production kernel.
+ Hence, the implementation uses the Linux kernel's Contiguous Memory
+ Allocator (CMA) for memory reservation if CMA is configured for kernel.
+ With CMA reservation this memory will be available for applications to
+-use it, while kernel is prevented from using it. With this fadump will
++use it, while kernel is prevented from using it. With this FADump will
+ still be able to capture all of the kernel memory and most of the user
+ space memory except the user pages that were present in CMA region.
  
- static DEFINE_MUTEX(fadump_mutex);
-@@ -179,61 +178,6 @@ static void fadump_show_config(void)
- 	pr_debug("Boot memory size  : %lx\n", fw_dump.boot_memory_size);
- }
+@@ -170,14 +170,14 @@ KDump, as dump mechanism.
+ The tools to examine the dump will be same as the ones
+ used for kdump.
  
--static unsigned long init_fadump_mem_struct(struct rtas_fadump_mem_struct *fdm,
--				unsigned long addr)
--{
--	if (!fdm)
--		return 0;
--
--	memset(fdm, 0, sizeof(struct rtas_fadump_mem_struct));
--	addr = addr & PAGE_MASK;
--
--	fdm->header.dump_format_version = cpu_to_be32(0x00000001);
--	fdm->header.dump_num_sections = cpu_to_be16(3);
--	fdm->header.dump_status_flag = 0;
--	fdm->header.offset_first_dump_section =
--		cpu_to_be32((u32)offsetof(struct rtas_fadump_mem_struct, cpu_state_data));
--
--	/*
--	 * Fields for disk dump option.
--	 * We are not using disk dump option, hence set these fields to 0.
--	 */
--	fdm->header.dd_block_size = 0;
--	fdm->header.dd_block_offset = 0;
--	fdm->header.dd_num_blocks = 0;
--	fdm->header.dd_offset_disk_path = 0;
--
--	/* set 0 to disable an automatic dump-reboot. */
--	fdm->header.max_time_auto = 0;
--
--	/* Kernel dump sections */
--	/* cpu state data section. */
--	fdm->cpu_state_data.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
--	fdm->cpu_state_data.source_data_type = cpu_to_be16(RTAS_FADUMP_CPU_STATE_DATA);
--	fdm->cpu_state_data.source_address = 0;
--	fdm->cpu_state_data.source_len = cpu_to_be64(fw_dump.cpu_state_data_size);
--	fdm->cpu_state_data.destination_address = cpu_to_be64(addr);
--	addr += fw_dump.cpu_state_data_size;
--
--	/* hpte region section */
--	fdm->hpte_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
--	fdm->hpte_region.source_data_type = cpu_to_be16(RTAS_FADUMP_HPTE_REGION);
--	fdm->hpte_region.source_address = 0;
--	fdm->hpte_region.source_len = cpu_to_be64(fw_dump.hpte_region_size);
--	fdm->hpte_region.destination_address = cpu_to_be64(addr);
--	addr += fw_dump.hpte_region_size;
--
--	/* RMA region section */
--	fdm->rmr_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
--	fdm->rmr_region.source_data_type = cpu_to_be16(RTAS_FADUMP_REAL_MODE_REGION);
--	fdm->rmr_region.source_address = cpu_to_be64(RMA_START);
--	fdm->rmr_region.source_len = cpu_to_be64(fw_dump.boot_memory_size);
--	fdm->rmr_region.destination_address = cpu_to_be64(addr);
--	addr += fw_dump.boot_memory_size;
--
--	return addr;
--}
--
- /**
-  * fadump_calculate_reserve_size(): reserve variable boot area 5% of System RAM
-  *
-@@ -480,61 +424,6 @@ static int __init early_fadump_reserve_mem(char *p)
- }
- early_param("fadump_reserve_mem", early_fadump_reserve_mem);
+-How to enable firmware-assisted dump (fadump):
++How to enable firmware-assisted dump (FADump):
+ ---------------------------------------------
  
--static int register_fw_dump(struct rtas_fadump_mem_struct *fdm)
--{
--	int rc, err;
--	unsigned int wait_time;
--
--	pr_debug("Registering for firmware-assisted kernel dump...\n");
--
--	/* TODO: Add upper time limit for the delay */
--	do {
--		rc = rtas_call(fw_dump.ibm_configure_kernel_dump, 3, 1, NULL,
--			FADUMP_REGISTER, fdm,
--			sizeof(struct rtas_fadump_mem_struct));
--
--		wait_time = rtas_busy_delay_time(rc);
--		if (wait_time)
--			mdelay(wait_time);
--
--	} while (wait_time);
--
--	err = -EIO;
--	switch (rc) {
--	default:
--		pr_err("Failed to register. Unknown Error(%d).\n", rc);
--		break;
--	case -1:
--		printk(KERN_ERR "Failed to register firmware-assisted kernel"
--			" dump. Hardware Error(%d).\n", rc);
--		break;
--	case -3:
--		if (!is_fadump_boot_mem_contiguous(&fw_dump))
--			pr_err("Can't have holes in boot memory area while registering fadump\n");
--		else if (!is_fadump_reserved_mem_contiguous(&fw_dump))
--			pr_err("Can't have holes in reserved memory area while"
--			       " registering fadump\n");
--
--		printk(KERN_ERR "Failed to register firmware-assisted kernel"
--			" dump. Parameter Error(%d).\n", rc);
--		err = -EINVAL;
--		break;
--	case -9:
--		printk(KERN_ERR "firmware-assisted kernel dump is already "
--			" registered.");
--		fw_dump.dump_registered = 1;
--		err = -EEXIST;
--		break;
--	case 0:
--		printk(KERN_INFO "firmware-assisted kernel dump registration"
--			" is successful\n");
--		fw_dump.dump_registered = 1;
--		err = 0;
--		break;
--	}
--	return err;
--}
--
- void crash_fadump(struct pt_regs *regs, const char *str)
- {
- 	struct fadump_crash_info_header *fdh = NULL;
-@@ -577,8 +466,7 @@ void crash_fadump(struct pt_regs *regs, const char *str)
+ 1. Set config option CONFIG_FA_DUMP=y and build kernel.
+-2. Boot into linux kernel with 'fadump=on' kernel cmdline option.
+-   By default, fadump reserved memory will be initialized as CMA area.
+-   Alternatively, user can boot linux kernel with 'fadump=nocma' to
+-   prevent fadump to use CMA.
++2. Boot into linux kernel with 'FADump=on' kernel cmdline option.
++   By default, FADump reserved memory will be initialized as CMA area.
++   Alternatively, user can boot linux kernel with 'FADump=nocma' to
++   prevent FADump to use CMA.
+ 3. Optionally, user can also set 'crashkernel=' kernel cmdline
+    to specify size of the memory to reserve for boot memory dump
+    preservation.
+@@ -190,7 +190,7 @@ NOTE: 1. 'fadump_reserve_mem=' parameter has been deprecated. Instead
+          option is set at kernel cmdline.
+       3. if user wants to capture all of user space memory and ok with
+          reserved memory not available to production system, then
+-         'fadump=nocma' kernel parameter can be used to fallback to
++         'FADump=nocma' kernel parameter can be used to fallback to
+          old behaviour.
  
- 	fdh->online_mask = *cpu_online_mask;
+ Sysfs/debugfs files:
+@@ -203,29 +203,29 @@ Here is the list of files under kernel sysfs:
  
--	/* Call ibm,os-term rtas call to trigger firmware assisted dump */
--	rtas_os_term((char *)str);
-+	fw_dump.ops->fadump_trigger(fdh, str);
- }
+  /sys/kernel/fadump_enabled
  
- #define GPR_MASK	0xffffff0000000000
-@@ -987,7 +875,7 @@ static int fadump_setup_crash_memory_ranges(void)
- static inline unsigned long fadump_relocate(unsigned long paddr)
- {
- 	if (paddr > RMA_START && paddr < fw_dump.boot_memory_size)
--		return be64_to_cpu(fdm.rmr_region.destination_address) + paddr;
-+		return fw_dump.boot_mem_dest_addr + paddr;
- 	else
- 		return paddr;
- }
-@@ -1060,7 +948,7 @@ static int fadump_create_elfcore_headers(char *bufp)
- 			 * to the specified destination_address. Hence set
- 			 * the correct offset.
- 			 */
--			phdr->p_offset = be64_to_cpu(fdm.rmr_region.destination_address);
-+			phdr->p_offset = fw_dump.boot_mem_dest_addr;
- 		}
+-    This is used to display the fadump status.
+-    0 = fadump is disabled
+-    1 = fadump is enabled
++    This is used to display the FADump status.
++    0 = FADump is disabled
++    1 = FADump is enabled
  
- 		phdr->p_paddr = mbase;
-@@ -1112,7 +1000,8 @@ static int register_fadump(void)
- 	if (ret)
- 		return ret;
+     This interface can be used by kdump init scripts to identify if
+-    fadump is enabled in the kernel and act accordingly.
++    FADump is enabled in the kernel and act accordingly.
  
--	addr = be64_to_cpu(fdm.rmr_region.destination_address) + be64_to_cpu(fdm.rmr_region.source_len);
-+	addr = fw_dump.fadumphdr_addr;
-+
- 	/* Initialize fadump crash info header. */
- 	addr = init_fadump_header(addr);
- 	vaddr = __va(addr);
-@@ -1121,34 +1010,8 @@ static int register_fadump(void)
- 	fadump_create_elfcore_headers(vaddr);
+  /sys/kernel/fadump_registered
  
- 	/* register the future kernel dump with firmware. */
--	return register_fw_dump(&fdm);
--}
--
--static int fadump_unregister_dump(struct rtas_fadump_mem_struct *fdm)
--{
--	int rc = 0;
--	unsigned int wait_time;
--
--	pr_debug("Un-register firmware-assisted dump\n");
--
--	/* TODO: Add upper time limit for the delay */
--	do {
--		rc = rtas_call(fw_dump.ibm_configure_kernel_dump, 3, 1, NULL,
--			FADUMP_UNREGISTER, fdm,
--			sizeof(struct rtas_fadump_mem_struct));
--
--		wait_time = rtas_busy_delay_time(rc);
--		if (wait_time)
--			mdelay(wait_time);
--	} while (wait_time);
--
--	if (rc) {
--		printk(KERN_ERR "Failed to un-register firmware-assisted dump."
--			" unexpected error(%d).\n", rc);
--		return rc;
--	}
--	fw_dump.dump_registered = 0;
--	return 0;
-+	pr_debug("Registering for firmware-assisted kernel dump...\n");
-+	return fw_dump.ops->register_fadump(&fw_dump);
- }
+-    This is used to display the fadump registration status as well
+-    as to control (start/stop) the fadump registration.
+-    0 = fadump is not registered.
+-    1 = fadump is registered and ready to handle system crash.
++    This is used to display the FADump registration status as well
++    as to control (start/stop) the FADump registration.
++    0 = FADump is not registered.
++    1 = FADump is registered and ready to handle system crash.
  
- static int fadump_invalidate_dump(const struct rtas_fadump_mem_struct *fdm)
-@@ -1186,7 +1049,7 @@ void fadump_cleanup(void)
- 		fadump_invalidate_dump(fdm_active);
- 	} else if (fw_dump.dump_registered) {
- 		/* Un-register Firmware-assisted dump if it was registered. */
--		fadump_unregister_dump(&fdm);
-+		fw_dump.ops->unregister_fadump(&fw_dump);
- 		free_crash_memory_ranges();
- 	}
- }
-@@ -1296,7 +1159,7 @@ static void fadump_invalidate_release_mem(void)
- 		fw_dump.cpu_notes_buf_size = 0;
- 	}
- 	/* Initialize the kernel dump memory structure for FAD registration. */
--	init_fadump_mem_struct(&fdm, fw_dump.reserve_dump_area_start);
-+	fw_dump.ops->init_fadump_mem_struct(&fw_dump);
- }
+-    To register fadump echo 1 > /sys/kernel/fadump_registered and
++    To register FADump echo 1 > /sys/kernel/fadump_registered and
+     echo 0 > /sys/kernel/fadump_registered for un-register and stop the
+-    fadump. Once the fadump is un-registered, the system crash will not
++    FADump. Once the FADump is un-registered, the system crash will not
+     be handled and vmcore will not be captured. This interface can be
+     easily integrated with kdump service start/stop.
  
- static ssize_t fadump_release_memory_store(struct kobject *kobj,
-@@ -1361,12 +1224,12 @@ static ssize_t fadump_register_store(struct kobject *kobj,
- 			goto unlock_out;
- 		}
- 		/* Un-register Firmware-assisted dump */
--		fadump_unregister_dump(&fdm);
-+		fw_dump.ops->unregister_fadump(&fw_dump);
- 		break;
- 	case 1:
- 		if (fw_dump.dump_registered == 1) {
- 			/* Un-register Firmware-assisted dump */
--			fadump_unregister_dump(&fdm);
-+			fw_dump.ops->unregister_fadump(&fw_dump);
- 		}
- 		/* Register Firmware-assisted dump */
- 		ret = register_fadump();
-@@ -1393,7 +1256,8 @@ static int fadump_region_show(struct seq_file *m, void *private)
- 		fdm_ptr = fdm_active;
- 	else {
- 		mutex_unlock(&fadump_mutex);
--		fdm_ptr = &fdm;
-+		fw_dump.ops->fadump_region_show(&fw_dump, m);
-+		return 0;
- 	}
+  /sys/kernel/fadump_release_mem
  
- 	seq_printf(m,
-@@ -1514,7 +1378,7 @@ int __init setup_fadump(void)
- 	}
- 	/* Initialize the kernel dump memory structure for FAD registration. */
- 	else if (fw_dump.reserve_dump_area_size)
--		init_fadump_mem_struct(&fdm, fw_dump.reserve_dump_area_start);
-+		fw_dump.ops->init_fadump_mem_struct(&fw_dump);
- 	fadump_init_files();
+-    This file is available only when fadump is active during
++    This file is available only when FADump is active during
+     second kernel. This is used to release the reserved memory
+     region that are held for saving crash dump. To release the
+     reserved memory echo 1 to it:
+@@ -244,26 +244,33 @@ Here is the list of files under powerpc debugfs:
  
- 	return 1;
-diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.c b/arch/powerpc/platforms/pseries/rtas-fadump.c
-index 9e7c9bf..790a37d 100644
---- a/arch/powerpc/platforms/pseries/rtas-fadump.c
-+++ b/arch/powerpc/platforms/pseries/rtas-fadump.c
-@@ -30,19 +30,152 @@
- #include "../../kernel/fadump-common.h"
- #include "rtas-fadump.h"
+  /sys/kernel/debug/powerpc/fadump_region
  
-+static struct rtas_fadump_mem_struct fdm;
-+
-+static void rtas_fadump_update_config(struct fw_dump *fadump_conf,
-+				      const struct rtas_fadump_mem_struct *fdm)
-+{
-+	fadump_conf->boot_mem_dest_addr =
-+		be64_to_cpu(fdm->rmr_region.destination_address);
-+
-+	fadump_conf->fadumphdr_addr = (fadump_conf->boot_mem_dest_addr +
-+				       fadump_conf->boot_memory_size);
-+}
-+
- static ulong rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
- {
--	return fadump_conf->reserve_dump_area_start;
-+	ulong addr = fadump_conf->reserve_dump_area_start;
-+
-+	memset(&fdm, 0, sizeof(struct rtas_fadump_mem_struct));
-+	addr = addr & PAGE_MASK;
-+
-+	fdm.header.dump_format_version = cpu_to_be32(0x00000001);
-+	fdm.header.dump_num_sections = cpu_to_be16(3);
-+	fdm.header.dump_status_flag = 0;
-+	fdm.header.offset_first_dump_section =
-+		cpu_to_be32((u32)offsetof(struct rtas_fadump_mem_struct,
-+					  cpu_state_data));
-+
-+	/*
-+	 * Fields for disk dump option.
-+	 * We are not using disk dump option, hence set these fields to 0.
-+	 */
-+	fdm.header.dd_block_size = 0;
-+	fdm.header.dd_block_offset = 0;
-+	fdm.header.dd_num_blocks = 0;
-+	fdm.header.dd_offset_disk_path = 0;
-+
-+	/* set 0 to disable an automatic dump-reboot. */
-+	fdm.header.max_time_auto = 0;
-+
-+	/* Kernel dump sections */
-+	/* cpu state data section. */
-+	fdm.cpu_state_data.request_flag =
-+		cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-+	fdm.cpu_state_data.source_data_type =
-+		cpu_to_be16(RTAS_FADUMP_CPU_STATE_DATA);
-+	fdm.cpu_state_data.source_address = 0;
-+	fdm.cpu_state_data.source_len =
-+		cpu_to_be64(fadump_conf->cpu_state_data_size);
-+	fdm.cpu_state_data.destination_address = cpu_to_be64(addr);
-+	addr += fadump_conf->cpu_state_data_size;
-+
-+	/* hpte region section */
-+	fdm.hpte_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-+	fdm.hpte_region.source_data_type =
-+		cpu_to_be16(RTAS_FADUMP_HPTE_REGION);
-+	fdm.hpte_region.source_address = 0;
-+	fdm.hpte_region.source_len =
-+		cpu_to_be64(fadump_conf->hpte_region_size);
-+	fdm.hpte_region.destination_address = cpu_to_be64(addr);
-+	addr += fadump_conf->hpte_region_size;
-+
-+	/* RMA region section */
-+	fdm.rmr_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-+	fdm.rmr_region.source_data_type =
-+		cpu_to_be16(RTAS_FADUMP_REAL_MODE_REGION);
-+	fdm.rmr_region.source_address = cpu_to_be64(RMA_START);
-+	fdm.rmr_region.source_len =
-+		cpu_to_be64(fadump_conf->boot_memory_size);
-+	fdm.rmr_region.destination_address = cpu_to_be64(addr);
-+	addr += fadump_conf->boot_memory_size;
-+
-+	rtas_fadump_update_config(fadump_conf, &fdm);
-+
-+	return addr;
- }
+-    This file shows the reserved memory regions if fadump is
++    This file shows the reserved memory regions if FADump is
+     enabled otherwise this file is empty. The output format
+-    is:
++    for regions provided by f/w is:
+     <region>: [<start>-<end>] <reserved-size> bytes, Dumped: <dump-size>
  
- static int rtas_fadump_register_fadump(struct fw_dump *fadump_conf)
- {
--	return -EIO;
-+	int rc, err = -EIO;
-+	unsigned int wait_time;
++    and for kernel DUMP region is:
 +
-+	/* TODO: Add upper time limit for the delay */
-+	do {
-+		rc =  rtas_call(fadump_conf->ibm_configure_kernel_dump, 3, 1,
-+				NULL, FADUMP_REGISTER, &fdm,
-+				sizeof(struct rtas_fadump_mem_struct));
++    DUMP: Src: <src-addr>, Dest: <dest-addr>, Size: <size>, Dumped: # bytes
 +
-+		wait_time = rtas_busy_delay_time(rc);
-+		if (wait_time)
-+			mdelay(wait_time);
-+
-+	} while (wait_time);
-+
-+	switch (rc) {
-+	case 0:
-+		pr_info("Registration is successful!\n");
-+		fadump_conf->dump_registered = 1;
-+		err = 0;
-+		break;
-+	case -1:
-+		pr_err("Failed to register. Hardware Error(%d).\n", rc);
-+		break;
-+	case -3:
-+		if (!is_fadump_boot_mem_contiguous(fadump_conf))
-+			pr_err("Can't hot-remove boot memory area.\n");
-+		else if (!is_fadump_reserved_mem_contiguous(fadump_conf))
-+			pr_err("Can't hot-remove reserved memory area.\n");
-+
-+		pr_err("Failed to register. Parameter Error(%d).\n", rc);
-+		err = -EINVAL;
-+		break;
-+	case -9:
-+		pr_err("Already registered!\n");
-+		fadump_conf->dump_registered = 1;
-+		err = -EEXIST;
-+		break;
-+	default:
-+		pr_err("Failed to register. Unknown Error(%d).\n", rc);
-+		break;
-+	}
-+
-+	return err;
- }
+     e.g.
+-    Contents when fadump is registered during first kernel
++    Contents when FADump is registered during first kernel
  
- static int rtas_fadump_unregister_fadump(struct fw_dump *fadump_conf)
- {
--	return -EIO;
-+	int rc;
-+	unsigned int wait_time;
-+
-+	/* TODO: Add upper time limit for the delay */
-+	do {
-+		rc =  rtas_call(fadump_conf->ibm_configure_kernel_dump, 3, 1,
-+				NULL, FADUMP_UNREGISTER, &fdm,
-+				sizeof(struct rtas_fadump_mem_struct));
-+
-+		wait_time = rtas_busy_delay_time(rc);
-+		if (wait_time)
-+			mdelay(wait_time);
-+	} while (wait_time);
-+
-+	if (rc) {
-+		pr_err("Failed to un-register - unexpected error(%d).\n", rc);
-+		return -EIO;
-+	}
-+
-+	fadump_conf->dump_registered = 0;
-+	return 0;
- }
+     # cat /sys/kernel/debug/powerpc/fadump_region
+     CPU : [0x0000006ffb0000-0x0000006fff001f] 0x40020 bytes, Dumped: 0x0
+     HPTE: [0x0000006fff0020-0x0000006fff101f] 0x1000 bytes, Dumped: 0x0
+-    DUMP: [0x0000006fff1020-0x0000007fff101f] 0x10000000 bytes, Dumped: 0x0
++    DUMP: Src: 0x00000000000000, Dest: 0x0000006fff1020, Size: 0x10000000, Dumped: 0x0 bytes
++    #
  
- static int rtas_fadump_invalidate_fadump(struct fw_dump *fadump_conf)
-@@ -62,6 +195,30 @@ static int __init rtas_fadump_process_fadump(struct fw_dump *fadump_conf)
- static void rtas_fadump_region_show(struct fw_dump *fadump_conf,
- 				    struct seq_file *m)
- {
-+	const struct rtas_fadump_mem_struct *fdm_ptr = &fdm;
-+	const struct rtas_fadump_section *cpu_data_section;
-+
-+	cpu_data_section = &(fdm_ptr->cpu_state_data);
-+	seq_printf(m, "CPU :[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-+		   be64_to_cpu(cpu_data_section->destination_address),
-+		   be64_to_cpu(cpu_data_section->destination_address) +
-+		   be64_to_cpu(cpu_data_section->source_len) - 1,
-+		   be64_to_cpu(cpu_data_section->source_len),
-+		   be64_to_cpu(cpu_data_section->bytes_dumped));
-+
-+	seq_printf(m, "HPTE:[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-+		   be64_to_cpu(fdm_ptr->hpte_region.destination_address),
-+		   be64_to_cpu(fdm_ptr->hpte_region.destination_address) +
-+		   be64_to_cpu(fdm_ptr->hpte_region.source_len) - 1,
-+		   be64_to_cpu(fdm_ptr->hpte_region.source_len),
-+		   be64_to_cpu(fdm_ptr->hpte_region.bytes_dumped));
-+
-+	seq_printf(m, "DUMP: Src: %#016llx, Dest: %#016llx, ",
-+		   be64_to_cpu(fdm_ptr->rmr_region.source_address),
-+		   be64_to_cpu(fdm_ptr->rmr_region.destination_address));
-+	seq_printf(m, "Size: %#llx, Dumped: %#llx bytes\n",
-+		   be64_to_cpu(fdm_ptr->rmr_region.source_len),
-+		   be64_to_cpu(fdm_ptr->rmr_region.bytes_dumped));
- }
+-    Contents when fadump is active during second kernel
++    Contents when FADump is active during second kernel
  
- static void rtas_fadump_trigger(struct fadump_crash_info_header *fdh,
+     # cat /sys/kernel/debug/powerpc/fadump_region
+     CPU : [0x0000006ffb0000-0x0000006fff001f] 0x40020 bytes, Dumped: 0x40020
+     HPTE: [0x0000006fff0020-0x0000006fff101f] 0x1000 bytes, Dumped: 0x1000
+-    DUMP: [0x0000006fff1020-0x0000007fff101f] 0x10000000 bytes, Dumped: 0x10000000
+-        : [0x00000010000000-0x0000006ffaffff] 0x5ffb0000 bytes, Dumped: 0x5ffb0000
++    DUMP: Src: 0x00000000000000, Dest: 0x0000006fff1020, Size: 0x10000000, Dumped: 0x10000000 bytes
++
++    Memory above 0x0000000010000000 is reserved for saving crash dump
++    #
+ 
+ NOTE: Please refer to Documentation/filesystems/debugfs.txt on
+       how to mount the debugfs filesystem.
+@@ -274,7 +281,7 @@ TODO:
+  o Need to come up with the better approach to find out more
+    accurate boot memory size that is required for a kernel to
+    boot successfully when booted with restricted memory.
+- o The fadump implementation introduces a fadump crash info structure
++ o The FADump implementation introduces a FADump crash info structure
+    in the scratch area before the ELF core header. The idea of introducing
+    this structure is to pass some important crash info data to the second
+    kernel which will help second kernel to populate ELF core header with
 
