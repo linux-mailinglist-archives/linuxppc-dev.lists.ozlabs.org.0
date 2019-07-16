@@ -1,65 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362FC6A47D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 11:03:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2C96A472
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 11:00:31 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nvW05VbpzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 19:00:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nvYt5RM0zDqYX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 19:02:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=linaro.org
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=viresh.kumar@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="iE9qoOLo"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nvSx2JrfzDqNd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 18:58:40 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 313C4285B5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 08:58:38 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 25BD9285A9; Tue, 16 Jul 2019 08:58:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203647] Locking API testsuite fails "mixed read-lock/lock-write
- ABBA" rlock on kernels >=4.14.x
-Date: Tue, 16 Jul 2019 08:58:37 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: matorola@gmail.com
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: DOCUMENTED
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-203647-206035-0zdwA3O9aN@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203647-206035@https.bugzilla.kernel.org/>
-References: <bug-203647-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nvVk6GzRzDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 19:00:14 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id l21so9113023pgm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 02:00:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=lkUFnw3tfRAr3e/K9WKPjwIamFFWJ4GH53aBPdA3SN4=;
+ b=iE9qoOLowk11gGQyNUKy6hX3dzsZULEYSEE9OPgqI7mSLLicdUlU32aTXLzaosOv7o
+ Ps4O6zFWL2zCMd3qvOz+NPOOvxudpA4ZoNz1iW7Kfm742WMhzcJgBCItjvxhdXUFEpyJ
+ q1nV6IR/pVSafAW3UgifsGzWyaCK13P0JoqyXGZf1ENQ7sW90oBo9k5SJQtD9weyR/nM
+ F6NcPidmAxKSquh6UC12UiEPXBGITyV41xeCRd0q7nCLS66gdldBCos0dPIjm88xzghm
+ mu0cB9pSTFbkVmGX1VOZzW3LHyZtMnr/kUgpnQ82ctfG0dTDhC3nwPBAwZiAkRnO8wZh
+ OCig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=lkUFnw3tfRAr3e/K9WKPjwIamFFWJ4GH53aBPdA3SN4=;
+ b=d22eRiFP777ZZuIa9UNgk3TslftaBVu27UBTZtiNFGHIiS907iYo/I28sZw/qTl1FB
+ mNkfGu5NJeTqkGNgRhWCI3fqdX7XsCSMXUizZA+mzRoHPJP12wZE2h9mhSnUY8ZckDzA
+ h4RUVJA1YLAa+XSOq7xDGz/BDpBSBR+tbVXrvCGsH6YxetczqvLN6WcurHz30wF/AFYJ
+ tTwSxPhAHeyqyR25O4pI1CrQXKiLXVzVYOrTNO7abeuXb1gJnvM6k+bHfdoCWGat90nU
+ 6vrJvZc5r1HBoQYTw0ARJnISkjn2Vh85wjrqO1yhuvg1qjPqDzSX/aiDLZtAlwYjvYj0
+ VdwA==
+X-Gm-Message-State: APjAAAWPFyqdI0QLP5bLJEfthjDkA1oCywoTzqbkE9ZnoloVeO4slkWP
+ TluiaRadyUjpdMAeE4OQ01gMOA==
+X-Google-Smtp-Source: APXvYqyRYVnjwsmXfuDGrvTUNw/8KnmANGhR7WhUa8xiZz7T5T2fm77xuJxrapWCLvklzQ79FgDmQw==
+X-Received: by 2002:a63:6c46:: with SMTP id h67mr22406939pgc.248.1563267611013; 
+ Tue, 16 Jul 2019 02:00:11 -0700 (PDT)
+Received: from localhost ([122.172.28.117])
+ by smtp.gmail.com with ESMTPSA id r6sm12769971pgl.74.2019.07.16.02.00.09
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 16 Jul 2019 02:00:10 -0700 (PDT)
+Date: Tue, 16 Jul 2019 14:30:08 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: wen.yang99@zte.com.cn
+Subject: Re: [PATCH v6] cpufreq/pasemi: fix an use-after-free
+ inpas_cpufreq_cpu_init()
+Message-ID: <20190716090008.pgddadjzribgbaxw@vireshk-i7>
+References: <20190712034409.zyl6sskrr6ra5nd3@vireshk-i7>
+ <201907161626465333445@zte.com.cn>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201907161626465333445@zte.com.cn>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,94 +81,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203647
+On 16-07-19, 16:26, wen.yang99@zte.com.cn wrote:
+> Okay thank you.
+> Now this patch
+> (https://lore.kernel.org/lkml/ee8cf5fb4b4a01fdf9199037ff6d835b935cfd13.1562902877.git.viresh.kumar@linaro.org/) 
+> seems to have not been merged into the linux-next.
+> 
+> In order to avoid code conflicts, we will wait until this patch is merged in and then send v7.
 
-Anatoly Pugachev (matorola@gmail.com) changed:
+Please rebase on PM tree's linux-next branch instead and resend your
+patch.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |matorola@gmail.com
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
 
---- Comment #7 from Anatoly Pugachev (matorola@gmail.com) ---
-it's the same for sparc64:
-
-`
-[    0.000020] PROMLIB: Sun IEEE Boot Prom 'OBP 4.38.12 2018/03/28 14:54'
-[    0.000032] PROMLIB: Root node compatible: sun4v
-[    0.000080] Linux version 5.2.0-10808-g9637d517347e (mator@ttip) (gcc
-version 8.3.0 (Debian 8.3.0-7)) #1080 SMP Tue Jul 16 10:46:19 MSK 2019
-[    0.000386] printk: bootconsole [earlyprom0] enabled
-[    0.000441] ARCH: SUN4V
-...
-[    0.451068]  memory used by lock dependency info: 3855 kB
-[    0.451104]  per task-struct memory footprint: 1920 bytes
-[    0.451140] ------------------------
-[    0.451167] | Locking API testsuite:
-[    0.451194]
-----------------------------------------------------------------------------
-[    0.451244]                                  | spin |wlock |rlock |mutex=
- |
-wsem | rsem |
-[    0.451294]=20=20
---------------------------------------------------------------------------
-[    0.451350]                      A-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.454281]                  A-B-B-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.457443]              A-B-B-C-C-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.460744]              A-B-C-A-B-C deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.464032]          A-B-B-C-C-D-D-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.467545]          A-B-C-D-B-D-D-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.471009]          A-B-C-D-B-C-D-A deadlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.474475]                     double unlock:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.477425]                   initialize held:  ok  |  ok  |  ok  |  ok =
- |=20
-ok  |  ok  |  ok  |
-[    0.480301]=20=20
---------------------------------------------------------------------------
-[    0.480352]               recursive read-lock:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.481247]            recursive read-lock #2:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.482120]             mixed read-write-lock:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.482998]             mixed write-read-lock:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.483878]   mixed read-lock/lock-write ABBA:             |FAILED|=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.484755]    mixed read-lock/lock-read ABBA:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.485676]  mixed write-lock/lock-write ABBA:             |  ok  |=20=
-=20=20=20=20=20=20=20=20
-   |  ok  |
-[    0.486597]=20=20
---------------------------------------------------------------------------
-`
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+viresh
