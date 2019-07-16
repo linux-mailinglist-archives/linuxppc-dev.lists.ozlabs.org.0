@@ -2,70 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E336A0A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 04:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6D96A0EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 05:45:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nlRT4C62zDqVK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 12:56:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nmWq2BQ7zDqTV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:45:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="mMbxgWVc"; 
- dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nlPc4JpxzDqPB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 12:55:13 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id i8so8644792pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 19:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ukMNRV3QLXCkcg5EJydHfcMLFLgjwuIeKkkg29Ffa4w=;
- b=mMbxgWVcxzKd5i9Ce2SgQ/K3BxxYHM4cFb72Fts5eFpQqxLoxCCfHUf+g203kxEBFJ
- W+Rb6DVT9+i5x5X2R2nPQHDQnZQcLyp8eLsNizEzUu0uGwFp8ahxDAuAxHkKoGlSrqLE
- X8BOqcVY6rK0sU4MGwiP+fAMrEciADNr/zAv4x2aXDyKf33KJDf/ChtYkaIWImmTEO6h
- nZl5WVxnwTSK81W4AfmVIgMTIIrQ9if9sJPcK3AdhOZF2niNk0uXHGz432nd9nt8TDKj
- UO+ZXZMhJATLBdmggqQt1J14EIYdYwCIOeirwVZ/9RaSAdMDnRM8jWKf57mqPwogsq5Y
- tbHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=ukMNRV3QLXCkcg5EJydHfcMLFLgjwuIeKkkg29Ffa4w=;
- b=qmI5S5ME0/lPg/5cQui9dhXWm6JvU6tqApUPC+5AgrqfLVARL4b6yT/tqQddjBzXS1
- DoJbDCaFWw4DwYP/5Hs4yPQ6ahghxYWP3kSkuNWhLMhZtUPOCMBW7R4gDMQquHIv4ym5
- /goXzEoVfq84VnI1MEymMU3ZPV7pT80kAgTGFpc2+XKXZtnWH6S5TzTRFEZXq7UB7S4b
- pylFZiQO2QCiGwfoaJJqRqmjN80+CcOnY1tkeUnOtp+UX17p0KQnMp9yhMZwt9QJlCQG
- 2ifo0L+SlRRTCk0QbefX3/BvOaWGPQ2xhDLIhCn+R4uVCwwQ0jI5++cGGDBj22/Bss+Q
- 4Esw==
-X-Gm-Message-State: APjAAAWiiZQyiTG+PQ0cwblnMeAxDu3nfrowplJgpBEPxYPJKVPz3mF2
- 34z5QCMjnBKVHz9HlRcfMNdeHE06FP8=
-X-Google-Smtp-Source: APXvYqz0cRJYhv0HI43HuEjehFDOupMdVFFzca0kbny3ESCJ8c/4QQlNXOHY/YerMPNrXZV3ACZYYQ==
-X-Received: by 2002:a17:90a:c58e:: with SMTP id
- l14mr32848162pjt.104.1563245709765; 
- Mon, 15 Jul 2019 19:55:09 -0700 (PDT)
-Received: from pasglop.ozlabs.ibm.com ([122.99.82.10])
- by smtp.gmail.com with ESMTPSA id f17sm16563583pgv.16.2019.07.15.19.55.06
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 15 Jul 2019 19:55:09 -0700 (PDT)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] PPC: Set reserved PCR bits
-Date: Tue, 16 Jul 2019 12:54:01 +1000
-Message-Id: <20190716025400.4475-1-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nmTz0Tz6zDqHP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 13:44:05 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6G3goUg090921
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 23:44:00 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ts5fajmc3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2019 23:44:00 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Tue, 16 Jul 2019 04:43:58 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 16 Jul 2019 04:43:56 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x6G3hgSX29622634
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jul 2019 03:43:42 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CAF8352051;
+ Tue, 16 Jul 2019 03:43:55 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.70.146])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 78BD45204F;
+ Tue, 16 Jul 2019 03:43:54 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc/nvdimm: Pick the nearby online node if the device
+ node is not online
+In-Reply-To: <20190711145654.17589-1-aneesh.kumar@linux.ibm.com>
+References: <20190711145654.17589-1-aneesh.kumar@linux.ibm.com>
+Date: Tue, 16 Jul 2019 09:13:52 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19071603-0008-0000-0000-000002FD8954
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071603-0009-0000-0000-0000226AFD7B
+Message-Id: <87r26qej9j.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-16_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907160046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,219 +85,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, alistair@popple.id.au, sjitindarsingh@gmail.com,
- Jordan Niethe <jniethe5@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently the reserved bits of the Processor Compatibility Register
-(PCR) are cleared as per the Programming Note in Section 1.3.3 of the
-ISA.  An update is planned for the ISA so that PCR reserved bits should
-be set. Set the reserved bits of the PCR as required.
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
 
-Acked-by: Alistair Popple <alistair@popple.id.au>
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
- arch/powerpc/include/asm/reg.h          |  3 +++
- arch/powerpc/kernel/cpu_setup_power.S   |  6 ++++++
- arch/powerpc/kernel/dt_cpu_ftrs.c       |  3 ++-
- arch/powerpc/kvm/book3s_hv.c            | 11 +++++++----
- arch/powerpc/kvm/book3s_hv_nested.c     |  6 +++---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 10 ++++++----
- 6 files changed, 27 insertions(+), 12 deletions(-)
+> This is similar to what ACPI does. Nvdimm layer doesn't bring the SCM device
+> numa node online. Hence we need to make sure we always use an online node
+> as ndr_desc.numa_node. Otherwise this result in kernel crashes. The target
+> node is used by dax/kmem and that will bring up the numa node online correctly.
+>
+> Without this patch, we do hit kernel crash as below because we try to access
+> uninitialized NODE_DATA in different code paths.
+>
+> cpu 0x0: Vector: 300 (Data Access) at [c0000000fac53170]
+>     pc: c0000000004bbc50: ___slab_alloc+0x120/0xca0
+>     lr: c0000000004bc834: __slab_alloc+0x64/0xc0
+>     sp: c0000000fac53400
+>    msr: 8000000002009033
+>    dar: 73e8
+>  dsisr: 80000
+>   current = 0xc0000000fabb6d80
+>   paca    = 0xc000000003870000   irqmask: 0x03   irq_happened: 0x01
+>     pid   = 7, comm = kworker/u16:0
+> Linux version 5.2.0-06234-g76bd729b2644 (kvaneesh@ltc-boston123) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #135 SMP Thu Jul 11 05:36:30 CDT 2019
+> enter ? for help
+> [link register   ] c0000000004bc834 __slab_alloc+0x64/0xc0
+> [c0000000fac53400] c0000000fac53480 (unreliable)
+> [c0000000fac53500] c0000000004bc818 __slab_alloc+0x48/0xc0
+> [c0000000fac53560] c0000000004c30a0 __kmalloc_node_track_caller+0x3c0/0x6b0
+> [c0000000fac535d0] c000000000cfafe4 devm_kmalloc+0x74/0xc0
+> [c0000000fac53600] c000000000d69434 nd_region_activate+0x144/0x560
+> [c0000000fac536d0] c000000000d6b19c nd_region_probe+0x17c/0x370
+> [c0000000fac537b0] c000000000d6349c nvdimm_bus_probe+0x10c/0x230
+> [c0000000fac53840] c000000000cf3cc4 really_probe+0x254/0x4e0
+> [c0000000fac538d0] c000000000cf429c driver_probe_device+0x16c/0x1e0
+> [c0000000fac53950] c000000000cf0b44 bus_for_each_drv+0x94/0x130
+> [c0000000fac539b0] c000000000cf392c __device_attach+0xdc/0x200
+> [c0000000fac53a50] c000000000cf231c bus_probe_device+0x4c/0xf0
+> [c0000000fac53a90] c000000000ced268 device_add+0x528/0x810
+> [c0000000fac53b60] c000000000d62a58 nd_async_device_register+0x28/0xa0
+> [c0000000fac53bd0] c0000000001ccb8c async_run_entry_fn+0xcc/0x1f0
+> [c0000000fac53c50] c0000000001bcd9c process_one_work+0x46c/0x860
+> [c0000000fac53d20] c0000000001bd4f4 worker_thread+0x364/0x5f0
+> [c0000000fac53db0] c0000000001c7260 kthread+0x1b0/0x1c0
+> [c0000000fac53e20] c00000000000b954 ret_from_kernel_thread+0x5c/0x68
+>
+> With the patch we get
+>
+>  # numactl -H
+> available: 2 nodes (0-1)
+> node 0 cpus:
+> node 0 size: 0 MB
+> node 0 free: 0 MB
+> node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+> node 1 size: 130865 MB
+> node 1 free: 129130 MB
+> node distances:
+> node   0   1
+>   0:  10  20
+>   1:  20  10
+>  # cat /sys/bus/nd/devices/region0/numa_node
+> 0
+>  # dmesg | grep papr_scm
+> [   91.332305] papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Region registered with target node 2 and online node 0
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 30 +++++++++++++++++++++--
+>  1 file changed, 28 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index c8ec670ee924..4abb0ecda30a 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -255,12 +255,32 @@ static const struct attribute_group *papr_scm_dimm_groups[] = {
+>  	NULL,
+>  };
+>  
+> +static inline int papr_scm_node(int node)
+> +{
+> +	int min_dist = INT_MAX, dist;
+> +	int nid, min_node;
+> +
+> +	if (node_online(node))
+> +		return node;
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 10caa145f98b..2e0815994f4d 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -475,6 +475,7 @@
- #define   PCR_VEC_DIS	(1ul << (63-0))	/* Vec. disable (bit NA since POWER8) */
- #define   PCR_VSX_DIS	(1ul << (63-1))	/* VSX disable (bit NA since POWER8) */
- #define   PCR_TM_DIS	(1ul << (63-2))	/* Trans. memory disable (POWER8) */
-+#define   PCR_HIGH_BITS	(PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
- /*
-  * These bits are used in the function kvmppc_set_arch_compat() to specify and
-  * determine both the compatibility level which we want to emulate and the
-@@ -483,6 +484,8 @@
- #define   PCR_ARCH_207	0x8		/* Architecture 2.07 */
- #define   PCR_ARCH_206	0x4		/* Architecture 2.06 */
- #define   PCR_ARCH_205	0x2		/* Architecture 2.05 */
-+#define   PCR_LOW_BITS	(PCR_ARCH_207 | PCR_ARCH_206 | PCR_ARCH_205)
-+#define   PCR_MASK	~(PCR_HIGH_BITS | PCR_LOW_BITS)	/* PCR Reserved Bits */
- #define	SPRN_HEIR	0x153	/* Hypervisor Emulated Instruction Register */
- #define SPRN_TLBINDEXR	0x154	/* P7 TLB control register */
- #define SPRN_TLBVPNR	0x155	/* P7 TLB control register */
-diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-index 3239a9fe6c1c..a460298c7ddb 100644
---- a/arch/powerpc/kernel/cpu_setup_power.S
-+++ b/arch/powerpc/kernel/cpu_setup_power.S
-@@ -23,6 +23,7 @@ _GLOBAL(__setup_cpu_power7)
- 	beqlr
- 	li	r0,0
- 	mtspr	SPRN_LPID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr	r3,SPRN_LPCR
- 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
-@@ -37,6 +38,7 @@ _GLOBAL(__restore_cpu_power7)
- 	beqlr
- 	li	r0,0
- 	mtspr	SPRN_LPID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr	r3,SPRN_LPCR
- 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
-@@ -54,6 +56,7 @@ _GLOBAL(__setup_cpu_power8)
- 	beqlr
- 	li	r0,0
- 	mtspr	SPRN_LPID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr	r3,SPRN_LPCR
- 	ori	r3, r3, LPCR_PECEDH
-@@ -76,6 +79,7 @@ _GLOBAL(__restore_cpu_power8)
- 	beqlr
- 	li	r0,0
- 	mtspr	SPRN_LPID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr   r3,SPRN_LPCR
- 	ori	r3, r3, LPCR_PECEDH
-@@ -98,6 +102,7 @@ _GLOBAL(__setup_cpu_power9)
- 	mtspr	SPRN_PSSCR,r0
- 	mtspr	SPRN_LPID,r0
- 	mtspr	SPRN_PID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr	r3,SPRN_LPCR
- 	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE  | LPCR_HEIC)
-@@ -123,6 +128,7 @@ _GLOBAL(__restore_cpu_power9)
- 	mtspr	SPRN_PSSCR,r0
- 	mtspr	SPRN_LPID,r0
- 	mtspr	SPRN_PID,r0
-+	LOAD_REG_IMMEDIATE(r0, PCR_MASK)
- 	mtspr	SPRN_PCR,r0
- 	mfspr   r3,SPRN_LPCR
- 	LOAD_REG_IMMEDIATE(r4, LPCR_PECEDH | LPCR_PECE_HVEE | LPCR_HVICE | LPCR_HEIC)
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 0e4c7c1f5c3e..7f2858e3e56a 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -102,7 +102,7 @@ static void __restore_cpu_cpufeatures(void)
- 	if (hv_mode) {
- 		mtspr(SPRN_LPID, 0);
- 		mtspr(SPRN_HFSCR, system_registers.hfscr);
--		mtspr(SPRN_PCR, 0);
-+		mtspr(SPRN_PCR, PCR_MASK);
- 	}
- 	mtspr(SPRN_FSCR, system_registers.fscr);
+We should handle NUMA_NO_NODE here.
+
+modified   arch/powerpc/platforms/pseries/papr_scm.c
+@@ -260,7 +260,7 @@ static inline int papr_scm_node(int node)
+ 	int min_dist = INT_MAX, dist;
+ 	int nid, min_node;
  
-@@ -145,6 +145,7 @@ static void __init cpufeatures_setup_cpu(void)
- 		mtspr(SPRN_HFSCR, 0);
- 	}
- 	mtspr(SPRN_FSCR, 0);
-+	mtspr(SPRN_PCR, PCR_MASK);
+-	if (node_online(node))
++	if ((node == NUMA_NO_NODE) || node_online(node))
+ 		return node;
  
- 	/*
- 	 * LPCR does not get cleared, to match behaviour with secondaries
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 76b1801aa44a..fb1debaa5a7c 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -401,8 +401,11 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 
- 	spin_lock(&vc->lock);
- 	vc->arch_compat = arch_compat;
--	/* Set all PCR bits for which guest_pcr_bit <= bit < host_pcr_bit */
--	vc->pcr = host_pcr_bit - guest_pcr_bit;
-+	/*
-+	 * Set all PCR bits for which guest_pcr_bit <= bit < host_pcr_bit
-+	 * Also set all reserved PCR bits
-+	 */
-+	vc->pcr = (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
- 	spin_unlock(&vc->lock);
- 
- 	return 0;
-@@ -3398,7 +3401,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 	}
- 
- 	if (vc->pcr)
--		mtspr(SPRN_PCR, vc->pcr);
-+		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
- 	mtspr(SPRN_DPDES, vc->dpdes);
- 	mtspr(SPRN_VTB, vc->vtb);
- 
-@@ -3478,7 +3481,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 	vc->vtb = mfspr(SPRN_VTB);
- 	mtspr(SPRN_DPDES, 0);
- 	if (vc->pcr)
--		mtspr(SPRN_PCR, 0);
-+		mtspr(SPRN_PCR, PCR_MASK);
- 
- 	if (vc->tb_offset_applied) {
- 		u64 new_tb = mftb() - vc->tb_offset_applied;
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 735e0ac6f5b2..e916522c5c39 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -29,7 +29,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- {
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 
--	hr->pcr = vc->pcr;
-+	hr->pcr = vc->pcr | PCR_MASK;
- 	hr->dpdes = vc->dpdes;
- 	hr->hfscr = vcpu->arch.hfscr;
- 	hr->tb_offset = vc->tb_offset;
-@@ -65,7 +65,7 @@ static void byteswap_hv_regs(struct hv_guest_state *hr)
- 	hr->lpid = swab32(hr->lpid);
- 	hr->vcpu_token = swab32(hr->vcpu_token);
- 	hr->lpcr = swab64(hr->lpcr);
--	hr->pcr = swab64(hr->pcr);
-+	hr->pcr = swab64(hr->pcr) | PCR_MASK;
- 	hr->amor = swab64(hr->amor);
- 	hr->dpdes = swab64(hr->dpdes);
- 	hr->hfscr = swab64(hr->hfscr);
-@@ -148,7 +148,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- {
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 
--	vc->pcr = hr->pcr;
-+	vc->pcr = hr->pcr | PCR_MASK;
- 	vc->dpdes = hr->dpdes;
- 	vcpu->arch.hfscr = hr->hfscr;
- 	vcpu->arch.dawr = hr->dawr0;
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 337e64468d78..f21dee7a1757 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -643,8 +643,10 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
- 
- 	/* Load guest PCR value to select appropriate compat mode */
- 37:	ld	r7, VCORE_PCR(r5)
--	cmpdi	r7, 0
-+	LOAD_REG_IMMEDIATE(r6, PCR_MASK)
-+	cmpld	r7, r6
- 	beq	38f
-+	or	r7, r7, r6
- 	mtspr	SPRN_PCR, r7
- 38:
- 
-@@ -1884,10 +1886,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
- 
- 	/* Reset PCR */
- 	ld	r0, VCORE_PCR(r5)
--	cmpdi	r0, 0
-+	LOAD_REG_IMMEDIATE(r6, PCR_MASK)
-+	cmpld	r0, r6
- 	beq	18f
--	li	r0, 0
--	mtspr	SPRN_PCR, r0
-+	mtspr	SPRN_PCR, r6
- 18:
- 	/* Signal secondary CPUs to continue */
- 	stb	r0,VCORE_IN_GUEST(r5)
--- 
-2.20.1
+ 	min_node = first_online_node;
+
+Will send an updated patch.
+
+> +
+> +	min_node = first_online_node;
+> +	for_each_online_node(nid) {
+> +		dist = node_distance(node, nid);
+> +		if (dist < min_dist) {
+> +			min_dist = dist;
+> +			min_node = nid;
+> +		}
+> +	}
+> +	return min_node;
+> +}
+> +
+>  static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>  {
+>  	struct device *dev = &p->pdev->dev;
+>  	struct nd_mapping_desc mapping;
+>  	struct nd_region_desc ndr_desc;
+>  	unsigned long dimm_flags;
+> +	int target_nid, online_nid;
+>  
+>  	p->bus_desc.ndctl = papr_scm_ndctl;
+>  	p->bus_desc.module = THIS_MODULE;
+> @@ -299,8 +319,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>  
+>  	memset(&ndr_desc, 0, sizeof(ndr_desc));
+>  	ndr_desc.attr_groups = region_attr_groups;
+> -	ndr_desc.numa_node = dev_to_node(&p->pdev->dev);
+> -	ndr_desc.target_node = ndr_desc.numa_node;
+> +	target_nid = dev_to_node(&p->pdev->dev);
+> +	online_nid = papr_scm_node(target_nid);
+> +	set_dev_node(&p->pdev->dev, online_nid);
+> +	ndr_desc.numa_node = online_nid;
+> +	ndr_desc.target_node = target_nid;
+>  	ndr_desc.res = &p->res;
+>  	ndr_desc.of_node = p->dn;
+>  	ndr_desc.provider_data = p;
+> @@ -318,6 +341,9 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>  				ndr_desc.res, p->dn);
+>  		goto err;
+>  	}
+> +	if (target_nid != online_nid)
+> +		dev_info(dev, "Region registered with target node %d and online node %d",
+> +			 target_nid, online_nid);
+>  
+>  	return 0;
+>  
+> -- 
+> 2.21.0
 
