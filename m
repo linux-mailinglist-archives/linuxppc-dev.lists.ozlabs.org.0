@@ -2,74 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD776A932
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 15:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2596AB01
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 16:53:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45p11t0kxDzDqg1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 23:09:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45p3Kt50D2zDqfP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 00:53:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=krzk@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="b8dhUBZS"; 
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="cJpVGUzw"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45p0zF721vzDqbv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 23:06:49 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id f17so5109611pfn.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 06:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=HndzIrwk0eloZ/VKZJ3ivaH1s8315qlKpsro16xZw70=;
- b=b8dhUBZSz3RGMnHXa2eQUBcpb0Fr1c6vhDDwn4sy14RwoF3LeMqo4GwVei/eUCKLfN
- 2ysAKK0S6zo65plaT8Lmyu1cdKbX5vv5C3GPTJPIInad+mBHinkOAREnbCNuxmpL9VDG
- fvZUIwNFnzQNqEmzHkL0RRQ1MQkDpVZLaNNcaAVC/zAYUxremZf5+M3FMQbomiyN3wH4
- zc2zC/xff3jM5dpplZUlTKdEFImIprhxsju27ez6MU1i0OsgFNq72UzfzJW9Togr4CqO
- YkkRxSa2wlAwsL/E0oFuYOap/7lvKcKnsDSBvmk5MITFO2BYwQSiCBv4/QcWtaXdxpFP
- 2++g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=HndzIrwk0eloZ/VKZJ3ivaH1s8315qlKpsro16xZw70=;
- b=RB3EBL36oVrvKw6FMMBJgYFHtIL+0320ur+IfbabkackG9EDOTsV1vP9BQS0MiUStV
- 2LitM/al947E9iNhNQCDq4fEn0pqgNUTNz6ftCKD2kItQOClqyUF9t0ubwqOzIqwWWlX
- PmErXihxq60MScJcJnPRf5Y0ADu9pHy6Qx5mERF+DKm9lI5RNeYGNNMdtLWnwbYWvWJL
- ospL/n9krXczXBoctmReoS0yITD4ZZAcn1+YnHznpZBpc8BRFVto7Mqt5GnI24bYCzy4
- S65bxBchDYwW7ymsD92fStpTVenNrUSJsuHKcMTvz2CMJE+ZsmKllQjDAXF2msXrmZpg
- HBPQ==
-X-Gm-Message-State: APjAAAWJC0ZCJL4sSWoBm61jFnSXID2a1GDN0NRs+vK9mfrJADcbK/a6
- CDxZEti/0vctspjWMk5Filk=
-X-Google-Smtp-Source: APXvYqxc7HGOD0D5gu8WnhNrsT1I3LmFfpI6lWg9smWBUfjHYlbiTNFFnqhLddSt9tTLEeru8OLm5Q==
-X-Received: by 2002:a63:b1d:: with SMTP id 29mr33615344pgl.103.1563282405436; 
- Tue, 16 Jul 2019 06:06:45 -0700 (PDT)
-Received: from brauner.io ([172.58.30.188])
- by smtp.gmail.com with ESMTPSA id a12sm42618252pje.3.2019.07.16.06.06.37
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 16 Jul 2019 06:06:44 -0700 (PDT)
-Date: Tue, 16 Jul 2019 15:06:33 +0200
-From: Christian Brauner <christian@brauner.io>
-To: Christian Borntraeger <borntraeger@de.ibm.com>
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-Message-ID: <20190716130631.tohj4ub54md25dys@brauner.io>
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
- <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45p3Hr6yNGzDqcR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 00:51:20 +1000 (AEST)
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com
+ [209.85.167.182])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4D126217F9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 14:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1563288677;
+ bh=sonO2Wj/dB2WVkbnigGOIptZBiYzU9g2oAVvNNhm8N0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=cJpVGUzwvpQrBfw5VxnjM7fZDMqN8buukyY5uNJV0ilBSNzK8xmxbSP8KeFgOPVGk
+ CdhPYLcquPdpNPv9IfGMnbk93gK1YgS3rEW3NEieCmVZ/yyatbJnN9K/XZrO4tC0sv
+ vpJ81lt0Z15VjbKndmSpPGS7eGfx6pNckGHuM6H8=
+Received: by mail-oi1-f182.google.com with SMTP id m202so15777788oig.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 07:51:17 -0700 (PDT)
+X-Gm-Message-State: APjAAAVODdrWMQWx9dxpKAl9r0rE6LCZPOKPDi0/buUVqGL0LMwxPuX7
+ qHYVmVoPt1oX3/WlmjmDwtjVONGiUPQc/0qEQts=
+X-Google-Smtp-Source: APXvYqznotTEvyaymhJh/wAMu0w2H5gcuDv5j22SZvycyNMyxsk7XBmOnJ7QXnjodYkrV1FF1kduEHzUtbpafqpVCNU=
+X-Received: by 2002:aca:1b0c:: with SMTP id b12mr2605814oib.123.1563288676578; 
+ Tue, 16 Jul 2019 07:51:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
-User-Agent: NeoMutt/20180716
+References: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
+ <20190712022018.27989-2-alex.shi@linux.alibaba.com>
+In-Reply-To: <20190712022018.27989-2-alex.shi@linux.alibaba.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Tue, 16 Jul 2019 16:51:05 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
+Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
+Subject: Re: [PATCH 02/12] Documentation/arm: repointer docs to
+ Documentation/arch/arm
+To: Alex Shi <alex.shi@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,118 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, arnd@arndb.de,
- linux-sh@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+Cc: linux-s390@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
+ linux-ia64@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Vasily Gorbik <gor@linux.ibm.com>
+ linux-serial@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
-> I think Vasily already has a clone3 patch for s390x with 435. 
+On Fri, 12 Jul 2019 at 04:20, Alex Shi <alex.shi@linux.alibaba.com> wrote:
+>
+> Since we move 'arm/arm64' docs to Documentation/arch/{arm,arm64} dir,
+> redirect the doc pointer to them.
+>
+> Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Kukjin Kim <kgene@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-serial@vger.kernel.org
+> ---
+>  Documentation/arch/arm/Samsung-S3C24XX/GPIO.txt    |  2 +-
+>  .../arch/arm/Samsung-S3C24XX/Overview.txt          |  6 +++---
+>  Documentation/arch/arm/Samsung/GPIO.txt            |  2 +-
+>  Documentation/arch/arm/Samsung/Overview.txt        |  4 ++--
+>  Documentation/devicetree/bindings/arm/xen.txt      |  2 +-
+>  Documentation/devicetree/booting-without-of.txt    |  4 ++--
+>  Documentation/translations/zh_CN/arm/Booting       |  4 ++--
+>  .../translations/zh_CN/arm/kernel_user_helpers.txt |  4 ++--
+>  MAINTAINERS                                        |  6 +++---
 
-A quick follow-up on this. Helge and Michael have asked whether there
-are any tests for clone3. Yes, there will be and I try to have them
-ready by the end of the this or next week for review. In the meantime I
-hope the following minimalistic test program that just verifies very
-very basic functionality (It's not pretty.) will help you test:
+I assume it will go through doc tree, so for Samsung:
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-#define _GNU_SOURCE
-#include <err.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <linux/sched.h>
-#include <linux/types.h>
-#include <sched.h>
-#include <signal.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mount.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <sys/sysmacros.h>
-#include <sys/types.h>
-#include <sys/un.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
-#ifndef CLONE_PIDFD
-#define CLONE_PIDFD 0x00001000
-#endif
-
-#ifndef __NR_clone3
-#define __NR_clone3 -1
-#endif
-
-static pid_t sys_clone3(struct clone_args *args)
-{
-	return syscall(__NR_clone3, args, sizeof(struct clone_args));
-}
-
-static int wait_for_pid(pid_t pid)
-{
-	int status, ret;
-
-again:
-	ret = waitpid(pid, &status, 0);
-	if (ret == -1) {
-		if (errno == EINTR)
-			goto again;
-
-		return -1;
-	}
-
-	if (ret != pid)
-		goto again;
-
-	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-		return -1;
-
-	return 0;
-}
-
-#define ptr_to_u64(ptr) ((__u64)((uintptr_t)(ptr)))
-
-int main(int argc, char *argv[])
-{
-	int pidfd = -1;
-	pid_t parent_tid = -1, pid = -1;
-	struct clone_args args = {0};
-
-	args.parent_tid = ptr_to_u64(&parent_tid); /* CLONE_PARENT_SETTID */
-	args.pidfd = ptr_to_u64(&pidfd); /* CLONE_PIDFD */
-	args.flags = CLONE_PIDFD | CLONE_PARENT_SETTID;
-	args.exit_signal = SIGCHLD;
-
-	pid = sys_clone3(&args);
-	if (pid < 0) {
-		fprintf(stderr, "%s - Failed to create new process\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	if (pid == 0) {
-		printf("Child process with pid %d\n", getpid());
-		exit(EXIT_SUCCESS);
-	}
-
-	printf("Parent process received child's pid %d as return value\n", pid);
-	printf("Parent process received child's pidfd %d\n", *(int *)args.pidfd);
-	printf("Parent process received child's pid %d as return argument\n",
-	       *(pid_t *)args.parent_tid);
-
-	if (wait_for_pid(pid))
-		exit(EXIT_FAILURE);
-
-	if (pid != *(pid_t *)args.parent_tid)
-		exit(EXIT_FAILURE);
-
-	close(pidfd);
-
-	return 0;
-}
+Best regards,
+Krzysztof
