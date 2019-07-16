@@ -2,100 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B396A716
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB6D6A77D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:33:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nySV1h3jzDqNL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:13:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nyw13X4tzDq61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:33:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nysy626BzDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:32:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45nysy4x88z8t9P
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:32:06 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45nysy4TR7z9sNC; Tue, 16 Jul 2019 21:32:06 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nyMb2yTMzDqY7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:09:15 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 623062BE9A;
- Tue, 16 Jul 2019 11:09:13 +0000 (UTC)
-Received: from [10.36.116.218] (ovpn-116-218.ams2.redhat.com [10.36.116.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6DC9519C68;
- Tue, 16 Jul 2019 11:09:07 +0000 (UTC)
-Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
- unregister_memory_block_under_nodes() never fail
-To: Oscar Salvador <osalvador@suse.de>
-References: <20190527111152.16324-1-david@redhat.com>
- <20190527111152.16324-11-david@redhat.com>
- <20190701085144.GJ6376@dhcp22.suse.cz> <20190701093640.GA17349@linux>
- <20190701102756.GO6376@dhcp22.suse.cz>
- <d450488d-7a82-f7a9-c8d3-b69a0bca48c6@redhat.com>
- <20190716084626.GA12394@linux>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <eb51f770-b0a3-f50c-daa4-babe6e8d3fc4@redhat.com>
-Date: Tue, 16 Jul 2019 13:09:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by ozlabs.org (Postfix) with ESMTPS id 45nysy0gdtz9s7T
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 21:32:05 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6GBN6Bi066038
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:32:01 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tscphawf1-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 16 Jul 2019 07:32:01 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Tue, 16 Jul 2019 12:31:59 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 16 Jul 2019 12:31:57 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6GBVtlJ18088184
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jul 2019 11:31:55 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A061342049;
+ Tue, 16 Jul 2019 11:31:55 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A21442042;
+ Tue, 16 Jul 2019 11:31:54 +0000 (GMT)
+Received: from hbathini.in.ibm.com (unknown [9.184.183.117])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Jul 2019 11:31:53 +0000 (GMT)
+Subject: [PATCH v4 00/25] Add FADump support on PowerNV platform
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Tue, 16 Jul 2019 17:01:53 +0530
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-In-Reply-To: <20190716084626.GA12394@linux>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.39]); Tue, 16 Jul 2019 11:09:13 +0000 (UTC)
+X-TM-AS-GCONF: 00
+x-cbid: 19071611-0020-0000-0000-00000354050C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071611-0021-0000-0000-000021A7D0ED
+Message-Id: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-16_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907160145
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,79 +100,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- linux-kernel@vger.kernel.org, Chris Wilson <chris@chris-wilson.co.uk>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- "David S. Miller" <davem@davemloft.net>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alex Deucher <alexander.deucher@amd.com>, Igor Mammedov <imammedo@redhat.com>,
- akpm@linux-foundation.org, Wei Yang <richard.weiyang@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Stewart Smith <stewart@linux.ibm.com>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16.07.19 10:46, Oscar Salvador wrote:
-> On Mon, Jul 15, 2019 at 01:10:33PM +0200, David Hildenbrand wrote:
->> On 01.07.19 12:27, Michal Hocko wrote:
->>> On Mon 01-07-19 11:36:44, Oscar Salvador wrote:
->>>> On Mon, Jul 01, 2019 at 10:51:44AM +0200, Michal Hocko wrote:
->>>>> Yeah, we do not allow to offline multi zone (node) ranges so the current
->>>>> code seems to be over engineered.
->>>>>
->>>>> Anyway, I am wondering why do we have to strictly check for already
->>>>> removed nodes links. Is the sysfs code going to complain we we try to
->>>>> remove again?
->>>>
->>>> No, sysfs will silently "fail" if the symlink has already been removed.
->>>> At least that is what I saw last time I played with it.
->>>>
->>>> I guess the question is what if sysfs handling changes in the future
->>>> and starts dropping warnings when trying to remove a symlink is not there.
->>>> Maybe that is unlikely to happen?
->>>
->>> And maybe we handle it then rather than have a static allocation that
->>> everybody with hotremove configured has to pay for.
->>>
->>
->> So what's the suggestion? Dropping the nodemask_t completely and calling
->> sysfs_remove_link() on already potentially removed links?
->>
->> Of course, we can also just use mem_blk->nid and rest assured that it
->> will never be called for memory blocks belonging to multiple nodes.
-> 
-> Hi David,
-> 
-> While it is easy to construct a scenario where a memblock belongs to multiple
-> nodes, I have to confess that I yet have not seen that in a real-world scenario.
-> 
-> Given said that, I think that the less risky way is to just drop the nodemask_t
-> and do not care about calling sysfs_remove_link() for already removed links.
-> As I said, sysfs_remove_link() will silently fail when it fails to find the
-> symlink, so I do not think it is a big deal.
-> 
-> 
+Firmware-Assisted Dump (FADump) is currently supported only on pSeries
+platform. This patch series adds support for PowerNV platform too.
 
-As far as I can tell we
+The first few patches refactor the FADump code to make use of common
+code across multiple platforms. Then basic FADump support is added for
+PowerNV platform. Followed by patches to honour reserved-ranges DT node
+while reserving/releasing memory used by FADump. The subsequent patch
+processes CPU state data provided by firmware to create and append core
+notes to the ELF core file and the next patch adds support to preserve
+crash data for subsequent boots (useful in cases like petitboot). The
+subsequent patches add support to export opalcore. opalcore makes
+debugging of failures in OPAL code easier. Firmware-Assisted Dump
+documentation is also updated appropriately.
 
-a) don't allow offlining of memory that belongs to multiple nodes
-already (as pointed out by Michal recently)
+The patch series is tested with the latest firmware plus the below skiboot
+changes for MPIPL support:
 
-b) users cannot add memory blocks that belong to multiple nodes via
-add_memory()
+    https://patchwork.ozlabs.org/project/skiboot/list/?series=119169
+    ("MPIPL support")
 
-So I don't see a way how remove_memory() (and even offline_pages())
-could ever succeed on such memory blocks.
 
-I think it should be fine to limit it to one node here. (if not, I guess
-we would have a different BUG that would actually allow to remove such
-memory blocks)
+Changes in v4:
+  * Split the patches.
+  * Rebased to latest upstream kernel version.
+  * Updated according to latest OPAL changes.
 
--- 
+---
 
-Thanks,
+Hari Bathini (25):
+      powerpc/fadump: move internal macros/definitions to a new header
+      powerpc/fadump: move internal code to a new file
+      powerpc/fadump: Improve fadump documentation
+      pseries/fadump: move rtas specific definitions to platform code
+      pseries/fadump: introduce callbacks for platform specific operations
+      pseries/fadump: define register/un-register callback functions
+      pseries/fadump: move out platform specific support from generic code
+      powerpc/fadump: use FADump instead of fadump for how it is pronounced
+      opal: add MPIPL interface definitions
+      powernv/fadump: add fadump support on powernv
+      powernv/fadump: register kernel metadata address with opal
+      powernv/fadump: define register/un-register callback functions
+      powernv/fadump: support copying multiple kernel memory regions
+      powernv/fadump: process the crashdump by exporting it as /proc/vmcore
+      powerpc/fadump: Update documentation about OPAL platform support
+      powerpc/fadump: consider reserved ranges while reserving memory
+      powerpc/fadump: consider reserved ranges while releasing memory
+      powernv/fadump: process architected register state data provided by firmware
+      powernv/fadump: add support to preserve crash data on FADUMP disabled kernel
+      powerpc/fadump: update documentation about CONFIG_PRESERVE_FA_DUMP
+      powernv/opalcore: export /sys/firmware/opal/core for analysing opal crashes
+      powernv/fadump: Warn before processing partial crashdump
+      powernv/opalcore: provide an option to invalidate /sys/firmware/opal/core file
+      powernv/fadump: consider f/w load area
+      powernv/fadump: update documentation about option to release opalcore
 
-David / dhildenb
+
+ Documentation/powerpc/firmware-assisted-dump.txt |  224 +++-
+ arch/powerpc/Kconfig                             |   23 
+ arch/powerpc/include/asm/fadump.h                |  190 ----
+ arch/powerpc/include/asm/opal-api.h              |   50 +
+ arch/powerpc/include/asm/opal.h                  |    6 
+ arch/powerpc/kernel/Makefile                     |    6 
+ arch/powerpc/kernel/fadump-common.c              |  153 +++
+ arch/powerpc/kernel/fadump-common.h              |  203 ++++
+ arch/powerpc/kernel/fadump.c                     | 1181 ++++++++--------------
+ arch/powerpc/kernel/prom.c                       |    4 
+ arch/powerpc/platforms/powernv/Makefile          |    3 
+ arch/powerpc/platforms/powernv/opal-call.c       |    3 
+ arch/powerpc/platforms/powernv/opal-core.c       |  637 ++++++++++++
+ arch/powerpc/platforms/powernv/opal-fadump.c     |  671 ++++++++++++
+ arch/powerpc/platforms/powernv/opal-fadump.h     |  154 +++
+ arch/powerpc/platforms/pseries/Makefile          |    1 
+ arch/powerpc/platforms/pseries/rtas-fadump.c     |  595 +++++++++++
+ arch/powerpc/platforms/pseries/rtas-fadump.h     |  123 ++
+ 18 files changed, 3231 insertions(+), 996 deletions(-)
+ create mode 100644 arch/powerpc/kernel/fadump-common.c
+ create mode 100644 arch/powerpc/kernel/fadump-common.h
+ create mode 100644 arch/powerpc/platforms/powernv/opal-core.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.h
+ create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
+ create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.h
+
