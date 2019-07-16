@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0641E6A70D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B396A716
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 13:13:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45nyPt0W9CzDqY7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:11:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45nySV1h3jzDqNL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,17 +18,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45nyMQ1GWxzDqRY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:09:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45nyMb2yTMzDqY7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 21:09:15 +1000 (AEST)
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
  [10.5.11.23])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id E40DD30832E9;
- Tue, 16 Jul 2019 11:09:02 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id 623062BE9A;
+ Tue, 16 Jul 2019 11:09:13 +0000 (UTC)
 Received: from [10.36.116.218] (ovpn-116-218.ams2.redhat.com [10.36.116.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8BC1419C59;
- Tue, 16 Jul 2019 11:08:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6DC9519C68;
+ Tue, 16 Jul 2019 11:09:07 +0000 (UTC)
 Subject: Re: [PATCH v3 10/11] mm/memory_hotplug: Make
  unregister_memory_block_under_nodes() never fail
 To: Oscar Salvador <osalvador@suse.de>
@@ -84,8 +84,8 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <d9e63646-f81d-c349-a54c-e17cdccb0760@redhat.com>
-Date: Tue, 16 Jul 2019 13:08:56 +0200
+Message-ID: <eb51f770-b0a3-f50c-daa4-babe6e8d3fc4@redhat.com>
+Date: Tue, 16 Jul 2019 13:09:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
@@ -95,7 +95,7 @@ Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.44]); Tue, 16 Jul 2019 11:09:03 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.39]); Tue, 16 Jul 2019 11:09:13 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -166,7 +166,7 @@ On 16.07.19 10:46, Oscar Salvador wrote:
 As far as I can tell we
 
 a) don't allow offlining of memory that belongs to multiple nodes
-already (as pointed out by Michael recently)
+already (as pointed out by Michal recently)
 
 b) users cannot add memory blocks that belong to multiple nodes via
 add_memory()
