@@ -1,77 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860616B028
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 21:57:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6006AF65
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2019 20:57:58 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45p8mL5jgVzDqZN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 04:57:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45pB522ktRzDqgW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 05:57:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::442; helo=mail-wr1-x442.google.com;
- envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=desnesn@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="fLx81Axc"; 
- dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45p8kB4vllzDqZ9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 04:56:02 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id r1so22075015wrl.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2019 11:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=HII1jGmOqJ+ZHDKFI1WGLRVkv6rLuJXcbXOQGuTO2qs=;
- b=fLx81Axc7fZXcKYyn4FdWmT0VEDGlHROQXan6kCDS1lBwXYOSOZICuwNpupEPxZ1KA
- wYSXFaoVOjGfUCkS+d8cHlAhu3M2pxovWkqnQFOwALA9QBVmnRkxZxo8H9luuiBMYElW
- teY5CswjSiHPAphop6UNge3b8FVvFOdl6ZPhV/lGeX4EdVgwNRrnGQgmpMB8qwN4h6Vz
- CUQTMLSjShRSEkdrxPF+i2v0KnEMWmD2NuZDGJaVq93w9O/93sXEJ13J+BUqFv+mqIR0
- a2nSPFa0W7ZgTdiFK5BAgfXI4EwftEfi8ScyprvmIm71SEiMx2Gq30N3zYyTNzblFVBj
- IDqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=HII1jGmOqJ+ZHDKFI1WGLRVkv6rLuJXcbXOQGuTO2qs=;
- b=o76sJrDxWZMpvikLEVGCfPFcEy1Dhl5EHPnJ25r3vRYA8rJgGikalv8PbOJELsi1QZ
- Vwucr/thuybjh3dFM1W4owEZHrWeFZ4SL8KQX8NMnsk1XilMYkWYCkadDWfGMQ9H/N/B
- FzneBp3E1hcujX4E6Vsc022ZUClQIluQuwGkSChEMmFYmKi5WrcHYqLwt5S2m8S4uM+n
- TaZj21azbc/6nXfdh1uWMrOpjpLjagzdwhSSpqhzUffGofE2XjqFNcJ/J2u1mmnzjsqn
- BCt5HtgiBHtoAhpbB1v3X3jDwgJiurax3KUOHoVd0HU2Ef4/OUDC1AZHejiQAq7WrQeD
- 6xWg==
-X-Gm-Message-State: APjAAAWChLpbzUZm9U91L3n0Tmpz2Z6eMeDhj7dVXJevmxehZFVCZQFW
- OYbvE88v1HWtSLGG7BQRXvo=
-X-Google-Smtp-Source: APXvYqxjOiZ+/ZmqnAl0iYfzzo4MAVdDizISydYdFT08PVtYYgV0sowV+fqLU0s1PX6fcTCrkIj0Fw==
-X-Received: by 2002:adf:f8cf:: with SMTP id f15mr36779432wrq.333.1563303357931; 
- Tue, 16 Jul 2019 11:55:57 -0700 (PDT)
-Received: from brauner.io ([213.220.153.21])
- by smtp.gmail.com with ESMTPSA id j33sm48044545wre.42.2019.07.16.11.55.56
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 16 Jul 2019 11:55:57 -0700 (PDT)
-Date: Tue, 16 Jul 2019 20:55:55 +0200
-From: Christian Brauner <christian@brauner.io>
-To: Sven Schnelle <svens@stackframe.org>
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-Message-ID: <20190716185554.gwpppirvmxgvnkgb@brauner.io>
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
- <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
- <20190716130631.tohj4ub54md25dys@brauner.io>
- <20190716185310.GA12537@t470p.stackframe.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45p9vK425SzDqd3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 05:48:57 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6GJkkln073587; Tue, 16 Jul 2019 15:48:47 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tsmyeg7xj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jul 2019 15:48:47 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6GJjLmD031930;
+ Tue, 16 Jul 2019 19:48:45 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 2tq6x61q7h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jul 2019 19:48:45 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6GJmjpG12387074
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jul 2019 19:48:45 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 086AB112067;
+ Tue, 16 Jul 2019 19:48:44 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F36CA112074;
+ Tue, 16 Jul 2019 19:48:42 +0000 (GMT)
+Received: from ibm.ibmuc.com (unknown [9.85.198.208])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Jul 2019 19:48:42 +0000 (GMT)
+From: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: mark __boot_from_prom and start_here_common as
+ __ref
+Date: Tue, 16 Jul 2019 16:48:29 -0300
+Message-Id: <20190716194829.15483-1-desnesn@linux.ibm.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190716185310.GA12537@t470p.stackframe.org>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-16_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=810 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907160242
+X-Mailman-Approved-At: Wed, 17 Jul 2019 05:56:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,44 +81,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, arnd@arndb.de,
- linux-sh@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Vasily Gorbik <gor@linux.ibm.com>
+Cc: desnesn@linux.ibm.com, paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 16, 2019 at 08:53:10PM +0200, Sven Schnelle wrote:
-> Hi,
-> 
-> [Adding Helge to CC list]
-> 
-> On Tue, Jul 16, 2019 at 03:06:33PM +0200, Christian Brauner wrote:
-> > On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
-> > > I think Vasily already has a clone3 patch for s390x with 435. 
-> > 
-> > A quick follow-up on this. Helge and Michael have asked whether there
-> > are any tests for clone3. Yes, there will be and I try to have them
-> > ready by the end of the this or next week for review. In the meantime I
-> > hope the following minimalistic test program that just verifies very
-> > very basic functionality (It's not pretty.) will help you test:
-> > [..]
-> 
-> On PA-RISC this seems to work fine with Helge's patch to wire up the
-> clone3 syscall.
+Functions `__boot_from_prom` and `start_here_common` are "init code" in
+the sense that they are only executed at boot time, nevertheless they
+should not be tagged as __init since this will carry them to a different
+section located at the very end of kernel text. If the TOC is not set up,
+the kernel may not be able to tolerate a branch trampoline to reach the
+init function.
 
-I think I already responded to Helge before and yes, I think that parisc
-doesn't do anything special for fork, vfork, clone, and by extension
-also probably doesn't need to for clone3.
-It should only be a problem for arches that require mucking explicitly
-with arguments of clone-like syscalls.
-In any case, I saw Helge's patch and I think I might've missed to add an
-Acked-by but feel free to add it.
+Thus, these functions should be marked as `__ref` and the assembler must
+be reminded to insert the code that follows into the last active section
+by the use of the `.previous` directive. This will allow the powerpc
+kernel to be built with CONFIG_SECTION_MISMATCH_WARN_ONLY disabled and
+quieten the following modpost warnings during compilation:
 
-Thanks for testing it and sorry that I couldn't test!
-Christian
+    WARNING: vmlinux.o(.text+0x2ad4): Section mismatch in reference from the variable __boot_from_prom to the function .init.text:prom_init()
+    The function __boot_from_prom() references
+    the function __init prom_init().
+    This is often because __boot_from_prom lacks a __init
+    annotation or the annotation of prom_init is wrong.
+
+    WARNING: vmlinux.o(.text+0x2cd0): Section mismatch in reference from the variable start_here_common to the function .init.text:start_kernel()
+    The function start_here_common() references
+    the function __init start_kernel().
+    This is often because start_here_common lacks a __init
+    annotation or the annotation of start_kernel is wrong.
+
+Credits: code is based on commit <9c4e4c90ec24> ("powerpc/64: mark
+start_here_multiplatform as __ref") and message is based on 2016 patch by
+Nicholas Piggin: https://lore.kernel.org/linuxppc-dev/20161222131419.18062-1-npiggin@gmail.com/
+
+Signed-off-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+---
+ arch/powerpc/kernel/head_64.S | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 259be7f6d551..04b34397b656 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -540,6 +540,7 @@ __start_initialization_multiplatform:
+ 	b	__after_prom_start
+ #endif /* CONFIG_PPC_BOOK3E */
+ 
++__REF
+ __boot_from_prom:
+ #ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
+ 	/* Save parameters */
+@@ -577,6 +578,7 @@ __boot_from_prom:
+ 	/* We never return. We also hit that trap if trying to boot
+ 	 * from OF while CONFIG_PPC_OF_BOOT_TRAMPOLINE isn't selected */
+ 	trap
++	.previous
+ 
+ __after_prom_start:
+ #ifdef CONFIG_RELOCATABLE
+@@ -983,6 +985,7 @@ start_here_multiplatform:
+ 	.previous
+ 	/* This is where all platforms converge execution */
+ 
++__REF
+ start_here_common:
+ 	/* relocation is on at this point */
+ 	std	r1,PACAKSAVE(r13)
+@@ -1003,6 +1006,7 @@ start_here_common:
+ 
+ 	/* Not reached */
+ 	BUG_OPCODE
++	.previous
+ 
+ /*
+  * We put a few things here that have to be page-aligned.
+-- 
+2.18.1
+
