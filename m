@@ -1,87 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638946BAD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 12:55:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE23F6BA61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 12:37:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45pYck1XJmzDqXJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 20:37:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45pZ1g3zD1zDqb1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 20:55:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.160.194; helo=mail-qt1-f194.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qt1-f194.google.com (mail-qt1-f194.google.com
+ [209.85.160.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45pYZk0hqKzDqQs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 20:35:57 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6HAVi7e043717
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 06:35:54 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tt0w1kfwj-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 06:35:54 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
- Wed, 17 Jul 2019 11:35:52 +0100
-Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 17 Jul 2019 11:35:48 +0100
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6HAZls328967204
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2019 10:35:48 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4B8BAE063;
- Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37B25AE05F;
- Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.199.56.245])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 8E42F2E2F43; Wed, 17 Jul 2019 16:05:43 +0530 (IST)
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>, Breno Leitao <leitao@debian.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
-Subject: [PATCH] powerpc/xive: Fix loop exit-condition in
- xive_find_target_in_mask()
-Date: Wed, 17 Jul 2019 16:05:24 +0530
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-x-cbid: 19071710-0060-0000-0000-0000036236CF
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011444; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01233404; UDB=6.00649903; IPR=6.01014728; 
- MB=3.00027758; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-17 10:35:51
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071710-0061-0000-0000-00004A2F7E98
-Message-Id: <1563359724-13931-1-git-send-email-ego@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-17_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907170128
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45pV0G3QM2zDqLf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 17:54:21 +1000 (AEST)
+Received: by mail-qt1-f194.google.com with SMTP id 44so22329955qtg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 00:54:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=9AEqQoaGTAa0PqZng6tVavUS5clIessMaCOIARWHN9U=;
+ b=SJ/PAduo6ICHeMF7a5ghoK44fRAcPtEhmOObTKiScaQMW9t++1ZOiWYzlc+pI9gtQJ
+ g03iuoMZrWb8lQziDu1O4nNKo8lRwCAHACEa4aHw0lNQ1Waf525kb7VUybj6d87xqEN5
+ WW+2pErDArYUlF1xedKXIxT1qi4N1E5me3pLgymac7i3XYn1O8dcrvIu9kwrUwJVqqx+
+ vyuqT+W99QG/qVigA7g0sTi1SUwKiWjBQ8lIBaqXAsiKa7cExmgSwM6cgiHxc5sE5ivZ
+ jFbtF6hK76mpSzvffe2P/A8w5nlDjJimUc2UpbxB7Gcrup2PLFjawFrprxGhfvFLnBFn
+ fj3g==
+X-Gm-Message-State: APjAAAWXVx8yNVdzLqRzednrjttCGSWcMoXhHD08BGbQvvmcuMi6ES4K
+ /UXaMGgEO5TTqkb3LSsP/Q682vRJev2/DsB+0Ow=
+X-Google-Smtp-Source: APXvYqwA3e0Hb/geagbCcwLScPUnQnKGWvdhC0OOCtTo0z46+Syjmze6aI0tfbRcL9XXOoSGgqg4OC9iYUrp9+KNhcg=
+X-Received: by 2002:aed:3e7c:: with SMTP id m57mr26678566qtf.204.1563350058887; 
+ Wed, 17 Jul 2019 00:54:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190717012719.5524-1-palmer@sifive.com>
+ <20190717012719.5524-4-palmer@sifive.com>
+In-Reply-To: <20190717012719.5524-4-palmer@sifive.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 17 Jul 2019 09:54:02 +0200
+Message-ID: <CAK8P3a2SGNJXqbHGFhVoPDZLpPYWGDVJ42D2476DLPU4nvf85g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] arch: Register fchmodat4, usually as syscall 434
+To: Palmer Dabbelt <palmer@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 17 Jul 2019 20:54:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,123 +62,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Stefan Agner <stefan@agner.ch>,
+ linux-mips@vger.kernel.org,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ Namhyung Kim <namhyung@kernel.org>, kim.phillips@arm.com,
+ Paul Mackerras <paulus@samba.org>, Deepa Dinamani <deepa.kernel@gmail.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-ia64@vger.kernel.org, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Hannes Reinecke <hare@suse.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ James Hogan <jhogan@kernel.org>, Firoz Khan <firoz.khan@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Jiri Olsa <jolsa@redhat.com>,
+ Tycho Andersen <tycho@tycho.ws>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Martin Schwidefsky <schwidefsky@de.ibm.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Christian Brauner <christian@brauner.io>,
+ Richard Henderson <rth@twiddle.net>, Jens Axboe <axboe@kernel.dk>,
+ David Howells <dhowells@redhat.com>, Michal Simek <monstr@monstr.eu>,
+ Tony Luck <tony.luck@intel.com>, Parisc List <linux-parisc@vger.kernel.org>,
+ Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>, Paul Burton <paul.burton@mips.com>,
+ alpha <linux-alpha@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Borislav Petkov <bp@alien8.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+On Wed, Jul 17, 2019 at 3:29 AM Palmer Dabbelt <palmer@sifive.com> wrote:
+>
+> This registers the new fchmodat4 syscall in most places as nuber 434,
+> with alpha being the exception where it's 544.  I found all these sites
+> by grepping for fspick, which I assume has found me everything.
 
-xive_find_target_in_mask() has the following for(;;) loop which has a
-bug when @first == cpumask_first(@mask) and condition 1 fails to hold
-for every CPU in @mask. In this case we loop forever in the for-loop.
+434 is now pidfd_open, the next free one is 436.
 
-  first = cpu;
-  for (;;) {
-  	  if (cpu_online(cpu) && xive_try_pick_target(cpu)) // condition 1
-		  return cpu;
-	  cpu = cpumask_next(cpu, mask);
-	  if (cpu == first) // condition 2
-		  break;
+>  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+>  arch/arm/tools/syscall.tbl                  | 1 +
+>  arch/arm64/include/asm/unistd32.h           | 2 ++
 
-	  if (cpu >= nr_cpu_ids) // condition 3
-		  cpu = cpumask_first(mask);
-  }
+You missed arch/arm64/include/asm/unistd.h, which
+contains __NR_compat_syscalls
 
-This is because, when @first == cpumask_first(@mask), we never hit the
-condition 2 (cpu == first) since prior to this check, we would have
-executed "cpu = cpumask_next(cpu, mask)" which will set the value of
-@cpu to a value greater than @first or to nr_cpus_ids. When this is
-coupled with the fact that condition 1 is not met, we will never exit
-this loop.
-
-This was discovered by the hard-lockup detector while running LTP test
-concurrently with SMT switch tests.
-
- watchdog: CPU 12 detected hard LOCKUP on other CPUs 68
- watchdog: CPU 12 TB:85587019220796, last SMP heartbeat TB:85578827223399 (15999ms ago)
- watchdog: CPU 68 Hard LOCKUP
- watchdog: CPU 68 TB:85587019361273, last heartbeat TB:85576815065016 (19930ms ago)
- CPU: 68 PID: 45050 Comm: hxediag Kdump: loaded Not tainted 4.18.0-100.el8.ppc64le #1
- NIP:  c0000000006f5578 LR: c000000000cba9ec CTR: 0000000000000000
- REGS: c000201fff3c7d80 TRAP: 0100   Not tainted  (4.18.0-100.el8.ppc64le)
- MSR:  9000000002883033 <SF,HV,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 24028424  XER: 00000000
- CFAR: c0000000006f558c IRQMASK: 1
- GPR00: c0000000000afc58 c000201c01c43400 c0000000015ce500 c000201cae26ec18
- GPR04: 0000000000000800 0000000000000540 0000000000000800 00000000000000f8
- GPR08: 0000000000000020 00000000000000a8 0000000080000000 c00800001a1beed8
- GPR12: c0000000000b1410 c000201fff7f4c00 0000000000000000 0000000000000000
- GPR16: 0000000000000000 0000000000000000 0000000000000540 0000000000000001
- GPR20: 0000000000000048 0000000010110000 c00800001a1e3780 c000201cae26ed18
- GPR24: 0000000000000000 c000201cae26ed8c 0000000000000001 c000000001116bc0
- GPR28: c000000001601ee8 c000000001602494 c000201cae26ec18 000000000000001f
- NIP [c0000000006f5578] find_next_bit+0x38/0x90
- LR [c000000000cba9ec] cpumask_next+0x2c/0x50
- Call Trace:
- [c000201c01c43400] [c000201cae26ec18] 0xc000201cae26ec18 (unreliable)
- [c000201c01c43420] [c0000000000afc58] xive_find_target_in_mask+0x1b8/0x240
- [c000201c01c43470] [c0000000000b0228] xive_pick_irq_target.isra.3+0x168/0x1f0
- [c000201c01c435c0] [c0000000000b1470] xive_irq_startup+0x60/0x260
- [c000201c01c43640] [c0000000001d8328] __irq_startup+0x58/0xf0
- [c000201c01c43670] [c0000000001d844c] irq_startup+0x8c/0x1a0
- [c000201c01c436b0] [c0000000001d57b0] __setup_irq+0x9f0/0xa90
- [c000201c01c43760] [c0000000001d5aa0] request_threaded_irq+0x140/0x220
- [c000201c01c437d0] [c00800001a17b3d4] bnx2x_nic_load+0x188c/0x3040 [bnx2x]
- [c000201c01c43950] [c00800001a187c44] bnx2x_self_test+0x1fc/0x1f70 [bnx2x]
- [c000201c01c43a90] [c000000000adc748] dev_ethtool+0x11d8/0x2cb0
- [c000201c01c43b60] [c000000000b0b61c] dev_ioctl+0x5ac/0xa50
- [c000201c01c43bf0] [c000000000a8d4ec] sock_do_ioctl+0xbc/0x1b0
- [c000201c01c43c60] [c000000000a8dfb8] sock_ioctl+0x258/0x4f0
- [c000201c01c43d20] [c0000000004c9704] do_vfs_ioctl+0xd4/0xa70
- [c000201c01c43de0] [c0000000004ca274] sys_ioctl+0xc4/0x160
- [c000201c01c43e30] [c00000000000b388] system_call+0x5c/0x70
- Instruction dump:
- 78aad182 54a806be 3920ffff 78a50664 794a1f24 7d294036 7d43502a 7d295039
- 4182001c 48000034 78a9d182 79291f24 <7d23482a> 2fa90000 409e0020 38a50040
-
-To fix this, move the check for condition 2 after the check for
-condition 3, so that we are able to break out of the loop soon after
-iterating through all the CPUs in the @mask in the problem case. Use
-do..while() to achieve this.
-
-Fixes: 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
-interrupt controller")
-Cc: <stable@vger.kernel.org> # 4.12+
-Reported-by: Indira P. Joga <indira.priya@in.ibm.com>
-Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
----
- arch/powerpc/sysdev/xive/common.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index 082c7e1..1cdb395 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -479,7 +479,7 @@ static int xive_find_target_in_mask(const struct cpumask *mask,
- 	 * Now go through the entire mask until we find a valid
- 	 * target.
- 	 */
--	for (;;) {
-+	do {
- 		/*
- 		 * We re-check online as the fallback case passes us
- 		 * an untested affinity mask
-@@ -487,12 +487,11 @@ static int xive_find_target_in_mask(const struct cpumask *mask,
- 		if (cpu_online(cpu) && xive_try_pick_target(cpu))
- 			return cpu;
- 		cpu = cpumask_next(cpu, mask);
--		if (cpu == first)
--			break;
- 		/* Wrap around */
- 		if (cpu >= nr_cpu_ids)
- 			cpu = cpumask_first(mask);
--	}
-+	} while (cpu != first);
-+
- 	return -1;
- }
- 
--- 
-1.9.4
-
+      Arnd
