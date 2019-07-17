@@ -1,49 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0861B6BFD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 18:48:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791516BFA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 18:32:26 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45pjTz5WhnzDqR5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 02:32:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45pjrV3MhFzDqHd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 02:48:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-X-Greylist: delayed 974 seconds by postgrey-1.36 at bilbo;
- Thu, 18 Jul 2019 02:30:09 AEST
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45pjRP6DTtzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 02:30:06 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id BBF80605C121F65CC65C;
- Thu, 18 Jul 2019 00:13:46 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Thu, 18 Jul 2019
- 00:13:42 +0800
-Date: Wed, 17 Jul 2019 17:13:20 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Subject: Re: [PATCH v4 13/15] docs: ABI: testing: make the files compatible
- with ReST output
-Message-ID: <20190717171320.000035c2@huawei.com>
-In-Reply-To: <88d15fa38167e3f2e73e65e1c1a1f39bca0267b4.1563365880.git.mchehab+samsung@kernel.org>
-References: <cover.1563365880.git.mchehab+samsung@kernel.org>
- <88d15fa38167e3f2e73e65e1c1a1f39bca0267b4.1563365880.git.mchehab+samsung@kernel.org>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45pjpT5rjkzDqMv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 02:46:41 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6HGkUed008627;
+ Wed, 17 Jul 2019 11:46:30 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x6HGkSxG008626;
+ Wed, 17 Jul 2019 11:46:28 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 17 Jul 2019 11:46:28 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: Re: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
+Message-ID: <20190717164628.GN20882@gate.crashing.org>
+References: <20190713032106.8509-1-yamada.masahiro@socionext.com>
+ <20190713124744.GS14074@gate.crashing.org>
+ <20190713131642.GU14074@gate.crashing.org>
+ <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
+ <20190713235430.GZ14074@gate.crashing.org>
+ <87v9w393r5.fsf@concordia.ellerman.id.au>
+ <20190715072959.GB20882@gate.crashing.org>
+ <87pnma89ak.fsf@concordia.ellerman.id.au>
+ <20190717143811.GL20882@gate.crashing.org>
+ <CAK7LNATesRrJFGZQOkTY+PL7FNyub5FJ0N6NF4s6icdXdPNr+Q@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNATesRrJFGZQOkTY+PL7FNyub5FJ0N6NF4s6icdXdPNr+Q@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,48 +59,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-doc@vger.kernel.org,
- linux-iio@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
- linux-mm@kvack.org, netdev@vger.kernel.org, Peter
- Meerwald-Stadler <pmeerw@pmeerw.net>, Guenter Roeck <groeck@chromium.org>,
- linux-stm32@st-md-mailman.stormreply.com,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-acpi@vger.kernel.org,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- xen-devel@lists.xenproject.org, Len Brown <lenb@kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>, linux-pm@vger.kernel.org,
- Richard Cochran <richardcochran@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Stefano
- Stabellini <sstabellini@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Fabrice Gasnier <fabrice.gasnier@st.com>, Benson Leung <bleung@chromium.org>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, Sebastian Reichel <sre@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Hartmut
- Knaack <knaack.h@gmx.de>, Enric Balletbo i Serra <enric.balletbo@collabora.com>,
- linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>,
- Jonathan Cameron <jic23@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 17 Jul 2019 09:28:17 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> wrote:
-
-> Some files over there won't parse well by Sphinx.
+On Thu, Jul 18, 2019 at 12:19:36AM +0900, Masahiro Yamada wrote:
+> On Wed, Jul 17, 2019 at 11:38 PM Segher Boessenkool
+> <segher@kernel.crashing.org> wrote:
+> >
+> > On Tue, Jul 16, 2019 at 10:15:47PM +1000, Michael Ellerman wrote:
+> > > Segher Boessenkool <segher@kernel.crashing.org> writes:
+> > > And it's definitely calling ar with no flags, eg:
+> > >
+> > >   rm -f init/built-in.a; powerpc-linux-ar rcSTPD init/built-in.a init/main.o init/version.o init/do_mounts.o init/do_mounts_rd.o init/do_mounts_initrd.o init/do_mounts_md.o init/initramfs.o init/init_task.o
+> >
+> > This uses thin archives.  Those will work fine.
+> >
+> > The failing case was empty files IIRC, stuff created from no inputs.
 > 
-> Fix them.
+> Actually, empty files are created everywhere.
+
+>        cmd_ar_builtin = rm -f $@; $(AR) rcSTP$(KBUILD_ARFLAGS) $@
+> $(real-prereqs)
+
+You use thin archives.
+
+Does every config use thin archives always nowadays?
+
+> BTW, your commit 8995ac8702737147115e1c75879a1a2d75627b9e
+> dates back to 2008.
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Hi Mauro,
+> At that time, thin archive was not used.
 
-Does feel like this one should perhaps have been broken up a touch!
+Yes, I know.  This isn't about built-in.[oa], it is about *other*
+archives we at least *used to* create.  If we *know* we do not anymore,
+then this workaround can of course be removed (and good riddance).
 
-For the IIO ones I've eyeballed it rather than testing the results
+If ar creates an archive file (a real one, not a thin archive), and it
+has no input files, it uses its default object format as destination
+format, if it isn't told to use something else.  And that doesn't work,
+it needs to use some format compatible with what that archive later is
+linked with.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-
+Segher
