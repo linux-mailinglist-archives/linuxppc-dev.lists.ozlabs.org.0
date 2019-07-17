@@ -2,41 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE606B4F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 05:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8118F6B53A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 05:59:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45pMwb0FBvzDqc5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 13:20:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45pNms5DcyzDqKW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 13:59:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=ftp.linux.org.uk
- (client-ip=195.92.253.2; helo=zeniv.linux.org.uk;
- envelope-from=viro@ftp.linux.org.uk; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [195.92.253.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
+ (client-ip=63.217.80.70; helo=mxhk.zte.com.cn;
+ envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=zte.com.cn
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.217.80.70])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45pMY80P7zzDqBx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 13:03:55 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hnaDa-0008R1-HC; Wed, 17 Jul 2019 03:02:58 +0000
-Date: Wed, 17 Jul 2019 04:02:58 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Rich Felker <dalias@libc.org>
-Subject: Re: [PATCH v2 2/4] Add fchmodat4(), a new syscall
-Message-ID: <20190717030258.GT17978@ZenIV.linux.org.uk>
-References: <20190717012719.5524-1-palmer@sifive.com>
- <20190717012719.5524-3-palmer@sifive.com>
- <20190717024046.GI1506@brightrain.aerifal.cx>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190717024046.GI1506@brightrain.aerifal.cx>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Mailman-Approved-At: Wed, 17 Jul 2019 13:17:29 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45pNlB4VkGzDqC0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 13:57:39 +1000 (AEST)
+Received: from mse-fl1.zte.com.cn (unknown [10.30.14.238])
+ by Forcepoint Email with ESMTPS id 5AE79B2E9F7A54F96F16;
+ Wed, 17 Jul 2019 11:57:35 +0800 (CST)
+Received: from notes_smtp.zte.com.cn ([10.30.1.239])
+ by mse-fl1.zte.com.cn with ESMTP id x6H3vDmB027532;
+ Wed, 17 Jul 2019 11:57:13 +0800 (GMT-8)
+ (envelope-from wen.yang99@zte.com.cn)
+Received: from fox-host8.localdomain ([10.74.120.8])
+ by szsmtp06.zte.com.cn (Lotus Domino Release 8.5.3FP6)
+ with ESMTP id 2019071711572903-2389314 ;
+ Wed, 17 Jul 2019 11:57:29 +0800 
+From: Wen Yang <wen.yang99@zte.com.cn>
+To: rjw@rjwysocki.net
+Subject: [PATCH v7] cpufreq/pasemi: fix an use-after-free in
+ pas_cpufreq_cpu_init()
+Date: Wed, 17 Jul 2019 11:55:04 +0800
+Message-Id: <1563335704-25562-1-git-send-email-wen.yang99@zte.com.cn>
+X-Mailer: git-send-email 1.8.3.1
+X-MIMETrack: Itemize by SMTP Server on SZSMTP06/server/zte_ltd(Release
+ 8.5.3FP6|November 21, 2013) at 2019-07-17 11:57:29,
+ Serialize by Router on notes_smtp/zte_ltd(Release 9.0.1FP7|August  17, 2016) at
+ 2019-07-17 11:57:16, Serialize complete at 2019-07-17 11:57:16
+X-MAIL: mse-fl1.zte.com.cn x6H3vDmB027532
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,59 +54,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kim.phillips@arm.com, catalin.marinas@arm.com, linux-sh@vger.kernel.org,
- peterz@infradead.org, Palmer Dabbelt <palmer@sifive.com>,
- heiko.carstens@de.ibm.com, stefan@agner.ch, linux-mips@vger.kernel.org,
- James.Bottomley@hansenpartnership.com, namhyung@kernel.org, paulus@samba.org,
- deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org,
- linux-ia64@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, hare@suse.com, gor@linux.ibm.com,
- ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org,
- linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com,
- geert@linux-m68k.org, linux-arm-kernel@lists.infradead.org, jhogan@kernel.org,
- firoz.khan@linaro.org, mattst88@gmail.com, fenghua.yu@intel.com,
- Arnd Bergmann <arnd@arndb.de>, jolsa@redhat.com, tycho@tycho.ws,
- acme@kernel.org, schwidefsky@de.ibm.com, linux-m68k@lists.linux-m68k.org,
- ink@jurassic.park.msu.ru, luto@kernel.org, alexander.shishkin@linux.intel.com,
- tglx@linutronix.de, christian@brauner.io, rth@twiddle.net, axboe@kernel.dk,
- dhowells@redhat.com, monstr@monstr.eu, tony.luck@intel.com,
- linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
+Cc: wang.yi59@zte.com.cn, linux-pm@vger.kernel.org, viresh.kumar@linaro.org,
+ linux-kernel@vger.kernel.org, xue.zhihong@zte.com.cn, cheng.shengyu@zte.com.cn,
+ linuxppc-dev@lists.ozlabs.org, Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 16, 2019 at 10:40:46PM -0400, Rich Felker wrote:
-> On Tue, Jul 16, 2019 at 06:27:17PM -0700, Palmer Dabbelt wrote:
-> > man 3p says that fchmodat() takes a flags argument, but the Linux
-> > syscall does not.  There doesn't appear to be a good userspace
-> > workaround for this issue but the implementation in the kernel is pretty
-> > straight-forward.  The specific use case where the missing flags came up
-> > was WRT a fuse filesystem implemenation, but the functionality is pretty
-> > generic so I'm assuming there would be other use cases.
-> 
-> Note that we do have a workaround in musl libc with O_PATH and
-> /proc/self/fd, but a syscall that allows a proper fix with the ugly
-> workaround only in the fallback path for old kernels will be much
-> appreciated!
-> 
-> What about also doing a new SYS_faccessat4 with working AT_EACCESS
-> flag? The workaround we have to do for it is far worse.
+The cpu variable is still being used in the of_get_property() call
+after the of_node_put() call, which may result in use-after-free.
 
-Umm...  That's doable, but getting into the "don't switch creds unless
-needed" territory.  I'll need to play with that a bit and see what
-gives a tolerable variant...
+Fixes: a9acc26b75f6 ("cpufreq/pasemi: fix possible object reference leak")
+Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+v7: adapt to commit ("cpufreq: Make cpufreq_generic_init() return void")
+v6: keep the blank line and fix warning: label 'out_unmap_sdcpwr' defined but not used.
+v5: put together the code to get, use, and release cpu device_node.
+v4: restore the blank line.
+v3: fix a leaked reference.
+v2: clean up the code according to the advice of viresh.
 
-What of this part wrt AT_EACCESS?
-        if (!issecure(SECURE_NO_SETUID_FIXUP)) {
-                /* Clear the capabilities if we switch to a non-root user */
-                kuid_t root_uid = make_kuid(override_cred->user_ns, 0);
-                if (!uid_eq(override_cred->uid, root_uid))
-                        cap_clear(override_cred->cap_effective);
-                else
-                        override_cred->cap_effective =
-                                override_cred->cap_permitted;
-        }
+ drivers/cpufreq/pasemi-cpufreq.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
+index 93f39a1..c66f566 100644
+--- a/drivers/cpufreq/pasemi-cpufreq.c
++++ b/drivers/cpufreq/pasemi-cpufreq.c
+@@ -131,10 +131,18 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	int err = -ENODEV;
+ 
+ 	cpu = of_get_cpu_node(policy->cpu, NULL);
++	if (!cpu)
++		goto out;
+ 
++	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+ 	of_node_put(cpu);
+-	if (!cpu)
++	if (!max_freqp) {
++		err = -EINVAL;
+ 		goto out;
++	}
++
++	/* we need the freq in kHz */
++	max_freq = *max_freqp / 1000;
+ 
+ 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
+ 	if (!dn)
+@@ -171,16 +179,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	}
+ 
+ 	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
+-
+-	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+-	if (!max_freqp) {
+-		err = -EINVAL;
+-		goto out_unmap_sdcpwr;
+-	}
+-
+-	/* we need the freq in kHz */
+-	max_freq = *max_freqp / 1000;
+-
+ 	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
+ 	pr_debug("initializing frequency table\n");
+ 
+@@ -199,9 +197,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
+ 	return 0;
+ 
+-out_unmap_sdcpwr:
+-	iounmap(sdcpwr_mapbase);
+-
+ out_unmap_sdcasr:
+ 	iounmap(sdcasr_mapbase);
+ out:
+-- 
+2.9.5
+
