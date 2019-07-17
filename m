@@ -2,46 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8DA6B7E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 10:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE23F6BA61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 12:37:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45pVMb3sBlzDqGN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 18:11:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45pYck1XJmzDqXJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2019 20:37:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com; envelope-from=yanaijie@huawei.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ego@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45pTth0pFczDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 17:49:31 +1000 (AEST)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id C094CF2B200A73A2ECFF;
- Wed, 17 Jul 2019 15:49:28 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Wed, 17 Jul 2019
- 15:49:19 +0800
-From: Jason Yan <yanaijie@huawei.com>
-To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [RFC PATCH 10/10] powerpc/fsl_booke/kaslr: dump out kernel offset
- information on panic
-Date: Wed, 17 Jul 2019 16:06:21 +0800
-Message-ID: <20190717080621.40424-11-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20190717080621.40424-1-yanaijie@huawei.com>
-References: <20190717080621.40424-1-yanaijie@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45pYZk0hqKzDqQs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 20:35:57 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6HAVi7e043717
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 06:35:54 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tt0w1kfwj-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 06:35:54 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ego@linux.vnet.ibm.com>;
+ Wed, 17 Jul 2019 11:35:52 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 17 Jul 2019 11:35:48 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6HAZls328967204
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Jul 2019 10:35:48 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4B8BAE063;
+ Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 37B25AE05F;
+ Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.199.56.245])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 17 Jul 2019 10:35:47 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 8E42F2E2F43; Wed, 17 Jul 2019 16:05:43 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>, Breno Leitao <leitao@debian.org>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Subject: [PATCH] powerpc/xive: Fix loop exit-condition in
+ xive_find_target_in_mask()
+Date: Wed, 17 Jul 2019 16:05:24 +0530
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 19071710-0060-0000-0000-0000036236CF
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011444; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01233404; UDB=6.00649903; IPR=6.01014728; 
+ MB=3.00027758; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-17 10:35:51
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071710-0061-0000-0000-00004A2F7E98
+Message-Id: <1563359724-13931-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-17_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907170128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,99 +93,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, Jason Yan <yanaijie@huawei.com>,
- linux-kernel@vger.kernel.org, jingxiangfeng@huawei.com,
- thunder.leizhen@huawei.com, fanchengyang@huawei.com, yebin10@huawei.com
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When kaslr is enabled, the kernel offset is different for every boot.
-This brings some difficult to debug the kernel. Dump out the kernel
-offset when panic so that we can easily debug the kernel.
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Cc: Diana Craciun <diana.craciun@nxp.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
+xive_find_target_in_mask() has the following for(;;) loop which has a
+bug when @first == cpumask_first(@mask) and condition 1 fails to hold
+for every CPU in @mask. In this case we loop forever in the for-loop.
+
+  first = cpu;
+  for (;;) {
+  	  if (cpu_online(cpu) && xive_try_pick_target(cpu)) // condition 1
+		  return cpu;
+	  cpu = cpumask_next(cpu, mask);
+	  if (cpu == first) // condition 2
+		  break;
+
+	  if (cpu >= nr_cpu_ids) // condition 3
+		  cpu = cpumask_first(mask);
+  }
+
+This is because, when @first == cpumask_first(@mask), we never hit the
+condition 2 (cpu == first) since prior to this check, we would have
+executed "cpu = cpumask_next(cpu, mask)" which will set the value of
+@cpu to a value greater than @first or to nr_cpus_ids. When this is
+coupled with the fact that condition 1 is not met, we will never exit
+this loop.
+
+This was discovered by the hard-lockup detector while running LTP test
+concurrently with SMT switch tests.
+
+ watchdog: CPU 12 detected hard LOCKUP on other CPUs 68
+ watchdog: CPU 12 TB:85587019220796, last SMP heartbeat TB:85578827223399 (15999ms ago)
+ watchdog: CPU 68 Hard LOCKUP
+ watchdog: CPU 68 TB:85587019361273, last heartbeat TB:85576815065016 (19930ms ago)
+ CPU: 68 PID: 45050 Comm: hxediag Kdump: loaded Not tainted 4.18.0-100.el8.ppc64le #1
+ NIP:  c0000000006f5578 LR: c000000000cba9ec CTR: 0000000000000000
+ REGS: c000201fff3c7d80 TRAP: 0100   Not tainted  (4.18.0-100.el8.ppc64le)
+ MSR:  9000000002883033 <SF,HV,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 24028424  XER: 00000000
+ CFAR: c0000000006f558c IRQMASK: 1
+ GPR00: c0000000000afc58 c000201c01c43400 c0000000015ce500 c000201cae26ec18
+ GPR04: 0000000000000800 0000000000000540 0000000000000800 00000000000000f8
+ GPR08: 0000000000000020 00000000000000a8 0000000080000000 c00800001a1beed8
+ GPR12: c0000000000b1410 c000201fff7f4c00 0000000000000000 0000000000000000
+ GPR16: 0000000000000000 0000000000000000 0000000000000540 0000000000000001
+ GPR20: 0000000000000048 0000000010110000 c00800001a1e3780 c000201cae26ed18
+ GPR24: 0000000000000000 c000201cae26ed8c 0000000000000001 c000000001116bc0
+ GPR28: c000000001601ee8 c000000001602494 c000201cae26ec18 000000000000001f
+ NIP [c0000000006f5578] find_next_bit+0x38/0x90
+ LR [c000000000cba9ec] cpumask_next+0x2c/0x50
+ Call Trace:
+ [c000201c01c43400] [c000201cae26ec18] 0xc000201cae26ec18 (unreliable)
+ [c000201c01c43420] [c0000000000afc58] xive_find_target_in_mask+0x1b8/0x240
+ [c000201c01c43470] [c0000000000b0228] xive_pick_irq_target.isra.3+0x168/0x1f0
+ [c000201c01c435c0] [c0000000000b1470] xive_irq_startup+0x60/0x260
+ [c000201c01c43640] [c0000000001d8328] __irq_startup+0x58/0xf0
+ [c000201c01c43670] [c0000000001d844c] irq_startup+0x8c/0x1a0
+ [c000201c01c436b0] [c0000000001d57b0] __setup_irq+0x9f0/0xa90
+ [c000201c01c43760] [c0000000001d5aa0] request_threaded_irq+0x140/0x220
+ [c000201c01c437d0] [c00800001a17b3d4] bnx2x_nic_load+0x188c/0x3040 [bnx2x]
+ [c000201c01c43950] [c00800001a187c44] bnx2x_self_test+0x1fc/0x1f70 [bnx2x]
+ [c000201c01c43a90] [c000000000adc748] dev_ethtool+0x11d8/0x2cb0
+ [c000201c01c43b60] [c000000000b0b61c] dev_ioctl+0x5ac/0xa50
+ [c000201c01c43bf0] [c000000000a8d4ec] sock_do_ioctl+0xbc/0x1b0
+ [c000201c01c43c60] [c000000000a8dfb8] sock_ioctl+0x258/0x4f0
+ [c000201c01c43d20] [c0000000004c9704] do_vfs_ioctl+0xd4/0xa70
+ [c000201c01c43de0] [c0000000004ca274] sys_ioctl+0xc4/0x160
+ [c000201c01c43e30] [c00000000000b388] system_call+0x5c/0x70
+ Instruction dump:
+ 78aad182 54a806be 3920ffff 78a50664 794a1f24 7d294036 7d43502a 7d295039
+ 4182001c 48000034 78a9d182 79291f24 <7d23482a> 2fa90000 409e0020 38a50040
+
+To fix this, move the check for condition 2 after the check for
+condition 3, so that we are able to break out of the loop soon after
+iterating through all the CPUs in the @mask in the problem case. Use
+do..while() to achieve this.
+
+Fixes: 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
+interrupt controller")
+Cc: <stable@vger.kernel.org> # 4.12+
+Reported-by: Indira P. Joga <indira.priya@in.ibm.com>
+Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/page.h     |  5 +++++
- arch/powerpc/kernel/machine_kexec.c |  1 +
- arch/powerpc/kernel/setup-common.c  | 23 +++++++++++++++++++++++
- 3 files changed, 29 insertions(+)
+ arch/powerpc/sysdev/xive/common.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index 60a68d3a54b1..cd3ac530e58d 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -317,6 +317,11 @@ struct vm_area_struct;
- 
- extern unsigned long kimage_vaddr;
- 
-+static inline unsigned long kaslr_offset(void)
-+{
-+	return kimage_vaddr - KERNELBASE;
-+}
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 082c7e1..1cdb395 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -479,7 +479,7 @@ static int xive_find_target_in_mask(const struct cpumask *mask,
+ 	 * Now go through the entire mask until we find a valid
+ 	 * target.
+ 	 */
+-	for (;;) {
++	do {
+ 		/*
+ 		 * We re-check online as the fallback case passes us
+ 		 * an untested affinity mask
+@@ -487,12 +487,11 @@ static int xive_find_target_in_mask(const struct cpumask *mask,
+ 		if (cpu_online(cpu) && xive_try_pick_target(cpu))
+ 			return cpu;
+ 		cpu = cpumask_next(cpu, mask);
+-		if (cpu == first)
+-			break;
+ 		/* Wrap around */
+ 		if (cpu >= nr_cpu_ids)
+ 			cpu = cpumask_first(mask);
+-	}
++	} while (cpu != first);
 +
- #include <asm-generic/memory_model.h>
- #endif /* __ASSEMBLY__ */
- #include <asm/slice.h>
-diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
-index c4ed328a7b96..078fe3d76feb 100644
---- a/arch/powerpc/kernel/machine_kexec.c
-+++ b/arch/powerpc/kernel/machine_kexec.c
-@@ -86,6 +86,7 @@ void arch_crash_save_vmcoreinfo(void)
- 	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
- 	VMCOREINFO_OFFSET(mmu_psize_def, shift);
- #endif
-+	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
+ 	return -1;
  }
  
- /*
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 1f8db666468d..49e540c0adeb 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -715,12 +715,35 @@ static struct notifier_block ppc_panic_block = {
- 	.priority = INT_MIN /* may not return; must be done last */
- };
- 
-+/*
-+ * Dump out kernel offset information on panic.
-+ */
-+static int dump_kernel_offset(struct notifier_block *self, unsigned long v,
-+			      void *p)
-+{
-+	const unsigned long offset = kaslr_offset();
-+
-+	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && offset > 0)
-+		pr_emerg("Kernel Offset: 0x%lx from 0x%lx\n",
-+			 offset, KERNELBASE);
-+	else
-+		pr_emerg("Kernel Offset: disabled\n");
-+
-+	return 0;
-+}
-+
-+static struct notifier_block kernel_offset_notifier = {
-+	.notifier_call = dump_kernel_offset
-+};
-+
- void __init setup_panic(void)
- {
- 	/* PPC64 always does a hard irq disable in its panic handler */
- 	if (!IS_ENABLED(CONFIG_PPC64) && !ppc_md.panic)
- 		return;
- 	atomic_notifier_chain_register(&panic_notifier_list, &ppc_panic_block);
-+	atomic_notifier_chain_register(&panic_notifier_list,
-+				       &kernel_offset_notifier);
- }
- 
- #ifdef CONFIG_CHECK_CACHE_COHERENCY
 -- 
-2.17.2
+1.9.4
 
