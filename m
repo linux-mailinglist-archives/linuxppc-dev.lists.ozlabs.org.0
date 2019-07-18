@@ -1,77 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153796D4D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 21:37:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3406D4CF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 21:33:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qPSd5K3BzDqf3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 05:33:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qPYM1TvMzDqJ1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 05:37:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
+ envelope-from=gomonovych@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="bxDHW8OF"; 
+ dkim-atps=neutral
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qPND1L5kzDqcw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 05:29:47 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6IJQrjL004775
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 15:29:44 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ttvbbxajw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 15:29:44 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6IJP7Gh017485
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:43 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 2tq6x7smmj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:43 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6IJTgUc50659650
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:42 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE5456E054
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:41 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC6EE6E058
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:41 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.236])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 19:29:41 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/rtas: allow rescheduling while changing cpu states
-Date: Thu, 18 Jul 2019 14:29:40 -0500
-Message-Id: <20190718192940.16103-3-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190718192940.16103-1-nathanl@linux.ibm.com>
-References: <20190718192940.16103-1-nathanl@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-18_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=764 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907180199
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qPQK68hvzDqdb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 05:31:36 +1000 (AEST)
+Received: by mail-lj1-x242.google.com with SMTP id t28so28480486lje.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=qcL3LovIaG2I+4/Ya4EZq8QuwXXlyROXKp2x+863zag=;
+ b=bxDHW8OFGKYh0iChgAPve01fDS61WHbwQNju+rrB0FSCA+XHKytTf+UIw0WXhxeDH8
+ IH2MQR1ydnwuDrKJB/yeqqg3tKgrXHMbBYNpTCRDxyW3+GzIub5F1P036SSsx1keDjsN
+ 2T3AuKSXyI6IoAG1MAMqr0UdfxvVcDD+K3p6RsKKUHEEurWWIh5lRqZZuiuVCe0e2dsQ
+ PyCLFDKcwCmNCTb17Ba+ZU2xm+QBUBwpxAocdg2IIHvMXB1hMQqChTRc0Ceyd08nr1HU
+ 6v3l0BlgbcImFhLdwzi9fcf1BFH9uH+IslFAQvgUeSxv8aYQpoVcZwNHz2Qg3Px+RugR
+ Bs6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=qcL3LovIaG2I+4/Ya4EZq8QuwXXlyROXKp2x+863zag=;
+ b=FpWAD4gLrLImM6bN0jox0U6+fmoNRfQiUJJ9Jza8sJZeLTnt37XBgQAHYWZr322V3X
+ 38hfMDOGfqwE5mFDvazjZnZ91sFcfaXlydmvwTCwdYydiSO/OQEBIRY5kR/Z8+mPtxyw
+ QpNQaqpACwWrDAQi/Cwh4wfCl7Cpn7uZQ7s/RdxnjyovWtW32RlXGb6Wy1Un7w/X2U4x
+ aSyXMJvvuD5hMHbtJVkIHxS8jUmhM7xuvobtg8K8UB06Ao5lDeAhp/ONdwByrTWXQEET
+ eIuoNs10bw+B9dSsi5oC+xufzVlIKnD7JSZ+NFOgl8m2SqWuNwGHlcmi2CeCgBcFYIeK
+ JfIQ==
+X-Gm-Message-State: APjAAAXdHy2XSesN9j+qA/G5q+jsOYcKNGLs6F5k1ZrXMbqDunbL792P
+ +ykRdtCljkq0EP93b5DPD3g=
+X-Google-Smtp-Source: APXvYqyVZBlbCBK1Y7Pv7LjJuRnTwXIED6u/+IBJTZFH9W7ohhUCtmgd+v2B/Rpb3qJcXdxW/jwBUw==
+X-Received: by 2002:a2e:870f:: with SMTP id m15mr25339251lji.223.1563478289408; 
+ Thu, 18 Jul 2019 12:31:29 -0700 (PDT)
+Received: from ul001888.eu.tieto.com ([91.90.160.140])
+ by smtp.gmail.com with ESMTPSA id x137sm4124120lff.23.2019.07.18.12.31.28
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 18 Jul 2019 12:31:28 -0700 (PDT)
+From: Vasyl Gomonovych <gomonovych@gmail.com>
+To: tyreld@linux.ibm.com, benh@kernel.crashing.org, paulus@samba.org,
+ mpe@ellerman.id.au, jejb@linux.ibm.com, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] scsi: ibmvscsi: remove casting dma_alloc_coherent
+Date: Thu, 18 Jul 2019 21:31:12 +0200
+Message-Id: <20190718193112.17709-1-gomonovych@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,38 +74,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Vasyl Gomonovych <gomonovych@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-rtas_cpu_state_change_mask() potentially operates on scores of cpus,
-so explicitly allow rescheduling in the loop body.
+Fix allocation style
+Generated by:  alloc_cast.cocci
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
 ---
- arch/powerpc/kernel/rtas.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/ibmvscsi/ibmvscsi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index fbefd9ff6dab..396fb2f35c01 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -20,6 +20,7 @@
- #include <linux/capability.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/completion.h>
- #include <linux/cpumask.h>
-@@ -902,6 +903,7 @@ static int rtas_cpu_state_change_mask(enum rtas_cpu_state state,
- 				cpumask_clear_cpu(cpu, cpus);
- 			}
- 		}
-+		cond_resched();
- 	}
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index 7f66a7783209..7e9b3e409851 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -715,8 +715,7 @@ static int map_sg_data(struct scsi_cmnd *cmd,
  
- 	return ret;
+ 	/* get indirect table */
+ 	if (!evt_struct->ext_list) {
+-		evt_struct->ext_list = (struct srp_direct_buf *)
+-			dma_alloc_coherent(dev,
++		evt_struct->ext_list = dma_alloc_coherent(dev,
+ 					   SG_ALL * sizeof(struct srp_direct_buf),
+ 					   &evt_struct->ext_list_token, 0);
+ 		if (!evt_struct->ext_list) {
 -- 
-2.20.1
+2.17.1
 
