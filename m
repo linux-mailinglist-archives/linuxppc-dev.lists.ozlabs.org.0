@@ -1,76 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F246D1FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 18:24:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qKFr6hWWzDqZN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 02:24:00 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDE66D23B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 18:44:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qKhy1z1CzDqc4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 02:44:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qKCw61WbzDqYY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 02:22:20 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qKfc25nLzDq6N
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 02:41:59 +1000 (AEST)
 Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6IGLvIl017897
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:22:17 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ttum1hq7c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:22:17 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6IGK1Dt016228
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:16 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04dal.us.ibm.com with ESMTP id 2trtmrgxun-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:16 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6IGMF8935062126
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:15 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4399D78067
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:15 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2859F7805E
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:15 +0000 (GMT)
-Received: from localhost (unknown [9.41.179.236])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 16:22:15 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/rtas: unexport rtas_online_cpus_mask,
- rtas_offline_cpus_mask
-Date: Thu, 18 Jul 2019 11:22:14 -0500
-Message-Id: <20190718162214.5694-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
+ x6IGarCF005490
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:41:56 -0400
+Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ttum1je26-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:41:56 -0400
+Received: from localhost
+ by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Thu, 18 Jul 2019 17:41:55 +0100
+Received: from b03cxnp07028.gho.boulder.ibm.com (9.17.130.15)
+ by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 18 Jul 2019 17:41:50 +0100
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6IGfmwM34341242
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Jul 2019 16:41:49 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B510CC6057;
+ Thu, 18 Jul 2019 16:41:48 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8093CC6095;
+ Thu, 18 Jul 2019 16:41:44 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.186.82])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 18 Jul 2019 16:41:44 +0000 (GMT)
+References: <20190718032858.28744-1-bauerman@linux.ibm.com>
+ <20190718032858.28744-7-bauerman@linux.ibm.com>
+ <20190718084456.GE24562@lst.de>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3 6/6] s390/mm: Remove sev_active() function
+In-reply-to: <20190718084456.GE24562@lst.de>
+Date: Thu, 18 Jul 2019 13:41:25 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
+x-cbid: 19071816-0016-0000-0000-000009D1B85B
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011452; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01234001; UDB=6.00650264; IPR=6.01015328; 
+ MB=3.00027782; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-18 16:41:55
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071816-0017-0000-0000-00004412E0B8
+Message-Id: <87d0i747nu.fsf@morokweng.localdomain>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-18_08:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=885 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907180171
+ mlxlogscore=990 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907180174
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,36 +93,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Halil Pasic <pasic@linux.ibm.com>, iommu@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Thomas Lendacky <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-fsdevel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Alexey Dobriyan <adobriyan@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These aren't used by modular code, nor should they be.
 
-Fixes: 120496ac2d2d ("powerpc: Bring all threads online prior to migration/hibernation")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/kernel/rtas.c | 2 --
- 1 file changed, 2 deletions(-)
+Christoph Hellwig <hch@lst.de> writes:
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 9b4d2a2ffb4f..2d4c9a0c4f08 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -926,13 +926,11 @@ int rtas_online_cpus_mask(cpumask_var_t cpus)
- 
- 	return ret;
- }
--EXPORT_SYMBOL(rtas_online_cpus_mask);
- 
- int rtas_offline_cpus_mask(cpumask_var_t cpus)
- {
- 	return rtas_cpu_state_change_mask(DOWN, cpus);
- }
--EXPORT_SYMBOL(rtas_offline_cpus_mask);
- 
- int rtas_ibm_suspend_me(u64 handle)
- {
+>> -/* are we a protected virtualization guest? */
+>> -bool sev_active(void)
+>> -{
+>> -	return is_prot_virt_guest();
+>> -}
+>> -
+>>  bool force_dma_unencrypted(struct device *dev)
+>>  {
+>> -	return sev_active();
+>> +	return is_prot_virt_guest();
+>>  }
+>
+> Do we want to keep the comment for force_dma_unencrypted?
+>
+> Otherwise looks good:
+>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+Thank you for your review on al these patches.
+
 -- 
-2.20.1
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
