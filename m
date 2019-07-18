@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03C66C897
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 07:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F99D6C899
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 07:12:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45q2JC1Z7TzDq9T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 15:10:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45q2Lb5N0yzDqKv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 15:12:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,16 +16,17 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
- by lists.ozlabs.org (Postfix) with ESMTP id 45q2Dc4X7YzDqZL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 15:06:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 45q2Df1s46zDqbl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 15:06:58 +1000 (AEST)
 Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 60682AE80053;
- Thu, 18 Jul 2019 01:06:19 -0400 (EDT)
+ by ozlabs.ru (Postfix) with ESMTP id 18538AE800AD;
+ Thu, 18 Jul 2019 01:06:20 -0400 (EDT)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v4 1/2] powerpc: Add handler for orphaned interrupts
-Date: Thu, 18 Jul 2019 15:06:03 +1000
-Message-Id: <20190718050604.74233-2-aik@ozlabs.ru>
+Subject: [PATCH kernel v4 2/2] powerpc/xive: Drop current cpu priority for
+ orphaned interrupts
+Date: Thu, 18 Jul 2019 15:06:04 +1000
+Message-Id: <20190718050604.74233-3-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190718050604.74233-1-aik@ozlabs.ru>
 References: <20190718050604.74233-1-aik@ozlabs.ru>
@@ -47,56 +48,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The test on generic_handle_irq() catches interrupt events that
-were served on a target CPU while the source interrupt was being
-shutdown on another CPU. This may lead to a blocked interrupt queue
-on a target CPU so if there is another assigned irq on that CPU, that
-device stops working.
+There is a race between releasing an irq on one cpu and fetching it
+from XIVE on another cpu. When such released irq appears in a queue,
+we take it from the queue but we do not change the current priority
+on that cpu and since there is no handler for the irq, EOI is never
+called and the cpu current priority remains elevated
+(7 vs. 0xff==unmasked). If another irq is assigned to the same cpu,
+then that device stops working until irq is moved to another cpu or
+the device is reset.
 
-This adds necessary infrastructure to allow platform to deal with it.
-The next patch implements it for XIVE.
+This implements ppc_md.orphan_irq callback which is called if no irq
+descriptor is found and which drops the current priority
+to 0xff which effectively unmasks interrupts in a current CPU.
 
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/include/asm/machdep.h | 3 +++
- arch/powerpc/kernel/irq.c          | 9 ++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/sysdev/xive/common.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
-index c43d6eca9edd..6cc14e28e89a 100644
---- a/arch/powerpc/include/asm/machdep.h
-+++ b/arch/powerpc/include/asm/machdep.h
-@@ -59,6 +59,9 @@ struct machdep_calls {
- 	/* Return an irq, or 0 to indicate there are none pending. */
- 	unsigned int	(*get_irq)(void);
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 082c7e1c20f0..17e696b2d71b 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -283,6 +283,23 @@ static unsigned int xive_get_irq(void)
+ 	return irq;
+ }
  
-+	/* Drops irq if it does not have a valid descriptor */
-+	void		(*orphan_irq)(unsigned int irq);
++/*
++ * Handles the case when a target CPU catches an interrupt which is being shut
++ * down on another CPU. generic_handle_irq() returns an error in such case
++ * and then the orphan_irq() handler restores the CPPR to reenable interrupts.
++ *
++ * Without orphan_irq() and valid irq_desc, there is no other way to restore
++ * the CPPR. This executes on a CPU which caught the interrupt.
++ */
++static void xive_orphan_irq(unsigned int irq)
++{
++	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
 +
- 	/* PCI stuff */
- 	/* Called after allocating resources */
- 	void		(*pcibios_fixup)(void);
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 5645bc9cbc09..e0689dcb17f0 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -632,10 +632,13 @@ void __do_irq(struct pt_regs *regs)
- 	may_hard_irq_enable();
++	xc->cppr = 0xff;
++	out_8(xive_tima + xive_tima_offset + TM_CPPR, 0xff);
++	DBG_VERBOSE("orphan_irq: irq %d, adjusting CPPR to 0xff\n", irq);
++}
++
+ /*
+  * After EOI'ing an interrupt, we need to re-check the queue
+  * to see if another interrupt is pending since multiple
+@@ -1419,6 +1436,7 @@ bool __init xive_core_init(const struct xive_ops *ops, void __iomem *area, u32 o
+ 	xive_irq_priority = max_prio;
  
- 	/* And finally process it */
--	if (unlikely(!irq))
-+	if (unlikely(!irq)) {
- 		__this_cpu_inc(irq_stat.spurious_irqs);
--	else
--		generic_handle_irq(irq);
-+	} else if (generic_handle_irq(irq)) {
-+		if (ppc_md.orphan_irq)
-+			ppc_md.orphan_irq(irq);
-+		__this_cpu_inc(irq_stat.spurious_irqs);
-+	}
+ 	ppc_md.get_irq = xive_get_irq;
++	ppc_md.orphan_irq = xive_orphan_irq;
+ 	__xive_enabled = true;
  
- 	trace_irq_exit(regs);
- 
+ 	pr_devel("Initializing host..\n");
 -- 
 2.17.1
 
