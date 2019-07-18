@@ -1,105 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773356D352
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 19:58:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B668F6D31C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 19:50:37 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qM9h3Q1dzDqCW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 03:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qMMB06KDzDqN7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 03:58:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (helo)
- smtp.helo=nam03-dm3-obe.outbound.protection.outlook.com
- (client-ip=40.107.80.89; helo=nam03-dm3-obe.outbound.protection.outlook.com;
- envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=amd.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=amdcloud.onmicrosoft.com
- header.i=@amdcloud.onmicrosoft.com header.b="Ydsnii7N"; 
- dkim-atps=neutral
-Received: from NAM03-DM3-obe.outbound.protection.outlook.com
- (mail-eopbgr800089.outbound.protection.outlook.com [40.107.80.89])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qM7G5SvwzDqCW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 03:48:26 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XPPxH6gh4mXQqnHWxflqPG/I4aUGr7gfIkvM7sjI40E5itSTgKmYDDYmayEM0LvXPywK30l3RknR5DSTHSwLVJEx/ojJ7nNTNUhvV0L6vVNh9k7tfxzyVZS0pNL5tVmBWTTjbS9hwJUl7noaICnmtXA0szwnX3UWKWUoa2blOYINmBYAwdszZynx+kAh7y/fcct3+PpGIZL17Z1Bb8NfakVHxEwP3f21YCobX11lwsoF35C0svnD8zaCamNwwaatVnmLI9gbyfxznbCXSvscu5kvBEBNYpN1fRX7ZqzADAYT3qDk6g9AGJ9Yt6vB9XnvNVeQnTdSRM04de7MV3uFwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sqYFTzPvqkPp1ogzDvPxzxk/XaqAr8Tx7Z9lSjMtonE=;
- b=W+dtYDUyyyYNi2uko7wt7U/hPpZIbArNg9Xv8OroVZ25hfYKznctPiy/EeIn3fQ49WYbHN/bTF6b7vK3zVwzQGEgnWxB6ApxEYTJ6fJECAUa49Spf826VzvA5osP7O/p6e1M+xJZ8P5kDMRKdBIt4R5bPnPu/rMZuL+yRsOo6S14rdG7SND0BUCsb+IufP28YInIDuvGclLTXqcdHgfNlfbFdNrom8s2vXi9eE1avLVHzuUQL1MMTqOGz0sFcymiCLfAvYwlaiIaENHCd9XKWCjrEZttU/SJ96h1qqxkibzyANrrNOQAyyrOc0PrY1z51UvgdONmEY+EqQcRgoNccg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=amd.com;dmarc=pass action=none header.from=amd.com;dkim=pass
- header.d=amd.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sqYFTzPvqkPp1ogzDvPxzxk/XaqAr8Tx7Z9lSjMtonE=;
- b=Ydsnii7NOzgZPaNaKd6KPEklvenCDIaa9NA3eF4qFPUtPP7NMR5ncnAOQJxDNfvljE1vDNjCvdIG0Sd/JhuZP/0LNs0eqvwcPqm7hQ8uc0WIgm4suhTkkbNzaa/GIWEvmo311Zxc69PDKgxuUJ2T98HUMJDcrpi6cZfY/nrW90g=
-Received: from DM6PR12MB3163.namprd12.prod.outlook.com (20.179.104.150) by
- DM6PR12MB3081.namprd12.prod.outlook.com (20.178.30.203) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2073.11; Thu, 18 Jul 2019 17:48:21 +0000
-Received: from DM6PR12MB3163.namprd12.prod.outlook.com
- ([fe80::9c3d:8593:906c:e4f7]) by DM6PR12MB3163.namprd12.prod.outlook.com
- ([fe80::9c3d:8593:906c:e4f7%6]) with mapi id 15.20.2073.012; Thu, 18 Jul 2019
- 17:48:21 +0000
-From: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>, "x86@kernel.org"
- <x86@kernel.org>
-Subject: Re: [PATCH v3 0/6] Remove x86-specific code from generic headers
-Thread-Topic: [PATCH v3 0/6] Remove x86-specific code from generic headers
-Thread-Index: AQHVPRj/oX9x6en7K0GjSSUSyjk8U6bQp8QA
-Date: Thu, 18 Jul 2019 17:48:21 +0000
-Message-ID: <680bb92e-66eb-8959-88a5-3447a6a282c8@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qMKC4G5CzDqH2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 03:57:01 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id C28C468B02; Thu, 18 Jul 2019 19:56:55 +0200 (CEST)
+Date: Thu, 18 Jul 2019 19:56:55 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
+Subject: Re: [PATCH v3 4/6] x86,s390/mm: Move sme_active() and sme_me_mask
+ to x86-specific header
+Message-ID: <20190718175655.GA361@lst.de>
 References: <20190718032858.28744-1-bauerman@linux.ibm.com>
-In-Reply-To: <20190718032858.28744-1-bauerman@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: SN4PR0501CA0156.namprd05.prod.outlook.com
- (2603:10b6:803:2c::34) To DM6PR12MB3163.namprd12.prod.outlook.com
- (2603:10b6:5:182::22)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Thomas.Lendacky@amd.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [165.204.77.1]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 42a63cdc-3ef7-4951-4b30-08d70ba81fd7
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:DM6PR12MB3081; 
-x-ms-traffictypediagnostic: DM6PR12MB3081:
-x-microsoft-antispam-prvs: <DM6PR12MB30815EF8FE340B88AFC3097EECC80@DM6PR12MB3081.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 01026E1310
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(136003)(376002)(396003)(39860400002)(346002)(366004)(54534003)(189003)(199004)(6512007)(305945005)(3846002)(478600001)(476003)(71200400001)(25786009)(6116002)(71190400001)(66946007)(2501003)(386003)(446003)(316002)(4326008)(54906003)(31686004)(11346002)(53936002)(256004)(52116002)(7736002)(66446008)(64756008)(6246003)(8676002)(8936002)(110136005)(66066001)(66476007)(99286004)(26005)(81166006)(2616005)(81156014)(5660300002)(6436002)(31696002)(6506007)(66556008)(86362001)(68736007)(14454004)(36756003)(6486002)(53546011)(229853002)(7416002)(486006)(186003)(102836004)(2906002)(76176011)(41533002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DM6PR12MB3081;
- H:DM6PR12MB3163.namprd12.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: uvrtIfqOdJtQYYDYYQJHcGAIs5Vw2llnYaQuU65O9PMMmzz0QyQmvkIkKoD9xZvv4LPLiCIpU6nsdudoW7BBvlxb6AmRcweI0zWirRdD4f+244ss6J6bKT5RL0gJ0xXUwnVJSt9bSOHaLimXU46Cv+HiBQaeXLwaeyi9F3l4xsX5rJSp0pqpry2mf9ys9Uu0x/2gFzQ/0J70vqD6Rz4UDCBXWJdJ5+gVAERAn77t65WHxkGbUdcAPeEv9gf9h2d3xMQPdujLAKKTDv7TQQaD1AYBDR8EALksDqOkaLS8l4vYBcQY4yj9QRLoVXI58SoqEj0DXt8/4xzwXN0Z2/B/iq4hNKkfQEK2WizBMRZzqfh6ZfnE5MutkBuBs12DUinnlfwAEvLeEGyah9f+vp5JRJ3p5RHzxEMEy9FtrJGqfbI=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F722F6675EEF4B4E824FE180F10FA466@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20190718032858.28744-5-bauerman@linux.ibm.com>
+ <cf48e778-130a-df2a-d94b-170bd85d692c@amd.com>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42a63cdc-3ef7-4951-4b30-08d70ba81fd7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jul 2019 17:48:21.4418 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tlendack@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3081
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf48e778-130a-df2a-d94b-170bd85d692c@amd.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,8 +48,9 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Mike Anderson <andmike@linux.ibm.com>,
  Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Robin Murphy <robin.murphy@arm.com>, Mike Anderson <andmike@linux.ibm.com>,
+ Robin Murphy <robin.murphy@arm.com>, "x86@kernel.org" <x86@kernel.org>,
  Ram Pai <linuxram@us.ibm.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
@@ -123,63 +60,15 @@ Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
  "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
+ Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gNy8xNy8xOSAxMDoyOCBQTSwgVGhpYWdvIEp1bmcgQmF1ZXJtYW5uIHdyb3RlOg0KPiBIZWxs
-bywNCj4gDQo+IFRoaXMgdmVyc2lvbiBpcyBtb3N0bHkgYWJvdXQgc3BsaXR0aW5nIHVwIHBhdGNo
-IDIvMyBpbnRvIHRocmVlIHNlcGFyYXRlDQo+IHBhdGNoZXMsIGFzIHN1Z2dlc3RlZCBieSBDaHJp
-c3RvcGggSGVsbHdpZy4gVHdvIG90aGVyIGNoYW5nZXMgYXJlIGEgZml4IGluDQo+IHBhdGNoIDEg
-d2hpY2ggd2Fzbid0IHNlbGVjdGluZyBBUkNIX0hBU19NRU1fRU5DUllQVCBmb3IgczM5MCBzcG90
-dGVkIGJ5DQo+IEphbmFuaSBhbmQgcmVtb3ZhbCBvZiBzbWVfYWN0aXZlIGFuZCBzZXZfYWN0aXZl
-IHN5bWJvbCBleHBvcnRzIGFzIHN1Z2dlc3RlZA0KPiBieSBDaHJpc3RvcGggSGVsbHdpZy4NCj4g
-DQo+IFRoZXNlIHBhdGNoZXMgYXJlIGFwcGxpZWQgb24gdG9wIG9mIHRvZGF5J3MgZG1hLW1hcHBp
-bmcvZm9yLW5leHQuDQo+IA0KPiBJIGRvbid0IGhhdmUgYSB3YXkgdG8gdGVzdCBTTUUsIFNFViwg
-bm9yIHMzOTAncyBQRUYgc28gdGhlIHBhdGNoZXMgaGF2ZSBvbmx5DQo+IGJlZW4gYnVpbGQgdGVz
-dGVkLg0KDQpJJ2xsIHRyeSBhbmQgZ2V0IHRoaXMgdGVzdGVkIHF1aWNrbHkgdG8gYmUgc3VyZSBl
-dmVyeXRoaW5nIHdvcmtzIGZvciBTTUUNCmFuZCBTRVYuDQoNClRoYW5rcywNClRvbQ0KDQo+IA0K
-PiBDaGFuZ2Vsb2cNCj4gDQo+IFNpbmNlIHYyOg0KPiANCj4gLSBQYXRjaCAieDg2LHMzOTA6IE1v
-dmUgQVJDSF9IQVNfTUVNX0VOQ1JZUFQgZGVmaW5pdGlvbiB0byBhcmNoL0tjb25maWciDQo+ICAg
-LSBBZGRlZCAic2VsZWN0IEFSQ0hfSEFTX01FTV9FTkNSWVBUIiB0byBjb25maWcgUzM5MC4gU3Vn
-Z2VzdGVkIGJ5IEphbmFuaS4NCj4gDQo+IC0gUGF0Y2ggIkRNQSBtYXBwaW5nOiBNb3ZlIFNNRSBo
-YW5kbGluZyB0byB4ODYtc3BlY2lmaWMgZmlsZXMiDQo+ICAgLSBTcGxpdCB1cCBpbnRvIDMgbmV3
-IHBhdGNoZXMuIFN1Z2dlc3RlZCBieSBDaHJpc3RvcGggSGVsbHdpZy4NCj4gDQo+IC0gUGF0Y2gg
-InN3aW90bGI6IFJlbW92ZSBjYWxsIHRvIHNtZV9hY3RpdmUoKSINCj4gICAtIE5ldyBwYXRjaC4N
-Cj4gDQo+IC0gUGF0Y2ggImRtYS1tYXBwaW5nOiBSZW1vdmUgZG1hX2NoZWNrX21hc2soKSINCj4g
-ICAtIE5ldyBwYXRjaC4NCj4gDQo+IC0gUGF0Y2ggIng4NixzMzkwL21tOiBNb3ZlIHNtZV9hY3Rp
-dmUoKSBhbmQgc21lX21lX21hc2sgdG8geDg2LXNwZWNpZmljIGhlYWRlciINCj4gICAtIE5ldyBw
-YXRjaC4NCj4gICAtIFJlbW92ZWQgZXhwb3J0IG9mIHNtZV9hY3RpdmUgc3ltYm9sLiBTdWdnZXN0
-ZWQgYnkgQ2hyaXN0b3BoIEhlbGx3aWcuDQo+IA0KPiAtIFBhdGNoICJmcy9jb3JlL3ZtY29yZTog
-TW92ZSBzZXZfYWN0aXZlKCkgcmVmZXJlbmNlIHRvIHg4NiBhcmNoIGNvZGUiDQo+ICAgLSBSZW1v
-dmVkIGV4cG9ydCBvZiBzZXZfYWN0aXZlIHN5bWJvbC4gU3VnZ2VzdGVkIGJ5IENocmlzdG9waCBI
-ZWxsd2lnLg0KPiANCj4gLSBQYXRjaCAiczM5MC9tbTogUmVtb3ZlIHNldl9hY3RpdmUoKSBmdW5j
-dGlvbiINCj4gICAtIE5ldyBwYXRjaC4NCj4gDQo+IFNpbmNlIHYxOg0KPiANCj4gLSBQYXRjaCAi
-eDg2LHMzOTA6IE1vdmUgQVJDSF9IQVNfTUVNX0VOQ1JZUFQgZGVmaW5pdGlvbiB0byBhcmNoL0tj
-b25maWciDQo+ICAgLSBSZW1vdmUgZGVmaW5pdGlvbiBvZiBBUkNIX0hBU19NRU1fRU5DUllQVCBm
-cm9tIHMzOTAvS2NvbmZpZyBhcyB3ZWxsLg0KPiAgIC0gUmV3b3JkZWQgcGF0Y2ggdGl0bGUgYW5k
-IG1lc3NhZ2UgYSBsaXR0bGUgYml0Lg0KPiANCj4gLSBQYXRjaCAiRE1BIG1hcHBpbmc6IE1vdmUg
-U01FIGhhbmRsaW5nIHRvIHg4Ni1zcGVjaWZpYyBmaWxlcyINCj4gICAtIEFkYXB0IHMzOTAncyA8
-YXNtL21lbV9lbmNyeXB0Lmg+IGFzIHdlbGwuDQo+ICAgLSBSZW1vdmUgZG1hX2NoZWNrX21hc2so
-KSBmcm9tIGtlcm5lbC9kbWEvbWFwcGluZy5jLiBTdWdnZXN0ZWQgYnkNCj4gICAgIENocmlzdG9w
-aCBIZWxsd2lnLg0KPiANCj4gVGhpYWdvIEp1bmcgQmF1ZXJtYW5uICg2KToNCj4gICB4ODYsczM5
-MDogTW92ZSBBUkNIX0hBU19NRU1fRU5DUllQVCBkZWZpbml0aW9uIHRvIGFyY2gvS2NvbmZpZw0K
-PiAgIHN3aW90bGI6IFJlbW92ZSBjYWxsIHRvIHNtZV9hY3RpdmUoKQ0KPiAgIGRtYS1tYXBwaW5n
-OiBSZW1vdmUgZG1hX2NoZWNrX21hc2soKQ0KPiAgIHg4NixzMzkwL21tOiBNb3ZlIHNtZV9hY3Rp
-dmUoKSBhbmQgc21lX21lX21hc2sgdG8geDg2LXNwZWNpZmljIGhlYWRlcg0KPiAgIGZzL2NvcmUv
-dm1jb3JlOiBNb3ZlIHNldl9hY3RpdmUoKSByZWZlcmVuY2UgdG8geDg2IGFyY2ggY29kZQ0KPiAg
-IHMzOTAvbW06IFJlbW92ZSBzZXZfYWN0aXZlKCkgZnVuY3Rpb24NCj4gDQo+ICBhcmNoL0tjb25m
-aWcgICAgICAgICAgICAgICAgICAgICAgICB8ICAzICsrKw0KPiAgYXJjaC9zMzkwL0tjb25maWcg
-ICAgICAgICAgICAgICAgICAgfCAgNCArLS0tDQo+ICBhcmNoL3MzOTAvaW5jbHVkZS9hc20vbWVt
-X2VuY3J5cHQuaCB8ICA1ICstLS0tDQo+ICBhcmNoL3MzOTAvbW0vaW5pdC5jICAgICAgICAgICAg
-ICAgICB8ICA4ICstLS0tLS0tDQo+ICBhcmNoL3g4Ni9LY29uZmlnICAgICAgICAgICAgICAgICAg
-ICB8ICA0ICstLS0NCj4gIGFyY2gveDg2L2luY2x1ZGUvYXNtL21lbV9lbmNyeXB0LmggIHwgMTAg
-KysrKysrKysrKw0KPiAgYXJjaC94ODYva2VybmVsL2NyYXNoX2R1bXBfNjQuYyAgICAgfCAgNSAr
-KysrKw0KPiAgYXJjaC94ODYvbW0vbWVtX2VuY3J5cHQuYyAgICAgICAgICAgfCAgMiAtLQ0KPiAg
-ZnMvcHJvYy92bWNvcmUuYyAgICAgICAgICAgICAgICAgICAgfCAgOCArKysrLS0tLQ0KPiAgaW5j
-bHVkZS9saW51eC9jcmFzaF9kdW1wLmggICAgICAgICAgfCAxNCArKysrKysrKysrKysrKw0KPiAg
-aW5jbHVkZS9saW51eC9tZW1fZW5jcnlwdC5oICAgICAgICAgfCAxNSArLS0tLS0tLS0tLS0tLS0N
-Cj4gIGtlcm5lbC9kbWEvbWFwcGluZy5jICAgICAgICAgICAgICAgIHwgIDggLS0tLS0tLS0NCj4g
-IGtlcm5lbC9kbWEvc3dpb3RsYi5jICAgICAgICAgICAgICAgIHwgIDMgKy0tDQo+ICAxMyBmaWxl
-cyBjaGFuZ2VkLCA0MiBpbnNlcnRpb25zKCspLCA0NyBkZWxldGlvbnMoLSkNCj4gDQo=
+On Thu, Jul 18, 2019 at 05:42:18PM +0000, Lendacky, Thomas wrote:
+> You may want to try and build the out-of-tree nvidia driver just to be
+> sure you can remove the EXPORT_SYMBOL(). But I believe that was related
+> to the DMA mask check, which now removed, may no longer be a problem.
+
+Out of tree driver simply don't matter for kernel development decisions.
