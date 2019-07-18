@@ -2,81 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E7E6C81D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 05:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 452D36C823
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 05:49:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45q0S30rhrzDqCH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 13:46:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45q0Wg5M3GzDqNP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 13:49:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="DiG4PHre"; 
+ dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45q04l2fQ7zDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 13:29:59 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6I3SsbL095104; Wed, 17 Jul 2019 23:29:46 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ttf0tkea5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jul 2019 23:29:46 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6I3TBdP097831;
- Wed, 17 Jul 2019 23:29:45 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ttf0tke9s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Jul 2019 23:29:45 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6I3Q8gb026039;
- Thu, 18 Jul 2019 03:29:44 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 2tq6x7mhys-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jul 2019 03:29:44 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6I3ThL111928472
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jul 2019 03:29:43 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C691AE067;
- Thu, 18 Jul 2019 03:29:43 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA7B4AE05F;
- Thu, 18 Jul 2019 03:29:38 +0000 (GMT)
-Received: from morokweng.localdomain.com (unknown [9.85.129.123])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jul 2019 03:29:38 +0000 (GMT)
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: x86@kernel.org
-Subject: [PATCH v3 6/6] s390/mm: Remove sev_active() function
-Date: Thu, 18 Jul 2019 00:28:58 -0300
-Message-Id: <20190718032858.28744-7-bauerman@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190718032858.28744-1-bauerman@linux.ibm.com>
-References: <20190718032858.28744-1-bauerman@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45q0Qd2ZDXzDqCH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 13:45:29 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id q22so49247527iog.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2019 20:45:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=kGdfw85thz+lwBPUuzzYY0HL9eZJ5pxBvBS13Dv+V9c=;
+ b=DiG4PHreoM1GL4Pwdj/fB3T7cl5+30l5uD3buBG6DAm1PQ/zQg51ZbdUd+NODc5nDD
+ MpSJbUErI8ujTENrWOG9kAJF2CP9kkxw3aAicnOhfcXffCoq38cs073Ps6mvEO+LdEv7
+ M3bAuBWwivMYDkzb4GlXQ4UENx2yKQ4iocYlmKdloBnHTJKmfoQNsd/Z/0DGVT5Y90CW
+ ititzwC4LUuAuhEOIs2Sj84nezF/tLEPlUMN697VQuUHdgKoCSypH2x+fPbphXQR9n7j
+ Nc/JimlsmhqJmHP+AswhwdBLr2YfnXkIC7A5j9u29vS1vqR6EOFBv+Q76VMDCkZcmjar
+ w3tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=kGdfw85thz+lwBPUuzzYY0HL9eZJ5pxBvBS13Dv+V9c=;
+ b=e8qnNorXdPNHQWXBYTIvGaq5xMebA39Xe4LClVQ6kzwQa3GxO2IAGFCKe4IfMqT9Qi
+ jqDR0kbELWQBLqzFPlZEaGZrr+eIhcGfIKi/lq5CKn2siPYaOr2LLGalVSp/P707bfoU
+ w5ZApEfwvgzv3kr9wBzJRUhHRLbyqZ6Y6JFu/Zcp/KYs91eb6nVzDVnSu6Oyv/twnAnM
+ w/BO8IcUcq0A2Bls7UMmCliNykn7CXh+0pU1R7UscrQtCF40b6U5i+Bossgt1DE3fOkg
+ BY+0yELqhN9z6fvx6Q04cm7Z3Oloqp0GXb8Miip7A2fcfLzvjV7l8qn8/njw/gBsPszz
+ 5P5A==
+X-Gm-Message-State: APjAAAXJxMd33gU5pFWcJGgyGvo1a8ea+MUkQDD1N/q5WrsiTroIih1R
+ KzCw5kRt+xDa0SGs4J+0Lj3cMrNygaArYip6uwbrowA5R94=
+X-Google-Smtp-Source: APXvYqz3LxdwZu5kdyX0GTycgmyknCtcdsFo7vHaY/8slf3nvmxDYBaN2DGhSvlpvd1X5e5AFOQ8kzoxVK3ro1wyR4M=
+X-Received: by 2002:a5d:9047:: with SMTP id v7mr17730526ioq.18.1563421527141; 
+ Wed, 17 Jul 2019 20:45:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-18_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907180037
+References: <20190717235437.12908-1-shawn@anastas.io>
+ <8b6963ac-521a-5752-2cfb-bcd87cad9dc4@ozlabs.ru>
+ <f9753335-b62c-67b4-84d7-7b67fe1b64ca@anastas.io>
+In-Reply-To: <f9753335-b62c-67b4-84d7-7b67fe1b64ca@anastas.io>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 18 Jul 2019 13:45:16 +1000
+Message-ID: <CAOSf1CGA_fDH7aAqRkc4maJUByaX7adGcjyt3cj4KFsMJNnocA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/dma: Fix invalid DMA mmap behavior
+To: Shawn Anastasio <shawn@anastas.io>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,59 +74,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Robin Murphy <robin.murphy@arm.com>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
- iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Lendacky <Thomas.Lendacky@amd.com>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-fsdevel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All references to sev_active() were moved to arch/x86 so we don't need to
-define it for s390 anymore.
+On Thu, Jul 18, 2019 at 1:16 PM Shawn Anastasio <shawn@anastas.io> wrote:
+>
+> On 7/17/19 9:59 PM, Alexey Kardashevskiy wrote:
+> >
+> > On 18/07/2019 09:54, Shawn Anastasio wrote:
+> >> The refactor of powerpc DMA functions in commit 6666cc17d780
+> >> ("powerpc/dma: remove dma_nommu_mmap_coherent") incorrectly
+> >> changes the way DMA mappings are handled on powerpc.
+> >> Since this change, all mapped pages are marked as cache-inhibited
+> >> through the default implementation of arch_dma_mmap_pgprot.
+> >> This differs from the previous behavior of only marking pages
+> >> in noncoherent mappings as cache-inhibited and has resulted in
+> >> sporadic system crashes in certain hardware configurations and
+> >> workloads (see Bugzilla).
+> >>
+> >> This commit restores the previous correct behavior by providing
+> >> an implementation of arch_dma_mmap_pgprot that only marks
+> >> pages in noncoherent mappings as cache-inhibited. As this behavior
+> >> should be universal for all powerpc platforms a new file,
+> >> dma-generic.c, was created to store it.
+> >>
+> >> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=204145
+> >> Fixes: 6666cc17d780 ("powerpc/dma: remove dma_nommu_mmap_coherent")
+> >> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+> >
+> > Is this the default one?
+> >
+> > include/linux/dma-noncoherent.h
+> > # define arch_dma_mmap_pgprot(dev, prot, attrs) pgprot_noncached(prot)
+>
+> Yep, that's the one.
+>
+> > Out of curiosity - do not we want to fix this one for everyone?
+>
+> Other than m68k, mips, and arm64, everybody else that doesn't have
+> ARCH_NO_COHERENT_DMA_MMAP set uses this default implementation, so
+> I assume this behavior is acceptable on those architectures.
 
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
----
- arch/s390/include/asm/mem_encrypt.h | 1 -
- arch/s390/mm/init.c                 | 8 +-------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+It might be acceptable, but there's no reason to use pgport_noncached
+if the platform supports cache-coherent DMA.
 
-diff --git a/arch/s390/include/asm/mem_encrypt.h b/arch/s390/include/asm/mem_encrypt.h
-index ff813a56bc30..2542cbf7e2d1 100644
---- a/arch/s390/include/asm/mem_encrypt.h
-+++ b/arch/s390/include/asm/mem_encrypt.h
-@@ -5,7 +5,6 @@
- #ifndef __ASSEMBLY__
- 
- static inline bool mem_encrypt_active(void) { return false; }
--extern bool sev_active(void);
- 
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 78c319c5ce48..6286eb3e815b 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -155,15 +155,9 @@ int set_memory_decrypted(unsigned long addr, int numpages)
- 	return 0;
- }
- 
--/* are we a protected virtualization guest? */
--bool sev_active(void)
--{
--	return is_prot_virt_guest();
--}
--
- bool force_dma_unencrypted(struct device *dev)
- {
--	return sev_active();
-+	return is_prot_virt_guest();
- }
- 
- /* protected virtualization */
+Christoph (+cc) made the change so maybe he saw something we're missing.
+
+> >> ---
+> >>   arch/powerpc/Kconfig             |  1 +
+> >>   arch/powerpc/kernel/Makefile     |  3 ++-
+> >>   arch/powerpc/kernel/dma-common.c | 17 +++++++++++++++++
+> >>   3 files changed, 20 insertions(+), 1 deletion(-)
+> >>   create mode 100644 arch/powerpc/kernel/dma-common.c
+> >>
+> >> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> >> index d8dcd8820369..77f6ebf97113 100644
+> >> --- a/arch/powerpc/Kconfig
+> >> +++ b/arch/powerpc/Kconfig
+> >> @@ -121,6 +121,7 @@ config PPC
+> >>       select ARCH_32BIT_OFF_T if PPC32
+> >>       select ARCH_HAS_DEBUG_VIRTUAL
+> >>       select ARCH_HAS_DEVMEM_IS_ALLOWED
+> >> +    select ARCH_HAS_DMA_MMAP_PGPROT
+> >>       select ARCH_HAS_ELF_RANDOMIZE
+> >>       select ARCH_HAS_FORTIFY_SOURCE
+> >>       select ARCH_HAS_GCOV_PROFILE_ALL
+> >> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> >> index 56dfa7a2a6f2..ea0c69236789 100644
+> >> --- a/arch/powerpc/kernel/Makefile
+> >> +++ b/arch/powerpc/kernel/Makefile
+> >> @@ -49,7 +49,8 @@ obj-y                := cputable.o ptrace.o
+> >> syscalls.o \
+> >>                      signal.o sysfs.o cacheinfo.o time.o \
+> >>                      prom.o traps.o setup-common.o \
+> >>                      udbg.o misc.o io.o misc_$(BITS).o \
+> >> -                   of_platform.o prom_parse.o
+> >> +                   of_platform.o prom_parse.o \
+> >> +                   dma-common.o
+> >>   obj-$(CONFIG_PPC64)        += setup_64.o sys_ppc32.o \
+> >>                      signal_64.o ptrace32.o \
+> >>                      paca.o nvram_64.o firmware.o
+> >> diff --git a/arch/powerpc/kernel/dma-common.c
+> >> b/arch/powerpc/kernel/dma-common.c
+> >> new file mode 100644
+> >> index 000000000000..5a15f99f4199
+> >> --- /dev/null
+> >> +++ b/arch/powerpc/kernel/dma-common.c
+> >> @@ -0,0 +1,17 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-or-later
+> >> +/*
+> >> + * Contains common dma routines for all powerpc platforms.
+> >> + *
+> >> + * Copyright (C) 2019 Shawn Anastasio (shawn@anastas.io)
+> >> + */
+> >> +
+> >> +#include <linux/mm.h>
+> >> +#include <linux/dma-noncoherent.h>
+> >> +
+> >> +pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
+> >> +        unsigned long attrs)
+> >> +{
+> >> +    if (!dev_is_dma_coherent(dev))
+> >> +        return pgprot_noncached(prot);
+> >> +    return prot;
+> >> +}
+> >>
+> >
