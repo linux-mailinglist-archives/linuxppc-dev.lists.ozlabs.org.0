@@ -1,34 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146AE6CF6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 16:04:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5183B6CF57
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 16:02:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qG623xVrzDqK9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 00:02:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qG9K1RZnzDqHp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 00:04:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qFzp43HZzDqXl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 23:56:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qFzs45CNzDqY7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 23:56:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45qFzp31PNz9sBt; Thu, 18 Jul 2019 23:56:38 +1000 (AEST)
+ id 45qFzq6mgpz9sDQ; Thu, 18 Jul 2019 23:56:39 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 63279eeb7f93abb1692573c26f1e038e1a87358b
-In-Reply-To: <20190703012022.15644-1-sjitindarsingh@gmail.com>
+X-powerpc-patch-commit: da0ef93310e67ae6902efded60b6724dab27a5d1
+In-Reply-To: <20190710052018.14628-1-sjitindarsingh@gmail.com>
 To: Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH 1/3] KVM: PPC: Book3S HV: Always save guest pmu for guest
- capable of nesting
-Message-Id: <45qFzp31PNz9sBt@ozlabs.org>
-Date: Thu, 18 Jul 2019 23:56:38 +1000 (AEST)
+Subject: Re: [PATCH] powerpc: mm: Limit rma_size to 1TB when running without
+ HV mode
+Message-Id: <45qFzq6mgpz9sDQ@ozlabs.org>
+Date: Thu, 18 Jul 2019 23:56:39 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,46 +40,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, sjitindarsingh@gmail.com
+Cc: kvm-ppc@vger.kernel.org, sjitindarsingh@gmail.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-07-03 at 01:20:20 UTC, Suraj Jitindar Singh wrote:
-> The performance monitoring unit (PMU) registers are saved on guest exit
-> when the guest has set the pmcregs_in_use flag in its lppaca, if it
-> exists, or unconditionally if it doesn't. If a nested guest is being
-> run then the hypervisor doesn't, and in most cases can't, know if the
-> pmu registers are in use since it doesn't know the location of the lppaca
-> for the nested guest, although it may have one for its immediate guest.
-> This results in the values of these registers being lost across nested
-> guest entry and exit in the case where the nested guest was making use
-> of the performance monitoring facility while it's nested guest hypervisor
-> wasn't.
+On Wed, 2019-07-10 at 05:20:18 UTC, Suraj Jitindar Singh wrote:
+> The virtual real mode addressing (VRMA) mechanism is used when a
+> partition is using HPT (Hash Page Table) translation and performs
+> real mode accesses (MSR[IR|DR] = 0) in non-hypervisor mode. In this
+> mode effective address bits 0:23 are treated as zero (i.e. the access
+> is aliased to 0) and the access is performed using an implicit 1TB SLB
+> entry.
 > 
-> Further more the hypervisor could interrupt a guest hypervisor between
-> when it has loaded up the pmu registers and it calling H_ENTER_NESTED or
-> between returning from the nested guest to the guest hypervisor and the
-> guest hypervisor reading the pmu registers, in kvmhv_p9_guest_entry().
-> This means that it isn't sufficient to just save the pmu registers when
-> entering or exiting a nested guest, but that it is necessary to always
-> save the pmu registers whenever a guest is capable of running nested guests
-> to ensure the register values aren't lost in the context switch.
+> The size of the RMA (Real Memory Area) is communicated to the guest as
+> the size of the first memory region in the device tree. And because of
+> the mechanism described above can be expected to not exceed 1TB. In the
+> event that the host erroneously represents the RMA as being larger than
+> 1TB, guest accesses in real mode to memory addresses above 1TB will be
+> aliased down to below 1TB. This means that a memory access performed in
+> real mode may differ to one performed in virtual mode for the same memory
+> address, which would likely have unintended consequences.
 > 
-> Ensure the pmu register values are preserved by always saving their
-> value into the vcpu struct when a guest is capable of running nested
-> guests.
-> 
-> This should have minimal performance impact however any impact can be
-> avoided by booting a guest with "-machine pseries,cap-nested-hv=false"
-> on the qemu commandline.
-> 
-> Fixes: 95a6432ce903 "KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix guests"
+> To avoid this outcome have the guest explicitly limit the size of the
+> RMA to the current maximum, which is 1TB. This means that even if the
+> first memory block is larger than 1TB, only the first 1TB should be
+> accessed in real mode.
 > 
 > Signed-off-by: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+> Tested-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
-Series applied to powerpc fixes, thanks.
+Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/63279eeb7f93abb1692573c26f1e038e1a87358b
+https://git.kernel.org/powerpc/c/da0ef93310e67ae6902efded60b6724dab27a5d1
 
 cheers
