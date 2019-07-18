@@ -2,35 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED91A6CE48
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 14:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45CE6CE8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 15:04:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qDXm0VyXzDqYp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 22:51:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qDqs0pGtzDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 23:04:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=pasic@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qDVL3KmqzDqLL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 22:49:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45qDVG1yRKz9s4Y;
- Thu, 18 Jul 2019 22:49:26 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>
-Subject: Crash in kvmppc_xive_release()
-Date: Thu, 18 Jul 2019 22:49:23 +1000
-Message-ID: <87k1cf8q3w.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qDmN2vywzDqND
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 23:01:38 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6ICvcWP059838
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 09:01:33 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tts6hg8gu-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 09:01:33 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <pasic@linux.ibm.com>;
+ Thu, 18 Jul 2019 14:01:31 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 18 Jul 2019 14:01:26 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6ID1O1I46399696
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Jul 2019 13:01:24 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B3CC511C04C;
+ Thu, 18 Jul 2019 13:01:24 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B18911C04A;
+ Thu, 18 Jul 2019 13:01:24 +0000 (GMT)
+Received: from oc2783563651 (unknown [9.152.224.219])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 18 Jul 2019 13:01:24 +0000 (GMT)
+Date: Thu, 18 Jul 2019 15:01:23 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3 6/6] s390/mm: Remove sev_active() function
+In-Reply-To: <20190718084456.GE24562@lst.de>
+References: <20190718032858.28744-1-bauerman@linux.ibm.com>
+ <20190718032858.28744-7-bauerman@linux.ibm.com>
+ <20190718084456.GE24562@lst.de>
+Organization: IBM
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19071813-0028-0000-0000-00000385B410
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071813-0029-0000-0000-00002445DDD0
+Message-Id: <20190718150123.4230a00c.pasic@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-18_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=995 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907180135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,49 +91,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Lendacky <Thomas.Lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-fsdevel@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Alexey Dobriyan <adobriyan@gmail.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anyone else seen this?
+On Thu, 18 Jul 2019 10:44:56 +0200
+Christoph Hellwig <hch@lst.de> wrote:
 
-This is running ~176 VMs on a Power9 (1 per thread), host crashes:
+> > -/* are we a protected virtualization guest? */
+> > -bool sev_active(void)
+> > -{
+> > -	return is_prot_virt_guest();
+> > -}
+> > -
+> >  bool force_dma_unencrypted(struct device *dev)
+> >  {
+> > -	return sev_active();
+> > +	return is_prot_virt_guest();
+> >  }
+> 
+> Do we want to keep the comment for force_dma_unencrypted?
 
-  [   66.403750][ T6423] xive: OPAL failed to allocate VCPUs order 11, err -10
-  [188523.080935670,4] Spent 1783 msecs in OPAL call 135!
-  [   66.484965][ T6250] BUG: Kernel NULL pointer dereference at 0x000042e8
-  [   66.485558][ T6250] Faulting instruction address: 0xc008000011a33fcc
-  [   66.485990][ T6250] Oops: Kernel access of bad area, sig: 7 [#1]
-  [   66.486405][ T6250] LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
-  [   66.486967][ T6250] Modules linked in: kvm_hv kvm
-  [   66.487275][ T6250] CPU: 107 PID: 6250 Comm: qemu-system-ppc Not tainted 5.2.0-rc2-gcc9x-gf5a9e488d623 #1
-  [   66.487902][ T6250] NIP:  c008000011a33fcc LR: c008000011a33fc4 CTR: c0000000005d5970
-  [   66.488383][ T6250] REGS: c000001fabebb900 TRAP: 0300   Not tainted  (5.2.0-rc2-gcc9x-gf5a9e488d623)
-  [   66.488933][ T6250] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24028224  XER: 00000000
-  [   66.489724][ T6250] CFAR: c0000000005d6a4c DAR: 00000000000042e8 DSISR: 00080000 IRQMASK: 0 
-  [   66.489724][ T6250] GPR00: c008000011a33fc4 c000001fabebbb90 c008000011a5a200 c000000001399928 
-  [   66.489724][ T6250] GPR04: 0000000000000001 c00000000047b8d0 0000000000000000 0000000000000001 
-  [   66.489724][ T6250] GPR08: 0000000000000000 0000000000000000 c000001fa8c42f00 c008000011a3af20 
-  [   66.489724][ T6250] GPR12: 0000000000008000 c0002023ff65a880 000000013a1b4000 0000000000000002 
-  [   66.489724][ T6250] GPR16: 0000000010000000 0000000000000002 0000000000000001 000000012b194cc0 
-  [   66.489724][ T6250] GPR20: 00007fffb1645250 0000000000000001 0000000000000031 0000000000000000 
-  [   66.489724][ T6250] GPR24: 00007fffb16408d8 c000001ffafb62e0 c000001f78699360 c000001ff35d0620 
-  [   66.489724][ T6250] GPR28: c000001ed0ed0000 c000001ecd900000 0000000000000000 c000001ed0ed0000 
-  [   66.495211][ T6250] NIP [c008000011a33fcc] kvmppc_xive_release+0x54/0x1b0 [kvm]
-  [   66.495642][ T6250] LR [c008000011a33fc4] kvmppc_xive_release+0x4c/0x1b0 [kvm]
-  [   66.496101][ T6250] Call Trace:
-  [   66.496314][ T6250] [c000001fabebbb90] [c008000011a33fc4] kvmppc_xive_release+0x4c/0x1b0 [kvm] (unreliable)
-  [   66.496893][ T6250] [c000001fabebbbf0] [c008000011a18d54] kvm_device_release+0xac/0xf0 [kvm]
-  [   66.497399][ T6250] [c000001fabebbc30] [c000000000442f8c] __fput+0xec/0x310
-  [   66.497815][ T6250] [c000001fabebbc90] [c000000000145f94] task_work_run+0x114/0x170
-  [   66.498296][ T6250] [c000001fabebbce0] [c000000000115274] do_exit+0x454/0xee0
-  [   66.498743][ T6250] [c000001fabebbdc0] [c000000000115dd0] do_group_exit+0x60/0xe0
-  [   66.499201][ T6250] [c000001fabebbe00] [c000000000115e74] sys_exit_group+0x24/0x40
-  [   66.499747][ T6250] [c000001fabebbe20] [c00000000000b83c] system_call+0x5c/0x70
-  [   66.500261][ T6250] Instruction dump:
-  [   66.500484][ T6250] fbe1fff8 fba1ffe8 fbc1fff0 7c7c1b78 f8010010 f821ffa1 eba30010 e87d0010 
-  [   66.501006][ T6250] ebdd0000 48006f61 e8410018 39200000 <eb7e42ea> 913e42e8 48007f3d e8410018 
-  [   66.501529][ T6250] ---[ end trace c021a6ca03594ec3 ]---
-  [   66.513119][ T6150] xive: OPAL failed to allocate VCPUs order 11, err -10
+Yes we do. With the comment transferred:
 
-cheers
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+
+> 
+> Otherwise looks good:
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+
