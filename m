@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4226CB38
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 10:48:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1726CB30
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 10:46:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45q76F3GCyzDqQN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 18:46:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45q78M01p6zDqMM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 18:48:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45q71Q4nRSzDqXC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 18:42:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45q71x5jr8zDqTk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 18:43:01 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 7AC8568B05; Thu, 18 Jul 2019 10:42:30 +0200 (CEST)
-Date: Thu, 18 Jul 2019 10:42:30 +0200
+ id 9FFC668B05; Thu, 18 Jul 2019 10:42:58 +0200 (CEST)
+Date: Thu, 18 Jul 2019 10:42:58 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Subject: Re: [PATCH v3 3/6] dma-mapping: Remove dma_check_mask()
-Message-ID: <20190718084230.GB24562@lst.de>
+Subject: Re: [PATCH v3 4/6] x86,s390/mm: Move sme_active() and sme_me_mask
+ to x86-specific header
+Message-ID: <20190718084258.GC24562@lst.de>
 References: <20190718032858.28744-1-bauerman@linux.ibm.com>
- <20190718032858.28744-4-bauerman@linux.ibm.com>
+ <20190718032858.28744-5-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190718032858.28744-4-bauerman@linux.ibm.com>
+In-Reply-To: <20190718032858.28744-5-bauerman@linux.ibm.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,11 +60,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 18, 2019 at 12:28:55AM -0300, Thiago Jung Bauermann wrote:
-> sme_active() is an x86-specific function so it's better not to call it from
-> generic code. Christoph Hellwig mentioned that "There is no reason why we
-> should have a special debug printk just for one specific reason why there
-> is a requirement for a large DMA mask.", so just remove dma_check_mask().
+On Thu, Jul 18, 2019 at 12:28:56AM -0300, Thiago Jung Bauermann wrote:
+> Now that generic code doesn't reference them, move sme_active() and
+> sme_me_mask to x86's <asm/mem_encrypt.h>.
+> 
+> Also remove the export for sme_active() since it's only used in files that
+> won't be built as modules. sme_me_mask on the other hand is used in
+> arch/x86/kvm/svm.c (via __sme_set() and __psp_pa()) which can be built as a
+> module so its export needs to stay.
 > 
 > Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
