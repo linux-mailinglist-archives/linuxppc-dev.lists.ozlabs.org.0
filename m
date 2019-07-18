@@ -2,84 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2076D673
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 23:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB9B6D685
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 23:34:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qS4N4h6fzDqh3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:31:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qS863nBRzDqJH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:34:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.222.194; helo=mail-qk1-f194.google.com;
+ envelope-from=arndbergmann@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com
+ [209.85.222.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qS1d28fxzDqDy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 07:28:52 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6ILLvtB121374; Thu, 18 Jul 2019 17:28:48 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ttxpnvm7m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jul 2019 17:28:47 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6ILOcNC126851;
- Thu, 18 Jul 2019 17:28:47 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ttxpnvm6j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jul 2019 17:28:47 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6ILOaeT005158;
- Thu, 18 Jul 2019 21:28:46 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04dal.us.ibm.com with ESMTP id 2trtmrjjgy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jul 2019 21:28:46 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6ILSjR139584190
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jul 2019 21:28:45 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C547AC062;
- Thu, 18 Jul 2019 21:28:45 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A8D7AC059;
- Thu, 18 Jul 2019 21:28:43 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.186.82])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Thu, 18 Jul 2019 21:28:42 +0000 (GMT)
-References: <20190713060023.8479-1-bauerman@linux.ibm.com>
- <20190713060023.8479-4-bauerman@linux.ibm.com>
- <70f8097f-7222-fe18-78b4-9372c21bfc9d@ozlabs.ru>
- <20190718195850.GU20882@gate.crashing.org>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v2 03/13] powerpc/prom_init: Add the ESM call to prom_init
-In-reply-to: <20190718195850.GU20882@gate.crashing.org>
-Date: Thu, 18 Jul 2019 18:28:36 -0300
-Message-ID: <875znz3ud7.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qS370b1wzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 07:30:10 +1000 (AEST)
+Received: by mail-qk1-f194.google.com with SMTP id m14so21632826qka.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 14:30:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=gXA3fCzwUc7S8+pRMyyFoXYQ6Lxj2094nm3NP6Me1pg=;
+ b=OjVoESVva1CWkevxYVwa6u/4/j30kNx/fTN/uDSc817uL3pGPMpO7FnaJnMS3vHHUw
+ DvBCAaxbSMTFGXmII+R1zW2yiIkXHSQLqpaidhK2uqNvay3nj0/djnfpWlEp2LOnAZVh
+ wiiBMYFIZ314yoWH/fWdBtO4f9+5vS62ekxGgVt5h4l0szMtWFFZPE3ixds1w4QQMe2u
+ knzmrzRy3coJWUF9ccEeJG4NnIXx6f3N3Uf/ZnO4fEmjdpLopmPkwHD8kwKoPGG0/g7A
+ 6BoQ2hPK9366ESL+rE4rCEq8DFfNl5OpL/stjsoaNkEaEWHKa2cJoNClXB6/IaQ+6Sfv
+ 9BbA==
+X-Gm-Message-State: APjAAAVYuMZM7d4XfUtJM69jPnisD02azV8t700QeYqdulipHS/osOSs
+ u18byhh4Q1DgC25wW8/qSSidzuoW8Dng1sDKDVU=
+X-Google-Smtp-Source: APXvYqwAnwmqNY3PBxWPuNJix5kLy4PEG765j1QyxyCKOemfTtTG+YSbK8sHn1TSB6/emkF2O/3aVUhdKFw2Cxuzrg4=
+X-Received: by 2002:a37:5f45:: with SMTP id t66mr32747316qkb.286.1563485406992; 
+ Thu, 18 Jul 2019 14:30:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-18_11:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=8 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907180218
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
+ <CAK8P3a33rGhPDFfRBAQyLTMG_WoEgX_toDgWR2O7rSwxKsZG+w@mail.gmail.com>
+ <20190718161231.xcno272nvqpln3wj@yavin>
+In-Reply-To: <20190718161231.xcno272nvqpln3wj@yavin>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 18 Jul 2019 23:29:50 +0200
+Message-ID: <CAK8P3a3MiYK4bJiA3G_m5H-TpfN5__--b+=szsJBhG7_it+NQg@mail.gmail.com>
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+To: Aleksa Sarai <cyphar@cyphar.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,83 +63,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Jann Horn <jannh@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, David Drysdale <drysdale@google.com>,
+ Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Hello Segher,
-
-Thanks for your review and suggestions!
-
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-
-> (Sorry to hijack your reply).
+On Thu, Jul 18, 2019 at 6:12 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2019-07-18, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Sat, Jul 6, 2019 at 5:00 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
+> >
+> > In fact, that seems similar enough to the existing openat() that I think
+> > you could also just add the fifth argument to the existing call when
+> > a newly defined flag is set, similarly to how we only use the 'mode'
+> > argument when O_CREAT or O_TMPFILE are set.
 >
-> On Thu, Jul 18, 2019 at 06:11:48PM +1000, Alexey Kardashevskiy wrote:
->> On 13/07/2019 16:00, Thiago Jung Bauermann wrote:
->> >From: Ram Pai <linuxram@us.ibm.com>
->> >+static int enter_secure_mode(unsigned long kbase, unsigned long fdt)
->> >+{
->> >+	register uint64_t func asm("r3") = UV_ESM;
->> >+	register uint64_t arg1 asm("r4") = (uint64_t)kbase;
->> >+	register uint64_t arg2 asm("r5") = (uint64_t)fdt;
->> 
->> What does UV do with kbase and fdt precisely? Few words in the commit 
->> log will do.
->> 
->> >+
->> >+	asm volatile("sc 2\n"
->> >+		     : "=r"(func)
->> >+		     : "0"(func), "r"(arg1), "r"(arg2)
->> >+		     :);
->> >+
->> >+	return (int)func;
->> 
->> And why "func"? Is it "function"? Weird name. Thanks,
-
-Yes, I believe func is for function. Perhaps ucall would be clearer
-if the variable wasn't reused for the return value as Segher points out.
-
-> Maybe the three vars should just be called "r3", "r4", and "r5" --
-> r3 is used as return value as well, so "func" isn't a great name for it.
-
-Yes, that does seem simpler.
-
-> Some other comments about this inline asm:
+> I considered doing this (and even had a preliminary version of it), but
+> I discovered that I was not in favour of this idea -- once I started to
+> write tests using it -- for a few reasons:
 >
-> The "\n" makes the generated asm look funny and has no other function.
-> Instead of using backreferences you can use a "+" constraint, "inout".
-> Empty clobber list is strange.
-> Casts to the return type, like most other casts, are an invitation to
-> bugs and not actually useful.
+>   1. It doesn't really allow for clean extension for a future 6th
+>          argument (because you are using up O_* flags to signify "use the
+>          next argument", and O_* flags don't give -EINVAL if they're
+>          unknown). Now, yes you can do the on-start runtime check that
+>          everyone does -- but I've never really liked having to do it.
 >
-> So this can be written
+>          Having reserved padding for later extensions (that is actually
+>          checked and gives -EINVAL) matches more modern syscall designs.
 >
-> static int enter_secure_mode(unsigned long kbase, unsigned long fdt)
-> {
-> 	register uint64_t r3 asm("r3") = UV_ESM;
-> 	register uint64_t r4 asm("r4") = kbase;
-> 	register uint64_t r4 asm("r5") = fdt;
+>   2. I really was hoping that the variadic openat(2) could be done away
+>      using this union setup (Linus said he didn't like it, and suggested
+>          using something like 'struct stat' as an argument for openat(2) --
+>          though personally I am not sure I would personally like to use an
+>          interface like that).
 >
-> 	asm volatile("sc 2" : "+r"(r3) : "r"(r4), "r"(r5));
->
-> 	return r3;
-> }
+>   3. In order to avoid wasting a syscall argument for mode/mask you need
+>          to either have something like your suggested mode_mask (which makes
+>          the syscall arguments less consistent) or have some sort of
+>          mode-like argument that is treated specially (which is really awful
+>          on multiple levels -- this one I also tried and even wrote my
+>          original tests using). And in both cases, the shims for
+>          open{,at}(2) are somewhat less clean.
 
-I'll adopt your version, it is cleaner inded. Thanks for providing it!
+These are all good reasons, thanks for providing the background.
 
-> (and it probably should use u64 instead of both uint64_t and unsigned long?)
+> All of that being said, I'd be happy to switch to whatever you think
+> makes the most sense. As long as it's possible to get an O_PATH with
+> RESOLVE_IN_ROOT set, I'm happy.
 
-Almost all of prom_init.c uses unsigned long, with u64 in just a few
-places. uint64_t isn't used anywhere else in the file. I'll switch to
-unsigned long everywhere, since this feature is only for 64 bit.
+I don't feel I should be in charge of making the decision. I'd still
+prefer avoiding the indirect argument structure because
 
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+4. it's inconsistent with most other syscalls
+
+5. you get the same problem with seccomp and strace that
+   clone3() has -- these and others only track the register
+   arguments by default.
+
+6. copying the structure adds a small overhead compared to
+   passing registers
+
+7. the calling conventions may be inconvenient for  a user space
+   library, so you end up with different prototypes for the low-level
+   syscall and the libc abstraction.
+
+I don't see any of the above seven points as a showstopper
+either way, so I hope someone else has a strong opinion
+and can make the decision easier for you.
+
+In the meantime just keep what you have, so you don't have
+to change it multiple times.
+
+       Arnd
