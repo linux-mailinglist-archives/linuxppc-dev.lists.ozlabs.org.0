@@ -1,68 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153796D4D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 21:37:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qPYM1TvMzDqJ1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 05:37:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CA86D563
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2019 21:48:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qPnX4HxwzDq9G
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 05:48:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
- envelope-from=gomonovych@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="bxDHW8OF"; 
- dkim-atps=neutral
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qPQK68hvzDqdb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 05:31:36 +1000 (AEST)
-Received: by mail-lj1-x242.google.com with SMTP id t28so28480486lje.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 12:31:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=qcL3LovIaG2I+4/Ya4EZq8QuwXXlyROXKp2x+863zag=;
- b=bxDHW8OFGKYh0iChgAPve01fDS61WHbwQNju+rrB0FSCA+XHKytTf+UIw0WXhxeDH8
- IH2MQR1ydnwuDrKJB/yeqqg3tKgrXHMbBYNpTCRDxyW3+GzIub5F1P036SSsx1keDjsN
- 2T3AuKSXyI6IoAG1MAMqr0UdfxvVcDD+K3p6RsKKUHEEurWWIh5lRqZZuiuVCe0e2dsQ
- PyCLFDKcwCmNCTb17Ba+ZU2xm+QBUBwpxAocdg2IIHvMXB1hMQqChTRc0Ceyd08nr1HU
- 6v3l0BlgbcImFhLdwzi9fcf1BFH9uH+IslFAQvgUeSxv8aYQpoVcZwNHz2Qg3Px+RugR
- Bs6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=qcL3LovIaG2I+4/Ya4EZq8QuwXXlyROXKp2x+863zag=;
- b=FpWAD4gLrLImM6bN0jox0U6+fmoNRfQiUJJ9Jza8sJZeLTnt37XBgQAHYWZr322V3X
- 38hfMDOGfqwE5mFDvazjZnZ91sFcfaXlydmvwTCwdYydiSO/OQEBIRY5kR/Z8+mPtxyw
- QpNQaqpACwWrDAQi/Cwh4wfCl7Cpn7uZQ7s/RdxnjyovWtW32RlXGb6Wy1Un7w/X2U4x
- aSyXMJvvuD5hMHbtJVkIHxS8jUmhM7xuvobtg8K8UB06Ao5lDeAhp/ONdwByrTWXQEET
- eIuoNs10bw+B9dSsi5oC+xufzVlIKnD7JSZ+NFOgl8m2SqWuNwGHlcmi2CeCgBcFYIeK
- JfIQ==
-X-Gm-Message-State: APjAAAXdHy2XSesN9j+qA/G5q+jsOYcKNGLs6F5k1ZrXMbqDunbL792P
- +ykRdtCljkq0EP93b5DPD3g=
-X-Google-Smtp-Source: APXvYqyVZBlbCBK1Y7Pv7LjJuRnTwXIED6u/+IBJTZFH9W7ohhUCtmgd+v2B/Rpb3qJcXdxW/jwBUw==
-X-Received: by 2002:a2e:870f:: with SMTP id m15mr25339251lji.223.1563478289408; 
- Thu, 18 Jul 2019 12:31:29 -0700 (PDT)
-Received: from ul001888.eu.tieto.com ([91.90.160.140])
- by smtp.gmail.com with ESMTPSA id x137sm4124120lff.23.2019.07.18.12.31.28
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Thu, 18 Jul 2019 12:31:28 -0700 (PDT)
-From: Vasyl Gomonovych <gomonovych@gmail.com>
-To: tyreld@linux.ibm.com, benh@kernel.crashing.org, paulus@samba.org,
- mpe@ellerman.id.au, jejb@linux.ibm.com, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] scsi: ibmvscsi: remove casting dma_alloc_coherent
-Date: Thu, 18 Jul 2019 21:31:12 +0200
-Message-Id: <20190718193112.17709-1-gomonovych@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qPk66Xm6zDqdP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 05:45:18 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6IJi7IK092753; Thu, 18 Jul 2019 15:44:58 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ttxs8rye1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jul 2019 15:44:58 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6IJinwF099302;
+ Thu, 18 Jul 2019 15:44:57 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ttxs8ryc6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jul 2019 15:44:57 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6IJhquN009613;
+ Thu, 18 Jul 2019 19:44:56 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04dal.us.ibm.com with ESMTP id 2trtmrj0u3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jul 2019 19:44:56 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6IJis3C60424544
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Jul 2019 19:44:54 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76B66BE056;
+ Thu, 18 Jul 2019 19:44:54 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1210BE051;
+ Thu, 18 Jul 2019 19:44:49 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.186.82])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 18 Jul 2019 19:44:49 +0000 (GMT)
+References: <20190718032858.28744-1-bauerman@linux.ibm.com>
+ <680bb92e-66eb-8959-88a5-3447a6a282c8@amd.com>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: "Lendacky\, Thomas" <Thomas.Lendacky@amd.com>
+Subject: Re: [PATCH v3 0/6] Remove x86-specific code from generic headers
+In-reply-to: <680bb92e-66eb-8959-88a5-3447a6a282c8@amd.com>
+Date: Thu, 18 Jul 2019 16:44:47 -0300
+Message-ID: <87a7db3z68.fsf@morokweng.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-18_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907180202
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,33 +90,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasyl Gomonovych <gomonovych@gmail.com>, linux-kernel@vger.kernel.org
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, "x86@kernel.org" <x86@kernel.org>,
+ Ram Pai <linuxram@us.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
+ "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Thomas
+ Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix allocation style
-Generated by:  alloc_cast.cocci
 
-Signed-off-by: Vasyl Gomonovych <gomonovych@gmail.com>
----
- drivers/scsi/ibmvscsi/ibmvscsi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Lendacky, Thomas <Thomas.Lendacky@amd.com> writes:
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index 7f66a7783209..7e9b3e409851 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -715,8 +715,7 @@ static int map_sg_data(struct scsi_cmnd *cmd,
- 
- 	/* get indirect table */
- 	if (!evt_struct->ext_list) {
--		evt_struct->ext_list = (struct srp_direct_buf *)
--			dma_alloc_coherent(dev,
-+		evt_struct->ext_list = dma_alloc_coherent(dev,
- 					   SG_ALL * sizeof(struct srp_direct_buf),
- 					   &evt_struct->ext_list_token, 0);
- 		if (!evt_struct->ext_list) {
+> On 7/17/19 10:28 PM, Thiago Jung Bauermann wrote:
+>> Hello,
+>> 
+>> This version is mostly about splitting up patch 2/3 into three separate
+>> patches, as suggested by Christoph Hellwig. Two other changes are a fix in
+>> patch 1 which wasn't selecting ARCH_HAS_MEM_ENCRYPT for s390 spotted by
+>> Janani and removal of sme_active and sev_active symbol exports as suggested
+>> by Christoph Hellwig.
+>> 
+>> These patches are applied on top of today's dma-mapping/for-next.
+>> 
+>> I don't have a way to test SME, SEV, nor s390's PEF so the patches have only
+>> been build tested.
+>
+> I'll try and get this tested quickly to be sure everything works for SME
+> and SEV.
+
+Thanks! And thanks for reviewing the patches.
+
 -- 
-2.17.1
-
+Thiago Jung Bauermann
+IBM Linux Technology Center
