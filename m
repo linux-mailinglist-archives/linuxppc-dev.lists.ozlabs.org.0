@@ -1,63 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D836E628
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:14:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24066E5A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 14:27:43 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qqyg3lFBzDqk5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 22:27:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qs140QlQzDqwt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 23:14:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+0127b854950d050a2cef+5808+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (helo)
+ smtp.helo=nam02-cy1-obe.outbound.protection.outlook.com
+ (client-ip=40.107.76.47; helo=nam02-cy1-obe.outbound.protection.outlook.com;
+ envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="Shq/x+VY"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amdcloud.onmicrosoft.com
+ header.i=@amdcloud.onmicrosoft.com header.b="ZVFR7r7S"; 
+ dkim-atps=neutral
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com
+ (mail-eopbgr760047.outbound.protection.outlook.com [40.107.76.47])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qqw21hyTzDq62
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 22:25:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Q886d7bl8lEXts4AHk4AB53sEAoQOKXk7yVHesZf6nQ=; b=Shq/x+VYKAn05ox1V2N5RXTEZ
- n9TqjqIdJcyhbnAbWUtjwKo/2lnYqiZJUmcz2hl7DEgnEcZymxcsEIZlT/rEhfea/JGGQnoKECRZT
- PX4FcLE+VSoI1KyLdEWKwwTgybSXWWLFUoj/R9oCGAxjVnbLjeO1BT2SereCkz7WUXvdlQrrGynyJ
- 45LFxpCD8uchfoKKHpVs2KPjp0TNIFcTDtoDhU/Qs6rgYphQ2ho7fGOrxCC0/ruZ8CtO2R748kG1Q
- OuBXhikezQudHNN4bQUOpQMhr5bqbgc9/UeZzSBMfeA99h6hGTeeqhQIQdiaIyZI9/ke7pYb4G1be
- Llw42VIvA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hoRws-00064o-Lg; Fri, 19 Jul 2019 12:25:18 +0000
-Date: Fri, 19 Jul 2019 05:25:18 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: question on "powerpc/pseries/dma: Allow SWIOTLB"
-Message-ID: <20190719122518.GA18682@infradead.org>
-References: <20190719071014.GA1922@infradead.org>
- <0f969485-a3fe-4436-a448-5f4c4f875cb2@ozlabs.ru>
- <20190719075348.GA2892@infradead.org>
- <33ba562c-1a87-58e2-4105-520834d5b969@ozlabs.ru>
- <20190719080532.GA3861@infradead.org>
- <14c9591a-5c8d-12a5-ed25-b7a41e0b1ad7@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qryg15q7zDqst
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 23:12:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z+R4EvSfFC6oIOg0I57t2z+Xhzj+CCwoBxHdt+rsD9fjHnm5T4LwOs+3VZOvNdh+wlgvn/Ms+jx2afoMHU4gy2cD6amngRTsC4xyW9N9e8SsUGRssQSqCY7OQj5YrZ3XipDC+WRm7AAl60zuMjJH6ogD/1PzI30+4XE+QVAgVe42B7wup1WyXQ46ZB8NdqKpWcCQBFSa3tkb1bemtn6glYF8mKtwjicOeU3IvZ8JT4KieyFEexsspBZoG01KsRUC9nHTpFqSve8PGgbEhFiM/pvKjZzKXfvD65Sjd6jadJ5zqN5kwzMvCWJVooRF1HKU0en3B4Y/fMc2lA4sEcFsBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ggUqI1mtPCK2vMkfn/mmHXNkd5CgzlWib7SrLAVBYn4=;
+ b=YsYmOwy+XGrf9f/u2ggKDbZK6oA9I/0x5F4oWIqig3UTRrN1TucnYbiZx582cO99yrUXWRTbXEkBjWRjmf18ird41I4iZ1FHlbtclb7r5ErLzSA0WcDtIVLkUz4IpGPilqVdSUmpAfz3gWEWZWd/AoX0VXKc2bMbvzpoIDAfqOIlqjskFS9LK4ySx7OVb8pnhfggiYBLSHSiYjjRbWxvrcbyy/hWIS2AWlDogEzzgTuM3O4pCuPHyfxNGgqPYqiW9J6GauKX8m5upvwnJJpOoUcW0NFh2ydp5sWYDJfXpH5Fz8E63suVxaI2j/FyLaeeV0djuiNfuOv0Ku49r3pKNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=amd.com;dmarc=pass action=none header.from=amd.com;dkim=pass
+ header.d=amd.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ggUqI1mtPCK2vMkfn/mmHXNkd5CgzlWib7SrLAVBYn4=;
+ b=ZVFR7r7S6LbywOS+XXr/Kv6FMk4sAJRpvuIwl+1cAp8qzyk9s4PB9xZRGleFVB1JrdcHqKkCFiNw1uzTMheItotNXoaWuz5V79ki2QZ5fjLGpQOlMutMMGfCdRUD+YSOYt485wD9AHBzSJZpHp/YZWXatn3ohEvQOZylS1O5QVI=
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com (20.179.104.150) by
+ DM6PR12MB3019.namprd12.prod.outlook.com (20.178.30.12) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2094.12; Fri, 19 Jul 2019 13:12:34 +0000
+Received: from DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::9c3d:8593:906c:e4f7]) by DM6PR12MB3163.namprd12.prod.outlook.com
+ ([fe80::9c3d:8593:906c:e4f7%6]) with mapi id 15.20.2073.012; Fri, 19 Jul 2019
+ 13:12:34 +0000
+From: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Subject: Re: [PATCH v3 0/6] Remove x86-specific code from generic headers
+Thread-Topic: [PATCH v3 0/6] Remove x86-specific code from generic headers
+Thread-Index: AQHVPRj/oX9x6en7K0GjSSUSyjk8U6bQU/MAgAB0XYCAASS5gA==
+Date: Fri, 19 Jul 2019 13:12:33 +0000
+Message-ID: <879a196a-1d92-931d-88f4-6ce17a09cf20@amd.com>
+References: <20190718032858.28744-1-bauerman@linux.ibm.com>
+ <680bb92e-66eb-8959-88a5-3447a6a282c8@amd.com>
+ <87a7db3z68.fsf@morokweng.localdomain>
+In-Reply-To: <87a7db3z68.fsf@morokweng.localdomain>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SN6PR04CA0004.namprd04.prod.outlook.com
+ (2603:10b6:805:3e::17) To DM6PR12MB3163.namprd12.prod.outlook.com
+ (2603:10b6:5:182::22)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Thomas.Lendacky@amd.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [165.204.84.11]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a3b2d442-bed0-474d-cc2b-08d70c4ac2f6
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:DM6PR12MB3019; 
+x-ms-traffictypediagnostic: DM6PR12MB3019:
+x-microsoft-antispam-prvs: <DM6PR12MB3019427DB838CD628D02CA71ECCB0@DM6PR12MB3019.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 01039C93E4
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(136003)(396003)(366004)(39860400002)(346002)(189003)(199004)(102836004)(53936002)(52116002)(7736002)(229853002)(256004)(6436002)(31696002)(25786009)(7416002)(8936002)(68736007)(6506007)(53546011)(305945005)(6916009)(6486002)(386003)(186003)(31686004)(486006)(71200400001)(71190400001)(2906002)(478600001)(446003)(14454004)(5660300002)(6512007)(4326008)(76176011)(54906003)(81156014)(476003)(26005)(2616005)(66066001)(6246003)(36756003)(8676002)(3846002)(6116002)(316002)(64756008)(66446008)(81166006)(66946007)(11346002)(66556008)(99286004)(86362001)(66476007)(4744005)(41533002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:DM6PR12MB3019;
+ H:DM6PR12MB3163.namprd12.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: F+z10TAX7b2fjtuBQEJL/X8dKfTh3kpLJ9l2EFFTfGUpWQHv3pKi923NSa4WHX3bZUDw7uVBjpSbx5TWXFEMqHG85J5aQOhUfgGwLGGFUa5p0uTmHKFg2e7fQ1tLgzphhqT9M7A7P4Lbi6n7qpFOMh/91YWDTjI0TOJ2cTR+tsAAVNPOeyNH+SkzZnb7gzI/YwCi7X4PJy/k1QeFqUBtnxsi/prOkx6wcGurCvrIUusYqQGDuu9CUAI7jPK1mQzqrWjeIu5q9NF24AGyo03Uswm8UOS8Sjzk1eRLwW32/7PnqBBx1/zcZrPBZAEEVANxJaQqXz3JoLueq4RNAdMoXQrq+mjiDov0v1Un7n2z/LFvw8rakuUggZfcvDrQDch9lC0rmF+bSS8FnX1g7LY+vaOUs2o0/pKyEVkZUo+/dY0=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E6763BDAFFDD7843AF08E64ECA218C71@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14c9591a-5c8d-12a5-ed25-b7a41e0b1ad7@ozlabs.ru>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3b2d442-bed0-474d-cc2b-08d70c4ac2f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2019 13:12:34.0158 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tlendack@amd.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,14 +112,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Hellwig <hch@infradead.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Mike Anderson <andmike@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, "x86@kernel.org" <x86@kernel.org>,
+ Ram Pai <linuxram@us.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
+ "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 19, 2019 at 06:23:59PM +1000, Alexey Kardashevskiy wrote:
-> It is getting there and I still do not see why "swiotlb=force" should not
-> work if chosed in the cmdline.
-
-Ok, makes sense.  But that means we also have the issue in a few
-other places..
+T24gNy8xOC8xOSAyOjQ0IFBNLCBUaGlhZ28gSnVuZyBCYXVlcm1hbm4gd3JvdGU6DQo+IA0KPiBM
+ZW5kYWNreSwgVGhvbWFzIDxUaG9tYXMuTGVuZGFja3lAYW1kLmNvbT4gd3JpdGVzOg0KPiANCj4+
+IE9uIDcvMTcvMTkgMTA6MjggUE0sIFRoaWFnbyBKdW5nIEJhdWVybWFubiB3cm90ZToNCj4+PiBI
+ZWxsbywNCj4+Pg0KPj4+IFRoaXMgdmVyc2lvbiBpcyBtb3N0bHkgYWJvdXQgc3BsaXR0aW5nIHVw
+IHBhdGNoIDIvMyBpbnRvIHRocmVlIHNlcGFyYXRlDQo+Pj4gcGF0Y2hlcywgYXMgc3VnZ2VzdGVk
+IGJ5IENocmlzdG9waCBIZWxsd2lnLiBUd28gb3RoZXIgY2hhbmdlcyBhcmUgYSBmaXggaW4NCj4+
+PiBwYXRjaCAxIHdoaWNoIHdhc24ndCBzZWxlY3RpbmcgQVJDSF9IQVNfTUVNX0VOQ1JZUFQgZm9y
+IHMzOTAgc3BvdHRlZCBieQ0KPj4+IEphbmFuaSBhbmQgcmVtb3ZhbCBvZiBzbWVfYWN0aXZlIGFu
+ZCBzZXZfYWN0aXZlIHN5bWJvbCBleHBvcnRzIGFzIHN1Z2dlc3RlZA0KPj4+IGJ5IENocmlzdG9w
+aCBIZWxsd2lnLg0KPj4+DQo+Pj4gVGhlc2UgcGF0Y2hlcyBhcmUgYXBwbGllZCBvbiB0b3Agb2Yg
+dG9kYXkncyBkbWEtbWFwcGluZy9mb3ItbmV4dC4NCj4+Pg0KPj4+IEkgZG9uJ3QgaGF2ZSBhIHdh
+eSB0byB0ZXN0IFNNRSwgU0VWLCBub3IgczM5MCdzIFBFRiBzbyB0aGUgcGF0Y2hlcyBoYXZlIG9u
+bHkNCj4+PiBiZWVuIGJ1aWxkIHRlc3RlZC4NCj4+DQo+PiBJJ2xsIHRyeSBhbmQgZ2V0IHRoaXMg
+dGVzdGVkIHF1aWNrbHkgdG8gYmUgc3VyZSBldmVyeXRoaW5nIHdvcmtzIGZvciBTTUUNCj4+IGFu
+ZCBTRVYuDQoNCkJ1aWx0IGFuZCB0ZXN0ZWQgYm90aCBTTUUgYW5kIFNFViBhbmQgZXZlcnl0aGlu
+ZyBhcHBlYXJzIHRvIGJlIHdvcmtpbmcNCndlbGwgKG5vdCBleHRlbnNpdmUgdGVzdGluZywgYnV0
+IHNob3VsZCBiZSBnb29kIGVub3VnaCkuDQoNClRoYW5rcywNClRvbQ0KDQo+IA0KPiBUaGFua3Mh
+IEFuZCB0aGFua3MgZm9yIHJldmlld2luZyB0aGUgcGF0Y2hlcy4NCj4gDQo=
