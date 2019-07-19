@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422F86E06E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EE56E071
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:06:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qf7V4cl5zDqRK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:04:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qf9d11FqzDqbr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:06:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="Fx4FeD9i"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qC2Ow/p8"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qctv5f3dzDqQY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:08:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qcvC4n5zzDqGg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:08:55 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D047D21872;
- Fri, 19 Jul 2019 04:08:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 11BCC2189D;
+ Fri, 19 Jul 2019 04:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563509317;
- bh=STJ7eoRUjKT6lWQmYtHhHf0Q6NbOBi3UBDB7Dc3P0JY=;
+ s=default; t=1563509333;
+ bh=oKyEFWzXcnPngXjKii1xyDGHrgSKFLMmkREyzqbzcxU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Fx4FeD9iNlEMvzkcVfxcYcXSgWHXqGh1cRsflAUoQN8xLxdAQMOnuYLb+BMSuiNG3
- CcKmqvhtGtioP46Ua4hcWo3b+CtE4q0ARlIgW5N6lfrqEdkFQIzxG0JRXgZWGYXixp
- qPHM81ikWmUUCZkzfbNySMKuDomWYc9Ik0XrEnTQ=
+ b=qC2Ow/p8cR2e4SXf2ZTUSI0GeY6HhqtBf8qBU9q2Boa+9HYAdAP20ueyPHfzw3anp
+ 9fMrdYgken7yE0vylNI5varWjhwUZYiHskWdhnzkzEaYaqooLff601hX7xBXBoRaIt
+ CGOpF9PpElDZAWeACVTbB1Uf5/Y07w46JLMKHzng=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 030/101] powerpc/pseries/mobility: prevent cpu
- hotplug during DT update
-Date: Fri, 19 Jul 2019 00:06:21 -0400
-Message-Id: <20190719040732.17285-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 038/101] powerpc/pci/of: Fix OF flags parsing for
+ 64bit BARs
+Date: Fri, 19 Jul 2019 00:06:29 -0400
+Message-Id: <20190719040732.17285-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
 References: <20190719040732.17285-1-sashal@kernel.org>
@@ -61,64 +61,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Shawn Anastasio <shawn@anastas.io>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-[ Upstream commit e59a175faa8df9d674247946f2a5a9c29c835725 ]
+[ Upstream commit df5be5be8735ef2ae80d5ae1f2453cd81a035c4b ]
 
-CPU online/offline code paths are sensitive to parts of the device
-tree (various cpu node properties, cache nodes) that can be changed as
-a result of a migration.
+When the firmware does PCI BAR resource allocation, it passes the assigned
+addresses and flags (prefetch/64bit/...) via the "reg" property of
+a PCI device device tree node so the kernel does not need to do
+resource allocation.
 
-Prevent CPU hotplug while the device tree potentially is inconsistent.
+The flags are stored in resource::flags - the lower byte stores
+PCI_BASE_ADDRESS_SPACE/etc bits and the other bytes are IORESOURCE_IO/etc.
+Some flags from PCI_BASE_ADDRESS_xxx and IORESOURCE_xxx are duplicated,
+such as PCI_BASE_ADDRESS_MEM_PREFETCH/PCI_BASE_ADDRESS_MEM_TYPE_64/etc.
+When parsing the "reg" property, we copy the prefetch flag but we skip
+on PCI_BASE_ADDRESS_MEM_TYPE_64 which leaves the flags out of sync.
 
-Fixes: 410bccf97881 ("powerpc/pseries: Partition migration in the kernel")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+The missing IORESOURCE_MEM_64 flag comes into play under 2 conditions:
+1. we remove PCI_PROBE_ONLY for pseries (by hacking pSeries_setup_arch()
+or by passing "/chosen/linux,pci-probe-only");
+2. we request resource alignment (by passing pci=resource_alignment=
+via the kernel cmd line to request PAGE_SIZE alignment or defining
+ppc_md.pcibios_default_alignment which returns anything but 0). Note that
+the alignment requests are ignored if PCI_PROBE_ONLY is enabled.
+
+With 1) and 2), the generic PCI code in the kernel unconditionally
+decides to:
+- reassign the BARs in pci_specified_resource_alignment() (works fine)
+- write new BARs to the device - this fails for 64bit BARs as the generic
+code looks at IORESOURCE_MEM_64 (not set) and writes only lower 32bits
+of the BAR and leaves the upper 32bit unmodified which breaks BAR mapping
+in the hypervisor.
+
+This fixes the issue by copying the flag. This is useful if we want to
+enforce certain BAR alignment per platform as handling subpage sized BARs
+is proven to cause problems with hotplug (SLOF already aligns BARs to 64k).
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Reviewed-by: Sam Bobroff <sbobroff@linux.ibm.com>
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+Reviewed-by: Shawn Anastasio <shawn@anastas.io>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/mobility.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/powerpc/kernel/pci_of_scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index f0e30dc94988..7b60fcf04dc4 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -9,6 +9,7 @@
-  * 2 as published by the Free Software Foundation.
-  */
- 
-+#include <linux/cpu.h>
- #include <linux/kernel.h>
- #include <linux/kobject.h>
- #include <linux/smp.h>
-@@ -344,11 +345,19 @@ void post_mobility_fixup(void)
- 	if (rc)
- 		printk(KERN_ERR "Post-mobility activate-fw failed: %d\n", rc);
- 
-+	/*
-+	 * We don't want CPUs to go online/offline while the device
-+	 * tree is being updated.
-+	 */
-+	cpus_read_lock();
-+
- 	rc = pseries_devicetree_update(MIGRATION_SCOPE);
- 	if (rc)
- 		printk(KERN_ERR "Post-mobility device tree update "
- 			"failed: %d\n", rc);
- 
-+	cpus_read_unlock();
-+
- 	/* Possibly switch to a new RFI flush type */
- 	pseries_setup_rfi_flush();
- 
+diff --git a/arch/powerpc/kernel/pci_of_scan.c b/arch/powerpc/kernel/pci_of_scan.c
+index 98f04725def7..c101b321dece 100644
+--- a/arch/powerpc/kernel/pci_of_scan.c
++++ b/arch/powerpc/kernel/pci_of_scan.c
+@@ -45,6 +45,8 @@ unsigned int pci_parse_of_flags(u32 addr0, int bridge)
+ 	if (addr0 & 0x02000000) {
+ 		flags = IORESOURCE_MEM | PCI_BASE_ADDRESS_SPACE_MEMORY;
+ 		flags |= (addr0 >> 22) & PCI_BASE_ADDRESS_MEM_TYPE_64;
++		if (flags & PCI_BASE_ADDRESS_MEM_TYPE_64)
++			flags |= IORESOURCE_MEM_64;
+ 		flags |= (addr0 >> 28) & PCI_BASE_ADDRESS_MEM_TYPE_1M;
+ 		if (addr0 & 0x40000000)
+ 			flags |= IORESOURCE_PREFETCH
 -- 
 2.20.1
 
