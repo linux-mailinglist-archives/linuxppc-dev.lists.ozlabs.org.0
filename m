@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264356E43D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 12:26:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qnHF6p0BzDqsy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 20:26:49 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 525216E45D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 12:31:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qnNs1LCqzDqsD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 20:31:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=brauner.io
- (client-ip=2a00:1450:4864:20::342; helo=mail-wm1-x342.google.com;
+ (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
  envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=brauner.io
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="MZ2aiez9"; 
+ secure) header.d=brauner.io header.i=@brauner.io header.b="JAjsDhcT"; 
  dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qnFP5m1HzDqpq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 20:25:11 +1000 (AEST)
-Received: by mail-wm1-x342.google.com with SMTP id s3so28279752wms.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 03:25:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qnLm5JMnzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 20:29:52 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id 207so28297242wma.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 03:29:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=RE4XO5hCXlohQ4XzzvHFXjCbWVs/5lisfj2a/CobVwA=;
- b=MZ2aiez9s7BuxY5oOnftVgW6/0s5yYSqpSbqe/ZNv3lt5LuholHgjz0i39qo8Pb0+s
- dUHj8OzB1751pSlS+bD850Lcgh+d8aH6A7FbvldJGeqflGt9mdQ3K9seLKwicoLqwQ+d
- tz1i1dKD8ZtjTj6HOhBQwoUqx7yeEfPggSJpjIPNpaWe7qAEjLIhf5XCP08LbyDVcqeT
- nhiijiJFqkzAOKLfKEPbmncCRHEmoTQk78GjVjUIlEohS6z2VaOxyaskDx/c9UFuVNsS
- 76v0yrZB3v8iiyYGR6QerPQlNbPj5wCdUlCwXoY99RFcl3RFg/Y9ivAj9zDavuf71YiC
- eiQg==
+ bh=/54Z+i2NAAKKYqTyaHCknB2yONX433P+mrrcxDIdMKQ=;
+ b=JAjsDhcTKFikvYch2sdYf3M1YIU4lD8gtr6ULD+m66RVXVuqlNpAWJ5aCmwhzsJqfu
+ NYMs/ngfnZnIR8qK+5gnlfw/LTN1DoKaojW4kG3ixmkDG7tw9PX3Gi1H6Z3rJyqaYFRY
+ gtdhUxjOR3aQahCtFDINrBG/OSP8pnsgZFupRZsDuzUdLCVJo0FcPvznY5c5cU461qY8
+ z6fVQ/+Mbzs3h37QWljm/AYaqqO87pyj8pyd6RorqrMiW7iIeyvakf6A7A7GAM2bH4rw
+ cbSgv5bCTz5aSE0toZ8ZOUCkVQ0c1BjSzCzQ1F1IbaB+eNv/4FBgS3Np35nlQBPDWp48
+ Qe+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=RE4XO5hCXlohQ4XzzvHFXjCbWVs/5lisfj2a/CobVwA=;
- b=emSAK6o6/tdb4wl+D/f6wlWYAz7wfybg/5n+zPCJiSUIyGzbSCMzFWip8e295+zMEl
- iBhzBQgaocsMMy9KqRutaORAUx6Wn/7wO1tXdgJbWMJ6J3blJ6GAkEOBfkWdrFj+GJAf
- Hld7b++lZtJDrZajW2JmUBPAyuJ4es029P3ofQiLTSbgYiVPpwBuYCqsqTn6DCJoL4EZ
- sbcDmG8UmHpTSucffFASAfY7Eoy+Oenvfl0g9P+W4adkgdu8tLGfpIInbhUX8BDkG85c
- D/mtw8Qjgf2vdqdhMpYxxIQvFmGh5mQhuuiGZJYEKj7ffnobRFR9Jh0Nbhkg6l9kzfk4
- KPrA==
-X-Gm-Message-State: APjAAAU/YY+LJawkRoC3g/wXyzIk8eJdacV+sNLkS7+RHge4ce6f85bq
- KF0JL3ZzsiGATZw5bJvXSOc=
-X-Google-Smtp-Source: APXvYqzFtX39u/LTTf9LpX1rQ8jjc8aXLaIGj170otP1O/m4fuBpUKB7NENA3hws+MMAj1mFVzZ+GQ==
-X-Received: by 2002:a7b:cbcb:: with SMTP id n11mr45928859wmi.146.1563531907454; 
- Fri, 19 Jul 2019 03:25:07 -0700 (PDT)
-Received: from brauner.io ([81.92.17.145])
- by smtp.gmail.com with ESMTPSA id x24sm30020307wmh.5.2019.07.19.03.25.05
+ bh=/54Z+i2NAAKKYqTyaHCknB2yONX433P+mrrcxDIdMKQ=;
+ b=FsVbhMb+CABZXhG5FV89Dr113fLHg8+fB7VzQVq4mMAXM2Bu/eEpoxcUV/bC7KZ2qs
+ dy2ThO/pbR6NnfsVd1jE651qhizEXOVlwECHzYjePYUUb+iwiHGbqH8rknBYJdy1Z3lN
+ eQ3hxNd2NJy8/uWfRcS2M8VXUbNCXoWzF/4nZgfwTFdwvnzJo6DjUAmxTAU9lRRg8m8I
+ lHMf99+d5vltKLunnjZo3EmOGK/hcUKBizF2CymxHkpQ0xPhkMOVCXyvnklJTARPNUb7
+ 7r0rbgRg6FlErY7agdnFqFytTEOfdzcb9jwem9YKoy33Dsu0yUUrJ+/9THns0FfRWKDa
+ imww==
+X-Gm-Message-State: APjAAAX+5cQ0TaIlCnYlO/dRdRSzLZ7bKVAjSLjsaVP+3ibQLAyJyMCY
+ nJbHqHEC1hutzuAGVydKWpE=
+X-Google-Smtp-Source: APXvYqynzSxRaiMvY03x+MCUOq/ut+wmSYg6CTggvreuOHjcm6imyyhYbJGXSWZ87v9KsAJECqBb6Q==
+X-Received: by 2002:a1c:c145:: with SMTP id r66mr47654238wmf.139.1563532189209; 
+ Fri, 19 Jul 2019 03:29:49 -0700 (PDT)
+Received: from brauner.io ([81.92.17.140])
+ by smtp.gmail.com with ESMTPSA id v4sm25167633wmg.22.2019.07.19.03.29.47
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 19 Jul 2019 03:25:06 -0700 (PDT)
-Date: Fri, 19 Jul 2019 12:25:04 +0200
+ Fri, 19 Jul 2019 03:29:49 -0700 (PDT)
+Date: Fri, 19 Jul 2019 12:29:41 +0200
 From: Christian Brauner <christian@brauner.io>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-Message-ID: <20190719102503.tm3ahvkh4rwykmws@brauner.io>
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
- <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
- <20190716130631.tohj4ub54md25dys@brauner.io>
- <874l3i8h0l.fsf@concordia.ellerman.id.au>
+To: "Dmitry V. Levin" <ldv@altlinux.org>
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+Message-ID: <20190719102932.274pvmxnrbjcc6gu@brauner.io>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
+ <CAK8P3a33rGhPDFfRBAQyLTMG_WoEgX_toDgWR2O7rSwxKsZG+w@mail.gmail.com>
+ <20190718161231.xcno272nvqpln3wj@yavin>
+ <CAK8P3a3MiYK4bJiA3G_m5H-TpfN5__--b+=szsJBhG7_it+NQg@mail.gmail.com>
+ <20190719021218.GB18022@altlinux.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <874l3i8h0l.fsf@concordia.ellerman.id.au>
+In-Reply-To: <20190719021218.GB18022@altlinux.org>
 User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,51 +84,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, arnd@arndb.de,
- linux-sh@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Vasily Gorbik <gor@linux.ibm.com>
+Cc: linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Tycho Andersen <tycho@tycho.ws>,
+ Aleksa Sarai <asarai@suse.de>, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Aleksa Sarai <cyphar@cyphar.com>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, David Drysdale <drysdale@google.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ "J. Bruce Fields" <bfields@fieldses.org>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Linux API <linux-api@vger.kernel.org>, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, alpha <linux-alpha@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 19, 2019 at 08:18:02PM +1000, Michael Ellerman wrote:
-> Christian Brauner <christian@brauner.io> writes:
-> > On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
-> >> I think Vasily already has a clone3 patch for s390x with 435. 
-> >
-> > A quick follow-up on this. Helge and Michael have asked whether there
-> > are any tests for clone3. Yes, there will be and I try to have them
-> > ready by the end of the this or next week for review. In the meantime I
-> > hope the following minimalistic test program that just verifies very
-> > very basic functionality (It's not pretty.) will help you test:
+On Fri, Jul 19, 2019 at 05:12:18AM +0300, Dmitry V. Levin wrote:
+> On Thu, Jul 18, 2019 at 11:29:50PM +0200, Arnd Bergmann wrote:
+> [...]
+> > 5. you get the same problem with seccomp and strace that
+> >    clone3() has -- these and others only track the register
+> >    arguments by default.
 > 
-> Hi Christian,
-> 
-> Thanks for the test.
-> 
-> This actually oopses on powerpc, it hits the BUG_ON in CHECK_FULL_REGS
-> in process.c around line 1633:
-> 
-> 	} else {
-> 		/* user thread */
-> 		struct pt_regs *regs = current_pt_regs();
-> 		CHECK_FULL_REGS(regs);
-> 		*childregs = *regs;
-> 		if (usp)
-> 
-> 
-> So I'll have to dig into how we fix that before we wire up clone3.
-> 
-> Turns out testing is good! :)
+> Just for the record, this is definitely not the case for strace:
+> it decodes arrays, structures, netlink messages, and so on by default.
 
-Indeed. I have a test-suite for clone3 in mind and I hope to have it
-ready by the end of next week. It's just always the finding the time
-part that is annoying. :)
+There sure is value in trying to design syscalls that can be handled
+nicely by seccomp but that shouldn't become a burden on designing
+extensible syscalls.
+I suggested a session for Ksummit where we can discuss if and how we can
+make seccomp more compatible with pointer-args in syscalls.
 
-Thanks for digging into this, Michael!
 Christian
