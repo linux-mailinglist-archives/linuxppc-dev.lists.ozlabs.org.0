@@ -1,49 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85BD6E1C5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 09:34:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qjSg2wjNzDqrq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:34:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BA46E1D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 09:38:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qjY85ffRzDqjp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:38:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qjQj4qyqzDqS9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 17:33:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=anastas.io
+ (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="txmGVyXS"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45qjQj2rh9z9s3Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 17:33:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1563521581;
- bh=zZQfdjcJH/hdrsr4OGa6Kd3ZRxGgdWOwTXQ1EaK5VVc=;
- h=Date:From:To:Subject:From;
- b=txmGVyXScTIM8uSqn8/ifypxfhzt2V6wDjety/FB0IvPEI1/fQlJAZ7DRfHuj9AuT
- PDfOPOYdJz/QLdrvm6pEJlJH3uYlwC93cRGhSqpBeYcpm1SlxXou29efIYViUJicVD
- xIrM9+Cx5BwMEK2tG2GGcIMYjMVtXNAaW6QKcVvQu+1fqVmKDts+Bpxs8mV1m2UCWQ
- syHXjBhu0ZU2kxDEo+tikDniwp/I2Bnrf/DphrWyj4QsoY3Y8N9I/omQzsn+v5reEb
- IGejXmUJSHqJbr5ubq/l2fkwYuSH0y55j936oUe/AY0pOEzWClhqBDBu8kUKbXbQAp
- 8kQC9k02T7aZg==
-Date: Fri, 19 Jul 2019 17:32:45 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: ppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: List etiquette
-Message-ID: <20190719173245.324739e4@canb.auug.org.au>
+ unprotected) header.d=anastas.io header.i=@anastas.io header.b="SEbNU/1/"; 
+ dkim-atps=neutral
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qjW266h7zDqjT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 17:36:46 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by alpha.anastas.io (Postfix) with ESMTPSA id 02BC77F92F;
+ Fri, 19 Jul 2019 02:36:43 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1563521804; bh=DOeY01lxwZti9woJpEBA+lAJ08+UzoDDuA49gXiGLkc=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=SEbNU/1/gVAOEAoqOo2wZdU0O7c1WarNt7PQrJo9lyC8bPBP/YEB05TZhkfG9Eg9l
+ qg1+1iScjT01Bu0kTYRfe8EwSUqsBh0kacfyB/8bUvIfbWD+UQVF5YwAmQOIGc7oI7
+ oKDCJkKBELCl38is+tIVTX6QoyFIYUZNhr0PopyyzBYD+Y2LKGuJ39sSCpTJbAUYs4
+ T+JBc9Nzw1YrhrvW+WcrJh7HtUoR+tcPhqTjMvYSfHtcm2+PSPk/0KGOVaK4Gsq39v
+ ZVtKc2c5hwfIidblCCzMxjpxrLRViP5/AJfWVEWWw2XyvuT8g0a7LOSDcWZZgueoiN
+ D7LZXmqSPUWYQ==
+Subject: Re: [PATCH] powerpc/dma: Fix invalid DMA mmap behavior
+To: Christoph Hellwig <hch@lst.de>
+References: <20190717235437.12908-1-shawn@anastas.io>
+ <8b6963ac-521a-5752-2cfb-bcd87cad9dc4@ozlabs.ru>
+ <f9753335-b62c-67b4-84d7-7b67fe1b64ca@anastas.io>
+ <CAOSf1CGA_fDH7aAqRkc4maJUByaX7adGcjyt3cj4KFsMJNnocA@mail.gmail.com>
+ <20190718084934.GF24562@lst.de> <20190718095200.GA25744@lst.de>
+ <2da4fafe-93f2-4bf1-62e1-180a3ac800fa@anastas.io>
+ <20190719070659.GA19555@lst.de>
+From: Shawn Anastasio <shawn@anastas.io>
+Message-ID: <3dd3bf62-3881-51f1-bbb0-e8ee515bb3d8@anastas.io>
+Date: Fri, 19 Jul 2019 02:36:42 -0500
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/vt.8lZWA.vHebVa1RR8A4VH";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <20190719070659.GA19555@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,43 +65,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ iommu@lists.linux-foundation.org, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/vt.8lZWA.vHebVa1RR8A4VH
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 7/19/19 2:06 AM, Christoph Hellwig wrote:
+ > What is inherently architecture specific here over the fact that
+ > the pgprot_* expand to architecture specific bits?
 
-Hi all,
+What I meant is that different architectures seem to have different
+criteria for setting the different pgprot_ bits. i.e. ppc checks
+for cache coherency, arm64 checks for cache coherency and
+writecombine, mips just checks for writecombine, etc.
 
-Just a short note to mention a couple of things:
+That being said, I'm no expert here and there is probably some behavior
+here that would make for a much more sane default.
 
-	- please do *not* post html formatted emails.  I may start just
-rejecting them soon.
+ > I'd rather not create boilerplate code where we don't have to it. Note
+ > that arch_dma_mmap_pgprot is a little misnamed now, as we also use it
+ > for the in-kernel remapping in kernel/dma/remap.c, which I'm slowly
+ > switching a lot of architectures to.  powerpc will follow soon once
+ > I get the ppc44x that was given to me to actually boot with a recent
+ > kernel (not that I've tried much so far).
 
-	- please cut down the quoting in replies to what is needed for
-context.
+Fair enough. I didn't realize that most of the other architectures
+don't use the common code anyways as you mention below.
 
-Thanks
---=20
-Cheers,
-Stephen Rothwell
+ > Every arch except for arm32 now uses dma direct for the direct mapping,
+ > and thus the common code without the indeed odd default.  I also have
+ > a series to remove the default fallback, which is inherently a bad idea:
+ >
+ > 
+http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-no-defaults
 
---Sig_/vt.8lZWA.vHebVa1RR8A4VH
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Awesome. This is great to hear.
 
------BEGIN PGP SIGNATURE-----
+ > I think your patch that started this thread is fine for 5.3 and -stable:
+ >
+ > Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0xch0ACgkQAVBC80lX
-0Gyj7gf6ApkhFHeLyivGI0XElee4PScZeOAIl0l5rPUTD4TDssCDL4LTlBKu+VfA
-t0QllSChwvn/ebMy8o8owCAeadz1rXddSjl3MzsMI+CWeN4onP61zakOKPLXZoHY
-2awG+5qUSTYjlPNEOIvHmPLomHh5faFHxjpJEAfTOBeopnmJkC/P8CJaRE2yrRLw
-bj5+bbtKCIYn0y2h12rPvPdDTgULzejDI0T92j6IgNhegx3s4VXZES16SHaxUJR8
-OL/4Z4UPv3kblMkTZCOf6GrjgQEwJ6vBckNke4xiMAM4vnGCrVbvUl5XGaEidrBp
-cjE/40eIw0s7C6ogRbG5ZDuVdgl3Ug==
-=Yhnp
------END PGP SIGNATURE-----
+Thanks!
 
---Sig_/vt.8lZWA.vHebVa1RR8A4VH--
+ > But going forward I'd rather have a sane default.
+
+Agreed.
