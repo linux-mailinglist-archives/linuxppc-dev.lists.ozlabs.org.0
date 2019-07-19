@@ -1,90 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5366D7F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 02:50:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qXVL71MHzDqPb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 10:50:34 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D196D8BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 04:07:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qZCZ0j2XzDqgq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 12:07:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=altlinux.org
+ (client-ip=194.107.17.57; helo=vmicros1.altlinux.org;
+ envelope-from=ldv@altlinux.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qXSJ48XKzDqMb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 10:48:47 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6J0lUgT003834
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 20:48:44 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tu1rmudyw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2019 20:48:44 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Fri, 19 Jul 2019 01:48:43 +0100
-Received: from b01cxnp22033.gho.pok.ibm.com (9.57.198.23)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 19 Jul 2019 01:48:41 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6J0meCY49283430
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jul 2019 00:48:40 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DA68112063;
- Fri, 19 Jul 2019 00:48:40 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96AED11206E;
- Fri, 19 Jul 2019 00:48:37 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.186.82])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Fri, 19 Jul 2019 00:48:37 +0000 (GMT)
-References: <20190713060023.8479-1-bauerman@linux.ibm.com>
- <20190713060023.8479-4-bauerman@linux.ibm.com>
- <70f8097f-7222-fe18-78b4-9372c21bfc9d@ozlabs.ru>
- <20190718195850.GU20882@gate.crashing.org>
- <875znz3ud7.fsf@morokweng.localdomain>
- <f4cba627-8c40-ce95-0ede-b01edf3546dc@ozlabs.ru>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH v2 03/13] powerpc/prom_init: Add the ESM call to prom_init
-In-reply-to: <f4cba627-8c40-ce95-0ede-b01edf3546dc@ozlabs.ru>
-Date: Thu, 18 Jul 2019 21:48:34 -0300
+ dmarc=none (p=none dis=none) header.from=altlinux.org
+X-Greylist: delayed 402 seconds by postgrey-1.36 at bilbo;
+ Fri, 19 Jul 2019 12:06:22 AEST
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45qZ9p3pMZzDqSZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 12:06:22 +1000 (AEST)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+ by vmicros1.altlinux.org (Postfix) with ESMTP id 492A272CA65;
+ Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+ id 3B39E7CC774; Fri, 19 Jul 2019 04:59:34 +0300 (MSK)
+Date: Fri, 19 Jul 2019 04:59:34 +0300
+From: "Dmitry V. Levin" <ldv@altlinux.org>
+To: Aleksa Sarai <cyphar@cyphar.com>
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+Message-ID: <20190719015933.GA18022@altlinux.org>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19071900-0060-0000-0000-00000362F0AB
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011455; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01234164; UDB=6.00650361; IPR=6.01015491; 
- MB=3.00027788; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-19 00:48:43
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071900-0061-0000-0000-00004A3500A0
-Message-Id: <874l3i4zod.fsf@morokweng.localdomain>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-19_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=18 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=730 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907190005
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
+Content-Disposition: inline
+In-Reply-To: <20190706145737.5299-9-cyphar@cyphar.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,48 +48,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Mike Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- linux-kernel@vger.kernel.org, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>, linux-kselftest@vger.kernel.org,
+ sparclinux@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, David Drysdale <drysdale@google.com>,
+ Christian Brauner <christian@brauner.io>,
+ "J. Bruce Fields" <bfields@fieldses.org>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ Jeff Layton <jlayton@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+--huq684BweRXVnRxX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On 19/07/2019 07:28, Thiago Jung Bauermann wrote:
->>
->> Hello Segher,
->>
->> Thanks for your review and suggestions!
->>
->> Segher Boessenkool <segher@kernel.crashing.org> writes:
->>
->>> (Sorry to hijack your reply).
->>>
->>> On Thu, Jul 18, 2019 at 06:11:48PM +1000, Alexey Kardashevskiy wrote:
->>>> On 13/07/2019 16:00, Thiago Jung Bauermann wrote:
->>>>> From: Ram Pai <linuxram@us.ibm.com>
->>>>> +static int enter_secure_mode(unsigned long kbase, unsigned long fdt)
->>>>> +{
->>>>> +	register uint64_t func asm("r3") = UV_ESM;
->>>>> +	register uint64_t arg1 asm("r4") = (uint64_t)kbase;
->>>>> +	register uint64_t arg2 asm("r5") = (uint64_t)fdt;
->>>>
->>>> What does UV do with kbase and fdt precisely? Few words in the commit
->>>> log will do.
->
->
-> What about this one? :)
+On Sun, Jul 07, 2019 at 12:57:35AM +1000, Aleksa Sarai wrote:
+[...]
+> +/**
+> + * Arguments for how openat2(2) should open the target path. If @extra i=
+s zero,
+> + * then openat2(2) is identical to openat(2).
+> + *
+> + * @flags: O_* flags (unknown flags ignored).
 
-Sorry, I don't have an elaborate answer yet. The non-elaborate answer is
-that the ultravisor uses the kbase and fdt as part of integrity checking
-of the secure guest.
+What was the rationale for implementing this semantics?
+Ignoring unknown flags makes potential extension of this new interface
+problematic.  This has bitten us many times already, so ...
 
---
-Thiago Jung Bauermann
-IBM Linux Technology Center
+> + * @mode: O_CREAT file mode (ignored otherwise).
+> + * @upgrade_mask: restrict how the O_PATH may be re-opened (ignored othe=
+rwise).
+> + * @resolve: RESOLVE_* flags (-EINVAL on unknown flags).
 
+=2E.. could you consider implementing this (-EINVAL on unknown flags) seman=
+tics
+for @flags as well, please?
+
+
+--=20
+ldv
+
+--huq684BweRXVnRxX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJdMSQFAAoJEAVFT+BVnCUIuaAP/3pgUoQA466F6S8jYN6F/icf
+oiQHExdeO3ruxRdNl1gi7af0RxQCiprfNIoD7KQyWSnyUyUm0Cdd7PzpEKXuumQi
+pN6ZTEO2bQeSs7AjCNpLrTgKcuOo/pZbNN7InAHKLB7k2xKKeBbdaVypgGiAEDjT
+JK+4s+8JcJoSg+d69G428QP2qpoHyIZJ5437gYv5rJbL9BRihwwvWF2OQ4TXrd6I
+YnyxPFRRZnfiN3HNbNlJjtMgt5g0AisLuahpJaDMq0NaXnBOosDm9jBAhVOX0CSB
+LUNByCygXeBKv9VuyrO4KnLXS3ORGfK38SDGqz3kFYy1quNRAGKgOXPnGXfb2xbZ
+bRCqyuxkSUOIfLKA6q9jnqO9RoUeOtLglFUT/5JpixTaoxSFN3Y6GlJFcnw+cVm+
+oWH4A/IoST68FCfbOMff976O36pakuWbsVGVsdv384OEHfWaf7c10P9EQc3fhgF3
+JoeY5ht9R1k8HWNOlCuCeHfTwSyLG3T/TROuZYtz65RdPemuuPSPERr+GzOtO9Fn
++wQmK99JlE3nhoyv5CmtqCmMQWhYZedqjbjs5wIq7tjalerg6TakNMmhzTGz5l8T
+i+3EfyMHhEtwq+2YNhdaPEmjfdBzyI3stxtEkURya0BnCgbYsP2mTIP8UbLGDqsY
+EJZiRtPRFfVoePwqT8Ux
+=zLLc
+-----END PGP SIGNATURE-----
+
+--huq684BweRXVnRxX--
