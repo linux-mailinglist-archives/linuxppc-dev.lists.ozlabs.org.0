@@ -1,85 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7B36E0C5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:57:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E7B6E0C4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:55:18 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qgFv5PDxzDqTk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:55:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qgJM6hcxzDqQW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:57:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=zte.com.cn
+ (client-ip=63.217.80.70; helo=mxhk.zte.com.cn;
+ envelope-from=wen.yang99@zte.com.cn; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=zte.com.cn
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.217.80.70])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qfgb6fjGzDqMd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 15:28:59 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6J5StMi058239
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 01:28:55 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tu762sdsp-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 01:28:54 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Fri, 19 Jul 2019 06:28:45 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 19 Jul 2019 06:28:40 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6J5Sd8a31523060
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jul 2019 05:28:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C12E4AE055;
- Fri, 19 Jul 2019 05:28:39 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A0DEAE045;
- Fri, 19 Jul 2019 05:28:38 +0000 (GMT)
-Received: from [9.124.31.155] (unknown [9.124.31.155])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 19 Jul 2019 05:28:37 +0000 (GMT)
-Subject: Re: [PATCH v2 1/3] tools/perf: Move kvm-stat header file from
- conditional inclusion to common include section
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>, acme@kernel.org
-References: <20190718181749.30612-1-anju@linux.vnet.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Fri, 19 Jul 2019 10:58:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <20190718181749.30612-1-anju@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19071905-4275-0000-0000-0000034EA9FC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071905-4276-0000-0000-0000385EC4E0
-Message-Id: <1afefd12-b9c5-77b6-c371-bef9fd6f788b@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-19_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907190060
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qgD300XzzDqvL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 15:53:36 +1000 (AEST)
+Received: from mse-fl2.zte.com.cn (unknown [10.30.14.239])
+ by Forcepoint Email with ESMTPS id EBFF080F49D5410EE23C;
+ Fri, 19 Jul 2019 13:53:32 +0800 (CST)
+Received: from kjyxapp05.zte.com.cn ([10.30.12.204])
+ by mse-fl2.zte.com.cn with SMTP id x6J5rIow024131;
+ Fri, 19 Jul 2019 13:53:18 +0800 (GMT-8)
+ (envelope-from wen.yang99@zte.com.cn)
+Received: from mapi (kjyxapp03[null]) by mapi (Zmail) with MAPI id mid14;
+ Fri, 19 Jul 2019 13:53:18 +0800 (CST)
+Date: Fri, 19 Jul 2019 13:53:18 +0800 (CST)
+X-Zmail-TransId: 2b055d315acebc291465
+X-Mailer: Zmail v1.0
+Message-ID: <201907191353187645082@zte.com.cn>
+In-Reply-To: <ca8781a6-438e-b69b-5d55-7267f2106f79@xenosoft.de>
+References: 201907090939164296374@zte.com.cn,
+ ca8781a6-438e-b69b-5d55-7267f2106f79@xenosoft.de
+Mime-Version: 1.0
+From: <wen.yang99@zte.com.cn>
+To: <chzigotzky@xenosoft.de>
+Subject: =?UTF-8?B?UmU6W1BBVENIIHY3XSBjcHVmcmVxL3Bhc2VtaTogZml4IGFuIHVzZS1hZnRlci1mcmVlaW5wYXNfY3B1ZnJlcV9jcHVfaW5pdCgp?=
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL: mse-fl2.zte.com.cn x6J5rIow024131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,15 +54,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, peterz@infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- alexander.shishkin@linux.intel.com, namhyung@kernel.org, jolsa@redhat.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-LGTM. For the series,
 
-Reviewed-By: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+--=====_001_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
+
+
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+Pj4+IEhlbGxvIFdlbiwKPj4+Cj4+PiBUaGFua3MgZm9yIHlvdXIgcGF0Y2ghCj4+Pgo+Pj4gRGlk
+IHlvdSB0ZXN0IHlvdXIgcGF0Y2ggd2l0aCBhIFAuQS4gU2VtaSBib2FyZD8KPj4+Cj4+IEhlbGxv
+IENocmlzdGlhbiwgdGhhbmsgeW91Lgo+PiBXZSBkb24ndCBoYXZlIGEgUC5BLiBTZW1pIGJvYXJk
+IHlldCwgc28gd2UgZGlkbid0IHRlc3QgaXQuCj4+IElmIHlvdSBoYXZlIHN1Y2ggYSBib2FyZCwg
+Y291bGQgeW91IHBsZWFzZSBraW5kbHkgaGVscCB0byB0ZXN0IGl0Pwo+Pgo+PiAtLQo+PiBUaGFu
+a3MgYW5kIHJlZ2FyZHMsCj4+IFdlbgo+IAo+IEhlbGxvIFdlbiwKPiAKPiBJIHN1Y2Nlc3NmdWxs
+eSB0ZXN0ZWQgeW91ciBwYXNlbWkgY3B1ZnJlcSBtb2RpZmljYXRpb25zIHdpdGggbXkgUC5BLgo+
+IFNlbWkgYm9hcmQgWzFdIHRvZGF5Lgo+IAo+IEZpcnN0IEkgcGF0Y2hlZCB0aGUgbGF0ZXN0IEdp
+dCBrZXJuZWwgd2l0aCBWaXJlc2ggS3VtYXIncyBwYXRjaCBbMl0uCj4gQWZ0ZXIgdGhhdCBJIHdh
+cyBhYmxlIHRvIHBhdGNoIHRoZSBsYXRlc3QgR2l0IGtlcm5lbCB3aXRoIHlvdXIgdjcgcGF0Y2gg
+WzNdLgo+IAo+IFRoZW4gdGhlIGtlcm5lbCBjb21waWxlZCB3aXRob3V0IGFueSBlcnJvcnMuCj4g
+Cj4gQWZ0ZXJ3YXJkcyBJIHN1Y2Nlc3NmdWxseSB0ZXN0ZWQgdGhlIG5ldyBHaXQga2VybmVsIHdp
+dGggc29tZSBjcHVmcmVxCj4gZ292ZXJub3JzIG9uIG9wZW5TVVNFIFR1bWJsZXdlZWQgMjAxOTA1
+MjEgUG93ZXJQQzY0IFs0XSBhbmQgb24gdWJ1bnR1Cj4gTUFURSAxNi4wNC42IExUUyBQb3dlclBD
+MzIuCj4gCj4gVGhhbmtzIGEgbG90IGZvciB5b3VyIHdvcmshCj4gCj4gVGVzdGVkLWJ5OiBDaHJp
+c3RpYW4gWmlnb3R6a3kgPGNoemlnb3R6a3lAeGVub3NvZnQuZGU+Cj4gCj4gQ2hlZXJzLAo+IENo
+cmlzdGlhbgoKVGhhbmsgeW91IHZlcnkgbXVjaCEKLS0KQ2hlZXJzLApXZW4KCj4gWzFdIGh0dHBz
+Oi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0FtaWdhT25lX1gxMDAwCj4gWzJdCj4gaHR0cHM6Ly9s
+b3JlLmtlcm5lbC5vcmcvbGttbC9lZThjZjVmYjRiNGEwMWZkZjkxOTkwMzdmZjZkODM1YjkzNWNm
+ZDEzLjE1NjI5MDI4NzcuZ2l0LnZpcmVzaC5rdW1hckBsaW5hcm8ub3JnLyNaMzBkcml2ZXJzOmNw
+dWZyZXE6cGFzZW1pLWNwdWZyZXEuYwo+IFszXSBodHRwczovL2xpc3RzLm96bGFicy5vcmcvcGlw
+ZXJtYWlsL2xpbnV4cHBjLWRldi8yMDE5LUp1bHkvMTkzNzM1Lmh0bWwKPiBbNF0gU2NyZWVuc2hv
+dHM6Cj4gaHR0cHM6Ly9pLnBpbmltZy5jb20vb3JpZ2luYWxzLzM3LzY2LzkzLzM3NjY5MzA2Y2Jj
+OTA5YTlkNzkyNzBhODQ5ZDE4YWE2LnBuZwo+IGFuZAo+IGh0dHBzOi8vaS5waW5pbWcuY29tL29y
+aWdpbmFscy9mZS9mOC9iZi9mZWY4YmZjOTBkOTViNWFlOWNmMzFlMTc1ZThiYTJkYS5wbmc=
+
+
+--=====_003_next=====--
+
+--=====_001_next=====--
 
