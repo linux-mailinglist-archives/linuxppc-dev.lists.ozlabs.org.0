@@ -1,54 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828C96E0BE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:50:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qg8k5nyjzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:50:46 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0196E0C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 07:53:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qgCk6spwzDqtN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 15:53:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qf845s44zDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 15:05:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="BxQTTQMq"; 
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.b="Znn2KVe6"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qd2j39FpzDqLR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:15:25 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9DAEB218A5;
- Fri, 19 Jul 2019 04:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563509723;
- bh=GgWJieV+f/vfttWKUOUbNSDuhOWm9LEZvnKvk9nlnnU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BxQTTQMqQshXxprbXHC9pLEA493caT5bYJtd7jYWiGWITqEuZ0F47AvsJjk4yJG5p
- 0VL9/OMnq3QRuJAnEKG3HqyaXGcvCq7TxBT18XQGbrp35TSdUw8eNLCbqWFGp5E9R8
- +X/k3x3sovU7IYLaPFoOKr2AJQUcSX3ia6xF0/jY=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 30/35] powerpc/eeh: Handle hugepages in ioremap
- space
-Date: Fri, 19 Jul 2019 00:14:18 -0400
-Message-Id: <20190719041423.19322-30-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719041423.19322-1-sashal@kernel.org>
-References: <20190719041423.19322-1-sashal@kernel.org>
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 45qf836QDkz9s00;
+ Fri, 19 Jul 2019 15:05:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1563512707;
+ bh=M+utsh9UbAsD43z7wK4lS+57JCI6TToPn3sL83++q5k=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Znn2KVe6t3HWwaFhpNM4s2SWpg5QKgs+t8FoMeIxdT4O2yZbEOLJDnAAhlNyeokfK
+ 2P33GwGq+yc9BVgmQ68xJyofRQ9RdrIxPmljqTWykaSHuXpMghP51bKax5o3PBRdqJ
+ zEVYVgZOMhpxL7tPRjHBheLFSjnyJhmF185w+tNUU5MImOIKPcIRHSDsBItKeCHKZb
+ nJ8qi4xvPvJpQ9oVVJjyU+Cr9sC+UiuJ8maXO/ZSCcBqC/WclCbRKwcmr0m5WLPjYX
+ NYcI3/qFCXeUwPnT7+n2VSugxziLcioBOvVbuk0ree3ykkSCOVS+VxfrifsXu7aoGo
+ Tkc4FGe9f/PhQ==
+Received: by neuling.org (Postfix, from userid 1000)
+ id C62EA2A1025; Fri, 19 Jul 2019 15:05:07 +1000 (AEST)
+From: Michael Neuling <mikey@neuling.org>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/tm: Fix oops on sigreturn on systems without TM
+Date: Fri, 19 Jul 2019 15:05:02 +1000
+Message-Id: <20190719050502.405-1-mikey@neuling.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,75 +54,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: mikey@neuling.org, Praveen Pandey <Praveen.Pandey@in.ibm.com>,
+ gromero@br.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Breno Leitao <breno.leitao@gmail.com>, Haren Myneni <haren@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Oliver O'Halloran <oohall@gmail.com>
+On systems like P9 powernv where we have no TM (or P8 booted with
+ppc_tm=off), userspace can construct a signal context which still has
+the MSR TS bits set. The kernel tries to restore this context which
+results in the following crash:
 
-[ Upstream commit 33439620680be5225c1b8806579a291e0d761ca0 ]
+[   74.980557] Unexpected TM Bad Thing exception at c0000000000022fc (msr 0x8000000102a03031) tm_scratch=800000020280f033
+[   74.980741] Oops: Unrecoverable exception, sig: 6 [#1]
+[   74.980820] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+[   74.980917] Modules linked in:
+[   74.980980] CPU: 0 PID: 1636 Comm: sigfuz Not tainted 5.2.0-11043-g0a8ad0ffa4 #69
+[   74.981096] NIP:  c0000000000022fc LR: 00007fffb2d67e48 CTR: 0000000000000000
+[   74.981212] REGS: c00000003fffbd70 TRAP: 0700   Not tainted  (5.2.0-11045-g7142b497d8)
+[   74.981325] MSR:  8000000102a03031 <SF,VEC,VSX,FP,ME,IR,DR,LE,TM[E]>  CR: 42004242  XER: 00000000
+[   74.981463] CFAR: c0000000000022e0 IRQMASK: 0
+[   74.981463] GPR00: 0000000000000072 00007fffb2b6e560 00007fffb2d87f00 0000000000000669
+[   74.981463] GPR04: 00007fffb2b6e728 0000000000000000 0000000000000000 00007fffb2b6f2a8
+[   74.981463] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[   74.981463] GPR12: 0000000000000000 00007fffb2b76900 0000000000000000 0000000000000000
+[   74.981463] GPR16: 00007fffb2370000 00007fffb2d84390 00007fffea3a15ac 000001000a250420
+[   74.981463] GPR20: 00007fffb2b6f260 0000000010001770 0000000000000000 0000000000000000
+[   74.981463] GPR24: 00007fffb2d843a0 00007fffea3a14a0 0000000000010000 0000000000800000
+[   74.981463] GPR28: 00007fffea3a14d8 00000000003d0f00 0000000000000000 00007fffb2b6e728
+[   74.982420] NIP [c0000000000022fc] rfi_flush_fallback+0x7c/0x80
+[   74.982517] LR [00007fffb2d67e48] 0x7fffb2d67e48
+[   74.982593] Call Trace:
+[   74.982632] Instruction dump:
+[   74.982691] e96a0220 e96a02a8 e96a0330 e96a03b8 394a0400 4200ffdc 7d2903a6 e92d0c00
+[   74.982809] e94d0c08 e96d0c10 e82d0c18 7db242a6 <4c000024> 7db243a6 7db142a6 f82d0c18
 
-In commit 4a7b06c157a2 ("powerpc/eeh: Handle hugepages in ioremap
-space") support for using hugepages in the vmalloc and ioremap areas was
-enabled for radix. Unfortunately this broke EEH MMIO error checking.
+The problem is the signal code assumes TM is enabled when
+CONFIG_PPC_TRANSACTIONAL_MEM is on. This may not be the case as with
+P9 powernv or if `ppc_tm=off` is used on P8.
 
-Detection works by inserting a hook which checks the results of the
-ioreadXX() set of functions.  When a read returns a 0xFFs response we
-need to check for an error which we do by mapping the (virtual) MMIO
-address back to a physical address, then mapping physical address to a
-PCI device via an interval tree.
+This means any local user can crash the system.
 
-When translating virt -> phys we currently assume the ioremap space is
-only populated by PAGE_SIZE mappings. If a hugepage mapping is found we
-emit a WARN_ON(), but otherwise handles the check as though a normal
-page was found. In pathalogical cases such as copying a buffer
-containing a lot of 0xFFs from BAR memory this can result in the system
-not booting because it's too busy printing WARN_ON()s.
+Fix the problem by returning a bad stack frame to the user if they try
+to set the MSR TS bits with sigreturn() on systems where TM is not
+supported.
 
-There's no real reason to assume huge pages can't be present and we're
-prefectly capable of handling them, so do that.
+Found with sigfuz kernel selftest on P9.
 
-Fixes: 4a7b06c157a2 ("powerpc/eeh: Handle hugepages in ioremap space")
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20190710150517.27114-1-oohall@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes CVE-2019-13648.
+
+Fixes: 2b0a576d15 ("powerpc: Add new transactional memory state to the signal context")
+Cc: stable@vger.kernel.org # v3.9
+Reported-by: Praveen Pandey <Praveen.Pandey@in.ibm.com>
+Signed-off-by: Michael Neuling <mikey@neuling.org>
 ---
- arch/powerpc/kernel/eeh.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/signal_32.c | 3 +++
+ arch/powerpc/kernel/signal_64.c | 5 +++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 6696c1986844..16193d7b0635 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -363,10 +363,19 @@ static inline unsigned long eeh_token_to_phys(unsigned long token)
- 					   NULL, &hugepage_shift);
- 	if (!ptep)
- 		return token;
--	WARN_ON(hugepage_shift);
--	pa = pte_pfn(*ptep) << PAGE_SHIFT;
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index f50b708d6d..98600b276f 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -1198,6 +1198,9 @@ SYSCALL_DEFINE0(rt_sigreturn)
+ 			goto bad;
  
--	return pa | (token & (PAGE_SIZE-1));
-+	pa = pte_pfn(*ptep);
+ 		if (MSR_TM_ACTIVE(msr_hi<<32)) {
++			/* Trying to start TM on non TM system */
++			if (!cpu_has_feature(CPU_FTR_TM))
++				goto bad;
+ 			/* We only recheckpoint on return if we're
+ 			 * transaction.
+ 			 */
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index 2f80e270c7..117515564e 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -771,6 +771,11 @@ SYSCALL_DEFINE0(rt_sigreturn)
+ 	if (MSR_TM_ACTIVE(msr)) {
+ 		/* We recheckpoint on return. */
+ 		struct ucontext __user *uc_transact;
 +
-+	/* On radix we can do hugepage mappings for io, so handle that */
-+	if (hugepage_shift) {
-+		pa <<= hugepage_shift;
-+		pa |= token & ((1ul << hugepage_shift) - 1);
-+	} else {
-+		pa <<= PAGE_SHIFT;
-+		pa |= token & (PAGE_SIZE - 1);
-+	}
++		/* Trying to start TM on non TM system */
++		if (!cpu_has_feature(CPU_FTR_TM))
++			goto badframe;
 +
-+	return pa;
- }
- 
- /*
+ 		if (__get_user(uc_transact, &uc->uc_link))
+ 			goto badframe;
+ 		if (restore_tm_sigcontexts(current, &uc->uc_mcontext,
 -- 
-2.20.1
+2.21.0
 
