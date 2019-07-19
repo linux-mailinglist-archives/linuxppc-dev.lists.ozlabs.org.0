@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292AB6DE1E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 06:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6FD6DE8B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 06:29:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qdHY35CzzDqLT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 14:26:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qdLj5YpgzDqCW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 14:29:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="BFespdZf"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="UNFa4S2F"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qcjT57kczDqfd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:00:29 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qckj0NV0zDqhK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:01:33 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0C5462189F;
- Fri, 19 Jul 2019 04:00:26 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 436D021873;
+ Fri, 19 Jul 2019 04:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563508827;
- bh=Bgd0Bw6dCsfqG18nCU1TXezh7rwvgVoQ1pq5kShUpig=;
+ s=default; t=1563508890;
+ bh=3gyWvW9TWKvGDCP/N8AuBPzV+BDaoFgHHsIs/6XfNHo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BFespdZfk4ajjYEZG76H9K9t1aX/GiI+XInOIZUBWXmHRrWSHqbQOv4bnAJEfy4Gz
- OhwjtWXkLm7Xz3i9qV9xMXWTX8RysO8+Xh64IBjTLwWltFCbKeEhEVc4t0dhPs7HK9
- Gn94Ol6VglOkf2cDrCMyOVEefYx1GTw2/GSQhZ2U=
+ b=UNFa4S2FEI33fcqOBuNsniCnQW5VTRLPSEIFkQn6vTbi+fqK2rk7JOthsjhQFO0xT
+ igw1c4lvc/P46ViG/ZWdxLy8NxEaa8IAwlpUpAj0DyMF3kbWDv7+BVV9T36km8srK/
+ SMkMyiBnGotiveD36CObaDFylP03CnyqBYown0Kw=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 112/171] powerpc/mm: Handle page table allocation
- failures
-Date: Thu, 18 Jul 2019 23:55:43 -0400
-Message-Id: <20190719035643.14300-112-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 140/171] powerpc/irq: Don't WARN continuously in
+ arch_local_irq_restore()
+Date: Thu, 18 Jul 2019 23:56:11 -0400
+Message-Id: <20190719035643.14300-140-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190719035643.14300-1-sashal@kernel.org>
 References: <20190719035643.14300-1-sashal@kernel.org>
@@ -61,66 +61,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 2230ebf6e6dd0b7751e2921b40f6cfe34f09bb16 ]
+[ Upstream commit 0fc12c022ad25532b66bf6f6c818ee1c1d63e702 ]
 
-This fixes kernel crash that arises due to not handling page table allocation
-failures while allocating hugetlb page table.
+When CONFIG_PPC_IRQ_SOFT_MASK_DEBUG is enabled (uncommon), we have a
+series of WARN_ON's in arch_local_irq_restore().
 
-Fixes: e2b3d202d1db ("powerpc: Switch 16GB and 16MB explicit hugepages to a different page table format")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+These are "should never happen" conditions, but if they do happen they
+can flood the console and render the system unusable. So switch them
+to WARN_ON_ONCE().
+
+Fixes: e2b36d591720 ("powerpc/64: Don't trace code that runs with the soft irq mask unreconciled")
+Fixes: 9b81c0211c24 ("powerpc/64s: make PACA_IRQ_HARD_DIS track MSR[EE] closely")
+Fixes: 7c0482e3d055 ("powerpc/irq: Fix another case of lazy IRQ state getting out of sync")
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20190708061046.7075-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/hugetlbpage.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/powerpc/kernel/irq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index b5d92dc32844..1de0f43a68e5 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -130,6 +130,8 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, unsigned long addr, unsigned long sz
- 	} else {
- 		pdshift = PUD_SHIFT;
- 		pu = pud_alloc(mm, pg, addr);
-+		if (!pu)
-+			return NULL;
- 		if (pshift == PUD_SHIFT)
- 			return (pte_t *)pu;
- 		else if (pshift > PMD_SHIFT) {
-@@ -138,6 +140,8 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, unsigned long addr, unsigned long sz
- 		} else {
- 			pdshift = PMD_SHIFT;
- 			pm = pmd_alloc(mm, pu, addr);
-+			if (!pm)
-+				return NULL;
- 			if (pshift == PMD_SHIFT)
- 				/* 16MB hugepage */
- 				return (pte_t *)pm;
-@@ -154,12 +158,16 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, unsigned long addr, unsigned long sz
- 	} else {
- 		pdshift = PUD_SHIFT;
- 		pu = pud_alloc(mm, pg, addr);
-+		if (!pu)
-+			return NULL;
- 		if (pshift >= PUD_SHIFT) {
- 			ptl = pud_lockptr(mm, pu);
- 			hpdp = (hugepd_t *)pu;
- 		} else {
- 			pdshift = PMD_SHIFT;
- 			pm = pmd_alloc(mm, pu, addr);
-+			if (!pm)
-+				return NULL;
- 			ptl = pmd_lockptr(mm, pm);
- 			hpdp = (hugepd_t *)pm;
- 		}
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index bc68c53af67c..5645bc9cbc09 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -255,7 +255,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	irq_happened = get_irq_happened();
+ 	if (!irq_happened) {
+ #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
+-		WARN_ON(!(mfmsr() & MSR_EE));
++		WARN_ON_ONCE(!(mfmsr() & MSR_EE));
+ #endif
+ 		return;
+ 	}
+@@ -268,7 +268,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	 */
+ 	if (!(irq_happened & PACA_IRQ_HARD_DIS)) {
+ #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
+-		WARN_ON(!(mfmsr() & MSR_EE));
++		WARN_ON_ONCE(!(mfmsr() & MSR_EE));
+ #endif
+ 		__hard_irq_disable();
+ #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
+@@ -279,7 +279,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 		 * warn if we are wrong. Only do that when IRQ tracing
+ 		 * is enabled as mfmsr() can be costly.
+ 		 */
+-		if (WARN_ON(mfmsr() & MSR_EE))
++		if (WARN_ON_ONCE(mfmsr() & MSR_EE))
+ 			__hard_irq_disable();
+ #endif
+ 	}
 -- 
 2.20.1
 
