@@ -2,60 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD566E239
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 10:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE46C6E25A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 10:16:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qkB44Dp3zDqkp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 18:07:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qkNt1bX4zDqrM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 18:16:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+0127b854950d050a2cef+5808+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="hY4ZF+xW"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bharata@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qk8J6S89zDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 18:05:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=j6m3dpxjPQBgsve5FxBN1VXYoBHhVQWi8vavLjXXQ1g=; b=hY4ZF+xWw7VgyJbXMBef6njm4
- uieIvbJvrktQEv3bl335vW3eC33Mp3HvXaEixDrB8YKz1VLETL3Fz5ezK0rpvE35hc9dmj1s1wiNK
- hPSxJOFvMxo9iBVrCG/BrnHGodwucUu1gsXYK4fiddTDt1ffgNC52gSbwEJAKwOPyDzOPrEq1A+zK
- Gt+ziY1HSZr+TJqi32nmWpYtD2LaMcDJx+JCvRU2JEAa7D6NcRChpkOdVSU9g1IYnugS/xunuxgtB
- rxdiGrMjwhurVGEsSMqxeSiMWkZA46dwuJNsF5T985DlL3Kwjy4X4cJW+FT4J0ccTV+nHgJGL2zAb
- uaWNiZj2g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hoNtU-0002VN-QO; Fri, 19 Jul 2019 08:05:32 +0000
-Date: Fri, 19 Jul 2019 01:05:32 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: question on "powerpc/pseries/dma: Allow SWIOTLB"
-Message-ID: <20190719080532.GA3861@infradead.org>
-References: <20190719071014.GA1922@infradead.org>
- <0f969485-a3fe-4436-a448-5f4c4f875cb2@ozlabs.ru>
- <20190719075348.GA2892@infradead.org>
- <33ba562c-1a87-58e2-4105-520834d5b969@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qkLx4gXWzDqpC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 18:14:48 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6J8CkhB008036
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 04:14:44 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tu95djdgk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 04:14:44 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Fri, 19 Jul 2019 09:14:42 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 19 Jul 2019 09:14:38 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6J8EbSS43712524
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jul 2019 08:14:37 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0178AAE051;
+ Fri, 19 Jul 2019 08:14:37 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9FABAE056;
+ Fri, 19 Jul 2019 08:14:34 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.124.35.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 19 Jul 2019 08:14:34 +0000 (GMT)
+Date: Fri, 19 Jul 2019 13:44:32 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v5 1/7] kvmppc: HMM backend driver to manage pages of
+ secure guest
+References: <20190709102545.9187-1-bharata@linux.ibm.com>
+ <20190709102545.9187-2-bharata@linux.ibm.com>
+ <29e536f225036d2a93e653c56a961fcb@linux.vnet.ibm.com>
+ <20190710134734.GB2873@ziepe.ca>
+ <20190711050848.GB12321@in.ibm.com>
+ <20190719064641.GA29238@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <33ba562c-1a87-58e2-4105-520834d5b969@ozlabs.ru>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190719064641.GA29238@infradead.org>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-TM-AS-GCONF: 00
+x-cbid: 19071908-0012-0000-0000-00000334517F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071908-0013-0000-0000-0000216DD618
+Message-Id: <20190719081432.GA4077@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-19_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=920 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907190094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,25 +94,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Hellwig <hch@infradead.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: bharata@linux.ibm.com
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
+ kvm-ppc@vger.kernel.org,
+ Linuxppc-dev <linuxppc-dev-bounces+janani=linux.ibm.com@lists.ozlabs.org>,
+ linux-mm@kvack.org, jglisse@redhat.com, janani <janani@linux.ibm.com>,
+ aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 19, 2019 at 06:00:25PM +1000, Alexey Kardashevskiy wrote:
-> > But shouldn't we force usage of the direct ops in that case as the
-> > IOMMU is not neededed at all?
+On Thu, Jul 18, 2019 at 11:46:41PM -0700, Christoph Hellwig wrote:
+> On Thu, Jul 11, 2019 at 10:38:48AM +0530, Bharata B Rao wrote:
+> > Hmmm... I still find it in upstream, guess it will be removed soon?
+> > 
+> > I find the below commit in mmotm.
 > 
-> We do, for mappings, but not unmappings and syncing.
+> Please take a look at the latest hmm code in mainline, there have
+> also been other significant changes as well.
 
-Well, I mean as in literally not setting a dma_ops so that the
-dma_direct code is used without the indirection through the iommu ops.
-This is not only more obvious, but also faster as you avoid the
-indirect call (although that probably doesn't matter much if you
-are bounce buffering anyway).
+Yes, my next version of this patchset will be based on those recent
+HMM related changes.
 
-> > Also isn't that support non-upstream so far?
-> 
-> How is this relevant? I expect the existing "swiotlb=force" just work.
+Regards,
+Bharata.
 
-I though the whole secure VM support was still not upstream.
