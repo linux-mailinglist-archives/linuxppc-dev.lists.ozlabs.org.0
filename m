@@ -2,59 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1746E128
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 08:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8AB6E160
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 09:08:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qhRm0Sw6zDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 16:48:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qhtV5p0RzDqsK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:08:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+0127b854950d050a2cef+5808+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qhPL5WW4zDqpg;
- Fri, 19 Jul 2019 16:46:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=dFnx5TzMMcoSpuOVSBkt3bk6kgdNjnFBeNAo17jg5Wk=; b=YPaurXaTajlIneAubMagzsXcC
- s7lRHW6bMmRz5vJoILwjx09X/rG2EhotoYUCEBkPgAPRvep7T9EL8rE9YqZx+lJqfB8dIDW6sgb/f
- 5ekxC+GX1RAI38SYBVesXcaEU28iwSanRRpEj/Mj05pSBUI/SgcGybCGhG5k0jsC+sqHbDva5YziK
- mxIe/MvYIGBGZ1jnh1UCzMiQK0WxQFTvo5gFiJu5VkmN0vpIF61rDTSu940GxT4YvZ0Ag8KdzjBt9
- fHnRvSoZHZKlymeW/sRI+JzKkOFfxcda4Fh/aTFGeFCY27ywJsi/kGHel8I3FcBNjtHaD6m2WGCGJ
- +rqfCRqZQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hoMfB-0007eC-Mp; Fri, 19 Jul 2019 06:46:41 +0000
-Date: Thu, 18 Jul 2019 23:46:41 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v5 1/7] kvmppc: HMM backend driver to manage pages of
- secure guest
-Message-ID: <20190719064641.GA29238@infradead.org>
-References: <20190709102545.9187-1-bharata@linux.ibm.com>
- <20190709102545.9187-2-bharata@linux.ibm.com>
- <29e536f225036d2a93e653c56a961fcb@linux.vnet.ibm.com>
- <20190710134734.GB2873@ziepe.ca>
- <20190711050848.GB12321@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qhrp3P0vzDqLs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 17:07:04 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id C11CF68BFE; Fri, 19 Jul 2019 09:06:59 +0200 (CEST)
+Date: Fri, 19 Jul 2019 09:06:59 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Shawn Anastasio <shawn@anastas.io>
+Subject: Re: [PATCH] powerpc/dma: Fix invalid DMA mmap behavior
+Message-ID: <20190719070659.GA19555@lst.de>
+References: <20190717235437.12908-1-shawn@anastas.io>
+ <8b6963ac-521a-5752-2cfb-bcd87cad9dc4@ozlabs.ru>
+ <f9753335-b62c-67b4-84d7-7b67fe1b64ca@anastas.io>
+ <CAOSf1CGA_fDH7aAqRkc4maJUByaX7adGcjyt3cj4KFsMJNnocA@mail.gmail.com>
+ <20190718084934.GF24562@lst.de> <20190718095200.GA25744@lst.de>
+ <2da4fafe-93f2-4bf1-62e1-180a3ac800fa@anastas.io>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190711050848.GB12321@in.ibm.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <2da4fafe-93f2-4bf1-62e1-180a3ac800fa@anastas.io>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,20 +49,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org,
- Linuxppc-dev <linuxppc-dev-bounces+janani=linux.ibm.com@lists.ozlabs.org>,
- linux-mm@kvack.org, jglisse@redhat.com, janani <janani@linux.ibm.com>,
- aneesh.kumar@linux.vnet.ibm.com, paulus@au1.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ iommu@lists.linux-foundation.org, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 11, 2019 at 10:38:48AM +0530, Bharata B Rao wrote:
-> Hmmm... I still find it in upstream, guess it will be removed soon?
-> 
-> I find the below commit in mmotm.
+On Thu, Jul 18, 2019 at 02:46:00PM -0500, Shawn Anastasio wrote:
+> Personally, I'm not a huge fan of an implicit default for something
+> inherently architecture-dependent like this at all.
 
-Please take a look at the latest hmm code in mainline, there have
-also been other significant changes as well.
+What is inherently architecture specific here over the fact that
+the pgprot_* expand to architecture specific bits?
+
+> What I'd like to
+> see is a mechanism that forces architecture code to explicitly
+> opt in to the default pgprot settings if they don't provide an
+> implementation of arch_dma_mmap_pgprot. This could perhaps be done
+> by reversing ARCH_HAS_DMA_MMAP_PGPROT to something like
+> ARCH_USE_DEFAULT_DMA_MMAP_PGPROT.
+
+I'd rather not create boilerplate code where we don't have to it.  Note
+that arch_dma_mmap_pgprot is a little misnamed now, as we also use it
+for the in-kernel remapping in kernel/dma/remap.c, which I'm slowly
+switching a lot of architectures to.  powerpc will follow soon once
+I get the ppc44x that was given to me to actually boot with a recent
+kernel (not that I've tried much so far).
+
+>
+> This way as more systems are moved to use the common mmap code instead
+> of their ops->mmap, the people doing the refactoring have to make an
+> explicit decision about the pgprot settings to use. Such a configuration
+> would have likely prevented this situation with powerpc from happening.
+
+Every arch except for arm32 now uses dma direct for the direct mapping,
+and thus the common code without the indeed odd default.  I also have
+a series to remove the default fallback, which is inherently a bad idea:
+
+http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/dma-no-defaults
+
+> That being said, if the default behavior doesn't make sense in the
+> general case it should probably be fixed as well.
+>
+> Curious to hear some thoughts on this.
+
+I think your patch that started this thread is fine for 5.3 and -stable:
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+But going forward I'd rather have a sane default.
