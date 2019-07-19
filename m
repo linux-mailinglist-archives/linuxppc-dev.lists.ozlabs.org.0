@@ -1,56 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5BB6E1AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 09:29:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5996E1AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 09:27:53 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qjJl25t5zDqrq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:27:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qjLj3MFszDqsm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:29:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qgnv00BMzDqlJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 16:19:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=redhat.com
- (client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=lijiang@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45qgnt35yQz8tRt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 16:19:30 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45qgnt2jwdz9sBF; Fri, 19 Jul 2019 16:19:30 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qf2B6qJBzDqjR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:59:58 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id A8707C024AF6;
- Fri, 19 Jul 2019 04:59:55 +0000 (UTC)
-Received: from localhost.localdomain (ovpn-12-123.pek2.redhat.com
- [10.72.12.123])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C94C363633;
- Fri, 19 Jul 2019 04:59:45 +0000 (UTC)
-Subject: Re: [PATCH v3 5/6] fs/core/vmcore: Move sev_active() reference to x86
- arch code
-To: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20190718032858.28744-1-bauerman@linux.ibm.com>
- <20190718032858.28744-6-bauerman@linux.ibm.com>
- <4a07bf75-b516-c81b-da7a-4b323e6d7e52@amd.com>
-From: lijiang <lijiang@redhat.com>
-Message-ID: <c85ae8ff-3b7b-88bf-6b6a-c41b159c9cc2@redhat.com>
-Date: Fri, 19 Jul 2019 12:59:41 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ by ozlabs.org (Postfix) with ESMTPS id 45qgns67n5z9s7T
+ for <linuxppc-dev@ozlabs.org>; Fri, 19 Jul 2019 16:19:29 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6J685ov107726
+ for <linuxppc-dev@ozlabs.org>; Fri, 19 Jul 2019 02:19:27 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tu85d8rky-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 19 Jul 2019 02:19:26 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
+ Fri, 19 Jul 2019 07:19:24 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 19 Jul 2019 07:19:21 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6J6JJeV42205314
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jul 2019 06:19:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDA38AE053;
+ Fri, 19 Jul 2019 06:19:19 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E270AE056;
+ Fri, 19 Jul 2019 06:19:18 +0000 (GMT)
+Received: from [9.184.183.117] (unknown [9.184.183.117])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 19 Jul 2019 06:19:18 +0000 (GMT)
+Subject: Re: [PATCH v4 00/25] Add FADump support on PowerNV platform
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+Date: Fri, 19 Jul 2019 11:49:17 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <4a07bf75-b516-c81b-da7a-4b323e6d7e52@amd.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+Content-Type: multipart/alternative;
+ boundary="------------E8527C4F5E4B1D39FEB74B1D"
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.32]); Fri, 19 Jul 2019 04:59:56 +0000 (UTC)
+X-TM-AS-GCONF: 00
+x-cbid: 19071906-0016-0000-0000-0000029440BF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071906-0017-0000-0000-000032F2201A
+Message-Id: <c03416bf-fb55-18a8-8227-bd3287a4ead0@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-19_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907190069
 X-Mailman-Approved-At: Fri, 19 Jul 2019 17:26:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,143 +105,219 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Baoquan He <bhe@redhat.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Robin Murphy <robin.murphy@arm.com>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
- "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Oliver <oohall@gmail.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>,
+ Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-在 2019年07月19日 01:47, Lendacky, Thomas 写道:
-> On 7/17/19 10:28 PM, Thiago Jung Bauermann wrote:
->> Secure Encrypted Virtualization is an x86-specific feature, so it shouldn't
->> appear in generic kernel code because it forces non-x86 architectures to
->> define the sev_active() function, which doesn't make a lot of sense.
->>
->> To solve this problem, add an x86 elfcorehdr_read() function to override
->> the generic weak implementation. To do that, it's necessary to make
->> read_from_oldmem() public so that it can be used outside of vmcore.c.
->>
->> Also, remove the export for sev_active() since it's only used in files that
->> won't be built as modules.
->>
->> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> 
-> Adding Lianbo and Baoquan, who recently worked on this, for their review.
-> 
+This is a multi-part message in MIME format.
+--------------E8527C4F5E4B1D39FEB74B1D
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-This change looks good to me.
+Sorry, I missed mentioning that this patchset is based on top of upstream kernel
+plus the below patches:
 
-Reviewed-by: Lianbo Jiang <lijiang@redhat.com>
+   https://patchwork.ozlabs.org/patch/1123582/
+    https://patchwork.ozlabs.org/patch/1123583/ <https://patchwork.ozlabs.org/patch/1123583/>
 
-Thanks.
-Lianbo
+On 16/07/19 5:01 PM, Hari Bathini wrote:
+> Firmware-Assisted Dump (FADump) is currently supported only on pSeries
+> platform. This patch series adds support for PowerNV platform too.
+>
+> The first few patches refactor the FADump code to make use of common
+> code across multiple platforms. Then basic FADump support is added for
+> PowerNV platform. Followed by patches to honour reserved-ranges DT node
+> while reserving/releasing memory used by FADump. The subsequent patch
+> processes CPU state data provided by firmware to create and append core
+> notes to the ELF core file and the next patch adds support to preserve
+> crash data for subsequent boots (useful in cases like petitboot). The
+> subsequent patches add support to export opalcore. opalcore makes
+> debugging of failures in OPAL code easier. Firmware-Assisted Dump
+> documentation is also updated appropriately.
+>
+> The patch series is tested with the latest firmware plus the below skiboot
+> changes for MPIPL support:
+>
+>     https://patchwork.ozlabs.org/project/skiboot/list/?series=119169
+>     ("MPIPL support")
+>
+>
+> Changes in v4:
+>   * Split the patches.
+>   * Rebased to latest upstream kernel version.
+>   * Updated according to latest OPAL changes.
+>
+> ---
+>
+> Hari Bathini (25):
+>       powerpc/fadump: move internal macros/definitions to a new header
+>       powerpc/fadump: move internal code to a new file
+>       powerpc/fadump: Improve fadump documentation
+>       pseries/fadump: move rtas specific definitions to platform code
+>       pseries/fadump: introduce callbacks for platform specific operations
+>       pseries/fadump: define register/un-register callback functions
+>       pseries/fadump: move out platform specific support from generic code
+>       powerpc/fadump: use FADump instead of fadump for how it is pronounced
+>       opal: add MPIPL interface definitions
+>       powernv/fadump: add fadump support on powernv
+>       powernv/fadump: register kernel metadata address with opal
+>       powernv/fadump: define register/un-register callback functions
+>       powernv/fadump: support copying multiple kernel memory regions
+>       powernv/fadump: process the crashdump by exporting it as /proc/vmcore
+>       powerpc/fadump: Update documentation about OPAL platform support
+>       powerpc/fadump: consider reserved ranges while reserving memory
+>       powerpc/fadump: consider reserved ranges while releasing memory
+>       powernv/fadump: process architected register state data provided by firmware
+>       powernv/fadump: add support to preserve crash data on FADUMP disabled kernel
+>       powerpc/fadump: update documentation about CONFIG_PRESERVE_FA_DUMP
+>       powernv/opalcore: export /sys/firmware/opal/core for analysing opal crashes
+>       powernv/fadump: Warn before processing partial crashdump
+>       powernv/opalcore: provide an option to invalidate /sys/firmware/opal/core file
+>       powernv/fadump: consider f/w load area
+>       powernv/fadump: update documentation about option to release opalcore
+>
+>
+>  Documentation/powerpc/firmware-assisted-dump.txt |  224 +++-
+>  arch/powerpc/Kconfig                             |   23 
+>  arch/powerpc/include/asm/fadump.h                |  190 ----
+>  arch/powerpc/include/asm/opal-api.h              |   50 +
+>  arch/powerpc/include/asm/opal.h                  |    6 
+>  arch/powerpc/kernel/Makefile                     |    6 
+>  arch/powerpc/kernel/fadump-common.c              |  153 +++
+>  arch/powerpc/kernel/fadump-common.h              |  203 ++++
+>  arch/powerpc/kernel/fadump.c                     | 1181 ++++++++--------------
+>  arch/powerpc/kernel/prom.c                       |    4 
+>  arch/powerpc/platforms/powernv/Makefile          |    3 
+>  arch/powerpc/platforms/powernv/opal-call.c       |    3 
+>  arch/powerpc/platforms/powernv/opal-core.c       |  637 ++++++++++++
+>  arch/powerpc/platforms/powernv/opal-fadump.c     |  671 ++++++++++++
+>  arch/powerpc/platforms/powernv/opal-fadump.h     |  154 +++
+>  arch/powerpc/platforms/pseries/Makefile          |    1 
+>  arch/powerpc/platforms/pseries/rtas-fadump.c     |  595 +++++++++++
+>  arch/powerpc/platforms/pseries/rtas-fadump.h     |  123 ++
+>  18 files changed, 3231 insertions(+), 996 deletions(-)
+>  create mode 100644 arch/powerpc/kernel/fadump-common.c
+>  create mode 100644 arch/powerpc/kernel/fadump-common.h
+>  create mode 100644 arch/powerpc/platforms/powernv/opal-core.c
+>  create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.c
+>  create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.h
+>  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
+>  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.h
+>
 
-> Thanks,
-> Tom
-> 
->> ---
->>  arch/x86/kernel/crash_dump_64.c |  5 +++++
->>  arch/x86/mm/mem_encrypt.c       |  1 -
->>  fs/proc/vmcore.c                |  8 ++++----
->>  include/linux/crash_dump.h      | 14 ++++++++++++++
->>  include/linux/mem_encrypt.h     |  1 -
->>  5 files changed, 23 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/x86/kernel/crash_dump_64.c b/arch/x86/kernel/crash_dump_64.c
->> index 22369dd5de3b..045e82e8945b 100644
->> --- a/arch/x86/kernel/crash_dump_64.c
->> +++ b/arch/x86/kernel/crash_dump_64.c
->> @@ -70,3 +70,8 @@ ssize_t copy_oldmem_page_encrypted(unsigned long pfn, char *buf, size_t csize,
->>  {
->>  	return __copy_oldmem_page(pfn, buf, csize, offset, userbuf, true);
->>  }
->> +
->> +ssize_t elfcorehdr_read(char *buf, size_t count, u64 *ppos)
->> +{
->> +	return read_from_oldmem(buf, count, ppos, 0, sev_active());
->> +}
->> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
->> index 7139f2f43955..b1e823441093 100644
->> --- a/arch/x86/mm/mem_encrypt.c
->> +++ b/arch/x86/mm/mem_encrypt.c
->> @@ -349,7 +349,6 @@ bool sev_active(void)
->>  {
->>  	return sme_me_mask && sev_enabled;
->>  }
->> -EXPORT_SYMBOL(sev_active);
->>  
->>  /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
->>  bool force_dma_unencrypted(struct device *dev)
->> diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
->> index 57957c91c6df..ca1f20bedd8c 100644
->> --- a/fs/proc/vmcore.c
->> +++ b/fs/proc/vmcore.c
->> @@ -100,9 +100,9 @@ static int pfn_is_ram(unsigned long pfn)
->>  }
->>  
->>  /* Reads a page from the oldmem device from given offset. */
->> -static ssize_t read_from_oldmem(char *buf, size_t count,
->> -				u64 *ppos, int userbuf,
->> -				bool encrypted)
->> +ssize_t read_from_oldmem(char *buf, size_t count,
->> +			 u64 *ppos, int userbuf,
->> +			 bool encrypted)
->>  {
->>  	unsigned long pfn, offset;
->>  	size_t nr_bytes;
->> @@ -166,7 +166,7 @@ void __weak elfcorehdr_free(unsigned long long addr)
->>   */
->>  ssize_t __weak elfcorehdr_read(char *buf, size_t count, u64 *ppos)
->>  {
->> -	return read_from_oldmem(buf, count, ppos, 0, sev_active());
->> +	return read_from_oldmem(buf, count, ppos, 0, false);
->>  }
->>  
->>  /*
->> diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
->> index f774c5eb9e3c..4664fc1871de 100644
->> --- a/include/linux/crash_dump.h
->> +++ b/include/linux/crash_dump.h
->> @@ -115,4 +115,18 @@ static inline int vmcore_add_device_dump(struct vmcoredd_data *data)
->>  	return -EOPNOTSUPP;
->>  }
->>  #endif /* CONFIG_PROC_VMCORE_DEVICE_DUMP */
->> +
->> +#ifdef CONFIG_PROC_VMCORE
->> +ssize_t read_from_oldmem(char *buf, size_t count,
->> +			 u64 *ppos, int userbuf,
->> +			 bool encrypted);
->> +#else
->> +static inline ssize_t read_from_oldmem(char *buf, size_t count,
->> +				       u64 *ppos, int userbuf,
->> +				       bool encrypted)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +#endif /* CONFIG_PROC_VMCORE */
->> +
->>  #endif /* LINUX_CRASHDUMP_H */
->> diff --git a/include/linux/mem_encrypt.h b/include/linux/mem_encrypt.h
->> index 0c5b0ff9eb29..5c4a18a91f89 100644
->> --- a/include/linux/mem_encrypt.h
->> +++ b/include/linux/mem_encrypt.h
->> @@ -19,7 +19,6 @@
->>  #else	/* !CONFIG_ARCH_HAS_MEM_ENCRYPT */
->>  
->>  static inline bool mem_encrypt_active(void) { return false; }
->> -static inline bool sev_active(void) { return false; }
->>  
->>  #endif	/* CONFIG_ARCH_HAS_MEM_ENCRYPT */
->>  
->>
+--------------E8527C4F5E4B1D39FEB74B1D
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <pre>Sorry, I missed mentioning that this patchset is based on top of upstream kernel
+plus the below patches:
+
+   <a target="_blank" class="c-link" href="https://patchwork.ozlabs.org/patch/1123582/" style="box-sizing: inherit; color: rgb(18, 100, 163); text-decoration: none; font-family: Slack-Lato, appleLogo, sans-serif; font-size: 15px; font-style: normal; font-variant-ligatures: common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">https://patchwork.ozlabs.org/patch/1123582/</a>
+<a target="_blank" class="c-link" href="https://patchwork.ozlabs.org/patch/1123583/" style="box-sizing: inherit; color: rgb(18, 100, 163); text-decoration: none; font-family: Slack-Lato, appleLogo, sans-serif; font-size: 15px; font-style: normal; font-variant-ligatures: common-ligatures; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">    https://patchwork.ozlabs.org/patch/1123583/</a>
+
+</pre>
+    <div class="moz-cite-prefix">On 16/07/19 5:01 PM, Hari Bathini
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+cite="mid:156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com">
+      <pre class="moz-quote-pre" wrap="">Firmware-Assisted Dump (FADump) is currently supported only on pSeries
+platform. This patch series adds support for PowerNV platform too.
+
+The first few patches refactor the FADump code to make use of common
+code across multiple platforms. Then basic FADump support is added for
+PowerNV platform. Followed by patches to honour reserved-ranges DT node
+while reserving/releasing memory used by FADump. The subsequent patch
+processes CPU state data provided by firmware to create and append core
+notes to the ELF core file and the next patch adds support to preserve
+crash data for subsequent boots (useful in cases like petitboot). The
+subsequent patches add support to export opalcore. opalcore makes
+debugging of failures in OPAL code easier. Firmware-Assisted Dump
+documentation is also updated appropriately.
+
+The patch series is tested with the latest firmware plus the below skiboot
+changes for MPIPL support:
+
+    <a class="moz-txt-link-freetext" href="https://patchwork.ozlabs.org/project/skiboot/list/?series=119169">https://patchwork.ozlabs.org/project/skiboot/list/?series=119169</a>
+    ("MPIPL support")
+
+
+Changes in v4:
+  * Split the patches.
+  * Rebased to latest upstream kernel version.
+  * Updated according to latest OPAL changes.
+
+---
+
+Hari Bathini (25):
+      powerpc/fadump: move internal macros/definitions to a new header
+      powerpc/fadump: move internal code to a new file
+      powerpc/fadump: Improve fadump documentation
+      pseries/fadump: move rtas specific definitions to platform code
+      pseries/fadump: introduce callbacks for platform specific operations
+      pseries/fadump: define register/un-register callback functions
+      pseries/fadump: move out platform specific support from generic code
+      powerpc/fadump: use FADump instead of fadump for how it is pronounced
+      opal: add MPIPL interface definitions
+      powernv/fadump: add fadump support on powernv
+      powernv/fadump: register kernel metadata address with opal
+      powernv/fadump: define register/un-register callback functions
+      powernv/fadump: support copying multiple kernel memory regions
+      powernv/fadump: process the crashdump by exporting it as /proc/vmcore
+      powerpc/fadump: Update documentation about OPAL platform support
+      powerpc/fadump: consider reserved ranges while reserving memory
+      powerpc/fadump: consider reserved ranges while releasing memory
+      powernv/fadump: process architected register state data provided by firmware
+      powernv/fadump: add support to preserve crash data on FADUMP disabled kernel
+      powerpc/fadump: update documentation about CONFIG_PRESERVE_FA_DUMP
+      powernv/opalcore: export /sys/firmware/opal/core for analysing opal crashes
+      powernv/fadump: Warn before processing partial crashdump
+      powernv/opalcore: provide an option to invalidate /sys/firmware/opal/core file
+      powernv/fadump: consider f/w load area
+      powernv/fadump: update documentation about option to release opalcore
+
+
+ Documentation/powerpc/firmware-assisted-dump.txt |  224 +++-
+ arch/powerpc/Kconfig                             |   23 
+ arch/powerpc/include/asm/fadump.h                |  190 ----
+ arch/powerpc/include/asm/opal-api.h              |   50 +
+ arch/powerpc/include/asm/opal.h                  |    6 
+ arch/powerpc/kernel/Makefile                     |    6 
+ arch/powerpc/kernel/fadump-common.c              |  153 +++
+ arch/powerpc/kernel/fadump-common.h              |  203 ++++
+ arch/powerpc/kernel/fadump.c                     | 1181 ++++++++--------------
+ arch/powerpc/kernel/prom.c                       |    4 
+ arch/powerpc/platforms/powernv/Makefile          |    3 
+ arch/powerpc/platforms/powernv/opal-call.c       |    3 
+ arch/powerpc/platforms/powernv/opal-core.c       |  637 ++++++++++++
+ arch/powerpc/platforms/powernv/opal-fadump.c     |  671 ++++++++++++
+ arch/powerpc/platforms/powernv/opal-fadump.h     |  154 +++
+ arch/powerpc/platforms/pseries/Makefile          |    1 
+ arch/powerpc/platforms/pseries/rtas-fadump.c     |  595 +++++++++++
+ arch/powerpc/platforms/pseries/rtas-fadump.h     |  123 ++
+ 18 files changed, 3231 insertions(+), 996 deletions(-)
+ create mode 100644 arch/powerpc/kernel/fadump-common.c
+ create mode 100644 arch/powerpc/kernel/fadump-common.h
+ create mode 100644 arch/powerpc/platforms/powernv/opal-core.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.c
+ create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.h
+ create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
+ create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.h
+
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------E8527C4F5E4B1D39FEB74B1D--
+
