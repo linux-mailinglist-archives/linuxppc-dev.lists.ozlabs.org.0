@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4450F6E056
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 06:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C857E6E058
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 06:53:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qdqT5Q7vzDqMw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 14:50:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qdtq2R14zDqbx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 14:53:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="O7YSSNYx"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="QkIvhWMv"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qcpq6Xt8zDqGT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:05:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qcq804lXzDqdh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2019 14:05:24 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 947F6218B8;
- Fri, 19 Jul 2019 04:05:05 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 25F7B21852;
+ Fri, 19 Jul 2019 04:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563509106;
- bh=vx2vWh9eODayEyi7NmcYmZ1q6GxdvboP6NB7tsl66xU=;
+ s=default; t=1563509121;
+ bh=4C3GOrjknXPI85zfXqF36miPxIgMOCcb0/OZJSd8Rqc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=O7YSSNYxPTrEPWiahUId+KqxTkfNZO1zwiRoRCyL5YgNqvvKEHvM22WObxfks+/0a
- juNZL1xYBmFCKtWNN+qZRKqemOInDSds2QtEFfDDfPMc5ClrLOeTThNeMxLv9t53+B
- DisslQJy1x4PUoB9F2WyHZ6j1amga9rb+rF9tkyg=
+ b=QkIvhWMv7kJjWVgpsH9d/vKorl5Q/0kJIHfnRyy60wrLI1GDJFdqdKThTWk3CpnYi
+ XZh31HkeshReMEoWQO4cIEjeYv1wfAeqLnKnsrkdp71Mjf1sCNcauaO3N5Fi769LwZ
+ E5KN1qUtlbMmABWSce18fUKc8bhXRUTchhLGkZ9k=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 071/141] powerpc/rtas: retry when cpu offline
- races with suspend/migration
-Date: Fri, 19 Jul 2019 00:01:36 -0400
-Message-Id: <20190719040246.15945-71-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 081/141] powerpc/4xx/uic: clear pending interrupt
+ after irq type/pol change
+Date: Fri, 19 Jul 2019 00:01:46 -0400
+Message-Id: <20190719040246.15945-81-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190719040246.15945-1-sashal@kernel.org>
 References: <20190719040246.15945-1-sashal@kernel.org>
@@ -61,60 +61,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Christian Lamparter <chunkeey@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Christian Lamparter <chunkeey@gmail.com>
 
-[ Upstream commit 9fb603050ffd94f8127df99c699cca2f575eb6a0 ]
+[ Upstream commit 3ab3a0689e74e6aa5b41360bc18861040ddef5b1 ]
 
-The protocol for suspending or migrating an LPAR requires all present
-processor threads to enter H_JOIN. So if we have threads offline, we
-have to temporarily bring them up. This can race with administrator
-actions such as SMT state changes. As of dfd718a2ed1f ("powerpc/rtas:
-Fix a potential race between CPU-Offline & Migration"),
-rtas_ibm_suspend_me() accounts for this, but errors out with -EBUSY
-for what almost certainly is a transient condition in any reasonable
-scenario.
+When testing out gpio-keys with a button, a spurious
+interrupt (and therefore a key press or release event)
+gets triggered as soon as the driver enables the irq
+line for the first time.
 
-Callers of rtas_ibm_suspend_me() already retry when -EAGAIN is
-returned, and it is typical during a migration for that to happen
-repeatedly for several minutes polling the H_VASI_STATE hcall result
-before proceeding to the next stage.
+This patch clears any potential bogus generated interrupt
+that was caused by the switching of the associated irq's
+type and polarity.
 
-So return -EAGAIN instead of -EBUSY when this race is
-encountered. Additionally: logging this event is still appropriate but
-use pr_info instead of pr_err; and remove use of unlikely() while here
-as this is not a hot path at all.
-
-Fixes: dfd718a2ed1f ("powerpc/rtas: Fix a potential race between CPU-Offline & Migration")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/4xx/uic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index fbc676160adf..9b4d2a2ffb4f 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -984,10 +984,9 @@ int rtas_ibm_suspend_me(u64 handle)
- 	cpu_hotplug_disable();
+diff --git a/arch/powerpc/platforms/4xx/uic.c b/arch/powerpc/platforms/4xx/uic.c
+index 8b4dd0da0839..9e27cfe27026 100644
+--- a/arch/powerpc/platforms/4xx/uic.c
++++ b/arch/powerpc/platforms/4xx/uic.c
+@@ -158,6 +158,7 @@ static int uic_set_irq_type(struct irq_data *d, unsigned int flow_type)
  
- 	/* Check if we raced with a CPU-Offline Operation */
--	if (unlikely(!cpumask_equal(cpu_present_mask, cpu_online_mask))) {
--		pr_err("%s: Raced against a concurrent CPU-Offline\n",
--		       __func__);
--		atomic_set(&data.error, -EBUSY);
-+	if (!cpumask_equal(cpu_present_mask, cpu_online_mask)) {
-+		pr_info("%s: Raced against a concurrent CPU-Offline\n", __func__);
-+		atomic_set(&data.error, -EAGAIN);
- 		goto out_hotplug_enable;
- 	}
+ 	mtdcr(uic->dcrbase + UIC_PR, pr);
+ 	mtdcr(uic->dcrbase + UIC_TR, tr);
++	mtdcr(uic->dcrbase + UIC_SR, ~mask);
+ 
+ 	raw_spin_unlock_irqrestore(&uic->lock, flags);
  
 -- 
 2.20.1
