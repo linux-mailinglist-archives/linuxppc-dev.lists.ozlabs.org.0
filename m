@@ -2,42 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30846E722
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 16:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB2C6E7F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2019 17:25:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45qtCB2G3kzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2019 00:08:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45qvvP5MXJzDqwP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2019 01:25:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45qt8j1gDSzDqvY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2019 00:06:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45qt8f5BxCz9s3Z;
- Sat, 20 Jul 2019 00:06:25 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sven Schnelle <svens@stackframe.org>
-Subject: Re: [PATCH v3 5/7] kexec_elf: remove elf_addr_to_cpu macro
-In-Reply-To: <20190715072417.GA25659@t470p.stackframe.org>
-References: <20190710142944.2774-1-svens@stackframe.org>
- <20190710142944.2774-6-svens@stackframe.org>
- <49206784-009c-391b-5f9a-11e9b1de930b@c-s.fr>
- <20190710180518.GA6343@t470p.stackframe.org>
- <871rywhlq4.fsf@concordia.ellerman.id.au>
- <20190715072417.GA25659@t470p.stackframe.org>
-Date: Sat, 20 Jul 2019 00:06:21 +1000
-Message-ID: <87tvbi6rvm.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45qvsM71JZzDqhb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2019 01:23:19 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6JFN5qY026512;
+ Fri, 19 Jul 2019 10:23:05 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x6JFN4GP026509;
+ Fri, 19 Jul 2019 10:23:04 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 19 Jul 2019 10:23:03 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nathan Chancellor <natechancellor@gmail.com>
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+Message-ID: <20190719152303.GA20882@gate.crashing.org>
+References: <c6ff2faba7fbb56a7f5b5f08cd3453f89fc0aaf4.1557480165.git.christophe.leroy@c-s.fr>
+ <45hnfp6SlLz9sP0@ozlabs.org> <20190708191416.GA21442@archlinux-threadripper>
+ <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+ <20190709064952.GA40851@archlinux-threadripper>
+ <20190719032456.GA14108@archlinux-threadripper>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190719032456.GA14108@archlinux-threadripper>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,43 +54,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, deller@gmx.de, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sven Schnelle <svens@stackframe.org> writes:
-> Hi Michael,
->
-> On Thu, Jul 11, 2019 at 09:08:51PM +1000, Michael Ellerman wrote:
->> Sven Schnelle <svens@stackframe.org> writes:
->> > On Wed, Jul 10, 2019 at 05:09:29PM +0200, Christophe Leroy wrote:
->> >> Le 10/07/2019 =C3=A0 16:29, Sven Schnelle a =C3=A9crit=C2=A0:
->> >> > It had only one definition, so just use the function directly.
->> >>=20
->> >> It had only one definition because it was for ppc64 only.
->> >> But as far as I understand (at least from the name of the new file), =
-you
->> >> want it to be generic, don't you ? Therefore I get on 32 bits it woul=
-d be
->> >> elf32_to_cpu().
->> >
->> > That brings up the question whether we need those endianess conversion=
-s. I would
->> > assume that the ELF file has always the same endianess as the running =
-kernel. So
->> > i think we could just drop them. What do you think?
->>=20
->> We should be able to kexec from big to little endian or vice versa, so
->> they are necessary.
->
-> I'll update the patch to check for a needed 32/64 bit conversion during r=
-untime,
-> so we can also kexec from 32 to 64 bit kernels and vice versa. Don't know
-> whether that's possible on powerpc, but at least on parisc it is.
+On Thu, Jul 18, 2019 at 08:24:56PM -0700, Nathan Chancellor wrote:
+> On Mon, Jul 08, 2019 at 11:49:52PM -0700, Nathan Chancellor wrote:
+> > On Tue, Jul 09, 2019 at 07:04:43AM +0200, Christophe Leroy wrote:
+> > > Is that a Clang bug ?
+> > 
+> > No idea, it happens with clang-8 and clang-9 though (pretty sure there
+> > were fixes for PowerPC in clang-8 so something before it probably won't
+> > work but I haven't tried).
+> > 
+> > > 
+> > > Do you have a disassembly of the code both with and without this patch in
+> > > order to compare ?
+> > 
+> > I can give you whatever disassembly you want (or I can upload the raw
+> > files if that is easier).
+> 
+> What disassembly/files did you need to start taking a look at this? I
+> can upload/send whatever you need.
 
-On some of the Freescale (NXP) machines that should actually be
-possible, the hardware can run a 64 or 32-bit kernel, but I'm not sure
-if anyone has actually tested kexec'ing from one to the other.
+A before and after of *only this patch*.  And then look at what changed;
+it maybe be obvious what is the problem to you, as well, so look at it
+yourself first?
 
-cheers
+
+Segher
