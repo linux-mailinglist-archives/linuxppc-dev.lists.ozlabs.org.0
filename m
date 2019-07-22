@@ -2,64 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3496FC19
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 11:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7EF6FD87
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 12:16:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sbmH6GKzzDqS2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 19:24:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45scwL19xKzDqTg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 20:16:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+8b691fc55bcfc6b3008b+5811+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="lWwY1OZQ"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45sbkQ6sZlzDqHn
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 19:23:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=pOTBY6AtVEUDX9/NDgELbMsFV/6Jx30XrIPuhDqSF1M=; b=lWwY1OZQ6NlBZRVOwRFqOAU9R
- e/Wv3qaaZxGg0hcOW/WhwAB+OGdI1MFapTX6SQwKdijL3BmjRFZ7Y55cAWLc7ed4OyCdDzaKkw5aG
- +quVEzCfekBv3Q/ZFCrN8PWNtfra7RWxIRPdhZXUJiNgeqvueXW6kHYuUzVrzw+jcFUgqEAqERC9E
- mKjkbwbuIFGWYddiLBTWFVPLmCqCLWcJObR5FOb9ryVT0MaQqv6jZScC4PK2mM5HQZX/l79kgyjlY
- RgwHX8IThrH/IunfsEU9DkcbqiSNLMCrqKVt6z1R2sp+y1CIhLohdlLa9Is5f3o5YJoMik1wI9SFM
- kVhRIUJ0w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hpUXC-0006xE-OD; Mon, 22 Jul 2019 09:23:06 +0000
-Date: Mon, 22 Jul 2019 02:23:06 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: question on "powerpc/pseries/dma: Allow SWIOTLB"
-Message-ID: <20190722092306.GA12167@infradead.org>
-References: <20190719071014.GA1922@infradead.org>
- <0f969485-a3fe-4436-a448-5f4c4f875cb2@ozlabs.ru>
- <20190719075348.GA2892@infradead.org>
- <33ba562c-1a87-58e2-4105-520834d5b969@ozlabs.ru>
- <20190719080532.GA3861@infradead.org>
- <14c9591a-5c8d-12a5-ed25-b7a41e0b1ad7@ozlabs.ru>
- <20190719122518.GA18682@infradead.org>
- <5c38b824-f703-bf97-3752-0f315b79b5a7@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sctX6skFzDqQC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 20:15:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45sctX3vfqz9s3l;
+ Mon, 22 Jul 2019 20:15:16 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+ Nathan Chancellor <natechancellor@gmail.com>
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+In-Reply-To: <20190721180150.GN20882@gate.crashing.org>
+References: <c6ff2faba7fbb56a7f5b5f08cd3453f89fc0aaf4.1557480165.git.christophe.leroy@c-s.fr>
+ <45hnfp6SlLz9sP0@ozlabs.org> <20190708191416.GA21442@archlinux-threadripper>
+ <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+ <20190709064952.GA40851@archlinux-threadripper>
+ <20190719032456.GA14108@archlinux-threadripper>
+ <20190719152303.GA20882@gate.crashing.org>
+ <20190719160455.GA12420@archlinux-threadripper>
+ <20190721075846.GA97701@archlinux-threadripper>
+ <20190721180150.GN20882@gate.crashing.org>
+Date: Mon, 22 Jul 2019 20:15:14 +1000
+Message-ID: <87imru74ul.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c38b824-f703-bf97-3752-0f315b79b5a7@ozlabs.ru>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,23 +52,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Hellwig <hch@infradead.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 20, 2019 at 09:22:49PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 19/07/2019 22:25, Christoph Hellwig wrote:
-> > On Fri, Jul 19, 2019 at 06:23:59PM +1000, Alexey Kardashevskiy wrote:
-> >> It is getting there and I still do not see why "swiotlb=force" should not
-> >> work if chosed in the cmdline.
-> > 
-> > Ok, makes sense.  But that means we also have the issue in a few
-> > other places..
-> 
-> Hmm, where? I got broadcom ethernet working with this.
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Sun, Jul 21, 2019 at 12:58:46AM -0700, Nathan Chancellor wrote:
+>> I have attached the disassembly of arch/powerpc/kernel/mem.o with
+>> clear_page (working) and broken_clear_page (broken), along with the side
+>> by side diff. My assembly knowledge is fairly limited as it stands and
+>> it is certainly not up to snuff on PowerPC so I have no idea what I am
+>> looking for. Please let me know if anything immediately looks off or if
+>> there is anything else I can do to help out.
+>
+> You might want to use a disassembler that shows most simplified mnemonics,
+> and you crucially should show the relocations.  "objdump -dr" works nicely.
+>
+>> 0000017c clear_user_page:
+>>      17c: 38 80 00 80                  	li 4, 128
+>>      180: 7c 89 03 a6                  	mtctr 4
+>>      184: 7c 00 1f ec                  	dcbz 0, 3
+>>      188: 38 63 00 20                  	addi 3, 3, 32
+>>      18c: 42 00 ff f8                  	bdnz .+65528
+>
+> That offset is incorrectly disassembled, btw (it's a signed field, not
+> unsigned).
+>
+>> 0000017c clear_user_page:
+>>      17c: 94 21 ff f0                  	stwu 1, -16(1)
+>>      180: 38 80 00 80                  	li 4, 128
+>>      184: 38 63 ff e0                  	addi 3, 3, -32
+>>      188: 7c 89 03 a6                  	mtctr 4
+>>      18c: 38 81 00 0f                  	addi 4, 1, 15
+>>      190: 8c c3 00 20                  	lbzu 6, 32(3)
+>>      194: 98 c1 00 0f                  	stb 6, 15(1)
+>>      198: 7c 00 27 ec                  	dcbz 0, 4
+>>      19c: 42 00 ff f4                  	bdnz .+65524
+>
+> Uh, yeah, well, I have no idea what clang tried here, but that won't
+> work.  It's copying a byte from each target cache line to the stack,
+> and then does clears the cache line containing that byte on the stack.
 
-In all the other IOMMU drivers that conditionally forward to the dma
-direct ops.  So it shouldn't affect powerpc.
+So it seems like this is a clang bug.
+
+None of the distros we support use clang, but we would still like to
+keep it working if we can.
+
+Looking at the original patch, the only upside is that the compiler
+can use both RA and RB to compute the address, rather than us forcing RA
+to 0.
+
+But at least with my compiler here (GCC 8 vintage) I don't actually see
+GCC ever using both GPRs even with the patch. Or at least, there's no
+difference before/after the patch as far as I can see.
+
+So my inclination is to revert the original patch. We can try again in a
+few years :D
+
+Thoughts?
+
+cheers
