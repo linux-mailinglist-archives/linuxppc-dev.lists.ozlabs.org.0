@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2E570804
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 19:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 079F27080E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 20:00:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sq9R6xHwzDqJt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2019 03:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sqCg2QT2zDqJV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2019 04:00:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45spyd70dqzDqVb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45spyd4gVbz8tXb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45spyd3NkJz9s8m; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45spyc0yy4z9sBZ
- for <linuxppc-dev@ozlabs.org>; Tue, 23 Jul 2019 03:49:27 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 73DB7ACD8;
- Mon, 22 Jul 2019 17:49:23 +0000 (UTC)
-Date: Mon, 22 Jul 2019 19:49:23 +0200
-From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc: avoid adjusting memory_limit for capture
- kernel memory reservation
-Message-ID: <20190722194923.4be2a1be@naga.suse.cz>
-In-Reply-To: <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
-References: <156166326909.13320.3330203549978146193.stgit@hbathini.in.ibm.com>
- <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sq9966mxzDqKj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:58:37 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x6MHwIwq002804;
+ Mon, 22 Jul 2019 12:58:18 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x6MHwH9G002785;
+ Mon, 22 Jul 2019 12:58:17 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 22 Jul 2019 12:58:17 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+Message-ID: <20190722175817.GE20882@gate.crashing.org>
+References: <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+ <20190709064952.GA40851@archlinux-threadripper>
+ <20190719032456.GA14108@archlinux-threadripper>
+ <20190719152303.GA20882@gate.crashing.org>
+ <20190719160455.GA12420@archlinux-threadripper>
+ <20190721075846.GA97701@archlinux-threadripper>
+ <20190721180150.GN20882@gate.crashing.org>
+ <20190722024140.GA55142@archlinux-threadripper>
+ <20190722061940.GZ20882@gate.crashing.org>
+ <CAKwvOd=KRVsFkT8dLFoitky9OF8tKmbn00-OPi6kBygyx4QwHg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKwvOd=KRVsFkT8dLFoitky9OF8tKmbn00-OPi6kBygyx4QwHg@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,113 +59,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 Jun 2019 00:51:19 +0530
-Hari Bathini <hbathini@linux.ibm.com> wrote:
-
-> Currently, if memory_limit is specified and it overlaps with memory to
-> be reserved for capture kernel, memory_limit is adjusted to accommodate
-> capture kernel. With memory reservation for capture kernel moved later
-> (after enforcing memory limit), this adjustment no longer holds water.
-> So, avoid adjusting memory_limit and error out instead.
-
-Can you split out the memory limit adjustment out of memory reservation
-so it can still be adjusted?
-
-Thanks
-
-Michal
+On Mon, Jul 22, 2019 at 10:21:07AM -0700, Nick Desaulniers wrote:
+> On Sun, Jul 21, 2019 at 11:19 PM Segher Boessenkool
+> <segher@kernel.crashing.org> wrote:
+> > On Sun, Jul 21, 2019 at 07:41:40PM -0700, Nathan Chancellor wrote:
+> > > On Sun, Jul 21, 2019 at 01:01:50PM -0500, Segher Boessenkool wrote:
+> > > > On Sun, Jul 21, 2019 at 12:58:46AM -0700, Nathan Chancellor wrote:
+> > > > > 0000017c clear_user_page:
+> > > > >      17c: 94 21 ff f0                     stwu 1, -16(1)
+> > > > >      180: 38 80 00 80                     li 4, 128
+> > > > >      184: 38 63 ff e0                     addi 3, 3, -32
+> > > > >      188: 7c 89 03 a6                     mtctr 4
+> > > > >      18c: 38 81 00 0f                     addi 4, 1, 15
+> > > > >      190: 8c c3 00 20                     lbzu 6, 32(3)
+> > > > >      194: 98 c1 00 0f                     stb 6, 15(1)
+> > > > >      198: 7c 00 27 ec                     dcbz 0, 4
+> > > > >      19c: 42 00 ff f4                     bdnz .+65524
+> > > >
+> > > > Uh, yeah, well, I have no idea what clang tried here, but that won't
+> > > > work.  It's copying a byte from each target cache line to the stack,
+> > > > and then does clears the cache line containing that byte on the stack.
+> > > >
+> > > > I *guess* this is about "Z" and not about "%y", but you'll have to ask
+> > > > the clang people.
+> > > >
+> > > > Or it may be that they do not treat inline asm operands as lvalues
+> > > > properly?  That rings some bells.  Yeah that looks like it.
+> >
+> > The code is
+> >   __asm__ __volatile__ ("dcbz %y0" : : "Z"(*(u8 *)addr) : "memory");
+> >
+> > so yeah it looks like clang took that  *(u8 *)addr  as rvalue, and
+> > stored that in stack, and then used *that* as memory.
 > 
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/fadump.c        |   16 ----------------
->  arch/powerpc/kernel/machine_kexec.c |   22 +++++++++++-----------
->  2 files changed, 11 insertions(+), 27 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 4eab972..a784695 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -476,22 +476,6 @@ int __init fadump_reserve_mem(void)
->  #endif
->  	}
->  
-> -	/*
-> -	 * Calculate the memory boundary.
-> -	 * If memory_limit is less than actual memory boundary then reserve
-> -	 * the memory for fadump beyond the memory_limit and adjust the
-> -	 * memory_limit accordingly, so that the running kernel can run with
-> -	 * specified memory_limit.
-> -	 */
-> -	if (memory_limit && memory_limit < memblock_end_of_DRAM()) {
-> -		size = get_fadump_area_size();
-> -		if ((memory_limit + size) < memblock_end_of_DRAM())
-> -			memory_limit += size;
-> -		else
-> -			memory_limit = memblock_end_of_DRAM();
-> -		printk(KERN_INFO "Adjusted memory_limit for firmware-assisted"
-> -				" dump, now %#016llx\n", memory_limit);
-> -	}
->  	if (memory_limit)
->  		memory_boundary = memory_limit;
->  	else
-> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
-> index c4ed328..fc5533b 100644
-> --- a/arch/powerpc/kernel/machine_kexec.c
-> +++ b/arch/powerpc/kernel/machine_kexec.c
-> @@ -125,10 +125,8 @@ void __init reserve_crashkernel(void)
->  		crashk_res.end = crash_base + crash_size - 1;
->  	}
->  
-> -	if (crashk_res.end == crashk_res.start) {
-> -		crashk_res.start = crashk_res.end = 0;
-> -		return;
-> -	}
-> +	if (crashk_res.end == crashk_res.start)
-> +		goto error_out;
->  
->  	/* We might have got these values via the command line or the
->  	 * device tree, either way sanitise them now. */
-> @@ -170,15 +168,13 @@ void __init reserve_crashkernel(void)
->  	if (overlaps_crashkernel(__pa(_stext), _end - _stext)) {
->  		printk(KERN_WARNING
->  			"Crash kernel can not overlap current kernel\n");
-> -		crashk_res.start = crashk_res.end = 0;
-> -		return;
-> +		goto error_out;
->  	}
->  
->  	/* Crash kernel trumps memory limit */
->  	if (memory_limit && memory_limit <= crashk_res.end) {
-> -		memory_limit = crashk_res.end + 1;
-> -		printk("Adjusted memory limit for crashkernel, now 0x%llx\n",
-> -		       memory_limit);
-> +		pr_err("Crash kernel size can't exceed memory_limit\n");
-> +		goto error_out;
->  	}
->  
->  	printk(KERN_INFO "Reserving %ldMB of memory at %ldMB "
-> @@ -190,9 +186,13 @@ void __init reserve_crashkernel(void)
->  	if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
->  	    memblock_reserve(crashk_res.start, crash_size)) {
->  		pr_err("Failed to reserve memory for crashkernel!\n");
-> -		crashk_res.start = crashk_res.end = 0;
-> -		return;
-> +		goto error_out;
->  	}
-> +
-> +	return;
-> +error_out:
-> +	crashk_res.start = crashk_res.end = 0;
-> +	return;
->  }
->  
->  int overlaps_crashkernel(unsigned long start, unsigned long size)
-> 
+> What's the %y modifier supposed to mean here?
 
+It prints a memory address for an indexed operand.
+
+If you write just "%0" it prints addresses that are a single register
+as "0(r3)" instead of "0,r3".  Some instructions do not allow offset
+form.
+
+> addr is in the list of
+> inputs, so what's wrong with using it as an rvalue?
+
+It seems to use *(u8 *)addr as rvalue.  Asm operands are lvalues.  It
+matters a lot for memory operands.
+
+> > Maybe clang simply does not not to treat "Z" the same as "m"?  (And "Y"
+> > and "Q" and "es" and a whole bunch of "w*", what about those?)
+
+
+Segher
