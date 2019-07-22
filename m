@@ -1,92 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C996FDAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 12:20:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sd112Y2LzDqNX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 20:20:53 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634496FE47
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 13:07:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sf2Q70NRzDqQ1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 21:07:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45scz93jH6zDqHw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 20:19:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Da+zFEck"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45scz92XGbz8tTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 20:19:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sf0L3KDfzDqPc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 21:05:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 45scz91ppnz9s8m; Mon, 22 Jul 2019 20:19:17 +1000 (AEST)
+ id 45sf0K5lJ7z9sBF; Mon, 22 Jul 2019 21:05:21 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="Da+zFEck"; 
- dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45scz86Z5Bz9s4Y;
- Mon, 22 Jul 2019 20:19:15 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id t132so17433838pgb.9;
- Mon, 22 Jul 2019 03:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=6GvKhTF87RmucqKS07fQeZvo0ffUNYVyGbclzr38IwA=;
- b=Da+zFEckL6guGISOkQ8dTgid77ODIzpHYorklac18cFWXpHQBvKxEnqL7dqyLj5GkG
- Zr7FK7bBNxLD+NAwv9344fMPZ6FccY0lT/ppcxgkzCkwKPHz5R2Fy0cVVIIfp8ZBkGfm
- Lb12PyEaMJlHZyQ4NiauFROxAniapc78Y4shNWboyAZD1XEkpJ+1DTNTQvr+BcBZF6z5
- PPG4VlsJHWD5y3WphHLuyenWlvJxMExxaadiNZ/30fFykjaNS1EqUQPcqG5Rll2N2yti
- Y+v4KqskIwVYhth792xX/Dxc6GSOD36y/GZE/zv7irk1Cv/2dqYPy4vITuwR/LbgaHFr
- hACQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=6GvKhTF87RmucqKS07fQeZvo0ffUNYVyGbclzr38IwA=;
- b=nYKS7wq7MbYHZ6yF2KiruwRNt/Xz+U0o5u9qXh+qRDYA1FLGf41KWu/iulQ8NJzDdH
- 7vEdJ/wPmGkbTsPYWU/sXNmopzNY3Wda+i3AOI7ygrS0YTS6bV2tnyrNBuE8eFYfs544
- ppGF1rcG/2zAxdzrAacYJMab+/q+gfvUrp1RGxBc39BYqupukSCXDIgPwyKdGAs4Z6tg
- u1XIpvx+Qog/u/uxBgpGOrn2LByp0/zgxgi5VkcEFzLyBH8oJ5GieEbU55mTsev4AjQ9
- vZgb+yWFVS9GnFCIiD+IzABlS0I1iTDxZMp3YuFpZ6/b5F6r3lUU7WDhHF6y9ZJ3czBa
- X0Yg==
-X-Gm-Message-State: APjAAAVd+DVsoVxYKSQJ6ueFbVBU4D0vAzxy+wf2n/mI9luodXzJucA5
- C8mCZmNQMnjPb7dGa7J2PVo=
-X-Google-Smtp-Source: APXvYqzvMF341yetoW1EfSHddV/G+hDZZHXei6DrL2bu+YK04arCMfX8QW11Pp6oJ8VtnEnt6IfErw==
-X-Received: by 2002:a17:90a:bb8a:: with SMTP id
- v10mr77424279pjr.78.1563790750901; 
- Mon, 22 Jul 2019 03:19:10 -0700 (PDT)
-Received: from wafer.ozlabs.ibm.com ([122.99.82.10])
- by smtp.googlemail.com with ESMTPSA id m4sm74128661pff.108.2019.07.22.03.19.05
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 22 Jul 2019 03:19:09 -0700 (PDT)
-Message-ID: <1a52eee28a093d19e0f06a05f471ca90e5e6db0c.camel@gmail.com>
-Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org, 
- linux-efi@vger.kernel.org
-Date: Mon, 22 Jul 2019 20:19:03 +1000
-In-Reply-To: <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
-References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
- <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45sf0K2TtCz9s8m;
+ Mon, 22 Jul 2019 21:05:21 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 7/8] KVM: PPC: Ultravisor: Enter a secure guest
+In-Reply-To: <20190718024724.GB13492@us.ibm.com>
+References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
+ <20190628200825.31049-8-cclaudio@linux.ibm.com>
+ <87ftncg24e.fsf@concordia.ellerman.id.au> <20190718024724.GB13492@us.ibm.com>
+Date: Mon, 22 Jul 2019 21:05:17 +1000
+Message-ID: <87h87e72j6.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,539 +48,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Matthew Garret <matthew.garret@nebula.com>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, linux-integrity@vger.kernel.org,
- George Wilson <gcwilson@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ Ryan Grimm <grimm@linux.ibm.com>, Thiago Bauermann <bauerman@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2019-06-13 at 16:50 -0400, Nayna Jain wrote:
-> As part of PowerNV secure boot support, OS verification keys are stored
-> and controlled by OPAL as secure variables. These need to be exposed to
-> the userspace so that sysadmins can perform key management tasks.
-> 
-> This patch adds the support to expose secure variables via a sysfs
-> interface It reuses the the existing efi defined hooks and backend in
-> order to maintain the compatibility with the userspace tools.
-> 
-> Though it reuses a great deal of efi, POWER platforms do not use EFI.
-> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
-> interface.
-
-I spent all day staring at the skiboot bits of this, so I figured I
-should see what the kernel bits looked like too...
-
-On the last version of this patch set (posted by Claudio) Matthew
-Garret was pretty explicit about the interface here not conforming to
-the expectations of efivars[1], so what's changed in this patch set to
-fix that?
-
-As far as I can tell it's has the same basic problems as before, just
-with a slightly different OPAL interface.
-
-[1] https://www.spinics.net/lists/linux-efi/msg15897.html
-
-> 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> ---
->  arch/powerpc/Kconfig                 |   2 +
->  drivers/firmware/Makefile            |   1 +
->  drivers/firmware/efi/efivars.c       |   2 +-
->  drivers/firmware/powerpc/Kconfig     |  12 +
->  drivers/firmware/powerpc/Makefile    |   3 +
->  drivers/firmware/powerpc/efi_error.c |  46 ++++
->  drivers/firmware/powerpc/secvar.c    | 326 +++++++++++++++++++++++++++
->  7 files changed, 391 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/firmware/powerpc/Kconfig
->  create mode 100644 drivers/firmware/powerpc/Makefile
->  create mode 100644 drivers/firmware/powerpc/efi_error.c
->  create mode 100644 drivers/firmware/powerpc/secvar.c
-> 
-
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 9de77bb14f54..1548dd8cf1a0 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -916,6 +916,8 @@ config PPC_SECURE_BOOT
->  	  allows user to enable OS Secure Boot on PowerPC systems that
->  	  have firmware secure boot support.
->  
-> +source "drivers/firmware/powerpc/Kconfig"
-> +
->  endmenu
-
-All of this is *very* powernv specific, so why is it here and not in
-arch/powerpc/platforms/powernv/ with the rest of the powernv platform
-code? Also, nothing about this is generic to powerpc as a whole so the
-Kconfig symbol should probably be change the Kconfig symbol to
-POWERNV_SECURE_BOOT or OPAL_SECURE_BOOT
-
->  config ISA_DMA_API
-> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-> index 3fa0b34eb72f..8cfaf7e6769d 100644
-> --- a/drivers/firmware/Makefile
-> +++ b/drivers/firmware/Makefile
-> @@ -33,3 +33,4 @@ obj-$(CONFIG_UEFI_CPER)		+= efi/
->  obj-y				+= imx/
->  obj-y				+= tegra/
->  obj-y				+= xilinx/
-> +obj-$(CONFIG_POWER_SECVAR_SYSFS) += powerpc/
-> diff --git a/drivers/firmware/efi/efivars.c b/drivers/firmware/efi/efivars.c
-> index 7576450c8254..30ef53003c24 100644
-> --- a/drivers/firmware/efi/efivars.c
-> +++ b/drivers/firmware/efi/efivars.c
-> @@ -664,7 +664,7 @@ int efivars_sysfs_init(void)
->  	struct kobject *parent_kobj = efivars_kobject();
->  	int error = 0;
->  
-> -	if (!efi_enabled(EFI_RUNTIME_SERVICES))
-> +	if (IS_ENABLED(CONFIG_EFI) && !efi_enabled(EFI_RUNTIME_SERVICES))
->  		return -ENODEV;
->  
->  	/* No efivars has been registered yet */
-
-Seems a bit sketch.
-
-> diff --git a/drivers/firmware/powerpc/Kconfig b/drivers/firmware/powerpc/Kconfig
-> new file mode 100644
-> index 000000000000..e0303fc517d5
-> --- /dev/null
-> +++ b/drivers/firmware/powerpc/Kconfig
-> @@ -0,0 +1,12 @@
-> +config POWER_SECVAR_SYSFS
-> +	tristate "Enable sysfs interface for POWER secure variables"
-> +	default n
-> +	depends on PPC_SECURE_BOOT
-> +	select UCS2_STRING
-> +	help
-> +	  POWER secure variables are managed and controlled by OPAL.
-> +	  These variables are exposed to userspace via sysfs to allow
-> +	  user to read/write these variables. Say Y if you have secure
-> +	  boot enabled and want to expose variables to userspace.
-> +
-> +source "drivers/firmware/efi/Kconfig"
-
-Again, this is all powernv specific and not generic to all powerpc
-platforms.
-
-> diff --git a/drivers/firmware/powerpc/Makefile b/drivers/firmware/powerpc/Makefile
-> new file mode 100644
-> index 000000000000..d5fa3b007315
-> --- /dev/null
-> +++ b/drivers/firmware/powerpc/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +obj-$(CONFIG_POWER_SECVAR_SYSFS) += ../efi/efivars.o efi_error.o ../efi/vars.o secvar.o
-
-Uh... That is going to need an Ack from someone in EFI land.
-
-> diff --git a/drivers/firmware/powerpc/efi_error.c b/drivers/firmware/powerpc/efi_error.c
-> new file mode 100644
-> index 000000000000..b5cabd52e6b4
-> --- /dev/null
-> +++ b/drivers/firmware/powerpc/efi_error.c
-> @@ -0,0 +1,46 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2019 IBM Corporation
-> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> + *
-> + * efi_error.c
-> + *      - Error codes as understood by efi based tools
-> + *      Taken from drivers/firmware/efi/efi.c
-> + */
-> +#include<linux/efi.h>
-> +
-> +int efi_status_to_err(efi_status_t status)
-> +{
-> +	int err;
-> +
-> +	switch (status) {
-> +	case EFI_SUCCESS:
-> +		err = 0;
-> +		break;
-> +	case EFI_INVALID_PARAMETER:
-> +		err = -EINVAL;
-> +		break;
-> +	case EFI_OUT_OF_RESOURCES:
-> +		err = -ENOSPC;
-> +		break;
-> +	case EFI_DEVICE_ERROR:
-> +		err = -EIO;
-> +		break;
-> +	case EFI_WRITE_PROTECTED:
-> +		err = -EROFS;
-> +		break;
-> +	case EFI_SECURITY_VIOLATION:
-> +		err = -EACCES;
-> +		break;
-> +	case EFI_NOT_FOUND:
-> +		err = -ENOENT;
-> +		break;
-> +	case EFI_ABORTED:
-> +		err = -EINTR;
-> +		break;
-> +	default:
-> +		err = -EINVAL;
-> +	}
-> +
-> +	return err;
-> +}
-
-what calls this?
-
-> diff --git a/drivers/firmware/powerpc/secvar.c b/drivers/firmware/powerpc/secvar.c
-> new file mode 100644
-> index 000000000000..f1f134a0bb7c
-> --- /dev/null
-> +++ b/drivers/firmware/powerpc/secvar.c
-> @@ -0,0 +1,326 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2019 IBM Corporation
-> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> + *
-> + * secvar.c
-> + * - wrappers to expose secure variables to userspace
-> + */
-> +#include <linux/kernel.h>
-> +#include <linux/init.h>
-> +#include <linux/types.h>
-> +#include <linux/errno.h>
-> +#include <linux/string.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/fs.h>
-> +#include <linux/slab.h>
-> +#include <linux/ioctl.h>
-> +#include <linux/uaccess.h>
-> +#include <linux/kdebug.h>
-> +#include <linux/efi.h>
-> +#include <linux/module.h>
-> +#include <linux/ucs2_string.h>
-> +#include <asm/opal-secvar.h>
-> +#include <asm/opal.h>
-> +
-> +static struct efivars efivars;
-> +struct kobject *powerpc_kobj;
-> +
-> +efi_status_t opal_to_efi_status_log(int rc, const char *func_name)
-> +{
-> +	efi_status_t status;
-> +
-> +	switch (rc) {
-> +	case OPAL_EMPTY:
-> +		status = EFI_NOT_FOUND;
-> +		break;
-> +	case OPAL_HARDWARE:
-> +		status = EFI_DEVICE_ERROR;
-> +		break;
-> +	case OPAL_NO_MEM:
-> +		pr_err("%s: No space in the volatile storage\n", func_name);
-> +		status = EFI_OUT_OF_RESOURCES;
-> +		break;
-> +	case OPAL_PARAMETER:
-> +		status = EFI_INVALID_PARAMETER;
-> +		break;
-> +	case OPAL_PARTIAL:
-> +		status = EFI_BUFFER_TOO_SMALL;
-> +		break;
-> +	case OPAL_PERMISSION:
-> +		status = EFI_WRITE_PROTECTED;
-> +		break;
-> +	case OPAL_RESOURCE:
-> +		pr_err("%s: No space in the non-volatile storage\n", func_name);
-> +		status = EFI_OUT_OF_RESOURCES;
-> +		break;
-> +	case OPAL_SUCCESS:
-> +		status = EFI_SUCCESS;
-> +		break;
-> +	default:
-> +		pr_err("%s: Unknown OPAL error %d\n", func_name, rc);
-> +		status = EFI_DEVICE_ERROR;
-> +		break;
-> +	}
-> +
-> +	return status;
-> +}
-> +
-> +#define opal_to_efi_status(rc) opal_to_efi_status_log(rc, __func__)
-> +
-> +static void createkey(efi_char16_t *name, u8 **key, unsigned long *keylen)
-> +{
-> +	*keylen = ucs2_utf8size(name) + 1;
-> +
-> +	*key = kzalloc(*keylen, GFP_KERNEL);
-> +	if (!*key) {
-> +		*keylen = 0;
-> +		*key = NULL;
-> +		return;
-> +	}
-> +
-> +	ucs2_as_utf8(*key, name, *keylen);
-> +}
+Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com> writes:
+> Michael Ellerman [mpe@ellerman.id.au] wrote:
+>> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
+>> > From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+>> >
+>> > To enter a secure guest, we have to go through the ultravisor, therefore
+>> > we do a ucall when we are entering a secure guest.
+>> >
+>> > This change is needed for any sort of entry to the secure guest from the
+>> > hypervisor, whether it is a return from an hcall, a return from a
+>> > hypervisor interrupt, or the first time that a secure guest vCPU is run.
+>> >
+>> > If we are returning from an hcall, the results are already in the
+>> > appropriate registers R3:12, except for R3, R6 and R7. R3 has the status
+>> > of the reflected hcall, therefore we move it to R0 for the ultravisor and
+>> > set R3 to the UV_RETURN ucall number. R6,7 were used as temporary
+>> > registers, hence we restore them.
+>> 
+>> This is another case where some documentation would help people to
+>> review the code.
+>> 
+>> > Have fast_guest_return check the kvm_arch.secure_guest field so that a
+>> > new CPU enters UV when started (in response to a RTAS start-cpu call).
+>> >
+>> > Thanks to input from Paul Mackerras, Ram Pai and Mike Anderson.
+>> >
+>> > Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+>> > [ Pass SRR1 in r11 for UV_RETURN, fix kvmppc_msr_interrupt to preserve
+>> >   the MSR_S bit ]
+>> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+>> > [ Fix UV_RETURN ucall number and arch.secure_guest check ]
+>> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+>> > [ Save the actual R3 in R0 for the ultravisor and use R3 for the
+>> >   UV_RETURN ucall number. Update commit message and ret_to_ultra comment ]
+>> > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+>> > ---
+>> >  arch/powerpc/include/asm/kvm_host.h       |  1 +
+>> >  arch/powerpc/include/asm/ultravisor-api.h |  1 +
+>> >  arch/powerpc/kernel/asm-offsets.c         |  1 +
+>> >  arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 40 +++++++++++++++++++----
+>> >  4 files changed, 37 insertions(+), 6 deletions(-)
+>> >
+>> > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+>> > index cffb365d9d02..89813ca987c2 100644
+>> > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+>> > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+>> > @@ -36,6 +36,7 @@
+>> >  #include <asm/asm-compat.h>
+>> >  #include <asm/feature-fixups.h>
+>> >  #include <asm/cpuidle.h>
+>> > +#include <asm/ultravisor-api.h>
+>> >  
+>> >  /* Sign-extend HDEC if not on POWER9 */
+>> >  #define EXTEND_HDEC(reg)			\
+>> > @@ -1092,16 +1093,12 @@ BEGIN_FTR_SECTION
+>> >  END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>> >  
+>> >  	ld	r5, VCPU_LR(r4)
+>> > -	ld	r6, VCPU_CR(r4)
+>> >  	mtlr	r5
+>> > -	mtcr	r6
+>> >  
+>> >  	ld	r1, VCPU_GPR(R1)(r4)
+>> >  	ld	r2, VCPU_GPR(R2)(r4)
+>> >  	ld	r3, VCPU_GPR(R3)(r4)
+>> >  	ld	r5, VCPU_GPR(R5)(r4)
+>> > -	ld	r6, VCPU_GPR(R6)(r4)
+>> > -	ld	r7, VCPU_GPR(R7)(r4)
+>> >  	ld	r8, VCPU_GPR(R8)(r4)
+>> >  	ld	r9, VCPU_GPR(R9)(r4)
+>> >  	ld	r10, VCPU_GPR(R10)(r4)
+>> > @@ -1119,10 +1116,38 @@ BEGIN_FTR_SECTION
+>> >  	mtspr	SPRN_HDSISR, r0
+>> >  END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+>> >  
+>> > +	ld	r6, VCPU_KVM(r4)
+>> > +	lbz	r7, KVM_SECURE_GUEST(r6)
+>> > +	cmpdi	r7, 0
+>> 
+>> You could hoist the load of r6 and r7 to here?
 >
-> +static void createmetadata(efi_char16_t *name, efi_guid_t *vendor, u32 *attr,
-> +			   u8 **mdata, unsigned long *mdsize)
-> +{
-> +	int size = 0;
-> +
-> +	*mdsize = ucs2_strsize(name, 1024) + sizeof(efi_guid_t) + sizeof(u32);
-> +	*mdata = kzalloc(*mdsize, GFP_KERNEL);
-> +
-> +	memcpy(*mdata, name, ucs2_strsize(name, 1024));
-> +	size = ucs2_strsize(name, 1024);
-> +
-> +	memcpy(*mdata + size, vendor, sizeof(efi_guid_t));
-> +	size += sizeof(efi_guid_t);
-> +
-> +	if (attr != NULL)
-> +		memcpy(*mdata + size, attr, sizeof(u32));
-> +	else
-> +		memset(*mdata + size, 0, sizeof(u32));
-> +}
+> we could move 'ld r7' here. r6 is used to restore CR below so
+> it (r6) has to stay there?
 
-> +static int convert_buffer_to_efi_guid(u8 *buffer, efi_guid_t *guid)
-> +{
-> +	u32 *a1;
-> +	u16 *a2;
-> +	u16 *a3;
-> +
-> +	a1 = kzalloc(4, GFP_KERNEL);
-> +	memcpy(a1, buffer, 4);
-> +	*a1 = be32_to_cpu(*a1);
-> +
-> +	a2 = kzalloc(2, GFP_KERNEL);
-> +	memcpy(a2, buffer+4, 2);
-> +	*a2 = be16_to_cpu(*a2);
-> +
-> +	a3 = kzalloc(2, GFP_KERNEL);
-> +	memcpy(a3, buffer+6, 2);
-> +	*a3 = be16_to_cpu(*a3);
-> +
-> +	*guid = EFI_GUID(*a1, *a2, *a3, *(buffer + 8),
-> +			*(buffer + 9),
-> +			*(buffer + 10),
-> +			*(buffer + 11),
-> +			*(buffer + 12),
-> +			*(buffer + 13),
-> +			*(buffer + 14),
-> +			*(buffer + 15));
-> +
-> +	kfree(a1);
-> +	kfree(a2);
-> +	kfree(a3);
+It's used to restore CR in both paths, so both paths load VCPU_CR(r4)
+into r6. So we could instead do that load once, before the branch?
 
-These should be on the stack, They're small and you free them almost
-immediately after allocating them.
+>> > +	bne	ret_to_ultra
+>> > +
+>> > +	lwz	r6, VCPU_CR(r4)
+>> > +	mtcr	r6
+>> > +
+>> > +	ld	r7, VCPU_GPR(R7)(r4)
+>> > +	ld	r6, VCPU_GPR(R6)(r4)
+>> >  	ld	r0, VCPU_GPR(R0)(r4)
+>> >  	ld	r4, VCPU_GPR(R4)(r4)
+>> >  	HRFI_TO_GUEST
+>> >  	b	.
+>> > +/*
+>> > + * We are entering a secure guest, so we have to invoke the ultravisor to do
+>> > + * that. If we are returning from a hcall, the results are already in the
+>> > + * appropriate registers R3:12, except for R3, R6 and R7. R3 has the status of
+>> > + * the reflected hcall, therefore we move it to R0 for the ultravisor and set
+>> > + * R3 to the UV_RETURN ucall number. R6,7 were used as temporary registers
+>> > + * above, hence we restore them.
+>> > + */
+>> > +ret_to_ultra:
+>> > +	lwz	r6, VCPU_CR(r4)
+>> > +	mtcr	r6
+>> > +	mfspr	r11, SPRN_SRR1
+>> > +	mr	r0, r3
+>> > +	LOAD_REG_IMMEDIATE(r3, UV_RETURN)
+>> 
+>> Worth open coding to save three instructions?
+>
+> Yes, good point:
+>
+> -       LOAD_REG_IMMEDIATE(r3, UV_RETURN)
+> +
+> +       li      r3, 0
+> +       oris    r3, r3, (UV_RETURN)@__AS_ATHIGH
+> +       ori     r3, r3, (UV_RETURN)@l
 
-> +	return 0;
-> +}
+This should do it no?
 
-> +static efi_status_t powerpc_get_variable(efi_char16_t *name, efi_guid_t *vendor,
-> +					 u32 *attr, unsigned long *data_size,
-> +					 void *data)
-> +{
-> +	int rc;
-> +	u8 *key;
-> +	unsigned long keylen;
-> +	u8 *metadata;
-> +	unsigned long mdsize;
-> +	unsigned long dsize;
-> +	unsigned long namesize;
-> +
-> +	if (!name)
-> +		return EFI_INVALID_PARAMETER;
-> +
-> +	if (!vendor)
-> +		return EFI_INVALID_PARAMETER;
-> +
-> +	if (*data_size == 0) {
-> +		/* If *data_size is zero, it implies data size is being asked */
-> +		createkey(name, &key, &keylen);
-> +		rc = opal_get_variable_size(key, keylen, &mdsize, &dsize);
-> +		*data_size = dsize;
-> +		kfree(key);
-> +		return opal_to_efi_status(rc);
-> +	}
-> +
-> +	createkey(name, &key, &keylen);
-> +	createmetadata(name, vendor, attr, &metadata, &mdsize);
-> +
-> +	rc = opal_get_variable(key, keylen, metadata, &mdsize, data, data_size);
-> +
-> +	if (rc)
-> +		return opal_to_efi_status(rc);
-> +
-> +	if (mdsize > 0) {
-> +		namesize = mdsize - sizeof(efi_guid_t) - sizeof(u32);
-> +		if (!attr)
-> +			return opal_to_efi_status(rc);
-> +		memset(attr, 0, sizeof(u32));
-> +		memcpy(attr, metadata + namesize + sizeof(efi_guid_t),
-> +		       sizeof(u32));
-> +		*attr = be32_to_cpu(*attr);
-> +	}
-> +
-> +	kfree(key);
-> +	kfree(metadata);
-> +
-> +	return opal_to_efi_status(rc);
-> +}
-> +
-> +
-> +static efi_status_t powerpc_get_next_variable(unsigned long *name_size,
-> +					      efi_char16_t *name,
-> +					      efi_guid_t *vendor)
-> +{
-> +	int rc;
-> +	u8 *key;
-> +	int namesize;
-> +	unsigned long keylen;
-> +	unsigned long keysize = 1024;
-> +	unsigned long *mdsize;
-> +	u8 *mdata = NULL;
-> +	efi_guid_t guid;
-> +
-> +	if (ucs2_strnlen(name, 1024) > 0) {
-> +		createkey(name, &key, &keylen);
-> +	} else {
-> +		keylen = 0;
-> +		key = kzalloc(1024, GFP_KERNEL);
-> +	}
-> +
-> +	pr_info("%s: powerpc get next variable, key is %s\n", __func__, key);
-> +
-> +	rc = opal_get_next_variable(key, &keylen, keysize);
+       li      r3, 0
+       oris    r3, r3, UV_RETURN
 
-As far as I can tell the UEFI spec says the key namespace is really
-made up of (vendor, key) tuples. This seems broken to me since it's
-ignoring the vendor GUID part and treating it purely as an output, so
-if we had two vendors (OS vendors maybe?) writing using the same key
-name it'll cause problems.
 
-You could fix that by concatenating the vendor GUID and the ucs-2 name
-string, then passing that to OPAL as the key. Based on what the gsmi
-driver does I don't think we really need to store the attributes either
-so the metadata channel can be ditched entirely.
-
-> +	if (rc) {
-> +		kfree(key);
-> +		return opal_to_efi_status(rc);
-> +	}
-> +
-> +	mdsize = kzalloc(sizeof(unsigned long), GFP_KERNEL);
-> +	rc = opal_get_variable_size(key, keylen, mdsize, NULL);
-> +	if (rc)
-> +		goto out;
-> +
-> +	if (*mdsize <= 0)
-> +		goto out;
-> +
-> +	mdata = kzalloc(*mdsize, GFP_KERNEL);
-> +
-> +	rc = opal_get_variable(key, keylen, mdata, mdsize, NULL, NULL);
-> +	if (rc)
-> +		goto out;
-> +
-> +	if (*mdsize > 0) {
-> +		namesize = *mdsize - sizeof(efi_guid_t) - sizeof(u32);
-> +		if (namesize > 0) {
-> +			memset(&guid, 0, sizeof(efi_guid_t));
-> +			convert_buffer_to_efi_guid(mdata + namesize, &guid);
-> +			memcpy(vendor, &guid, sizeof(efi_guid_t));
-> +			memset(name, 0, namesize + 2);
-> +			memcpy(name, mdata, namesize);
-> +			*name_size = namesize + 2;
-> +			name[namesize++] = 0;
-> +			name[namesize] = 0;
-> +		}
-> +	}
-> +
-> +out:
-> +	kfree(mdsize);
-> +	kfree(mdata);
-> +
-> +	return opal_to_efi_status(rc);
-> +}
-> +
-> +static efi_status_t powerpc_set_variable(efi_char16_t *name, efi_guid_t *vendor,
-> +					 u32 attr, unsigned long data_size,
-> +					 void *data)
-> +{
-> +	int rc;
-> +	u8 *key;
-> +	unsigned long keylen;
-> +	u8 *metadata;
-> +	unsigned long mdsize;
-> +
-> +	if (!name)
-> +		return EFI_INVALID_PARAMETER;
-> +
-> +	if (!vendor)
-> +		return EFI_INVALID_PARAMETER;
-> +
-> +	createkey(name, &key, &keylen);
-> +	pr_info("%s: nayna key is %s\n", __func__, key);
-> +
-> +	createmetadata(name, vendor, &attr, &metadata, &mdsize);
-> +	rc = opal_set_variable(key, keylen, metadata, mdsize, data, data_size);
-> +
-> +	return opal_to_efi_status(rc);
-> +}
-> +
-> +
-> +static const struct efivar_operations efivar_ops = {
-> +	.get_variable = powerpc_get_variable,
-> +	.set_variable = powerpc_set_variable,
-> +	.get_next_variable = powerpc_get_next_variable,
-> +};
-> +
-> +
-> +static __init int power_secvar_init(void)
-> +{
-> +	int rc = 0;
-> +	unsigned long ver = 0;
-> +
-> +	rc = opal_variable_version(&ver);
-> +	if (ver != BACKEND_TC_COMPAT_V1) {
-> +		pr_info("Compatible backend unsupported\n");
-> +		return -1;
-> +	}
-> +
-> +	powerpc_kobj = kobject_create_and_add("secvar", firmware_kobj);
-> +	if (!powerpc_kobj) {
-> +		pr_info("secvar: Failed to create firmware kobj\n");
-> +		goto out_err;
-> +	}
-> +
-> +	rc = efivars_register(&efivars, &efivar_ops, powerpc_kobj);
-> +	if (rc) {
-> +		pr_info("powerpc: Failed to register efivars\n");
-> +		return rc;
-> +	}
-> +
-> +	return 0;
-> +out_err:
-> +	kobject_put(powerpc_kobj);
-> +	pr_info("powerpc: failed to load: %d\n", rc);
-> +	return rc;
-> +}
-> +arch_initcall(power_secvar_init);
-> +
-> +static void __exit power_secvar_exit(void)
-> +{
-> +	efivars_unregister(&efivars);
-> +	kobject_put(powerpc_kobj);
-> +}
-> +module_exit(power_secvar_exit);
-> +
-> +MODULE_AUTHOR("Nayna Jain");
-> +MODULE_LICENSE("GPL");
-
+cheers
