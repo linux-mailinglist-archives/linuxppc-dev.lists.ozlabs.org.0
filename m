@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634496FE47
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 13:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 137DB6FF60
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 14:18:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sf2Q70NRzDqQ1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 21:07:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sgcm4TXPzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 22:18:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45sf0L3KDfzDqPc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 21:05:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sgYw5rCHzDqPf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 22:16:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 45sf0K5lJ7z9sBF; Mon, 22 Jul 2019 21:05:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45sf0K2TtCz9s8m;
- Mon, 22 Jul 2019 21:05:21 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45sgYt6VLKz9s00;
+ Mon, 22 Jul 2019 22:16:02 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 7/8] KVM: PPC: Ultravisor: Enter a secure guest
-In-Reply-To: <20190718024724.GB13492@us.ibm.com>
-References: <20190628200825.31049-1-cclaudio@linux.ibm.com>
- <20190628200825.31049-8-cclaudio@linux.ibm.com>
- <87ftncg24e.fsf@concordia.ellerman.id.au> <20190718024724.GB13492@us.ibm.com>
-Date: Mon, 22 Jul 2019 21:05:17 +1000
-Message-ID: <87h87e72j6.fsf@concordia.ellerman.id.au>
+To: Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH] powerpc/dma: Fix invalid DMA mmap behavior
+In-Reply-To: <CAK8P3a1ChtE10D=enp_a+isBCGgRW1nX6-0jChuAvTcUAWECBg@mail.gmail.com>
+References: <20190717235437.12908-1-shawn@anastas.io>
+ <8b6963ac-521a-5752-2cfb-bcd87cad9dc4@ozlabs.ru>
+ <f9753335-b62c-67b4-84d7-7b67fe1b64ca@anastas.io>
+ <CAOSf1CGA_fDH7aAqRkc4maJUByaX7adGcjyt3cj4KFsMJNnocA@mail.gmail.com>
+ <20190718084934.GF24562@lst.de> <20190718095200.GA25744@lst.de>
+ <CAK8P3a1ChtE10D=enp_a+isBCGgRW1nX6-0jChuAvTcUAWECBg@mail.gmail.com>
+Date: Mon, 22 Jul 2019 22:16:02 +1000
+Message-ID: <87ef2i6z99.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,143 +48,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- Ryan Grimm <grimm@linux.ibm.com>, Thiago Bauermann <bauerman@linux.ibm.com>,
- Anshuman Khandual <khandual@linux.vnet.ibm.com>
+Cc: Shawn Anastasio <shawn@anastas.io>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Sam Bobroff <sbobroff@linux.ibm.com>,
+ "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com> writes:
-> Michael Ellerman [mpe@ellerman.id.au] wrote:
->> Claudio Carvalho <cclaudio@linux.ibm.com> writes:
->> > From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Arnd Bergmann <arnd@arndb.de> writes:
+> On Thu, Jul 18, 2019 at 11:52 AM Christoph Hellwig <hch@lst.de> wrote:
+>> On Thu, Jul 18, 2019 at 10:49:34AM +0200, Christoph Hellwig wrote:
+>> > On Thu, Jul 18, 2019 at 01:45:16PM +1000, Oliver O'Halloran wrote:
+>> > > > Other than m68k, mips, and arm64, everybody else that doesn't have
+>> > > > ARCH_NO_COHERENT_DMA_MMAP set uses this default implementation, so
+>> > > > I assume this behavior is acceptable on those architectures.
+>> > >
+>> > > It might be acceptable, but there's no reason to use pgport_noncached
+>> > > if the platform supports cache-coherent DMA.
+>> > >
+>> > > Christoph (+cc) made the change so maybe he saw something we're missing.
 >> >
->> > To enter a secure guest, we have to go through the ultravisor, therefore
->> > we do a ucall when we are entering a secure guest.
->> >
->> > This change is needed for any sort of entry to the secure guest from the
->> > hypervisor, whether it is a return from an hcall, a return from a
->> > hypervisor interrupt, or the first time that a secure guest vCPU is run.
->> >
->> > If we are returning from an hcall, the results are already in the
->> > appropriate registers R3:12, except for R3, R6 and R7. R3 has the status
->> > of the reflected hcall, therefore we move it to R0 for the ultravisor and
->> > set R3 to the UV_RETURN ucall number. R6,7 were used as temporary
->> > registers, hence we restore them.
->> 
->> This is another case where some documentation would help people to
->> review the code.
->> 
->> > Have fast_guest_return check the kvm_arch.secure_guest field so that a
->> > new CPU enters UV when started (in response to a RTAS start-cpu call).
->> >
->> > Thanks to input from Paul Mackerras, Ram Pai and Mike Anderson.
->> >
->> > Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
->> > [ Pass SRR1 in r11 for UV_RETURN, fix kvmppc_msr_interrupt to preserve
->> >   the MSR_S bit ]
->> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
->> > [ Fix UV_RETURN ucall number and arch.secure_guest check ]
->> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
->> > [ Save the actual R3 in R0 for the ultravisor and use R3 for the
->> >   UV_RETURN ucall number. Update commit message and ret_to_ultra comment ]
->> > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> > ---
->> >  arch/powerpc/include/asm/kvm_host.h       |  1 +
->> >  arch/powerpc/include/asm/ultravisor-api.h |  1 +
->> >  arch/powerpc/kernel/asm-offsets.c         |  1 +
->> >  arch/powerpc/kvm/book3s_hv_rmhandlers.S   | 40 +++++++++++++++++++----
->> >  4 files changed, 37 insertions(+), 6 deletions(-)
->> >
->> > diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> > index cffb365d9d02..89813ca987c2 100644
->> > --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> > +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
->> > @@ -36,6 +36,7 @@
->> >  #include <asm/asm-compat.h>
->> >  #include <asm/feature-fixups.h>
->> >  #include <asm/cpuidle.h>
->> > +#include <asm/ultravisor-api.h>
->> >  
->> >  /* Sign-extend HDEC if not on POWER9 */
->> >  #define EXTEND_HDEC(reg)			\
->> > @@ -1092,16 +1093,12 @@ BEGIN_FTR_SECTION
->> >  END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->> >  
->> >  	ld	r5, VCPU_LR(r4)
->> > -	ld	r6, VCPU_CR(r4)
->> >  	mtlr	r5
->> > -	mtcr	r6
->> >  
->> >  	ld	r1, VCPU_GPR(R1)(r4)
->> >  	ld	r2, VCPU_GPR(R2)(r4)
->> >  	ld	r3, VCPU_GPR(R3)(r4)
->> >  	ld	r5, VCPU_GPR(R5)(r4)
->> > -	ld	r6, VCPU_GPR(R6)(r4)
->> > -	ld	r7, VCPU_GPR(R7)(r4)
->> >  	ld	r8, VCPU_GPR(R8)(r4)
->> >  	ld	r9, VCPU_GPR(R9)(r4)
->> >  	ld	r10, VCPU_GPR(R10)(r4)
->> > @@ -1119,10 +1116,38 @@ BEGIN_FTR_SECTION
->> >  	mtspr	SPRN_HDSISR, r0
->> >  END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
->> >  
->> > +	ld	r6, VCPU_KVM(r4)
->> > +	lbz	r7, KVM_SECURE_GUEST(r6)
->> > +	cmpdi	r7, 0
->> 
->> You could hoist the load of r6 and r7 to here?
+>> > I always found the forcing of noncached access even for coherent
+>> > devices a little odd, but this was inherited from the previous
+>> > implementation, which surprised me a bit as the different attributes
+>> > are usually problematic even on x86.  Let me dig into the history a
+>> > bit more, but I suspect the righ fix is to default to cached mappings
+>> > for coherent devices.
+>>
+>> Ok, some history:
+>>
+>> The generic dma mmap implementation, which we are effectively still
+>> using today was added by:
+>>
+>> commit 64ccc9c033c6089b2d426dad3c56477ab066c999
+>> Author: Marek Szyprowski <m.szyprowski@samsung.com>
+>> Date:   Thu Jun 14 13:03:04 2012 +0200
+>>
+>>     common: dma-mapping: add support for generic dma_mmap_* calls
+>>
+>> and unconditionally uses pgprot_noncached in dma_common_mmap, which is
+>> then used as the fallback by dma_mmap_attrs if no ->mmap method is
+>> present.  At that point we already had the powerpc implementation
+>> that only uses pgprot_noncached for non-coherent mappings, and
+>> the arm one, which uses pgprot_writecombine if DMA_ATTR_WRITE_COMBINE
+>> is set and otherwise pgprot_dmacoherent, which seems to be uncached.
+>> Arm did support coherent platforms at that time, but they might have
+>> been an afterthought and not handled properly.
 >
-> we could move 'ld r7' here. r6 is used to restore CR below so
-> it (r6) has to stay there?
-
-It's used to restore CR in both paths, so both paths load VCPU_CR(r4)
-into r6. So we could instead do that load once, before the branch?
-
->> > +	bne	ret_to_ultra
->> > +
->> > +	lwz	r6, VCPU_CR(r4)
->> > +	mtcr	r6
->> > +
->> > +	ld	r7, VCPU_GPR(R7)(r4)
->> > +	ld	r6, VCPU_GPR(R6)(r4)
->> >  	ld	r0, VCPU_GPR(R0)(r4)
->> >  	ld	r4, VCPU_GPR(R4)(r4)
->> >  	HRFI_TO_GUEST
->> >  	b	.
->> > +/*
->> > + * We are entering a secure guest, so we have to invoke the ultravisor to do
->> > + * that. If we are returning from a hcall, the results are already in the
->> > + * appropriate registers R3:12, except for R3, R6 and R7. R3 has the status of
->> > + * the reflected hcall, therefore we move it to R0 for the ultravisor and set
->> > + * R3 to the UV_RETURN ucall number. R6,7 were used as temporary registers
->> > + * above, hence we restore them.
->> > + */
->> > +ret_to_ultra:
->> > +	lwz	r6, VCPU_CR(r4)
->> > +	mtcr	r6
->> > +	mfspr	r11, SPRN_SRR1
->> > +	mr	r0, r3
->> > +	LOAD_REG_IMMEDIATE(r3, UV_RETURN)
->> 
->> Worth open coding to save three instructions?
+> Cache-coherent devices are still very rare on 32-bit ARM.
 >
-> Yes, good point:
+> Among the callers of dma_mmap_coherent(), almost all are in platform
+> specific device drivers that only ever run on noncoherent ARM SoCs,
+> which explains why nobody would have noticed problems.
 >
-> -       LOAD_REG_IMMEDIATE(r3, UV_RETURN)
-> +
-> +       li      r3, 0
-> +       oris    r3, r3, (UV_RETURN)@__AS_ATHIGH
-> +       ori     r3, r3, (UV_RETURN)@l
+> There is also a difference in behavior between ARM and PowerPC
+> when dealing with mismatched cacheability attributes: If the same
+> page is mapped as both cached and uncached to, this may
+> cause silent undefined behavior on ARM, while PowerPC should
+> enter a checkstop as soon as it notices.
 
-This should do it no?
+On newer Power CPUs it's actually more like the ARM behaviour.
 
-       li      r3, 0
-       oris    r3, r3, UV_RETURN
-
+I don't know for sure that it will *never* checkstop but there are at
+least cases where it won't. There's some (not much) detail in the
+Power8/9 user manuals.
 
 cheers
