@@ -2,72 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BE5707FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 19:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2E570804
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 19:58:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sq7P6cjtzDqVn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2019 03:57:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sq9R6xHwzDqJt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2019 03:58:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="l74Ga2UN"; 
- dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45spwK4JyVzDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:47:29 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id y15so17728885pfn.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 10:47:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=7xS0c3M+AYF9dKnSJXbr9Z9WeQPtRSwknJMFizoWC90=;
- b=l74Ga2UN8F8Q/yrY5xAsIprRWmkxXAfNn/X4DwnYFxOyp1PozvuOzixIF5vXrPCfk3
- wMT4IPrKD7VIsStfNGlc5OxVg14B+mtPtkWLdyGeN36uOks0cO1CQHPaw66VIA2VNasv
- 3+R599uaHPyBZofjPQTJ0zj1Om2JbP/YXyTUFbz2OVrfD3mu/m9DfL/MCQTFy4UORChe
- Y5cAjK66yZAmYTqaQ0m7Hs1lXeVQW3BrEzXStYWpO65/uCyZTxBn6KsyfPLYvG5VINFJ
- nt5iS4DecNENKw1iV6h0Q9lEkKmNQwxzapZAhnyDOydl+hV8XL6f9QSKycpy6IHzOn5D
- fwAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=7xS0c3M+AYF9dKnSJXbr9Z9WeQPtRSwknJMFizoWC90=;
- b=GbWe/RDtRKR2qRL6hcuglBmdFfF7HmRxohhVIkHLSr27CvmAY93khr7Of4Gb9O6ESf
- NCYiiT+AsLtPz9qZcR2COCFDVY/IRvs4/WG7WevyVAEZLsDvqiWFuXJ+paQuSX5/EKb9
- MfhXEk6ZmoE97iEdM6sFh+Y3vrSjTNtv7oMZs3BS4PxWoB5Lt4fv3XMfXgRxFQf54aaO
- 9LVvFgp1fbWBs7CWz/cJiz1yylsxrpS11fK1vQlLf2dZfKR6FHHmwCIEqyb2z77eMDx6
- dwSdsQ6RkiNaBek5IUbi0wV4aAi/lhMmDnQGEC0onv3ugAN7vVKYUT+2sbIWjpPyrerq
- d1bQ==
-X-Gm-Message-State: APjAAAVNxNJoeoCStL17ApqGS8D790VUFpTMyOL4u/Yt1yCz0yZ8HStK
- E7BrjSjG1e4bIGg3eoVllMcGyO+k
-X-Google-Smtp-Source: APXvYqweo9oJiRNiZHFMcTx/83oiB+aspk0v/724rAEJcNrvUY5UTGh7Js9kZKkw+eMKqVHklAWKew==
-X-Received: by 2002:aa7:8007:: with SMTP id j7mr1394993pfi.154.1563817647434; 
- Mon, 22 Jul 2019 10:47:27 -0700 (PDT)
-Received: from bobo.local0.net (193-116-123-212.tpgi.com.au. [193.116.123.212])
- by smtp.gmail.com with ESMTPSA id z24sm69170057pfr.51.2019.07.22.10.47.24
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 22 Jul 2019 10:47:27 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 4/4] powerpc/64: Add VIRTUAL_BUG_ON checks for __va and
- __pa addresses
-Date: Tue, 23 Jul 2019 03:47:00 +1000
-Message-Id: <20190722174700.11483-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190722174700.11483-1-npiggin@gmail.com>
-References: <20190722174700.11483-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45spyd70dqzDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45spyd4gVbz8tXb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45spyd3NkJz9s8m; Tue, 23 Jul 2019 03:49:29 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45spyc0yy4z9sBZ
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Jul 2019 03:49:27 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 73DB7ACD8;
+ Mon, 22 Jul 2019 17:49:23 +0000 (UTC)
+Date: Mon, 22 Jul 2019 19:49:23 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc: avoid adjusting memory_limit for capture
+ kernel memory reservation
+Message-ID: <20190722194923.4be2a1be@naga.suse.cz>
+In-Reply-To: <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
+References: <156166326909.13320.3330203549978146193.stgit@hbathini.in.ibm.com>
+ <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,47 +61,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ensure __va is given an address below PAGE_OFFSET, and __pa is given
-one above PAGE_OFFSET.
+On Fri, 28 Jun 2019 00:51:19 +0530
+Hari Bathini <hbathini@linux.ibm.com> wrote:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/page.h | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> Currently, if memory_limit is specified and it overlaps with memory to
+> be reserved for capture kernel, memory_limit is adjusted to accommodate
+> capture kernel. With memory reservation for capture kernel moved later
+> (after enforcing memory limit), this adjustment no longer holds water.
+> So, avoid adjusting memory_limit and error out instead.
 
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index 0d52f57fca04..c8bb14ff4713 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -215,9 +215,19 @@ static inline bool pfn_valid(unsigned long pfn)
- /*
-  * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
-  * with -mcmodel=medium, so we use & and | instead of - and + on 64-bit.
-+ * This also results in better code generation.
-  */
--#define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET))
--#define __pa(x) ((unsigned long)(x) & 0x0fffffffffffffffUL)
-+#define __va(x)								\
-+({									\
-+	VIRTUAL_BUG_ON((unsigned long)(x) >= PAGE_OFFSET);		\
-+	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
-+})
-+
-+#define __pa(x)								\
-+({									\
-+	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
-+	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
-+})
- 
- #else /* 32-bit, non book E */
- #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + PAGE_OFFSET - MEMORY_START))
--- 
-2.20.1
+Can you split out the memory limit adjustment out of memory reservation
+so it can still be adjusted?
+
+Thanks
+
+Michal
+> 
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/fadump.c        |   16 ----------------
+>  arch/powerpc/kernel/machine_kexec.c |   22 +++++++++++-----------
+>  2 files changed, 11 insertions(+), 27 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 4eab972..a784695 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -476,22 +476,6 @@ int __init fadump_reserve_mem(void)
+>  #endif
+>  	}
+>  
+> -	/*
+> -	 * Calculate the memory boundary.
+> -	 * If memory_limit is less than actual memory boundary then reserve
+> -	 * the memory for fadump beyond the memory_limit and adjust the
+> -	 * memory_limit accordingly, so that the running kernel can run with
+> -	 * specified memory_limit.
+> -	 */
+> -	if (memory_limit && memory_limit < memblock_end_of_DRAM()) {
+> -		size = get_fadump_area_size();
+> -		if ((memory_limit + size) < memblock_end_of_DRAM())
+> -			memory_limit += size;
+> -		else
+> -			memory_limit = memblock_end_of_DRAM();
+> -		printk(KERN_INFO "Adjusted memory_limit for firmware-assisted"
+> -				" dump, now %#016llx\n", memory_limit);
+> -	}
+>  	if (memory_limit)
+>  		memory_boundary = memory_limit;
+>  	else
+> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
+> index c4ed328..fc5533b 100644
+> --- a/arch/powerpc/kernel/machine_kexec.c
+> +++ b/arch/powerpc/kernel/machine_kexec.c
+> @@ -125,10 +125,8 @@ void __init reserve_crashkernel(void)
+>  		crashk_res.end = crash_base + crash_size - 1;
+>  	}
+>  
+> -	if (crashk_res.end == crashk_res.start) {
+> -		crashk_res.start = crashk_res.end = 0;
+> -		return;
+> -	}
+> +	if (crashk_res.end == crashk_res.start)
+> +		goto error_out;
+>  
+>  	/* We might have got these values via the command line or the
+>  	 * device tree, either way sanitise them now. */
+> @@ -170,15 +168,13 @@ void __init reserve_crashkernel(void)
+>  	if (overlaps_crashkernel(__pa(_stext), _end - _stext)) {
+>  		printk(KERN_WARNING
+>  			"Crash kernel can not overlap current kernel\n");
+> -		crashk_res.start = crashk_res.end = 0;
+> -		return;
+> +		goto error_out;
+>  	}
+>  
+>  	/* Crash kernel trumps memory limit */
+>  	if (memory_limit && memory_limit <= crashk_res.end) {
+> -		memory_limit = crashk_res.end + 1;
+> -		printk("Adjusted memory limit for crashkernel, now 0x%llx\n",
+> -		       memory_limit);
+> +		pr_err("Crash kernel size can't exceed memory_limit\n");
+> +		goto error_out;
+>  	}
+>  
+>  	printk(KERN_INFO "Reserving %ldMB of memory at %ldMB "
+> @@ -190,9 +186,13 @@ void __init reserve_crashkernel(void)
+>  	if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
+>  	    memblock_reserve(crashk_res.start, crash_size)) {
+>  		pr_err("Failed to reserve memory for crashkernel!\n");
+> -		crashk_res.start = crashk_res.end = 0;
+> -		return;
+> +		goto error_out;
+>  	}
+> +
+> +	return;
+> +error_out:
+> +	crashk_res.start = crashk_res.end = 0;
+> +	return;
+>  }
+>  
+>  int overlaps_crashkernel(unsigned long start, unsigned long size)
+> 
 
