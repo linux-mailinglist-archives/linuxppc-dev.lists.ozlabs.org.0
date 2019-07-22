@@ -1,51 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438DB6F6D7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 02:56:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sNTk1FLGzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 10:56:26 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC346F744
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 04:43:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sQs82d28zDqPv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 12:43:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com;
+ envelope-from=natechancellor@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="sLB7Ghof"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45sNRk4q77zDqTM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 10:54:41 +1000 (AEST)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2019 17:54:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,292,1559545200"; 
- d="gz'50?scan'50,208,50";a="159726631"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga007.jf.intel.com with ESMTP; 21 Jul 2019 17:54:10 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1hpMaf-000FbH-SJ; Mon, 22 Jul 2019 08:54:09 +0800
-Date: Mon, 22 Jul 2019 08:53:33 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH] powerpc: Test broken dcbz
-Message-ID: <201907220849.f3zL8NEf%lkp@intel.com>
-References: <20190721075846.GA97701@archlinux-threadripper>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sQqJ5PqhzDqKH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 12:41:48 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id v19so33764008wmj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jul 2019 19:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=pPpIaNLQF1tYH4Gfl3jia7C14Lw+otLIe/3ei3vnPHs=;
+ b=sLB7GhofPFZ5SYPVDuVZlXMpNNlMRtuES+25pXgCvgLJPuadSzAUx5Jbmgwq/JFJ9h
+ yO9m6cvFdThjorC34g+cjoFFhpJFSLU5Hh7c8KlutAKpb7US5ajp7X/bVFy92dqO89dk
+ A8uo267m106oLEz8RAHfR5UMiCiRjfuH0juHcPuPHlPdrOPjNGwKBX3dpubePRKY8IqU
+ TKFCd19MCezBwIv9IjYYX1DHjnx8fnr0uMlAwH19hZWVz0bGVQDPnlZmcMK466xFD3K+
+ PFZbmaypa4eJqhjKO5P77VKvQVFCLkZM0shjYH12V4hHh7FnrzRwSxbkBib3P/iENaED
+ EQpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=pPpIaNLQF1tYH4Gfl3jia7C14Lw+otLIe/3ei3vnPHs=;
+ b=WsGpb/teV9lOCeWJW0WiZ92Je+H1qyyHyKP0k+JJPf9zJ/aDxt5ofndI5ZHXS7bL83
+ 7zhj5j6MHB78bByV0W5aOZVnAmzWsjcSlct+XYr4YTe+luUBBYUHx5+e1S1WVcyh3RVR
+ Byy1xHbMrOi4MDONh5QGelu2WJM9enN05hheqDYh7A5mKzqNHFnOZCM0SM+cEw/oM7Qk
+ ML8ToGlKy/vYblV6oUwHsjnXIBcLg9QZYOOWbEqvoSjVSLCWIKLHqZ6383YNpcyDvQ9H
+ T2g0huGaKFl8S9xQ1XDVYCdpvqjN0I0u1pJeqqH7nyQ1d63/FDLU2J07pFqTy3OmftLa
+ TMwg==
+X-Gm-Message-State: APjAAAW2fXeedAN6CaSj1mz0r1/ts8eQnIoQiVMzlqC8SmhKr1oOSgSl
+ sLMH2fxu8u207ddPMz+CjBw=
+X-Google-Smtp-Source: APXvYqx1EumfogFI6bF7CUKrs6P6jGGQhRz0yUURcnZKT5wjZtyt8HwVEiTqC5DtRkMGoBh275xdSg==
+X-Received: by 2002:a1c:1d08:: with SMTP id d8mr58946832wmd.22.1563763303934; 
+ Sun, 21 Jul 2019 19:41:43 -0700 (PDT)
+Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
+ by smtp.gmail.com with ESMTPSA id i6sm30907180wrv.47.2019.07.21.19.41.42
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Sun, 21 Jul 2019 19:41:42 -0700 (PDT)
+Date: Sun, 21 Jul 2019 19:41:40 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+Message-ID: <20190722024140.GA55142@archlinux-threadripper>
+References: <c6ff2faba7fbb56a7f5b5f08cd3453f89fc0aaf4.1557480165.git.christophe.leroy@c-s.fr>
+ <45hnfp6SlLz9sP0@ozlabs.org>
+ <20190708191416.GA21442@archlinux-threadripper>
+ <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+ <20190709064952.GA40851@archlinux-threadripper>
+ <20190719032456.GA14108@archlinux-threadripper>
+ <20190719152303.GA20882@gate.crashing.org>
+ <20190719160455.GA12420@archlinux-threadripper>
+ <20190721075846.GA97701@archlinux-threadripper>
+ <20190721180150.GN20882@gate.crashing.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="rtzc7m3ci76vghzi"
+Content-Type: multipart/mixed; boundary="HcAYCG3uE/tztfnV"
 Content-Disposition: inline
-In-Reply-To: <20190721075846.GA97701@archlinux-threadripper>
-X-Patchwork-Hint: ignore
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190721180150.GN20882@gate.crashing.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,526 +89,1731 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, kbuild-all@01.org,
- linuxppc-dev@lists.ozlabs.org
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---rtzc7m3ci76vghzi
+--HcAYCG3uE/tztfnV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Hi Nathan,
+Hi Segher,
 
-Thank you for the patch! Yet something to improve:
+On Sun, Jul 21, 2019 at 01:01:50PM -0500, Segher Boessenkool wrote:
+> On Sun, Jul 21, 2019 at 12:58:46AM -0700, Nathan Chancellor wrote:
+> > I have attached the disassembly of arch/powerpc/kernel/mem.o with
+> > clear_page (working) and broken_clear_page (broken), along with the side
+> > by side diff. My assembly knowledge is fairly limited as it stands and
+> > it is certainly not up to snuff on PowerPC so I have no idea what I am
+> > looking for. Please let me know if anything immediately looks off or if
+> > there is anything else I can do to help out.
+> 
+> You might want to use a disassembler that shows most simplified mnemonics,
+> and you crucially should show the relocations.  "objdump -dr" works nicely.
 
-[auto build test ERROR on linus/master]
-[cannot apply to v5.3-rc1 next-20190719]
-[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+Copy, those are attached below if you want to take a further look at
+them.
 
-url:    https://github.com/0day-ci/linux/commits/Nathan-Chancellor/powerpc-Test-broken-dcbz/20190722-051054
-config: powerpc-defconfig (attached as .config)
-compiler: powerpc64-linux-gcc (GCC) 7.4.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # save the attached .config to linux build tree
-        GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
+> > 0000017c clear_user_page:
+> >      17c: 38 80 00 80                  	li 4, 128
+> >      180: 7c 89 03 a6                  	mtctr 4
+> >      184: 7c 00 1f ec                  	dcbz 0, 3
+> >      188: 38 63 00 20                  	addi 3, 3, 32
+> >      18c: 42 00 ff f8                  	bdnz .+65528
+> 
+> That offset is incorrectly disassembled, btw (it's a signed field, not
+> unsigned).
+> 
+> > 0000017c clear_user_page:
+> >      17c: 94 21 ff f0                  	stwu 1, -16(1)
+> >      180: 38 80 00 80                  	li 4, 128
+> >      184: 38 63 ff e0                  	addi 3, 3, -32
+> >      188: 7c 89 03 a6                  	mtctr 4
+> >      18c: 38 81 00 0f                  	addi 4, 1, 15
+> >      190: 8c c3 00 20                  	lbzu 6, 32(3)
+> >      194: 98 c1 00 0f                  	stb 6, 15(1)
+> >      198: 7c 00 27 ec                  	dcbz 0, 4
+> >      19c: 42 00 ff f4                  	bdnz .+65524
+> 
+> Uh, yeah, well, I have no idea what clang tried here, but that won't
+> work.  It's copying a byte from each target cache line to the stack,
+> and then does clears the cache line containing that byte on the stack.
+> 
+> I *guess* this is about "Z" and not about "%y", but you'll have to ask
+> the clang people.
+> 
+> Or it may be that they do not treat inline asm operands as lvalues
+> properly?  That rings some bells.  Yeah that looks like it.
+> 
+> 
+> Segher
 
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
+Okay, I think I understand... I think this is enough to bring up an LLVM
+bug report but I'll ask some of the LLVM folks I know before doing so.
 
-All errors (new ones prefixed by >>):
+Thank you for all of the input, I really appreciate it,
+Nathan
 
-   arch/powerpc/mm/mem.c: In function 'clear_user_page':
->> arch/powerpc/mm/mem.c:364:2: error: implicit declaration of function 'broken_clear_page'; did you mean 'bdev_read_page'? [-Werror=implicit-function-declaration]
-     broken_clear_page(page);
-     ^~~~~~~~~~~~~~~~~
-     bdev_read_page
-   cc1: all warnings being treated as errors
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="mem-working.txt"
 
-vim +364 arch/powerpc/mm/mem.c
 
----
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+mem-working.o:     file format elf32-powerpc
 
---rtzc7m3ci76vghzi
-Content-Type: application/gzip
-Content-Disposition: attachment; filename=".config.gz"
-Content-Transfer-Encoding: base64
 
-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
-AA==
+Disassembly of section .text:
 
---rtzc7m3ci76vghzi--
+00000000 <phys_mem_access_prot>:
+   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff e0 	stwu    r1,-32(r1)
+   c:	93 a1 00 14 	stw     r29,20(r1)
+  10:	7c fd 3b 78 	mr      r29,r7
+  14:	3c e0 00 00 	lis     r7,0
+			16: R_PPC_ADDR16_HA	ppc_md
+  18:	38 e7 00 00 	addi    r7,r7,0
+			1a: R_PPC_ADDR16_LO	ppc_md
+  1c:	81 07 00 a0 	lwz     r8,160(r7)
+  20:	93 c1 00 18 	stw     r30,24(r1)
+  24:	28 08 00 00 	cmplwi  r8,0
+  28:	7c 7e 1b 78 	mr      r30,r3
+  2c:	41 82 00 20 	beq     4c <phys_mem_access_prot+0x4c>
+  30:	80 7d 00 00 	lwz     r3,0(r29)
+  34:	38 e1 00 08 	addi    r7,r1,8
+  38:	7d 09 03 a6 	mtctr   r8
+  3c:	90 61 00 08 	stw     r3,8(r1)
+  40:	7f c3 f3 78 	mr      r3,r30
+  44:	4e 80 04 21 	bctrl
+  48:	48 00 00 28 	b       70 <phys_mem_access_prot+0x70>
+  4c:	7c a3 2b 78 	mr      r3,r5
+  50:	48 00 00 01 	bl      50 <phys_mem_access_prot+0x50>
+			50: R_PPC_PLTREL24	page_is_ram
+  54:	28 03 00 00 	cmplwi  r3,0
+  58:	80 7d 00 00 	lwz     r3,0(r29)
+  5c:	40 82 00 10 	bne     6c <phys_mem_access_prot+0x6c>
+  60:	54 63 06 26 	rlwinm  r3,r3,0,24,19
+  64:	60 63 05 00 	ori     r3,r3,1280
+  68:	90 7d 00 00 	stw     r3,0(r29)
+  6c:	90 7e 00 00 	stw     r3,0(r30)
+  70:	83 c1 00 18 	lwz     r30,24(r1)
+  74:	83 a1 00 14 	lwz     r29,20(r1)
+  78:	80 01 00 24 	lwz     r0,36(r1)
+  7c:	38 21 00 20 	addi    r1,r1,32
+  80:	7c 08 03 a6 	mtlr    r0
+  84:	4e 80 00 20 	blr
+
+00000088 <free_initmem>:
+  88:	7c 08 02 a6 	mflr    r0
+  8c:	90 01 00 04 	stw     r0,4(r1)
+  90:	94 21 ff f0 	stwu    r1,-16(r1)
+  94:	3c 60 00 00 	lis     r3,0
+			96: R_PPC_ADDR16_HA	ppc_md
+  98:	3c 80 00 00 	lis     r4,0
+			9a: R_PPC_ADDR16_HA	ppc_printk_progress
+  9c:	38 63 00 00 	addi    r3,r3,0
+			9e: R_PPC_ADDR16_LO	ppc_md
+  a0:	38 84 00 00 	addi    r4,r4,0
+			a2: R_PPC_ADDR16_LO	ppc_printk_progress
+  a4:	90 83 00 60 	stw     r4,96(r3)
+  a8:	48 00 00 01 	bl      a8 <free_initmem+0x20>
+			a8: R_PPC_PLTREL24	mark_initmem_nx
+  ac:	3c 60 00 00 	lis     r3,0
+			ae: R_PPC_ADDR16_HA	init_mem_is_free
+  b0:	38 80 00 01 	li      r4,1
+  b4:	98 83 00 00 	stb     r4,0(r3)
+			b6: R_PPC_ADDR16_LO	init_mem_is_free
+  b8:	3c 60 00 00 	lis     r3,0
+			ba: R_PPC_ADDR16_HA	__init_begin
+  bc:	3c 80 00 00 	lis     r4,0
+			be: R_PPC_ADDR16_HA	__init_end
+  c0:	3c a0 00 00 	lis     r5,0
+			c2: R_PPC_ADDR16_HA	.rodata.str1.1+0x107
+  c4:	38 63 00 00 	addi    r3,r3,0
+			c6: R_PPC_ADDR16_LO	__init_begin
+  c8:	38 84 00 00 	addi    r4,r4,0
+			ca: R_PPC_ADDR16_LO	__init_end
+  cc:	38 c5 00 00 	addi    r6,r5,0
+			ce: R_PPC_ADDR16_LO	.rodata.str1.1+0x107
+  d0:	38 a0 00 cc 	li      r5,204
+  d4:	48 00 00 01 	bl      d4 <free_initmem+0x4c>
+			d4: R_PPC_PLTREL24	free_reserved_area
+  d8:	80 01 00 14 	lwz     r0,20(r1)
+  dc:	38 21 00 10 	addi    r1,r1,16
+  e0:	7c 08 03 a6 	mtlr    r0
+  e4:	4e 80 00 20 	blr
+
+000000e8 <flush_dcache_page>:
+  e8:	80 83 00 00 	lwz     r4,0(r3)
+  ec:	70 84 08 00 	andi.   r4,r4,2048
+  f0:	4d 82 00 20 	beqlr
+  f4:	38 80 08 00 	li      r4,2048
+  f8:	7c a0 18 28 	lwarx   r5,0,r3
+  fc:	7c a5 20 78 	andc    r5,r5,r4
+ 100:	7c a0 19 2d 	stwcx.  r5,0,r3
+ 104:	40 a2 ff f4 	bne     f8 <flush_dcache_page+0x10>
+ 108:	4e 80 00 20 	blr
+
+0000010c <flush_dcache_icache_page>:
+ 10c:	7c 08 02 a6 	mflr    r0
+ 110:	90 01 00 04 	stw     r0,4(r1)
+ 114:	94 21 ff f0 	stwu    r1,-16(r1)
+ 118:	80 82 00 00 	lwz     r4,0(r2)
+ 11c:	38 84 00 01 	addi    r4,r4,1
+ 120:	90 82 00 00 	stw     r4,0(r2)
+ 124:	80 82 0a e4 	lwz     r4,2788(r2)
+ 128:	38 84 00 01 	addi    r4,r4,1
+ 12c:	90 82 0a e4 	stw     r4,2788(r2)
+ 130:	3c 80 00 00 	lis     r4,0
+			132: R_PPC_ADDR16_HA	mem_map
+ 134:	80 84 00 00 	lwz     r4,0(r4)
+			136: R_PPC_ADDR16_LO	mem_map
+ 138:	7c 64 18 50 	subf    r3,r4,r3
+ 13c:	3c 80 cc cc 	lis     r4,-13108
+ 140:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 144:	60 84 d0 00 	ori     r4,r4,53248
+ 148:	7c 63 21 d6 	mullw   r3,r3,r4
+ 14c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 150:	48 00 00 01 	bl      150 <flush_dcache_icache_page+0x44>
+			150: R_PPC_PLTREL24	__flush_dcache_icache
+ 154:	80 62 0a e4 	lwz     r3,2788(r2)
+ 158:	38 63 ff ff 	addi    r3,r3,-1
+ 15c:	90 62 0a e4 	stw     r3,2788(r2)
+ 160:	80 62 00 00 	lwz     r3,0(r2)
+ 164:	38 63 ff ff 	addi    r3,r3,-1
+ 168:	90 62 00 00 	stw     r3,0(r2)
+ 16c:	80 01 00 14 	lwz     r0,20(r1)
+ 170:	38 21 00 10 	addi    r1,r1,16
+ 174:	7c 08 03 a6 	mtlr    r0
+ 178:	4e 80 00 20 	blr
+
+0000017c <clear_user_page>:
+ 17c:	38 80 00 80 	li      r4,128
+ 180:	7c 89 03 a6 	mtctr   r4
+ 184:	7c 00 1f ec 	dcbz    0,r3
+ 188:	38 63 00 20 	addi    r3,r3,32
+ 18c:	42 00 ff f8 	bdnz    184 <clear_user_page+0x8>
+ 190:	80 65 00 00 	lwz     r3,0(r5)
+ 194:	70 63 08 00 	andi.   r3,r3,2048
+ 198:	4d 82 00 20 	beqlr
+ 19c:	38 60 08 00 	li      r3,2048
+ 1a0:	7c 80 28 28 	lwarx   r4,0,r5
+ 1a4:	7c 84 18 78 	andc    r4,r4,r3
+ 1a8:	7c 80 29 2d 	stwcx.  r4,0,r5
+ 1ac:	40 a2 ff f4 	bne     1a0 <clear_user_page+0x24>
+ 1b0:	4e 80 00 20 	blr
+
+000001b4 <copy_user_page>:
+ 1b4:	7c 08 02 a6 	mflr    r0
+ 1b8:	90 01 00 04 	stw     r0,4(r1)
+ 1bc:	94 21 ff f0 	stwu    r1,-16(r1)
+ 1c0:	93 c1 00 08 	stw     r30,8(r1)
+ 1c4:	7c de 33 78 	mr      r30,r6
+ 1c8:	48 00 00 01 	bl      1c8 <copy_user_page+0x14>
+			1c8: R_PPC_PLTREL24	copy_page
+ 1cc:	80 7e 00 00 	lwz     r3,0(r30)
+ 1d0:	70 63 08 00 	andi.   r3,r3,2048
+ 1d4:	41 82 00 18 	beq     1ec <copy_user_page+0x38>
+ 1d8:	38 60 08 00 	li      r3,2048
+ 1dc:	7c 80 f0 28 	lwarx   r4,0,r30
+ 1e0:	7c 84 18 78 	andc    r4,r4,r3
+ 1e4:	7c 80 f1 2d 	stwcx.  r4,0,r30
+ 1e8:	40 a2 ff f4 	bne     1dc <copy_user_page+0x28>
+ 1ec:	83 c1 00 08 	lwz     r30,8(r1)
+ 1f0:	80 01 00 14 	lwz     r0,20(r1)
+ 1f4:	38 21 00 10 	addi    r1,r1,16
+ 1f8:	7c 08 03 a6 	mtlr    r0
+ 1fc:	4e 80 00 20 	blr
+
+00000200 <flush_icache_user_range>:
+ 200:	7c 08 02 a6 	mflr    r0
+ 204:	90 01 00 04 	stw     r0,4(r1)
+ 208:	94 21 ff e0 	stwu    r1,-32(r1)
+ 20c:	3c 60 00 00 	lis     r3,0
+			20e: R_PPC_ADDR16_HA	.rodata.str1.1+0x115
+ 210:	93 81 00 10 	stw     r28,16(r1)
+ 214:	7c 9c 23 78 	mr      r28,r4
+ 218:	38 63 00 00 	addi    r3,r3,0
+			21a: R_PPC_ADDR16_LO	.rodata.str1.1+0x115
+ 21c:	38 80 00 53 	li      r4,83
+ 220:	93 a1 00 14 	stw     r29,20(r1)
+ 224:	7c bd 2b 78 	mr      r29,r5
+ 228:	38 a0 00 00 	li      r5,0
+ 22c:	93 c1 00 18 	stw     r30,24(r1)
+ 230:	7c de 33 78 	mr      r30,r6
+ 234:	48 00 00 01 	bl      234 <flush_icache_user_range+0x34>
+			234: R_PPC_PLTREL24	__might_sleep
+ 238:	3c 60 00 00 	lis     r3,0
+			23a: R_PPC_ADDR16_HA	mem_map
+ 23c:	3c 80 cc cc 	lis     r4,-13108
+ 240:	80 63 00 00 	lwz     r3,0(r3)
+			242: R_PPC_ADDR16_LO	mem_map
+ 244:	60 84 d0 00 	ori     r4,r4,53248
+ 248:	7c 63 e0 50 	subf    r3,r3,r28
+ 24c:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 250:	7c 63 21 d6 	mullw   r3,r3,r4
+ 254:	57 a4 05 3e 	clrlwi  r4,r29,20
+ 258:	50 64 00 26 	rlwimi  r4,r3,0,0,19
+ 25c:	3c 64 c0 00 	addis   r3,r4,-16384
+ 260:	7c 83 f2 14 	add     r4,r3,r30
+ 264:	48 00 00 01 	bl      264 <flush_icache_user_range+0x64>
+			264: R_PPC_PLTREL24	flush_icache_range
+ 268:	83 c1 00 18 	lwz     r30,24(r1)
+ 26c:	83 a1 00 14 	lwz     r29,20(r1)
+ 270:	83 81 00 10 	lwz     r28,16(r1)
+ 274:	80 01 00 24 	lwz     r0,36(r1)
+ 278:	38 21 00 20 	addi    r1,r1,32
+ 27c:	7c 08 03 a6 	mtlr    r0
+ 280:	4e 80 00 20 	blr
+
+00000284 <update_mmu_cache>:
+ 284:	4e 80 00 20 	blr
+
+00000288 <devmem_is_allowed>:
+ 288:	7c 08 02 a6 	mflr    r0
+ 28c:	90 01 00 04 	stw     r0,4(r1)
+ 290:	94 21 ff f0 	stwu    r1,-16(r1)
+ 294:	93 c1 00 08 	stw     r30,8(r1)
+ 298:	7c 7e 1b 78 	mr      r30,r3
+ 29c:	54 63 65 3e 	rlwinm  r3,r3,12,20,31
+ 2a0:	57 c4 60 26 	rlwinm  r4,r30,12,0,19
+ 2a4:	48 00 00 01 	bl      2a4 <devmem_is_allowed+0x1c>
+			2a4: R_PPC_PLTREL24	iomem_is_exclusive
+ 2a8:	70 63 00 01 	andi.   r3,r3,1
+ 2ac:	38 60 00 00 	li      r3,0
+ 2b0:	41 81 00 14 	bgt     2c4 <devmem_is_allowed+0x3c>
+ 2b4:	7f c3 f3 78 	mr      r3,r30
+ 2b8:	48 00 00 01 	bl      2b8 <devmem_is_allowed+0x30>
+			2b8: R_PPC_PLTREL24	page_is_ram
+ 2bc:	7c 63 00 34 	cntlzw  r3,r3
+ 2c0:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+ 2c4:	83 c1 00 08 	lwz     r30,8(r1)
+ 2c8:	80 01 00 14 	lwz     r0,20(r1)
+ 2cc:	38 21 00 10 	addi    r1,r1,16
+ 2d0:	7c 08 03 a6 	mtlr    r0
+ 2d4:	4e 80 00 20 	blr
+
+Disassembly of section .init.text:
+
+00000000 <mem_topology_setup>:
+   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff f0 	stwu    r1,-16(r1)
+   c:	48 00 00 01 	bl      c <mem_topology_setup+0xc>
+			c: R_PPC_PLTREL24	memblock_end_of_DRAM
+  10:	54 84 a0 3e 	rotlwi  r4,r4,20
+  14:	3c a0 00 00 	lis     r5,0
+			16: R_PPC_ADDR16_HA	max_pfn
+  18:	50 64 a0 16 	rlwimi  r4,r3,20,0,11
+  1c:	3c 60 00 00 	lis     r3,0
+			1e: R_PPC_ADDR16_HA	max_low_pfn
+  20:	90 85 00 00 	stw     r4,0(r5)
+			22: R_PPC_ADDR16_LO	max_pfn
+  24:	38 a0 ff ff 	li      r5,-1
+  28:	90 83 00 00 	stw     r4,0(r3)
+			2a: R_PPC_ADDR16_LO	max_low_pfn
+  2c:	3c 60 00 00 	lis     r3,0
+			2e: R_PPC_ADDR16_HA	min_low_pfn
+  30:	38 80 00 00 	li      r4,0
+  34:	38 c0 ff ff 	li      r6,-1
+  38:	39 00 00 00 	li      r8,0
+  3c:	90 83 00 00 	stw     r4,0(r3)
+			3e: R_PPC_ADDR16_LO	min_low_pfn
+  40:	3c 60 00 00 	lis     r3,0
+			42: R_PPC_ADDR16_HA	memblock
+  44:	38 80 00 00 	li      r4,0
+  48:	38 63 00 00 	addi    r3,r3,0
+			4a: R_PPC_ADDR16_LO	memblock
+  4c:	38 e3 00 10 	addi    r7,r3,16
+  50:	38 60 00 00 	li      r3,0
+  54:	48 00 00 01 	bl      54 <mem_topology_setup+0x54>
+			54: R_PPC_PLTREL24	memblock_set_node
+  58:	80 01 00 14 	lwz     r0,20(r1)
+  5c:	38 21 00 10 	addi    r1,r1,16
+  60:	7c 08 03 a6 	mtlr    r0
+  64:	4e 80 00 20 	blr
+
+00000068 <initmem_init>:
+  68:	7c 08 02 a6 	mflr    r0
+  6c:	90 01 00 04 	stw     r0,4(r1)
+  70:	94 21 ff f0 	stwu    r1,-16(r1)
+  74:	38 60 00 00 	li      r3,0
+  78:	48 00 00 01 	bl      78 <initmem_init+0x10>
+			78: R_PPC_PLTREL24	sparse_memory_present_with_active_regions
+  7c:	80 01 00 14 	lwz     r0,20(r1)
+  80:	38 21 00 10 	addi    r1,r1,16
+  84:	7c 08 03 a6 	mtlr    r0
+  88:	4e 80 00 20 	blr
+
+0000008c <paging_init>:
+  8c:	7c 08 02 a6 	mflr    r0
+  90:	90 01 00 04 	stw     r0,4(r1)
+  94:	94 21 ff d0 	stwu    r1,-48(r1)
+  98:	93 21 00 14 	stw     r25,20(r1)
+  9c:	93 41 00 18 	stw     r26,24(r1)
+  a0:	93 61 00 1c 	stw     r27,28(r1)
+  a4:	93 81 00 20 	stw     r28,32(r1)
+  a8:	93 a1 00 24 	stw     r29,36(r1)
+  ac:	93 c1 00 28 	stw     r30,40(r1)
+  b0:	48 00 00 01 	bl      b0 <paging_init+0x24>
+			b0: R_PPC_PLTREL24	memblock_phys_mem_size
+  b4:	7c 7e 1b 78 	mr      r30,r3
+  b8:	7c 9d 23 78 	mr      r29,r4
+  bc:	3f 40 ff fe 	lis     r26,-2
+  c0:	48 00 00 01 	bl      c0 <paging_init+0x34>
+			c0: R_PPC_PLTREL24	memblock_end_of_DRAM
+  c4:	7c 7c 1b 78 	mr      r28,r3
+  c8:	7c 9b 23 78 	mr      r27,r4
+  cc:	3b 20 00 00 	li      r25,0
+  d0:	38 e1 00 08 	addi    r7,r1,8
+  d4:	7f 43 d3 78 	mr      r3,r26
+  d8:	93 21 00 10 	stw     r25,16(r1)
+  dc:	38 a0 00 00 	li      r5,0
+  e0:	38 c0 00 00 	li      r6,0
+  e4:	93 21 00 08 	stw     r25,8(r1)
+  e8:	48 00 00 01 	bl      e8 <paging_init+0x5c>
+			e8: R_PPC_PLTREL24	map_kernel_page
+  ec:	3b 5a 10 00 	addi    r26,r26,4096
+  f0:	2c 1a f0 00 	cmpwi   r26,-4096
+  f4:	40 82 ff dc 	bne     d0 <paging_init+0x44>
+  f8:	3c 60 00 00 	lis     r3,0
+			fa: R_PPC_ADDR16_HA	.rodata.str1.1
+  fc:	4c c6 31 82 	crclr   4*cr1+eq
+ 100:	7f 85 e3 78 	mr      r5,r28
+ 104:	38 63 00 00 	addi    r3,r3,0
+			106: R_PPC_ADDR16_LO	.rodata.str1.1
+ 108:	7f 66 db 78 	mr      r6,r27
+ 10c:	7f c7 f3 78 	mr      r7,r30
+ 110:	7f a8 eb 78 	mr      r8,r29
+ 114:	48 00 00 01 	bl      114 <paging_init+0x88>
+			114: R_PPC_PLTREL24	printk
+ 118:	7c 7d d8 10 	subfc   r3,r29,r27
+ 11c:	4c c6 31 82 	crclr   4*cr1+eq
+ 120:	7c be e1 10 	subfe   r5,r30,r28
+ 124:	54 64 60 3e 	rotlwi  r4,r3,12
+ 128:	3c 60 00 00 	lis     r3,0
+			12a: R_PPC_ADDR16_HA	.rodata.str1.1+0x29
+ 12c:	50 a4 60 26 	rlwimi  r4,r5,12,0,19
+ 130:	38 63 00 00 	addi    r3,r3,0
+			132: R_PPC_ADDR16_LO	.rodata.str1.1+0x29
+ 134:	48 00 00 01 	bl      134 <paging_init+0xa8>
+			134: R_PPC_PLTREL24	printk
+ 138:	3c 60 00 00 	lis     r3,0
+			13a: R_PPC_ADDR16_HA	max_low_pfn
+ 13c:	80 83 00 00 	lwz     r4,0(r3)
+			13e: R_PPC_ADDR16_LO	max_low_pfn
+ 140:	3c 60 00 00 	lis     r3,0
+			142: R_PPC_ADDR16_HA	.bss+0x10
+ 144:	94 83 00 00 	stwu    r4,0(r3)
+			146: R_PPC_ADDR16_LO	.bss+0x10
+ 148:	48 00 00 01 	bl      148 <paging_init+0xbc>
+			148: R_PPC_PLTREL24	free_area_init_nodes
+ 14c:	83 c1 00 28 	lwz     r30,40(r1)
+ 150:	83 a1 00 24 	lwz     r29,36(r1)
+ 154:	83 81 00 20 	lwz     r28,32(r1)
+ 158:	83 61 00 1c 	lwz     r27,28(r1)
+ 15c:	83 41 00 18 	lwz     r26,24(r1)
+ 160:	83 21 00 14 	lwz     r25,20(r1)
+ 164:	80 01 00 34 	lwz     r0,52(r1)
+ 168:	38 21 00 30 	addi    r1,r1,48
+ 16c:	7c 08 03 a6 	mtlr    r0
+ 170:	4e 80 00 20 	blr
+
+00000174 <mem_init>:
+ 174:	7c 08 02 a6 	mflr    r0
+ 178:	90 01 00 04 	stw     r0,4(r1)
+ 17c:	94 21 ff e0 	stwu    r1,-32(r1)
+ 180:	3c 60 00 00 	lis     r3,0
+			182: R_PPC_ADDR16_HA	max_low_pfn
+ 184:	3c 80 00 00 	lis     r4,0
+			186: R_PPC_ADDR16_HA	max_pfn
+ 188:	93 81 00 10 	stw     r28,16(r1)
+ 18c:	3f 80 00 00 	lis     r28,0
+			18e: R_PPC_ADDR16_HA	high_memory
+ 190:	80 63 00 00 	lwz     r3,0(r3)
+			192: R_PPC_ADDR16_LO	max_low_pfn
+ 194:	80 84 00 00 	lwz     r4,0(r4)
+			196: R_PPC_ADDR16_LO	max_pfn
+ 198:	54 63 60 26 	rlwinm  r3,r3,12,0,19
+ 19c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 1a0:	90 7c 00 00 	stw     r3,0(r28)
+			1a2: R_PPC_ADDR16_LO	high_memory
+ 1a4:	3c 60 00 00 	lis     r3,0
+			1a6: R_PPC_ADDR16_HA	max_mapnr
+ 1a8:	93 a1 00 14 	stw     r29,20(r1)
+ 1ac:	93 c1 00 18 	stw     r30,24(r1)
+ 1b0:	90 83 00 00 	stw     r4,0(r3)
+			1b2: R_PPC_ADDR16_LO	max_mapnr
+ 1b4:	48 00 00 01 	bl      1b4 <mem_init+0x40>
+			1b4: R_PPC_PLTREL24	memblock_free_all
+ 1b8:	38 60 00 00 	li      r3,0
+ 1bc:	48 00 00 01 	bl      1bc <mem_init+0x48>
+			1bc: R_PPC_PLTREL24	mem_init_print_info
+ 1c0:	3c 60 00 00 	lis     r3,0
+			1c2: R_PPC_ADDR16_HA	.rodata.str1.1+0x44
+ 1c4:	4c c6 31 82 	crclr   4*cr1+eq
+ 1c8:	38 63 00 00 	addi    r3,r3,0
+			1ca: R_PPC_ADDR16_LO	.rodata.str1.1+0x44
+ 1cc:	48 00 00 01 	bl      1cc <mem_init+0x58>
+			1cc: R_PPC_PLTREL24	printk
+ 1d0:	3c 80 ff fd 	lis     r4,-3
+ 1d4:	3c 60 00 00 	lis     r3,0
+			1d6: R_PPC_ADDR16_HA	.rodata.str1.1+0x65
+ 1d8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1dc:	60 9e f0 00 	ori     r30,r4,61440
+ 1e0:	38 63 00 00 	addi    r3,r3,0
+			1e2: R_PPC_ADDR16_LO	.rodata.str1.1+0x65
+ 1e4:	7f c4 f3 78 	mr      r4,r30
+ 1e8:	38 a0 f0 00 	li      r5,-4096
+ 1ec:	48 00 00 01 	bl      1ec <mem_init+0x78>
+			1ec: R_PPC_PLTREL24	printk
+ 1f0:	3c 80 ff dd 	lis     r4,-35
+ 1f4:	3c 60 00 00 	lis     r3,0
+			1f6: R_PPC_ADDR16_HA	.rodata.str1.1+0x87
+ 1f8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1fc:	60 9d f0 00 	ori     r29,r4,61440
+ 200:	38 63 00 00 	addi    r3,r3,0
+			202: R_PPC_ADDR16_LO	.rodata.str1.1+0x87
+ 204:	7f a4 eb 78 	mr      r4,r29
+ 208:	7f c5 f3 78 	mr      r5,r30
+ 20c:	48 00 00 01 	bl      20c <mem_init+0x98>
+			20c: R_PPC_PLTREL24	printk
+ 210:	3f c0 00 00 	lis     r30,0
+			212: R_PPC_ADDR16_HA	ioremap_bot
+ 214:	3c 60 00 00 	lis     r3,0
+			216: R_PPC_ADDR16_HA	.rodata.str1.1+0xb1
+ 218:	4c c6 31 82 	crclr   4*cr1+eq
+ 21c:	80 9e 00 00 	lwz     r4,0(r30)
+			21e: R_PPC_ADDR16_LO	ioremap_bot
+ 220:	38 63 00 00 	addi    r3,r3,0
+			222: R_PPC_ADDR16_LO	.rodata.str1.1+0xb1
+ 224:	7f a5 eb 78 	mr      r5,r29
+ 228:	48 00 00 01 	bl      228 <mem_init+0xb4>
+			228: R_PPC_PLTREL24	printk
+ 22c:	80 7c 00 00 	lwz     r3,0(r28)
+			22e: R_PPC_ADDR16_LO	high_memory
+ 230:	3c 80 01 00 	lis     r4,256
+ 234:	4c c6 31 82 	crclr   4*cr1+eq
+ 238:	38 63 ff ff 	addi    r3,r3,-1
+ 23c:	80 be 00 00 	lwz     r5,0(r30)
+			23e: R_PPC_ADDR16_LO	ioremap_bot
+ 240:	3c 63 10 00 	addis   r3,r3,4096
+ 244:	54 63 00 06 	rlwinm  r3,r3,0,0,3
+ 248:	50 64 02 0c 	rlwimi  r4,r3,0,8,6
+ 24c:	3c 60 00 00 	lis     r3,0
+			24e: R_PPC_ADDR16_HA	.rodata.str1.1+0xda
+ 250:	38 63 00 00 	addi    r3,r3,0
+			252: R_PPC_ADDR16_LO	.rodata.str1.1+0xda
+ 254:	48 00 00 01 	bl      254 <mem_init+0xe0>
+			254: R_PPC_PLTREL24	printk
+ 258:	83 c1 00 18 	lwz     r30,24(r1)
+ 25c:	83 a1 00 14 	lwz     r29,20(r1)
+ 260:	83 81 00 10 	lwz     r28,16(r1)
+ 264:	80 01 00 24 	lwz     r0,36(r1)
+ 268:	38 21 00 20 	addi    r1,r1,32
+ 26c:	7c 08 03 a6 	mtlr    r0
+ 270:	4e 80 00 20 	blr
+
+00000274 <add_system_ram_resources>:
+ 274:	7c 08 02 a6 	mflr    r0
+ 278:	90 01 00 04 	stw     r0,4(r1)
+ 27c:	94 21 ff c0 	stwu    r1,-64(r1)
+ 280:	3c 60 00 00 	lis     r3,0
+			282: R_PPC_ADDR16_HA	memblock
+ 284:	93 a1 00 34 	stw     r29,52(r1)
+ 288:	3b a3 00 00 	addi    r29,r3,0
+			28a: R_PPC_ADDR16_LO	memblock
+ 28c:	80 7d 00 10 	lwz     r3,16(r29)
+ 290:	93 81 00 30 	stw     r28,48(r1)
+ 294:	1c 63 00 18 	mulli   r3,r3,24
+ 298:	83 9d 00 20 	lwz     r28,32(r29)
+ 29c:	7c 7c 1a 14 	add     r3,r28,r3
+ 2a0:	92 a1 00 14 	stw     r21,20(r1)
+ 2a4:	7c 1c 18 40 	cmplw   r28,r3
+ 2a8:	92 c1 00 18 	stw     r22,24(r1)
+ 2ac:	92 e1 00 1c 	stw     r23,28(r1)
+ 2b0:	93 01 00 20 	stw     r24,32(r1)
+ 2b4:	93 21 00 24 	stw     r25,36(r1)
+ 2b8:	93 41 00 28 	stw     r26,40(r1)
+ 2bc:	93 61 00 2c 	stw     r27,44(r1)
+ 2c0:	93 c1 00 38 	stw     r30,56(r1)
+ 2c4:	40 80 00 ac 	bge     370 <add_system_ram_resources+0xfc>
+ 2c8:	3c 60 00 00 	lis     r3,0
+			2ca: R_PPC_ADDR16_HA	kmalloc_caches
+ 2cc:	3c 80 00 00 	lis     r4,0
+			2ce: R_PPC_ADDR16_HA	.rodata.str1.1+0x199
+ 2d0:	3c a0 81 00 	lis     r5,-32512
+ 2d4:	3c c0 00 00 	lis     r6,0
+			2d6: R_PPC_ADDR16_HA	iomem_resource
+ 2d8:	3b 7c ff e8 	addi    r27,r28,-24
+ 2dc:	3b 40 00 00 	li      r26,0
+ 2e0:	3b 23 00 00 	addi    r25,r3,0
+			2e2: R_PPC_ADDR16_LO	kmalloc_caches
+ 2e4:	3b 04 00 00 	addi    r24,r4,0
+			2e6: R_PPC_ADDR16_LO	.rodata.str1.1+0x199
+ 2e8:	60 b7 02 00 	ori     r23,r5,512
+ 2ec:	3b c6 00 00 	addi    r30,r6,0
+			2ee: R_PPC_ADDR16_LO	iomem_resource
+ 2f0:	80 79 00 18 	lwz     r3,24(r25)
+ 2f4:	38 80 0d c0 	li      r4,3520
+ 2f8:	38 a0 00 28 	li      r5,40
+ 2fc:	82 db 00 1c 	lwz     r22,28(r27)
+ 300:	82 bb 00 24 	lwz     r21,36(r27)
+ 304:	48 00 00 01 	bl      304 <add_system_ram_resources+0x90>
+			304: R_PPC_PLTREL24	kmem_cache_alloc_trace
+ 308:	7c 64 1b 78 	mr      r4,r3
+ 30c:	7c 63 00 34 	cntlzw  r3,r3
+ 310:	28 04 00 00 	cmplwi  r4,0
+ 314:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+ 318:	0f 03 00 00 	twnei   r3,0
+ 31c:	41 82 00 34 	beq     350 <add_system_ram_resources+0xdc>
+ 320:	7c 76 aa 14 	add     r3,r22,r21
+ 324:	93 04 00 10 	stw     r24,16(r4)
+ 328:	38 63 ff ff 	addi    r3,r3,-1
+ 32c:	90 64 00 0c 	stw     r3,12(r4)
+ 330:	7f c3 f3 78 	mr      r3,r30
+ 334:	93 44 00 00 	stw     r26,0(r4)
+ 338:	92 c4 00 04 	stw     r22,4(r4)
+ 33c:	93 44 00 08 	stw     r26,8(r4)
+ 340:	92 e4 00 14 	stw     r23,20(r4)
+ 344:	48 00 00 01 	bl      344 <add_system_ram_resources+0xd0>
+			344: R_PPC_PLTREL24	request_resource
+ 348:	54 63 0f fe 	rlwinm  r3,r3,1,31,31
+ 34c:	0f 03 00 00 	twnei   r3,0
+ 350:	80 7d 00 10 	lwz     r3,16(r29)
+ 354:	3b 9c 00 18 	addi    r28,r28,24
+ 358:	3b 7b 00 18 	addi    r27,r27,24
+ 35c:	80 9d 00 20 	lwz     r4,32(r29)
+ 360:	1c 63 00 18 	mulli   r3,r3,24
+ 364:	7c 64 1a 14 	add     r3,r4,r3
+ 368:	7c 1c 18 40 	cmplw   r28,r3
+ 36c:	41 80 ff 84 	blt     2f0 <add_system_ram_resources+0x7c>
+ 370:	38 60 00 00 	li      r3,0
+ 374:	83 c1 00 38 	lwz     r30,56(r1)
+ 378:	83 a1 00 34 	lwz     r29,52(r1)
+ 37c:	83 81 00 30 	lwz     r28,48(r1)
+ 380:	83 61 00 2c 	lwz     r27,44(r1)
+ 384:	83 41 00 28 	lwz     r26,40(r1)
+ 388:	83 21 00 24 	lwz     r25,36(r1)
+ 38c:	83 01 00 20 	lwz     r24,32(r1)
+ 390:	82 e1 00 1c 	lwz     r23,28(r1)
+ 394:	82 c1 00 18 	lwz     r22,24(r1)
+ 398:	82 a1 00 14 	lwz     r21,20(r1)
+ 39c:	80 01 00 44 	lwz     r0,68(r1)
+ 3a0:	38 21 00 40 	addi    r1,r1,64
+ 3a4:	7c 08 03 a6 	mtlr    r0
+ 3a8:	4e 80 00 20 	blr
+
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="mem-broken.txt"
+
+
+mem-broken.o:     file format elf32-powerpc
+
+
+Disassembly of section .text:
+
+00000000 <phys_mem_access_prot>:
+   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff e0 	stwu    r1,-32(r1)
+   c:	93 a1 00 14 	stw     r29,20(r1)
+  10:	7c fd 3b 78 	mr      r29,r7
+  14:	3c e0 00 00 	lis     r7,0
+			16: R_PPC_ADDR16_HA	ppc_md
+  18:	38 e7 00 00 	addi    r7,r7,0
+			1a: R_PPC_ADDR16_LO	ppc_md
+  1c:	81 07 00 a0 	lwz     r8,160(r7)
+  20:	93 c1 00 18 	stw     r30,24(r1)
+  24:	28 08 00 00 	cmplwi  r8,0
+  28:	7c 7e 1b 78 	mr      r30,r3
+  2c:	41 82 00 20 	beq     4c <phys_mem_access_prot+0x4c>
+  30:	80 7d 00 00 	lwz     r3,0(r29)
+  34:	38 e1 00 08 	addi    r7,r1,8
+  38:	7d 09 03 a6 	mtctr   r8
+  3c:	90 61 00 08 	stw     r3,8(r1)
+  40:	7f c3 f3 78 	mr      r3,r30
+  44:	4e 80 04 21 	bctrl
+  48:	48 00 00 28 	b       70 <phys_mem_access_prot+0x70>
+  4c:	7c a3 2b 78 	mr      r3,r5
+  50:	48 00 00 01 	bl      50 <phys_mem_access_prot+0x50>
+			50: R_PPC_PLTREL24	page_is_ram
+  54:	28 03 00 00 	cmplwi  r3,0
+  58:	80 7d 00 00 	lwz     r3,0(r29)
+  5c:	40 82 00 10 	bne     6c <phys_mem_access_prot+0x6c>
+  60:	54 63 06 26 	rlwinm  r3,r3,0,24,19
+  64:	60 63 05 00 	ori     r3,r3,1280
+  68:	90 7d 00 00 	stw     r3,0(r29)
+  6c:	90 7e 00 00 	stw     r3,0(r30)
+  70:	83 c1 00 18 	lwz     r30,24(r1)
+  74:	83 a1 00 14 	lwz     r29,20(r1)
+  78:	80 01 00 24 	lwz     r0,36(r1)
+  7c:	38 21 00 20 	addi    r1,r1,32
+  80:	7c 08 03 a6 	mtlr    r0
+  84:	4e 80 00 20 	blr
+
+00000088 <free_initmem>:
+  88:	7c 08 02 a6 	mflr    r0
+  8c:	90 01 00 04 	stw     r0,4(r1)
+  90:	94 21 ff f0 	stwu    r1,-16(r1)
+  94:	3c 60 00 00 	lis     r3,0
+			96: R_PPC_ADDR16_HA	ppc_md
+  98:	3c 80 00 00 	lis     r4,0
+			9a: R_PPC_ADDR16_HA	ppc_printk_progress
+  9c:	38 63 00 00 	addi    r3,r3,0
+			9e: R_PPC_ADDR16_LO	ppc_md
+  a0:	38 84 00 00 	addi    r4,r4,0
+			a2: R_PPC_ADDR16_LO	ppc_printk_progress
+  a4:	90 83 00 60 	stw     r4,96(r3)
+  a8:	48 00 00 01 	bl      a8 <free_initmem+0x20>
+			a8: R_PPC_PLTREL24	mark_initmem_nx
+  ac:	3c 60 00 00 	lis     r3,0
+			ae: R_PPC_ADDR16_HA	init_mem_is_free
+  b0:	38 80 00 01 	li      r4,1
+  b4:	98 83 00 00 	stb     r4,0(r3)
+			b6: R_PPC_ADDR16_LO	init_mem_is_free
+  b8:	3c 60 00 00 	lis     r3,0
+			ba: R_PPC_ADDR16_HA	__init_begin
+  bc:	3c 80 00 00 	lis     r4,0
+			be: R_PPC_ADDR16_HA	__init_end
+  c0:	3c a0 00 00 	lis     r5,0
+			c2: R_PPC_ADDR16_HA	.rodata.str1.1+0x107
+  c4:	38 63 00 00 	addi    r3,r3,0
+			c6: R_PPC_ADDR16_LO	__init_begin
+  c8:	38 84 00 00 	addi    r4,r4,0
+			ca: R_PPC_ADDR16_LO	__init_end
+  cc:	38 c5 00 00 	addi    r6,r5,0
+			ce: R_PPC_ADDR16_LO	.rodata.str1.1+0x107
+  d0:	38 a0 00 cc 	li      r5,204
+  d4:	48 00 00 01 	bl      d4 <free_initmem+0x4c>
+			d4: R_PPC_PLTREL24	free_reserved_area
+  d8:	80 01 00 14 	lwz     r0,20(r1)
+  dc:	38 21 00 10 	addi    r1,r1,16
+  e0:	7c 08 03 a6 	mtlr    r0
+  e4:	4e 80 00 20 	blr
+
+000000e8 <flush_dcache_page>:
+  e8:	80 83 00 00 	lwz     r4,0(r3)
+  ec:	70 84 08 00 	andi.   r4,r4,2048
+  f0:	4d 82 00 20 	beqlr
+  f4:	38 80 08 00 	li      r4,2048
+  f8:	7c a0 18 28 	lwarx   r5,0,r3
+  fc:	7c a5 20 78 	andc    r5,r5,r4
+ 100:	7c a0 19 2d 	stwcx.  r5,0,r3
+ 104:	40 a2 ff f4 	bne     f8 <flush_dcache_page+0x10>
+ 108:	4e 80 00 20 	blr
+
+0000010c <flush_dcache_icache_page>:
+ 10c:	7c 08 02 a6 	mflr    r0
+ 110:	90 01 00 04 	stw     r0,4(r1)
+ 114:	94 21 ff f0 	stwu    r1,-16(r1)
+ 118:	80 82 00 00 	lwz     r4,0(r2)
+ 11c:	38 84 00 01 	addi    r4,r4,1
+ 120:	90 82 00 00 	stw     r4,0(r2)
+ 124:	80 82 0a e4 	lwz     r4,2788(r2)
+ 128:	38 84 00 01 	addi    r4,r4,1
+ 12c:	90 82 0a e4 	stw     r4,2788(r2)
+ 130:	3c 80 00 00 	lis     r4,0
+			132: R_PPC_ADDR16_HA	mem_map
+ 134:	80 84 00 00 	lwz     r4,0(r4)
+			136: R_PPC_ADDR16_LO	mem_map
+ 138:	7c 64 18 50 	subf    r3,r4,r3
+ 13c:	3c 80 cc cc 	lis     r4,-13108
+ 140:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 144:	60 84 d0 00 	ori     r4,r4,53248
+ 148:	7c 63 21 d6 	mullw   r3,r3,r4
+ 14c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 150:	48 00 00 01 	bl      150 <flush_dcache_icache_page+0x44>
+			150: R_PPC_PLTREL24	__flush_dcache_icache
+ 154:	80 62 0a e4 	lwz     r3,2788(r2)
+ 158:	38 63 ff ff 	addi    r3,r3,-1
+ 15c:	90 62 0a e4 	stw     r3,2788(r2)
+ 160:	80 62 00 00 	lwz     r3,0(r2)
+ 164:	38 63 ff ff 	addi    r3,r3,-1
+ 168:	90 62 00 00 	stw     r3,0(r2)
+ 16c:	80 01 00 14 	lwz     r0,20(r1)
+ 170:	38 21 00 10 	addi    r1,r1,16
+ 174:	7c 08 03 a6 	mtlr    r0
+ 178:	4e 80 00 20 	blr
+
+0000017c <clear_user_page>:
+ 17c:	94 21 ff f0 	stwu    r1,-16(r1)
+ 180:	38 80 00 80 	li      r4,128
+ 184:	38 63 ff e0 	addi    r3,r3,-32
+ 188:	7c 89 03 a6 	mtctr   r4
+ 18c:	38 81 00 0f 	addi    r4,r1,15
+ 190:	8c c3 00 20 	lbzu    r6,32(r3)
+ 194:	98 c1 00 0f 	stb     r6,15(r1)
+ 198:	7c 00 27 ec 	dcbz    0,r4
+ 19c:	42 00 ff f4 	bdnz    190 <clear_user_page+0x14>
+ 1a0:	80 65 00 00 	lwz     r3,0(r5)
+ 1a4:	70 63 08 00 	andi.   r3,r3,2048
+ 1a8:	41 82 00 18 	beq     1c0 <clear_user_page+0x44>
+ 1ac:	38 60 08 00 	li      r3,2048
+ 1b0:	7c 80 28 28 	lwarx   r4,0,r5
+ 1b4:	7c 84 18 78 	andc    r4,r4,r3
+ 1b8:	7c 80 29 2d 	stwcx.  r4,0,r5
+ 1bc:	40 a2 ff f4 	bne     1b0 <clear_user_page+0x34>
+ 1c0:	38 21 00 10 	addi    r1,r1,16
+ 1c4:	4e 80 00 20 	blr
+
+000001c8 <copy_user_page>:
+ 1c8:	7c 08 02 a6 	mflr    r0
+ 1cc:	90 01 00 04 	stw     r0,4(r1)
+ 1d0:	94 21 ff f0 	stwu    r1,-16(r1)
+ 1d4:	93 c1 00 08 	stw     r30,8(r1)
+ 1d8:	7c de 33 78 	mr      r30,r6
+ 1dc:	48 00 00 01 	bl      1dc <copy_user_page+0x14>
+			1dc: R_PPC_PLTREL24	copy_page
+ 1e0:	80 7e 00 00 	lwz     r3,0(r30)
+ 1e4:	70 63 08 00 	andi.   r3,r3,2048
+ 1e8:	41 82 00 18 	beq     200 <copy_user_page+0x38>
+ 1ec:	38 60 08 00 	li      r3,2048
+ 1f0:	7c 80 f0 28 	lwarx   r4,0,r30
+ 1f4:	7c 84 18 78 	andc    r4,r4,r3
+ 1f8:	7c 80 f1 2d 	stwcx.  r4,0,r30
+ 1fc:	40 a2 ff f4 	bne     1f0 <copy_user_page+0x28>
+ 200:	83 c1 00 08 	lwz     r30,8(r1)
+ 204:	80 01 00 14 	lwz     r0,20(r1)
+ 208:	38 21 00 10 	addi    r1,r1,16
+ 20c:	7c 08 03 a6 	mtlr    r0
+ 210:	4e 80 00 20 	blr
+
+00000214 <flush_icache_user_range>:
+ 214:	7c 08 02 a6 	mflr    r0
+ 218:	90 01 00 04 	stw     r0,4(r1)
+ 21c:	94 21 ff e0 	stwu    r1,-32(r1)
+ 220:	3c 60 00 00 	lis     r3,0
+			222: R_PPC_ADDR16_HA	.rodata.str1.1+0x115
+ 224:	93 81 00 10 	stw     r28,16(r1)
+ 228:	7c 9c 23 78 	mr      r28,r4
+ 22c:	38 63 00 00 	addi    r3,r3,0
+			22e: R_PPC_ADDR16_LO	.rodata.str1.1+0x115
+ 230:	38 80 00 53 	li      r4,83
+ 234:	93 a1 00 14 	stw     r29,20(r1)
+ 238:	7c bd 2b 78 	mr      r29,r5
+ 23c:	38 a0 00 00 	li      r5,0
+ 240:	93 c1 00 18 	stw     r30,24(r1)
+ 244:	7c de 33 78 	mr      r30,r6
+ 248:	48 00 00 01 	bl      248 <flush_icache_user_range+0x34>
+			248: R_PPC_PLTREL24	__might_sleep
+ 24c:	3c 60 00 00 	lis     r3,0
+			24e: R_PPC_ADDR16_HA	mem_map
+ 250:	3c 80 cc cc 	lis     r4,-13108
+ 254:	80 63 00 00 	lwz     r3,0(r3)
+			256: R_PPC_ADDR16_LO	mem_map
+ 258:	60 84 d0 00 	ori     r4,r4,53248
+ 25c:	7c 63 e0 50 	subf    r3,r3,r28
+ 260:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 264:	7c 63 21 d6 	mullw   r3,r3,r4
+ 268:	57 a4 05 3e 	clrlwi  r4,r29,20
+ 26c:	50 64 00 26 	rlwimi  r4,r3,0,0,19
+ 270:	3c 64 c0 00 	addis   r3,r4,-16384
+ 274:	7c 83 f2 14 	add     r4,r3,r30
+ 278:	48 00 00 01 	bl      278 <flush_icache_user_range+0x64>
+			278: R_PPC_PLTREL24	flush_icache_range
+ 27c:	83 c1 00 18 	lwz     r30,24(r1)
+ 280:	83 a1 00 14 	lwz     r29,20(r1)
+ 284:	83 81 00 10 	lwz     r28,16(r1)
+ 288:	80 01 00 24 	lwz     r0,36(r1)
+ 28c:	38 21 00 20 	addi    r1,r1,32
+ 290:	7c 08 03 a6 	mtlr    r0
+ 294:	4e 80 00 20 	blr
+
+00000298 <update_mmu_cache>:
+ 298:	4e 80 00 20 	blr
+
+0000029c <devmem_is_allowed>:
+ 29c:	7c 08 02 a6 	mflr    r0
+ 2a0:	90 01 00 04 	stw     r0,4(r1)
+ 2a4:	94 21 ff f0 	stwu    r1,-16(r1)
+ 2a8:	93 c1 00 08 	stw     r30,8(r1)
+ 2ac:	7c 7e 1b 78 	mr      r30,r3
+ 2b0:	54 63 65 3e 	rlwinm  r3,r3,12,20,31
+ 2b4:	57 c4 60 26 	rlwinm  r4,r30,12,0,19
+ 2b8:	48 00 00 01 	bl      2b8 <devmem_is_allowed+0x1c>
+			2b8: R_PPC_PLTREL24	iomem_is_exclusive
+ 2bc:	70 63 00 01 	andi.   r3,r3,1
+ 2c0:	38 60 00 00 	li      r3,0
+ 2c4:	41 81 00 14 	bgt     2d8 <devmem_is_allowed+0x3c>
+ 2c8:	7f c3 f3 78 	mr      r3,r30
+ 2cc:	48 00 00 01 	bl      2cc <devmem_is_allowed+0x30>
+			2cc: R_PPC_PLTREL24	page_is_ram
+ 2d0:	7c 63 00 34 	cntlzw  r3,r3
+ 2d4:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+ 2d8:	83 c1 00 08 	lwz     r30,8(r1)
+ 2dc:	80 01 00 14 	lwz     r0,20(r1)
+ 2e0:	38 21 00 10 	addi    r1,r1,16
+ 2e4:	7c 08 03 a6 	mtlr    r0
+ 2e8:	4e 80 00 20 	blr
+
+Disassembly of section .init.text:
+
+00000000 <mem_topology_setup>:
+   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff f0 	stwu    r1,-16(r1)
+   c:	48 00 00 01 	bl      c <mem_topology_setup+0xc>
+			c: R_PPC_PLTREL24	memblock_end_of_DRAM
+  10:	54 84 a0 3e 	rotlwi  r4,r4,20
+  14:	3c a0 00 00 	lis     r5,0
+			16: R_PPC_ADDR16_HA	max_pfn
+  18:	50 64 a0 16 	rlwimi  r4,r3,20,0,11
+  1c:	3c 60 00 00 	lis     r3,0
+			1e: R_PPC_ADDR16_HA	max_low_pfn
+  20:	90 85 00 00 	stw     r4,0(r5)
+			22: R_PPC_ADDR16_LO	max_pfn
+  24:	38 a0 ff ff 	li      r5,-1
+  28:	90 83 00 00 	stw     r4,0(r3)
+			2a: R_PPC_ADDR16_LO	max_low_pfn
+  2c:	3c 60 00 00 	lis     r3,0
+			2e: R_PPC_ADDR16_HA	min_low_pfn
+  30:	38 80 00 00 	li      r4,0
+  34:	38 c0 ff ff 	li      r6,-1
+  38:	39 00 00 00 	li      r8,0
+  3c:	90 83 00 00 	stw     r4,0(r3)
+			3e: R_PPC_ADDR16_LO	min_low_pfn
+  40:	3c 60 00 00 	lis     r3,0
+			42: R_PPC_ADDR16_HA	memblock
+  44:	38 80 00 00 	li      r4,0
+  48:	38 63 00 00 	addi    r3,r3,0
+			4a: R_PPC_ADDR16_LO	memblock
+  4c:	38 e3 00 10 	addi    r7,r3,16
+  50:	38 60 00 00 	li      r3,0
+  54:	48 00 00 01 	bl      54 <mem_topology_setup+0x54>
+			54: R_PPC_PLTREL24	memblock_set_node
+  58:	80 01 00 14 	lwz     r0,20(r1)
+  5c:	38 21 00 10 	addi    r1,r1,16
+  60:	7c 08 03 a6 	mtlr    r0
+  64:	4e 80 00 20 	blr
+
+00000068 <initmem_init>:
+  68:	7c 08 02 a6 	mflr    r0
+  6c:	90 01 00 04 	stw     r0,4(r1)
+  70:	94 21 ff f0 	stwu    r1,-16(r1)
+  74:	38 60 00 00 	li      r3,0
+  78:	48 00 00 01 	bl      78 <initmem_init+0x10>
+			78: R_PPC_PLTREL24	sparse_memory_present_with_active_regions
+  7c:	80 01 00 14 	lwz     r0,20(r1)
+  80:	38 21 00 10 	addi    r1,r1,16
+  84:	7c 08 03 a6 	mtlr    r0
+  88:	4e 80 00 20 	blr
+
+0000008c <paging_init>:
+  8c:	7c 08 02 a6 	mflr    r0
+  90:	90 01 00 04 	stw     r0,4(r1)
+  94:	94 21 ff d0 	stwu    r1,-48(r1)
+  98:	93 21 00 14 	stw     r25,20(r1)
+  9c:	93 41 00 18 	stw     r26,24(r1)
+  a0:	93 61 00 1c 	stw     r27,28(r1)
+  a4:	93 81 00 20 	stw     r28,32(r1)
+  a8:	93 a1 00 24 	stw     r29,36(r1)
+  ac:	93 c1 00 28 	stw     r30,40(r1)
+  b0:	48 00 00 01 	bl      b0 <paging_init+0x24>
+			b0: R_PPC_PLTREL24	memblock_phys_mem_size
+  b4:	7c 7e 1b 78 	mr      r30,r3
+  b8:	7c 9d 23 78 	mr      r29,r4
+  bc:	3f 40 ff fe 	lis     r26,-2
+  c0:	48 00 00 01 	bl      c0 <paging_init+0x34>
+			c0: R_PPC_PLTREL24	memblock_end_of_DRAM
+  c4:	7c 7c 1b 78 	mr      r28,r3
+  c8:	7c 9b 23 78 	mr      r27,r4
+  cc:	3b 20 00 00 	li      r25,0
+  d0:	38 e1 00 08 	addi    r7,r1,8
+  d4:	7f 43 d3 78 	mr      r3,r26
+  d8:	93 21 00 10 	stw     r25,16(r1)
+  dc:	38 a0 00 00 	li      r5,0
+  e0:	38 c0 00 00 	li      r6,0
+  e4:	93 21 00 08 	stw     r25,8(r1)
+  e8:	48 00 00 01 	bl      e8 <paging_init+0x5c>
+			e8: R_PPC_PLTREL24	map_kernel_page
+  ec:	3b 5a 10 00 	addi    r26,r26,4096
+  f0:	2c 1a f0 00 	cmpwi   r26,-4096
+  f4:	40 82 ff dc 	bne     d0 <paging_init+0x44>
+  f8:	3c 60 00 00 	lis     r3,0
+			fa: R_PPC_ADDR16_HA	.rodata.str1.1
+  fc:	4c c6 31 82 	crclr   4*cr1+eq
+ 100:	7f 85 e3 78 	mr      r5,r28
+ 104:	38 63 00 00 	addi    r3,r3,0
+			106: R_PPC_ADDR16_LO	.rodata.str1.1
+ 108:	7f 66 db 78 	mr      r6,r27
+ 10c:	7f c7 f3 78 	mr      r7,r30
+ 110:	7f a8 eb 78 	mr      r8,r29
+ 114:	48 00 00 01 	bl      114 <paging_init+0x88>
+			114: R_PPC_PLTREL24	printk
+ 118:	7c 7d d8 10 	subfc   r3,r29,r27
+ 11c:	4c c6 31 82 	crclr   4*cr1+eq
+ 120:	7c be e1 10 	subfe   r5,r30,r28
+ 124:	54 64 60 3e 	rotlwi  r4,r3,12
+ 128:	3c 60 00 00 	lis     r3,0
+			12a: R_PPC_ADDR16_HA	.rodata.str1.1+0x29
+ 12c:	50 a4 60 26 	rlwimi  r4,r5,12,0,19
+ 130:	38 63 00 00 	addi    r3,r3,0
+			132: R_PPC_ADDR16_LO	.rodata.str1.1+0x29
+ 134:	48 00 00 01 	bl      134 <paging_init+0xa8>
+			134: R_PPC_PLTREL24	printk
+ 138:	3c 60 00 00 	lis     r3,0
+			13a: R_PPC_ADDR16_HA	max_low_pfn
+ 13c:	80 83 00 00 	lwz     r4,0(r3)
+			13e: R_PPC_ADDR16_LO	max_low_pfn
+ 140:	3c 60 00 00 	lis     r3,0
+			142: R_PPC_ADDR16_HA	.bss+0x10
+ 144:	94 83 00 00 	stwu    r4,0(r3)
+			146: R_PPC_ADDR16_LO	.bss+0x10
+ 148:	48 00 00 01 	bl      148 <paging_init+0xbc>
+			148: R_PPC_PLTREL24	free_area_init_nodes
+ 14c:	83 c1 00 28 	lwz     r30,40(r1)
+ 150:	83 a1 00 24 	lwz     r29,36(r1)
+ 154:	83 81 00 20 	lwz     r28,32(r1)
+ 158:	83 61 00 1c 	lwz     r27,28(r1)
+ 15c:	83 41 00 18 	lwz     r26,24(r1)
+ 160:	83 21 00 14 	lwz     r25,20(r1)
+ 164:	80 01 00 34 	lwz     r0,52(r1)
+ 168:	38 21 00 30 	addi    r1,r1,48
+ 16c:	7c 08 03 a6 	mtlr    r0
+ 170:	4e 80 00 20 	blr
+
+00000174 <mem_init>:
+ 174:	7c 08 02 a6 	mflr    r0
+ 178:	90 01 00 04 	stw     r0,4(r1)
+ 17c:	94 21 ff e0 	stwu    r1,-32(r1)
+ 180:	3c 60 00 00 	lis     r3,0
+			182: R_PPC_ADDR16_HA	max_low_pfn
+ 184:	3c 80 00 00 	lis     r4,0
+			186: R_PPC_ADDR16_HA	max_pfn
+ 188:	93 81 00 10 	stw     r28,16(r1)
+ 18c:	3f 80 00 00 	lis     r28,0
+			18e: R_PPC_ADDR16_HA	high_memory
+ 190:	80 63 00 00 	lwz     r3,0(r3)
+			192: R_PPC_ADDR16_LO	max_low_pfn
+ 194:	80 84 00 00 	lwz     r4,0(r4)
+			196: R_PPC_ADDR16_LO	max_pfn
+ 198:	54 63 60 26 	rlwinm  r3,r3,12,0,19
+ 19c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 1a0:	90 7c 00 00 	stw     r3,0(r28)
+			1a2: R_PPC_ADDR16_LO	high_memory
+ 1a4:	3c 60 00 00 	lis     r3,0
+			1a6: R_PPC_ADDR16_HA	max_mapnr
+ 1a8:	93 a1 00 14 	stw     r29,20(r1)
+ 1ac:	93 c1 00 18 	stw     r30,24(r1)
+ 1b0:	90 83 00 00 	stw     r4,0(r3)
+			1b2: R_PPC_ADDR16_LO	max_mapnr
+ 1b4:	48 00 00 01 	bl      1b4 <mem_init+0x40>
+			1b4: R_PPC_PLTREL24	memblock_free_all
+ 1b8:	38 60 00 00 	li      r3,0
+ 1bc:	48 00 00 01 	bl      1bc <mem_init+0x48>
+			1bc: R_PPC_PLTREL24	mem_init_print_info
+ 1c0:	3c 60 00 00 	lis     r3,0
+			1c2: R_PPC_ADDR16_HA	.rodata.str1.1+0x44
+ 1c4:	4c c6 31 82 	crclr   4*cr1+eq
+ 1c8:	38 63 00 00 	addi    r3,r3,0
+			1ca: R_PPC_ADDR16_LO	.rodata.str1.1+0x44
+ 1cc:	48 00 00 01 	bl      1cc <mem_init+0x58>
+			1cc: R_PPC_PLTREL24	printk
+ 1d0:	3c 80 ff fd 	lis     r4,-3
+ 1d4:	3c 60 00 00 	lis     r3,0
+			1d6: R_PPC_ADDR16_HA	.rodata.str1.1+0x65
+ 1d8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1dc:	60 9e f0 00 	ori     r30,r4,61440
+ 1e0:	38 63 00 00 	addi    r3,r3,0
+			1e2: R_PPC_ADDR16_LO	.rodata.str1.1+0x65
+ 1e4:	7f c4 f3 78 	mr      r4,r30
+ 1e8:	38 a0 f0 00 	li      r5,-4096
+ 1ec:	48 00 00 01 	bl      1ec <mem_init+0x78>
+			1ec: R_PPC_PLTREL24	printk
+ 1f0:	3c 80 ff dd 	lis     r4,-35
+ 1f4:	3c 60 00 00 	lis     r3,0
+			1f6: R_PPC_ADDR16_HA	.rodata.str1.1+0x87
+ 1f8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1fc:	60 9d f0 00 	ori     r29,r4,61440
+ 200:	38 63 00 00 	addi    r3,r3,0
+			202: R_PPC_ADDR16_LO	.rodata.str1.1+0x87
+ 204:	7f a4 eb 78 	mr      r4,r29
+ 208:	7f c5 f3 78 	mr      r5,r30
+ 20c:	48 00 00 01 	bl      20c <mem_init+0x98>
+			20c: R_PPC_PLTREL24	printk
+ 210:	3f c0 00 00 	lis     r30,0
+			212: R_PPC_ADDR16_HA	ioremap_bot
+ 214:	3c 60 00 00 	lis     r3,0
+			216: R_PPC_ADDR16_HA	.rodata.str1.1+0xb1
+ 218:	4c c6 31 82 	crclr   4*cr1+eq
+ 21c:	80 9e 00 00 	lwz     r4,0(r30)
+			21e: R_PPC_ADDR16_LO	ioremap_bot
+ 220:	38 63 00 00 	addi    r3,r3,0
+			222: R_PPC_ADDR16_LO	.rodata.str1.1+0xb1
+ 224:	7f a5 eb 78 	mr      r5,r29
+ 228:	48 00 00 01 	bl      228 <mem_init+0xb4>
+			228: R_PPC_PLTREL24	printk
+ 22c:	80 7c 00 00 	lwz     r3,0(r28)
+			22e: R_PPC_ADDR16_LO	high_memory
+ 230:	3c 80 01 00 	lis     r4,256
+ 234:	4c c6 31 82 	crclr   4*cr1+eq
+ 238:	38 63 ff ff 	addi    r3,r3,-1
+ 23c:	80 be 00 00 	lwz     r5,0(r30)
+			23e: R_PPC_ADDR16_LO	ioremap_bot
+ 240:	3c 63 10 00 	addis   r3,r3,4096
+ 244:	54 63 00 06 	rlwinm  r3,r3,0,0,3
+ 248:	50 64 02 0c 	rlwimi  r4,r3,0,8,6
+ 24c:	3c 60 00 00 	lis     r3,0
+			24e: R_PPC_ADDR16_HA	.rodata.str1.1+0xda
+ 250:	38 63 00 00 	addi    r3,r3,0
+			252: R_PPC_ADDR16_LO	.rodata.str1.1+0xda
+ 254:	48 00 00 01 	bl      254 <mem_init+0xe0>
+			254: R_PPC_PLTREL24	printk
+ 258:	83 c1 00 18 	lwz     r30,24(r1)
+ 25c:	83 a1 00 14 	lwz     r29,20(r1)
+ 260:	83 81 00 10 	lwz     r28,16(r1)
+ 264:	80 01 00 24 	lwz     r0,36(r1)
+ 268:	38 21 00 20 	addi    r1,r1,32
+ 26c:	7c 08 03 a6 	mtlr    r0
+ 270:	4e 80 00 20 	blr
+
+00000274 <add_system_ram_resources>:
+ 274:	7c 08 02 a6 	mflr    r0
+ 278:	90 01 00 04 	stw     r0,4(r1)
+ 27c:	94 21 ff c0 	stwu    r1,-64(r1)
+ 280:	3c 60 00 00 	lis     r3,0
+			282: R_PPC_ADDR16_HA	memblock
+ 284:	93 a1 00 34 	stw     r29,52(r1)
+ 288:	3b a3 00 00 	addi    r29,r3,0
+			28a: R_PPC_ADDR16_LO	memblock
+ 28c:	80 7d 00 10 	lwz     r3,16(r29)
+ 290:	93 81 00 30 	stw     r28,48(r1)
+ 294:	1c 63 00 18 	mulli   r3,r3,24
+ 298:	83 9d 00 20 	lwz     r28,32(r29)
+ 29c:	7c 7c 1a 14 	add     r3,r28,r3
+ 2a0:	92 a1 00 14 	stw     r21,20(r1)
+ 2a4:	7c 1c 18 40 	cmplw   r28,r3
+ 2a8:	92 c1 00 18 	stw     r22,24(r1)
+ 2ac:	92 e1 00 1c 	stw     r23,28(r1)
+ 2b0:	93 01 00 20 	stw     r24,32(r1)
+ 2b4:	93 21 00 24 	stw     r25,36(r1)
+ 2b8:	93 41 00 28 	stw     r26,40(r1)
+ 2bc:	93 61 00 2c 	stw     r27,44(r1)
+ 2c0:	93 c1 00 38 	stw     r30,56(r1)
+ 2c4:	40 80 00 ac 	bge     370 <add_system_ram_resources+0xfc>
+ 2c8:	3c 60 00 00 	lis     r3,0
+			2ca: R_PPC_ADDR16_HA	kmalloc_caches
+ 2cc:	3c 80 00 00 	lis     r4,0
+			2ce: R_PPC_ADDR16_HA	.rodata.str1.1+0x199
+ 2d0:	3c a0 81 00 	lis     r5,-32512
+ 2d4:	3c c0 00 00 	lis     r6,0
+			2d6: R_PPC_ADDR16_HA	iomem_resource
+ 2d8:	3b 7c ff e8 	addi    r27,r28,-24
+ 2dc:	3b 40 00 00 	li      r26,0
+ 2e0:	3b 23 00 00 	addi    r25,r3,0
+			2e2: R_PPC_ADDR16_LO	kmalloc_caches
+ 2e4:	3b 04 00 00 	addi    r24,r4,0
+			2e6: R_PPC_ADDR16_LO	.rodata.str1.1+0x199
+ 2e8:	60 b7 02 00 	ori     r23,r5,512
+ 2ec:	3b c6 00 00 	addi    r30,r6,0
+			2ee: R_PPC_ADDR16_LO	iomem_resource
+ 2f0:	80 79 00 18 	lwz     r3,24(r25)
+ 2f4:	38 80 0d c0 	li      r4,3520
+ 2f8:	38 a0 00 28 	li      r5,40
+ 2fc:	82 db 00 1c 	lwz     r22,28(r27)
+ 300:	82 bb 00 24 	lwz     r21,36(r27)
+ 304:	48 00 00 01 	bl      304 <add_system_ram_resources+0x90>
+			304: R_PPC_PLTREL24	kmem_cache_alloc_trace
+ 308:	7c 64 1b 78 	mr      r4,r3
+ 30c:	7c 63 00 34 	cntlzw  r3,r3
+ 310:	28 04 00 00 	cmplwi  r4,0
+ 314:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+ 318:	0f 03 00 00 	twnei   r3,0
+ 31c:	41 82 00 34 	beq     350 <add_system_ram_resources+0xdc>
+ 320:	7c 76 aa 14 	add     r3,r22,r21
+ 324:	93 04 00 10 	stw     r24,16(r4)
+ 328:	38 63 ff ff 	addi    r3,r3,-1
+ 32c:	90 64 00 0c 	stw     r3,12(r4)
+ 330:	7f c3 f3 78 	mr      r3,r30
+ 334:	93 44 00 00 	stw     r26,0(r4)
+ 338:	92 c4 00 04 	stw     r22,4(r4)
+ 33c:	93 44 00 08 	stw     r26,8(r4)
+ 340:	92 e4 00 14 	stw     r23,20(r4)
+ 344:	48 00 00 01 	bl      344 <add_system_ram_resources+0xd0>
+			344: R_PPC_PLTREL24	request_resource
+ 348:	54 63 0f fe 	rlwinm  r3,r3,1,31,31
+ 34c:	0f 03 00 00 	twnei   r3,0
+ 350:	80 7d 00 10 	lwz     r3,16(r29)
+ 354:	3b 9c 00 18 	addi    r28,r28,24
+ 358:	3b 7b 00 18 	addi    r27,r27,24
+ 35c:	80 9d 00 20 	lwz     r4,32(r29)
+ 360:	1c 63 00 18 	mulli   r3,r3,24
+ 364:	7c 64 1a 14 	add     r3,r4,r3
+ 368:	7c 1c 18 40 	cmplw   r28,r3
+ 36c:	41 80 ff 84 	blt     2f0 <add_system_ram_resources+0x7c>
+ 370:	38 60 00 00 	li      r3,0
+ 374:	83 c1 00 38 	lwz     r30,56(r1)
+ 378:	83 a1 00 34 	lwz     r29,52(r1)
+ 37c:	83 81 00 30 	lwz     r28,48(r1)
+ 380:	83 61 00 2c 	lwz     r27,44(r1)
+ 384:	83 41 00 28 	lwz     r26,40(r1)
+ 388:	83 21 00 24 	lwz     r25,36(r1)
+ 38c:	83 01 00 20 	lwz     r24,32(r1)
+ 390:	82 e1 00 1c 	lwz     r23,28(r1)
+ 394:	82 c1 00 18 	lwz     r22,24(r1)
+ 398:	82 a1 00 14 	lwz     r21,20(r1)
+ 39c:	80 01 00 44 	lwz     r0,68(r1)
+ 3a0:	38 21 00 40 	addi    r1,r1,64
+ 3a4:	7c 08 03 a6 	mtlr    r0
+ 3a8:	4e 80 00 20 	blr
+
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="mem-diff.txt"
+
+
+mem-working.o:     file format elf32-powerpc		      |	mem-broken.o:     file format elf32-powerpc
+
+
+Disassembly of section .text:					Disassembly of section .text:
+
+00000000 <phys_mem_access_prot>:				00000000 <phys_mem_access_prot>:
+   0:	7c 08 02 a6 	mflr    r0				   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)			   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff e0 	stwu    r1,-32(r1)			   8:	94 21 ff e0 	stwu    r1,-32(r1)
+   c:	93 a1 00 14 	stw     r29,20(r1)			   c:	93 a1 00 14 	stw     r29,20(r1)
+  10:	7c fd 3b 78 	mr      r29,r7				  10:	7c fd 3b 78 	mr      r29,r7
+  14:	3c e0 00 00 	lis     r7,0				  14:	3c e0 00 00 	lis     r7,0
+			16: R_PPC_ADDR16_HA	ppc_md					16: R_PPC_ADDR16_HA	ppc_md
+  18:	38 e7 00 00 	addi    r7,r7,0				  18:	38 e7 00 00 	addi    r7,r7,0
+			1a: R_PPC_ADDR16_LO	ppc_md					1a: R_PPC_ADDR16_LO	ppc_md
+  1c:	81 07 00 a0 	lwz     r8,160(r7)			  1c:	81 07 00 a0 	lwz     r8,160(r7)
+  20:	93 c1 00 18 	stw     r30,24(r1)			  20:	93 c1 00 18 	stw     r30,24(r1)
+  24:	28 08 00 00 	cmplwi  r8,0				  24:	28 08 00 00 	cmplwi  r8,0
+  28:	7c 7e 1b 78 	mr      r30,r3				  28:	7c 7e 1b 78 	mr      r30,r3
+  2c:	41 82 00 20 	beq     4c <phys_mem_access_prot+0x4c	  2c:	41 82 00 20 	beq     4c <phys_mem_access_prot+0x4c
+  30:	80 7d 00 00 	lwz     r3,0(r29)			  30:	80 7d 00 00 	lwz     r3,0(r29)
+  34:	38 e1 00 08 	addi    r7,r1,8				  34:	38 e1 00 08 	addi    r7,r1,8
+  38:	7d 09 03 a6 	mtctr   r8				  38:	7d 09 03 a6 	mtctr   r8
+  3c:	90 61 00 08 	stw     r3,8(r1)			  3c:	90 61 00 08 	stw     r3,8(r1)
+  40:	7f c3 f3 78 	mr      r3,r30				  40:	7f c3 f3 78 	mr      r3,r30
+  44:	4e 80 04 21 	bctrl					  44:	4e 80 04 21 	bctrl
+  48:	48 00 00 28 	b       70 <phys_mem_access_prot+0x70	  48:	48 00 00 28 	b       70 <phys_mem_access_prot+0x70
+  4c:	7c a3 2b 78 	mr      r3,r5				  4c:	7c a3 2b 78 	mr      r3,r5
+  50:	48 00 00 01 	bl      50 <phys_mem_access_prot+0x50	  50:	48 00 00 01 	bl      50 <phys_mem_access_prot+0x50
+			50: R_PPC_PLTREL24	page_is_ram				50: R_PPC_PLTREL24	page_is_ram
+  54:	28 03 00 00 	cmplwi  r3,0				  54:	28 03 00 00 	cmplwi  r3,0
+  58:	80 7d 00 00 	lwz     r3,0(r29)			  58:	80 7d 00 00 	lwz     r3,0(r29)
+  5c:	40 82 00 10 	bne     6c <phys_mem_access_prot+0x6c	  5c:	40 82 00 10 	bne     6c <phys_mem_access_prot+0x6c
+  60:	54 63 06 26 	rlwinm  r3,r3,0,24,19			  60:	54 63 06 26 	rlwinm  r3,r3,0,24,19
+  64:	60 63 05 00 	ori     r3,r3,1280			  64:	60 63 05 00 	ori     r3,r3,1280
+  68:	90 7d 00 00 	stw     r3,0(r29)			  68:	90 7d 00 00 	stw     r3,0(r29)
+  6c:	90 7e 00 00 	stw     r3,0(r30)			  6c:	90 7e 00 00 	stw     r3,0(r30)
+  70:	83 c1 00 18 	lwz     r30,24(r1)			  70:	83 c1 00 18 	lwz     r30,24(r1)
+  74:	83 a1 00 14 	lwz     r29,20(r1)			  74:	83 a1 00 14 	lwz     r29,20(r1)
+  78:	80 01 00 24 	lwz     r0,36(r1)			  78:	80 01 00 24 	lwz     r0,36(r1)
+  7c:	38 21 00 20 	addi    r1,r1,32			  7c:	38 21 00 20 	addi    r1,r1,32
+  80:	7c 08 03 a6 	mtlr    r0				  80:	7c 08 03 a6 	mtlr    r0
+  84:	4e 80 00 20 	blr					  84:	4e 80 00 20 	blr
+
+00000088 <free_initmem>:					00000088 <free_initmem>:
+  88:	7c 08 02 a6 	mflr    r0				  88:	7c 08 02 a6 	mflr    r0
+  8c:	90 01 00 04 	stw     r0,4(r1)			  8c:	90 01 00 04 	stw     r0,4(r1)
+  90:	94 21 ff f0 	stwu    r1,-16(r1)			  90:	94 21 ff f0 	stwu    r1,-16(r1)
+  94:	3c 60 00 00 	lis     r3,0				  94:	3c 60 00 00 	lis     r3,0
+			96: R_PPC_ADDR16_HA	ppc_md					96: R_PPC_ADDR16_HA	ppc_md
+  98:	3c 80 00 00 	lis     r4,0				  98:	3c 80 00 00 	lis     r4,0
+			9a: R_PPC_ADDR16_HA	ppc_printk_pr				9a: R_PPC_ADDR16_HA	ppc_printk_pr
+  9c:	38 63 00 00 	addi    r3,r3,0				  9c:	38 63 00 00 	addi    r3,r3,0
+			9e: R_PPC_ADDR16_LO	ppc_md					9e: R_PPC_ADDR16_LO	ppc_md
+  a0:	38 84 00 00 	addi    r4,r4,0				  a0:	38 84 00 00 	addi    r4,r4,0
+			a2: R_PPC_ADDR16_LO	ppc_printk_pr				a2: R_PPC_ADDR16_LO	ppc_printk_pr
+  a4:	90 83 00 60 	stw     r4,96(r3)			  a4:	90 83 00 60 	stw     r4,96(r3)
+  a8:	48 00 00 01 	bl      a8 <free_initmem+0x20>		  a8:	48 00 00 01 	bl      a8 <free_initmem+0x20>
+			a8: R_PPC_PLTREL24	mark_initmem_				a8: R_PPC_PLTREL24	mark_initmem_
+  ac:	3c 60 00 00 	lis     r3,0				  ac:	3c 60 00 00 	lis     r3,0
+			ae: R_PPC_ADDR16_HA	init_mem_is_f				ae: R_PPC_ADDR16_HA	init_mem_is_f
+  b0:	38 80 00 01 	li      r4,1				  b0:	38 80 00 01 	li      r4,1
+  b4:	98 83 00 00 	stb     r4,0(r3)			  b4:	98 83 00 00 	stb     r4,0(r3)
+			b6: R_PPC_ADDR16_LO	init_mem_is_f				b6: R_PPC_ADDR16_LO	init_mem_is_f
+  b8:	3c 60 00 00 	lis     r3,0				  b8:	3c 60 00 00 	lis     r3,0
+			ba: R_PPC_ADDR16_HA	__init_begin				ba: R_PPC_ADDR16_HA	__init_begin
+  bc:	3c 80 00 00 	lis     r4,0				  bc:	3c 80 00 00 	lis     r4,0
+			be: R_PPC_ADDR16_HA	__init_end				be: R_PPC_ADDR16_HA	__init_end
+  c0:	3c a0 00 00 	lis     r5,0				  c0:	3c a0 00 00 	lis     r5,0
+			c2: R_PPC_ADDR16_HA	.rodata.str1.				c2: R_PPC_ADDR16_HA	.rodata.str1.
+  c4:	38 63 00 00 	addi    r3,r3,0				  c4:	38 63 00 00 	addi    r3,r3,0
+			c6: R_PPC_ADDR16_LO	__init_begin				c6: R_PPC_ADDR16_LO	__init_begin
+  c8:	38 84 00 00 	addi    r4,r4,0				  c8:	38 84 00 00 	addi    r4,r4,0
+			ca: R_PPC_ADDR16_LO	__init_end				ca: R_PPC_ADDR16_LO	__init_end
+  cc:	38 c5 00 00 	addi    r6,r5,0				  cc:	38 c5 00 00 	addi    r6,r5,0
+			ce: R_PPC_ADDR16_LO	.rodata.str1.				ce: R_PPC_ADDR16_LO	.rodata.str1.
+  d0:	38 a0 00 cc 	li      r5,204				  d0:	38 a0 00 cc 	li      r5,204
+  d4:	48 00 00 01 	bl      d4 <free_initmem+0x4c>		  d4:	48 00 00 01 	bl      d4 <free_initmem+0x4c>
+			d4: R_PPC_PLTREL24	free_reserved				d4: R_PPC_PLTREL24	free_reserved
+  d8:	80 01 00 14 	lwz     r0,20(r1)			  d8:	80 01 00 14 	lwz     r0,20(r1)
+  dc:	38 21 00 10 	addi    r1,r1,16			  dc:	38 21 00 10 	addi    r1,r1,16
+  e0:	7c 08 03 a6 	mtlr    r0				  e0:	7c 08 03 a6 	mtlr    r0
+  e4:	4e 80 00 20 	blr					  e4:	4e 80 00 20 	blr
+
+000000e8 <flush_dcache_page>:					000000e8 <flush_dcache_page>:
+  e8:	80 83 00 00 	lwz     r4,0(r3)			  e8:	80 83 00 00 	lwz     r4,0(r3)
+  ec:	70 84 08 00 	andi.   r4,r4,2048			  ec:	70 84 08 00 	andi.   r4,r4,2048
+  f0:	4d 82 00 20 	beqlr					  f0:	4d 82 00 20 	beqlr
+  f4:	38 80 08 00 	li      r4,2048				  f4:	38 80 08 00 	li      r4,2048
+  f8:	7c a0 18 28 	lwarx   r5,0,r3				  f8:	7c a0 18 28 	lwarx   r5,0,r3
+  fc:	7c a5 20 78 	andc    r5,r5,r4			  fc:	7c a5 20 78 	andc    r5,r5,r4
+ 100:	7c a0 19 2d 	stwcx.  r5,0,r3				 100:	7c a0 19 2d 	stwcx.  r5,0,r3
+ 104:	40 a2 ff f4 	bne     f8 <flush_dcache_page+0x10>	 104:	40 a2 ff f4 	bne     f8 <flush_dcache_page+0x10>
+ 108:	4e 80 00 20 	blr					 108:	4e 80 00 20 	blr
+
+0000010c <flush_dcache_icache_page>:				0000010c <flush_dcache_icache_page>:
+ 10c:	7c 08 02 a6 	mflr    r0				 10c:	7c 08 02 a6 	mflr    r0
+ 110:	90 01 00 04 	stw     r0,4(r1)			 110:	90 01 00 04 	stw     r0,4(r1)
+ 114:	94 21 ff f0 	stwu    r1,-16(r1)			 114:	94 21 ff f0 	stwu    r1,-16(r1)
+ 118:	80 82 00 00 	lwz     r4,0(r2)			 118:	80 82 00 00 	lwz     r4,0(r2)
+ 11c:	38 84 00 01 	addi    r4,r4,1				 11c:	38 84 00 01 	addi    r4,r4,1
+ 120:	90 82 00 00 	stw     r4,0(r2)			 120:	90 82 00 00 	stw     r4,0(r2)
+ 124:	80 82 0a e4 	lwz     r4,2788(r2)			 124:	80 82 0a e4 	lwz     r4,2788(r2)
+ 128:	38 84 00 01 	addi    r4,r4,1				 128:	38 84 00 01 	addi    r4,r4,1
+ 12c:	90 82 0a e4 	stw     r4,2788(r2)			 12c:	90 82 0a e4 	stw     r4,2788(r2)
+ 130:	3c 80 00 00 	lis     r4,0				 130:	3c 80 00 00 	lis     r4,0
+			132: R_PPC_ADDR16_HA	mem_map					132: R_PPC_ADDR16_HA	mem_map
+ 134:	80 84 00 00 	lwz     r4,0(r4)			 134:	80 84 00 00 	lwz     r4,0(r4)
+			136: R_PPC_ADDR16_LO	mem_map					136: R_PPC_ADDR16_LO	mem_map
+ 138:	7c 64 18 50 	subf    r3,r4,r3			 138:	7c 64 18 50 	subf    r3,r4,r3
+ 13c:	3c 80 cc cc 	lis     r4,-13108			 13c:	3c 80 cc cc 	lis     r4,-13108
+ 140:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31			 140:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 144:	60 84 d0 00 	ori     r4,r4,53248			 144:	60 84 d0 00 	ori     r4,r4,53248
+ 148:	7c 63 21 d6 	mullw   r3,r3,r4			 148:	7c 63 21 d6 	mullw   r3,r3,r4
+ 14c:	3c 63 c0 00 	addis   r3,r3,-16384			 14c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 150:	48 00 00 01 	bl      150 <flush_dcache_icache_page	 150:	48 00 00 01 	bl      150 <flush_dcache_icache_page
+			150: R_PPC_PLTREL24	__flush_dcach				150: R_PPC_PLTREL24	__flush_dcach
+ 154:	80 62 0a e4 	lwz     r3,2788(r2)			 154:	80 62 0a e4 	lwz     r3,2788(r2)
+ 158:	38 63 ff ff 	addi    r3,r3,-1			 158:	38 63 ff ff 	addi    r3,r3,-1
+ 15c:	90 62 0a e4 	stw     r3,2788(r2)			 15c:	90 62 0a e4 	stw     r3,2788(r2)
+ 160:	80 62 00 00 	lwz     r3,0(r2)			 160:	80 62 00 00 	lwz     r3,0(r2)
+ 164:	38 63 ff ff 	addi    r3,r3,-1			 164:	38 63 ff ff 	addi    r3,r3,-1
+ 168:	90 62 00 00 	stw     r3,0(r2)			 168:	90 62 00 00 	stw     r3,0(r2)
+ 16c:	80 01 00 14 	lwz     r0,20(r1)			 16c:	80 01 00 14 	lwz     r0,20(r1)
+ 170:	38 21 00 10 	addi    r1,r1,16			 170:	38 21 00 10 	addi    r1,r1,16
+ 174:	7c 08 03 a6 	mtlr    r0				 174:	7c 08 03 a6 	mtlr    r0
+ 178:	4e 80 00 20 	blr					 178:	4e 80 00 20 	blr
+
+0000017c <clear_user_page>:					0000017c <clear_user_page>:
+ 17c:	38 80 00 80 	li      r4,128			      |	 17c:	94 21 ff f0 	stwu    r1,-16(r1)
+ 180:	7c 89 03 a6 	mtctr   r4			      |	 180:	38 80 00 80 	li      r4,128
+ 184:	7c 00 1f ec 	dcbz    0,r3			      |	 184:	38 63 ff e0 	addi    r3,r3,-32
+ 188:	38 63 00 20 	addi    r3,r3,32		      |	 188:	7c 89 03 a6 	mtctr   r4
+ 18c:	42 00 ff f8 	bdnz    184 <clear_user_page+0x8>     |	 18c:	38 81 00 0f 	addi    r4,r1,15
+ 190:	80 65 00 00 	lwz     r3,0(r5)		      |	 190:	8c c3 00 20 	lbzu    r6,32(r3)
+ 194:	70 63 08 00 	andi.   r3,r3,2048		      |	 194:	98 c1 00 0f 	stb     r6,15(r1)
+ 198:	4d 82 00 20 	beqlr				      |	 198:	7c 00 27 ec 	dcbz    0,r4
+ 19c:	38 60 08 00 	li      r3,2048			      |	 19c:	42 00 ff f4 	bdnz    190 <clear_user_page+0x14>
+ 1a0:	7c 80 28 28 	lwarx   r4,0,r5			      |	 1a0:	80 65 00 00 	lwz     r3,0(r5)
+ 1a4:	7c 84 18 78 	andc    r4,r4,r3		      |	 1a4:	70 63 08 00 	andi.   r3,r3,2048
+ 1a8:	7c 80 29 2d 	stwcx.  r4,0,r5			      |	 1a8:	41 82 00 18 	beq     1c0 <clear_user_page+0x44>
+ 1ac:	40 a2 ff f4 	bne     1a0 <clear_user_page+0x24>    |	 1ac:	38 60 08 00 	li      r3,2048
+ 1b0:	4e 80 00 20 	blr				      |	 1b0:	7c 80 28 28 	lwarx   r4,0,r5
+							      |	 1b4:	7c 84 18 78 	andc    r4,r4,r3
+000001b4 <copy_user_page>:				      |	 1b8:	7c 80 29 2d 	stwcx.  r4,0,r5
+ 1b4:	7c 08 02 a6 	mflr    r0			      |	 1bc:	40 a2 ff f4 	bne     1b0 <clear_user_page+0x34>
+ 1b8:	90 01 00 04 	stw     r0,4(r1)		      |	 1c0:	38 21 00 10 	addi    r1,r1,16
+ 1bc:	94 21 ff f0 	stwu    r1,-16(r1)		      |	 1c4:	4e 80 00 20 	blr
+ 1c0:	93 c1 00 08 	stw     r30,8(r1)		      |
+ 1c4:	7c de 33 78 	mr      r30,r6			      |	000001c8 <copy_user_page>:
+ 1c8:	48 00 00 01 	bl      1c8 <copy_user_page+0x14>     |	 1c8:	7c 08 02 a6 	mflr    r0
+			1c8: R_PPC_PLTREL24	copy_page     |	 1cc:	90 01 00 04 	stw     r0,4(r1)
+ 1cc:	80 7e 00 00 	lwz     r3,0(r30)		      |	 1d0:	94 21 ff f0 	stwu    r1,-16(r1)
+ 1d0:	70 63 08 00 	andi.   r3,r3,2048		      |	 1d4:	93 c1 00 08 	stw     r30,8(r1)
+ 1d4:	41 82 00 18 	beq     1ec <copy_user_page+0x38>     |	 1d8:	7c de 33 78 	mr      r30,r6
+ 1d8:	38 60 08 00 	li      r3,2048			      |	 1dc:	48 00 00 01 	bl      1dc <copy_user_page+0x14>
+ 1dc:	7c 80 f0 28 	lwarx   r4,0,r30		      |				1dc: R_PPC_PLTREL24	copy_page
+ 1e0:	7c 84 18 78 	andc    r4,r4,r3		      |	 1e0:	80 7e 00 00 	lwz     r3,0(r30)
+ 1e4:	7c 80 f1 2d 	stwcx.  r4,0,r30		      |	 1e4:	70 63 08 00 	andi.   r3,r3,2048
+ 1e8:	40 a2 ff f4 	bne     1dc <copy_user_page+0x28>     |	 1e8:	41 82 00 18 	beq     200 <copy_user_page+0x38>
+ 1ec:	83 c1 00 08 	lwz     r30,8(r1)		      |	 1ec:	38 60 08 00 	li      r3,2048
+ 1f0:	80 01 00 14 	lwz     r0,20(r1)		      |	 1f0:	7c 80 f0 28 	lwarx   r4,0,r30
+ 1f4:	38 21 00 10 	addi    r1,r1,16		      |	 1f4:	7c 84 18 78 	andc    r4,r4,r3
+ 1f8:	7c 08 03 a6 	mtlr    r0			      |	 1f8:	7c 80 f1 2d 	stwcx.  r4,0,r30
+ 1fc:	4e 80 00 20 	blr				      |	 1fc:	40 a2 ff f4 	bne     1f0 <copy_user_page+0x28>
+							      |	 200:	83 c1 00 08 	lwz     r30,8(r1)
+00000200 <flush_icache_user_range>:			      |	 204:	80 01 00 14 	lwz     r0,20(r1)
+ 200:	7c 08 02 a6 	mflr    r0			      |	 208:	38 21 00 10 	addi    r1,r1,16
+ 204:	90 01 00 04 	stw     r0,4(r1)		      |	 20c:	7c 08 03 a6 	mtlr    r0
+ 208:	94 21 ff e0 	stwu    r1,-32(r1)		      |	 210:	4e 80 00 20 	blr
+ 20c:	3c 60 00 00 	lis     r3,0			      |
+			20e: R_PPC_ADDR16_HA	.rodata.str1. |	00000214 <flush_icache_user_range>:
+ 210:	93 81 00 10 	stw     r28,16(r1)		      |	 214:	7c 08 02 a6 	mflr    r0
+ 214:	7c 9c 23 78 	mr      r28,r4			      |	 218:	90 01 00 04 	stw     r0,4(r1)
+ 218:	38 63 00 00 	addi    r3,r3,0			      |	 21c:	94 21 ff e0 	stwu    r1,-32(r1)
+			21a: R_PPC_ADDR16_LO	.rodata.str1. |	 220:	3c 60 00 00 	lis     r3,0
+ 21c:	38 80 00 53 	li      r4,83			      |				222: R_PPC_ADDR16_HA	.rodata.str1.
+ 220:	93 a1 00 14 	stw     r29,20(r1)		      |	 224:	93 81 00 10 	stw     r28,16(r1)
+ 224:	7c bd 2b 78 	mr      r29,r5			      |	 228:	7c 9c 23 78 	mr      r28,r4
+ 228:	38 a0 00 00 	li      r5,0			      |	 22c:	38 63 00 00 	addi    r3,r3,0
+ 22c:	93 c1 00 18 	stw     r30,24(r1)		      |				22e: R_PPC_ADDR16_LO	.rodata.str1.
+ 230:	7c de 33 78 	mr      r30,r6			      |	 230:	38 80 00 53 	li      r4,83
+ 234:	48 00 00 01 	bl      234 <flush_icache_user_range+ |	 234:	93 a1 00 14 	stw     r29,20(r1)
+			234: R_PPC_PLTREL24	__might_sleep |	 238:	7c bd 2b 78 	mr      r29,r5
+ 238:	3c 60 00 00 	lis     r3,0			      |	 23c:	38 a0 00 00 	li      r5,0
+			23a: R_PPC_ADDR16_HA	mem_map	      |	 240:	93 c1 00 18 	stw     r30,24(r1)
+ 23c:	3c 80 cc cc 	lis     r4,-13108		      |	 244:	7c de 33 78 	mr      r30,r6
+ 240:	80 63 00 00 	lwz     r3,0(r3)		      |	 248:	48 00 00 01 	bl      248 <flush_icache_user_range+
+			242: R_PPC_ADDR16_LO	mem_map	      |				248: R_PPC_PLTREL24	__might_sleep
+ 244:	60 84 d0 00 	ori     r4,r4,53248		      |	 24c:	3c 60 00 00 	lis     r3,0
+ 248:	7c 63 e0 50 	subf    r3,r3,r28		      |				24e: R_PPC_ADDR16_HA	mem_map
+ 24c:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31		      |	 250:	3c 80 cc cc 	lis     r4,-13108
+ 250:	7c 63 21 d6 	mullw   r3,r3,r4		      |	 254:	80 63 00 00 	lwz     r3,0(r3)
+ 254:	57 a4 05 3e 	clrlwi  r4,r29,20		      |				256: R_PPC_ADDR16_LO	mem_map
+ 258:	50 64 00 26 	rlwimi  r4,r3,0,0,19		      |	 258:	60 84 d0 00 	ori     r4,r4,53248
+ 25c:	3c 64 c0 00 	addis   r3,r4,-16384		      |	 25c:	7c 63 e0 50 	subf    r3,r3,r28
+ 260:	7c 83 f2 14 	add     r4,r3,r30		      |	 260:	54 63 e8 fe 	rlwinm  r3,r3,29,3,31
+ 264:	48 00 00 01 	bl      264 <flush_icache_user_range+ |	 264:	7c 63 21 d6 	mullw   r3,r3,r4
+			264: R_PPC_PLTREL24	flush_icache_ |	 268:	57 a4 05 3e 	clrlwi  r4,r29,20
+ 268:	83 c1 00 18 	lwz     r30,24(r1)		      |	 26c:	50 64 00 26 	rlwimi  r4,r3,0,0,19
+ 26c:	83 a1 00 14 	lwz     r29,20(r1)		      |	 270:	3c 64 c0 00 	addis   r3,r4,-16384
+ 270:	83 81 00 10 	lwz     r28,16(r1)		      |	 274:	7c 83 f2 14 	add     r4,r3,r30
+ 274:	80 01 00 24 	lwz     r0,36(r1)		      |	 278:	48 00 00 01 	bl      278 <flush_icache_user_range+
+ 278:	38 21 00 20 	addi    r1,r1,32		      |				278: R_PPC_PLTREL24	flush_icache_
+ 27c:	7c 08 03 a6 	mtlr    r0			      |	 27c:	83 c1 00 18 	lwz     r30,24(r1)
+ 280:	4e 80 00 20 	blr				      |	 280:	83 a1 00 14 	lwz     r29,20(r1)
+							      |	 284:	83 81 00 10 	lwz     r28,16(r1)
+00000284 <update_mmu_cache>:				      |	 288:	80 01 00 24 	lwz     r0,36(r1)
+ 284:	4e 80 00 20 	blr				      |	 28c:	38 21 00 20 	addi    r1,r1,32
+							      |	 290:	7c 08 03 a6 	mtlr    r0
+00000288 <devmem_is_allowed>:				      |	 294:	4e 80 00 20 	blr
+ 288:	7c 08 02 a6 	mflr    r0			      |
+ 28c:	90 01 00 04 	stw     r0,4(r1)		      |	00000298 <update_mmu_cache>:
+ 290:	94 21 ff f0 	stwu    r1,-16(r1)		      |	 298:	4e 80 00 20 	blr
+ 294:	93 c1 00 08 	stw     r30,8(r1)		      |
+ 298:	7c 7e 1b 78 	mr      r30,r3			      |	0000029c <devmem_is_allowed>:
+ 29c:	54 63 65 3e 	rlwinm  r3,r3,12,20,31		      |	 29c:	7c 08 02 a6 	mflr    r0
+ 2a0:	57 c4 60 26 	rlwinm  r4,r30,12,0,19		      |	 2a0:	90 01 00 04 	stw     r0,4(r1)
+ 2a4:	48 00 00 01 	bl      2a4 <devmem_is_allowed+0x1c>  |	 2a4:	94 21 ff f0 	stwu    r1,-16(r1)
+			2a4: R_PPC_PLTREL24	iomem_is_excl |	 2a8:	93 c1 00 08 	stw     r30,8(r1)
+ 2a8:	70 63 00 01 	andi.   r3,r3,1			      |	 2ac:	7c 7e 1b 78 	mr      r30,r3
+ 2ac:	38 60 00 00 	li      r3,0			      |	 2b0:	54 63 65 3e 	rlwinm  r3,r3,12,20,31
+ 2b0:	41 81 00 14 	bgt     2c4 <devmem_is_allowed+0x3c>  |	 2b4:	57 c4 60 26 	rlwinm  r4,r30,12,0,19
+ 2b4:	7f c3 f3 78 	mr      r3,r30			      |	 2b8:	48 00 00 01 	bl      2b8 <devmem_is_allowed+0x1c>
+ 2b8:	48 00 00 01 	bl      2b8 <devmem_is_allowed+0x30>  |				2b8: R_PPC_PLTREL24	iomem_is_excl
+			2b8: R_PPC_PLTREL24	page_is_ram   |	 2bc:	70 63 00 01 	andi.   r3,r3,1
+ 2bc:	7c 63 00 34 	cntlzw  r3,r3			      |	 2c0:	38 60 00 00 	li      r3,0
+ 2c0:	54 63 df fe 	rlwinm  r3,r3,27,31,31		      |	 2c4:	41 81 00 14 	bgt     2d8 <devmem_is_allowed+0x3c>
+ 2c4:	83 c1 00 08 	lwz     r30,8(r1)		      |	 2c8:	7f c3 f3 78 	mr      r3,r30
+ 2c8:	80 01 00 14 	lwz     r0,20(r1)		      |	 2cc:	48 00 00 01 	bl      2cc <devmem_is_allowed+0x30>
+ 2cc:	38 21 00 10 	addi    r1,r1,16		      |				2cc: R_PPC_PLTREL24	page_is_ram
+ 2d0:	7c 08 03 a6 	mtlr    r0			      |	 2d0:	7c 63 00 34 	cntlzw  r3,r3
+ 2d4:	4e 80 00 20 	blr				      |	 2d4:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+							      >	 2d8:	83 c1 00 08 	lwz     r30,8(r1)
+							      >	 2dc:	80 01 00 14 	lwz     r0,20(r1)
+							      >	 2e0:	38 21 00 10 	addi    r1,r1,16
+							      >	 2e4:	7c 08 03 a6 	mtlr    r0
+							      >	 2e8:	4e 80 00 20 	blr
+
+Disassembly of section .init.text:				Disassembly of section .init.text:
+
+00000000 <mem_topology_setup>:					00000000 <mem_topology_setup>:
+   0:	7c 08 02 a6 	mflr    r0				   0:	7c 08 02 a6 	mflr    r0
+   4:	90 01 00 04 	stw     r0,4(r1)			   4:	90 01 00 04 	stw     r0,4(r1)
+   8:	94 21 ff f0 	stwu    r1,-16(r1)			   8:	94 21 ff f0 	stwu    r1,-16(r1)
+   c:	48 00 00 01 	bl      c <mem_topology_setup+0xc>	   c:	48 00 00 01 	bl      c <mem_topology_setup+0xc>
+			c: R_PPC_PLTREL24	memblock_end_				c: R_PPC_PLTREL24	memblock_end_
+  10:	54 84 a0 3e 	rotlwi  r4,r4,20			  10:	54 84 a0 3e 	rotlwi  r4,r4,20
+  14:	3c a0 00 00 	lis     r5,0				  14:	3c a0 00 00 	lis     r5,0
+			16: R_PPC_ADDR16_HA	max_pfn					16: R_PPC_ADDR16_HA	max_pfn
+  18:	50 64 a0 16 	rlwimi  r4,r3,20,0,11			  18:	50 64 a0 16 	rlwimi  r4,r3,20,0,11
+  1c:	3c 60 00 00 	lis     r3,0				  1c:	3c 60 00 00 	lis     r3,0
+			1e: R_PPC_ADDR16_HA	max_low_pfn				1e: R_PPC_ADDR16_HA	max_low_pfn
+  20:	90 85 00 00 	stw     r4,0(r5)			  20:	90 85 00 00 	stw     r4,0(r5)
+			22: R_PPC_ADDR16_LO	max_pfn					22: R_PPC_ADDR16_LO	max_pfn
+  24:	38 a0 ff ff 	li      r5,-1				  24:	38 a0 ff ff 	li      r5,-1
+  28:	90 83 00 00 	stw     r4,0(r3)			  28:	90 83 00 00 	stw     r4,0(r3)
+			2a: R_PPC_ADDR16_LO	max_low_pfn				2a: R_PPC_ADDR16_LO	max_low_pfn
+  2c:	3c 60 00 00 	lis     r3,0				  2c:	3c 60 00 00 	lis     r3,0
+			2e: R_PPC_ADDR16_HA	min_low_pfn				2e: R_PPC_ADDR16_HA	min_low_pfn
+  30:	38 80 00 00 	li      r4,0				  30:	38 80 00 00 	li      r4,0
+  34:	38 c0 ff ff 	li      r6,-1				  34:	38 c0 ff ff 	li      r6,-1
+  38:	39 00 00 00 	li      r8,0				  38:	39 00 00 00 	li      r8,0
+  3c:	90 83 00 00 	stw     r4,0(r3)			  3c:	90 83 00 00 	stw     r4,0(r3)
+			3e: R_PPC_ADDR16_LO	min_low_pfn				3e: R_PPC_ADDR16_LO	min_low_pfn
+  40:	3c 60 00 00 	lis     r3,0				  40:	3c 60 00 00 	lis     r3,0
+			42: R_PPC_ADDR16_HA	memblock				42: R_PPC_ADDR16_HA	memblock
+  44:	38 80 00 00 	li      r4,0				  44:	38 80 00 00 	li      r4,0
+  48:	38 63 00 00 	addi    r3,r3,0				  48:	38 63 00 00 	addi    r3,r3,0
+			4a: R_PPC_ADDR16_LO	memblock				4a: R_PPC_ADDR16_LO	memblock
+  4c:	38 e3 00 10 	addi    r7,r3,16			  4c:	38 e3 00 10 	addi    r7,r3,16
+  50:	38 60 00 00 	li      r3,0				  50:	38 60 00 00 	li      r3,0
+  54:	48 00 00 01 	bl      54 <mem_topology_setup+0x54>	  54:	48 00 00 01 	bl      54 <mem_topology_setup+0x54>
+			54: R_PPC_PLTREL24	memblock_set_				54: R_PPC_PLTREL24	memblock_set_
+  58:	80 01 00 14 	lwz     r0,20(r1)			  58:	80 01 00 14 	lwz     r0,20(r1)
+  5c:	38 21 00 10 	addi    r1,r1,16			  5c:	38 21 00 10 	addi    r1,r1,16
+  60:	7c 08 03 a6 	mtlr    r0				  60:	7c 08 03 a6 	mtlr    r0
+  64:	4e 80 00 20 	blr					  64:	4e 80 00 20 	blr
+
+00000068 <initmem_init>:					00000068 <initmem_init>:
+  68:	7c 08 02 a6 	mflr    r0				  68:	7c 08 02 a6 	mflr    r0
+  6c:	90 01 00 04 	stw     r0,4(r1)			  6c:	90 01 00 04 	stw     r0,4(r1)
+  70:	94 21 ff f0 	stwu    r1,-16(r1)			  70:	94 21 ff f0 	stwu    r1,-16(r1)
+  74:	38 60 00 00 	li      r3,0				  74:	38 60 00 00 	li      r3,0
+  78:	48 00 00 01 	bl      78 <initmem_init+0x10>		  78:	48 00 00 01 	bl      78 <initmem_init+0x10>
+			78: R_PPC_PLTREL24	sparse_memory				78: R_PPC_PLTREL24	sparse_memory
+  7c:	80 01 00 14 	lwz     r0,20(r1)			  7c:	80 01 00 14 	lwz     r0,20(r1)
+  80:	38 21 00 10 	addi    r1,r1,16			  80:	38 21 00 10 	addi    r1,r1,16
+  84:	7c 08 03 a6 	mtlr    r0				  84:	7c 08 03 a6 	mtlr    r0
+  88:	4e 80 00 20 	blr					  88:	4e 80 00 20 	blr
+
+0000008c <paging_init>:						0000008c <paging_init>:
+  8c:	7c 08 02 a6 	mflr    r0				  8c:	7c 08 02 a6 	mflr    r0
+  90:	90 01 00 04 	stw     r0,4(r1)			  90:	90 01 00 04 	stw     r0,4(r1)
+  94:	94 21 ff d0 	stwu    r1,-48(r1)			  94:	94 21 ff d0 	stwu    r1,-48(r1)
+  98:	93 21 00 14 	stw     r25,20(r1)			  98:	93 21 00 14 	stw     r25,20(r1)
+  9c:	93 41 00 18 	stw     r26,24(r1)			  9c:	93 41 00 18 	stw     r26,24(r1)
+  a0:	93 61 00 1c 	stw     r27,28(r1)			  a0:	93 61 00 1c 	stw     r27,28(r1)
+  a4:	93 81 00 20 	stw     r28,32(r1)			  a4:	93 81 00 20 	stw     r28,32(r1)
+  a8:	93 a1 00 24 	stw     r29,36(r1)			  a8:	93 a1 00 24 	stw     r29,36(r1)
+  ac:	93 c1 00 28 	stw     r30,40(r1)			  ac:	93 c1 00 28 	stw     r30,40(r1)
+  b0:	48 00 00 01 	bl      b0 <paging_init+0x24>		  b0:	48 00 00 01 	bl      b0 <paging_init+0x24>
+			b0: R_PPC_PLTREL24	memblock_phys				b0: R_PPC_PLTREL24	memblock_phys
+  b4:	7c 7e 1b 78 	mr      r30,r3				  b4:	7c 7e 1b 78 	mr      r30,r3
+  b8:	7c 9d 23 78 	mr      r29,r4				  b8:	7c 9d 23 78 	mr      r29,r4
+  bc:	3f 40 ff fe 	lis     r26,-2				  bc:	3f 40 ff fe 	lis     r26,-2
+  c0:	48 00 00 01 	bl      c0 <paging_init+0x34>		  c0:	48 00 00 01 	bl      c0 <paging_init+0x34>
+			c0: R_PPC_PLTREL24	memblock_end_				c0: R_PPC_PLTREL24	memblock_end_
+  c4:	7c 7c 1b 78 	mr      r28,r3				  c4:	7c 7c 1b 78 	mr      r28,r3
+  c8:	7c 9b 23 78 	mr      r27,r4				  c8:	7c 9b 23 78 	mr      r27,r4
+  cc:	3b 20 00 00 	li      r25,0				  cc:	3b 20 00 00 	li      r25,0
+  d0:	38 e1 00 08 	addi    r7,r1,8				  d0:	38 e1 00 08 	addi    r7,r1,8
+  d4:	7f 43 d3 78 	mr      r3,r26				  d4:	7f 43 d3 78 	mr      r3,r26
+  d8:	93 21 00 10 	stw     r25,16(r1)			  d8:	93 21 00 10 	stw     r25,16(r1)
+  dc:	38 a0 00 00 	li      r5,0				  dc:	38 a0 00 00 	li      r5,0
+  e0:	38 c0 00 00 	li      r6,0				  e0:	38 c0 00 00 	li      r6,0
+  e4:	93 21 00 08 	stw     r25,8(r1)			  e4:	93 21 00 08 	stw     r25,8(r1)
+  e8:	48 00 00 01 	bl      e8 <paging_init+0x5c>		  e8:	48 00 00 01 	bl      e8 <paging_init+0x5c>
+			e8: R_PPC_PLTREL24	map_kernel_pa				e8: R_PPC_PLTREL24	map_kernel_pa
+  ec:	3b 5a 10 00 	addi    r26,r26,4096			  ec:	3b 5a 10 00 	addi    r26,r26,4096
+  f0:	2c 1a f0 00 	cmpwi   r26,-4096			  f0:	2c 1a f0 00 	cmpwi   r26,-4096
+  f4:	40 82 ff dc 	bne     d0 <paging_init+0x44>		  f4:	40 82 ff dc 	bne     d0 <paging_init+0x44>
+  f8:	3c 60 00 00 	lis     r3,0				  f8:	3c 60 00 00 	lis     r3,0
+			fa: R_PPC_ADDR16_HA	.rodata.str1.				fa: R_PPC_ADDR16_HA	.rodata.str1.
+  fc:	4c c6 31 82 	crclr   4*cr1+eq			  fc:	4c c6 31 82 	crclr   4*cr1+eq
+ 100:	7f 85 e3 78 	mr      r5,r28				 100:	7f 85 e3 78 	mr      r5,r28
+ 104:	38 63 00 00 	addi    r3,r3,0				 104:	38 63 00 00 	addi    r3,r3,0
+			106: R_PPC_ADDR16_LO	.rodata.str1.				106: R_PPC_ADDR16_LO	.rodata.str1.
+ 108:	7f 66 db 78 	mr      r6,r27				 108:	7f 66 db 78 	mr      r6,r27
+ 10c:	7f c7 f3 78 	mr      r7,r30				 10c:	7f c7 f3 78 	mr      r7,r30
+ 110:	7f a8 eb 78 	mr      r8,r29				 110:	7f a8 eb 78 	mr      r8,r29
+ 114:	48 00 00 01 	bl      114 <paging_init+0x88>		 114:	48 00 00 01 	bl      114 <paging_init+0x88>
+			114: R_PPC_PLTREL24	printk					114: R_PPC_PLTREL24	printk
+ 118:	7c 7d d8 10 	subfc   r3,r29,r27			 118:	7c 7d d8 10 	subfc   r3,r29,r27
+ 11c:	4c c6 31 82 	crclr   4*cr1+eq			 11c:	4c c6 31 82 	crclr   4*cr1+eq
+ 120:	7c be e1 10 	subfe   r5,r30,r28			 120:	7c be e1 10 	subfe   r5,r30,r28
+ 124:	54 64 60 3e 	rotlwi  r4,r3,12			 124:	54 64 60 3e 	rotlwi  r4,r3,12
+ 128:	3c 60 00 00 	lis     r3,0				 128:	3c 60 00 00 	lis     r3,0
+			12a: R_PPC_ADDR16_HA	.rodata.str1.				12a: R_PPC_ADDR16_HA	.rodata.str1.
+ 12c:	50 a4 60 26 	rlwimi  r4,r5,12,0,19			 12c:	50 a4 60 26 	rlwimi  r4,r5,12,0,19
+ 130:	38 63 00 00 	addi    r3,r3,0				 130:	38 63 00 00 	addi    r3,r3,0
+			132: R_PPC_ADDR16_LO	.rodata.str1.				132: R_PPC_ADDR16_LO	.rodata.str1.
+ 134:	48 00 00 01 	bl      134 <paging_init+0xa8>		 134:	48 00 00 01 	bl      134 <paging_init+0xa8>
+			134: R_PPC_PLTREL24	printk					134: R_PPC_PLTREL24	printk
+ 138:	3c 60 00 00 	lis     r3,0				 138:	3c 60 00 00 	lis     r3,0
+			13a: R_PPC_ADDR16_HA	max_low_pfn				13a: R_PPC_ADDR16_HA	max_low_pfn
+ 13c:	80 83 00 00 	lwz     r4,0(r3)			 13c:	80 83 00 00 	lwz     r4,0(r3)
+			13e: R_PPC_ADDR16_LO	max_low_pfn				13e: R_PPC_ADDR16_LO	max_low_pfn
+ 140:	3c 60 00 00 	lis     r3,0				 140:	3c 60 00 00 	lis     r3,0
+			142: R_PPC_ADDR16_HA	.bss+0x10				142: R_PPC_ADDR16_HA	.bss+0x10
+ 144:	94 83 00 00 	stwu    r4,0(r3)			 144:	94 83 00 00 	stwu    r4,0(r3)
+			146: R_PPC_ADDR16_LO	.bss+0x10				146: R_PPC_ADDR16_LO	.bss+0x10
+ 148:	48 00 00 01 	bl      148 <paging_init+0xbc>		 148:	48 00 00 01 	bl      148 <paging_init+0xbc>
+			148: R_PPC_PLTREL24	free_area_ini				148: R_PPC_PLTREL24	free_area_ini
+ 14c:	83 c1 00 28 	lwz     r30,40(r1)			 14c:	83 c1 00 28 	lwz     r30,40(r1)
+ 150:	83 a1 00 24 	lwz     r29,36(r1)			 150:	83 a1 00 24 	lwz     r29,36(r1)
+ 154:	83 81 00 20 	lwz     r28,32(r1)			 154:	83 81 00 20 	lwz     r28,32(r1)
+ 158:	83 61 00 1c 	lwz     r27,28(r1)			 158:	83 61 00 1c 	lwz     r27,28(r1)
+ 15c:	83 41 00 18 	lwz     r26,24(r1)			 15c:	83 41 00 18 	lwz     r26,24(r1)
+ 160:	83 21 00 14 	lwz     r25,20(r1)			 160:	83 21 00 14 	lwz     r25,20(r1)
+ 164:	80 01 00 34 	lwz     r0,52(r1)			 164:	80 01 00 34 	lwz     r0,52(r1)
+ 168:	38 21 00 30 	addi    r1,r1,48			 168:	38 21 00 30 	addi    r1,r1,48
+ 16c:	7c 08 03 a6 	mtlr    r0				 16c:	7c 08 03 a6 	mtlr    r0
+ 170:	4e 80 00 20 	blr					 170:	4e 80 00 20 	blr
+
+00000174 <mem_init>:						00000174 <mem_init>:
+ 174:	7c 08 02 a6 	mflr    r0				 174:	7c 08 02 a6 	mflr    r0
+ 178:	90 01 00 04 	stw     r0,4(r1)			 178:	90 01 00 04 	stw     r0,4(r1)
+ 17c:	94 21 ff e0 	stwu    r1,-32(r1)			 17c:	94 21 ff e0 	stwu    r1,-32(r1)
+ 180:	3c 60 00 00 	lis     r3,0				 180:	3c 60 00 00 	lis     r3,0
+			182: R_PPC_ADDR16_HA	max_low_pfn				182: R_PPC_ADDR16_HA	max_low_pfn
+ 184:	3c 80 00 00 	lis     r4,0				 184:	3c 80 00 00 	lis     r4,0
+			186: R_PPC_ADDR16_HA	max_pfn					186: R_PPC_ADDR16_HA	max_pfn
+ 188:	93 81 00 10 	stw     r28,16(r1)			 188:	93 81 00 10 	stw     r28,16(r1)
+ 18c:	3f 80 00 00 	lis     r28,0				 18c:	3f 80 00 00 	lis     r28,0
+			18e: R_PPC_ADDR16_HA	high_memory				18e: R_PPC_ADDR16_HA	high_memory
+ 190:	80 63 00 00 	lwz     r3,0(r3)			 190:	80 63 00 00 	lwz     r3,0(r3)
+			192: R_PPC_ADDR16_LO	max_low_pfn				192: R_PPC_ADDR16_LO	max_low_pfn
+ 194:	80 84 00 00 	lwz     r4,0(r4)			 194:	80 84 00 00 	lwz     r4,0(r4)
+			196: R_PPC_ADDR16_LO	max_pfn					196: R_PPC_ADDR16_LO	max_pfn
+ 198:	54 63 60 26 	rlwinm  r3,r3,12,0,19			 198:	54 63 60 26 	rlwinm  r3,r3,12,0,19
+ 19c:	3c 63 c0 00 	addis   r3,r3,-16384			 19c:	3c 63 c0 00 	addis   r3,r3,-16384
+ 1a0:	90 7c 00 00 	stw     r3,0(r28)			 1a0:	90 7c 00 00 	stw     r3,0(r28)
+			1a2: R_PPC_ADDR16_LO	high_memory				1a2: R_PPC_ADDR16_LO	high_memory
+ 1a4:	3c 60 00 00 	lis     r3,0				 1a4:	3c 60 00 00 	lis     r3,0
+			1a6: R_PPC_ADDR16_HA	max_mapnr				1a6: R_PPC_ADDR16_HA	max_mapnr
+ 1a8:	93 a1 00 14 	stw     r29,20(r1)			 1a8:	93 a1 00 14 	stw     r29,20(r1)
+ 1ac:	93 c1 00 18 	stw     r30,24(r1)			 1ac:	93 c1 00 18 	stw     r30,24(r1)
+ 1b0:	90 83 00 00 	stw     r4,0(r3)			 1b0:	90 83 00 00 	stw     r4,0(r3)
+			1b2: R_PPC_ADDR16_LO	max_mapnr				1b2: R_PPC_ADDR16_LO	max_mapnr
+ 1b4:	48 00 00 01 	bl      1b4 <mem_init+0x40>		 1b4:	48 00 00 01 	bl      1b4 <mem_init+0x40>
+			1b4: R_PPC_PLTREL24	memblock_free				1b4: R_PPC_PLTREL24	memblock_free
+ 1b8:	38 60 00 00 	li      r3,0				 1b8:	38 60 00 00 	li      r3,0
+ 1bc:	48 00 00 01 	bl      1bc <mem_init+0x48>		 1bc:	48 00 00 01 	bl      1bc <mem_init+0x48>
+			1bc: R_PPC_PLTREL24	mem_init_prin				1bc: R_PPC_PLTREL24	mem_init_prin
+ 1c0:	3c 60 00 00 	lis     r3,0				 1c0:	3c 60 00 00 	lis     r3,0
+			1c2: R_PPC_ADDR16_HA	.rodata.str1.				1c2: R_PPC_ADDR16_HA	.rodata.str1.
+ 1c4:	4c c6 31 82 	crclr   4*cr1+eq			 1c4:	4c c6 31 82 	crclr   4*cr1+eq
+ 1c8:	38 63 00 00 	addi    r3,r3,0				 1c8:	38 63 00 00 	addi    r3,r3,0
+			1ca: R_PPC_ADDR16_LO	.rodata.str1.				1ca: R_PPC_ADDR16_LO	.rodata.str1.
+ 1cc:	48 00 00 01 	bl      1cc <mem_init+0x58>		 1cc:	48 00 00 01 	bl      1cc <mem_init+0x58>
+			1cc: R_PPC_PLTREL24	printk					1cc: R_PPC_PLTREL24	printk
+ 1d0:	3c 80 ff fd 	lis     r4,-3				 1d0:	3c 80 ff fd 	lis     r4,-3
+ 1d4:	3c 60 00 00 	lis     r3,0				 1d4:	3c 60 00 00 	lis     r3,0
+			1d6: R_PPC_ADDR16_HA	.rodata.str1.				1d6: R_PPC_ADDR16_HA	.rodata.str1.
+ 1d8:	4c c6 31 82 	crclr   4*cr1+eq			 1d8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1dc:	60 9e f0 00 	ori     r30,r4,61440			 1dc:	60 9e f0 00 	ori     r30,r4,61440
+ 1e0:	38 63 00 00 	addi    r3,r3,0				 1e0:	38 63 00 00 	addi    r3,r3,0
+			1e2: R_PPC_ADDR16_LO	.rodata.str1.				1e2: R_PPC_ADDR16_LO	.rodata.str1.
+ 1e4:	7f c4 f3 78 	mr      r4,r30				 1e4:	7f c4 f3 78 	mr      r4,r30
+ 1e8:	38 a0 f0 00 	li      r5,-4096			 1e8:	38 a0 f0 00 	li      r5,-4096
+ 1ec:	48 00 00 01 	bl      1ec <mem_init+0x78>		 1ec:	48 00 00 01 	bl      1ec <mem_init+0x78>
+			1ec: R_PPC_PLTREL24	printk					1ec: R_PPC_PLTREL24	printk
+ 1f0:	3c 80 ff dd 	lis     r4,-35				 1f0:	3c 80 ff dd 	lis     r4,-35
+ 1f4:	3c 60 00 00 	lis     r3,0				 1f4:	3c 60 00 00 	lis     r3,0
+			1f6: R_PPC_ADDR16_HA	.rodata.str1.				1f6: R_PPC_ADDR16_HA	.rodata.str1.
+ 1f8:	4c c6 31 82 	crclr   4*cr1+eq			 1f8:	4c c6 31 82 	crclr   4*cr1+eq
+ 1fc:	60 9d f0 00 	ori     r29,r4,61440			 1fc:	60 9d f0 00 	ori     r29,r4,61440
+ 200:	38 63 00 00 	addi    r3,r3,0				 200:	38 63 00 00 	addi    r3,r3,0
+			202: R_PPC_ADDR16_LO	.rodata.str1.				202: R_PPC_ADDR16_LO	.rodata.str1.
+ 204:	7f a4 eb 78 	mr      r4,r29				 204:	7f a4 eb 78 	mr      r4,r29
+ 208:	7f c5 f3 78 	mr      r5,r30				 208:	7f c5 f3 78 	mr      r5,r30
+ 20c:	48 00 00 01 	bl      20c <mem_init+0x98>		 20c:	48 00 00 01 	bl      20c <mem_init+0x98>
+			20c: R_PPC_PLTREL24	printk					20c: R_PPC_PLTREL24	printk
+ 210:	3f c0 00 00 	lis     r30,0				 210:	3f c0 00 00 	lis     r30,0
+			212: R_PPC_ADDR16_HA	ioremap_bot				212: R_PPC_ADDR16_HA	ioremap_bot
+ 214:	3c 60 00 00 	lis     r3,0				 214:	3c 60 00 00 	lis     r3,0
+			216: R_PPC_ADDR16_HA	.rodata.str1.				216: R_PPC_ADDR16_HA	.rodata.str1.
+ 218:	4c c6 31 82 	crclr   4*cr1+eq			 218:	4c c6 31 82 	crclr   4*cr1+eq
+ 21c:	80 9e 00 00 	lwz     r4,0(r30)			 21c:	80 9e 00 00 	lwz     r4,0(r30)
+			21e: R_PPC_ADDR16_LO	ioremap_bot				21e: R_PPC_ADDR16_LO	ioremap_bot
+ 220:	38 63 00 00 	addi    r3,r3,0				 220:	38 63 00 00 	addi    r3,r3,0
+			222: R_PPC_ADDR16_LO	.rodata.str1.				222: R_PPC_ADDR16_LO	.rodata.str1.
+ 224:	7f a5 eb 78 	mr      r5,r29				 224:	7f a5 eb 78 	mr      r5,r29
+ 228:	48 00 00 01 	bl      228 <mem_init+0xb4>		 228:	48 00 00 01 	bl      228 <mem_init+0xb4>
+			228: R_PPC_PLTREL24	printk					228: R_PPC_PLTREL24	printk
+ 22c:	80 7c 00 00 	lwz     r3,0(r28)			 22c:	80 7c 00 00 	lwz     r3,0(r28)
+			22e: R_PPC_ADDR16_LO	high_memory				22e: R_PPC_ADDR16_LO	high_memory
+ 230:	3c 80 01 00 	lis     r4,256				 230:	3c 80 01 00 	lis     r4,256
+ 234:	4c c6 31 82 	crclr   4*cr1+eq			 234:	4c c6 31 82 	crclr   4*cr1+eq
+ 238:	38 63 ff ff 	addi    r3,r3,-1			 238:	38 63 ff ff 	addi    r3,r3,-1
+ 23c:	80 be 00 00 	lwz     r5,0(r30)			 23c:	80 be 00 00 	lwz     r5,0(r30)
+			23e: R_PPC_ADDR16_LO	ioremap_bot				23e: R_PPC_ADDR16_LO	ioremap_bot
+ 240:	3c 63 10 00 	addis   r3,r3,4096			 240:	3c 63 10 00 	addis   r3,r3,4096
+ 244:	54 63 00 06 	rlwinm  r3,r3,0,0,3			 244:	54 63 00 06 	rlwinm  r3,r3,0,0,3
+ 248:	50 64 02 0c 	rlwimi  r4,r3,0,8,6			 248:	50 64 02 0c 	rlwimi  r4,r3,0,8,6
+ 24c:	3c 60 00 00 	lis     r3,0				 24c:	3c 60 00 00 	lis     r3,0
+			24e: R_PPC_ADDR16_HA	.rodata.str1.				24e: R_PPC_ADDR16_HA	.rodata.str1.
+ 250:	38 63 00 00 	addi    r3,r3,0				 250:	38 63 00 00 	addi    r3,r3,0
+			252: R_PPC_ADDR16_LO	.rodata.str1.				252: R_PPC_ADDR16_LO	.rodata.str1.
+ 254:	48 00 00 01 	bl      254 <mem_init+0xe0>		 254:	48 00 00 01 	bl      254 <mem_init+0xe0>
+			254: R_PPC_PLTREL24	printk					254: R_PPC_PLTREL24	printk
+ 258:	83 c1 00 18 	lwz     r30,24(r1)			 258:	83 c1 00 18 	lwz     r30,24(r1)
+ 25c:	83 a1 00 14 	lwz     r29,20(r1)			 25c:	83 a1 00 14 	lwz     r29,20(r1)
+ 260:	83 81 00 10 	lwz     r28,16(r1)			 260:	83 81 00 10 	lwz     r28,16(r1)
+ 264:	80 01 00 24 	lwz     r0,36(r1)			 264:	80 01 00 24 	lwz     r0,36(r1)
+ 268:	38 21 00 20 	addi    r1,r1,32			 268:	38 21 00 20 	addi    r1,r1,32
+ 26c:	7c 08 03 a6 	mtlr    r0				 26c:	7c 08 03 a6 	mtlr    r0
+ 270:	4e 80 00 20 	blr					 270:	4e 80 00 20 	blr
+
+00000274 <add_system_ram_resources>:				00000274 <add_system_ram_resources>:
+ 274:	7c 08 02 a6 	mflr    r0				 274:	7c 08 02 a6 	mflr    r0
+ 278:	90 01 00 04 	stw     r0,4(r1)			 278:	90 01 00 04 	stw     r0,4(r1)
+ 27c:	94 21 ff c0 	stwu    r1,-64(r1)			 27c:	94 21 ff c0 	stwu    r1,-64(r1)
+ 280:	3c 60 00 00 	lis     r3,0				 280:	3c 60 00 00 	lis     r3,0
+			282: R_PPC_ADDR16_HA	memblock				282: R_PPC_ADDR16_HA	memblock
+ 284:	93 a1 00 34 	stw     r29,52(r1)			 284:	93 a1 00 34 	stw     r29,52(r1)
+ 288:	3b a3 00 00 	addi    r29,r3,0			 288:	3b a3 00 00 	addi    r29,r3,0
+			28a: R_PPC_ADDR16_LO	memblock				28a: R_PPC_ADDR16_LO	memblock
+ 28c:	80 7d 00 10 	lwz     r3,16(r29)			 28c:	80 7d 00 10 	lwz     r3,16(r29)
+ 290:	93 81 00 30 	stw     r28,48(r1)			 290:	93 81 00 30 	stw     r28,48(r1)
+ 294:	1c 63 00 18 	mulli   r3,r3,24			 294:	1c 63 00 18 	mulli   r3,r3,24
+ 298:	83 9d 00 20 	lwz     r28,32(r29)			 298:	83 9d 00 20 	lwz     r28,32(r29)
+ 29c:	7c 7c 1a 14 	add     r3,r28,r3			 29c:	7c 7c 1a 14 	add     r3,r28,r3
+ 2a0:	92 a1 00 14 	stw     r21,20(r1)			 2a0:	92 a1 00 14 	stw     r21,20(r1)
+ 2a4:	7c 1c 18 40 	cmplw   r28,r3				 2a4:	7c 1c 18 40 	cmplw   r28,r3
+ 2a8:	92 c1 00 18 	stw     r22,24(r1)			 2a8:	92 c1 00 18 	stw     r22,24(r1)
+ 2ac:	92 e1 00 1c 	stw     r23,28(r1)			 2ac:	92 e1 00 1c 	stw     r23,28(r1)
+ 2b0:	93 01 00 20 	stw     r24,32(r1)			 2b0:	93 01 00 20 	stw     r24,32(r1)
+ 2b4:	93 21 00 24 	stw     r25,36(r1)			 2b4:	93 21 00 24 	stw     r25,36(r1)
+ 2b8:	93 41 00 28 	stw     r26,40(r1)			 2b8:	93 41 00 28 	stw     r26,40(r1)
+ 2bc:	93 61 00 2c 	stw     r27,44(r1)			 2bc:	93 61 00 2c 	stw     r27,44(r1)
+ 2c0:	93 c1 00 38 	stw     r30,56(r1)			 2c0:	93 c1 00 38 	stw     r30,56(r1)
+ 2c4:	40 80 00 ac 	bge     370 <add_system_ram_resources	 2c4:	40 80 00 ac 	bge     370 <add_system_ram_resources
+ 2c8:	3c 60 00 00 	lis     r3,0				 2c8:	3c 60 00 00 	lis     r3,0
+			2ca: R_PPC_ADDR16_HA	kmalloc_cache				2ca: R_PPC_ADDR16_HA	kmalloc_cache
+ 2cc:	3c 80 00 00 	lis     r4,0				 2cc:	3c 80 00 00 	lis     r4,0
+			2ce: R_PPC_ADDR16_HA	.rodata.str1.				2ce: R_PPC_ADDR16_HA	.rodata.str1.
+ 2d0:	3c a0 81 00 	lis     r5,-32512			 2d0:	3c a0 81 00 	lis     r5,-32512
+ 2d4:	3c c0 00 00 	lis     r6,0				 2d4:	3c c0 00 00 	lis     r6,0
+			2d6: R_PPC_ADDR16_HA	iomem_resourc				2d6: R_PPC_ADDR16_HA	iomem_resourc
+ 2d8:	3b 7c ff e8 	addi    r27,r28,-24			 2d8:	3b 7c ff e8 	addi    r27,r28,-24
+ 2dc:	3b 40 00 00 	li      r26,0				 2dc:	3b 40 00 00 	li      r26,0
+ 2e0:	3b 23 00 00 	addi    r25,r3,0			 2e0:	3b 23 00 00 	addi    r25,r3,0
+			2e2: R_PPC_ADDR16_LO	kmalloc_cache				2e2: R_PPC_ADDR16_LO	kmalloc_cache
+ 2e4:	3b 04 00 00 	addi    r24,r4,0			 2e4:	3b 04 00 00 	addi    r24,r4,0
+			2e6: R_PPC_ADDR16_LO	.rodata.str1.				2e6: R_PPC_ADDR16_LO	.rodata.str1.
+ 2e8:	60 b7 02 00 	ori     r23,r5,512			 2e8:	60 b7 02 00 	ori     r23,r5,512
+ 2ec:	3b c6 00 00 	addi    r30,r6,0			 2ec:	3b c6 00 00 	addi    r30,r6,0
+			2ee: R_PPC_ADDR16_LO	iomem_resourc				2ee: R_PPC_ADDR16_LO	iomem_resourc
+ 2f0:	80 79 00 18 	lwz     r3,24(r25)			 2f0:	80 79 00 18 	lwz     r3,24(r25)
+ 2f4:	38 80 0d c0 	li      r4,3520				 2f4:	38 80 0d c0 	li      r4,3520
+ 2f8:	38 a0 00 28 	li      r5,40				 2f8:	38 a0 00 28 	li      r5,40
+ 2fc:	82 db 00 1c 	lwz     r22,28(r27)			 2fc:	82 db 00 1c 	lwz     r22,28(r27)
+ 300:	82 bb 00 24 	lwz     r21,36(r27)			 300:	82 bb 00 24 	lwz     r21,36(r27)
+ 304:	48 00 00 01 	bl      304 <add_system_ram_resources	 304:	48 00 00 01 	bl      304 <add_system_ram_resources
+			304: R_PPC_PLTREL24	kmem_cache_al				304: R_PPC_PLTREL24	kmem_cache_al
+ 308:	7c 64 1b 78 	mr      r4,r3				 308:	7c 64 1b 78 	mr      r4,r3
+ 30c:	7c 63 00 34 	cntlzw  r3,r3				 30c:	7c 63 00 34 	cntlzw  r3,r3
+ 310:	28 04 00 00 	cmplwi  r4,0				 310:	28 04 00 00 	cmplwi  r4,0
+ 314:	54 63 df fe 	rlwinm  r3,r3,27,31,31			 314:	54 63 df fe 	rlwinm  r3,r3,27,31,31
+ 318:	0f 03 00 00 	twnei   r3,0				 318:	0f 03 00 00 	twnei   r3,0
+ 31c:	41 82 00 34 	beq     350 <add_system_ram_resources	 31c:	41 82 00 34 	beq     350 <add_system_ram_resources
+ 320:	7c 76 aa 14 	add     r3,r22,r21			 320:	7c 76 aa 14 	add     r3,r22,r21
+ 324:	93 04 00 10 	stw     r24,16(r4)			 324:	93 04 00 10 	stw     r24,16(r4)
+ 328:	38 63 ff ff 	addi    r3,r3,-1			 328:	38 63 ff ff 	addi    r3,r3,-1
+ 32c:	90 64 00 0c 	stw     r3,12(r4)			 32c:	90 64 00 0c 	stw     r3,12(r4)
+ 330:	7f c3 f3 78 	mr      r3,r30				 330:	7f c3 f3 78 	mr      r3,r30
+ 334:	93 44 00 00 	stw     r26,0(r4)			 334:	93 44 00 00 	stw     r26,0(r4)
+ 338:	92 c4 00 04 	stw     r22,4(r4)			 338:	92 c4 00 04 	stw     r22,4(r4)
+ 33c:	93 44 00 08 	stw     r26,8(r4)			 33c:	93 44 00 08 	stw     r26,8(r4)
+ 340:	92 e4 00 14 	stw     r23,20(r4)			 340:	92 e4 00 14 	stw     r23,20(r4)
+ 344:	48 00 00 01 	bl      344 <add_system_ram_resources	 344:	48 00 00 01 	bl      344 <add_system_ram_resources
+			344: R_PPC_PLTREL24	request_resou				344: R_PPC_PLTREL24	request_resou
+ 348:	54 63 0f fe 	rlwinm  r3,r3,1,31,31			 348:	54 63 0f fe 	rlwinm  r3,r3,1,31,31
+ 34c:	0f 03 00 00 	twnei   r3,0				 34c:	0f 03 00 00 	twnei   r3,0
+ 350:	80 7d 00 10 	lwz     r3,16(r29)			 350:	80 7d 00 10 	lwz     r3,16(r29)
+ 354:	3b 9c 00 18 	addi    r28,r28,24			 354:	3b 9c 00 18 	addi    r28,r28,24
+ 358:	3b 7b 00 18 	addi    r27,r27,24			 358:	3b 7b 00 18 	addi    r27,r27,24
+ 35c:	80 9d 00 20 	lwz     r4,32(r29)			 35c:	80 9d 00 20 	lwz     r4,32(r29)
+ 360:	1c 63 00 18 	mulli   r3,r3,24			 360:	1c 63 00 18 	mulli   r3,r3,24
+ 364:	7c 64 1a 14 	add     r3,r4,r3			 364:	7c 64 1a 14 	add     r3,r4,r3
+ 368:	7c 1c 18 40 	cmplw   r28,r3				 368:	7c 1c 18 40 	cmplw   r28,r3
+ 36c:	41 80 ff 84 	blt     2f0 <add_system_ram_resources	 36c:	41 80 ff 84 	blt     2f0 <add_system_ram_resources
+ 370:	38 60 00 00 	li      r3,0				 370:	38 60 00 00 	li      r3,0
+ 374:	83 c1 00 38 	lwz     r30,56(r1)			 374:	83 c1 00 38 	lwz     r30,56(r1)
+ 378:	83 a1 00 34 	lwz     r29,52(r1)			 378:	83 a1 00 34 	lwz     r29,52(r1)
+ 37c:	83 81 00 30 	lwz     r28,48(r1)			 37c:	83 81 00 30 	lwz     r28,48(r1)
+ 380:	83 61 00 2c 	lwz     r27,44(r1)			 380:	83 61 00 2c 	lwz     r27,44(r1)
+ 384:	83 41 00 28 	lwz     r26,40(r1)			 384:	83 41 00 28 	lwz     r26,40(r1)
+ 388:	83 21 00 24 	lwz     r25,36(r1)			 388:	83 21 00 24 	lwz     r25,36(r1)
+ 38c:	83 01 00 20 	lwz     r24,32(r1)			 38c:	83 01 00 20 	lwz     r24,32(r1)
+ 390:	82 e1 00 1c 	lwz     r23,28(r1)			 390:	82 e1 00 1c 	lwz     r23,28(r1)
+ 394:	82 c1 00 18 	lwz     r22,24(r1)			 394:	82 c1 00 18 	lwz     r22,24(r1)
+ 398:	82 a1 00 14 	lwz     r21,20(r1)			 398:	82 a1 00 14 	lwz     r21,20(r1)
+ 39c:	80 01 00 44 	lwz     r0,68(r1)			 39c:	80 01 00 44 	lwz     r0,68(r1)
+ 3a0:	38 21 00 40 	addi    r1,r1,64			 3a0:	38 21 00 40 	addi    r1,r1,64
+ 3a4:	7c 08 03 a6 	mtlr    r0				 3a4:	7c 08 03 a6 	mtlr    r0
+ 3a8:	4e 80 00 20 	blr					 3a8:	4e 80 00 20 	blr
+
+--HcAYCG3uE/tztfnV--
