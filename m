@@ -2,47 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341C1700F4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 15:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF6D70107
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 15:31:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sj4F6H4RzDqGF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 23:23:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sjDM4dWYzDqGL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 23:30:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=pengutronix.de
- (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de;
- envelope-from=l.stach@pengutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=pengutronix.de
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45shdf1qMczDqGP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 23:04:21 +1000 (AEST)
-Received: from kresse.hi.pengutronix.de ([2001:67c:670:100:1d::2a])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <l.stach@pengutronix.de>)
- id 1hpXz6-0005yy-7y; Mon, 22 Jul 2019 15:04:08 +0200
-Message-ID: <1563800647.2311.13.camel@pengutronix.de>
-Subject: Re: [PATCH 10/10] ASoC: fsl_sai: Add support for imx7ulp/imx8mq
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Daniel Baluta <daniel.baluta@nxp.com>, broonie@kernel.org
-Date: Mon, 22 Jul 2019 15:04:07 +0200
-In-Reply-To: <20190722124833.28757-11-daniel.baluta@nxp.com>
-References: <20190722124833.28757-1-daniel.baluta@nxp.com>
- <20190722124833.28757-11-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u2 
-Mime-Version: 1.0
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sj2r1CFnzDqM2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 23:22:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 45sj2p5GbJz9s4Y; Mon, 22 Jul 2019 23:22:42 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 45sj2n4jwQz9s8m; Mon, 22 Jul 2019 23:22:41 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc: Wire up clone3 syscall
+Date: Mon, 22 Jul 2019 23:22:31 +1000
+Message-Id: <20190722132231.10169-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::2a
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,55 +41,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, viorel.suman@nxp.com, timur@kernel.org,
- Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, shengjiu.wang@nxp.com,
- angus@akkea.ca, tiwai@suse.com, perex@perex.cz, nicoleotsuka@gmail.com,
- linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, christian@brauner.io
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am Montag, den 22.07.2019, 15:48 +0300 schrieb Daniel Baluta:
-> SAI module on imx7ulp/imx8m features 2 new registers (VERID and PARAM)
-> at the beginning of register address space.
-> 
-> On imx7ulp FIFOs can held up to 16 x 32 bit samples.
-> On imx8mq FIFOs can held up to 128 x 32 bit samples.
-> 
-> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> ---
->  sound/soc/fsl/fsl_sai.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index f2441b84877e..b05837465b5a 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -1065,10 +1065,24 @@ static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
-> >  	.reg_offset = 0,
->  };
->  
-> +static const struct fsl_sai_soc_data fsl_sai_imx7ulp_data = {
-> > +	.use_imx_pcm = true,
-> > +	.fifo_depth = 16,
-> > +	.reg_offset = 8,
-> +};
-> +
-> +static const struct fsl_sai_soc_data fsl_sai_imx8mq_data = {
-> > +	.use_imx_pcm = true,
-> > +	.fifo_depth = 128,
-> > +	.reg_offset = 8,
-> +};
-> +
->  static const struct of_device_id fsl_sai_ids[] = {
-> >  	{ .compatible = "fsl,vf610-sai", .data = &fsl_sai_vf610_data },
-> >  	{ .compatible = "fsl,imx6sx-sai", .data = &fsl_sai_imx6sx_data },
-> >  	{ .compatible = "fsl,imx6ul-sai", .data = &fsl_sai_imx6sx_data },
-> > +	{ .compatible = "fsl,imx7ulp-sai", .data = &fsl_sai_imx7ulp_data },
-> > +	{ .compatible = "fsl,imx8mq-sai", .data = &fsl_sai_imx8mq_data },
-> > 
-Those two new compatibles need to be documented in the DT bindings.
+Wire up the new clone3 syscall added in commit 7f192e3cd316 ("fork:
+add clone3").
 
-Regards,
-Lucas
+This requires a ppc_clone3 wrapper, in order to save the non-volatile
+GPRs before calling into the generic syscall code. Otherwise we hit
+the BUG_ON in CHECK_FULL_REGS in copy_thread().
+
+Lightly tested using Christian's test code on a Power8 LE VM.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/unistd.h        | 1 +
+ arch/powerpc/kernel/entry_64.S           | 5 +++++
+ arch/powerpc/kernel/syscalls/syscall.tbl | 1 +
+ 3 files changed, 7 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
+index 68473c3c471c..b0720c7c3fcf 100644
+--- a/arch/powerpc/include/asm/unistd.h
++++ b/arch/powerpc/include/asm/unistd.h
+@@ -49,6 +49,7 @@
+ #define __ARCH_WANT_SYS_FORK
+ #define __ARCH_WANT_SYS_VFORK
+ #define __ARCH_WANT_SYS_CLONE
++#define __ARCH_WANT_SYS_CLONE3
+ 
+ #endif		/* __ASSEMBLY__ */
+ #endif /* _ASM_POWERPC_UNISTD_H_ */
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index d9105fcf4021..0a0b5310f54a 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -487,6 +487,11 @@ _GLOBAL(ppc_clone)
+ 	bl	sys_clone
+ 	b	.Lsyscall_exit
+ 
++_GLOBAL(ppc_clone3)
++       bl      save_nvgprs
++       bl      sys_clone3
++       b       .Lsyscall_exit
++
+ _GLOBAL(ppc32_swapcontext)
+ 	bl	save_nvgprs
+ 	bl	compat_sys_swapcontext
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index f2c3bda2d39f..6886ecb590d5 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -516,3 +516,4 @@
+ 432	common	fsmount				sys_fsmount
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
++435	common	clone3				ppc_clone3
+-- 
+2.20.1
+
