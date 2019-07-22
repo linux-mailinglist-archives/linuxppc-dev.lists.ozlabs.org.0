@@ -2,35 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DA16F74A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 04:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407416F797
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 04:55:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45sR0p5jCfzDqSG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 12:50:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45sR6W5488zDqVN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2019 12:54:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45sQyl2DfYzDqDs
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45sQyl5w1tzDqMC
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 12:48:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 45sQyk612Wz9sBF; Mon, 22 Jul 2019 12:48:14 +1000 (AEST)
+ id 45sQyl2WrQz9sLt; Mon, 22 Jul 2019 12:48:15 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 4d202c8c8ed3822327285747db1765967110b274
-In-Reply-To: <1563359724-13931-1-git-send-email-ego@linux.vnet.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Breno Leitao <leitao@debian.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+X-powerpc-patch-commit: c7ce5fe9288c5692fa456a804cf5ea5976d842f1
+In-Reply-To: <20190719050502.405-1-mikey@neuling.org>
+To: Michael Neuling <mikey@neuling.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/xive: Fix loop exit-condition in
- xive_find_target_in_mask()
-Message-Id: <45sQyk612Wz9sBF@ozlabs.org>
-Date: Mon, 22 Jul 2019 12:48:14 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/tm: Fix oops on sigreturn on systems without TM
+Message-Id: <45sQyl2WrQz9sLt@ozlabs.org>
+Date: Mon, 22 Jul 2019 12:48:15 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,95 +38,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: mikey@neuling.org, Praveen Pandey <Praveen.Pandey@in.ibm.com>,
+ gromero@br.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Breno Leitao <breno.leitao@gmail.com>, Haren Myneni <haren@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2019-07-17 at 10:35:24 UTC, "Gautham R. Shenoy" wrote:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+On Fri, 2019-07-19 at 05:05:02 UTC, Michael Neuling wrote:
+> On systems like P9 powernv where we have no TM (or P8 booted with
+> ppc_tm=off), userspace can construct a signal context which still has
+> the MSR TS bits set. The kernel tries to restore this context which
+> results in the following crash:
 > 
-> xive_find_target_in_mask() has the following for(;;) loop which has a
-> bug when @first == cpumask_first(@mask) and condition 1 fails to hold
-> for every CPU in @mask. In this case we loop forever in the for-loop.
+> [   74.980557] Unexpected TM Bad Thing exception at c0000000000022fc (msr 0x8000000102a03031) tm_scratch=800000020280f033
+> [   74.980741] Oops: Unrecoverable exception, sig: 6 [#1]
+> [   74.980820] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> [   74.980917] Modules linked in:
+> [   74.980980] CPU: 0 PID: 1636 Comm: sigfuz Not tainted 5.2.0-11043-g0a8ad0ffa4 #69
+> [   74.981096] NIP:  c0000000000022fc LR: 00007fffb2d67e48 CTR: 0000000000000000
+> [   74.981212] REGS: c00000003fffbd70 TRAP: 0700   Not tainted  (5.2.0-11045-g7142b497d8)
+> [   74.981325] MSR:  8000000102a03031 <SF,VEC,VSX,FP,ME,IR,DR,LE,TM[E]>  CR: 42004242  XER: 00000000
+> [   74.981463] CFAR: c0000000000022e0 IRQMASK: 0
+> [   74.981463] GPR00: 0000000000000072 00007fffb2b6e560 00007fffb2d87f00 0000000000000669
+> [   74.981463] GPR04: 00007fffb2b6e728 0000000000000000 0000000000000000 00007fffb2b6f2a8
+> [   74.981463] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [   74.981463] GPR12: 0000000000000000 00007fffb2b76900 0000000000000000 0000000000000000
+> [   74.981463] GPR16: 00007fffb2370000 00007fffb2d84390 00007fffea3a15ac 000001000a250420
+> [   74.981463] GPR20: 00007fffb2b6f260 0000000010001770 0000000000000000 0000000000000000
+> [   74.981463] GPR24: 00007fffb2d843a0 00007fffea3a14a0 0000000000010000 0000000000800000
+> [   74.981463] GPR28: 00007fffea3a14d8 00000000003d0f00 0000000000000000 00007fffb2b6e728
+> [   74.982420] NIP [c0000000000022fc] rfi_flush_fallback+0x7c/0x80
+> [   74.982517] LR [00007fffb2d67e48] 0x7fffb2d67e48
+> [   74.982593] Call Trace:
+> [   74.982632] Instruction dump:
+> [   74.982691] e96a0220 e96a02a8 e96a0330 e96a03b8 394a0400 4200ffdc 7d2903a6 e92d0c00
+> [   74.982809] e94d0c08 e96d0c10 e82d0c18 7db242a6 <4c000024> 7db243a6 7db142a6 f82d0c18
 > 
->   first = cpu;
->   for (;;) {
->   	  if (cpu_online(cpu) && xive_try_pick_target(cpu)) // condition 1
-> 		  return cpu;
-> 	  cpu = cpumask_next(cpu, mask);
-> 	  if (cpu == first) // condition 2
-> 		  break;
+> The problem is the signal code assumes TM is enabled when
+> CONFIG_PPC_TRANSACTIONAL_MEM is on. This may not be the case as with
+> P9 powernv or if `ppc_tm=off` is used on P8.
 > 
-> 	  if (cpu >= nr_cpu_ids) // condition 3
-> 		  cpu = cpumask_first(mask);
->   }
+> This means any local user can crash the system.
 > 
-> This is because, when @first == cpumask_first(@mask), we never hit the
-> condition 2 (cpu == first) since prior to this check, we would have
-> executed "cpu = cpumask_next(cpu, mask)" which will set the value of
-> @cpu to a value greater than @first or to nr_cpus_ids. When this is
-> coupled with the fact that condition 1 is not met, we will never exit
-> this loop.
+> Fix the problem by returning a bad stack frame to the user if they try
+> to set the MSR TS bits with sigreturn() on systems where TM is not
+> supported.
 > 
-> This was discovered by the hard-lockup detector while running LTP test
-> concurrently with SMT switch tests.
+> Found with sigfuz kernel selftest on P9.
 > 
->  watchdog: CPU 12 detected hard LOCKUP on other CPUs 68
->  watchdog: CPU 12 TB:85587019220796, last SMP heartbeat TB:85578827223399 (15999ms ago)
->  watchdog: CPU 68 Hard LOCKUP
->  watchdog: CPU 68 TB:85587019361273, last heartbeat TB:85576815065016 (19930ms ago)
->  CPU: 68 PID: 45050 Comm: hxediag Kdump: loaded Not tainted 4.18.0-100.el8.ppc64le #1
->  NIP:  c0000000006f5578 LR: c000000000cba9ec CTR: 0000000000000000
->  REGS: c000201fff3c7d80 TRAP: 0100   Not tainted  (4.18.0-100.el8.ppc64le)
->  MSR:  9000000002883033 <SF,HV,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 24028424  XER: 00000000
->  CFAR: c0000000006f558c IRQMASK: 1
->  GPR00: c0000000000afc58 c000201c01c43400 c0000000015ce500 c000201cae26ec18
->  GPR04: 0000000000000800 0000000000000540 0000000000000800 00000000000000f8
->  GPR08: 0000000000000020 00000000000000a8 0000000080000000 c00800001a1beed8
->  GPR12: c0000000000b1410 c000201fff7f4c00 0000000000000000 0000000000000000
->  GPR16: 0000000000000000 0000000000000000 0000000000000540 0000000000000001
->  GPR20: 0000000000000048 0000000010110000 c00800001a1e3780 c000201cae26ed18
->  GPR24: 0000000000000000 c000201cae26ed8c 0000000000000001 c000000001116bc0
->  GPR28: c000000001601ee8 c000000001602494 c000201cae26ec18 000000000000001f
->  NIP [c0000000006f5578] find_next_bit+0x38/0x90
->  LR [c000000000cba9ec] cpumask_next+0x2c/0x50
->  Call Trace:
->  [c000201c01c43400] [c000201cae26ec18] 0xc000201cae26ec18 (unreliable)
->  [c000201c01c43420] [c0000000000afc58] xive_find_target_in_mask+0x1b8/0x240
->  [c000201c01c43470] [c0000000000b0228] xive_pick_irq_target.isra.3+0x168/0x1f0
->  [c000201c01c435c0] [c0000000000b1470] xive_irq_startup+0x60/0x260
->  [c000201c01c43640] [c0000000001d8328] __irq_startup+0x58/0xf0
->  [c000201c01c43670] [c0000000001d844c] irq_startup+0x8c/0x1a0
->  [c000201c01c436b0] [c0000000001d57b0] __setup_irq+0x9f0/0xa90
->  [c000201c01c43760] [c0000000001d5aa0] request_threaded_irq+0x140/0x220
->  [c000201c01c437d0] [c00800001a17b3d4] bnx2x_nic_load+0x188c/0x3040 [bnx2x]
->  [c000201c01c43950] [c00800001a187c44] bnx2x_self_test+0x1fc/0x1f70 [bnx2x]
->  [c000201c01c43a90] [c000000000adc748] dev_ethtool+0x11d8/0x2cb0
->  [c000201c01c43b60] [c000000000b0b61c] dev_ioctl+0x5ac/0xa50
->  [c000201c01c43bf0] [c000000000a8d4ec] sock_do_ioctl+0xbc/0x1b0
->  [c000201c01c43c60] [c000000000a8dfb8] sock_ioctl+0x258/0x4f0
->  [c000201c01c43d20] [c0000000004c9704] do_vfs_ioctl+0xd4/0xa70
->  [c000201c01c43de0] [c0000000004ca274] sys_ioctl+0xc4/0x160
->  [c000201c01c43e30] [c00000000000b388] system_call+0x5c/0x70
->  Instruction dump:
->  78aad182 54a806be 3920ffff 78a50664 794a1f24 7d294036 7d43502a 7d295039
->  4182001c 48000034 78a9d182 79291f24 <7d23482a> 2fa90000 409e0020 38a50040
+> This fixes CVE-2019-13648.
 > 
-> To fix this, move the check for condition 2 after the check for
-> condition 3, so that we are able to break out of the loop soon after
-> iterating through all the CPUs in the @mask in the problem case. Use
-> do..while() to achieve this.
-> 
-> Fixes: 243e25112d06 ("powerpc/xive: Native exploitation of the XIVE
-> interrupt controller")
-> Cc: <stable@vger.kernel.org> # 4.12+
-> Reported-by: Indira P. Joga <indira.priya@in.ibm.com>
-> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> Fixes: 2b0a576d15 ("powerpc: Add new transactional memory state to the signal context")
+> Cc: stable@vger.kernel.org # v3.9
+> Reported-by: Praveen Pandey <Praveen.Pandey@in.ibm.com>
+> Signed-off-by: Michael Neuling <mikey@neuling.org>
 
 Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/4d202c8c8ed3822327285747db1765967110b274
+https://git.kernel.org/powerpc/c/c7ce5fe9288c5692fa456a804cf5ea5976d842f1
 
 cheers
