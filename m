@@ -2,79 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4FE7256F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 05:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F43672572
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 05:40:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45th0Q6qCbzDqMl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 13:39:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45th2L1Jr2zDqHn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 13:40:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linaro.org
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=viresh.kumar@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="GLW0xIF/"; 
+ unprotected) header.d=linaro.org header.i=@linaro.org header.b="AS7dyrHG"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45t7V92KL1zDqRp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 16:14:23 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id w10so18867594pgj.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 23:14:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45t7VJ2dTXzDqRd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 16:14:32 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id x15so8521559pgg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2019 23:14:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vuhDAdrwQAvGhhF1l4sTnH2/cYgn8v3uFIkNwLOWcSI=;
- b=GLW0xIF/ikmhDxxaWkwedXQ3YAtiEnzbtfMJ9HikV4tL95rqEh2fkcB6NkefS0TByU
- +QQ1hhPN/eokT2aVxg0eTyR+90qMUvCEVt61eF45mxKmxYTxyaL9RYps9BAZTMO/3cDb
- 9C4NZ3uhWr2iKuhcCIrARd0ii+fMDfM0DIeWksAUC6ORyiERFbDn1C2vq8S/hkwYbIHB
- g/xyhH2PR0cFm9DdI53v5Y67tYeflXFdxVK6L0Q8ZnqYVmdDUpOGII7k1z1MNqs5JNRA
- OPWC2yrAd7K4gFy5nbRUzC6OGpMxbNPocvSPv+RbcxEN1BWEsoCoEgPiI4t0kVS5DIyX
- 10dw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=SWb56XEnAkwuUUTQuv4g9CftmyTnuWFI0OcyOh8bV4E=;
+ b=AS7dyrHGVRmWsssELTaKoX/PZHEcnPqpDyuzYRx6yaWF7GV4TKl3wEsZLCqK09+afF
+ UKPtHWleI0QB5Zu+zLqZNjhxvZgS1rWrGvzeol0aIejROxSkP10NjaNGLT9TtV4w4lTW
+ 9Ts6P/HxToNpQDWru2fZuBq1sLHJFfgeXg6uLZz6K18KDfsWBt3WvVSSgCAc46a8uYMh
+ SmC/72s3aW8jIJj9hT0a9/XIgifFfWhoAOjRGbzvD9UVyZPoczLs2O0lZfsyOWbuV1LB
+ ieQ/b25D/HHynbfdTLTG6pT9Zlj8Y50YrcCoIMfmMka93RWyu3U789hVkhtj1fOM6LFV
+ XQAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=vuhDAdrwQAvGhhF1l4sTnH2/cYgn8v3uFIkNwLOWcSI=;
- b=N0CJrC6KF7tz6+qyBCcd8+OsyB6YCO7zQFcovMaoxG+IEOusVVuVy1Z6EZy0okRXCD
- 5u94dyc09Pe7D2A+ET1+o+0+ihHT0/p0qdXkyxKmqW+F80dGe2Hg7gs1qT5vmgUK1+DP
- H5RvGcuZoo7tni04MBJ02oXEU0hQx5t8U0i6CHzyTk6CGqz+fJE+8waqkn40vaDZ1skA
- p3Hrr3/2U3F+wJQ4v42Hp5fTNmcp4vPFK/PHKNxbfkhKG1O6qNnlQA3RSjkh2369vF3q
- nBxsPHYSlIu7RZba/Kp9sv+frog4kFlPeNQYdnRZOPAaeQY22haETKlFidLyad6S9/Mq
- gGsg==
-X-Gm-Message-State: APjAAAWGNCXtjEr7mRuqosBgdAyRrJYHPd0oyTIfsyj/OX6BboXxa+3Z
- 0j75GUYHsOLmFGFlHQ1ciYDcyg==
-X-Google-Smtp-Source: APXvYqxP6bnPVRQ1MCBwzGR7VTcX3M/ry8bfvkqazsDReUg7h0RInIBa5NIHj45OVf4NXWgl6klj/w==
-X-Received: by 2002:a63:c106:: with SMTP id w6mr75584400pgf.422.1563862461180; 
- Mon, 22 Jul 2019 23:14:21 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=SWb56XEnAkwuUUTQuv4g9CftmyTnuWFI0OcyOh8bV4E=;
+ b=OPhj837TMqqNMrc1H9Lj47LuY8XeEV79R+gRYsPeCGbw/THDmwCrBrSOh5s2Z818nr
+ b7elruPelQ+5RUZihJEtzRV8h5dFGf28rVQUROAxpKEk6xsg7TrtKHQ6G3lEff9J1jU8
+ GmPI/cyhd/Eb4xlHnkIkTXK4J44yWMfySfmAMfNNZD+fIyS1bMIHZeE8x3OzxK5/psox
+ y0QxdnKqaPREWUFj9WIX8mCSg7Pe/k3e8U5EflX9vcz5Jck7p3zf7pl9dloN7AsHAeN1
+ hB4H8QPqrnbf0dx95kPtQZInNHACjtxLuQUZ0eLAU6MSnlcz6Lo6OyhHIvM/5ems090A
+ gVlw==
+X-Gm-Message-State: APjAAAX36IzHUz5kD7VM6YONWGDF+ZvkWMESQJzo94573KbgAA5Ps9NG
+ +F9MEwRt2RUUL+fOApB+GlZ16Q==
+X-Google-Smtp-Source: APXvYqyq06GLrfwvz+SL3YblFkBvCGjEzZkE9WnMZ0S1XzqjTWZU7vBi+IBQSh3jl76Zezux9RP3Ug==
+X-Received: by 2002:a62:2f04:: with SMTP id v4mr3966722pfv.14.1563862470362;
+ Mon, 22 Jul 2019 23:14:30 -0700 (PDT)
 Received: from localhost ([122.172.28.117])
- by smtp.gmail.com with ESMTPSA id o95sm36186558pjb.4.2019.07.22.23.14.19
+ by smtp.gmail.com with ESMTPSA id c69sm50590753pje.6.2019.07.22.23.14.29
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 22 Jul 2019 23:14:19 -0700 (PDT)
+ Mon, 22 Jul 2019 23:14:29 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Rafael Wysocki <rjw@rjwysocki.net>,
- Amit Daniel Kachhap <amit.kachhap@gmail.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Eduardo Valentin <edubezval@gmail.com>,
- Erik Schmauss <erik.schmauss@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Javi Merino <javi.merino@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>,
- Viresh Kumar <viresh.kumar@linaro.org>, Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH V2 00/10] cpufreq: Migrate users of policy notifiers to QoS
- requests
-Date: Tue, 23 Jul 2019 11:44:00 +0530
-Message-Id: <cover.1563862014.git.viresh.kumar@linaro.org>
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH V2 03/10] powerpc: macintosh: Switch to QoS requests instead
+ of cpufreq notifier
+Date: Tue, 23 Jul 2019 11:44:03 +0530
+Message-Id: <8fab346b73991afcc6bc602253c973e5d4ecde95.1563862014.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.21.0.rc0.269.g1a574e7a288b
+In-Reply-To: <cover.1563862014.git.viresh.kumar@linaro.org>
+References: <cover.1563862014.git.viresh.kumar@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,72 +80,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
- linux-doc@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, devel@acpica.org
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Vincent Guittot <vincent.guittot@linaro.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+The cpufreq core now takes the min/max frequency constraints via QoS
+requests and the CPUFREQ_ADJUST notifier shall get removed later on.
 
-Now that cpufreq core supports taking QoS requests for min/max cpu
-frequencies, lets migrate rest of the users to using them instead of the
-policy notifiers.
+Switch over to using the QoS request for maximum frequency constraint
+for windfarm_cpufreq_clamp driver.
 
-The CPUFREQ_NOTIFY and CPUFREQ_ADJUST events of the policy notifiers are
-removed as a result, but we have to add CPUFREQ_CREATE_POLICY and
-CPUFREQ_REMOVE_POLICY events to it for the acpi stuff specifically,
-though they are also used by arch_topology stuff now. So the policy
-notifiers aren't completely removed.
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ drivers/macintosh/windfarm_cpufreq_clamp.c | 77 ++++++++++++++--------
+ 1 file changed, 50 insertions(+), 27 deletions(-)
 
-Boot tested on my x86 PC and ARM hikey board.
-
-This has already gone through build bot for a few days now.
-
-V1->V2:
-- Added Acked-by tags
-- Reordered to keep cleanups at the bottom
-- Rebased over 5.3-rc1
-
---
-viresh
-
-Viresh Kumar (10):
-  cpufreq: Add policy create/remove notifiers
-  thermal: cpu_cooling: Switch to QoS requests instead of cpufreq
-    notifier
-  powerpc: macintosh: Switch to QoS requests instead of cpufreq notifier
-  cpufreq: powerpc_cbe: Switch to QoS requests instead of cpufreq
-    notifier
-  ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier
-  arch_topology: Use CPUFREQ_CREATE_POLICY instead of CPUFREQ_NOTIFY
-  video: sa1100fb: Remove cpufreq policy notifier
-  video: pxafb: Remove cpufreq policy notifier
-  cpufreq: Remove CPUFREQ_ADJUST and CPUFREQ_NOTIFY policy notifier
-    events
-  Documentation: cpufreq: Update policy notifier documentation
-
- Documentation/cpu-freq/core.txt            |  16 +--
- drivers/acpi/processor_driver.c            |  44 ++++++++-
- drivers/acpi/processor_perflib.c           | 106 +++++++++-----------
- drivers/acpi/processor_thermal.c           |  81 ++++++++-------
- drivers/base/arch_topology.c               |   2 +-
- drivers/cpufreq/cpufreq.c                  |  51 ++++------
- drivers/cpufreq/ppc_cbe_cpufreq.c          |  19 +++-
- drivers/cpufreq/ppc_cbe_cpufreq.h          |   8 ++
- drivers/cpufreq/ppc_cbe_cpufreq_pmi.c      |  96 +++++++++++-------
- drivers/macintosh/windfarm_cpufreq_clamp.c |  77 ++++++++++-----
- drivers/thermal/cpu_cooling.c              | 110 +++++----------------
- drivers/video/fbdev/pxafb.c                |  21 ----
- drivers/video/fbdev/pxafb.h                |   1 -
- drivers/video/fbdev/sa1100fb.c             |  27 -----
- drivers/video/fbdev/sa1100fb.h             |   1 -
- include/acpi/processor.h                   |  22 +++--
- include/linux/cpufreq.h                    |   4 +-
- 17 files changed, 327 insertions(+), 359 deletions(-)
-
+diff --git a/drivers/macintosh/windfarm_cpufreq_clamp.c b/drivers/macintosh/windfarm_cpufreq_clamp.c
+index 52fd5fca89a0..705c6200814b 100644
+--- a/drivers/macintosh/windfarm_cpufreq_clamp.c
++++ b/drivers/macintosh/windfarm_cpufreq_clamp.c
+@@ -3,9 +3,11 @@
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+ #include <linux/delay.h>
++#include <linux/pm_qos.h>
+ #include <linux/slab.h>
+ #include <linux/init.h>
+ #include <linux/wait.h>
++#include <linux/cpu.h>
+ #include <linux/cpufreq.h>
+ 
+ #include <asm/prom.h>
+@@ -16,36 +18,24 @@
+ 
+ static int clamped;
+ static struct wf_control *clamp_control;
+-
+-static int clamp_notifier_call(struct notifier_block *self,
+-			       unsigned long event, void *data)
+-{
+-	struct cpufreq_policy *p = data;
+-	unsigned long max_freq;
+-
+-	if (event != CPUFREQ_ADJUST)
+-		return 0;
+-
+-	max_freq = clamped ? (p->cpuinfo.min_freq) : (p->cpuinfo.max_freq);
+-	cpufreq_verify_within_limits(p, 0, max_freq);
+-
+-	return 0;
+-}
+-
+-static struct notifier_block clamp_notifier = {
+-	.notifier_call = clamp_notifier_call,
+-};
++static struct dev_pm_qos_request qos_req;
++static unsigned int min_freq, max_freq;
+ 
+ static int clamp_set(struct wf_control *ct, s32 value)
+ {
+-	if (value)
++	unsigned int freq;
++
++	if (value) {
++		freq = min_freq;
+ 		printk(KERN_INFO "windfarm: Clamping CPU frequency to "
+ 		       "minimum !\n");
+-	else
++	} else {
++		freq = max_freq;
+ 		printk(KERN_INFO "windfarm: CPU frequency unclamped !\n");
++	}
+ 	clamped = value;
+-	cpufreq_update_policy(0);
+-	return 0;
++
++	return dev_pm_qos_update_request(&qos_req, freq);
+ }
+ 
+ static int clamp_get(struct wf_control *ct, s32 *value)
+@@ -74,27 +64,60 @@ static const struct wf_control_ops clamp_ops = {
+ 
+ static int __init wf_cpufreq_clamp_init(void)
+ {
++	struct cpufreq_policy *policy;
+ 	struct wf_control *clamp;
++	struct device *dev;
++	int ret;
++
++	policy = cpufreq_cpu_get(0);
++	if (!policy) {
++		pr_warn("%s: cpufreq policy not found cpu0\n", __func__);
++		return -EPROBE_DEFER;
++	}
++
++	min_freq = policy->cpuinfo.min_freq;
++	max_freq = policy->cpuinfo.max_freq;
++	cpufreq_cpu_put(policy);
++
++	dev = get_cpu_device(0);
++	if (unlikely(!dev)) {
++		pr_warn("%s: No cpu device for cpu0\n", __func__);
++		return -ENODEV;
++	}
+ 
+ 	clamp = kmalloc(sizeof(struct wf_control), GFP_KERNEL);
+ 	if (clamp == NULL)
+ 		return -ENOMEM;
+-	cpufreq_register_notifier(&clamp_notifier, CPUFREQ_POLICY_NOTIFIER);
++
++	ret = dev_pm_qos_add_request(dev, &qos_req, DEV_PM_QOS_MAX_FREQUENCY,
++				     max_freq);
++	if (ret < 0) {
++		pr_err("%s: Failed to add freq constraint (%d)\n", __func__,
++		       ret);
++		goto free;
++	}
++
+ 	clamp->ops = &clamp_ops;
+ 	clamp->name = "cpufreq-clamp";
+-	if (wf_register_control(clamp))
++	ret = wf_register_control(clamp);
++	if (ret)
+ 		goto fail;
+ 	clamp_control = clamp;
+ 	return 0;
+  fail:
++	dev_pm_qos_remove_request(&qos_req);
++
++ free:
+ 	kfree(clamp);
+-	return -ENODEV;
++	return ret;
+ }
+ 
+ static void __exit wf_cpufreq_clamp_exit(void)
+ {
+-	if (clamp_control)
++	if (clamp_control) {
+ 		wf_unregister_control(clamp_control);
++		dev_pm_qos_remove_request(&qos_req);
++	}
+ }
+ 
+ 
 -- 
 2.21.0.rc0.269.g1a574e7a288b
 
