@@ -1,82 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A482725C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 06:14:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FBB725B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 06:09:56 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45thh00BvfzDq9K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 14:09:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45thn25mFHzDqQg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 14:14:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tNpP4QpKzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 02:14:21 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6NGD8vY042847
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 12:14:19 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tx54w1ay7-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 12:14:19 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Tue, 23 Jul 2019 17:14:17 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 23 Jul 2019 17:14:15 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x6NGDxxg32964954
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jul 2019 16:13:59 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E84AFA405F;
- Tue, 23 Jul 2019 16:14:13 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1B075A405B;
- Tue, 23 Jul 2019 16:14:11 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.109.195.195])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 23 Jul 2019 16:14:10 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 4/4] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-Date: Tue, 23 Jul 2019 21:43:57 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190723161357.26718-1-vaibhav@linux.ibm.com>
-References: <20190723161357.26718-1-vaibhav@linux.ibm.com>
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="ahn4jTwY"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tPqy6xNNzDq6M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 03:00:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=lM4rRR9UlNkzJHNHnArlH/ByV65Pyr5ihMbwu1aCo6M=; b=ahn4jTwYjyNa4M8unrPay3xxJ
+ qlIqnbejiYbw3DRIt9C70tkP9EFqJ3giqYyOya76N0uvawyijpYmPkEBsUhrU6LcdIrOh0cwbToHJ
+ eSDRJERbOtHPC03u2b8BaWLgxBA86iMxobxTGynSM5rNTOe9wRcDXZRV7dWKMKwTfnGMw=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.org.uk>)
+ id 1hpy9U-0004J0-5S; Tue, 23 Jul 2019 17:00:36 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+ id 7DD202742B59; Tue, 23 Jul 2019 18:00:35 +0100 (BST)
+Date: Tue, 23 Jul 2019 18:00:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH 01/10] ASoC: fsl_sai: add of_match data
+Message-ID: <20190723170035.GO5365@sirena.org.uk>
+References: <20190722124833.28757-1-daniel.baluta@nxp.com>
+ <20190722124833.28757-2-daniel.baluta@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19072316-0012-0000-0000-000003357F39
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19072316-0013-0000-0000-0000216F1049
-Message-Id: <20190723161357.26718-5-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-23_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=975 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907230163
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="9DptZICXTlJ7FQ09"
+Content-Disposition: inline
+In-Reply-To: <20190722124833.28757-2-daniel.baluta@nxp.com>
+X-Cookie: Avoid contact with eyes.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,91 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Laurent Dufour <ldufour@linux.vnet.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: alsa-devel@alsa-project.org, viorel.suman@nxp.com, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, shengjiu.wang@nxp.com,
+ angus@akkea.ca, tiwai@suse.com, perex@perex.cz, nicoleotsuka@gmail.com,
+ linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
+ linux-kernel@vger.kernel.org, l.stach@pengutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In some cases initial bind of scm memory for an lpar can fail if
-previously it wasn't released using a scm-unbind hcall. This situation
-can arise due to panic of the previous kernel or forced lpar
-fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
 
-To mitigate such cases the patch updates papr_scm_probe() to force a
-call to drc_pmem_unbind() in case the initial bind of scm memory fails
-with EBUSY error. In case scm-bind operation again fails after the
-forced scm-unbind then we follow the existing error path. We also
-update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
-and indicate it as a EBUSY error back to the caller.
+--9DptZICXTlJ7FQ09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
----
-Change-log:
+On Mon, Jul 22, 2019 at 03:48:24PM +0300, Daniel Baluta wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+>=20
+> New revisions of the SAI IP block have even more differences that need
+> be taken into account by the driver. To avoid sprinking compatible
+> checks all over the driver move the current differences into of_match_dat=
+a.
+>=20
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  sound/soc/fsl/fsl_sai.c | 22 ++++++++++++++--------
 
-v5:
-* None. Re-spinning the patchset.
+You need to supply your own signoff if you're sending someone else's
+patch - see submitting-patches.rst for details on what signoffs mean and
+why they're required.
 
-v4:
-* None. Re-spinning the patchset.
+--9DptZICXTlJ7FQ09
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v3:
-* Minor update to a code comment. [Oliver]
+-----BEGIN PGP SIGNATURE-----
 
-v2:
-* Moved the retry code from drc_pmem_bind() to papr_scm_probe()
-  [Oliver]
-* Changed the type of variable 'rc' in drc_pmem_bind() to
-  int64_t. [Oliver]
----
- arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl03PTIACgkQJNaLcl1U
+h9Ce4wf9FPwW9YoTZLNQAPLcH2tdxWqllpH3ZIAiKSDjWkeH9SHfV2iiH1AAMTIL
+yM/q6mJxSQPQ4MLekLosnBJXVMkh6/2U8t2pX6YsLFs//vvguPT5XnBZ3VGti2vo
+/jvnayUvKMLs/KhI6EvTT+6UVOBnPos0aFMsLkNbdVzb76jIOPX4kVy/TTiqoSjY
+sAtGZkl3m0hfwBlOxWPRgkuJdsckLcRLAvVV99ZopDdsWDo2m0KLEXDCm/81P0F6
+oVukPsYlmNfOuU5XpKC+/droD+XBK4AO9gy42C4aFkeSsA8eRmFvLlGjEHXlqBU9
+DWoy0wiEwu0NjI5w/kgYiLSufz+TTA==
+=kOOi
+-----END PGP SIGNATURE-----
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 82568a7e0a7c..2c07908359b2 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -44,8 +44,9 @@ struct papr_scm_priv {
- static int drc_pmem_bind(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
--	uint64_t rc, token;
- 	uint64_t saved = 0;
-+	uint64_t token;
-+	int64_t rc;
- 
- 	/*
- 	 * When the hypervisor cannot map all the requested memory in a single
-@@ -65,6 +66,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
- 	} while (rc == H_BUSY);
- 
- 	if (rc) {
-+		/* H_OVERLAP needs a separate error path */
-+		if (rc == H_OVERLAP)
-+			return -EBUSY;
-+
- 		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
- 		return -ENXIO;
- 	}
-@@ -404,6 +409,14 @@ static int papr_scm_probe(struct platform_device *pdev)
- 
- 	/* request the hypervisor to bind this region to somewhere in memory */
- 	rc = drc_pmem_bind(p);
-+
-+	/* If phyp says drc memory still bound then force unbound and retry */
-+	if (rc == -EBUSY) {
-+		dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
-+		drc_pmem_unbind(p);
-+		rc = drc_pmem_bind(p);
-+	}
-+
- 	if (rc)
- 		goto err;
- 
--- 
-2.21.0
-
+--9DptZICXTlJ7FQ09--
