@@ -1,54 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBDB725A7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 06:01:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45thTq1SxXzDqBh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 14:01:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3451B725AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 06:02:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45thWw6xp0zDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 14:02:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.194; helo=mail-oi1-f194.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tN2l5Th5zDqMH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 01:39:53 +1000 (AEST)
-Received: by mail-oi1-f194.google.com with SMTP id l12so32652993oil.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 08:39:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=3LRI5UFjq44LBBsGkyZn0c1iwjTBwJ4UTljGvj/dw6Y=;
- b=awJTj8TxRJsoZzSD398iuE6fVSayLWBRbtJBzk7TNrqbuhfPioYl7qcSNdFz//nzMr
- iLC5xe/JVd9fpzkdGVjT+ZOkdJcCrHkRz9iBl92jKvMSO8Mdgtp7MECh+eRF6aPPGcFz
- Mxh6I+rFguzHH0mDBcAOZfLfDBfrNBglVI0OQ+RyAjA/BTolWfwHHo9b1sQbLEXw3IM+
- bMpa7Lg/Oxtg6g5UEhpbGaDOvOSynyMWcEsW/BghzbnFkppwY9HwGUBFT1mLmrQWxjcp
- jgcBk85JdVH2rAseI0X8/BGiLX3M5ymI5rryho0gdFXprtzEvlE0h1DI/slaJgjcMNA3
- lpGg==
-X-Gm-Message-State: APjAAAULzfYkntOlTjxjj1jfWlL0z/r29nWTD63bjMo/VFi6KEacuEBm
- 2zFHcrK+hp/OWuB5/cJtLFkcOesFYhZ/A1H5YuI=
-X-Google-Smtp-Source: APXvYqwCaeRX0/ukewQLWY9NtFhKzlFerKVFsRpBXybOEA8aU+bcGmK/xxtuS8ZeOR85kl+PHrPdml7b97UouubKPrk=
-X-Received: by 2002:aca:bd43:: with SMTP id n64mr34013805oif.148.1563896390666; 
- Tue, 23 Jul 2019 08:39:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tNpC1nGNzDqPl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 02:14:10 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6NGD8nt042855
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 12:14:06 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tx54w1aps-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 12:14:06 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
+ Tue, 23 Jul 2019 17:14:04 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 23 Jul 2019 17:14:02 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6NGE1KW59637942
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Jul 2019 16:14:01 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B97AA4062;
+ Tue, 23 Jul 2019 16:14:01 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D953A405B;
+ Tue, 23 Jul 2019 16:13:59 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.109.195.195])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 23 Jul 2019 16:13:59 +0000 (GMT)
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 0/4] powerpc/papr_scm: Workaround for failure of drc bind
+ after kexec
+Date: Tue, 23 Jul 2019 21:43:53 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190723080441.19110-1-geert@linux-m68k.org>
-In-Reply-To: <20190723080441.19110-1-geert@linux-m68k.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 23 Jul 2019 17:39:39 +0200
-Message-ID: <CAMuHMdVuVqXnW8SEnpcbvh8agYvPh775rv9tmV9kGUa6Q2wcwA@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v5.3-rc1
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19072316-0008-0000-0000-000003001B36
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072316-0009-0000-0000-0000226DA900
+Message-Id: <20190723161357.26718-1-vaibhav@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-23_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=717 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907230163
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,59 +86,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-um@lists.infradead.org,
- linux-mips@vger.kernel.org, Parisc List <linux-parisc@vger.kernel.org>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 23, 2019 at 5:22 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v5.3-rc1[1] compared to v5.2[2].
+Presently an error is returned in response to hcall H_SCM_BIND_MEM when a
+new kernel boots on lpar via kexec. This prevents papr_scm from registering
+drc memory regions with nvdimm. The error reported is of the form below:
 
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/5f9e832c137075045d15cd6899ab0505cfb2ca4b/ (241 out of 242 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/0ecfebd2b52404ae0c54a878c872bb93363ada36/ (all 242 configs)
->
->
-> *** ERRORS ***
->
-> 11 error regressions:
->   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: 'X86_CR4_SMEP' undeclared (first use in this function):  => 281:13
->   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: implicit declaration of function 'native_read_cr4' [-Werror=implicit-function-declaration]:  => 279:8
->   + /kisskb/src/drivers/misc/lkdtm/bugs.c: error: implicit declaration of function 'native_write_cr4' [-Werror=implicit-function-declaration]:  => 288:2
+"papr_scm ibm,persistent-memory:ibm,pmemory@44100002: bind err: -68"
 
-um-all{mod,yes}config
+On investigation it was revealed that phyp returns this error as previous
+kernel did not completely release bindings for drc scm-memory blocks and
+hence phyp rejected request for re-binding these block to lpar with error
+H_OVERLAP. Also support for a new H_SCM_UNBIND_ALL is recently added which
+is better suited for releasing all the bound scm-memory block from an lpar.
 
->   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2446' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n':  => 2445:3
->   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2452' declared with attribute error: BUILD_BUG_ON failed: err_str[sizeof(err_str) - 2] != '\n':  => 2451:3
->   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2790' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n':  => 2789:5
->   + /kisskb/src/drivers/net/wireless/intel/iwlwifi/fw/dbg.c: error: call to '__compiletime_assert_2801' declared with attribute error: BUILD_BUG_ON failed: invalid_ap_str[sizeof(invalid_ap_str) - 2] != '\n':  => 2800:5
+So leveraging new hcall H_SCM_UNBIND_ALL, we can workaround H_OVERLAP issue
+during kexec by forcing an unbind of all drm scm-memory blocks and issuing
+H_SCM_BIND_MEM to re-bind the drc scm-memory blocks to lpar. This sequence
+will also be needed when a new kernel boot on lpar after previous kernel
+panicked and it never got an opportunity to call H_SCM_UNBIND_MEM/ALL.
 
-powerpc-all{mod,yes}config{,+64K_PAGES}
-mips-allmodconfig
+Hence this patch-set implements following changes to papr_scm module:
 
->   + /kisskb/src/include/linux/kprobes.h: error: implicit declaration of function 'kprobe_fault_handler'; did you mean 'kprobe_page_fault'? [-Werror=implicit-function-declaration]:  => 477:9
+* Update hvcall.h to include opcodes for new hcall H_SCM_UNBIND_ALL.
 
-parisc-allmodconfig
+* Update it to use H_SCM_UNBIND_ALL instead of H_SCM_UNBIND_MEM
 
->   + /kisskb/src/mm/hmm.c: error: implicit declaration of function 'pud_pfn' [-Werror=implicit-function-declaration]:  => 753:3, 753:9
->   + /kisskb/src/mm/hmm.c: error: implicit declaration of function 'pud_pfn'; did you mean 'pte_pfn'? [-Werror=implicit-function-declaration]:  => 753:9
+* In case hcall H_SCM_BIND_MEM fails with error H_OVERLAP, force
+  H_SCM_UNBIND_ALL and retry the bind operation again.
 
-ppc64_book3e_allmodconfig
-um-all{mod,yes}config
+With the patch-set applied re-bind of drc scm-memory to lpar succeeds after
+a kexec to new kernel as illustrated below:
 
->   + error: "vmf_insert_mixed" [drivers/gpu/drm/exynos/exynosdrm.ko] undefined!:  => N/A
+# Old kernel
+$ sudo ndctl list -R
+[
+  {
+    "dev":"region0",
+    <snip>
+    ....
+  }
+]
+# kexec to new kernel
+$ sudo kexec --initrd=... vmlinux
+...
+...
+I'm in purgatory
+...
+papr_scm ibm,persistent-memory:ibm,pmemory@44100002: Un-binding and retrying
+...
+# New kernel
+$ sudo ndctl list -R
+[
+  {
+    "dev":"region0",
+    <snip>
+    ....
+  }
+]
 
-sh-all{mod,yes}config (fix available)
+---
+Change-log:
+v5:
+* Added a new doc-patch describing the HCALL interface between a guest kernel
+  and PAPR compliant hyper-visor like PowerVM/KVM.
 
+v4:
+* Updated the patch description of first patch in the series as suggested
+  by Mpe.
 
-Gr{oetje,eeting}s,
+v3:
+* Fixed a build warning reported by kbuild test robot.
+* Updated the hcall opcode from latest papr-scm specification.
+* Fixed a minor code comment & patch description as pointed out by Oliver.
 
-                        Geert
+v2:
+* Addressed review comments from Oliver on v1 patchset.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Vaibhav Jain (4):
+  powerpc: Document some HCalls for Storage Class Memory
+  powerpc/pseries: Update SCM hcall op-codes in hvcall.h
+  powerpc/papr_scm: Update drc_pmem_unbind() to use H_SCM_UNBIND_ALL
+  powerpc/papr_scm: Force a scm-unbind if initial scm-bind fails
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+ Documentation/powerpc/hcalls.txt          | 140 ++++++++++++++++++++++
+ arch/powerpc/include/asm/hvcall.h         |  11 +-
+ arch/powerpc/platforms/pseries/papr_scm.c |  44 +++++--
+ 3 files changed, 184 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/powerpc/hcalls.txt
+
+-- 
+2.21.0
+
