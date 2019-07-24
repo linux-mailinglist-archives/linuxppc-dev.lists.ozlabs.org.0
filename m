@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF3E72BFD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 12:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34FC72C09
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 12:05:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45trX14lf9zDqLW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 20:03:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45trZM3SM9zDqNy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 20:05:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45trRc633vzDqNw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:59:40 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6O9oftb090127
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:59:38 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2txmx70qhx-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45trS73Rg9zDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 20:00:07 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6O9rJrB017805
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 06:00:05 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2txmrds578-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:59:38 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 06:00:04 -0400
 Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 24 Jul 2019 10:59:34 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Wed, 24 Jul 2019 11:00:01 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 24 Jul 2019 10:59:32 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6O9xVl523003356
+ Wed, 24 Jul 2019 10:59:59 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x6O9xhqZ40698150
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jul 2019 09:59:31 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 70894A4059;
- Wed, 24 Jul 2019 09:59:31 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01BC4A4053;
- Wed, 24 Jul 2019 09:59:30 +0000 (GMT)
+ Wed, 24 Jul 2019 09:59:43 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FECE4C040;
+ Wed, 24 Jul 2019 09:59:58 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CE1614C04E;
+ Wed, 24 Jul 2019 09:59:56 +0000 (GMT)
 Received: from skywalker.linux.ibm.com (unknown [9.199.44.139])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Jul 2019 09:59:29 +0000 (GMT)
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Jul 2019 09:59:56 +0000 (GMT)
 X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/5] powerpc/64: Add VIRTUAL_BUG_ON checks for __va and
- __pa addresses
-In-Reply-To: <20190724084638.24982-4-npiggin@gmail.com>
+Subject: Re: [PATCH 5/5] powerpc/64s/radix: Remove redundant pfn_pte bitop,
+ add VM_BUG_ON
+In-Reply-To: <20190724084638.24982-5-npiggin@gmail.com>
 References: <20190724084638.24982-1-npiggin@gmail.com>
- <20190724084638.24982-4-npiggin@gmail.com>
-Date: Wed, 24 Jul 2019 15:29:28 +0530
+ <20190724084638.24982-5-npiggin@gmail.com>
+Date: Wed, 24 Jul 2019 15:29:55 +0530
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
-x-cbid: 19072409-0020-0000-0000-00000356A878
+x-cbid: 19072410-0012-0000-0000-00000335AE49
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19072409-0021-0000-0000-000021AA977B
-Message-Id: <87a7d3n473.fsf@linux.ibm.com>
+x-cbparentid: 19072409-0013-0000-0000-0000216F41AD
+Message-Id: <877e87n46c.fsf@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-07-24_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -98,47 +98,57 @@ Sender: "Linuxppc-dev"
 
 Nicholas Piggin <npiggin@gmail.com> writes:
 
-> Ensure __va is given a physical address below PAGE_OFFSET, and __pa is
-> given a virtual address above PAGE_OFFSET.
+> pfn_pte is never given a pte above the addressable physical memory
+> limit, so the masking is redundant. In case of a software bug, it
+> is not obviously better to silently truncate the pfn than to corrupt
+> the pte (either one will result in memory corruption or crashes),
+> so there is no reason to add this to the fast path.
+>
+> Add VM_BUG_ON to catch cases where the pfn is invalid. These would
+> catch the create_section_mapping bug fixed by a previous commit.
+>
+>   [16885.256466] ------------[ cut here ]------------
+>   [16885.256492] kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable.h:612!
+>   cpu 0x0: Vector: 700 (Program Check) at [c0000000ee0a36d0]
+>       pc: c000000000080738: __map_kernel_page+0x248/0x6f0
+>       lr: c000000000080ac0: __map_kernel_page+0x5d0/0x6f0
+>       sp: c0000000ee0a3960
+>      msr: 9000000000029033
+>     current = 0xc0000000ec63b400
+>     paca    = 0xc0000000017f0000   irqmask: 0x03   irq_happened: 0x01
+>       pid   = 85, comm = sh
+>   kernel BUG at arch/powerpc/include/asm/book3s/64/pgtable.h:612!
+>   Linux version 5.3.0-rc1-00001-g0fe93e5f3394
+>   enter ? for help
+>   [c0000000ee0a3a00] c000000000d37378 create_physical_mapping+0x260/0x360
+>   [c0000000ee0a3b10] c000000000d370bc create_section_mapping+0x1c/0x3c
+>   [c0000000ee0a3b30] c000000000071f54 arch_add_memory+0x74/0x130
 >
 
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/page.h | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  arch/powerpc/include/asm/book3s/64/pgtable.h | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-> index 0d52f57fca04..c8bb14ff4713 100644
-> --- a/arch/powerpc/include/asm/page.h
-> +++ b/arch/powerpc/include/asm/page.h
-> @@ -215,9 +215,19 @@ static inline bool pfn_valid(unsigned long pfn)
->  /*
->   * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
->   * with -mcmodel=medium, so we use & and | instead of - and + on 64-bit.
-> + * This also results in better code generation.
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index 8308f32e9782..8e47fb85dfa6 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -608,8 +608,10 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
 >   */
-> -#define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET))
-> -#define __pa(x) ((unsigned long)(x) & 0x0fffffffffffffffUL)
-> +#define __va(x)								\
-> +({									\
-> +	VIRTUAL_BUG_ON((unsigned long)(x) >= PAGE_OFFSET);		\
-> +	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
-> +})
-
-Can we make that static inline? Is there a need for __pa and __va to be
-#define like we do #ifndef anywhere?
-
+>  static inline pte_t pfn_pte(unsigned long pfn, pgprot_t pgprot)
+>  {
+> -	return __pte((((pte_basic_t)(pfn) << PAGE_SHIFT) & PTE_RPN_MASK) |
+> -		     pgprot_val(pgprot));
+> +	VM_BUG_ON(pfn >> (64 - PAGE_SHIFT));
+> +	VM_BUG_ON((pfn << PAGE_SHIFT) & ~PTE_RPN_MASK);
 > +
-> +#define __pa(x)								\
-> +({									\
-> +	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
-> +	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
-> +})
+> +	return __pte(((pte_basic_t)pfn << PAGE_SHIFT) | pgprot_val(pgprot));
+>  }
 >  
->  #else /* 32-bit, non book E */
->  #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + PAGE_OFFSET - MEMORY_START))
+>  static inline unsigned long pte_pfn(pte_t pte)
 > -- 
 > 2.22.0
 
