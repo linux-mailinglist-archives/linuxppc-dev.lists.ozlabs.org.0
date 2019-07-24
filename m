@@ -2,87 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B63572B63
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B78072B74
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:33:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tqnw6ycjzDq9m
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:30:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45tqsB5btXzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:33:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ldufour@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tqkr3zdJzDqL7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:27:48 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6O9Rej5032995
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:27:45 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2txjmcdhm5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:27:45 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.vnet.ibm.com>;
- Wed, 24 Jul 2019 10:27:42 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 24 Jul 2019 10:27:40 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6O9RcAv39583988
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jul 2019 09:27:38 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 548D6AE045;
- Wed, 24 Jul 2019 09:27:38 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06568AE04D;
- Wed, 24 Jul 2019 09:27:38 +0000 (GMT)
-Received: from pomme.lab.toulouse-stg.fr.ibm.com (unknown [9.101.4.33])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Jul 2019 09:27:37 +0000 (GMT)
-Subject: Re: [PATCH v5 4/4] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-To: "Oliver O'Halloran" <oohall@gmail.com>
-References: <20190723161357.26718-1-vaibhav@linux.ibm.com>
- <20190723161357.26718-5-vaibhav@linux.ibm.com>
- <fa75968e-1417-ef02-4f5e-5ba34c778377@linux.vnet.ibm.com>
- <CAOSf1CFA14eRY66J0gHAvNnWGzFTFmb3-RKQ3+XjrqdG0jxk6g@mail.gmail.com>
-From: Laurent Dufour <ldufour@linux.vnet.ibm.com>
-Date: Wed, 24 Jul 2019 11:27:37 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tqqJ5gw2zDq5f
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:31:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=brauner.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="ekczK6N+"; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45tqqJ4FWRz8sxB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:31:40 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45tqqJ3n4Fz9sLt; Wed, 24 Jul 2019 19:31:40 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=brauner.io
+ (client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
+ envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=brauner.io
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="ekczK6N+"; 
+ dkim-atps=neutral
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45tqqH5tcqz9sBZ
+ for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 19:31:39 +1000 (AEST)
+Received: by mail-ed1-x543.google.com with SMTP id k8so46482497edr.11
+ for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 02:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=nEkTF+cqPf/v2CMmPE5u5s1dVQ6nE3Sqg5k1QdIwMS4=;
+ b=ekczK6N+BR0shxexBKgIZQ4TSWiAI9mE07FsYpvO4oyWt/i9GexLYk7EoZdy3iwKRH
+ g+BuyeJawN4iS6909W2c6JtM2AxtdiJqQwpEE6HgpKRVjB3HwNu/UJuYiuwmMsT4OeZ3
+ utiMHUgGTNB0iP3G7lzOJC3WRUUNkHkvh+mZ5OVbYoSagg2/TJ3jJALK5iNmhoUYOjM3
+ NlRHa50acd36Wqrh942AmrQvBqL4C6La4S3p+HLy5ZsMHdz2yjJCnNm6DnX8UXJUqczg
+ 1+moIY35SUyBEgDtu3qCiaB7G/oO3cpq8g2j8bOv5LFImmEt7ZNpK8b1M/VXvUkU3lAc
+ u1ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=nEkTF+cqPf/v2CMmPE5u5s1dVQ6nE3Sqg5k1QdIwMS4=;
+ b=dJDGn2Yic4SpqrChwtEDJ2vc2wupJwprLhhvjs4TQ6EpzydvuhdfKPC4pRLvf3p+55
+ BeRDeWi7Fe5kR9pklyrs1ywgMN54V24ZcFfrgMNRGlstMJAvz5pQp08EX87GcYS/4et9
+ lsvVieJftgBtBQlzfFMc6v5xx3aKcBDE6W2QluADf1w7ge3ShnKyxj2gIlNLBaMB9C7G
+ BwfbwEyVBMO8Z1+Avpz7c0thZTBeP28LMWwH88UMwX8fQxN7g3+5k8ZcHjD6VgmftnkV
+ JFH7s7uvRewPEEYIr6scuo6ICKMm6e8us5FxssvIw5iEVWFHTl8fjdqaYGstM88ye7js
+ 329Q==
+X-Gm-Message-State: APjAAAVnBXip85y56rL3SC0ivGMidQQv2v+9/a0qcGFEElEIn+OFjL9w
+ 13Hs11vcHYzlyVCH7dOgqAk=
+X-Google-Smtp-Source: APXvYqwgJ29U2DdS0WD8cMY2jrFDebelcceKx3kTwHiFfem/dqd2jhAjcifGI4qRDD5QHt9HaLW/oQ==
+X-Received: by 2002:a17:906:3612:: with SMTP id
+ q18mr63278352ejb.278.1563960695291; 
+ Wed, 24 Jul 2019 02:31:35 -0700 (PDT)
+Received: from brauner.io ([178.19.218.101])
+ by smtp.gmail.com with ESMTPSA id l35sm12571254edc.2.2019.07.24.02.31.34
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 24 Jul 2019 02:31:34 -0700 (PDT)
+Date: Wed, 24 Jul 2019 11:31:34 +0200
+From: Christian Brauner <christian@brauner.io>
+To: Arseny Solokha <asolokha@kb.kras.ru>
+Subject: Re: [PATCH] powerpc: Wire up clone3 syscall
+Message-ID: <20190724093132.orflnhvyiff75yrd@brauner.io>
+References: <20190722133701.g3w5g4crogqb7oi5@brauner.io>
+ <87ftmwknr9.fsf@kb.kras.ru>
 MIME-Version: 1.0
-In-Reply-To: <CAOSf1CFA14eRY66J0gHAvNnWGzFTFmb3-RKQ3+XjrqdG0jxk6g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19072409-0016-0000-0000-00000295A2FE
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19072409-0017-0000-0000-000032F396EE
-Message-Id: <ee9b6b91-3e43-9436-6e3a-b0dc73179dd1@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-24_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1907240105
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87ftmwknr9.fsf@kb.kras.ru>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,52 +98,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 24/07/2019 à 11:24, Oliver O'Halloran a écrit :
-> On Wed, Jul 24, 2019 at 7:17 PM Laurent Dufour
-> <ldufour@linux.vnet.ibm.com> wrote:
->>
->> Le 23/07/2019 à 18:13, Vaibhav Jain a écrit :
->>> *snip*
->>> @@ -404,6 +409,14 @@ static int papr_scm_probe(struct platform_device *pdev)
->>>
->>>        /* request the hypervisor to bind this region to somewhere in memory */
->>>        rc = drc_pmem_bind(p);
->>> +
->>> +     /* If phyp says drc memory still bound then force unbound and retry */
->>> +     if (rc == -EBUSY) {
->>> +             dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
->>> +             drc_pmem_unbind(p);
->>> +             rc = drc_pmem_bind(p);
->>
->> In the unlikely case where H_SCM_BIND_MEM is returning H_OVERLAP once the
->> unbinding has been done, the error would be silently processed. That sounds
->> really unlikely, but should an error message be displayed in this
->> particular case ?
+On Wed, Jul 24, 2019 at 12:25:14PM +0700, Arseny Solokha wrote:
+> Hi,
 > 
-> drc_pmem_bind() prints the h-call error code if we get one, so it's not silent
+> may I also ask to provide ppc_clone3 symbol also for 32-bit powerpc? Otherwise
+> Michael's patch breaks build for me:
 
-That's no more the case whith this patch, H_OVERLAP is handled before 
-writing the error message, which would make sense for the first try.
+Makes sense. Michael, are you planning on picking this up? :)
 
-For the record, the patch introduces:
+Christian
 
-@@ -65,6 +66,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
-  	} while (rc == H_BUSY);
-
-  	if (rc) {
-+		/* H_OVERLAP needs a separate error path */
-+		if (rc == H_OVERLAP)
-+			return -EBUSY;
-+
-  		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
-  		return -ENXIO;
-  	}
-
+> 
+>   powerpc-e500v2-linux-gnuspe-ld: arch/powerpc/kernel/systbl.o: in function `sys_call_table':
+>   (.rodata+0x6cc): undefined reference to `ppc_clone3'
+>   make: *** [Makefile:1060: vmlinux] Error 1
+> 
+> The patch was tested using Christian's program on a real e500 machine.
+> 
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -597,6 +597,14 @@ ppc_clone:
+>  	stw	r0,_TRAP(r1)		/* register set saved */
+>  	b	sys_clone
+> 
+> +	.globl	ppc_clone3
+> +ppc_clone3:
+> +	SAVE_NVGPRS(r1)
+> +	lwz	r0,_TRAP(r1)
+> +	rlwinm	r0,r0,0,0,30		/* clear LSB to indicate full */
+> +	stw	r0,_TRAP(r1)		/* register set saved */
+> +	b	sys_clone3
+> +
+>  	.globl	ppc_swapcontext
+>  ppc_swapcontext:
+>  	SAVE_NVGPRS(r1)
+> 
+> I don't think this trivial hunk deserves a separate patch submission.
+> 
+> Thanks,
+> Arseny
