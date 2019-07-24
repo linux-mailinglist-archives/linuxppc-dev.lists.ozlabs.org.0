@@ -2,73 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5588B7274F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 07:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE8972750
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 07:29:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tkPc4GTpzDqK1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 15:27:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45tkRX0lwbzDqMb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 15:29:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=nishkadg.linux@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="WGv9BUqp"; 
- dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=anju@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tB2Y4bKqzDqS2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 18:09:09 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id i8so19007019pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 01:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=hCvOR3nb19zpkJHPKREgguJngLbu4r1vMJhi29PVQzI=;
- b=WGv9BUqpMfwzTXVXFcO2czrxzQklaLondrp+6XMGSfFFlkcRy7MjxJCfzSoZpMFA8G
- XQMalWq3JRuiciWayBIF7+PaNOH3VvLEOVXYIjg9WmcHNXA0iaKIMNoD6lo49VyrsNgL
- Lmh3H3/ixkSoU2zSFUjk4VfS8irLbDlpP3SValNI5+sS1MBAecYmpiTfqPo0WwZdHjUA
- ZldUZzyCaCYsdVq12bejOC0Q7KJZhMynV6N9wHjaKuTazQ2icYAq58PlK9n/kI5ooUcO
- tkwtew4eLjbBJ/h+APh60yuHS0/jg2i2roTlobw6U8QFASghE+n0HiK30xhwIY/oWfl2
- mnww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=hCvOR3nb19zpkJHPKREgguJngLbu4r1vMJhi29PVQzI=;
- b=p1JrTnefCDRySTFaQmYJXXWUMauEwnrQQHJIDOOm9ZQPsuz8LO1qYIaAG0aIOCbOm+
- 4Vw9CwnUUayQiiP0PO94HNtdJhncX/hI/sx2GnDgIlMis/HkFUA2/V2Snd3VnDWI7b1z
- qJgldEa0G40LulEb4/oSkL3CHGZQyGiAkKuaIsCj1TE1Bz7b5hWXU7trv4z1WTiCCQ0x
- jrmUJ4YKWpv7mb9bEiNGr171gdfjRQibl89azgpemtew9oRbIuw/43TXORkVcWg14IKX
- BbpZAfN/rTZVY8alltGoE3/sBfWkwv/KWmtkYQ5bMWwKWsJXvirc1bbO1LHkbToxMuhl
- C8oQ==
-X-Gm-Message-State: APjAAAXD0WFkUHAN6uXz37NTkZb0W2CrCJYttzeKp1DzWkWmN5zL3rAD
- iTAcoOOUJAUAAflhQs1rZio=
-X-Google-Smtp-Source: APXvYqxEYAuXO/sQuaFQMOeLEf/JsmUtSFxXIArrFjel5fHiRw0u8svDJL8+fPl+kPU/7EL/a++6XQ==
-X-Received: by 2002:a17:90a:ac14:: with SMTP id
- o20mr82103517pjq.114.1563869344766; 
- Tue, 23 Jul 2019 01:09:04 -0700 (PDT)
-Received: from localhost.localdomain ([122.163.0.39])
- by smtp.gmail.com with ESMTPSA id j12sm32646534pff.4.2019.07.23.01.09.01
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 23 Jul 2019 01:09:04 -0700 (PDT)
-From: Nishka Dasgupta <nishkadg.linux@gmail.com>
-To: haren@us.ibm.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] crypto: nx: nx-842-powernv: Add of_node_put() before return
-Date: Tue, 23 Jul 2019 13:38:51 +0530
-Message-Id: <20190723080851.7648-1-nishkadg.linux@gmail.com>
-X-Mailer: git-send-email 2.19.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tkMY1qcSzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 15:25:45 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6O5M6LU012399
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 01:25:42 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2txdysekrr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 01:25:42 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <anju@linux.vnet.ibm.com>;
+ Wed, 24 Jul 2019 06:25:40 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 24 Jul 2019 06:25:37 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6O5Pa1T56623316
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jul 2019 05:25:36 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A9E7F11C05C;
+ Wed, 24 Jul 2019 05:25:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C1B0911C058;
+ Wed, 24 Jul 2019 05:25:35 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.35.72])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 24 Jul 2019 05:25:35 +0000 (GMT)
+Subject: Re: [RFC PATCH 3/4] powerpc/perf: fix imc allocation failure
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20190722174700.11483-1-npiggin@gmail.com>
+ <20190722174700.11483-4-npiggin@gmail.com>
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+Date: Wed, 24 Jul 2019 10:55:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 24 Jul 2019 15:25:10 +1000
+In-Reply-To: <20190722174700.11483-4-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19072405-0020-0000-0000-000003569744
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072405-0021-0000-0000-000021AA84D1
+Message-Id: <d98a70fc-1d2b-b074-0fab-d6d0bec81bc2@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-24_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=869 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907240061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,33 +91,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishka Dasgupta <nishkadg.linux@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Each iteration of for_each_child_of_node puts the previous node, but
-in the case of a return from the middle of the loop, there is no put,
-thus causing a memory leak. Add an of_node_put before the return.
-Issue found with Coccinelle.
 
-Signed-off-by: Nishka Dasgupta <nishkadg.linux@gmail.com>
----
- drivers/crypto/nx/nx-842-powernv.c | 1 +
- 1 file changed, 1 insertion(+)
+On 7/22/19 11:16 PM, Nicholas Piggin wrote:
+> alloc_pages_node return value should be tested before applying
+> page_address.
+>
+> Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
 
-diff --git a/drivers/crypto/nx/nx-842-powernv.c b/drivers/crypto/nx/nx-842-powernv.c
-index e78ff5c65ed6..c037a2403b82 100644
---- a/drivers/crypto/nx/nx-842-powernv.c
-+++ b/drivers/crypto/nx/nx-842-powernv.c
-@@ -1020,6 +1020,7 @@ static __init int nx842_powernv_init(void)
- 		ret = nx842_powernv_probe_vas(dn);
- 		if (ret) {
- 			nx842_delete_coprocs();
-+			of_node_put(dn);
- 			return ret;
- 		}
- 	}
--- 
-2.19.1
+Tested-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 
