@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC68A72BB3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:49:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1978D72BAC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:47:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tr9h649XzDqNK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:47:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45trD52CpWzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:49:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,59 +16,53 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="eZZvz8MU"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="UvwJ2lo5"; 
  dkim-atps=neutral
 Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
  [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tr8252YbzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:46:08 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id o9so88302460iom.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 02:46:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45trBJ0kM0zDqHY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:48:07 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id i10so88166100iol.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 02:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=NRFjHFE35FB4uBSwYwCu/PcwL63Fp8i9zWsUbuLLhZg=;
- b=eZZvz8MUDDvscWAJp5URtRj7R64vdVPSsQzexiV44aZ/dAsvvgDxUig8LVWn77lQYd
- Mx6Zt+ROmH9gnZrRPbrtFydwYrPxRdxWa8dxwyICaOwby2570vL1PUMAA/z5nTwcthL9
- VAPNDAEXLGJA6UzfNYxH/qVLbkU6C7UBcUmOn2jqfbEbktGL7I5wFDuK9qM162m4qee/
- xsedwTv21w8SWOGwWMFAOL9KVkhZC4OMGDx4AUvvXmpofH9rntTgBa5BXzl9c31h5Mt4
- XwfD1xp2F1BxUDuLu6fVRzCuE9zWyoDRvgTrzjzWvCxu3QWzt1CaHqcCa4d0wjxTTowV
- OL0w==
+ :cc; bh=g8dj50axO8C54fqaJo4sVi0aVeMQ4lAcF1ULpERAzug=;
+ b=UvwJ2lo5i2e1IV79pm+YfpJaMt4vPCYwRCPfKRQTknVD4JKC8i+Tdml3VIDmX6axts
+ ddU8Nqerb7XM+RxMpBDNg+uv1Oagp+iJSj/JKY3Aut2sBXriivcQ1qAdjrhGzsE6YGGR
+ tZdxGvvSDH+KxnCzubx48cE2vYS+WNMqAgiJnUPCLHgUKhsYYXk/U9v4kLsv2jTh1e69
+ YSE4SyySlY1m26K+nJC9A1jgEwW6TNRgXTWkf4PCtEooGl1NoI3hEMvAtsO3hbZZewaG
+ QX53rLoR8OSMdS5PAoduRHMPqCYgNNyGgURFH68PeO6x0rRYP5qgf3CmlEXG1G9mSuk1
+ K/oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=NRFjHFE35FB4uBSwYwCu/PcwL63Fp8i9zWsUbuLLhZg=;
- b=t2A1JwaUZ6KOFWoJXqZLVwpYbQZA6Q5dQp19mw+jLflOm31wVAuNlrsU0xxfVrrf1x
- 3Idg9LrdhE+7KsvL2lLWPj6XyvoWxtARJ26tHRlDmeHR/4KdwkQ4twk5bXMSKKcX0+MU
- wawxKzF7s7XIlxKC9KnDxeE+MLUOc0G32QGu8M3+YO/ihYAdMfM4DMiYRXn04eOdph3N
- zlSJWoyF5BA7htPMlyxAthXPAK2oYb0FRkqxBrupBlNiI6l8hYVOVRckFNvMvq8sOF5M
- dwTOgG0dBMkiLSq55iJiMQjjasJrMML5bWuy72huDUOn4xME+GmX17JL37AN950aMuMK
- hVQg==
-X-Gm-Message-State: APjAAAUgHj0/LORMOVUkzorOXOjhQ7MAeqisf48iT1koJHZgfk1Mpl5c
- Y4+pKXUlFwCbSQhF4rExnpCd1q8OYX8k5r2zeos=
-X-Google-Smtp-Source: APXvYqxY0n6k2Mly30f0xzGLMM2w4qXnmJpnhtjFzxOGcJdfuDO/kg96aWAmVa7MLSP/nIevYC/YqGPHMLEAFzwlx6Q=
-X-Received: by 2002:a6b:c98c:: with SMTP id
- z134mr37161446iof.276.1563961565409; 
- Wed, 24 Jul 2019 02:46:05 -0700 (PDT)
+ :message-id:subject:to:cc;
+ bh=g8dj50axO8C54fqaJo4sVi0aVeMQ4lAcF1ULpERAzug=;
+ b=qw3k7mrg/eJ0IZF7hnfy9Z5eMM3yGXmc8f9G+sikia1051Y/oqKTQSQtxYaR9HhDPY
+ znIcnvRX6EUvdHYol78Z4sVWKj/8qXv0yd1+LFgf9qrbmxZpo4T3VGCJm+vddUdO8Vkp
+ ec+/KEroh826gwFMXzPcXrgh9QBa2+PeHRhvdL/QXUMroYEOxWsL7+Tkqb1cxZ7KbZdq
+ +iHEc0NyAGe8BOBRYia8l1iXE0GroDJDMR0Lu14TGuDHl7TPdPjVcRVyotlIjHVMXyfq
+ j4eVcVNE8kcKVm6IC0Vw5Dnq09JAkoRfCtCtMe2i76cREm/BfIrLT8YBqqeo7iakXIiE
+ diSw==
+X-Gm-Message-State: APjAAAUmrQzc8mgPfwfMEppwV6vypumgK0idiWf+uuxxTlxPw9yoUxq7
+ xsZZtMtBJfxxbZP0f9DbpgfHxOFyhwTd8AliBACBP0Bm
+X-Google-Smtp-Source: APXvYqwslPE8DCguo6zrlZgHFc4w3+R6TEQaE6B0sa8LhS+AyOsn+wpIurngNrSl995UPemHXJJR05CNhCXCKqIMGVg=
+X-Received: by 2002:a5d:8497:: with SMTP id t23mr50392900iom.298.1563961685824; 
+ Wed, 24 Jul 2019 02:48:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190723161357.26718-1-vaibhav@linux.ibm.com>
- <20190723161357.26718-5-vaibhav@linux.ibm.com>
- <fa75968e-1417-ef02-4f5e-5ba34c778377@linux.vnet.ibm.com>
- <CAOSf1CFA14eRY66J0gHAvNnWGzFTFmb3-RKQ3+XjrqdG0jxk6g@mail.gmail.com>
- <ee9b6b91-3e43-9436-6e3a-b0dc73179dd1@linux.vnet.ibm.com>
-In-Reply-To: <ee9b6b91-3e43-9436-6e3a-b0dc73179dd1@linux.vnet.ibm.com>
+References: <d5bbb2e9a39da905d656524bdf9e1b6705fd526a.1563853440.git.sbobroff@linux.ibm.com>
+ <201907241746.mKIx06OX%lkp@intel.com>
+In-Reply-To: <201907241746.mKIx06OX%lkp@intel.com>
 From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 24 Jul 2019 19:45:54 +1000
-Message-ID: <CAOSf1CEYMDeasS9kxcoA47Sqt3yvE399AOop3kSzrZ6aOMVPMw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] powerpc/papr_scm: Force a scm-unbind if initial
- scm-bind fails
-To: Laurent Dufour <ldufour@linux.vnet.ibm.com>
+Date: Wed, 24 Jul 2019 19:47:55 +1000
+Message-ID: <CAOSf1CGW9+6TRkbQRqNPcGY9o-=s3YVRGO4GWcKx22ZkXvwCpg@mail.gmail.com>
+Subject: Re: [PATCH v3 9/9] powerpc/eeh: Convert log messages to eeh_edev_*
+ macros
+To: kbuild test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,64 +74,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kbuild-all@01.org,
+ Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 24, 2019 at 7:27 PM Laurent Dufour
-<ldufour@linux.vnet.ibm.com> wrote:
+On Wed, Jul 24, 2019 at 7:24 PM kbuild test robot <lkp@intel.com> wrote:
 >
-> Le 24/07/2019 =C3=A0 11:24, Oliver O'Halloran a =C3=A9crit :
-> > On Wed, Jul 24, 2019 at 7:17 PM Laurent Dufour
-> > <ldufour@linux.vnet.ibm.com> wrote:
-> >>
-> >> Le 23/07/2019 =C3=A0 18:13, Vaibhav Jain a =C3=A9crit :
-> >>> *snip*
-> >>> @@ -404,6 +409,14 @@ static int papr_scm_probe(struct platform_device=
- *pdev)
-> >>>
-> >>>        /* request the hypervisor to bind this region to somewhere in =
-memory */
-> >>>        rc =3D drc_pmem_bind(p);
-> >>> +
-> >>> +     /* If phyp says drc memory still bound then force unbound and r=
-etry */
-> >>> +     if (rc =3D=3D -EBUSY) {
-> >>> +             dev_warn(&pdev->dev, "Retrying bind after unbinding\n")=
-;
-> >>> +             drc_pmem_unbind(p);
-> >>> +             rc =3D drc_pmem_bind(p);
-> >>
-> >> In the unlikely case where H_SCM_BIND_MEM is returning H_OVERLAP once =
-the
-> >> unbinding has been done, the error would be silently processed. That s=
-ounds
-> >> really unlikely, but should an error message be displayed in this
-> >> particular case ?
-> >
-> > drc_pmem_bind() prints the h-call error code if we get one, so it's not=
- silent
+> Hi Sam,
 >
-> That's no more the case whith this patch, H_OVERLAP is handled before
-> writing the error message, which would make sense for the first try.
+> I love your patch! Yet something to improve:
 >
-> For the record, the patch introduces:
+> [auto build test ERROR on linus/master]
+> [also build test ERROR on v5.3-rc1 next-20190724]
+> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
 >
-> @@ -65,6 +66,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
->         } while (rc =3D=3D H_BUSY);
+> url:    https://github.com/0day-ci/linux/commits/Sam-Bobroff/powerpc-64-Adjust-order-in-pcibios_init/20190724-134001
+> config: powerpc-defconfig (attached as .config)
+> compiler: powerpc64-linux-gcc (GCC) 7.4.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.4.0 make.cross ARCH=powerpc
 >
->         if (rc) {
-> +               /* H_OVERLAP needs a separate error path */
-> +               if (rc =3D=3D H_OVERLAP)
-> +                       return -EBUSY;
-> +
->                 dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
->                 return -ENXIO;
->         }
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>    arch/powerpc/kernel/eeh_driver.c: In function 'eeh_add_virt_device':
+> >> arch/powerpc/kernel/eeh_driver.c:459:17: error: unused variable 'pdn' [-Werror=unused-variable]
+>      struct pci_dn *pdn = eeh_dev_to_pdn(edev);
 
-Ah, good point. Getting H_OVERLAP is still an error case so I think
-it's reasonable to still print the message in that case.
+FYI this happens when CONFIG_IOV isn't set. Adding a __maybe_unused
+annotation fixes it.
+
+>                     ^~~
+>    cc1: all warnings being treated as errors
+>
+> vim +/pdn +459 arch/powerpc/kernel/eeh_driver.c
+>
+> 77bd7415 arch/powerpc/platforms/pseries/eeh_driver.c Linas Vepstas 2005-11-03  454
+> bf773df9 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018-09-12  455  static void *eeh_add_virt_device(struct eeh_dev *edev)
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  456  {
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  457      struct pci_driver *driver;
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  458      struct pci_dev *dev = eeh_dev_to_pci_dev(edev);
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04 @459      struct pci_dn *pdn = eeh_dev_to_pdn(edev);
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  460
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  461      if (!(edev->physfn)) {
+> 6dad7bbd arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2019-07-23  462              eeh_edev_warn(edev, "Not for VF\n");
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  463              return NULL;
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  464      }
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  465
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  466      driver = eeh_pcid_get(dev);
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  467      if (driver) {
+> 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018-05-25  468              if (driver->err_handler) {
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  469                      eeh_pcid_put(dev);
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  470                      return NULL;
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  471              }
+> 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018-05-25  472              eeh_pcid_put(dev);
+> 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018-05-25  473      }
+> 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016-03-04  474
+>
+> :::::: The code at line 459 was first introduced by commit
+> :::::: 67086e32b56481531ab1292b284e074b1a8d764c powerpc/eeh: powerpc/eeh: Support error recovery for VF PE
+>
+> :::::: TO: Wei Yang <weiyang@linux.vnet.ibm.com>
+> :::::: CC: Michael Ellerman <mpe@ellerman.id.au>
+>
+> ---
+> 0-DAY kernel test infrastructure                Open Source Technology Center
+> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
