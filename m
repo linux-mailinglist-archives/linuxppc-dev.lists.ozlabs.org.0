@@ -1,50 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E782B7417D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 00:35:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8952C734B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:12:21 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45v22p2760zDqJX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 03:12:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45v9Cg0L3yzDqGg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 08:35:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="gnNuMHvb"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="nkBeIOGm"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45v20b75WczDq6q
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 03:10:23 +1000 (AEST)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.3-2 tag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563988221;
- bh=8Iv1KNyqx9qxX4tBWmO2qXBdCa/7Mtdy+eUFXutnc2k=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=gnNuMHvb3zY+RHCONcmiUO5vAwOOLzOxxX6bLB0XbQSyScyNRHUvxB6kuv6jDj6Ay
- rpUIDdogUAjCCK31LSRCkFogRUQtdSHXNGLSW2T8bCuzNT+ExYeVDl4hb7SGEpRwgD
- 92Y3ay6PmZocijx8K3Jzx4ELhB57zQDrCYvlzy1c=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87o91j5z20.fsf@concordia.ellerman.id.au>
-References: <87o91j5z20.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87o91j5z20.fsf@concordia.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.3-2
-X-PR-Tracked-Commit-Id: 3a855b7ac7d5021674aa3e1cc9d3bfd6b604e9c0
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: bed38c3e2dca01b358a62b5e73b46e875742fd75
-Message-Id: <156398822120.2764.10514051840491932120.pr-tracker-bot@kernel.org>
-Date: Wed, 24 Jul 2019 17:10:21 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45v99k5NPhzDqK5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 08:33:44 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id o13so21901569pgp.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 15:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Y/x6T9kinMfPan8m7akcwnPUQ5JFdRG0gz/KSb0mcCI=;
+ b=nkBeIOGm6q+oZWaL1ucDgpjPsDPDqfkbxl/mobplA0/OSCxx9bfOy3wgZHieGk4UuF
+ V9blwGoM6eEl3/UJpefJ1Jwp/LLvbTNcNUw32bnxDFkbkKHJSO8W2bwDMh1Yv9w2ez7X
+ Sdj7jZHap6xYPpj9fAHjMpeCZkImIcYI1iqdB3hBEpdadCnC9/dK26taxnQmhL2Ta3In
+ ZuLf2khv7kwyCo1FmEP77XOXrr7xEAPq0Y1/ZUqy+HLPII4Q3y2YKgLHkxmL1uoiW3UB
+ 4hCXeOMbFEnhC52VlKcTN7hB6dpWyghayWkm0FYLQjutHOG/MXObHvrkFtKKAgcV90ap
+ QKEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Y/x6T9kinMfPan8m7akcwnPUQ5JFdRG0gz/KSb0mcCI=;
+ b=Gj9/dzCVejBKnnnUtGWgopmv8k4yQvAw8ez2JafaIc4BjfSOwrNfGwVyWeUZOEFoyr
+ yi6wB6POIta/B1MR3XlpzFkbPdxsRKknRDWAuF5UE685SaXNRrHm+S++8nLJ2Ur8LSzE
+ 168cu84b+64o9TPfxGTzD1KYi+cJrum1B9g99FqInm3kNoDejUp0UQFFQ82O7BdWuZ6D
+ z6T+gDvkb4gTNUb4XmwlV55vmF4r4os7o/j27gxwImmNivEcL4a0n4FYG/yZCFEMv8MG
+ cNpUIAL4SBNsdBn+rYCZG/f6WrxhmTFdt+6xMVMS19R8Q7vJahQCOeRUXjG1w/uBYqgH
+ VoJw==
+X-Gm-Message-State: APjAAAURu5XbNm+ZyTX8NRccaapsY+5aIhxt23IPgJVBiLWaQM/3z5Mn
+ 4GbnQ+cGoFglmOVCAFH6Hc8=
+X-Google-Smtp-Source: APXvYqz8l8S9S4kT3bBRHUZtDyZDw87gOZ6oemul7YrBcmpaj0riEqQvW2MvkMmjoQau2NA+p6bWnA==
+X-Received: by 2002:a17:90a:ad89:: with SMTP id
+ s9mr90574492pjq.41.1564007620473; 
+ Wed, 24 Jul 2019 15:33:40 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id w14sm53942878pfn.47.2019.07.24.15.33.39
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 24 Jul 2019 15:33:40 -0700 (PDT)
+Date: Wed, 24 Jul 2019 15:34:22 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH 01/10] ASoC: fsl_sai: add of_match data
+Message-ID: <20190724223422.GA6859@Asurada-Nvidia.nvidia.com>
+References: <20190722124833.28757-1-daniel.baluta@nxp.com>
+ <20190722124833.28757-2-daniel.baluta@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190722124833.28757-2-daniel.baluta@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,23 +82,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aarcange@redhat.com, ego@linux.vnet.ibm.com, mikey@neuling.org,
- shawn@anastas.io, Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, clg@kaod.org, sjitindarsingh@gmail.com,
- vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, viorel.suman@nxp.com, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, shengjiu.wang@nxp.com,
+ angus@akkea.ca, tiwai@suse.com, perex@perex.cz, broonie@kernel.org,
+ linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
+ linux-kernel@vger.kernel.org, l.stach@pengutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Wed, 24 Jul 2019 23:42:31 +1000:
+On Mon, Jul 22, 2019 at 03:48:24PM +0300, Daniel Baluta wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+> 
+> New revisions of the SAI IP block have even more differences that need
+> be taken into account by the driver. To avoid sprinking compatible
+> checks all over the driver move the current differences into of_match_data.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.3-2
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/bed38c3e2dca01b358a62b5e73b46e875742fd75
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Looks like Mark has applied this already? If so, should probably
+drop applied ones and rebase the remaining patches for a resend.
