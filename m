@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C4C72AAD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 10:53:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAD772A77
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 10:51:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tpwb4cZFzDqHG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 18:51:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45tpzQ1vSwzDqMH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 18:53:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::644; helo=mail-pl1-x644.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="W7UQM/EE"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="a6FNF4/P"; 
  dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tprJ3jdxzDqGN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 18:47:28 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id w24so21737993plp.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 01:47:28 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tprN1y0kzDqKr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 18:47:32 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id w10so20872101pgj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 01:47:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=yeA5fh1Ch0+CG67IzCY8H8gbbjcLsTzUO6FW9sn2dao=;
- b=W7UQM/EEkwZUnRQDmo0f4C6cp/7AAHUPIAs/GO4dL8LL+qiFh2QETn3XY9W1LpPo7e
- eQPmSId9eALHHAlDry6/dFXDiVMQ48zlO0xPgD5Xx+0qgljkx45zOo1dVkxuHdblbCbL
- Seik2vAlvECi1bHNBDeVmyewUDxXijnbEFMt9U8/ZjyvdPyjXiX8AJhF/l9qWF0gTVtT
- mNTble4bDKrXySCbUHSl5cr7ED5CQPcAlf3I9O9IP9qpy2prcPBZqjYQpoY1Fx8z9xLN
- l/VgfANRjkgQfYJX8Jrk7G+xFW2AOl2RQfN6KqwkRL60A1gmH9OEtyZHejkm1CEKB95U
- wSeg==
+ bh=KXdZnBt4Dikq7l5rtbuptsrDWxyJ2ir0gklP9Kfry+c=;
+ b=a6FNF4/PnRSINU/7k8ZCRYWki2wse5zEEYQXIgDOushwzdAYwFDVbhuHXX6hcZRkpj
+ epN+IgLepizsLL0/eOGQfyNVoLQUah4exe3n1k+3TTg63jDQRwOTw3vZUF0VATjNDiAf
+ e0R8rtgYKVTI5lFjDC1rV9np6XQh+W7JmwaotZCra6pmk9RgxzzDPksr0QGu4hRtMAl1
+ 5ujYVCntAT/QyIF5xeuqyT/DNklxHK8yZtYaDJpiQ8RTUIZFeYqgDzouHXpF0e71lUaX
+ VORLFTOXQ1GKUgVdT0YDR8O8yueIxLzPgnz3d6t79idcBL6aqApTfuMhz+chcCan4quP
+ 7qIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=yeA5fh1Ch0+CG67IzCY8H8gbbjcLsTzUO6FW9sn2dao=;
- b=dZOyMoALnSrk8Kt49/3RhUM7E5hLcmw0Hg90zXSixMEj0+0u4unfTuP7HjmH4ASWWZ
- aoIFGtlQ9MaCSlMoTPoNL7MqA5QLyAmSlLW98OoT9pDVJ36DjlzpmfDthQBZLg4pQRRX
- LT2tmpQTyS98CMTi7IRwVrhaYg2x2dmHBz1jgWyS6q+Ex1kkNxrvspEBt46gBTCsBxXO
- HY51DHnowSXpM8CS4A9tsWKlW+UKUCc9iWhuM9Vp12dZioDnfTA6uAmABz0VdiYceXOT
- AC7JfZxKx7TWML1E6K057+yzuDCYItXPQalCKrnjAswRV9niIv52o19Cu3+plDNijfQf
- IH4w==
-X-Gm-Message-State: APjAAAVczGA5E7fsuDBZCjJq8fn+0lM3S3qYbRhqCBWEgmNLieHaq55P
- hUHk3I5B2h/yd0EiUqR7jxxtMLL0
-X-Google-Smtp-Source: APXvYqwdwuBrHDD40DIzNFrxMK1BhePBf+6XCrMoWGjhNGHH+ZyAfyWckYNZoTVEezvN3p5cKFZKXg==
-X-Received: by 2002:a17:902:aa95:: with SMTP id
- d21mr81364588plr.185.1563958045209; 
- Wed, 24 Jul 2019 01:47:25 -0700 (PDT)
+ bh=KXdZnBt4Dikq7l5rtbuptsrDWxyJ2ir0gklP9Kfry+c=;
+ b=e/j7Dzu7hVDHKUy3xFTqt2P1qMIaPEUy4wSDEPRHXCgkYhX/2+kgw9aRRm9kVw4uUM
+ cGZ7IuxNQmFqNQl/1hylWt1Ak/p7EivPoQYcZHCkwwbXupAy1uMrWXeLXiP5w7uVKct/
+ 4hNoYEVD45WjFQV32fgrH9LUnmUykzjwMSdaS2HyerGzeEhQrp6WD8sGBYhHkDMz/5de
+ fCsRNW0HJ+vnEcFwNmy/EvRMWsybfWV3CZX+NcuOu3nRCNq5FlZ8hpua6K3G/7KfgYT2
+ jmEzI+rAtDzc/D7N1E1X9CWd3NEmU1nuSW6YymlwxMEODvJt+cdKiWGq/kAmS3bSsR9m
+ f66Q==
+X-Gm-Message-State: APjAAAXq8x65Xb4AgylTIeDBPzWtt7sT6OjSDv9n+hGfr5jEtIVlCytA
+ xnce3hRqhYIDYA69CVUOdPsOm50l
+X-Google-Smtp-Source: APXvYqxH4DwsS1yENbxqxfO4JF8419EBgN3hVFI7yVBlpT72dPdA5GqzcXfC1YomQUAVpuBiJagGwA==
+X-Received: by 2002:aa7:940c:: with SMTP id x12mr10362462pfo.80.1563958049588; 
+ Wed, 24 Jul 2019 01:47:29 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([220.240.251.33])
- by smtp.gmail.com with ESMTPSA id a3sm54286745pje.3.2019.07.24.01.47.21
+ by smtp.gmail.com with ESMTPSA id a3sm54286745pje.3.2019.07.24.01.47.25
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 24 Jul 2019 01:47:24 -0700 (PDT)
+ Wed, 24 Jul 2019 01:47:29 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/5] powerpc/64s/radix: Fix memory hot-unplug page table split
-Date: Wed, 24 Jul 2019 18:46:35 +1000
-Message-Id: <20190724084638.24982-2-npiggin@gmail.com>
+Subject: [PATCH 3/5] powerpc/perf: fix imc allocation failure handling
+Date: Wed, 24 Jul 2019 18:46:36 +1000
+Message-Id: <20190724084638.24982-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190724084638.24982-1-npiggin@gmail.com>
 References: <20190724084638.24982-1-npiggin@gmail.com>
@@ -87,34 +86,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-create_physical_mapping expects physical addresses, but splitting
-these mapping on hot unplug is supplying virtual (effective)
-addresses.
+The alloc_pages_node return value should be tested for failure
+before being passed to page_address.
 
-[I'm not sure how to test this one]
-
-Cc: Balbir Singh <bsingharora@gmail.com>
-Fixes: 4dd5f8a99e791 ("powerpc/mm/radix: Split linear mapping on hot-unplug")
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Tested-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/perf/imc-pmu.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index c5cc16ab1954..2204d8eeb784 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -737,8 +737,8 @@ static int __meminit stop_machine_change_mapping(void *data)
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index dea243185ea4..cb50a9e1fd2d 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -577,6 +577,7 @@ static int core_imc_mem_init(int cpu, int size)
+ {
+ 	int nid, rc = 0, core_id = (cpu / threads_per_core);
+ 	struct imc_mem_info *mem_info;
++	struct page *page;
  
- 	spin_unlock(&init_mm.page_table_lock);
- 	pte_clear(&init_mm, params->aligned_start, params->pte);
--	create_physical_mapping(params->aligned_start, params->start, -1);
--	create_physical_mapping(params->end, params->aligned_end, -1);
-+	create_physical_mapping(__pa(params->aligned_start), __pa(params->start), -1);
-+	create_physical_mapping(__pa(params->end), __pa(params->aligned_end), -1);
- 	spin_lock(&init_mm.page_table_lock);
- 	return 0;
- }
+ 	/*
+ 	 * alloc_pages_node() will allocate memory for core in the
+@@ -587,11 +588,12 @@ static int core_imc_mem_init(int cpu, int size)
+ 	mem_info->id = core_id;
+ 
+ 	/* We need only vbase for core counters */
+-	mem_info->vbase = page_address(alloc_pages_node(nid,
+-					  GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE |
+-					  __GFP_NOWARN, get_order(size)));
+-	if (!mem_info->vbase)
++	page = alloc_pages_node(nid,
++				GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE |
++				__GFP_NOWARN, get_order(size));
++	if (!page)
+ 		return -ENOMEM;
++	mem_info->vbase = page_address(page);
+ 
+ 	/* Init the mutex */
+ 	core_imc_refc[core_id].id = core_id;
+@@ -849,15 +851,17 @@ static int thread_imc_mem_alloc(int cpu_id, int size)
+ 	int nid = cpu_to_node(cpu_id);
+ 
+ 	if (!local_mem) {
++		struct page *page;
+ 		/*
+ 		 * This case could happen only once at start, since we dont
+ 		 * free the memory in cpu offline path.
+ 		 */
+-		local_mem = page_address(alloc_pages_node(nid,
++		page = alloc_pages_node(nid,
+ 				  GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE |
+-				  __GFP_NOWARN, get_order(size)));
+-		if (!local_mem)
++				  __GFP_NOWARN, get_order(size));
++		if (!page)
+ 			return -ENOMEM;
++		local_mem = page_address(page);
+ 
+ 		per_cpu(thread_imc_mem, cpu_id) = local_mem;
+ 	}
+@@ -1095,11 +1099,14 @@ static int trace_imc_mem_alloc(int cpu_id, int size)
+ 	int core_id = (cpu_id / threads_per_core);
+ 
+ 	if (!local_mem) {
+-		local_mem = page_address(alloc_pages_node(phys_id,
+-					GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE |
+-					__GFP_NOWARN, get_order(size)));
+-		if (!local_mem)
++		struct page *page;
++
++		page = alloc_pages_node(phys_id,
++				GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE |
++				__GFP_NOWARN, get_order(size));
++		if (!page)
+ 			return -ENOMEM;
++		local_mem = page_address(page);
+ 		per_cpu(trace_imc_mem, cpu_id) = local_mem;
+ 
+ 		/* Initialise the counters for trace mode */
 -- 
 2.22.0
 
