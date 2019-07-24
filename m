@@ -1,85 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C027072BDE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:57:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3FA72BC9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 11:54:32 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45trKd1dv3zDqNP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:54:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45trNf2TQvzDqLS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 19:57:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45trHb5bKYzDqGg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:52:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="SGvqCL4O"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45trHb0rTRz8vk9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:52:43 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45trHb0Gf0z9sLt; Wed, 24 Jul 2019 19:52:43 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com;
- envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="SGvqCL4O"; 
- dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45trHZ5Zb6z9s3l;
- Wed, 24 Jul 2019 19:52:42 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id i10so88191208iol.13;
- Wed, 24 Jul 2019 02:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
- b=SGvqCL4O1tDMyTtUF8VzsVIaleRAOFgk1B28yr96Tc5DkoDBmOCfKpb+8DoWOK/MrX
- 2D3N8WoY7chRvw1ox0YQgUQqnONnS6yXFvZAdnPH8u3VnvSIbpzzJWjXzHKMfgCzGy90
- Ikf3cqKH73hhRrRiXIlELX/hkzMl6g8ZyiraOiMiFY1ELoTqUl6cQObs2IC8PxxVkObK
- aWQF7OxsUJrsYaSNx4NsIbUmrMO0Z5iz6Yan+Wsf7OjG4e87Tlz+wka5UxTeg/6hajeb
- Vt/ISV+jdgor/H1Sg1FLW5SZ9D6Q5TXu4MG5mHRGgirz3QzqaPNgRt7teGd54t14d4E/
- ruvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=DhDzbuvFs0yJ/WUz3ukdt8uO4k/3AKV8qsjWlE0aKEw=;
- b=j4zSCrU0P2F+6AnJ5kC+a32pMaAfR4FkQbDEGcIWGolPw1cdWVeOWn3xDiPtTrfa/F
- VSgx3HgVZHy93yszg56V1YoUOi8xX2JbiluFa6G9qeLqsWA3638Mmc9HsmwMYskULvYf
- QjLNNnrKHcwew3z0V0isODkaCvoQPJg6qcgNs/RkgodW9O9X2m1CEDLHiKW2S1pJgSaq
- P8rYePft1dJBCDtjDalJs8EFyHlYXgcb5/ff5YylLpWXjh4lAWKEm34beU9C8hfNhMZk
- FTz2XfwEwfib8Evjc9S5zuNHl2RAbzQWZZVwLktivkTOrQ4XusXiDYyTl2CZ4B086dA2
- hx+w==
-X-Gm-Message-State: APjAAAVYQGaKm1qWcqWecubwjVLb9TTwO6qJ2syEauMV1eDFQs9Q2xK+
- q+KgzmWfSsNNL713G08aWk76szxORTHdDF0WmtA=
-X-Google-Smtp-Source: APXvYqzWo9lCX65m/qQJPiWc2w2e8N/+FLhFIZ0DpQbgEIju2e27m5KvrfTquDsr7BpwzrPpgtrGq0LH0Cy0lwpS2eI=
-X-Received: by 2002:a5d:8497:: with SMTP id t23mr50409358iom.298.1563961959018; 
- Wed, 24 Jul 2019 02:52:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45trL95wY6zDqHp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 19:54:57 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6O9nuVW094897
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:54:54 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2txjmcer41-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 05:54:11 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
+ Wed, 24 Jul 2019 10:54:06 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 24 Jul 2019 10:54:04 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6O9s34Y46530612
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jul 2019 09:54:03 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 58A9742041;
+ Wed, 24 Jul 2019 09:54:03 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E972542042;
+ Wed, 24 Jul 2019 09:54:01 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.44.139])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Jul 2019 09:54:01 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/5] powerpc/64s/radix: Fix memory hotplug section page
+ table creation
+In-Reply-To: <20190724084638.24982-1-npiggin@gmail.com>
+References: <20190724084638.24982-1-npiggin@gmail.com>
+Date: Wed, 24 Jul 2019 15:24:00 +0530
 MIME-Version: 1.0
-References: <1560459027-5248-1-git-send-email-nayna@linux.ibm.com>
- <1560459027-5248-3-git-send-email-nayna@linux.ibm.com>
- <87o92910fg.fsf@concordia.ellerman.id.au>
- <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
-In-Reply-To: <6d2988c1-9b89-448b-4537-c3c6673b6dd1@linux.vnet.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 24 Jul 2019 19:52:28 +1000
-Message-ID: <CAOSf1CFHYv5VsBMEnNAqa7v7WakPfdpGpbENmG8chusm=hW21g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc: expose secure variables via sysfs
-To: Nayna <nayna@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19072409-0016-0000-0000-00000295A482
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072409-0017-0000-0000-000032F39890
+Message-Id: <87imrrn4g7.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-24_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907240109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,107 +87,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Eric Ricther <erichte@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Mimi Zohar <zohar@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
- Matthew Garret <matthew.garret@nebula.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, Jeremy Kerr <jk@ozlabs.org>,
- Elaine Palmer <erpalmer@us.ibm.com>, linux-integrity@vger.kernel.org,
- George Wilson <gcwilson@linux.ibm.com>
+Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 24, 2019 at 12:35 AM Nayna <nayna@linux.vnet.ibm.com> wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
+
+> create_physical_mapping expects physical addresses, but creating and
+> splitting these mappings after boot is supplying virtual (effective)
+> addresses. This can be irritated by booting with mem= to limit memory
+> then probing an unused physical memory range:
 >
-> On 07/05/2019 02:05 AM, Michael Ellerman wrote:
-> > Hi Nayna,
+>   echo <addr> > /sys/devices/system/memory/probe
 >
-> Hi Michael, Oliver,
+> This mostly works by accident, firstly because __va(__va(x)) == __va(x)
+> so the virtual address does not get corrupted. Secondly because pfn_pte
+> masks out the upper bits of the pfn beyond the physical address limit,
+> so a pfn constructed with a 0xc000000000000000 virtual linear address
+> will be masked back to the correct physical address in the pte.
 >
-> > Nayna Jain <nayna@linux.ibm.com> writes:
-> >> As part of PowerNV secure boot support, OS verification keys are stored
-> >> and controlled by OPAL as secure variables. These need to be exposed to
-> >> the userspace so that sysadmins can perform key management tasks.
-> >>
-> >> This patch adds the support to expose secure variables via a sysfs
-> >> interface It reuses the the existing efi defined hooks and backend in
-> >> order to maintain the compatibility with the userspace tools.
-> > Which tools? Can you include a log demonstrating how they're used, ie.
-> > so that I can test the sequence of commands.
-> >
-> >> Though it reuses a great deal of efi, POWER platforms do not use EFI.
-> >> A new config, POWER_SECVAR_SYSFS, is defined to enable this new sysfs
-> >> interface.
-> > Sorry I haven't been able to keep up with all the discussions, but I
-> > thought the consensus was that pretending to be EFI-like was a bad idea,
-> > because we don't have actual EFI and we're not implementing an entirely
-> > compatible scheme to EFI anyway.
 
-My read is the consensus was that pretending to be EFI is a bad idea
-unless we're going to behave like EFI.
+Good catch. Did this result in any error?
 
-> > Greg suggested just putting the variables in sysfs, why does that not
-> > work? Matthew mentioned "complex semantics around variable deletion and
-> > immutability" but do we have to emulate those semantics on powerpc?
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+> Cc: Reza Arbab <arbab@linux.vnet.ibm.com>
+> Fixes: 6cc27341b21a8 ("powerpc/mm: add radix__create_section_mapping()")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Sorry for the delay in the response.
->
-> Yes, I agree. The purpose of the v2 version of the patchset was to try
-> and quickly address Matthew's concerns. This version of the patchset:
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index b4ca9e95e678..c5cc16ab1954 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -902,7 +902,7 @@ int __meminit radix__create_section_mapping(unsigned long start, unsigned long e
+>  		return -1;
+>  	}
+>  
+> -	return create_physical_mapping(start, end, nid);
+> +	return create_physical_mapping(__pa(start), __pa(end), nid);
 
-> * is based on Greg's suggestion to use sysfs
 
-As far as I can tell Greg made that suggestion here:
+While we are here, should we change the prototype to take phys_addr_t ?
 
-https://lwn.net/ml/linux-fsdevel/20190603072916.GA7545@kroah.com/
+>  }
+>  
+>  int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
+> -- 
+> 2.22.0
 
-Then walked back on that suggestion after Matthew pointed out that
-efivars is separate because of the immutability requirement and the
-odd update semantics:
-
-https://lwn.net/ml/linux-fsdevel/20190605081301.GA23180@kroah.com/
-
-Considering the whole point of this is to present the same user-facing
-interface so shouldn't you be dealing with all the problems that
-interface creates?
-
-> * is not using any EFI configs
-That's true, but...
-
-> * is not exposing secure variables via efivarfs
-> * is STILL using some of the existing EFI code, that is used by EFI to
-> expose its variables via sysfs, to avoid code duplication.
-
-We avoid some of the potential problems of selecting CONFIG_EFI and we
-gain a bunch of other potential problems since you've hacked the
-makefiles to build code that's normally CONFIG_EFI only.
-
-> * is using efivar hooks to expose secure variables for tool compatibility
-
-Here's the real problem. For compatibility with the existing userspace
-tooling, which expects UEFI,  you need to present the same interface
-with the same semantics. Trying to not use efivarfs means you've
-already lost since you no longer have the same interface. So how is
-this an improvement? I think the options here are to either:
-
-1) Come up with a new interface, implement it, and adapt the user
-tooling to deal with the new API.
-
-*or*
-
-2) Use efivarsfs and fix the based i-cant-believe-its-not-efi variable
-backend so it behaves *exactly* like the UEFI get/setVariable APIs.
-This means that you need to validate the update certificates at
-runtime. I don't think this is a huge strech since you're already
-implementing the validator.
-
-1) gives you the flexibility to change the key hierarchy and whatnot,
-while 2) means we've got less weird powerpc crap for users to deal
-with. I have no strong opinions about which you choose to do, but
-don't do this.
-
-Oliver
