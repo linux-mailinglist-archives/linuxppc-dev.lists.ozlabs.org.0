@@ -1,102 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2CA727A1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 07:58:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tl5P2d73zDqLT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 15:58:33 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0529972870
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 08:44:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45tm6P00QtzDqLk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 16:44:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2a00:1450:4864:20::342; helo=mail-wm1-x342.google.com;
+ envelope-from=daniel.baluta@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="DWt/IW5i"; 
+ dkim-atps=neutral
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
+ [IPv6:2a00:1450:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tl3p3KymzDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 15:57:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45tl3n4LXFz8wL5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 15:57:09 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45tl3n48p5z9sBZ; Wed, 24 Jul 2019 15:57:09 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45tl3m6y63z9s4Y
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 15:57:08 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6O5piB5136376
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 01:57:06 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2txdsq02kf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 01:57:05 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Wed, 24 Jul 2019 06:57:04 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 24 Jul 2019 06:57:02 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6O5v1AL24314004
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jul 2019 05:57:01 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A73D4C052;
- Wed, 24 Jul 2019 05:57:01 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0E7C4C066;
- Wed, 24 Jul 2019 05:56:59 +0000 (GMT)
-Received: from [9.109.198.228] (unknown [9.109.198.228])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Jul 2019 05:56:59 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc: avoid adjusting memory_limit for capture
- kernel memory reservation
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
- Hari Bathini <hbathini@linux.ibm.com>
-References: <156166326909.13320.3330203549978146193.stgit@hbathini.in.ibm.com>
- <156166327993.13320.10788410344711883330.stgit@hbathini.in.ibm.com>
- <20190722194923.4be2a1be@naga.suse.cz>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Wed, 24 Jul 2019 11:26:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tm4Z4khxzDqJh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 16:42:49 +1000 (AEST)
+Received: by mail-wm1-x342.google.com with SMTP id a15so40644988wmj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2019 23:42:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yhhTks9k7nEzj+aqUPzjcgfPfrYu7EH2vLu4ISBiDtk=;
+ b=DWt/IW5iTiJuFdKySxXe/u8ZM2xivsOCZIeSJPaLQseWNAb2LGlkoIeWzw4rDAztHh
+ lGWzWEf5e3Xetp9zUbH80REkydjclSSLXwv5fn9dKednX+X44gs0TBvY0T4bWC2R22hZ
+ rc0GxARNjAv5hZB/Xw898dmY091/0pot9hn9hMaGHeeAZNELSzvJLTuhNdblrjv25ZZ1
+ /nRgFF2G7a5lm3FuKTwDZjFnFHi/6GAK2lqF0hhXJ0dUl9vCY/t3GMgYCH7PigSbAJ4h
+ QxW9esCoWqGFKlASOpemnAmG90MTPBdhAIGa6VYbAlL0OuUTC87dmwXOUcbYFdmmmrw6
+ DxJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yhhTks9k7nEzj+aqUPzjcgfPfrYu7EH2vLu4ISBiDtk=;
+ b=FLrlTys3sn6oK1s+aNmb3jraYbZrM+Ssmh/uHcjIjiTuNfR0RUXpnCJEXiiqpS9hde
+ IrGuPd3Alk3auaYaU4Wdqv76mMVqodMljr7qYkWNCv2snCorRcVLQNlVcwPNHbTaS2eJ
+ c2F4G0TQifjzCqVwS5D6muQsKIPhijnL0wsK5ZW1sZjk9dINM0qEhkn6yEOQT3YbD+3R
+ BXWK8SScYkciZYhK38uSPZ+KZ8x0/BySW99tBTQtygw/FfV2TxX+NWwpJQHlwWv5/4Uh
+ sm2luz8zh9cx20mcWuHPQIbEQVUNr1Uio9tR1uxUoaM6dBKZZGrMZTid2+tZFIUe99M0
+ 4SYQ==
+X-Gm-Message-State: APjAAAWk6hb2xvfBgWQZ851e1asLGT98ExNVCaSx0rtjxdMdO2CiYzLS
+ n1IVhcpQDLPSjlnzcJlXaOx7skHy24/r8+ABWIE=
+X-Google-Smtp-Source: APXvYqwdVUJE/2oWoyFAfBzcKEi4mRXrXogdySO7cGxwUbUTLuzL6gabc5kqGwLm/BmR7O6IXFq3v2LF0AqX/kj3+dg=
+X-Received: by 2002:a7b:c051:: with SMTP id u17mr71032749wmc.25.1563950564848; 
+ Tue, 23 Jul 2019 23:42:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190722194923.4be2a1be@naga.suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19072405-0008-0000-0000-000003003A80
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19072405-0009-0000-0000-0000226DC99C
-Message-Id: <eea7ef41-9067-ceb4-1b57-13aee705ba91@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-24_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1907240067
+References: <20190722124833.28757-1-daniel.baluta@nxp.com>
+ <20190722124833.28757-2-daniel.baluta@nxp.com>
+ <20190723170035.GO5365@sirena.org.uk>
+In-Reply-To: <20190723170035.GO5365@sirena.org.uk>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 24 Jul 2019 09:42:33 +0300
+Message-ID: <CAEnQRZC_mNnwYkpdiX2d_ccT_L-hivWdxQTMEUojjDWv+NCiQg@mail.gmail.com>
+Subject: Re: [alsa-devel] [PATCH 01/10] ASoC: fsl_sai: add of_match data
+To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,118 +74,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Ananth N Mavinakayanahalli <ananth@linux.ibm.com>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>,
+ Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ "S.j. Wang" <shengjiu.wang@nxp.com>,
+ "Angus Ainslie \(Purism\)" <angus@akkea.ca>, Takashi Iwai <tiwai@suse.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
+ Viorel Suman <viorel.suman@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/22/19 11:19 PM, Michal Suchánek wrote:
-> On Fri, 28 Jun 2019 00:51:19 +0530
-> Hari Bathini <hbathini@linux.ibm.com> wrote:
-> 
->> Currently, if memory_limit is specified and it overlaps with memory to
->> be reserved for capture kernel, memory_limit is adjusted to accommodate
->> capture kernel. With memory reservation for capture kernel moved later
->> (after enforcing memory limit), this adjustment no longer holds water.
->> So, avoid adjusting memory_limit and error out instead.
-> 
-> Can you split out the memory limit adjustment out of memory reservation
-> so it can still be adjusted?
+On Tue, Jul 23, 2019 at 8:01 PM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Mon, Jul 22, 2019 at 03:48:24PM +0300, Daniel Baluta wrote:
+> > From: Lucas Stach <l.stach@pengutronix.de>
+> >
+> > New revisions of the SAI IP block have even more differences that need
+> > be taken into account by the driver. To avoid sprinking compatible
+> > checks all over the driver move the current differences into of_match_data.
+> >
+> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > ---
+> >  sound/soc/fsl/fsl_sai.c | 22 ++++++++++++++--------
+>
+> You need to supply your own signoff if you're sending someone else's
+> patch - see submitting-patches.rst for details on what signoffs mean and
+> why they're required.
 
-Do you mean adjust the memory limit before we do the actual reservation ?
-
-> 
-> Thanks
-> 
-> Michal
->>
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->> ---
->>  arch/powerpc/kernel/fadump.c        |   16 ----------------
->>  arch/powerpc/kernel/machine_kexec.c |   22 +++++++++++-----------
->>  2 files changed, 11 insertions(+), 27 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index 4eab972..a784695 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -476,22 +476,6 @@ int __init fadump_reserve_mem(void)
->>  #endif
->>  	}
->>  
->> -	/*
->> -	 * Calculate the memory boundary.
->> -	 * If memory_limit is less than actual memory boundary then reserve
->> -	 * the memory for fadump beyond the memory_limit and adjust the
->> -	 * memory_limit accordingly, so that the running kernel can run with
->> -	 * specified memory_limit.
->> -	 */
->> -	if (memory_limit && memory_limit < memblock_end_of_DRAM()) {
->> -		size = get_fadump_area_size();
->> -		if ((memory_limit + size) < memblock_end_of_DRAM())
->> -			memory_limit += size;
->> -		else
->> -			memory_limit = memblock_end_of_DRAM();
->> -		printk(KERN_INFO "Adjusted memory_limit for firmware-assisted"
->> -				" dump, now %#016llx\n", memory_limit);
->> -	}
->>  	if (memory_limit)
->>  		memory_boundary = memory_limit;
->>  	else
->> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
->> index c4ed328..fc5533b 100644
->> --- a/arch/powerpc/kernel/machine_kexec.c
->> +++ b/arch/powerpc/kernel/machine_kexec.c
->> @@ -125,10 +125,8 @@ void __init reserve_crashkernel(void)
->>  		crashk_res.end = crash_base + crash_size - 1;
->>  	}
->>  
->> -	if (crashk_res.end == crashk_res.start) {
->> -		crashk_res.start = crashk_res.end = 0;
->> -		return;
->> -	}
->> +	if (crashk_res.end == crashk_res.start)
->> +		goto error_out;
->>  
->>  	/* We might have got these values via the command line or the
->>  	 * device tree, either way sanitise them now. */
->> @@ -170,15 +168,13 @@ void __init reserve_crashkernel(void)
->>  	if (overlaps_crashkernel(__pa(_stext), _end - _stext)) {
->>  		printk(KERN_WARNING
->>  			"Crash kernel can not overlap current kernel\n");
->> -		crashk_res.start = crashk_res.end = 0;
->> -		return;
->> +		goto error_out;
->>  	}
->>  
->>  	/* Crash kernel trumps memory limit */
->>  	if (memory_limit && memory_limit <= crashk_res.end) {
->> -		memory_limit = crashk_res.end + 1;
->> -		printk("Adjusted memory limit for crashkernel, now 0x%llx\n",
->> -		       memory_limit);
->> +		pr_err("Crash kernel size can't exceed memory_limit\n");
->> +		goto error_out;
->>  	}
->>  
->>  	printk(KERN_INFO "Reserving %ldMB of memory at %ldMB "
->> @@ -190,9 +186,13 @@ void __init reserve_crashkernel(void)
->>  	if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
->>  	    memblock_reserve(crashk_res.start, crash_size)) {
->>  		pr_err("Failed to reserve memory for crashkernel!\n");
->> -		crashk_res.start = crashk_res.end = 0;
->> -		return;
->> +		goto error_out;
->>  	}
->> +
->> +	return;
->> +error_out:
->> +	crashk_res.start = crashk_res.end = 0;
->> +	return;
->>  }
->>  
->>  int overlaps_crashkernel(unsigned long start, unsigned long size)
->>
-> 
-
+Ack. Sorry for missing this.
