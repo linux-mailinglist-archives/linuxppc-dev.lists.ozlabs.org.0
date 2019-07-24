@@ -1,91 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8E073227
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 16:49:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BF07318C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2019 16:24:38 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45tyKH2Df4zDqP5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 00:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45tytJ3HLBzDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 00:49:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45tyGT3t7BzDqCM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 00:22:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="S/RZMMQT"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45tyGT2CNBz8sxB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 00:22:09 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45tyGT1jNFz9sBZ; Thu, 25 Jul 2019 00:22:09 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=brauner.io
  (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
  envelope-from=christian@brauner.io; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=brauner.io
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=brauner.io header.i=@brauner.io header.b="S/RZMMQT"; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=brauner.io header.i=@brauner.io header.b="apUb95+U"; 
  dkim-atps=neutral
 Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
  [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45tyGS6s1Bz9s8m
- for <linuxppc-dev@ozlabs.org>; Thu, 25 Jul 2019 00:22:07 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id w24so22080384plp.2
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Jul 2019 07:22:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45tyr94MBMzDqN5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 00:47:52 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id b3so22112048plr.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 07:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brauner.io; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=TsvF6gMlarlMCvq4Ol72LgeUXJwNy8VMRhpgIz3/Ho4=;
- b=S/RZMMQT5J2NfDBmL2ZKpf3BuXyaqu+M2mejR2KVj/LTbDmS7sWyJ/KFkSJN0GOJvM
- Jo51eYbaQY89ZT6RsuTh7KI/HqJ+uZmqs3BGwdJgUuhUclW1yeHgWPoo09tHiGRC4E7a
- otxkE+hPKTXOhAL66F+SIrvvVMsTO6T6m3crSPO3mU9kGku+Z8nwifvMRs0XCEBEGNut
- IsHmo+PnPS6ugFLexahQAyNXhN2LPHvH2r0LkpY2xe8EDCI6QO1rXLwVaj2pw9S/Iw0h
- thx8BCsm+4ub65qs9MK+rIYCqg3w3CjxX+lhirCYQQVOow8lWQlTWRr+ynovMUd6VF1Q
- 1bFQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=x1ubznM31Zi+8TITQjBWLaj+FG6dvDHIz+J1DjDCti4=;
+ b=apUb95+UUHbfjQGu5THqimf7upSpdEPG3EOBuYncXw3es/N64Gofs9902QeBgnzEMP
+ 1djLkK5QF9ik7aPuwoGym8cZ+Dpi/ZTHp5G4mq9wudiK6uoveKfnJ8Xc1GC+KMwpPbJw
+ lmboN5MR2PSUcGWjGBpyBm27lDjuB+MWW/3VwXOJps0Wh2xhby9nQBNafEZBDjKD26dx
+ jFFH45TLUM4KUozPm/9zlH2q8XZ3KODsH3x4OiYEinpIx9i6CAd1TGWo7aogWwdCFtAX
+ rUedAODkq0ZdmF0CFiYi/YWMtt/10vn4TWyRXo7Weufp159jqwO8KOBZIKQqw912DazD
+ 2XEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=TsvF6gMlarlMCvq4Ol72LgeUXJwNy8VMRhpgIz3/Ho4=;
- b=UMRV8uMFnmj0b9Mf/2H5/o/jlHlXgK4Dtp8+MvMkqAE1XZDWPtT5C0oP5s0gDNkkZX
- hmY98213sPvdBOlY9Su6IGtJERLMrB+BwrsdueTQCsioRh1MgGhwY5Iokqn/DD+9qjQp
- 5HYnlb5ETfHnIBPsQ/i7nv5GVP1J+O0bk7B69t+1BFZbDj3yFed2sNgy9/oJEh4csenK
- oC3pg1Rl2mkTGS8CKfPQRzL2Ryt5UfGy/vasdI3WJamAunh4XdzF8VLOF3LM01XcOpsL
- 9051bIM96H964LjHSRZc1Et1cm2xb5dnO9r0lCHpFrPT6/1SGcPCV9l3NlNyOPnTtxoY
- /bDQ==
-X-Gm-Message-State: APjAAAUvWk58cm4qBRC30evl6E94XF+//vrk8wPxdTV39UPwBJdAECsE
- SDhc4v4PI+Jpd9Y5YFrBXUI=
-X-Google-Smtp-Source: APXvYqyzpTeFD6mUN5tbsvb9OTguocp51aldoBULkkclWfbGIM2of9+cJaQMVN/OBorYzdl5LvXyqw==
-X-Received: by 2002:a17:902:9a42:: with SMTP id
- x2mr87031475plv.106.1563978124596; 
- Wed, 24 Jul 2019 07:22:04 -0700 (PDT)
-Received: from brauner.io ([172.58.27.54])
- by smtp.gmail.com with ESMTPSA id f6sm48434494pga.50.2019.07.24.07.22.01
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=x1ubznM31Zi+8TITQjBWLaj+FG6dvDHIz+J1DjDCti4=;
+ b=h6ctS2FDRv0F5jEeWjC22bUMlheI7V+LN1yV6b/I2MHAkpmZ0mOxNEioeS7W6dL9f0
+ GEKSxIb5U9yG3NIEAf3ZGG/cjhxDgNKlnpTFf3wcEyfK+JKMVCi3L8HBJLYhcHbgoDKL
+ XAIr/ExR9frC6exv9Ie7rwBOompVgi+cH8tM99mosti1GnGrP+Tgy1tiDlM9k9g1Du52
+ bBqNUo43ax3lnpJkZMXNUsOTpQJpsuzn05cSv+WpipsBq3VpZ5HC+HzE0gOsw+lxjPpw
+ gonW/5ZgD8FN3gJnOVzYWfxpNCI/A06Nk873vwojgaHQmbLaHWQ7sanrD+nnZFCv5FhL
+ KZpA==
+X-Gm-Message-State: APjAAAU4wA45QfJmBIgqG8R+3cRq3iAqbihfEjJy5vPZuJ5AVGaJvNGC
+ rEwhoj0Oys+qiE5kTEDnbnM=
+X-Google-Smtp-Source: APXvYqxgsIhm+uDW9ChjMulVpCeodED60MY1Gj7ZmMvRCcYNs3AH9HQpm4Dxz3xwlUn5xHzOEPau2g==
+X-Received: by 2002:a17:902:2ec5:: with SMTP id
+ r63mr85107148plb.21.1563979670908; 
+ Wed, 24 Jul 2019 07:47:50 -0700 (PDT)
+Received: from localhost.localdomain ([172.58.27.54])
+ by smtp.gmail.com with ESMTPSA id g6sm41125644pgh.64.2019.07.24.07.47.39
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Wed, 24 Jul 2019 07:22:03 -0700 (PDT)
-Date: Wed, 24 Jul 2019 16:21:57 +0200
+ Wed, 24 Jul 2019 07:47:50 -0700 (PDT)
 From: Christian Brauner <christian@brauner.io>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc: Wire up clone3 syscall
-Message-ID: <20190724142155.ybrchvuhybvr64hx@brauner.io>
-References: <20190724140259.23554-1-mpe@ellerman.id.au>
+To: linux-kernel@vger.kernel.org,
+	oleg@redhat.com
+Subject: [PATCH 3/5] arch: wire-up pidfd_wait()
+Date: Wed, 24 Jul 2019 16:46:49 +0200
+Message-Id: <20190724144651.28272-4-christian@brauner.io>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190724144651.28272-1-christian@brauner.io>
+References: <20190724144651.28272-1-christian@brauner.io>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190724140259.23554-1-mpe@ellerman.id.au>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,93 +80,281 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, asolokha@kb.kras.ru, linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, dhowells@redhat.com,
+ sparclinux@vger.kernel.org, joel@joelfernandes.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, x86@kernel.org, torvalds@linux-foundation.org,
+ Christian Brauner <christian@brauner.io>, kernel-team@android.com,
+ linux-xtensa@linux-xtensa.org, keescook@chromium.org, arnd@arndb.de,
+ jannh@google.com, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, viro@zeniv.linux.org.uk, luto@kernel.org,
+ tglx@linutronix.de, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-mips@vger.kernel.org, ebiederm@xmission.com, linux-alpha@vger.kernel.org,
+ tj@kernel.org, akpm@linux-foundation.org, cyphar@cyphar.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 25, 2019 at 12:02:59AM +1000, Michael Ellerman wrote:
-> Wire up the new clone3 syscall added in commit 7f192e3cd316 ("fork:
-> add clone3").
-> 
-> This requires a ppc_clone3 wrapper, in order to save the non-volatile
-> GPRs before calling into the generic syscall code. Otherwise we hit
-> the BUG_ON in CHECK_FULL_REGS in copy_thread().
-> 
-> Lightly tested using Christian's test code on a Power8 LE VM.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+This wires up the pidfd_wait() syscall into all arches at once.
 
-Acked-by: Christian Brauner <christian@brauner.io>
+Signed-off-by: Christian Brauner <christian@brauner.io>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Andy Lutomirsky <luto@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-api@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-arch@vger.kernel.org
+Cc: x86@kernel.org
+---
+ arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+ arch/arm/tools/syscall.tbl                  | 1 +
+ arch/arm64/include/asm/unistd.h             | 2 +-
+ arch/arm64/include/asm/unistd32.h           | 4 +++-
+ arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+ arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
+ arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
+ arch/s390/kernel/syscalls/syscall.tbl       | 1 +
+ arch/sh/kernel/syscalls/syscall.tbl         | 1 +
+ arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
+ arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
+ arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
+ include/linux/syscalls.h                    | 4 ++++
+ include/uapi/asm-generic/unistd.h           | 4 +++-
+ 20 files changed, 27 insertions(+), 3 deletions(-)
 
-> ---
->  arch/powerpc/include/asm/unistd.h        | 1 +
->  arch/powerpc/kernel/entry_32.S           | 8 ++++++++
->  arch/powerpc/kernel/entry_64.S           | 5 +++++
->  arch/powerpc/kernel/syscalls/syscall.tbl | 1 +
->  4 files changed, 15 insertions(+)
-> 
-> v2: Add the wrapper for 32-bit as well, don't allow SPU programs to call
->     clone3 (switch ABI to nospu).
-> 
-> v1: https://lore.kernel.org/r/20190722132231.10169-1-mpe@ellerman.id.au
-> 
-> diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
-> index 68473c3c471c..b0720c7c3fcf 100644
-> --- a/arch/powerpc/include/asm/unistd.h
-> +++ b/arch/powerpc/include/asm/unistd.h
-> @@ -49,6 +49,7 @@
->  #define __ARCH_WANT_SYS_FORK
->  #define __ARCH_WANT_SYS_VFORK
->  #define __ARCH_WANT_SYS_CLONE
-> +#define __ARCH_WANT_SYS_CLONE3
->  
->  #endif		/* __ASSEMBLY__ */
->  #endif /* _ASM_POWERPC_UNISTD_H_ */
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 85fdb6d879f1..54fab22c9a43 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -597,6 +597,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
->  	stw	r0,_TRAP(r1)		/* register set saved */
->  	b	sys_clone
->  
-> +	.globl	ppc_clone3
-> +ppc_clone3:
-> +	SAVE_NVGPRS(r1)
-> +	lwz	r0,_TRAP(r1)
-> +	rlwinm	r0,r0,0,0,30		/* clear LSB to indicate full */
-> +	stw	r0,_TRAP(r1)		/* register set saved */
-> +	b	sys_clone3
-> +
->  	.globl	ppc_swapcontext
->  ppc_swapcontext:
->  	SAVE_NVGPRS(r1)
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-> index d9105fcf4021..0a0b5310f54a 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -487,6 +487,11 @@ _GLOBAL(ppc_clone)
->  	bl	sys_clone
->  	b	.Lsyscall_exit
->  
-> +_GLOBAL(ppc_clone3)
-> +       bl      save_nvgprs
-> +       bl      sys_clone3
-> +       b       .Lsyscall_exit
-> +
->  _GLOBAL(ppc32_swapcontext)
->  	bl	save_nvgprs
->  	bl	compat_sys_swapcontext
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-> index f2c3bda2d39f..43f736ed47f2 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -516,3 +516,4 @@
->  432	common	fsmount				sys_fsmount
->  433	common	fspick				sys_fspick
->  434	common	pidfd_open			sys_pidfd_open
-> +435	nospu	clone3				ppc_clone3
-> -- 
-> 2.20.1
-> 
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index 728fe028c02c..ca3e593f0c7a 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -475,3 +475,4 @@
+ 543	common	fspick				sys_fspick
+ 544	common	pidfd_open			sys_pidfd_open
+ # 545 reserved for clone3
++548	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index 6da7dc4d79cc..5e448d915b2f 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -449,3 +449,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
+index 2629a68b8724..b722e47377a5 100644
+--- a/arch/arm64/include/asm/unistd.h
++++ b/arch/arm64/include/asm/unistd.h
+@@ -38,7 +38,7 @@
+ #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
+ #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
+ 
+-#define __NR_compat_syscalls		436
++#define __NR_compat_syscalls		439
+ #endif
+ 
+ #define __ARCH_WANT_SYS_CLONE
+diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
+index 94ab29cf4f00..ca77c9d4f7a1 100644
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -877,7 +877,9 @@ __SYSCALL(__NR_fsmount, sys_fsmount)
+ __SYSCALL(__NR_fspick, sys_fspick)
+ #define __NR_pidfd_open 434
+ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
+-#define __NR_clone3 435
++#define __NR_pidfd_wait 438
++__SYSCALL(__NR_pidfd_wait, sys_pidfd_wait)
++#define __NR_clone3 439
+ __SYSCALL(__NR_clone3, sys_clone3)
+ 
+ /*
+diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
+index 36d5faf4c86c..f038afaced9b 100644
+--- a/arch/ia64/kernel/syscalls/syscall.tbl
++++ b/arch/ia64/kernel/syscalls/syscall.tbl
+@@ -356,3 +356,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index a88a285a0e5f..51f86f7b4cec 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -435,3 +435,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 09b0cd7dab0a..24f912ac5dfa 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -441,3 +441,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index c9c879ec9b6d..edc144c4040c 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -374,3 +374,4 @@
+ 433	n32	fspick				sys_fspick
+ 434	n32	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	n32	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index bbce9159caa1..da4486ea0f4f 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -350,3 +350,4 @@
+ 433	n64	fspick				sys_fspick
+ 434	n64	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	n64	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 9653591428ec..d738688e50d8 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -423,3 +423,4 @@
+ 433	o32	fspick				sys_fspick
+ 434	o32	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	o32	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index 670d1371aca1..d60f44d8145c 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -432,3 +432,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3_wrapper
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 3331749aab20..3309bf5f5370 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -517,3 +517,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index a90d3e945445..ef8ba9a9c3bb 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -438,3 +438,4 @@
+ 433  common	fspick			sys_fspick			sys_fspick
+ 434  common	pidfd_open		sys_pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438  common	pidfd_wait		sys_pidfd_wait			sys_pidfd_wait
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index b5ed26c4c005..9e786a198bfd 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -438,3 +438,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 8c8cc7537fb2..ef4f13907894 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -481,3 +481,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index c00019abd076..76ec8c905745 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -440,3 +440,4 @@
+ 433	i386	fspick			sys_fspick			__ia32_sys_fspick
+ 434	i386	pidfd_open		sys_pidfd_open			__ia32_sys_pidfd_open
+ 435	i386	clone3			sys_clone3			__ia32_sys_clone3
++438	i386	pidfd_wait		sys_pidfd_wait			__ia32_sys_pidfd_wait
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index c29976eca4a8..733c206130f8 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -357,6 +357,7 @@
+ 433	common	fspick			__x64_sys_fspick
+ 434	common	pidfd_open		__x64_sys_pidfd_open
+ 435	common	clone3			__x64_sys_clone3/ptregs
++438	common	pidfd_wait		__x64_sys_pidfd_wait
+ 
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index 25f4de729a6d..417203971292 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -406,3 +406,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++438	common	pidfd_wait			sys_pidfd_wait
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 88145da7d140..760e8eacb93c 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -932,6 +932,10 @@ asmlinkage long sys_clock_adjtime32(clockid_t which_clock,
+ asmlinkage long sys_syncfs(int fd);
+ asmlinkage long sys_setns(int fd, int nstype);
+ asmlinkage long sys_pidfd_open(pid_t pid, unsigned int flags);
++asmlinkage long sys_pidfd_wait(int pidfd, int __user *stat_addr,
++			       struct siginfo __user *info,
++			       struct rusage __user *ru, unsigned int states,
++			       unsigned int flags);
+ asmlinkage long sys_sendmmsg(int fd, struct mmsghdr __user *msg,
+ 			     unsigned int vlen, unsigned flags);
+ asmlinkage long sys_process_vm_readv(pid_t pid,
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 1be0e798e362..0dd5b9d4dba0 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -850,9 +850,11 @@ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
+ #define __NR_clone3 435
+ __SYSCALL(__NR_clone3, sys_clone3)
+ #endif
++#define __NR_pidfd_wait 438
++__SYSCALL(__NR_pidfd_wait, sys_pidfd_wait)
+ 
+ #undef __NR_syscalls
+-#define __NR_syscalls 436
++#define __NR_syscalls 439
+ 
+ /*
+  * 32 bit systems traditionally used different
+-- 
+2.22.0
+
