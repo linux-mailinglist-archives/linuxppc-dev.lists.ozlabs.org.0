@@ -1,56 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DAC747F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 09:18:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C863174773
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 08:45:27 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45vN4z63dyzDqQB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 16:45:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45vNpv0KB9zDqRB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 17:18:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+83ed8b149c19f06b98a5+5814+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=huawei.com
+ (client-ip=45.249.212.190; helo=huawei.com; envelope-from=yanaijie@huawei.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45vMrL4LC7zDqLW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 16:34:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=dRYLE4wAMZUXc1bapMWQYiU6+gIHdEfanG26NMQ1nBw=; b=LLTDjV7o5RqKxbZAvmS7LEBsw2
- 9fWW/cmwf9GAjKeC9Tz9rvREtJ8XHMgQoL8mXhTe/El7RQHLAZXx4zAYw6NXkRXnXjPwd39Uxl7pV
- WkYtgRBC8qQsI22Uu/kGUOX+gZp/pSV8I71sclnrlOl6082t4WnpAr5UkE3k9BnG/9JPqi9f1ZEpq
- Q2KNXn3iTMoHq1parkveJjKK3uOQQK0vdx7PS/E31lFqUPzQ97WmUPWEE6nikB8YVXAaKPB0b5+JD
- MTrhz4mW+W8JCH1xhku+A5sJCQBmfZI6PGHnGa86WbcBtNGkqnIvqlndqdALd4rFLPj2naqcaiWL+
- iuTFkkYg==;
-Received: from p57b3f613.dip0.t-ipconnect.de ([87.179.246.19] helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hqXKT-0000ND-SE; Thu, 25 Jul 2019 06:34:18 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 5/5] dma-mapping: remove ARCH_NO_COHERENT_DMA_MMAP
-Date: Thu, 25 Jul 2019 08:34:01 +0200
-Message-Id: <20190725063401.29904-6-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190725063401.29904-1-hch@lst.de>
-References: <20190725063401.29904-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45vNn91t91zDqK6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 17:16:43 +1000 (AEST)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 6D97166E45FB2AA639F1;
+ Thu, 25 Jul 2019 15:16:37 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.203) by DGGEMS406-HUB.china.huawei.com
+ (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Thu, 25 Jul 2019
+ 15:16:30 +0800
+Subject: Re: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
+To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
+ <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
+ <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
+ <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
+References: <20190717080621.40424-1-yanaijie@huawei.com>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <e6ad41bc-5d5a-cf3f-b308-e1863b4fef99@huawei.com>
+Date: Thu, 25 Jul 2019 15:16:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190717080621.40424-1-yanaijie@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.203]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,163 +55,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- Takashi Iwai <tiwai@suse.de>, linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, thunder.leizhen@huawei.com, fanchengyang@huawei.com,
+ yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we never use a default ->mmap implementation, and non-coherent
-architectures can control the presence of ->mmap support by enabling
-ARCH_HAS_DMA_COHERENT_TO_PFN for the dma direct implementation there
-is no need for a global config option to control the availability
-of dma_common_mmap.
+Hi all, any comments?
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/Kconfig            |  3 ---
- arch/c6x/Kconfig        |  1 -
- arch/m68k/Kconfig       |  1 -
- arch/microblaze/Kconfig |  1 -
- arch/parisc/Kconfig     |  1 -
- arch/sh/Kconfig         |  1 -
- arch/xtensa/Kconfig     |  1 -
- kernel/dma/mapping.c    |  4 ----
- sound/core/pcm_native.c | 10 +---------
- 9 files changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index a7b57dd42c26..ec2834206d08 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -790,9 +790,6 @@ config COMPAT_32BIT_TIME
- 	  This is relevant on all 32-bit architectures, and 64-bit architectures
- 	  as part of compat syscall handling.
- 
--config ARCH_NO_COHERENT_DMA_MMAP
--	bool
--
- config ARCH_NO_PREEMPT
- 	bool
- 
-diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-index b4fb61c83494..e65e8d82442a 100644
---- a/arch/c6x/Kconfig
-+++ b/arch/c6x/Kconfig
-@@ -20,7 +20,6 @@ config C6X
- 	select OF_EARLY_FLATTREE
- 	select GENERIC_CLOCKEVENTS
- 	select MODULES_USE_ELF_RELA
--	select ARCH_NO_COHERENT_DMA_MMAP
- 	select MMU_GATHER_NO_RANGE if MMU
- 
- config MMU
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index c518d695c376..614b355ae338 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -8,7 +8,6 @@ config M68K
- 	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
- 	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_NO_PREEMPT if !COLDFIRE
- 	select BINFMT_FLAT_ARGVP_ENVP_ON_STACK
- 	select DMA_DIRECT_REMAP if HAS_DMA && MMU && !COLDFIRE
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index d411de05b628..632c9477a0f6 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -9,7 +9,6 @@ config MICROBLAZE
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select BUILDTIME_EXTABLE_SORT
- 	select TIMER_OF
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 6d732e451071..e9dd88b7f81e 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -52,7 +52,6 @@ config PARISC
- 	select GENERIC_SCHED_CLOCK
- 	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
- 	select GENERIC_CLOCKEVENTS
--	select ARCH_NO_COHERENT_DMA_MMAP
- 	select CPU_NO_EFFICIENT_FFS
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 6b1b5941b618..f356ee674d89 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -5,7 +5,6 @@ config SUPERH
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select HAVE_PATA_PLATFORM
- 	select CLKDEV_LOOKUP
- 	select DMA_DECLARE_COHERENT
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index ebc135bda921..70653aed3005 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -5,7 +5,6 @@ config XTENSA
- 	select ARCH_HAS_BINFMT_FLAT if !MMU
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_FRAME_POINTERS
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 7dff1829c8c5..815446f76995 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -169,7 +169,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
- 		unsigned long attrs)
- {
--#ifndef CONFIG_ARCH_NO_COHERENT_DMA_MMAP
- 	unsigned long user_count = vma_pages(vma);
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	unsigned long off = vma->vm_pgoff;
-@@ -198,9 +197,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 
- 	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
- 			user_count << PAGE_SHIFT, vma->vm_page_prot);
--#else
--	return -ENXIO;
--#endif /* !CONFIG_ARCH_NO_COHERENT_DMA_MMAP */
- }
- 
- /**
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 860543a4c840..2dadc708343a 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -218,15 +218,7 @@ int snd_pcm_info_user(struct snd_pcm_substream *substream,
- 
- static bool hw_support_mmap(struct snd_pcm_substream *substream)
- {
--	if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
--		return false;
--	/* architecture supports dma_mmap_coherent()? */
--#if defined(CONFIG_ARCH_NO_COHERENT_DMA_MMAP) || !defined(CONFIG_HAS_DMA)
--	if (!substream->ops->mmap &&
--	    substream->dma_buffer.dev.type == SNDRV_DMA_TYPE_DEV)
--		return false;
--#endif
--	return true;
-+	return substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP;
- }
- 
- static int constrain_mask_params(struct snd_pcm_substream *substream,
--- 
-2.20.1
+On 2019/7/17 16:06, Jason Yan wrote:
+> This series implements KASLR for powerpc/fsl_booke/32, as a security
+> feature that deters exploit attempts relying on knowledge of the location
+> of kernel internals.
+> 
+> Since CONFIG_RELOCATABLE has already supported, what we need to do is
+> map or copy kernel to a proper place and relocate. Freescale Book-E
+> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
+> entries are not suitable to map the kernel directly in a randomized
+> region, so we chose to copy the kernel to a proper place and restart to
+> relocate.
+> 
+> Entropy is derived from the banner and timer base, which will change every
+> build and boot. This not so much safe so additionally the bootloader may
+> pass entropy via the /chosen/kaslr-seed node in device tree.
+> 
+> We will use the first 512M of the low memory to randomize the kernel
+> image. The memory will be split in 64M zones. We will use the lower 8
+> bit of the entropy to decide the index of the 64M zone. Then we chose a
+> 16K aligned offset inside the 64M zone to put the kernel in.
+> 
+>      KERNELBASE
+> 
+>          |-->   64M   <--|
+>          |               |
+>          +---------------+    +----------------+---------------+
+>          |               |....|    |kernel|    |               |
+>          +---------------+    +----------------+---------------+
+>          |                         |
+>          |----->   offset    <-----|
+> 
+>                                kimage_vaddr
+> 
+> We also check if we will overlap with some areas like the dtb area, the
+> initrd area or the crashkernel area. If we cannot find a proper area,
+> kaslr will be disabled and boot from the original kernel.
+> 
+> Jason Yan (10):
+>    powerpc: unify definition of M_IF_NEEDED
+>    powerpc: move memstart_addr and kernstart_addr to init-common.c
+>    powerpc: introduce kimage_vaddr to store the kernel base
+>    powerpc/fsl_booke/32: introduce create_tlb_entry() helper
+>    powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
+>    powerpc/fsl_booke/32: implement KASLR infrastructure
+>    powerpc/fsl_booke/32: randomize the kernel image offset
+>    powerpc/fsl_booke/kaslr: clear the original kernel if randomized
+>    powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
+>    powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
+> 
+>   arch/powerpc/Kconfig                          |  11 +
+>   arch/powerpc/include/asm/nohash/mmu-book3e.h  |  10 +
+>   arch/powerpc/include/asm/page.h               |   7 +
+>   arch/powerpc/kernel/Makefile                  |   1 +
+>   arch/powerpc/kernel/early_32.c                |   2 +-
+>   arch/powerpc/kernel/exceptions-64e.S          |  10 -
+>   arch/powerpc/kernel/fsl_booke_entry_mapping.S |  23 +-
+>   arch/powerpc/kernel/head_fsl_booke.S          |  61 ++-
+>   arch/powerpc/kernel/kaslr_booke.c             | 439 ++++++++++++++++++
+>   arch/powerpc/kernel/machine_kexec.c           |   1 +
+>   arch/powerpc/kernel/misc_64.S                 |   5 -
+>   arch/powerpc/kernel/setup-common.c            |  23 +
+>   arch/powerpc/mm/init-common.c                 |   7 +
+>   arch/powerpc/mm/init_32.c                     |   5 -
+>   arch/powerpc/mm/init_64.c                     |   5 -
+>   arch/powerpc/mm/mmu_decl.h                    |  10 +
+>   arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
+>   17 files changed, 580 insertions(+), 48 deletions(-)
+>   create mode 100644 arch/powerpc/kernel/kaslr_booke.c
+> 
 
