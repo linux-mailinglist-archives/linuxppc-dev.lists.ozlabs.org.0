@@ -1,71 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E80B7587D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 21:59:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45vjjm4L5TzDqRL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 05:59:56 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A35C5759B0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 23:33:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45vln53MqBzDqTs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 07:32:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=google.com
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="kTg+uBtB";
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.b="L1PQzO25"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45vjgx14jPzDqNy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 05:58:16 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id c3so139913pfa.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 12:58:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=q1zzi7FPBij/o2TB0V49FOYnUapYVtCOQBftk4jb7sM=;
- b=kTg+uBtB6pkMq/6M/tQANEdWidFy2aefELMOif8PvLwgECwcyrC2zXjcwjgLlAi8Fz
- s7pTNL5y8A2nYSHbXn/N8xMd6pyNrmK2VwGLW6cdqGMbpN2zbbLXlPV1LkaBp1LNk1dh
- O+h3f82uEi68q0ambxJr76CBOQDpdvSbTowFQ=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45vll21tXSzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 07:31:08 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id t14so23857852plr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 14:31:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=mfaBZ71hrJPdlZeMC578OQz4LN6coQODfHCSFL4DY30=;
+ b=L1PQzO25HSmegQlGogBRTDRVTJihGQ8nW9Pn1vU/pcEljVrJpCDHdb5G5+wUOZRaji
+ zXIIf53eCREsVmf57JKSXVPPLdRqtrwWoKl74voeX8/y2vPEEjikuw990cW8pTWz42n3
+ ABhie+Ty3rfGMfWkgYDzV8jMxGv16NOkmEN3RYHdennsIIwff6Z3ZxELWILi6yjguG51
+ EDfK+J1awSDH2gdNIicNi7/QO22SW1WjMemBbfQb+Qy6tBUGqaqNEO5LyOMHRj8dwaxK
+ OgaNX6VSDa5tUrSrABbZy9yBQmccK4Hs8OK2TQ3ZC78A1yP4XhW9aJYEbXDQnsQXinQb
+ Etyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=q1zzi7FPBij/o2TB0V49FOYnUapYVtCOQBftk4jb7sM=;
- b=TDrFV0iMyW5qRlkPxBFcDLq5yYMv/Lutmd/8A595Z3wKo8BvILxYrrhZEe8TbFmuS4
- pWanQfds+kjLBVBd1vdfGK0VQlP2J2961uqyP3AeMYcJUVCb6i0r9hGoHW+KHqIoQoUt
- fMBjGFBiD5rN8xojcWt2c7hsuD7Nk1XuwMUKqf2TUepH87t1Cvk/hEeS0ECrpP2RuZsU
- MXLarXFCCH7bh8CLAxpcfby+CpsIjTjYvHQI1EER01JiJuZZcsynkWW0b1E+ALYSEa9D
- JFfmzzTLly6sifz9wEtipbHHzSCFXVkYScdwciDPuYS8W96aWlD2QHEA8b6EYbkP+Zmu
- S4dw==
-X-Gm-Message-State: APjAAAXgP3gsIiv1+eYgW70z/LpnUNHmKVI/V2xBrhDKtqhz94UlFKst
- X3FuAzaORGY/VuQ9XjUIpCOOTQ==
-X-Google-Smtp-Source: APXvYqwWG4tnTtE/YPrDLHwEnE9csORMu/zIiO8Sy+jOPLxKiii0cWDG8jMtv435J0IMQF5f3NraUQ==
-X-Received: by 2002:a17:90a:270f:: with SMTP id
- o15mr94434828pje.56.1564084694036; 
- Thu, 25 Jul 2019 12:58:14 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id f197sm49936596pfa.161.2019.07.25.12.58.12
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 25 Jul 2019 12:58:13 -0700 (PDT)
-Date: Thu, 25 Jul 2019 12:58:12 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Jason Yan <yanaijie@huawei.com>
-Subject: Re: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
-Message-ID: <201907251252.0C58037@keescook>
-References: <20190717080621.40424-1-yanaijie@huawei.com>
- <e6ad41bc-5d5a-cf3f-b308-e1863b4fef99@huawei.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=mfaBZ71hrJPdlZeMC578OQz4LN6coQODfHCSFL4DY30=;
+ b=ZZHYjHkoSj4btwM/v69I05mJPZcI+YqYudCkYUZkfbIUODGrQf8RDMjD6Rz1D33kvX
+ NV+L0mQmPHcPcOxTP/oPPv6UuOjGn6d+Kt3TqS+43zSrBsTpZ6AJTKxv5P+AsuBcxHzR
+ 6k8dWtFcRDnEfALGLXnIiOjflOwauJPPEUkOYfrzBxfb3l3f7uZ8Se/jgJyjtp9UDt43
+ /syoSe/VjB/81yavqZf4mnouhnvxs6MC4BIfs8WRCEL2fok82HGmTIqHKxBKNOsPnKHX
+ dlwgHIreVF/nlwKJotYHLRr94SORhpvJcyIdCCzWhCrQDYcb3Tf5ubtGm/46KxF7SARi
+ EEjQ==
+X-Gm-Message-State: APjAAAVvSjWUD3A1AcgS//RZ+/bEj7qqPQJWyk4+tT4k6WRbknRCjFKB
+ 7EqkNowpxVCGgKMYtC30KuOs2DVUpte6c6PaSIpGIA==
+X-Google-Smtp-Source: APXvYqzjunthGBlYQvAXo+D4K5dU893NIP2cgPdwJ1VeZyB0ObEP3a74b4CPfy0ldYRUMBT3J8r5CPg4PIfODOfyOYc=
+X-Received: by 2002:a17:902:b944:: with SMTP id
+ h4mr16697787pls.179.1564090262638; 
+ Thu, 25 Jul 2019 14:31:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e6ad41bc-5d5a-cf3f-b308-e1863b4fef99@huawei.com>
+References: <a5864549-40c3-badd-8c41-d5b7bf3c4f3c@c-s.fr>
+ <20190709064952.GA40851@archlinux-threadripper>
+ <20190719032456.GA14108@archlinux-threadripper>
+ <20190719152303.GA20882@gate.crashing.org>
+ <20190719160455.GA12420@archlinux-threadripper>
+ <20190721075846.GA97701@archlinux-threadripper>
+ <20190721180150.GN20882@gate.crashing.org>
+ <20190722024140.GA55142@archlinux-threadripper>
+ <20190722061940.GZ20882@gate.crashing.org>
+ <CAKwvOd=KRVsFkT8dLFoitky9OF8tKmbn00-OPi6kBygyx4QwHg@mail.gmail.com>
+ <20190722175817.GE20882@gate.crashing.org>
+In-Reply-To: <20190722175817.GE20882@gate.crashing.org>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Thu, 25 Jul 2019 14:30:51 -0700
+Message-ID: <CAKwvOdkzBt=tTk+26dp+QsCStMUJ0_v5Mpjy2TOXPw1mu71itg@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc: slightly improve cache helpers
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,86 +83,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, kernel-hardening@lists.openwall.com,
- thunder.leizhen@huawei.com, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- jingxiangfeng@huawei.com, diana.craciun@nxp.com, paulus@samba.org,
- fanchengyang@huawei.com, linuxppc-dev@lists.ozlabs.org, yebin10@huawei.com
+Cc: James Y Knight <jyknight@google.com>, LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 25, 2019 at 03:16:28PM +0800, Jason Yan wrote:
-> Hi all, any comments?
+On Mon, Jul 22, 2019 at 10:58 AM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> On Mon, Jul 22, 2019 at 10:21:07AM -0700, Nick Desaulniers wrote:
+> > On Sun, Jul 21, 2019 at 11:19 PM Segher Boessenkool
+> > <segher@kernel.crashing.org> wrote:
+> > > On Sun, Jul 21, 2019 at 07:41:40PM -0700, Nathan Chancellor wrote:
+> > > > On Sun, Jul 21, 2019 at 01:01:50PM -0500, Segher Boessenkool wrote:
+> > > > > On Sun, Jul 21, 2019 at 12:58:46AM -0700, Nathan Chancellor wrote:
+> > > > > > 0000017c clear_user_page:
+> > > > > >      17c: 94 21 ff f0                     stwu 1, -16(1)
+> > > > > >      180: 38 80 00 80                     li 4, 128
+> > > > > >      184: 38 63 ff e0                     addi 3, 3, -32
+> > > > > >      188: 7c 89 03 a6                     mtctr 4
+> > > > > >      18c: 38 81 00 0f                     addi 4, 1, 15
+> > > > > >      190: 8c c3 00 20                     lbzu 6, 32(3)
+> > > > > >      194: 98 c1 00 0f                     stb 6, 15(1)
+> > > > > >      198: 7c 00 27 ec                     dcbz 0, 4
+> > > > > >      19c: 42 00 ff f4                     bdnz .+65524
+> > > > >
+> > > > > Uh, yeah, well, I have no idea what clang tried here, but that won't
+> > > > > work.  It's copying a byte from each target cache line to the stack,
+> > > > > and then does clears the cache line containing that byte on the stack.
+> > > > >
+> > > > > I *guess* this is about "Z" and not about "%y", but you'll have to ask
+> > > > > the clang people.
+> > > > >
+> > > > > Or it may be that they do not treat inline asm operands as lvalues
+> > > > > properly?  That rings some bells.  Yeah that looks like it.
+> > >
+> > > The code is
+> > >   __asm__ __volatile__ ("dcbz %y0" : : "Z"(*(u8 *)addr) : "memory");
+> > >
+> > > so yeah it looks like clang took that  *(u8 *)addr  as rvalue, and
+> > > stored that in stack, and then used *that* as memory.
+> >
+> > What's the %y modifier supposed to mean here?
+>
+> It prints a memory address for an indexed operand.
+>
+> If you write just "%0" it prints addresses that are a single register
+> as "0(r3)" instead of "0,r3".  Some instructions do not allow offset
+> form.
+>
+> > addr is in the list of
+> > inputs, so what's wrong with using it as an rvalue?
+>
+> It seems to use *(u8 *)addr as rvalue.  Asm operands are lvalues.  It
+> matters a lot for memory operands.
 
-I'm a fan of it, but I don't know ppc internals well enough to sanely
-review the code. :) Some comments below on design...
+Hmm...not sure that's specified behavior.  Anyways, I've filed:
+https://bugs.llvm.org/show_bug.cgi?id=42762
+to see if folks more familiar with LLVM's ppc backend have some more thoughts.
 
-> 
-> 
-> On 2019/7/17 16:06, Jason Yan wrote:
-> > This series implements KASLR for powerpc/fsl_booke/32, as a security
-> > feature that deters exploit attempts relying on knowledge of the location
-> > of kernel internals.
-> > 
-> > Since CONFIG_RELOCATABLE has already supported, what we need to do is
-> > map or copy kernel to a proper place and relocate. Freescale Book-E
-> > parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
-> > entries are not suitable to map the kernel directly in a randomized
-> > region, so we chose to copy the kernel to a proper place and restart to
-> > relocate.
-> > 
-> > Entropy is derived from the banner and timer base, which will change every
-> > build and boot. This not so much safe so additionally the bootloader may
-> > pass entropy via the /chosen/kaslr-seed node in device tree.
-
-Good: adding kaslr-seed is a good step here. Are there any x86-like
-RDRAND or RDTSC to use? (Or maybe timer base here is similar to x86
-RDTSC here?)
-
-> > 
-> > We will use the first 512M of the low memory to randomize the kernel
-> > image. The memory will be split in 64M zones. We will use the lower 8
-> > bit of the entropy to decide the index of the 64M zone. Then we chose a
-> > 16K aligned offset inside the 64M zone to put the kernel in.
-
-Does this 16K granularity have any page table performance impact? My
-understanding was that x86 needed to have 2M granularity due to its page
-table layouts.
-
-Why the 64M zones instead of just 16K granularity across the entire low
-512M?
-
-> > 
-> >      KERNELBASE
-> > 
-> >          |-->   64M   <--|
-> >          |               |
-> >          +---------------+    +----------------+---------------+
-> >          |               |....|    |kernel|    |               |
-> >          +---------------+    +----------------+---------------+
-> >          |                         |
-> >          |----->   offset    <-----|
-> > 
-> >                                kimage_vaddr
-> > 
-> > We also check if we will overlap with some areas like the dtb area, the
-> > initrd area or the crashkernel area. If we cannot find a proper area,
-> > kaslr will be disabled and boot from the original kernel.
-> > 
-> > Jason Yan (10):
-> >    powerpc: unify definition of M_IF_NEEDED
-> >    powerpc: move memstart_addr and kernstart_addr to init-common.c
-> >    powerpc: introduce kimage_vaddr to store the kernel base
-> >    powerpc/fsl_booke/32: introduce create_tlb_entry() helper
-> >    powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
-> >    powerpc/fsl_booke/32: implement KASLR infrastructure
-> >    powerpc/fsl_booke/32: randomize the kernel image offset
-> >    powerpc/fsl_booke/kaslr: clear the original kernel if randomized
-> >    powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
-> >    powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
-
-Is there anything planned for other fixed-location things, like x86's
-CONFIG_RANDOMIZE_MEMORY?
-
+I recommend considering reverting commit 6c5875843b87 ("powerpc:
+slightly improve cache helpers") until the issue is resolved in clang,
+otherwise I'll probably just turn off our CI builds of PPC32 for the
+time being.
 -- 
-Kees Cook
+Thanks,
+~Nick Desaulniers
