@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164487475F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 08:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F58D74762
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 08:38:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45vMtS6dwMzDqDh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 16:36:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45vMwW2BNNzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 16:38:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -21,30 +21,32 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45vMr846RfzDqHW
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45vMr911przDqHY
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 16:34:15 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=LxRzrmqNwWXEcTNqN3l9QmLeMxibMu/ZcBBkXbQrVyw=; b=sSnqsD3xQllFI83sT8h2y1ez1
- 1+NR5rILrzn2fx0DuMS6EJFmwNO2XExgFACUjDedABMEkNIU+rd/3LQBIAijY+FYAPHBgRyh+iWj/
- IpUfZWjQUrOov9ACuWzZIpk8dEQvTgwxjZToBUZbDwwD1Q958u7eCSs6OWQKRiJiov29n3YEoK6Kx
- wZKMqYHH4+emQ89aJMh4HOldAgXeQl37NVAViusOoKrxseDk/BtaZuGi/S6ipg1+Q3ABquMo/NZB9
- 3x49mtJERY+aV+t7Eevu+qlkEmOHGvaN5oa5/vwxNtpHmx+2jAwE/AJHn0l+gvbqKEdkQH9QIBqnW
- BzSzvrgfw==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+ :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=MC0YAzXDv4UW9aVepSWPET61pXC/qRZc/Q3SPMyp+PQ=; b=Esvg+F9BiaNCjmiQCK2JehhcKp
+ zzy3Y/xqfF/imbthCGLbTIxT3Yk8Wt0IkMCnilvmnai8L8kxBcHxe+90/LFQH8ZsHtzu/eIQsnC1W
+ DozJci7ibHxEpCNTCY4Cpr6I7Z473YFnBurzqqnb8YDNS+RUWbKX30Woy0NcYDvlY3ibiH0+4Xdfe
+ OrG5KvVCVdOzhc3p8y/dwnwNrFC4ooOKry7hSnvcsyyTdN6jJwdBFmHGfkZNFtKzoV07zerTAE3XT
+ +z2o9T8m3oXqkvgtGiGPDCWimt7cBljnOF9pSkrcOO/KVXVLJHC9CHpBFnL+3W40Q99QqGijLsLaX
+ 0sRt7JDQ==;
 Received: from p57b3f613.dip0.t-ipconnect.de ([87.179.246.19] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hqXKH-0000FL-DN; Thu, 25 Jul 2019 06:34:05 +0000
+ id 1hqXKJ-0000Fp-Pl; Thu, 25 Jul 2019 06:34:08 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org,
  Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: remove default fallbacks in dma_map_ops
-Date: Thu, 25 Jul 2019 08:33:56 +0200
-Message-Id: <20190725063401.29904-1-hch@lst.de>
+Subject: [PATCH 1/5] m68knommu: add a pgprot_noncached stub
+Date: Thu, 25 Jul 2019 08:33:57 +0200
+Message-Id: <20190725063401.29904-2-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190725063401.29904-1-hch@lst.de>
+References: <20190725063401.29904-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -69,16 +71,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+Provide a pgprot_noncached like all the other nommu ports so that
+common code can rely on it being able to be present.  Note that this is
+generally code that is not actually run on nommu, but at least we can
+avoid nasty ifdefs by having a stub.
 
-we have a few places where the DMA mapping layer has non-trivial default
-actions that are questionable and/or dangerous.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/m68k/include/asm/pgtable_no.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This series instead wires up the mmap, get_sgtable and get_required_mask
-methods explicitly and cleans up some surrounding areas.  This also means
-we could get rid of the ARCH_NO_COHERENT_DMA_MMAP kconfig option, as we
-now require a mmap method wired up, or in case of non-coherent dma-direct
-the presence of the arch_dma_coherent_to_pfn hook.  The only interesting
-case is that the sound code also checked the ARCH_NO_COHERENT_DMA_MMAP
-symbol in somewhat odd ways, so I'd like to see a review of the sound
-situation before going forward with that patch.
+diff --git a/arch/m68k/include/asm/pgtable_no.h b/arch/m68k/include/asm/pgtable_no.h
+index fc3a96c77bd8..06194c7ba151 100644
+--- a/arch/m68k/include/asm/pgtable_no.h
++++ b/arch/m68k/include/asm/pgtable_no.h
+@@ -29,6 +29,8 @@
+ #define PAGE_READONLY	__pgprot(0)
+ #define PAGE_KERNEL	__pgprot(0)
+ 
++#define pgprot_noncached(prot)   (prot)
++
+ extern void paging_init(void);
+ #define swapper_pg_dir ((pgd_t *) 0)
+ 
+-- 
+2.20.1
+
