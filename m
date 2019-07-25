@@ -1,76 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBF574216
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 01:33:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45vBV34WjpzDqPg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 09:32:59 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FDB74405
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 05:35:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45vHsH1LcTzDqM7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2019 13:34:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=nicoleotsuka@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sbobroff@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="tIdJ7NmW"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45vBSQ0L19zDqGl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 09:31:31 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id y15so21698289pfn.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 16:31:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=3aT0xWPKwx9j25bSWm8e+6oJCrrpCLlu597vQAlJDBs=;
- b=tIdJ7NmWXUvHErQYcNszRpHn79HTpTb5ocvhWbq2OOcn3jOMpERZd5YQovQdbXRV5M
- d53x4GFyRCm37F0DAZRSadBhvL5hrqY5g0Guck6kNTLFjF3QPVBPCvoOt2YqvmJ3W+nm
- yBvZ1Vhxc4FLjoyMUmqQ4PN3lbQhxqpKwHhHpIllnsH6V3+dFWNf+l2W8INTjAG9QuXq
- MiQSegpZZbTv8hOsUgrw/qrTYFqar+h7Aex3H3+btRSnEMywYeFbWMOjy/GuZ8n2SsFi
- ZF7BoFHBFYB1SsSmuRkuAWZHAEAe4p7LLu/fA6RRQnGx9xHeQWtBp3Kzl2T1zrdMoT/C
- E9Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=3aT0xWPKwx9j25bSWm8e+6oJCrrpCLlu597vQAlJDBs=;
- b=mtjjdJwhowRxkC2z9+qJP6vu3XvHuMPgtTXaK/oZ3o03sdTv+BkZb3GQ2cZhrEKF/w
- LE5xAvyRd1JsMCTod3QKXfT0S+k/wlvhPfTt8JuaZr/QjNr1F0QpgkO3mXuuODuUyuZS
- CNEfR6rMTqXyTP9MKFpZ6GtLo2eR+UFo3BO22J2GlJrBDyRWlciRAn7/2ThRodaX3BZn
- tcl3XbhittyuScUHvMzf6vZFuxToEQQDHQ70SSB+YzQF3pieOSgxrbl/e3NNo+s3tLk+
- 3jzAqIczwykfT1gHKBJJiOykuoZk3oX39sAJudAiqT+ZknbywuGB3YgYdMgaIZ9DMbJk
- 0NHA==
-X-Gm-Message-State: APjAAAWsB4WuuMBlwvYuRWb9pr6SNPackHp5FjsrBPJspZkkv96Ep20V
- nQk0aW4TBSDSvF10K3N3RTk=
-X-Google-Smtp-Source: APXvYqz6lZ8tairF7kG/M+oiR7xdVsAQ2HLdN2mu8roRZyhiSxQTDjhUEamVSPOcB+CD4YH3w8SjMA==
-X-Received: by 2002:a17:90a:2041:: with SMTP id
- n59mr86440763pjc.6.1564011088318; 
- Wed, 24 Jul 2019 16:31:28 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id e17sm38617789pgm.21.2019.07.24.16.31.27
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 24 Jul 2019 16:31:28 -0700 (PDT)
-Date: Wed, 24 Jul 2019 16:32:12 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH 09/10] ASoC: fsl_sai: Add support for SAI new version
-Message-ID: <20190724233212.GD6859@Asurada-Nvidia.nvidia.com>
-References: <20190722124833.28757-1-daniel.baluta@nxp.com>
- <20190722124833.28757-10-daniel.baluta@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45vHqY3qTFzDqM0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2019 13:33:28 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6P3XIwS136084
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 23:33:25 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ty1wk53k9-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2019 23:33:23 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Thu, 25 Jul 2019 04:33:15 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 25 Jul 2019 04:33:13 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6P3XCTc34472112
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Jul 2019 03:33:12 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68481A4054;
+ Thu, 25 Jul 2019 03:33:12 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C0F76A405F;
+ Thu, 25 Jul 2019 03:33:11 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Jul 2019 03:33:11 +0000 (GMT)
+Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6FDE9A018C;
+ Thu, 25 Jul 2019 13:33:10 +1000 (AEST)
+Date: Thu, 25 Jul 2019 13:33:09 +1000
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH v3 9/9] powerpc/eeh: Convert log messages to eeh_edev_*
+ macros
+References: <d5bbb2e9a39da905d656524bdf9e1b6705fd526a.1563853440.git.sbobroff@linux.ibm.com>
+ <201907241746.mKIx06OX%lkp@intel.com>
+ <CAOSf1CGW9+6TRkbQRqNPcGY9o-=s3YVRGO4GWcKx22ZkXvwCpg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="2oS5YaxWCcQjTEyO"
 Content-Disposition: inline
-In-Reply-To: <20190722124833.28757-10-daniel.baluta@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAOSf1CGW9+6TRkbQRqNPcGY9o-=s3YVRGO4GWcKx22ZkXvwCpg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19072503-0020-0000-0000-00000356EB1C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072503-0021-0000-0000-000021AADDB0
+Message-Id: <20190725033308.GA6209@tungsten.ozlabs.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-25_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907250040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,683 +97,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, viorel.suman@nxp.com, timur@kernel.org,
- Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, shengjiu.wang@nxp.com,
- angus@akkea.ca, tiwai@suse.com, perex@perex.cz, broonie@kernel.org,
- linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com,
- linux-kernel@vger.kernel.org, l.stach@pengutronix.de
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Tyrel Datwyler <tyreld@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ kbuild test robot <lkp@intel.com>, kbuild-all@01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 22, 2019 at 03:48:32PM +0300, Daniel Baluta wrote:
-> New IP version introduces Version ID and Parameter registers
-> and optionally added Timestamp feature.
-> 
-> VERID and PARAM registers are placed at the top of registers
-> address space and some registers are shifted according to
-> the following table:
-> 
-> Tx/Rx data registers and Tx/Rx FIFO registers keep their
-> addresses, all other registers are shifted by 8.
 
-Feels like Lucas's approach is neater. I saw that Register TMR
-at 0x60 is exceptional during your previous discussion. So can
-we apply an offset-cancellation for it exceptionally? I haven't
-checked all the registers so this would look okay to me as well
-if there are more than just Register TMR.
+--2oS5YaxWCcQjTEyO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
-Nicolin
+On Wed, Jul 24, 2019 at 07:47:55PM +1000, Oliver O'Halloran wrote:
+> On Wed, Jul 24, 2019 at 7:24 PM kbuild test robot <lkp@intel.com> wrote:
+> >
+> > Hi Sam,
+> >
+> > I love your patch! Yet something to improve:
+> >
+> > [auto build test ERROR on linus/master]
+> > [also build test ERROR on v5.3-rc1 next-20190724]
+> > [if your patch is applied to the wrong git tree, please drop us a note =
+to help improve the system]
+> >
+> > url:    https://github.com/0day-ci/linux/commits/Sam-Bobroff/powerpc-64=
+-Adjust-order-in-pcibios_init/20190724-134001
+> > config: powerpc-defconfig (attached as .config)
+> > compiler: powerpc64-linux-gcc (GCC) 7.4.0
+> > reproduce:
+> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/s=
+bin/make.cross -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # save the attached .config to linux build tree
+> >         GCC_VERSION=3D7.4.0 make.cross ARCH=3Dpowerpc
+> >
+> > If you fix the issue, kindly add following tag
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> >    arch/powerpc/kernel/eeh_driver.c: In function 'eeh_add_virt_device':
+> > >> arch/powerpc/kernel/eeh_driver.c:459:17: error: unused variable 'pdn=
+' [-Werror=3Dunused-variable]
+> >      struct pci_dn *pdn =3D eeh_dev_to_pdn(edev);
+>=20
+> FYI this happens when CONFIG_IOV isn't set. Adding a __maybe_unused
+> annotation fixes it.
 
-> SAI Memory map is described in chapter 13.10.4.1.1 I2S Memory map
-> of the Reference Manual [1].
-> 
-> In order to make as less changes as possible we attach an offset
-> to each register offset to each changed register definition. The
-> offset is read from each board private data.
-> 
-> [1]https://cache.nxp.com/secured/assets/documents/en/reference-manual/IMX8MDQLQRM.pdf?__gda__=1563728701_38bea7f0f726472cc675cb141b91bec7&fileExt=.pdf
-> 
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> ---
->  sound/soc/fsl/fsl_sai.c | 240 +++++++++++++++++++++++-----------------
->  sound/soc/fsl/fsl_sai.h |  41 +++----
->  2 files changed, 162 insertions(+), 119 deletions(-)
-> 
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index 140014901fce..f2441b84877e 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -40,6 +40,7 @@ static const struct snd_pcm_hw_constraint_list fsl_sai_rate_constraints = {
->  static irqreturn_t fsl_sai_isr(int irq, void *devid)
->  {
->  	struct fsl_sai *sai = (struct fsl_sai *)devid;
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	struct device *dev = &sai->pdev->dev;
->  	u32 flags, xcsr, mask;
->  	bool irq_none = true;
-> @@ -52,7 +53,7 @@ static irqreturn_t fsl_sai_isr(int irq, void *devid)
->  	mask = (FSL_SAI_FLAGS >> FSL_SAI_CSR_xIE_SHIFT) << FSL_SAI_CSR_xF_SHIFT;
->  
->  	/* Tx IRQ */
-> -	regmap_read(sai->regmap, FSL_SAI_TCSR, &xcsr);
-> +	regmap_read(sai->regmap, FSL_SAI_TCSR(ofs), &xcsr);
->  	flags = xcsr & mask;
->  
->  	if (flags)
-> @@ -82,11 +83,11 @@ static irqreturn_t fsl_sai_isr(int irq, void *devid)
->  	xcsr &= ~FSL_SAI_CSR_xF_MASK;
->  
->  	if (flags)
-> -		regmap_write(sai->regmap, FSL_SAI_TCSR, flags | xcsr);
-> +		regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), flags | xcsr);
->  
->  irq_rx:
->  	/* Rx IRQ */
-> -	regmap_read(sai->regmap, FSL_SAI_RCSR, &xcsr);
-> +	regmap_read(sai->regmap, FSL_SAI_RCSR(ofs), &xcsr);
->  	flags = xcsr & mask;
->  
->  	if (flags)
-> @@ -116,7 +117,7 @@ static irqreturn_t fsl_sai_isr(int irq, void *devid)
->  	xcsr &= ~FSL_SAI_CSR_xF_MASK;
->  
->  	if (flags)
-> -		regmap_write(sai->regmap, FSL_SAI_RCSR, flags | xcsr);
-> +		regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), flags | xcsr);
->  
->  out:
->  	if (irq_none)
-> @@ -140,6 +141,7 @@ static int fsl_sai_set_dai_sysclk_tr(struct snd_soc_dai *cpu_dai,
->  		int clk_id, unsigned int freq, int fsl_dir)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	bool tx = fsl_dir == FSL_FMT_TRANSMITTER;
->  	u32 val_cr2 = 0;
->  
-> @@ -160,7 +162,7 @@ static int fsl_sai_set_dai_sysclk_tr(struct snd_soc_dai *cpu_dai,
->  		return -EINVAL;
->  	}
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx, ofs),
->  			   FSL_SAI_CR2_MSEL_MASK, val_cr2);
->  
->  	return 0;
-> @@ -193,6 +195,7 @@ static int fsl_sai_set_dai_fmt_tr(struct snd_soc_dai *cpu_dai,
->  				unsigned int fmt, int fsl_dir)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	bool tx = fsl_dir == FSL_FMT_TRANSMITTER;
->  	u32 val_cr2 = 0, val_cr4 = 0;
->  
-> @@ -287,9 +290,9 @@ static int fsl_sai_set_dai_fmt_tr(struct snd_soc_dai *cpu_dai,
->  		return -EINVAL;
->  	}
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx, ofs),
->  			   FSL_SAI_CR2_BCP | FSL_SAI_CR2_BCD_MSTR, val_cr2);
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  			   FSL_SAI_CR4_MF | FSL_SAI_CR4_FSE |
->  			   FSL_SAI_CR4_FSP | FSL_SAI_CR4_FSD_MSTR, val_cr4);
->  
-> @@ -316,6 +319,7 @@ static int fsl_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
->  static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	unsigned long clk_rate;
->  	u32 savediv = 0, ratio, savesub = freq;
->  	u32 id;
-> @@ -378,17 +382,17 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
->  	 */
->  	if ((sai->synchronous[TX] && !sai->synchronous[RX]) ||
->  	    (!tx && !sai->synchronous[RX])) {
-> -		regmap_update_bits(sai->regmap, FSL_SAI_RCR2,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_RCR2(ofs),
->  				   FSL_SAI_CR2_MSEL_MASK,
->  				   FSL_SAI_CR2_MSEL(sai->mclk_id[tx]));
-> -		regmap_update_bits(sai->regmap, FSL_SAI_RCR2,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_RCR2(ofs),
->  				   FSL_SAI_CR2_DIV_MASK, savediv - 1);
->  	} else if ((sai->synchronous[RX] && !sai->synchronous[TX]) ||
->  		   (tx && !sai->synchronous[TX])) {
-> -		regmap_update_bits(sai->regmap, FSL_SAI_TCR2,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_TCR2(ofs),
->  				   FSL_SAI_CR2_MSEL_MASK,
->  				   FSL_SAI_CR2_MSEL(sai->mclk_id[tx]));
-> -		regmap_update_bits(sai->regmap, FSL_SAI_TCR2,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_TCR2(ofs),
->  				   FSL_SAI_CR2_DIV_MASK, savediv - 1);
->  	}
->  
-> @@ -403,6 +407,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
->  		struct snd_soc_dai *cpu_dai)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
->  	unsigned int channels = params_channels(params);
->  	u32 word_width = params_width(params);
-> @@ -455,19 +460,19 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
->  
->  	if (!sai->is_slave_mode) {
->  		if (!sai->synchronous[TX] && sai->synchronous[RX] && !tx) {
-> -			regmap_update_bits(sai->regmap, FSL_SAI_TCR4,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_TCR4(ofs),
->  				FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
->  				val_cr4);
-> -			regmap_update_bits(sai->regmap, FSL_SAI_TCR5,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_TCR5(ofs),
->  				FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
->  				FSL_SAI_CR5_FBT_MASK, val_cr5);
->  			regmap_write(sai->regmap, FSL_SAI_TMR,
->  				~0UL - ((1 << channels) - 1));
->  		} else if (!sai->synchronous[RX] && sai->synchronous[TX] && tx) {
-> -			regmap_update_bits(sai->regmap, FSL_SAI_RCR4,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_RCR4(ofs),
->  				FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
->  				val_cr4);
-> -			regmap_update_bits(sai->regmap, FSL_SAI_RCR5,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_RCR5(ofs),
->  				FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
->  				FSL_SAI_CR5_FBT_MASK, val_cr5);
->  			regmap_write(sai->regmap, FSL_SAI_RMR,
-> @@ -475,26 +480,26 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
->  		}
->  	}
->  
-> -	switch (sai->soc_data->fcomb_mode[tx]) {
-> +	switch (sai->fcomb_mode[tx]) {
->  	case FSL_SAI_FCOMB_NONE:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  				   FSL_SAI_CR4_FCOMB_SOFT |
->  				   FSL_SAI_CR4_FCOMB_SHIFT, 0);
->  		break;
->  	case FSL_SAI_FCOMB_SHIFT:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  				   FSL_SAI_CR4_FCOMB_SOFT |
->  				   FSL_SAI_CR4_FCOMB_SHIFT,
->  				   FSL_SAI_CR4_FCOMB_SHIFT);
->  		break;
->  	case FSL_SAI_FCOMB_SOFT:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  				   FSL_SAI_CR4_FCOMB_SOFT |
->  				   FSL_SAI_CR4_FCOMB_SHIFT,
->  				   FSL_SAI_CR4_FCOMB_SOFT);
->  		break;
->  	case FSL_SAI_FCOMB_BOTH:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  				   FSL_SAI_CR4_FCOMB_SOFT |
->  				   FSL_SAI_CR4_FCOMB_SHIFT,
->  				   FSL_SAI_CR4_FCOMB_SOFT |
-> @@ -504,10 +509,10 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
->  		break;
->  	}
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
->  			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
->  			   val_cr4);
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
->  			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
->  			   FSL_SAI_CR5_FBT_MASK, val_cr5);
->  	regmap_write(sai->regmap, FSL_SAI_xMR(tx), ~0UL - ((1 << channels) - 1));
-> @@ -535,6 +540,8 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
->  		struct snd_soc_dai *cpu_dai)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
-> +
->  	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
->  	u32 xcsr, count = 100;
->  
-> @@ -543,9 +550,9 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
->  	 * Rx sync with Tx clocks: Clear SYNC for Tx, set it for Rx.
->  	 * Tx sync with Rx clocks: Clear SYNC for Rx, set it for Tx.
->  	 */
-> -	regmap_update_bits(sai->regmap, FSL_SAI_TCR2, FSL_SAI_CR2_SYNC,
-> -		           sai->synchronous[TX] ? FSL_SAI_CR2_SYNC : 0);
-> -	regmap_update_bits(sai->regmap, FSL_SAI_RCR2, FSL_SAI_CR2_SYNC,
-> +	regmap_update_bits(sai->regmap, FSL_SAI_TCR2(ofs), FSL_SAI_CR2_SYNC,
-> +			   sai->synchronous[TX] ? FSL_SAI_CR2_SYNC : 0);
-> +	regmap_update_bits(sai->regmap, FSL_SAI_RCR2(ofs), FSL_SAI_CR2_SYNC,
->  			   sai->synchronous[RX] ? FSL_SAI_CR2_SYNC : 0);
->  
->  	/*
-> @@ -556,43 +563,44 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
->  	case SNDRV_PCM_TRIGGER_START:
->  	case SNDRV_PCM_TRIGGER_RESUME:
->  	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
->  				   FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
->  
-> -		regmap_update_bits(sai->regmap, FSL_SAI_RCSR,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
->  				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
-> -		regmap_update_bits(sai->regmap, FSL_SAI_TCSR,
-> +		regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
->  				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
->  
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
->  				   FSL_SAI_CSR_xIE_MASK, FSL_SAI_FLAGS);
->  		break;
->  	case SNDRV_PCM_TRIGGER_STOP:
->  	case SNDRV_PCM_TRIGGER_SUSPEND:
->  	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
->  				   FSL_SAI_CSR_FRDE, 0);
-> -		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx),
-> +		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
->  				   FSL_SAI_CSR_xIE_MASK, 0);
->  
->  		/* Check if the opposite FRDE is also disabled */
-> -		regmap_read(sai->regmap, FSL_SAI_xCSR(!tx), &xcsr);
-> +		regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
->  		if (!(xcsr & FSL_SAI_CSR_FRDE)) {
->  			/* Disable both directions and reset their FIFOs */
-> -			regmap_update_bits(sai->regmap, FSL_SAI_TCSR,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
->  					   FSL_SAI_CSR_TERE, 0);
-> -			regmap_update_bits(sai->regmap, FSL_SAI_RCSR,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
->  					   FSL_SAI_CSR_TERE, 0);
->  
->  			/* TERE will remain set till the end of current frame */
->  			do {
->  				udelay(10);
-> -				regmap_read(sai->regmap, FSL_SAI_xCSR(tx), &xcsr);
-> +				regmap_read(sai->regmap,
-> +					    FSL_SAI_xCSR(tx, ofs), &xcsr);
->  			} while (--count && xcsr & FSL_SAI_CSR_TERE);
->  
-> -			regmap_update_bits(sai->regmap, FSL_SAI_TCSR,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
->  					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
-> -			regmap_update_bits(sai->regmap, FSL_SAI_RCSR,
-> +			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
->  					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
->  
->  			/*
-> @@ -604,13 +612,13 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
->  			 */
->  			if (!sai->is_slave_mode) {
->  				/* Software Reset for both Tx and Rx */
-> -				regmap_write(sai->regmap,
-> -					     FSL_SAI_TCSR, FSL_SAI_CSR_SR);
-> -				regmap_write(sai->regmap,
-> -					     FSL_SAI_RCSR, FSL_SAI_CSR_SR);
-> +				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs),
-> +					     FSL_SAI_CSR_SR);
-> +				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs),
-> +					     FSL_SAI_CSR_SR);
->  				/* Clear SR bit to finish the reset */
-> -				regmap_write(sai->regmap, FSL_SAI_TCSR, 0);
-> -				regmap_write(sai->regmap, FSL_SAI_RCSR, 0);
-> +				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
-> +				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
->  			}
->  		}
->  		break;
-> @@ -625,12 +633,13 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
->  		struct snd_soc_dai *cpu_dai)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
->  	int ret;
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
->  			   FSL_SAI_CR3_TRCE_MASK,
-> -			   FSL_SAI_CR3_TRCE(sai->soc_data->dl_mask[tx]);
-> +			   FSL_SAI_CR3_TRCE(sai->dl_mask[tx]));
->  
->  	ret = snd_pcm_hw_constraint_list(substream->runtime, 0,
->  			SNDRV_PCM_HW_PARAM_RATE, &fsl_sai_rate_constraints);
-> @@ -642,9 +651,10 @@ static void fsl_sai_shutdown(struct snd_pcm_substream *substream,
->  		struct snd_soc_dai *cpu_dai)
->  {
->  	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx),
-> +	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
->  			   FSL_SAI_CR3_TRCE_MASK, 0);
->  }
->  
-> @@ -662,18 +672,20 @@ static const struct snd_soc_dai_ops fsl_sai_pcm_dai_ops = {
->  static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
->  {
->  	struct fsl_sai *sai = dev_get_drvdata(cpu_dai->dev);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  
->  	/* Software Reset for both Tx and Rx */
-> -	regmap_write(sai->regmap, FSL_SAI_TCSR, FSL_SAI_CSR_SR);
-> -	regmap_write(sai->regmap, FSL_SAI_RCSR, FSL_SAI_CSR_SR);
-> +	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
-> +	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
->  	/* Clear SR bit to finish the reset */
-> -	regmap_write(sai->regmap, FSL_SAI_TCSR, 0);
-> -	regmap_write(sai->regmap, FSL_SAI_RCSR, 0);
-> +	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
-> +	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
->  
-> -	regmap_update_bits(sai->regmap, FSL_SAI_TCR1, FSL_SAI_CR1_RFW_MASK,
-> +	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
-> +			   FSL_SAI_CR1_RFW_MASK,
->  			   sai->soc_data->fifo_depth - FSL_SAI_MAXBURST_TX);
-> -	regmap_update_bits(sai->regmap, FSL_SAI_RCR1, FSL_SAI_CR1_RFW_MASK,
-> -			   FSL_SAI_MAXBURST_RX - 1);
-> +	regmap_update_bits(sai->regmap, FSL_SAI_RCR1(ofs),
-> +			   FSL_SAI_CR1_RFW_MASK, FSL_SAI_MAXBURST_RX - 1);
->  
->  	snd_soc_dai_init_dma_data(cpu_dai, &sai->dma_params_tx,
->  				&sai->dma_params_rx);
-> @@ -710,12 +722,12 @@ static const struct snd_soc_component_driver fsl_component = {
->  	.name           = "fsl-sai",
->  };
->  
-> -static struct reg_default fsl_sai_reg_defaults[] = {
-> -	{FSL_SAI_TCR1, 0},
-> -	{FSL_SAI_TCR2, 0},
-> -	{FSL_SAI_TCR3, 0},
-> -	{FSL_SAI_TCR4, 0},
-> -	{FSL_SAI_TCR5, 0},
-> +static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
-> +	{FSL_SAI_TCR1(0), 0},
-> +	{FSL_SAI_TCR2(0), 0},
-> +	{FSL_SAI_TCR3(0), 0},
-> +	{FSL_SAI_TCR4(0), 0},
-> +	{FSL_SAI_TCR5(0), 0},
->  	{FSL_SAI_TDR0, 0},
->  	{FSL_SAI_TDR1, 0},
->  	{FSL_SAI_TDR2, 0},
-> @@ -724,24 +736,50 @@ static struct reg_default fsl_sai_reg_defaults[] = {
->  	{FSL_SAI_TDR5, 0},
->  	{FSL_SAI_TDR6, 0},
->  	{FSL_SAI_TDR7, 0},
-> -	{FSL_SAI_TMR,  0},
-> -	{FSL_SAI_RCR1, 0},
-> -	{FSL_SAI_RCR2, 0},
-> -	{FSL_SAI_RCR3, 0},
-> -	{FSL_SAI_RCR4, 0},
-> -	{FSL_SAI_RCR5, 0},
-> -	{FSL_SAI_RMR,  0},
-> +	{FSL_SAI_TMR, 0},
-> +	{FSL_SAI_RCR1(0), 0},
-> +	{FSL_SAI_RCR2(0), 0},
-> +	{FSL_SAI_RCR3(0), 0},
-> +	{FSL_SAI_RCR4(0), 0},
-> +	{FSL_SAI_RCR5(0), 0},
-> +	{FSL_SAI_RMR, 0},
-> +};
-> +
-> +static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
-> +	{FSL_SAI_TCR1(8), 0},
-> +	{FSL_SAI_TCR2(8), 0},
-> +	{FSL_SAI_TCR3(8), 0},
-> +	{FSL_SAI_TCR4(8), 0},
-> +	{FSL_SAI_TCR5(8), 0},
-> +	{FSL_SAI_TDR0, 0},
-> +	{FSL_SAI_TDR1, 0},
-> +	{FSL_SAI_TDR2, 0},
-> +	{FSL_SAI_TDR3, 0},
-> +	{FSL_SAI_TDR4, 0},
-> +	{FSL_SAI_TDR5, 0},
-> +	{FSL_SAI_TDR6, 0},
-> +	{FSL_SAI_TDR7, 0},
-> +	{FSL_SAI_TMR, 0},
-> +	{FSL_SAI_RCR1(8), 0},
-> +	{FSL_SAI_RCR2(8), 0},
-> +	{FSL_SAI_RCR3(8), 0},
-> +	{FSL_SAI_RCR4(8), 0},
-> +	{FSL_SAI_RCR5(8), 0},
-> +	{FSL_SAI_RMR, 0},
->  };
->  
->  static bool fsl_sai_readable_reg(struct device *dev, unsigned int reg)
->  {
-> +	struct fsl_sai *sai = dev_get_drvdata(dev);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
-> +
-> +	if (reg >= FSL_SAI_TCSR(ofs) && reg <= FSL_SAI_TCR5(ofs))
-> +		return true;
-> +
-> +	if (reg >= FSL_SAI_RCSR(ofs) && reg <= FSL_SAI_RCR5(ofs))
-> +		return true;
-> +
->  	switch (reg) {
-> -	case FSL_SAI_TCSR:
-> -	case FSL_SAI_TCR1:
-> -	case FSL_SAI_TCR2:
-> -	case FSL_SAI_TCR3:
-> -	case FSL_SAI_TCR4:
-> -	case FSL_SAI_TCR5:
->  	case FSL_SAI_TFR0:
->  	case FSL_SAI_TFR1:
->  	case FSL_SAI_TFR2:
-> @@ -751,12 +789,6 @@ static bool fsl_sai_readable_reg(struct device *dev, unsigned int reg)
->  	case FSL_SAI_TFR6:
->  	case FSL_SAI_TFR7:
->  	case FSL_SAI_TMR:
-> -	case FSL_SAI_RCSR:
-> -	case FSL_SAI_RCR1:
-> -	case FSL_SAI_RCR2:
-> -	case FSL_SAI_RCR3:
-> -	case FSL_SAI_RCR4:
-> -	case FSL_SAI_RCR5:
->  	case FSL_SAI_RDR0:
->  	case FSL_SAI_RDR1:
->  	case FSL_SAI_RDR2:
-> @@ -782,9 +814,13 @@ static bool fsl_sai_readable_reg(struct device *dev, unsigned int reg)
->  
->  static bool fsl_sai_volatile_reg(struct device *dev, unsigned int reg)
->  {
-> +	struct fsl_sai *sai = dev_get_drvdata(dev);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
-> +
-> +	if (reg == FSL_SAI_TCSR(ofs) || reg == FSL_SAI_RCSR(ofs))
-> +		return true;
-> +
->  	switch (reg) {
-> -	case FSL_SAI_TCSR:
-> -	case FSL_SAI_RCSR:
->  	case FSL_SAI_TFR0:
->  	case FSL_SAI_TFR1:
->  	case FSL_SAI_TFR2:
-> @@ -817,13 +853,16 @@ static bool fsl_sai_volatile_reg(struct device *dev, unsigned int reg)
->  
->  static bool fsl_sai_writeable_reg(struct device *dev, unsigned int reg)
->  {
-> +	struct fsl_sai *sai = dev_get_drvdata(dev);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
-> +
-> +	if (reg >= FSL_SAI_TCSR(ofs) && reg <= FSL_SAI_TCR5(ofs))
-> +		return true;
-> +
-> +	if (reg >= FSL_SAI_RCSR(ofs) && reg <= FSL_SAI_RCR5(ofs))
-> +		return true;
-> +
->  	switch (reg) {
-> -	case FSL_SAI_TCSR:
-> -	case FSL_SAI_TCR1:
-> -	case FSL_SAI_TCR2:
-> -	case FSL_SAI_TCR3:
-> -	case FSL_SAI_TCR4:
-> -	case FSL_SAI_TCR5:
->  	case FSL_SAI_TDR0:
->  	case FSL_SAI_TDR1:
->  	case FSL_SAI_TDR2:
-> @@ -833,12 +872,6 @@ static bool fsl_sai_writeable_reg(struct device *dev, unsigned int reg)
->  	case FSL_SAI_TDR6:
->  	case FSL_SAI_TDR7:
->  	case FSL_SAI_TMR:
-> -	case FSL_SAI_RCSR:
-> -	case FSL_SAI_RCR1:
-> -	case FSL_SAI_RCR2:
-> -	case FSL_SAI_RCR3:
-> -	case FSL_SAI_RCR4:
-> -	case FSL_SAI_RCR5:
->  	case FSL_SAI_RMR:
->  		return true;
->  	default:
-> @@ -846,14 +879,14 @@ static bool fsl_sai_writeable_reg(struct device *dev, unsigned int reg)
->  	}
->  }
->  
-> -static const struct regmap_config fsl_sai_regmap_config = {
-> +static struct regmap_config fsl_sai_regmap_config = {
->  	.reg_bits = 32,
->  	.reg_stride = 4,
->  	.val_bits = 32,
->  
->  	.max_register = FSL_SAI_RMR,
-> -	.reg_defaults = fsl_sai_reg_defaults,
-> -	.num_reg_defaults = ARRAY_SIZE(fsl_sai_reg_defaults),
-> +	.reg_defaults = fsl_sai_reg_defaults_ofs0,
-> +	.num_reg_defaults = ARRAY_SIZE(fsl_sai_reg_defaults_ofs0),
->  	.readable_reg = fsl_sai_readable_reg,
->  	.volatile_reg = fsl_sai_volatile_reg,
->  	.writeable_reg = fsl_sai_writeable_reg,
-> @@ -885,6 +918,12 @@ static int fsl_sai_probe(struct platform_device *pdev)
->  	if (IS_ERR(base))
->  		return PTR_ERR(base);
->  
-> +	if (sai->soc_data->reg_offset == 8) {
-> +		fsl_sai_regmap_config.reg_defaults = fsl_sai_reg_defaults_ofs8;
-> +		fsl_sai_regmap_config.num_reg_defaults =
-> +			ARRAY_SIZE(fsl_sai_reg_defaults_ofs8);
-> +	}
-> +
->  	sai->regmap = devm_regmap_init_mmio_clk(&pdev->dev,
->  			"bus", base, &fsl_sai_regmap_config);
->  
-> @@ -1017,11 +1056,13 @@ static int fsl_sai_remove(struct platform_device *pdev)
->  static const struct fsl_sai_soc_data fsl_sai_vf610_data = {
->  	.use_imx_pcm = false,
->  	.fifo_depth = 32,
-> +	.reg_offset = 0,
->  };
->  
->  static const struct fsl_sai_soc_data fsl_sai_imx6sx_data = {
->  	.use_imx_pcm = true,
->  	.fifo_depth = 32,
-> +	.reg_offset = 0,
->  };
->  
->  static const struct of_device_id fsl_sai_ids[] = {
-> @@ -1054,6 +1095,7 @@ static int fsl_sai_runtime_suspend(struct device *dev)
->  static int fsl_sai_runtime_resume(struct device *dev)
->  {
->  	struct fsl_sai *sai = dev_get_drvdata(dev);
-> +	unsigned int ofs = sai->soc_data->reg_offset;
->  	int ret;
->  
->  	ret = clk_prepare_enable(sai->bus_clk);
-> @@ -1075,11 +1117,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
->  	}
->  
->  	regcache_cache_only(sai->regmap, false);
-> -	regmap_write(sai->regmap, FSL_SAI_TCSR, FSL_SAI_CSR_SR);
-> -	regmap_write(sai->regmap, FSL_SAI_RCSR, FSL_SAI_CSR_SR);
-> +	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
-> +	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
->  	usleep_range(1000, 2000);
-> -	regmap_write(sai->regmap, FSL_SAI_TCSR, 0);
-> -	regmap_write(sai->regmap, FSL_SAI_RCSR, 0);
-> +	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
-> +	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
->  
->  	ret = regcache_sync(sai->regmap);
->  	if (ret)
-> diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-> index abf140951187..d20f16cc2a80 100644
-> --- a/sound/soc/fsl/fsl_sai.h
-> +++ b/sound/soc/fsl/fsl_sai.h
-> @@ -14,12 +14,12 @@
->  			 SNDRV_PCM_FMTBIT_S32_LE)
->  
->  /* SAI Register Map Register */
-> -#define FSL_SAI_TCSR	0x00 /* SAI Transmit Control */
-> -#define FSL_SAI_TCR1	0x04 /* SAI Transmit Configuration 1 */
-> -#define FSL_SAI_TCR2	0x08 /* SAI Transmit Configuration 2 */
-> -#define FSL_SAI_TCR3	0x0c /* SAI Transmit Configuration 3 */
-> -#define FSL_SAI_TCR4	0x10 /* SAI Transmit Configuration 4 */
-> -#define FSL_SAI_TCR5	0x14 /* SAI Transmit Configuration 5 */
-> +#define FSL_SAI_TCSR(ofs)	(0x00 + ofs) /* SAI Transmit Control */
-> +#define FSL_SAI_TCR1(ofs)	(0x04 + ofs) /* SAI Transmit Configuration 1 */
-> +#define FSL_SAI_TCR2(ofs)	(0x08 + ofs) /* SAI Transmit Configuration 2 */
-> +#define FSL_SAI_TCR3(ofs)	(0x0c + ofs) /* SAI Transmit Configuration 3 */
-> +#define FSL_SAI_TCR4(ofs)	(0x10 + ofs) /* SAI Transmit Configuration 4 */
-> +#define FSL_SAI_TCR5(ofs)	(0x14 + ofs) /* SAI Transmit Configuration 5 */
->  #define FSL_SAI_TDR0	0x20 /* SAI Transmit Data 0 */
->  #define FSL_SAI_TDR1	0x24 /* SAI Transmit Data 1 */
->  #define FSL_SAI_TDR2	0x28 /* SAI Transmit Data 2 */
-> @@ -37,12 +37,12 @@
->  #define FSL_SAI_TFR6	0x58 /* SAI Transmit FIFO 6 */
->  #define FSL_SAI_TFR7	0x5C /* SAI Transmit FIFO 7 */
->  #define FSL_SAI_TMR	0x60 /* SAI Transmit Mask */
-> -#define FSL_SAI_RCSR	0x80 /* SAI Receive Control */
-> -#define FSL_SAI_RCR1	0x84 /* SAI Receive Configuration 1 */
-> -#define FSL_SAI_RCR2	0x88 /* SAI Receive Configuration 2 */
-> -#define FSL_SAI_RCR3	0x8c /* SAI Receive Configuration 3 */
-> -#define FSL_SAI_RCR4	0x90 /* SAI Receive Configuration 4 */
-> -#define FSL_SAI_RCR5	0x94 /* SAI Receive Configuration 5 */
-> +#define FSL_SAI_RCSR(ofs)	(0x80 + ofs) /* SAI Receive Control */
-> +#define FSL_SAI_RCR1(ofs)	(0x84 + ofs)/* SAI Receive Configuration 1 */
-> +#define FSL_SAI_RCR2(ofs)	(0x88 + ofs) /* SAI Receive Configuration 2 */
-> +#define FSL_SAI_RCR3(ofs)	(0x8c + ofs) /* SAI Receive Configuration 3 */
-> +#define FSL_SAI_RCR4(ofs)	(0x90 + ofs) /* SAI Receive Configuration 4 */
-> +#define FSL_SAI_RCR5(ofs)	(0x94 + ofs) /* SAI Receive Configuration 5 */
->  #define FSL_SAI_RDR0	0xa0 /* SAI Receive Data 0 */
->  #define FSL_SAI_RDR1	0xa4 /* SAI Receive Data 1 */
->  #define FSL_SAI_RDR2	0xa8 /* SAI Receive Data 2 */
-> @@ -61,14 +61,14 @@
->  #define FSL_SAI_RFR7	0xdc /* SAI Receive FIFO 7 */
->  #define FSL_SAI_RMR	0xe0 /* SAI Receive Mask */
->  
-> -#define FSL_SAI_xCSR(tx)	(tx ? FSL_SAI_TCSR : FSL_SAI_RCSR)
-> -#define FSL_SAI_xCR1(tx)	(tx ? FSL_SAI_TCR1 : FSL_SAI_RCR1)
-> -#define FSL_SAI_xCR2(tx)	(tx ? FSL_SAI_TCR2 : FSL_SAI_RCR2)
-> -#define FSL_SAI_xCR3(tx)	(tx ? FSL_SAI_TCR3 : FSL_SAI_RCR3)
-> -#define FSL_SAI_xCR4(tx)	(tx ? FSL_SAI_TCR4 : FSL_SAI_RCR4)
-> -#define FSL_SAI_xCR5(tx)	(tx ? FSL_SAI_TCR5 : FSL_SAI_RCR5)
-> -#define FSL_SAI_xDR(tx)		(tx ? FSL_SAI_TDR : FSL_SAI_RDR)
-> -#define FSL_SAI_xFR(tx)		(tx ? FSL_SAI_TFR : FSL_SAI_RFR)
-> +#define FSL_SAI_xCSR(tx, ofs)	(tx ? FSL_SAI_TCSR(ofs) : FSL_SAI_RCSR(ofs))
-> +#define FSL_SAI_xCR1(tx, ofs)	(tx ? FSL_SAI_TCR1(ofs) : FSL_SAI_RCR1(ofs))
-> +#define FSL_SAI_xCR2(tx, ofs)	(tx ? FSL_SAI_TCR2(ofs) : FSL_SAI_RCR2(ofs))
-> +#define FSL_SAI_xCR3(tx, ofs)	(tx ? FSL_SAI_TCR3(ofs) : FSL_SAI_RCR3(ofs))
-> +#define FSL_SAI_xCR4(tx, ofs)	(tx ? FSL_SAI_TCR4(ofs) : FSL_SAI_RCR4(ofs))
-> +#define FSL_SAI_xCR5(tx, ofs)	(tx ? FSL_SAI_TCR5(ofs) : FSL_SAI_RCR5(ofs))
-> +#define FSL_SAI_xDR(tx, ofs)	(tx ? FSL_SAI_TDR(ofs) : FSL_SAI_RDR(ofs))
-> +#define FSL_SAI_xFR(tx, ofs)	(tx ? FSL_SAI_TFR(ofs) : FSL_SAI_RFR(ofs))
->  #define FSL_SAI_xMR(tx)		(tx ? FSL_SAI_TMR : FSL_SAI_RMR)
->  
->  /* SAI Transmit/Receive Control Register */
-> @@ -166,6 +166,7 @@
->  struct fsl_sai_soc_data {
->  	bool use_imx_pcm;
->  	unsigned int fifo_depth;
-> +	unsigned int reg_offset;
->  };
->  
->  struct fsl_sai {
-> -- 
-> 2.17.1
-> 
+Ah, thanks. This must be in eeh_add_virt_device().
+
+Since there's now only a single use of pdn in that function, maybe we
+can remove the variable, and the IOV case can do this:
+	pci_iov_add_virtfn(edev->physfn, eeh_dev_to_pdn(edev)->vf_index);
+
+> >                     ^~~
+> >    cc1: all warnings being treated as errors
+> >
+> > vim +/pdn +459 arch/powerpc/kernel/eeh_driver.c
+> >
+> > 77bd7415 arch/powerpc/platforms/pseries/eeh_driver.c Linas Vepstas 2005=
+-11-03  454
+> > bf773df9 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018=
+-09-12  455  static void *eeh_add_virt_device(struct eeh_dev *edev)
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  456  {
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  457      struct pci_driver *driver;
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  458      struct pci_dev *dev =3D eeh_dev_to_pci_dev(edev);
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04 @459      struct pci_dn *pdn =3D eeh_dev_to_pdn(edev);
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  460
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  461      if (!(edev->physfn)) {
+> > 6dad7bbd arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2019=
+-07-23  462              eeh_edev_warn(edev, "Not for VF\n");
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  463              return NULL;
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  464      }
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  465
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  466      driver =3D eeh_pcid_get(dev);
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  467      if (driver) {
+> > 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018=
+-05-25  468              if (driver->err_handler) {
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  469                      eeh_pcid_put(dev);
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  470                      return NULL;
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  471              }
+> > 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018=
+-05-25  472              eeh_pcid_put(dev);
+> > 46d4be41 arch/powerpc/kernel/eeh_driver.c            Sam Bobroff   2018=
+-05-25  473      }
+> > 67086e32 arch/powerpc/kernel/eeh_driver.c            Wei Yang      2016=
+-03-04  474
+> >
+> > :::::: The code at line 459 was first introduced by commit
+> > :::::: 67086e32b56481531ab1292b284e074b1a8d764c powerpc/eeh: powerpc/ee=
+h: Support error recovery for VF PE
+> >
+> > :::::: TO: Wei Yang <weiyang@linux.vnet.ibm.com>
+> > :::::: CC: Michael Ellerman <mpe@ellerman.id.au>
+> >
+> > ---
+> > 0-DAY kernel test infrastructure                Open Source Technology =
+Center
+> > https://lists.01.org/pipermail/kbuild-all                   Intel Corpo=
+ration
+>=20
+
+--2oS5YaxWCcQjTEyO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl05IukACgkQMX8w6AQl
+/iKKQQf/aon/v0++ynRs7vZGH1sBZLIF2w18OkrYOM++1oaY2HV09MXECvUod7sd
+pr1iv6zgj9YNabZzEDq1zqAYVDg4+hjIrEvCOqC1Pf3S+/Sv+dr8a4lTv7cA8gS6
+rMncuzmrn+D12gpEnlYfk/NgGZaJ2XoMEXIjmrgAQEcoxZy5+rw2tnSw9xaPIDyG
+byxAL8uh7D+XLChISZ6gfBJpeA9juciK3INkOYGVTyJcq3wtRgkrUeNJT/7+toJP
+hxkjoP6r4P5Im5yhqXdrGNemgzf75Pddan3u9HIlGY8UpHBx8a4hAw0vle9Fh6bl
+RxDX6fmZU/MBq1tuTG2tkvSp7WxdzQ==
+=oChm
+-----END PGP SIGNATURE-----
+
+--2oS5YaxWCcQjTEyO--
+
