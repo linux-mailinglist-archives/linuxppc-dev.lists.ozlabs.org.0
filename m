@@ -2,56 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EDE766EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 15:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 411F276EB9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 18:17:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45w8WM4VGFzDqLk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 23:07:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45wDkr31nXzDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2019 02:17:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mchehab+samsung@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=chromium.org
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="FGTl2rF5"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="GhJtb6y3";
+ dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45w8TR24lKzDqDx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 23:05:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
- From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=v25fSyTOpn+HLVJ1/RYUYjo/p2HKkKXuypllJV6JuFU=; b=FGTl2rF5Ekw99U5eWA0qO4ViY
- ezxgPoNckrfd02rKeR5DfhI5n58vJTcEz7aQ3diHZkRmGndI5Rrlekc33Ay4TibbLOwpG1XKCSloG
- 82pJRxtCcnQvPslNG7xO/8DHeER9qlTWSUhlaF/iNE0YUnkdxnIGvBgg9Brpdp4iVK9JkJjbm0TvY
- TcCvfrG3NaxcqzRwVsiX1+l5U3fjf1yQEEnGnZRs2iZazrP26MkKBj4gTVChmnzy3Hz3krFh/Kx2g
- S6dj3Qi5GKN2Rfpl0jR+wq9OXeL8jT6dpW75i/Mr7cpWYS51GnMWuFS7A6xMmFALsHG7f3ly85U0p
- sDY3Ty9HA==;
-Received: from [179.95.31.157] (helo=coco.lan)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hqzun-0004Yn-F9; Fri, 26 Jul 2019 13:05:42 +0000
-Date: Fri, 26 Jul 2019 10:05:33 -0300
-From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 00/26] ReST conversion of text files without .txt
- extension
-Message-ID: <20190726100521.5d379300@coco.lan>
-In-Reply-To: <cover.1564145354.git.mchehab+samsung@kernel.org>
-References: <cover.1564145354.git.mchehab+samsung@kernel.org>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45wDj11D0WzDqD0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2019 02:16:02 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id f20so15770449pgj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 09:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=9pxdI8Q1eQGc6MFJDXbX8IPKQf5e9FjRtdij/Ccdk+g=;
+ b=GhJtb6y3IvR2euTrzUQLBPzuWpMC1r078nOKLTS2B26A9HymM6QBFZfT03uDUsxGMt
+ qEU5Dj5ZPRoFY2MiQMolT8V6egN2ZpXNx0R/y1ExRSFTnrcIQQkTlH+qisWgVrr+fhu5
+ fwWtJB/yQ5JNCDew1FsG+XjvLgH1fzf99fEmQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=9pxdI8Q1eQGc6MFJDXbX8IPKQf5e9FjRtdij/Ccdk+g=;
+ b=ROX3yxdLbOv77fJGhU0Q+iSErFdJm6rH+GZnE4cfU6rpj4U909gP8KzyKWI5PPAp6u
+ rLTpipHfpt7w2TwN46ErfRGTZowYqMbE7fMQiDgD5YzMqtlnYFh0LFjQkqoQA1PUe52T
+ FZO5BTblHBQVcbvBZ9HaPu6dkYAK1oYh7zAF03FPdofiPTqAnNzoCH1HhuWxnhAWs0qK
+ 4uCiZEY92w/iSjn+o9uACYQULdOisyD7meTY1LnchHO6PdNuLzyvZY4aInGkGqJDWtoV
+ hX5J4U2uZWl2rYMWoYN34zOedmzKLAEvNnoSn3wtdTDBTdpRENuiP1JE2Ap2cECBlzXY
+ PdUQ==
+X-Gm-Message-State: APjAAAXIyC+na3FtwF/F51LkprvsuBvvt3vfqUFtwNwhB6jbLJlW/4cJ
+ SAMdh6xeNuWDR6pUOUh7uNHZmw==
+X-Google-Smtp-Source: APXvYqxorBpjLgP/KwuMcH8kC+695azPg68CPTEJ3NXXlbisGsg21F6WBT3zy6Q5jm5oFPVjAt8Owg==
+X-Received: by 2002:a62:5344:: with SMTP id h65mr23349574pfb.32.1564157758990; 
+ Fri, 26 Jul 2019 09:15:58 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id i126sm61479400pfb.32.2019.07.26.09.15.57
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 26 Jul 2019 09:15:58 -0700 (PDT)
+Date: Fri, 26 Jul 2019 09:15:57 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Jason Yan <yanaijie@huawei.com>
+Subject: Re: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
+Message-ID: <201907260914.E37F9B041@keescook>
+References: <20190717080621.40424-1-yanaijie@huawei.com>
+ <e6ad41bc-5d5a-cf3f-b308-e1863b4fef99@huawei.com>
+ <201907251252.0C58037@keescook>
+ <877d818d-b3ec-1cea-d024-4ad6aea7af60@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877d818d-b3ec-1cea-d024-4ad6aea7af60@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,46 +78,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, alsa-devel@alsa-project.org,
- linux-doc@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-i2c@vger.kernel.org, devel@driverdev.osuosl.org,
- linux-cifs@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-scsi@vger.kernel.org, devel@lists.orangefs.org,
- devicetree@vger.kernel.org, linux-pm@vger.kernel.org, rcu@vger.kernel.org,
- openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
- linux-hwmon@vger.kernel.org, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, samba-technical@lists.samba.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-rtc@vger.kernel.org
+Cc: wangkefeng.wang@huawei.com, kernel-hardening@lists.openwall.com,
+ thunder.leizhen@huawei.com, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ jingxiangfeng@huawei.com, diana.craciun@nxp.com, paulus@samba.org,
+ fanchengyang@huawei.com, linuxppc-dev@lists.ozlabs.org, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Fri, 26 Jul 2019 09:51:10 -0300
-Mauro Carvalho Chehab <mchehab+samsung@kernel.org> escreveu:
+On Fri, Jul 26, 2019 at 03:20:26PM +0800, Jason Yan wrote:
+> The boot code only maps one 64M zone at early start. If the kernel crosses
+> two 64M zones, we need to map two 64M zones. Keep the kernel in one 64M
+> saves a lot of complex codes.
 
-> This series converts the text files under Documentation with doesn't end
-> neither .txt or .rst and are not part of ABI or features.
-> 
-> This series is at:
-> 	https://git.linuxtv.org/mchehab/experimental.git/log/?h=rst_for_5_4_v3
-> 
-> And it is based on yesterday's upstream tree.
-> 
-> After this series, we have ~320 files left to be converted to ReST.
-> 
-> v2:
->   - Added 3 files submitted for v5.3 that weren't merged yet;
->   - markdown patch broken into two, per Rob's request;
->   - rebased on the top of upstream master branch
-> 
-> Mauro Carvalho Chehab (26):
+Ah-ha. Gotcha. Thanks for the clarification.
 
->   docs: ABI: remove extension from sysfs-class-mic.txt
+> Yes, if this feature can be accepted, I will start to work with powerpc64
+> KASLR and other things like CONFIG_RANDOMIZE_MEMORY.
 
-    ^ In time: this one was already merged.
+Awesome. :)
 
-Thanks,
-Mauro
+-- 
+Kees Cook
