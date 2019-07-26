@@ -2,54 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7664675FCD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 09:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB0476174
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 11:04:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45w0zc5d4yzDqP7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 17:27:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45w36N4WxfzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2019 19:03:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.191; helo=huawei.com; envelope-from=yanaijie@huawei.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45w0xq6SWzzDqDS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 17:26:23 +1000 (AEST)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id F0961D2C6880CA9EA506;
- Fri, 26 Jul 2019 15:26:19 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.203) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Fri, 26 Jul 2019
- 15:26:13 +0800
-Subject: Re: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
-To: Diana Madalina Craciun <diana.craciun@nxp.com>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "christophe.leroy@c-s.fr"
- <christophe.leroy@c-s.fr>, "benh@kernel.crashing.org"
- <benh@kernel.crashing.org>, "paulus@samba.org" <paulus@samba.org>,
- "npiggin@gmail.com" <npiggin@gmail.com>, "keescook@chromium.org"
- <keescook@chromium.org>, "kernel-hardening@lists.openwall.com"
- <kernel-hardening@lists.openwall.com>
-References: <20190717080621.40424-1-yanaijie@huawei.com>
- <e6ad41bc-5d5a-cf3f-b308-e1863b4fef99@huawei.com>
- <VI1PR0401MB24632CD6AB1C5EDCFF817705FFC00@VI1PR0401MB2463.eurprd04.prod.outlook.com>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <b50275ae-9eb8-11da-248c-1ad7dbf93469@huawei.com>
-Date: Fri, 26 Jul 2019 15:26:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45w34g66LBzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2019 19:02:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.b="MJT90D3v"; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 45w34g15Ltz9sBF; Fri, 26 Jul 2019 19:02:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1564131747;
+ bh=BD/Pm2ddApIFdrZBQdhnC5yjEOAa6DgTIzyYlCv07OY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=MJT90D3vJpQhA2JY0XMbaGppm4FIE0xgG8ZcANSyW7D9TMn+i25efIWDEtNMCHbPg
+ zOeBpONuhD19kk/PzNgmzOq5akzmbrPZnvKUl1jMKQvU4Q6GuaN3mLO0tyIgnkWPSj
+ ty6TxJO34OML+8XmULDgHP8gV4JFqGJT2JCxwhcQ=
+Date: Fri, 26 Jul 2019 18:53:00 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v5 2/4] powerpc/pseries: Update SCM hcall op-codes in
+ hvcall.h
+Message-ID: <20190726085300.GA4865@umbus>
+References: <20190723161357.26718-1-vaibhav@linux.ibm.com>
+ <20190723161357.26718-3-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <VI1PR0401MB24632CD6AB1C5EDCFF817705FFC00@VI1PR0401MB2463.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.203]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ew6BAiZeqk4r7MaW"
+Content-Disposition: inline
+In-Reply-To: <20190723161357.26718-3-vaibhav@linux.ibm.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,108 +54,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "jingxiangfeng@huawei.com" <jingxiangfeng@huawei.com>,
- "thunder.leizhen@huawei.com" <thunder.leizhen@huawei.com>,
- "fanchengyang@huawei.com" <fanchengyang@huawei.com>,
- "yebin10@huawei.com" <yebin10@huawei.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--ew6BAiZeqk4r7MaW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2019/7/26 15:04, Diana Madalina Craciun wrote:
-> Hi Jason,
-> 
-> I have briefly tested yesterday on a P4080 board and did not see any
-> issues. I do not have much expertise on KASLR, but I will take a look
-> over the code.
-> 
+On Tue, Jul 23, 2019 at 09:43:55PM +0530, Vaibhav Jain wrote:
+> Update the hvcalls.h to include op-codes for new hcalls introduce to
+> manage SCM memory. Also update existing hcall definitions to reflect
+> current papr specification for SCM.
+>=20
+> The removed hcall op-codes H_SCM_MEM_QUERY, H_SCM_BLOCK_CLEAR were
+> transient proposals and there support was never implemented by
+> Power-VM nor they were used anywhere in Linux kernel. Hence we don't
+> expect anyone to be impacted by this change.
+>=20
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-Hi Diana, thanks. Looking forward to your suggestions.
+They really should not have been merged while only interim proposals.
+But since they have changed, better to update them than not, obviously.
 
-> Regards,
-> Diana
-> 
-> On 7/25/2019 10:16 AM, Jason Yan wrote:
->> Hi all, any comments?
->>
->>
->> On 2019/7/17 16:06, Jason Yan wrote:
->>> This series implements KASLR for powerpc/fsl_booke/32, as a security
->>> feature that deters exploit attempts relying on knowledge of the location
->>> of kernel internals.
->>>
->>> Since CONFIG_RELOCATABLE has already supported, what we need to do is
->>> map or copy kernel to a proper place and relocate. Freescale Book-E
->>> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
->>> entries are not suitable to map the kernel directly in a randomized
->>> region, so we chose to copy the kernel to a proper place and restart to
->>> relocate.
->>>
->>> Entropy is derived from the banner and timer base, which will change every
->>> build and boot. This not so much safe so additionally the bootloader may
->>> pass entropy via the /chosen/kaslr-seed node in device tree.
->>>
->>> We will use the first 512M of the low memory to randomize the kernel
->>> image. The memory will be split in 64M zones. We will use the lower 8
->>> bit of the entropy to decide the index of the 64M zone. Then we chose a
->>> 16K aligned offset inside the 64M zone to put the kernel in.
->>>
->>>       KERNELBASE
->>>
->>>           |-->   64M   <--|
->>>           |               |
->>>           +---------------+    +----------------+---------------+
->>>           |               |....|    |kernel|    |               |
->>>           +---------------+    +----------------+---------------+
->>>           |                         |
->>>           |----->   offset    <-----|
->>>
->>>                                 kimage_vaddr
->>>
->>> We also check if we will overlap with some areas like the dtb area, the
->>> initrd area or the crashkernel area. If we cannot find a proper area,
->>> kaslr will be disabled and boot from the original kernel.
->>>
->>> Jason Yan (10):
->>>     powerpc: unify definition of M_IF_NEEDED
->>>     powerpc: move memstart_addr and kernstart_addr to init-common.c
->>>     powerpc: introduce kimage_vaddr to store the kernel base
->>>     powerpc/fsl_booke/32: introduce create_tlb_entry() helper
->>>     powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper
->>>     powerpc/fsl_booke/32: implement KASLR infrastructure
->>>     powerpc/fsl_booke/32: randomize the kernel image offset
->>>     powerpc/fsl_booke/kaslr: clear the original kernel if randomized
->>>     powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter
->>>     powerpc/fsl_booke/kaslr: dump out kernel offset information on panic
->>>
->>>    arch/powerpc/Kconfig                          |  11 +
->>>    arch/powerpc/include/asm/nohash/mmu-book3e.h  |  10 +
->>>    arch/powerpc/include/asm/page.h               |   7 +
->>>    arch/powerpc/kernel/Makefile                  |   1 +
->>>    arch/powerpc/kernel/early_32.c                |   2 +-
->>>    arch/powerpc/kernel/exceptions-64e.S          |  10 -
->>>    arch/powerpc/kernel/fsl_booke_entry_mapping.S |  23 +-
->>>    arch/powerpc/kernel/head_fsl_booke.S          |  61 ++-
->>>    arch/powerpc/kernel/kaslr_booke.c             | 439 ++++++++++++++++++
->>>    arch/powerpc/kernel/machine_kexec.c           |   1 +
->>>    arch/powerpc/kernel/misc_64.S                 |   5 -
->>>    arch/powerpc/kernel/setup-common.c            |  23 +
->>>    arch/powerpc/mm/init-common.c                 |   7 +
->>>    arch/powerpc/mm/init_32.c                     |   5 -
->>>    arch/powerpc/mm/init_64.c                     |   5 -
->>>    arch/powerpc/mm/mmu_decl.h                    |  10 +
->>>    arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-
->>>    17 files changed, 580 insertions(+), 48 deletions(-)
->>>    create mode 100644 arch/powerpc/kernel/kaslr_booke.c
->>>
->>
-> 
-> 
-> .
-> 
+> ---
+> Change-log:
+>=20
+> v5:
+> * None. Re-spinning the patchset.
+>=20
+> v4:
+> * Updated the patch description mentioned current status of removed
+>   hcall opcodes. [Mpe]
+>=20
+> v3:
+> * Added updated opcode for H_SCM_HEALTH [Oliver]
+>=20
+> v2:
+> * None new patch in this series.
+> ---
+>  arch/powerpc/include/asm/hvcall.h | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm=
+/hvcall.h
+> index 463c63a9fcf1..11112023e327 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -302,9 +302,14 @@
+>  #define H_SCM_UNBIND_MEM        0x3F0
+>  #define H_SCM_QUERY_BLOCK_MEM_BINDING 0x3F4
+>  #define H_SCM_QUERY_LOGICAL_MEM_BINDING 0x3F8
+> -#define H_SCM_MEM_QUERY	        0x3FC
+> -#define H_SCM_BLOCK_CLEAR       0x400
+> -#define MAX_HCALL_OPCODE	H_SCM_BLOCK_CLEAR
+> +#define H_SCM_UNBIND_ALL        0x3FC
+> +#define H_SCM_HEALTH            0x400
+> +#define H_SCM_PERFORMANCE_STATS 0x418
+> +#define MAX_HCALL_OPCODE	H_SCM_PERFORMANCE_STATS
+> +
+> +/* Scope args for H_SCM_UNBIND_ALL */
+> +#define H_UNBIND_SCOPE_ALL (0x1)
+> +#define H_UNBIND_SCOPE_DRC (0x2)
+> =20
+>  /* H_VIOCTL functions */
+>  #define H_GET_VIOA_DUMP_SIZE	0x01
 
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--ew6BAiZeqk4r7MaW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl06v2kACgkQbDjKyiDZ
+s5Lj+xAAq4hogQn+QnL4OnQUW/8DedCVnp5mKEBGEyoZ1im+P0NG1+XxVtszuRhq
+mpjofoYWeo4mBukqNZWA1kjstxZgmA87qV4JMNcifP3DHJHDDjd9bmwOTwSdWrWu
+ktdH2q6OqjyXpODsdVr5IdtXXzOChthvJ2nxaD4ncVWQBKq1OagdHRCnLiyQiXRP
+Wwg7f1IZhMggJF+kMS+KKCkNGNsa9Jet4YDHtpZR2AxjpgrORiKA/fXyWBpml3xb
+iZOGh1ufy+aDewOEc7Q9yRtS0znpxa4Hhsd700E6oFD2AB9+USa1Fwe+ZbwqyT6z
+jOWOSVTdlbDfYRU8ZDz6JMXO8JRDXUGb+9ILco21tgsw8MRlKq6mlQhwAZ78bcnB
+rz6wrrDPIUmG9jdg21ZvL58UuEGyYQxjNDHTuLlnS1i9NVaL7pRC/BQcd7aL3P0G
+uVg74qmJlFV6BpYfqULYjFjWNOlRYlLggJ2tkH4+85yjAq8TYpEMiv/RPUJmS0KR
+u65y7uhdfqFmsrSsf3zKgIhPj/o95mMs2iAYzLzyDKbIkFwXkuMl9ujO32iR0cpK
+8lT7zPih15YDddHUgCEl0D+mqjuSZ8zxIzNKMyZSXhU0bhT16bSTzNHJhXT2C7Zc
+GkHSiANFZ/bggMb6bTUHsz6fLy4ed6vOlR4lEsLqBFAz7dCuD8s=
+=THzg
+-----END PGP SIGNATURE-----
+
+--ew6BAiZeqk4r7MaW--
