@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1A877A5C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2019 17:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE8477A5E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2019 17:44:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45wqwM4m3vzDqY5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 01:42:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45wqyB0KF2zDqbB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 01:44:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45wqBs6XnQzDqKJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 01:10:29 +1000 (AEST)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 204F26CBACB8CC91259D;
- Sat, 27 Jul 2019 23:10:27 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Sat, 27 Jul 2019
- 23:10:16 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45wqBt6Q4lzDqKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 01:10:30 +1000 (AEST)
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 445BBE0CE35BE6B53BA0;
+ Sat, 27 Jul 2019 23:10:28 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Sat, 27 Jul 2019
+ 23:10:19 +0800
 From: YueHaibing <yuehaibing@huawei.com>
 To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
  <tiwai@suse.com>, <eric@anholt.net>, <wahrenst@gmx.net>,
@@ -41,10 +41,10 @@ To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
  <wens@csie.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
  <yamada.masahiro@socionext.com>, <michal.simek@xilinx.com>,
  <jcmvbkbc@gmail.com>
-Subject: [PATCH -next 18/34] ASoC: mmp-sspa: use
+Subject: [PATCH -next 19/34] ASoC: jz4740: use
  devm_platform_ioremap_resource() to simplify code
-Date: Sat, 27 Jul 2019 23:07:22 +0800
-Message-ID: <20190727150738.54764-19-yuehaibing@huawei.com>
+Date: Sat, 27 Jul 2019 23:07:23 +0800
+Message-ID: <20190727150738.54764-20-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20190727150738.54764-1-yuehaibing@huawei.com>
 References: <20190727150738.54764-1-yuehaibing@huawei.com>
@@ -79,30 +79,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- sound/soc/pxa/mmp-sspa.c | 4 +---
+ sound/soc/codecs/jz4740.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/pxa/mmp-sspa.c b/sound/soc/pxa/mmp-sspa.c
-index 72f4364..e3e5425 100644
---- a/sound/soc/pxa/mmp-sspa.c
-+++ b/sound/soc/pxa/mmp-sspa.c
-@@ -399,7 +399,6 @@ static const struct snd_soc_component_driver mmp_sspa_component = {
- static int asoc_mmp_sspa_probe(struct platform_device *pdev)
+diff --git a/sound/soc/codecs/jz4740.c b/sound/soc/codecs/jz4740.c
+index 974e17f..460aa1f 100644
+--- a/sound/soc/codecs/jz4740.c
++++ b/sound/soc/codecs/jz4740.c
+@@ -318,7 +318,6 @@ static int jz4740_codec_probe(struct platform_device *pdev)
  {
- 	struct sspa_priv *priv;
--	struct resource *res;
+ 	int ret;
+ 	struct jz4740_codec *jz4740_codec;
+-	struct resource *mem;
+ 	void __iomem *base;
  
- 	priv = devm_kzalloc(&pdev->dev,
- 				sizeof(struct sspa_priv), GFP_KERNEL);
-@@ -417,8 +416,7 @@ static int asoc_mmp_sspa_probe(struct platform_device *pdev)
- 	if (priv->dma_params == NULL)
+ 	jz4740_codec = devm_kzalloc(&pdev->dev, sizeof(*jz4740_codec),
+@@ -326,8 +325,7 @@ static int jz4740_codec_probe(struct platform_device *pdev)
+ 	if (!jz4740_codec)
  		return -ENOMEM;
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	priv->sspa->mmio_base = devm_ioremap_resource(&pdev->dev, res);
-+	priv->sspa->mmio_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->sspa->mmio_base))
- 		return PTR_ERR(priv->sspa->mmio_base);
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	base = devm_ioremap_resource(&pdev->dev, mem);
++	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
  
 -- 
 2.7.4
