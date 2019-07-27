@@ -1,50 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C9A77D1A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 03:16:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901AF77D07
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 03:10:05 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45x4Vd6y48zDqT9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 11:10:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45x4dc2bfJzDqcJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 11:16:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cyphar.com
- (client-ip=2001:67c:2050:104:0:2:25:2; helo=mx2.mailbox.org;
- envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=afcidk@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=cyphar.com
-Received: from mx2.mailbox.org (mx2a.mailbox.org
- [IPv6:2001:67c:2050:104:0:2:25:2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="T+UzIYi/"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45x4Ph7380zDqT9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 11:05:44 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org
- [IPv6:2001:67c:2050:105:465:1:2:0])
- (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
- (No client certificate requested)
- by mx2.mailbox.org (Postfix) with ESMTPS id A8096A1C19;
- Sun, 28 Jul 2019 03:05:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
- by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172])
- (amavisd-new, port 10030)
- with ESMTP id ttFTDrf5we2F; Sun, 28 Jul 2019 03:05:34 +0200 (CEST)
-From: Aleksa Sarai <cyphar@cyphar.com>
-To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
- David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v11 3/8] open: O_EMPTYPATH: procfs-less file descriptor
- re-opening
-Date: Sun, 28 Jul 2019 11:02:02 +1000
-Message-Id: <20190728010207.9781-4-cyphar@cyphar.com>
-In-Reply-To: <20190728010207.9781-1-cyphar@cyphar.com>
-References: <20190728010207.9781-1-cyphar@cyphar.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45wp6X0fDPzDqJh
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 00:21:36 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id 19so25842669pfa.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2019 07:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
+ b=T+UzIYi/1THcC8I6GGTQVftBbmYmneEqyzoZFaOOV0bsgkD4/yotJY+aT39yhYMbKU
+ hP7XuGXa26yH/rd2Nj/oFrTDYEcp5JUuY3kmmuDDU7fPuMGddkQghGbGlfTO+H8pKvVB
+ pSe3h0PTMAUsbiz2LBWk2Z19ayzMznrnydOiG1Hn9M1yV6yTmgyr6pygeBUIKivIxRkK
+ AslNgkHOQWvuyAhddym0LYgEWCybK94ah26A3c+j6bFoy1BFojsB3uQ/zIoW1PPLaFzG
+ iRc8ls7OCAbEHg78NFqB9lL8kFZRs8DzukHcVHBv38OGkga6Mp045UeW3iThwjfRKg8C
+ KTCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
+ b=c8Oc7r6TmYyc8jlfGETHIWxLdW3tlKr52QKSTXzXnaNlK/rqm5A7zfv0OOUQ94pta3
+ 4ZuYrUBO1KlDK6/dXxf32cVgC3e+qtmQSZmD9MiBBrAO7SslyWHW6iQYdyKVhKzyhBBD
+ qO4NFUe4GXMCLaMNQFBMjdkcPG+gfvQncD5pdr1m2A4ufc0JKoiN5oMIMTF/ohXMCjM1
+ jUZwLehj+AggCzWPD052AbSXi/YxXmSpUMr92w7iM5txg9kXaUO806R2YDa7/8G/rB2P
+ f5cJkKqT5aZZTdDnbWEPMj95Mfww2YJpBRVpLOJOGPUGKvF9KJVmtHZyPiIOHJjfX84d
+ w3SQ==
+X-Gm-Message-State: APjAAAUHwZcE6kQoCQPQ6C96g5Y1g20zTqt2NkXEa3FzoI39ELQ1QB/b
+ WHxOW/BwYE/0N6NCtPsBzzQ=
+X-Google-Smtp-Source: APXvYqwImUJ0RccHZPsxX4PaZHY9X78k754oNQpfDLf2SEuy6uSlyklXeLtGbLK7+kjMFAkrLZ0G0A==
+X-Received: by 2002:a65:5cca:: with SMTP id b10mr98493196pgt.365.1564237291919; 
+ Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
+Received: from localhost.localdomain (36-238-206-183.dynamic-ip.hinet.net.
+ [36.238.206.183])
+ by smtp.googlemail.com with ESMTPSA id c8sm63671109pjq.2.2019.07.27.07.21.26
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
+From: Pei Hsuan Hung <afcidk@gmail.com>
+To: 
+Subject: [PATCH] Fix typo reigster to register
+Date: Sat, 27 Jul 2019 22:21:09 +0800
+Message-Id: <20190727142111.20039-1-afcidk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Mailman-Approved-At: Sun, 28 Jul 2019 11:11:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,244 +74,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
- Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
- Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
- David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
- linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
- linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
- linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- containers@lists.linux-foundation.org
+Cc: David Airlie <airlied@linux.ie>, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel@lists.freedesktop.org, Oliver O'Halloran <oohall@gmail.com>,
+ Ping-Ke Shih <pkshih@realtek.com>, linux-scsi@vger.kernel.org,
+ James Smart <james.smart@broadcom.com>, Chanwoo Choi <cw00.choi@samsung.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, afcidk@gmail.com,
+ Dick Kennedy <dick.kennedy@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Kalle Valo <kvalo@codeaurora.org>,
+ trivial@kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Sam Bobroff <sbobroff@linux.ibm.com>, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Brian Starkey <brian.starkey@arm.com>, Jeremy Kerr <jk@ozlabs.org>,
+ Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Userspace has made use of /proc/self/fd very liberally to allow for
-descriptors to be re-opened. There are a wide variety of uses for this
-feature, but it has always required constructing a pathname and could
-not be done without procfs mounted. The obvious solution for this is to
-extend openat(2) to have an AT_EMPTY_PATH-equivalent -- O_EMPTYPATH.
-
-Now that descriptor re-opening has been made safe through the new
-magic-link resolution restrictions, we can replicate these restrictions
-for O_EMPTYPATH. In particular, we only allow "upgrading" the file
-descriptor if the corresponding FMODE_PATH_* bit is set (or the
-FMODE_{READ,WRITE} cases for non-O_PATH file descriptors).
-
-When doing openat(O_EMPTYPATH|O_PATH), O_PATH takes precedence and
-O_EMPTYPATH is ignored. Very few users ever have a need to O_PATH
-re-open an existing file descriptor, and so accommodating them at the
-expense of further complicating O_PATH makes little sense. Ultimately,
-if users ask for this we can always add RESOLVE_EMPTY_PATH to
-resolveat(2) in the future.
-
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Signed-off-by: Pei Hsuan Hung <afcidk@gmail.com>
+Cc: trivial@kernel.org
 ---
- arch/alpha/include/uapi/asm/fcntl.h  |  1 +
- arch/parisc/include/uapi/asm/fcntl.h | 39 ++++++++++++++--------------
- arch/sparc/include/uapi/asm/fcntl.h  |  1 +
- fs/fcntl.c                           |  2 +-
- fs/namei.c                           | 20 ++++++++++++++
- fs/open.c                            |  7 ++++-
- include/linux/fcntl.h                |  2 +-
- include/uapi/asm-generic/fcntl.h     |  4 +++
- 8 files changed, 54 insertions(+), 22 deletions(-)
+ arch/powerpc/kernel/eeh.c                           | 2 +-
+ arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
+ drivers/extcon/extcon-rt8973a.c                     | 2 +-
+ drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
+ drivers/scsi/lpfc/lpfc_hbadisc.c                    | 4 ++--
+ fs/userfaultfd.c                                    | 2 +-
+ 7 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/alpha/include/uapi/asm/fcntl.h b/arch/alpha/include/uapi/asm/fcntl.h
-index 50bdc8e8a271..1f879bade68b 100644
---- a/arch/alpha/include/uapi/asm/fcntl.h
-+++ b/arch/alpha/include/uapi/asm/fcntl.h
-@@ -34,6 +34,7 @@
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index c0e4b73191f3..d75c9c24ec4d 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
+ }
  
- #define O_PATH		040000000
- #define __O_TMPFILE	0100000000
-+#define O_EMPTYPATH	0200000000
- 
- #define F_GETLK		7
- #define F_SETLK		8
-diff --git a/arch/parisc/include/uapi/asm/fcntl.h b/arch/parisc/include/uapi/asm/fcntl.h
-index 03ce20e5ad7d..5d709058a76f 100644
---- a/arch/parisc/include/uapi/asm/fcntl.h
-+++ b/arch/parisc/include/uapi/asm/fcntl.h
-@@ -2,26 +2,27 @@
- #ifndef _PARISC_FCNTL_H
- #define _PARISC_FCNTL_H
- 
--#define O_APPEND	000000010
--#define O_BLKSEEK	000000100 /* HPUX only */
--#define O_CREAT		000000400 /* not fcntl */
--#define O_EXCL		000002000 /* not fcntl */
--#define O_LARGEFILE	000004000
--#define __O_SYNC	000100000
-+#define O_APPEND	0000000010
-+#define O_BLKSEEK	0000000100 /* HPUX only */
-+#define O_CREAT		0000000400 /* not fcntl */
-+#define O_EXCL		0000002000 /* not fcntl */
-+#define O_LARGEFILE	0000004000
-+#define __O_SYNC	0000100000
- #define O_SYNC		(__O_SYNC|O_DSYNC)
--#define O_NONBLOCK	000200004 /* HPUX has separate NDELAY & NONBLOCK */
--#define O_NOCTTY	000400000 /* not fcntl */
--#define O_DSYNC		001000000 /* HPUX only */
--#define O_RSYNC		002000000 /* HPUX only */
--#define O_NOATIME	004000000
--#define O_CLOEXEC	010000000 /* set close_on_exec */
--
--#define O_DIRECTORY	000010000 /* must be a directory */
--#define O_NOFOLLOW	000000200 /* don't follow links */
--#define O_INVISIBLE	004000000 /* invisible I/O, for DMAPI/XDSM */
--
--#define O_PATH		020000000
--#define __O_TMPFILE	040000000
-+#define O_NONBLOCK	0000200004 /* HPUX has separate NDELAY & NONBLOCK */
-+#define O_NOCTTY	0000400000 /* not fcntl */
-+#define O_DSYNC		0001000000 /* HPUX only */
-+#define O_RSYNC		0002000000 /* HPUX only */
-+#define O_NOATIME	0004000000
-+#define O_CLOEXEC	0010000000 /* set close_on_exec */
-+
-+#define O_DIRECTORY	0000010000 /* must be a directory */
-+#define O_NOFOLLOW	0000000200 /* don't follow links */
-+#define O_INVISIBLE	0004000000 /* invisible I/O, for DMAPI/XDSM */
-+
-+#define O_PATH		0020000000
-+#define __O_TMPFILE	0040000000
-+#define O_EMPTYPATH	0100000000
- 
- #define F_GETLK64	8
- #define F_SETLK64	9
-diff --git a/arch/sparc/include/uapi/asm/fcntl.h b/arch/sparc/include/uapi/asm/fcntl.h
-index 67dae75e5274..dc86c9eaf950 100644
---- a/arch/sparc/include/uapi/asm/fcntl.h
-+++ b/arch/sparc/include/uapi/asm/fcntl.h
-@@ -37,6 +37,7 @@
- 
- #define O_PATH		0x1000000
- #define __O_TMPFILE	0x2000000
-+#define O_EMPTYPATH	0x4000000
- 
- #define F_GETOWN	5	/*  for sockets. */
- #define F_SETOWN	6	/*  for sockets. */
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index 3d40771e8e7c..4cf05a2fd162 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -1031,7 +1031,7 @@ static int __init fcntl_init(void)
- 	 * Exceptions: O_NONBLOCK is a two bit define on parisc; O_NDELAY
- 	 * is defined as O_NONBLOCK on some platforms and not on others.
+ /**
+- * eeh_ops_unregister - Unreigster platform dependent EEH operations
++ * eeh_ops_unregister - Unregister platform dependent EEH operations
+  * @name: name of EEH platform operations
+  *
+  * Unregister the platform dependent EEH operation callback
+diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
+index 5c3f5d088c3b..9548a086937b 100644
+--- a/arch/powerpc/platforms/cell/spufs/switch.c
++++ b/arch/powerpc/platforms/cell/spufs/switch.c
+@@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
+ {
+ 	/* Save, Step 38:
+ 	 *     Save RA_GROUP_ID register and the
+-	 *     RA_ENABLE reigster in the CSA.
++	 *     RA_ENABLE register in the CSA.
  	 */
--	BUILD_BUG_ON(21 - 1 /* for O_RDONLY being 0 */ !=
-+	BUILD_BUG_ON(22 - 1 /* for O_RDONLY being 0 */ !=
- 		HWEIGHT32(
- 			(VALID_OPEN_FLAGS & ~(O_NONBLOCK | O_NDELAY)) |
- 			__FMODE_EXEC | __FMODE_NONOTIFY));
-diff --git a/fs/namei.c b/fs/namei.c
-index 54d57dad0f91..e39b573fcc4d 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -3571,6 +3571,24 @@ static int trailing_magiclink(struct nameidata *nd, int acc_mode,
- 	return may_open_magiclink(upgrade_mask, acc_mode);
- }
- 
-+static int do_emptypath(struct nameidata *nd, const struct open_flags *op,
-+			struct file *file)
-+{
-+	int error;
-+	/* We don't support AT_FDCWD (since O_PATH is disallowed here). */
-+	struct fd f = fdget_raw(nd->dfd);
-+
-+	if (!f.file)
-+		return -EBADF;
-+
-+	/* Apply trailing_magiclink()-like restrictions. */
-+	error = may_open_magiclink(f.file->f_mode, op->acc_mode);
-+	if (!error)
-+		error = vfs_open(&f.file->f_path, file);
-+	fdput(f);
-+	return error;
-+}
-+
- static struct file *path_openat(struct nameidata *nd,
- 			const struct open_flags *op, unsigned flags)
+ 	csa->priv1.resource_allocation_groupID_RW =
+ 		spu_resource_allocation_groupID_get(spu);
+@@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
  {
-@@ -3583,6 +3601,8 @@ static struct file *path_openat(struct nameidata *nd,
+ 	/* Restore, Step 29:
+ 	 *     Restore RA_GROUP_ID register and the
+-	 *     RA_ENABLE reigster from the CSA.
++	 *     RA_ENABLE register from the CSA.
+ 	 */
+ 	spu_resource_allocation_groupID_set(spu,
+ 			csa->priv1.resource_allocation_groupID_RW);
+diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
+index 40c07f4d656e..e75c03792398 100644
+--- a/drivers/extcon/extcon-rt8973a.c
++++ b/drivers/extcon/extcon-rt8973a.c
+@@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
+ 	}
+ 	cable_type = adc & RT8973A_REG_ADC_MASK;
  
- 	if (unlikely(file->f_flags & __O_TMPFILE)) {
- 		error = do_tmpfile(nd, flags, op, file);
-+	} else if (unlikely(file->f_flags & O_EMPTYPATH)) {
-+		error = do_emptypath(nd, op, file);
- 	} else if (unlikely(file->f_flags & O_PATH)) {
- 		/* Inlined path_lookupat() with a trailing_magiclink() check. */
- 		fmode_t opath_mask = op->opath_mask;
-diff --git a/fs/open.c b/fs/open.c
-index ab20eae39df7..bdca45528524 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -996,6 +996,8 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
- 		lookup_flags |= LOOKUP_DIRECTORY;
- 	if (!(flags & O_NOFOLLOW))
- 		lookup_flags |= LOOKUP_FOLLOW;
-+	if (flags & O_EMPTYPATH)
-+		lookup_flags |= LOOKUP_EMPTY;
- 	op->lookup_flags = lookup_flags;
- 	return 0;
- }
-@@ -1057,14 +1059,17 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
- {
- 	struct open_flags op;
- 	int fd = build_open_flags(flags, mode, &op);
-+	int empty = 0;
- 	struct filename *tmp;
+-	/* Read Device 1 reigster to identify correct cable type */
++	/* Read Device 1 register to identify correct cable type */
+ 	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
+ 	if (ret) {
+ 		dev_err(info->dev, "failed to read DEV1 register\n");
+diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
+index 993031542fa1..0d81b34a4212 100644
+--- a/drivers/gpu/drm/arm/malidp_regs.h
++++ b/drivers/gpu/drm/arm/malidp_regs.h
+@@ -145,7 +145,7 @@
+ #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
+ #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
+ 		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
+-/* Enhance coeffents reigster offset */
++/* Enhance coeffents register offset */
+ #define MALIDP_SE_IMAGE_ENH			0x3C
+ /* ENH_LIMITS offset 0x0 */
+ #define     MALIDP_SE_ENH_LOW_LEVEL		24
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
+index 99c6f7eefd85..d03c8f12a15c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
+@@ -58,7 +58,7 @@ struct fw_priv {
+ 	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
+ 	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
+ 	u8 hci_sel;
+-	/* the same value as reigster value  */
++	/* the same value as register value  */
+ 	u8 chip_version;
+ 	/* customer  ID low byte */
+ 	u8 customer_id_0;
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 28ecaa7fc715..9e116bd79836 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
+  * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
+  * @phba: Pointer to hba context object.
+  *
+- * This function unregisters the currently reigstered FCF. This function
++ * This function unregisters the currently registered FCF. This function
+  * also tries to find another FCF for discovery by rescan the HBA FCF table.
+  */
+ void
+@@ -6609,7 +6609,7 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
+  * lpfc_unregister_fcf - Unregister the currently registered fcf record
+  * @phba: Pointer to hba context object.
+  *
+- * This function just unregisters the currently reigstered FCF. It does not
++ * This function just unregisters the currently registered FCF. It does not
+  * try to find another FCF for discovery.
+  */
+ void
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index ccbdbd62f0d8..612dc1240f90 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+ #endif /* CONFIG_HUGETLB_PAGE */
  
- 	if (fd)
- 		return fd;
- 
--	tmp = getname(filename);
-+	tmp = getname_flags(filename, op.lookup_flags, &empty);
- 	if (IS_ERR(tmp))
- 		return PTR_ERR(tmp);
-+	if (!empty)
-+		op.open_flag &= ~O_EMPTYPATH;
- 
- 	fd = get_unused_fd_flags(flags);
- 	if (fd >= 0) {
-diff --git a/include/linux/fcntl.h b/include/linux/fcntl.h
-index d019df946cb2..2868ae6c8fc1 100644
---- a/include/linux/fcntl.h
-+++ b/include/linux/fcntl.h
-@@ -9,7 +9,7 @@
- 	(O_RDONLY | O_WRONLY | O_RDWR | O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC | \
- 	 O_APPEND | O_NDELAY | O_NONBLOCK | O_NDELAY | __O_SYNC | O_DSYNC | \
- 	 FASYNC	| O_DIRECT | O_LARGEFILE | O_DIRECTORY | O_NOFOLLOW | \
--	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE)
-+	 O_NOATIME | O_CLOEXEC | O_PATH | __O_TMPFILE | O_EMPTYPATH)
- 
- #ifndef force_o_largefile
- #define force_o_largefile() (!IS_ENABLED(CONFIG_ARCH_32BIT_OFF_T))
-diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-index 9dc0bf0c5a6e..ae6862f69cc2 100644
---- a/include/uapi/asm-generic/fcntl.h
-+++ b/include/uapi/asm-generic/fcntl.h
-@@ -89,6 +89,10 @@
- #define __O_TMPFILE	020000000
- #endif
- 
-+#ifndef O_EMPTYPATH
-+#define O_EMPTYPATH 040000000
-+#endif
-+
- /* a horrid kludge trying to make sure that this will fail on old kernels */
- #define O_TMPFILE (__O_TMPFILE | O_DIRECTORY)
- #define O_TMPFILE_MASK (__O_TMPFILE | O_DIRECTORY | O_CREAT)      
+ /*
+- * Verify the pagetables are still not ok after having reigstered into
++ * Verify the pagetables are still not ok after having registered into
+  * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
+  * userfault that has already been resolved, if userfaultfd_read and
+  * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
 -- 
-2.22.0
+2.17.1
 
