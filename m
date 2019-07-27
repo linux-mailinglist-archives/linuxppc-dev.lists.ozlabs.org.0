@@ -2,30 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3281177A45
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2019 17:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91ED777A46
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2019 17:32:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45wqfc3mHNzDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 01:31:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45wqhL2MzjzDqTY
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 01:32:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.190; helo=huawei.com;
+ (client-ip=45.249.212.191; helo=huawei.com;
  envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45wqBS5xBnzDqK3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 01:10:08 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 5847837D049430CC0E55;
- Sat, 27 Jul 2019 23:10:02 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Sat, 27 Jul 2019
- 23:09:55 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45wqBT1FsQzDqKH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 01:10:09 +1000 (AEST)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 53D2A344F7D54AFB3CA9;
+ Sat, 27 Jul 2019 23:10:06 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Sat, 27 Jul 2019
+ 23:09:58 +0800
 From: YueHaibing <yuehaibing@huawei.com>
 To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
  <tiwai@suse.com>, <eric@anholt.net>, <wahrenst@gmx.net>,
@@ -41,10 +41,10 @@ To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
  <wens@csie.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
  <yamada.masahiro@socionext.com>, <michal.simek@xilinx.com>,
  <jcmvbkbc@gmail.com>
-Subject: [PATCH -next 11/34] ASoC: mxs-saif: use
- devm_platform_ioremap_resource() to simplify code
-Date: Sat, 27 Jul 2019 23:07:15 +0800
-Message-ID: <20190727150738.54764-12-yuehaibing@huawei.com>
+Subject: [PATCH -next 12/34] ASoC: spear: use devm_platform_ioremap_resource()
+ to simplify code
+Date: Sat, 27 Jul 2019 23:07:16 +0800
+Message-ID: <20190727150738.54764-13-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20190727150738.54764-1-yuehaibing@huawei.com>
 References: <20190727150738.54764-1-yuehaibing@huawei.com>
@@ -79,31 +79,27 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- sound/soc/mxs/mxs-saif.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/soc/spear/spdif_in.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/mxs/mxs-saif.c b/sound/soc/mxs/mxs-saif.c
-index 269b6d6..a2c7942 100644
---- a/sound/soc/mxs/mxs-saif.c
-+++ b/sound/soc/mxs/mxs-saif.c
-@@ -732,7 +732,6 @@ static int mxs_saif_mclk_init(struct platform_device *pdev)
- static int mxs_saif_probe(struct platform_device *pdev)
+diff --git a/sound/soc/spear/spdif_in.c b/sound/soc/spear/spdif_in.c
+index 78a6a36..4b68d6e 100644
+--- a/sound/soc/spear/spdif_in.c
++++ b/sound/soc/spear/spdif_in.c
+@@ -202,12 +202,11 @@ static int spdif_in_probe(struct platform_device *pdev)
  {
- 	struct device_node *np = pdev->dev.of_node;
--	struct resource *iores;
- 	struct mxs_saif *saif;
- 	int irq, ret = 0;
- 	struct device_node *master;
-@@ -786,9 +785,7 @@ static int mxs_saif_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+ 	struct spdif_in_dev *host;
+ 	struct spear_spdif_platform_data *pdata;
+-	struct resource *res, *res_fifo;
++	struct resource *res_fifo;
+ 	void __iomem *io_base;
+ 	int ret;
  
--	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	saif->base = devm_ioremap_resource(&pdev->dev, iores);
-+	saif->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(saif->base))
- 		return PTR_ERR(saif->base);
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	io_base = devm_ioremap_resource(&pdev->dev, res);
++	io_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(io_base))
+ 		return PTR_ERR(io_base);
  
 -- 
 2.7.4
