@@ -2,68 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F84678181
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 22:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4E2781E0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 23:37:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xZC85qNXzDqQf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 06:28:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xblG5HLLzDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 07:37:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.208.194; helo=mail-lj1-f194.google.com;
- envelope-from=valentin.longchamp@gmail.com; receiver=<UNKNOWN>)
+ (client-ip=209.85.208.195; helo=mail-lj1-f195.google.com;
+ envelope-from=yefremov.denis@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=longchamp.me
-Received: from mail-lj1-f194.google.com (mail-lj1-f194.google.com
- [209.85.208.194])
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from mail-lj1-f195.google.com (mail-lj1-f195.google.com
+ [209.85.208.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xZ9953v5zDqQf
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 06:26:37 +1000 (AEST)
-Received: by mail-lj1-f194.google.com with SMTP id m23so56404196lje.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 13:26:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xZ4t3FPzzDqQf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 06:22:49 +1000 (AEST)
+Received: by mail-lj1-f195.google.com with SMTP id p17so56489388ljg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 13:22:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=xbgnZfEJSXYEqeGOYWZYFmzEbI2Hf2xWozhS6zkHcHE=;
- b=S1W/038aFScnoujkQeAJP89pYsdFgIHq2Q+uWpz5MIVJUm5HDc1Dnb+zqc9Z/rhHw4
- 2Qo28IAGGI3l2QFnuNmt/N9CeD3ZtGPwhZMIyfbDL4kM9CJhgRZ6GoRWXMGSY3jrIwJS
- 89KD73SPBe7BmuO9dASkpCMcA0Q3T2xcld8fZ7wn6xD9e+2ro8ugKXN+YRYbl95FBzGm
- jAIywD+JB+VRX+do2OfbN+Q9kDS6rPnrUTRS8YvFNkTGw6Iy/jBOWKHwRehkWg/MZSZD
- r8m2/p+Lajr4FLE8WqwQ+OhbcSu0b6YHWtdjvQcTgj3KQcWfcNli4+bbTTLcuSPlMZ32
- k5eQ==
-X-Gm-Message-State: APjAAAUmw8jilia4qHaZjK8zjao1OmeyZ0325HsSEy8Q3pIexDHMMwfH
- IwnfZQtT6pEHti+c74NhrhE+OTxPlTU=
-X-Google-Smtp-Source: APXvYqy/92ICKb7ai2UK+wY98lhxpOv04Ybz2fJc1DOknjfmHWKSLr2TRIK5/W/gH+vNHHKq6jXgXA==
-X-Received: by 2002:a2e:25a:: with SMTP id 87mr56359231ljc.183.1564345593874; 
- Sun, 28 Jul 2019 13:26:33 -0700 (PDT)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com.
- [209.85.208.172])
- by smtp.gmail.com with ESMTPSA id 199sm12378868ljf.44.2019.07.28.13.26.32
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
- Sun, 28 Jul 2019 13:26:32 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id m23so56404152lje.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 13:26:32 -0700 (PDT)
-X-Received: by 2002:a2e:9003:: with SMTP id h3mr52948428ljg.194.1564345592515; 
- Sun, 28 Jul 2019 13:26:32 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=H30JE1TBEsAuw94izU6UpoMxwvUnP+RXDRNZnh1O8pc=;
+ b=uPjtM/lpXsew345llBPaeG7P1DUbKm9J73z8QE/pLIWfhnYqZ9QlKPzAkYuwJHk7WD
+ CrRxo5J2gKJWxe1TYnbF4FAVJJ4f85M2OAGaMZ69JRGC52VSZd4DHNNvAejSP6tMqxuN
+ 7Oq+aXQDI0cqDId37cmnzp4DgQGApHuBCUmOqH+YobgHFiii1y3TnjINAVJ0+PszOJic
+ +Ce7NNvJW+lAevEAy8Yj8JhBmfhAuG7p6/7w0nTr4XKjloejDhF7oaqT2+9qEv7uiPdD
+ /AFsLv5vmcZCAP+R+b6vGph80lKnCIv76pdnoYA3vDrX8lwhIeN7MoZA/BKGnLefug4C
+ oZ8w==
+X-Gm-Message-State: APjAAAVxiXqBqMepHTXli4x0dDm+IswrNilGnwspQ+4ca1UWQhLy2bdt
+ CQH3XYXU2ab5MB//ml6uz4o=
+X-Google-Smtp-Source: APXvYqygX2Y5dS/gnwNqOZKPSCByVOdOdiau/6PoALAhMf0ml07RPwI9uM2EKDeRpNnJ5yE9cYpa9g==
+X-Received: by 2002:a2e:814e:: with SMTP id t14mr20112908ljg.167.1564345365258; 
+ Sun, 28 Jul 2019 13:22:45 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru.
+ [188.32.48.208])
+ by smtp.googlemail.com with ESMTPSA id z17sm12395917ljc.37.2019.07.28.13.22.44
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 28 Jul 2019 13:22:44 -0700 (PDT)
+From: Denis Efremov <efremov@linux.com>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 0/5] PCI: Convert pci_resource_to_user() to a weak function
+Date: Sun, 28 Jul 2019 23:22:08 +0300
+Message-Id: <20190728202213.15550-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190714200501.1276-1-valentin@longchamp.me>
- <CADYrJDwvwVThmOwHZ4Moqenf=-iqoHC+yJ_uxtrD8sDso33rjg@mail.gmail.com>
- <2243421e574c72c5e75d27cc0122338e2e0bde63.camel@buserror.net>
-In-Reply-To: <2243421e574c72c5e75d27cc0122338e2e0bde63.camel@buserror.net>
-From: Valentin Longchamp <valentin@longchamp.me>
-Date: Sun, 28 Jul 2019 22:26:21 +0200
-X-Gmail-Original-Message-ID: <CADYrJDxpYm+Z39iZk-k5U7=bK7BY4xcbwsC+wRRFo6cteHeQ=A@mail.gmail.com>
-Message-ID: <CADYrJDxpYm+Z39iZk-k5U7=bK7BY4xcbwsC+wRRFo6cteHeQ=A@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/kmcent2: update the ethernet devices' phy
- properties
-To: Scott Wood <oss@buserror.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Mon, 29 Jul 2019 07:36:11 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,91 +65,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Madalin Bucur <madalin.bucur@nxp.com>
+Cc: Michal Simek <monstr@monstr.eu>, linux-pci@vger.kernel.org,
+ linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+ linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
+ Denis Efremov <efremov@linux.com>, James Hogan <jhogan@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le dim. 28 juil. 2019 =C3=A0 21:26, Scott Wood <oss@buserror.net> a =C3=A9c=
-rit :
-> On Sun, 2019-07-28 at 18:01 +0200, Valentin Longchamp wrote:
-> > Le dim. 14 juil. 2019 =C3=A0 22:05, Valentin Longchamp
-> > <valentin@longchamp.me> a =C3=A9crit :
-> > >
-> > > Change all phy-connection-type properties to phy-mode that are better
-> > > supported by the fman driver.
-> > >
-> > > Use the more readable fixed-link node for the 2 sgmii links.
-> > >
-> > > Change the RGMII link to rgmii-id as the clock delays are added by th=
-e
-> > > phy.
-> > >
-> > > Signed-off-by: Valentin Longchamp <valentin@longchamp.me>
->
-> I don't see any other uses of phy-mode in arch/powerpc/boot/dts/fsl, and =
-I see
-> lots of phy-connection-type with fman.  Madalin, does this patch look OK?
+Architectures currently define HAVE_ARCH_PCI_RESOURCE_TO_USER if they want
+to provide their own pci_resource_to_user() implementation. This could be
+simplified if we make the generic version a weak function. Thus,
+architecture specific versions will automatically override the generic one.
 
-The fman driver (mac_probe()) calls of_get_phy_mode() which first
-looks for phy-mode, and then phy-connection-type. Both should be the
-same according to the device tree binding.
+Denis Efremov (5):
+  PCI: Convert pci_resource_to_user to a weak function
+  microblaze/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
+  mips/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
+  powerpc/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
+  spark/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
 
-With some older kernels I remember we had issues with
-phy-connection-type but not phy-mode, but this is more than 2 years
-ago, I don't remember the details. phy-mode works well (tested ~2
-weeks ago) with 4.14, 4.19 and 5.2, for sure.
+ arch/microblaze/include/asm/pci.h |  2 --
+ arch/mips/include/asm/pci.h       |  1 -
+ arch/powerpc/include/asm/pci.h    |  2 --
+ arch/sparc/include/asm/pci.h      |  2 --
+ drivers/pci/pci.c                 |  8 ++++++++
+ include/linux/pci.h               | 18 +++---------------
+ 6 files changed, 11 insertions(+), 22 deletions(-)
 
-Valentin
+-- 
+2.21.0
 
->
-> -Scott
->
-> > > ---
-> > >  arch/powerpc/boot/dts/fsl/kmcent2.dts | 16 +++++++++++-----
-> > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/arch/powerpc/boot/dts/fsl/kmcent2.dts
-> > > b/arch/powerpc/boot/dts/fsl/kmcent2.dts
-> > > index 48b7f9797124..c3e0741cafb1 100644
-> > > --- a/arch/powerpc/boot/dts/fsl/kmcent2.dts
-> > > +++ b/arch/powerpc/boot/dts/fsl/kmcent2.dts
-> > > @@ -210,13 +210,19 @@
-> > >
-> > >                 fman@400000 {
-> > >                         ethernet@e0000 {
-> > > -                               fixed-link =3D <0 1 1000 0 0>;
-> > > -                               phy-connection-type =3D "sgmii";
-> > > +                               phy-mode =3D "sgmii";
-> > > +                               fixed-link {
-> > > +                                       speed =3D <1000>;
-> > > +                                       full-duplex;
-> > > +                               };
-> > >                         };
-> > >
-> > >                         ethernet@e2000 {
-> > > -                               fixed-link =3D <1 1 1000 0 0>;
-> > > -                               phy-connection-type =3D "sgmii";
-> > > +                               phy-mode =3D "sgmii";
-> > > +                               fixed-link {
-> > > +                                       speed =3D <1000>;
-> > > +                                       full-duplex;
-> > > +                               };
-> > >                         };
-> > >
-> > >                         ethernet@e4000 {
-> > > @@ -229,7 +235,7 @@
-> > >
-> > >                         ethernet@e8000 {
-> > >                                 phy-handle =3D <&front_phy>;
-> > > -                               phy-connection-type =3D "rgmii";
-> > > +                               phy-mode =3D "rgmii-id";
-> > >                         };
-> > >
-> > >                         mdio0: mdio@fc000 {
-> > > --
-> > > 2.17.1
-> > >
-> >
-> >
->
