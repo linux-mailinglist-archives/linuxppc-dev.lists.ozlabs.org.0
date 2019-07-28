@@ -1,68 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C9A77D1A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 03:16:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45x4dc2bfJzDqcJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 11:16:04 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C596577D15
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 03:11:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45x4Xh4c9pzDqXD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jul 2019 11:11:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=afcidk@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=cyphar.com
+ (client-ip=2001:67c:2050:104:0:2:25:2; helo=mx2.mailbox.org;
+ envelope-from=cyphar@cyphar.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="T+UzIYi/"; 
- dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=cyphar.com
+Received: from mx2.mailbox.org (mx2a.mailbox.org
+ [IPv6:2001:67c:2050:104:0:2:25:2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45wp6X0fDPzDqJh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 00:21:36 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id 19so25842669pfa.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2019 07:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
- b=T+UzIYi/1THcC8I6GGTQVftBbmYmneEqyzoZFaOOV0bsgkD4/yotJY+aT39yhYMbKU
- hP7XuGXa26yH/rd2Nj/oFrTDYEcp5JUuY3kmmuDDU7fPuMGddkQghGbGlfTO+H8pKvVB
- pSe3h0PTMAUsbiz2LBWk2Z19ayzMznrnydOiG1Hn9M1yV6yTmgyr6pygeBUIKivIxRkK
- AslNgkHOQWvuyAhddym0LYgEWCybK94ah26A3c+j6bFoy1BFojsB3uQ/zIoW1PPLaFzG
- iRc8ls7OCAbEHg78NFqB9lL8kFZRs8DzukHcVHBv38OGkga6Mp045UeW3iThwjfRKg8C
- KTCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=y63nlDdoReiitfVEZgVBo7xRRyCxoDD8AEYgo5/VomM=;
- b=c8Oc7r6TmYyc8jlfGETHIWxLdW3tlKr52QKSTXzXnaNlK/rqm5A7zfv0OOUQ94pta3
- 4ZuYrUBO1KlDK6/dXxf32cVgC3e+qtmQSZmD9MiBBrAO7SslyWHW6iQYdyKVhKzyhBBD
- qO4NFUe4GXMCLaMNQFBMjdkcPG+gfvQncD5pdr1m2A4ufc0JKoiN5oMIMTF/ohXMCjM1
- jUZwLehj+AggCzWPD052AbSXi/YxXmSpUMr92w7iM5txg9kXaUO806R2YDa7/8G/rB2P
- f5cJkKqT5aZZTdDnbWEPMj95Mfww2YJpBRVpLOJOGPUGKvF9KJVmtHZyPiIOHJjfX84d
- w3SQ==
-X-Gm-Message-State: APjAAAUHwZcE6kQoCQPQ6C96g5Y1g20zTqt2NkXEa3FzoI39ELQ1QB/b
- WHxOW/BwYE/0N6NCtPsBzzQ=
-X-Google-Smtp-Source: APXvYqwImUJ0RccHZPsxX4PaZHY9X78k754oNQpfDLf2SEuy6uSlyklXeLtGbLK7+kjMFAkrLZ0G0A==
-X-Received: by 2002:a65:5cca:: with SMTP id b10mr98493196pgt.365.1564237291919; 
- Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
-Received: from localhost.localdomain (36-238-206-183.dynamic-ip.hinet.net.
- [36.238.206.183])
- by smtp.googlemail.com with ESMTPSA id c8sm63671109pjq.2.2019.07.27.07.21.26
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 27 Jul 2019 07:21:31 -0700 (PDT)
-From: Pei Hsuan Hung <afcidk@gmail.com>
-To: 
-Subject: [PATCH] Fix typo reigster to register
-Date: Sat, 27 Jul 2019 22:21:09 +0800
-Message-Id: <20190727142111.20039-1-afcidk@gmail.com>
-X-Mailer: git-send-email 2.17.1
-X-Mailman-Approved-At: Sun, 28 Jul 2019 11:11:13 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45x4Qn4fSwzDqT8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 11:06:41 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+ (No client certificate requested)
+ by mx2.mailbox.org (Postfix) with ESMTPS id 19753A1C30;
+ Sun, 28 Jul 2019 03:06:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+ by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de
+ [80.241.56.125]) (amavisd-new, port 10030)
+ with ESMTP id BkrwCgHTwUNt; Sun, 28 Jul 2019 03:06:27 +0200 (CEST)
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Al Viro <viro@zeniv.linux.org.uk>, Jeff Layton <jlayton@kernel.org>,
+ "J. Bruce Fields" <bfields@fieldses.org>, Arnd Bergmann <arnd@arndb.de>,
+ David Howells <dhowells@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v11 4/8] namei: O_BENEATH-style path resolution flags
+Date: Sun, 28 Jul 2019 11:02:03 +1000
+Message-Id: <20190728010207.9781-5-cyphar@cyphar.com>
+In-Reply-To: <20190728010207.9781-1-cyphar@cyphar.com>
+References: <20190728010207.9781-1-cyphar@cyphar.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,147 +54,340 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Airlie <airlied@linux.ie>, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, Oliver O'Halloran <oohall@gmail.com>,
- Ping-Ke Shih <pkshih@realtek.com>, linux-scsi@vger.kernel.org,
- James Smart <james.smart@broadcom.com>, Chanwoo Choi <cw00.choi@samsung.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>, afcidk@gmail.com,
- Dick Kennedy <dick.kennedy@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Kalle Valo <kvalo@codeaurora.org>,
- trivial@kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>,
- Sam Bobroff <sbobroff@linux.ibm.com>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Brian Starkey <brian.starkey@arm.com>, Jeremy Kerr <jk@ozlabs.org>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Larry Finger <Larry.Finger@lwfinger.net>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Tycho Andersen <tycho@tycho.ws>, Aleksa Sarai <asarai@suse.de>,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+ Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ Aleksa Sarai <cyphar@cyphar.com>, Andy Lutomirski <luto@kernel.org>,
+ David Drysdale <drysdale@google.com>, Christian Brauner <christian@brauner.io>,
+ linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-api@vger.kernel.org, Chanho Min <chanho.min@lge.com>,
+ linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>,
+ linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ containers@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Pei Hsuan Hung <afcidk@gmail.com>
-Cc: trivial@kernel.org
----
- arch/powerpc/kernel/eeh.c                           | 2 +-
- arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
- drivers/extcon/extcon-rt8973a.c                     | 2 +-
- drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
- drivers/scsi/lpfc/lpfc_hbadisc.c                    | 4 ++--
- fs/userfaultfd.c                                    | 2 +-
- 7 files changed, 9 insertions(+), 9 deletions(-)
+Add the following flags to allow various restrictions on path resolution
+(these affect the *entire* resolution, rather than just the final path
+component -- as is the case with LOOKUP_FOLLOW).
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index c0e4b73191f3..d75c9c24ec4d 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
+The primary justification for these flags is to allow for programs to be
+far more strict about how they want path resolution to handle symlinks,
+mountpoint crossings, and paths that escape the dirfd (through an
+absolute path or ".." shenanigans).
+
+This is of particular concern to container runtimes that want to be very
+careful about malicious root filesystems that a container's init might
+have screwed around with (and there is no real way to protect against
+this in userspace if you consider potential races against a malicious
+container's init). More classical applications (which have their own
+potentially buggy userspace path sanitisation code) include web servers,
+archive extraction tools, network file servers, and so on.
+
+These flags are exposed to userspace through openat2(2) in a later
+patchset.
+
+* LOOKUP_NO_XDEV: Disallow mount-point crossing (both *down* into one,
+  or *up* from one). Both bind-mounts and cross-filesystem mounts are
+  blocked by this flag. The naming is based on "find -xdev" as well as
+  -EXDEV (though find(1) doesn't walk upwards, the semantics seem
+  obvious).
+
+* LOOKUP_NO_MAGICLINKS: Disallows ->get_link "symlink" (or rather,
+  magic-link) jumping. This is a very specific restriction, and it
+  exists because /proc/$pid/fd/... "symlinks" allow for access outside
+  nd->root and pose risk to container runtimes that don't want to be
+  tricked into accessing a host path (but do want to allow
+  no-funny-business symlink resolution).
+
+* LOOKUP_NO_SYMLINKS: Disallows resolution through symlinks of any kind
+  (including magic-links).
+
+* LOOKUP_BENEATH: Disallow "escapes" from the starting point of the
+  filesystem tree during resolution (you must stay "beneath" the
+  starting point at all times). Currently this is done by disallowing
+  ".." and absolute paths (either in the given path or found during
+  symlink resolution) entirely, as well as all magic-link jumping.
+
+  The wholesale banning of ".." is because it is currently not safe to
+  allow ".." resolution (races can cause the path to be moved outside of
+  the root -- this is conceptually similar to historical chroot(2)
+  escape attacks). Future patches in this series will address this, and
+  will re-enable ".." resolution once it is safe. With those patches,
+  ".." resolution will only be allowed if it remains in the root
+  throughout resolution (such as "a/../b" not "a/../../outside/b").
+
+  The banning of magic-link jumping is done because it is not clear
+  whether semantically they should be allowed -- while some magic-links
+  are safe there are many that can cause escapes (and once a
+  resolution is outside of the root, O_BENEATH will no longer detect
+  it). Future patches may re-enable magic-link jumping when such jumps
+  would remain inside the root.
+
+The LOOKUP_NO_*LINK flags return -ELOOP if path resolution would
+violates their requirement, while the others all return -EXDEV.
+
+This is a refresh of Al's AT_NO_JUMPS patchset[1] (which was a variation
+on David Drysdale's O_BENEATH patchset[2], which in turn was based on
+the Capsicum project[3]). Input from Linus and Andy in the AT_NO_JUMPS
+thread[4] determined most of the API changes made in this refresh.
+
+[1]: https://lwn.net/Articles/721443/
+[2]: https://lwn.net/Articles/619151/
+[3]: https://lwn.net/Articles/603929/
+[4]: https://lwn.net/Articles/723057/
+
+Cc: Christian Brauner <christian@brauner.io>
+Suggested-by: David Drysdale <drysdale@google.com>
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+ fs/namei.c            | 85 ++++++++++++++++++++++++++++++++++++-------
+ include/linux/namei.h |  7 ++++
+ 2 files changed, 78 insertions(+), 14 deletions(-)
+
+diff --git a/fs/namei.c b/fs/namei.c
+index e39b573fcc4d..2e18ce5a313e 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -674,7 +674,11 @@ static int unlazy_walk(struct nameidata *nd)
+ 		goto out2;
+ 	if (unlikely(!legitimize_path(nd, &nd->path, nd->seq)))
+ 		goto out1;
+-	if (nd->root.mnt && !(nd->flags & LOOKUP_ROOT)) {
++	if (!nd->root.mnt) {
++		/* Restart from path_init() if nd->root was cleared. */
++		if (nd->flags & LOOKUP_BENEATH)
++			goto out;
++	} else if (!(nd->flags & LOOKUP_ROOT)) {
+ 		if (unlikely(!legitimize_path(nd, &nd->root, nd->root_seq)))
+ 			goto out;
+ 	}
+@@ -843,6 +847,13 @@ static inline void path_to_nameidata(const struct path *path,
+ 
+ static int nd_jump_root(struct nameidata *nd)
+ {
++	if (unlikely(nd->flags & LOOKUP_BENEATH))
++		return -EXDEV;
++	if (unlikely(nd->flags & LOOKUP_NO_XDEV)) {
++		/* Absolute path arguments to path_init() are allowed. */
++		if (nd->path.mnt != NULL && nd->path.mnt != nd->root.mnt)
++			return -EXDEV;
++	}
+ 	if (nd->flags & LOOKUP_RCU) {
+ 		struct dentry *d;
+ 		nd->path = nd->root;
+@@ -1051,6 +1062,9 @@ const char *get_link(struct nameidata *nd)
+ 	int error;
+ 	const char *res;
+ 
++	if (unlikely(nd->flags & LOOKUP_NO_SYMLINKS))
++		return ERR_PTR(-ELOOP);
++
+ 	if (!(nd->flags & LOOKUP_RCU)) {
+ 		touch_atime(&last->link);
+ 		cond_resched();
+@@ -1082,14 +1096,22 @@ const char *get_link(struct nameidata *nd)
+ 		} else {
+ 			res = get(dentry, inode, &last->done);
+ 		}
++		if (nd->flags & LOOKUP_MAGICLINK_JUMPED) {
++			if (unlikely(nd->flags & LOOKUP_NO_MAGICLINKS))
++				return ERR_PTR(-ELOOP);
++			/* Not currently safe. */
++			if (unlikely(nd->flags & LOOKUP_BENEATH))
++				return ERR_PTR(-EXDEV);
++		}
+ 		if (IS_ERR_OR_NULL(res))
+ 			return res;
+ 	}
+ 	if (*res == '/') {
+ 		if (!nd->root.mnt)
+ 			set_root(nd);
+-		if (unlikely(nd_jump_root(nd)))
+-			return ERR_PTR(-ECHILD);
++		error = nd_jump_root(nd);
++		if (unlikely(error))
++			return ERR_PTR(error);
+ 		while (unlikely(*++res == '/'))
+ 			;
+ 	}
+@@ -1270,12 +1292,16 @@ static int follow_managed(struct path *path, struct nameidata *nd)
+ 		break;
+ 	}
+ 
+-	if (need_mntput && path->mnt == mnt)
+-		mntput(path->mnt);
++	if (need_mntput) {
++		if (path->mnt == mnt)
++			mntput(path->mnt);
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			ret = -EXDEV;
++		else
++			nd->flags |= LOOKUP_JUMPED;
++	}
+ 	if (ret == -EISDIR || !ret)
+ 		ret = 1;
+-	if (need_mntput)
+-		nd->flags |= LOOKUP_JUMPED;
+ 	if (unlikely(ret < 0))
+ 		path_put_conditional(path, nd);
+ 	return ret;
+@@ -1332,6 +1358,8 @@ static bool __follow_mount_rcu(struct nameidata *nd, struct path *path,
+ 		mounted = __lookup_mnt(path->mnt, path->dentry);
+ 		if (!mounted)
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return false;
+ 		path->mnt = &mounted->mnt;
+ 		path->dentry = mounted->mnt.mnt_root;
+ 		nd->flags |= LOOKUP_JUMPED;
+@@ -1352,8 +1380,11 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+ 	struct inode *inode = nd->inode;
+ 
+ 	while (1) {
+-		if (path_equal(&nd->path, &nd->root))
++		if (path_equal(&nd->path, &nd->root)) {
++			if (unlikely(nd->flags & LOOKUP_BENEATH))
++				return -EXDEV;
+ 			break;
++		}
+ 		if (nd->path.dentry != nd->path.mnt->mnt_root) {
+ 			struct dentry *old = nd->path.dentry;
+ 			struct dentry *parent = old->d_parent;
+@@ -1378,6 +1409,8 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+ 				return -ECHILD;
+ 			if (&mparent->mnt == nd->path.mnt)
+ 				break;
++			if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++				return -EXDEV;
+ 			/* we know that mountpoint was pinned */
+ 			nd->path.dentry = mountpoint;
+ 			nd->path.mnt = &mparent->mnt;
+@@ -1392,6 +1425,8 @@ static int follow_dotdot_rcu(struct nameidata *nd)
+ 			return -ECHILD;
+ 		if (!mounted)
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return -EXDEV;
+ 		nd->path.mnt = &mounted->mnt;
+ 		nd->path.dentry = mounted->mnt.mnt_root;
+ 		inode = nd->path.dentry->d_inode;
+@@ -1480,8 +1515,11 @@ static int path_parent_directory(struct path *path)
+ static int follow_dotdot(struct nameidata *nd)
+ {
+ 	while(1) {
+-		if (path_equal(&nd->path, &nd->root))
++		if (path_equal(&nd->path, &nd->root)) {
++			if (unlikely(nd->flags & LOOKUP_BENEATH))
++				return -EXDEV;
+ 			break;
++		}
+ 		if (nd->path.dentry != nd->path.mnt->mnt_root) {
+ 			int ret = path_parent_directory(&nd->path);
+ 			if (ret)
+@@ -1490,6 +1528,8 @@ static int follow_dotdot(struct nameidata *nd)
+ 		}
+ 		if (!follow_up(&nd->path))
+ 			break;
++		if (unlikely(nd->flags & LOOKUP_NO_XDEV))
++			return -EXDEV;
+ 	}
+ 	follow_mount(&nd->path);
+ 	nd->inode = nd->path.dentry->d_inode;
+@@ -1704,6 +1744,13 @@ static inline int may_lookup(struct nameidata *nd)
+ static inline int handle_dots(struct nameidata *nd, int type)
+ {
+ 	if (type == LAST_DOTDOT) {
++		/*
++		 * LOOKUP_BENEATH resolving ".." is not currently safe -- races
++		 * can cause our parent to have moved outside of the root and
++		 * us to skip over it.
++		 */
++		if (unlikely(nd->flags & LOOKUP_BENEATH))
++			return -EXDEV;
+ 		if (!nd->root.mnt)
+ 			set_root(nd);
+ 		if (nd->flags & LOOKUP_RCU) {
+@@ -2170,6 +2217,7 @@ static int link_path_walk(const char *name, struct nameidata *nd)
+ /* must be paired with terminate_walk() */
+ static const char *path_init(struct nameidata *nd, unsigned flags)
+ {
++	int error;
+ 	const char *s = nd->name->name;
+ 
+ 	if (!*s)
+@@ -2202,11 +2250,13 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+ 	nd->path.dentry = NULL;
+ 
+ 	nd->m_seq = read_seqbegin(&mount_lock);
++
++	/* Figure out the starting path and root (if needed). */
+ 	if (*s == '/') {
+ 		set_root(nd);
+-		if (likely(!nd_jump_root(nd)))
+-			return s;
+-		return ERR_PTR(-ECHILD);
++		error = nd_jump_root(nd);
++		if (unlikely(error))
++			return ERR_PTR(error);
+ 	} else if (nd->dfd == AT_FDCWD) {
+ 		if (flags & LOOKUP_RCU) {
+ 			struct fs_struct *fs = current->fs;
+@@ -2222,7 +2272,6 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+ 			get_fs_pwd(current->fs, &nd->path);
+ 			nd->inode = nd->path.dentry->d_inode;
+ 		}
+-		return s;
+ 	} else {
+ 		/* Caller must check execute permissions on the starting path component */
+ 		struct fd f = fdget_raw(nd->dfd);
+@@ -2247,8 +2296,16 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+ 			nd->inode = nd->path.dentry->d_inode;
+ 		}
+ 		fdput(f);
+-		return s;
+ 	}
++	/* For scoped-lookups we need to set the root to the dirfd as well. */
++	if (flags & LOOKUP_BENEATH) {
++		nd->root = nd->path;
++		if (flags & LOOKUP_RCU)
++			nd->root_seq = nd->seq;
++		else
++			path_get(&nd->root);
++	}
++	return s;
  }
  
- /**
-- * eeh_ops_unregister - Unreigster platform dependent EEH operations
-+ * eeh_ops_unregister - Unregister platform dependent EEH operations
-  * @name: name of EEH platform operations
-  *
-  * Unregister the platform dependent EEH operation callback
-diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
-index 5c3f5d088c3b..9548a086937b 100644
---- a/arch/powerpc/platforms/cell/spufs/switch.c
-+++ b/arch/powerpc/platforms/cell/spufs/switch.c
-@@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Save, Step 38:
- 	 *     Save RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster in the CSA.
-+	 *     RA_ENABLE register in the CSA.
- 	 */
- 	csa->priv1.resource_allocation_groupID_RW =
- 		spu_resource_allocation_groupID_get(spu);
-@@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
- {
- 	/* Restore, Step 29:
- 	 *     Restore RA_GROUP_ID register and the
--	 *     RA_ENABLE reigster from the CSA.
-+	 *     RA_ENABLE register from the CSA.
- 	 */
- 	spu_resource_allocation_groupID_set(spu,
- 			csa->priv1.resource_allocation_groupID_RW);
-diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
-index 40c07f4d656e..e75c03792398 100644
---- a/drivers/extcon/extcon-rt8973a.c
-+++ b/drivers/extcon/extcon-rt8973a.c
-@@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
- 	}
- 	cable_type = adc & RT8973A_REG_ADC_MASK;
+ static const char *trailing_symlink(struct nameidata *nd)
+diff --git a/include/linux/namei.h b/include/linux/namei.h
+index bd6d3eb7764d..be407415c28a 100644
+--- a/include/linux/namei.h
++++ b/include/linux/namei.h
+@@ -51,6 +51,13 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
+ #define LOOKUP_DOWN		0x8000
+ #define LOOKUP_MAGICLINK_JUMPED	0x10000
  
--	/* Read Device 1 reigster to identify correct cable type */
-+	/* Read Device 1 register to identify correct cable type */
- 	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
- 	if (ret) {
- 		dev_err(info->dev, "failed to read DEV1 register\n");
-diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
-index 993031542fa1..0d81b34a4212 100644
---- a/drivers/gpu/drm/arm/malidp_regs.h
-+++ b/drivers/gpu/drm/arm/malidp_regs.h
-@@ -145,7 +145,7 @@
- #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
- #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
- 		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
--/* Enhance coeffents reigster offset */
-+/* Enhance coeffents register offset */
- #define MALIDP_SE_IMAGE_ENH			0x3C
- /* ENH_LIMITS offset 0x0 */
- #define     MALIDP_SE_ENH_LOW_LEVEL		24
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-index 99c6f7eefd85..d03c8f12a15c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-@@ -58,7 +58,7 @@ struct fw_priv {
- 	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
- 	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
- 	u8 hci_sel;
--	/* the same value as reigster value  */
-+	/* the same value as register value  */
- 	u8 chip_version;
- 	/* customer  ID low byte */
- 	u8 customer_id_0;
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 28ecaa7fc715..9e116bd79836 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
-  * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
-  * @phba: Pointer to hba context object.
-  *
-- * This function unregisters the currently reigstered FCF. This function
-+ * This function unregisters the currently registered FCF. This function
-  * also tries to find another FCF for discovery by rescan the HBA FCF table.
-  */
- void
-@@ -6609,7 +6609,7 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
-  * lpfc_unregister_fcf - Unregister the currently registered fcf record
-  * @phba: Pointer to hba context object.
-  *
-- * This function just unregisters the currently reigstered FCF. It does not
-+ * This function just unregisters the currently registered FCF. It does not
-  * try to find another FCF for discovery.
-  */
- void
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index ccbdbd62f0d8..612dc1240f90 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
- #endif /* CONFIG_HUGETLB_PAGE */
++/* Scoping flags for lookup. */
++#define LOOKUP_BENEATH		0x020000 /* No escaping from starting point. */
++#define LOOKUP_NO_XDEV		0x040000 /* No mountpoint crossing. */
++#define LOOKUP_NO_MAGICLINKS	0x080000 /* No /proc/$pid/fd/ "symlink" crossing. */
++#define LOOKUP_NO_SYMLINKS	0x100000 /* No symlink crossing *at all*.
++					    Implies LOOKUP_NO_MAGICLINKS. */
++
+ extern int path_pts(struct path *path);
  
- /*
-- * Verify the pagetables are still not ok after having reigstered into
-+ * Verify the pagetables are still not ok after having registered into
-  * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
-  * userfault that has already been resolved, if userfaultfd_read and
-  * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
+ extern int user_path_at_empty(int, const char __user *, unsigned, struct path *, int *empty);
 -- 
-2.17.1
+2.22.0
 
