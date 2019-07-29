@@ -1,92 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0883785C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 09:03:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xrHh3LkSzDqHh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 17:03:12 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18F77872C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 10:18:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xsyx4MS6zDqDt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 18:18:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xrF013fZzDq8B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 17:00:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="lMZEXZFQ"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45xrDy3VmZz8tTP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 17:00:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45xrDy34pHz9sMQ; Mon, 29 Jul 2019 17:00:50 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="lMZEXZFQ"; 
- dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xswt1J1vzDqDV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 18:17:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="KuwtfCog"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45xrDw6CN4z9s7T
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Jul 2019 17:00:45 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id t16so27481304pfe.11
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Jul 2019 00:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=x68WSHqzgOt8X1v6Nhk9LJIdr20J8mlA0StKGgUt7jU=;
- b=lMZEXZFQjwtoyDt4RSf6Vbz6DgysKTLhtFZubkL/qaKaTRYjLw428Efuv23wnkwqJQ
- GbJk6zGAHEVvHRH5Tw0pKajTYOM2GZbrWTECIQAY+VuQ5QkPGnJQxXpxCFq9Sb5/SVQb
- 1hzketwWN4ebgYglRk1PB6+PlXwF1QaH30pAA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=x68WSHqzgOt8X1v6Nhk9LJIdr20J8mlA0StKGgUt7jU=;
- b=ac01Ezd1ImaG29Jn+M3cpeVh7Y3Z1Oqd4gUEq+qQZFggvu/fCMhDWHyMDfgjxa0jYu
- zR7hEnkmf1Y4Vkob8Yoq9XgEJLAjhsaV8avdplxDa72+SuHxNv916eAFrzql5hGPDvQ+
- Jq0CZvMHExAvxJSfu7FPiFUYeFDeaJrvgvtJt1BBDhKBs+X/ucbrxUzLVcSp2vv+f1mt
- CK8Dv5quEoyLUAgB4H84dps61P9dWKXC7zZEOSwljwBsU0aXdYsbKn4wEnK/a61bsNn5
- xAm29V/psQDiDvV+iNarrUdKSbC9fATRoAHhWcI8/dO9DojmJBW55rSJp+frzSMjGShS
- woxw==
-X-Gm-Message-State: APjAAAUMRT1eY4CqpJ/gXlR8IMM23w6k0T0wT+aZwXfbanF8LMeA8a2s
- OYcaYms2b1MfIRTSKAq4w9Y=
-X-Google-Smtp-Source: APXvYqwRCGEBrkNmiEc2N0xdRuhPKQOYoNi2+1tLwh4iQHOeCG61louZm3CHBIJYGiFxgogXP5QSrA==
-X-Received: by 2002:a17:90a:30e4:: with SMTP id
- h91mr106220547pjb.37.1564383643846; 
- Mon, 29 Jul 2019 00:00:43 -0700 (PDT)
-Received: from localhost (ppp167-251-205.static.internode.on.net.
- [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id f64sm63703792pfa.115.2019.07.29.00.00.41
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 29 Jul 2019 00:00:42 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Andrew Donnellan <ajd@linux.ibm.com>,
- Christopher M Riedl <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com
-Subject: Re: [RFC PATCH v2] powerpc/xmon: restrict when kernel is locked down
-In-Reply-To: <87h88m2iu4.fsf@dja-thinkpad.axtens.net>
-References: <20190524123816.1773-1-cmr@informatik.wtf>
- <81549d40-e477-6552-9a12-7200933279af@linux.ibm.com>
- <1146575236.484635.1559617524880@privateemail.com>
- <57844920-c17b-d93c-66c0-e6822af71929@linux.ibm.com>
- <87h88m2iu4.fsf@dja-thinkpad.axtens.net>
-Date: Mon, 29 Jul 2019 17:00:38 +1000
-Message-ID: <87ef29gwa1.fsf@dja-thinkpad.axtens.net>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45xswr3RwKz9s3l;
+ Mon, 29 Jul 2019 18:17:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1564388221;
+ bh=QTGSK8b6jLhRPZsvILGhaC9+i81pGyxrPcsA6pWARvg=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=KuwtfCoggLzAn9DYKFsM+bXE/v6CWP74qimFUg5dgIAr8+JdD+K/7r0ktzaEzCE3J
+ BosHXKti9xtRlAk/vbPgy8Rcl6nXJ2ClwFsPCOzJsfQ+W/TMqdQwuaAZ/ekh66VSST
+ EnlpJcbBIBX5Hk09Vf2bosLt/MZYf7LpBx5yx+SBdvbF5hpJJ2NRMPExjBksbmozTX
+ OOb6xkWltTQ+EaDlpOFtdGjqcELU9Fm+ByCIBm9p+LP+fUVajgbV/4/LUx1NAJN5u5
+ hYB6uyrENyzMDROCCTp0DuHEHeulZlM6sQLncEi9sRTUhvXnS0PWn1GTcNrQXRRcpF
+ dcbPTt9Y/i7wg==
+Date: Mon, 29 Jul 2019 18:16:51 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Santosh Sivaraj <santosh@fossix.org>
+Subject: Re: [PATCH] powerpc/kvm: Fall through switch case explicitly
+Message-ID: <20190729181651.4b9586a7@canb.auug.org.au>
+In-Reply-To: <20190729055536.25591-1-santosh@fossix.org>
+References: <20190729055536.25591-1-santosh@fossix.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/rExPsN0GRo/hs_UJDe5wfcA";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,36 +57,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mjg59@google.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Chris,
+--Sig_/rExPsN0GRo/hs_UJDe5wfcA
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
->>>> Remind me again why we need to clear breakpoints in integrity mode?
-...
->> Integrity mode merely means we are aiming to prevent modifications to 
->> kernel memory. IMHO leaving existing breakpoints in place is fine as 
->> long as when we hit the breakpoint xmon is in read-only mode.
->>
-...
-> I think ajd is right. 
->
-> I think about it like this. There are 2 transitions:
->
->  - into integrity mode
->
->    Here, we need to go into r/o, but do not need to clear breakpoints.
->    You can still insert breakpoints in readonly mode, so clearing them
->    just makes things more irritating rather than safer.
->
->  - into confidentiality mode
->
->    Here we need to purge breakpoints and disable xmon completely.
+Hi Santosh,
 
-Would you be able to send a v2 with these changes? (that is, not purging
-breakpoints when entering integrity mode)
+On Mon, 29 Jul 2019 11:25:36 +0530 Santosh Sivaraj <santosh@fossix.org> wro=
+te:
+>
+> Implicit fallthrough warning was enabled globally which broke
+> the build. Make it explicit with a `fall through` comment.
+>=20
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  arch/powerpc/kvm/book3s_32_mmu.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_32_mmu.c b/arch/powerpc/kvm/book3s_3=
+2_mmu.c
+> index 653936177857..18f244aad7aa 100644
+> --- a/arch/powerpc/kvm/book3s_32_mmu.c
+> +++ b/arch/powerpc/kvm/book3s_32_mmu.c
+> @@ -239,6 +239,7 @@ static int kvmppc_mmu_book3s_32_xlate_pte(struct kvm_=
+vcpu *vcpu, gva_t eaddr,
+>  				case 2:
+>  				case 6:
+>  					pte->may_write =3D true;
+> +					/* fall through */
+>  				case 3:
+>  				case 5:
+>  				case 7:
+> --=20
+> 2.20.1
+>=20
 
-Regards,
-Daniel
+Thanks
+
+Reviewed-by: Stephen Rothwell <sfr@canb.auug.org.au>
+
+This only shows up as a warning in a powerpc allyesconfig build.
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/rExPsN0GRo/hs_UJDe5wfcA
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0+q3QACgkQAVBC80lX
+0Gyrrwf9FAW9tfADHo7wgSxpAXk7UBrDuhWFwjx4HCs0mEppx6Ut0CYRu6gD7BBq
+hly9Iik4uIGnTzlPqgyqAynHCBhfvmmV5Z0ZhKfAbozqW7hZr4vQaMAZHPCBgeOl
+SSYXYioMuLEmr1oiEn1NgdYVPqKGDf60zoQZTiQtgBjlCdLHIQtN/k+uShfzvMHD
+697dhHCkzVzVWHfCVM3Put15/BPlYTDXFareolLnoO74Gdf7jIp+Gokrr7ILYuR3
+SXstfk0NAvDFiI1U0bU2lAIxh+KY12HQfsipj4KgtVOD9Sw9jYJU83ZLvPhpawJz
+ZjgckByP5q7kdB8O6sLp1FBKC6Kaxw==
+=DLbG
+-----END PGP SIGNATURE-----
+
+--Sig_/rExPsN0GRo/hs_UJDe5wfcA--
