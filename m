@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F2F783D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 06:08:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B1E783D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 06:06:14 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xmMR4kGlzDqPn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 14:06:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xmPY50mbzDqSF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 14:08:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.b="dzOpQ8Xn"; 
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="Fxecae3x"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xmDt10GvzDqML
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 14:00:29 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id k189so8466708pgk.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 21:00:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xmDy33pZzDqJC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 14:00:34 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id c2so26924684plz.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jul 2019 21:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=QeuUeEGe1/vHoSUVD7CZG3g0CzW19Ib+t17yb0VRxVM=;
- b=dzOpQ8XnZPvv9a6HGcnDXu1OaPo7zL6gA6hwqj7dwCXBlH0IH19EkWHnn7evbNTe60
- K/JJ+2X2ZCD4+5Hg37tUdWDxilG2RU/VOEO3S5BJd97BAr588CWefzcwm63ajh9VAorD
- daEXwTv717MF+HTyasy9CYpK3aixtemLBAuz33oeyercMkDXHNf1OPMtxGhHRwwxIo14
- DAMmA+0XzoaEn9DQzIXcU1aPkmQpAIrsdegWKFFRm9rnQo+78Qee/OW1BmCp5lRUXh3T
- 2Bd8FLlB2z/E+AAfZaUczUeTAyZLf+qUDbL2+eLtSyYmYYCSWrzbwAw8pDl0Rt2ZBPtH
- BWwA==
+ bh=WwFeAlQ6IuYgXIVYtx8CQnkRCdX32iDrGGlWM20HRkk=;
+ b=Fxecae3xqy40byOksy98DwNVQZN9qFp551/NzOq4Phfam/XCTu8WtrrY9s7mcvzImk
+ itO4BzaScGz+GvMdZa7H/D/FY/x6QxGFFyXZsQ14s8Ag2WVDs3skBoFUm26JbkETCnTw
+ 3gQBqiMBDiaj9rHv115aLNkBhy9u6NxJM0BUOlAqy6/jCBxC0I2gmFKH6ZLryt/2rPS0
+ p9CB+O6XR91xwhNaHA4NNm7HTU8TIbLb+VHLIMcDBvA3dggBXDeh8PdrCKNHyGIGRnF+
+ XbQY3NB+55neS3Ior5YC6LyYP7XPc5wkdTY4ig1waWnr8sJC9+5GqFASHeWnWsANL8r8
+ gk4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=QeuUeEGe1/vHoSUVD7CZG3g0CzW19Ib+t17yb0VRxVM=;
- b=aybkhk7DMamXlH4SQVWOu3xrHD1vXf2UtsLRDtstUdCeh6g3OqKz09xvdSeWdtPyBM
- ayxIlqCCoTtej0SbhGC+ZxqzH4HblgUKtwzok7KSCjCnFmMbiM1FLHWxNtXx+sdgqcFn
- m/Ewh2M0XP8XmlS+3Z+rbcoIZGIlINVtyGHklP+5ccVcRa+UCVZa5kR2OWtb+yl78SH/
- gigpE7926ucWNvy8daK10il57UMXGok9fWhcNYXNgRFttvsq4MWqwdqlFnFilkq6j4IF
- GtBLVJwQG87iWICTiR4nxgBrAzGhMUze65jprhhOwSYev8QRWkTPkgKTHg7BV07CdWFF
- RrAw==
-X-Gm-Message-State: APjAAAXwjoeJIdPy/M3kqyg+EBNPiQoDUwxjTTLK9kfi7fh47mAOJd5H
- hTprvXYfyhaFAeH8QanjB4JIvY0mtAo=
-X-Google-Smtp-Source: APXvYqzgnkqIBRED/ppwcsuEs2geqMEAhP7O/UcivsJsnEjYo+OpuUuPsFv5q5o2WteHVelbqQBmUg==
-X-Received: by 2002:a17:90a:bb8a:: with SMTP id
- v10mr111301558pjr.78.1564372827393; 
- Sun, 28 Jul 2019 21:00:27 -0700 (PDT)
+ bh=WwFeAlQ6IuYgXIVYtx8CQnkRCdX32iDrGGlWM20HRkk=;
+ b=JCCiKCqMHXw8EoTMFfgYCxdsUlGjOvmg3ZiAG4zi/9cj95+bjmpjO0at1Xgjdh8EnV
+ Z4amrGD4Kic2fR9P1vyRQtiOdt3oNyXoOPFZlUNV1ZfErxRHjlL0LwCHcrz5sy2vE8bY
+ ADPr+H6kZ1psvYc6N3kye95bRDhg3v/umpsSvNign8H8EPSslN5YKpUALhcs6H+AXVV0
+ WFmkUHnuSVwZ2JpvPg23R9R+a1se+ZLvurpRO/TTNEBAD/z7V0K/6K1suPW5s35hRq11
+ vpgz8+A5f+Ve1JhGAgkRcHnU8KvhhBG2QczDrj4jUPIoDGKG2DWqH3kNLBpJwZFTAZCS
+ ElJg==
+X-Gm-Message-State: APjAAAW1hZGx7cJWVpgWe18QCPIWtsb12if9DRQORb0ov1y9/AuXnl3U
+ WSTCFbJXmAOExXvDHGPXyvsDtNzhMuE=
+X-Google-Smtp-Source: APXvYqwd9R3GmaUpLLYf1lGgzZM9NR9zEJpKD3gBITjlGHlKJVGKj9KGuL6LQrtgghl/lRVO+1wXfg==
+X-Received: by 2002:a17:902:b582:: with SMTP id
+ a2mr109947123pls.128.1564372831045; 
+ Sun, 28 Jul 2019 21:00:31 -0700 (PDT)
 Received: from santosiv.in.ibm.com ([183.82.17.52])
- by smtp.gmail.com with ESMTPSA id g1sm100033948pgg.27.2019.07.28.21.00.24
+ by smtp.gmail.com with ESMTPSA id g1sm100033948pgg.27.2019.07.28.21.00.27
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Sun, 28 Jul 2019 21:00:26 -0700 (PDT)
+ Sun, 28 Jul 2019 21:00:30 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org
-Subject: [v6 2/6] powerpc/mce: Fix MCE handling for huge pages
-Date: Mon, 29 Jul 2019 09:30:07 +0530
-Message-Id: <20190729040011.5086-3-santosh@fossix.org>
+Subject: [v6 3/6] extable: Add function to search only kernel exception table
+Date: Mon, 29 Jul 2019 09:30:08 +0530
+Message-Id: <20190729040011.5086-4-santosh@fossix.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190729040011.5086-1-santosh@fossix.org>
 References: <20190729040011.5086-1-santosh@fossix.org>
@@ -84,158 +84,67 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
  Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+ Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Balbir Singh <bsingharora@gmail.com>
+Certain architecture specific operating modes (e.g., in powerpc machine
+check handler that is unable to access vmalloc memory), the
+search_exception_tables cannot be called because it also searches the module
+exception tables if entry is not found in the kernel exception table.
 
-The current code would fail on huge pages addresses, since the shift would be
-incorrect. Use the correct page shift value returned by __find_linux_pte() to
-get the correct physical address. The code is more generic and can handle both
-regular and compound pages.
-
-Fixes: ba41e1e1ccb9 ("powerpc/mce: Hookup derror (load/store) UE errors")
-
-Signed-off-by: Balbir Singh <bsingharora@gmail.com>
-[arbab@linux.ibm.com: Fixup pseries_do_memory_failure()]
-Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
-[santosh: return physical address instead of pfn; change commit log]
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/mce.h       |  2 +-
- arch/powerpc/kernel/mce_power.c      | 50 ++++++++++++++--------------
- arch/powerpc/platforms/pseries/ras.c |  9 ++---
- 3 files changed, 29 insertions(+), 32 deletions(-)
+ include/linux/extable.h |  2 ++
+ kernel/extable.c        | 11 +++++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index a4c6a74ad2fb..f3a6036b6bc0 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -209,7 +209,7 @@ extern void release_mce_event(void);
- extern void machine_check_queue_event(void);
- extern void machine_check_print_event_info(struct machine_check_event *evt,
- 					   bool user_mode, bool in_guest);
--unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr);
-+unsigned long addr_to_phys(struct pt_regs *regs, unsigned long addr);
- #ifdef CONFIG_PPC_BOOK3S_64
- void flush_and_reload_slb(void);
- #endif /* CONFIG_PPC_BOOK3S_64 */
-diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-index a814d2dfb5b0..bed38a8e2e50 100644
---- a/arch/powerpc/kernel/mce_power.c
-+++ b/arch/powerpc/kernel/mce_power.c
-@@ -20,13 +20,14 @@
- #include <asm/exception-64s.h>
+diff --git a/include/linux/extable.h b/include/linux/extable.h
+index 41c5b3a25f67..81ecfaa83ad3 100644
+--- a/include/linux/extable.h
++++ b/include/linux/extable.h
+@@ -19,6 +19,8 @@ void trim_init_extable(struct module *m);
  
- /*
-- * Convert an address related to an mm to a PFN. NOTE: we are in real
-- * mode, we could potentially race with page table updates.
-+ * Convert an address related to an mm to a physical address.
-+ * NOTE: we are in real mode, we could potentially race with page table updates.
-  */
--unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
-+unsigned long addr_to_phys(struct pt_regs *regs, unsigned long addr)
- {
--	pte_t *ptep;
--	unsigned long flags;
-+	pte_t *ptep, pte;
-+	unsigned int shift;
-+	unsigned long flags, phys_addr;
- 	struct mm_struct *mm;
+ /* Given an address, look for it in the exception tables */
+ const struct exception_table_entry *search_exception_tables(unsigned long add);
++const struct exception_table_entry *
++search_kernel_exception_table(unsigned long addr);
  
- 	if (user_mode(regs))
-@@ -35,14 +36,21 @@ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
- 		mm = &init_mm;
- 
- 	local_irq_save(flags);
--	if (mm == current->mm)
--		ptep = find_current_mm_pte(mm->pgd, addr, NULL, NULL);
--	else
--		ptep = find_init_mm_pte(addr, NULL);
-+	ptep = __find_linux_pte(mm->pgd, addr, NULL, &shift);
- 	local_irq_restore(flags);
-+
- 	if (!ptep || pte_special(*ptep))
- 		return ULONG_MAX;
--	return pte_pfn(*ptep);
-+
-+	pte = *ptep;
-+	if (shift > PAGE_SHIFT) {
-+		unsigned long rpnmask = (1ul << shift) - PAGE_SIZE;
-+
-+		pte = __pte(pte_val(pte) | (addr & rpnmask));
-+	}
-+	phys_addr = pte_pfn(pte) << PAGE_SHIFT;
-+
-+	return phys_addr;
+ #ifdef CONFIG_MODULES
+ /* For extable.c to search modules' exception tables. */
+diff --git a/kernel/extable.c b/kernel/extable.c
+index e23cce6e6092..f6c9406eec7d 100644
+--- a/kernel/extable.c
++++ b/kernel/extable.c
+@@ -40,13 +40,20 @@ void __init sort_main_extable(void)
+ 	}
  }
  
- /* flush SLBs and reload */
-@@ -354,18 +362,16 @@ static int mce_find_instr_ea_and_pfn(struct pt_regs *regs, uint64_t *addr,
- 	 * faults
- 	 */
- 	int instr;
--	unsigned long pfn, instr_addr;
-+	unsigned long instr_addr;
- 	struct instruction_op op;
- 	struct pt_regs tmp = *regs;
++/* Given an address, look for it in the kernel exception table */
++const
++struct exception_table_entry *search_kernel_exception_table(unsigned long addr)
++{
++	return search_extable(__start___ex_table,
++			      __stop___ex_table - __start___ex_table, addr);
++}
++
+ /* Given an address, look for it in the exception tables. */
+ const struct exception_table_entry *search_exception_tables(unsigned long addr)
+ {
+ 	const struct exception_table_entry *e;
  
--	pfn = addr_to_pfn(regs, regs->nip);
--	if (pfn != ULONG_MAX) {
--		instr_addr = (pfn << PAGE_SHIFT) + (regs->nip & ~PAGE_MASK);
-+	instr_addr = addr_to_phys(regs, regs->nip) + (regs->nip & ~PAGE_MASK);
-+	if (instr_addr != ULONG_MAX) {
- 		instr = *(unsigned int *)(instr_addr);
- 		if (!analyse_instr(&op, &tmp, instr)) {
--			pfn = addr_to_pfn(regs, op.ea);
- 			*addr = op.ea;
--			*phys_addr = (pfn << PAGE_SHIFT);
-+			*phys_addr = addr_to_phys(regs, op.ea);
- 			return 0;
- 		}
- 		/*
-@@ -440,15 +446,9 @@ static int mce_handle_ierror(struct pt_regs *regs,
- 			*addr = regs->nip;
- 			if (mce_err->sync_error &&
- 				table[i].error_type == MCE_ERROR_TYPE_UE) {
--				unsigned long pfn;
--
--				if (get_paca()->in_mce < MAX_MCE_DEPTH) {
--					pfn = addr_to_pfn(regs, regs->nip);
--					if (pfn != ULONG_MAX) {
--						*phys_addr =
--							(pfn << PAGE_SHIFT);
--					}
--				}
-+				if (get_paca()->in_mce < MAX_MCE_DEPTH)
-+					*phys_addr = addr_to_phys(regs,
-+								 regs->nip);
- 			}
- 		}
- 		return handled;
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index f16fdd0f71f7..5743f6353638 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -739,13 +739,10 @@ static void pseries_do_memory_failure(struct pt_regs *regs,
- 	if (mce_log->sub_err_type & UE_LOGICAL_ADDR_PROVIDED) {
- 		paddr = be64_to_cpu(mce_log->logical_address);
- 	} else if (mce_log->sub_err_type & UE_EFFECTIVE_ADDR_PROVIDED) {
--		unsigned long pfn;
--
--		pfn = addr_to_pfn(regs,
--				  be64_to_cpu(mce_log->effective_address));
--		if (pfn == ULONG_MAX)
-+		paddr = addr_to_phys(regs,
-+				     be64_to_cpu(mce_log->effective_address));
-+		if (paddr == ULONG_MAX)
- 			return;
--		paddr = pfn << PAGE_SHIFT;
- 	} else {
- 		return;
- 	}
+-	e = search_extable(__start___ex_table,
+-			   __stop___ex_table - __start___ex_table, addr);
++	e = search_kernel_exception_table(addr);
+ 	if (!e)
+ 		e = search_module_extables(addr);
+ 	return e;
 -- 
 2.20.1
 
