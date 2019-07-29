@@ -1,70 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624A779141
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 18:41:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45y56W34KFzDqQd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 02:41:07 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCF079A0E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 22:34:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yBHw1l6YzDqR6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 06:34:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
+ smtp.mailfrom=flex--ndesaulniers.bounces.google.com
+ (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com;
+ envelope-from=3y1y_xqwkdpwrhiweyprmivwksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--ndesaulniers.bounces.google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="JZjXEn6Q";
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.b="NrH9CP3j"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com
+ [IPv6:2607:f8b0:4864:20::64a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45y53p5p5rzDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 02:38:45 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id x15so18186298pgg.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 09:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=+08c+PdXIBVeY6sDHfUjTE9cNjO6KyMEPTgMj7V2IY4=;
- b=JZjXEn6QYGEaImI7V1iUAdLhYZw+xOBslJwMzGz0qIiJ1mxf2/qcPESNBb5IZQ6Zi0
- l0Hvc6j2QUyhIUuWRbNzPSyKiMbLB6WU5H0DWxMm29fVsPXeMsiHs8opmPpQXwdGrT9Q
- e1gVS+ZMXJlJodmV3Wc15altBqNOZou3V7FbI=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yB6Q3WprzDqDc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 06:26:14 +1000 (AEST)
+Received: by mail-pl1-x64a.google.com with SMTP id a5so33828851pla.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 13:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=InkWYbyakoin4kW7joWmSnOT6nnJvOIEoZKfiSX6FXM=;
+ b=NrH9CP3j3IaEZeQTRPUpaINe6R+O0NeUPVTiKEqR6ZRIdxWO6b0hnLm51vp8WpodBt
+ b6YZ/M3SVAVCFf3UurTkKgjdqsG/kQ8nQYh7BWrOOjkRKhtlE1ly2pEUBUWxk6GGbYm8
+ 1ArC7a1eS8zanTLR4ftZoAMpPBBnZ9ajFP2RpwM+A1dCeK8QIzBW1wpVAYqB7Uuom3Lo
+ CoBW1LSDZajNANwdP5yg7IcmAWWiInk7VkArgc5DgBwQrWjtWw6B0CmJ+6WQc8lHqx03
+ m3b2v59YP42soakHigmlcSIQP5KCqXM6lb/979S2CV6wnYKKJK5lJX989prCYbKth+Ai
+ M+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=+08c+PdXIBVeY6sDHfUjTE9cNjO6KyMEPTgMj7V2IY4=;
- b=PSSWa9010TN4CIlimrGwvKyAGMG+R6p4fRohsr8jeetEF2m7LTTQKgpaueUUu1A+qy
- BCgmA3B0uKRk5D5j/9bP6ntDAJjRuka+xKbDRQbd3Th6fRNUtAyGc4QbIDaFOZ36OYrd
- EDq6D/MhOJgJSbvOBc2BMjsz1DmDBoOGDFq2xnkGSeZl5dayppPlB9/EyHWwYsElsk0M
- NOVgGqIqOpUEtN3eQBKEDzznsIy7Y5lo5x5KUZg3FpF789JoXUT5YlGIknhPgoifNt/4
- Npd1fbPtiboSczaLLzEX+niCWpaVl+QIuBcTb9r3dPSARwXk9czxQzUsdPzJWHzbJPYQ
- Qagg==
-X-Gm-Message-State: APjAAAUskjuRkIdpY7ykc1Go/uCdEViD/cUrMaxYCKGUjeEoENx2IoBA
- kfRbdvV5m6/G55NieElRquyHGQ==
-X-Google-Smtp-Source: APXvYqyELyrdfBSbaJc1b/4/p8QGl1qLzaYkHKBSMm8jZldpOoqQAfcTWUmpFaevBfT0PPNVUHwiBQ==
-X-Received: by 2002:a63:494d:: with SMTP id
- y13mr106885695pgk.109.1564418324034; 
- Mon, 29 Jul 2019 09:38:44 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id q144sm63458340pfc.103.2019.07.29.09.38.43
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 29 Jul 2019 09:38:43 -0700 (PDT)
-Date: Mon, 29 Jul 2019 09:38:42 -0700
-From: Kees Cook <keescook@chromium.org>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] scsi: ibmvfc: Mark expected switch fall-throughs
-Message-ID: <201907290938.022D08EA@keescook>
-References: <20190729002608.GA25263@embeddedor>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190729002608.GA25263@embeddedor>
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=InkWYbyakoin4kW7joWmSnOT6nnJvOIEoZKfiSX6FXM=;
+ b=RRarK+o6SeRWo2ErDDcMnVA0l3kAbXCjvawejzJtfPcdmguvctx493bRzeJFt7WZMa
+ 9ut8dJOoQT7LxhB2AChiqzBO6jk1BZy3lsMTs1vD/UPM6QtLhqvz11I+1nAwjj8T/C37
+ c+H8sZe18OMmZMRYIRlZlcQdyZcc/J0U/uqYVZ69FUho+yhvm/gb7tvMTA1zRrsSTWlO
+ ND/OEK+vELKuni+Vv1n40L/R+rPh7oYOeUbI85On/iX9WFBAZtC6as4VFakgZoPZpyRM
+ jgu9of7nnF43O7VcLJ1PJsKSpJS8GOCb4EZiq90XWZZjehZYV0+ppHrLWQEFs+tCzu3D
+ kTvQ==
+X-Gm-Message-State: APjAAAU207n1UUCwLvWyfVpBqynPwUm+H9J9nYE8Sh8TEX3XeItd5889
+ MzG0S2i3zUkIrz2rDuxis67UfEbz2kiWtzkW8vY=
+X-Google-Smtp-Source: APXvYqzbqjK6rfCZn+o56AxaIOeOmnCvc2eWfzYd3XaqtryKtAIfNfxTDSqVXK8CEHfxuNI/ij2rwh8wRg9LWpZl+Y0=
+X-Received: by 2002:a63:5b52:: with SMTP id l18mr106138942pgm.21.1564431971070; 
+ Mon, 29 Jul 2019 13:26:11 -0700 (PDT)
+Date: Mon, 29 Jul 2019 13:25:41 -0700
+Message-Id: <20190729202542.205309-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.709.g102302147b-goog
+Subject: [PATCH] powerpc: workaround clang codegen bug in dcbz
+From: Nick Desaulniers <ndesaulniers@google.com>
+To: mpe@ellerman.id.au
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,91 +71,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: arnd@arndb.de, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ kbuild test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jul 28, 2019 at 07:26:08PM -0500, Gustavo A. R. Silva wrote:
-> Mark switch cases where we are expecting to fall through.
-> 
-> This patch fixes the following warnings:
-> 
-> drivers/scsi/ibmvscsi/ibmvfc.c: In function 'ibmvfc_npiv_login_done':
-> drivers/scsi/ibmvscsi/ibmvfc.c:4022:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    ibmvfc_retry_host_init(vhost);
->    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/scsi/ibmvscsi/ibmvfc.c:4023:2: note: here
->   case IBMVFC_MAD_DRIVER_FAILED:
->   ^~~~
-> drivers/scsi/ibmvscsi/ibmvfc.c: In function 'ibmvfc_bsg_request':
-> drivers/scsi/ibmvscsi/ibmvfc.c:1830:11: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    port_id = (bsg_request->rqst_data.h_els.port_id[0] << 16) |
->    ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     (bsg_request->rqst_data.h_els.port_id[1] << 8) |
->     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     bsg_request->rqst_data.h_els.port_id[2];
->     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/scsi/ibmvscsi/ibmvfc.c:1833:2: note: here
->   case FC_BSG_RPT_ELS:
->   ^~~~
-> drivers/scsi/ibmvscsi/ibmvfc.c:1838:11: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    port_id = (bsg_request->rqst_data.h_ct.port_id[0] << 16) |
->    ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     (bsg_request->rqst_data.h_ct.port_id[1] << 8) |
->     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     bsg_request->rqst_data.h_ct.port_id[2];
->     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/scsi/ibmvscsi/ibmvfc.c:1841:2: note: here
->   case FC_BSG_RPT_CT:
->   ^~~~
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Commit 6c5875843b87 ("powerpc: slightly improve cache helpers") exposed
+what looks like a codegen bug in Clang's handling of `%y` output
+template with `Z` constraint. This is resulting in panics during boot
+for 32b powerpc builds w/ Clang, as reported by our CI.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Add back the original code that worked behind a preprocessor check for
+__clang__ until we can fix LLVM.
 
--Kees
+Further, it seems that clang allnoconfig builds are unhappy with `Z`, as
+reported by 0day bot. This is likely because Clang warns about inline
+asm constraints when the constraint requires inlining to be semantically
+valid.
 
-> ---
->  drivers/scsi/ibmvscsi/ibmvfc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-> index 8cdbac076a1b..df897df5cafe 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> @@ -1830,6 +1830,7 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
->  		port_id = (bsg_request->rqst_data.h_els.port_id[0] << 16) |
->  			(bsg_request->rqst_data.h_els.port_id[1] << 8) |
->  			bsg_request->rqst_data.h_els.port_id[2];
-> +		/* fall through */
->  	case FC_BSG_RPT_ELS:
->  		fc_flags = IBMVFC_FC_ELS;
->  		break;
-> @@ -1838,6 +1839,7 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
->  		port_id = (bsg_request->rqst_data.h_ct.port_id[0] << 16) |
->  			(bsg_request->rqst_data.h_ct.port_id[1] << 8) |
->  			bsg_request->rqst_data.h_ct.port_id[2];
-> +		/* fall through */
->  	case FC_BSG_RPT_CT:
->  		fc_flags = IBMVFC_FC_CT_IU;
->  		break;
-> @@ -4020,6 +4022,7 @@ static void ibmvfc_npiv_login_done(struct ibmvfc_event *evt)
->  		return;
->  	case IBMVFC_MAD_CRQ_ERROR:
->  		ibmvfc_retry_host_init(vhost);
-> +		/* fall through */
->  	case IBMVFC_MAD_DRIVER_FAILED:
->  		ibmvfc_free_event(evt);
->  		return;
-> -- 
-> 2.22.0
-> 
+Link: https://bugs.llvm.org/show_bug.cgi?id=42762
+Link: https://github.com/ClangBuiltLinux/linux/issues/593
+Link: https://lore.kernel.org/lkml/20190721075846.GA97701@archlinux-threadripper/
+Debugged-by: Nathan Chancellor <natechancellor@gmail.com>
+Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+Reported-by: kbuild test robot <lkp@intel.com>
+Suggested-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+Alternatively, we could just revert 6c5875843b87. It seems that GCC
+generates the same code for these functions for out of line versions.
+But I'm not sure how the inlined code generated would be affected.
 
+ arch/powerpc/include/asm/cache.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
+index b3388d95f451..72983da94dce 100644
+--- a/arch/powerpc/include/asm/cache.h
++++ b/arch/powerpc/include/asm/cache.h
+@@ -105,6 +105,30 @@ extern void _set_L3CR(unsigned long);
+ #define _set_L3CR(val)	do { } while(0)
+ #endif
+ 
++/*
++ * Workaround for https://bugs.llvm.org/show_bug.cgi?id=42762.
++ */
++#ifdef __clang__
++static inline void dcbz(void *addr)
++{
++	__asm__ __volatile__ ("dcbz 0, %0" : : "r"(addr) : "memory");
++}
++
++static inline void dcbi(void *addr)
++{
++	__asm__ __volatile__ ("dcbi 0, %0" : : "r"(addr) : "memory");
++}
++
++static inline void dcbf(void *addr)
++{
++	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
++}
++
++static inline void dcbst(void *addr)
++{
++	__asm__ __volatile__ ("dcbst 0, %0" : : "r"(addr) : "memory");
++}
++#else
+ static inline void dcbz(void *addr)
+ {
+ 	__asm__ __volatile__ ("dcbz %y0" : : "Z"(*(u8 *)addr) : "memory");
+@@ -124,6 +148,7 @@ static inline void dcbst(void *addr)
+ {
+ 	__asm__ __volatile__ ("dcbst %y0" : : "Z"(*(u8 *)addr) : "memory");
+ }
++#endif /* __clang__ */
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_CACHE_H */
 -- 
-Kees Cook
+2.22.0.709.g102302147b-goog
+
