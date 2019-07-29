@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A0A78CDF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 15:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA3B78CFB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 15:38:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45y0sq6YS2zDqK5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 23:29:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45y14B2rfrzDqML
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 23:38:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,30 +18,30 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45y0ny5L6YzDqJm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 23:26:28 +1000 (AEST)
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 6FFE4A76CB5ED39761D5;
- Mon, 29 Jul 2019 21:26:22 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.203) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Mon, 29 Jul 2019
- 21:26:14 +0800
-Subject: Re: [RFC PATCH 04/10] powerpc/fsl_booke/32: introduce
- create_tlb_entry() helper
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45y10P2YZ2zDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 23:35:33 +1000 (AEST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 55120CB76ABAB4BC196D;
+ Mon, 29 Jul 2019 21:35:30 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.203) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Mon, 29 Jul 2019
+ 21:35:19 +0800
+Subject: Re: [RFC PATCH 05/10] powerpc/fsl_booke/32: introduce
+ reloc_kernel_entry() helper
 To: Christophe Leroy <christophe.leroy@c-s.fr>, <mpe@ellerman.id.au>,
  <linuxppc-dev@lists.ozlabs.org>, <diana.craciun@nxp.com>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
 References: <20190717080621.40424-1-yanaijie@huawei.com>
- <20190717080621.40424-5-yanaijie@huawei.com>
- <4e6c468d-287b-4bba-675c-8b3f73456500@c-s.fr>
+ <20190717080621.40424-6-yanaijie@huawei.com>
+ <e4ccd015-a9c4-b0a6-e3ca-d37a04e29ec6@c-s.fr>
 From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <bf63f6e1-c74f-8494-5f1f-f4c5a1a671fe@huawei.com>
-Date: Mon, 29 Jul 2019 21:26:12 +0800
+Message-ID: <60238fe3-a6ec-3537-d56d-29ebeb38f5fd@huawei.com>
+Date: Mon, 29 Jul 2019 21:35:18 +0800
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.5.0
 MIME-Version: 1.0
-In-Reply-To: <4e6c468d-287b-4bba-675c-8b3f73456500@c-s.fr>
+In-Reply-To: <e4ccd015-a9c4-b0a6-e3ca-d37a04e29ec6@c-s.fr>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -66,13 +66,13 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 2019/7/29 19:05, Christophe Leroy wrote:
+On 2019/7/29 19:08, Christophe Leroy wrote:
 > 
 > 
 > Le 17/07/2019 à 10:06, Jason Yan a écrit :
->> Add a new helper create_tlb_entry() to create a tlb entry by the virtual
->> and physical address. This is a preparation to support boot kernel at a
->> randomized address.
+>> Add a new helper reloc_kernel_entry() to jump back to the start of the
+>> new kernel. After we put the new kernel in a randomized place we can use
+>> this new helper to enter the kernel and begin to relocate again.
 >>
 >> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 >> Cc: Diana Craciun <diana.craciun@nxp.com>
@@ -83,84 +83,77 @@ On 2019/7/29 19:05, Christophe Leroy wrote:
 >> Cc: Nicholas Piggin <npiggin@gmail.com>
 >> Cc: Kees Cook <keescook@chromium.org>
 >> ---
->>   arch/powerpc/kernel/head_fsl_booke.S | 30 ++++++++++++++++++++++++++++
+>>   arch/powerpc/kernel/head_fsl_booke.S | 16 ++++++++++++++++
 >>   arch/powerpc/mm/mmu_decl.h           |  1 +
->>   2 files changed, 31 insertions(+)
+>>   2 files changed, 17 insertions(+)
 >>
 >> diff --git a/arch/powerpc/kernel/head_fsl_booke.S 
 >> b/arch/powerpc/kernel/head_fsl_booke.S
->> index adf0505dbe02..a57d44638031 100644
+>> index a57d44638031..ce40f96dae20 100644
 >> --- a/arch/powerpc/kernel/head_fsl_booke.S
 >> +++ b/arch/powerpc/kernel/head_fsl_booke.S
->> @@ -1114,6 +1114,36 @@ __secondary_hold_acknowledge:
->>       .long    -1
->>   #endif
+>> @@ -1144,6 +1144,22 @@ _GLOBAL(create_tlb_entry)
+>>       sync
+>>       blr
 >> +/*
->> + * Create a 64M tlb by address and entry
->> + * r3/r4 - physical address
->> + * r5 - virtual address
->> + * r6 - entry
+>> + * Return to the start of the relocated kernel and run again
+>> + * r3 - virtual address of fdt
+>> + * r4 - entry of the kernel
 >> + */
->> +_GLOBAL(create_tlb_entry)
->> +    lis     r7,0x1000               /* Set MAS0(TLBSEL) = 1 */
->> +    rlwimi  r7,r6,16,4,15           /* Setup MAS0 = TLBSEL | ESEL(r6) */
->> +    mtspr   SPRN_MAS0,r7            /* Write MAS0 */
->> +
->> +    lis     r6,(MAS1_VALID|MAS1_IPROT)@h
->> +    ori     r6,r6,(MAS1_TSIZE(BOOK3E_PAGESZ_64M))@l
->> +    mtspr   SPRN_MAS1,r6            /* Write MAS1 */
->> +
->> +    lis     r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@h
->> +    ori     r6,r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@l
->> +    and     r6,r6,r5
->> +    ori    r6,r6,MAS2_M@l
->> +    mtspr   SPRN_MAS2,r6            /* Write MAS2(EPN) */
->> +
->> +    mr      r8,r4
->> +    ori     r8,r8,(MAS3_SW|MAS3_SR|MAS3_SX)
+>> +_GLOBAL(reloc_kernel_entry)
+>> +    mfmsr    r7
+>> +    li    r8,(MSR_IS | MSR_DS)
+>> +    andc    r7,r7,r8
 > 
-> Could drop the mr r8, r4 and do:
+> Instead of the li/andc, what about the following:
 > 
-> ori     r8,r4,(MAS3_SW|MAS3_SR|MAS3_SX)
+> rlwinm r7, r7, 0, ~(MSR_IS | MSR_DS)
 > 
 
-OK, thanks for the suggestion.
+Good idea.
 
->> +    mtspr   SPRN_MAS3,r8            /* Write MAS3(RPN) */
 >> +
->> +    tlbwe                           /* Write TLB */
+>> +    mtspr    SPRN_SRR0,r4
+>> +    mtspr    SPRN_SRR1,r7
 >> +    isync
 >> +    sync
->> +    blr
+>> +    rfi
+> 
+> Are the isync/sync really necessary ? AFAIK, rfi is context synchronising.
+> 
+
+I see some code with sync before rfi so I'm not sure. I will check this
+and drop the isync/sync if it's true.
+
+Thanks.
+
 >> +
 >>   /*
 >>    * Create a tlb entry with the same effective and physical address as
 >>    * the tlb entry used by the current running code. But set the TS to 1.
 >> diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
->> index 32c1a191c28a..d7737cf97cee 100644
+>> index d7737cf97cee..dae8e9177574 100644
 >> --- a/arch/powerpc/mm/mmu_decl.h
 >> +++ b/arch/powerpc/mm/mmu_decl.h
->> @@ -142,6 +142,7 @@ extern unsigned long calc_cam_sz(unsigned long 
->> ram, unsigned long virt,
->>   extern void adjust_total_lowmem(void);
+>> @@ -143,6 +143,7 @@ extern void adjust_total_lowmem(void);
 >>   extern int switch_to_as1(void);
 >>   extern void restore_to_as0(int esel, int offset, void *dt_ptr, int 
 >> bootcpu);
->> +extern void create_tlb_entry(phys_addr_t phys, unsigned long virt, 
+>>   extern void create_tlb_entry(phys_addr_t phys, unsigned long virt, 
 >> int entry);
+>> +extern void reloc_kernel_entry(void *fdt, int addr);
 > 
-> Please please do not add new declarations with the useless 'extern' 
-> keyword. See checkpatch report: 
-> https://openpower.xyz/job/snowpatch/job/snowpatch-linux-checkpatch/8124//artifact/linux/checkpatch.log 
+> No new 'extern' please, see 
+> https://openpower.xyz/job/snowpatch/job/snowpatch-linux-checkpatch/8125//artifact/linux/checkpatch.log 
 > 
-
-Will drop all useless 'extern' in this and other patches, thanks.
-
+> 
 > 
 >>   #endif
 >>   extern void loadcam_entry(unsigned int index);
 >>   extern void loadcam_multi(int first_idx, int num, int tmp_idx);
 >>
+> 
+> Christophe
 > 
 > .
 > 
