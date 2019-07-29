@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E222179CC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 01:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6D679CCE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 01:29:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yG6X4gSJzDqRv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 09:26:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yG9m0XypzDqSM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 09:29:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yG4V1tpdzDqGN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 09:24:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yG7y44sTzDqGN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 09:27:58 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id B843728682
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 23:24:54 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 48C6128726
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 23:27:56 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id ABE432873F; Mon, 29 Jul 2019 23:24:54 +0000 (UTC)
+ id 3B891286AD; Mon, 29 Jul 2019 23:27:56 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -33,11 +33,11 @@ X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
  NO_RELAYS autolearn=ham version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204375] New: kernel 5.2.4 w. KASAN enabled fails to boot on a
+Subject: [Bug 204375] kernel 5.2.4 w. KASAN enabled fails to boot on a
  PowerMac G4 3,6 at very early stage
-Date: Mon, 29 Jul 2019 23:24:54 +0000
+Date: Mon, 29 Jul 2019 23:27:55 +0000
 X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
+X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Product: Platform Specific/Hardware
 X-Bugzilla-Component: PPC-32
@@ -50,10 +50,10 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression
-Message-ID: <bug-204375-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-204375-206035-wSc3JFvduG@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204375-206035@https.bugzilla.kernel.org/>
+References: <bug-204375-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -77,35 +77,13 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204375
 
-            Bug ID: 204375
-           Summary: kernel 5.2.4 w. KASAN enabled fails to boot on a
-                    PowerMac G4 3,6 at very early stage
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.2.4
-          Hardware: PPC-32
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: erhard_f@mailbox.org
-        Regression: No
+--- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 284039
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284039&action=3Dedit
+kernel .config (PowerMac G4 DP, kernel 5.2.4)
 
-I wanted to give KASAN a try to uncover even more bugs, but as it turns out=
- a
-KASAN enabled kernel does not boot at all on my PowerMac G4 MDD. ;)
-
-Tried kernels 5.2.4 and 5.3-rc2, both without success. I can't give a dmesg=
- as
-the boot process stops/stalls very early, only showing two lines on an
-OpenFirmware console (white background, black letters):
-
-done
-found display   : /pco@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1,
-opening...
+With this .config the G4 DP boots fine.
+With this .config + KASAN enabled the G4 DP fails to boot.
 
 --=20
 You are receiving this mail because:
