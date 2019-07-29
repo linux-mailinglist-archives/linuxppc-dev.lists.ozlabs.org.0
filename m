@@ -1,56 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC9B78940
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 12:08:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F1C78904
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 11:59:32 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xwC46XQrzDqKK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 19:59:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xwNx2vsCzDqLt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 20:08:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
- [209.85.221.66])
+ (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
+ envelope-from=yefremov.denis@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+ [209.85.221.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xw8v6k50zDq61
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 19:57:35 +1000 (AEST)
-Received: by mail-wr1-f66.google.com with SMTP id y4so61124184wrm.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 02:57:34 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xwM50TQmzDqCZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 20:06:24 +1000 (AEST)
+Received: by mail-wr1-f67.google.com with SMTP id p17so61126123wrf.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 03:06:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=3EgmHLFik/OPgDdGuLMAdfuPiX1r55Htn8ht8rmVprc=;
- b=sGNYOp4+yW/7XDMa66aHr2QM6yCdNexEJcRBYVqrrqSmBawS2VCd1cD7sPOR3s7fqi
- ai8psUk9rXRhr2LvAMoDAeciq7952XiLV29TH55mJZgHLaOgaSLjB+Zx8UOkOWLsF+3H
- OTDgmdI0HIbJqSvPjm+nk8EfctmxlaVZlugJLRAbnFhESMaf6o7K+CU/P41Cr+IVy/q+
- fd3T+li/PvdnhLmdM5nzMWVidv3bTeBVzN/gxsKybH/O+hQVtQ6mMuOh2J6zI81PSqxF
- 9FR9Ica8IECG3e4oDD+HPWBfIETqygtXsEDL3S+6nZNwP/NbRksayCBv4aMjbAvmBvNw
- thVg==
-X-Gm-Message-State: APjAAAUnPVlvKKW+/yrF90oi5/CQTa7XcvBQxtFh7vXNcVKk4iKK+2RL
- ylIwtJQvqweqkpO9ch8fEAkqz+nXhtUbNRJYc3g=
-X-Google-Smtp-Source: APXvYqwjfJqS4NGp1R7UrJA2JKANbRDFjcVknk63xGwZnvz1sSMLkkUqcYNpnDqWGXG4WZ8w21QgE4NZzRTpKbjjx94=
-X-Received: by 2002:adf:f08f:: with SMTP id n15mr35431224wro.213.1564394251709; 
- Mon, 29 Jul 2019 02:57:31 -0700 (PDT)
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=+lJIZvSYaI3dYqcvOi7SpRuQ2vDd2GcTwOMwgzFwFeQ=;
+ b=a/TILrjeamfAsdH8/adJoGCQTpT5HKnOlMnhh15i3z7pcIbXFzKMKQ7B2roF2Fk+xN
+ JL0NE7LnZL5J72lbO9s7OLUz2JB4Y4msenD8i+XZhrPp5Ioqu1lsqPQBE3v8h5MTsKLO
+ 885kUU8n4hP51UCUjtD3Tg2es7mpba90TU38IMT/KZUVGj5u2WEbIWpfLJgaz4X8cMO1
+ TxV8WaJmS1qByNlgc7mdfFgwBczj0IQzN9ozDUjlKJGptVipP9B1ynUllZek184GOeLe
+ CDpQcgX3mh0xcbBHQkKOhYmvqyWL7eXZFDkwCP+SjdACPyRgnChvReZ6+7XFnOf6TguM
+ CToA==
+X-Gm-Message-State: APjAAAUP9aGqAHWVZylA6ldlkKynKzFUzWuiISeLxdcHdSTKwAI4RGto
+ Zny/xqtyOV2uO5v4f43Qbwc=
+X-Google-Smtp-Source: APXvYqwRktv2fozVreuUhBqi1B5R21SS7JUFpkXMpWHHKx1itYi/JgJWJHXGc58FiILOo4GtbsPbvA==
+X-Received: by 2002:a5d:4e45:: with SMTP id r5mr10938244wrt.206.1564394781631; 
+ Mon, 29 Jul 2019 03:06:21 -0700 (PDT)
+Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru.
+ [188.32.48.208])
+ by smtp.gmail.com with ESMTPSA id x18sm54245837wmi.12.2019.07.29.03.06.20
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Mon, 29 Jul 2019 03:06:21 -0700 (PDT)
+Subject: Re: [EXTERNAL][PATCH 1/5] PCI: Convert pci_resource_to_user to a weak
+ function
+To: Paul Burton <paul.burton@mips.com>
+References: <20190728202213.15550-1-efremov@linux.com>
+ <20190728202213.15550-2-efremov@linux.com>
+ <20190728224953.kezztdozc6k24ya3@pburton-laptop>
+From: Denis Efremov <efremov@linux.com>
+Message-ID: <cd83d298-45f6-7330-0347-96025cde8959@linux.com>
+Date: Mon, 29 Jul 2019 13:06:19 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190725063401.29904-1-hch@lst.de>
- <20190725063401.29904-5-hch@lst.de>
-In-Reply-To: <20190725063401.29904-5-hch@lst.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 29 Jul 2019 11:57:19 +0200
-Message-ID: <CAMuHMdUBPj8AVSuDwaBB_4gRD6k7vzo0WAFJEkTUbxSw31bzUg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] dma-mapping: provide a better default
- ->get_required_mask
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190728224953.kezztdozc6k24ya3@pburton-laptop>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,47 +73,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>, Takashi Iwai <tiwai@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux IOMMU <iommu@lists.linux-foundation.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Michal Simek <monstr@monstr.eu>, James Hogan <jhogan@kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Ralf Baechle <ralf@linux-mips.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+Hi Paul,
 
-On Thu, Jul 25, 2019 at 8:35 AM Christoph Hellwig <hch@lst.de> wrote:
-> Most dma_map_ops instances are IOMMUs that work perfectly fine in 32-bits
-> of IOVA space, and the generic direct mapping code already provides its
-> own routines that is intelligent based on the amount of memory actually
-> present.  Wire up the dma-direct routine for the ARM direct mapping code
-> as well, and otherwise default to the constant 32-bit mask.  This way
-> we only need to override it for the occasional odd IOMMU that requires
-> 64-bit IOVA support, or IOMMU drivers that are more efficient if they
-> can fall back to the direct mapping.
+On 29.07.2019 01:49, Paul Burton wrote:
+> Hi Denis,
+> 
+> This is wrong - using __weak on the declaration in a header will cause
+> the weak attribute to be applied to all implementations too (presuming
+> the C files containing the implementations include the header). You then
+> get whichever impleentation the linker chooses, which isn't necessarily
+> the one you wanted.
 
-As I know you like diving into cans of worms ;-)
-
-Does 64-bit IOVA support actually work in general? Or only on 64-bit
-platforms, due to dma_addr_t to unsigned long truncation on 32-bit?
-
-https://lore.kernel.org/linux-renesas-soc/CAMuHMdWkQ918Y61tMJbHEu29AGLEyNwbvZbSBB-RRH7YYUNRcA@mail.gmail.com/
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thank you for pointing me on that. I will prepare the v2.
