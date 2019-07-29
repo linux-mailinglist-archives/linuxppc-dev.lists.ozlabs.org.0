@@ -2,58 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AD47898B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 12:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466CC78A08
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 13:01:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xwg13DtxzDqJB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 20:20:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xxZK4YVtzDqK5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 21:01:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.167.65; helo=mail-lf1-f65.google.com;
- envelope-from=yefremov.denis@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-Received: from mail-lf1-f65.google.com (mail-lf1-f65.google.com
- [209.85.167.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Z7KOP+q9"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xwXf1mPqzDqJR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 20:14:42 +1000 (AEST)
-Received: by mail-lf1-f65.google.com with SMTP id u10so2887842lfm.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 03:14:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=BsIPSvfzLwnhnLKtcEHLG5y6k186GA8GW/6JbbfPnA4=;
- b=ZzAut6bTrqjv/wLDFPeOHJzOlvS1sG7zNAiw0jZcGGOS4DZMRAap93nPqspc2cnFbg
- KCefp02dyMiieRPPYcD0J9YOJvtw6bctyRXWQJaoReYYR3VA77sE8cqP7VUNhhEenxON
- 4AHK1YJViGIUoAyIDFCYxs9FTbSPXasXBA8X4zDzd+o4l/bsZ/gbETKb2Bn9pYnNbZpd
- ilXcjtAkLQ0IrD5zoXHctaSe6SrNidM+8YQD0Gi4XPod6ytxtANTg02iTwOdjyVShjJu
- Poxxez/ByG62igConzEe0NSdJ+IJ/cRflhnQ/KFFcCmKVr4JCa3s17+yLeg8Ip0ThE7M
- AbQA==
-X-Gm-Message-State: APjAAAXJsf1ijkp9ZWjBVXTaV/rmfQNeyDwqdMycC7JBhzwJJkaWM0c6
- wut2hwpeIDsNIuGdwC9N+tY=
-X-Google-Smtp-Source: APXvYqxAitsCCS/HFPR7uHO4tOhzGp6jjCagTQ9NCr3/Ull+T3hU8+UpiyoxWae7OFM9Qe0aQhN3uA==
-X-Received: by 2002:ac2:5492:: with SMTP id t18mr53096046lfk.41.1564395278677; 
- Mon, 29 Jul 2019 03:14:38 -0700 (PDT)
-Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru.
- [188.32.48.208])
- by smtp.googlemail.com with ESMTPSA id y12sm11814834lfy.36.2019.07.29.03.14.37
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 29 Jul 2019 03:14:38 -0700 (PDT)
-From: Denis Efremov <efremov@linux.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 4/5] powerpc/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
-Date: Mon, 29 Jul 2019 13:14:00 +0300
-Message-Id: <20190729101401.28068-5-efremov@linux.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190729101401.28068-1-efremov@linux.com>
-References: <20190729101401.28068-1-efremov@linux.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xxWv5RrnzDqGN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 20:59:05 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45xxWg4mFmz9v9MP;
+ Mon, 29 Jul 2019 12:58:55 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Z7KOP+q9; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id m1vNkj6CGk8W; Mon, 29 Jul 2019 12:58:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45xxWg3ZpVz9v9M5;
+ Mon, 29 Jul 2019 12:58:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1564397935; bh=VxSKkHaFNdhmlWwNqqJwQwOE2mQ2WhfF8ueMIIf3F34=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Z7KOP+q9C3qceGHfw6ZeieAEjypdB1+Dkd+P+cMakb/+BsuwphM7JqYj93yE4KHS0
+ ailFGX6Tzv1R5Yn1Wg1WclPtJ+xN54IxByFDadhndcGJ27eXhoj9At/rNwTvcaaw61
+ bvk5zCMdSO9rZUN03xgStmlD/qCIyPrZcFJ3yBRI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 567A48B7CB;
+ Mon, 29 Jul 2019 12:59:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id bO3NIiryu1lR; Mon, 29 Jul 2019 12:59:00 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FEA98B7B3;
+ Mon, 29 Jul 2019 12:59:00 +0200 (CEST)
+Subject: Re: [RFC PATCH 01/10] powerpc: unify definition of M_IF_NEEDED
+To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com
+References: <20190717080621.40424-1-yanaijie@huawei.com>
+ <20190717080621.40424-2-yanaijie@huawei.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <e9f2a7fc-ea70-e018-24b2-76cde6705780@c-s.fr>
+Date: Mon, 29 Jul 2019 12:59:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190717080621.40424-2-yanaijie@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,35 +81,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Denis Efremov <efremov@linux.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, thunder.leizhen@huawei.com, fanchengyang@huawei.com,
+ yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The function pci_resource_to_user() was turned to a weak one. Thus,
-powerpc-specific version will automatically override the generic one
-and the HAVE_ARCH_PCI_RESOURCE_TO_USER macro should be removed.
 
-Signed-off-by: Denis Efremov <efremov@linux.com>
----
- arch/powerpc/include/asm/pci.h | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 2372d35533ad..327567b8f7d6 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -112,8 +112,6 @@ extern pgprot_t	pci_phys_mem_access_prot(struct file *file,
- 					 unsigned long size,
- 					 pgprot_t prot);
- 
--#define HAVE_ARCH_PCI_RESOURCE_TO_USER
--
- extern resource_size_t pcibios_io_space_offset(struct pci_controller *hose);
- extern void pcibios_setup_bus_devices(struct pci_bus *bus);
- extern void pcibios_setup_bus_self(struct pci_bus *bus);
--- 
-2.21.0
+Le 17/07/2019 à 10:06, Jason Yan a écrit :
+> M_IF_NEEDED is defined too many times. Move it to a common place.
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> Cc: Diana Craciun <diana.craciun@nxp.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Kees Cook <keescook@chromium.org>
 
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+> ---
+>   arch/powerpc/include/asm/nohash/mmu-book3e.h  | 10 ++++++++++
+>   arch/powerpc/kernel/exceptions-64e.S          | 10 ----------
+>   arch/powerpc/kernel/fsl_booke_entry_mapping.S | 10 ----------
+>   arch/powerpc/kernel/misc_64.S                 |  5 -----
+>   4 files changed, 10 insertions(+), 25 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/nohash/mmu-book3e.h b/arch/powerpc/include/asm/nohash/mmu-book3e.h
+> index 4c9777d256fb..0877362e48fa 100644
+> --- a/arch/powerpc/include/asm/nohash/mmu-book3e.h
+> +++ b/arch/powerpc/include/asm/nohash/mmu-book3e.h
+> @@ -221,6 +221,16 @@
+>   #define TLBILX_T_CLASS2			6
+>   #define TLBILX_T_CLASS3			7
+>   
+> +/*
+> + * The mapping only needs to be cache-coherent on SMP, except on
+> + * Freescale e500mc derivatives where it's also needed for coherent DMA.
+> + */
+> +#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+> +#define M_IF_NEEDED	MAS2_M
+> +#else
+> +#define M_IF_NEEDED	0
+> +#endif
+> +
+>   #ifndef __ASSEMBLY__
+>   #include <asm/bug.h>
+>   
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+> index 1cfb3da4a84a..fd49ec07ce4a 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -1342,16 +1342,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
+>   	sync
+>   	isync
+>   
+> -/*
+> - * The mapping only needs to be cache-coherent on SMP, except on
+> - * Freescale e500mc derivatives where it's also needed for coherent DMA.
+> - */
+> -#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+> -#define M_IF_NEEDED	MAS2_M
+> -#else
+> -#define M_IF_NEEDED	0
+> -#endif
+> -
+>   /* 6. Setup KERNELBASE mapping in TLB[0]
+>    *
+>    * r3 = MAS0 w/TLBSEL & ESEL for the entry we started in
+> diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+> index ea065282b303..de0980945510 100644
+> --- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+> +++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+> @@ -153,16 +153,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
+>   	tlbivax 0,r9
+>   	TLBSYNC
+>   
+> -/*
+> - * The mapping only needs to be cache-coherent on SMP, except on
+> - * Freescale e500mc derivatives where it's also needed for coherent DMA.
+> - */
+> -#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+> -#define M_IF_NEEDED	MAS2_M
+> -#else
+> -#define M_IF_NEEDED	0
+> -#endif
+> -
+>   #if defined(ENTRY_MAPPING_BOOT_SETUP)
+>   
+>   /* 6. Setup KERNELBASE mapping in TLB1[0] */
+> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> index b55a7b4cb543..26074f92d4bc 100644
+> --- a/arch/powerpc/kernel/misc_64.S
+> +++ b/arch/powerpc/kernel/misc_64.S
+> @@ -432,11 +432,6 @@ kexec_create_tlb:
+>   	rlwimi	r9,r10,16,4,15		/* Setup MAS0 = TLBSEL | ESEL(r9) */
+>   
+>   /* Set up a temp identity mapping v:0 to p:0 and return to it. */
+> -#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
+> -#define M_IF_NEEDED	MAS2_M
+> -#else
+> -#define M_IF_NEEDED	0
+> -#endif
+>   	mtspr	SPRN_MAS0,r9
+>   
+>   	lis	r9,(MAS1_VALID|MAS1_IPROT)@h
+> 
