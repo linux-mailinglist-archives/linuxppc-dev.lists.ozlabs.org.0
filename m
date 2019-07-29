@@ -2,43 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294C17889F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 11:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C2B788ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 11:53:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xvmX3kH8zDqLV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 19:39:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xw485qqTzDqLb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 19:53:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=liviu.dudau@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 45xvkY3TwnzDqBm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 19:38:07 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86135344;
- Mon, 29 Jul 2019 02:38:04 -0700 (PDT)
-Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
- [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 468AE3F694;
- Mon, 29 Jul 2019 02:38:04 -0700 (PDT)
-Received: by e110455-lin.cambridge.arm.com (Postfix, from userid 1000)
- id C804368240B; Mon, 29 Jul 2019 10:38:02 +0100 (BST)
-Date: Mon, 29 Jul 2019 10:38:02 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Pei Hsuan Hung <afcidk@gmail.com>
-Subject: Re: [PATCH] Fix typo reigster to register
-Message-ID: <20190729093802.y33mfklarh23yngl@e110455-lin.cambridge.arm.com>
-References: <20190727142111.20039-1-afcidk@gmail.com>
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xw2L3DrTzDqBH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 19:51:54 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6T9pUV9176560; Mon, 29 Jul 2019 05:51:44 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u1w4dc5am-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2019 05:51:44 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x6T9pihE177344;
+ Mon, 29 Jul 2019 05:51:44 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u1w4dc59w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2019 05:51:44 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x6T9ncCL026576;
+ Mon, 29 Jul 2019 09:51:43 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 2u0e86pgk2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jul 2019 09:51:43 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6T9pgui55312856
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Jul 2019 09:51:42 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 64ED0AE05F;
+ Mon, 29 Jul 2019 09:51:42 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74A08AE05C;
+ Mon, 29 Jul 2019 09:51:40 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.204.200.158])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 29 Jul 2019 09:51:40 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au,
+ "Oliver O'Halloran" <oohall@gmail.com>
+Subject: [PATCH v3] powerpc/nvdimm: Pick nearby online node if the device node
+ is not online
+Date: Mon, 29 Jul 2019 15:21:28 +0530
+Message-Id: <20190729095128.23707-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190727142111.20039-1-afcidk@gmail.com>
-User-Agent: NeoMutt/20180716
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-29_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907290117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,168 +89,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
- Oliver O'Halloran <oohall@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
- linux-scsi@vger.kernel.org, James Smart <james.smart@broadcom.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, MyungJoo Ham <myungjoo.ham@samsung.com>,
- Dick Kennedy <dick.kennedy@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Kalle Valo <kvalo@codeaurora.org>,
- trivial@kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>,
- Sam Bobroff <sbobroff@linux.ibm.com>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Brian Starkey <brian.starkey@arm.com>, Jeremy Kerr <jk@ozlabs.org>,
- Daniel Vetter <daniel@ffwll.ch>, linux-fsdevel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Larry Finger <Larry.Finger@lwfinger.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Pei,
+Currently, nvdimm subsystem expects the device numa node for SCM device to be
+an online node. It also doesn't try to bring the device numa node online. Hence
+if we use a non-online numa node as device node we hit crashes like below. This
+is because we try to access uninitialized NODE_DATA in different code paths.
 
-On Sat, Jul 27, 2019 at 10:21:09PM +0800, Pei Hsuan Hung wrote:
-> Signed-off-by: Pei Hsuan Hung <afcidk@gmail.com>
-> Cc: trivial@kernel.org
-> ---
->  arch/powerpc/kernel/eeh.c                           | 2 +-
->  arch/powerpc/platforms/cell/spufs/switch.c          | 4 ++--
->  drivers/extcon/extcon-rt8973a.c                     | 2 +-
->  drivers/gpu/drm/arm/malidp_regs.h                   | 2 +-
->  drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h | 2 +-
->  drivers/scsi/lpfc/lpfc_hbadisc.c                    | 4 ++--
->  fs/userfaultfd.c                                    | 2 +-
->  7 files changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index c0e4b73191f3..d75c9c24ec4d 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -1030,7 +1030,7 @@ int __init eeh_ops_register(struct eeh_ops *ops)
->  }
->  
->  /**
-> - * eeh_ops_unregister - Unreigster platform dependent EEH operations
-> + * eeh_ops_unregister - Unregister platform dependent EEH operations
->   * @name: name of EEH platform operations
->   *
->   * Unregister the platform dependent EEH operation callback
-> diff --git a/arch/powerpc/platforms/cell/spufs/switch.c b/arch/powerpc/platforms/cell/spufs/switch.c
-> index 5c3f5d088c3b..9548a086937b 100644
-> --- a/arch/powerpc/platforms/cell/spufs/switch.c
-> +++ b/arch/powerpc/platforms/cell/spufs/switch.c
-> @@ -574,7 +574,7 @@ static inline void save_mfc_rag(struct spu_state *csa, struct spu *spu)
->  {
->  	/* Save, Step 38:
->  	 *     Save RA_GROUP_ID register and the
-> -	 *     RA_ENABLE reigster in the CSA.
-> +	 *     RA_ENABLE register in the CSA.
->  	 */
->  	csa->priv1.resource_allocation_groupID_RW =
->  		spu_resource_allocation_groupID_get(spu);
-> @@ -1227,7 +1227,7 @@ static inline void restore_mfc_rag(struct spu_state *csa, struct spu *spu)
->  {
->  	/* Restore, Step 29:
->  	 *     Restore RA_GROUP_ID register and the
-> -	 *     RA_ENABLE reigster from the CSA.
-> +	 *     RA_ENABLE register from the CSA.
->  	 */
->  	spu_resource_allocation_groupID_set(spu,
->  			csa->priv1.resource_allocation_groupID_RW);
-> diff --git a/drivers/extcon/extcon-rt8973a.c b/drivers/extcon/extcon-rt8973a.c
-> index 40c07f4d656e..e75c03792398 100644
-> --- a/drivers/extcon/extcon-rt8973a.c
-> +++ b/drivers/extcon/extcon-rt8973a.c
-> @@ -270,7 +270,7 @@ static int rt8973a_muic_get_cable_type(struct rt8973a_muic_info *info)
->  	}
->  	cable_type = adc & RT8973A_REG_ADC_MASK;
->  
-> -	/* Read Device 1 reigster to identify correct cable type */
-> +	/* Read Device 1 register to identify correct cable type */
->  	ret = regmap_read(info->regmap, RT8973A_REG_DEV1, &dev1);
->  	if (ret) {
->  		dev_err(info->dev, "failed to read DEV1 register\n");
-> diff --git a/drivers/gpu/drm/arm/malidp_regs.h b/drivers/gpu/drm/arm/malidp_regs.h
-> index 993031542fa1..0d81b34a4212 100644
-> --- a/drivers/gpu/drm/arm/malidp_regs.h
-> +++ b/drivers/gpu/drm/arm/malidp_regs.h
-> @@ -145,7 +145,7 @@
->  #define     MALIDP_SE_COEFFTAB_DATA_MASK	0x3fff
->  #define     MALIDP_SE_SET_COEFFTAB_DATA(x) \
->  		((x) & MALIDP_SE_COEFFTAB_DATA_MASK)
-> -/* Enhance coeffents reigster offset */
-> +/* Enhance coeffents register offset */
+cpu 0x0: Vector: 300 (Data Access) at [c0000000fac53170]
+    pc: c0000000004bbc50: ___slab_alloc+0x120/0xca0
+    lr: c0000000004bc834: __slab_alloc+0x64/0xc0
+    sp: c0000000fac53400
+   msr: 8000000002009033
+   dar: 73e8
+ dsisr: 80000
+  current = 0xc0000000fabb6d80
+  paca    = 0xc000000003870000   irqmask: 0x03   irq_happened: 0x01
+    pid   = 7, comm = kworker/u16:0
+Linux version 5.2.0-06234-g76bd729b2644 (kvaneesh@ltc-boston123) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #135 SMP Thu Jul 11 05:36:30 CDT 2019
+enter ? for help
+[link register   ] c0000000004bc834 __slab_alloc+0x64/0xc0
+[c0000000fac53400] c0000000fac53480 (unreliable)
+[c0000000fac53500] c0000000004bc818 __slab_alloc+0x48/0xc0
+[c0000000fac53560] c0000000004c30a0 __kmalloc_node_track_caller+0x3c0/0x6b0
+[c0000000fac535d0] c000000000cfafe4 devm_kmalloc+0x74/0xc0
+[c0000000fac53600] c000000000d69434 nd_region_activate+0x144/0x560
+[c0000000fac536d0] c000000000d6b19c nd_region_probe+0x17c/0x370
+[c0000000fac537b0] c000000000d6349c nvdimm_bus_probe+0x10c/0x230
+[c0000000fac53840] c000000000cf3cc4 really_probe+0x254/0x4e0
+[c0000000fac538d0] c000000000cf429c driver_probe_device+0x16c/0x1e0
+[c0000000fac53950] c000000000cf0b44 bus_for_each_drv+0x94/0x130
+[c0000000fac539b0] c000000000cf392c __device_attach+0xdc/0x200
+[c0000000fac53a50] c000000000cf231c bus_probe_device+0x4c/0xf0
+[c0000000fac53a90] c000000000ced268 device_add+0x528/0x810
+[c0000000fac53b60] c000000000d62a58 nd_async_device_register+0x28/0xa0
+[c0000000fac53bd0] c0000000001ccb8c async_run_entry_fn+0xcc/0x1f0
+[c0000000fac53c50] c0000000001bcd9c process_one_work+0x46c/0x860
+[c0000000fac53d20] c0000000001bd4f4 worker_thread+0x364/0x5f0
+[c0000000fac53db0] c0000000001c7260 kthread+0x1b0/0x1c0
+[c0000000fac53e20] c00000000000b954 ret_from_kernel_thread+0x5c/0x68
 
-Unless this patch was generated by a script I think it is worth correcting the
-other spelling mistake on that line as well: coefficients rather than coeffents.
+The patch tries to fix this by picking the nearest online node as the SCM node.
+This does have a problem of us losing the information that SCM node is
+equidistant from two other online nodes. If applications need to understand these
+fine-grained details we should express then like x86 does via
+/sys/devices/system/node/nodeX/accessY/initiators/
 
-With that: Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+With the patch we get
 
-Best regards,
-Liviu
+ # numactl -H
+available: 2 nodes (0-1)
+node 0 cpus:
+node 0 size: 0 MB
+node 0 free: 0 MB
+node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+node 1 size: 130865 MB
+node 1 free: 129130 MB
+node distances:
+node   0   1
+  0:  10  20
+  1:  20  10
+ # cat /sys/bus/nd/devices/region0/numa_node
+0
+ # dmesg | grep papr_scm
+[   91.332305] papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Region registered with target node 2 and online node 0
 
->  #define MALIDP_SE_IMAGE_ENH			0x3C
->  /* ENH_LIMITS offset 0x0 */
->  #define     MALIDP_SE_ENH_LOW_LEVEL		24
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-> index 99c6f7eefd85..d03c8f12a15c 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/fw.h
-> @@ -58,7 +58,7 @@ struct fw_priv {
->  	/* 0x81: PCI-AP, 01:PCIe, 02: 92S-U,
->  	 * 0x82: USB-AP, 0x12: 72S-U, 03:SDIO */
->  	u8 hci_sel;
-> -	/* the same value as reigster value  */
-> +	/* the same value as register value  */
->  	u8 chip_version;
->  	/* customer  ID low byte */
->  	u8 customer_id_0;
-> diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-> index 28ecaa7fc715..9e116bd79836 100644
-> --- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-> +++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-> @@ -6551,7 +6551,7 @@ lpfc_sli4_unregister_fcf(struct lpfc_hba *phba)
->   * lpfc_unregister_fcf_rescan - Unregister currently registered fcf and rescan
->   * @phba: Pointer to hba context object.
->   *
-> - * This function unregisters the currently reigstered FCF. This function
-> + * This function unregisters the currently registered FCF. This function
->   * also tries to find another FCF for discovery by rescan the HBA FCF table.
->   */
->  void
-> @@ -6609,7 +6609,7 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
->   * lpfc_unregister_fcf - Unregister the currently registered fcf record
->   * @phba: Pointer to hba context object.
->   *
-> - * This function just unregisters the currently reigstered FCF. It does not
-> + * This function just unregisters the currently registered FCF. It does not
->   * try to find another FCF for discovery.
->   */
->  void
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index ccbdbd62f0d8..612dc1240f90 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -267,7 +267,7 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
->  #endif /* CONFIG_HUGETLB_PAGE */
->  
->  /*
-> - * Verify the pagetables are still not ok after having reigstered into
-> + * Verify the pagetables are still not ok after having registered into
->   * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
->   * userfault that has already been resolved, if userfaultfd_read and
->   * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
-> -- 
-> 2.17.1
-> 
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+Changes from V2:
+* Update commit message
+* Don't update platform device numa node
 
+Changes from V1:
+* handle NUMA_NO_NODE
+
+ arch/powerpc/platforms/pseries/papr_scm.c | 29 +++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 2c07908359b2..a5ac371a3f06 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -275,12 +275,32 @@ static const struct attribute_group *papr_scm_dimm_groups[] = {
+ 	NULL,
+ };
+ 
++static inline int papr_scm_node(int node)
++{
++	int min_dist = INT_MAX, dist;
++	int nid, min_node;
++
++	if ((node == NUMA_NO_NODE) || node_online(node))
++		return node;
++
++	min_node = first_online_node;
++	for_each_online_node(nid) {
++		dist = node_distance(node, nid);
++		if (dist < min_dist) {
++			min_dist = dist;
++			min_node = nid;
++		}
++	}
++	return min_node;
++}
++
+ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ {
+ 	struct device *dev = &p->pdev->dev;
+ 	struct nd_mapping_desc mapping;
+ 	struct nd_region_desc ndr_desc;
+ 	unsigned long dimm_flags;
++	int target_nid, online_nid;
+ 
+ 	p->bus_desc.ndctl = papr_scm_ndctl;
+ 	p->bus_desc.module = THIS_MODULE;
+@@ -319,8 +339,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 
+ 	memset(&ndr_desc, 0, sizeof(ndr_desc));
+ 	ndr_desc.attr_groups = region_attr_groups;
+-	ndr_desc.numa_node = dev_to_node(&p->pdev->dev);
+-	ndr_desc.target_node = ndr_desc.numa_node;
++	target_nid = dev_to_node(&p->pdev->dev);
++	online_nid = papr_scm_node(target_nid);
++	ndr_desc.numa_node = online_nid;
++	ndr_desc.target_node = target_nid;
+ 	ndr_desc.res = &p->res;
+ 	ndr_desc.of_node = p->dn;
+ 	ndr_desc.provider_data = p;
+@@ -338,6 +360,9 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 				ndr_desc.res, p->dn);
+ 		goto err;
+ 	}
++	if (target_nid != online_nid)
++		dev_info(dev, "Region registered with target node %d and online node %d",
++			 target_nid, online_nid);
+ 
+ 	return 0;
+ 
 -- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+2.21.0
+
