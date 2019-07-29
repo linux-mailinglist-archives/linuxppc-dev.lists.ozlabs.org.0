@@ -2,72 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD66578F11
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 17:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEF378F2D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 17:28:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45y3My2yQPzDqDy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 01:22:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45y3V81Kx5zDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 01:28:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.14.78; helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=diana.craciun@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="NB/ouqXU"; 
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="mt/gTzcM"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140078.outbound.protection.outlook.com [40.107.14.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45y1ry5vC7zDqKX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 00:14:10 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id f17so24119243pfn.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 07:14:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Vj26kmMb0OHym4ecWxBShXJPwtsGHDBme/NdioODVlU=;
- b=NB/ouqXUSD1MyFdXUVhsM18bd/fh6Y4e0LDInMz1tccHuC9MA0/MxOVOijQErc42u2
- QTqAmPnoiXOivAqWtdP9wN8pdaS49EytheOmpb9cvA8gUilyZFHlD16elj4d4y5th5NV
- x2FUU6dnvlGnLQ3TJ+Rf1jALqiqxIEPIsaRo2wK7ZKvjUIwjIkaAv+jK6Rrf4ouaL/Tg
- oUKfhrNswFVwECwRDHXTlqIrVYcED1Gp4fPlFrNLL9ke0yKRKvbd7hTQM6PsFLmf0AQS
- VfQ8BKQ+32CBu8LmWpqC7fqfjIFbtr8lkqE4gLQkoCnLIHN1Kxk67+bYvmIUFZ3Ufw4V
- u4hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Vj26kmMb0OHym4ecWxBShXJPwtsGHDBme/NdioODVlU=;
- b=liCTn91ofVsf8VyTyOqO+z1jzfVfPl297kMEqCSXjfHfPPz235f2groD/uvk7E+wSl
- 0C8r06k5FGZbeBwu45dNlI1sp+yyBp2+WlK7YNg9rXyS8J36SGptDnPmcEAQxp/deTRG
- L4ffSg5NShR+EUzv2jpMT9e+j+OGTTx7wlfdADlkD3hBGtuQHJNibgkwM99CNdKPT//W
- Ss1tEo9k+LgscTiZd8ccdUeXBiINqaFaYlZJVUOpSoBmYlgAU6ENdaylsqtEYpeDUict
- iH35nuNhsVBnUNxnXYdilrTwXcUU+S1T+Zi9PlBrkfZNAJk3kZb8WlaiVEb3P+u5IKp3
- XEQQ==
-X-Gm-Message-State: APjAAAVujLHgnq633LKY8X6QhaNB4tQC33akckvTDhj44YvOSVnYQmuh
- Y6PfnS/pvTrgMC27wZ1m0z4UzjRlz7Q=
-X-Google-Smtp-Source: APXvYqyAN/lyilTuSNYme0wuxk/SGvgiH/sjGLdQw5Mn4YoFhUCktTXsyQ5SanxAyw/UjSNF7bZ7IA==
-X-Received: by 2002:a62:6044:: with SMTP id u65mr36155888pfb.15.1564409648841; 
- Mon, 29 Jul 2019 07:14:08 -0700 (PDT)
-Received: from bobo.local0.net (61-68-184-39.tpgi.com.au. [61.68.184.39])
- by smtp.gmail.com with ESMTPSA id u7sm53960083pfm.96.2019.07.29.07.14.06
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 29 Jul 2019 07:14:08 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 18/18] powerpc/64s/exception: program check handler do not
- branch into a macro
-Date: Tue, 30 Jul 2019 00:12:47 +1000
-Message-Id: <20190729141247.26762-19-npiggin@gmail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190729141247.26762-1-npiggin@gmail.com>
-References: <20190729141247.26762-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45y2Cg5wp9zDqFp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 00:30:21 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dmzkZhD9rfo468Kfd7Mhc+h3vRlWO4Lvj7phir8E0BlgENE6BD9oVs9i81VxK76tzq18X/iHgzuqnABJ1M/IuaFA/k/VQpS5XaYb3AOtVHQsDQ3xJywQd+YKworz8IrcrpifZ3Gz1MIjwjJhmMQ8eWLWop4OWGJs6nIAYF+C4L9Q8IvCaGeEi+uVZk06ANJy17qOMY0WNnDVCT/RQIn61UHJz2bHRM3NRI6AI4lVwhcUFVeccSBn1pQZOI2VCMvQVN8cR/zO4Rj+h3F4VXjPBRbMIwP0x5db1qXaN+a9yplkVxZthg9Nzvpv4wj8+F/3sB2B0ZL8CGbSS6ydNfkr/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t+wCdu3SvhhI5Nq9aA0GPKeBPlhpLiUeh0ZGbhj8Xt0=;
+ b=G2fOYIDl2fdx7HrVBrWy1+foilcK4b2e1rop8KcziRLdG572ztrEpqy/lDaeSJ8zfdh1NwZdifzPgvD60fxbxRYdlu029O+6+1ElGxfIVzHCVPAag1IrH8/8jrmrLJNcG/Rbtz6Wg+KGgD0FEL9Gl66FABTnclqrE+sx4eBOXMdQmLVtZZEjabErOrvLJVQUqa8F6AoC/hbxCjbAyzuokC/snwiWT9j6TkT14+U+WuaG7gEqdVYYNGTEAyhF9nM9ONYvIR/IhDS9wfEUP08shGT0Q2KMVIBXHXr2qQ7hv9G9KZq37fvwDTVDqnzux94a2BflIRgXQe2JB0MdpmtakQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=nxp.com;dmarc=pass action=none header.from=nxp.com;dkim=pass
+ header.d=nxp.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t+wCdu3SvhhI5Nq9aA0GPKeBPlhpLiUeh0ZGbhj8Xt0=;
+ b=mt/gTzcMcUYriI0vKZGE6+LrhRyvCos2qVmdmLzJsRlVmpxY9OYoEAYA6wf1tAVD2J2nO8hZ0UDqxaS0acnJhLCUb5SvMZWTgOxi7xNSGvK31jKJD2OZEkKHYbL//C12z+P7136OM7CCyP7zewlJpdDUMWVpKs4dfJGQ6YFvkJY=
+Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com (10.168.61.13) by
+ VI1PR0401MB2272.eurprd04.prod.outlook.com (10.169.137.140) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2115.10; Mon, 29 Jul 2019 14:30:15 +0000
+Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com
+ ([fe80::49dc:1671:b13b:e382]) by VI1PR0401MB2463.eurprd04.prod.outlook.com
+ ([fe80::49dc:1671:b13b:e382%9]) with mapi id 15.20.2115.005; Mon, 29 Jul 2019
+ 14:30:15 +0000
+From: Diana Madalina Craciun <diana.craciun@nxp.com>
+To: Jason Yan <yanaijie@huawei.com>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "christophe.leroy@c-s.fr"
+ <christophe.leroy@c-s.fr>, "benh@kernel.crashing.org"
+ <benh@kernel.crashing.org>, "paulus@samba.org" <paulus@samba.org>,
+ "npiggin@gmail.com" <npiggin@gmail.com>, "keescook@chromium.org"
+ <keescook@chromium.org>, "kernel-hardening@lists.openwall.com"
+ <kernel-hardening@lists.openwall.com>
+Subject: Re: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
+Thread-Topic: [RFC PATCH 00/10] implement KASLR for powerpc/fsl_booke/32
+Thread-Index: AQHVPHQmPxsZ5ebrqkOb0IKUtKxd9g==
+Date: Mon, 29 Jul 2019 14:30:15 +0000
+Message-ID: <VI1PR0401MB24633E9C5475F8D50536C46FFFDD0@VI1PR0401MB2463.eurprd04.prod.outlook.com>
+References: <20190717080621.40424-1-yanaijie@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=diana.craciun@nxp.com; 
+x-originating-ip: [212.146.100.6]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 078f2f98-c292-4f27-a3bb-08d7143145ef
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR0401MB2272; 
+x-ms-traffictypediagnostic: VI1PR0401MB2272:
+x-microsoft-antispam-prvs: <VI1PR0401MB22727C6BC38B9DE504EFFAA1FFDD0@VI1PR0401MB2272.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5236;
+x-forefront-prvs: 01136D2D90
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(396003)(366004)(39860400002)(346002)(136003)(376002)(189003)(199004)(91956017)(8676002)(446003)(66946007)(7736002)(7696005)(486006)(76116006)(476003)(2906002)(81156014)(81166006)(52536014)(71190400001)(55016002)(3846002)(66066001)(33656002)(256004)(14444005)(76176011)(64756008)(66556008)(9686003)(6116002)(66446008)(71200400001)(66476007)(53936002)(2201001)(14454004)(99286004)(305945005)(229853002)(6436002)(7416002)(2501003)(68736007)(8936002)(4326008)(110136005)(54906003)(86362001)(478600001)(5660300002)(186003)(102836004)(6246003)(6506007)(53546011)(25786009)(316002)(26005)(74316002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0401MB2272;
+ H:VI1PR0401MB2463.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: q7M8rIkdoFNPpU/P2Oy9SYKAFR2WdSN/U5EtI4DErjW55sbqkLsSLM7Vr4zXxfZmKStqHBuMT6vMC9+vKVz3C7KJpGAGkP+yQ6W+NBCLgjLTHzSOyfMctRZ4ZJXZr7X1KsGzsb6dJf8jRcBzvr0r7lN6d45WDsjGt4bDhD9mRVLW6b0f4ruav0l0+ax8g4z++l6eP1gZ5JZUW+EmUi9n+7UDpGsuvsFTV6knugPZZrNZEk8UShXJBC0NRUDB3uL9CWLXnJCVFT1TzO4FqdHnDo4HsixAsrVagmZskTxMhRrcCxbgz8P/5T6JYdiLP1J1cLCev9HnLy0KrzfmGYKueIl+hDXXIM0akzgUe798PsN5fyZndUS/4FRAuEcTPZlIV5g4X/qtC986hLStS2wDdY+ijvB0FkX5Nd56KqMoHg8=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 078f2f98-c292-4f27-a3bb-08d7143145ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jul 2019 14:30:15.4829 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: diana.craciun@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2272
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,70 +109,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "jingxiangfeng@huawei.com" <jingxiangfeng@huawei.com>,
+ "thunder.leizhen@huawei.com" <thunder.leizhen@huawei.com>,
+ "fanchengyang@huawei.com" <fanchengyang@huawei.com>,
+ "yebin10@huawei.com" <yebin10@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's a bit too clever to jump to a label inside an expanded macro,
-particularly when the label is just a number rather than a descriptive
-name.
-
-So expand interrupt handler code twice, for the stack and no stack
-cases, and branch to those. The slight code size increase is worth
-the improved clarity of branches for this non-performance critical
-code.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/exceptions-64s.S | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0ee8c4a744c9..69f71c8759c5 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -533,11 +533,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	andi.	r10,r12,MSR_PR		/* See if coming from user	*/
- 	mr	r10,r1			/* Save r1			*/
- 	subi	r1,r1,INT_FRAME_SIZE	/* alloc frame on kernel stack	*/
--	beq-	1f
-+	beq-	100f
- 	ld	r1,PACAKSAVE(r13)	/* kernel stack to use		*/
--1:	tdgei	r1,-INT_FRAME_SIZE	/* trap if r1 is in userspace	*/
--	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0
--3:
-+100:	tdgei	r1,-INT_FRAME_SIZE	/* trap if r1 is in userspace	*/
-+	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,0
- 	.endif
- 
- 	std	r9,_CCR(r1)		/* save CR in stackframe	*/
-@@ -551,10 +550,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	.if \kaup
- 	kuap_save_amr_and_lock r9, r10, cr1, cr0
- 	.endif
--	beq	4f			/* if from kernel mode		*/
-+	beq	101f			/* if from kernel mode		*/
- 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10)
- 	SAVE_PPR(\area, r9)
--4:
-+101:
- 	.else
- 	.if \kaup
- 	kuap_save_amr_and_lock r9, r10, cr1
-@@ -1325,9 +1324,11 @@ EXC_COMMON_BEGIN(program_check_common)
- 	mr	r10,r1			/* Save r1			*/
- 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack		*/
- 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
--	b 3f				/* Jump into the macro !!	*/
-+	INT_COMMON 0x700, PACA_EXGEN, 0, 1, 1, 0, 0
-+	b 3f
- 2:
- 	INT_COMMON 0x700, PACA_EXGEN, 1, 1, 1, 0, 0
-+3:
- 	bl	save_nvgprs
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	program_check_exception
--- 
-2.22.0
-
+Reviewed-by: Diana Craciun <diana.craciun@nxp.com>=0A=
+Tested-by: Diana Craciun <diana.craciun@nxp.com>=0A=
+=0A=
+=0A=
+On 7/17/2019 10:49 AM, Jason Yan wrote:=0A=
+> This series implements KASLR for powerpc/fsl_booke/32, as a security=0A=
+> feature that deters exploit attempts relying on knowledge of the location=
+=0A=
+> of kernel internals.=0A=
+>=0A=
+> Since CONFIG_RELOCATABLE has already supported, what we need to do is=0A=
+> map or copy kernel to a proper place and relocate. Freescale Book-E=0A=
+> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1=0A=
+> entries are not suitable to map the kernel directly in a randomized=0A=
+> region, so we chose to copy the kernel to a proper place and restart to=
+=0A=
+> relocate.=0A=
+>=0A=
+> Entropy is derived from the banner and timer base, which will change ever=
+y=0A=
+> build and boot. This not so much safe so additionally the bootloader may=
+=0A=
+> pass entropy via the /chosen/kaslr-seed node in device tree.=0A=
+>=0A=
+> We will use the first 512M of the low memory to randomize the kernel=0A=
+> image. The memory will be split in 64M zones. We will use the lower 8=0A=
+> bit of the entropy to decide the index of the 64M zone. Then we chose a=
+=0A=
+> 16K aligned offset inside the 64M zone to put the kernel in.=0A=
+>=0A=
+>     KERNELBASE=0A=
+>=0A=
+>         |-->   64M   <--|=0A=
+>         |               |=0A=
+>         +---------------+    +----------------+---------------+=0A=
+>         |               |....|    |kernel|    |               |=0A=
+>         +---------------+    +----------------+---------------+=0A=
+>         |                         |=0A=
+>         |----->   offset    <-----|=0A=
+>=0A=
+>                               kimage_vaddr=0A=
+>=0A=
+> We also check if we will overlap with some areas like the dtb area, the=
+=0A=
+> initrd area or the crashkernel area. If we cannot find a proper area,=0A=
+> kaslr will be disabled and boot from the original kernel.=0A=
+>=0A=
+> Jason Yan (10):=0A=
+>   powerpc: unify definition of M_IF_NEEDED=0A=
+>   powerpc: move memstart_addr and kernstart_addr to init-common.c=0A=
+>   powerpc: introduce kimage_vaddr to store the kernel base=0A=
+>   powerpc/fsl_booke/32: introduce create_tlb_entry() helper=0A=
+>   powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper=0A=
+>   powerpc/fsl_booke/32: implement KASLR infrastructure=0A=
+>   powerpc/fsl_booke/32: randomize the kernel image offset=0A=
+>   powerpc/fsl_booke/kaslr: clear the original kernel if randomized=0A=
+>   powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter=0A=
+>   powerpc/fsl_booke/kaslr: dump out kernel offset information on panic=0A=
+>=0A=
+>  arch/powerpc/Kconfig                          |  11 +=0A=
+>  arch/powerpc/include/asm/nohash/mmu-book3e.h  |  10 +=0A=
+>  arch/powerpc/include/asm/page.h               |   7 +=0A=
+>  arch/powerpc/kernel/Makefile                  |   1 +=0A=
+>  arch/powerpc/kernel/early_32.c                |   2 +-=0A=
+>  arch/powerpc/kernel/exceptions-64e.S          |  10 -=0A=
+>  arch/powerpc/kernel/fsl_booke_entry_mapping.S |  23 +-=0A=
+>  arch/powerpc/kernel/head_fsl_booke.S          |  61 ++-=0A=
+>  arch/powerpc/kernel/kaslr_booke.c             | 439 ++++++++++++++++++=
+=0A=
+>  arch/powerpc/kernel/machine_kexec.c           |   1 +=0A=
+>  arch/powerpc/kernel/misc_64.S                 |   5 -=0A=
+>  arch/powerpc/kernel/setup-common.c            |  23 +=0A=
+>  arch/powerpc/mm/init-common.c                 |   7 +=0A=
+>  arch/powerpc/mm/init_32.c                     |   5 -=0A=
+>  arch/powerpc/mm/init_64.c                     |   5 -=0A=
+>  arch/powerpc/mm/mmu_decl.h                    |  10 +=0A=
+>  arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-=0A=
+>  17 files changed, 580 insertions(+), 48 deletions(-)=0A=
+>  create mode 100644 arch/powerpc/kernel/kaslr_booke.c=0A=
+>=0A=
+=0A=
