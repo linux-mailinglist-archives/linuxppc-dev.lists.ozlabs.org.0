@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3991478E2F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 16:38:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45y2PF4SVkzDqNQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 00:38:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DCE78E40
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 16:42:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45y2T41m8szDqGl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 00:42:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,54 +16,53 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="EF3s8ISh"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="kPIB7J4E"; 
  dkim-atps=neutral
 Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
  [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45y1rN3nQVzDq96
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 00:13:39 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id 4so20580981pld.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 07:13:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45y1rP2v6fzDqC8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 00:13:41 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id w24so27572318plp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 07:13:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=AZTrJ75fwiSKeqtskzr4XIpVQCwpd4JHPmIVa+6R3Ls=;
- b=EF3s8IShvEp0jpuIEnSCFD/PBnkFkVka6xmsO/YBfoniarOUoHKPoM6gVKjJ05McvQ
- N28A1uIRzQnRPHRR0WqDSLgn2V9H2nrxnbWJlhuFCpf/3/LbsZXAxafQm4awVZxy+fad
- +1+vsHMRe67nvVuK9wynvrBMfG1BkmvPCoA41LRo6KmOOsEANy7dEnfkjj7q2devjibq
- nNwWEgMIjlVwf9365N5Et13gczBMgMQ6r6frGxPdYpcjnx3uPbfzYErsrw9mv4/hrLX6
- zm+CEN01/ajSYz7bpY4i2n5w6S0pEGk/0ZO2wFvcbGZ9FK9UCw23/Kp3RZFIENOn58AF
- v1rQ==
+ bh=xEsxeG444yzcJtuWUSv56xRP6n++uc8jNpqEvnRlTIU=;
+ b=kPIB7J4EkK7fwjPCgFLANeYHAwAo2RrT8eFmI8Msfnn1bOro7J3QnE670NTUYMBqC4
+ WoppYdFgxzFypo3dyWNJi8oCJ+YAZRY5VXQU9TeT8aD72fHtdA8CB/e08kv+TgFPdPTT
+ d6Sqf/F0LdzRHxGkxfC6hNYLO6IGYTAlc6V/I2dCaH5ZCB1KLTu+zFkaF4AJqLzB2+/0
+ LSM9UHV8RZuRV2uxs23XehDM8/+hMbLWsWRhqmYqZfGHLpkPDk0n/TErlTX/sxW3XVhH
+ gIdTDcK02XSf4apFz0zm5LNpAkirdKJaoiIbgiauo45ykctFnXI51tQygmDDIaH3zBTZ
+ tEIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=AZTrJ75fwiSKeqtskzr4XIpVQCwpd4JHPmIVa+6R3Ls=;
- b=KidCEiVNzx8+DouMs0H9Mw1PdhHlHZJFtl20JoB01FjQfNaBsgHAsEUOf3fuf2uJhZ
- 5LZLollYyv6L8E6CxYZfyh7rRsPf/8SHCwqtDQhyLJUUTg9jmzIwujwFR4JadOP9pAr/
- Qq0m+yDPHQHe9A1PG/mcQd7qGnKUNAnKiGRqvG4G5EgtLnqdQynbHU6zqWEBJNSp5egc
- PbXKgKTgjfSVFUrZnMkpWkvbnbsIcPXfi8On962ZdiVn67H/moPl2PjBn/z2Wa4cRFP7
- WsP2Ch5DsHe8r9G4zFTwaiT6hRQ1FbMf0GH0jsVotnDf8MxcU/nSfa0ONZyM2trhaoVF
- HGFQ==
-X-Gm-Message-State: APjAAAXdPFk6lGD+GQ2azJjbJKYL4NKdpoGQBLS9pry8r8c/e4T73oWr
- IFlX3NhRWQuLI0VGVdv7o0SfxPhjp+s=
-X-Google-Smtp-Source: APXvYqzn1mExoKIf2CUjg3Gke91Ma9FvDpH88VEMLNVe471ukEDkaBbmQhmBaTPDGxfIcvRZX/FNDw==
-X-Received: by 2002:a17:902:76c6:: with SMTP id
- j6mr110086938plt.102.1564409617004; 
- Mon, 29 Jul 2019 07:13:37 -0700 (PDT)
+ bh=xEsxeG444yzcJtuWUSv56xRP6n++uc8jNpqEvnRlTIU=;
+ b=MGKEvQDVJEFrORBiwjbebX0D2+AGDZF/8KJm5Py2U5Hcf+Fyt/RYP4f5qLqCAPLxD5
+ chdLVy1fNB8BGF/UesCl0pNeslvAiQsP6gM/BTUmzC85LoH4eu2wfBPtyiiR1FRqq57I
+ yb7HjTngnUMxgsZouc+GSxSd/DUrYzrVk6mEL+OTV9Av8s2Kvao+42+xDDb1vEGnlKuC
+ qGw+VbjO7NR0dzw5o4eX/0lrkLNrbRA8FBApFbMgntL7SLK5b2qhWYTu3K+GAhqR//2V
+ UXAMZ2iPC8A1ELH/EtdH/bsdnOVeCOnWtEeYSxFlfZxAYxH3M+Jt2mSNJWX7ojwv8UPD
+ NU1A==
+X-Gm-Message-State: APjAAAXrb+VUbp1LzDHBUkI1JqHHPtI1WQu5fwsJNifCteFOdJ/yqh2H
+ mzJV19pDB+5j7nn1lKKrbMtEpoRCOto=
+X-Google-Smtp-Source: APXvYqxEZ38iRzceJ+2JSjiAaHjoodLApxWMwLqqrdodE+hE1iGnToN4/GETOMmajA5JeOfsM/S1Rg==
+X-Received: by 2002:a17:902:306:: with SMTP id
+ 6mr111872233pld.148.1564409619385; 
+ Mon, 29 Jul 2019 07:13:39 -0700 (PDT)
 Received: from bobo.local0.net (61-68-184-39.tpgi.com.au. [61.68.184.39])
- by smtp.gmail.com with ESMTPSA id u7sm53960083pfm.96.2019.07.29.07.13.35
+ by smtp.gmail.com with ESMTPSA id u7sm53960083pfm.96.2019.07.29.07.13.37
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 29 Jul 2019 07:13:36 -0700 (PDT)
+ Mon, 29 Jul 2019 07:13:39 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 04/18] powerpc/64s/exception: Fix performance monitor virt
- handler
-Date: Tue, 30 Jul 2019 00:12:33 +1000
-Message-Id: <20190729141247.26762-5-npiggin@gmail.com>
+Subject: [PATCH 05/18] powerpc/64s/exception: remove 0xb00 handler
+Date: Tue, 30 Jul 2019 00:12:34 +1000
+Message-Id: <20190729141247.26762-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190729141247.26762-1-npiggin@gmail.com>
 References: <20190729141247.26762-1-npiggin@gmail.com>
@@ -85,28 +84,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The perf virt handler uses EXCEPTION_PROLOG_2_REAL rather than _VIRT.
-In practice this is okay because the _REAL variant is usable by virt
-mode interrupts, but should be fixed (and is a performance win).
+This vector is not used by any supported processor, and has been
+implemented as an unknown exception going back to 2.6. There is
+nothing special about 0xb00, so remove it like other unused
+vectors.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/exceptions-64s.S | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 60969992e9e0..723c37f3da17 100644
+index 723c37f3da17..9c407392774c 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -750,7 +750,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
- #define __TRAMP_VIRT_OOL_MASKABLE(name, realvec, bitmask)		\
- 	TRAMP_VIRT_BEGIN(tramp_virt_##name);				\
- 	EXCEPTION_PROLOG_1 EXC_STD, PACA_EXGEN, 0, realvec, 0, 0, bitmask ; \
--	EXCEPTION_PROLOG_2_REAL name##_common, EXC_STD, 1
-+	EXCEPTION_PROLOG_2_VIRT name##_common, EXC_STD
+@@ -1563,10 +1563,8 @@ EXC_COMMON_ASYNC(doorbell_super_common, 0xa00, unknown_exception)
+ #endif
  
- #define EXC_VIRT_OOL_MASKABLE(name, start, size, realvec, bitmask)	\
- 	__EXC_VIRT_OOL_MASKABLE(name, start, size);			\
+ 
+-EXC_REAL(trap_0b, 0xb00, 0x100)
+-EXC_VIRT(trap_0b, 0x4b00, 0x100, 0xb00)
+-TRAMP_KVM(PACA_EXGEN, 0xb00)
+-EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
++EXC_REAL_NONE(0xb00, 0x100)
++EXC_VIRT_NONE(0x4b00, 0x100)
+ 
+ /*
+  * system call / hypercall (0xc00, 0x4c00)
 -- 
 2.22.0
 
