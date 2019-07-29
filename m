@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AD47898B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 12:20:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259BF78984
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 12:18:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45xwcx3tP9zDqHw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 20:18:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45xwg13DtxzDqJB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2019 20:20:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.208.196; helo=mail-lj1-f196.google.com;
+ (client-ip=209.85.167.65; helo=mail-lf1-f65.google.com;
  envelope-from=yefremov.denis@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.com
-Received: from mail-lj1-f196.google.com (mail-lj1-f196.google.com
- [209.85.208.196])
+Received: from mail-lf1-f65.google.com (mail-lf1-f65.google.com
+ [209.85.167.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45xwXQ3pHKzDqJk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 20:14:30 +1000 (AEST)
-Received: by mail-lj1-f196.google.com with SMTP id k18so57989611ljc.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 03:14:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45xwXf1mPqzDqJR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 20:14:42 +1000 (AEST)
+Received: by mail-lf1-f65.google.com with SMTP id u10so2887842lfm.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2019 03:14:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Dpd4bG4LMHeAuXOdMrtoCn/QAeMyQrruUgZF75ZQCJ8=;
- b=h5a9EA8SKeckVKSfU4mxr2qtRDmZfJxkq9o+kI1u5q93qV8IqMNdyonKTlZWXsN3Go
- gqZatlzKm/v4bo816gyE8ZWCwpPHZqYV/KjveJARRNUPr2j9/+RmrtiFJKXx53y1Llax
- 1qZgTsH8dJZ7SFdmw/WO548SQjlMvnWkuomWIfpmxoftDOAzd01L6LhiKLlpp+ma5Ycv
- 6y4UehpKeVzS23+ebZ18NiwkmUwrirMr3SDNq1Ptri3sWSY94uPXhf2YODB9aRJWnxIS
- jG6hJqHTc8T2l30Cfmt4JY36Qj5Mc7ggRFTKk3nM1fx+PRNia5nYaJtSIuND4QXT378W
- pbRg==
-X-Gm-Message-State: APjAAAVGJHqw57kdm2NTAqoJXy+bzn8exrBHvmkDnzpU9LXFepR3bT+1
- kHexEskbk1e9yA5bFExHN34=
-X-Google-Smtp-Source: APXvYqwEk2DknbB7kclA3P32EP96BIIMax8pcdBk+oaWSWKN8ffIkF+Ld5QCSkXWovB+komF1DZEFA==
-X-Received: by 2002:a2e:b4c9:: with SMTP id r9mr57348496ljm.196.1564395267211; 
- Mon, 29 Jul 2019 03:14:27 -0700 (PDT)
+ bh=BsIPSvfzLwnhnLKtcEHLG5y6k186GA8GW/6JbbfPnA4=;
+ b=ZzAut6bTrqjv/wLDFPeOHJzOlvS1sG7zNAiw0jZcGGOS4DZMRAap93nPqspc2cnFbg
+ KCefp02dyMiieRPPYcD0J9YOJvtw6bctyRXWQJaoReYYR3VA77sE8cqP7VUNhhEenxON
+ 4AHK1YJViGIUoAyIDFCYxs9FTbSPXasXBA8X4zDzd+o4l/bsZ/gbETKb2Bn9pYnNbZpd
+ ilXcjtAkLQ0IrD5zoXHctaSe6SrNidM+8YQD0Gi4XPod6ytxtANTg02iTwOdjyVShjJu
+ Poxxez/ByG62igConzEe0NSdJ+IJ/cRflhnQ/KFFcCmKVr4JCa3s17+yLeg8Ip0ThE7M
+ AbQA==
+X-Gm-Message-State: APjAAAXJsf1ijkp9ZWjBVXTaV/rmfQNeyDwqdMycC7JBhzwJJkaWM0c6
+ wut2hwpeIDsNIuGdwC9N+tY=
+X-Google-Smtp-Source: APXvYqxAitsCCS/HFPR7uHO4tOhzGp6jjCagTQ9NCr3/Ull+T3hU8+UpiyoxWae7OFM9Qe0aQhN3uA==
+X-Received: by 2002:ac2:5492:: with SMTP id t18mr53096046lfk.41.1564395278677; 
+ Mon, 29 Jul 2019 03:14:38 -0700 (PDT)
 Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru.
  [188.32.48.208])
- by smtp.googlemail.com with ESMTPSA id y12sm11814834lfy.36.2019.07.29.03.14.26
+ by smtp.googlemail.com with ESMTPSA id y12sm11814834lfy.36.2019.07.29.03.14.37
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 29 Jul 2019 03:14:26 -0700 (PDT)
+ Mon, 29 Jul 2019 03:14:38 -0700 (PDT)
 From: Denis Efremov <efremov@linux.com>
 To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 1/5] PCI: Convert pci_resource_to_user to a weak function
-Date: Mon, 29 Jul 2019 13:13:57 +0300
-Message-Id: <20190729101401.28068-2-efremov@linux.com>
+Subject: [PATCH v2 4/5] powerpc/PCI: Remove HAVE_ARCH_PCI_RESOURCE_TO_USER
+Date: Mon, 29 Jul 2019 13:14:00 +0300
+Message-Id: <20190729101401.28068-5-efremov@linux.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190729101401.28068-1-efremov@linux.com>
 References: <20190729101401.28068-1-efremov@linux.com>
@@ -66,76 +66,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Simek <monstr@monstr.eu>, linux-pci@vger.kernel.org,
- linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Paul Mackerras <paulus@samba.org>,
- Denis Efremov <efremov@linux.com>, James Hogan <jhogan@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Denis Efremov <efremov@linux.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch turns pci_resource_to_user() to a weak function. Thus,
-architecture-specific versions will automatically override the generic
-one. This allows to remove the HAVE_ARCH_PCI_RESOURCE_TO_USER macro and
-avoid the conditional compilation for this single function.
+The function pci_resource_to_user() was turned to a weak one. Thus,
+powerpc-specific version will automatically override the generic one
+and the HAVE_ARCH_PCI_RESOURCE_TO_USER macro should be removed.
 
 Signed-off-by: Denis Efremov <efremov@linux.com>
 ---
- drivers/pci/pci.c   |  8 ++++++++
- include/linux/pci.h | 12 ------------
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ arch/powerpc/include/asm/pci.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 29ed5ec1ac27..f9dc7563a8b9 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5932,6 +5932,14 @@ resource_size_t __weak pcibios_default_alignment(void)
- 	return 0;
- }
+diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+index 2372d35533ad..327567b8f7d6 100644
+--- a/arch/powerpc/include/asm/pci.h
++++ b/arch/powerpc/include/asm/pci.h
+@@ -112,8 +112,6 @@ extern pgprot_t	pci_phys_mem_access_prot(struct file *file,
+ 					 unsigned long size,
+ 					 pgprot_t prot);
  
-+void __weak pci_resource_to_user(const struct pci_dev *dev, int bar,
-+		const struct resource *rsrc, resource_size_t *start,
-+		resource_size_t *end)
-+{
-+	*start = rsrc->start;
-+	*end = rsrc->end;
-+}
-+
- #define RESOURCE_ALIGNMENT_PARAM_SIZE COMMAND_LINE_SIZE
- static char resource_alignment_param[RESOURCE_ALIGNMENT_PARAM_SIZE] = {0};
- static DEFINE_SPINLOCK(resource_alignment_lock);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 9e700d9f9f28..dbdfdab1027b 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1870,25 +1870,13 @@ static inline const char *pci_name(const struct pci_dev *pdev)
- 	return dev_name(&pdev->dev);
- }
- 
+-#define HAVE_ARCH_PCI_RESOURCE_TO_USER
 -
- /*
-  * Some archs don't want to expose struct resource to userland as-is
-  * in sysfs and /proc
-  */
--#ifdef HAVE_ARCH_PCI_RESOURCE_TO_USER
- void pci_resource_to_user(const struct pci_dev *dev, int bar,
- 			  const struct resource *rsrc,
- 			  resource_size_t *start, resource_size_t *end);
--#else
--static inline void pci_resource_to_user(const struct pci_dev *dev, int bar,
--		const struct resource *rsrc, resource_size_t *start,
--		resource_size_t *end)
--{
--	*start = rsrc->start;
--	*end = rsrc->end;
--}
--#endif /* HAVE_ARCH_PCI_RESOURCE_TO_USER */
--
- 
- /*
-  * The world is not perfect and supplies us with broken PCI devices.
+ extern resource_size_t pcibios_io_space_offset(struct pci_controller *hose);
+ extern void pcibios_setup_bus_devices(struct pci_bus *bus);
+ extern void pcibios_setup_bus_self(struct pci_bus *bus);
 -- 
 2.21.0
 
