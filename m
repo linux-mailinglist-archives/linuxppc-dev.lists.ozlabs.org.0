@@ -2,46 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49597A2F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 10:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBA47A41D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 11:28:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yTsp0LXkzDqTM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 18:16:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yWSV2BMFzDqVb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 19:28:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="TZx1YxNl"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yTqM23VrzDqQN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 18:14:22 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 59F32ABE9;
- Tue, 30 Jul 2019 08:14:18 +0000 (UTC)
-Date: Tue, 30 Jul 2019 10:14:15 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Hoan Tran OS <hoan@os.amperecomputing.com>
-Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20190730081415.GN9330@dhcp22.suse.cz>
-References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
- <20190712070247.GM29483@dhcp22.suse.cz>
- <586ae736-a429-cf94-1520-1a94ffadad88@os.amperecomputing.com>
- <20190712121223.GR29483@dhcp22.suse.cz>
- <20190712143730.au3662g4ua2tjudu@willie-the-truck>
- <20190712150007.GU29483@dhcp22.suse.cz>
- <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yWPH5Mg7zDqLt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 19:25:21 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 45yWP822ftz9v4h5;
+ Tue, 30 Jul 2019 11:25:16 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=TZx1YxNl; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 2dAfY6oCGoGF; Tue, 30 Jul 2019 11:25:16 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45yWP80hbTz9v4gw;
+ Tue, 30 Jul 2019 11:25:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1564478716; bh=zrJuLYMZl8yMmLQ5arOArSoM6UnoE7nwuZhDCSwICX0=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=TZx1YxNl+aHzIHCeqfmgQSCd37IikeHQti8c8Fz4QiJ6R+8tmJ1SHzF52QfxLtJ7a
+ Jc9Jgy6ywynV3j+rHAxx2wHaH7ltod/8M33uPbFB23wrwhmxyKJSSr58SR2MpAC9jj
+ CNopfNTl5IWzOVK1RX/lo3kMNNv/gA904RkCznsI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 34B238B800;
+ Tue, 30 Jul 2019 11:25:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id OL1JeO5h3g0d; Tue, 30 Jul 2019 11:25:17 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F2E5F8B74F;
+ Tue, 30 Jul 2019 11:25:16 +0200 (CEST)
+Subject: Re: [PATCH v2 02/10] powerpc: move memstart_addr and kernstart_addr
+ to init-common.c
+To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
+ benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
+ keescook@chromium.org, kernel-hardening@lists.openwall.com
+References: <20190730074225.39544-1-yanaijie@huawei.com>
+ <20190730074225.39544-3-yanaijie@huawei.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <98a0a18c-0a77-1ab1-d40a-f7de0b9c9009@c-s.fr>
+Date: Tue, 30 Jul 2019 11:25:16 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190730074225.39544-3-yanaijie@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,60 +82,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Will Deacon <will@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org,
+ jingxiangfeng@huawei.com, zhaohongjiang@huawei.com, thunder.leizhen@huawei.com,
+ fanchengyang@huawei.com, yebin10@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[Sorry for a late reply]
 
-On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
-> Hi,
+
+Le 30/07/2019 à 09:42, Jason Yan a écrit :
+> These two variables are both defined in init_32.c and init_64.c. Move
+> them to init-common.c.
 > 
-> On 7/12/19 10:00 PM, Michal Hocko wrote:
-[...]
-> > Hmm, I thought this was selectable. But I am obviously wrong here.
-> > Looking more closely, it seems that this is indeed only about
-> > __early_pfn_to_nid and as such not something that should add a config
-> > symbol. This should have been called out in the changelog though.
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> Cc: Diana Craciun <diana.craciun@nxp.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Kees Cook <keescook@chromium.org>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+> ---
+>   arch/powerpc/mm/init-common.c | 5 +++++
+>   arch/powerpc/mm/init_32.c     | 5 -----
+>   arch/powerpc/mm/init_64.c     | 5 -----
+>   3 files changed, 5 insertions(+), 10 deletions(-)
 > 
-> Yes, do you have any other comments about my patch?
-
-Not really. Just make sure to explicitly state that
-CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
-doesn't really deserve it's own config and can be pulled under NUMA.
-
-> > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-> > bucket? Do we have any NUMA architecture that doesn't enable it?
-> > 
+> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+> index a84da92920f7..152ae0d21435 100644
+> --- a/arch/powerpc/mm/init-common.c
+> +++ b/arch/powerpc/mm/init-common.c
+> @@ -21,6 +21,11 @@
+>   #include <asm/pgtable.h>
+>   #include <asm/kup.h>
+>   
+> +phys_addr_t memstart_addr = (phys_addr_t)~0ull;
+> +EXPORT_SYMBOL_GPL(memstart_addr);
+> +phys_addr_t kernstart_addr;
+> +EXPORT_SYMBOL_GPL(kernstart_addr);
+> +
+>   static bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
+>   static bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
+>   
+> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
+> index b04896a88d79..872df48ae41b 100644
+> --- a/arch/powerpc/mm/init_32.c
+> +++ b/arch/powerpc/mm/init_32.c
+> @@ -56,11 +56,6 @@
+>   phys_addr_t total_memory;
+>   phys_addr_t total_lowmem;
+>   
+> -phys_addr_t memstart_addr = (phys_addr_t)~0ull;
+> -EXPORT_SYMBOL(memstart_addr);
+> -phys_addr_t kernstart_addr;
+> -EXPORT_SYMBOL(kernstart_addr);
+> -
+>   #ifdef CONFIG_RELOCATABLE
+>   /* Used in __va()/__pa() */
+>   long long virt_phys_offset;
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index a44f6281ca3a..c836f1269ee7 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -63,11 +63,6 @@
+>   
+>   #include <mm/mmu_decl.h>
+>   
+> -phys_addr_t memstart_addr = ~0;
+> -EXPORT_SYMBOL_GPL(memstart_addr);
+> -phys_addr_t kernstart_addr;
+> -EXPORT_SYMBOL_GPL(kernstart_addr);
+> -
+>   #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>   /*
+>    * Given an address within the vmemmap, determine the pfn of the page that
 > 
-> As I checked with arch Kconfig files, there are 2 architectures, riscv 
-> and microblaze, do not support NUMA but enable this config.
-> 
-> And 1 architecture, alpha, supports NUMA but does not enable this config.
-
-Care to have a look and clean this up please?
-
--- 
-Michal Hocko
-SUSE Labs
