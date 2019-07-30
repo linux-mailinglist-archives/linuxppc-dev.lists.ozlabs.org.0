@@ -2,49 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F3C7A038
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 07:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4547A056
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 07:30:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yPb14KbLzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 15:03:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yQ9s2R9zzDqTy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 15:30:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yPYG1jKmzDqQT;
- Tue, 30 Jul 2019 15:01:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.b="HL7zp8pO"; 
- dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 45yPYF0NxWz9s3Z;
- Tue, 30 Jul 2019 15:01:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1564462913;
- bh=Vgdma4M3NjY+571qzaaGNdc2/IobJXlKXEZw6X3gf8k=;
- h=Subject:From:To:Cc:Date:From;
- b=HL7zp8pO6qQEj4dGzi3XO2/xjjxFw+mjFHz9ELt1et+Qb5Kg1SP+80KBlrU3bnHLP
- i2T3e4+XYcH6f9pVp2gvL5+J2e12HgKos6AigFv04AnbPj+tLVy2dxoXVaJ7QeueUS
- nzDHNN0S5SqRSTY+EgWo909aN5sPTE4rVkr8ccVJHSGGg4yfm5/2SsD3oW1EZl2+mM
- UW1Or3Rg35OuZPHc6moAgT4G6tXWVIIXpjgdQ/J3pHMt4zR80QTjWlo0X5M+7pa6OK
- VMpd1GmwNAzgo7vEZ89nri2jDKn+OzIGqsVeF2wE74JOCcrFcEfBz4Dmx07gXTV7fK
- +/AGVgaRQ3Zqw==
-Received: by neuling.org (Postfix, from userid 1000)
- id 04BF52A17B3; Tue, 30 Jul 2019 15:01:52 +1000 (AEST)
-Message-ID: <67db82ab73dbb630c45003795f7597274f30983e.camel@neuling.org>
-Subject: CVE-2019-13648: Linux kernel: powerpc: kernel crash in TM handling
- triggerable by any local user
-From: Michael Neuling <mikey@neuling.org>
-To: oss-security@lists.openwall.com
-Date: Tue, 30 Jul 2019 15:01:52 +1000
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yQ7z0blwzDqPF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 15:28:30 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6U5RMFK031448
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 01:28:27 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u2f2h9ann-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 01:28:27 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
+ Tue, 30 Jul 2019 06:28:25 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 30 Jul 2019 06:28:22 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6U5SL3253477548
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Jul 2019 05:28:21 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8127AA405F;
+ Tue, 30 Jul 2019 05:28:21 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18FB4A4054;
+ Tue, 30 Jul 2019 05:28:19 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.109.195.186])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 30 Jul 2019 05:28:18 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
+ Tue, 30 Jul 2019 10:58:18 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Laurent Dufour
+ <ldufour@linux.vnet.ibm.com>
+Subject: Re: [DOC][PATCH v5 1/4] powerpc: Document some HCalls for Storage
+ Class Memory
+In-Reply-To: <20190724145909.4ca5b9a8@naga.suse.cz>
+References: <20190723161357.26718-1-vaibhav@linux.ibm.com>
+ <20190723161357.26718-2-vaibhav@linux.ibm.com>
+ <a8277da0-ad26-d491-ed6b-61bf5ea18dbb@linux.vnet.ibm.com>
+ <20190724145909.4ca5b9a8@naga.suse.cz>
+Date: Tue, 30 Jul 2019 10:58:18 +0530
 MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19073005-0012-0000-0000-000003377D1E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19073005-0013-0000-0000-000021712096
+Message-Id: <87zhkw2irx.fsf@vajain21.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-30_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=768 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907300057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,56 +93,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Linuxppc-users <linuxppc-users@lists.ozlabs.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Linux kernel for powerpc since v3.9 has a bug in the TM handling  where=
- any
-unprivileged local user may crash the operating system.
 
-This bug affects machines using 64-bit CPUs where Transactional Memory (TM)=
- is
-not present or has been disabled (see below for more details on affected CP=
-Us).
+Thanks everyone for reviewing this patch-set. The V4 got merged upstream which
+didn't have this DOC-patch. So, I will re-spin a separate and independent
+doc-patch incorporating your review comments.
 
-To trigger the bug a process constructs a signal context which still has th=
-e MSR
-TS bits set. That process then passes this signal context to the sigreturn(=
-)
-system call. When returning back to userspace, the kernel then crashes with=
- a
-bad TM transition (TM Bad Thing) or by executing TM code on a non-TM system=
-.
-
-All 64bit machines where TM is not present are affected. This includes Powe=
-rPC
-970 (G5), PA6T, POWER5/6/7 VMs under KVM or LPARs under PowerVM and POWER9 =
-bare
-metal.=20
-
-Additionally systems with TM hardware but where TM is disabled in software =
-(via
-ppc_tm=3Doff kernel cmdline) are also affected. This includes POWER8/9 VMs =
-under
-KVM or LPARs under PowerVM and POWER8 bare metal.
-
-The bug was introduced in commit:
-  2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal =
-context")
-
-Which was originally merged in v3.9.=20
-
-The upstream fix is here:
-  https://git.kernel.org/torvalds/c/f16d80b75a096c52354c6e0a574993f3b0dfbdf=
-e
-
-The fix can be verified by running `sigfuz -m` from the kernel selftests:
- https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/to=
-ols/testing/selftests/powerpc/signal/sigfuz.c?h=3Dv5.2
-
-cheers
-Mikey
+Cheers,
+-- 
+Vaibhav Jain <vaibhav@linux.ibm.com>
+Linux Technology Center, IBM India Pvt. Ltd.
 
