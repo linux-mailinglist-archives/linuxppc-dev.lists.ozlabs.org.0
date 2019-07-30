@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F3C7A038
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 07:03:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020697A01D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 06:47:22 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yPDC6sh9zDqSk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 14:47:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yPb14KbLzDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 15:03:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yPBG69dyzDqQJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 14:45:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yPYG1jKmzDqQT;
+ Tue, 30 Jul 2019 15:01:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=neuling.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.b="vHr5CCoO"; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45yPBG41FXz9s3Z;
- Tue, 30 Jul 2019 14:45:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1564461926;
- bh=jVD+AoMQGxi/wGGXONCIPWY+Ktwi9IFbSQiYXXW609I=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=vHr5CCoOOUOXhslZFa6FwTY+3WcjSvShnk5udQDMSTK8z4KTNI75mqtrzgVlNqIqg
- EkehG84POXKm5lST85lzzOB8G7CixJVfOofDlzVl7Pa0kDobAPIzwNARdaZupi1dVv
- 4FQ8nnr3MLRyJIqVEeqw6DUszojUsevZ6UH244LZHBlH2HmYWcoU4IRj4sA2+VyC8h
- 0uh0j77wVTCixZJ9mI6mindrSXaDSi/7JcU9/XBZ21ycqVVIdMFBqr1uFcZ05KN2fg
- p4mS2zxvWchv0nNAMNxFuWEm2q6wrbg/iBbMLdWpAiEr66fll6T9rdNnO/2Ij5F87i
- X21VklLnoF41A==
-Date: Tue, 30 Jul 2019 14:45:26 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman
- <mpe@ellerman.id.au>
-Subject: Re: [PATCH] drivers/macintosh/smu.c: Mark expected switch fall-through
-Message-ID: <20190730144526.3088aad4@canb.auug.org.au>
-In-Reply-To: <20190730143704.060a2606@canb.auug.org.au>
-References: <20190730143704.060a2606@canb.auug.org.au>
+ unprotected) header.d=neuling.org header.i=@neuling.org header.b="HL7zp8pO"; 
+ dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 45yPYF0NxWz9s3Z;
+ Tue, 30 Jul 2019 15:01:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1564462913;
+ bh=Vgdma4M3NjY+571qzaaGNdc2/IobJXlKXEZw6X3gf8k=;
+ h=Subject:From:To:Cc:Date:From;
+ b=HL7zp8pO6qQEj4dGzi3XO2/xjjxFw+mjFHz9ELt1et+Qb5Kg1SP+80KBlrU3bnHLP
+ i2T3e4+XYcH6f9pVp2gvL5+J2e12HgKos6AigFv04AnbPj+tLVy2dxoXVaJ7QeueUS
+ nzDHNN0S5SqRSTY+EgWo909aN5sPTE4rVkr8ccVJHSGGg4yfm5/2SsD3oW1EZl2+mM
+ UW1Or3Rg35OuZPHc6moAgT4G6tXWVIIXpjgdQ/J3pHMt4zR80QTjWlo0X5M+7pa6OK
+ VMpd1GmwNAzgo7vEZ89nri2jDKn+OzIGqsVeF2wE74JOCcrFcEfBz4Dmx07gXTV7fK
+ +/AGVgaRQ3Zqw==
+Received: by neuling.org (Postfix, from userid 1000)
+ id 04BF52A17B3; Tue, 30 Jul 2019 15:01:52 +1000 (AEST)
+Message-ID: <67db82ab73dbb630c45003795f7597274f30983e.camel@neuling.org>
+Subject: CVE-2019-13648: Linux kernel: powerpc: kernel crash in TM handling
+ triggerable by any local user
+From: Michael Neuling <mikey@neuling.org>
+To: oss-security@lists.openwall.com
+Date: Tue, 30 Jul 2019 15:01:52 +1000
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/CPhGrAmmSmh99vXtb+BIRHN";
- protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,61 +56,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux kernel Mailing List <linux-kernel@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Kees Cook <keescook@chromium.org>,
- "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Linuxppc-users <linuxppc-users@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/CPhGrAmmSmh99vXtb+BIRHN
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+The Linux kernel for powerpc since v3.9 has a bug in the TM handling  where=
+ any
+unprivileged local user may crash the operating system.
 
-Hi all,
+This bug affects machines using 64-bit CPUs where Transactional Memory (TM)=
+ is
+not present or has been disabled (see below for more details on affected CP=
+Us).
 
-On Tue, 30 Jul 2019 14:37:04 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> Mark switch cases where we are expecting to fall through.
->=20
-> This patch fixes the following warning (Building: powerpc):
->=20
-> drivers/macintosh/smu.c: In function 'smu_queue_i2c':
-> drivers/macintosh/smu.c:854:21: warning: this statement may fall through =
-[-Wimplicit-fallthrough=3D]
->    cmd->info.devaddr &=3D 0xfe;
->    ~~~~~~~~~~~~~~~~~~^~~~~~~
-> drivers/macintosh/smu.c:855:2: note: here
->   case SMU_I2C_TRANSFER_STDSUB:
->   ^~~~
->=20
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> Cc: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+To trigger the bug a process constructs a signal context which still has th=
+e MSR
+TS bits set. That process then passes this signal context to the sigreturn(=
+)
+system call. When returning back to userspace, the kernel then crashes with=
+ a
+bad TM transition (TM Bad Thing) or by executing TM code on a non-TM system=
+.
 
-Fixes: 0365ba7fb1fa ("[PATCH] ppc64: SMU driver update & i2c support")
+All 64bit machines where TM is not present are affected. This includes Powe=
+rPC
+970 (G5), PA6T, POWER5/6/7 VMs under KVM or LPARs under PowerVM and POWER9 =
+bare
+metal.=20
 
-Sorry, forgot :-)
---=20
-Cheers,
-Stephen Rothwell
+Additionally systems with TM hardware but where TM is disabled in software =
+(via
+ppc_tm=3Doff kernel cmdline) are also affected. This includes POWER8/9 VMs =
+under
+KVM or LPARs under PowerVM and POWER8 bare metal.
 
---Sig_/CPhGrAmmSmh99vXtb+BIRHN
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+The bug was introduced in commit:
+  2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal =
+context")
 
------BEGIN PGP SIGNATURE-----
+Which was originally merged in v3.9.=20
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0/y2YACgkQAVBC80lX
-0Gyt0wgAi3jthifR+t5hLJW4sbfr3P+HukPfwX1FebITb+a65Uu+7K8zNV9n6g1J
-MsmihdRnaaO2rD+YLCnqSBDZjNdD1j5cXDcWQJe3nPM69nfblQyhNPbdyk48/q2b
-vT8OkvPfGvJelf73ph1gkkn6zXR3J3LAx9dpp3ittcSlLIsfhjlXz67IMDl8z8Bk
-ZxxFX8Rv2ivByxWDO4PGtxDFtAV3C/SlK6fzyIUvXBG5M+xPAe9Vy2UYRVY1ZekM
-l4c+3+dAXIod3G6SNBt2u/1NNn0xiXX0jPtkIw0j5n0fB3NQK2EmRpM32IKAcUYu
-XX55Y1BZxGJ01G7/eT0TNtVYJww9bQ==
-=7y4x
------END PGP SIGNATURE-----
+The upstream fix is here:
+  https://git.kernel.org/torvalds/c/f16d80b75a096c52354c6e0a574993f3b0dfbdf=
+e
 
---Sig_/CPhGrAmmSmh99vXtb+BIRHN--
+The fix can be verified by running `sigfuz -m` from the kernel selftests:
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/to=
+ols/testing/selftests/powerpc/signal/sigfuz.c?h=3Dv5.2
+
+cheers
+Mikey
+
