@@ -2,45 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238BA7B645
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 01:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2478F7B652
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 01:41:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45ytCk3lfMzDqb9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 09:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ytNT2X8dzDqWJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 09:40:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yt9s4tH6zDqRn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:31:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
+ (client-ip=131.153.2.43; helo=h2.fbrelay.privateemail.com;
+ envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45yt9s1XFzz8sy4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:31:45 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45yt9s1LgKz9sDQ; Wed, 31 Jul 2019 09:31:45 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=131.153.2.44; helo=h3.fbrelay.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h3.fbrelay.privateemail.com (h3.fbrelay.privateemail.com
- [131.153.2.44])
+X-Greylist: delayed 440 seconds by postgrey-1.36 at bilbo;
+ Wed, 31 Jul 2019 09:39:06 AEST
+Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
+ [131.153.2.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45yt9r3BgQz9s00
- for <linuxppc-dev@ozlabs.org>; Wed, 31 Jul 2019 09:31:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ytLL3HKbzDqW4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:39:06 +1000 (AEST)
 Received: from MTA-09-4.privateemail.com (mta-09.privateemail.com
  [198.54.127.58])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id 8EEDF80649
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Jul 2019 19:31:39 -0400 (EDT)
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 5135581311
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 19:31:42 -0400 (EDT)
 Received: from MTA-09.privateemail.com (localhost [127.0.0.1])
  by MTA-09.privateemail.com (Postfix) with ESMTP id 0D1AD6004F;
  Tue, 30 Jul 2019 19:31:33 -0400 (EDT)
