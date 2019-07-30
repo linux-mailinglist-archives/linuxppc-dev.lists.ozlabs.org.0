@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5247A53A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 11:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FC67A53E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 11:54:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yX0d12H6zDqWr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 19:52:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yX2W0p4nzDqRh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 19:54:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,58 +16,58 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="D9yvfTFg"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="gVISzoKt"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yWv25fj0zDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 19:47:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yWwb3pv6zDqQM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 19:49:03 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 45yWtx4J8rz9vBLV;
- Tue, 30 Jul 2019 11:47:37 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 45yWwW1BVGz9vBLV;
+ Tue, 30 Jul 2019 11:48:59 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=D9yvfTFg; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=gVISzoKt; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8iuiIZs2SoI6; Tue, 30 Jul 2019 11:47:37 +0200 (CEST)
+ with ESMTP id mXrohcSYwk5G; Tue, 30 Jul 2019 11:48:59 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 45yWtx37D2z9vBLN;
- Tue, 30 Jul 2019 11:47:37 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 45yWwW05gcz9vBLN;
+ Tue, 30 Jul 2019 11:48:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1564480057; bh=8Elcq5DvNm2PwJ3AEzgoFiT2sWRlD923ZYF11Klazfg=;
+ t=1564480139; bh=tFSCyuXc6xQQsa1h4dVfNa0KvJuc0fYe9QTvxMXWUko=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=D9yvfTFgfaMwYumReHctJgExqulPG0Dwg03sF4s8sufaJg+yAduTAZt8K7iWVJrl2
- 1RU9GUaDh63kKxC4/iTS8RBVoJChSQZQ1fBCeojBQmDX2cuhNVezgHvf7hh5oBBG3q
- axwEZCdn7ECTc4gNLkJxCGYcyi4XWH1xQQ5cH48g=
+ b=gVISzoKtekQbUyLsLuz/fiSuqHr8hTH9GVy3MNjsYonNwQXwqaDGF4JIojVzSpw6s
+ o+RcDtYDrqB1/6D3ZbKWuMfgQUgniAlw62L9NVMrAD+m3eLUpqcx8k1kdHQ8c9lyTM
+ MXL5wJJnNCIb4BDP8JNrMMuS+OCntHIg0vEgGics=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B83938B801;
- Tue, 30 Jul 2019 11:47:37 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 22B038B803;
+ Tue, 30 Jul 2019 11:49:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qh6NCYNUGaNl; Tue, 30 Jul 2019 11:47:37 +0200 (CEST)
+ with ESMTP id eL2YwilihXe6; Tue, 30 Jul 2019 11:49:00 +0200 (CEST)
 Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EF2458B805;
- Tue, 30 Jul 2019 11:47:34 +0200 (CEST)
-Subject: Re: [PATCH v2 08/10] powerpc/fsl_booke/kaslr: clear the original
- kernel if randomized
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D06DD8B801;
+ Tue, 30 Jul 2019 11:48:59 +0200 (CEST)
+Subject: Re: [PATCH v2 10/10] powerpc/fsl_booke/kaslr: dump out kernel offset
+ information on panic
 To: Jason Yan <yanaijie@huawei.com>, mpe@ellerman.id.au,
  linuxppc-dev@lists.ozlabs.org, diana.craciun@nxp.com,
  benh@kernel.crashing.org, paulus@samba.org, npiggin@gmail.com,
  keescook@chromium.org, kernel-hardening@lists.openwall.com
 References: <20190730074225.39544-1-yanaijie@huawei.com>
- <20190730074225.39544-9-yanaijie@huawei.com>
+ <20190730074225.39544-11-yanaijie@huawei.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <fc1bf072-8256-f944-cc60-f0da50d319ff@c-s.fr>
-Date: Tue, 30 Jul 2019 11:47:34 +0200
+Message-ID: <2a31b934-3658-c02e-4e86-c9ba03029bd6@c-s.fr>
+Date: Tue, 30 Jul 2019 11:48:59 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190730074225.39544-9-yanaijie@huawei.com>
+In-Reply-To: <20190730074225.39544-11-yanaijie@huawei.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -92,7 +92,9 @@ Sender: "Linuxppc-dev"
 
 
 Le 30/07/2019 à 09:42, Jason Yan a écrit :
-> The original kernel still exists in the memory, clear it now.
+> When kaslr is enabled, the kernel offset is different for every boot.
+> This brings some difficult to debug the kernel. Dump out the kernel
+> offset when panic so that we can easily debug the kernel.
 > 
 > Signed-off-by: Jason Yan <yanaijie@huawei.com>
 > Cc: Diana Craciun <diana.craciun@nxp.com>
@@ -105,61 +107,75 @@ Le 30/07/2019 à 09:42, Jason Yan a écrit :
 
 Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
-Is kaslr_second_init() the best name ?
-What about kaslr_late_init() or kaslr_clear_early_kernel() or ... ?
-
-Christophe
 
 > ---
->   arch/powerpc/kernel/kaslr_booke.c  | 11 +++++++++++
->   arch/powerpc/mm/mmu_decl.h         |  2 ++
->   arch/powerpc/mm/nohash/fsl_booke.c |  1 +
->   3 files changed, 14 insertions(+)
+>   arch/powerpc/include/asm/page.h     |  5 +++++
+>   arch/powerpc/kernel/machine_kexec.c |  1 +
+>   arch/powerpc/kernel/setup-common.c  | 19 +++++++++++++++++++
+>   3 files changed, 25 insertions(+)
 > 
-> diff --git a/arch/powerpc/kernel/kaslr_booke.c b/arch/powerpc/kernel/kaslr_booke.c
-> index 0bb02e45b928..f032ac119457 100644
-> --- a/arch/powerpc/kernel/kaslr_booke.c
-> +++ b/arch/powerpc/kernel/kaslr_booke.c
-> @@ -412,3 +412,14 @@ notrace void __init kaslr_early_init(void *dt_ptr, phys_addr_t size)
+> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+> index 60a68d3a54b1..cd3ac530e58d 100644
+> --- a/arch/powerpc/include/asm/page.h
+> +++ b/arch/powerpc/include/asm/page.h
+> @@ -317,6 +317,11 @@ struct vm_area_struct;
 >   
->   	reloc_kernel_entry(dt_ptr, kimage_vaddr);
->   }
-> +
-> +void __init kaslr_second_init(void)
+>   extern unsigned long kimage_vaddr;
+>   
+> +static inline unsigned long kaslr_offset(void)
 > +{
-> +	/* If randomized, clear the original kernel */
-> +	if (kimage_vaddr != KERNELBASE) {
-> +		unsigned long kernel_sz;
-> +
-> +		kernel_sz = (unsigned long)_end - kimage_vaddr;
-> +		memzero_explicit((void *)KERNELBASE, kernel_sz);
-> +	}
+> +	return kimage_vaddr - KERNELBASE;
 > +}
-> diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-> index 9332772c8a66..550c8d742f88 100644
-> --- a/arch/powerpc/mm/mmu_decl.h
-> +++ b/arch/powerpc/mm/mmu_decl.h
-> @@ -150,8 +150,10 @@ extern void loadcam_multi(int first_idx, int num, int tmp_idx);
->   
->   #ifdef CONFIG_RANDOMIZE_BASE
->   void kaslr_early_init(void *dt_ptr, phys_addr_t size);
-> +void kaslr_second_init(void);
->   #else
->   static inline void kaslr_early_init(void *dt_ptr, phys_addr_t size) {}
-> +static inline void kaslr_second_init(void) {}
+> +
+>   #include <asm-generic/memory_model.h>
+>   #endif /* __ASSEMBLY__ */
+>   #include <asm/slice.h>
+> diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
+> index c4ed328a7b96..078fe3d76feb 100644
+> --- a/arch/powerpc/kernel/machine_kexec.c
+> +++ b/arch/powerpc/kernel/machine_kexec.c
+> @@ -86,6 +86,7 @@ void arch_crash_save_vmcoreinfo(void)
+>   	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
+>   	VMCOREINFO_OFFSET(mmu_psize_def, shift);
 >   #endif
+> +	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
+>   }
 >   
->   struct tlbcam {
-> diff --git a/arch/powerpc/mm/nohash/fsl_booke.c b/arch/powerpc/mm/nohash/fsl_booke.c
-> index 8d25a8dc965f..fa5a87f5c08e 100644
-> --- a/arch/powerpc/mm/nohash/fsl_booke.c
-> +++ b/arch/powerpc/mm/nohash/fsl_booke.c
-> @@ -269,6 +269,7 @@ notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
->   	kernstart_addr = start;
->   	if (is_second_reloc) {
->   		virt_phys_offset = PAGE_OFFSET - memstart_addr;
-> +		kaslr_second_init();
+>   /*
+> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+> index 1f8db666468d..064075f02837 100644
+> --- a/arch/powerpc/kernel/setup-common.c
+> +++ b/arch/powerpc/kernel/setup-common.c
+> @@ -715,12 +715,31 @@ static struct notifier_block ppc_panic_block = {
+>   	.priority = INT_MIN /* may not return; must be done last */
+>   };
+>   
+> +/*
+> + * Dump out kernel offset information on panic.
+> + */
+> +static int dump_kernel_offset(struct notifier_block *self, unsigned long v,
+> +			      void *p)
+> +{
+> +	pr_emerg("Kernel Offset: 0x%lx from 0x%lx\n",
+> +		 kaslr_offset(), KERNELBASE);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct notifier_block kernel_offset_notifier = {
+> +	.notifier_call = dump_kernel_offset
+> +};
+> +
+>   void __init setup_panic(void)
+>   {
+>   	/* PPC64 always does a hard irq disable in its panic handler */
+>   	if (!IS_ENABLED(CONFIG_PPC64) && !ppc_md.panic)
 >   		return;
->   	}
+>   	atomic_notifier_chain_register(&panic_notifier_list, &ppc_panic_block);
+> +	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && kaslr_offset() > 0)
+> +		atomic_notifier_chain_register(&panic_notifier_list,
+> +					       &kernel_offset_notifier);
+>   }
 >   
+>   #ifdef CONFIG_CHECK_CACHE_COHERENCY
 > 
