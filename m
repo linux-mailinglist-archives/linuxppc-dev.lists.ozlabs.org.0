@@ -1,69 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D3079F7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 05:20:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA69579F6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 05:05:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yLyV3snLzDqKT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 13:05:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yMJ83m0SzDqFF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2019 13:20:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yLvW2WJFzDqQb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 13:02:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="rmdn8grV"; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 45yLvW0DYGz8syV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 13:02:31 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 45yLvV6hTZz9sPj; Tue, 30 Jul 2019 13:02:30 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=acme@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="rmdn8grV"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 45yLvV2n1Xz9sPW
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Jul 2019 13:02:29 +1000 (AEST)
-Received: from quaco.ghostprotocols.net (unknown [179.97.35.50])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D12D0216C8;
- Tue, 30 Jul 2019 03:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564455747;
- bh=PSjU/J96qYUTgZJWl8A6gS6FjJ45nEybaQnrKlCX67c=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rmdn8grVj1phifwIbh16XgDIzUW3+r80oAhC4eT8EKQOjIOkzi7bveZkBLINxL7oA
- cE1HBygCe2kJjp2azFWkYXid9BwFEPMDKhvr+q2wHixPqItpX6F+n6yxh6sElweC93
- I2N3OdvpPMQHB1B10GSpUecX6qsSAk1hzqzUw47Q=
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 107/107] perf vendor events power9: Added missing event
- descriptions
-Date: Mon, 29 Jul 2019 23:56:10 -0300
-Message-Id: <20190730025610.22603-108-acme@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190730025610.22603-1-acme@kernel.org>
-References: <20190730025610.22603-1-acme@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yMGM0TlLzDqRs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2019 13:18:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.b="rU36D1G1"; dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45yMGL31dsz9sBF;
+ Tue, 30 Jul 2019 13:18:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1564456730;
+ bh=aIWtuuU2oqEixpaxrfNoPqD/tQwT5Vsy+zMn9kQmMvo=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=rU36D1G12wN5iQVufrnRhumMN+oMDZAxsHKd5YOKONn5Wxf+8HUTfz8QSPw/tqZCG
+ ZJQOntg4cpPwrXmMJOwHnbfVN5p8Gw3Xq+bnx/SsxvPyqKUI6DmLeGwSoNYoS6oao0
+ Y2Oc/kejPJ5dEkh/Gnl/wcMGf7l8RmksaUiJGvvpdkFR3HmXfKg8rePOru1kT+nlKd
+ J8BwITqp9IeDvKDTXNLUijb42+Fzn6gbjM7BHpHgV1vZBHsGlwC4b7d/KMmd52uirl
+ eridoV6z5KL93Wj9O23Fy40mN0aNWJzhxQjYI3yDLvvkxtb+gMtufgDFkdH6drxmea
+ DuLuC4bg8tW3A==
+Date: Tue, 30 Jul 2019 13:18:49 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: Re: [PATCH] powerpc/kvm: Fall through switch case explicitly
+Message-ID: <20190730131849.4d704abe@canb.auug.org.au>
+In-Reply-To: <30ecba4e-a232-ad28-4c1a-5a173a7ac7cc@embeddedor.com>
+References: <20190729055536.25591-1-santosh@fossix.org>
+ <20190729181651.4b9586a7@canb.auug.org.au>
+ <30ecba4e-a232-ad28-4c1a-5a173a7ac7cc@embeddedor.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/5x3.=yExsVuPkcZHWu9FDrC";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,93 +59,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org,
- Clark Williams <williams@redhat.com>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, Michael Petlan <mpetlan@redhat.com>,
- Paul Clarke <pc@us.ibm.com>, Jiri Olsa <jolsa@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, Carl Love <cel@us.ibm.com>
+Cc: Santosh Sivaraj <santosh@fossix.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Petlan <mpetlan@redhat.com>
+--Sig_/5x3.=yExsVuPkcZHWu9FDrC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Documentation source:
+Hi all,
 
-https://wiki.raptorcs.com/w/images/6/6b/POWER9_PMU_UG_v12_28NOV2018_pub.pdf
+On Mon, 29 Jul 2019 18:45:40 -0500 "Gustavo A. R. Silva" <gustavo@embeddedo=
+r.com> wrote:
+>
+> On 7/29/19 3:16 AM, Stephen Rothwell wrote:
+> >=20
+> > On Mon, 29 Jul 2019 11:25:36 +0530 Santosh Sivaraj <santosh@fossix.org>=
+ wrote: =20
+> >>
+> >> Implicit fallthrough warning was enabled globally which broke
+> >> the build. Make it explicit with a `fall through` comment.
+> >>
+> >> Signed-off-by: Santosh Sivaraj <santosh@fossix.org> =20
+>=20
+> Reviewed-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+>=20
+> Thanks!
+> --
+> Gustavo
+>=20
+> >> ---
+> >>  arch/powerpc/kvm/book3s_32_mmu.c | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/arch/powerpc/kvm/book3s_32_mmu.c b/arch/powerpc/kvm/book3=
+s_32_mmu.c
+> >> index 653936177857..18f244aad7aa 100644
+> >> --- a/arch/powerpc/kvm/book3s_32_mmu.c
+> >> +++ b/arch/powerpc/kvm/book3s_32_mmu.c
+> >> @@ -239,6 +239,7 @@ static int kvmppc_mmu_book3s_32_xlate_pte(struct k=
+vm_vcpu *vcpu, gva_t eaddr,
+> >>  				case 2:
+> >>  				case 6:
+> >>  					pte->may_write =3D true;
+> >> +					/* fall through */
+> >>  				case 3:
+> >>  				case 5:
+> >>  				case 7:
+> >> --=20
+> >> 2.20.1
+> >> =20
+> >=20
+> > Thanks
+> >=20
+> > Reviewed-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> >=20
+> > This only shows up as a warning in a powerpc allyesconfig build.
+> >  =20
 
-Signed-off-by: Michael Petlan <mpetlan@redhat.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>
-Cc: Carl Love <cel@us.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Cc: Paul Clarke <pc@us.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: linuxppc-dev@ozlabs.org
-LPU-Reference: 20190719100837.7503-1-mpetlan@redhat.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/pmu-events/arch/powerpc/power9/memory.json | 2 +-
- tools/perf/pmu-events/arch/powerpc/power9/other.json  | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+I will apply this to linux-next today (and keep it until it turns up in
+some other tree).
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/memory.json b/tools/perf/pmu-events/arch/powerpc/power9/memory.json
-index 2e2ebc700c74..c3bb283e37e9 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/memory.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/memory.json
-@@ -52,7 +52,7 @@
-   {,
-     "EventCode": "0x4D02C",
-     "EventName": "PM_PMC1_REWIND",
--    "BriefDescription": ""
-+    "BriefDescription": "PMC1 rewind event"
-   },
-   {,
-     "EventCode": "0x15158",
-diff --git a/tools/perf/pmu-events/arch/powerpc/power9/other.json b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-index 48cf4f920b3f..62b864269623 100644
---- a/tools/perf/pmu-events/arch/powerpc/power9/other.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power9/other.json
-@@ -237,7 +237,7 @@
-   {,
-     "EventCode": "0xD0B0",
-     "EventName": "PM_HWSYNC",
--    "BriefDescription": ""
-+    "BriefDescription": "A hwsync instruction was decoded and transferred"
-   },
-   {,
-     "EventCode": "0x168B0",
-@@ -1232,7 +1232,7 @@
-   {,
-     "EventCode": "0xD8AC",
-     "EventName": "PM_LWSYNC",
--    "BriefDescription": ""
-+    "BriefDescription": "An lwsync instruction was decoded and transferred"
-   },
-   {,
-     "EventCode": "0x2094",
-@@ -1747,7 +1747,7 @@
-   {,
-     "EventCode": "0xD8B0",
-     "EventName": "PM_PTESYNC",
--    "BriefDescription": ""
-+    "BriefDescription": "A ptesync instruction was counted when the instruction is decoded and transmitted"
-   },
-   {,
-     "EventCode": "0x26086",
-@@ -2107,7 +2107,7 @@
-   {,
-     "EventCode": "0xF080",
-     "EventName": "PM_LSU_STCX_FAIL",
--    "BriefDescription": ""
-+    "BriefDescription": "The LSU detects the condition that a stcx instruction failed. No requirement to wait for a response from the nest"
-   },
-   {,
-     "EventCode": "0x30038",
--- 
-2.21.0
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/5x3.=yExsVuPkcZHWu9FDrC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl0/txkACgkQAVBC80lX
+0Gx4Vgf8C6LoCIynMEHnhq8lLhqV8aKs1aH1yySVy9BTS/Xwr/6hT18WEQfub7dm
+LVybe4on81CCIUEGPYEaMn0p8zMObgloCdiE1wXXdCMBj5rSuWt+3rkErEVwpbmi
+tpwaV++Vnzu4x+1yYLqJswGrKQuShpDJz3NN0COFJq+DVCZPclfyJ4a5OY76cD9o
+WyG76reawillD5KvFCNeGbOQZw/le7P0eynJrpcv7wHV9K+clXn9QgvpJ9YyB2CW
+zusp53FB0dRSTRpXckfzH8UdL1JGQ3WYmHdEDwdq3CAANn7ZsFrPYAr0dL0ByGmh
+hv4gnKU2f+IMFCidJ/XaCLu4fZvnqw==
+=Itor
+-----END PGP SIGNATURE-----
+
+--Sig_/5x3.=yExsVuPkcZHWu9FDrC--
