@@ -1,37 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4CE7C36C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:26:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zDhj0FP7zDqcj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:26:13 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AFA7C374
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:28:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zDld0rDxzDqd3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:28:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zBQ20XVDzDqfc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:43:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zBTn3fyZzDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:46:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45zBQ14ftsz9s00;
- Wed, 31 Jul 2019 21:43:21 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45zBTm01V7z9s00;
+ Wed, 31 Jul 2019 21:46:35 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/powernv: Restrict OPAL symbol map to only be
- readable by root
-In-Reply-To: <2a934abd-07c0-2741-8f2e-b9224abde005@linux.ibm.com>
-References: <20190503075253.22798-1-ajd@linux.ibm.com>
- <2a934abd-07c0-2741-8f2e-b9224abde005@linux.ibm.com>
-Date: Wed, 31 Jul 2019 21:43:21 +1000
-Message-ID: <87h872qvja.fsf@concordia.ellerman.id.au>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH] drivers/macintosh/smu.c: Mark expected switch fall-through
+In-Reply-To: <201907301005.0661E63CF@keescook>
+References: <20190730143704.060a2606@canb.auug.org.au>
+ <878ssfzjdk.fsf@concordia.ellerman.id.au> <201907301005.0661E63CF@keescook>
+Date: Wed, 31 Jul 2019 21:46:34 +1000
+Message-ID: <87ef26qvdx.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,28 +44,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, stable@vger.kernel.org,
- Stewart Smith <stewart@linux.ibm.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> On 3/5/19 5:52 pm, Andrew Donnellan wrote:
->> Currently the OPAL symbol map is globally readable, which seems bad as it
->> contains physical addresses.
+Kees Cook <keescook@chromium.org> writes:
+> On Wed, Jul 31, 2019 at 12:28:55AM +1000, Michael Ellerman wrote:
+>> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+>> > Mark switch cases where we are expecting to fall through.
+>> >
+>> > This patch fixes the following warning (Building: powerpc):
+>> >
+>> > drivers/macintosh/smu.c: In function 'smu_queue_i2c':
+>> > drivers/macintosh/smu.c:854:21: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>> >    cmd->info.devaddr &= 0xfe;
+>> >    ~~~~~~~~~~~~~~~~~~^~~~~~~
+>> > drivers/macintosh/smu.c:855:2: note: here
+>> >   case SMU_I2C_TRANSFER_STDSUB:
+>> >   ^~~~
+>> >
+>> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> > Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
+>> > Cc: Kees Cook <keescook@chromium.org>
+>> > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>> > ---
+>> >  drivers/macintosh/smu.c | 1 +
+>> >  1 file changed, 1 insertion(+)
+>> >
+>> > diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
+>> > index 276065c888bc..23f1f41c8602 100644
+>> > --- a/drivers/macintosh/smu.c
+>> > +++ b/drivers/macintosh/smu.c
+>> > @@ -852,6 +852,7 @@ int smu_queue_i2c(struct smu_i2c_cmd *cmd)
+>> >  		break;
+>> >  	case SMU_I2C_TRANSFER_COMBINED:
+>> >  		cmd->info.devaddr &= 0xfe;
+>> > +		/* fall through */
+>> >  	case SMU_I2C_TRANSFER_STDSUB:
+>> >  		if (cmd->info.sublen > 3)
+>> >  			return -EINVAL;
 >> 
->> Restrict it to root.
->> 
->> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Jordan Niethe <jniethe5@gmail.com>
->> Cc: Stewart Smith <stewart@linux.ibm.com>
->> Fixes: c8742f85125d ("powerpc/powernv: Expose OPAL firmware symbol map")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+>> Why do we think it's an expected fall through? I can't really convince
+>> myself from the surrounding code that it's definitely intentional.
 >
-> mpe: ping?
+> Yeah, good question. Just now when I went looking for who
+> used SMU_I2C_TRANSFER_COMBINED, I found the only caller in
+> arch/powerpc/platforms/powermac/low_i2c.c and it is clearly using a
+> fall-through for building the command for "stdsub" and "combined",
+> so I think that's justification enough:
+>
+>         switch(bus->mode) {
+>         case pmac_i2c_mode_std:
+>                 if (subsize != 0)
+>                         return -EINVAL;
+>                 cmd->info.type = SMU_I2C_TRANSFER_SIMPLE;
+>                 break;
+>         case pmac_i2c_mode_stdsub:
+>         case pmac_i2c_mode_combined:
+>                 if (subsize > 3 || subsize < 1)
+>                         return -EINVAL;
+>                 cmd->info.sublen = subsize;
+>                 /* that's big-endian only but heh ! */
+>                 memcpy(&cmd->info.subaddr, ((char *)&subaddr) + (4 - subsize),
+>                        subsize);
+>                 if (bus->mode == pmac_i2c_mode_stdsub)
+>                         cmd->info.type = SMU_I2C_TRANSFER_STDSUB;
+>                 else
+>                         cmd->info.type = SMU_I2C_TRANSFER_COMBINED;
+>
+>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Picked up for v5.4.
+Thanks.
 
 cheers
