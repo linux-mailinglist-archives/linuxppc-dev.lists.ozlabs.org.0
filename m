@@ -1,50 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E278C7C7A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 17:53:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C4B7C540
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 16:45:39 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zGSJ28zWzDqkf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 00:45:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zHyh4Y6QzDqkW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 01:53:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zGMQ1HxpzDqkb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 00:41:21 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id E6CFCB0C6;
- Wed, 31 Jul 2019 14:41:17 +0000 (UTC)
-Date: Wed, 31 Jul 2019 16:41:14 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: microblaze HAVE_MEMBLOCK_NODE_MAP dependency (was Re: [PATCH v2
- 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-Message-ID: <20190731144114.GY9330@dhcp22.suse.cz>
-References: <20190712150007.GU29483@dhcp22.suse.cz>
- <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
- <20190730081415.GN9330@dhcp22.suse.cz>
- <20190731062420.GC21422@rapoport-lnx>
- <20190731080309.GZ9330@dhcp22.suse.cz>
- <20190731111422.GA14538@rapoport-lnx>
- <20190731114016.GI9330@dhcp22.suse.cz>
- <20190731122631.GB14538@rapoport-lnx>
- <20190731130037.GN9330@dhcp22.suse.cz>
- <20190731142129.GA24998@rapoport-lnx>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 45zHpg1d76zDqWq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 01:46:33 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C06831576;
+ Wed, 31 Jul 2019 08:46:29 -0700 (PDT)
+Received: from e112269-lin.arm.com (e112269-lin.cambridge.arm.com
+ [10.1.196.133])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A45C73F694;
+ Wed, 31 Jul 2019 08:46:26 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH v10 06/22] powerpc: mm: Add p?d_leaf() definitions
+Date: Wed, 31 Jul 2019 16:45:47 +0100
+Message-Id: <20190731154603.41797-7-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190731154603.41797-1-steven.price@arm.com>
+References: <20190731154603.41797-1-steven.price@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190731142129.GA24998@rapoport-lnx>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,121 +46,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Will Deacon <will@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran OS <hoan@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: Mark Rutland <Mark.Rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, "Liang,
+ Kan" <kan.liang@linux.intel.com>, x86@kernel.org,
+ Steven Price <steven.price@arm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ kvm-ppc@vger.kernel.org,
+ =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 31-07-19 17:21:29, Mike Rapoport wrote:
-> On Wed, Jul 31, 2019 at 03:00:37PM +0200, Michal Hocko wrote:
-> > On Wed 31-07-19 15:26:32, Mike Rapoport wrote:
-> > > On Wed, Jul 31, 2019 at 01:40:16PM +0200, Michal Hocko wrote:
-> > > > On Wed 31-07-19 14:14:22, Mike Rapoport wrote:
-> > > > > On Wed, Jul 31, 2019 at 10:03:09AM +0200, Michal Hocko wrote:
-> > > > > > On Wed 31-07-19 09:24:21, Mike Rapoport wrote:
-> > > > > > > [ sorry for a late reply too, somehow I missed this thread before ]
-> > > > > > > 
-> > > > > > > On Tue, Jul 30, 2019 at 10:14:15AM +0200, Michal Hocko wrote:
-> > > > > > > > [Sorry for a late reply]
-> > > > > > > > 
-> > > > > > > > On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
-> > > > > > > > > Hi,
-> > > > > > > > > 
-> > > > > > > > > On 7/12/19 10:00 PM, Michal Hocko wrote:
-> > > > > > > > [...]
-> > > > > > > > > > Hmm, I thought this was selectable. But I am obviously wrong here.
-> > > > > > > > > > Looking more closely, it seems that this is indeed only about
-> > > > > > > > > > __early_pfn_to_nid and as such not something that should add a config
-> > > > > > > > > > symbol. This should have been called out in the changelog though.
-> > > > > > > > > 
-> > > > > > > > > Yes, do you have any other comments about my patch?
-> > > > > > > > 
-> > > > > > > > Not really. Just make sure to explicitly state that
-> > > > > > > > CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
-> > > > > > > > doesn't really deserve it's own config and can be pulled under NUMA.
-> > > > > > > > 
-> > > > > > > > > > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-> > > > > > > > > > bucket? Do we have any NUMA architecture that doesn't enable it?
-> > > > > > > > > > 
-> > > > > > > 
-> > > > > > > HAVE_MEMBLOCK_NODE_MAP makes huge difference in node/zone initialization
-> > > > > > > sequence so it's not only about a singe function.
-> > > > > > 
-> > > > > > The question is whether we want to have this a config option or enable
-> > > > > > it unconditionally for each NUMA system.
-> > > > > 
-> > > > > We can make it 'default NUMA', but we can't drop it completely because
-> > > > > microblaze uses sparse_memory_present_with_active_regions() which is
-> > > > > unavailable when HAVE_MEMBLOCK_NODE_MAP=n.
-> > > > 
-> > > > I suppose you mean that microblaze is using
-> > > > sparse_memory_present_with_active_regions even without CONFIG_NUMA,
-> > > > right?
-> > > 
-> > > Yes.
-> > > 
-> > > > I have to confess I do not understand that code. What is the deal
-> > > > with setting node id there?
-> > > 
-> > > The sparse_memory_present_with_active_regions() iterates over
-> > > memblock.memory regions and uses the node id of each region as the
-> > > parameter to memory_present(). The assumption here is that sometime before
-> > > each region was assigned a proper non-negative node id. 
-> > > 
-> > > microblaze uses device tree for memory enumeration and the current FDT code
-> > > does memblock_add() that implicitly sets nid in memblock.memory regions to -1.
-> > > 
-> > > So in order to have proper node id passed to memory_present() microblaze
-> > > has to call memblock_set_node() before it can use
-> > > sparse_memory_present_with_active_regions().
-> > 
-> > I am sorry, but I still do not follow. Who is consuming that node id
-> > information when NUMA=n. In other words why cannot we simply do
->  
-> We can, I think nobody cared to change it.
+walk_page_range() is going to be allowed to walk page tables other than
+those of user space. For this it needs to know when it has reached a
+'leaf' entry in the page tables. This information is provided by the
+p?d_leaf() functions/macros.
 
-It would be great if somebody with the actual HW could try it out.
-I can throw a patch but I do not even have a cross compiler in my
-toolbox.
+For powerpc pmd_large() already exists and does what we want, so hoist
+it out of the CONFIG_TRANSPARENT_HUGEPAGE condition and implement the
+other levels. Macros are used to provide the generic p?d_leaf() names.
 
-> 
-> > diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-> > index a015a951c8b7..3a47e8db8d1c 100644
-> > --- a/arch/microblaze/mm/init.c
-> > +++ b/arch/microblaze/mm/init.c
-> > @@ -175,14 +175,9 @@ void __init setup_memory(void)
-> >  
-> >  		start_pfn = memblock_region_memory_base_pfn(reg);
-> >  		end_pfn = memblock_region_memory_end_pfn(reg);
-> > -		memblock_set_node(start_pfn << PAGE_SHIFT,
-> > -				  (end_pfn - start_pfn) << PAGE_SHIFT,
-> > -				  &memblock.memory, 0);
-> > +		memory_present(0, start_pfn << PAGE_SHIFT, end_pfn << PAGE_SHIFT);
-> 
-> memory_present() expects pfns, the shift is not needed.
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: linuxppc-dev@lists.ozlabs.org
+CC: kvm-ppc@vger.kernel.org
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 30 ++++++++++++++------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-Right.
-
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 8308f32e9782..84270666355c 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -921,6 +921,12 @@ static inline int pud_present(pud_t pud)
+ 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PRESENT));
+ }
+ 
++#define pud_leaf	pud_large
++static inline int pud_large(pud_t pud)
++{
++	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
++}
++
+ extern struct page *pud_page(pud_t pud);
+ extern struct page *pmd_page(pmd_t pmd);
+ static inline pte_t pud_pte(pud_t pud)
+@@ -964,6 +970,12 @@ static inline int pgd_present(pgd_t pgd)
+ 	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PRESENT));
+ }
+ 
++#define pgd_leaf	pgd_large
++static inline int pgd_large(pgd_t pgd)
++{
++	return !!(pgd_raw(pgd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ static inline pte_t pgd_pte(pgd_t pgd)
+ {
+ 	return __pte_raw(pgd_raw(pgd));
+@@ -1131,6 +1143,15 @@ static inline bool pmd_access_permitted(pmd_t pmd, bool write)
+ 	return pte_access_permitted(pmd_pte(pmd), write);
+ }
+ 
++#define pmd_leaf	pmd_large
++/*
++ * returns true for pmd migration entries, THP, devmap, hugetlb
++ */
++static inline int pmd_large(pmd_t pmd)
++{
++	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
++}
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
+ extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
+@@ -1157,15 +1178,6 @@ pmd_hugepage_update(struct mm_struct *mm, unsigned long addr, pmd_t *pmdp,
+ 	return hash__pmd_hugepage_update(mm, addr, pmdp, clr, set);
+ }
+ 
+-/*
+- * returns true for pmd migration entries, THP, devmap, hugetlb
+- * But compile time dependent on THP config
+- */
+-static inline int pmd_large(pmd_t pmd)
+-{
+-	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+-}
+-
+ static inline pmd_t pmd_mknotpresent(pmd_t pmd)
+ {
+ 	return __pmd(pmd_val(pmd) & ~_PAGE_PRESENT);
 -- 
-Michal Hocko
-SUSE Labs
+2.20.1
+
