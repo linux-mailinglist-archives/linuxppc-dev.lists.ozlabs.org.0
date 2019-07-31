@@ -1,50 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622137C41E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:55:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zFLC43HszDqZP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:55:15 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DF87C431
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:58:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zFQ022GHzDqnV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:58:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zD7L27hfzDqk5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 23:00:46 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id CB714AEF3;
- Wed, 31 Jul 2019 13:00:40 +0000 (UTC)
-Date: Wed, 31 Jul 2019 15:00:37 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: microblaze HAVE_MEMBLOCK_NODE_MAP dependency (was Re: [PATCH v2 0/5]
- mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA)
-Message-ID: <20190731130037.GN9330@dhcp22.suse.cz>
-References: <20190712121223.GR29483@dhcp22.suse.cz>
- <20190712143730.au3662g4ua2tjudu@willie-the-truck>
- <20190712150007.GU29483@dhcp22.suse.cz>
- <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
- <20190730081415.GN9330@dhcp22.suse.cz>
- <20190731062420.GC21422@rapoport-lnx>
- <20190731080309.GZ9330@dhcp22.suse.cz>
- <20190731111422.GA14538@rapoport-lnx>
- <20190731114016.GI9330@dhcp22.suse.cz>
- <20190731122631.GB14538@rapoport-lnx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zDML0SjfzDqgB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 23:11:09 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 53CD728562
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 13:11:05 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 4211E28569; Wed, 31 Jul 2019 13:11:05 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=unavailable version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204375] kernel 5.2.4 w. KASAN enabled fails to boot on a
+ PowerMac G4 3,6 at very early stage
+Date: Wed, 31 Jul 2019 13:11:03 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204375-206035-6TaF0H8wrs@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204375-206035@https.bugzilla.kernel.org/>
+References: <bug-204375-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190731122631.GB14538@rapoport-lnx>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,115 +71,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Will Deacon <will@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran OS <hoan@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 31-07-19 15:26:32, Mike Rapoport wrote:
-> On Wed, Jul 31, 2019 at 01:40:16PM +0200, Michal Hocko wrote:
-> > On Wed 31-07-19 14:14:22, Mike Rapoport wrote:
-> > > On Wed, Jul 31, 2019 at 10:03:09AM +0200, Michal Hocko wrote:
-> > > > On Wed 31-07-19 09:24:21, Mike Rapoport wrote:
-> > > > > [ sorry for a late reply too, somehow I missed this thread before ]
-> > > > > 
-> > > > > On Tue, Jul 30, 2019 at 10:14:15AM +0200, Michal Hocko wrote:
-> > > > > > [Sorry for a late reply]
-> > > > > > 
-> > > > > > On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
-> > > > > > > Hi,
-> > > > > > > 
-> > > > > > > On 7/12/19 10:00 PM, Michal Hocko wrote:
-> > > > > > [...]
-> > > > > > > > Hmm, I thought this was selectable. But I am obviously wrong here.
-> > > > > > > > Looking more closely, it seems that this is indeed only about
-> > > > > > > > __early_pfn_to_nid and as such not something that should add a config
-> > > > > > > > symbol. This should have been called out in the changelog though.
-> > > > > > > 
-> > > > > > > Yes, do you have any other comments about my patch?
-> > > > > > 
-> > > > > > Not really. Just make sure to explicitly state that
-> > > > > > CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
-> > > > > > doesn't really deserve it's own config and can be pulled under NUMA.
-> > > > > > 
-> > > > > > > > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-> > > > > > > > bucket? Do we have any NUMA architecture that doesn't enable it?
-> > > > > > > > 
-> > > > > 
-> > > > > HAVE_MEMBLOCK_NODE_MAP makes huge difference in node/zone initialization
-> > > > > sequence so it's not only about a singe function.
-> > > > 
-> > > > The question is whether we want to have this a config option or enable
-> > > > it unconditionally for each NUMA system.
-> > > 
-> > > We can make it 'default NUMA', but we can't drop it completely because
-> > > microblaze uses sparse_memory_present_with_active_regions() which is
-> > > unavailable when HAVE_MEMBLOCK_NODE_MAP=n.
-> > 
-> > I suppose you mean that microblaze is using
-> > sparse_memory_present_with_active_regions even without CONFIG_NUMA,
-> > right?
-> 
-> Yes.
-> 
-> > I have to confess I do not understand that code. What is the deal
-> > with setting node id there?
-> 
-> The sparse_memory_present_with_active_regions() iterates over
-> memblock.memory regions and uses the node id of each region as the
-> parameter to memory_present(). The assumption here is that sometime before
-> each region was assigned a proper non-negative node id. 
-> 
-> microblaze uses device tree for memory enumeration and the current FDT code
-> does memblock_add() that implicitly sets nid in memblock.memory regions to -1.
-> 
-> So in order to have proper node id passed to memory_present() microblaze
-> has to call memblock_set_node() before it can use
-> sparse_memory_present_with_active_regions().
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204375
 
-I am sorry, but I still do not follow. Who is consuming that node id
-information when NUMA=n. In other words why cannot we simply do
+--- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
+I opened bug #204397 with your output.
 
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index a015a951c8b7..3a47e8db8d1c 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -175,14 +175,9 @@ void __init setup_memory(void)
- 
- 		start_pfn = memblock_region_memory_base_pfn(reg);
- 		end_pfn = memblock_region_memory_end_pfn(reg);
--		memblock_set_node(start_pfn << PAGE_SHIFT,
--				  (end_pfn - start_pfn) << PAGE_SHIFT,
--				  &memblock.memory, 0);
-+		memory_present(0, start_pfn << PAGE_SHIFT, end_pfn << PAGE_SHIFT);
- 	}
- 
--	/* XXX need to clip this if using highmem? */
--	sparse_memory_present_with_active_regions(0);
--
- 	paging_init();
- }
- 
--- 
-Michal Hocko
-SUSE Labs
+The G4 DP won't boot to a stage where I can get a dmesg, even if waiting fo=
+r 10
+minutes.
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
