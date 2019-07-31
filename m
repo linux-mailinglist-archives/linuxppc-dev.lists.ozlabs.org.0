@@ -1,26 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEDD7B69A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 02:15:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100E27B694
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 02:13:57 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45yv6T55KTzDqYt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 10:13:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45yv8q2k7QzDqXm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 10:15:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45yv4c5vhCzDqXl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 10:12:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45yv4c3rjJz8tQV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 10:12:16 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45yv4c2lm7z9s3l; Wed, 31 Jul 2019 10:12:16 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
  (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45yv4Y0dyCzDqXl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 10:12:11 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 45yv4b601sz9sDQ
+ for <linuxppc-dev@ozlabs.org>; Wed, 31 Jul 2019 10:12:15 +1000 (AEST)
 Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
  x6V07I0k082099; Tue, 30 Jul 2019 20:12:04 -0400
