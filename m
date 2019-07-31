@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9FA7BDC3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 11:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 388917BDC9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 11:57:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45z80x58nWzDqWW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 19:54:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45z83W3zZzzDqf5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 19:57:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,23 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45z7dz0MNzzDqBb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 19:38:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45z7gG1z4vzDqdf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 19:39:38 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 3B60028775
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:38:28 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 4AA7728775
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:39:36 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 2F2A9288DD; Wed, 31 Jul 2019 09:38:28 +0000 (UTC)
+ id 3F105287EF; Wed, 31 Jul 2019 09:39:36 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
+ NO_RELAYS autolearn=unavailable version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204375] kernel 5.2.4 w. KASAN enabled fails to boot on a
  PowerMac G4 3,6 at very early stage
-Date: Wed, 31 Jul 2019 09:38:27 +0000
+Date: Wed, 31 Jul 2019 09:39:34 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -51,7 +51,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-204375-206035-DNhRTmsafY@https.bugzilla.kernel.org/>
+Message-ID: <bug-204375-206035-eLzWdV7Hnl@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204375-206035@https.bugzilla.kernel.org/>
 References: <bug-204375-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,12 +77,12 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204375
 
---- Comment #7 from Christophe Leroy (christophe.leroy@c-s.fr) ---
-Created attachment 284059
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284059&action=3Dedit
-Screenshot1
+--- Comment #8 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Created attachment 284061
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284061&action=3Dedit
+Screenshot2
 
-When booting QEMU in graphic mode, it first hangs for some time here.
+Then it reverts to text mode and continue booting
 
 --=20
 You are receiving this mail because:
