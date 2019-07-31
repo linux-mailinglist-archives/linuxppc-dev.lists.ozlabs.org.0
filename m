@@ -1,83 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE317C3CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:41:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zF204NS7zDqLq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:41:12 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6621A7C3DA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:44:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zF5B0NzQzDqlc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:43:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zC0T3cStzDqgZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 22:09:45 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6VC7PJs091657
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 08:09:42 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u3aejgvyq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 08:09:41 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <srikar@linux.vnet.ibm.com>;
- Wed, 31 Jul 2019 13:09:39 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 31 Jul 2019 13:09:37 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6VC9aBx54263984
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Jul 2019 12:09:36 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F28FA4040;
- Wed, 31 Jul 2019 12:09:36 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87C97A404D;
- Wed, 31 Jul 2019 12:09:35 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Wed, 31 Jul 2019 12:09:35 +0000 (GMT)
-Date: Wed, 31 Jul 2019 17:39:34 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Use nid as fallback for chip_id
-References: <1562062765-31104-1-git-send-email-srikar@linux.vnet.ibm.com>
- <87lfwhypv0.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zC0j5zq4zDqZL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 22:09:57 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id C7027288F8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 12:09:54 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id BB4CD2891A; Wed, 31 Jul 2019 12:09:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Wed, 31 Jul 2019 12:09:54 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: mpe@ellerman.id.au
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-oenXhNmqa8@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87lfwhypv0.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 19073112-4275-0000-0000-0000035262E1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19073112-4276-0000-0000-000038635258
-Message-Id: <20190731120934.GB11365@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-31_05:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1907310125
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,85 +71,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michael Ellerman <mpe@ellerman.id.au> [2019-07-29 22:41:55]:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
-> >  
-> > +	chip_id = of_get_ibm_chip_id(np);
-> > +	if (chip_id == -1)
-> > +		chip_id = of_node_to_nid(np);
-> > +
-> >  	of_node_put(np);
-> > -	return of_get_ibm_chip_id(np);
-> > +	return chip_id;
-> >  }
-> 
-> A nid is not a chip-id.
-> 
+--- Comment #4 from mpe@ellerman.id.au ---
+bugzilla-daemon@bugzilla.kernel.org writes:
 
-Agree that nid is not a chip-id.
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+>
+> --- Comment #2 from Andrew Morton (akpm@linux-foundation.org) ---
+> (switched to email.  Please respond via emailed reply-to-all, not via the
+> bugzilla web interface).
+>
+>
+> On Mon, 29 Jul 2019 22:35:48 +0000 bugzilla-daemon@bugzilla.kernel.org wr=
+ote:
+>
+>> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+>>=20
+>>             Bug ID: 204371
+>>            Summary: BUG kmalloc-4k (Tainted: G        W        ): Object
+>>                     padding overwritten
+>>            Product: Memory Management
+>>            Version: 2.5
+>>     Kernel Version: 5.3.0-rc2
+>>           Hardware: PPC-32
+>>                 OS: Linux
+>>               Tree: Mainline
+>>             Status: NEW
+>>           Severity: normal
+>>           Priority: P1
+>>          Component: Slab Allocator
+>>           Assignee: akpm@linux-foundation.org
+>>           Reporter: erhard_f@mailbox.org
+>>         Regression: No
+>
+> cc'ing various people here.
+>
+> I suspect proc_cgroup_show() is innocent and that perhaps
+> bpf_prepare_filter() had a memory scribble.  iirc there has been at
+> least one recent pretty serious bpf fix applied recently.  Can others
+> please take a look?
 
-> This obviously happens to work for the case you've identified above but
-> it's not something I'm happy to merge in general.
-> 
+I haven't been able to reproduce this on a 64-bit or 32-bit powerpc
+machine here. But I don't run gentoo userspace, so I suspect I'm not
+tripping the same path at boot. I did run the seccomp selftest and that
+didn't trip it either.
 
-Okay.
+cheers
 
-> We could do a similar change in the topology code, but I'd probably like
-> it to be restricted to when we're running under PowerVM and there are no
-> chip-ids found at all.
-> 
-
-So for PowerNV case and KVM guest, of_get_ibm_chip_id() always seems to
-returns a valid chip-id. Its *only* in the PowerVM case that we are
-returning nid as the fallback chip-id.
-
-
-Do you think checking for OPAL firmware would help?
-
-chip_id = of_get_ibm_chip_id(np);
-if (chip_id == -1 && !firmware_has_feature(FW_FEATURE_OPAL))
-	chip_id = of_node_to_nid(np);
-
-of_node_put(np);
-
-
-or should we do
-
-int topology_physical_package_id(int cpu)
-{
-	int chip_id = cpu_to_chip_id(cpu)
-	if (chip_id == -1 && !firmware_has_feature(FW_FEATURE_OPAL))
-		//Fallback to nid instead of chip-id.
-....
-	return chip_id;
-}
-
-> I'm also not clear how it will interact with migration.
-> 
-
-On migration, this function would be triggered when the cpumasks are getting
-updated. So I would expect this to continue working.
-
-Or Am I missing someother migration related quirk?
-
-> cheers
-> 
-
-
-The other alternative that I see is 
-
-
-
-
--- 
-Thanks and Regards
-Srikar Dronamraju
-
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
