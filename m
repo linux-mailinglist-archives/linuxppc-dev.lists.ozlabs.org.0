@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 137D47C04D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 13:44:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EAC7C03F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 13:41:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zBNF2V9wzDqB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 21:41:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zBR93sGQzDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 21:44:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="LGowm6Ze"; dkim-atps=neutral
+ header.b="MC3kMyK9"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6k4QwFzDqQh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6k4wKDzDqQv
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:30:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
@@ -31,25 +31,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
  List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=cEMvo+aAiAvNnhZtfMZlN+6fbBamb6KwvsUBirQOEt0=; b=LGowm6Zev4yw
- dLl7wROmA1FUtPTOHQMDyCB1LNjHCkIB3uMaNx1NGxbiPoSb4iEqqQtjvJx/r2TGrCU17jU4cp846
- ESPOeejJf315wnoxyERNJrgcWgAzEiK7P3aBelMIkbAnw8m8zoa6x2fk4FFEq+lMF2XCxtiUtbi4N
- CTXqM=;
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+ List-Archive; bh=rRPz+PWWHOG3+Z69Sa198TqzitnXS8SfELUICqTQMgE=; b=MC3kMyK9KPVL
+ xh62WxhHGry3uYbLLNEwrY8hSb2Oh0BYEPEr7KQhYpnNYhl7mVPz3mFuECKljaDS+Uh5Jd6QvZO1B
+ dgD+0Ym95Ww6DObAecmO+AdqH5NOD6jvIrSwXD8htVcdZZhoHlzKP4dXHwIDXJAfHuJc6aLIbWFdQ
+ g/zwc=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=ypsilon.sirena.org.uk)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hsmnd-0001lD-BP; Wed, 31 Jul 2019 11:29:41 +0000
+ id 1hsmni-0001mW-2t; Wed, 31 Jul 2019 11:29:46 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
- id BB84B2742CC3; Wed, 31 Jul 2019 12:29:40 +0100 (BST)
+ id 6EECC2742C99; Wed, 31 Jul 2019 12:29:45 +0100 (BST)
 From: Mark Brown <broonie@kernel.org>
 To: YueHaibing <yuehaibing@huawei.com>
-Subject: Applied "ASoC: inno_rk3036: use devm_platform_ioremap_resource() to
- simplify code" to the asoc tree
-In-Reply-To: <20190727150738.54764-21-yuehaibing@huawei.com>
+Subject: Applied "ASoC: meson: axg-pdm: use devm_platform_ioremap_resource()
+ to simplify code" to the asoc tree
+In-Reply-To: <20190727150738.54764-28-yuehaibing@huawei.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190731112940.BB84B2742CC3@ypsilon.sirena.org.uk>
-Date: Wed, 31 Jul 2019 12:29:40 +0100 (BST)
+Message-Id: <20190731112945.6EECC2742C99@ypsilon.sirena.org.uk>
+Date: Wed, 31 Jul 2019 12:29:45 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,7 +87,7 @@ Sender: "Linuxppc-dev"
 
 The patch
 
-   ASoC: inno_rk3036: use devm_platform_ioremap_resource() to simplify code
+   ASoC: meson: axg-pdm: use devm_platform_ioremap_resource() to simplify code
 
 has been applied to the asoc tree at
 
@@ -111,10 +112,10 @@ to this mail.
 Thanks,
 Mark
 
-From 2d1ffc7d0f58f6a39a34854e952f5020fc655af0 Mon Sep 17 00:00:00 2001
+From 2e73d98f2ecf61008926bb8a425c3281a89959c0 Mon Sep 17 00:00:00 2001
 From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 27 Jul 2019 23:07:24 +0800
-Subject: [PATCH] ASoC: inno_rk3036: use devm_platform_ioremap_resource() to
+Date: Sat, 27 Jul 2019 23:07:31 +0800
+Subject: [PATCH] ASoC: meson: axg-pdm: use devm_platform_ioremap_resource() to
  simplify code
 
 Use devm_platform_ioremap_resource() to simplify the code a bit.
@@ -122,33 +123,33 @@ This is detected by coccinelle.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20190727150738.54764-21-yuehaibing@huawei.com
+Link: https://lore.kernel.org/r/20190727150738.54764-28-yuehaibing@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/inno_rk3036.c | 4 +---
+ sound/soc/meson/axg-pdm.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/inno_rk3036.c b/sound/soc/codecs/inno_rk3036.c
-index 7feedbb7bbed..14d8fe1c28a4 100644
---- a/sound/soc/codecs/inno_rk3036.c
-+++ b/sound/soc/codecs/inno_rk3036.c
-@@ -405,7 +405,6 @@ static int rk3036_codec_platform_probe(struct platform_device *pdev)
+diff --git a/sound/soc/meson/axg-pdm.c b/sound/soc/meson/axg-pdm.c
+index 9d5684493ffc..bfd37d49a73e 100644
+--- a/sound/soc/meson/axg-pdm.c
++++ b/sound/soc/meson/axg-pdm.c
+@@ -585,7 +585,6 @@ static int axg_pdm_probe(struct platform_device *pdev)
  {
- 	struct rk3036_codec_priv *priv;
- 	struct device_node *of_node = pdev->dev.of_node;
+ 	struct device *dev = &pdev->dev;
+ 	struct axg_pdm *priv;
 -	struct resource *res;
- 	void __iomem *base;
- 	struct regmap *grf;
+ 	void __iomem *regs;
  	int ret;
-@@ -414,8 +413,7 @@ static int rk3036_codec_platform_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
+ 
+@@ -600,8 +599,7 @@ static int axg_pdm_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, res);
-+	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+-	regs = devm_ioremap_resource(dev, res);
++	regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -- 
 2.20.1
