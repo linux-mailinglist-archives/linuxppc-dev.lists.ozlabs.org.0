@@ -1,49 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98A77BC98
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 11:07:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D08D7BB2E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 10:07:17 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45z5cf0TmpzDqZ3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 18:07:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45z6y70QNJzDqcT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 19:07:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=mhocko@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45z5X34g7rzDqYk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 18:03:14 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 8CE3BAEAE;
- Wed, 31 Jul 2019 08:03:10 +0000 (UTC)
-Date: Wed, 31 Jul 2019 10:03:09 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20190731080309.GZ9330@dhcp22.suse.cz>
-References: <1562887528-5896-1-git-send-email-Hoan@os.amperecomputing.com>
- <20190712070247.GM29483@dhcp22.suse.cz>
- <586ae736-a429-cf94-1520-1a94ffadad88@os.amperecomputing.com>
- <20190712121223.GR29483@dhcp22.suse.cz>
- <20190712143730.au3662g4ua2tjudu@willie-the-truck>
- <20190712150007.GU29483@dhcp22.suse.cz>
- <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
- <20190730081415.GN9330@dhcp22.suse.cz>
- <20190731062420.GC21422@rapoport-lnx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45z6sz0SLRzDqc8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 19:03:49 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id B780B28897
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 09:03:46 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id AC244288CF; Wed, 31 Jul 2019 09:03:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=unavailable version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Wed, 31 Jul 2019 09:03:45 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-Nced1Tb5ip@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190731062420.GC21422@rapoport-lnx>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,76 +71,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Will Deacon <will@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran OS <hoan@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Open Source Submission <patches@amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 31-07-19 09:24:21, Mike Rapoport wrote:
-> [ sorry for a late reply too, somehow I missed this thread before ]
-> 
-> On Tue, Jul 30, 2019 at 10:14:15AM +0200, Michal Hocko wrote:
-> > [Sorry for a late reply]
-> > 
-> > On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
-> > > Hi,
-> > > 
-> > > On 7/12/19 10:00 PM, Michal Hocko wrote:
-> > [...]
-> > > > Hmm, I thought this was selectable. But I am obviously wrong here.
-> > > > Looking more closely, it seems that this is indeed only about
-> > > > __early_pfn_to_nid and as such not something that should add a config
-> > > > symbol. This should have been called out in the changelog though.
-> > > 
-> > > Yes, do you have any other comments about my patch?
-> > 
-> > Not really. Just make sure to explicitly state that
-> > CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
-> > doesn't really deserve it's own config and can be pulled under NUMA.
-> > 
-> > > > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
-> > > > bucket? Do we have any NUMA architecture that doesn't enable it?
-> > > > 
-> 
-> HAVE_MEMBLOCK_NODE_MAP makes huge difference in node/zone initialization
-> sequence so it's not only about a singe function.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
-The question is whether we want to have this a config option or enable
-it unconditionally for each NUMA system.
+--- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
+On Tue, 30 Jul 2019 11:52:44 -0700
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> > > As I checked with arch Kconfig files, there are 2 architectures, riscv 
-> > > and microblaze, do not support NUMA but enable this config.
-> 
-> My take would be that riscv will support NUMA some day.
->  
-> > > And 1 architecture, alpha, supports NUMA but does not enable this config.
-> 
-> alpha's NUMA support is BROKEN for more than a decade now, I doubt it'll
-> ever get fixed.
+> (switched to email.  Please respond via emailed reply-to-all, not via the
+> bugzilla web interface).
+>=20
+>=20
+> On Mon, 29 Jul 2019 22:35:48 +0000 bugzilla-daemon@bugzilla.kernel.org wr=
+ote:
+>=20
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+> >=20
+> >             Bug ID: 204371
+> >            Summary: BUG kmalloc-4k (Tainted: G        W        ): Object
+> >                     padding overwritten
+> >            Product: Memory Management
+> >            Version: 2.5
+> >     Kernel Version: 5.3.0-rc2
+> >           Hardware: PPC-32
+> >                 OS: Linux
+> >               Tree: Mainline
+> >             Status: NEW
+> >           Severity: normal
+> >           Priority: P1
+> >          Component: Slab Allocator
+> >           Assignee: akpm@linux-foundation.org
+> >           Reporter: erhard_f@mailbox.org
+> >         Regression: No=20=20
+>=20
+> cc'ing various people here.
+>=20
+> I suspect proc_cgroup_show() is innocent and that perhaps
+> bpf_prepare_filter() had a memory scribble.  iirc there has been at
+> least one recent pretty serious bpf fix applied recently.  Can others
+> please take a look?
+>=20
+> (Seriously - please don't modify this report via the bugzilla web interfa=
+ce!)
 
-I can see Al has marked it BROKEN in 2005. Maybe time to rip it out?
-Although it doesn't seem to be a lot of code in arch/alpha at first
-glance so maybe not worth an effort.
--- 
-Michal Hocko
-SUSE Labs
+Hm, don't know whether this is bpfs fault.. I am getting this for other thi=
+ngs
+too:
+
+[...]
+Jul 31 10:46:53 T600 kernel: Object 442ee539: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
+ 6b
+6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+Jul 31 10:46:53 T600 kernel: Object 41b83bb9: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
+ 6b
+6b 6b 6b 6b a5  kkkkkkkkkkkkkkk.
+Jul 31 10:46:53 T600 kernel: Redzone 720e193a: bb bb bb bb=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+                ....
+Jul 31 10:46:53 T600 kernel: Padding 0b116c89: 00 00 00 00 00 00 00 00=20=
+=20=20=20=20=20=20=20=20
+                ........
+Jul 31 10:46:53 T600 kernel: CPU: 1 PID: 120 Comm: systemd-journal Tainted:=
+ G=20=20
+ B   W         5.2.4-gentoo #1
+Jul 31 10:46:53 T600 kernel: Call Trace:
+Jul 31 10:46:53 T600 kernel: [dd663b68] [c0628d80] dump_stack+0xa0/0xfc
+(unreliable)
+Jul 31 10:46:53 T600 kernel: [dd663b98] [c01984ac]
+check_bytes_and_report+0xc8/0xf0
+Jul 31 10:46:53 T600 kernel: [dd663bc8] [c0198fd0] check_object+0x10c/0x224
+Jul 31 10:46:53 T600 kernel: [dd663bf8] [c0199964]
+alloc_debug_processing+0xc4/0x13c
+Jul 31 10:46:53 T600 kernel: [dd663c18] [c0199bc4]
+___slab_alloc.constprop.72+0x1e8/0x380
+Jul 31 10:46:53 T600 kernel: [dd663ca8] [c0199d9c]
+__slab_alloc.constprop.71+0x40/0x6c
+Jul 31 10:46:53 T600 kernel: [dd663cd8] [c019a014]
+kmem_cache_alloc_trace+0x7c/0x170
+Jul 31 10:46:53 T600 kernel: [dd663d18] [c02d6a5c] btrfs_opendir+0x48/0x78
+Jul 31 10:46:53 T600 kernel: [dd663d38] [c01a9320] do_dentry_open+0x25c/0x2=
+f0
+Jul 31 10:46:53 T600 kernel: [dd663d68] [c01bc284] path_openat+0x814/0xaf0
+Jul 31 10:46:53 T600 kernel: [dd663e38] [c01bc5a4] do_filp_open+0x44/0xa0
+Jul 31 10:46:53 T600 kernel: [dd663ee8] [c01aa178] do_sys_open+0x7c/0x108
+Jul 31 10:46:53 T600 kernel: [dd663f38] [c0015274] ret_from_syscall+0x0/0x34
+Jul 31 10:46:53 T600 kernel: --- interrupt: c00 at 0x7eae14
+                                 LR =3D 0x7eadf8
+Jul 31 10:46:53 T600 kernel: FIX kmalloc-4k: Restoring
+0x0b116c89-0x85f2eca1=3D0x5a
+[...]
+
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
