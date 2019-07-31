@@ -1,36 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7F07C39D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:32:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AFA7C374
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:28:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zDld0rDxzDqd3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:28:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zDrG28nFzDqZL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:32:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zBTn3fyZzDqbk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:46:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zBjQ5KyVzDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:56:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 45zBjQ0hd0z9sMQ; Wed, 31 Jul 2019 21:56:42 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 45zBTm01V7z9s00;
- Wed, 31 Jul 2019 21:46:35 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 45zBjP5xMjz9s00;
+ Wed, 31 Jul 2019 21:56:41 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] drivers/macintosh/smu.c: Mark expected switch fall-through
-In-Reply-To: <201907301005.0661E63CF@keescook>
-References: <20190730143704.060a2606@canb.auug.org.au>
- <878ssfzjdk.fsf@concordia.ellerman.id.au> <201907301005.0661E63CF@keescook>
-Date: Wed, 31 Jul 2019 21:46:34 +1000
-Message-ID: <87ef26qvdx.fsf@concordia.ellerman.id.au>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 107/107] perf vendor events power9: Added missing event
+ descriptions
+In-Reply-To: <20190730025610.22603-108-acme@kernel.org>
+References: <20190730025610.22603-1-acme@kernel.org>
+ <20190730025610.22603-108-acme@kernel.org>
+Date: Wed, 31 Jul 2019 21:56:40 +1000
+Message-ID: <87a7cuqux3.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -44,81 +49,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, linuxppc-dev@ozlabs.org,
+ Clark Williams <williams@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, Michael Petlan <mpetlan@redhat.com>,
+ Paul Clarke <pc@us.ibm.com>, Jiri Olsa <jolsa@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, Carl Love <cel@us.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kees Cook <keescook@chromium.org> writes:
-> On Wed, Jul 31, 2019 at 12:28:55AM +1000, Michael Ellerman wrote:
->> Stephen Rothwell <sfr@canb.auug.org.au> writes:
->> > Mark switch cases where we are expecting to fall through.
->> >
->> > This patch fixes the following warning (Building: powerpc):
->> >
->> > drivers/macintosh/smu.c: In function 'smu_queue_i2c':
->> > drivers/macintosh/smu.c:854:21: warning: this statement may fall through [-Wimplicit-fallthrough=]
->> >    cmd->info.devaddr &= 0xfe;
->> >    ~~~~~~~~~~~~~~~~~~^~~~~~~
->> > drivers/macintosh/smu.c:855:2: note: here
->> >   case SMU_I2C_TRANSFER_STDSUB:
->> >   ^~~~
->> >
->> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> > Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
->> > Cc: Kees Cook <keescook@chromium.org>
->> > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
->> > ---
->> >  drivers/macintosh/smu.c | 1 +
->> >  1 file changed, 1 insertion(+)
->> >
->> > diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
->> > index 276065c888bc..23f1f41c8602 100644
->> > --- a/drivers/macintosh/smu.c
->> > +++ b/drivers/macintosh/smu.c
->> > @@ -852,6 +852,7 @@ int smu_queue_i2c(struct smu_i2c_cmd *cmd)
->> >  		break;
->> >  	case SMU_I2C_TRANSFER_COMBINED:
->> >  		cmd->info.devaddr &= 0xfe;
->> > +		/* fall through */
->> >  	case SMU_I2C_TRANSFER_STDSUB:
->> >  		if (cmd->info.sublen > 3)
->> >  			return -EINVAL;
->> 
->> Why do we think it's an expected fall through? I can't really convince
->> myself from the surrounding code that it's definitely intentional.
+Arnaldo Carvalho de Melo <acme@kernel.org> writes:
+> From: Michael Petlan <mpetlan@redhat.com>
 >
-> Yeah, good question. Just now when I went looking for who
-> used SMU_I2C_TRANSFER_COMBINED, I found the only caller in
-> arch/powerpc/platforms/powermac/low_i2c.c and it is clearly using a
-> fall-through for building the command for "stdsub" and "combined",
-> so I think that's justification enough:
+> Documentation source:
 >
->         switch(bus->mode) {
->         case pmac_i2c_mode_std:
->                 if (subsize != 0)
->                         return -EINVAL;
->                 cmd->info.type = SMU_I2C_TRANSFER_SIMPLE;
->                 break;
->         case pmac_i2c_mode_stdsub:
->         case pmac_i2c_mode_combined:
->                 if (subsize > 3 || subsize < 1)
->                         return -EINVAL;
->                 cmd->info.sublen = subsize;
->                 /* that's big-endian only but heh ! */
->                 memcpy(&cmd->info.subaddr, ((char *)&subaddr) + (4 - subsize),
->                        subsize);
->                 if (bus->mode == pmac_i2c_mode_stdsub)
->                         cmd->info.type = SMU_I2C_TRANSFER_STDSUB;
->                 else
->                         cmd->info.type = SMU_I2C_TRANSFER_COMBINED;
+> https://wiki.raptorcs.com/w/images/6/6b/POWER9_PMU_UG_v12_28NOV2018_pub.pdf
 >
->
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Michael Petlan <mpetlan@redhat.com>
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+> Cc: Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>
+> Cc: Carl Love <cel@us.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> Cc: Paul Clarke <pc@us.ibm.com>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Cc: linuxppc-dev@ozlabs.org
+> LPU-Reference: 20190719100837.7503-1-mpetlan@redhat.com
+> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-Thanks.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
 cheers
