@@ -1,65 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FC87C3E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:46:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6621A7C3DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 15:44:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zF5B0NzQzDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:43:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zF8J0tm0zDq9L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 23:46:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zC0j5zq4zDqZL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 22:09:57 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id C7027288F8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 12:09:54 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id BB4CD2891A; Wed, 31 Jul 2019 12:09:54 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
- padding overwritten
-Date: Wed, 31 Jul 2019 12:09:54 +0000
-X-Bugzilla-Reason: CC
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Memory Management
-X-Bugzilla-Component: Slab Allocator
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: mpe@ellerman.id.au
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: akpm@linux-foundation.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204371-206035-oenXhNmqa8@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
-References: <bug-204371-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zCNB5kxqzDqZQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 22:26:50 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6VCN2b0141723
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 08:26:48 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u3aejhpyr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 08:26:47 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
+ Wed, 31 Jul 2019 13:26:45 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 31 Jul 2019 13:26:37 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6VCQZF059244618
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 Jul 2019 12:26:36 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DB81511C05B;
+ Wed, 31 Jul 2019 12:26:35 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D43D911C04A;
+ Wed, 31 Jul 2019 12:26:33 +0000 (GMT)
+Received: from rapoport-lnx (unknown [9.148.8.168])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 31 Jul 2019 12:26:33 +0000 (GMT)
+Date: Wed, 31 Jul 2019 15:26:32 +0300
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v2 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+References: <586ae736-a429-cf94-1520-1a94ffadad88@os.amperecomputing.com>
+ <20190712121223.GR29483@dhcp22.suse.cz>
+ <20190712143730.au3662g4ua2tjudu@willie-the-truck>
+ <20190712150007.GU29483@dhcp22.suse.cz>
+ <730368c5-1711-89ae-e3ef-65418b17ddc9@os.amperecomputing.com>
+ <20190730081415.GN9330@dhcp22.suse.cz>
+ <20190731062420.GC21422@rapoport-lnx>
+ <20190731080309.GZ9330@dhcp22.suse.cz>
+ <20190731111422.GA14538@rapoport-lnx>
+ <20190731114016.GI9330@dhcp22.suse.cz>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190731114016.GI9330@dhcp22.suse.cz>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 19073112-0028-0000-0000-00000389A2B7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19073112-0029-0000-0000-00002449F381
+Message-Id: <20190731122631.GB14538@rapoport-lnx>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-31_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=761 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1907310126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +98,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ Will Deacon <will@kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Hoan Tran OS <hoan@os.amperecomputing.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Open Source Submission <patches@amperecomputing.com>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+On Wed, Jul 31, 2019 at 01:40:16PM +0200, Michal Hocko wrote:
+> On Wed 31-07-19 14:14:22, Mike Rapoport wrote:
+> > On Wed, Jul 31, 2019 at 10:03:09AM +0200, Michal Hocko wrote:
+> > > On Wed 31-07-19 09:24:21, Mike Rapoport wrote:
+> > > > [ sorry for a late reply too, somehow I missed this thread before ]
+> > > > 
+> > > > On Tue, Jul 30, 2019 at 10:14:15AM +0200, Michal Hocko wrote:
+> > > > > [Sorry for a late reply]
+> > > > > 
+> > > > > On Mon 15-07-19 17:55:07, Hoan Tran OS wrote:
+> > > > > > Hi,
+> > > > > > 
+> > > > > > On 7/12/19 10:00 PM, Michal Hocko wrote:
+> > > > > [...]
+> > > > > > > Hmm, I thought this was selectable. But I am obviously wrong here.
+> > > > > > > Looking more closely, it seems that this is indeed only about
+> > > > > > > __early_pfn_to_nid and as such not something that should add a config
+> > > > > > > symbol. This should have been called out in the changelog though.
+> > > > > > 
+> > > > > > Yes, do you have any other comments about my patch?
+> > > > > 
+> > > > > Not really. Just make sure to explicitly state that
+> > > > > CONFIG_NODES_SPAN_OTHER_NODES is only about __early_pfn_to_nid and that
+> > > > > doesn't really deserve it's own config and can be pulled under NUMA.
+> > > > > 
+> > > > > > > Also while at it, does HAVE_MEMBLOCK_NODE_MAP fall into a similar
+> > > > > > > bucket? Do we have any NUMA architecture that doesn't enable it?
+> > > > > > > 
+> > > > 
+> > > > HAVE_MEMBLOCK_NODE_MAP makes huge difference in node/zone initialization
+> > > > sequence so it's not only about a singe function.
+> > > 
+> > > The question is whether we want to have this a config option or enable
+> > > it unconditionally for each NUMA system.
+> > 
+> > We can make it 'default NUMA', but we can't drop it completely because
+> > microblaze uses sparse_memory_present_with_active_regions() which is
+> > unavailable when HAVE_MEMBLOCK_NODE_MAP=n.
+> 
+> I suppose you mean that microblaze is using
+> sparse_memory_present_with_active_regions even without CONFIG_NUMA,
+> right?
 
---- Comment #4 from mpe@ellerman.id.au ---
-bugzilla-daemon@bugzilla.kernel.org writes:
+Yes.
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
->
-> --- Comment #2 from Andrew Morton (akpm@linux-foundation.org) ---
-> (switched to email.  Please respond via emailed reply-to-all, not via the
-> bugzilla web interface).
->
->
-> On Mon, 29 Jul 2019 22:35:48 +0000 bugzilla-daemon@bugzilla.kernel.org wr=
-ote:
->
->> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
->>=20
->>             Bug ID: 204371
->>            Summary: BUG kmalloc-4k (Tainted: G        W        ): Object
->>                     padding overwritten
->>            Product: Memory Management
->>            Version: 2.5
->>     Kernel Version: 5.3.0-rc2
->>           Hardware: PPC-32
->>                 OS: Linux
->>               Tree: Mainline
->>             Status: NEW
->>           Severity: normal
->>           Priority: P1
->>          Component: Slab Allocator
->>           Assignee: akpm@linux-foundation.org
->>           Reporter: erhard_f@mailbox.org
->>         Regression: No
->
-> cc'ing various people here.
->
-> I suspect proc_cgroup_show() is innocent and that perhaps
-> bpf_prepare_filter() had a memory scribble.  iirc there has been at
-> least one recent pretty serious bpf fix applied recently.  Can others
-> please take a look?
+> I have to confess I do not understand that code. What is the deal
+> with setting node id there?
 
-I haven't been able to reproduce this on a 64-bit or 32-bit powerpc
-machine here. But I don't run gentoo userspace, so I suspect I'm not
-tripping the same path at boot. I did run the seccomp selftest and that
-didn't trip it either.
+The sparse_memory_present_with_active_regions() iterates over
+memblock.memory regions and uses the node id of each region as the
+parameter to memory_present(). The assumption here is that sometime before
+each region was assigned a proper non-negative node id. 
 
-cheers
+microblaze uses device tree for memory enumeration and the current FDT code
+does memblock_add() that implicitly sets nid in memblock.memory regions to -1.
 
---=20
-You are receiving this mail because:
-You are on the CC list for the bug.=
+So in order to have proper node id passed to memory_present() microblaze
+has to call memblock_set_node() before it can use
+sparse_memory_present_with_active_regions().
+
+> -- 
+> Michal Hocko
+> SUSE Labs
+
+-- 
+Sincerely yours,
+Mike.
+
