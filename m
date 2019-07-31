@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33CD7C02F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 13:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 909757C00F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 13:34:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zBKV3ZMpzDqfC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 21:39:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zBCN758szDqWJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 21:34:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="TZ07R/Bq"; dkim-atps=neutral
+ header.b="j2EOOVV2"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6k3ysLzDqQP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6k2SwmzDqQK
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:30:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
@@ -31,26 +31,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
  List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=PdT/eIhyr6y3H0l5rgN8DPLYN6B+GE6VkE6u1jqDo4M=; b=TZ07R/Bq7JWG
- Ug2noyqlEHi+TCjSinpappZdtelQXXTyvbK6HZcYFXfRlljPKDvtVgXjP/llSeESoLlOCz0StuOsP
- FyV+rxxYGy6DNICaVt50U83yMZmtA6sOxnRx/vk/uDnHFmbCie3Z1kPaBA8INm45YgOOwpr5gwiHO
- n1b4k=;
+ List-Archive; bh=D27PgUzlkeJT1hRDQAIWF2kJbtKxhYxVBpbQCxryxOg=; b=j2EOOVV2gVCv
+ IwofE9JOuzwJZVPv5AaFEhn0PEGycQZW3HOh6JT5ZaDYCAA5gH9/QTi/DsF+hdOlzJSvi1AQ1hCqY
+ WztfJFk2HqD0Ewio4F2IePC419Da3YEYElcdOb74J03NFYrpCdZIzkCANZy54zkks2dz8BbPx52Z0
+ MT6UI=;
 Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
  ([82.37.168.47] helo=ypsilon.sirena.org.uk)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hsmnf-0001lY-2E; Wed, 31 Jul 2019 11:29:43 +0000
+ id 1hsmnh-0001lx-KJ; Wed, 31 Jul 2019 11:29:45 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
- id 8BDF32742C99; Wed, 31 Jul 2019 12:29:42 +0100 (BST)
+ id 1946E2742CC3; Wed, 31 Jul 2019 12:29:45 +0100 (BST)
 From: Mark Brown <broonie@kernel.org>
 To: YueHaibing <yuehaibing@huawei.com>
-Subject: Applied "ASoC: stm32: sai: use devm_platform_ioremap_resource() to
- simplify code" to the asoc tree
-In-Reply-To: <20190727150738.54764-16-yuehaibing@huawei.com>
+Subject: Applied "ASoC: meson: axg-spdifin: use
+ devm_platform_ioremap_resource() to simplify code" to the asoc tree
+In-Reply-To: <20190727150738.54764-29-yuehaibing@huawei.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190731112942.8BDF32742C99@ypsilon.sirena.org.uk>
-Date: Wed, 31 Jul 2019 12:29:42 +0100 (BST)
+Message-Id: <20190731112945.1946E2742CC3@ypsilon.sirena.org.uk>
+Date: Wed, 31 Jul 2019 12:29:45 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,7 +87,7 @@ Sender: "Linuxppc-dev"
 
 The patch
 
-   ASoC: stm32: sai: use devm_platform_ioremap_resource() to simplify code
+   ASoC: meson: axg-spdifin: use devm_platform_ioremap_resource() to simplify code
 
 has been applied to the asoc tree at
 
@@ -112,44 +112,44 @@ to this mail.
 Thanks,
 Mark
 
-From 1c63223cda84fb10643938e4e4eb02110f8ae9a2 Mon Sep 17 00:00:00 2001
+From d61feec0f60c250c786a9e0069ce909979491c7b Mon Sep 17 00:00:00 2001
 From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 27 Jul 2019 23:07:19 +0800
-Subject: [PATCH] ASoC: stm32: sai: use devm_platform_ioremap_resource() to
- simplify code
+Date: Sat, 27 Jul 2019 23:07:32 +0800
+Subject: [PATCH] ASoC: meson: axg-spdifin: use
+ devm_platform_ioremap_resource() to simplify code
 
 Use devm_platform_ioremap_resource() to simplify the code a bit.
 This is detected by coccinelle.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20190727150738.54764-16-yuehaibing@huawei.com
+Link: https://lore.kernel.org/r/20190727150738.54764-29-yuehaibing@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/stm/stm32_sai.c | 4 +---
+ sound/soc/meson/axg-spdifin.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/stm/stm32_sai.c b/sound/soc/stm/stm32_sai.c
-index 63f68e663676..1ac5103cea78 100644
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -152,7 +152,6 @@ static int stm32_sai_probe(struct platform_device *pdev)
- {
- 	struct stm32_sai_data *sai;
- 	struct reset_control *rst;
+diff --git a/sound/soc/meson/axg-spdifin.c b/sound/soc/meson/axg-spdifin.c
+index 01b2035fa841..d0d09f945b48 100644
+--- a/sound/soc/meson/axg-spdifin.c
++++ b/sound/soc/meson/axg-spdifin.c
+@@ -453,7 +453,6 @@ static int axg_spdifin_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct axg_spdifin *priv;
+ 	struct snd_soc_dai_driver *dai_drv;
 -	struct resource *res;
- 	const struct of_device_id *of_id;
- 	u32 val;
+ 	void __iomem *regs;
  	int ret;
-@@ -161,8 +160,7 @@ static int stm32_sai_probe(struct platform_device *pdev)
- 	if (!sai)
- 		return -ENOMEM;
+ 
+@@ -468,8 +467,7 @@ static int axg_spdifin_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	sai->base = devm_ioremap_resource(&pdev->dev, res);
-+	sai->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sai->base))
- 		return PTR_ERR(sai->base);
+-	regs = devm_ioremap_resource(dev, res);
++	regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -- 
 2.20.1
