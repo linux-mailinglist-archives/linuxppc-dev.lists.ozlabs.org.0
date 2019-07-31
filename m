@@ -2,40 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6730E7D06C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 00:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3309C7D1AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 01:09:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zS6l2pStzDqP3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 08:01:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zTdz4jylzDqnp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 09:09:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx1.suse.de;
- envelope-from=nsaenzjulienne@suse.de; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="H7B8fYCB"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zJBZ4wLmzDqJM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 02:03:49 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id D13F2AF9A;
- Wed, 31 Jul 2019 15:48:00 +0000 (UTC)
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To: catalin.marinas@arm.com, hch@lst.de, wahrenst@gmx.net,
- marc.zyngier@arm.com, Robin Murphy <robin.murphy@arm.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- iommu@lists.linux-foundation.org, linux-mm@kvack.org
-Subject: [PATCH 0/8] Raspberry Pi 4 DMA addressing support
-Date: Wed, 31 Jul 2019 17:47:43 +0200
-Message-Id: <20190731154752.16557-1-nsaenzjulienne@suse.de>
-X-Mailer: git-send-email 2.22.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zTbf6z1xzDqmX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 09:07:40 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id u14so32710702pfn.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 16:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=5xkYYWFUJIGhYM2fFqk+xJx9QlaJV4qyP7MvDXs3VJM=;
+ b=H7B8fYCBMlcSaq3TS6JFo6g6OuYJCB0xVAwCo3RnbdPMLxnz57bHxot5y8qLSjXSCT
+ LbtZfFaFTldYeMipVcZ6E6TMg2H03ojXz6EocNmhL7y1bwzqGTKCpcQe11onclyt7AUu
+ YbYCp9KQ/HbBCKpzv6wzA9TceVkR4jWbhOXUWFL+UhNXQzYTgDVZI1gCXZ7Sqzekp1p+
+ mw8DHrrsV/GtZQw/UKzQ/3bfmlYyVjk2ghlGyYQJZrAGqVnF2XKI21V1m+T6DsKOz0Je
+ zYpZSq+z+d6bSXa+sd74Xx4MdGGXaCcFkK9wOUi+IyzOVN9UIo6Kwgg5ZDjGzCvECGIT
+ 9Gpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=5xkYYWFUJIGhYM2fFqk+xJx9QlaJV4qyP7MvDXs3VJM=;
+ b=DhwM1RQZlPfo5rJ8geV9SIPusXbT+qvU63ECLLo2aPhEF3k1hG2cThwGq16jaJ6OGD
+ ey+5C9rp1Sn/FCwhnM1MrMIPBA5r6FbF87xN0bDs2gl2ACsM7uv/cjAlCG9JJiV23kw2
+ y2xsbCpqee56OeS2J0un3ftoojZSME97JGR19iZObArDIW9ycjXdlZMlzNa1PAuKOp2C
+ u+Bnln3wscAlVsq0OGyD8t/utG0567iIrRM9UnzhJnwoVXZM331YOLYL2ZOGnhC6I5d+
+ eReNOUQxZIyEuR4NB+zpjKSQEMs0CaHYbT8epXB1OotniNZSmimDf3ENYAx2nZYHh+k3
+ 289Q==
+X-Gm-Message-State: APjAAAW1TIUAL8TliDBEB0psK9m3PSQtmttdo5GqT1feSfL/1GWbpkdE
+ yElN6QryaLeZSvgw8c6hDBY=
+X-Google-Smtp-Source: APXvYqxTtXhMznTnaW549CxpKCl6nL/8QkUHFO3fOBv1rVGdANcxuDKxOgtKIhoU2PxcraqK4+aSkg==
+X-Received: by 2002:a17:90a:fa07:: with SMTP id
+ cm7mr5065190pjb.138.1564614456719; 
+ Wed, 31 Jul 2019 16:07:36 -0700 (PDT)
+Received: from localhost ([61.69.185.217])
+ by smtp.gmail.com with ESMTPSA id i3sm75438531pfo.138.2019.07.31.16.07.35
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 31 Jul 2019 16:07:36 -0700 (PDT)
+Date: Thu, 01 Aug 2019 09:05:51 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/64s/radix: introduce option to disable
+ broadcast tlbie
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20190731123203.6370-1-npiggin@gmail.com>
+ <188d2d1d-a254-d00c-eee4-dd71e01b443f@c-s.fr>
+In-Reply-To: <188d2d1d-a254-d00c-eee4-dd71e01b443f@c-s.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 01 Aug 2019 07:55:07 +1000
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1564613600.hm3hrx4s31.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,85 +82,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: phill@raspberryi.org, linux-s390@vger.kernel.org, f.fainelli@gmail.com,
- mbrugger@suse.com, frowand.list@gmail.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, eric@anholt.net, robh+dt@kernel.org,
- linux-rpi-kernel@lists.infradead.org, akpm@linux-foundation.org,
- will@kernel.org, nsaenzjulienne@suse.de, m.szyprowski@samsung.com
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
-this series attempts to address some issues we found while bringing up
-the new Raspberry Pi 4 in arm64 and it's intended to serve as a follow
-up of this discussion:
-https://lkml.org/lkml/2019/7/17/476
+Christophe Leroy's on July 31, 2019 11:56 pm:
+>=20
+>=20
+> Le 31/07/2019 =C3=A0 14:32, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> This is an initial hack of a quick option to disable use of the tlbie
+>> instruction. This takes the simplest possible initial pass of just
+>> replacing low level tlbie functions with IPIs. This means it's not as
+>> performant as it could be if we spend some time optmizing it, but on
+>> the other hand having a 1:1 replacement of tlbie is simple and can be
+>> useful for comparisons so I think it's the right initial approach.
+>=20
+> Can you explain why we want to optionnaly disable use of tlbie ?
 
-The new Raspberry Pi 4 has up to 4GB of memory but most peripherals can
-only address the first GB: their DMA address range is
-0xc0000000-0xfc000000 which is aliased to the first GB of physical
-memory 0x00000000-0x3c000000. Note that only some peripherals have these
-limitations: the ARM cores, PCIe, V3D, GENET, and 40-bit DMA channels
-have a wider view of the address space.
+It's something we've wanted to have more control of for a while.
 
-Part of this is solved in arm32 by setting up the machine specific
-'.dma_zone_size = SZ_1G', which takes care of the allocating the
-coherent memory area at the right spot. Yet no buffer bouncing (needed
-for dma streaming) is available at the moment, but that's a story for
-another series.
+One is for testing performance, especially on large systems it is not
+always best to use tlbie. For example if you have threaded apps that
+only run on a few CPUs (e.g., process * thread hybrid process model
+server).
 
-Unfortunately there is no such thing as '.dma_zone_size' in arm64 also
-only ZONE_DMA32 is created which is interpreted by dma-direct and the
-arm64 code as if all peripherals where be able to address the first 4GB
-of memory.
+There is also concern about coherent accelerators may have high
+latency to respond to tlbie, which can block the resource for others.
 
-In the light of this, the series implements the following changes:
+And we did have a hardware errata with early POWER9 it would have
+been nice to disable it until the kernel could be updated with the
+workaround.
 
-- Add code that parses the device-tree in oder to find the SoC's common
-  DMA area.
-
-- Create a ZONE_DMA whenever that area is needed and add the rest of the
-  lower 4 GB of memory to ZONE_DMA32*.
-
-- Create the CMA area in a place suitable for all peripherals.
-
-- Inform dma-direct of the new runtime calculated min_mask*.
-
-That's all.
-
-Regards,
-Nicolas
-
-* These solutions where already discussed on the previous RFC (see link
-above).
-
----
-
-Nicolas Saenz Julienne (8):
-  arm64: mm: use arm64_dma_phys_limit instead of calling
-    max_zone_dma_phys()
-  arm64: rename variables used to calculate ZONE_DMA32's size
-  of/fdt: add function to get the SoC wide DMA addressable memory size
-  arm64: re-introduce max_zone_dma_phys()
-  arm64: use ZONE_DMA on DMA addressing limited devices
-  dma-direct: turn ARCH_ZONE_DMA_BITS into a variable
-  arm64: update arch_zone_dma_bits to fine tune dma-direct min mask
-  mm: comment arm64's usage of 'enum zone_type'
-
- arch/arm64/Kconfig              |  4 ++
- arch/arm64/mm/init.c            | 78 ++++++++++++++++++++++++++-------
- arch/powerpc/include/asm/page.h |  9 ----
- arch/powerpc/mm/mem.c           | 14 +++++-
- arch/s390/include/asm/page.h    |  2 -
- arch/s390/mm/init.c             |  1 +
- drivers/of/fdt.c                | 72 ++++++++++++++++++++++++++++++
- include/linux/dma-direct.h      |  2 +
- include/linux/mmzone.h          | 21 ++++-----
- include/linux/of_fdt.h          |  2 +
- kernel/dma/direct.c             |  8 ++--
- 11 files changed, 168 insertions(+), 45 deletions(-)
-
--- 
-2.22.0
-
+Thanks,
+Nick
+=
