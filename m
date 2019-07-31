@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8393E7C1FB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 14:44:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93EA7C221
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 14:49:28 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zCtD6Z4mzDqk8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 22:49:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zCmy5PcwzDq7c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2019 22:44:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
- header.b="r9mBPI6m"; dkim-atps=neutral
+ header.b="MWl7ooSD"; dkim-atps=neutral
 Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
  [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6p0Sg0zDqPf
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zB6p2b71zDqQP
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2019 21:30:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
@@ -31,24 +31,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
  List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
- List-Archive; bh=x9Az2l9jRA1fvbltqAEskyHx15EQpvhr5JUZPqMPcJg=; b=r9mBPI6mq1Wt
- 9wWcxy04DISQgMzTe9zjN17SICHierskov65a5G/KTGzIPfLYk6OdBqGBKCHjQx/7yuNoZErFaONO
- V34xTi/pyn0mJ38McNc0yybWE278vdQR+qmyytMH/MUuqGWupGkQrfmbWkiNlcMS3ZFiL3ZMZnePy
- 8qAow=;
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+ List-Archive; bh=Oc00lErgK9TOIwDxfVL0TGkToNOIUPKLzcyDE4l8jTo=; b=MWl7ooSDiy8l
+ ZsfUmwvPp4rcYzXloF5d28C1TXqzuFMWJ810qZ/0v1KdizN5/T0Zsx78LlaNpT0z6MLwpKJjTPhPR
+ U5qxJ51R5u7pfTmCvaJrmn92PN1OtazSkegLpgphoQgyXBEo+x3+IYE5RNWF5q+GRz1sqH/nIg3YG
+ 5YRLo=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net
+ ([82.37.168.47] helo=ypsilon.sirena.org.uk)
  by heliosphere.sirena.org.uk with esmtpsa
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <broonie@sirena.org.uk>)
- id 1hsmnl-0001ne-1i; Wed, 31 Jul 2019 11:29:49 +0000
+ id 1hsmnl-0001ns-5M; Wed, 31 Jul 2019 11:29:49 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
- id 339E92742C99; Wed, 31 Jul 2019 12:29:48 +0100 (BST)
+ id 8D5682742CC3; Wed, 31 Jul 2019 12:29:48 +0100 (BST)
 From: Mark Brown <broonie@kernel.org>
 To: YueHaibing <yuehaibing@huawei.com>
-Subject: Applied "ASoC: bcm2835-i2s: use devm_platform_ioremap_resource() to
+Subject: Applied "ASoC: fsl_audmix: use devm_platform_ioremap_resource() to
  simplify code" to the asoc tree
-In-Reply-To: <20190727150738.54764-10-yuehaibing@huawei.com>
+In-Reply-To: <20190727150738.54764-9-yuehaibing@huawei.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190731112948.339E92742C99@ypsilon.sirena.org.uk>
+Message-Id: <20190731112948.8D5682742CC3@ypsilon.sirena.org.uk>
 Date: Wed, 31 Jul 2019 12:29:48 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,7 +87,7 @@ Sender: "Linuxppc-dev"
 
 The patch
 
-   ASoC: bcm2835-i2s: use devm_platform_ioremap_resource() to simplify code
+   ASoC: fsl_audmix: use devm_platform_ioremap_resource() to simplify code
 
 has been applied to the asoc tree at
 
@@ -111,10 +112,10 @@ to this mail.
 Thanks,
 Mark
 
-From d400b1b30cbff1c0962bbb3f895e839ccd120cb7 Mon Sep 17 00:00:00 2001
+From 959bb6b54d708652fe06097feecc3acd4d6b8c89 Mon Sep 17 00:00:00 2001
 From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 27 Jul 2019 23:07:13 +0800
-Subject: [PATCH] ASoC: bcm2835-i2s: use devm_platform_ioremap_resource() to
+Date: Sat, 27 Jul 2019 23:07:12 +0800
+Subject: [PATCH] ASoC: fsl_audmix: use devm_platform_ioremap_resource() to
  simplify code
 
 Use devm_platform_ioremap_resource() to simplify the code a bit.
@@ -122,33 +123,33 @@ This is detected by coccinelle.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20190727150738.54764-10-yuehaibing@huawei.com
+Link: https://lore.kernel.org/r/20190727150738.54764-9-yuehaibing@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/bcm/bcm2835-i2s.c | 4 +---
+ sound/soc/fsl/fsl_audmix.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/bcm/bcm2835-i2s.c b/sound/soc/bcm/bcm2835-i2s.c
-index 5ef80f3d446a..e6a12e271b07 100644
---- a/sound/soc/bcm/bcm2835-i2s.c
-+++ b/sound/soc/bcm/bcm2835-i2s.c
-@@ -828,7 +828,6 @@ static int bcm2835_i2s_probe(struct platform_device *pdev)
+diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
+index 3897a54a11fe..c7e4e9757dce 100644
+--- a/sound/soc/fsl/fsl_audmix.c
++++ b/sound/soc/fsl/fsl_audmix.c
+@@ -458,7 +458,6 @@ static int fsl_audmix_probe(struct platform_device *pdev)
  {
- 	struct bcm2835_i2s_dev *dev;
- 	int ret;
--	struct resource *mem;
- 	void __iomem *base;
- 	const __be32 *addr;
- 	dma_addr_t dma_base;
-@@ -848,8 +847,7 @@ static int bcm2835_i2s_probe(struct platform_device *pdev)
- 	}
+ 	struct device *dev = &pdev->dev;
+ 	struct fsl_audmix *priv;
+-	struct resource *res;
+ 	const char *mdrv;
+ 	const struct of_device_id *of_id;
+ 	void __iomem *regs;
+@@ -475,8 +474,7 @@ static int fsl_audmix_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 	/* Request ioarea */
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, mem);
-+	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+ 	/* Get the addresses */
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	regs = devm_ioremap_resource(dev, res);
++	regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -- 
 2.20.1
