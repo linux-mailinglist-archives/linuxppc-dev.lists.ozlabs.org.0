@@ -2,53 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE127E07F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 18:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3D17E223
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 20:26:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zx5B1h1dzDqgC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 02:46:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zzJv59lmzDqlm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 04:26:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="1vCYTqrW"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zx2p5GdczDqHH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 02:44:18 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A272C20838;
- Thu,  1 Aug 2019 16:44:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564677856;
- bh=luxeEe+sNcMiUEJZddOmw2LCtZnw/7cP+2BTlvtj75g=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=1vCYTqrWNpzwy70+mDDkDyYbXSINihdTQt827ZNZ38BqrocpuTP/5twuQPWb+gghN
- +bl+z5TixFmhDdNjnDx+Eh8sSH8KshmaqVzUor7b7NSq1e0PiUUaxnmgdxPhdn1229
- Armf1YNDTLI9lVu8j9VV+a1Qdb+UMV3aZU2PBKDY=
-Date: Thu, 1 Aug 2019 17:44:12 +0100
-From: Will Deacon <will@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
-Message-ID: <20190801164411.kmsl4japtfkgvzxe@willie-the-truck>
-References: <20190801142118.21225-1-hch@lst.de>
- <20190801142118.21225-2-hch@lst.de>
- <20190801162305.3m32chycsdjmdejk@willie-the-truck>
- <20190801163457.GB26588@lst.de>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zzH00lg6zDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 04:25:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45zzGz0qYQz8x8x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 04:24:59 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45zzGz0XYsz9sDQ; Fri,  2 Aug 2019 04:24:59 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 45zzGy18RQz9s00;
+ Fri,  2 Aug 2019 04:24:56 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x71IOqoC030724;
+ Thu, 1 Aug 2019 13:24:52 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x71IOpCQ030723;
+ Thu, 1 Aug 2019 13:24:51 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 1 Aug 2019 13:24:51 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] selftests/powerpc: Fix build failures with GCC 9
+Message-ID: <20190801182451.GU31406@gate.crashing.org>
+References: <20190801122628.25084-1-mpe@ellerman.id.au>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190801163457.GB26588@lst.de>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190801122628.25084-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,60 +64,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, linuxppc-dev@lists.ozlabs.org,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 01, 2019 at 06:34:57PM +0200, Christoph Hellwig wrote:
-> On Thu, Aug 01, 2019 at 05:23:06PM +0100, Will Deacon wrote:
-> > > -	if (!dev_is_dma_coherent(dev) || (attrs & DMA_ATTR_WRITE_COMBINE))
-> > > -		return pgprot_writecombine(prot);
-> > > -	return prot;
-> > > +	return pgprot_writecombine(prot);
-> > >  }
-> > 
-> > Seems like a sensible cleanup to me:
-> > 
-> > Acked-by: Will Deacon <will@kernel.org>
-> > 
-> > Although arch_dma_mmap_pgprot() is a bit of a misnomer now that it only
-> > gets involved in the non-coherent case.
+On Thu, Aug 01, 2019 at 10:26:28PM +1000, Michael Ellerman wrote:
+> GCC 9 fails to build some of the ptrace TM tests, with errors such as:
 > 
-> A better name is welcome.
-
-How about arch_dma_noncoherent_mmap_pgprot() ? Too long?
-
-> My other idea would be to just remove it entirely and do something like:
+>   ptrace-tm-spd-vsx.c: In function 'tm_spd_vsx':
+>   ptrace-tm-spd-vsx.c:51:2: error: listing the stack pointer register 'r1' in a clobber list is deprecated [-Werror=deprecated]
+>      51 |  asm __volatile__(
+>         |  ^~~
+>   ptrace-tm-spd-vsx.c:51:2: note: the value of the stack pointer after an 'asm' statement must be the same as it was before the statement
 > 
-> #ifndef pgprot_dmacoherent
-> #define pgprot_dmacoherent pgprot_noncached
-> #endif
-> 
-> pgprot_t dma_mmap_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
-> {
-> 	if (dev_is_dma_coherent(dev) || (attrs & DMA_ATTR_NON_CONSISTENT))
-> 		return prot;
-> #ifdef pgprot_writecombine
-> 	if (attrs & DMA_ATTR_WRITE_COMBINE)
-> 		return pgprot_writecombine(prot);
-> #endif
-> 	return pgprot_dmacoherent(prot);
-> }
+> Which is probably fair enough.
 
-Oh, I prefer that!
+Maybe you shouldn't build the tests with -Werror though?  (And you could
+include the much more useful -Wextra while you're at it ;-) ).
 
-> But my worry is how this interacts with architectures that have an
-> uncached segment (mips, nios2, microblaze, extensa) where we'd have
-> the kernel access DMA_ATTR_WRITE_COMBINE mappigns using the uncached
-> segment, and userspace mmaps using pgprot_writecombine, which could
-> lead to aliasing issues.  But then again mips already supports
-> DMA_ATTR_WRITE_COMBINE, so this must be ok somehow.  I guess I'll
-> need to field that question to the relevant parties.
+> Some of these inline asm blocks are doing quite a lot and are probably
+> pushing the boundaries of what's sane to do with inline asm,
 
-Or it's always been busted and happens to work out in practice...
+These are just testcases, you sometimes need to do evil things there.
+But yeah :-)
 
-Will
+> but they shouldn't actually be returning with r1 modified.
+
+But they *do* modify lr, and that one isnt't listed; I guess the r1
+clobber was there because of the call in the asm, but that needs an
+lr clobber, instead.
+
+(Or it was because of the "or 1,1,1")?
+
+
+Segher
