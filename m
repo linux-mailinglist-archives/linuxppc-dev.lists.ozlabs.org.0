@@ -1,65 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4CF7DD70
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 16:08:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7837DBE5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 14:49:57 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zqrJ5fxnzDq9k
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 22:49:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zsb01DXbzDqfX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 00:08:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zqnR2B55zDqld
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 22:47:22 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 38517285DB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 12:47:20 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 2C72B285FB; Thu,  1 Aug 2019 12:47:20 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
- padding overwritten
-Date: Thu, 01 Aug 2019 12:47:19 +0000
-X-Bugzilla-Reason: CC
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Memory Management
-X-Bugzilla-Component: Slab Allocator
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: akpm@linux-foundation.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204371-206035-FJ4o58Kg5c@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
-References: <bug-204371-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zsW252tPzDqRy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 00:04:59 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 5620168AFE; Thu,  1 Aug 2019 16:04:52 +0200 (CEST)
+Date: Thu, 1 Aug 2019 16:04:52 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Subject: Re: [PATCH 6/8] dma-direct: turn ARCH_ZONE_DMA_BITS into a variable
+Message-ID: <20190801140452.GB23435@lst.de>
+References: <20190731154752.16557-1-nsaenzjulienne@suse.de>
+ <20190731154752.16557-7-nsaenzjulienne@suse.de>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190731154752.16557-7-nsaenzjulienne@suse.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,49 +45,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, eric@anholt.net,
+ Paul Mackerras <paulus@samba.org>, will@kernel.org, hch@lst.de,
+ Marek Szyprowski <m.szyprowski@samsung.com>, phill@raspberryi.org,
+ linux-s390@vger.kernel.org, f.fainelli@gmail.com, frowand.list@gmail.com,
+ Christian Borntraeger <borntraeger@de.ibm.com>, catalin.marinas@arm.com,
+ devicetree@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ marc.zyngier@arm.com, robh+dt@kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, mbrugger@suse.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, wahrenst@gmx.net, akpm@linux-foundation.org,
+ Robin Murphy <robin.murphy@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+A few nitpicks, otherwise this looks great:
 
---- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
-On Wed, 31 Jul 2019 12:09:54 +0000
-bugzilla-daemon@bugzilla.kernel.org wrote:
+> @@ -201,7 +202,7 @@ static int __init mark_nonram_nosave(void)
+>   * everything else. GFP_DMA32 page allocations automatically fall back to
+>   * ZONE_DMA.
+>   *
+> - * By using 31-bit unconditionally, we can exploit ARCH_ZONE_DMA_BITS to
+> + * By using 31-bit unconditionally, we can exploit arch_zone_dma_bits to
+>   * inform the generic DMA mapping code.  32-bit only devices (if not handled
+>   * by an IOMMU anyway) will take a first dip into ZONE_NORMAL and get
+>   * otherwise served by ZONE_DMA.
+> @@ -237,9 +238,18 @@ void __init paging_init(void)
+>  	printk(KERN_DEBUG "Memory hole size: %ldMB\n",
+>  	       (long int)((top_of_ram - total_ram) >> 20));
+>  
+> +	/*
+> +	 * Allow 30-bit DMA for very limited Broadcom wifi chips on many
+> +	 * powerbooks.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_PPC32))
+> +		arch_zone_dma_bits = 30;
+> +	else
+> +		arch_zone_dma_bits = 31;
+> +
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
->=20
-> --- Comment #4 from mpe@ellerman.id.au ---
->
-> > I suspect proc_cgroup_show() is innocent and that perhaps
-> > bpf_prepare_filter() had a memory scribble.  iirc there has been at
-> > least one recent pretty serious bpf fix applied recently.  Can others
-> > please take a look?=20=20
->=20
-> I haven't been able to reproduce this on a 64-bit or 32-bit powerpc
-> machine here. But I don't run gentoo userspace, so I suspect I'm not
-> tripping the same path at boot. I did run the seccomp selftest and that
-> didn't trip it either.
->=20
-> cheers
+So the above unconditionally comment obviously isn't true any more, and
+Ben also said for the recent ppc32 hack he'd prefer dynamic detection.
 
-Doing some fiddling around on another bug (bug #204375), I noticed that I g=
-et
-this "kmalloc-4k (Tainted: G W ): Object padding overwritten" during boot o=
-nly
-when I boot from my btrfs partition, but not from my other ext4 partition. =
-The
-ext4 partition is not a clone, but pretty much the same stuff in the same
-versions. My btrfs root is mounted with 'lazytime,compress=3Dzstd:1', syste=
-md is
-242.
+Maybe Ben and or other ppc folks can chime in an add a patch to the series
+to sort this out now that we have a dynamic ZONE_DMA threshold?
 
-I built a 5.2.5 kernel on the Talos II with CONFIG_SLUB_DEBUG=3Dy but here I
-don't hit the bug, even if I boot from a btrfs partition with the same
-settings. Have to test it on the G5 yet (kernel .config more similar to the=
- G4
-one than the Talos II one).
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 59bdceea3737..40dfc9b4ee4c 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -19,9 +19,7 @@
+>   * Most architectures use ZONE_DMA for the first 16 Megabytes, but
+>   * some use it for entirely different regions:
+>   */
+> -#ifndef ARCH_ZONE_DMA_BITS
+> -#define ARCH_ZONE_DMA_BITS 24
+> -#endif
+> +unsigned int arch_zone_dma_bits __ro_after_init = 24;
 
---=20
-You are receiving this mail because:
-You are on the CC list for the bug.=
+I'd prefer to drop the arch_ prefix and just calls this zone_dma_bits.
+In the long run we really need to find a way to just automatically set
+this from the meminit code, but that is out of scope for this series.
+For now can you please just update the comment above to say something
+like:
+
+/*
+ * Most architectures use ZONE_DMA for the first 16 Megabytes, but some use it
+ * it for entirely different regions.  In that case the arch code needs to
+ * override the variable below for dma-direct to work properly.
+ */
