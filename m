@@ -2,51 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15E87D9C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 13:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952617DA10
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 13:12:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45znQ60dKbzDqw3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 21:00:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zngM0BQQzDqtW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 21:11:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=178.33.251.175; helo=3.mo179.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=wanadoo.fr
+ (client-ip=80.12.242.127; helo=smtp.smtpout.orange.fr;
+ envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 4198 seconds by postgrey-1.36 at bilbo;
- Thu, 01 Aug 2019 20:58:56 AEST
-Received: from 3.mo179.mail-out.ovh.net (3.mo179.mail-out.ovh.net
- [178.33.251.175])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=wanadoo.fr
+Received: from smtp.smtpout.orange.fr (smtp05.smtpout.orange.fr
+ [80.12.242.127])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45znNJ4FnWzDqrC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 20:58:55 +1000 (AEST)
-Received: from player778.ha.ovh.net (unknown [10.108.54.74])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id 4C0E413D42F
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 11:41:43 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player778.ha.ovh.net (Postfix) with ESMTPSA id 5D8AE873BBDD;
- Thu,  1 Aug 2019 09:41:33 +0000 (UTC)
-Date: Thu, 1 Aug 2019 11:41:32 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH 2/2] powerpc/xive: Add a check for memory allocation
- failure
-Message-ID: <20190801114132.4c1db5be@bahia.lan>
-In-Reply-To: <cc53462734dfeaf15b6bad0e626b483de18656b4.1564647619.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1564647619.git.christophe.jaillet@wanadoo.fr>
- <cc53462734dfeaf15b6bad0e626b483de18656b4.1564647619.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45znd74LNSzDqcv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 21:10:01 +1000 (AEST)
+Received: from localhost.localdomain ([176.167.121.156]) by mwinf5d09 with ME
+ id jn9q200093NZnML03n9qj6; Thu, 01 Aug 2019 13:09:56 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 01 Aug 2019 13:09:56 +0200
+X-ME-IP: 176.167.121.156
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+ allison@lohutok.net, tglx@linutronix.de, clg@kaod.org, groug@kaod.org
+Subject: [PATCH] powerpc/xive: Add some error handling code to
+ 'xive_spapr_init()'
+Date: Thu,  1 Aug 2019 13:09:56 +0200
+Message-Id: <20190801110956.8517-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 12958826454390118683
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgddukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,56 +48,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- paulus@samba.org, clg@kaod.org, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, allison@lohutok.net
+Cc: kernel-janitors@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2019 10:32:42 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+'xive_irq_bitmap_add()' can return -ENOMEM.
+In this case, we should free the memory already allocated and return
+'false' to the caller.
 
-> The result of this kzalloc is not checked. Add a check and corresponding
-> error handling code.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+Also add an error path which undoes the 'tima = ioremap(...)'
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+NOT compile tested (I don't have a cross compiler and won't install one).
+So if some correction or improvement are needed, feel free to propose and
+commit it directly.
+---
+ arch/powerpc/sysdev/xive/spapr.c | 36 +++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-> Note that 'xive_irq_bitmap_add()' failures are not handled in
-> 'xive_spapr_init()'
-> I guess that it is not really an issue. This function is _init, so if a
-> memory allocation occures here, it is likely that the system will
-> already be in bad shape.
-
-Hmm not sure... The allocation could also fail if the "ibm,xive-lisn-ranges"
-property contains an insanely big range, eg. count == 1 << 31. The system isn't
-necessarily in bad shape in this case, but XIVE is definitely unusable and
-we should let a chance to the kernel to switch to XICS in this case.
-
-I guess it is worth adding proper error handling in xive_spapr_init() as well.
-
-> Anyway, the check added here would at least keep the data linked in
-> 'xive_irq_bitmaps' usable.
-> ---
->  arch/powerpc/sysdev/xive/spapr.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index b4f5eb9e0f82..52198131c75e 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -53,6 +53,10 @@ static int xive_irq_bitmap_add(int base, int count)
->  	xibm->base = base;
->  	xibm->count = count;
->  	xibm->bitmap = kzalloc(xibm->count, GFP_KERNEL);
-> +	if (!xibm->bitmap) {
-> +		kfree(xibm);
-> +		return -ENOMEM;
-> +	}
->  	list_add(&xibm->list, &xive_irq_bitmaps);
->  
->  	pr_info("Using IRQ range [%x-%x]", xibm->base,
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 52198131c75e..b3ae0b76c433 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -64,6 +64,17 @@ static int xive_irq_bitmap_add(int base, int count)
+ 	return 0;
+ }
+ 
++static void xive_irq_bitmap_remove_all(void)
++{
++	struct xive_irq_bitmap *xibm, *tmp;
++
++	list_for_each_entry_safe(xibm, tmp, &xive_irq_bitmaps, list) {
++		list_del(&xibm->list);
++		kfree(xibm->bitmap);
++		kfree(xibm);
++	}
++}
++
+ static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+ {
+ 	int irq;
+@@ -723,7 +734,7 @@ bool __init xive_spapr_init(void)
+ 	u32 val;
+ 	u32 len;
+ 	const __be32 *reg;
+-	int i;
++	int i, err;
+ 
+ 	if (xive_spapr_disabled())
+ 		return false;
+@@ -748,23 +759,26 @@ bool __init xive_spapr_init(void)
+ 	}
+ 
+ 	if (!xive_get_max_prio(&max_prio))
+-		return false;
++		goto err_unmap;
+ 
+ 	/* Feed the IRQ number allocator with the ranges given in the DT */
+ 	reg = of_get_property(np, "ibm,xive-lisn-ranges", &len);
+ 	if (!reg) {
+ 		pr_err("Failed to read 'ibm,xive-lisn-ranges' property\n");
+-		return false;
++		goto err_unmap;
+ 	}
+ 
+ 	if (len % (2 * sizeof(u32)) != 0) {
+ 		pr_err("invalid 'ibm,xive-lisn-ranges' property\n");
+-		return false;
++		goto err_unmap;
+ 	}
+ 
+-	for (i = 0; i < len / (2 * sizeof(u32)); i++, reg += 2)
+-		xive_irq_bitmap_add(be32_to_cpu(reg[0]),
+-				    be32_to_cpu(reg[1]));
++	for (i = 0; i < len / (2 * sizeof(u32)); i++, reg += 2) {
++		err = xive_irq_bitmap_add(be32_to_cpu(reg[0]),
++					  be32_to_cpu(reg[1]));
++		if (err < 0)
++			goto err_mem_free;
++	}
+ 
+ 	/* Iterate the EQ sizes and pick one */
+ 	of_property_for_each_u32(np, "ibm,xive-eq-sizes", prop, reg, val) {
+@@ -775,8 +789,14 @@ bool __init xive_spapr_init(void)
+ 
+ 	/* Initialize XIVE core with our backend */
+ 	if (!xive_core_init(&xive_spapr_ops, tima, TM_QW1_OS, max_prio))
+-		return false;
++		goto err_mem_free;
+ 
+ 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
+ 	return true;
++
++err_mem_free:
++	xive_irq_bitmap_remove_all();
++err_unmap:
++	iounmap(tima);
++	return false;
+ }
+-- 
+2.20.1
 
