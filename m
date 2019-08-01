@@ -1,62 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517EE7D39C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 05:22:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16E77D311
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 04:14:13 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zYkn3VY0zDqnp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 12:14:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zbG267ZBzDqnf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 13:22:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zbCp6JNlzDqn1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 13:20:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=alliedtelesis.co.nz
- (client-ip=2001:df5:b000:5::4; helo=gate2.alliedtelesis.co.nz;
- envelope-from=chrisp@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.b="n8/0XorC"; dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [IPv6:2001:df5:b000:5::4])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 45zbCp3QVrz8shd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 13:20:54 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 45zbCp2QZzz9sNf; Thu,  1 Aug 2019 13:20:54 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zYhx2vJBzDqgG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 12:12:33 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 268C6806CB;
- Thu,  1 Aug 2019 14:12:30 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1564625550;
- bh=BJLWyjePC2+DBjwmNFu0d5Smcae6KotI87TPj31Ta1s=;
- h=From:To:Cc:Subject:Date;
- b=n8/0XorCrJswqUn9NfbqYYPlt64vFpvc3/IhMiayXavNkA/vKYF6Rz4sfeo3C5rtI
- 3NIUbnx5tkYijcT//IQ+9LOWLUIwnopClchyGUvil0dUyldFuO9Zj6RfZdCWAQSDZZ
- YIdZyfNhq+A+fn+sjzIMj9i/BvgyPppa2so5xZGOqekNgAlii7samzZJT0aDSpjEBO
- bfJcd23OmkUc+n9ZhuHQ+K0VbRJysMLZQ2quQFTNtXmSvX/ERIUYp7e9rGkBX9waPJ
- 71pbl8iZWkcCle//8nbQFT6YG1bUHAZKTlSuT50ztGEPnke0uTbFCP4MUYXgSdhSni
- NtwVnR0NRUJEw==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with
- Trustwave SEG (v7, 5, 8, 10121)
- id <B5d424a8d0000>; Thu, 01 Aug 2019 14:12:29 +1200
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
- by smtp (Postfix) with ESMTP id 7023313EEED;
- Thu,  1 Aug 2019 14:12:31 +1200 (NZST)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
- id 330BC1E0504; Thu,  1 Aug 2019 14:12:29 +1200 (NZST)
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
- christophe.leroy@c-s.fr, malat@debian.org
-Subject: [PATCH v2] powerpc: Support CMDLINE_EXTEND
-Date: Thu,  1 Aug 2019 14:12:06 +1200
-Message-Id: <20190801021206.26799-1-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.22.0
+ by ozlabs.org (Postfix) with ESMTPS id 45zbCn444Lz9sNF
+ for <linuxppc-dev@ozlabs.org>; Thu,  1 Aug 2019 13:20:52 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x713HHRR011680
+ for <linuxppc-dev@ozlabs.org>; Wed, 31 Jul 2019 23:20:49 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u3nna505s-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 31 Jul 2019 23:20:49 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 1 Aug 2019 04:20:47 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 1 Aug 2019 04:20:44 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x713KRa139780848
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Aug 2019 03:20:27 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A16AD11C04A;
+ Thu,  1 Aug 2019 03:20:43 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F7D111C058;
+ Thu,  1 Aug 2019 03:20:43 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Aug 2019 03:20:43 +0000 (GMT)
+Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AE788A01FE;
+ Thu,  1 Aug 2019 13:20:41 +1000 (AEST)
+Subject: Re: [PATCH 1/3] powerpc/spinlocks: Refactor SHARED_PROCESSOR
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
+References: <20190728125438.1550-1-cmr@informatik.wtf>
+ <20190728125438.1550-2-cmr@informatik.wtf>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Thu, 1 Aug 2019 13:20:41 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+In-Reply-To: <20190728125438.1550-2-cmr@informatik.wtf>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19080103-4275-0000-0000-000003529CE4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19080103-4276-0000-0000-000038638E1B
+Message-Id: <3468d006-63e2-8e20-47d6-fe41de31b14b@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-01_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=674 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908010027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,130 +110,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bring powerpc in line with other architectures that support extending or
-overriding the bootloader provided command line.
+On 28/7/19 10:54 pm, Christopher M. Riedl wrote:
+> Determining if a processor is in shared processor mode is not a constant
+> so don't hide it behind a #define.
+> 
+> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
 
-The current behaviour is most like CMDLINE_FROM_BOOTLOADER where the
-bootloader command line is preferred but the kernel config can provide a
-fallback so CMDLINE_FROM_BOOTLOADER is the default. CMDLINE_EXTEND can
-be used to append the CMDLINE from the kernel config to the one provided
-by the bootloader.
+This seems aesthetically more right.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
-While I'm at it does anyone think it's worth getting rid of the default C=
-MDLINE
-value if CMDLINE_BOOL and maybe CMDLINE_BOOL? Every defconfig in the kern=
-el
-that sets CMDLINE_BOOL=3Dy also sets CMDLINE to something other than
-"console=3DttyS0,9600 console=3Dtty0 root=3D/dev/sda2". Removing CMDLINE_=
-BOOL and
-unconditionally setting the default value of CMDLINE to "" would clean up=
- the
-Kconfig even more.
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-Changes in v2:
-- incorporate ideas from Christope's patch https://patchwork.ozlabs.org/p=
-atch/1074126/
+> ---
+>   arch/powerpc/include/asm/spinlock.h | 21 +++++++++++++++------
+>   1 file changed, 15 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+> index a47f827bc5f1..8631b0b4e109 100644
+> --- a/arch/powerpc/include/asm/spinlock.h
+> +++ b/arch/powerpc/include/asm/spinlock.h
+> @@ -101,15 +101,24 @@ static inline int arch_spin_trylock(arch_spinlock_t *lock)
+>   
+>   #if defined(CONFIG_PPC_SPLPAR)
+>   /* We only yield to the hypervisor if we are in shared processor mode */
+> -#define SHARED_PROCESSOR (lppaca_shared_proc(local_paca->lppaca_ptr))
+>   extern void __spin_yield(arch_spinlock_t *lock);
+>   extern void __rw_yield(arch_rwlock_t *lock);
+>   #else /* SPLPAR */
+>   #define __spin_yield(x)	barrier()
+>   #define __rw_yield(x)	barrier()
+> -#define SHARED_PROCESSOR	0
+>   #endif
+>   
+> +static inline bool is_shared_processor(void)
+> +{
+> +/* Only server processors have an lppaca struct */
+> +#ifdef CONFIG_PPC_BOOK3S
+> +	return (IS_ENABLED(CONFIG_PPC_SPLPAR) &&
+> +		lppaca_shared_proc(local_paca->lppaca_ptr));
+> +#else
+> +	return false;
+> +#endif
+> +}
+> +
+>   static inline void arch_spin_lock(arch_spinlock_t *lock)
+>   {
+>   	while (1) {
+> @@ -117,7 +126,7 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
+>   			break;
+>   		do {
+>   			HMT_low();
+> -			if (SHARED_PROCESSOR)
+> +			if (is_shared_processor())
+>   				__spin_yield(lock);
+>   		} while (unlikely(lock->slock != 0));
+>   		HMT_medium();
+> @@ -136,7 +145,7 @@ void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
+>   		local_irq_restore(flags);
+>   		do {
+>   			HMT_low();
+> -			if (SHARED_PROCESSOR)
+> +			if (is_shared_processor())
+>   				__spin_yield(lock);
+>   		} while (unlikely(lock->slock != 0));
+>   		HMT_medium();
+> @@ -226,7 +235,7 @@ static inline void arch_read_lock(arch_rwlock_t *rw)
+>   			break;
+>   		do {
+>   			HMT_low();
+> -			if (SHARED_PROCESSOR)
+> +			if (is_shared_processor())
+>   				__rw_yield(rw);
+>   		} while (unlikely(rw->lock < 0));
+>   		HMT_medium();
+> @@ -240,7 +249,7 @@ static inline void arch_write_lock(arch_rwlock_t *rw)
+>   			break;
+>   		do {
+>   			HMT_low();
+> -			if (SHARED_PROCESSOR)
+> +			if (is_shared_processor())
+>   				__rw_yield(rw);
+>   		} while (unlikely(rw->lock != 0));
+>   		HMT_medium();
+> 
 
- arch/powerpc/Kconfig            | 20 +++++++++++++++++++-
- arch/powerpc/kernel/prom_init.c | 26 +++++++++++++++++++++++++-
- 2 files changed, 44 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 77f6ebf97113..d413fe1b4058 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -852,15 +852,33 @@ config CMDLINE
- 	  some command-line options at build time by entering them here.  In
- 	  most cases you will need to specify the root device here.
-=20
-+choice
-+	prompt "Kernel command line type" if CMDLINE !=3D ""
-+	default CMDLINE_FROM_BOOTLOADER
-+
-+config CMDLINE_FROM_BOOTLOADER
-+	bool "Use bootloader kernel arguments if available"
-+	help
-+	  Uses the command-line options passed by the boot loader. If
-+	  the boot loader doesn't provide any, the default kernel command
-+	  string provided in CMDLINE will be used.
-+
-+config CMDLINE_EXTEND
-+	bool "Extend bootloader kernel arguments"
-+	help
-+	  The command-line arguments provided by the boot loader will be
-+	  appended to the default kernel command string.
-+
- config CMDLINE_FORCE
- 	bool "Always use the default kernel command string"
--	depends on CMDLINE_BOOL
- 	help
- 	  Always use the default kernel command string, even if the boot
- 	  loader passes other arguments to the kernel.
- 	  This is useful if you cannot or don't want to change the
- 	  command-line options your boot loader passes to the kernel.
-=20
-+endchoice
-+
- config EXTRA_TARGETS
- 	string "Additional default image types"
- 	help
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
-nit.c
-index 514707ef6779..df29f141dbd2 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -310,6 +310,25 @@ static size_t __init prom_strlcpy(char *dest, const =
-char *src, size_t size)
- 	return ret;
- }
-=20
-+static size_t __init prom_strlcat(char *dest, const char *src, size_t co=
-unt)
-+{
-+	size_t dsize =3D prom_strlen(dest);
-+	size_t len =3D prom_strlen(src);
-+	size_t res =3D dsize + len;
-+
-+	/* This would be a bug */
-+	BUG_ON(dsize >=3D count);
-+
-+	dest +=3D dsize;
-+	count -=3D dsize;
-+	if (len >=3D count)
-+		len =3D count-1;
-+	memcpy(dest, src, len);
-+	dest[len] =3D 0;
-+	return res;
-+
-+}
-+
- #ifdef CONFIG_PPC_PSERIES
- static int __init prom_strtobool(const char *s, bool *res)
- {
-@@ -761,8 +780,13 @@ static void __init early_cmdline_parse(void)
- 	p =3D prom_cmd_line;
- 	if ((long)prom.chosen > 0)
- 		l =3D prom_getprop(prom.chosen, "bootargs", p, COMMAND_LINE_SIZE-1);
--	if (IS_ENABLED(CONFIG_CMDLINE_BOOL) && (l <=3D 0 || p[0] =3D=3D '\0')) =
-/* dbl check */
-+
-+	if (IS_ENABLED(CONFIG_CMDLINE_FORCE) || l <=3D 0 || p[0] =3D=3D '\0')
- 		prom_strlcpy(prom_cmd_line, CONFIG_CMDLINE, sizeof(prom_cmd_line));
-+	else if (IS_ENABLED(CONFIG_CMDLINE_EXTEND))
-+		prom_strlcat(prom_cmd_line, " " CONFIG_CMDLINE,
-+			     sizeof(prom_cmd_line));
-+
- 	prom_printf("command line: %s\n", prom_cmd_line);
-=20
- #ifdef CONFIG_PPC64
---=20
-2.22.0
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
