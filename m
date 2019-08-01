@@ -1,58 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2770E7DDE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 16:28:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zt28130xzDqjv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 00:28:32 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A637DE03
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 16:38:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45ztFN3Gs1zDqvV
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 00:38:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+f91b4cf709acd1b15965+5821+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="NtiYtJVE"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.4.69; helo=eur03-db5-obe.outbound.protection.outlook.com;
+ envelope-from=diana.craciun@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="WyJXrGsm"; 
+ dkim-atps=neutral
+Received: from EUR03-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr40069.outbound.protection.outlook.com [40.107.4.69])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zstP75NgzDqnD
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 00:21:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=mpHyjnJR17EzfHojRb2JoLPTrVjdaNl1TnjSHWzORXw=; b=NtiYtJVEmDfDxmTbI5QbPew0xT
- zEQbgiotyyVtl+/aNeJqPjLDkgyw4xpO15KvT7vfKK9pncilCrG1v7qLtwzbBn//rNMTVvBaozUJS
- H5AzJslFkM8k8ljq1UrrfmIhWdKAXaLxQz9G6E0jUN8QLV1XUDdGEvV3HaANH/N5oU46TicGUJGXP
- IbfJcEF0D32Wgd8ZSL0Zpu5bJEp12MEZLb5JIsiNCz3RptGT2CIrOj9qApxv0OGQsUkbxXBSj01B0
- 6JYc12+UjSGY9cHW/PJuj6m12u6LSGvygP9z1CPj7bq5yZn2XPNbk8jM86THnubHsqC5NBcPobQkK
- Osll/wtQ==;
-Received: from [195.167.85.94] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1htBxT-0006Ja-DI; Thu, 01 Aug 2019 14:21:39 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org
-Subject: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
-Date: Thu,  1 Aug 2019 17:21:18 +0300
-Message-Id: <20190801142118.21225-2-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190801142118.21225-1-hch@lst.de>
-References: <20190801142118.21225-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45ztCP2NqzzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 00:36:29 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CYr2meXM69npODDLpXFK2I9B2npkCPXNSX6HmMpdgLAXbyDf+xxP6Qf3O4zyKnBzDGroP5sQTt8YgNAK9PkZbpC8nYCCeh3FYU7UrFuOPrQnn/0iLUq87ZL/e4SMVfmQeMkoDQtFbXY9ePTCVCTrmXGD1GZVa5DtV9NjlHzDy+LyOCNyRPUgAuKVHN0UTipdGn/ECsjxaWKOV9Lz5tpyFeCSsWMmD/54RAEudofd2XUCMJxU2tUljI+TvLK2idhayzYVYz7We5yYRDTQni2loR2+fp5ANgPaQymo/yHw0bS7H8OPBImW+0PNgAP4MoK/VZD46o4+yFXDk4H8hvqPiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R1j/xWNjVhtuG2exxoTdvMOB9LNEHw7+0yc17MrH46Y=;
+ b=BZ4C5h4x87Vskxygq3frV3XK6+h0C3d39jLUi9pwlLSNFH/kDZxWy6f59MdDRQLi2cgurXBw0RhPnKoF/I8OOrOSsklf3Rl4Ci8uJrYmvpzHxZMEvgXzNoUxFq6s4P1Itzelwm9KoVdCpbdlaf/OOCW8Kw0GIRf7qyiV1Av/YKwmHEkEzhBvmJl+h4Hq5+Q0vPnx40e044jIUq2EBHAjyH/vX7r8Lp/HPx/Ba86AD6/LZ2qyZI28pYzLXzz3BmHIpriSw8JsSVZgT9T+VLbQf7YTxx94N+FRK810DDPtv9gIinl3fHaXKWMB1QHqez4X+tcoEIbi7eko2OSq1m788g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
+ smtp.mailfrom=nxp.com;dmarc=pass action=none header.from=nxp.com;dkim=pass
+ header.d=nxp.com;arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R1j/xWNjVhtuG2exxoTdvMOB9LNEHw7+0yc17MrH46Y=;
+ b=WyJXrGsmn4FXQQJhe3tXVQLg5uWoTsJmf4S0nhZYY/9TSRaLjqcCphEq3808cIbbmP48SDyX81D1VXVRDlBfYtDSXd54c+1yJCBL/4z++HM+sPZj1tFCzKU6BFQmF4Tgl5Zb30XAEwwTD3hpJixZjtHOYxKxI1XmY6IxBUFvrjI=
+Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com (10.168.61.13) by
+ VI1PR0401MB2560.eurprd04.prod.outlook.com (10.168.66.23) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2136.14; Thu, 1 Aug 2019 14:36:23 +0000
+Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com
+ ([fe80::49dc:1671:b13b:e382]) by VI1PR0401MB2463.eurprd04.prod.outlook.com
+ ([fe80::49dc:1671:b13b:e382%9]) with mapi id 15.20.2115.005; Thu, 1 Aug 2019
+ 14:36:23 +0000
+From: Diana Madalina Craciun <diana.craciun@nxp.com>
+To: Jason Yan <yanaijie@huawei.com>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "christophe.leroy@c-s.fr"
+ <christophe.leroy@c-s.fr>, "benh@kernel.crashing.org"
+ <benh@kernel.crashing.org>, "paulus@samba.org" <paulus@samba.org>,
+ "npiggin@gmail.com" <npiggin@gmail.com>, "keescook@chromium.org"
+ <keescook@chromium.org>, "kernel-hardening@lists.openwall.com"
+ <kernel-hardening@lists.openwall.com>
+Subject: Re: [PATCH v3 00/10] implement KASLR for powerpc/fsl_booke/32
+Thread-Topic: [PATCH v3 00/10] implement KASLR for powerpc/fsl_booke/32
+Thread-Index: AQHVR4IOWsHaCjD120G4pOTxFRhTEA==
+Date: Thu, 1 Aug 2019 14:36:23 +0000
+Message-ID: <VI1PR0401MB2463844DD4A35EB3F0959C22FFDE0@VI1PR0401MB2463.eurprd04.prod.outlook.com>
+References: <20190731094318.26538-1-yanaijie@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=diana.craciun@nxp.com; 
+x-originating-ip: [212.146.100.6]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 72743461-46de-4921-e1ec-08d7168da0c2
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VI1PR0401MB2560; 
+x-ms-traffictypediagnostic: VI1PR0401MB2560:
+x-microsoft-antispam-prvs: <VI1PR0401MB2560E5A77FDEDC43B55E37F3FFDE0@VI1PR0401MB2560.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 01165471DB
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(39860400002)(346002)(396003)(366004)(136003)(376002)(199004)(189003)(2906002)(53936002)(446003)(9686003)(14454004)(55016002)(74316002)(4326008)(476003)(3846002)(14444005)(66946007)(76176011)(6116002)(66476007)(25786009)(486006)(86362001)(68736007)(91956017)(66556008)(66446008)(64756008)(53546011)(2501003)(478600001)(7416002)(76116006)(6506007)(2201001)(52536014)(316002)(229853002)(6436002)(66066001)(6246003)(26005)(33656002)(110136005)(54906003)(99286004)(305945005)(71190400001)(5660300002)(102836004)(81166006)(7736002)(256004)(8936002)(71200400001)(186003)(8676002)(7696005)(81156014);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0401MB2560;
+ H:VI1PR0401MB2463.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: rDDQTg5OvWA7GSwZ05UaGnO4tNwVcZjyxgAueL6sf9TB/zng76XdJTcgSgAC1lexmiHoh0ZWIqDdUCPpRNOqltcdgZI+ckVsd4kgMPdD+8nH/9cqvQ9GKCZGJzKBmEzVhZykBqakuP07s5p+b9DGBa8CvWxaKvpCIRjoAGnojtDLnsIC7tpOJHfk7rtlEPSjV05xGJC7z7FoZIwv/2gswU0e/WCVL8F22jHXN9fEugFPmAvcnGBzH6b+M1TSKPQqAlInvzHgw3FLtrdvllGAw+SMXrPyCP0bnKzTZzCLC3ftotIhdnl29gIZ2t8Aastd6FjWeZjOt+9X557j9eIR1+MqfXq9irHQzcJb312shWHMW23V+XqENTSyaA5p3exRSlQ9yhto90LVgU1hNOB0+t91aaf5lLH+JJmPTfNyxZc=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72743461-46de-4921-e1ec-08d7168da0c2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2019 14:36:23.8810 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: diana.craciun@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2560
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,209 +109,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, Will Deacon <will@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Russell King <linux@armlinux.org.uk>,
- linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "jingxiangfeng@huawei.com" <jingxiangfeng@huawei.com>,
+ "zhaohongjiang@huawei.com" <zhaohongjiang@huawei.com>,
+ "thunder.leizhen@huawei.com" <thunder.leizhen@huawei.com>,
+ "fanchengyang@huawei.com" <fanchengyang@huawei.com>,
+ "yebin10@huawei.com" <yebin10@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All the way back to introducing dma_common_mmap we've defaulyed to mark
-the pages as uncached.  But this is wrong for DMA coherent devices or
-if using DMA_ATTR_NON_CONSISTENT.  Later on DMA_ATTR_WRITE_COMBINE
-also got incorrect treatment as that flag is only treated special on
-the alloc side for non-coherent devices.
-
-Introduce a new dma_mmap_pgprot helper that deals with the check
-for coherent devices and DMA_ATTR_NON_CONSISTENT so that only the
-remapping cases even reach arch_dma_mmap_pgprot and we thus ensure
-no aliasing of page attributes happens.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/arm/mm/dma-mapping.c        |  4 +---
- arch/arm64/mm/dma-mapping.c      |  4 +---
- arch/powerpc/kernel/Makefile     |  3 +--
- arch/powerpc/kernel/dma-common.c | 17 -----------------
- drivers/iommu/dma-iommu.c        |  6 +++---
- include/linux/dma-mapping.h      |  1 +
- include/linux/dma-noncoherent.h  |  5 -----
- kernel/dma/mapping.c             | 11 ++++++++++-
- kernel/dma/remap.c               |  2 +-
- 9 files changed, 18 insertions(+), 35 deletions(-)
- delete mode 100644 arch/powerpc/kernel/dma-common.c
-
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index 9c9a23e5600d..cfe44df169c5 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -2397,9 +2397,7 @@ long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
- pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
- 		unsigned long attrs)
- {
--	if (!dev_is_dma_coherent(dev))
--		return __get_dma_pgprot(attrs, prot);
--	return prot;
-+	return __get_dma_pgprot(attrs, prot);
- }
- 
- void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
-diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
-index 1d3f0b5a9940..bd2b039f43a6 100644
---- a/arch/arm64/mm/dma-mapping.c
-+++ b/arch/arm64/mm/dma-mapping.c
-@@ -14,9 +14,7 @@
- pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
- 		unsigned long attrs)
- {
--	if (!dev_is_dma_coherent(dev) || (attrs & DMA_ATTR_WRITE_COMBINE))
--		return pgprot_writecombine(prot);
--	return prot;
-+	return pgprot_writecombine(prot);
- }
- 
- void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index ea0c69236789..56dfa7a2a6f2 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -49,8 +49,7 @@ obj-y				:= cputable.o ptrace.o syscalls.o \
- 				   signal.o sysfs.o cacheinfo.o time.o \
- 				   prom.o traps.o setup-common.o \
- 				   udbg.o misc.o io.o misc_$(BITS).o \
--				   of_platform.o prom_parse.o \
--				   dma-common.o
-+				   of_platform.o prom_parse.o
- obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
- 				   signal_64.o ptrace32.o \
- 				   paca.o nvram_64.o firmware.o
-diff --git a/arch/powerpc/kernel/dma-common.c b/arch/powerpc/kernel/dma-common.c
-deleted file mode 100644
-index dc7ef6b17b69..000000000000
---- a/arch/powerpc/kernel/dma-common.c
-+++ /dev/null
-@@ -1,17 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * Contains common dma routines for all powerpc platforms.
-- *
-- * Copyright (C) 2019 Shawn Anastasio.
-- */
--
--#include <linux/mm.h>
--#include <linux/dma-noncoherent.h>
--
--pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
--		unsigned long attrs)
--{
--	if (!dev_is_dma_coherent(dev))
--		return pgprot_noncached(prot);
--	return prot;
--}
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index a7f9c3edbcb2..703de9a7553f 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -574,7 +574,7 @@ static void *iommu_dma_alloc_remap(struct device *dev, size_t size,
- 	struct iova_domain *iovad = &cookie->iovad;
- 	bool coherent = dev_is_dma_coherent(dev);
- 	int ioprot = dma_info_to_prot(DMA_BIDIRECTIONAL, coherent, attrs);
--	pgprot_t prot = arch_dma_mmap_pgprot(dev, PAGE_KERNEL, attrs);
-+	pgprot_t prot = dma_mmap_pgprot(dev, PAGE_KERNEL, attrs);
- 	unsigned int count, min_size, alloc_sizes = domain->pgsize_bitmap;
- 	struct page **pages;
- 	struct sg_table sgt;
-@@ -975,7 +975,7 @@ static void *iommu_dma_alloc_pages(struct device *dev, size_t size,
- 		return NULL;
- 
- 	if (IS_ENABLED(CONFIG_DMA_REMAP) && (!coherent || PageHighMem(page))) {
--		pgprot_t prot = arch_dma_mmap_pgprot(dev, PAGE_KERNEL, attrs);
-+		pgprot_t prot = dma_mmap_pgprot(dev, PAGE_KERNEL, attrs);
- 
- 		cpu_addr = dma_common_contiguous_remap(page, alloc_size,
- 				VM_USERMAP, prot, __builtin_return_address(0));
-@@ -1035,7 +1035,7 @@ static int iommu_dma_mmap(struct device *dev, struct vm_area_struct *vma,
- 	unsigned long pfn, off = vma->vm_pgoff;
- 	int ret;
- 
--	vma->vm_page_prot = arch_dma_mmap_pgprot(dev, vma->vm_page_prot, attrs);
-+	vma->vm_page_prot = dma_mmap_pgprot(dev, vma->vm_page_prot, attrs);
- 
- 	if (dma_mmap_from_dev_coherent(dev, vma, cpu_addr, size, &ret))
- 		return ret;
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 633dae466097..c61d7870277f 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -611,6 +611,7 @@ static inline void dma_sync_single_range_for_device(struct device *dev,
- #define dma_get_sgtable(d, t, v, h, s) dma_get_sgtable_attrs(d, t, v, h, s, 0)
- #define dma_mmap_coherent(d, v, c, h, s) dma_mmap_attrs(d, v, c, h, s, 0)
- 
-+pgprot_t dma_mmap_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs);
- extern int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 		void *cpu_addr, dma_addr_t dma_addr, size_t size,
- 		unsigned long attrs);
-diff --git a/include/linux/dma-noncoherent.h b/include/linux/dma-noncoherent.h
-index 3813211a9aad..9ae5cee543c4 100644
---- a/include/linux/dma-noncoherent.h
-+++ b/include/linux/dma-noncoherent.h
-@@ -42,13 +42,8 @@ void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
- 		dma_addr_t dma_addr, unsigned long attrs);
- long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
- 		dma_addr_t dma_addr);
--
--#ifdef CONFIG_ARCH_HAS_DMA_MMAP_PGPROT
- pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
- 		unsigned long attrs);
--#else
--# define arch_dma_mmap_pgprot(dev, prot, attrs)	pgprot_noncached(prot)
--#endif
- 
- #ifdef CONFIG_DMA_NONCOHERENT_CACHE_SYNC
- void arch_dma_cache_sync(struct device *dev, void *vaddr, size_t size,
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 815446f76995..357ae5cdb91b 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -162,6 +162,15 @@ int dma_get_sgtable_attrs(struct device *dev, struct sg_table *sgt,
- }
- EXPORT_SYMBOL(dma_get_sgtable_attrs);
- 
-+pgprot_t dma_mmap_pgprot(struct device *dev, pgprot_t prot, unsigned long attrs)
-+{
-+	if (dev_is_dma_coherent(dev) || (attrs & DMA_ATTR_NON_CONSISTENT))
-+		return prot;
-+	if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_MMAP_PGPROT))
-+		return arch_dma_mmap_pgprot(dev, prot, attrs);
-+	return pgprot_noncached(prot);
-+}
-+
- /*
-  * Create userspace mapping for the DMA-coherent memory.
-  */
-@@ -175,7 +184,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 	unsigned long pfn;
- 	int ret = -ENXIO;
- 
--	vma->vm_page_prot = arch_dma_mmap_pgprot(dev, vma->vm_page_prot, attrs);
-+	vma->vm_page_prot = dma_mmap_pgprot(dev, vma->vm_page_prot, attrs);
- 
- 	if (dma_mmap_from_dev_coherent(dev, vma, cpu_addr, size, &ret))
- 		return ret;
-diff --git a/kernel/dma/remap.c b/kernel/dma/remap.c
-index a594aec07882..3d75c79b124c 100644
---- a/kernel/dma/remap.c
-+++ b/kernel/dma/remap.c
-@@ -218,7 +218,7 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 
- 	/* create a coherent mapping */
- 	ret = dma_common_contiguous_remap(page, size, VM_USERMAP,
--			arch_dma_mmap_pgprot(dev, PAGE_KERNEL, attrs),
-+			dma_mmap_pgprot(dev, PAGE_KERNEL, attrs),
- 			__builtin_return_address(0));
- 	if (!ret) {
- 		__dma_direct_free_pages(dev, size, page);
--- 
-2.20.1
-
+Hi Jason,=0A=
+=0A=
+I have tested these series on a P4080 platform.=0A=
+=0A=
+Regards,=0A=
+Diana=0A=
+=0A=
+=0A=
+On 7/31/2019 12:26 PM, Jason Yan wrote:=0A=
+> This series implements KASLR for powerpc/fsl_booke/32, as a security=0A=
+> feature that deters exploit attempts relying on knowledge of the location=
+=0A=
+> of kernel internals.=0A=
+>=0A=
+> Since CONFIG_RELOCATABLE has already supported, what we need to do is=0A=
+> map or copy kernel to a proper place and relocate. Freescale Book-E=0A=
+> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1=0A=
+> entries are not suitable to map the kernel directly in a randomized=0A=
+> region, so we chose to copy the kernel to a proper place and restart to=
+=0A=
+> relocate.=0A=
+>=0A=
+> Entropy is derived from the banner and timer base, which will change ever=
+y=0A=
+> build and boot. This not so much safe so additionally the bootloader may=
+=0A=
+> pass entropy via the /chosen/kaslr-seed node in device tree.=0A=
+>=0A=
+> We will use the first 512M of the low memory to randomize the kernel=0A=
+> image. The memory will be split in 64M zones. We will use the lower 8=0A=
+> bit of the entropy to decide the index of the 64M zone. Then we chose a=
+=0A=
+> 16K aligned offset inside the 64M zone to put the kernel in.=0A=
+>=0A=
+>     KERNELBASE=0A=
+>=0A=
+>         |-->   64M   <--|=0A=
+>         |               |=0A=
+>         +---------------+    +----------------+---------------+=0A=
+>         |               |....|    |kernel|    |               |=0A=
+>         +---------------+    +----------------+---------------+=0A=
+>         |                         |=0A=
+>         |----->   offset    <-----|=0A=
+>=0A=
+>                               kimage_vaddr=0A=
+>=0A=
+> We also check if we will overlap with some areas like the dtb area, the=
+=0A=
+> initrd area or the crashkernel area. If we cannot find a proper area,=0A=
+> kaslr will be disabled and boot from the original kernel.=0A=
+>=0A=
+> Changes since v2:=0A=
+>  - Remove unnecessary #ifdef=0A=
+>  - Use SZ_64M instead of0x4000000=0A=
+>  - Call early_init_dt_scan_chosen() to init boot_command_line=0A=
+>  - Rename kaslr_second_init() to kaslr_late_init()=0A=
+>=0A=
+> Changes since v1:=0A=
+>  - Remove some useless 'extern' keyword.=0A=
+>  - Replace EXPORT_SYMBOL with EXPORT_SYMBOL_GPL=0A=
+>  - Improve some assembly code=0A=
+>  - Use memzero_explicit instead of memset=0A=
+>  - Use boot_command_line and remove early_command_line=0A=
+>  - Do not print kaslr offset if kaslr is disabled=0A=
+>=0A=
+> Jason Yan (10):=0A=
+>   powerpc: unify definition of M_IF_NEEDED=0A=
+>   powerpc: move memstart_addr and kernstart_addr to init-common.c=0A=
+>   powerpc: introduce kimage_vaddr to store the kernel base=0A=
+>   powerpc/fsl_booke/32: introduce create_tlb_entry() helper=0A=
+>   powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper=0A=
+>   powerpc/fsl_booke/32: implement KASLR infrastructure=0A=
+>   powerpc/fsl_booke/32: randomize the kernel image offset=0A=
+>   powerpc/fsl_booke/kaslr: clear the original kernel if randomized=0A=
+>   powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter=0A=
+>   powerpc/fsl_booke/kaslr: dump out kernel offset information on panic=0A=
+>=0A=
+>  arch/powerpc/Kconfig                          |  11 +=0A=
+>  arch/powerpc/include/asm/nohash/mmu-book3e.h  |  10 +=0A=
+>  arch/powerpc/include/asm/page.h               |   7 +=0A=
+>  arch/powerpc/kernel/Makefile                  |   1 +=0A=
+>  arch/powerpc/kernel/early_32.c                |   2 +-=0A=
+>  arch/powerpc/kernel/exceptions-64e.S          |  10 -=0A=
+>  arch/powerpc/kernel/fsl_booke_entry_mapping.S |  23 +-=0A=
+>  arch/powerpc/kernel/head_fsl_booke.S          |  55 ++-=0A=
+>  arch/powerpc/kernel/kaslr_booke.c             | 427 ++++++++++++++++++=
+=0A=
+>  arch/powerpc/kernel/machine_kexec.c           |   1 +=0A=
+>  arch/powerpc/kernel/misc_64.S                 |   5 -=0A=
+>  arch/powerpc/kernel/setup-common.c            |  19 +=0A=
+>  arch/powerpc/mm/init-common.c                 |   7 +=0A=
+>  arch/powerpc/mm/init_32.c                     |   5 -=0A=
+>  arch/powerpc/mm/init_64.c                     |   5 -=0A=
+>  arch/powerpc/mm/mmu_decl.h                    |  10 +=0A=
+>  arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-=0A=
+>  17 files changed, 558 insertions(+), 48 deletions(-)=0A=
+>  create mode 100644 arch/powerpc/kernel/kaslr_booke.c=0A=
+>=0A=
+=0A=
