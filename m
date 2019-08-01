@@ -1,35 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045057DB76
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 14:29:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 45zqNL5mkwzDqtW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 22:29:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7837DBE5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 14:49:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 45zqrJ5fxnzDq9k
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2019 22:49:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 45zqKR6wtxzDqWb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 22:26:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 45zqKR3LMhz9sDQ; Thu,  1 Aug 2019 22:26:35 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 45zqKR26Cyz9sMr; Thu,  1 Aug 2019 22:26:35 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] selftests/powerpc: Fix build failures with GCC 9
-Date: Thu,  1 Aug 2019 22:26:28 +1000
-Message-Id: <20190801122628.25084-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.0
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 45zqnR2B55zDqld
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 22:47:22 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 38517285DB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2019 12:47:20 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 2C72B285FB; Thu,  1 Aug 2019 12:47:20 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Thu, 01 Aug 2019 12:47:19 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-FJ4o58Kg5c@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,85 +75,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-GCC 9 fails to build some of the ptrace TM tests, with errors such as:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
-  ptrace-tm-spd-vsx.c: In function 'tm_spd_vsx':
-  ptrace-tm-spd-vsx.c:51:2: error: listing the stack pointer register 'r1' in a clobber list is deprecated [-Werror=deprecated]
-     51 |  asm __volatile__(
-        |  ^~~
-  ptrace-tm-spd-vsx.c:51:2: note: the value of the stack pointer after an 'asm' statement must be the same as it was before the statement
+--- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
+On Wed, 31 Jul 2019 12:09:54 +0000
+bugzilla-daemon@bugzilla.kernel.org wrote:
 
-Which is probably fair enough.
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+>=20
+> --- Comment #4 from mpe@ellerman.id.au ---
+>
+> > I suspect proc_cgroup_show() is innocent and that perhaps
+> > bpf_prepare_filter() had a memory scribble.  iirc there has been at
+> > least one recent pretty serious bpf fix applied recently.  Can others
+> > please take a look?=20=20
+>=20
+> I haven't been able to reproduce this on a 64-bit or 32-bit powerpc
+> machine here. But I don't run gentoo userspace, so I suspect I'm not
+> tripping the same path at boot. I did run the seccomp selftest and that
+> didn't trip it either.
+>=20
+> cheers
 
-Some of these inline asm blocks are doing quite a lot and are probably
-pushing the boundaries of what's sane to do with inline asm, but they
-shouldn't actually be returning with r1 modified.
+Doing some fiddling around on another bug (bug #204375), I noticed that I g=
+et
+this "kmalloc-4k (Tainted: G W ): Object padding overwritten" during boot o=
+nly
+when I boot from my btrfs partition, but not from my other ext4 partition. =
+The
+ext4 partition is not a clone, but pretty much the same stuff in the same
+versions. My btrfs root is mounted with 'lazytime,compress=3Dzstd:1', syste=
+md is
+242.
 
-So drop r1 from the clobbers for now, we should probably rewrite them
-to be real asm functions at some point.
+I built a 5.2.5 kernel on the Talos II with CONFIG_SLUB_DEBUG=3Dy but here I
+don't hit the bug, even if I boot from a btrfs partition with the same
+settings. Have to test it on the G5 yet (kernel .config more similar to the=
+ G4
+one than the Talos II one).
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c | 3 +--
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c     | 2 +-
- tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c     | 3 +--
- 4 files changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-index 25e23e73c72e..7b835ef4f8a6 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-@@ -73,7 +73,7 @@ void tm_spd_tar(void)
- 		[sprn_texasr]"i"(SPRN_TEXASR), [tar_1]"i"(TAR_1),
- 		[dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2), [dscr_2]"i"(DSCR_2),
- 		[tar_3]"i"(TAR_3), [dscr_3]"i"(DSCR_3)
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-index f603fe5a445b..724e5aa499cd 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-vsx.c
-@@ -74,8 +74,7 @@ void tm_spd_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR)
--		: "memory", "r0", "r1", "r3", "r4",
--		"r7", "r8", "r9", "r10", "r11"
-+		: "memory", "r0", "r3", "r4", "r7", "r8", "r9", "r10", "r11"
- 		);
- 
- 	if (result) {
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-index e0d37f07bdeb..46ef378a15ec 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-@@ -62,7 +62,7 @@ void tm_tar(void)
- 		[sprn_ppr]"i"(SPRN_PPR), [sprn_texasr]"i"(SPRN_TEXASR),
- 		[tar_1]"i"(TAR_1), [dscr_1]"i"(DSCR_1), [tar_2]"i"(TAR_2),
- 		[dscr_2]"i"(DSCR_2), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4", "r5", "r6"
-+		: "memory", "r0", "r3", "r4", "r5", "r6"
- 		);
- 
- 	/* TM failed, analyse */
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-index 8027457b97b7..9f16f3a74e28 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-vsx.c
-@@ -62,8 +62,7 @@ void tm_vsx(void)
- 		"3: ;"
- 		: [res] "=r" (result), [texasr] "=r" (texasr)
- 		: [sprn_texasr] "i"  (SPRN_TEXASR), [cptr1] "b" (&cptr[1])
--		: "memory", "r0", "r1", "r3", "r4",
--		"r7", "r8", "r9", "r10", "r11"
-+		: "memory", "r0", "r3", "r4", "r7", "r8", "r9", "r10", "r11"
- 		);
- 
- 	if (result) {
--- 
-2.21.0
-
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
