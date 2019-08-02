@@ -2,102 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7274B7EF9B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 10:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731657F53D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 12:40:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460LSx0S6DzDqkc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 18:49:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460Nvw6tjDzDqQP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 20:39:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.4.86; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=diana.craciun@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="MBqHuJND"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="qVCPNdH/"; 
  dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40086.outbound.protection.outlook.com [40.107.4.86])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460LR5275CzDqsh
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 18:48:16 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O6eNdhB4pFae1GAxXzoLguI6+Zf7gMKusRdW8W7v7QoLeTHpyPRYxHc0UWEA0U27jxWUUIkMTUQhZg2NQzTMIOVRJlmcYxIsUMrxnNCiL5rGPRFJNr1fzZANyLj0FOD/COuymKw7ZvaENQUxdSYKeyAOj/S8BEPAbzeLqTyx1Ys5ziXWeb8nyW7/JO84fZ22DTLsfYIzquCrGoApygwYg6UeY1Sc5QRbxRsa98f3dBGsOzwM8ErPp+MjdQbpcGDCR4oyXIYFo7cAEMLJBapXp9mqMNUmKiDCwXNNZKiUk1vrYC+4+qOheepv9kUbTUC7Rz0CURfil5Kf4BBaNH/uuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxRdiLzB/7t67WpVjbo9iz9TYpfjet5bWNCCoQuxccM=;
- b=oeehMASACEbrfozQNN0ZEvRIxQpZGFa1vWjSfTp9McLC65AqEV6tPM5615se+mOZTYBvBT1Hirm8YSNOEA6cOcFK7oEPCI2mYXgCDRyHh5G0Zca9mBa9bm7Rnz8tHG37Ko0tBKHlSl1LMmZZ9ho1S3BJbdyO4m/b9cre/lAcRbsvyMTM0/xhQdfvQpwpw7HMab1ZVqLOBjtHJN3CoBolK9HmfNRcnsws6j+v7I6p0lqKiDmx+jl/xYsCO6/r7cR+Mbxw9wemdMZG0HGY60C0gx3oBiRkqG1GM++SAnKy3dsT72cP+A8XeR2uvkrzpFDCz9slsxdmO2W7NlJYL7K/jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=nxp.com;dmarc=pass action=none header.from=nxp.com;dkim=pass
- header.d=nxp.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxRdiLzB/7t67WpVjbo9iz9TYpfjet5bWNCCoQuxccM=;
- b=MBqHuJNDnge64xFWlcdjbhSsxgw0kewMIm83XfrZGUBewgNAO61mJ8hc4DR4aK0bU2/Hg5QGj4OezlwpkSnSOTWXkJICQG07oQC/5gjqq/8Bn0KrKDDhXfvuLYlCqozEQJ9W+gmTiKXhWMGJtmfAofJ9lrVaPxYn6SkBugYYT8M=
-Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com (10.168.61.13) by
- VI1PR0401MB2638.eurprd04.prod.outlook.com (10.168.65.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2136.15; Fri, 2 Aug 2019 08:48:10 +0000
-Received: from VI1PR0401MB2463.eurprd04.prod.outlook.com
- ([fe80::49dc:1671:b13b:e382]) by VI1PR0401MB2463.eurprd04.prod.outlook.com
- ([fe80::49dc:1671:b13b:e382%9]) with mapi id 15.20.2115.005; Fri, 2 Aug 2019
- 08:48:10 +0000
-From: Diana Madalina Craciun <diana.craciun@nxp.com>
-To: Jason Yan <yanaijie@huawei.com>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "christophe.leroy@c-s.fr"
- <christophe.leroy@c-s.fr>, "benh@kernel.crashing.org"
- <benh@kernel.crashing.org>, "paulus@samba.org" <paulus@samba.org>,
- "npiggin@gmail.com" <npiggin@gmail.com>, "keescook@chromium.org"
- <keescook@chromium.org>, "kernel-hardening@lists.openwall.com"
- <kernel-hardening@lists.openwall.com>
-Subject: Re: [PATCH v3 00/10] implement KASLR for powerpc/fsl_booke/32
-Thread-Topic: [PATCH v3 00/10] implement KASLR for powerpc/fsl_booke/32
-Thread-Index: AQHVR4IOWsHaCjD120G4pOTxFRhTEA==
-Date: Fri, 2 Aug 2019 08:48:10 +0000
-Message-ID: <VI1PR0401MB246349AD76C09D009BB8B5A4FFD90@VI1PR0401MB2463.eurprd04.prod.outlook.com>
-References: <20190731094318.26538-1-yanaijie@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=diana.craciun@nxp.com; 
-x-originating-ip: [212.146.100.6]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f8580ecb-d6a3-4e09-1fcf-08d71726259b
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VI1PR0401MB2638; 
-x-ms-traffictypediagnostic: VI1PR0401MB2638:
-x-microsoft-antispam-prvs: <VI1PR0401MB2638CF4CFD18FC2D07CD8303FFD90@VI1PR0401MB2638.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 011787B9DD
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(346002)(39860400002)(366004)(376002)(136003)(396003)(189003)(199004)(99286004)(3846002)(14454004)(6116002)(305945005)(71200400001)(476003)(33656002)(478600001)(8676002)(68736007)(81166006)(7736002)(66066001)(25786009)(5660300002)(8936002)(4326008)(71190400001)(2201001)(74316002)(81156014)(86362001)(52536014)(76176011)(7696005)(14444005)(53936002)(486006)(6246003)(91956017)(256004)(26005)(316002)(2906002)(76116006)(446003)(66446008)(102836004)(66946007)(229853002)(6506007)(7416002)(53546011)(66476007)(64756008)(9686003)(110136005)(2501003)(54906003)(66556008)(55016002)(6436002)(186003);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR0401MB2638;
- H:VI1PR0401MB2463.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: FBxON3gONiO0j3V98Ojb3ldPdouon7x3reTtDPguoRSMNT3+t2EwEZrC4UDa5DmR+mg8zfZZPPO1Wz/zYWuQWpJWFxv7Z+MWObi1Ia6v5eDU5rmXOcW6m05jmgAqW6A1rUXPLogYyz5XSDji36nQE8Ayi/XqWo3vt33A7BZ43CguNqDAhj/NuW+15yXidTArhwLy8jdWWOHuD/FuZrPa0+X/HgKtcanAYXYeSQ7p29xNJAkjRQORk6ulDR0ZAmJhY4ioGzp6ZpKSgbp96xquYczQnZuz9Vo8qZowyocDmEJQrvX08qm8lNy4nVRKPxeIaoekoxn0nTnj2yg4fWL0pUKJHPXbsxOUC8RD6ndCupI6sC3GoHZqe6oAm/3DBXsI2OzhW2YO4hv3IUpMELHJ3qcbMCWgbuMS1rqAEpdL/X0=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460Nsv4wJVzDqxB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 20:38:11 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id D13942086A;
+ Fri,  2 Aug 2019 10:38:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1564742288;
+ bh=IYNwTW73rLYyMyjD9BJMjODjl0NeiQXEjNWG7ynwQFE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=qVCPNdH/6+F3JEUwjc5ECdeVvv2rxFW/YIsSdLtdhUSAecBHvE/aZD9g4yMo2gZSj
+ 2yoBLIUP0QYtsd9bkMqXcwYzxDAGO2T7/GL9cxrLT0Ys0KRqsv6Oult274XWCLaght
+ wblNSh7hCme4l3pG2uJghbpPO6jnYgJmHgYdUE7s=
+Date: Fri, 2 Aug 2019 11:38:03 +0100
+From: Will Deacon <will@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
+Message-ID: <20190802103803.3qrbhqwxlasojsco@willie-the-truck>
+References: <20190801142118.21225-1-hch@lst.de>
+ <20190801142118.21225-2-hch@lst.de>
+ <20190801162305.3m32chycsdjmdejk@willie-the-truck>
+ <20190801163457.GB26588@lst.de>
+ <20190801164411.kmsl4japtfkgvzxe@willie-the-truck>
+ <20190802081441.GA9725@lst.de>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8580ecb-d6a3-4e09-1fcf-08d71726259b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2019 08:48:10.1312 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: diana.craciun@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0401MB2638
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190802081441.GA9725@lst.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,112 +62,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "jingxiangfeng@huawei.com" <jingxiangfeng@huawei.com>,
- "zhaohongjiang@huawei.com" <zhaohongjiang@huawei.com>,
- "thunder.leizhen@huawei.com" <thunder.leizhen@huawei.com>,
- "fanchengyang@huawei.com" <fanchengyang@huawei.com>,
- "yebin10@huawei.com" <yebin10@huawei.com>
+Cc: Shawn Anastasio <shawn@anastas.io>, linuxppc-dev@lists.ozlabs.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Except for one comment in patch 06/10: Reviewed-by: Diana Craciun=0A=
-<diana.craciun@nxp.com>=0A=
-And also: Tested-by: Diana Craciun <diana.craciun@nxp.com>=0A=
-=0A=
-Regards,=0A=
-Diana=0A=
-=0A=
-On 7/31/2019 12:26 PM, Jason Yan wrote:=0A=
-> This series implements KASLR for powerpc/fsl_booke/32, as a security=0A=
-> feature that deters exploit attempts relying on knowledge of the location=
-=0A=
-> of kernel internals.=0A=
->=0A=
-> Since CONFIG_RELOCATABLE has already supported, what we need to do is=0A=
-> map or copy kernel to a proper place and relocate. Freescale Book-E=0A=
-> parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1=0A=
-> entries are not suitable to map the kernel directly in a randomized=0A=
-> region, so we chose to copy the kernel to a proper place and restart to=
-=0A=
-> relocate.=0A=
->=0A=
-> Entropy is derived from the banner and timer base, which will change ever=
-y=0A=
-> build and boot. This not so much safe so additionally the bootloader may=
-=0A=
-> pass entropy via the /chosen/kaslr-seed node in device tree.=0A=
->=0A=
-> We will use the first 512M of the low memory to randomize the kernel=0A=
-> image. The memory will be split in 64M zones. We will use the lower 8=0A=
-> bit of the entropy to decide the index of the 64M zone. Then we chose a=
-=0A=
-> 16K aligned offset inside the 64M zone to put the kernel in.=0A=
->=0A=
->     KERNELBASE=0A=
->=0A=
->         |-->   64M   <--|=0A=
->         |               |=0A=
->         +---------------+    +----------------+---------------+=0A=
->         |               |....|    |kernel|    |               |=0A=
->         +---------------+    +----------------+---------------+=0A=
->         |                         |=0A=
->         |----->   offset    <-----|=0A=
->=0A=
->                               kimage_vaddr=0A=
->=0A=
-> We also check if we will overlap with some areas like the dtb area, the=
-=0A=
-> initrd area or the crashkernel area. If we cannot find a proper area,=0A=
-> kaslr will be disabled and boot from the original kernel.=0A=
->=0A=
-> Changes since v2:=0A=
->  - Remove unnecessary #ifdef=0A=
->  - Use SZ_64M instead of0x4000000=0A=
->  - Call early_init_dt_scan_chosen() to init boot_command_line=0A=
->  - Rename kaslr_second_init() to kaslr_late_init()=0A=
->=0A=
-> Changes since v1:=0A=
->  - Remove some useless 'extern' keyword.=0A=
->  - Replace EXPORT_SYMBOL with EXPORT_SYMBOL_GPL=0A=
->  - Improve some assembly code=0A=
->  - Use memzero_explicit instead of memset=0A=
->  - Use boot_command_line and remove early_command_line=0A=
->  - Do not print kaslr offset if kaslr is disabled=0A=
->=0A=
-> Jason Yan (10):=0A=
->   powerpc: unify definition of M_IF_NEEDED=0A=
->   powerpc: move memstart_addr and kernstart_addr to init-common.c=0A=
->   powerpc: introduce kimage_vaddr to store the kernel base=0A=
->   powerpc/fsl_booke/32: introduce create_tlb_entry() helper=0A=
->   powerpc/fsl_booke/32: introduce reloc_kernel_entry() helper=0A=
->   powerpc/fsl_booke/32: implement KASLR infrastructure=0A=
->   powerpc/fsl_booke/32: randomize the kernel image offset=0A=
->   powerpc/fsl_booke/kaslr: clear the original kernel if randomized=0A=
->   powerpc/fsl_booke/kaslr: support nokaslr cmdline parameter=0A=
->   powerpc/fsl_booke/kaslr: dump out kernel offset information on panic=0A=
->=0A=
->  arch/powerpc/Kconfig                          |  11 +=0A=
->  arch/powerpc/include/asm/nohash/mmu-book3e.h  |  10 +=0A=
->  arch/powerpc/include/asm/page.h               |   7 +=0A=
->  arch/powerpc/kernel/Makefile                  |   1 +=0A=
->  arch/powerpc/kernel/early_32.c                |   2 +-=0A=
->  arch/powerpc/kernel/exceptions-64e.S          |  10 -=0A=
->  arch/powerpc/kernel/fsl_booke_entry_mapping.S |  23 +-=0A=
->  arch/powerpc/kernel/head_fsl_booke.S          |  55 ++-=0A=
->  arch/powerpc/kernel/kaslr_booke.c             | 427 ++++++++++++++++++=
-=0A=
->  arch/powerpc/kernel/machine_kexec.c           |   1 +=0A=
->  arch/powerpc/kernel/misc_64.S                 |   5 -=0A=
->  arch/powerpc/kernel/setup-common.c            |  19 +=0A=
->  arch/powerpc/mm/init-common.c                 |   7 +=0A=
->  arch/powerpc/mm/init_32.c                     |   5 -=0A=
->  arch/powerpc/mm/init_64.c                     |   5 -=0A=
->  arch/powerpc/mm/mmu_decl.h                    |  10 +=0A=
->  arch/powerpc/mm/nohash/fsl_booke.c            |   8 +-=0A=
->  17 files changed, 558 insertions(+), 48 deletions(-)=0A=
->  create mode 100644 arch/powerpc/kernel/kaslr_booke.c=0A=
->=0A=
-=0A=
+On Fri, Aug 02, 2019 at 10:14:41AM +0200, Christoph Hellwig wrote:
+> On Thu, Aug 01, 2019 at 05:44:12PM +0100, Will Deacon wrote:
+> > > > Although arch_dma_mmap_pgprot() is a bit of a misnomer now that it only
+> > > > gets involved in the non-coherent case.
+> > > 
+> > > A better name is welcome.
+> > 
+> > How about arch_dma_noncoherent_mmap_pgprot() ? Too long?
+> 
+> Sounds a little long yes.  And doesn't fix the additional problem that
+> we don't just it for mmap but also for the in-kernel remapping these
+> days.
+
+Hmm. Maybe just arch_dma_noncoherent_pgprot() then.
+
+> > > But my worry is how this interacts with architectures that have an
+> > > uncached segment (mips, nios2, microblaze, extensa) where we'd have
+> > > the kernel access DMA_ATTR_WRITE_COMBINE mappigns using the uncached
+> > > segment, and userspace mmaps using pgprot_writecombine, which could
+> > > lead to aliasing issues.  But then again mips already supports
+> > > DMA_ATTR_WRITE_COMBINE, so this must be ok somehow.  I guess I'll
+> > > need to field that question to the relevant parties.
+> > 
+> > Or it's always been busted and happens to work out in practice...
+> 
+> I've sent a ping to the mips folks.  While we'are at it:  arm64
+> and arm32 (optionally) map dma coherent allocations as write combine.
+> I suspect this hasn't always just been busted but intentional (of course!),
+> but is there any chance to get a quote from the arm architecture spec
+> on why this is fine as it looks rather confusion?
+
+So this boils down to a terminology mismatch. The Arm architecture doesn't have
+anything called "write combine", so in Linux we instead provide what the Arm
+architecture calls "Normal non-cacheable" memory for pgprot_writecombine().
+Amongst other things, this memory type permits speculation, unaligned accesses
+and merging of writes. I found something in the architecture spec about
+non-cachable memory, but it's written in Armglish[1].
+
+pgprot_noncached(), on the other hand, provides what the architecture calls
+Strongly Ordered or Device-nGnRnE memory. This is intended for mapping MMIO
+(i.e. PCI config space) and therefore forbids speculation, preserves access
+size, requires strict alignment and also forces write responses to come from
+the endpoint.
+
+I think the naming mismatch is historical, but on arm64 we wanted to use the
+same names as arm32 so that any drivers using these things directly would get
+the same behaviour.
+
+Will
+
+[1]
+
+B2.4.4 Implication of caches for the application programmer
+
+[...]
+
+Data coherency issues
+
+Software can ensure the data coherency of caches in the following ways:
+
+  * By not using the caches in situations where coherency issues can arise.
+    This can be achieved by:
+
+    - Using Non-cacheable or, in some cases, Write-Through Cacheable memory.
+
+    - Not enabling caches in the system.
+
+  * By using cache maintenance instructions to manage the coherency issues
+    in software.
+
+  * By using hardware coherency mechanisms to ensure the coherency of data
+    accesses to memory for cacheable locations by observers within the
+    different shareability domains.
