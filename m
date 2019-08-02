@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1AF7FA68
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 15:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591077FB2E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 15:39:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460Sm20vMQzDr2w
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 23:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460Stb5S6VzDqyg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 23:39:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="0kF+BRTJ"; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="PxD64+ST"; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460STn0wgCzDqD0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 23:20:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460SVn1gXNzDr6Y
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 23:21:53 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B56B021849;
- Fri,  2 Aug 2019 13:20:56 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1F178217D4;
+ Fri,  2 Aug 2019 13:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564752057;
- bh=T2iFgkP0UDzAXbiI2k0wz3wf1VnOxEi+QvaaMJHeMfY=;
+ s=default; t=1564752110;
+ bh=nopyJIrag+tPMdf2wrz1rrKCXw5JMgcHYzSfj2Boglc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=0kF+BRTJZKkb5JLOblpAsbxxZg0n8Zvuc4nU16qfG0+LLsDH7jrEuIz9etLt/N86b
- qRuWi0dmy095lQ8E112Dyg2G5ZHgaIs3tTy3KwUw5pHqoifdLGHsOFrKCMQgNUqM2Q
- pKsb99G+cMJdFfUksXwsi9CHQikSKMsfOdOymcvM=
+ b=PxD64+STnfdSfTjPcVy2aYkS3+rChY16rICVjaBDV38YJmmGLSBzsXwoPAf+I+Y8g
+ CHWLXuRE+UVm8evJDrtPdVm3O251wmvWnFk2y2G8P7+Q/S2QBJD2LGz6B0whuziRUH
+ vslAktsx4kZ5DbHYHCGE+NB25BYNIzJgY6IkKcgY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 37/76] powerpc/papr_scm: Force a scm-unbind if
- initial scm-bind fails
-Date: Fri,  2 Aug 2019 09:19:11 -0400
-Message-Id: <20190802131951.11600-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 46/76] cpufreq/pasemi: fix use-after-free in
+ pas_cpufreq_cpu_init()
+Date: Fri,  2 Aug 2019 09:19:20 -0400
+Message-Id: <20190802131951.11600-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190802131951.11600-1-sashal@kernel.org>
 References: <20190802131951.11600-1-sashal@kernel.org>
@@ -61,79 +61,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, Wen Yang <wen.yang99@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
+From: Wen Yang <wen.yang99@zte.com.cn>
 
-[ Upstream commit 3a855b7ac7d5021674aa3e1cc9d3bfd6b604e9c0 ]
+[ Upstream commit e0a12445d1cb186d875410d093a00d215bec6a89 ]
 
-In some cases initial bind of scm memory for an lpar can fail if
-previously it wasn't released using a scm-unbind hcall. This situation
-can arise due to panic of the previous kernel or forced lpar
-fadump. In such cases the H_SCM_BIND_MEM return a H_OVERLAP error.
+The cpu variable is still being used in the of_get_property() call
+after the of_node_put() call, which may result in use-after-free.
 
-To mitigate such cases the patch updates papr_scm_probe() to force a
-call to drc_pmem_unbind() in case the initial bind of scm memory fails
-with EBUSY error. In case scm-bind operation again fails after the
-forced scm-unbind then we follow the existing error path. We also
-update drc_pmem_bind() to handle the H_OVERLAP error returned by phyp
-and indicate it as a EBUSY error back to the caller.
-
-Suggested-by: "Oliver O'Halloran" <oohall@gmail.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20190629160610.23402-4-vaibhav@linux.ibm.com
+Fixes: a9acc26b75f6 ("cpufreq/pasemi: fix possible object reference leak")
+Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/papr_scm.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/cpufreq/pasemi-cpufreq.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 96c53b23e58f9..dad9825e40874 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -42,8 +42,9 @@ struct papr_scm_priv {
- static int drc_pmem_bind(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
--	uint64_t rc, token;
- 	uint64_t saved = 0;
-+	uint64_t token;
-+	int64_t rc;
+diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
+index 6b1e4abe32483..d2f061015323d 100644
+--- a/drivers/cpufreq/pasemi-cpufreq.c
++++ b/drivers/cpufreq/pasemi-cpufreq.c
+@@ -131,10 +131,18 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	int err = -ENODEV;
  
- 	/*
- 	 * When the hypervisor cannot map all the requested memory in a single
-@@ -63,6 +64,10 @@ static int drc_pmem_bind(struct papr_scm_priv *p)
- 	} while (rc == H_BUSY);
+ 	cpu = of_get_cpu_node(policy->cpu, NULL);
++	if (!cpu)
++		goto out;
  
- 	if (rc) {
-+		/* H_OVERLAP needs a separate error path */
-+		if (rc == H_OVERLAP)
-+			return -EBUSY;
-+
- 		dev_err(&p->pdev->dev, "bind err: %lld\n", rc);
- 		return -ENXIO;
- 	}
-@@ -316,6 +321,14 @@ static int papr_scm_probe(struct platform_device *pdev)
- 
- 	/* request the hypervisor to bind this region to somewhere in memory */
- 	rc = drc_pmem_bind(p);
-+
-+	/* If phyp says drc memory still bound then force unbound and retry */
-+	if (rc == -EBUSY) {
-+		dev_warn(&pdev->dev, "Retrying bind after unbinding\n");
-+		drc_pmem_unbind(p);
-+		rc = drc_pmem_bind(p);
++	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+ 	of_node_put(cpu);
+-	if (!cpu)
++	if (!max_freqp) {
++		err = -EINVAL;
+ 		goto out;
 +	}
 +
- 	if (rc)
- 		goto err;
++	/* we need the freq in kHz */
++	max_freq = *max_freqp / 1000;
  
+ 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
+ 	if (!dn)
+@@ -171,16 +179,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	}
+ 
+ 	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
+-
+-	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+-	if (!max_freqp) {
+-		err = -EINVAL;
+-		goto out_unmap_sdcpwr;
+-	}
+-
+-	/* we need the freq in kHz */
+-	max_freq = *max_freqp / 1000;
+-
+ 	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
+ 	pr_debug("initializing frequency table\n");
+ 
+@@ -198,9 +196,6 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
+ 
+-out_unmap_sdcpwr:
+-	iounmap(sdcpwr_mapbase);
+-
+ out_unmap_sdcasr:
+ 	iounmap(sdcasr_mapbase);
+ out:
 -- 
 2.20.1
 
