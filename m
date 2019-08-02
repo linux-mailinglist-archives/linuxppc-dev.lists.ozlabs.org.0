@@ -2,63 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2686A7EB75
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 06:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 082167EB99
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 06:40:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460DcH2whvzDqxX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:25:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460DxN1pjgzDqhk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:40:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460DT26NxNzDqkV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 14:19:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 460DT25qXpz8t7p
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 14:19:34 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 460DT25bGFz9sBF; Fri,  2 Aug 2019 14:19:34 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=131.153.2.43; helo=h2.fbrelay.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
- [131.153.2.43])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="OrECB1Qi"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 460DT21BMvz9s3Z
- for <linuxppc-dev@ozlabs.org>; Fri,  2 Aug 2019 14:19:34 +1000 (AEST)
-Received: from MTA-06-3.privateemail.com (mta-06.privateemail.com
- [68.65.122.16])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id DA2D9814DC
- for <linuxppc-dev@ozlabs.org>; Fri,  2 Aug 2019 00:19:31 -0400 (EDT)
-Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id 8A46860045;
- Fri,  2 Aug 2019 00:19:28 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.234])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id 236B160039;
- Fri,  2 Aug 2019 04:19:28 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2 3/3] powerpc/spinlocks: Fix oops in shared-processor
- spinlocks
-Date: Thu,  1 Aug 2019 23:22:33 -0500
-Message-Id: <20190802042233.20835-4-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190802042233.20835-1-cmr@informatik.wtf>
-References: <20190802042233.20835-1-cmr@informatik.wtf>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460Dvd67NpzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 14:39:06 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 460DvS6qFmz9vBfl;
+ Fri,  2 Aug 2019 06:39:00 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=OrECB1Qi; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VmsG6ZbgH4qa; Fri,  2 Aug 2019 06:39:00 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 460DvS5jsZz9vBfh;
+ Fri,  2 Aug 2019 06:39:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1564720740; bh=q4ZMvCC9pF+bx4xNGwk+CVz7RuBSg1EdnJ2pgjPeQI8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=OrECB1QiT0LZ6vxWcdJhfnUKF4ps7URVPjA44CCjsevXP15OMtx9gDt9OxbJa6e0G
+ glOX9ChRVQVt0QfagwdFNriKpYrVMu7PCJBph3/SUepixBj/d75xTeoTwgzqYkDzWu
+ 103672yojHYi0i9DGUq+onvK/LJGTNefcAYtlff8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A33F28B795;
+ Fri,  2 Aug 2019 06:39:01 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id rZwoK36GmEMj; Fri,  2 Aug 2019 06:39:01 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 20BA28B74C;
+ Fri,  2 Aug 2019 06:39:01 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc: Support CMDLINE_EXTEND
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "malat@debian.org" <malat@debian.org>
+References: <20190801021206.26799-1-chris.packham@alliedtelesis.co.nz>
+ <0a47ab71-d968-5aaa-6b5f-bd255d2565dd@c-s.fr>
+ <1564698745.4914.14.camel@alliedtelesis.co.nz>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <51bbac81-e252-ee27-3b9c-d315f69951ad@c-s.fr>
+Date: Fri, 2 Aug 2019 06:39:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <1564698745.4914.14.camel@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,148 +83,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@informatik.wtf>, ajd@linux.ibm.com,
- bauerman@linux.ibm.com
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Booting w/ ppc64le_defconfig + CONFIG_PREEMPT results in the attached
-kernel trace due to calling shared-processor spinlocks while not running
-in an SPLPAR. Previously, the out-of-line spinlocks implementations were
-selected based on CONFIG_PPC_SPLPAR at compile time without a runtime
-shared-processor LPAR check.
 
-To fix, call the actual spinlock implementations from a set of common
-functions, spin_yield() and rw_yield(), which check for shared-processor
-LPAR during runtime and select the appropriate lock implementation.
 
-[    0.430878] BUG: Kernel NULL pointer dereference at 0x00000100
-[    0.431991] Faulting instruction address: 0xc000000000097f88
-[    0.432934] Oops: Kernel access of bad area, sig: 7 [#1]
-[    0.433448] LE PAGE_SIZE=64K MMU=Radix MMU=Hash PREEMPT SMP NR_CPUS=2048 NUMA PowerNV
-[    0.434479] Modules linked in:
-[    0.435055] CPU: 0 PID: 2 Comm: kthreadd Not tainted 5.2.0-rc6-00491-g249155c20f9b #28
-[    0.435730] NIP:  c000000000097f88 LR: c000000000c07a88 CTR: c00000000015ca10
-[    0.436383] REGS: c0000000727079f0 TRAP: 0300   Not tainted  (5.2.0-rc6-00491-g249155c20f9b)
-[    0.437004] MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000424  XER: 20040000
-[    0.437874] CFAR: c000000000c07a84 DAR: 0000000000000100 DSISR: 00080000 IRQMASK: 1
-[    0.437874] GPR00: c000000000c07a88 c000000072707c80 c000000001546300 c00000007be38a80
-[    0.437874] GPR04: c0000000726f0c00 0000000000000002 c00000007279c980 0000000000000100
-[    0.437874] GPR08: c000000001581b78 0000000080000001 0000000000000008 c00000007279c9b0
-[    0.437874] GPR12: 0000000000000000 c000000001730000 c000000000142558 0000000000000000
-[    0.437874] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.437874] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.437874] GPR24: c00000007be38a80 c000000000c002f4 0000000000000000 0000000000000000
-[    0.437874] GPR28: c000000072221a00 c0000000726c2600 c00000007be38a80 c00000007be38a80
-[    0.443992] NIP [c000000000097f88] __spin_yield+0x48/0xa0
-[    0.444523] LR [c000000000c07a88] __raw_spin_lock+0xb8/0xc0
-[    0.445080] Call Trace:
-[    0.445670] [c000000072707c80] [c000000072221a00] 0xc000000072221a00 (unreliable)
-[    0.446425] [c000000072707cb0] [c000000000bffb0c] __schedule+0xbc/0x850
-[    0.447078] [c000000072707d70] [c000000000c002f4] schedule+0x54/0x130
-[    0.447694] [c000000072707da0] [c0000000001427dc] kthreadd+0x28c/0x2b0
-[    0.448389] [c000000072707e20] [c00000000000c1cc] ret_from_kernel_thread+0x5c/0x70
-[    0.449143] Instruction dump:
-[    0.449821] 4d9e0020 552a043e 210a07ff 79080fe0 0b080000 3d020004 3908b878 794a1f24
-[    0.450587] e8e80000 7ce7502a e8e70000 38e70100 <7ca03c2c> 70a70001 78a50020 4d820020
-[    0.452808] ---[ end trace 474d6b2b8fc5cb7e ]---
+Le 02/08/2019 à 00:32, Chris Packham a écrit :
+> On Thu, 2019-08-01 at 08:14 +0200, Christophe Leroy wrote:
+>>
+>> Le 01/08/2019 à 04:12, Chris Packham a écrit :
+>>>
+>>> Bring powerpc in line with other architectures that support
+>>> extending or
+>>> overriding the bootloader provided command line.
+>>>
+>>> The current behaviour is most like CMDLINE_FROM_BOOTLOADER where
+>>> the
+>>> bootloader command line is preferred but the kernel config can
+>>> provide a
+>>> fallback so CMDLINE_FROM_BOOTLOADER is the default. CMDLINE_EXTEND
+>>> can
+>>> be used to append the CMDLINE from the kernel config to the one
+>>> provided
+>>> by the bootloader.
+>>>
+>>> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+>>> ---
+>>> While I'm at it does anyone think it's worth getting rid of the
+>>> default CMDLINE
+>>> value if CMDLINE_BOOL and maybe CMDLINE_BOOL? Every defconfig in
+>>> the kernel
+>>> that sets CMDLINE_BOOL=y also sets CMDLINE to something other than
+>>> "console=ttyS0,9600 console=tty0 root=/dev/sda2". Removing
+>>> CMDLINE_BOOL and
+>>> unconditionally setting the default value of CMDLINE to "" would
+>>> clean up the
+>>> Kconfig even more.
+>> Note
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co
+>> mmit/?id=cbe46bd4f5104552b612505b73d366f66efc2341
+>> which is already a step forward.
+>>
+>> I guess that default is for users selecting this option manually to
+>> get
+>> a first sensitive CMDLINE. But is it really worth it ?
+>>
+> 
+> I'm not even sure if it is working as intended right now. Even without
+> my changes if I use menuconfig and select CMDLINE_BOOL I end up with
+> CONFIG_CMDLINE="" in the resulting .config.
 
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
- arch/powerpc/include/asm/spinlock.h | 36 ++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+I guess if the CONFIG_CMDLINE doesn't exist yet, it will get the default 
+value. But if it is already there allthough empty, it will remain empty.
+So yes I guess you could just drop it for this reason and the other 
+reasons you said.
 
-diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-index 0a8270183770..6aed8a83b180 100644
---- a/arch/powerpc/include/asm/spinlock.h
-+++ b/arch/powerpc/include/asm/spinlock.h
-@@ -103,11 +103,9 @@ static inline int arch_spin_trylock(arch_spinlock_t *lock)
- /* We only yield to the hypervisor if we are in shared processor mode */
- void splpar_spin_yield(arch_spinlock_t *lock);
- void splpar_rw_yield(arch_rwlock_t *lock);
--#define __spin_yield(x) splpar_spin_yield(x)
--#define __rw_yield(x) splpar_rw_yield(x)
- #else /* SPLPAR */
--#define __spin_yield(x)	barrier()
--#define __rw_yield(x)	barrier()
-+static inline void splpar_spin_yield(arch_spinlock_t *lock) {};
-+static inline void splpar_rw_yield(arch_rwlock_t *lock) {};
- #endif
- 
- static inline bool is_shared_processor(void)
-@@ -124,6 +122,22 @@ static inline bool is_shared_processor(void)
- #endif
- }
- 
-+static inline void spin_yield(arch_spinlock_t *lock)
-+{
-+	if (is_shared_processor())
-+		splpar_spin_yield(lock);
-+	else
-+		barrier();
-+}
-+
-+static inline void rw_yield(arch_rwlock_t *lock)
-+{
-+	if (is_shared_processor())
-+		splpar_rw_yield(lock);
-+	else
-+		barrier();
-+}
-+
- static inline void arch_spin_lock(arch_spinlock_t *lock)
- {
- 	while (1) {
-@@ -132,7 +146,7 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__spin_yield(lock);
-+				spin_yield(lock);
- 		} while (unlikely(lock->slock != 0));
- 		HMT_medium();
- 	}
-@@ -151,7 +165,7 @@ void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__spin_yield(lock);
-+				spin_yield(lock);
- 		} while (unlikely(lock->slock != 0));
- 		HMT_medium();
- 		local_irq_restore(flags_dis);
-@@ -241,7 +255,7 @@ static inline void arch_read_lock(arch_rwlock_t *rw)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__rw_yield(rw);
-+				rw_yield(rw);
- 		} while (unlikely(rw->lock < 0));
- 		HMT_medium();
- 	}
-@@ -255,7 +269,7 @@ static inline void arch_write_lock(arch_rwlock_t *rw)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__rw_yield(rw);
-+				rw_yield(rw);
- 		} while (unlikely(rw->lock != 0));
- 		HMT_medium();
- 	}
-@@ -295,9 +309,9 @@ static inline void arch_write_unlock(arch_rwlock_t *rw)
- 	rw->lock = 0;
- }
- 
--#define arch_spin_relax(lock)	__spin_yield(lock)
--#define arch_read_relax(lock)	__rw_yield(lock)
--#define arch_write_relax(lock)	__rw_yield(lock)
-+#define arch_spin_relax(lock)	spin_yield(lock)
-+#define arch_read_relax(lock)	rw_yield(lock)
-+#define arch_write_relax(lock)	rw_yield(lock)
- 
- /* See include/linux/spinlock.h */
- #define smp_mb__after_spinlock()   smp_mb()
--- 
-2.22.0
+Christophe
 
