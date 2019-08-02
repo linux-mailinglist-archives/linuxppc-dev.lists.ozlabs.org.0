@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FB7F5C5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 13:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132A37F5C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 13:10:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460PY75MvGzDqyH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:08:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460PbR4CH0zDqc1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:10:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="d2fKJmyf"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="PvD1TMdG"; 
  dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460PLt24tPzDqxH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 20:59:50 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id f5so27076233pgu.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 03:59:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PLw4ThjzDqT6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 20:59:52 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id r1so35852149pfq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 03:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=R2NF6P17PKz3upjs1/CZJw05PPuqz6k3ABhSgMlkQRo=;
- b=d2fKJmyfU2FJax+QoPbp8a2zg/YpxT5bzMJv/tRJaaZybrStWifNifJsYehvZoYUmC
- OiR8ciUThc7inSn7BCQZkTQFzp43VaF8G61QZHIzGa7jdfXJvRWC898OyYMF5Dfr1M0g
- KEDgTntMNdC5ZoPf8r7cJ559IjIEewKxNqAsNmeES1QovGW5pIhYBuyWIGVcDBTu/xnV
- rAoxFHIw+lDAtQ0jFwrP5NFq4mj0XZmc4w9bgAYpDaiHrTQUzwodbm/nz+Cf6QkYnA/k
- It22nsZEKwcHz8WCGHnlpzsZ+BaSvPw1Ijk3jcztgdfp8RCgnt3fIgUKO/h29PZMz6x5
- nSdQ==
+ bh=XdGy2i8bk4Bqf0fGYwGlXi8P8nJz3KLNviVMeWvHUdE=;
+ b=PvD1TMdG6h8rm+ALOmULszyhvpi16UCoLWJqfLuYFi4ata8XoFe39Eba4IiXPdx4i3
+ aZIa58XJTV7bideXDXn2NcfA86/IsmUQE0Zx9mUfpSv8ZDji1SyiPunUOrljIn2N4Fl8
+ LTBhwO2zlUC/dldritqRktL39P8yH07B5CT/7rg9gbZ0mpoFQPLJK3JYYlYcqqDrCOU+
+ QFnuSefo/ItmEymgHU9EYpwf5/fizGQERvl64p2sYCqdIlMYKSPnfzwglyYtkZKA6VDu
+ wjeDtA0l/0SprJlhmbuGHkUkPQ5ukQzemsJobI8QVAWfXYOLeU5xZOit6dya0dXOkNKj
+ LaOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=R2NF6P17PKz3upjs1/CZJw05PPuqz6k3ABhSgMlkQRo=;
- b=oFuaSP/Tdmd9P2YQHTNPzYUpwheu05lYrRS9tzwDN+1BwYuczIy8yfIOdUg3tIAEWO
- q4y+FOoZhKvoh0Qn8Y9+OWKYZKPlntmwdvndBsAKMYgJ1Pocsqb01JKyr0pOWFG4rtCH
- 32i69iY0fikGMmM9O3SAdwYX9KCUJC+O6ZG5MutCht+miMA9CoLE8OPrjtvtY3Dvahi8
- RzKcn/TcecW0+AlNBrqr1t6xRxH5V1hf00lTUNBTt3O7YaIh50jr/DSuLYSCXX//OZCj
- MgvD47YYuFZtl1rRm36jl/HEzOU7c8WNvfIpSM4QnAGHtxduQzQBbUzO39UA9Oj+84yK
- Jkkw==
-X-Gm-Message-State: APjAAAV79TJYft5+Pmbe8IzukLgKwncMskv6VvJ9qeO0v7PJC/pKj2q6
- Rk2uIDRlexEZEsXHhA/sWHiN5CJ0Kdg=
-X-Google-Smtp-Source: APXvYqz4WshzU7VbNj/PPLZG41pbQ1m+H8giRhKspx7QC92VZLml+XO2p8tIlIxg/Wr5Ftt1yj+vmw==
-X-Received: by 2002:aa7:8a92:: with SMTP id a18mr59882309pfc.216.1564743588353; 
- Fri, 02 Aug 2019 03:59:48 -0700 (PDT)
+ bh=XdGy2i8bk4Bqf0fGYwGlXi8P8nJz3KLNviVMeWvHUdE=;
+ b=W3uFQ9ctBTDAZMWDy2rUXMgXraYpJVWDskc1rFIczbg+VTcpCtU78boVvp0VZorLGh
+ 2ouFVI4Kw3G/smUJAPhP/wbFF6Ekca5S61BYwWxShm7G3a3O6zf1ZDWzjC6upGJbueIx
+ YgJcTlMAR57i9z/WqT5Njm3DRs9+0d21ElWiTxPfY7CTHqtu6Y03Nti4DOvGvHhEW+YA
+ q1jpGHehqFMX/z00NimNHRaDMUe7bbWU6UW71mRxcSws7UNQqa9ySSuvJz7rUZ4n9+ni
+ Quc0XVXPN6eWSl5xts9ENw8gzbUKu+xEDmgxK9QSvQJmrAnTgqSze2gkrJdY8CoOTcNP
+ hBRQ==
+X-Gm-Message-State: APjAAAVVQ3AQGzfa26aEDxRnrmbfkOOD2xkiwiLMqm/Vu1vhrhWYc5rb
+ yRxojkzBU5e3TL8p4UYcoZrfK5DYay0=
+X-Google-Smtp-Source: APXvYqzZVichpWUHjVjMIUWxv0J59X870nLZEsIEGwgCJMnok2y6Be9umr7mjkpnwbV3jzKuaYlQVg==
+X-Received: by 2002:a63:fe52:: with SMTP id
+ x18mr123885561pgj.344.1564743590707; 
+ Fri, 02 Aug 2019 03:59:50 -0700 (PDT)
 Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
- by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.03.59.46
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.03.59.48
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 02 Aug 2019 03:59:47 -0700 (PDT)
+ Fri, 02 Aug 2019 03:59:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 03/44] powerpc/64s/exception: machine check fix KVM guest
- test
-Date: Fri,  2 Aug 2019 20:56:28 +1000
-Message-Id: <20190802105709.27696-4-npiggin@gmail.com>
+Subject: [PATCH v2 04/44] powerpc/64s/exception: machine check adjust RFI
+ target
+Date: Fri,  2 Aug 2019 20:56:29 +1000
+Message-Id: <20190802105709.27696-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190802105709.27696-1-npiggin@gmail.com>
 References: <20190802105709.27696-1-npiggin@gmail.com>
@@ -84,79 +85,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The machine_check_handle_early hypervisor guest test is skipped if
-!HVMODE or MSR[HV]=0, which is wrong for PR or nested hypervisors
-that could be running a guest in this state.
+The host kernel delivery case for powernv does RFI_TO_USER_OR_KERNEL,
+but should just use RFI_TO_KERNEL which makes it clear this is not a
+user case.
 
-Test HSTATE_IN_GUEST up front and use that to branch out to the KVM
-handler, then MSR[PR] alone can test for this kernel's userspace.
-This matches all other interrupt handling.
+This is not a bug because RFI_TO_USER_OR_KERNEL deals with kernel
+returns just fine.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 33 +++++++++++-----------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6d8d21fa935f..e00cffb25517 100644
+index e00cffb25517..dbd1a8c68636 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1108,11 +1108,8 @@ EXC_COMMON_BEGIN(machine_check_handle_early)
- 	bl	machine_check_early
- 	std	r3,RESULT(r1)	/* Save result */
- 	ld	r12,_MSR(r1)
--BEGIN_FTR_SECTION
--	b	4f
--END_FTR_SECTION_IFCLR(CPU_FTR_HVMODE)
- 
--#ifdef	CONFIG_PPC_P7_NAP
-+#ifdef CONFIG_PPC_P7_NAP
- 	/*
- 	 * Check if thread was in power saving mode. We come here when any
- 	 * of the following is true:
-@@ -1128,30 +1125,26 @@ BEGIN_FTR_SECTION
- END_FTR_SECTION_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
- #endif
- 
--	/*
--	 * Check if we are coming from hypervisor userspace. If yes then we
--	 * continue in host kernel in V mode to deliver the MC event.
--	 */
--	rldicl.	r11,r12,4,63		/* See if MC hit while in HV mode. */
--	beq	5f
--4:	andi.	r11,r12,MSR_PR		/* See if coming from user. */
--	bne	9f			/* continue in V mode if we are. */
--
--5:
- #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
--BEGIN_FTR_SECTION
- 	/*
--	 * We are coming from kernel context. Check if we are coming from
--	 * guest. if yes, then we can continue. We will fall through
--	 * do_kvm_200->kvmppc_interrupt to deliver the MC event to guest.
-+	 * Check if we are coming from guest. If yes, then run the normal
-+	 * exception handler which will take the do_kvm_200->kvmppc_interrupt
-+	 * branch to deliver the MC event to guest.
+@@ -1184,7 +1184,7 @@ BEGIN_FTR_SECTION
  	 */
- 	lbz	r11,HSTATE_IN_GUEST(r13)
- 	cmpwi	r11,0			/* Check if coming from guest */
- 	bne	9f			/* continue if we are. */
--END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- #endif
-+
-+	/*
-+	 * Check if we are coming from userspace. If yes, then run the normal
-+	 * exception handler which will deliver the MC event to this kernel.
-+	 */
-+	andi.	r11,r12,MSR_PR		/* See if coming from user. */
-+	bne	9f			/* continue in V mode if we are. */
-+
+ 	bl	machine_check_queue_event
+ 	MACHINE_CHECK_HANDLER_WINDUP
+-	RFI_TO_USER_OR_KERNEL
++	RFI_TO_KERNEL
+ FTR_SECTION_ELSE
  	/*
--	 * At this point we are not sure about what context we come from.
-+	 * At this point we are coming from kernel context.
- 	 * Queue up the MCE event and return from the interrupt.
- 	 * But before that, check if this is an un-recoverable exception.
- 	 * If yes, then stay on emergency stack and panic.
+ 	 * pSeries: Return from MC interrupt. Before that stay on emergency
 -- 
 2.22.0
 
