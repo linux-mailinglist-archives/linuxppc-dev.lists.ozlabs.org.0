@@ -1,40 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42727ED19
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 09:05:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460J8m1WHDzDqtK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 17:05:44 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33757ED50
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 09:20:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 460JTp17kRzDqwn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 17:20:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ spf=pass (mailfrom) smtp.mailfrom=redhat.com
+ (client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460J6q4HRqzDqrq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 17:04:01 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 9BBBA68B05; Fri,  2 Aug 2019 09:03:54 +0200 (CEST)
-Date: Fri, 2 Aug 2019 09:03:54 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Takashi Iwai <tiwai@suse.de>, iommu@lists.linux-foundation.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 5/5] dma-mapping: remove ARCH_NO_COHERENT_DMA_MMAP
-Message-ID: <20190802070354.GA8280@lst.de>
-References: <20190725063401.29904-1-hch@lst.de>
- <20190725063401.29904-6-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460JS15PgXzDqsL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 17:18:57 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id BB3C83082145;
+ Fri,  2 Aug 2019 07:18:53 +0000 (UTC)
+Received: from [10.36.116.87] (ovpn-116-87.ams2.redhat.com [10.36.116.87])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2E4F35D9CD;
+ Fri,  2 Aug 2019 07:18:48 +0000 (UTC)
+Subject: Re: [PATCH 1/1] pseries/hotplug-memory.c: Change rc variable to bool
+To: Leonardo Bras <leonardo@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20190801231055.19603-1-leonardo@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <69821502-a449-d1a8-c2e8-a1aa67cca02f@redhat.com>
+Date: Fri, 2 Aug 2019 09:18:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190725063401.29904-6-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20190801231055.19603-1-leonardo@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.42]); Fri, 02 Aug 2019 07:18:54 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,174 +102,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, Michal Simek <monstr@monstr.eu>,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ YueHaibing <yuehaibing@huawei.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Takashi,
-
-any comments on the sounds/ side of this?
-
-On Thu, Jul 25, 2019 at 08:34:01AM +0200, Christoph Hellwig wrote:
-> Now that we never use a default ->mmap implementation, and non-coherent
-> architectures can control the presence of ->mmap support by enabling
-> ARCH_HAS_DMA_COHERENT_TO_PFN for the dma direct implementation there
-> is no need for a global config option to control the availability
-> of dma_common_mmap.
+On 02.08.19 01:10, Leonardo Bras wrote:
+> Changes the return variable to bool (as the return value) and
+> avoids doing a ternary operation before returning.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Also, since rc will always be true, there is no need to do
+> rc &= bool, as (true && X) will result in X.
+> 
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 > ---
->  arch/Kconfig            |  3 ---
->  arch/c6x/Kconfig        |  1 -
->  arch/m68k/Kconfig       |  1 -
->  arch/microblaze/Kconfig |  1 -
->  arch/parisc/Kconfig     |  1 -
->  arch/sh/Kconfig         |  1 -
->  arch/xtensa/Kconfig     |  1 -
->  kernel/dma/mapping.c    |  4 ----
->  sound/core/pcm_native.c | 10 +---------
->  9 files changed, 1 insertion(+), 22 deletions(-)
+>  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index a7b57dd42c26..ec2834206d08 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -790,9 +790,6 @@ config COMPAT_32BIT_TIME
->  	  This is relevant on all 32-bit architectures, and 64-bit architectures
->  	  as part of compat syscall handling.
->  
-> -config ARCH_NO_COHERENT_DMA_MMAP
-> -	bool
-> -
->  config ARCH_NO_PREEMPT
->  	bool
->  
-> diff --git a/arch/c6x/Kconfig b/arch/c6x/Kconfig
-> index b4fb61c83494..e65e8d82442a 100644
-> --- a/arch/c6x/Kconfig
-> +++ b/arch/c6x/Kconfig
-> @@ -20,7 +20,6 @@ config C6X
->  	select OF_EARLY_FLATTREE
->  	select GENERIC_CLOCKEVENTS
->  	select MODULES_USE_ELF_RELA
-> -	select ARCH_NO_COHERENT_DMA_MMAP
->  	select MMU_GATHER_NO_RANGE if MMU
->  
->  config MMU
-> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-> index c518d695c376..614b355ae338 100644
-> --- a/arch/m68k/Kconfig
-> +++ b/arch/m68k/Kconfig
-> @@ -8,7 +8,6 @@ config M68K
->  	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
->  	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
-> -	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
->  	select ARCH_NO_PREEMPT if !COLDFIRE
->  	select BINFMT_FLAT_ARGVP_ENVP_ON_STACK
->  	select DMA_DIRECT_REMAP if HAS_DMA && MMU && !COLDFIRE
-> diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-> index d411de05b628..632c9477a0f6 100644
-> --- a/arch/microblaze/Kconfig
-> +++ b/arch/microblaze/Kconfig
-> @@ -9,7 +9,6 @@ config MICROBLAZE
->  	select ARCH_HAS_SYNC_DMA_FOR_CPU
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> -	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
->  	select ARCH_WANT_IPC_PARSE_VERSION
->  	select BUILDTIME_EXTABLE_SORT
->  	select TIMER_OF
-> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-> index 6d732e451071..e9dd88b7f81e 100644
-> --- a/arch/parisc/Kconfig
-> +++ b/arch/parisc/Kconfig
-> @@ -52,7 +52,6 @@ config PARISC
->  	select GENERIC_SCHED_CLOCK
->  	select HAVE_UNSTABLE_SCHED_CLOCK if SMP
->  	select GENERIC_CLOCKEVENTS
-> -	select ARCH_NO_COHERENT_DMA_MMAP
->  	select CPU_NO_EFFICIENT_FFS
->  	select NEED_DMA_MAP_STATE
->  	select NEED_SG_DMA_LENGTH
-> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-> index 6b1b5941b618..f356ee674d89 100644
-> --- a/arch/sh/Kconfig
-> +++ b/arch/sh/Kconfig
-> @@ -5,7 +5,6 @@ config SUPERH
->  	select ARCH_HAS_PTE_SPECIAL
->  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> -	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
->  	select HAVE_PATA_PLATFORM
->  	select CLKDEV_LOOKUP
->  	select DMA_DECLARE_COHERENT
-> diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-> index ebc135bda921..70653aed3005 100644
-> --- a/arch/xtensa/Kconfig
-> +++ b/arch/xtensa/Kconfig
-> @@ -5,7 +5,6 @@ config XTENSA
->  	select ARCH_HAS_BINFMT_FLAT if !MMU
->  	select ARCH_HAS_SYNC_DMA_FOR_CPU
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-> -	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
->  	select ARCH_USE_QUEUED_RWLOCKS
->  	select ARCH_USE_QUEUED_SPINLOCKS
->  	select ARCH_WANT_FRAME_POINTERS
-> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-> index 7dff1829c8c5..815446f76995 100644
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -169,7 +169,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
->  		void *cpu_addr, dma_addr_t dma_addr, size_t size,
->  		unsigned long attrs)
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 8e700390f3d6..392deb4855e5 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_node *np)
+>  static bool lmb_is_removable(struct drmem_lmb *lmb)
 >  {
-> -#ifndef CONFIG_ARCH_NO_COHERENT_DMA_MMAP
->  	unsigned long user_count = vma_pages(vma);
->  	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
->  	unsigned long off = vma->vm_pgoff;
-> @@ -198,9 +197,6 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+>  	int i, scns_per_block;
+> -	int rc = 1;
+> +	bool rc = true;
+>  	unsigned long pfn, block_sz;
+>  	u64 phys_addr;
 >  
->  	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
->  			user_count << PAGE_SHIFT, vma->vm_page_prot);
-> -#else
-> -	return -ENXIO;
-> -#endif /* !CONFIG_ARCH_NO_COHERENT_DMA_MMAP */
+> @@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lmb)
+>  		if (!pfn_present(pfn))
+>  			continue;
+>  
+> -		rc &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
+> +		rc = is_mem_section_removable(pfn, PAGES_PER_SECTION);
+
+No, that's wrong.
+
+If is_mem_section_removable() is false in the first iteration but true
+in the last iteration, you would return true instead of false, which
+introduced a bug. We have to AND all sub-results, not simply use the
+last one.
+
+>  		phys_addr += MIN_MEMORY_BLOCK_SIZE;
+>  	}
+>  
+> -	return rc ? true : false;
+> +	return rc;
 >  }
 >  
->  /**
-> diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-> index 860543a4c840..2dadc708343a 100644
-> --- a/sound/core/pcm_native.c
-> +++ b/sound/core/pcm_native.c
-> @@ -218,15 +218,7 @@ int snd_pcm_info_user(struct snd_pcm_substream *substream,
->  
->  static bool hw_support_mmap(struct snd_pcm_substream *substream)
->  {
-> -	if (!(substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP))
-> -		return false;
-> -	/* architecture supports dma_mmap_coherent()? */
-> -#if defined(CONFIG_ARCH_NO_COHERENT_DMA_MMAP) || !defined(CONFIG_HAS_DMA)
-> -	if (!substream->ops->mmap &&
-> -	    substream->dma_buffer.dev.type == SNDRV_DMA_TYPE_DEV)
-> -		return false;
-> -#endif
-> -	return true;
-> +	return substream->runtime->hw.info & SNDRV_PCM_INFO_MMAP;
->  }
->  
->  static int constrain_mask_params(struct snd_pcm_substream *substream,
-> -- 
-> 2.20.1
+>  static int dlpar_add_lmb(struct drmem_lmb *);
 > 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
----end quoted text---
+
+
+-- 
+
+Thanks,
+
+David / dhildenb
