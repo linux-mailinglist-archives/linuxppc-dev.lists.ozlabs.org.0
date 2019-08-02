@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5AB7F615
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 13:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5E47F61E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 13:41:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460QDL4kJrzDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:39:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460QGd3zh3zDqdM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:41:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
+ (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="GVYtYAxC"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="KyWtGJc7"; 
  dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460PMV364mzDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:00:22 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id c2so33486240plz.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:00:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PMX61CzzDqyG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:00:24 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id n190so769173pgn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:00:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ycxDcWZtlkCQ1tMVmSZA/ZfExudWUJUXlte1q489Imk=;
- b=GVYtYAxCu9h62disAps7RBRMbKlINqY/uwfzGwufKawYeBx47JsxYKutDmfVZgUAyv
- 55b7cRkhOor7yHd4NO3dVzcXKoOin6Z1Ux51QsAnQMHZ1qx9bMtNyZfxVQx301JG7AQt
- rVgeMi80GfKjEiTPjvgDPx2BAwNJElu9GZktnszEcU+SiVngKAt2d6dBn29QwtX1osWD
- KiJ6uiEUHhrxTYPoqb3SYciAYjJIM3QRMcSSUDxSH1y5E8Zd15MwmY5QDNUq2Y0ZToXB
- 48yKjtDDA7McmuHS12ep+5DF5Jk3i41WyRNFjExcKhFr7o1TUFl8g1dgpKQZ634++jR1
- iyeg==
+ bh=jIhsNd5YQJz/rDA3V1MZBXHXL5wyYsVdMoD4Ib8k8bI=;
+ b=KyWtGJc7EDI6L58AH3L7OC2a0QXDtA2+LAYGr0Amuq28VKQVrt97wzgpOhm1pstUlW
+ VOIb/XgdZ1DjiDDDsxo938DA4fhxQqpV98OxEpxuH2QKq753YRjvQDDlM59BqMMnJDa1
+ CBmqxxqGCvnJZehqpK6Qnn7NdE/Wt1urx7iB5yWycNyVj1rkFYq4ToHwerEMWSY24AA7
+ CPA6vLjUFKRQQxflFSBMevOORw5zJfoY7VQlHKEDHbxV20FntosNxFFsAs8EfEOYxspp
+ SD9YkDVn3RebIOD21HD6VCTHpRxhhCjEXGpaC4R097K16PbJmlMPgIyDWS0YiDKK232F
+ pP9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ycxDcWZtlkCQ1tMVmSZA/ZfExudWUJUXlte1q489Imk=;
- b=ZD7WkF1m8zi79+rF8jwg2RX7IkzM3OxuI4xFrZ8zvdOnXR3NhTTXG9dWuGBqnBoe30
- EWbhvgMsggS5t3LZB7hYvXJxDjvRl+0eezLbf/X4xnDwbXA82i70anUEv/7YgfynB9+P
- DZaGOGwmGQgtjj4D+kcSXD4oJU1VgyEbshSTm9S1QgTy34IniKufas9dKdVE9ZL55jua
- upwc+RgIUPr8uggSE1lB0/CV5NLzq0Mxq9CG2PFuAI4uetsCfuTmbIuaXa4c/1nnZbcJ
- +I1ZUxXaFC+zTJyS1hfzcOtJzK4X0SjDytcJpj96ViElJhN2Rnqamg3ep4QxolWiELbg
- aQOg==
-X-Gm-Message-State: APjAAAWsP3VwJ1NBRjTc2+rd6oT/1otm/gelnCpOvodMXfOFyYCXJe+u
- Ob/Lhi75SqZJyCYUMF1kf/94yy8n3Xg=
-X-Google-Smtp-Source: APXvYqzQeCNsrNEB/lXUbBmHVkAvit64Y0k5cDae/RI6kXMRAl6lpVsuAhy5H9td5Vy7wI05E3bnMg==
-X-Received: by 2002:a17:902:6b86:: with SMTP id
- p6mr133930154plk.14.1564743620410; 
- Fri, 02 Aug 2019 04:00:20 -0700 (PDT)
+ bh=jIhsNd5YQJz/rDA3V1MZBXHXL5wyYsVdMoD4Ib8k8bI=;
+ b=W29oRxvkPcCqFzyLXb8mTSYgq+2C6O0hie4HsfocEA9UzLGush4ftQ0E+6pDe94+Lh
+ 1y3Flj0upSwejFnP8bj+EU0se5yYA4saPn1YhhQNud9GV39aOxIWVy7pd/G8rKDLK0F6
+ 9LeSazC0Zkza0BiRNQOkFU3YTHjcd9iFmgRsycidf/ZRd3BZZmGnutprYkoKIGcU5BsQ
+ cBpnh714XiIjK9ykR7TZpMXZiAau7DYkUxmalcZ9Z9MohI7SWj6DgN+F+Y0TRI+4PG5C
+ amIRNNMxUs0wARWcVN0qo7xbbm8+e1oE6n3dhvUDTt0gVIAynP/Y/1Z+BAITmwWIh10K
+ j3+g==
+X-Gm-Message-State: APjAAAXajfYDroZfOknjKIuf2/b85K6QRVCLtpl8TUBnJb5kM67ImByg
+ NiWKOYy17HRwlwLHA/nakOMUT3uoBac=
+X-Google-Smtp-Source: APXvYqxEAZqtXjywi81VyJTvvOw9POK4Ws3EKu7qzwj90OkPgP5fZOAcfSf0ZWfNtlBGIeSTRE1WoA==
+X-Received: by 2002:a63:590f:: with SMTP id n15mr77248872pgb.190.1564743622904; 
+ Fri, 02 Aug 2019 04:00:22 -0700 (PDT)
 Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
- by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.18
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.20
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 02 Aug 2019 04:00:19 -0700 (PDT)
+ Fri, 02 Aug 2019 04:00:22 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 17/44] powerpc/64s/exception: Fix DAR load for
- handle_page_fault error case
-Date: Fri,  2 Aug 2019 20:56:42 +1000
-Message-Id: <20190802105709.27696-18-npiggin@gmail.com>
+Subject: [PATCH v2 18/44] powerpc/64s/exception: move head-64.h exception code
+ to exception-64s.S
+Date: Fri,  2 Aug 2019 20:56:43 +1000
+Message-Id: <20190802105709.27696-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190802105709.27696-1-npiggin@gmail.com>
 References: <20190802105709.27696-1-npiggin@gmail.com>
@@ -85,28 +84,121 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This buglet goes back to before the 64/32 arch merge, but it does not
-seem to have had practical consequences because bad_page_fault does
-not use the 2nd argument, but rather regs->dar/nip.
+The head-64.h code should deal only with the head code sections
+and offset calculations.
+
+No generated code change except BUG line number constants.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/head-64.h   | 41 ----------------------------
+ arch/powerpc/kernel/exceptions-64s.S | 41 ++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 41 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/head-64.h b/arch/powerpc/include/asm/head-64.h
+index a466765709a9..2dabcf668292 100644
+--- a/arch/powerpc/include/asm/head-64.h
++++ b/arch/powerpc/include/asm/head-64.h
+@@ -169,47 +169,6 @@ end_##sname:
+ 
+ #define ABS_ADDR(label) (label - fs_label + fs_start)
+ 
+-#define EXC_REAL_BEGIN(name, start, size)			\
+-	FIXED_SECTION_ENTRY_BEGIN_LOCATION(real_vectors, exc_real_##start##_##name, start, size)
+-
+-#define EXC_REAL_END(name, start, size)				\
+-	FIXED_SECTION_ENTRY_END_LOCATION(real_vectors, exc_real_##start##_##name, start, size)
+-
+-#define EXC_VIRT_BEGIN(name, start, size)			\
+-	FIXED_SECTION_ENTRY_BEGIN_LOCATION(virt_vectors, exc_virt_##start##_##name, start, size)
+-
+-#define EXC_VIRT_END(name, start, size)				\
+-	FIXED_SECTION_ENTRY_END_LOCATION(virt_vectors, exc_virt_##start##_##name, start, size)
+-
+-#define EXC_COMMON_BEGIN(name)					\
+-	USE_TEXT_SECTION();					\
+-	.balign IFETCH_ALIGN_BYTES;				\
+-	.global name;						\
+-	_ASM_NOKPROBE_SYMBOL(name);				\
+-	DEFINE_FIXED_SYMBOL(name);				\
+-name:
+-
+-#define TRAMP_REAL_BEGIN(name)					\
+-	FIXED_SECTION_ENTRY_BEGIN(real_trampolines, name)
+-
+-#define TRAMP_VIRT_BEGIN(name)					\
+-	FIXED_SECTION_ENTRY_BEGIN(virt_trampolines, name)
+-
+-#ifdef CONFIG_KVM_BOOK3S_64_HANDLER
+-#define TRAMP_KVM_BEGIN(name)					\
+-	TRAMP_VIRT_BEGIN(name)
+-#else
+-#define TRAMP_KVM_BEGIN(name)
+-#endif
+-
+-#define EXC_REAL_NONE(start, size)				\
+-	FIXED_SECTION_ENTRY_BEGIN_LOCATION(real_vectors, exc_real_##start##_##unused, start, size); \
+-	FIXED_SECTION_ENTRY_END_LOCATION(real_vectors, exc_real_##start##_##unused, start, size)
+-
+-#define EXC_VIRT_NONE(start, size)				\
+-	FIXED_SECTION_ENTRY_BEGIN_LOCATION(virt_vectors, exc_virt_##start##_##unused, start, size); \
+-	FIXED_SECTION_ENTRY_END_LOCATION(virt_vectors, exc_virt_##start##_##unused, start, size)
+-
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif	/* _ASM_POWERPC_HEAD_64_H */
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 6b409d62d36c..f79f811ee131 100644
+index f79f811ee131..1fb46fb24696 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -2336,7 +2336,7 @@ handle_page_fault:
- 	bl	save_nvgprs
- 	mr	r5,r3
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
--	lwz	r4,_DAR(r1)
-+	ld	r4,_DAR(r1)
- 	bl	bad_page_fault
- 	b	ret_from_except
+@@ -43,6 +43,47 @@
+ .endif
+ #endif
  
++#define EXC_REAL_BEGIN(name, start, size)			\
++	FIXED_SECTION_ENTRY_BEGIN_LOCATION(real_vectors, exc_real_##start##_##name, start, size)
++
++#define EXC_REAL_END(name, start, size)				\
++	FIXED_SECTION_ENTRY_END_LOCATION(real_vectors, exc_real_##start##_##name, start, size)
++
++#define EXC_VIRT_BEGIN(name, start, size)			\
++	FIXED_SECTION_ENTRY_BEGIN_LOCATION(virt_vectors, exc_virt_##start##_##name, start, size)
++
++#define EXC_VIRT_END(name, start, size)				\
++	FIXED_SECTION_ENTRY_END_LOCATION(virt_vectors, exc_virt_##start##_##name, start, size)
++
++#define EXC_COMMON_BEGIN(name)					\
++	USE_TEXT_SECTION();					\
++	.balign IFETCH_ALIGN_BYTES;				\
++	.global name;						\
++	_ASM_NOKPROBE_SYMBOL(name);				\
++	DEFINE_FIXED_SYMBOL(name);				\
++name:
++
++#define TRAMP_REAL_BEGIN(name)					\
++	FIXED_SECTION_ENTRY_BEGIN(real_trampolines, name)
++
++#define TRAMP_VIRT_BEGIN(name)					\
++	FIXED_SECTION_ENTRY_BEGIN(virt_trampolines, name)
++
++#ifdef CONFIG_KVM_BOOK3S_64_HANDLER
++#define TRAMP_KVM_BEGIN(name)					\
++	TRAMP_VIRT_BEGIN(name)
++#else
++#define TRAMP_KVM_BEGIN(name)
++#endif
++
++#define EXC_REAL_NONE(start, size)				\
++	FIXED_SECTION_ENTRY_BEGIN_LOCATION(real_vectors, exc_real_##start##_##unused, start, size); \
++	FIXED_SECTION_ENTRY_END_LOCATION(real_vectors, exc_real_##start##_##unused, start, size)
++
++#define EXC_VIRT_NONE(start, size)				\
++	FIXED_SECTION_ENTRY_BEGIN_LOCATION(virt_vectors, exc_virt_##start##_##unused, start, size); \
++	FIXED_SECTION_ENTRY_END_LOCATION(virt_vectors, exc_virt_##start##_##unused, start, size)
++
+ /*
+  * We're short on space and time in the exception prolog, so we can't
+  * use the normal LOAD_REG_IMMEDIATE macro to load the address of label.
 -- 
 2.22.0
 
