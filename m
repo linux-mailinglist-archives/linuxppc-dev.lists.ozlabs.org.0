@@ -2,55 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731657F53D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 12:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7D87F5A8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 13:02:29 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460Nvw6tjDzDqQP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 20:39:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460PPs2DC3zDqXq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:02:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="qVCPNdH/"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="ugwpKFrl"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460Nsv4wJVzDqxB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 20:38:11 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D13942086A;
- Fri,  2 Aug 2019 10:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564742288;
- bh=IYNwTW73rLYyMyjD9BJMjODjl0NeiQXEjNWG7ynwQFE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=qVCPNdH/6+F3JEUwjc5ECdeVvv2rxFW/YIsSdLtdhUSAecBHvE/aZD9g4yMo2gZSj
- 2yoBLIUP0QYtsd9bkMqXcwYzxDAGO2T7/GL9cxrLT0Ys0KRqsv6Oult274XWCLaght
- wblNSh7hCme4l3pG2uJghbpPO6jnYgJmHgYdUE7s=
-Date: Fri, 2 Aug 2019 11:38:03 +0100
-From: Will Deacon <will@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
-Message-ID: <20190802103803.3qrbhqwxlasojsco@willie-the-truck>
-References: <20190801142118.21225-1-hch@lst.de>
- <20190801142118.21225-2-hch@lst.de>
- <20190801162305.3m32chycsdjmdejk@willie-the-truck>
- <20190801163457.GB26588@lst.de>
- <20190801164411.kmsl4japtfkgvzxe@willie-the-truck>
- <20190802081441.GA9725@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PLq3YR6zDqxH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 20:59:45 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id l21so35892175pgm.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 03:59:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qLk1lH2qzO3UGmPiNB0xpQDneJ0ciNco1cgaBRmX6yo=;
+ b=ugwpKFrlJXHyKforDElkraC2gYENKAJUfb6H/mdCst3nUppsRstpJtGzhmsO/8L84h
+ v9rTt+rg9sYfp4IDMlM0Amw8/pGyFzmd19jDvnsHoxcJgZm9Y17afQspm4geepDihEG+
+ B0AUWG/2SSvGkx5j/tO8Ge2SAdHbjEMDvUQsIQBrHCzENYc7FHxsXztTW/KRUezewG0T
+ wwdY5io1vJ0jyWxx9rV34VIGFpzL6Cd34fKwwQxxc1TCSUgYNasfo9fQz+F+XaAqjxAw
+ NfoYEmR9M55IHpHxce4+KA9CVTyobW88yhkWuGyRfZKIrG17SRjHd5m01W8xGPQPYBNW
+ RfzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qLk1lH2qzO3UGmPiNB0xpQDneJ0ciNco1cgaBRmX6yo=;
+ b=s9QG+vdnlpnnz9oDi5JxRr124u6t2xp5f1HS7VntAa/GaXXgaG8ArlZTXBfQVuVHqk
+ K9V02SNVgjZvF+aRTCuqsOTktY5fi/kOWNHbqmasIQHmKfsQNuLRhS4jnjVn59tRlq0F
+ nHoQQqDIRbgWnRQ9mlvN5fEnXUdYxYOmAqYFf4GHzksFGFWQtgcgvcDdpQuYkks66zqU
+ 1o0u1FgpG/R3rJ7q0XaCv29CHgecT7obY8sceiYh41Chx4jI2NUD5e2VDO2vwaX2PgZL
+ 5uzCvQH+lQJTPCYID6B2Qlx2ETvn2arYt2uKIEppOt4zm70Dfi/ZR2duTjQshSB2mbKW
+ U8aw==
+X-Gm-Message-State: APjAAAU74o8relljcCFH16Y9TU9hDzqImzd3sE/KkETQDjp6xBu/+Ppa
+ y0bU61dGyMgSYvqovdWXCLnXrCTeIi8=
+X-Google-Smtp-Source: APXvYqzDsLuYIsHZDgiDnJVS8MCFdqjK7IWWH4UklJ3ePwyXODSsmpIbMVPgn3SGIv4eRXD75QY7zg==
+X-Received: by 2002:a17:90a:a407:: with SMTP id
+ y7mr1101024pjp.97.1564743581455; 
+ Fri, 02 Aug 2019 03:59:41 -0700 (PDT)
+Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.03.59.39
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Fri, 02 Aug 2019 03:59:40 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/44] powerpc/64s/exception: cleanup and macrofiy,
+Date: Fri,  2 Aug 2019 20:56:25 +1000
+Message-Id: <20190802105709.27696-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190802081441.GA9725@lst.de>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,84 +77,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, linuxppc-dev@lists.ozlabs.org,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 02, 2019 at 10:14:41AM +0200, Christoph Hellwig wrote:
-> On Thu, Aug 01, 2019 at 05:44:12PM +0100, Will Deacon wrote:
-> > > > Although arch_dma_mmap_pgprot() is a bit of a misnomer now that it only
-> > > > gets involved in the non-coherent case.
-> > > 
-> > > A better name is welcome.
-> > 
-> > How about arch_dma_noncoherent_mmap_pgprot() ? Too long?
-> 
-> Sounds a little long yes.  And doesn't fix the additional problem that
-> we don't just it for mmap but also for the in-kernel remapping these
-> days.
+This series is the combined outstanding series posted previously, plus
+a change to a new way to define parameters for interrupt code
+generation macros (which is a bit clunky but works better than
+alternatives).
 
-Hmm. Maybe just arch_dma_noncoherent_pgprot() then.
+This is mostly the end result. There is still a few minor things that
+could be done, and possibly we could add a "standard form" macro for
+well behaved handlers that don't require any custom code, which blats
+out everything (the real and virt vectors, KVM handler, and common
+handler stuff) in one line after the definition block. But that's not
+really important now.
 
-> > > But my worry is how this interacts with architectures that have an
-> > > uncached segment (mips, nios2, microblaze, extensa) where we'd have
-> > > the kernel access DMA_ATTR_WRITE_COMBINE mappigns using the uncached
-> > > segment, and userspace mmaps using pgprot_writecombine, which could
-> > > lead to aliasing issues.  But then again mips already supports
-> > > DMA_ATTR_WRITE_COMBINE, so this must be ok somehow.  I guess I'll
-> > > need to field that question to the relevant parties.
-> > 
-> > Or it's always been busted and happens to work out in practice...
-> 
-> I've sent a ping to the mips folks.  While we'are at it:  arm64
-> and arm32 (optionally) map dma coherent allocations as write combine.
-> I suspect this hasn't always just been busted but intentional (of course!),
-> but is there any chance to get a quote from the arm architecture spec
-> on why this is fine as it looks rather confusion?
+After this we can start on actually improving the generated code.
 
-So this boils down to a terminology mismatch. The Arm architecture doesn't have
-anything called "write combine", so in Linux we instead provide what the Arm
-architecture calls "Normal non-cacheable" memory for pgprot_writecombine().
-Amongst other things, this memory type permits speculation, unaligned accesses
-and merging of writes. I found something in the architecture spec about
-non-cachable memory, but it's written in Armglish[1].
+Thanks,
+Nick
 
-pgprot_noncached(), on the other hand, provides what the architecture calls
-Strongly Ordered or Device-nGnRnE memory. This is intended for mapping MMIO
-(i.e. PCI config space) and therefore forbids speculation, preserves access
-size, requires strict alignment and also forces write responses to come from
-the endpoint.
+Nicholas Piggin (44):
+  powerpc/64s/exception: machine check fwnmi remove HV case
+  powerpc/64s/exception: machine check remove bitrotted comment
+  powerpc/64s/exception: machine check fix KVM guest test
+  powerpc/64s/exception: machine check adjust RFI target
+  powerpc/64s/exception: machine check pseries should always run the
+    early handler
+  powerpc/64s/exception: machine check remove machine_check_pSeries_0
+    branch
+  powerpc/64s/exception: machine check use correct cfar for late handler
+  powerpc/64s/powernv: machine check dump SLB contents
+  powerpc/64s/pseries: machine check convert to use common event code
+  powerpc/64s/exception: machine check pseries should skip the late
+    handler for kernel MCEs
+  powerpc/64s/exception: machine check restructure to reuse common
+    macros
+  powerpc/64s/exception: machine check move tramp code
+  powerpc/64s/exception: simplify machine check early path
+  powerpc/64s/exception: machine check move unrecoverable handling out
+    of line
+  powerpc/64s/exception: untangle early machine check handler branch
+  powerpc/64s/exception: machine check improve labels and comments
+  powerpc/64s/exception: Fix DAR load for handle_page_fault error case
+  powerpc/64s/exception: move head-64.h exception code to
+    exception-64s.S
+  powerpc/64s/exception: Add EXC_HV_OR_STD, which selects HSRR if HVMODE
+  powerpc/64s/exception: Fix performance monitor virt handler
+  powerpc/64s/exception: remove 0xb00 handler
+  powerpc/64s/exception: Replace PROLOG macros and EXC helpers with a
+    gas macro
+  powerpc/64s/exception: remove EXCEPTION_PROLOG_0/1, rename _2
+  powerpc/64s/exception: Add the virt variant of the denorm interrupt
+    handler
+  powerpc/64s/exception: INT_HANDLER support HDAR/HDSISR and use it in
+    HDSI
+  powerpc/64s/exception: Add INT_KVM_HANDLER gas macro
+  powerpc/64s/exception: KVM_HANDLER reorder arguments to match other
+    macros
+  powerpc/64s/exception: Merge EXCEPTION_PROLOG_COMMON_2/3
+  powerpc/64s/exception: Add INT_COMMON gas macro to generate common
+    exception code
+  powerpc/64s/exception: Expand EXCEPTION_COMMON macro into caller
+  powerpc/64s/exception: Expand EXCEPTION_PROLOG_COMMON_1 and 2 into
+    caller
+  powerpc/64s/exception: INT_COMMON add DAR, DSISR, reconcile options
+  powerpc/64s/exception: move interrupt entry code above the common
+    handler
+  powerpc/64s/exception: program check handler do not branch into a
+    macro
+  powerpc/64s/exception: Remove pointless KVM handler name bifurcation
+  powerpc/64s/exception: reduce page fault unnecessary loads
+  powerpc/64s/exception: Introduce INT_DEFINE parameter block for code
+    generation
+  powerpc/64s/exception: Add GEN_COMMON macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Add GEN_KVM macro that uses INT_DEFINE
+    parameters
+  powerpc/64s/exception: Expand EXC_COMMON and EXC_COMMON_ASYNC macros
+  powerpc/64s/exception: Move all interrupt handlers to new style code
+    gen macros
+  powerpc/64s/exception: Remove old INT_ENTRY macro
+  powerpc/64s/exception: Remove old INT_COMMON macro
+  powerpc/64s/exception: Remove old INT_KVM_HANDLER
 
-I think the naming mismatch is historical, but on arm64 we wanted to use the
-same names as arm32 so that any drivers using these things directly would get
-the same behaviour.
+ arch/powerpc/include/asm/head-64.h     |   41 -
+ arch/powerpc/include/asm/mce.h         |    6 +
+ arch/powerpc/kernel/exceptions-64s.S   | 2242 ++++++++++++++----------
+ arch/powerpc/kernel/mce.c              |   40 +-
+ arch/powerpc/kernel/mce_power.c        |    4 +
+ arch/powerpc/mm/book3s64/hash_utils.c  |    4 +-
+ arch/powerpc/platforms/powernv/setup.c |    9 +
+ arch/powerpc/platforms/pseries/ras.c   |  457 ++---
+ arch/powerpc/platforms/pseries/setup.c |   24 +-
+ 9 files changed, 1600 insertions(+), 1227 deletions(-)
 
-Will
+-- 
+2.22.0
 
-[1]
-
-B2.4.4 Implication of caches for the application programmer
-
-[...]
-
-Data coherency issues
-
-Software can ensure the data coherency of caches in the following ways:
-
-  * By not using the caches in situations where coherency issues can arise.
-    This can be achieved by:
-
-    - Using Non-cacheable or, in some cases, Write-Through Cacheable memory.
-
-    - Not enabling caches in the system.
-
-  * By using cache maintenance instructions to manage the coherency issues
-    in software.
-
-  * By using hardware coherency mechanisms to ensure the coherency of data
-    accesses to memory for cacheable locations by observers within the
-    different shareability domains.
