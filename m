@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062D27F6B5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 472047F6B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:21:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460R612zJ3zDr6q
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:18:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460R8h4dHtzDqxt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:21:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ (client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="tpeLQoTI"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="B4V8LjQ/"; 
  dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460PNH20VbzDqWY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:01:03 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id l21so35894048pgm.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:01:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PNK3HdjzDqWQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:01:04 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id f5so27077948pgu.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=mAKcPiEgUxcrdn5zn8VXTbaNOyIViZl/IZGJXFIxsuU=;
- b=tpeLQoTIfEhorIZL/D56dt2gJCmoT9EO6AnglmdgJF7EJOJBNcmp/PyLJtKnN0Pxxr
- uyk9NgQVDRKBipUJYkwQvMbZLKWUmVqHy1s0ijP9TxwHHQH1DjfG54OKs61vytxxX96t
- V6I8xjIedPK7y65pRH5FmKVDslh3/ZiZ1lIoEI8BtnH5YqiM9muTyjfmtkKiprodUvh2
- rooyiVOQGdTMN84X71HhvJ1CRfZLs1KrnoG07HT8uXlC2rKVhW4DRaa4REqax/Qn52yD
- 6LrjSfdfpS2PrcMYKNxvyFSRIHjx281/mh7w0+HhRC0GJm+ILlin0ShT6kWrZMcVKyMf
- JoIQ==
+ bh=mogfE0VLDYlunhvdXFwvMD3xvra3O8btWA/7cNbOVAU=;
+ b=B4V8LjQ/9G5/sixecbHiXf4bO6dIHQq9V2JmZybt0zrVt/P8RMT+BBmN7Fted4M2Xb
+ +kVaPzdiAc/7iSoPnU4FtWZ5cPo+6UEAf7Ya2uNe2KY2Nm6NHc4jLSgo1Of4+bb0C1xF
+ kFesgBF+vKeKdqJ6vpyAW2686Lmxj+OK2ozZqQk8L0I2VDG7fxvbljz3gF5qXci7buTG
+ zbI8jTom8RIKn9rBDu/WQYFCzFSxYclAZMiYWfAL5eX6j5oIGTWLkfbhS9Go417qkZ2C
+ g6S+vSbvdoMIUKAsjB+t+Akwjdcc5bu24y4/C37Yu3g1gxdebZdbnaWbgfs7m7co6LlH
+ DDdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=mAKcPiEgUxcrdn5zn8VXTbaNOyIViZl/IZGJXFIxsuU=;
- b=NZgmYXwDGvAegAhkfFjYjpp9RfHUP/5IOJNhGOHkYUT+RhkiVbQDCtl8BSdngND+x8
- S3p2GlhbzZ8DTxAxek0tITg4Th3ffFazHfhqe+DhnMcB6XnaEYRc23alo1tJ2b9LfF5G
- eN4dFbWUD1muxC3SdD/1O/E6Jm5KD+VPtmtkNW44URSspNXcD7LoM6Ix9L0khjiXtVo/
- 3lPSANvpuVoFu44pf9ax2hK716liaDv//evN5+qmCmh8xgj2+fxuQxyO2JhNYFoliPeP
- MfCSKeikCBZny71bqQDB5aKQJcaF2zQUUkPCOfxFEDzfoXQ3S0yLXstbThvzk+JgYARp
- JY2Q==
-X-Gm-Message-State: APjAAAX0tfL105Im3Kfcny1yu4BZTb3Tq4tmmxmsCnYgEXFkcCpVjdif
- iTtcffCp1x5fkLYXo9ZjdJUSaVFK52g=
-X-Google-Smtp-Source: APXvYqzMfh8FbN4SLAb9vyc/gsj4f8bBZP3Yt6FnQ/dePEJ3x8umO0LkKy4kmMjm2k6mupI1YRhVdg==
-X-Received: by 2002:a17:90a:eb08:: with SMTP id
- j8mr3901287pjz.72.1564743658028; 
- Fri, 02 Aug 2019 04:00:58 -0700 (PDT)
+ bh=mogfE0VLDYlunhvdXFwvMD3xvra3O8btWA/7cNbOVAU=;
+ b=G3QpkAUd07LkBxH/kuYKxfAwo/LJys47Y/+bLBDWq/gglRfSIflGDL0SZBNeMf/4Wu
+ yTxIc2olEhYia3GC0Q6NprsHC0Ya8/VSaQQWf0txd8NR4Zdk1Jr/wP3fShRvVEM4KnUB
+ 63Hp6EcKLU70S3ZClkzWo4QtI5dxu4J2M0SiaoIF8X5ew8rrEyNBBUOC+GezNRey7PWS
+ 66UMVstlm1RD54ndJ3YXqjv7ZUOX5FkWDSxsypew0kc9AbekFlEY+Ko13C/s9pEM8INo
+ a7hqAVKc5Wef8JNPaTJ9MaRcUKF3PUEUC1t98VS2Z+oPba53RP7lw37efZCBasGte+9v
+ OtYQ==
+X-Gm-Message-State: APjAAAUuTvj6ycU/BN5DYFgnZtTuEWShqSXwQmtXiW5kfJf/HIekVwXG
+ pD+IFO7pufyXHYWCiQWaO7Cs2CTKWQk=
+X-Google-Smtp-Source: APXvYqwW63wybTsJEv2lstxx3IBWjo7l0vkow6dybeETo3y6gK2liCtlNxlIaEwzla/s6Nbwq/itMg==
+X-Received: by 2002:a63:2bd2:: with SMTP id
+ r201mr121702072pgr.193.1564743660194; 
+ Fri, 02 Aug 2019 04:01:00 -0700 (PDT)
 Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
- by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.55
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.58
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 02 Aug 2019 04:00:57 -0700 (PDT)
+ Fri, 02 Aug 2019 04:00:59 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 33/44] powerpc/64s/exception: move interrupt entry code
- above the common handler
-Date: Fri,  2 Aug 2019 20:56:58 +1000
-Message-Id: <20190802105709.27696-34-npiggin@gmail.com>
+Subject: [PATCH v2 34/44] powerpc/64s/exception: program check handler do not
+ branch into a macro
+Date: Fri,  2 Aug 2019 20:56:59 +1000
+Message-Id: <20190802105709.27696-35-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190802105709.27696-1-npiggin@gmail.com>
 References: <20190802105709.27696-1-npiggin@gmail.com>
@@ -85,497 +85,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This better reflects the order in which the code is executed.
+It is clever, but the small code saving is not worth the spaghetti of
+jumping to a label in an expanded macro, particularly when the label
+is just a number rather than a descriptive name.
 
-No generated code change except BUG line number constants.
+So expand the INT_COMMON macro twice, once for the stack and no stack
+cases, and branch to those. The slight code size increase is worth
+the improved clarity of branches for this non-performance critical
+code.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 450 +++++++++++++--------------
- 1 file changed, 225 insertions(+), 225 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index c35c25817941..5532923a9aac 100644
+index 5532923a9aac..3ebb39a4b9fa 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -180,101 +180,6 @@ BEGIN_FTR_SECTION_NESTED(943)						\
- 	std	ra,offset(r13);						\
- END_FTR_SECTION_NESTED(ftr,ftr,943)
+@@ -533,11 +533,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	andi.	r10,r12,MSR_PR		/* See if coming from user	*/
+ 	mr	r10,r1			/* Save r1			*/
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc frame on kernel stack	*/
+-	beq-	1f
++	beq-	100f
+ 	ld	r1,PACAKSAVE(r13)	/* kernel stack to use		*/
+-1:	tdgei	r1,-INT_FRAME_SIZE	/* trap if r1 is in userspace	*/
+-	EMIT_BUG_ENTRY 1b,__FILE__,__LINE__,0
+-3:
++100:	tdgei	r1,-INT_FRAME_SIZE	/* trap if r1 is in userspace	*/
++	EMIT_BUG_ENTRY 100b,__FILE__,__LINE__,0
+ 	.endif
  
--.macro INT_SAVE_SRR_AND_JUMP label, hsrr, set_ri
--	ld	r10,PACAKMSR(r13)	/* get MSR value for kernel */
--	.if ! \set_ri
--	xori	r10,r10,MSR_RI		/* Clear MSR_RI */
--	.endif
--	.if \hsrr == EXC_HV_OR_STD
--	BEGIN_FTR_SECTION
--	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
--	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
--	mtspr	SPRN_HSRR1,r10
--	FTR_SECTION_ELSE
--	mfspr	r11,SPRN_SRR0		/* save SRR0 */
--	mfspr	r12,SPRN_SRR1		/* and SRR1 */
--	mtspr	SPRN_SRR1,r10
--	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
--	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
--	mtspr	SPRN_HSRR1,r10
--	.else
--	mfspr	r11,SPRN_SRR0		/* save SRR0 */
--	mfspr	r12,SPRN_SRR1		/* and SRR1 */
--	mtspr	SPRN_SRR1,r10
--	.endif
--	LOAD_HANDLER(r10, \label\())
--	.if \hsrr == EXC_HV_OR_STD
--	BEGIN_FTR_SECTION
--	mtspr	SPRN_HSRR0,r10
--	HRFI_TO_KERNEL
--	FTR_SECTION_ELSE
--	mtspr	SPRN_SRR0,r10
--	RFI_TO_KERNEL
--	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	mtspr	SPRN_HSRR0,r10
--	HRFI_TO_KERNEL
--	.else
--	mtspr	SPRN_SRR0,r10
--	RFI_TO_KERNEL
--	.endif
--	b	.	/* prevent speculative execution */
--.endm
--
--/* INT_SAVE_SRR_AND_JUMP works for real or virt, this is faster but virt only */
--.macro INT_VIRT_SAVE_SRR_AND_JUMP label, hsrr
--#ifdef CONFIG_RELOCATABLE
--	.if \hsrr == EXC_HV_OR_STD
--	BEGIN_FTR_SECTION
--	mfspr	r11,SPRN_HSRR0	/* save HSRR0 */
--	FTR_SECTION_ELSE
--	mfspr	r11,SPRN_SRR0	/* save SRR0 */
--	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	mfspr	r11,SPRN_HSRR0	/* save HSRR0 */
--	.else
--	mfspr	r11,SPRN_SRR0	/* save SRR0 */
--	.endif
--	LOAD_HANDLER(r12, \label\())
--	mtctr	r12
--	.if \hsrr == EXC_HV_OR_STD
--	BEGIN_FTR_SECTION
--	mfspr	r12,SPRN_HSRR1	/* and HSRR1 */
--	FTR_SECTION_ELSE
--	mfspr	r12,SPRN_SRR1	/* and HSRR1 */
--	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	mfspr	r12,SPRN_HSRR1	/* and HSRR1 */
--	.else
--	mfspr	r12,SPRN_SRR1	/* and HSRR1 */
--	.endif
--	li	r10,MSR_RI
--	mtmsrd 	r10,1		/* Set RI (EE=0) */
--	bctr
--#else
--	.if \hsrr == EXC_HV_OR_STD
--	BEGIN_FTR_SECTION
--	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
--	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
--	FTR_SECTION_ELSE
--	mfspr	r11,SPRN_SRR0		/* save SRR0 */
--	mfspr	r12,SPRN_SRR1		/* and SRR1 */
--	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--	.elseif \hsrr
--	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
--	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
--	.else
--	mfspr	r11,SPRN_SRR0		/* save SRR0 */
--	mfspr	r12,SPRN_SRR1		/* and SRR1 */
--	.endif
--	li	r10,MSR_RI
--	mtmsrd 	r10,1			/* Set RI (EE=0) */
--	b	\label
--#endif
--.endm
--
- /*
-  * Branch to label using its 0xC000 address. This results in instruction
-  * address suitable for MSR[IR]=0 or 1, which allows relocation to be turned
-@@ -288,6 +193,15 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	mtctr	reg;							\
- 	bctr
- 
-+.macro INT_KVM_HANDLER vec, hsrr, area, skip
-+	.if \hsrr
-+	TRAMP_KVM_BEGIN(do_kvm_H\vec\())
-+	.else
-+	TRAMP_KVM_BEGIN(do_kvm_\vec\())
-+	.endif
-+	KVM_HANDLER \vec, \hsrr, \area, \skip
-+.endm
-+
- #ifdef CONFIG_KVM_BOOK3S_64_HANDLER
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- /*
-@@ -390,6 +304,222 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- .endm
- #endif
- 
-+.macro INT_SAVE_SRR_AND_JUMP label, hsrr, set_ri
-+	ld	r10,PACAKMSR(r13)	/* get MSR value for kernel */
-+	.if ! \set_ri
-+	xori	r10,r10,MSR_RI		/* Clear MSR_RI */
-+	.endif
-+	.if \hsrr == EXC_HV_OR_STD
-+	BEGIN_FTR_SECTION
-+	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-+	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
-+	mtspr	SPRN_HSRR1,r10
-+	FTR_SECTION_ELSE
-+	mfspr	r11,SPRN_SRR0		/* save SRR0 */
-+	mfspr	r12,SPRN_SRR1		/* and SRR1 */
-+	mtspr	SPRN_SRR1,r10
-+	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+	.elseif \hsrr
-+	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-+	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
-+	mtspr	SPRN_HSRR1,r10
-+	.else
-+	mfspr	r11,SPRN_SRR0		/* save SRR0 */
-+	mfspr	r12,SPRN_SRR1		/* and SRR1 */
-+	mtspr	SPRN_SRR1,r10
-+	.endif
-+	LOAD_HANDLER(r10, \label\())
-+	.if \hsrr == EXC_HV_OR_STD
-+	BEGIN_FTR_SECTION
-+	mtspr	SPRN_HSRR0,r10
-+	HRFI_TO_KERNEL
-+	FTR_SECTION_ELSE
-+	mtspr	SPRN_SRR0,r10
-+	RFI_TO_KERNEL
-+	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+	.elseif \hsrr
-+	mtspr	SPRN_HSRR0,r10
-+	HRFI_TO_KERNEL
-+	.else
-+	mtspr	SPRN_SRR0,r10
-+	RFI_TO_KERNEL
-+	.endif
-+	b	.	/* prevent speculative execution */
-+.endm
-+
-+/* INT_SAVE_SRR_AND_JUMP works for real or virt, this is faster but virt only */
-+.macro INT_VIRT_SAVE_SRR_AND_JUMP label, hsrr
-+#ifdef CONFIG_RELOCATABLE
-+	.if \hsrr == EXC_HV_OR_STD
-+	BEGIN_FTR_SECTION
-+	mfspr	r11,SPRN_HSRR0	/* save HSRR0 */
-+	FTR_SECTION_ELSE
-+	mfspr	r11,SPRN_SRR0	/* save SRR0 */
-+	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+	.elseif \hsrr
-+	mfspr	r11,SPRN_HSRR0	/* save HSRR0 */
-+	.else
-+	mfspr	r11,SPRN_SRR0	/* save SRR0 */
-+	.endif
-+	LOAD_HANDLER(r12, \label\())
-+	mtctr	r12
-+	.if \hsrr == EXC_HV_OR_STD
-+	BEGIN_FTR_SECTION
-+	mfspr	r12,SPRN_HSRR1	/* and HSRR1 */
-+	FTR_SECTION_ELSE
-+	mfspr	r12,SPRN_SRR1	/* and HSRR1 */
-+	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+	.elseif \hsrr
-+	mfspr	r12,SPRN_HSRR1	/* and HSRR1 */
-+	.else
-+	mfspr	r12,SPRN_SRR1	/* and HSRR1 */
-+	.endif
-+	li	r10,MSR_RI
-+	mtmsrd 	r10,1		/* Set RI (EE=0) */
-+	bctr
-+#else
-+	.if \hsrr == EXC_HV_OR_STD
-+	BEGIN_FTR_SECTION
-+	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-+	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
-+	FTR_SECTION_ELSE
-+	mfspr	r11,SPRN_SRR0		/* save SRR0 */
-+	mfspr	r12,SPRN_SRR1		/* and SRR1 */
-+	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+	.elseif \hsrr
-+	mfspr	r11,SPRN_HSRR0		/* save HSRR0 */
-+	mfspr	r12,SPRN_HSRR1		/* and HSRR1 */
-+	.else
-+	mfspr	r11,SPRN_SRR0		/* save SRR0 */
-+	mfspr	r12,SPRN_SRR1		/* and SRR1 */
-+	.endif
-+	li	r10,MSR_RI
-+	mtmsrd 	r10,1			/* Set RI (EE=0) */
-+	b	\label
-+#endif
-+.endm
-+
-+/*
-+ * This is the BOOK3S interrupt entry code macro.
-+ *
-+ * This can result in one of several things happening:
-+ * - Branch to the _common handler, relocated, in virtual mode.
-+ *   These are normal interrupts (synchronous and asynchronous) handled by
-+ *   the kernel.
-+ * - Branch to KVM, relocated but real mode interrupts remain in real mode.
-+ *   These occur when HSTATE_IN_GUEST is set. The interrupt may be caused by
-+ *   / intended for host or guest kernel, but KVM must always be involved
-+ *   because the machine state is set for guest execution.
-+ * - Branch to the masked handler, unrelocated.
-+ *   These occur when maskable asynchronous interrupts are taken with the
-+ *   irq_soft_mask set.
-+ * - Branch to an "early" handler in real mode but relocated.
-+ *   This is done if early=1. MCE and HMI use these to handle errors in real
-+ *   mode.
-+ * - Fall through and continue executing in real, unrelocated mode.
-+ *   This is done if early=2.
-+ */
-+.macro INT_HANDLER name, vec, ool, early, virt, hsrr, area, ri, dar, dsisr, bitmask, kvm
-+	SET_SCRATCH0(r13)			/* save r13 */
-+	GET_PACA(r13)
-+	std	r9,\area\()+EX_R9(r13)		/* save r9 */
-+	OPT_GET_SPR(r9, SPRN_PPR, CPU_FTR_HAS_PPR)
-+	HMT_MEDIUM
-+	std	r10,\area\()+EX_R10(r13)	/* save r10 - r12 */
-+	OPT_GET_SPR(r10, SPRN_CFAR, CPU_FTR_CFAR)
-+	.if \ool
-+	.if !\virt
-+	b	tramp_real_\name
-+	.pushsection .text
-+	TRAMP_REAL_BEGIN(tramp_real_\name)
-+	.else
-+	b	tramp_virt_\name
-+	.pushsection .text
-+	TRAMP_VIRT_BEGIN(tramp_virt_\name)
-+	.endif
-+	.endif
-+
-+	OPT_SAVE_REG_TO_PACA(\area\()+EX_PPR, r9, CPU_FTR_HAS_PPR)
-+	OPT_SAVE_REG_TO_PACA(\area\()+EX_CFAR, r10, CPU_FTR_CFAR)
-+	INTERRUPT_TO_KERNEL
-+	SAVE_CTR(r10, \area\())
-+	mfcr	r9
-+	.if \kvm
-+		KVMTEST \hsrr \vec
-+	.endif
-+	.if \bitmask
-+		lbz	r10,PACAIRQSOFTMASK(r13)
-+		andi.	r10,r10,\bitmask
-+		/* Associate vector numbers with bits in paca->irq_happened */
-+		.if \vec == 0x500 || \vec == 0xea0
-+		li	r10,PACA_IRQ_EE
-+		.elseif \vec == 0x900
-+		li	r10,PACA_IRQ_DEC
-+		.elseif \vec == 0xa00 || \vec == 0xe80
-+		li	r10,PACA_IRQ_DBELL
-+		.elseif \vec == 0xe60
-+		li	r10,PACA_IRQ_HMI
-+		.elseif \vec == 0xf00
-+		li	r10,PACA_IRQ_PMI
-+		.else
-+		.abort "Bad maskable vector"
-+		.endif
-+
-+		.if \hsrr == EXC_HV_OR_STD
-+		BEGIN_FTR_SECTION
-+		bne	masked_Hinterrupt
-+		FTR_SECTION_ELSE
-+		bne	masked_interrupt
-+		ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
-+		.elseif \hsrr
-+		bne	masked_Hinterrupt
-+		.else
-+		bne	masked_interrupt
-+		.endif
-+	.endif
-+
-+	std	r11,\area\()+EX_R11(r13)
-+	std	r12,\area\()+EX_R12(r13)
-+
-+	/*
-+	 * DAR/DSISR, SCRATCH0 must be read before setting MSR[RI],
-+	 * because a d-side MCE will clobber those registers so is
-+	 * not recoverable if they are live.
-+	 */
-+	GET_SCRATCH0(r10)
-+	std	r10,\area\()+EX_R13(r13)
-+	.if \dar
-+	.if \hsrr
-+	mfspr	r10,SPRN_HDAR
-+	.else
-+	mfspr	r10,SPRN_DAR
-+	.endif
-+	std	r10,\area\()+EX_DAR(r13)
-+	.endif
-+	.if \dsisr
-+	.if \hsrr
-+	mfspr	r10,SPRN_HDSISR
-+	.else
-+	mfspr	r10,SPRN_DSISR
-+	.endif
-+	stw	r10,\area\()+EX_DSISR(r13)
-+	.endif
-+
-+	.if \early == 2
-+	/* nothing more */
-+	.elseif \early
-+	mfctr	r10			/* save ctr, even for !RELOCATABLE */
-+	BRANCH_TO_C000(r11, \name\()_early_common)
-+	.elseif !\virt
-+	INT_SAVE_SRR_AND_JUMP \name\()_common, \hsrr, \ri
-+	.else
-+	INT_VIRT_SAVE_SRR_AND_JUMP \name\()_common, \hsrr
-+	.endif
-+	.if \ool
-+	.popsection
-+	.endif
-+.endm
-+
- /*
-  * On entry r13 points to the paca, r9-r13 are saved in the paca,
-  * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
-@@ -555,136 +685,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
- #define FINISH_NAP
- #endif
- 
--/*
-- * This is the BOOK3S interrupt entry code macro.
-- *
-- * This can result in one of several things happening:
-- * - Branch to the _common handler, relocated, in virtual mode.
-- *   These are normal interrupts (synchronous and asynchronous) handled by
-- *   the kernel.
-- * - Branch to KVM, relocated but real mode interrupts remain in real mode.
-- *   These occur when HSTATE_IN_GUEST is set. The interrupt may be caused by
-- *   / intended for host or guest kernel, but KVM must always be involved
-- *   because the machine state is set for guest execution.
-- * - Branch to the masked handler, unrelocated.
-- *   These occur when maskable asynchronous interrupts are taken with the
-- *   irq_soft_mask set.
-- * - Branch to an "early" handler in real mode but relocated.
-- *   This is done if early=1. MCE and HMI use these to handle errors in real
-- *   mode.
-- * - Fall through and continue executing in real, unrelocated mode.
-- *   This is done if early=2.
-- */
--.macro INT_HANDLER name, vec, ool, early, virt, hsrr, area, ri, dar, dsisr, bitmask, kvm
--	SET_SCRATCH0(r13)			/* save r13 */
--	GET_PACA(r13)
--	std	r9,\area\()+EX_R9(r13)		/* save r9 */
--	OPT_GET_SPR(r9, SPRN_PPR, CPU_FTR_HAS_PPR)
--	HMT_MEDIUM
--	std	r10,\area\()+EX_R10(r13)	/* save r10 - r12 */
--	OPT_GET_SPR(r10, SPRN_CFAR, CPU_FTR_CFAR)
--	.if \ool
--	.if !\virt
--	b	tramp_real_\name
--	.pushsection .text
--	TRAMP_REAL_BEGIN(tramp_real_\name)
--	.else
--	b	tramp_virt_\name
--	.pushsection .text
--	TRAMP_VIRT_BEGIN(tramp_virt_\name)
--	.endif
--	.endif
--
--	OPT_SAVE_REG_TO_PACA(\area\()+EX_PPR, r9, CPU_FTR_HAS_PPR)
--	OPT_SAVE_REG_TO_PACA(\area\()+EX_CFAR, r10, CPU_FTR_CFAR)
--	INTERRUPT_TO_KERNEL
--	SAVE_CTR(r10, \area\())
--	mfcr	r9
--	.if \kvm
--		KVMTEST \hsrr \vec
--	.endif
--	.if \bitmask
--		lbz	r10,PACAIRQSOFTMASK(r13)
--		andi.	r10,r10,\bitmask
--		/* Associate vector numbers with bits in paca->irq_happened */
--		.if \vec == 0x500 || \vec == 0xea0
--		li	r10,PACA_IRQ_EE
--		.elseif \vec == 0x900
--		li	r10,PACA_IRQ_DEC
--		.elseif \vec == 0xa00 || \vec == 0xe80
--		li	r10,PACA_IRQ_DBELL
--		.elseif \vec == 0xe60
--		li	r10,PACA_IRQ_HMI
--		.elseif \vec == 0xf00
--		li	r10,PACA_IRQ_PMI
--		.else
--		.abort "Bad maskable vector"
--		.endif
--
--		.if \hsrr == EXC_HV_OR_STD
--		BEGIN_FTR_SECTION
--		bne	masked_Hinterrupt
--		FTR_SECTION_ELSE
--		bne	masked_interrupt
--		ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
--		.elseif \hsrr
--		bne	masked_Hinterrupt
--		.else
--		bne	masked_interrupt
--		.endif
--	.endif
--
--	std	r11,\area\()+EX_R11(r13)
--	std	r12,\area\()+EX_R12(r13)
--
--	/*
--	 * DAR/DSISR, SCRATCH0 must be read before setting MSR[RI],
--	 * because a d-side MCE will clobber those registers so is
--	 * not recoverable if they are live.
--	 */
--	GET_SCRATCH0(r10)
--	std	r10,\area\()+EX_R13(r13)
--	.if \dar
--	.if \hsrr
--	mfspr	r10,SPRN_HDAR
--	.else
--	mfspr	r10,SPRN_DAR
--	.endif
--	std	r10,\area\()+EX_DAR(r13)
--	.endif
--	.if \dsisr
--	.if \hsrr
--	mfspr	r10,SPRN_HDSISR
--	.else
--	mfspr	r10,SPRN_DSISR
--	.endif
--	stw	r10,\area\()+EX_DSISR(r13)
--	.endif
--
--	.if \early == 2
--	/* nothing more */
--	.elseif \early
--	mfctr	r10			/* save ctr, even for !RELOCATABLE */
--	BRANCH_TO_C000(r11, \name\()_early_common)
--	.elseif !\virt
--	INT_SAVE_SRR_AND_JUMP \name\()_common, \hsrr, \ri
--	.else
--	INT_VIRT_SAVE_SRR_AND_JUMP \name\()_common, \hsrr
--	.endif
--	.if \ool
--	.popsection
--	.endif
--.endm
--
--.macro INT_KVM_HANDLER vec, hsrr, area, skip
--	.if \hsrr
--	TRAMP_KVM_BEGIN(do_kvm_H\vec\())
--	.else
--	TRAMP_KVM_BEGIN(do_kvm_\vec\())
--	.endif
--	KVM_HANDLER \vec, \hsrr, \area, \skip
--.endm
--
- #define EXC_COMMON(name, realvec, hdlr)					\
- 	EXC_COMMON_BEGIN(name);						\
- 	INT_COMMON realvec, PACA_EXGEN, 1, 1, 1, 0, 0 ;			\
+ 	std	r9,_CCR(r1)		/* save CR in stackframe	*/
+@@ -551,10 +550,10 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.if \kaup
+ 	kuap_save_amr_and_lock r9, r10, cr1, cr0
+ 	.endif
+-	beq	4f			/* if from kernel mode		*/
++	beq	101f			/* if from kernel mode		*/
+ 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10)
+ 	SAVE_PPR(\area, r9)
+-4:
++101:
+ 	.else
+ 	.if \kaup
+ 	kuap_save_amr_and_lock r9, r10, cr1
+@@ -1325,9 +1324,11 @@ EXC_COMMON_BEGIN(program_check_common)
+ 	mr	r10,r1			/* Save r1			*/
+ 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack		*/
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
+-	b 3f				/* Jump into the macro !!	*/
++	INT_COMMON 0x700, PACA_EXGEN, 0, 1, 1, 0, 0
++	b 3f
+ 2:
+ 	INT_COMMON 0x700, PACA_EXGEN, 1, 1, 1, 0, 0
++3:
+ 	bl	save_nvgprs
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	program_check_exception
 -- 
 2.22.0
 
