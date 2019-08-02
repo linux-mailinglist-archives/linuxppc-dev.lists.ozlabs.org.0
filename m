@@ -2,37 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001237F7BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 15:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5C47F7D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 15:06:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460S5x2yT3zDr9K
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 23:03:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460S9T2MyCzDqDc
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 23:06:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460Qcg4kDczDqhD
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:56:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460RDk5tK9zDqsK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 22:24:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 460Qcf4ghKz9sBF; Fri,  2 Aug 2019 21:56:50 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 460Qcf1lx4z9s7T;
- Fri,  2 Aug 2019 21:56:50 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 460RDj5TGBz9sDB;
+ Fri,  2 Aug 2019 22:24:37 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [RFC PATCH] powerpc: Add the ppc_capabilities ELF note
-In-Reply-To: <20190701140948.26775-1-cclaudio@linux.ibm.com>
-References: <20190701140948.26775-1-cclaudio@linux.ibm.com>
-Date: Fri, 02 Aug 2019 21:56:48 +1000
-Message-ID: <874l2zlr0f.fsf@concordia.ellerman.id.au>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v2] PCI: rpaphp: Avoid a sometimes-uninitialized warning
+In-Reply-To: <20190802001102.GG151852@google.com>
+References: <20190603174323.48251-1-natechancellor@gmail.com>
+ <20190603221157.58502-1-natechancellor@gmail.com>
+ <20190722024313.GB55142@archlinux-threadripper>
+ <87lfwq7lzb.fsf@concordia.ellerman.id.au>
+ <20190802001102.GG151852@google.com>
+Date: Fri, 02 Aug 2019 22:24:36 +1000
+Message-ID: <87v9vfkb5n.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -46,115 +47,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Thiago Bauermann <bauerman@linux.ibm.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Claudio,
-
-Claudio Carvalho <cclaudio@linux.ibm.com> writes:
-> Add the ppc_capabilities ELF note to the powerpc kernel binary. It is a
-> bitmap that can be used to advertise kernel capabilities to userland.
+Bjorn Helgaas <helgaas@kernel.org> writes:
+> On Mon, Jul 22, 2019 at 02:05:12PM +1000, Michael Ellerman wrote:
+>> Nathan Chancellor <natechancellor@gmail.com> writes:
+>> > On Mon, Jun 03, 2019 at 03:11:58PM -0700, Nathan Chancellor wrote:
+>> >> When building with -Wsometimes-uninitialized, clang warns:
+>> >> 
+>> >> drivers/pci/hotplug/rpaphp_core.c:243:14: warning: variable 'fndit' is
+>> >> used uninitialized whenever 'for' loop exits because its condition is
+>> >> false [-Wsometimes-uninitialized]
+>> >>         for (j = 0; j < entries; j++) {
+>> >>                     ^~~~~~~~~~~
+>> >> drivers/pci/hotplug/rpaphp_core.c:256:6: note: uninitialized use occurs
+>> >> here
+>> >>         if (fndit)
+>> >>             ^~~~~
+>> >> drivers/pci/hotplug/rpaphp_core.c:243:14: note: remove the condition if
+>> >> it is always true
+>> >>         for (j = 0; j < entries; j++) {
+>> >>                     ^~~~~~~~~~~
+>> >> drivers/pci/hotplug/rpaphp_core.c:233:14: note: initialize the variable
+>> >> 'fndit' to silence this warning
+>> >>         int j, fndit;
+>> >>                     ^
+>> >>                      = 0
+>> >> 
+>> >> fndit is only used to gate a sprintf call, which can be moved into the
+>> >> loop to simplify the code and eliminate the local variable, which will
+>> >> fix this warning.
+>> >> 
+>> >> Link: https://github.com/ClangBuiltLinux/linux/issues/504
+>> >> Fixes: 2fcf3ae508c2 ("hotplug/drc-info: Add code to search ibm,drc-info property")
+>> >> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+>> >> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+>> >> ---
+>> >> 
+>> >> v1 -> v2:
+>> >> 
+>> >> * Eliminate fndit altogether by shuffling the sprintf call into the for
+>> >>   loop and changing the if conditional, as suggested by Nick.
+>> >> 
+>> >>  drivers/pci/hotplug/rpaphp_core.c | 18 +++++++-----------
+>> >>  1 file changed, 7 insertions(+), 11 deletions(-)
+>> >> 
+>> >> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
+>> >> index bcd5d357ca23..c3899ee1db99 100644
+>> >> --- a/drivers/pci/hotplug/rpaphp_core.c
+>> >> +++ b/drivers/pci/hotplug/rpaphp_core.c
+>> >> @@ -230,7 +230,7 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
+>> >>  	struct of_drc_info drc;
+>> >>  	const __be32 *value;
+>> >>  	char cell_drc_name[MAX_DRC_NAME_LEN];
+>> >> -	int j, fndit;
+>> >> +	int j;
+>> >>  
+>> >>  	info = of_find_property(dn->parent, "ibm,drc-info", NULL);
+>> >>  	if (info == NULL)
+>> >> @@ -245,17 +245,13 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
+>> >>  
+>> >>  		/* Should now know end of current entry */
+>> >>  
+>> >> -		if (my_index > drc.last_drc_index)
+>> >> -			continue;
+>> >> -
+>> >> -		fndit = 1;
+>> >> -		break;
+>> >> +		/* Found it */
+>> >> +		if (my_index <= drc.last_drc_index) {
+>> >> +			sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix,
+>> >> +				my_index);
+>> >> +			break;
+>> >> +		}
+>> >>  	}
+>> >> -	/* Found it */
+>> >> -
+>> >> -	if (fndit)
+>> >> -		sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix, 
+>> >> -			my_index);
+>> >>  
+>> >>  	if (((drc_name == NULL) ||
+>> >>  	     (drc_name && !strcmp(drc_name, cell_drc_name))) &&
+>> >> -- 
+>> >> 2.22.0.rc3
+>> >> 
+>> >
+>> > Hi all,
+>> >
+>> > Could someone please pick this up?
+>> 
+>> I'll take it.
+>> 
+>> I was expecting Bjorn to take it as a PCI patch, but I realise now that
+>> I merged that code in the first place so may as well take this too.
+>> 
+>> I'll put it in my next branch once that opens next week.
 >
-> This patch also defines PPCCAP_ULTRAVISOR_BIT as being the bit zero.
+> Sorry, I should have done something with this.  Did you take it,
+> Michael?  I don't see it in -next and haven't figured out where to
+> look in your git tree, so I can't tell.  Just let me know either way
+> so I know whether to drop this or apply it.
 
-Apologies for the slow review.
+Yes I have it in my next-test, which will eventually become my next when
+I get time to rebase it, test and push etc:
 
-I think we should use the "PowerPC" name space for the note. There is
-precedent for that in that we already create a note with that name in
-our zImage.pseries. See arch/powerpc/boot/addnote.c
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=next-test
 
-That code uses a note type of 1275 (from IEEE 1275).
-
-For this capabilities note I think we should probably just use a note
-type of 1, just in case note type 0 confuses something. The note types
-Linux defines in include/uapi/linux/elf.h also start at 1.
-
-So we should have a powerpc uapi header, elfnote.h I guess, which
-documents we're using the "PowerPC" namespace and defines note type 1 as
-the "Capabilities" type.
-
-I'd also like something more like a specification document, that can go
-in Documentation/powerpc and describes the capabilities bits in general
-and then what the specific ultravisor bit means. Something we could
-point other operating systems at if they want to implement similar
-support.
-
-Also none of this is any use unless petitboot is taught to look for the
-note. I imagine with Sam having left we don't have anyone signed up to
-do that work?
-
-Also when you send v2 do you mind Cc'ing linux kernel and linux-arch,
-thanks.
-
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index 0ea6c4aa3a20..4ec36fe4325b 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -49,7 +49,7 @@ obj-y				:= cputable.o ptrace.o syscalls.o \
->  				   signal.o sysfs.o cacheinfo.o time.o \
->  				   prom.o traps.o setup-common.o \
->  				   udbg.o misc.o io.o misc_$(BITS).o \
-> -				   of_platform.o prom_parse.o
-> +				   of_platform.o prom_parse.o note.o
-
-I think for now we should make this 64-bit Book3S only, as there are no
-plans for it to be used on any other platforms. A boot loader can
-interpret the absence of the note entirely as a set of capabilities
-that are all zero.
-
-
->  obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o \
->  				   signal_64.o ptrace32.o \
->  				   paca.o nvram_64.o firmware.o
+So no further action required on your part.
 
 cheers
-
-
-> diff --git a/arch/powerpc/kernel/note.S b/arch/powerpc/kernel/note.S
-> new file mode 100644
-> index 000000000000..721bf8ce9eb7
-> --- /dev/null
-> +++ b/arch/powerpc/kernel/note.S
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * PowerPC ELF notes.
-> + *
-> + * Copyright 2019, IBM Corporation
-> + */
-> +#include <linux/elfnote.h>
-> +
-> +/*
-> + * Ultravisor-capable bit (PowerNV only).
-> + *
-> + * Indicate that the powerpc kernel binary knows how to run in an
-> + * ultravisor-enabled system.
-> + *
-> + * In an ultravisor-enabled system, some machine resources are now controlled
-> + * by the ultravisor. If the kernel is not ultravisor-capable, but it ends up
-> + * being run on a machine with ultravisor, the kernel will probably crash
-> + * trying to access ultravisor resources. For instance, it may crash in early
-> + * boot trying to set the partition table entry 0.
-> + *
-> + * In an ultravisor-enabled system, petitboot can warn the user or prevent the
-> + * kernel from being run if the ppc_capabilities doesn't exist or the
-> + * Ultravisor-capable bit is not set.
-> + */
-> +#if defined(CONFIG_PPC_POWERNV)
-> +#define PPCCAP_ULTRAVISOR_BIT		(1 << 0)
-> +#else
-> +#define PPCCAP_ULTRAVISOR_BIT		0
-> +#endif
-> +
-> +/*
-> + * Add the ppc_capabilities ELF note to the powerpc kernel binary. It is a
-> + * bitmap that can be used to advertise kernel capabilities to userland.
-> + */
-> +ELFNOTE(ppc_capabilities, 3,
-> +	.long PPCCAP_ULTRAVISOR_BIT)
-> -- 
-> 2.20.1
