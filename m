@@ -2,53 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D557E717
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 02:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECECC7E725
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 02:24:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46070F1y3zzDqtR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 10:12:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4607FZ6pXKzDqhn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 10:24:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=stewart@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="fnX7M40a"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4606yM6vmBzDqv4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 10:11:07 +1000 (AEST)
-Received: from localhost (unknown [69.71.4.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1394A2080C;
- Fri,  2 Aug 2019 00:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564704665;
- bh=eW7F5798CjDmOzeoFlM6FrvKP9mNOge+/pN3w8NdF/8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=fnX7M40ahP6OU1THYNFdxmP2J5YyI4SVk3AQpe5PtsvXXn18Gmw958x0rV+4pPEtV
- fs6jOO7LDQLcefUurUJwAPeBNfSXyYB6ah7LpSChj9V61/Wro8RtZnKpCzRlSLK5/k
- Gp/hmC8xYGjZTfPbM4pIVM0NKyj75fHSlFrC29uM=
-Date: Thu, 1 Aug 2019 19:11:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] PCI: rpaphp: Avoid a sometimes-uninitialized warning
-Message-ID: <20190802001102.GG151852@google.com>
-References: <20190603174323.48251-1-natechancellor@gmail.com>
- <20190603221157.58502-1-natechancellor@gmail.com>
- <20190722024313.GB55142@archlinux-threadripper>
- <87lfwq7lzb.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4607Cj0k5jzDqh2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 10:22:40 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x720HX9E027173
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 1 Aug 2019 20:22:37 -0400
+Received: from e14.ny.us.ibm.com (e14.ny.us.ibm.com [129.33.205.204])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u48wnavhm-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2019 20:22:37 -0400
+Received: from localhost
+ by e14.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <stewart@linux.ibm.com>;
+ Fri, 2 Aug 2019 01:22:36 +0100
+Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
+ by e14.ny.us.ibm.com (146.89.104.201) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 2 Aug 2019 01:22:34 +0100
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x720MXL550463116
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 Aug 2019 00:22:33 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5156FAC05F;
+ Fri,  2 Aug 2019 00:22:33 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0FAB6AC064;
+ Fri,  2 Aug 2019 00:22:33 +0000 (GMT)
+Received: from birb.localdomain (unknown [9.185.142.84])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Aug 2019 00:22:33 +0000 (GMT)
+Received: by birb.localdomain (Postfix, from userid 1000)
+ id 841C0478276; Fri,  2 Aug 2019 10:22:29 +1000 (AEST)
+From: Stewart Smith <stewart@linux.ibm.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/xive: Update comment referencing magic loads from
+ an ESB
+In-Reply-To: <20190802000835.26191-1-jniethe5@gmail.com>
+References: <20190802000835.26191-1-jniethe5@gmail.com>
+Date: Fri, 02 Aug 2019 10:22:29 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87lfwq7lzb.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 19080200-0052-0000-0000-000003E77B15
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011535; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01240768; UDB=6.00654315; IPR=6.01022193; 
+ MB=3.00028001; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-02 00:22:35
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19080200-0053-0000-0000-000061EEB6A7
+Message-Id: <87a7csct6i.fsf@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-01_10:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=773 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908020000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,111 +93,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 22, 2019 at 02:05:12PM +1000, Michael Ellerman wrote:
-> Nathan Chancellor <natechancellor@gmail.com> writes:
-> > On Mon, Jun 03, 2019 at 03:11:58PM -0700, Nathan Chancellor wrote:
-> >> When building with -Wsometimes-uninitialized, clang warns:
-> >> 
-> >> drivers/pci/hotplug/rpaphp_core.c:243:14: warning: variable 'fndit' is
-> >> used uninitialized whenever 'for' loop exits because its condition is
-> >> false [-Wsometimes-uninitialized]
-> >>         for (j = 0; j < entries; j++) {
-> >>                     ^~~~~~~~~~~
-> >> drivers/pci/hotplug/rpaphp_core.c:256:6: note: uninitialized use occurs
-> >> here
-> >>         if (fndit)
-> >>             ^~~~~
-> >> drivers/pci/hotplug/rpaphp_core.c:243:14: note: remove the condition if
-> >> it is always true
-> >>         for (j = 0; j < entries; j++) {
-> >>                     ^~~~~~~~~~~
-> >> drivers/pci/hotplug/rpaphp_core.c:233:14: note: initialize the variable
-> >> 'fndit' to silence this warning
-> >>         int j, fndit;
-> >>                     ^
-> >>                      = 0
-> >> 
-> >> fndit is only used to gate a sprintf call, which can be moved into the
-> >> loop to simplify the code and eliminate the local variable, which will
-> >> fix this warning.
-> >> 
-> >> Link: https://github.com/ClangBuiltLinux/linux/issues/504
-> >> Fixes: 2fcf3ae508c2 ("hotplug/drc-info: Add code to search ibm,drc-info property")
-> >> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-> >> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> >> ---
-> >> 
-> >> v1 -> v2:
-> >> 
-> >> * Eliminate fndit altogether by shuffling the sprintf call into the for
-> >>   loop and changing the if conditional, as suggested by Nick.
-> >> 
-> >>  drivers/pci/hotplug/rpaphp_core.c | 18 +++++++-----------
-> >>  1 file changed, 7 insertions(+), 11 deletions(-)
-> >> 
-> >> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-> >> index bcd5d357ca23..c3899ee1db99 100644
-> >> --- a/drivers/pci/hotplug/rpaphp_core.c
-> >> +++ b/drivers/pci/hotplug/rpaphp_core.c
-> >> @@ -230,7 +230,7 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
-> >>  	struct of_drc_info drc;
-> >>  	const __be32 *value;
-> >>  	char cell_drc_name[MAX_DRC_NAME_LEN];
-> >> -	int j, fndit;
-> >> +	int j;
-> >>  
-> >>  	info = of_find_property(dn->parent, "ibm,drc-info", NULL);
-> >>  	if (info == NULL)
-> >> @@ -245,17 +245,13 @@ static int rpaphp_check_drc_props_v2(struct device_node *dn, char *drc_name,
-> >>  
-> >>  		/* Should now know end of current entry */
-> >>  
-> >> -		if (my_index > drc.last_drc_index)
-> >> -			continue;
-> >> -
-> >> -		fndit = 1;
-> >> -		break;
-> >> +		/* Found it */
-> >> +		if (my_index <= drc.last_drc_index) {
-> >> +			sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix,
-> >> +				my_index);
-> >> +			break;
-> >> +		}
-> >>  	}
-> >> -	/* Found it */
-> >> -
-> >> -	if (fndit)
-> >> -		sprintf(cell_drc_name, "%s%d", drc.drc_name_prefix, 
-> >> -			my_index);
-> >>  
-> >>  	if (((drc_name == NULL) ||
-> >>  	     (drc_name && !strcmp(drc_name, cell_drc_name))) &&
-> >> -- 
-> >> 2.22.0.rc3
-> >> 
-> >
-> > Hi all,
-> >
-> > Could someone please pick this up?
-> 
-> I'll take it.
-> 
-> I was expecting Bjorn to take it as a PCI patch, but I realise now that
-> I merged that code in the first place so may as well take this too.
-> 
-> I'll put it in my next branch once that opens next week.
+Jordan Niethe <jniethe5@gmail.com> writes:
+> The comment above xive_esb_read() references magic loads from an ESB as
+> described xive.h. This has been inaccurate since commit 12c1f339cd49
+> ("powerpc/xive: Move definition of ESB bits") which moved the
+> description. Update the comment to reference the new location of the
+> description in xive-regs.h
+>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-Sorry, I should have done something with this.  Did you take it,
-Michael?  I don't see it in -next and haven't figured out where to
-look in your git tree, so I can't tell.  Just let me know either way
-so I know whether to drop this or apply it.
+Acked-by: Stewart Smith <stewart@linux.ibm.com>
 
-Bjorn
+-- 
+Stewart Smith
+OPAL Architect, IBM.
+
