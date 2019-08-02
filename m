@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016407F6CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:27:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460RHP3xh0zDr7D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:26:57 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5F87F6D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:29:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 460RLj2dhwzDr76
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:29:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="a6kDkj+5"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="N9271AN4"; 
  dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460PNM1vKvzDqxf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:01:07 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id y15so35872901pfn.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:01:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PNP5rsXzDqWY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:01:09 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id c14so33439279plo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=nanOQbXs9olX59d1uRmjC7tvR9Xt5ZOOBj36zmx961Q=;
- b=a6kDkj+5spYU01a4dZp/RZDxuJMUoSyAnfjoWvaUOhS70Y3MNNc7wxGSJmyZCe+hZc
- 5bNGD69Q4MRDpR1vmK8Y0w/A6+8RCiTseFF8BMKnuG5MfIF4CcBgbSsXFLM1qwobCI/U
- vEol9hm2VtuSZql4kl9vbeCKFMnPsrPzjotEHsPeWwJjbM14GYoNo0n2cZrDFtnGCQ0q
- bgV/n/DEeerK8ONbpsplx/Xpxm5f+kIhSRTG2q0/CPMRo03LLLMR4ucrpRvmuYOmaAXj
- tpPVzvDdkZRwnaV3XOEWjj5LV6rGKhEu0267N64ILrloBZ0CFs52mKs4FauiXlJHF+wQ
- dRJg==
+ bh=bjgPARunrveAR60BcMrkvF+8areEhXRfI3V6rRBkkF8=;
+ b=N9271AN4AYPj2EBrtzLUDO376UB1taBbPOxiF261Vstw+elXlaxNdwzMZbnx49P9uh
+ uDr4c7zgHbrlfudYdfW1mPeTrpEyqp2lxGScr5Nzh+Bqr+GIpAfqoaWJJMRcZeIB4gan
+ 1xi96NqPDVk4Aj/86Oe7KBX5gCaLwWIO0otZURmADipUwJenkDV4eg458/2g7bXePJM3
+ i49GfqseMd5ehc6oDDA5kRh43Lb1eB2JwAjMnmLIPSAL8ReR8f2/zJh8LX05G6qnJxvc
+ Mae8FVTOLKKXUjklqIZ0vgI3NCLNErKQa4Rml3EnZnWgtJ8sfdG3yhNfwRV98eiXaIBK
+ 9dSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=nanOQbXs9olX59d1uRmjC7tvR9Xt5ZOOBj36zmx961Q=;
- b=WOOO/6A02pl5iiCcDi2zeLlDxT3PRi4GefOrcpOtHBtK46yiI8lG6xcTy54gjl6dns
- AI/ZcGa+/tx93AJPihEjbHjV8/pW4+43t2htGUFiErQYjIIIXi71Igy8jD5n/P8M29iX
- QOAygXfXEx/VzPM8NnxN54UOT1nmU1RrvwhDE7cd2Ejfh85fjwP+29mRTz9tF+CHU3IK
- Et/ilrrPi3At8gsZnTabPXnGlu+2PLG2lr2CVGrFKtkVryE1oBeQ4pedfHMBAWiblyrG
- ZdPpRduLVCDvxukGi8Or6WUhw9IJVVfZJrfWYmrtImCrAz9bhOW3loW6mcFVpJvEZ9Y8
- DAJA==
-X-Gm-Message-State: APjAAAWb14GTQdGqvCReUhl5hrSDYRcUdkConHI0UBDrFSFUi+LA5wQR
- xuUweze7V7wsojBuahd2Fh6TSOq25oU=
-X-Google-Smtp-Source: APXvYqwLQONCM3Zn9keXnY8UBkDtbI12HqT8wzpt8XKPGoe95U321iTMJeFQLDBaGflt35fqVh+HPg==
-X-Received: by 2002:a62:3347:: with SMTP id z68mr60508961pfz.174.1564743664799; 
- Fri, 02 Aug 2019 04:01:04 -0700 (PDT)
+ bh=bjgPARunrveAR60BcMrkvF+8areEhXRfI3V6rRBkkF8=;
+ b=bwhfNxADI0x/4jtg/UvJJ0maGZl2ny5yGsd+jaF9z4vPew08T9/Pgv2q1G+9Ol+Wyc
+ 3kWAQNlEsB3tcH3NU8vgfu8D/9a5AxjEZmoJiOjnA6rwiPNtgHX3h9SSVMOZuGOzBTOY
+ IOlo3JqofCqAN3EBzTxTrrmZGtYZdksRoXmVlFzuySZNeD/gkzhVHWr9Q6Yi6Kk+n2vw
+ MJx0zbxLbEuqJ2R93Epv0WNL/0KkWHUpiitg9qmZnrpSdhX7YBrzfGBq1tb9vQpbbc2i
+ 4/OeyMyekHARgOJEANF+cB8WqS0t7YKWJJ5Is1AcMNBDFpiH7lUCUd8A7VmUmehZ0t0F
+ yFuA==
+X-Gm-Message-State: APjAAAVfj32SYSlgE097mCyn+Rp+AdeSo6ZK6SrPdeHU1QRSXrYlKZGz
+ K6U76vk4OfgMA2+oBeDUfbW6Yg7INdk=
+X-Google-Smtp-Source: APXvYqxNjAQTypb98BQP43vURZ/PKYVf7ybvhY/xwiopsZ0BzfFsRIwKPh7PD8f1dIiPAuRbiBaAnA==
+X-Received: by 2002:a17:902:7488:: with SMTP id
+ h8mr56879858pll.168.1564743666901; 
+ Fri, 02 Aug 2019 04:01:06 -0700 (PDT)
 Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
- by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.01.02
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.01.05
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 02 Aug 2019 04:01:04 -0700 (PDT)
+ Fri, 02 Aug 2019 04:01:06 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 36/44] powerpc/64s/exception: reduce page fault unnecessary
- loads
-Date: Fri,  2 Aug 2019 20:57:01 +1000
-Message-Id: <20190802105709.27696-37-npiggin@gmail.com>
+Subject: [PATCH v2 37/44] powerpc/64s/exception: Introduce INT_DEFINE
+ parameter block for code generation
+Date: Fri,  2 Aug 2019 20:57:02 +1000
+Message-Id: <20190802105709.27696-38-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190802105709.27696-1-npiggin@gmail.com>
 References: <20190802105709.27696-1-npiggin@gmail.com>
@@ -84,124 +85,153 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This avoids 3 loads in the radix page fault case, 1 load in the
-hash fault case, and 2 loads in the hash miss page fault case.
+The code generation macro arguments are difficult to read, and
+defaults can't easily be used.
+
+This introduces a block where parameters can be set for interrupt
+handler code generation by the subsequent macros, and adds the first
+generation macro for interrupt entry.
+
+One interrupt handler is converted to the new macros to demonstrate
+the change, the rest will be coverted all at once.
+
+No generated code change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S  | 38 ++++++++++++---------------
- arch/powerpc/mm/book3s64/hash_utils.c |  4 +--
- 2 files changed, 19 insertions(+), 23 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 87 ++++++++++++++++++++++++++--
+ 1 file changed, 83 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 908c8003f063..c8ba052290f8 100644
+index c8ba052290f8..10d706f67a53 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1159,11 +1159,11 @@ EXC_COMMON_BEGIN(data_access_common)
- 	 * EX_DAR and EX_DSISR have saved DAR/DSISR
+@@ -193,6 +193,61 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 	mtctr	reg;							\
+ 	bctr
+ 
++/*
++ * Interrupt code generation macros
++ */
++#define IVEC		.L_IVEC_\name\()
++#define IHSRR		.L_IHSRR_\name\()
++#define IAREA		.L_IAREA_\name\()
++#define IDAR		.L_IDAR_\name\()
++#define IDSISR		.L_IDSISR_\name\()
++#define ISET_RI		.L_ISET_RI_\name\()
++#define IEARLY		.L_IEARLY_\name\()
++#define IMASK		.L_IMASK_\name\()
++#define IKVM_REAL	.L_IKVM_REAL_\name\()
++#define IKVM_VIRT	.L_IKVM_VIRT_\name\()
++
++#define INT_DEFINE_BEGIN(n)						\
++.macro int_define_ ## n name
++
++#define INT_DEFINE_END(n)						\
++.endm ;									\
++int_define_ ## n n ;							\
++do_define_int n
++
++.macro do_define_int name
++	.ifndef IVEC
++		.error "IVEC not defined"
++	.endif
++	.ifndef IHSRR
++		.error "IHSRR not defined"
++	.endif
++	.ifndef IAREA
++		.error "IAREA not defined"
++	.endif
++	.ifndef IDAR
++		IDAR=0
++	.endif
++	.ifndef IDSISR
++		IDSISR=0
++	.endif
++	.ifndef ISET_RI
++		ISET_RI=1
++	.endif
++	.ifndef IEARLY
++		IEARLY=0
++	.endif
++	.ifndef IMASK
++		IMASK=0
++	.endif
++	.ifndef IKVM_REAL
++		IKVM_REAL=0
++	.endif
++	.ifndef IKVM_VIRT
++		IKVM_VIRT=0
++	.endif
++.endm
++
+ .macro INT_KVM_HANDLER name, vec, hsrr, area, skip
+ 	TRAMP_KVM_BEGIN(\name\()_kvm)
+ 	KVM_HANDLER \vec, \hsrr, \area, \skip
+@@ -474,7 +529,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
  	 */
- 	INT_COMMON 0x300, PACA_EXGEN, 1, 1, 1, 1, 1
--	ld	r12,_MSR(r1)
--	ld	r3,_DAR(r1)
--	ld	r4,_DSISR(r1)
--	li	r5,0x300
-+	ld	r4,_DAR(r1)
-+	ld	r5,_DSISR(r1)
- BEGIN_MMU_FTR_SECTION
-+	ld	r6,_MSR(r1)
-+	li	r3,0x300
- 	b	do_hash_page		/* Try to handle as hpte fault */
- MMU_FTR_SECTION_ELSE
- 	b	handle_page_fault
-@@ -1211,11 +1211,11 @@ EXC_VIRT_END(instruction_access, 0x4400, 0x80)
- INT_KVM_HANDLER instruction_access, 0x400, EXC_STD, PACA_EXGEN, 0
- EXC_COMMON_BEGIN(instruction_access_common)
- 	INT_COMMON 0x400, PACA_EXGEN, 1, 1, 1, 2, 2
--	ld      r12,_MSR(r1)
--	ld	r3,_DAR(r1)
--	ld	r4,_DSISR(r1)
--	li	r5,0x400
-+	ld	r4,_DAR(r1)
-+	ld	r5,_DSISR(r1)
- BEGIN_MMU_FTR_SECTION
-+	ld      r6,_MSR(r1)
-+	li	r3,0x400
- 	b	do_hash_page		/* Try to handle as hpte fault */
- MMU_FTR_SECTION_ELSE
- 	b	handle_page_fault
-@@ -2261,7 +2261,7 @@ do_hash_page:
- #ifdef CONFIG_PPC_BOOK3S_64
- 	lis	r0,(DSISR_BAD_FAULT_64S | DSISR_DABRMATCH | DSISR_KEYFAULT)@h
- 	ori	r0,r0,DSISR_BAD_FAULT_64S@l
--	and.	r0,r4,r0		/* weird error? */
-+	and.	r0,r5,r0		/* weird error? */
- 	bne-	handle_page_fault	/* if not, try to insert a HPTE */
- 	ld	r11, PACA_THREAD_INFO(r13)
- 	lwz	r0,TI_PREEMPT(r11)	/* If we're in an "NMI" */
-@@ -2269,15 +2269,13 @@ do_hash_page:
- 	bne	77f			/* then don't call hash_page now */
+ 	GET_SCRATCH0(r10)
+ 	std	r10,\area\()+EX_R13(r13)
+-	.if \dar
++	.if \dar == 1
+ 	.if \hsrr
+ 	mfspr	r10,SPRN_HDAR
+ 	.else
+@@ -482,7 +537,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ 	std	r10,\area\()+EX_DAR(r13)
+ 	.endif
+-	.if \dsisr
++	.if \dsisr == 1
+ 	.if \hsrr
+ 	mfspr	r10,SPRN_HDSISR
+ 	.else
+@@ -506,6 +561,18 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	.endif
+ .endm
  
- 	/*
--	 * r3 contains the faulting address
--	 * r4 msr
--	 * r5 contains the trap number
--	 * r6 contains dsisr
-+	 * r3 contains the trap number
-+	 * r4 contains the faulting address
-+	 * r5 contains dsisr
-+	 * r6 msr
- 	 *
- 	 * at return r3 = 0 for success, 1 for page fault, negative for error
- 	 */
--        mr 	r4,r12
--	ld      r6,_DSISR(r1)
- 	bl	__hash_page		/* build HPTE if possible */
-         cmpdi	r3,0			/* see if __hash_page succeeded */
++#define GEN_REAL	0
++#define GEN_VIRT	1
++#define GEN_OOL		1
++
++.macro GEN_INT_ENTRY name virt ool=0
++	.if ! \virt
++		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_REAL
++	.else
++		INT_HANDLER \name, IVEC, \ool, IEARLY, \virt, IHSRR, IAREA, ISET_RI, IDAR, IDSISR, IMASK, IKVM_VIRT
++	.endif
++.endm
++
+ /*
+  * On entry r13 points to the paca, r9-r13 are saved in the paca,
+  * r9 contains the saved CR, r11 and r12 contain the saved SRR0 and
+@@ -1143,12 +1210,24 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+ 	bl	unrecoverable_exception
+ 	b	.
  
-@@ -2287,16 +2285,15 @@ do_hash_page:
- 	/* Error */
- 	blt-	13f
++INT_DEFINE_BEGIN(data_access)
++	IVEC=0x300
++	IHSRR=0
++	IAREA=PACA_EXGEN
++	IDAR=1
++	IDSISR=1
++	ISET_RI=1
++	IEARLY=0
++	IMASK=0
++	IKVM_REAL=1
++	IKVM_VIRT=0
++INT_DEFINE_END(data_access)
  
--	/* Reload DSISR into r4 for the DABR check below */
--	ld      r4,_DSISR(r1)
-+	/* Reload DAR/DSISR into r4/r5 for the DABR check below */
-+	ld	r4,_DAR(r1)
-+	ld      r5,_DSISR(r1)
- #endif /* CONFIG_PPC_BOOK3S_64 */
- 
- /* Here we have a page fault that hash_page can't handle. */
- handle_page_fault:
--11:	andis.  r0,r4,DSISR_DABRMATCH@h
-+11:	andis.  r0,r5,DSISR_DABRMATCH@h
- 	bne-    handle_dabr_fault
--	ld	r4,_DAR(r1)
--	ld	r5,_DSISR(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	do_page_fault
- 	cmpdi	r3,0
-@@ -2343,7 +2340,6 @@ handle_dabr_fault:
-  * the access, or panic if there isn't a handler.
-  */
- 77:	bl	save_nvgprs
--	mr	r4,r3
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	li	r5,SIGSEGV
- 	bl	bad_page_fault
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index b8ad14bb1170..0a434cea16b7 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1460,8 +1460,8 @@ int hash_page(unsigned long ea, unsigned long access, unsigned long trap,
- }
- EXPORT_SYMBOL_GPL(hash_page);
- 
--int __hash_page(unsigned long ea, unsigned long msr, unsigned long trap,
--		unsigned long dsisr)
-+int __hash_page(unsigned long trap, unsigned long ea, unsigned long dsisr,
-+		unsigned long msr)
- {
- 	unsigned long access = _PAGE_PRESENT | _PAGE_READ;
- 	unsigned long flags = 0;
+ EXC_REAL_BEGIN(data_access, 0x300, 0x80)
+-	INT_HANDLER data_access, 0x300, 1, 0, 0, EXC_STD, PACA_EXGEN, 1, 1, 1, 0, 1
++	GEN_INT_ENTRY data_access, GEN_REAL, GEN_OOL
+ EXC_REAL_END(data_access, 0x300, 0x80)
+ EXC_VIRT_BEGIN(data_access, 0x4300, 0x80)
+-	INT_HANDLER data_access, 0x300, 0, 0, 1, EXC_STD, PACA_EXGEN, 1, 1, 1, 0, 0
++	GEN_INT_ENTRY data_access, GEN_VIRT
+ EXC_VIRT_END(data_access, 0x4300, 0x80)
+ INT_KVM_HANDLER data_access, 0x300, EXC_STD, PACA_EXGEN, 1
+ EXC_COMMON_BEGIN(data_access_common)
 -- 
 2.22.0
 
