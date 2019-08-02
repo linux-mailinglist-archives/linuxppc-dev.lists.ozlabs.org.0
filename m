@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FD47F65A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D09F47F660
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 14:03:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460QkK4d9jzDr63
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:01:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460Qmn2jqdzDr68
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 22:03:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="OGQ6fJG1"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="o527z/wM"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460PMz1kWvzDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:00:47 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id n4so622840pgv.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:00:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460PN13P6WzDqdR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 21:00:49 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id c3so12725477pfa.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 04:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=QTtVJlFFD6sDeYJwufrSiZe/9ev66CXc9Xk6LJUAV48=;
- b=OGQ6fJG1x8/bnmh+L61qAYqxC1ZKFTXZ4GXYcKW1oAZD03iB+iDIPxQwcPjX2hKU86
- Aks7LjBIL7nTOLxJ2A+2HB385p0iRFjP7CfvPLq4EJ4I2t1guaIgNCZIThmxUusHJdzW
- 0jpAwy3YwWvoUYBCaofpKFmuVCk+rWwMpBzwD6DapH3NcZP2Rs7z+HHRsvo6T8fpDDtI
- Azn/8jkgr2mpe/vFopkxZJ0FNXGV6b97WwWqHqZvnddt8Si7NQ/N+jXcIRQKEYXi+NWz
- 2hGFnJywz2LMlu+yf/XjHpyIm5HSYziijSE0/9KXW25H2qFgwtSV3nTEidyMQLpwGQHe
- xZHQ==
+ bh=9cVs3vrYiV1ttZGTPtn9kTYPYdXFehQY0y7nbVy7MPQ=;
+ b=o527z/wMYjeVH2T67wsjYA2p0tHfEWGiJu5dClCBYcETNy1dri1btBn3XqGofj+eT4
+ oSqEKk2M2SN8fscold0ur08D9HfnPvbc5IAKlSzjhysIZydRTEVOv2fin1bJfrNv0KAv
+ z+/OKnc0bZKAd1JAkgaUkxqszdecz3qSKccdbrJOSXhP4bwMLQC7/4LD/Y3MkT9DEmru
+ VP9LCR4RLx9jyacw3+Z9y5M7d7el2WaFK89uwpYkON1ChUcTd43gYBCZAvP/SlyesccP
+ vm3Aexf4KQ14fEzBtJWjJNH+VeQQV8lx05TIGuDGTPLFJlfRTWFh1mSJ8AuO7iNqm2Ze
+ OAyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=QTtVJlFFD6sDeYJwufrSiZe/9ev66CXc9Xk6LJUAV48=;
- b=c4G2KyPsrVsU8Rh+6+eduZ+zgkQmVlu5ZiSLweaa38tqVUIA+cUmYYiWToOBT05B05
- oOfUBVIr+68qMNdBczDbc0sYWiqb1am2Hh48i1vi0CZIy64kq1MufdD5aqJCNUiOhYaw
- rwtlq6bplmW4BQVWpLU2DG4k92DHnpjwBdQ/JQCXeypKCVJ4Pt9XtErlWoiHpjyGolSp
- L/KzMYSCrr/EciH8+ziWrtmJYQw3xZTHu5zySpihswgcDPFOtzzLQTxjw3Hp3sSdoztT
- 4JxmIizWUnjoCnya30VD9KTgLeXetZoTfwQnAqdYEjxPW1s2XiERAQYBA4LLrHgTiF/c
- FtcA==
-X-Gm-Message-State: APjAAAX3DTr7m43gfV0XL+ppbdn69Ucfp2MZxUB11FybDZXZykxK1xlM
- OwUcdrCmd3kFSEq/IbyBDZOxz7HBMlA=
-X-Google-Smtp-Source: APXvYqwS8IuFklYuMDYJuFk91P2sdTP9xDrL4RZTFabCSN9mdo9ucOPt4VcRU7jXzxfkCixbsV0Mbg==
-X-Received: by 2002:a65:5043:: with SMTP id k3mr67194715pgo.406.1564743644475; 
- Fri, 02 Aug 2019 04:00:44 -0700 (PDT)
+ bh=9cVs3vrYiV1ttZGTPtn9kTYPYdXFehQY0y7nbVy7MPQ=;
+ b=nQIMUmPj4SM0CobKOhsViwUmTWh5XFnyBEjSbWEEK/OTvW1hpZ20weKalxZ6dzCHkW
+ yszE62jxbxsCTBNNE+mlUzhg5EOYpAK2kCXX5fVWp0pZB6W6sG1jOsEBRR33Pg7yTpsC
+ ZiCKtc/D22mtTwpX5ZFXMhirju1iZ3Zr31d2iDiLXh6N67+U2Nic5fBZm6q/PjsAbDLI
+ wY4e+kj4LpfN9Amtaa2skCJorH4vL8jyhK6asvR9aVO8fuVE5Ll2LfKlo21ghjq59BGS
+ dd3GFSmdulcsBLWKrYEWAZNbxmgqHkZhmzv9AqnwI6XdgAGwvE+TWi9o7DUPAb9CVBwA
+ Rm6g==
+X-Gm-Message-State: APjAAAV/xi5lH0me+g5PBQFQVeSB3C+kDyPAXwEReeLGuUkBMlcjrp0w
+ b46j2PfTZAZ8tjpmGREBiDOqxT6J9x8=
+X-Google-Smtp-Source: APXvYqx5glyKZ8EF9SEn1IYgCN/FjrehW/aBbUUHx5sDayJzy5IjyOeDWuciDbZjRLi8axUike6EuA==
+X-Received: by 2002:a65:4304:: with SMTP id j4mr126737001pgq.419.1564743646803; 
+ Fri, 02 Aug 2019 04:00:46 -0700 (PDT)
 Received: from bobo.local0.net (193-116-68-11.tpgi.com.au. [193.116.68.11])
- by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.42
+ by smtp.gmail.com with ESMTPSA id t96sm7377118pjb.1.2019.08.02.04.00.44
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 02 Aug 2019 04:00:43 -0700 (PDT)
+ Fri, 02 Aug 2019 04:00:46 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 27/44] powerpc/64s/exception: KVM_HANDLER reorder arguments
- to match other macros
-Date: Fri,  2 Aug 2019 20:56:52 +1000
-Message-Id: <20190802105709.27696-28-npiggin@gmail.com>
+Subject: [PATCH v2 28/44] powerpc/64s/exception: Merge
+ EXCEPTION_PROLOG_COMMON_2/3
+Date: Fri,  2 Aug 2019 20:56:53 +1000
+Message-Id: <20190802105709.27696-29-npiggin@gmail.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190802105709.27696-1-npiggin@gmail.com>
 References: <20190802105709.27696-1-npiggin@gmail.com>
@@ -84,74 +84,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Also change argument name (n -> vec) to match others.
+Merge EXCEPTION_PROLOG_COMMON_3 into EXCEPTION_PROLOG_COMMON_2.
 
-No generated code change.
+No generated code change except BUG line number constants.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 52d4cfe4093e..c36c6a029ee9 100644
+index c36c6a029ee9..2b07dc49d14d 100644
 --- a/arch/powerpc/kernel/exceptions-64s.S
 +++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -316,7 +316,7 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
- 	.endif
- .endm
+@@ -399,7 +399,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
+ 	std	r10,GPR1(r1);		/* save r1 in stackframe	*/ \
  
--.macro KVM_HANDLER area, hsrr, n, skip
-+.macro KVM_HANDLER vec, hsrr, area, skip
- 	.if \skip
- 	cmpwi	r10,KVM_GUEST_MODE_SKIP
- 	beq	89f
-@@ -337,14 +337,14 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- 	/* HSRR variants have the 0x2 bit added to their trap number */
- 	.if \hsrr == EXC_HV_OR_STD
- 	BEGIN_FTR_SECTION
--	ori	r12,r12,(\n + 0x2)
-+	ori	r12,r12,(\vec + 0x2)
- 	FTR_SECTION_ELSE
--	ori	r12,r12,(\n)
-+	ori	r12,r12,(\vec)
- 	ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
- 	.elseif \hsrr
--	ori	r12,r12,(\n + 0x2)
-+	ori	r12,r12,(\vec + 0x2)
- 	.else
--	ori	r12,r12,(\n)
-+	ori	r12,r12,(\vec)
- 	.endif
+ /* Save original regs values from save area to stack frame. */
+-#define EXCEPTION_PROLOG_COMMON_2(area)					   \
++#define EXCEPTION_PROLOG_COMMON_2(area, trap)				   \
+ 	ld	r9,area+EX_R9(r13);	/* move r9, r10 to stackframe	*/ \
+ 	ld	r10,area+EX_R10(r13);					   \
+ 	std	r9,GPR9(r1);						   \
+@@ -415,9 +415,7 @@ BEGIN_FTR_SECTION_NESTED(66);						   \
+ 	std	r10,ORIG_GPR3(r1);					   \
+ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66);			   \
+ 	GET_CTR(r10, area);						   \
+-	std	r10,_CTR(r1);
+-
+-#define EXCEPTION_PROLOG_COMMON_3(trap)					   \
++	std	r10,_CTR(r1);						   \
+ 	std	r2,GPR2(r1);		/* save r2 in stackframe	*/ \
+ 	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe   */ \
+ 	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe	*/ \
+@@ -453,8 +451,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66);			   \
+ 	beq	4f;			/* if from kernel mode		*/ \
+ 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10);				   \
+ 	SAVE_PPR(area, r9);						   \
+-4:	EXCEPTION_PROLOG_COMMON_2(area);				   \
+-	EXCEPTION_PROLOG_COMMON_3(trap);				   \
++4:	EXCEPTION_PROLOG_COMMON_2(area, trap);				   \
+ 	ACCOUNT_STOLEN_TIME
  
- #ifdef CONFIG_RELOCATABLE
-@@ -386,7 +386,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
- #else
- .macro KVMTEST hsrr, n
- .endm
--.macro KVM_HANDLER area, hsrr, n, skip
-+.macro KVM_HANDLER vec, hsrr, area, skip
- .endm
- #endif
+ /*
+@@ -464,8 +461,7 @@ END_FTR_SECTION_NESTED(CPU_FTR_CFAR, CPU_FTR_CFAR, 66);			   \
+ #define EXCEPTION_COMMON_STACK(area, trap)			\
+ 	EXCEPTION_PROLOG_COMMON_1();				\
+ 	kuap_save_amr_and_lock r9, r10, cr1;			\
+-	EXCEPTION_PROLOG_COMMON_2(area);			\
+-	EXCEPTION_PROLOG_COMMON_3(trap)
++	EXCEPTION_PROLOG_COMMON_2(area, trap)
  
-@@ -657,7 +657,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
- 	.else
- 	TRAMP_KVM_BEGIN(do_kvm_\vec\())
- 	.endif
--	KVM_HANDLER \area, \hsrr, \vec, \skip
-+	KVM_HANDLER \vec, \hsrr, \area, \skip
- .endm
+ /*
+  * Restore all registers including H/SRR0/1 saved in a stack frame of a
+@@ -968,8 +964,7 @@ EXC_COMMON_BEGIN(machine_check_early_common)
  
- #define EXC_COMMON(name, realvec, hdlr)					\
-@@ -1539,7 +1539,7 @@ TRAMP_KVM_BEGIN(do_kvm_0xc00)
- 	SET_SCRATCH0(r10)
- 	std	r9,PACA_EXGEN+EX_R9(r13)
- 	mfcr	r9
--	KVM_HANDLER PACA_EXGEN, EXC_STD, 0xc00, 0
-+	KVM_HANDLER 0xc00, EXC_STD, PACA_EXGEN, 0
- #endif
+ 	EXCEPTION_PROLOG_COMMON_1()
+ 	/* We don't touch AMR here, we never go to virtual mode */
+-	EXCEPTION_PROLOG_COMMON_2(PACA_EXMC)
+-	EXCEPTION_PROLOG_COMMON_3(0x200)
++	EXCEPTION_PROLOG_COMMON_2(PACA_EXMC, 0x200)
  
- 
+ 	ld	r3,PACA_EXMC+EX_DAR(r13)
+ 	lwz	r4,PACA_EXMC+EX_DSISR(r13)
+@@ -1617,8 +1612,7 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
+ 	EXCEPTION_PROLOG_COMMON_1()
+ 	/* We don't touch AMR here, we never go to virtual mode */
+-	EXCEPTION_PROLOG_COMMON_2(PACA_EXGEN)
+-	EXCEPTION_PROLOG_COMMON_3(0xe60)
++	EXCEPTION_PROLOG_COMMON_2(PACA_EXGEN, 0xe60)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	hmi_exception_realmode
+ 	cmpdi	cr0,r3,0
 -- 
 2.22.0
 
