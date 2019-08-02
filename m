@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA187ED63
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 09:25:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B237ED58
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 09:22:56 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460JXY3NxhzDqvK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 17:22:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460Jb94rF4zDqdx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 17:25:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460JVb0zXczDq9s
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 17:21:11 +1000 (AEST)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460JY35tWTzDq9s
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 17:23:19 +1000 (AEST)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 56E3D5AFD9;
- Fri,  2 Aug 2019 07:21:09 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id CC8E5C0467C3;
+ Fri,  2 Aug 2019 07:23:17 +0000 (UTC)
 Received: from [10.36.116.87] (ovpn-116-87.ams2.redhat.com [10.36.116.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 792C5100032A;
- Fri,  2 Aug 2019 07:21:06 +0000 (UTC)
-Subject: Re: [PATCH 1/1] pseries/hotplug-memory.c: Replace nested ifs by
- switch-case
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 48D1A5D9CD;
+ Fri,  2 Aug 2019 07:23:15 +0000 (UTC)
+Subject: Re: [PATCH 1/1] pseries/hotplug-memory.c: Change rc variable to bool
+From: David Hildenbrand <david@redhat.com>
 To: Leonardo Bras <leonardo@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
-References: <20190801225251.17864-1-leonardo@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
+References: <20190801231055.19603-1-leonardo@linux.ibm.com>
+ <69821502-a449-d1a8-c2e8-a1aa67cca02f@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -80,18 +80,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <a01e8782-c59c-4c77-76f2-f4c36d1d9ed9@redhat.com>
-Date: Fri, 2 Aug 2019 09:21:05 +0200
+Message-ID: <78612e21-de54-4bd2-c22f-1c67aed29b2e@redhat.com>
+Date: Fri, 2 Aug 2019 09:23:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190801225251.17864-1-leonardo@linux.ibm.com>
+In-Reply-To: <69821502-a449-d1a8-c2e8-a1aa67cca02f@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.39]); Fri, 02 Aug 2019 07:21:09 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.31]); Fri, 02 Aug 2019 07:23:17 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,90 +103,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>, Rob Herring <robh@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Rob Herring <robh@kernel.org>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
  YueHaibing <yuehaibing@huawei.com>,
  Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02.08.19 00:52, Leonardo Bras wrote:
-> I noticed these nested ifs can be easily replaced by switch-cases,
-> which can improve readability.
+On 02.08.19 09:18, David Hildenbrand wrote:
+> On 02.08.19 01:10, Leonardo Bras wrote:
+>> Changes the return variable to bool (as the return value) and
+>> avoids doing a ternary operation before returning.
+>>
+>> Also, since rc will always be true, there is no need to do
+>> rc &= bool, as (true && X) will result in X.
+>>
+>> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> index 8e700390f3d6..392deb4855e5 100644
+>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+>> @@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_node *np)
+>>  static bool lmb_is_removable(struct drmem_lmb *lmb)
+>>  {
+>>  	int i, scns_per_block;
+>> -	int rc = 1;
+>> +	bool rc = true;
+>>  	unsigned long pfn, block_sz;
+>>  	u64 phys_addr;
+>>  
+>> @@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lmb)
+>>  		if (!pfn_present(pfn))
+>>  			continue;
+>>  
+>> -		rc &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
+>> +		rc = is_mem_section_removable(pfn, PAGES_PER_SECTION);
 > 
-> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-> ---
->  .../platforms/pseries/hotplug-memory.c        | 26 +++++++++++++------
->  1 file changed, 18 insertions(+), 8 deletions(-)
-
-More LOC but seems to be the right thing to do
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
+> No, that's wrong.
 > 
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 46d0d35b9ca4..8e700390f3d6 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -880,34 +880,44 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
->  
->  	switch (hp_elog->action) {
->  	case PSERIES_HP_ELOG_ACTION_ADD:
-> -		if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_COUNT) {
-> +		switch (hp_elog->id_type) {
-> +		case PSERIES_HP_ELOG_ID_DRC_COUNT:
->  			count = hp_elog->_drc_u.drc_count;
->  			rc = dlpar_memory_add_by_count(count);
-> -		} else if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_INDEX) {
-> +			break;
-> +		case PSERIES_HP_ELOG_ID_DRC_INDEX:
->  			drc_index = hp_elog->_drc_u.drc_index;
->  			rc = dlpar_memory_add_by_index(drc_index);
-> -		} else if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_IC) {
-> +			break;
-> +		case PSERIES_HP_ELOG_ID_DRC_IC:
->  			count = hp_elog->_drc_u.ic.count;
->  			drc_index = hp_elog->_drc_u.ic.index;
->  			rc = dlpar_memory_add_by_ic(count, drc_index);
-> -		} else {
-> +			break;
-> +		default:
->  			rc = -EINVAL;
-> +			break;
->  		}
->  
->  		break;
->  	case PSERIES_HP_ELOG_ACTION_REMOVE:
-> -		if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_COUNT) {
-> +		switch (hp_elog->id_type) {
-> +		case PSERIES_HP_ELOG_ID_DRC_COUNT:
->  			count = hp_elog->_drc_u.drc_count;
->  			rc = dlpar_memory_remove_by_count(count);
-> -		} else if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_INDEX) {
-> +			break;
-> +		case PSERIES_HP_ELOG_ID_DRC_INDEX:
->  			drc_index = hp_elog->_drc_u.drc_index;
->  			rc = dlpar_memory_remove_by_index(drc_index);
-> -		} else if (hp_elog->id_type == PSERIES_HP_ELOG_ID_DRC_IC) {
-> +			break;
-> +		case PSERIES_HP_ELOG_ID_DRC_IC:
->  			count = hp_elog->_drc_u.ic.count;
->  			drc_index = hp_elog->_drc_u.ic.index;
->  			rc = dlpar_memory_remove_by_ic(count, drc_index);
-> -		} else {
-> +			break;
-> +		default:
->  			rc = -EINVAL;
-> +			break;
->  		}
->  
->  		break;
-> 
+> If is_mem_section_removable() is false in the first iteration but true
+> in the last iteration, you would return true instead of false, which
+> introduced a bug. We have to AND all sub-results, not simply use the
+> last one.
 
+BTW, including such subtle changes in a "Change rc variable to bool"
+patch should be avoided.
 
 -- 
 
