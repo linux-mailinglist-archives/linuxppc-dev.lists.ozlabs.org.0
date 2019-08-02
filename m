@@ -1,83 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2187E647
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 01:12:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4605g50ysSzDqv6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 09:12:49 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8117E712
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 02:11:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4606y82gp7zDqrV
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 10:10:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ envelope-from=jniethe5@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="DRxylKkW"; 
+ dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4605dH54C8zDql9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 09:11:15 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x71N7CLB013624
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 1 Aug 2019 19:11:11 -0400
-Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u49btgbpf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2019 19:11:10 -0400
-Received: from localhost
- by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <leonardo@linux.ibm.com>;
- Fri, 2 Aug 2019 00:11:10 +0100
-Received: from b03cxnp07028.gho.boulder.ibm.com (9.17.130.15)
- by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 2 Aug 2019 00:11:06 +0100
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x71NB5nl44826960
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Aug 2019 23:11:05 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1857BC606E;
- Thu,  1 Aug 2019 23:11:05 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4CE5AC6073;
- Thu,  1 Aug 2019 23:11:02 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.147])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  1 Aug 2019 23:11:01 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] pseries/hotplug-memory.c: Change rc variable to bool
-Date: Thu,  1 Aug 2019 20:10:55 -0300
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4606vz6SnSzDqpL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 10:09:03 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id t16so34954735pfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2019 17:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D6oKvKKtd2mdWhdvhvbSVPHKK5O5uXEl/mQdtU+h1c0=;
+ b=DRxylKkWE5heSulMvaL2ZY4CBWrFN9s9v3s6qYmVc7yB4WTc3/M2YYeSVJr5gVnsu6
+ +wEvPpF+8nxBCm27CzEk3RNpB2PxsD5izIx1/t2RHiOBk8uesTEnr01S9y6FfUZ8oPme
+ LLQUs9aSsB0Sr2v2wFZ927FiLHY5XLHjs/mkEkTHw30coY9xAk9wQZqN4ehMDsj7z3cu
+ fhhXA/Ax38OavUvsVYhPBVX3bKRSFFjaA3esEPgYsYp8Mnnfz9krvl7xgHY7pQIpqWhC
+ JL6+9SaGmzmBLEMyhyA2WGXi0/33Skt5+g4ZUOj8Ol2+ldX2ZNxPRS+mgNb7vnEVS2Oq
+ AGgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D6oKvKKtd2mdWhdvhvbSVPHKK5O5uXEl/mQdtU+h1c0=;
+ b=R1mqLXijprzTeYpkYJso4JFuKmPwVkcvqe45w+3zO1vRwGNMwhyy6/MRhFjFaURSp6
+ J8F24zzbjz+3kNq4RdcuNSCeWYsE9A5qIb04dzABqh/BOsSH0+SFlbRtn1LE1MLlSp/v
+ ERgZtsdjFeT0VCYO/CujxWMCoZ+nMpEn4t5k4r0wE6QKAmPZeECUBZGMzkLn2iI/W3Uv
+ DrFfXyhUGoqA+Va6u4t6EpmfK0A70ueljJJoB6y6S7mzEOf0+0leoSsqjoQ7mpv0+00y
+ l9DJ1Q9Is4H6o4tbhhcRde83xe3nJhvoBirmSiGeCReOHloBu8ROQU/dZ4Bw05kcvQPf
+ M3rQ==
+X-Gm-Message-State: APjAAAU+9qLNAFo/nBbyIQXhpEzV+qqS7Mm/rhYgbpScddn0JSVYsWGx
+ S3utnMDVgdrq+YJnVmC21stYB41v
+X-Google-Smtp-Source: APXvYqx+QzFEXpRFBsQeyaiMA3rw95+OygsqcBuPG/XCen+9t3pwmhDdUvrbCJLp+EHoHLjybLk5tg==
+X-Received: by 2002:a17:90a:9bca:: with SMTP id
+ b10mr1417355pjw.90.1564704539951; 
+ Thu, 01 Aug 2019 17:08:59 -0700 (PDT)
+Received: from pasglop.ozlabs.ibm.com ([122.99.82.10])
+ by smtp.gmail.com with ESMTPSA id f8sm40263894pgd.58.2019.08.01.17.08.57
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Thu, 01 Aug 2019 17:08:59 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/xive: Update comment referencing magic loads from an
+ ESB
+Date: Fri,  2 Aug 2019 10:08:35 +1000
+Message-Id: <20190802000835.26191-1-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19080123-0016-0000-0000-000009D75B29
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011535; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01240745; UDB=6.00654301; IPR=6.01022169; 
- MB=3.00028000; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-01 23:11:08
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080123-0017-0000-0000-000044429749
-Message-Id: <20190801231055.19603-1-leonardo@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-01_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=793 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908010244
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,56 +78,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- YueHaibing <yuehaibing@huawei.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Changes the return variable to bool (as the return value) and
-avoids doing a ternary operation before returning.
+The comment above xive_esb_read() references magic loads from an ESB as
+described xive.h. This has been inaccurate since commit 12c1f339cd49
+("powerpc/xive: Move definition of ESB bits") which moved the
+description. Update the comment to reference the new location of the
+description in xive-regs.h
 
-Also, since rc will always be true, there is no need to do
-rc &= bool, as (true && X) will result in X.
-
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/sysdev/xive/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 8e700390f3d6..392deb4855e5 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_node *np)
- static bool lmb_is_removable(struct drmem_lmb *lmb)
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 1cdb39575eae..083f657091d7 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -185,7 +185,7 @@ static u32 xive_scan_interrupts(struct xive_cpu *xc, bool just_peek)
+ 
+ /*
+  * This is used to perform the magic loads from an ESB
+- * described in xive.h
++ * described in xive-regs.h
+  */
+ static notrace u8 xive_esb_read(struct xive_irq_data *xd, u32 offset)
  {
- 	int i, scns_per_block;
--	int rc = 1;
-+	bool rc = true;
- 	unsigned long pfn, block_sz;
- 	u64 phys_addr;
- 
-@@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lmb)
- 		if (!pfn_present(pfn))
- 			continue;
- 
--		rc &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
-+		rc = is_mem_section_removable(pfn, PAGES_PER_SECTION);
- 		phys_addr += MIN_MEMORY_BLOCK_SIZE;
- 	}
- 
--	return rc ? true : false;
-+	return rc;
- }
- 
- static int dlpar_add_lmb(struct drmem_lmb *);
 -- 
 2.20.1
 
