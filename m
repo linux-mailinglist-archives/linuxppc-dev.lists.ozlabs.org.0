@@ -1,55 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F197FBDE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 16:15:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460Thm4kThzDqyH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2019 00:15:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF967FBEB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 16:18:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 460Tm74KzbzDr9M
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2019 00:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=leonardo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="2A+t2vxa"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460Scm2fpjzDqPF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 23:27:04 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 43CF321874;
- Fri,  2 Aug 2019 13:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1564752422;
- bh=J5CYI7fhl0cw3YAPWG669inFrbneWOgsZL6tUna83Ic=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=2A+t2vxa9SVKT4/ktw0/XJsDG8RsuuBhX3D6g41YcotEzQo3PPRJjECQQdn9gekrG
- cc6mNFGL2vasXdV/EXW4u4cbwlVRCtTN0vpGcALnPGggX3h7PzLLqprMFHNZVlH5Dq
- 52X1bet6szFkkoWnAFWZ1ksXZBAV6y+Y4If3HzwY=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 15/17] scsi: ibmvfc: fix WARN_ON during event pool
- release
-Date: Fri,  2 Aug 2019 09:26:32 -0400
-Message-Id: <20190802132635.14885-15-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460T1p6FbtzDr6v
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 23:45:18 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x72Dgu0H069103; Fri, 2 Aug 2019 09:45:02 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u4p3r8kdh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Aug 2019 09:45:01 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x72Dh5uF069804;
+ Fri, 2 Aug 2019 09:44:54 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u4p3r8kc0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Aug 2019 09:44:54 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x72De7aZ024476;
+ Fri, 2 Aug 2019 13:44:53 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01wdc.us.ibm.com with ESMTP id 2u0e874dkw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Aug 2019 13:44:52 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x72DiqSw60096922
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 Aug 2019 13:44:52 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2290DBE051;
+ Fri,  2 Aug 2019 13:44:52 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A41CBE053;
+ Fri,  2 Aug 2019 13:44:49 +0000 (GMT)
+Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.18.235.147])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Aug 2019 13:44:49 +0000 (GMT)
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/1] powerpc/pseries/hotplug-memory.c: Change rc variable
+ to bool
+Date: Fri,  2 Aug 2019 10:39:15 -0300
+Message-Id: <20190802133914.30413-1-leonardo@linux.ibm.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802132635.14885-1-sashal@kernel.org>
-References: <20190802132635.14885-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-02_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=945 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908020141
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,81 +88,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-scsi@vger.kernel.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>,
+ David Hildenbrand <david@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ YueHaibing <yuehaibing@huawei.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
+Changes the return variable to bool (as the return value) and
+avoids doing a ternary operation before returning.
 
-[ Upstream commit 5578257ca0e21056821e6481bd534ba267b84e58 ]
-
-While removing an ibmvfc client adapter a WARN_ON like the following
-WARN_ON is seen in the kernel log:
-
-WARNING: CPU: 6 PID: 5421 at ./include/linux/dma-mapping.h:541
-ibmvfc_free_event_pool+0x12c/0x1f0 [ibmvfc]
-CPU: 6 PID: 5421 Comm: rmmod Tainted: G            E     4.17.0-rc1-next-20180419-autotest #1
-NIP:  d00000000290328c LR: d00000000290325c CTR: c00000000036ee20
-REGS: c000000288d1b7e0 TRAP: 0700   Tainted: G            E      (4.17.0-rc1-next-20180419-autotest)
-MSR:  800000010282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE,TM[E]>  CR: 44008828  XER: 20000000
-CFAR: c00000000036e408 SOFTE: 1
-GPR00: d00000000290325c c000000288d1ba60 d000000002917900 c000000289d75448
-GPR04: 0000000000000071 c0000000ff870000 0000000018040000 0000000000000001
-GPR08: 0000000000000000 c00000000156e838 0000000000000001 d00000000290c640
-GPR12: c00000000036ee20 c00000001ec4dc00 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 00000100276901e0 0000000010020598
-GPR20: 0000000010020550 0000000010020538 0000000010020578 00000000100205b0
-GPR24: 0000000000000000 0000000000000000 0000000010020590 5deadbeef0000100
-GPR28: 5deadbeef0000200 d000000002910b00 0000000000000071 c0000002822f87d8
-NIP [d00000000290328c] ibmvfc_free_event_pool+0x12c/0x1f0 [ibmvfc]
-LR [d00000000290325c] ibmvfc_free_event_pool+0xfc/0x1f0 [ibmvfc]
-Call Trace:
-[c000000288d1ba60] [d00000000290325c] ibmvfc_free_event_pool+0xfc/0x1f0 [ibmvfc] (unreliable)
-[c000000288d1baf0] [d000000002909390] ibmvfc_abort_task_set+0x7b0/0x8b0 [ibmvfc]
-[c000000288d1bb70] [c0000000000d8c68] vio_bus_remove+0x68/0x100
-[c000000288d1bbb0] [c0000000007da7c4] device_release_driver_internal+0x1f4/0x2d0
-[c000000288d1bc00] [c0000000007da95c] driver_detach+0x7c/0x100
-[c000000288d1bc40] [c0000000007d8af4] bus_remove_driver+0x84/0x140
-[c000000288d1bcb0] [c0000000007db6ac] driver_unregister+0x4c/0xa0
-[c000000288d1bd20] [c0000000000d6e7c] vio_unregister_driver+0x2c/0x50
-[c000000288d1bd50] [d00000000290ba0c] cleanup_module+0x24/0x15e0 [ibmvfc]
-[c000000288d1bd70] [c0000000001dadb0] sys_delete_module+0x220/0x2d0
-[c000000288d1be30] [c00000000000b284] system_call+0x58/0x6c
-Instruction dump:
-e8410018 e87f0068 809f0078 e8bf0080 e8df0088 2fa30000 419e008c e9230200
-2fa90000 419e0080 894d098a 794a07e0 <0b0a0000> e9290008 2fa90000 419e0028
-
-This is tripped as a result of irqs being disabled during the call to
-dma_free_coherent() by ibmvfc_free_event_pool(). At this point in the code path
-we have quiesced the adapter and its overly paranoid anyways to be holding the
-host lock.
-
-Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Signed-off-by: Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+  - Restore previous and-ing logic on rc.
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 1f9f9e5af2072..0526a47e30a3f 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -4869,8 +4869,8 @@ static int ibmvfc_remove(struct vio_dev *vdev)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 8e700390f3d6..c126b94d1943 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -338,7 +338,7 @@ static int pseries_remove_mem_node(struct device_node *np)
+ static bool lmb_is_removable(struct drmem_lmb *lmb)
+ {
+ 	int i, scns_per_block;
+-	int rc = 1;
++	bool rc = true;
+ 	unsigned long pfn, block_sz;
+ 	u64 phys_addr;
  
- 	spin_lock_irqsave(vhost->host->host_lock, flags);
- 	ibmvfc_purge_requests(vhost, DID_ERROR);
--	ibmvfc_free_event_pool(vhost);
- 	spin_unlock_irqrestore(vhost->host->host_lock, flags);
-+	ibmvfc_free_event_pool(vhost);
+@@ -363,11 +363,11 @@ static bool lmb_is_removable(struct drmem_lmb *lmb)
+ 		if (!pfn_present(pfn))
+ 			continue;
  
- 	ibmvfc_free_mem(vhost);
- 	spin_lock(&ibmvfc_driver_lock);
+-		rc &= is_mem_section_removable(pfn, PAGES_PER_SECTION);
++		rc = rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
+ 		phys_addr += MIN_MEMORY_BLOCK_SIZE;
+ 	}
+ 
+-	return rc ? true : false;
++	return rc;
+ }
+ 
+ static int dlpar_add_lmb(struct drmem_lmb *);
 -- 
 2.20.1
 
