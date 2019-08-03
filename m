@@ -2,76 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CD5800F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2019 21:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 419FF804C4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2019 08:50:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 460cjN3gRFzDrCl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2019 05:31:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 460vm430yCzDr1q
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2019 16:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 460cg11LN3zDrCP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2019 05:29:32 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x72JRP27012252
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 2 Aug 2019 15:29:30 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u4sk2c075-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 15:29:30 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x72JOJeN024513
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 2 Aug 2019 19:29:29 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma03dal.us.ibm.com with ESMTP id 2u0e87g3vb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2019 19:29:29 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x72JTS3447907186
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 2 Aug 2019 19:29:28 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A392F112061
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 19:29:28 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8985E112066
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 19:29:28 +0000 (GMT)
-Received: from localhost (unknown [9.80.205.161])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2019 19:29:28 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 3/3] powerpc/pseries/mobility: use cond_resched when
- updating device tree
-Date: Fri,  2 Aug 2019 14:29:26 -0500
-Message-Id: <20190802192926.19277-4-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190802192926.19277-1-nathanl@linux.ibm.com>
-References: <20190802192926.19277-1-nathanl@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 460vkG3qT5zDrBm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2019 16:48:20 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 3208868BFE; Sat,  3 Aug 2019 08:48:13 +0200 (CEST)
+Date: Sat, 3 Aug 2019 08:48:12 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
+Message-ID: <20190803064812.GA29746@lst.de>
+References: <20190801142118.21225-1-hch@lst.de>
+ <20190801142118.21225-2-hch@lst.de>
+ <20190801162305.3m32chycsdjmdejk@willie-the-truck>
+ <20190801163457.GB26588@lst.de>
+ <20190801164411.kmsl4japtfkgvzxe@willie-the-truck>
+ <20190802081441.GA9725@lst.de>
+ <20190802103803.3qrbhqwxlasojsco@willie-the-truck>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-02_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908020205
+In-Reply-To: <20190802103803.3qrbhqwxlasojsco@willie-the-truck>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,64 +51,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Shawn Anastasio <shawn@anastas.io>, linuxppc-dev@lists.ozlabs.org,
+ Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After a partition migration, pseries_devicetree_update() processes
-changes to the device tree communicated from the platform to
-Linux. This is a relatively heavyweight operation, with multiple
-device tree searches, memory allocations, and conversations with
-partition firmware.
+On Fri, Aug 02, 2019 at 11:38:03AM +0100, Will Deacon wrote:
+> 
+> So this boils down to a terminology mismatch. The Arm architecture doesn't have
+> anything called "write combine", so in Linux we instead provide what the Arm
+> architecture calls "Normal non-cacheable" memory for pgprot_writecombine().
+> Amongst other things, this memory type permits speculation, unaligned accesses
+> and merging of writes. I found something in the architecture spec about
+> non-cachable memory, but it's written in Armglish[1].
+> 
+> pgprot_noncached(), on the other hand, provides what the architecture calls
+> Strongly Ordered or Device-nGnRnE memory. This is intended for mapping MMIO
+> (i.e. PCI config space) and therefore forbids speculation, preserves access
+> size, requires strict alignment and also forces write responses to come from
+> the endpoint.
+> 
+> I think the naming mismatch is historical, but on arm64 we wanted to use the
+> same names as arm32 so that any drivers using these things directly would get
+> the same behaviour.
 
-There's a few levels of nested loops which are bounded only by
-decisions made by the platform, outside of Linux's control, and indeed
-we have seen RCU stalls on large systems while executing this call
-graph. Use cond_resched() in these loops so that the cpu is yielded
-when needed.
+That all makes sense, but it totally needs a comment.  I'll try to draft
+one based on this.  I've also looked at the arm32 code a bit more, and
+it seems arm always (?) supported Normal non-cacheable attribute, but
+Linux only optionally uses it for arm v6+ because of fears of drivers
+missing barriers.  The other really weird things is that in arm32
+pgprot_dmacoherent incudes the L_PTE_XN bit, which from my understanding
+is the no-execture bit, but pgprot_writecombine does not.  This seems to
+not very unintentional.  So minus that the whole DMA_ATTR_WRITE_COMBІNE
+seems to be about flagging old arm specific drivers as having the proper
+barriers in places and otherwise is a no-op.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/mobility.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Here is my tentative plan:
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index fe812bebdf5e..b571285f6c14 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -9,6 +9,7 @@
- #include <linux/cpu.h>
- #include <linux/kernel.h>
- #include <linux/kobject.h>
-+#include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/stat.h>
- #include <linux/completion.h>
-@@ -207,7 +208,11 @@ static int update_dt_node(__be32 phandle, s32 scope)
- 
- 				prop_data += vd;
- 			}
-+
-+			cond_resched();
- 		}
-+
-+		cond_resched();
- 	} while (rtas_rc == 1);
- 
- 	of_node_put(dn);
-@@ -310,8 +315,12 @@ int pseries_devicetree_update(s32 scope)
- 					add_dt_node(phandle, drc_index);
- 					break;
- 				}
-+
-+				cond_resched();
- 			}
- 		}
-+
-+		cond_resched();
- 	} while (rc == 1);
- 
- 	kfree(rtas_buf);
--- 
-2.20.1
-
+ - respin this patch with a small fix to handle the
+   DMA_ATTR_NON_CONSISTENT (as in ignore it unless actually supported),
+   but keep the name as-is to avoid churn.  This should allow 5.3
+   inclusion and backports
+ - remove DMA_ATTR_WRITE_COMBINE support from mips, probably also 5.3
+   material.
+ - move all architectures but arm over to just define
+   pgprot_dmacoherent, including a comment with the above explanation
+   for arm64.
+ - make DMA_ATTR_WRITE_COMBINE a no-op and schedule it for removal,
+   thus removing the last instances of arch_dma_mmap_pgprot
