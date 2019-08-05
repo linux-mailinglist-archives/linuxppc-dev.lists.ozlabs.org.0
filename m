@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F2480FD4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 02:44:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A6A80FC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 02:36:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 461zNF1tvfzDqXG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 10:36:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 461zY25ssmzDqWh
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 10:44:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,27 +19,28 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 461zLC4KYlzDqTv
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 10:34:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 461zVs5l2lzDqWf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 10:42:13 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 24B6A28821
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 00:34:39 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id DA3B1287FB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 00:42:11 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 107302882C; Mon,  5 Aug 2019 00:34:39 +0000 (UTC)
+ id CE8F928830; Mon,  5 Aug 2019 00:42:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
+ NO_RELAYS autolearn=unavailable version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204479] KASAN hit at modprobe zram
-Date: Mon, 05 Aug 2019 00:34:37 +0000
-X-Bugzilla-Reason: CC
+Subject: [Bug 204375] kernel 5.2.4 w. KASAN enabled fails to boot on a
+ PowerMac G4 3,6 at very early stage
+Date: Mon, 05 Aug 2019 00:42:10 +0000
+X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: Flash/Memory Technology Devices
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
@@ -47,12 +48,12 @@ X-Bugzilla-Who: erhard_f@mailbox.org
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: dwmw2@infradead.org
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-204479-206035-Tkg5nGNc0S@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204479-206035@https.bugzilla.kernel.org/>
-References: <bug-204479-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204375-206035-SFqrPU65la@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204375-206035@https.bugzilla.kernel.org/>
+References: <bug-204375-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -74,15 +75,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204479
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204375
 
-Erhard F. (erhard_f@mailbox.org) changed:
-
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |linuxppc-dev@lists.ozlabs.o
-                   |                            |rg
+--- Comment #14 from Erhard F. (erhard_f@mailbox.org) ---
+With radeon.ko module removed the G4 DP continues and finishes booting with
+KASAN. So this one seems fixed. Thanks!
 
 --=20
 You are receiving this mail because:
-You are on the CC list for the bug.=
+You are watching the assignee of the bug.=
