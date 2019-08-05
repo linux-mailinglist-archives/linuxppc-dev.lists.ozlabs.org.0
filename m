@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1581287
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 08:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B848812A0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 08:59:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4627bs0xRLzDqVl
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 16:47:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4627sn21MLzDqhb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 16:59:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46278P5rvRzDqV3
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46278X3QFgzDqXf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:52 +1000 (AEST)
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 356A26152D7CDC293207;
+ by Forcepoint Email with ESMTP id 3B389BDC3C4B824952CB;
  Mon,  5 Aug 2019 14:26:37 +0800 (CST)
 Received: from huawei.com (10.175.124.28) by DGGEMS414-HUB.china.huawei.com
  (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Mon, 5 Aug 2019
- 14:26:30 +0800
+ 14:26:28 +0800
 From: Jason Yan <yanaijie@huawei.com>
 To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
  <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [PATCH v4 05/10] powerpc/fsl_booke/32: introduce reloc_kernel_entry()
- helper
-Date: Mon, 5 Aug 2019 14:43:30 +0800
-Message-ID: <20190805064335.19156-6-yanaijie@huawei.com>
+Subject: [PATCH v4 03/10] powerpc: introduce kimage_vaddr to store the kernel
+ base
+Date: Mon, 5 Aug 2019 14:43:28 +0800
+Message-ID: <20190805064335.19156-4-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20190805064335.19156-1-yanaijie@huawei.com>
 References: <20190805064335.19156-1-yanaijie@huawei.com>
@@ -61,9 +61,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new helper reloc_kernel_entry() to jump back to the start of the
-new kernel. After we put the new kernel in a randomized place we can use
-this new helper to enter the kernel and begin to relocate again.
+Now the kernel base is a fixed value - KERNELBASE. To support KASLR, we
+need a variable to store the kernel base.
 
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 Cc: Diana Craciun <diana.craciun@nxp.com>
@@ -77,46 +76,36 @@ Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
 Tested-by: Diana Craciun <diana.craciun@nxp.com>
 ---
- arch/powerpc/kernel/head_fsl_booke.S | 13 +++++++++++++
- arch/powerpc/mm/mmu_decl.h           |  1 +
- 2 files changed, 14 insertions(+)
+ arch/powerpc/include/asm/page.h | 2 ++
+ arch/powerpc/mm/init-common.c   | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index 04d124fee17d..2083382dd662 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -1143,6 +1143,19 @@ _GLOBAL(create_tlb_entry)
- 	sync
- 	blr
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index 0d52f57fca04..60a68d3a54b1 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -315,6 +315,8 @@ void arch_free_page(struct page *page, int order);
  
-+/*
-+ * Return to the start of the relocated kernel and run again
-+ * r3 - virtual address of fdt
-+ * r4 - entry of the kernel
-+ */
-+_GLOBAL(reloc_kernel_entry)
-+	mfmsr	r7
-+	rlwinm	r7, r7, 0, ~(MSR_IS | MSR_DS)
+ struct vm_area_struct;
+ 
++extern unsigned long kimage_vaddr;
 +
-+	mtspr	SPRN_SRR0,r4
-+	mtspr	SPRN_SRR1,r7
-+	rfi
-+
- /*
-  * Create a tlb entry with the same effective and physical address as
-  * the tlb entry used by the current running code. But set the TS to 1.
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index a09f89d3aa0f..804da298beb3 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -143,6 +143,7 @@ extern void adjust_total_lowmem(void);
- extern int switch_to_as1(void);
- extern void restore_to_as0(int esel, int offset, void *dt_ptr, int bootcpu);
- void create_tlb_entry(phys_addr_t phys, unsigned long virt, int entry);
-+void reloc_kernel_entry(void *fdt, int addr);
- #endif
- extern void loadcam_entry(unsigned int index);
- extern void loadcam_multi(int first_idx, int num, int tmp_idx);
+ #include <asm-generic/memory_model.h>
+ #endif /* __ASSEMBLY__ */
+ #include <asm/slice.h>
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index 152ae0d21435..d4801ce48dc5 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -25,6 +25,8 @@ phys_addr_t memstart_addr = (phys_addr_t)~0ull;
+ EXPORT_SYMBOL_GPL(memstart_addr);
+ phys_addr_t kernstart_addr;
+ EXPORT_SYMBOL_GPL(kernstart_addr);
++unsigned long kimage_vaddr = KERNELBASE;
++EXPORT_SYMBOL_GPL(kimage_vaddr);
+ 
+ static bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
+ static bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
 -- 
 2.17.2
 
