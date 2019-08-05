@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1581287
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 08:47:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A3281288
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 08:49:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4627fH26MWzDqVP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 16:49:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4627bs0xRLzDqVl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 16:47:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46278Q5rzhzDqG0
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46278P5rvRzDqV3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:45 +1000 (AEST)
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 28FC4A35ABC050BAC3FA;
+ by Forcepoint Email with ESMTP id 356A26152D7CDC293207;
  Mon,  5 Aug 2019 14:26:37 +0800 (CST)
 Received: from huawei.com (10.175.124.28) by DGGEMS414-HUB.china.huawei.com
  (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Mon, 5 Aug 2019
- 14:26:29 +0800
+ 14:26:30 +0800
 From: Jason Yan <yanaijie@huawei.com>
 To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
  <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [PATCH v4 04/10] powerpc/fsl_booke/32: introduce create_tlb_entry()
+Subject: [PATCH v4 05/10] powerpc/fsl_booke/32: introduce reloc_kernel_entry()
  helper
-Date: Mon, 5 Aug 2019 14:43:29 +0800
-Message-ID: <20190805064335.19156-5-yanaijie@huawei.com>
+Date: Mon, 5 Aug 2019 14:43:30 +0800
+Message-ID: <20190805064335.19156-6-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20190805064335.19156-1-yanaijie@huawei.com>
 References: <20190805064335.19156-1-yanaijie@huawei.com>
@@ -61,9 +61,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new helper create_tlb_entry() to create a tlb entry by the virtual
-and physical address. This is a preparation to support boot kernel at a
-randomized address.
+Add a new helper reloc_kernel_entry() to jump back to the start of the
+new kernel. After we put the new kernel in a randomized place we can use
+this new helper to enter the kernel and begin to relocate again.
 
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 Cc: Diana Craciun <diana.craciun@nxp.com>
@@ -77,59 +77,43 @@ Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
 Tested-by: Diana Craciun <diana.craciun@nxp.com>
 ---
- arch/powerpc/kernel/head_fsl_booke.S | 29 ++++++++++++++++++++++++++++
+ arch/powerpc/kernel/head_fsl_booke.S | 13 +++++++++++++
  arch/powerpc/mm/mmu_decl.h           |  1 +
- 2 files changed, 30 insertions(+)
+ 2 files changed, 14 insertions(+)
 
 diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index adf0505dbe02..04d124fee17d 100644
+index 04d124fee17d..2083382dd662 100644
 --- a/arch/powerpc/kernel/head_fsl_booke.S
 +++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -1114,6 +1114,35 @@ __secondary_hold_acknowledge:
- 	.long	-1
- #endif
+@@ -1143,6 +1143,19 @@ _GLOBAL(create_tlb_entry)
+ 	sync
+ 	blr
  
 +/*
-+ * Create a 64M tlb by address and entry
-+ * r3/r4 - physical address
-+ * r5 - virtual address
-+ * r6 - entry
++ * Return to the start of the relocated kernel and run again
++ * r3 - virtual address of fdt
++ * r4 - entry of the kernel
 + */
-+_GLOBAL(create_tlb_entry)
-+	lis     r7,0x1000               /* Set MAS0(TLBSEL) = 1 */
-+	rlwimi  r7,r6,16,4,15           /* Setup MAS0 = TLBSEL | ESEL(r6) */
-+	mtspr   SPRN_MAS0,r7            /* Write MAS0 */
++_GLOBAL(reloc_kernel_entry)
++	mfmsr	r7
++	rlwinm	r7, r7, 0, ~(MSR_IS | MSR_DS)
 +
-+	lis     r6,(MAS1_VALID|MAS1_IPROT)@h
-+	ori     r6,r6,(MAS1_TSIZE(BOOK3E_PAGESZ_64M))@l
-+	mtspr   SPRN_MAS1,r6            /* Write MAS1 */
-+
-+	lis     r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@h
-+	ori     r6,r6,MAS2_EPN_MASK(BOOK3E_PAGESZ_64M)@l
-+	and     r6,r6,r5
-+	ori	r6,r6,MAS2_M@l
-+	mtspr   SPRN_MAS2,r6            /* Write MAS2(EPN) */
-+
-+	ori     r8,r4,(MAS3_SW|MAS3_SR|MAS3_SX)
-+	mtspr   SPRN_MAS3,r8            /* Write MAS3(RPN) */
-+
-+	tlbwe                           /* Write TLB */
-+	isync
-+	sync
-+	blr
++	mtspr	SPRN_SRR0,r4
++	mtspr	SPRN_SRR1,r7
++	rfi
 +
  /*
   * Create a tlb entry with the same effective and physical address as
   * the tlb entry used by the current running code. But set the TS to 1.
 diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index 32c1a191c28a..a09f89d3aa0f 100644
+index a09f89d3aa0f..804da298beb3 100644
 --- a/arch/powerpc/mm/mmu_decl.h
 +++ b/arch/powerpc/mm/mmu_decl.h
-@@ -142,6 +142,7 @@ extern unsigned long calc_cam_sz(unsigned long ram, unsigned long virt,
- extern void adjust_total_lowmem(void);
+@@ -143,6 +143,7 @@ extern void adjust_total_lowmem(void);
  extern int switch_to_as1(void);
  extern void restore_to_as0(int esel, int offset, void *dt_ptr, int bootcpu);
-+void create_tlb_entry(phys_addr_t phys, unsigned long virt, int entry);
+ void create_tlb_entry(phys_addr_t phys, unsigned long virt, int entry);
++void reloc_kernel_entry(void *fdt, int addr);
  #endif
  extern void loadcam_entry(unsigned int index);
  extern void loadcam_multi(int first_idx, int num, int tmp_idx);
