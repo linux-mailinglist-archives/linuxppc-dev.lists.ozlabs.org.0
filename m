@@ -2,37 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034AC8159A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 11:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C0281639
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 12:01:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462CNF3VjJzDqYd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 19:37:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462CwH3MY3zDqMg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 20:01:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=rjwysocki.net
+ (client-ip=79.96.170.134; helo=cloudserver094114.home.pl;
+ envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl
+ [79.96.170.134])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462CL83Pd5zDq9y
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 19:35:28 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 462CL73Nknz9sDB;
- Mon,  5 Aug 2019 19:35:27 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.3-3 tag
-In-Reply-To: <CAADWXX-B=twNfqs=2hbp0UFpnhqmUDMFZA3tjXFEjDp2dAD_YA@mail.gmail.com>
-References: <87a7cpw3on.fsf@concordia.ellerman.id.au>
- <CAADWXX-B=twNfqs=2hbp0UFpnhqmUDMFZA3tjXFEjDp2dAD_YA@mail.gmail.com>
-Date: Mon, 05 Aug 2019 19:35:25 +1000
-Message-ID: <877e7svtsy.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462Csb5VGgzDqW2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 19:59:14 +1000 (AEST)
+Received: from 79.184.254.29.ipv4.supernova.orange.pl (79.184.254.29) (HELO
+ kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.275)
+ id a3463300b674835e; Mon, 5 Aug 2019 11:59:09 +0200
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Ran Wang <ran.wang_1@nxp.com>
+Subject: Re: [PATCH v5 1/3] PM: wakeup: Add routine to help fetch wakeup
+ source object.
+Date: Mon, 05 Aug 2019 11:59:09 +0200
+Message-ID: <4158639.B12JYek7R7@kreacher>
+In-Reply-To: <20190724074722.12270-1-ran.wang_1@nxp.com>
+References: <20190724074722.12270-1-ran.wang_1@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,40 +47,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, santosh@fossix.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Christian Brauner <christian@brauner.io>
+Cc: Mark Rutland <mark.rutland@arm.com>, Li Biwen <biwen.li@nxp.com>,
+ Len Brown <len.brown@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+ devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
-> On Sun, Aug 4, 2019 at 4:49 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Please pull some more powerpc fixes for 5.3:
->
-> Hmm. This was caught by the gmail spam-filter for some reason. I don't
-> see anything particularly different from your normal pull requests, so
-> don't ask me why.
->
-> The fact that you have no email authentication (dkim/spf/whatever) for
-> your email address tends to make gmail more suspicious of emails, so
-> it's probably then some random other pattern that just happened to
-> trigger it.
->
-> I do check my spam fairly religiously, so it's not like it's usually a
-> problem - and I obviously marked it as ham to hopefully teach gmail
-> the error of its ways. So this is just a heads up.
+On Wednesday, July 24, 2019 9:47:20 AM CEST Ran Wang wrote:
+> Some user might want to go through all registered wakeup sources
+> and doing things accordingly. For example, SoC PM driver might need to
+> do HW programming to prevent powering down specific IP which wakeup
+> source depending on. So add this API to help walk through all registered
+> wakeup source objects on that list and return them one by one.
+> 
+> Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+> ---
+> Change in v5:
+> 	- Update commit message, add decription of walk through all wakeup
+> 	source objects.
+> 	- Add SCU protection in function wakeup_source_get_next().
+> 	- Rename wakeup_source member 'attached_dev' to 'dev' and move it up
+> 	(before wakeirq).
+> 
+> Change in v4:
+> 	- None.
+> 
+> Change in v3:
+> 	- Adjust indentation of *attached_dev;.
+> 
+> Change in v2:
+> 	- None.
+> 
+>  drivers/base/power/wakeup.c | 24 ++++++++++++++++++++++++
+>  include/linux/pm_wakeup.h   |  3 +++
+>  2 files changed, 27 insertions(+)
+> 
+> diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
+> index ee31d4f..2fba891 100644
+> --- a/drivers/base/power/wakeup.c
+> +++ b/drivers/base/power/wakeup.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/suspend.h>
+>  #include <linux/seq_file.h>
+>  #include <linux/debugfs.h>
+> +#include <linux/of_device.h>
+>  #include <linux/pm_wakeirq.h>
+>  #include <trace/events/power.h>
+>  
+> @@ -226,6 +227,28 @@ void wakeup_source_unregister(struct wakeup_source *ws)
+>  	}
+>  }
+>  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
+> +/**
+> + * wakeup_source_get_next - Get next wakeup source from the list
+> + * @ws: Previous wakeup source object, null means caller want first one.
+> + */
+> +struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws)
+> +{
+> +	struct list_head *ws_head = &wakeup_sources;
+> +	struct wakeup_source *next_ws = NULL;
+> +	int idx;
+> +
+> +	idx = srcu_read_lock(&wakeup_srcu);
+> +	if (ws)
+> +		next_ws = list_next_or_null_rcu(ws_head, &ws->entry,
+> +				struct wakeup_source, entry);
+> +	else
+> +		next_ws = list_entry_rcu(ws_head->next,
+> +				struct wakeup_source, entry);
+> +	srcu_read_unlock(&wakeup_srcu, idx);
+> +
 
-Thanks.
+This is incorrect.
 
-> But if you do have the possibility of enabling DKIM or similar on
-> ellerman.id.au, then that is always a good thing, of course. I hate
-> spam, even even if DKIM and friends certainly aren't perfect, they are
-> better than nothing.
+The SRCU cannot be unlocked until the caller of this is done
+with the object returned by it, or that object can be freed
+while it is still being accessed.
 
-I'll talk to sfr about getting DKIM/SPF setup, he's the brains behind my
-mail setup.
+Besides, this patch conflicts with some general wakeup sources
+changes in the works, so it needs to be deferred and rebased on
+top of those changes.
 
-cheers
+> +	return next_ws;
+> +}
+> +EXPORT_SYMBOL_GPL(wakeup_source_get_next);
+>  
+>  /**
+>   * device_wakeup_attach - Attach a wakeup source object to a device object.
+> @@ -242,6 +265,7 @@ static int device_wakeup_attach(struct device *dev, struct wakeup_source *ws)
+>  		return -EEXIST;
+>  	}
+>  	dev->power.wakeup = ws;
+> +	ws->dev = dev;
+>  	if (dev->power.wakeirq)
+>  		device_wakeup_attach_irq(dev, dev->power.wakeirq);
+>  	spin_unlock_irq(&dev->power.lock);
+> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
+> index 9102760..fc23c1a 100644
+> --- a/include/linux/pm_wakeup.h
+> +++ b/include/linux/pm_wakeup.h
+> @@ -23,6 +23,7 @@ struct wake_irq;
+>   * @name: Name of the wakeup source
+>   * @entry: Wakeup source list entry
+>   * @lock: Wakeup source lock
+> + * @dev: The device it attached to
+>   * @wakeirq: Optional device specific wakeirq
+>   * @timer: Wakeup timer list
+>   * @timer_expires: Wakeup timer expiration
+> @@ -42,6 +43,7 @@ struct wakeup_source {
+>  	const char 		*name;
+>  	struct list_head	entry;
+>  	spinlock_t		lock;
+> +	struct device		*dev;
+>  	struct wake_irq		*wakeirq;
+>  	struct timer_list	timer;
+>  	unsigned long		timer_expires;
+> @@ -88,6 +90,7 @@ extern void wakeup_source_add(struct wakeup_source *ws);
+>  extern void wakeup_source_remove(struct wakeup_source *ws);
+>  extern struct wakeup_source *wakeup_source_register(const char *name);
+>  extern void wakeup_source_unregister(struct wakeup_source *ws);
+> +extern struct wakeup_source *wakeup_source_get_next(struct wakeup_source *ws);
+>  extern int device_wakeup_enable(struct device *dev);
+>  extern int device_wakeup_disable(struct device *dev);
+>  extern void device_set_wakeup_capable(struct device *dev, bool capable);
+> 
+
+
+
+
