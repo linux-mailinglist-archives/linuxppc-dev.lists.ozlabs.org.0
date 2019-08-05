@@ -2,79 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BCF813F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 10:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A6C8146F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 10:49:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4629Sw0qkjzDqtd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 18:11:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462BJZ6zYSzDqvv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 18:49:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=cogentembedded.com
- (client-ip=2a00:1450:4864:20::241; helo=mail-lj1-x241.google.com;
- envelope-from=sergei.shtylyov@cogentembedded.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=cogentembedded.com
+ spf=pass (mailfrom) smtp.mailfrom=alliedtelesis.co.nz
+ (client-ip=2001:df5:b000:5::4; helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=cogentembedded-com.20150623.gappssmtp.com
- header.i=@cogentembedded-com.20150623.gappssmtp.com header.b="OKXu80bh"; 
- dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.b="D2Llkz2O"; dkim-atps=neutral
+X-Greylist: delayed 44084 seconds by postgrey-1.36 at bilbo;
+ Mon, 05 Aug 2019 18:47:20 AEST
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [IPv6:2001:df5:b000:5::4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4629Mg5zYpzDqfV
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 18:06:36 +1000 (AEST)
-Received: by mail-lj1-x241.google.com with SMTP id t28so78486267lje.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Aug 2019 01:06:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=4jotGUYX3HDjIjrPWkq93S31gJkGTLLQx5i8QIerKxE=;
- b=OKXu80bhtKFjmm2MpkIDYVWmXqi7Y+Xjky/uEczjP2Zl5b7vO97lSZ4GxsSOJjZduQ
- VgPXNXexmCAKG6Z+637VhMExKFfEjxuDw3H3mRcIbO3qLRCxF1TJiOxHnvXkyL1xl5hz
- 9tSzcuFZEaM47GjqXTJ6n5YnEqhbYAzKlpVrDHKCy9VeCfnp53elgyy+VMv+lz31Ers7
- Eic301vKwslj47MtbPz81DyzufZoA3sVB/fmBoMeBi2wwb65qyfXQctIncrR9gNzSMvv
- ew3Ty0ZvYjqCUhy9kY7gTZ+iW4B61AZpbS675ligIs/I+dyRKPx83vFtsSrTsvbz0lFJ
- WX4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=4jotGUYX3HDjIjrPWkq93S31gJkGTLLQx5i8QIerKxE=;
- b=Joy4Dqm5TaZsePNEz70rmFgCz0qevH1VN8IcW3C56n2EjA20pUNHTaKxR9KwULlVj6
- 8nwPjlNxR+WLPKrjhEtmP5x/x3ciGMF+YlZKZGlzGIOOeIpI5Y0ajCx7R6Xk6XU+SzIC
- UvmE5cm0q6rfHiw6ppsBpxdvB95eQyY7MGyKynBYdVUAa99gT2avImIt98McKHtFlcB2
- UaGe0aV2L+RsHHbkc/hR00awpHyBGSU1HKCOQQqd2pmg96ZGmLN5Rhr0P2cnwtTve6/X
- Dk5ejTPEigW6tVS6Yowfc5arkprAq5yaojDbQIV1Z8wvv3jcVt1RJiDMpYhsA7VkNOxb
- 9M8w==
-X-Gm-Message-State: APjAAAW+0stiZiazEgLxT2EZh07HOZJAqC1fC0uT92E0Jh9z961WgCBd
- FmlmsyFcCnf87+/wDRJrW8bgBw==
-X-Google-Smtp-Source: APXvYqyZpQSVk777vhC2lpS6B8C38YOlvgzOQV2vQdpdrwUMZBvpR5l2r7dZg3bY6N4q4hVA/QRa0Q==
-X-Received: by 2002:a2e:9b48:: with SMTP id o8mr78054712ljj.122.1564992392086; 
- Mon, 05 Aug 2019 01:06:32 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:44f5:2f9a:806:ec14:8a98:a30c?
- ([2a00:1fa0:44f5:2f9a:806:ec14:8a98:a30c])
- by smtp.gmail.com with ESMTPSA id l24sm17213019lji.78.2019.08.05.01.06.30
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 05 Aug 2019 01:06:31 -0700 (PDT)
-Subject: Re: [PATCH 2/2] MIPS: remove support for DMA_ATTR_WRITE_COMBINE
-To: Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-References: <20190805080145.5694-1-hch@lst.de>
- <20190805080145.5694-3-hch@lst.de>
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <f02604c5-dbea-e64e-cfb7-3a002b0da9a6@cogentembedded.com>
-Date: Mon, 5 Aug 2019 11:06:24 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190805080145.5694-3-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462BGc1fT5zDqdn
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 18:47:19 +1000 (AEST)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 61A9A806B6;
+ Mon,  5 Aug 2019 20:47:13 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1564994833;
+ bh=ZLsG/GZIaKCDY5oiWEWm3v4NszB63MKwFnCPRkxN+s4=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=D2Llkz2OggG/yITf7D3x9JF5wPV5VH7aXQmWDrPavnVvL3oePcrdB9XA+DLngl28e
+ 1jS6eHmSkxyuDFbkf/FgCKbCJoNl0ku/IP2WaPfWNTKfECPCgc+zy9FV74essdJvtp
+ e1uobtRuISG2VmkmP+ENnx6LjFQCPWJ6PTzBkBpSS/HvB2UYjzP0XAQbsu/5Bj37mV
+ FUBjV8wpaT50cAIlFxekrNGsVg7q6EFvrh8SwmAWsD99uArHGIvqLO7d3c30Y0IKZP
+ l+01PTiud3g0PmTfwF5Tr9nlBFWbcDIiw5KEyAsEMXegyq3AF0/Q7w4RL5ujdV+mMz
+ 6eaOUeAzIFjBQ==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
+ mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5d47ed0c0000>; Mon, 05 Aug 2019 20:47:13 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
+ (TLS) id 15.0.1156.6; Mon, 5 Aug 2019 20:47:08 +1200
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1156.000; Mon, 5 Aug 2019 20:47:08 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>, "npiggin@gmail.com" <npiggin@gmail.com>
+Subject: Re: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
+Thread-Topic: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
+Thread-Index: AQHVSzJiQ9f053Ig/kuwEclH36qTsqbrdSqA
+Date: Mon, 5 Aug 2019 08:47:07 +0000
+Message-ID: <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
+References: <1564970785.27215.29.camel@alliedtelesis.co.nz>
+In-Reply-To: <1564970785.27215.29.camel@alliedtelesis.co.nz>
+Accept-Language: en-NZ, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.14.96]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E2C6A9928DF50A44984766BAC819915F@atlnz.lc>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,36 +84,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, Will Deacon <will@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Catalin Marinas <catalin.marinas@arm.com>,
- James Hogan <jhogan@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Grant
+ McEwan <grant.mcewan@alliedtelesis.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
-
-On 05.08.2019 11:01, Christoph Hellwig wrote:
-
-> Mips uses the KSEG1 kernel memory segment do map dma coherent
-
-     MIPS. s/do/to/?
-
-> allocations for n
-
-on-coherent devices as uncachable, and does not have
-
-    Uncacheable?
-
-> any kind of special support for DMA_ATTR_WRITE_COMBINE in the allocation
-> path.  Thus supporting DMA_ATTR_WRITE_COMBINE in dma_mmap_attrs will
-> lead to multiple mappings with different caching attributes.
-> 
-> Fixes: 8c172467be36 ("MIPS: Add implementation of dma_map_ops.mmap()")
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-[...]
-
-MBR, Sergei
+T24gTW9uLCAyMDE5LTA4LTA1IGF0IDE0OjA2ICsxMjAwLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0K
+PiBIaSBBbGwsDQo+IA0KPiBJIGhhdmUgYSBjdXN0b20gYm9hcmQgdGhhdCB1c2VzIHRoZSBGcmVl
+c2NhbGUvTlhQIFQyMDgwIFNvQy4NCj4gDQo+IFRoZSBib2FyZCBib290cyBmaW5lIHVzaW5nIHY0
+LjE5LjYwIGJ1dCB3aGVuIEkgdXNlIHY1LjEuMjEgaXQgbG9ja3MNCj4gdXANCj4gd2FpdGluZyBm
+b3IgdGhlIG90aGVyIENQVXMgdG8gY29tZSBvbmxpbmUgKGVhcmx5cHJpbnRrIG91dHB1dCBiZWxv
+dykuDQo+IElmIEkgc2V0IG1heGNwdXM9MCB0aGVuIHRoZSBzeXN0ZW0gYm9vdHMgYWxsIHRoZSB3
+YXkgdGhyb3VnaCB0bw0KPiB1c2VybGFuZC4gVGhlIHNhbWUgdGhpbmcgaGFwcGVucyB3aXRoIDUu
+My1yYzIuDQo+IA0KPiBUaGUgZGVmY29uZmlnIEknbSB1c2luZyBpcyANCj4gaHR0cHM6Ly9naXN0
+LmdpdGh1Yi5jb20vY3BhY2toYW0vZjI0ZDBiNDI2ZjMNCj4gZGUwZWFhYmExN2I4MmMzNTI4YTlk
+IGl0IHdhcyB1cGRhdGVkIGZyb20gdGhlIHdvcmtpbmcgdjQuMTkuNjANCj4gZGVmY29uZmlnIHVz
+aW5nIG1ha2Ugb2xkZGVmY29uZmlnLg0KPiANCj4gRG9lcyB0aGlzIHJpbmcgYW55IGJlbGxzIGZv
+ciBhbnlvbmU/DQo+IA0KPiBJIGhhdmVuJ3QgZHVnIGludG8gdGhlIGRpZmZlcmVuY2VzIGJldHdl
+ZW4gdGhlIHdvcmtpbmcgYW4gbm9uLXdvcmtpbmcNCj4gdmVyc2lvbnMgeWV0LiBJJ2xsIHN0YXJ0
+IGxvb2tpbmcgbm93Lg0KDQpJJ3ZlIGJpc2VjdGVkIHRoaXMgdG8gdGhlIGZvbGxvd2luZyBjb21t
+aXQNCg0KY29tbWl0IGVkMWNkNmRlYjAxM2ExMTk1OWQxN2E5NGUzNWNlMTU5MTk3NjMyZGENCkF1
+dGhvcjogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+DQpEYXRlOiAg
+IFRodSBKYW4gMzEgMTA6MDg6NTggMjAxOSArMDAwMA0KDQogICAgcG93ZXJwYzogQWN0aXZhdGUg
+Q09ORklHX1RIUkVBRF9JTkZPX0lOX1RBU0sNCiAgICANCiAgICBUaGlzIHBhdGNoIGFjdGl2YXRl
+cyBDT05GSUdfVEhSRUFEX0lORk9fSU5fVEFTSyB3aGljaA0KICAgIG1vdmVzIHRoZSB0aHJlYWRf
+aW5mbyBpbnRvIHRhc2tfc3RydWN0Lg0KDQpJJ2xsIGJlIHRoZSBmaXJzdCB0byBhZG1pdCB0aGlz
+IGlzIHdlbGwgYmV5b25kIG15IGFyZWEgb2Yga25vd2xlZGdlIHNvDQpJJ20gdW5zdXJlIHdoYXQg
+YWJvdXQgdGhpcyBwYXRjaCBpcyBwcm9ibGVtYXRpYyBidXQgSSBjYW4gYmUgZmFpcmx5DQpzdXJl
+IHRoYXQgYSBidWlsZCBpbW1lZGlhdGVseSBiZWZvcmUgdGhpcyBwYXRjaCB3b3JrcyB3aGlsZSBh
+IGJ1aWxkDQp3aXRoIHRoaXMgcGF0Y2ggaGFuZ3MuDQoNCj4gDQo+IEJvb3RpbmcuLi4NCj4gTU1V
+OiBTdXBwb3J0ZWQgcGFnZSBzaXplcw0KPiAgICAgICAgICA0IEtCIGFzIGRpcmVjdA0KPiAgICAg
+ICAyMDQ4IEtCIGFzIGRpcmVjdCAmIGluZGlyZWN0DQo+ICAgICAgIDQwOTYgS0IgYXMgZGlyZWN0
+DQo+ICAgICAgMTYzODQgS0IgYXMgZGlyZWN0DQo+ICAgICAgNjU1MzYgS0IgYXMgZGlyZWN0DQo+
+ICAgICAyNjIxNDQgS0IgYXMgZGlyZWN0DQo+ICAgIDEwNDg1NzYgS0IgYXMgZGlyZWN0DQo+IE1N
+VTogQm9vazNFIEhXIHRhYmxld2FsayBlbmFibGVkDQo+IExpbnV4IHZlcnNpb24gNS4xLjIxLWF0
+MSsgKEBjaHJpc3AtZGwpIChnY2MgdmVyc2lvbiA0LjkuMyAoY3Jvc3N0b29sLQ0KPiBORyANCj4g
+Y3Jvc3N0b29sLW5nLTEuMjIuMCkpICMyNCBTTVAgUFJFRU1QVCBNb24gQXVnIDUgMDE6NDI6MDAg
+VVRDIDIwMTkNCj4gRm91bmQgaW5pdHJkIGF0IDB4YzAwMDAwMDAyZjA0NTAwMDoweGMwMDAwMDAw
+MzAwMDAwMDANCj4gVXNpbmcgQ29yZU5ldCBHZW5lcmljIG1hY2hpbmUgZGVzY3JpcHRpb24NCj4g
+Rm91bmQgbGVnYWN5IHNlcmlhbCBwb3J0IDAgZm9yIC9zb2NAZmZlMDAwMDAwL3NlcmlhbEAxMWM1
+MDANCj4gICBtZW09ZmZlMTFjNTAwLCB0YWRkcj1mZmUxMWM1MDAsIGlycT0wLCBjbGs9MzAwMDAw
+MDAwLCBzcGVlZD0wDQo+IEZvdW5kIGxlZ2FjeSBzZXJpYWwgcG9ydCAxIGZvciAvc29jQGZmZTAw
+MDAwMC9zZXJpYWxAMTFjNjAwDQo+ICAgbWVtPWZmZTExYzYwMCwgdGFkZHI9ZmZlMTFjNjAwLCBp
+cnE9MCwgY2xrPTMwMDAwMDAwMCwgc3BlZWQ9MA0KPiBGb3VuZCBsZWdhY3kgc2VyaWFsIHBvcnQg
+MiBmb3IgL3NvY0BmZmUwMDAwMDAvc2VyaWFsQDExZDUwMA0KPiAgIG1lbT1mZmUxMWQ1MDAsIHRh
+ZGRyPWZmZTExZDUwMCwgaXJxPTAsIGNsaz0zMDAwMDAwMDAsIHNwZWVkPTANCj4gRm91bmQgbGVn
+YWN5IHNlcmlhbCBwb3J0IDMgZm9yIC9zb2NAZmZlMDAwMDAwL3NlcmlhbEAxMWQ2MDANCj4gICBt
+ZW09ZmZlMTFkNjAwLCB0YWRkcj1mZmUxMWQ2MDAsIGlycT0wLCBjbGs9MzAwMDAwMDAwLCBzcGVl
+ZD0wDQo+IHByaW50azogYm9vdGNvbnNvbGUgW3VkYmcwXSBlbmFibGVkDQo+IENQVSBtYXBzIGlu
+aXRpYWxpemVkIGZvciAyIHRocmVhZHMgcGVyIGNvcmUNCj4gICh0aHJlYWQgc2hpZnQgaXMgMSkN
+Cj4gQWxsb2NhdGVkIDE4NTYgYnl0ZXMgZm9yIDggcGFjYXMNCj4gLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gcGh5c19tZW1fc2l6ZSAgICAg
+PSAweDEwMDAwMDAwMA0KPiBkY2FjaGVfYnNpemUgICAgICA9IDB4NDANCj4gaWNhY2hlX2JzaXpl
+ICAgICAgPSAweDQwDQo+IGNwdV9mZWF0dXJlcyAgICAgID0gMHgwMDAwMDAwMzAwOTAwM2I2DQo+
+ICAgcG9zc2libGUgICAgICAgID0gMHgwMDAwMDAwMzAwOTAwM2I2DQo+ICAgYWx3YXlzICAgICAg
+ICAgID0gMHgwMDAwMDAwMzAwODAwM2I0DQo+IGNwdV91c2VyX2ZlYXR1cmVzID0gMHhkYzAwODAw
+MCAweDA4MDAwMDAwDQo+IG1tdV9mZWF0dXJlcyAgICAgID0gMHgwMDBhMDAxMA0KPiBmaXJtd2Fy
+ZV9mZWF0dXJlcyA9IDB4MDAwMDAwMDAwMDAwMDAwMA0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiBDb3JlTmV0IEdlbmVyaWMgYm9hcmQN
+Cj4gYmFycmllci1ub3NwZWM6IHVzaW5nIGlzeW5jOyBzeW5jIGFzIHNwZWN1bGF0aW9uIGJhcnJp
+ZXINCj4gYmFycmllci1ub3NwZWM6IHBhdGNoZWQgNDEyIGxvY2F0aW9ucw0KPiBUb3Agb2YgUkFN
+OiAweDEwMDAwMDAwMCwgVG90YWwgUkFNOiAweDEwMDAwMDAwMA0KPiBNZW1vcnkgaG9sZSBzaXpl
+OiAwTUINCj4gWm9uZSByYW5nZXM6DQo+ICAgRE1BICAgICAgW21lbSAweDAwMDAwMDAwMDAwMDAw
+MDAtMHgwMDAwMDAwMDdmZmZlZmZmXQ0KPiAgIE5vcm1hbCAgIFttZW0gMHgwMDAwMDAwMDdmZmZm
+MDAwLTB4MDAwMDAwMDBmZmZmZmZmZl0NCj4gTW92YWJsZSB6b25lIHN0YXJ0IGZvciBlYWNoIG5v
+ZGUNCj4gRWFybHkgbWVtb3J5IG5vZGUgcmFuZ2VzDQo+ICAgbm9kZSAgIDA6IFttZW0gMHgwMDAw
+MDAwMDAwMDAwMDAwLTB4MDAwMDAwMDBmZmZmZmZmZl0NCj4gSW5pdG1lbSBzZXR1cCBub2RlIDAg
+W21lbSAweDAwMDAwMDAwMDAwMDAwMDAtMHgwMDAwMDAwMGZmZmZmZmZmXQ0KPiBPbiBub2RlIDAg
+dG90YWxwYWdlczogMTA0ODU3Ng0KPiAgIERNQSB6b25lOiA3MTY4IHBhZ2VzIHVzZWQgZm9yIG1l
+bW1hcA0KPiAgIERNQSB6b25lOiAwIHBhZ2VzIHJlc2VydmVkDQo+ICAgRE1BIHpvbmU6IDUyNDI4
+NyBwYWdlcywgTElGTyBiYXRjaDo2Mw0KPiAgIE5vcm1hbCB6b25lOiA3MTY5IHBhZ2VzIHVzZWQg
+Zm9yIG1lbW1hcA0KPiAgIE5vcm1hbCB6b25lOiA1MjQyODkgcGFnZXMsIExJRk8gYmF0Y2g6NjMN
+Cj4gTU1VOiBBbGxvY2F0ZWQgMjExMiBieXRlcyBvZiBjb250ZXh0IG1hcHMgZm9yIDI1NSBjb250
+ZXh0cw0KPiBwZXJjcHU6IEVtYmVkZGVkIDIyIHBhZ2VzL2NwdSBzNDkzMDQgcjAgZDQwODA4IHUx
+MzEwNzINCj4gcGNwdS1hbGxvYzogczQ5MzA0IHIwIGQ0MDgwOCB1MTMxMDcyIGFsbG9jPTEqMTA0
+ODU3Ng0KPiBwY3B1LWFsbG9jOiBbMF0gMCAxIDIgMyA0IDUgNiA3IA0KPiBCdWlsdCAxIHpvbmVs
+aXN0cywgbW9iaWxpdHkgZ3JvdXBpbmcgb24uICBUb3RhbCBwYWdlczogMTAzNDIzOQ0KPiBLZXJu
+ZWwgY29tbWFuZCBsaW5lOiBjb25zb2xlPXR0eVMwLDExNTIwMCByb290PS9kZXYvcmFtMA0KPiBy
+ZWxlYXNlZmlsZT1saW51eGJveF9wcGM2NF9lNjUwMG1jLXRiMjMzLnJlbCBib290dmVyc2lvbj02
+LjIuNw0KPiBsb2dsZXZlbD04IG10ZG9vcHMubXRkZGV2PWVycmxvZw0KPiBtdGRwYXJ0cz1mZmY4
+MDAwMDAuZmxhc2g6NDA4OE0odXNlciksOE0oZXJybG9nKQ0KPiBlYXJseXByaW50az10dHlTMCwx
+MTUyMDAgcmVhbF9pbml0PQ0KPiAvYmluL3NoIHNlY3VyaXR5bGV2ZWw9MSByZWxhZGRyPTB4MTAw
+MDAwMCwxNTIyNTIzDQo+IHByaW50azogbG9nX2J1Zl9sZW4gaW5kaXZpZHVhbCBtYXggY3B1IGNv
+bnRyaWJ1dGlvbjogNDA5NiBieXRlcw0KPiBwcmludGs6IGxvZ19idWZfbGVuIHRvdGFsIGNwdV9l
+eHRyYSBjb250cmlidXRpb25zOiAyODY3MiBieXRlcw0KPiBwcmludGs6IGxvZ19idWZfbGVuIG1p
+biBzaXplOiAxNjM4NCBieXRlcw0KPiBwcmludGs6IGxvZ19idWZfbGVuOiA2NTUzNiBieXRlcw0K
+PiBwcmludGs6IGVhcmx5IGxvZyBidWYgZnJlZTogMTI0MTIoNzUlKQ0KPiBEZW50cnkgY2FjaGUg
+aGFzaCB0YWJsZSBlbnRyaWVzOiA1MjQyODggKG9yZGVyOiAxMCwgNDE5NDMwNCBieXRlcykNCj4g
+SW5vZGUtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiAyNjIxNDQgKG9yZGVyOiA5LCAyMDk3MTUy
+IGJ5dGVzKQ0KPiBNZW1vcnk6IDM5NzkyODRLLzQxOTQzMDRLIGF2YWlsYWJsZSAoODcwNEsga2Vy
+bmVsIGNvZGUsIDE1ODRLIHJ3ZGF0YSwNCj4gMjQ5Nksgcm9kYXRhLCA0NzJLIGluaXQsIDI5OUsg
+YnNzLCAyMTUwMjBLIHJlc2VydmVkLCAwSyBjbWEtcmVzZXJ2ZWQpDQo+IFNMVUI6IEhXYWxpZ249
+NjQsIE9yZGVyPTAtMywgTWluT2JqZWN0cz0wLCBDUFVzPTgsIE5vZGVzPTENCj4gcmN1OiBQcmVl
+bXB0aWJsZSBoaWVyYXJjaGljYWwgUkNVIGltcGxlbWVudGF0aW9uLg0KPiByY3U6ICAgIFJDVSBl
+dmVudCB0cmFjaW5nIGlzIGVuYWJsZWQuDQo+ICAgICAgICAgVGFza3MgUkNVIGVuYWJsZWQuDQo+
+IHJjdTogUkNVIGNhbGN1bGF0ZWQgdmFsdWUgb2Ygc2NoZWR1bGVyLWVubGlzdG1lbnQgZGVsYXkg
+aXMgMjUNCj4gamlmZmllcy4NCj4gTlJfSVJRUzogNTEyLCBucl9pcnFzOiA1MTIsIHByZWFsbG9j
+YXRlZCBpcnFzOiAxNg0KPiBtcGljOiBTZXR0aW5nIHVwIE1QSUMgIiBPcGVuUElDICAiIHZlcnNp
+b24gMS4yIGF0IGZmZTA0MDAwMCwgbWF4IDgNCj4gQ1BVcw0KPiBtcGljOiBJU1Ugc2l6ZTogNTEy
+LCBzaGlmdDogOSwgbWFzazogMWZmDQo+IG1waWM6IEluaXRpYWxpemluZyBmb3IgNTEyIHNvdXJj
+ZXMNCj4gdGltZV9pbml0OiBkZWNyZW1lbnRlciBmcmVxdWVuY3kgPSAzNy41MDAwMDAgTUh6DQo+
+IHRpbWVfaW5pdDogcHJvY2Vzc29yIGZyZXF1ZW5jeSAgID0gMTUwMC4wMDAwMDAgTUh6DQo+IGNs
+b2Nrc291cmNlOiB0aW1lYmFzZTogbWFzazogMHhmZmZmZmZmZmZmZmZmZmZmIG1heF9jeWNsZXM6
+DQo+IDB4OGE2MGRkNmE5LCBtYXhfaWRsZV9uczogNDQwNzk1MjA0MDU2IG5zDQo+IGNsb2Nrc291
+cmNlOiB0aW1lYmFzZSBtdWx0WzFhYWFhYWFiXSBzaGlmdFsyNF0gcmVnaXN0ZXJlZA0KPiBjbG9j
+a2V2ZW50OiBkZWNyZW1lbnRlciBtdWx0Wzk5OTk5OWFdIHNoaWZ0WzMyXSBjcHVbMF0NCj4gcGlk
+X21heDogZGVmYXVsdDogMzI3NjggbWluaW11bTogMzAxDQo+IE1vdW50LWNhY2hlIGhhc2ggdGFi
+bGUgZW50cmllczogODE5MiAob3JkZXI6IDQsIDY1NTM2IGJ5dGVzKQ0KPiBNb3VudHBvaW50LWNh
+Y2hlIGhhc2ggdGFibGUgZW50cmllczogODE5MiAob3JkZXI6IDQsIDY1NTM2IGJ5dGVzKQ0KPiBl
+NjUwMCBmYW1pbHkgcGVyZm9ybWFuY2UgbW9uaXRvciBoYXJkd2FyZSBzdXBwb3J0IHJlZ2lzdGVy
+ZWQNCj4gcmN1OiBIaWVyYXJjaGljYWwgU1JDVSBpbXBsZW1lbnRhdGlvbi4NCj4gc21wOiBCcmlu
+Z2luZyB1cCBzZWNvbmRhcnkgQ1BVcyAuLi4NCg==
