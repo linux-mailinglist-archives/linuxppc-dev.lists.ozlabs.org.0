@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EC3812AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 09:01:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4627wp6gXKzDqmh
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 17:01:46 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E68E6812B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 09:03:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4627z670h3zDqwT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2019 17:03:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.35; helo=huawei.com; envelope-from=yanaijie@huawei.com;
+ (client-ip=45.249.212.190; helo=huawei.com; envelope-from=yanaijie@huawei.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46278W5jvJzDqXW
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46278Y2pPKzDqMw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2019 16:26:53 +1000 (AEST)
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 2260391AEF05ED8F6065;
- Mon,  5 Aug 2019 14:26:37 +0800 (CST)
+ by Forcepoint Email with ESMTP id 41AFBE3D100840E7D288;
+ Mon,  5 Aug 2019 14:26:42 +0800 (CST)
 Received: from huawei.com (10.175.124.28) by DGGEMS414-HUB.china.huawei.com
  (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Mon, 5 Aug 2019
- 14:26:26 +0800
+ 14:26:33 +0800
 From: Jason Yan <yanaijie@huawei.com>
 To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
  <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [PATCH v4 01/10] powerpc: unify definition of M_IF_NEEDED
-Date: Mon, 5 Aug 2019 14:43:26 +0800
-Message-ID: <20190805064335.19156-2-yanaijie@huawei.com>
+Subject: [PATCH v4 09/10] powerpc/fsl_booke/kaslr: support nokaslr cmdline
+ parameter
+Date: Mon, 5 Aug 2019 14:43:34 +0800
+Message-ID: <20190805064335.19156-10-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20190805064335.19156-1-yanaijie@huawei.com>
 References: <20190805064335.19156-1-yanaijie@huawei.com>
@@ -60,7 +61,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-M_IF_NEEDED is defined too many times. Move it to a common place.
+One may want to disable kaslr when boot, so provide a cmdline parameter
+'nokaslr' to support this.
 
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 Cc: Diana Craciun <diana.craciun@nxp.com>
@@ -70,95 +72,44 @@ Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>
 Cc: Kees Cook <keescook@chromium.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
 Tested-by: Diana Craciun <diana.craciun@nxp.com>
 ---
- arch/powerpc/include/asm/nohash/mmu-book3e.h  | 10 ++++++++++
- arch/powerpc/kernel/exceptions-64e.S          | 10 ----------
- arch/powerpc/kernel/fsl_booke_entry_mapping.S | 10 ----------
- arch/powerpc/kernel/misc_64.S                 |  5 -----
- 4 files changed, 10 insertions(+), 25 deletions(-)
+ arch/powerpc/kernel/kaslr_booke.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/mmu-book3e.h b/arch/powerpc/include/asm/nohash/mmu-book3e.h
-index 4c9777d256fb..0877362e48fa 100644
---- a/arch/powerpc/include/asm/nohash/mmu-book3e.h
-+++ b/arch/powerpc/include/asm/nohash/mmu-book3e.h
-@@ -221,6 +221,16 @@
- #define TLBILX_T_CLASS2			6
- #define TLBILX_T_CLASS3			7
+diff --git a/arch/powerpc/kernel/kaslr_booke.c b/arch/powerpc/kernel/kaslr_booke.c
+index 4b3f19a663fc..7c3cb41e7122 100644
+--- a/arch/powerpc/kernel/kaslr_booke.c
++++ b/arch/powerpc/kernel/kaslr_booke.c
+@@ -361,6 +361,18 @@ static unsigned long __init kaslr_choose_location(void *dt_ptr, phys_addr_t size
+ 	return kaslr_offset;
+ }
  
-+/*
-+ * The mapping only needs to be cache-coherent on SMP, except on
-+ * Freescale e500mc derivatives where it's also needed for coherent DMA.
-+ */
-+#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
-+#define M_IF_NEEDED	MAS2_M
-+#else
-+#define M_IF_NEEDED	0
-+#endif
++static inline __init bool kaslr_disabled(void)
++{
++	char *str;
 +
- #ifndef __ASSEMBLY__
- #include <asm/bug.h>
++	str = strstr(boot_command_line, "nokaslr");
++	if ((str == boot_command_line) ||
++	    (str > boot_command_line && *(str - 1) == ' '))
++		return true;
++
++	return false;
++}
++
+ /*
+  * To see if we need to relocate the kernel to a random offset
+  * void *dt_ptr - address of the device tree
+@@ -376,6 +388,8 @@ notrace void __init kaslr_early_init(void *dt_ptr, phys_addr_t size)
+ 	kernel_sz = (unsigned long)_end - KERNELBASE;
  
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index 1cfb3da4a84a..fd49ec07ce4a 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -1342,16 +1342,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
- 	sync
- 	isync
+ 	kaslr_get_cmdline(dt_ptr);
++	if (kaslr_disabled())
++		return;
  
--/*
-- * The mapping only needs to be cache-coherent on SMP, except on
-- * Freescale e500mc derivatives where it's also needed for coherent DMA.
-- */
--#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
--#define M_IF_NEEDED	MAS2_M
--#else
--#define M_IF_NEEDED	0
--#endif
--
- /* 6. Setup KERNELBASE mapping in TLB[0]
-  *
-  * r3 = MAS0 w/TLBSEL & ESEL for the entry we started in
-diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-index ea065282b303..de0980945510 100644
---- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-+++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-@@ -153,16 +153,6 @@ skpinv:	addi	r6,r6,1				/* Increment */
- 	tlbivax 0,r9
- 	TLBSYNC
+ 	offset = kaslr_choose_location(dt_ptr, size, kernel_sz);
  
--/*
-- * The mapping only needs to be cache-coherent on SMP, except on
-- * Freescale e500mc derivatives where it's also needed for coherent DMA.
-- */
--#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
--#define M_IF_NEEDED	MAS2_M
--#else
--#define M_IF_NEEDED	0
--#endif
--
- #if defined(ENTRY_MAPPING_BOOT_SETUP)
- 
- /* 6. Setup KERNELBASE mapping in TLB1[0] */
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index b55a7b4cb543..26074f92d4bc 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -432,11 +432,6 @@ kexec_create_tlb:
- 	rlwimi	r9,r10,16,4,15		/* Setup MAS0 = TLBSEL | ESEL(r9) */
- 
- /* Set up a temp identity mapping v:0 to p:0 and return to it. */
--#if defined(CONFIG_SMP) || defined(CONFIG_PPC_E500MC)
--#define M_IF_NEEDED	MAS2_M
--#else
--#define M_IF_NEEDED	0
--#endif
- 	mtspr	SPRN_MAS0,r9
- 
- 	lis	r9,(MAS1_VALID|MAS1_IPROT)@h
 -- 
 2.17.2
 
