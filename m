@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4F783AAA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 22:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E2683AB2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 22:53:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4636Hb3FgWzDqfL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 06:51:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4636Ks2ZVKzDqvx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 06:53:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4636Cz5BXgzDr0y
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 06:48:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4636J90lKqzDqGk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 06:51:52 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 995C828981
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 20:48:11 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id B2DFC28994
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 20:51:50 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 8C903289A0; Tue,  6 Aug 2019 20:48:11 +0000 (UTC)
+ id A67A52899D; Tue,  6 Aug 2019 20:51:50 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -35,7 +35,7 @@ From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
  padding overwritten
-Date: Tue, 06 Aug 2019 20:48:11 +0000
+Date: Tue, 06 Aug 2019 20:51:50 +0000
 X-Bugzilla-Reason: CC
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: None
@@ -51,7 +51,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: akpm@linux-foundation.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-204371-206035-jo7cqVtml5@https.bugzilla.kernel.org/>
+Message-ID: <bug-204371-206035-RMgwCz5sEW@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
 References: <bug-204371-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,10 +77,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
---- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 284241
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284241&action=3Dedit
-dmesg (PowerMac G5 11,2, kernel 5.3-rc3)
+--- Comment #8 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 284243
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284243&action=3Dedit
+kernel .config (PowerMac G5 11,2, kernel 5.3-rc3)
 
 --=20
 You are receiving this mail because:
