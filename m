@@ -2,83 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50AB82A07
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 05:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC1F82A16
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 05:44:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462g8j3ZFwzDqZb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:28:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462gVX1fXszDqcx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:44:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ravi.bangoria@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (mailfrom) smtp.mailfrom=thegavinli.com
+ (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
+ envelope-from=gavinli@thegavinli.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=thegavinli.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=thegavinli.com header.i=@thegavinli.com
+ header.b="UanfDFFy"; dkim-atps=neutral
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
+ [IPv6:2a00:1450:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462g6r1Wn3zDqTG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 13:27:15 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x763R9hL104757
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 5 Aug 2019 23:27:12 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2u6wy6xsgj-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Aug 2019 23:27:12 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Tue, 6 Aug 2019 04:27:10 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 6 Aug 2019 04:27:06 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x763R5Id54853792
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2019 03:27:05 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 24931A4062;
- Tue,  6 Aug 2019 03:27:05 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89FD8A405B;
- Tue,  6 Aug 2019 03:27:03 +0000 (GMT)
-Received: from [9.124.31.110] (unknown [9.124.31.110])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2019 03:27:03 +0000 (GMT)
-Subject: Re: [PATCH v3 0/3] Powerpc64/Watchpoint: Few important fixes
-To: mpe@ellerman.id.au, mikey@neuling.org
-References: <20190710045445.31037-1-ravi.bangoria@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Date: Tue, 6 Aug 2019 08:57:02 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462fQt6qc8zDqWN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 12:56:01 +1000 (AEST)
+Received: by mail-ed1-x542.google.com with SMTP id p15so80873035eds.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Aug 2019 19:56:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=thegavinli.com; s=google;
+ h=sender:mime-version:references:in-reply-to:from:date:message-id
+ :subject:to:cc;
+ bh=ymynYvUaAJ/fSsk8dTF47gjXr8CYua8YobOOSKegPcM=;
+ b=UanfDFFyXJgYSA7QqCuSdaCf5p+I3v2GUlvbhA8+2qe6l86pJKL0lTlbCFnTx3gBOk
+ jjw0CPJdEKovLTwXtm6Go48h8/Y8NunT8oKKFGaMd9OyBH8HT4SxYQbIV6jerO9zgRB+
+ DhQfv6wnIBUjLqio5JTWuVL4Tjft7woEGwUdE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:mime-version:references:in-reply-to:from
+ :date:message-id:subject:to:cc;
+ bh=ymynYvUaAJ/fSsk8dTF47gjXr8CYua8YobOOSKegPcM=;
+ b=WLx1GHGuvJfVBso1DX0yCxIxYiNEJ83DbYOtVoZk80MRS300YqEUGzpRC3rULCtsG+
+ 9Fwgz0xrK7yZ+pAj753R3MSRl3j4WFSugptPcwB7pyUSuA0KbklgBcMpMWE5/v7F/xog
+ usaELCHFQpxjKRfoWbOW+EyjNgvBkFgd80EyMoEXcOhng60fkWncdfeibHEEfU/xYmsf
+ CAkEeg2MNXszQkdEGpa+yRsOjjKkha25iE4ILNkjSO0dEMOrlW1wdXykCdPxxn4QX6hG
+ g7k6zQFkp02m2DmxCr0fUoN/AKUCPqD0CfAEJTlPRgf0hABcmvja8XCFcdx5bSTRdfRd
+ j1eA==
+X-Gm-Message-State: APjAAAW8FR1xHM2A3jANC/62nBYasDFoJvHSOUE4u7I8AaXZRKvBIC4C
+ w11rx8ksiNwgKER+Np1Tnd9tGcmAS69TQQ==
+X-Google-Smtp-Source: APXvYqwhjAH+tGX/gl0r0oLijDpuVDxfiKYbFv9J9y0m6F8hmdciZHRqQBb7GBAt4JjFPjIrflWLUw==
+X-Received: by 2002:a17:906:9410:: with SMTP id
+ q16mr1038322ejx.90.1565060158105; 
+ Mon, 05 Aug 2019 19:55:58 -0700 (PDT)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com.
+ [209.85.208.43])
+ by smtp.gmail.com with ESMTPSA id g11sm14448840ejm.86.2019.08.05.19.55.55
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Mon, 05 Aug 2019 19:55:56 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id d4so80954621edr.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Aug 2019 19:55:55 -0700 (PDT)
+X-Received: by 2002:a17:906:b315:: with SMTP id
+ n21mr1014103ejz.312.1565060155502; 
+ Mon, 05 Aug 2019 19:55:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190710045445.31037-1-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19080603-0028-0000-0000-0000038C0670
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080603-0029-0000-0000-0000244C65DB
-Message-Id: <334222f3-37af-722c-aa87-02d629b6062a@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-06_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=663 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908060038
+References: <20190805080145.5694-1-hch@lst.de>
+ <20190805080145.5694-2-hch@lst.de>
+ <CAP_+7SzPdNCMKuuXMjHjpCzxsey2YWR_e6mTAWtNSZ6kKBvKFw@mail.gmail.com>
+In-Reply-To: <CAP_+7SzPdNCMKuuXMjHjpCzxsey2YWR_e6mTAWtNSZ6kKBvKFw@mail.gmail.com>
+From: Gavin Li <gavinli@thegavinli.com>
+Date: Mon, 5 Aug 2019 19:55:44 -0700
+X-Gmail-Original-Message-ID: <CA+GxvY5C_rrukCzC5K-h72bePyW8PS_Rfj3uxh-K6UrcAextUQ@mail.gmail.com>
+Message-ID: <CA+GxvY5C_rrukCzC5K-h72bePyW8PS_Rfj3uxh-K6UrcAextUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dma-mapping: fix page attributes for dma_mmap_*
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Tue, 06 Aug 2019 13:42:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,14 +87,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Gavin Li <git@thegavinli.com>, Shawn Anastasio <shawn@anastas.io>,
+ Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-mips@vger.kernel.org, Paul Burton <paul.burton@mips.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mikey, mpe ...
+>         /* create a coherent mapping */
+>         ret = dma_common_contiguous_remap(page, size, VM_USERMAP,
+> -                       arch_dma_mmap_pgprot(dev, PAGE_KERNEL, attrs),
+> +                       dma_pgprot(dev, PAGE_KERNEL, attrs),
+>                         __builtin_return_address(0));
+>         if (!ret) {
+>                 __dma_direct_free_pages(dev, size, page);
 
-Any thoughts?
-
+Is dma_common_contiguous_remap() still necessary in the
+DMA_ATTR_NON_CONSISTENT case? I would presume it would be fine to just
+return a linearly mapped address in that case.
