@@ -2,38 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8139A830BC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AEE830F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:49:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462swj46PGzDqVn
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 21:34:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462tGV57PXzDqtv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 21:49:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462sty74RTzDqgD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 21:32:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462tDr6Hr8zDqpv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 21:48:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 462tDq605Pz9sND; Tue,  6 Aug 2019 21:48:11 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 462sty3LhMz9s7T;
- Tue,  6 Aug 2019 21:32:42 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 462tDp3tXMz9sN1;
+ Tue,  6 Aug 2019 21:48:10 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
- "linuxppc-dev\@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "christophe.leroy\@c-s.fr" <christophe.leroy@c-s.fr>,
- "npiggin\@gmail.com" <npiggin@gmail.com>
-Subject: Re: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
-In-Reply-To: <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
-References: <1564970785.27215.29.camel@alliedtelesis.co.nz>
- <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
-Date: Tue, 06 Aug 2019 21:32:39 +1000
-Message-ID: <87wofqv8a0.fsf@concordia.ellerman.id.au>
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
+ kernel-hardening@lists.openwall.com
+Subject: Re: [RFC PATCH v3] powerpc/xmon: Restrict when kernel is locked down
+In-Reply-To: <20190803190040.8103-1-cmr@informatik.wtf>
+References: <20190803190040.8103-1-cmr@informatik.wtf>
+Date: Tue, 06 Aug 2019 21:48:07 +1000
+Message-ID: <87tvauv7k8.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -47,170 +47,231 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Grant McEwan <grant.mcewan@alliedtelesis.co.nz>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, mjg59@google.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
-> On Mon, 2019-08-05 at 14:06 +1200, Chris Packham wrote:
->> Hi All,
->> 
->> I have a custom board that uses the Freescale/NXP T2080 SoC.
->> 
->> The board boots fine using v4.19.60 but when I use v5.1.21 it locks
->> up
->> waiting for the other CPUs to come online (earlyprintk output below).
->> If I set maxcpus=0 then the system boots all the way through to
->> userland. The same thing happens with 5.3-rc2.
->> 
->> The defconfig I'm using is 
->> https://gist.github.com/cpackham/f24d0b426f3
->> de0eaaba17b82c3528a9d it was updated from the working v4.19.60
->> defconfig using make olddefconfig.
->> 
->> Does this ring any bells for anyone?
->> 
->> I haven't dug into the differences between the working an non-working
->> versions yet. I'll start looking now.
+"Christopher M. Riedl" <cmr@informatik.wtf> writes:
+> Xmon should be either fully or partially disabled depending on the
+> kernel lockdown state.
 >
-> I've bisected this to the following commit
-
-Thanks that's super helpful.
-
-> commit ed1cd6deb013a11959d17a94e35ce159197632da
-> Author: Christophe Leroy <christophe.leroy@c-s.fr>
-> Date:   Thu Jan 31 10:08:58 2019 +0000
+> Put xmon into read-only mode for lockdown=integrity and completely
+> disable xmon when lockdown=confidentiality. Xmon checks the lockdown
+> state and takes appropriate action:
 >
->     powerpc: Activate CONFIG_THREAD_INFO_IN_TASK
->     
->     This patch activates CONFIG_THREAD_INFO_IN_TASK which
->     moves the thread_info into task_struct.
+>  (1) during xmon_setup to prevent early xmon'ing
 >
-> I'll be the first to admit this is well beyond my area of knowledge so
-> I'm unsure what about this patch is problematic but I can be fairly
-> sure that a build immediately before this patch works while a build
-> with this patch hangs.
+>  (2) when triggered via sysrq
+>
+>  (3) when toggled via debugfs
+>
+>  (4) when triggered via a previously enabled breakpoint
+>
+> The following lockdown state transitions are handled:
+>
+>  (1) lockdown=none -> lockdown=integrity
+>      set xmon read-only mode
+>
+>  (2) lockdown=none -> lockdown=confidentiality
+>      clear all breakpoints, set xmon read-only mode,
+>      prevent re-entry into xmon
+>
+>  (3) lockdown=integrity -> lockdown=confidentiality
+>      clear all breakpoints, set xmon read-only mode,
+>      prevent re-entry into xmon
+>
+> Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> ---
+> Changes since v1:
+>  - Rebased onto v36 of https://patchwork.kernel.org/cover/11049461/
+>    (based on: f632a8170a6b667ee4e3f552087588f0fe13c4bb)
+>  - Do not clear existing breakpoints when transitioning from
+>    lockdown=none to lockdown=integrity
+>  - Remove line continuation and dangling quote (confuses checkpatch.pl)
+>    from the xmon command help/usage string
 
-It makes a pretty fundamental change to the way the kernel stores some
-information about each task, moving it off the stack and into the task
-struct.
+This looks good to me.
 
-It definitely has the potential to break things, but I thought we had
-reasonable test coverage of the Book3E platforms, I have a p5020ds
-(e5500) that I boot as part of my CI.
-
-Aha. If I take your config and try to boot it on my p5020ds I get the
-same behaviour, stuck at SMP bringup. So it seems it's something in your
-config vs corenet64_smp_defconfig that is triggering the bug.
-
-Can you try bisecting what in the config triggers it?
-
-To do that you checkout ed1cd6deb013a11959d17a94e35ce159197632da, then
-you build/boot with corenet64_smp_defconfig to confirm it works. Then
-you use tools/testing/ktest/config-bisect.pl to bisect the changes in
-the .config.
+So I guess we're just waiting on lockdown to go in somewhere.
 
 cheers
 
-
->> Booting...
->> MMU: Supported page sizes
->>          4 KB as direct
->>       2048 KB as direct & indirect
->>       4096 KB as direct
->>      16384 KB as direct
->>      65536 KB as direct
->>     262144 KB as direct
->>    1048576 KB as direct
->> MMU: Book3E HW tablewalk enabled
->> Linux version 5.1.21-at1+ (@chrisp-dl) (gcc version 4.9.3 (crosstool-
->> NG 
->> crosstool-ng-1.22.0)) #24 SMP PREEMPT Mon Aug 5 01:42:00 UTC 2019
->> Found initrd at 0xc00000002f045000:0xc000000030000000
->> Using CoreNet Generic machine description
->> Found legacy serial port 0 for /soc@ffe000000/serial@11c500
->>   mem=ffe11c500, taddr=ffe11c500, irq=0, clk=300000000, speed=0
->> Found legacy serial port 1 for /soc@ffe000000/serial@11c600
->>   mem=ffe11c600, taddr=ffe11c600, irq=0, clk=300000000, speed=0
->> Found legacy serial port 2 for /soc@ffe000000/serial@11d500
->>   mem=ffe11d500, taddr=ffe11d500, irq=0, clk=300000000, speed=0
->> Found legacy serial port 3 for /soc@ffe000000/serial@11d600
->>   mem=ffe11d600, taddr=ffe11d600, irq=0, clk=300000000, speed=0
->> printk: bootconsole [udbg0] enabled
->> CPU maps initialized for 2 threads per core
->>  (thread shift is 1)
->> Allocated 1856 bytes for 8 pacas
->> -----------------------------------------------------
->> phys_mem_size     = 0x100000000
->> dcache_bsize      = 0x40
->> icache_bsize      = 0x40
->> cpu_features      = 0x00000003009003b6
->>   possible        = 0x00000003009003b6
->>   always          = 0x00000003008003b4
->> cpu_user_features = 0xdc008000 0x08000000
->> mmu_features      = 0x000a0010
->> firmware_features = 0x0000000000000000
->> -----------------------------------------------------
->> CoreNet Generic board
->> barrier-nospec: using isync; sync as speculation barrier
->> barrier-nospec: patched 412 locations
->> Top of RAM: 0x100000000, Total RAM: 0x100000000
->> Memory hole size: 0MB
->> Zone ranges:
->>   DMA      [mem 0x0000000000000000-0x000000007fffefff]
->>   Normal   [mem 0x000000007ffff000-0x00000000ffffffff]
->> Movable zone start for each node
->> Early memory node ranges
->>   node   0: [mem 0x0000000000000000-0x00000000ffffffff]
->> Initmem setup node 0 [mem 0x0000000000000000-0x00000000ffffffff]
->> On node 0 totalpages: 1048576
->>   DMA zone: 7168 pages used for memmap
->>   DMA zone: 0 pages reserved
->>   DMA zone: 524287 pages, LIFO batch:63
->>   Normal zone: 7169 pages used for memmap
->>   Normal zone: 524289 pages, LIFO batch:63
->> MMU: Allocated 2112 bytes of context maps for 255 contexts
->> percpu: Embedded 22 pages/cpu s49304 r0 d40808 u131072
->> pcpu-alloc: s49304 r0 d40808 u131072 alloc=1*1048576
->> pcpu-alloc: [0] 0 1 2 3 4 5 6 7 
->> Built 1 zonelists, mobility grouping on.  Total pages: 1034239
->> Kernel command line: console=ttyS0,115200 root=/dev/ram0
->> releasefile=linuxbox_ppc64_e6500mc-tb233.rel bootversion=6.2.7
->> loglevel=8 mtdoops.mtddev=errlog
->> mtdparts=fff800000.flash:4088M(user),8M(errlog)
->> earlyprintk=ttyS0,115200 real_init=
->> /bin/sh securitylevel=1 reladdr=0x1000000,1522523
->> printk: log_buf_len individual max cpu contribution: 4096 bytes
->> printk: log_buf_len total cpu_extra contributions: 28672 bytes
->> printk: log_buf_len min size: 16384 bytes
->> printk: log_buf_len: 65536 bytes
->> printk: early log buf free: 12412(75%)
->> Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes)
->> Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes)
->> Memory: 3979284K/4194304K available (8704K kernel code, 1584K rwdata,
->> 2496K rodata, 472K init, 299K bss, 215020K reserved, 0K cma-reserved)
->> SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
->> rcu: Preemptible hierarchical RCU implementation.
->> rcu:    RCU event tracing is enabled.
->>         Tasks RCU enabled.
->> rcu: RCU calculated value of scheduler-enlistment delay is 25
->> jiffies.
->> NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
->> mpic: Setting up MPIC " OpenPIC  " version 1.2 at ffe040000, max 8
->> CPUs
->> mpic: ISU size: 512, shift: 9, mask: 1ff
->> mpic: Initializing for 512 sources
->> time_init: decrementer frequency = 37.500000 MHz
->> time_init: processor frequency   = 1500.000000 MHz
->> clocksource: timebase: mask: 0xffffffffffffffff max_cycles:
->> 0x8a60dd6a9, max_idle_ns: 440795204056 ns
->> clocksource: timebase mult[1aaaaaab] shift[24] registered
->> clockevent: decrementer mult[999999a] shift[32] cpu[0]
->> pid_max: default: 32768 minimum: 301
->> Mount-cache hash table entries: 8192 (order: 4, 65536 bytes)
->> Mountpoint-cache hash table entries: 8192 (order: 4, 65536 bytes)
->> e6500 family performance monitor hardware support registered
->> rcu: Hierarchical SRCU implementation.
->> smp: Bringing up secondary CPUs ...
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index d0620d762a5a..1a5e43d664ca 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/nmi.h>
+>  #include <linux/ctype.h>
+>  #include <linux/highmem.h>
+> +#include <linux/security.h>
+>  
+>  #include <asm/debugfs.h>
+>  #include <asm/ptrace.h>
+> @@ -187,6 +188,9 @@ static void dump_tlb_44x(void);
+>  static void dump_tlb_book3e(void);
+>  #endif
+>  
+> +static void clear_all_bpt(void);
+> +static void xmon_init(int);
+> +
+>  #ifdef CONFIG_PPC64
+>  #define REG		"%.16lx"
+>  #else
+> @@ -283,10 +287,41 @@ Commands:\n\
+>  "  U	show uptime information\n"
+>  "  ?	help\n"
+>  "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
+> -"  zr	reboot\n\
+> -  zh	halt\n"
+> +"  zr	reboot\n"
+> +"  zh	halt\n"
+>  ;
+>  
+> +#ifdef CONFIG_SECURITY
+> +static bool xmon_is_locked_down(void)
+> +{
+> +	static bool lockdown;
+> +
+> +	if (!lockdown) {
+> +		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
+> +		if (lockdown) {
+> +			printf("xmon: Disabled due to kernel lockdown\n");
+> +			xmon_is_ro = true;
+> +			xmon_on = 0;
+> +			xmon_init(0);
+> +			clear_all_bpt();
+> +		}
+> +	}
+> +
+> +	if (!xmon_is_ro) {
+> +		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
+> +		if (xmon_is_ro)
+> +			printf("xmon: Read-only due to kernel lockdown\n");
+> +	}
+> +
+> +	return lockdown;
+> +}
+> +#else /* CONFIG_SECURITY */
+> +static inline bool xmon_is_locked_down(void)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  static struct pt_regs *xmon_regs;
+>  
+>  static inline void sync(void)
+> @@ -704,6 +739,9 @@ static int xmon_bpt(struct pt_regs *regs)
+>  	struct bpt *bp;
+>  	unsigned long offset;
+>  
+> +	if (xmon_is_locked_down())
+> +		return 0;
+> +
+>  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+>  		return 0;
+>  
+> @@ -735,6 +773,9 @@ static int xmon_sstep(struct pt_regs *regs)
+>  
+>  static int xmon_break_match(struct pt_regs *regs)
+>  {
+> +	if (xmon_is_locked_down())
+> +		return 0;
+> +
+>  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+>  		return 0;
+>  	if (dabr.enabled == 0)
+> @@ -745,6 +786,9 @@ static int xmon_break_match(struct pt_regs *regs)
+>  
+>  static int xmon_iabr_match(struct pt_regs *regs)
+>  {
+> +	if (xmon_is_locked_down())
+> +		return 0;
+> +
+>  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+>  		return 0;
+>  	if (iabr == NULL)
+> @@ -3741,6 +3785,9 @@ static void xmon_init(int enable)
+>  #ifdef CONFIG_MAGIC_SYSRQ
+>  static void sysrq_handle_xmon(int key)
+>  {
+> +	if (xmon_is_locked_down())
+> +		return;
+> +
+>  	/* ensure xmon is enabled */
+>  	xmon_init(1);
+>  	debugger(get_irq_regs());
+> @@ -3762,7 +3809,6 @@ static int __init setup_xmon_sysrq(void)
+>  device_initcall(setup_xmon_sysrq);
+>  #endif /* CONFIG_MAGIC_SYSRQ */
+>  
+> -#ifdef CONFIG_DEBUG_FS
+>  static void clear_all_bpt(void)
+>  {
+>  	int i;
+> @@ -3784,8 +3830,12 @@ static void clear_all_bpt(void)
+>  	printf("xmon: All breakpoints cleared\n");
+>  }
+>  
+> +#ifdef CONFIG_DEBUG_FS
+>  static int xmon_dbgfs_set(void *data, u64 val)
+>  {
+> +	if (xmon_is_locked_down())
+> +		return 0;
+> +
+>  	xmon_on = !!val;
+>  	xmon_init(xmon_on);
+>  
+> @@ -3844,6 +3894,9 @@ early_param("xmon", early_parse_xmon);
+>  
+>  void __init xmon_setup(void)
+>  {
+> +	if (xmon_is_locked_down())
+> +		return;
+> +
+>  	if (xmon_on)
+>  		xmon_init(1);
+>  	if (xmon_early)
+> diff --git a/include/linux/security.h b/include/linux/security.h
+> index 807dc0d24982..379b74b5d545 100644
+> --- a/include/linux/security.h
+> +++ b/include/linux/security.h
+> @@ -116,12 +116,14 @@ enum lockdown_reason {
+>  	LOCKDOWN_MODULE_PARAMETERS,
+>  	LOCKDOWN_MMIOTRACE,
+>  	LOCKDOWN_DEBUGFS,
+> +	LOCKDOWN_XMON_WR,
+>  	LOCKDOWN_INTEGRITY_MAX,
+>  	LOCKDOWN_KCORE,
+>  	LOCKDOWN_KPROBES,
+>  	LOCKDOWN_BPF_READ,
+>  	LOCKDOWN_PERF,
+>  	LOCKDOWN_TRACEFS,
+> +	LOCKDOWN_XMON_RW,
+>  	LOCKDOWN_CONFIDENTIALITY_MAX,
+>  };
+>  
+> diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+> index f6c74cf6a798..79d1799a62ca 100644
+> --- a/security/lockdown/lockdown.c
+> +++ b/security/lockdown/lockdown.c
+> @@ -31,12 +31,14 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
+>  	[LOCKDOWN_MODULE_PARAMETERS] = "unsafe module parameters",
+>  	[LOCKDOWN_MMIOTRACE] = "unsafe mmio",
+>  	[LOCKDOWN_DEBUGFS] = "debugfs access",
+> +	[LOCKDOWN_XMON_WR] = "xmon write access",
+>  	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
+>  	[LOCKDOWN_KCORE] = "/proc/kcore access",
+>  	[LOCKDOWN_KPROBES] = "use of kprobes",
+>  	[LOCKDOWN_BPF_READ] = "use of bpf to read kernel RAM",
+>  	[LOCKDOWN_PERF] = "unsafe use of perf",
+>  	[LOCKDOWN_TRACEFS] = "use of tracefs",
+> +	[LOCKDOWN_XMON_RW] = "xmon read and write access",
+>  	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
+>  };
+>  
+> -- 
+> 2.22.0
