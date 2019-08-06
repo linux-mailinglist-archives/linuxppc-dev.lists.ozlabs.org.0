@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0473C82B16
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:37:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462k0r0mq5zDqwr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:37:16 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B82DB82B19
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:38:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 462k2l1mTszDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:38:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,66 +19,63 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462jhq1xw8zDqTC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:23 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462jhv1WHGzDqTD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:27 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x765MCMA001825
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 6 Aug 2019 01:23:20 -0400
-Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u70f95t8n-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2019 01:23:20 -0400
-Received: from localhost
- by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
- Tue, 6 Aug 2019 06:23:19 +0100
-Received: from b01cxnp23034.gho.pok.ibm.com (9.57.198.29)
- by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 6 Aug 2019 06:23:15 +0100
+ x765M3VT106194; Tue, 6 Aug 2019 01:23:19 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u70mk5fhe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2019 01:23:18 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x765N3dE108742;
+ Tue, 6 Aug 2019 01:23:18 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u70mk5fgv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2019 01:23:18 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x765KHSn019637;
+ Tue, 6 Aug 2019 05:23:17 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 2u51w629bm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2019 05:23:17 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x765NEri54133180
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x765NGQp36569422
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2019 05:23:14 GMT
+ Tue, 6 Aug 2019 05:23:16 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C00D112064;
+ by IMSVA (Postfix) with ESMTP id 87060112061;
+ Tue,  6 Aug 2019 05:23:16 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 703C5112063;
  Tue,  6 Aug 2019 05:23:14 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91563112063;
- Tue,  6 Aug 2019 05:23:11 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.207.254])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2019 05:23:11 +0000 (GMT)
+ Tue,  6 Aug 2019 05:23:14 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 06/16] powerpc: Introduce the MSR_S bit
-Date: Tue,  6 Aug 2019 02:22:27 -0300
+Subject: [PATCH v3 07/16] powerpc/pseries: Add and use LPPACA_SIZE constant
+Date: Tue,  6 Aug 2019 02:22:28 -0300
+Message-Id: <20190806052237.12525-8-bauerman@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190806052237.12525-1-bauerman@linux.ibm.com>
 References: <20190806052237.12525-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19080605-0060-0000-0000-0000036975F3
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011558; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01242749; UDB=6.00655527; IPR=6.01024213; 
- MB=3.00028061; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-06 05:23:17
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080605-0061-0000-0000-00004A71CA45
-Message-Id: <20190806052237.12525-7-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-06_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=643 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908060063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,66 +88,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+Cc: Alexey Kardashevskiy <aik@linux.ibm.com>,
+ Anshuman Khandual <anshuman.linux@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
  Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
  Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Helps document what the hard-coded number means.
 
-The ultravisor processor mode is introduced in POWER platforms that
-supports the Protected Execution Facility (PEF). Ultravisor is higher
-privileged than hypervisor mode.
+Also take the opportunity to fix an #endif comment.
 
-In PEF enabled platforms, the MSR_S bit is used to indicate if the
-thread is in secure state. With the MSR_S bit, the privilege state of
-the thread is now determined by MSR_S, MSR_HV and MSR_PR, as follows:
-
-      HV  PR  S=0         S=1
-      ---------------------------------------------
-      0   0   privileged  privileged (secure guest kernel)
-      0   1   problem     problem (secure guest userspace)
-      1   0   hypervisor  ultravisor
-      1   1   problem     reserved
-
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-[ cclaudio: Update the commit message ]
-Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+Suggested-by: Alexey Kardashevskiy <aik@linux.ibm.com>
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/include/asm/reg.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/paca.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 10caa145f98b..ec3714cf0989 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -38,6 +38,7 @@
- #define MSR_TM_LG	32		/* Trans Mem Available */
- #define MSR_VEC_LG	25	        /* Enable AltiVec */
- #define MSR_VSX_LG	23		/* Enable VSX */
-+#define MSR_S_LG	22		/* Secure state */
- #define MSR_POW_LG	18		/* Enable Power Management */
- #define MSR_WE_LG	18		/* Wait State Enable */
- #define MSR_TGPR_LG	17		/* TLB Update registers in use */
-@@ -71,11 +72,13 @@
- #define MSR_SF		__MASK(MSR_SF_LG)	/* Enable 64 bit mode */
- #define MSR_ISF		__MASK(MSR_ISF_LG)	/* Interrupt 64b mode valid on 630 */
- #define MSR_HV 		__MASK(MSR_HV_LG)	/* Hypervisor state */
-+#define MSR_S		__MASK(MSR_S_LG)	/* Secure state */
- #else
- /* so tests for these bits fail on 32-bit */
- #define MSR_SF		0
- #define MSR_ISF		0
- #define MSR_HV		0
-+#define MSR_S		0
- #endif
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index e3ad8aa4730d..612fc87ef785 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -52,6 +52,8 @@ static void *__init alloc_paca_data(unsigned long size, unsigned long align,
  
+ #ifdef CONFIG_PPC_PSERIES
+ 
++#define LPPACA_SIZE 0x400
++
  /*
-
+  * See asm/lppaca.h for more detail.
+  *
+@@ -65,7 +67,7 @@ static inline void init_lppaca(struct lppaca *lppaca)
+ 
+ 	*lppaca = (struct lppaca) {
+ 		.desc = cpu_to_be32(0xd397d781),	/* "LpPa" */
+-		.size = cpu_to_be16(0x400),
++		.size = cpu_to_be16(LPPACA_SIZE),
+ 		.fpregs_in_use = 1,
+ 		.slb_count = cpu_to_be16(64),
+ 		.vmxregs_in_use = 0,
+@@ -75,19 +77,18 @@ static inline void init_lppaca(struct lppaca *lppaca)
+ static struct lppaca * __init new_lppaca(int cpu, unsigned long limit)
+ {
+ 	struct lppaca *lp;
+-	size_t size = 0x400;
+ 
+-	BUILD_BUG_ON(size < sizeof(struct lppaca));
++	BUILD_BUG_ON(sizeof(struct lppaca) > LPPACA_SIZE);
+ 
+ 	if (early_cpu_has_feature(CPU_FTR_HVMODE))
+ 		return NULL;
+ 
+-	lp = alloc_paca_data(size, 0x400, limit, cpu);
++	lp = alloc_paca_data(LPPACA_SIZE, 0x400, limit, cpu);
+ 	init_lppaca(lp);
+ 
+ 	return lp;
+ }
+-#endif /* CONFIG_PPC_BOOK3S */
++#endif /* CONFIG_PPC_PSERIES */
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 
