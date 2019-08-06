@@ -1,84 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E67083021
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 12:57:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462s6g5K1bzDr6b
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 20:57:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8139A830BC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:34:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 462swj46PGzDqVn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 21:34:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462s4x1BYHzDqfj
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 20:56:13 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x76AgcrG025397
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 6 Aug 2019 06:56:08 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u76grccap-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2019 06:56:08 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Tue, 6 Aug 2019 11:56:06 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 6 Aug 2019 11:56:04 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x76Au2sk57344108
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2019 10:56:02 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6E981A405F;
- Tue,  6 Aug 2019 10:56:02 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 675EDA4062;
- Tue,  6 Aug 2019 10:56:01 +0000 (GMT)
-Received: from [9.193.100.20] (unknown [9.193.100.20])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2019 10:56:01 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/fadump: sysfs for fadump memory reservation
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20190806031242.30749-1-sourabhjain@linux.ibm.com>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Tue, 6 Aug 2019 16:26:00 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462sty74RTzDqgD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 21:32:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 462sty3LhMz9s7T;
+ Tue,  6 Aug 2019 21:32:42 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "linuxppc-dev\@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "christophe.leroy\@c-s.fr" <christophe.leroy@c-s.fr>,
+ "npiggin\@gmail.com" <npiggin@gmail.com>
+Subject: Re: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
+In-Reply-To: <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
+References: <1564970785.27215.29.camel@alliedtelesis.co.nz>
+ <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
+Date: Tue, 06 Aug 2019 21:32:39 +1000
+Message-ID: <87wofqv8a0.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20190806031242.30749-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19080610-0008-0000-0000-00000305C137
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080610-0009-0000-0000-0000A17FC9F5
-Message-Id: <2285b7db-b3eb-6f4d-28f8-a3b740ab6e87@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-06_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908060112
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,82 +47,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Grant McEwan <grant.mcewan@alliedtelesis.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/6/19 8:42 AM, Sourabh Jain wrote:
-> Add a sys interface to allow querying the memory reserved by fadump
-> for saving the crash dump.
-> 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
+> On Mon, 2019-08-05 at 14:06 +1200, Chris Packham wrote:
+>> Hi All,
+>> 
+>> I have a custom board that uses the Freescale/NXP T2080 SoC.
+>> 
+>> The board boots fine using v4.19.60 but when I use v5.1.21 it locks
+>> up
+>> waiting for the other CPUs to come online (earlyprintk output below).
+>> If I set maxcpus=0 then the system boots all the way through to
+>> userland. The same thing happens with 5.3-rc2.
+>> 
+>> The defconfig I'm using is 
+>> https://gist.github.com/cpackham/f24d0b426f3
+>> de0eaaba17b82c3528a9d it was updated from the working v4.19.60
+>> defconfig using make olddefconfig.
+>> 
+>> Does this ring any bells for anyone?
+>> 
+>> I haven't dug into the differences between the working an non-working
+>> versions yet. I'll start looking now.
+>
+> I've bisected this to the following commit
 
-Looks good to me.
+Thanks that's super helpful.
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+> commit ed1cd6deb013a11959d17a94e35ce159197632da
+> Author: Christophe Leroy <christophe.leroy@c-s.fr>
+> Date:   Thu Jan 31 10:08:58 2019 +0000
+>
+>     powerpc: Activate CONFIG_THREAD_INFO_IN_TASK
+>     
+>     This patch activates CONFIG_THREAD_INFO_IN_TASK which
+>     moves the thread_info into task_struct.
+>
+> I'll be the first to admit this is well beyond my area of knowledge so
+> I'm unsure what about this patch is problematic but I can be fairly
+> sure that a build immediately before this patch works while a build
+> with this patch hangs.
 
-Thanks,
--Mahesh.
+It makes a pretty fundamental change to the way the kernel stores some
+information about each task, moving it off the stack and into the task
+struct.
 
-> ---
->  Documentation/powerpc/firmware-assisted-dump.rst |  5 +++++
->  arch/powerpc/kernel/fadump.c                     | 14 ++++++++++++++
->  2 files changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
-> index 9ca12830a48e..4a7f6dc556f5 100644
-> --- a/Documentation/powerpc/firmware-assisted-dump.rst
-> +++ b/Documentation/powerpc/firmware-assisted-dump.rst
-> @@ -222,6 +222,11 @@ Here is the list of files under kernel sysfs:
->      be handled and vmcore will not be captured. This interface can be
->      easily integrated with kdump service start/stop.
-> 
-> +/sys/kernel/fadump_mem_reserved
-> +
-> +   This is used to display the memory reserved by fadump for saving the
-> +   crash dump.
-> +
->   /sys/kernel/fadump_release_mem
->      This file is available only when fadump is active during
->      second kernel. This is used to release the reserved memory
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 4eab97292cc2..70d49013ebec 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1514,6 +1514,13 @@ static ssize_t fadump_enabled_show(struct kobject *kobj,
->  	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
->  }
-> 
-> +static ssize_t fadump_mem_reserved_show(struct kobject *kobj,
-> +					struct kobj_attribute *attr,
-> +					char *buf)
-> +{
-> +	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
-> +}
-> +
->  static ssize_t fadump_register_show(struct kobject *kobj,
->  					struct kobj_attribute *attr,
->  					char *buf)
-> @@ -1632,6 +1639,9 @@ static struct kobj_attribute fadump_attr = __ATTR(fadump_enabled,
->  static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
->  						0644, fadump_register_show,
->  						fadump_register_store);
-> +static struct kobj_attribute fadump_mem_reserved_attr =
-> +			__ATTR(fadump_mem_reserved, 0444,
-> +			fadump_mem_reserved_show, NULL);
-> 
->  DEFINE_SHOW_ATTRIBUTE(fadump_region);
-> 
-> @@ -1663,6 +1673,10 @@ static void fadump_init_files(void)
->  			printk(KERN_ERR "fadump: unable to create sysfs file"
->  				" fadump_release_mem (%d)\n", rc);
->  	}
-> +	rc = sysfs_create_file(kernel_kobj, &fadump_mem_reserved_attr.attr);
-> +	if (rc)
-> +		pr_err("unable to create sysfs file fadump_mem_reserved (%d)\n",
-> +			rc);
->  	return;
->  }
-> 
+It definitely has the potential to break things, but I thought we had
+reasonable test coverage of the Book3E platforms, I have a p5020ds
+(e5500) that I boot as part of my CI.
 
+Aha. If I take your config and try to boot it on my p5020ds I get the
+same behaviour, stuck at SMP bringup. So it seems it's something in your
+config vs corenet64_smp_defconfig that is triggering the bug.
+
+Can you try bisecting what in the config triggers it?
+
+To do that you checkout ed1cd6deb013a11959d17a94e35ce159197632da, then
+you build/boot with corenet64_smp_defconfig to confirm it works. Then
+you use tools/testing/ktest/config-bisect.pl to bisect the changes in
+the .config.
+
+cheers
+
+
+>> Booting...
+>> MMU: Supported page sizes
+>>          4 KB as direct
+>>       2048 KB as direct & indirect
+>>       4096 KB as direct
+>>      16384 KB as direct
+>>      65536 KB as direct
+>>     262144 KB as direct
+>>    1048576 KB as direct
+>> MMU: Book3E HW tablewalk enabled
+>> Linux version 5.1.21-at1+ (@chrisp-dl) (gcc version 4.9.3 (crosstool-
+>> NG 
+>> crosstool-ng-1.22.0)) #24 SMP PREEMPT Mon Aug 5 01:42:00 UTC 2019
+>> Found initrd at 0xc00000002f045000:0xc000000030000000
+>> Using CoreNet Generic machine description
+>> Found legacy serial port 0 for /soc@ffe000000/serial@11c500
+>>   mem=ffe11c500, taddr=ffe11c500, irq=0, clk=300000000, speed=0
+>> Found legacy serial port 1 for /soc@ffe000000/serial@11c600
+>>   mem=ffe11c600, taddr=ffe11c600, irq=0, clk=300000000, speed=0
+>> Found legacy serial port 2 for /soc@ffe000000/serial@11d500
+>>   mem=ffe11d500, taddr=ffe11d500, irq=0, clk=300000000, speed=0
+>> Found legacy serial port 3 for /soc@ffe000000/serial@11d600
+>>   mem=ffe11d600, taddr=ffe11d600, irq=0, clk=300000000, speed=0
+>> printk: bootconsole [udbg0] enabled
+>> CPU maps initialized for 2 threads per core
+>>  (thread shift is 1)
+>> Allocated 1856 bytes for 8 pacas
+>> -----------------------------------------------------
+>> phys_mem_size     = 0x100000000
+>> dcache_bsize      = 0x40
+>> icache_bsize      = 0x40
+>> cpu_features      = 0x00000003009003b6
+>>   possible        = 0x00000003009003b6
+>>   always          = 0x00000003008003b4
+>> cpu_user_features = 0xdc008000 0x08000000
+>> mmu_features      = 0x000a0010
+>> firmware_features = 0x0000000000000000
+>> -----------------------------------------------------
+>> CoreNet Generic board
+>> barrier-nospec: using isync; sync as speculation barrier
+>> barrier-nospec: patched 412 locations
+>> Top of RAM: 0x100000000, Total RAM: 0x100000000
+>> Memory hole size: 0MB
+>> Zone ranges:
+>>   DMA      [mem 0x0000000000000000-0x000000007fffefff]
+>>   Normal   [mem 0x000000007ffff000-0x00000000ffffffff]
+>> Movable zone start for each node
+>> Early memory node ranges
+>>   node   0: [mem 0x0000000000000000-0x00000000ffffffff]
+>> Initmem setup node 0 [mem 0x0000000000000000-0x00000000ffffffff]
+>> On node 0 totalpages: 1048576
+>>   DMA zone: 7168 pages used for memmap
+>>   DMA zone: 0 pages reserved
+>>   DMA zone: 524287 pages, LIFO batch:63
+>>   Normal zone: 7169 pages used for memmap
+>>   Normal zone: 524289 pages, LIFO batch:63
+>> MMU: Allocated 2112 bytes of context maps for 255 contexts
+>> percpu: Embedded 22 pages/cpu s49304 r0 d40808 u131072
+>> pcpu-alloc: s49304 r0 d40808 u131072 alloc=1*1048576
+>> pcpu-alloc: [0] 0 1 2 3 4 5 6 7 
+>> Built 1 zonelists, mobility grouping on.  Total pages: 1034239
+>> Kernel command line: console=ttyS0,115200 root=/dev/ram0
+>> releasefile=linuxbox_ppc64_e6500mc-tb233.rel bootversion=6.2.7
+>> loglevel=8 mtdoops.mtddev=errlog
+>> mtdparts=fff800000.flash:4088M(user),8M(errlog)
+>> earlyprintk=ttyS0,115200 real_init=
+>> /bin/sh securitylevel=1 reladdr=0x1000000,1522523
+>> printk: log_buf_len individual max cpu contribution: 4096 bytes
+>> printk: log_buf_len total cpu_extra contributions: 28672 bytes
+>> printk: log_buf_len min size: 16384 bytes
+>> printk: log_buf_len: 65536 bytes
+>> printk: early log buf free: 12412(75%)
+>> Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes)
+>> Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes)
+>> Memory: 3979284K/4194304K available (8704K kernel code, 1584K rwdata,
+>> 2496K rodata, 472K init, 299K bss, 215020K reserved, 0K cma-reserved)
+>> SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=8, Nodes=1
+>> rcu: Preemptible hierarchical RCU implementation.
+>> rcu:    RCU event tracing is enabled.
+>>         Tasks RCU enabled.
+>> rcu: RCU calculated value of scheduler-enlistment delay is 25
+>> jiffies.
+>> NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+>> mpic: Setting up MPIC " OpenPIC  " version 1.2 at ffe040000, max 8
+>> CPUs
+>> mpic: ISU size: 512, shift: 9, mask: 1ff
+>> mpic: Initializing for 512 sources
+>> time_init: decrementer frequency = 37.500000 MHz
+>> time_init: processor frequency   = 1500.000000 MHz
+>> clocksource: timebase: mask: 0xffffffffffffffff max_cycles:
+>> 0x8a60dd6a9, max_idle_ns: 440795204056 ns
+>> clocksource: timebase mult[1aaaaaab] shift[24] registered
+>> clockevent: decrementer mult[999999a] shift[32] cpu[0]
+>> pid_max: default: 32768 minimum: 301
+>> Mount-cache hash table entries: 8192 (order: 4, 65536 bytes)
+>> Mountpoint-cache hash table entries: 8192 (order: 4, 65536 bytes)
+>> e6500 family performance monitor hardware support registered
+>> rcu: Hierarchical SRCU implementation.
+>> smp: Bringing up secondary CPUs ...
