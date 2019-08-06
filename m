@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A938282B3F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:49:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4E482B3A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:46:51 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462kCq32Z2zDqVB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:46:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462kGr1hhgzDqwy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:49:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,51 +19,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462jj11MNjzDqTC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462jj4073GzDqb0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:35 +1000 (AEST)
 Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x765MM5f005338; Tue, 6 Aug 2019 01:23:27 -0400
+ x765MMtI005341; Tue, 6 Aug 2019 01:23:30 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u70rb590e-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u70rb591w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 01:23:27 -0400
+ Tue, 06 Aug 2019 01:23:29 -0400
 Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x765Mmho006942;
- Tue, 6 Aug 2019 01:23:26 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u70rb5901-1
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x765MWU6006264;
+ Tue, 6 Aug 2019 01:23:29 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u70rb591e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 01:23:26 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x765KIPJ025255;
- Tue, 6 Aug 2019 05:23:25 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 2u51w6wy8v-1
+ Tue, 06 Aug 2019 01:23:29 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x765KFil010060;
+ Tue, 6 Aug 2019 05:23:28 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 2u51w6dej7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 05:23:25 +0000
+ Tue, 06 Aug 2019 05:23:28 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x765NOdQ46596514
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x765NSen53084442
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2019 05:23:24 GMT
+ Tue, 6 Aug 2019 05:23:28 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CBE79112062;
- Tue,  6 Aug 2019 05:23:24 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0A532112064;
+ Tue,  6 Aug 2019 05:23:28 +0000 (GMT)
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8EB2112061;
- Tue,  6 Aug 2019 05:23:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 36A92112061;
+ Tue,  6 Aug 2019 05:23:25 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.207.254])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2019 05:23:22 +0000 (GMT)
+ Tue,  6 Aug 2019 05:23:24 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 10/16] powerpc/pseries/svm: Unshare all pages before
- kexecing a new kernel
-Date: Tue,  6 Aug 2019 02:22:31 -0300
-Message-Id: <20190806052237.12525-11-bauerman@linux.ibm.com>
+Subject: [PATCH v3 11/16] powerpc/pseries/svm: Export guest SVM status to user
+ space via sysfs
+Date: Tue,  6 Aug 2019 02:22:32 -0300
+Message-Id: <20190806052237.12525-12-bauerman@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190806052237.12525-1-bauerman@linux.ibm.com>
 References: <20190806052237.12525-1-bauerman@linux.ibm.com>
@@ -92,81 +92,82 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
  Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ram Pai <linuxram@us.ibm.com>
+From: Ryan Grimm <grimm@linux.vnet.ibm.com>
 
-A new kernel deserves a clean slate. Any pages shared with the hypervisor
-is unshared before invoking the new kernel. However there are exceptions.
-If the new kernel is invoked to dump the current kernel, or if there is a
-explicit request to preserve the state of the current kernel, unsharing
-of pages is skipped.
+User space might want to know it's running in a secure VM.  It can't do
+a mfmsr because mfmsr is a privileged instruction.
 
-NOTE: While testing crashkernel, make sure at least 256M is reserved for
-crashkernel. Otherwise SWIOTLB allocation will fail and crash kernel will
-fail to boot.
+The solution here is to create a cpu attribute:
 
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+/sys/devices/system/cpu/svm
+
+which will read 0 or 1 based on the S bit of the guest's CPU 0.
+
+Signed-off-by: Ryan Grimm <grimm@linux.vnet.ibm.com>
+Reviewed-by: Ram Pai <linuxram@us.ibm.com>
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/include/asm/ultravisor-api.h | 1 +
- arch/powerpc/include/asm/ultravisor.h     | 5 +++++
- arch/powerpc/kernel/machine_kexec_64.c    | 9 +++++++++
- 3 files changed, 15 insertions(+)
+ arch/powerpc/kernel/sysfs.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/ultravisor-api.h b/arch/powerpc/include/asm/ultravisor-api.h
-index 142b0576b89f..7e69c364bde0 100644
---- a/arch/powerpc/include/asm/ultravisor-api.h
-+++ b/arch/powerpc/include/asm/ultravisor-api.h
-@@ -24,5 +24,6 @@
- #define UV_ESM				0xF110
- #define UV_SHARE_PAGE			0xF130
- #define UV_UNSHARE_PAGE			0xF134
-+#define UV_UNSHARE_ALL_PAGES		0xF140
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index e2147d7c9e72..f7100ab77d29 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -19,6 +19,7 @@
+ #include <asm/smp.h>
+ #include <asm/pmc.h>
+ #include <asm/firmware.h>
++#include <asm/svm.h>
  
- #endif /* _ASM_POWERPC_ULTRAVISOR_API_H */
-diff --git a/arch/powerpc/include/asm/ultravisor.h b/arch/powerpc/include/asm/ultravisor.h
-index a930aec8c1e3..e6f8a2b96694 100644
---- a/arch/powerpc/include/asm/ultravisor.h
-+++ b/arch/powerpc/include/asm/ultravisor.h
-@@ -21,4 +21,9 @@ static inline int uv_unshare_page(u64 pfn, u64 npages)
- 	return ucall_norets(UV_UNSHARE_PAGE, pfn, npages);
- }
+ #include "cacheinfo.h"
+ #include "setup.h"
+@@ -715,6 +716,32 @@ static struct device_attribute pa6t_attrs[] = {
+ #endif /* HAS_PPC_PMC_PA6T */
+ #endif /* HAS_PPC_PMC_CLASSIC */
  
-+static inline int uv_unshare_all_pages(void)
++#ifdef CONFIG_PPC_SVM
++static void get_svm(void *val)
 +{
-+	return ucall_norets(UV_UNSHARE_ALL_PAGES);
++	u32 *value = val;
++
++	*value = is_secure_guest();
 +}
 +
- #endif	/* _ASM_POWERPC_ULTRAVISOR_H */
-diff --git a/arch/powerpc/kernel/machine_kexec_64.c b/arch/powerpc/kernel/machine_kexec_64.c
-index 18481b0e2788..04a7cba58eff 100644
---- a/arch/powerpc/kernel/machine_kexec_64.c
-+++ b/arch/powerpc/kernel/machine_kexec_64.c
-@@ -29,6 +29,8 @@
- #include <asm/smp.h>
- #include <asm/hw_breakpoint.h>
- #include <asm/asm-prototypes.h>
-+#include <asm/svm.h>
-+#include <asm/ultravisor.h>
- 
- int default_machine_kexec_prepare(struct kimage *image)
++static ssize_t show_svm(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	u32 val;
++	smp_call_function_single(0, get_svm, &val, 1);
++	return sprintf(buf, "%u\n", val);
++}
++static DEVICE_ATTR(svm, 0444, show_svm, NULL);
++
++static void create_svm_file(void)
++{
++	device_create_file(cpu_subsys.dev_root, &dev_attr_svm);
++}
++#else
++static void create_svm_file(void)
++{
++}
++#endif /* CONFIG_PPC_SVM */
++
+ static int register_cpu_online(unsigned int cpu)
  {
-@@ -327,6 +329,13 @@ void default_machine_kexec(struct kimage *image)
- #ifdef CONFIG_PPC_PSERIES
- 	kexec_paca.lppaca_ptr = NULL;
- #endif
-+
-+	if (is_secure_guest() && !(image->preserve_context ||
-+				   image->type == KEXEC_TYPE_CRASH)) {
-+		uv_unshare_all_pages();
-+		printk("kexec: Unshared all shared pages.\n");
-+	}
-+
- 	paca_ptrs[kexec_paca.paca_index] = &kexec_paca;
+ 	struct cpu *c = &per_cpu(cpu_devices, cpu);
+@@ -1058,6 +1085,8 @@ static int __init topology_init(void)
+ 	sysfs_create_dscr_default();
+ #endif /* CONFIG_PPC64 */
  
- 	setup_paca(&kexec_paca);
++	create_svm_file();
++
+ 	return 0;
+ }
+ subsys_initcall(topology_init);
