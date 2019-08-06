@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBBC82B46
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:51:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462kKZ6lbgzDr0w
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:51:46 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 396B782B4E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 07:53:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 462kMj3ry8zDqwr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 15:53:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,63 +19,67 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462jj75LNGzDqTW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:39 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462jj84ZBvzDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 15:23:40 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x765LvCY055755; Tue, 6 Aug 2019 01:23:33 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2u739ar4q2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 01:23:33 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x765Lvka055784;
- Tue, 6 Aug 2019 01:23:32 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2u739ar4pk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 01:23:32 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x765KFIT011715;
- Tue, 6 Aug 2019 05:23:31 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 2u51w62tnk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Aug 2019 05:23:31 +0000
+ x765LwdW110172
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 6 Aug 2019 01:23:38 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u7253agw7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2019 01:23:37 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bauerman@linux.ibm.com>;
+ Tue, 6 Aug 2019 06:23:37 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 6 Aug 2019 06:23:34 +0100
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x765NULh54329696
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x765NXhO47907140
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Aug 2019 05:23:30 GMT
+ Tue, 6 Aug 2019 05:23:33 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5223112062;
- Tue,  6 Aug 2019 05:23:30 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 31129112063;
+ Tue,  6 Aug 2019 05:23:33 +0000 (GMT)
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 77A72112066;
- Tue,  6 Aug 2019 05:23:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 22236112061;
+ Tue,  6 Aug 2019 05:23:31 +0000 (GMT)
 Received: from morokweng.localdomain.com (unknown [9.85.207.254])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  6 Aug 2019 05:23:28 +0000 (GMT)
+ Tue,  6 Aug 2019 05:23:30 +0000 (GMT)
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 12/16] powerpc/pseries/svm: Disable doorbells in SVM guests
-Date: Tue,  6 Aug 2019 02:22:33 -0300
-Message-Id: <20190806052237.12525-13-bauerman@linux.ibm.com>
+Subject: [PATCH v3 13/16] powerpc/pseries/iommu: Don't use dma_iommu_ops on
+ secure guests
+Date: Tue,  6 Aug 2019 02:22:34 -0300
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190806052237.12525-1-bauerman@linux.ibm.com>
 References: <20190806052237.12525-1-bauerman@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
+x-cbid: 19080605-0060-0000-0000-0000036975F4
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011558; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01242749; UDB=6.00655527; IPR=6.01024213; 
+ MB=3.00028061; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-06 05:23:36
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19080605-0061-0000-0000-00004A71CA72
+Message-Id: <20190806052237.12525-14-bauerman@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-06_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=565 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908060063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,59 +96,44 @@ Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
  Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Sukadev Bhattiprolu <sukadev@linux.ibm.com>, Christoph Hellwig <hch@lst.de>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+ Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Secure guest memory is inacessible to devices so regular DMA isn't
+possible.
 
-Normally, the HV emulates some instructions like MSGSNDP, MSGCLRP
-from a KVM guest. To emulate the instructions, it must first read
-the instruction from the guest's memory and decode its parameters.
+In that case set devices' dma_map_ops to NULL so that the generic
+DMA code path will use SWIOTLB and DMA to bounce buffers.
 
-However for a secure guest (aka SVM), the page containing the
-instruction is in secure memory and the HV cannot access directly.
-It would need the Ultravisor (UV) to facilitate accessing the
-instruction and parameters but the UV currently does not have
-the support for such accesses.
-
-Until the UV has such support, disable doorbells in SVMs. This might
-incur a performance hit but that is yet to be quantified.
-
-With this patch applied (needed only in SVMs not needed for HV) we
-are able to launch SVM guests with multi-core support. Eg:
-
-	qemu -smp sockets=2,cores=2,threads=2.
-
-Fix suggested by Benjamin Herrenschmidt. Thanks to input from
-Paul Mackerras, Ram Pai and Michael Anderson.
-
-Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
 Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/smp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/iommu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index 4b3ef8d9c63f..ad61e90032da 100644
---- a/arch/powerpc/platforms/pseries/smp.c
-+++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -41,6 +41,7 @@
- #include <asm/dbell.h>
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 889dc2e44b89..6fd8c8581873 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -36,6 +36,7 @@
+ #include <asm/udbg.h>
+ #include <asm/mmzone.h>
  #include <asm/plpar_wrappers.h>
- #include <asm/code-patching.h>
 +#include <asm/svm.h>
  
  #include "pseries.h"
- #include "offline_states.h"
-@@ -221,7 +222,7 @@ static __init void pSeries_smp_probe_xics(void)
- {
- 	xics_smp_probe();
  
--	if (cpu_has_feature(CPU_FTR_DBELL))
-+	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
- 		smp_ops->cause_ipi = smp_pseries_cause_ipi;
- 	else
- 		smp_ops->cause_ipi = icp_ops->cause_ipi;
+@@ -1318,7 +1319,10 @@ void iommu_init_early_pSeries(void)
+ 	of_reconfig_notifier_register(&iommu_reconfig_nb);
+ 	register_memory_notifier(&iommu_mem_nb);
+ 
+-	set_pci_dma_ops(&dma_iommu_ops);
++	if (is_secure_guest())
++		set_pci_dma_ops(NULL);
++	else
++		set_pci_dma_ops(&dma_iommu_ops);
+ }
+ 
+ static int __init disable_multitce(char *str)
+
