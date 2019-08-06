@@ -2,84 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6383580
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 17:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C898360C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 17:59:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462zRD6znPzDr69
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 01:42:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462zpS3tDRzDr7l
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 01:59:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linaro.org
- (client-ip=2607:f8b0:4864:20::b43; helo=mail-yb1-xb43.google.com;
- envelope-from=leo.yan@linaro.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.b="NcmXSNcy"; 
- dkim-atps=neutral
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com
- [IPv6:2607:f8b0:4864:20::b43])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462qsc4SggzDr27
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 20:01:24 +1000 (AEST)
-Received: by mail-yb1-xb43.google.com with SMTP id d9so24009048ybf.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2019 03:01:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=SpJEkhv16jwVLO2sSfJ7SapVMbBMCm5PIZfy4pO40/c=;
- b=NcmXSNcyQXDjk3UYlgYN76nvMxC7M92+xGOU6qJ+B27Ib4OnaFsQUE4R4i6AgQ5Z27
- CrVPGUgZwTFsH/qOmNAZIQ9t8+tJQYLJRYwOgyGPNBTtVtV2+jhG318/V8R4JQ79LBji
- IXJFOhESxve1HFswgRG5nTJ/blfxFcD16f8zz9LuhnDFQEGvMLmUBnqt1xPDTPxTR3F2
- UHxlkCaew7fGYGA1NWH+bEsjzPS8fNmBKA8ge4sydhn43kds0Br7aJqOw8nsgys43bqq
- +XxhHjPci5pdYEoWKUtlQUEsK7RtCbrhP00EmAXuXadm7JEFV+so2h2c2OMhdTF7sOr/
- uDpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=SpJEkhv16jwVLO2sSfJ7SapVMbBMCm5PIZfy4pO40/c=;
- b=ChP+iRC4soGgKylSespskAiNEeqsdvKR98l/l30JoJiu/16tpyvkBGU93g9+0EDsru
- dQoFmydJw6mmU01H1kFt1mh4HKV2lMj7n9NubGmANZGZPQFxV2HGgMoislUJAHmLC1WM
- ZDO5rdnOChOknTx+6CI/N0IVwWOxkxMq31+1du8qCp3PagEIzGKXuPRktSljSO1lGKpD
- EmFk/sECoDiWgsJPe9yoH7t8oB2G+WCRmNvP/B+5wY8hojNZQ+TF3x26bEgihYs38FW1
- znl7gOUHGgfcWKewLBqG2rxxRsfd9IYO7ff9BC+Un7O+5+uEmETVkfzPFUak+C2skOgX
- CwVw==
-X-Gm-Message-State: APjAAAUwVM2lXA29AJkk84sz6kZOOkjRuqxn5BamdgDUF2izMpGNCvT5
- 4Hko71QxYYj7KrT4oRrSKMQrtw==
-X-Google-Smtp-Source: APXvYqwTAorLnL1JJGzrv713O0sksEZzjbqxPPlxmNn5n95Bw8aIX/crRrWGGgZ7Emh+mOBZG+hc4w==
-X-Received: by 2002:a25:1a82:: with SMTP id a124mr1799776yba.160.1565085681984; 
- Tue, 06 Aug 2019 03:01:21 -0700 (PDT)
-Received: from localhost.localdomain (li1322-146.members.linode.com.
- [45.79.223.146])
- by smtp.gmail.com with ESMTPSA id h12sm18316685ywm.91.2019.08.06.03.01.12
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 06 Aug 2019 03:01:21 -0700 (PDT)
-From: Leo Yan <leo.yan@linaro.org>
-To: Russell King <linux@armlinux.org.uk>, Oleg Nesterov <oleg@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org,
- netdev@vger.kernel.org, bpf@vger.kernel.org,
- clang-built-linux@googlegroups.com, Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH v2 3/3] arm: Add support for function error injection
-Date: Tue,  6 Aug 2019 18:00:15 +0800
-Message-Id: <20190806100015.11256-4-leo.yan@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190806100015.11256-1-leo.yan@linaro.org>
-References: <20190806100015.11256-1-leo.yan@linaro.org>
-X-Mailman-Approved-At: Wed, 07 Aug 2019 01:35:31 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462zmP2gxxzDr1f
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 01:57:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 462zmL5VKrz8tPq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 01:57:22 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 462zmL577mz9sN1; Wed,  7 Aug 2019 01:57:22 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 462zmL1DwGz9sMr
+ for <linuxppc-dev@ozlabs.org>; Wed,  7 Aug 2019 01:57:21 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x76Fv12L016606;
+ Tue, 6 Aug 2019 10:57:01 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x76Fv0d8016605;
+ Tue, 6 Aug 2019 10:57:00 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 6 Aug 2019 10:57:00 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 3/3] powerpc/spinlocks: Fix oops in shared-processor
+ spinlocks
+Message-ID: <20190806155700.GP31406@gate.crashing.org>
+References: <20190802042233.20835-1-cmr@informatik.wtf>
+ <20190802042233.20835-4-cmr@informatik.wtf>
+ <877e7vlruk.fsf@concordia.ellerman.id.au>
+ <850780620.61430.1564758724962@privateemail.com>
+ <87r25yv6cc.fsf@concordia.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r25yv6cc.fsf@concordia.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,89 +69,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Leo Yan <leo.yan@linaro.org>
+Cc: linuxppc-dev@ozlabs.org, Christopher M Riedl <cmr@informatik.wtf>,
+ ajd@linux.ibm.com, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch implements arm specific functions regs_set_return_value() and
-override_function_with_return() to support function error injection.
+On Tue, Aug 06, 2019 at 10:14:27PM +1000, Michael Ellerman wrote:
+> Christopher M Riedl <cmr@informatik.wtf> writes:
+> > Yep, and that's no good. Hmm, executing the barrier() in the non-shared-processor
+> > case probably hurts performance here?
+> 
+> It's only a "compiler barrier", so it shouldn't generate any code.
+> 
+> But it does have the effect of telling the compiler it can't optimise
+> across that barrier, which can be important.
 
-In the exception flow, it updates pt_regs::ARM_pc with pt_regs::ARM_lr
-so can override the probed function return.
+This is
 
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
----
- arch/arm/Kconfig              |  1 +
- arch/arm/include/asm/ptrace.h |  5 +++++
- arch/arm/lib/Makefile         |  2 ++
- arch/arm/lib/error-inject.c   | 19 +++++++++++++++++++
- 4 files changed, 27 insertions(+)
- create mode 100644 arch/arm/lib/error-inject.c
+#define barrier() __asm__ __volatile__("": : :"memory")
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 33b00579beff..2d3d44a037f6 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -77,6 +77,7 @@ config ARM
- 	select HAVE_EXIT_THREAD
- 	select HAVE_FAST_GUP if ARM_LPAE
- 	select HAVE_FTRACE_MCOUNT_RECORD if !XIP_KERNEL
-+	select HAVE_FUNCTION_ERROR_INJECTION if !THUMB2_KERNEL
- 	select HAVE_FUNCTION_GRAPH_TRACER if !THUMB2_KERNEL && !CC_IS_CLANG
- 	select HAVE_FUNCTION_TRACER if !XIP_KERNEL
- 	select HAVE_GCC_PLUGINS
-diff --git a/arch/arm/include/asm/ptrace.h b/arch/arm/include/asm/ptrace.h
-index 91d6b7856be4..3b41f37b361a 100644
---- a/arch/arm/include/asm/ptrace.h
-+++ b/arch/arm/include/asm/ptrace.h
-@@ -89,6 +89,11 @@ static inline long regs_return_value(struct pt_regs *regs)
- 	return regs->ARM_r0;
- }
- 
-+static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
-+{
-+	regs->ARM_r0 = rc;
-+}
-+
- #define instruction_pointer(regs)	(regs)->ARM_pc
- 
- #ifdef CONFIG_THUMB2_KERNEL
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index b25c54585048..8f56484a7156 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -42,3 +42,5 @@ ifeq ($(CONFIG_KERNEL_MODE_NEON),y)
-   CFLAGS_xor-neon.o		+= $(NEON_FLAGS)
-   obj-$(CONFIG_XOR_BLOCKS)	+= xor-neon.o
- endif
-+
-+obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
-diff --git a/arch/arm/lib/error-inject.c b/arch/arm/lib/error-inject.c
-new file mode 100644
-index 000000000000..2d696dc94893
---- /dev/null
-+++ b/arch/arm/lib/error-inject.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/error-injection.h>
-+#include <linux/kprobes.h>
-+
-+void override_function_with_return(struct pt_regs *regs)
-+{
-+	/*
-+	 * 'regs' represents the state on entry of a predefined function in
-+	 * the kernel/module and which is captured on a kprobe.
-+	 *
-+	 * 'regs->ARM_lr' contains the the link register for the probed
-+	 * function, when kprobe returns back from exception it will override
-+	 * the end of probed function and directly return to the predefined
-+	 * function's caller.
-+	 */
-+	instruction_pointer_set(regs, regs->ARM_lr);
-+}
-+NOKPROBE_SYMBOL(override_function_with_return);
--- 
-2.17.1
+It doesn't tell the compiler "not to optimise" across the barrier.  It
+tells the compiler that all memory accesses before the barrier should
+stay before it, and all accesses after the barrier should stay after it,
+because it says the "barrier" can access and/or change any memory.
 
+This does not tell the hardware not to move those accesses around.  It
+also doesn't say anything about things that are not in memory.  Not
+everything you think is in memory, is.  What is and isn't in memory can
+change during compilation.
+
+
+[ This message brought to you by the "Stamp Out Optimisation Barrier"
+  campaign. ]
+
+
+Segher
