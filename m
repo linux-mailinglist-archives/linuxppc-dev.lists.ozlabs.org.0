@@ -1,59 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3C48365F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 18:10:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46303j1SfrzDr22
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 02:10:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19738836A8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 18:26:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4630Pc2kw6zDqlh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 02:26:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=will@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=tlfalcon@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="QwYLVlSC"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46301p0QMzzDqpr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 02:09:01 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 981C320679;
- Tue,  6 Aug 2019 16:08:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565107739;
- bh=v0k57mTDkfDZaJNeGslFkP/p8/lZF5e0EN6d5zbeXJQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=QwYLVlSCvE5RkEzMUkxya/17HqX4ysozqlmTdPTPO5zBru0s7lkz8yZHQi0kE7QPa
- J3nsmuubbBmALdIHYivFeIBCfxouhnJ+9TQ0HskYPSpEl7ePJW8QWsSwlXZEvwICkA
- ksIz9c1GMc0XmZhCNFQc096KaCxj+m1SMXGhPUZc=
-Date: Tue, 6 Aug 2019 17:08:54 +0100
-From: Will Deacon <will@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] dma-mapping: fix page attributes for dma_mmap_*
-Message-ID: <20190806160854.htk67msiyadlrl4m@willie-the-truck>
-References: <20190801142118.21225-1-hch@lst.de>
- <20190801142118.21225-2-hch@lst.de>
- <20190801162305.3m32chycsdjmdejk@willie-the-truck>
- <20190801163457.GB26588@lst.de>
- <20190801164411.kmsl4japtfkgvzxe@willie-the-truck>
- <20190802081441.GA9725@lst.de>
- <20190802103803.3qrbhqwxlasojsco@willie-the-truck>
- <20190803064812.GA29746@lst.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190803064812.GA29746@lst.de>
-User-Agent: NeoMutt/20170113 (1.7.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4630MW3JppzDqMh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 02:24:23 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x76GHk4q087280; Tue, 6 Aug 2019 12:24:14 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2u7atsxeg3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2019 12:23:33 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x76GAd7c026027;
+ Tue, 6 Aug 2019 16:23:11 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma03dal.us.ibm.com with ESMTP id 2u51w6smvw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 Aug 2019 16:23:11 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x76GNA9D29557036
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 6 Aug 2019 16:23:10 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9EC68B2064;
+ Tue,  6 Aug 2019 16:23:10 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 43E84B205F;
+ Tue,  6 Aug 2019 16:23:10 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.41.178.211])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  6 Aug 2019 16:23:10 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH net-next v2] ibmveth: Allow users to update reported speed and
+ duplex
+Date: Tue,  6 Aug 2019 11:23:08 -0500
+Message-Id: <1565108588-17331-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-06_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908060153
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,72 +78,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, linuxppc-dev@lists.ozlabs.org,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: netdev@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 03, 2019 at 08:48:12AM +0200, Christoph Hellwig wrote:
-> On Fri, Aug 02, 2019 at 11:38:03AM +0100, Will Deacon wrote:
-> > 
-> > So this boils down to a terminology mismatch. The Arm architecture doesn't have
-> > anything called "write combine", so in Linux we instead provide what the Arm
-> > architecture calls "Normal non-cacheable" memory for pgprot_writecombine().
-> > Amongst other things, this memory type permits speculation, unaligned accesses
-> > and merging of writes. I found something in the architecture spec about
-> > non-cachable memory, but it's written in Armglish[1].
-> > 
-> > pgprot_noncached(), on the other hand, provides what the architecture calls
-> > Strongly Ordered or Device-nGnRnE memory. This is intended for mapping MMIO
-> > (i.e. PCI config space) and therefore forbids speculation, preserves access
-> > size, requires strict alignment and also forces write responses to come from
-> > the endpoint.
-> > 
-> > I think the naming mismatch is historical, but on arm64 we wanted to use the
-> > same names as arm32 so that any drivers using these things directly would get
-> > the same behaviour.
-> 
-> That all makes sense, but it totally needs a comment.  I'll try to draft
-> one based on this.  I've also looked at the arm32 code a bit more, and
-> it seems arm always (?) supported Normal non-cacheable attribute, but
-> Linux only optionally uses it for arm v6+ because of fears of drivers
-> missing barriers.
+Reported ethtool link settings for the ibmveth driver are currently
+hardcoded and no longer reflect the actual capabilities of supported
+hardware. There is no interface designed for retrieving this information
+from device firmware nor is there any way to update current settings
+to reflect observed or expected link speeds.
 
-I think it was also to do with aliasing, but I don't recall all of the
-details.
+To avoid breaking existing configurations, retain current values as
+default settings but let users update them to match the expected
+capabilities of underlying hardware if needed. This update would
+allow the use of configurations that rely on certain link speed
+settings, such as LACP. This patch is based on the implementation
+in virtio_net.
 
-> The other really weird things is that in arm32
-> pgprot_dmacoherent incudes the L_PTE_XN bit, which from my understanding
-> is the no-execture bit, but pgprot_writecombine does not.  This seems to
-> not very unintentional.  So minus that the whole DMA_ATTR_WRITE_COMBІNE
-> seems to be about flagging old arm specific drivers as having the proper
-> barriers in places and otherwise is a no-op.
+Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+---
+v2: Updated default driver speed/duplex settings to avoid
+    breaking existing setups
+---
+ drivers/net/ethernet/ibm/ibmveth.c | 83 ++++++++++++++++++++++++++++----------
+ drivers/net/ethernet/ibm/ibmveth.h |  3 ++
+ 2 files changed, 64 insertions(+), 22 deletions(-)
 
-I think it only matters for Armv7 CPUs, but yes, we should probably be
-setting L_PTE_XN for both of these memory types.
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index d654c23..5dc634f 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -712,31 +712,68 @@ static int ibmveth_close(struct net_device *netdev)
+ 	return 0;
+ }
+ 
+-static int netdev_get_link_ksettings(struct net_device *dev,
+-				     struct ethtool_link_ksettings *cmd)
++static bool
++ibmveth_validate_ethtool_cmd(const struct ethtool_link_ksettings *cmd)
+ {
+-	u32 supported, advertising;
+-
+-	supported = (SUPPORTED_1000baseT_Full | SUPPORTED_Autoneg |
+-				SUPPORTED_FIBRE);
+-	advertising = (ADVERTISED_1000baseT_Full | ADVERTISED_Autoneg |
+-				ADVERTISED_FIBRE);
+-	cmd->base.speed = SPEED_1000;
+-	cmd->base.duplex = DUPLEX_FULL;
+-	cmd->base.port = PORT_FIBRE;
+-	cmd->base.phy_address = 0;
+-	cmd->base.autoneg = AUTONEG_ENABLE;
+-
+-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
+-						supported);
+-	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+-						advertising);
++	struct ethtool_link_ksettings diff1 = *cmd;
++	struct ethtool_link_ksettings diff2 = {};
++
++	diff2.base.port = PORT_OTHER;
++	diff1.base.speed = 0;
++	diff1.base.duplex = 0;
++	diff1.base.cmd = 0;
++	diff1.base.link_mode_masks_nwords = 0;
++	ethtool_link_ksettings_zero_link_mode(&diff1, advertising);
++
++	return !memcmp(&diff1.base, &diff2.base, sizeof(diff1.base)) &&
++		bitmap_empty(diff1.link_modes.supported,
++			     __ETHTOOL_LINK_MODE_MASK_NBITS) &&
++		bitmap_empty(diff1.link_modes.advertising,
++			     __ETHTOOL_LINK_MODE_MASK_NBITS) &&
++		bitmap_empty(diff1.link_modes.lp_advertising,
++			     __ETHTOOL_LINK_MODE_MASK_NBITS);
++}
++
++static int ibmveth_set_link_ksettings(struct net_device *dev,
++				      const struct ethtool_link_ksettings *cmd)
++{
++	struct ibmveth_adapter *adapter = netdev_priv(dev);
++	u32 speed;
++	u8 duplex;
++
++	speed = cmd->base.speed;
++	duplex = cmd->base.duplex;
++	/* don't allow custom speed and duplex */
++	if (!ethtool_validate_speed(speed) ||
++	    !ethtool_validate_duplex(duplex) ||
++	    !ibmveth_validate_ethtool_cmd(cmd))
++		return -EINVAL;
++	adapter->speed = speed;
++	adapter->duplex = duplex;
+ 
+ 	return 0;
+ }
+ 
+-static void netdev_get_drvinfo(struct net_device *dev,
+-			       struct ethtool_drvinfo *info)
++static int ibmveth_get_link_ksettings(struct net_device *dev,
++				      struct ethtool_link_ksettings *cmd)
++{
++	struct ibmveth_adapter *adapter = netdev_priv(dev);
++
++	cmd->base.speed = adapter->speed;
++	cmd->base.duplex = adapter->duplex;
++	cmd->base.port = PORT_OTHER;
++
++	return 0;
++}
++
++static void ibmveth_init_link_settings(struct ibmveth_adapter *adapter)
++{
++	adapter->duplex = DUPLEX_FULL;
++	adapter->speed = SPEED_1000;
++}
++
++static void ibmveth_get_drvinfo(struct net_device *dev,
++				struct ethtool_drvinfo *info)
+ {
+ 	strlcpy(info->driver, ibmveth_driver_name, sizeof(info->driver));
+ 	strlcpy(info->version, ibmveth_driver_version, sizeof(info->version));
+@@ -965,12 +1002,13 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
+ }
+ 
+ static const struct ethtool_ops netdev_ethtool_ops = {
+-	.get_drvinfo		= netdev_get_drvinfo,
++	.get_drvinfo		= ibmveth_get_drvinfo,
+ 	.get_link		= ethtool_op_get_link,
+ 	.get_strings		= ibmveth_get_strings,
+ 	.get_sset_count		= ibmveth_get_sset_count,
+ 	.get_ethtool_stats	= ibmveth_get_ethtool_stats,
+-	.get_link_ksettings	= netdev_get_link_ksettings,
++	.get_link_ksettings	= ibmveth_get_link_ksettings,
++	.set_link_ksettings	= ibmveth_set_link_ksettings
+ };
+ 
+ static int ibmveth_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+@@ -1647,6 +1685,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+ 	adapter->netdev = netdev;
+ 	adapter->mcastFilterSize = *mcastFilterSize_p;
+ 	adapter->pool_config = 0;
++	ibmveth_init_link_settings(adapter);
+ 
+ 	netif_napi_add(netdev, &adapter->napi, ibmveth_poll, 16);
+ 
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 4e9bf34..db96c88 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -162,6 +162,9 @@ struct ibmveth_adapter {
+     u64 tx_send_failed;
+     u64 tx_large_packets;
+     u64 rx_large_packets;
++    /* Ethtool settings */
++    u8 duplex;
++    u32 speed;
+ };
+ 
+ /*
+-- 
+1.8.3.1
 
-> Here is my tentative plan:
-> 
->  - respin this patch with a small fix to handle the
->    DMA_ATTR_NON_CONSISTENT (as in ignore it unless actually supported),
->    but keep the name as-is to avoid churn.  This should allow 5.3
->    inclusion and backports
->  - remove DMA_ATTR_WRITE_COMBINE support from mips, probably also 5.3
->    material.
->  - move all architectures but arm over to just define
->    pgprot_dmacoherent, including a comment with the above explanation
->    for arm64.
-
-That would be great, thanks.
-
->  - make DMA_ATTR_WRITE_COMBINE a no-op and schedule it for removal,
->    thus removing the last instances of arch_dma_mmap_pgprot
-
-All sounds good to me, although I suppose 32-bit Arm platforms without
-CONFIG_ARM_DMA_MEM_BUFFERABLE may run into issues if DMA_ATTR_WRITE_COMBINE
-disappears. Only one way to find out...
-
-Will
