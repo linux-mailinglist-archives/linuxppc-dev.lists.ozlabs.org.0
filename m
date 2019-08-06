@@ -2,38 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AEE830F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 13:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C793683135
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 14:16:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 462tGV57PXzDqtv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 21:49:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 462tsv6CD6zDqys
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2019 22:16:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 462tDr6Hr8zDqpv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 21:48:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 462tqC0JFRzDqpR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2019 22:14:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 462tDq605Pz9sND; Tue,  6 Aug 2019 21:48:11 +1000 (AEST)
+ id 462tqB2TZwz9sN1; Tue,  6 Aug 2019 22:14:30 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 462tDp3tXMz9sN1;
- Tue,  6 Aug 2019 21:48:10 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 462tqB0cfzz9sDB;
+ Tue,  6 Aug 2019 22:14:30 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com
-Subject: Re: [RFC PATCH v3] powerpc/xmon: Restrict when kernel is locked down
-In-Reply-To: <20190803190040.8103-1-cmr@informatik.wtf>
-References: <20190803190040.8103-1-cmr@informatik.wtf>
-Date: Tue, 06 Aug 2019 21:48:07 +1000
-Message-ID: <87tvauv7k8.fsf@concordia.ellerman.id.au>
+To: Christopher M Riedl <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v2 3/3] powerpc/spinlocks: Fix oops in shared-processor
+ spinlocks
+In-Reply-To: <850780620.61430.1564758724962@privateemail.com>
+References: <20190802042233.20835-1-cmr@informatik.wtf>
+ <20190802042233.20835-4-cmr@informatik.wtf>
+ <877e7vlruk.fsf@concordia.ellerman.id.au>
+ <850780620.61430.1564758724962@privateemail.com>
+Date: Tue, 06 Aug 2019 22:14:27 +1000
+Message-ID: <87r25yv6cc.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -47,231 +50,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, mjg59@google.com, dja@axtens.net
+Cc: ajd@linux.ibm.com, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Christopher M. Riedl" <cmr@informatik.wtf> writes:
-> Xmon should be either fully or partially disabled depending on the
-> kernel lockdown state.
+Christopher M Riedl <cmr@informatik.wtf> writes:
+>> On August 2, 2019 at 6:38 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> "Christopher M. Riedl" <cmr@informatik.wtf> writes:
+>> > diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+>> > index 0a8270183770..6aed8a83b180 100644
+>> > --- a/arch/powerpc/include/asm/spinlock.h
+>> > +++ b/arch/powerpc/include/asm/spinlock.h
+>> > @@ -124,6 +122,22 @@ static inline bool is_shared_processor(void)
+>> >  #endif
+>> >  }
+>> >  
+>> > +static inline void spin_yield(arch_spinlock_t *lock)
+>> > +{
+>> > +	if (is_shared_processor())
+>> > +		splpar_spin_yield(lock);
+>> > +	else
+>> > +		barrier();
+>> > +}
+>> ...
+>> >  static inline void arch_spin_lock(arch_spinlock_t *lock)
+>> >  {
+>> >  	while (1) {
+>> > @@ -132,7 +146,7 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
+>> >  		do {
+>> >  			HMT_low();
+>> >  			if (is_shared_processor())
+>> > -				__spin_yield(lock);
+>> > +				spin_yield(lock);
+>> 
+>> This leaves us with a double test of is_shared_processor() doesn't it?
 >
-> Put xmon into read-only mode for lockdown=integrity and completely
-> disable xmon when lockdown=confidentiality. Xmon checks the lockdown
-> state and takes appropriate action:
->
->  (1) during xmon_setup to prevent early xmon'ing
->
->  (2) when triggered via sysrq
->
->  (3) when toggled via debugfs
->
->  (4) when triggered via a previously enabled breakpoint
->
-> The following lockdown state transitions are handled:
->
->  (1) lockdown=none -> lockdown=integrity
->      set xmon read-only mode
->
->  (2) lockdown=none -> lockdown=confidentiality
->      clear all breakpoints, set xmon read-only mode,
->      prevent re-entry into xmon
->
->  (3) lockdown=integrity -> lockdown=confidentiality
->      clear all breakpoints, set xmon read-only mode,
->      prevent re-entry into xmon
->
-> Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> ---
-> Changes since v1:
->  - Rebased onto v36 of https://patchwork.kernel.org/cover/11049461/
->    (based on: f632a8170a6b667ee4e3f552087588f0fe13c4bb)
->  - Do not clear existing breakpoints when transitioning from
->    lockdown=none to lockdown=integrity
->  - Remove line continuation and dangling quote (confuses checkpatch.pl)
->    from the xmon command help/usage string
+> Yep, and that's no good. Hmm, executing the barrier() in the non-shared-processor
+> case probably hurts performance here?
 
-This looks good to me.
+It's only a "compiler barrier", so it shouldn't generate any code.
 
-So I guess we're just waiting on lockdown to go in somewhere.
+But it does have the effect of telling the compiler it can't optimise
+across that barrier, which can be important.
+
+In those spin loops all we're doing is checking lock->slock which is
+already marked volatile in the definition of arch_spinlock_t, so the
+extra barrier shouldn't really make any difference.
+
+But still the current code doesn't have a barrier() there, so we should
+make sure we don't introduce one as part of this refactor.
+
+So I think you just want to change the call to spin_yield() above to
+splpar_spin_yield(), which avoids the double check, and also avoids the
+barrier() in the SPLPAR=n case.
+
+And then arch_spin_relax() calls spin_yield() etc.
 
 cheers
-
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index d0620d762a5a..1a5e43d664ca 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -25,6 +25,7 @@
->  #include <linux/nmi.h>
->  #include <linux/ctype.h>
->  #include <linux/highmem.h>
-> +#include <linux/security.h>
->  
->  #include <asm/debugfs.h>
->  #include <asm/ptrace.h>
-> @@ -187,6 +188,9 @@ static void dump_tlb_44x(void);
->  static void dump_tlb_book3e(void);
->  #endif
->  
-> +static void clear_all_bpt(void);
-> +static void xmon_init(int);
-> +
->  #ifdef CONFIG_PPC64
->  #define REG		"%.16lx"
->  #else
-> @@ -283,10 +287,41 @@ Commands:\n\
->  "  U	show uptime information\n"
->  "  ?	help\n"
->  "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
-> -"  zr	reboot\n\
-> -  zh	halt\n"
-> +"  zr	reboot\n"
-> +"  zh	halt\n"
->  ;
->  
-> +#ifdef CONFIG_SECURITY
-> +static bool xmon_is_locked_down(void)
-> +{
-> +	static bool lockdown;
-> +
-> +	if (!lockdown) {
-> +		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
-> +		if (lockdown) {
-> +			printf("xmon: Disabled due to kernel lockdown\n");
-> +			xmon_is_ro = true;
-> +			xmon_on = 0;
-> +			xmon_init(0);
-> +			clear_all_bpt();
-> +		}
-> +	}
-> +
-> +	if (!xmon_is_ro) {
-> +		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
-> +		if (xmon_is_ro)
-> +			printf("xmon: Read-only due to kernel lockdown\n");
-> +	}
-> +
-> +	return lockdown;
-> +}
-> +#else /* CONFIG_SECURITY */
-> +static inline bool xmon_is_locked_down(void)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  static struct pt_regs *xmon_regs;
->  
->  static inline void sync(void)
-> @@ -704,6 +739,9 @@ static int xmon_bpt(struct pt_regs *regs)
->  	struct bpt *bp;
->  	unsigned long offset;
->  
-> +	if (xmon_is_locked_down())
-> +		return 0;
-> +
->  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
->  		return 0;
->  
-> @@ -735,6 +773,9 @@ static int xmon_sstep(struct pt_regs *regs)
->  
->  static int xmon_break_match(struct pt_regs *regs)
->  {
-> +	if (xmon_is_locked_down())
-> +		return 0;
-> +
->  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
->  		return 0;
->  	if (dabr.enabled == 0)
-> @@ -745,6 +786,9 @@ static int xmon_break_match(struct pt_regs *regs)
->  
->  static int xmon_iabr_match(struct pt_regs *regs)
->  {
-> +	if (xmon_is_locked_down())
-> +		return 0;
-> +
->  	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
->  		return 0;
->  	if (iabr == NULL)
-> @@ -3741,6 +3785,9 @@ static void xmon_init(int enable)
->  #ifdef CONFIG_MAGIC_SYSRQ
->  static void sysrq_handle_xmon(int key)
->  {
-> +	if (xmon_is_locked_down())
-> +		return;
-> +
->  	/* ensure xmon is enabled */
->  	xmon_init(1);
->  	debugger(get_irq_regs());
-> @@ -3762,7 +3809,6 @@ static int __init setup_xmon_sysrq(void)
->  device_initcall(setup_xmon_sysrq);
->  #endif /* CONFIG_MAGIC_SYSRQ */
->  
-> -#ifdef CONFIG_DEBUG_FS
->  static void clear_all_bpt(void)
->  {
->  	int i;
-> @@ -3784,8 +3830,12 @@ static void clear_all_bpt(void)
->  	printf("xmon: All breakpoints cleared\n");
->  }
->  
-> +#ifdef CONFIG_DEBUG_FS
->  static int xmon_dbgfs_set(void *data, u64 val)
->  {
-> +	if (xmon_is_locked_down())
-> +		return 0;
-> +
->  	xmon_on = !!val;
->  	xmon_init(xmon_on);
->  
-> @@ -3844,6 +3894,9 @@ early_param("xmon", early_parse_xmon);
->  
->  void __init xmon_setup(void)
->  {
-> +	if (xmon_is_locked_down())
-> +		return;
-> +
->  	if (xmon_on)
->  		xmon_init(1);
->  	if (xmon_early)
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 807dc0d24982..379b74b5d545 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -116,12 +116,14 @@ enum lockdown_reason {
->  	LOCKDOWN_MODULE_PARAMETERS,
->  	LOCKDOWN_MMIOTRACE,
->  	LOCKDOWN_DEBUGFS,
-> +	LOCKDOWN_XMON_WR,
->  	LOCKDOWN_INTEGRITY_MAX,
->  	LOCKDOWN_KCORE,
->  	LOCKDOWN_KPROBES,
->  	LOCKDOWN_BPF_READ,
->  	LOCKDOWN_PERF,
->  	LOCKDOWN_TRACEFS,
-> +	LOCKDOWN_XMON_RW,
->  	LOCKDOWN_CONFIDENTIALITY_MAX,
->  };
->  
-> diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-> index f6c74cf6a798..79d1799a62ca 100644
-> --- a/security/lockdown/lockdown.c
-> +++ b/security/lockdown/lockdown.c
-> @@ -31,12 +31,14 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
->  	[LOCKDOWN_MODULE_PARAMETERS] = "unsafe module parameters",
->  	[LOCKDOWN_MMIOTRACE] = "unsafe mmio",
->  	[LOCKDOWN_DEBUGFS] = "debugfs access",
-> +	[LOCKDOWN_XMON_WR] = "xmon write access",
->  	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
->  	[LOCKDOWN_KCORE] = "/proc/kcore access",
->  	[LOCKDOWN_KPROBES] = "use of kprobes",
->  	[LOCKDOWN_BPF_READ] = "use of bpf to read kernel RAM",
->  	[LOCKDOWN_PERF] = "unsafe use of perf",
->  	[LOCKDOWN_TRACEFS] = "use of tracefs",
-> +	[LOCKDOWN_XMON_RW] = "xmon read and write access",
->  	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
->  };
->  
-> -- 
-> 2.22.0
