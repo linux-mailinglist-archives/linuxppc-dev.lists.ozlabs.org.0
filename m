@@ -2,46 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A34E84517
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 09:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09FE384926
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 12:11:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 463MpZ09qczDrCF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 17:00:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 463S2S4HTNzDrFC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 20:11:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=huawei.com
- (client-ip=45.249.212.191; helo=huawei.com; envelope-from=yanaijie@huawei.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 463MM63tdCzDr6v
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 16:40:18 +1000 (AEST)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id ECCF7E8AB2CAFC5D4654;
- Wed,  7 Aug 2019 14:40:12 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Wed, 7 Aug 2019
- 14:40:02 +0800
-From: Jason Yan <yanaijie@huawei.com>
-To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>
-Subject: [PATCH v5 08/10] powerpc/fsl_booke/kaslr: clear the original kernel
- if randomized
-Date: Wed, 7 Aug 2019 14:57:04 +0800
-Message-ID: <20190807065706.11411-9-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20190807065706.11411-1-yanaijie@huawei.com>
-References: <20190807065706.11411-1-yanaijie@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 463S0X3fQbzDqwM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 20:09:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 463S0X0wZpz9sNF;
+ Wed,  7 Aug 2019 20:09:32 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Thomas Falcon <tlfalcon@linux.ibm.com>
+Subject: Re: [PATCH net-next v2] ibmveth: Allow users to update reported speed
+ and duplex
+In-Reply-To: <1565108588-17331-1-git-send-email-tlfalcon@linux.ibm.com>
+References: <1565108588-17331-1-git-send-email-tlfalcon@linux.ibm.com>
+Date: Wed, 07 Aug 2019 20:09:26 +1000
+Message-ID: <87imr9uw15.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,79 +44,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, Jason Yan <yanaijie@huawei.com>,
- linux-kernel@vger.kernel.org, jingxiangfeng@huawei.com,
- zhaohongjiang@huawei.com, thunder.leizhen@huawei.com, fanchengyang@huawei.com,
- yebin10@huawei.com
+Cc: netdev@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The original kernel still exists in the memory, clear it now.
+Thomas Falcon <tlfalcon@linux.ibm.com> writes:
+> Reported ethtool link settings for the ibmveth driver are currently
+> hardcoded and no longer reflect the actual capabilities of supported
+> hardware. There is no interface designed for retrieving this information
+> from device firmware nor is there any way to update current settings
+> to reflect observed or expected link speeds.
+>
+> To avoid breaking existing configurations, retain current values as
+> default settings but let users update them to match the expected
+> capabilities of underlying hardware if needed. This update would
+> allow the use of configurations that rely on certain link speed
+> settings, such as LACP. This patch is based on the implementation
+> in virtio_net.
+>
+> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+> ---
+> v2: Updated default driver speed/duplex settings to avoid
+>     breaking existing setups
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Cc: Diana Craciun <diana.craciun@nxp.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Reviewed-by: Diana Craciun <diana.craciun@nxp.com>
-Tested-by: Diana Craciun <diana.craciun@nxp.com>
----
- arch/powerpc/kernel/kaslr_booke.c  | 11 +++++++++++
- arch/powerpc/mm/mmu_decl.h         |  2 ++
- arch/powerpc/mm/nohash/fsl_booke.c |  1 +
- 3 files changed, 14 insertions(+)
+Thanks.
 
-diff --git a/arch/powerpc/kernel/kaslr_booke.c b/arch/powerpc/kernel/kaslr_booke.c
-index 52b59b05f906..c6b326424b54 100644
---- a/arch/powerpc/kernel/kaslr_booke.c
-+++ b/arch/powerpc/kernel/kaslr_booke.c
-@@ -400,3 +400,14 @@ notrace void __init kaslr_early_init(void *dt_ptr, phys_addr_t size)
- 
- 	reloc_kernel_entry(dt_ptr, kimage_vaddr);
- }
-+
-+void __init kaslr_late_init(void)
-+{
-+	/* If randomized, clear the original kernel */
-+	if (kimage_vaddr != KERNELBASE) {
-+		unsigned long kernel_sz;
-+
-+		kernel_sz = (unsigned long)_end - kimage_vaddr;
-+		memzero_explicit((void *)KERNELBASE, kernel_sz);
-+	}
-+}
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index 9332772c8a66..f0a461482dba 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -150,8 +150,10 @@ extern void loadcam_multi(int first_idx, int num, int tmp_idx);
- 
- #ifdef CONFIG_RANDOMIZE_BASE
- void kaslr_early_init(void *dt_ptr, phys_addr_t size);
-+void kaslr_late_init(void);
- #else
- static inline void kaslr_early_init(void *dt_ptr, phys_addr_t size) {}
-+static inline void kaslr_late_init(void) {}
- #endif
- 
- struct tlbcam {
-diff --git a/arch/powerpc/mm/nohash/fsl_booke.c b/arch/powerpc/mm/nohash/fsl_booke.c
-index 8d25a8dc965f..e88fcc367600 100644
---- a/arch/powerpc/mm/nohash/fsl_booke.c
-+++ b/arch/powerpc/mm/nohash/fsl_booke.c
-@@ -269,6 +269,7 @@ notrace void __init relocate_init(u64 dt_ptr, phys_addr_t start)
- 	kernstart_addr = start;
- 	if (is_second_reloc) {
- 		virt_phys_offset = PAGE_OFFSET - memstart_addr;
-+		kaslr_late_init();
- 		return;
- 	}
- 
--- 
-2.17.2
+I won't give you an ack because I don't know jack about network drivers
+these days, but I think that alleviates my concern about breaking
+existing setups. I'll leave the rest of the review up to the networking
+folks.
 
+cheers
+
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index d654c23..5dc634f 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> @@ -712,31 +712,68 @@ static int ibmveth_close(struct net_device *netdev)
+>  	return 0;
+>  }
+>  
+> -static int netdev_get_link_ksettings(struct net_device *dev,
+> -				     struct ethtool_link_ksettings *cmd)
+> +static bool
+> +ibmveth_validate_ethtool_cmd(const struct ethtool_link_ksettings *cmd)
+>  {
+> -	u32 supported, advertising;
+> -
+> -	supported = (SUPPORTED_1000baseT_Full | SUPPORTED_Autoneg |
+> -				SUPPORTED_FIBRE);
+> -	advertising = (ADVERTISED_1000baseT_Full | ADVERTISED_Autoneg |
+> -				ADVERTISED_FIBRE);
+> -	cmd->base.speed = SPEED_1000;
+> -	cmd->base.duplex = DUPLEX_FULL;
+> -	cmd->base.port = PORT_FIBRE;
+> -	cmd->base.phy_address = 0;
+> -	cmd->base.autoneg = AUTONEG_ENABLE;
+> -
+> -	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
+> -						supported);
+> -	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+> -						advertising);
+> +	struct ethtool_link_ksettings diff1 = *cmd;
+> +	struct ethtool_link_ksettings diff2 = {};
+> +
+> +	diff2.base.port = PORT_OTHER;
+> +	diff1.base.speed = 0;
+> +	diff1.base.duplex = 0;
+> +	diff1.base.cmd = 0;
+> +	diff1.base.link_mode_masks_nwords = 0;
+> +	ethtool_link_ksettings_zero_link_mode(&diff1, advertising);
+> +
+> +	return !memcmp(&diff1.base, &diff2.base, sizeof(diff1.base)) &&
+> +		bitmap_empty(diff1.link_modes.supported,
+> +			     __ETHTOOL_LINK_MODE_MASK_NBITS) &&
+> +		bitmap_empty(diff1.link_modes.advertising,
+> +			     __ETHTOOL_LINK_MODE_MASK_NBITS) &&
+> +		bitmap_empty(diff1.link_modes.lp_advertising,
+> +			     __ETHTOOL_LINK_MODE_MASK_NBITS);
+> +}
+> +
+> +static int ibmveth_set_link_ksettings(struct net_device *dev,
+> +				      const struct ethtool_link_ksettings *cmd)
+> +{
+> +	struct ibmveth_adapter *adapter = netdev_priv(dev);
+> +	u32 speed;
+> +	u8 duplex;
+> +
+> +	speed = cmd->base.speed;
+> +	duplex = cmd->base.duplex;
+> +	/* don't allow custom speed and duplex */
+> +	if (!ethtool_validate_speed(speed) ||
+> +	    !ethtool_validate_duplex(duplex) ||
+> +	    !ibmveth_validate_ethtool_cmd(cmd))
+> +		return -EINVAL;
+> +	adapter->speed = speed;
+> +	adapter->duplex = duplex;
+>  
+>  	return 0;
+>  }
+>  
+> -static void netdev_get_drvinfo(struct net_device *dev,
+> -			       struct ethtool_drvinfo *info)
+> +static int ibmveth_get_link_ksettings(struct net_device *dev,
+> +				      struct ethtool_link_ksettings *cmd)
+> +{
+> +	struct ibmveth_adapter *adapter = netdev_priv(dev);
+> +
+> +	cmd->base.speed = adapter->speed;
+> +	cmd->base.duplex = adapter->duplex;
+> +	cmd->base.port = PORT_OTHER;
+> +
+> +	return 0;
+> +}
+> +
+> +static void ibmveth_init_link_settings(struct ibmveth_adapter *adapter)
+> +{
+> +	adapter->duplex = DUPLEX_FULL;
+> +	adapter->speed = SPEED_1000;
+> +}
+> +
+> +static void ibmveth_get_drvinfo(struct net_device *dev,
+> +				struct ethtool_drvinfo *info)
+>  {
+>  	strlcpy(info->driver, ibmveth_driver_name, sizeof(info->driver));
+>  	strlcpy(info->version, ibmveth_driver_version, sizeof(info->version));
+> @@ -965,12 +1002,13 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
+>  }
+>  
+>  static const struct ethtool_ops netdev_ethtool_ops = {
+> -	.get_drvinfo		= netdev_get_drvinfo,
+> +	.get_drvinfo		= ibmveth_get_drvinfo,
+>  	.get_link		= ethtool_op_get_link,
+>  	.get_strings		= ibmveth_get_strings,
+>  	.get_sset_count		= ibmveth_get_sset_count,
+>  	.get_ethtool_stats	= ibmveth_get_ethtool_stats,
+> -	.get_link_ksettings	= netdev_get_link_ksettings,
+> +	.get_link_ksettings	= ibmveth_get_link_ksettings,
+> +	.set_link_ksettings	= ibmveth_set_link_ksettings
+>  };
+>  
+>  static int ibmveth_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+> @@ -1647,6 +1685,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>  	adapter->netdev = netdev;
+>  	adapter->mcastFilterSize = *mcastFilterSize_p;
+>  	adapter->pool_config = 0;
+> +	ibmveth_init_link_settings(adapter);
+>  
+>  	netif_napi_add(netdev, &adapter->napi, ibmveth_poll, 16);
+>  
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index 4e9bf34..db96c88 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -162,6 +162,9 @@ struct ibmveth_adapter {
+>      u64 tx_send_failed;
+>      u64 tx_large_packets;
+>      u64 rx_large_packets;
+> +    /* Ethtool settings */
+> +    u8 duplex;
+> +    u32 speed;
+>  };
+>  
+>  /*
+> -- 
+> 1.8.3.1
