@@ -2,72 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD2584FF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 17:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F33B84FF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 17:34:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 463b8l14dTzDqgM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 01:32:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 463bCW1sjyzDqHX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 01:34:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+ecabc3e5d1f7686a0adb+5827+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="sRJQtK8f"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="iOmJJbCI"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 463ZT30ck9zDqdr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 01:01:11 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 463ZSy223gz9vBn3;
- Wed,  7 Aug 2019 17:01:06 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=sRJQtK8f; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id m0nSBStJOG36; Wed,  7 Aug 2019 17:01:06 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 463ZSy0pcTz9vBn1;
- Wed,  7 Aug 2019 17:01:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565190066; bh=KTk/jsxYEOr2RjeIKWnkX+Ltl2is2fgwnpKFsrOk8/8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=sRJQtK8fCvFmVa5upXjuwDOGm9hGZjkc/VKJJ9WW668ZltUiWrsQqJwp1omtrCIZe
- U7GkK+wllXv3obOKwfAHc+Y8576hosyLgeH23Eus1lpYZqAynEF9J0Gf0qpsM/skE6
- Qhfn7lKU+36eYgf0PKqlrsae12jN09GVpjfSIXUE=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B64BC8B835;
- Wed,  7 Aug 2019 17:01:07 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lLYk9-4xDcJM; Wed,  7 Aug 2019 17:01:07 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 885588B832;
- Wed,  7 Aug 2019 17:01:07 +0200 (CEST)
-Subject: Re: [PATCH 3/4] powerpc: support KASAN instrumentation of bitops
-To: Daniel Axtens <dja@axtens.net>, aneesh.kumar@linux.ibm.com,
- bsingharora@gmail.com
-References: <20190806233827.16454-1-dja@axtens.net>
- <20190806233827.16454-4-dja@axtens.net>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b96900fd-2b43-f6b9-0d22-2d715370baf0@c-s.fr>
-Date: Wed, 7 Aug 2019 17:01:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 463Zd70LXlzDqsm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 01:08:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=YtHsude1BtKUvKeAIOmPUNdT3dzZ/aol3UUJ65Tl92I=; b=iOmJJbCI42gvEYVaX/vrNexdq
+ JIPgEV1fXxwfPprQZbpc7n7S+0J0au5VSfoNA7fyDiF4STJyeGnMFhr9fvRt/WGDtAtjZtOA07c+e
+ sWCidm3rhUzjDD0NDf68aCYpNg6skiJ7sNmUF2ECWXW/3TeknjNerhB4JB66HYNlPRf4q48k4dpXd
+ GBFWOTcDkjemw/tisnicazyN1wPe/ppeFG60wo94hAsptupehTNCqx2RtHskDi9c1XpMIIbMrWnD7
+ oVQD6l9cEzXYawLH7NP2EJx4NI4lDmukxRRKoOYYVwDqCzQv6SabaW3Q5DClngPfrUg7DxGoqxvIn
+ 3ZakknADQ==;
+Received: from [195.167.85.94] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hvNXe-0002xa-41; Wed, 07 Aug 2019 15:07:54 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: benh@kernel.crashing.org,
+	paulus@samba.org,
+	mpe@ellerman.id.au
+Subject: [PATCH] powerpc: use <asm-generic/dma-mapping.h>
+Date: Wed,  7 Aug 2019 18:07:52 +0300
+Message-Id: <20190807150752.17894-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190806233827.16454-4-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,131 +64,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- kasan-dev@googlegroups.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The powerpc version of dma-mapping.h only contains a version of
+get_arch_dma_ops that always return NULL.  Replace it with the
+asm-generic version that does the same.
 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/powerpc/include/asm/Kbuild        |  1 +
+ arch/powerpc/include/asm/dma-mapping.h | 18 ------------------
+ 2 files changed, 1 insertion(+), 18 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/dma-mapping.h
 
-Le 07/08/2019 à 01:38, Daniel Axtens a écrit :
-> In KASAN development I noticed that the powerpc-specific bitops
-> were not being picked up by the KASAN test suite.
-> 
-> Instrumentation is done via the bitops-instrumented.h header. It
-> requies that arch-specific versions of bitop functions are renamed
-> to arch_*. Do this renaming.
-> 
-> For clear_bit_unlock_is_negative_byte, the current implementation
-> uses the PG_waiter constant. This works because it's a preprocessor
-> macro - so it's only actually evaluated in contexts where PG_waiter
-> is defined. With instrumentation however, it becomes a static inline
-> function, and all of a sudden we need the actual value of PG_waiter.
-> Because of the order of header includes, it's not available and we
-> fail to compile. Instead, manually specify that we care about bit 7.
-> This is still correct: bit 7 is the bit that would mark a negative
-> byte, but it does obscure the origin a little bit.
-> 
-> Cc: Nicholas Piggin <npiggin@gmail.com> # clear_bit_unlock_negative_byte
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
->   arch/powerpc/include/asm/bitops.h | 25 ++++++++++++++-----------
->   1 file changed, 14 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
-> index 603aed229af7..19dc16e62e6a 100644
-> --- a/arch/powerpc/include/asm/bitops.h
-> +++ b/arch/powerpc/include/asm/bitops.h
-> @@ -86,22 +86,22 @@ DEFINE_BITOP(clear_bits, andc, "")
->   DEFINE_BITOP(clear_bits_unlock, andc, PPC_RELEASE_BARRIER)
->   DEFINE_BITOP(change_bits, xor, "")
->   
-> -static __inline__ void set_bit(int nr, volatile unsigned long *addr)
-> +static __inline__ void arch_set_bit(int nr, volatile unsigned long *addr)
->   {
->   	set_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
->   }
->   
-> -static __inline__ void clear_bit(int nr, volatile unsigned long *addr)
-> +static __inline__ void arch_clear_bit(int nr, volatile unsigned long *addr)
->   {
->   	clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
->   }
->   
-> -static __inline__ void clear_bit_unlock(int nr, volatile unsigned long *addr)
-> +static __inline__ void arch_clear_bit_unlock(int nr, volatile unsigned long *addr)
->   {
->   	clear_bits_unlock(BIT_MASK(nr), addr + BIT_WORD(nr));
->   }
->   
-> -static __inline__ void change_bit(int nr, volatile unsigned long *addr)
-> +static __inline__ void arch_change_bit(int nr, volatile unsigned long *addr)
->   {
->   	change_bits(BIT_MASK(nr), addr + BIT_WORD(nr));
->   }
-> @@ -138,26 +138,26 @@ DEFINE_TESTOP(test_and_clear_bits, andc, PPC_ATOMIC_ENTRY_BARRIER,
->   DEFINE_TESTOP(test_and_change_bits, xor, PPC_ATOMIC_ENTRY_BARRIER,
->   	      PPC_ATOMIC_EXIT_BARRIER, 0)
->   
-> -static __inline__ int test_and_set_bit(unsigned long nr,
-> +static __inline__ int arch_test_and_set_bit(unsigned long nr,
->   				       volatile unsigned long *addr)
->   {
->   	return test_and_set_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
->   }
->   
-> -static __inline__ int test_and_set_bit_lock(unsigned long nr,
-> +static __inline__ int arch_test_and_set_bit_lock(unsigned long nr,
->   				       volatile unsigned long *addr)
->   {
->   	return test_and_set_bits_lock(BIT_MASK(nr),
->   				addr + BIT_WORD(nr)) != 0;
->   }
->   
-> -static __inline__ int test_and_clear_bit(unsigned long nr,
-> +static __inline__ int arch_test_and_clear_bit(unsigned long nr,
->   					 volatile unsigned long *addr)
->   {
->   	return test_and_clear_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
->   }
->   
-> -static __inline__ int test_and_change_bit(unsigned long nr,
-> +static __inline__ int arch_test_and_change_bit(unsigned long nr,
->   					  volatile unsigned long *addr)
->   {
->   	return test_and_change_bits(BIT_MASK(nr), addr + BIT_WORD(nr)) != 0;
-> @@ -186,14 +186,14 @@ static __inline__ unsigned long clear_bit_unlock_return_word(int nr,
->   }
->   
->   /* This is a special function for mm/filemap.c */
-> -#define clear_bit_unlock_is_negative_byte(nr, addr)			\
-> -	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(PG_waiters))
-> +#define arch_clear_bit_unlock_is_negative_byte(nr, addr)		\
-> +	(clear_bit_unlock_return_word(nr, addr) & BIT_MASK(7))
+diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+index 9a1d2fc6ceb7..15bb09ad5dc2 100644
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -4,6 +4,7 @@ generated-y += syscall_table_64.h
+ generated-y += syscall_table_c32.h
+ generated-y += syscall_table_spu.h
+ generic-y += div64.h
++generic-y += dma-mapping.h
+ generic-y += export.h
+ generic-y += irq_regs.h
+ generic-y += local64.h
+diff --git a/arch/powerpc/include/asm/dma-mapping.h b/arch/powerpc/include/asm/dma-mapping.h
+deleted file mode 100644
+index 565d6f74b189..000000000000
+--- a/arch/powerpc/include/asm/dma-mapping.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Copyright (C) 2004 IBM
+- */
+-#ifndef _ASM_DMA_MAPPING_H
+-#define _ASM_DMA_MAPPING_H
+-
+-static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
+-{
+-	/* We don't handle the NULL dev case for ISA for now. We could
+-	 * do it via an out of line call but it is not needed for now. The
+-	 * only ISA DMA device we support is the floppy and we have a hack
+-	 * in the floppy driver directly to get a device for us.
+-	 */
+-	return NULL;
+-}
+-
+-#endif	/* _ASM_DMA_MAPPING_H */
+-- 
+2.20.1
 
-Maybe add a comment reminding that 7 is PG_waiters ?
-
-Christophe
-
->   
->   #endif /* CONFIG_PPC64 */
->   
->   #include <asm-generic/bitops/non-atomic.h>
->   
-> -static __inline__ void __clear_bit_unlock(int nr, volatile unsigned long *addr)
-> +static __inline__ void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
->   {
->   	__asm__ __volatile__(PPC_RELEASE_BARRIER "" ::: "memory");
->   	__clear_bit(nr, addr);
-> @@ -239,6 +239,9 @@ unsigned long __arch_hweight64(__u64 w);
->   
->   #include <asm-generic/bitops/find.h>
->   
-> +/* wrappers that deal with KASAN instrumentation */
-> +#include <asm-generic/bitops-instrumented.h>
-> +
->   /* Little-endian versions */
->   #include <asm-generic/bitops/le.h>
->   
-> 
