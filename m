@@ -1,77 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF1683E09
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 01:52:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 463BJB6T0TzDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 09:52:10 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9CF83E25
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 02:09:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 463Bhd4zYBzDr1Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2019 10:09:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=alliedtelesis.co.nz
- (client-ip=2001:df5:b000:5::4; helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.b="CsGD6Sv0"; dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [IPv6:2001:df5:b000:5::4])
+ spf=pass (mailfrom) smtp.mailfrom=kernel.org
+ (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.b="TAeG++7B"; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 463BFy2rFCzDqk7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 09:50:13 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 463Bfs6085zDqyn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2019 10:08:21 +1000 (AEST)
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 9FCF0806B6;
- Wed,  7 Aug 2019 11:50:10 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1565135410;
- bh=3w+TsYJ/BOA4bU+clEe5xv1EtOTNmUVQfTf0oX0iwzc=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=CsGD6Sv0Yoiqswotq5gP0D8jKw1mDjbo7VSsiMMJ4i4iFqMgsw4/No3cvKr5r6TbC
- FHAyNv5w1DjfrJf8eLoEaXHxReeCqk9B8Nsuwtjnfo904uATpxmKjCUL2gjc9X2Ysp
- y8dKqPKqo9dUbrxE95fPokGq+tEdaOE7pFAhgeug2pgrDPGrCvCFqOXAZws38zfZZZ
- 0Bit1LbvAp65siuYaGxK1rOYxQebFHdxvw5i25ZGwa1wiuy4RBcnacK5HEWQzM3oNt
- LBCCiegiQyV4xYlAUVegkaeyBbyE46YHG0O1E8EVlknFMrHibfc8ZW/EptNmJkgUqc
- uYel+08vyj2pg==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5d4a122c0000>; Wed, 07 Aug 2019 11:50:09 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1156.6; Wed, 7 Aug 2019 11:50:05 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1156.000; Wed, 7 Aug 2019 11:50:05 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "npiggin@gmail.com" <npiggin@gmail.com>
-Subject: Re: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
-Thread-Topic: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
-Thread-Index: AQHVSzJiQ9f053Ig/kuwEclH36qTsqbrdSqAgAHAlICAAM4IAA==
-Date: Tue, 6 Aug 2019 23:50:04 +0000
-Message-ID: <1565135404.16914.5.camel@alliedtelesis.co.nz>
-References: <1564970785.27215.29.camel@alliedtelesis.co.nz>
- <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
- <87wofqv8a0.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87wofqv8a0.fsf@concordia.ellerman.id.au>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.18.5.2-0ubuntu3.2 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [2001:df5:b000:22:3a2c:4aff:fe70:2b02]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <02A96275979766439D2116CE581FB956@atlnz.lc>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id ED7FA2089E;
+ Wed,  7 Aug 2019 00:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1565136499;
+ bh=FhChKXsPPb1L8MSYtmcGqA0kOKtJaeO7DrzVbRT1MXs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=TAeG++7BBNLdzsT8EeUACw88fONFc1pQcT8EUvAlKq8EqeLzcGZIz0ceLh4nYgX84
+ xTRDE/BvbyzWZvQYIvI12bG0fb2Hr+ia9Vz72+zfUolIsY7N4a0uoRfA30sNdV3zwc
+ LDnEWEZxfNuA7Zo/uTF7X1Z/DVFpbZNzGS5Nb8/c=
+Date: Wed, 7 Aug 2019 09:08:11 +0900
+From: Masami Hiramatsu <mhiramat@kernel.org>
+To: Leo Yan <leo.yan@linaro.org>
+Subject: Re: [PATCH v2 0/3] arm/arm64: Add support for function error injection
+Message-Id: <20190807090811.1e50eb3e1d5a7b85743748e7@kernel.org>
+In-Reply-To: <20190806100015.11256-1-leo.yan@linaro.org>
+References: <20190806100015.11256-1-leo.yan@linaro.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,151 +57,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Grant
- McEwan <grant.mcewan@alliedtelesis.co.nz>
+Cc: Song Liu <songliubraving@fb.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Alexei Starovoitov <ast@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ Daniel Borkmann <daniel@iogearbox.net>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, clang-built-linux@googlegroups.com,
+ Ingo Molnar <mingo@redhat.com>, Yonghong Song <yhs@fb.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVHVlLCAyMDE5LTA4LTA2IGF0IDIxOjMyICsxMDAwLCBNaWNoYWVsIEVsbGVybWFuIHdyb3Rl
-Og0KPiBDaHJpcyBQYWNraGFtIDxDaHJpcy5QYWNraGFtQGFsbGllZHRlbGVzaXMuY28ubno+IHdy
-aXRlczoNCj4gPiANCj4gPiBPbiBNb24sIDIwMTktMDgtMDUgYXQgMTQ6MDYgKzEyMDAsIENocmlz
-IFBhY2toYW0gd3JvdGU6DQo+ID4gPiANCj4gPiA+IEhpIEFsbCwNCj4gPiA+IA0KPiA+ID4gSSBo
-YXZlIGEgY3VzdG9tIGJvYXJkIHRoYXQgdXNlcyB0aGUgRnJlZXNjYWxlL05YUCBUMjA4MCBTb0Mu
-DQo+ID4gPiANCj4gPiA+IFRoZSBib2FyZCBib290cyBmaW5lIHVzaW5nIHY0LjE5LjYwIGJ1dCB3
-aGVuIEkgdXNlIHY1LjEuMjEgaXQNCj4gPiA+IGxvY2tzDQo+ID4gPiB1cA0KPiA+ID4gd2FpdGlu
-ZyBmb3IgdGhlIG90aGVyIENQVXMgdG8gY29tZSBvbmxpbmUgKGVhcmx5cHJpbnRrIG91dHB1dA0K
-PiA+ID4gYmVsb3cpLg0KPiA+ID4gSWYgSSBzZXQgbWF4Y3B1cz0wIHRoZW4gdGhlIHN5c3RlbSBi
-b290cyBhbGwgdGhlIHdheSB0aHJvdWdoIHRvDQo+ID4gPiB1c2VybGFuZC4gVGhlIHNhbWUgdGhp
-bmcgaGFwcGVucyB3aXRoIDUuMy1yYzIuDQo+ID4gPiANCj4gPiA+IFRoZSBkZWZjb25maWcgSSdt
-IHVzaW5nIGlzwqANCj4gPiA+IGh0dHBzOi8vZ2lzdC5naXRodWIuY29tL2NwYWNraGFtL2YyNGQw
-YjQyNmYzDQo+ID4gPiBkZTBlYWFiYTE3YjgyYzM1MjhhOWQgaXQgd2FzIHVwZGF0ZWQgZnJvbSB0
-aGUgd29ya2luZyB2NC4xOS42MA0KPiA+ID4gZGVmY29uZmlnIHVzaW5nIG1ha2Ugb2xkZGVmY29u
-ZmlnLg0KPiA+ID4gDQo+ID4gPiBEb2VzIHRoaXMgcmluZyBhbnkgYmVsbHMgZm9yIGFueW9uZT8N
-Cj4gPiA+IA0KPiA+ID4gSSBoYXZlbid0IGR1ZyBpbnRvIHRoZSBkaWZmZXJlbmNlcyBiZXR3ZWVu
-IHRoZSB3b3JraW5nIGFuIG5vbi0NCj4gPiA+IHdvcmtpbmcNCj4gPiA+IHZlcnNpb25zIHlldC4g
-SSdsbCBzdGFydCBsb29raW5nIG5vdy4NCj4gPiBJJ3ZlIGJpc2VjdGVkIHRoaXMgdG8gdGhlIGZv
-bGxvd2luZyBjb21taXQNCj4gVGhhbmtzIHRoYXQncyBzdXBlciBoZWxwZnVsLg0KPiANCj4gPiAN
-Cj4gPiBjb21taXQgZWQxY2Q2ZGViMDEzYTExOTU5ZDE3YTk0ZTM1Y2UxNTkxOTc2MzJkYQ0KPiA+
-IEF1dGhvcjogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMuZnI+DQo+ID4g
-RGF0ZTrCoMKgwqBUaHUgSmFuIDMxIDEwOjA4OjU4IDIwMTkgKzAwMDANCj4gPiANCj4gPiDCoMKg
-wqDCoHBvd2VycGM6IEFjdGl2YXRlIENPTkZJR19USFJFQURfSU5GT19JTl9UQVNLDQo+ID4gwqDC
-oMKgwqANCj4gPiDCoMKgwqDCoFRoaXMgcGF0Y2ggYWN0aXZhdGVzIENPTkZJR19USFJFQURfSU5G
-T19JTl9UQVNLIHdoaWNoDQo+ID4gwqDCoMKgwqBtb3ZlcyB0aGUgdGhyZWFkX2luZm8gaW50byB0
-YXNrX3N0cnVjdC4NCj4gPiANCj4gPiBJJ2xsIGJlIHRoZSBmaXJzdCB0byBhZG1pdCB0aGlzIGlz
-IHdlbGwgYmV5b25kIG15IGFyZWEgb2Yga25vd2xlZGdlDQo+ID4gc28NCj4gPiBJJ20gdW5zdXJl
-IHdoYXQgYWJvdXQgdGhpcyBwYXRjaCBpcyBwcm9ibGVtYXRpYyBidXQgSSBjYW4gYmUgZmFpcmx5
-DQo+ID4gc3VyZSB0aGF0IGEgYnVpbGQgaW1tZWRpYXRlbHkgYmVmb3JlIHRoaXMgcGF0Y2ggd29y
-a3Mgd2hpbGUgYSBidWlsZA0KPiA+IHdpdGggdGhpcyBwYXRjaCBoYW5ncy4NCj4gSXQgbWFrZXMg
-YSBwcmV0dHkgZnVuZGFtZW50YWwgY2hhbmdlIHRvIHRoZSB3YXkgdGhlIGtlcm5lbCBzdG9yZXMN
-Cj4gc29tZQ0KPiBpbmZvcm1hdGlvbiBhYm91dCBlYWNoIHRhc2ssIG1vdmluZyBpdCBvZmYgdGhl
-IHN0YWNrIGFuZCBpbnRvIHRoZQ0KPiB0YXNrDQo+IHN0cnVjdC4NCj4gDQo+IEl0IGRlZmluaXRl
-bHkgaGFzIHRoZSBwb3RlbnRpYWwgdG8gYnJlYWsgdGhpbmdzLCBidXQgSSB0aG91Z2h0IHdlIGhh
-ZA0KPiByZWFzb25hYmxlIHRlc3QgY292ZXJhZ2Ugb2YgdGhlIEJvb2szRSBwbGF0Zm9ybXMsIEkg
-aGF2ZSBhIHA1MDIwZHMNCj4gKGU1NTAwKSB0aGF0IEkgYm9vdCBhcyBwYXJ0IG9mIG15IENJLg0K
-PiANCj4gQWhhLiBJZiBJIHRha2UgeW91ciBjb25maWcgYW5kIHRyeSB0byBib290IGl0IG9uIG15
-IHA1MDIwZHMgSSBnZXQgdGhlDQo+IHNhbWUgYmVoYXZpb3VyLCBzdHVjayBhdCBTTVAgYnJpbmd1
-cC4gU28gaXQgc2VlbXMgaXQncyBzb21ldGhpbmcgaW4NCj4geW91cg0KPiBjb25maWcgdnMgY29y
-ZW5ldDY0X3NtcF9kZWZjb25maWcgdGhhdCBpcyB0cmlnZ2VyaW5nIHRoZSBidWcuDQo+IA0KPiBD
-YW4geW91IHRyeSBiaXNlY3Rpbmcgd2hhdCBpbiB0aGUgY29uZmlnIHRyaWdnZXJzIGl0Pw0KPiAN
-Cj4gVG8gZG8gdGhhdCB5b3UgY2hlY2tvdXQgZWQxY2Q2ZGViMDEzYTExOTU5ZDE3YTk0ZTM1Y2Ux
-NTkxOTc2MzJkYSwNCj4gdGhlbg0KPiB5b3UgYnVpbGQvYm9vdCB3aXRoIGNvcmVuZXQ2NF9zbXBf
-ZGVmY29uZmlnIHRvIGNvbmZpcm0gaXQgd29ya3MuIFRoZW4NCj4geW91IHVzZSB0b29scy90ZXN0
-aW5nL2t0ZXN0L2NvbmZpZy1iaXNlY3QucGwgdG8gYmlzZWN0IHRoZSBjaGFuZ2VzIGluDQo+IHRo
-ZSAuY29uZmlnLg0KPiANCj4gY2hlZXJzDQo+IA0KDQpUaGUgZGlmZmVyZW5jZSBiZXR3ZWVuIGEg
-d29ya2luZyBhbmQgbm9uIHdvcmtpbmcgZGVmY29uZmlnIGlzDQpDT05GSUdfUFJFRU1QVCBzcGVj
-aWZpY2FsbHkgQ09ORklHX1BSRUVNUFQ9eSBtYWtlcyBteSBzeXN0ZW0gaGFuZyBhdA0KYm9vdC4N
-Cg0KSXMgdGhhdCBub3cgaW50ZW50aW9uYWxseSBwcm9oaWJpdGVkIG9uIDY0LWJpdCBwb3dlcnBj
-Pw0KDQo+ID4gDQo+ID4gPiANCj4gPiA+IEJvb3RpbmcuLi4NCj4gPiA+IE1NVTogU3VwcG9ydGVk
-IHBhZ2Ugc2l6ZXMNCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoDQgS0IgYXMgZGlyZWN0DQo+ID4g
-PiDCoMKgwqDCoMKgwqAyMDQ4IEtCIGFzIGRpcmVjdCAmIGluZGlyZWN0DQo+ID4gPiDCoMKgwqDC
-oMKgwqA0MDk2IEtCIGFzIGRpcmVjdA0KPiA+ID4gwqDCoMKgwqDCoDE2Mzg0IEtCIGFzIGRpcmVj
-dA0KPiA+ID4gwqDCoMKgwqDCoDY1NTM2IEtCIGFzIGRpcmVjdA0KPiA+ID4gwqDCoMKgwqAyNjIx
-NDQgS0IgYXMgZGlyZWN0DQo+ID4gPiDCoMKgwqAxMDQ4NTc2IEtCIGFzIGRpcmVjdA0KPiA+ID4g
-TU1VOiBCb29rM0UgSFcgdGFibGV3YWxrIGVuYWJsZWQNCj4gPiA+IExpbnV4IHZlcnNpb24gNS4x
-LjIxLWF0MSsgKEBjaHJpc3AtZGwpIChnY2MgdmVyc2lvbiA0LjkuMw0KPiA+ID4gKGNyb3NzdG9v
-bC0NCj4gPiA+IE5HwqANCj4gPiA+IGNyb3NzdG9vbC1uZy0xLjIyLjApKSAjMjQgU01QIFBSRUVN
-UFQgTW9uIEF1ZyA1IDAxOjQyOjAwIFVUQyAyMDE5DQo+ID4gPiBGb3VuZCBpbml0cmQgYXQgMHhj
-MDAwMDAwMDJmMDQ1MDAwOjB4YzAwMDAwMDAzMDAwMDAwMA0KPiA+ID4gVXNpbmcgQ29yZU5ldCBH
-ZW5lcmljIG1hY2hpbmUgZGVzY3JpcHRpb24NCj4gPiA+IEZvdW5kIGxlZ2FjeSBzZXJpYWwgcG9y
-dCAwIGZvciAvc29jQGZmZTAwMDAwMC9zZXJpYWxAMTFjNTAwDQo+ID4gPiDCoCBtZW09ZmZlMTFj
-NTAwLCB0YWRkcj1mZmUxMWM1MDAsIGlycT0wLCBjbGs9MzAwMDAwMDAwLCBzcGVlZD0wDQo+ID4g
-PiBGb3VuZCBsZWdhY3kgc2VyaWFsIHBvcnQgMSBmb3IgL3NvY0BmZmUwMDAwMDAvc2VyaWFsQDEx
-YzYwMA0KPiA+ID4gwqAgbWVtPWZmZTExYzYwMCwgdGFkZHI9ZmZlMTFjNjAwLCBpcnE9MCwgY2xr
-PTMwMDAwMDAwMCwgc3BlZWQ9MA0KPiA+ID4gRm91bmQgbGVnYWN5IHNlcmlhbCBwb3J0IDIgZm9y
-IC9zb2NAZmZlMDAwMDAwL3NlcmlhbEAxMWQ1MDANCj4gPiA+IMKgIG1lbT1mZmUxMWQ1MDAsIHRh
-ZGRyPWZmZTExZDUwMCwgaXJxPTAsIGNsaz0zMDAwMDAwMDAsIHNwZWVkPTANCj4gPiA+IEZvdW5k
-IGxlZ2FjeSBzZXJpYWwgcG9ydCAzIGZvciAvc29jQGZmZTAwMDAwMC9zZXJpYWxAMTFkNjAwDQo+
-ID4gPiDCoCBtZW09ZmZlMTFkNjAwLCB0YWRkcj1mZmUxMWQ2MDAsIGlycT0wLCBjbGs9MzAwMDAw
-MDAwLCBzcGVlZD0wDQo+ID4gPiBwcmludGs6IGJvb3Rjb25zb2xlIFt1ZGJnMF0gZW5hYmxlZA0K
-PiA+ID4gQ1BVIG1hcHMgaW5pdGlhbGl6ZWQgZm9yIDIgdGhyZWFkcyBwZXIgY29yZQ0KPiA+ID4g
-wqAodGhyZWFkIHNoaWZ0IGlzIDEpDQo+ID4gPiBBbGxvY2F0ZWQgMTg1NiBieXRlcyBmb3IgOCBw
-YWNhcw0KPiA+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0NCj4gPiA+IHBoeXNfbWVtX3NpemXCoMKgwqDCoMKgPSAweDEwMDAwMDAwMA0KPiA+
-ID4gZGNhY2hlX2JzaXplwqDCoMKgwqDCoMKgPSAweDQwDQo+ID4gPiBpY2FjaGVfYnNpemXCoMKg
-wqDCoMKgwqA9IDB4NDANCj4gPiA+IGNwdV9mZWF0dXJlc8KgwqDCoMKgwqDCoD0gMHgwMDAwMDAw
-MzAwOTAwM2I2DQo+ID4gPiDCoCBwb3NzaWJsZcKgwqDCoMKgwqDCoMKgwqA9IDB4MDAwMDAwMDMw
-MDkwMDNiNg0KPiA+ID4gwqAgYWx3YXlzwqDCoMKgwqDCoMKgwqDCoMKgwqA9IDB4MDAwMDAwMDMw
-MDgwMDNiNA0KPiA+ID4gY3B1X3VzZXJfZmVhdHVyZXMgPSAweGRjMDA4MDAwIDB4MDgwMDAwMDAN
-Cj4gPiA+IG1tdV9mZWF0dXJlc8KgwqDCoMKgwqDCoD0gMHgwMDBhMDAxMA0KPiA+ID4gZmlybXdh
-cmVfZmVhdHVyZXMgPSAweDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+IC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4gPiBDb3JlTmV0IEdlbmVy
-aWMgYm9hcmQNCj4gPiA+IGJhcnJpZXItbm9zcGVjOiB1c2luZyBpc3luYzsgc3luYyBhcyBzcGVj
-dWxhdGlvbiBiYXJyaWVyDQo+ID4gPiBiYXJyaWVyLW5vc3BlYzogcGF0Y2hlZCA0MTIgbG9jYXRp
-b25zDQo+ID4gPiBUb3Agb2YgUkFNOiAweDEwMDAwMDAwMCwgVG90YWwgUkFNOiAweDEwMDAwMDAw
-MA0KPiA+ID4gTWVtb3J5IGhvbGUgc2l6ZTogME1CDQo+ID4gPiBab25lIHJhbmdlczoNCj4gPiA+
-IMKgIERNQcKgwqDCoMKgwqDCoFttZW0gMHgwMDAwMDAwMDAwMDAwMDAwLTB4MDAwMDAwMDA3ZmZm
-ZWZmZl0NCj4gPiA+IMKgIE5vcm1hbMKgwqDCoFttZW0gMHgwMDAwMDAwMDdmZmZmMDAwLTB4MDAw
-MDAwMDBmZmZmZmZmZl0NCj4gPiA+IE1vdmFibGUgem9uZSBzdGFydCBmb3IgZWFjaCBub2RlDQo+
-ID4gPiBFYXJseSBtZW1vcnkgbm9kZSByYW5nZXMNCj4gPiA+IMKgIG5vZGXCoMKgwqAwOiBbbWVt
-IDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAwZmZmZmZmZmZdDQo+ID4gPiBJbml0bWVtIHNl
-dHVwIG5vZGUgMCBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAwZmZmZmZmZmZdDQo+
-ID4gPiBPbiBub2RlIDAgdG90YWxwYWdlczogMTA0ODU3Ng0KPiA+ID4gwqAgRE1BIHpvbmU6IDcx
-NjggcGFnZXMgdXNlZCBmb3IgbWVtbWFwDQo+ID4gPiDCoCBETUEgem9uZTogMCBwYWdlcyByZXNl
-cnZlZA0KPiA+ID4gwqAgRE1BIHpvbmU6IDUyNDI4NyBwYWdlcywgTElGTyBiYXRjaDo2Mw0KPiA+
-ID4gwqAgTm9ybWFsIHpvbmU6IDcxNjkgcGFnZXMgdXNlZCBmb3IgbWVtbWFwDQo+ID4gPiDCoCBO
-b3JtYWwgem9uZTogNTI0Mjg5IHBhZ2VzLCBMSUZPIGJhdGNoOjYzDQo+ID4gPiBNTVU6IEFsbG9j
-YXRlZCAyMTEyIGJ5dGVzIG9mIGNvbnRleHQgbWFwcyBmb3IgMjU1IGNvbnRleHRzDQo+ID4gPiBw
-ZXJjcHU6IEVtYmVkZGVkIDIyIHBhZ2VzL2NwdSBzNDkzMDQgcjAgZDQwODA4IHUxMzEwNzINCj4g
-PiA+IHBjcHUtYWxsb2M6IHM0OTMwNCByMCBkNDA4MDggdTEzMTA3MiBhbGxvYz0xKjEwNDg1NzYN
-Cj4gPiA+IHBjcHUtYWxsb2M6IFswXSAwIDEgMiAzIDQgNSA2IDfCoA0KPiA+ID4gQnVpbHQgMSB6
-b25lbGlzdHMsIG1vYmlsaXR5IGdyb3VwaW5nIG9uLsKgwqBUb3RhbCBwYWdlczogMTAzNDIzOQ0K
-PiA+ID4gS2VybmVsIGNvbW1hbmQgbGluZTogY29uc29sZT10dHlTMCwxMTUyMDAgcm9vdD0vZGV2
-L3JhbTANCj4gPiA+IHJlbGVhc2VmaWxlPWxpbnV4Ym94X3BwYzY0X2U2NTAwbWMtdGIyMzMucmVs
-IGJvb3R2ZXJzaW9uPTYuMi43DQo+ID4gPiBsb2dsZXZlbD04IG10ZG9vcHMubXRkZGV2PWVycmxv
-Zw0KPiA+ID4gbXRkcGFydHM9ZmZmODAwMDAwLmZsYXNoOjQwODhNKHVzZXIpLDhNKGVycmxvZykN
-Cj4gPiA+IGVhcmx5cHJpbnRrPXR0eVMwLDExNTIwMCByZWFsX2luaXQ9DQo+ID4gPiAvYmluL3No
-IHNlY3VyaXR5bGV2ZWw9MSByZWxhZGRyPTB4MTAwMDAwMCwxNTIyNTIzDQo+ID4gPiBwcmludGs6
-IGxvZ19idWZfbGVuIGluZGl2aWR1YWwgbWF4IGNwdSBjb250cmlidXRpb246IDQwOTYgYnl0ZXMN
-Cj4gPiA+IHByaW50azogbG9nX2J1Zl9sZW4gdG90YWwgY3B1X2V4dHJhIGNvbnRyaWJ1dGlvbnM6
-IDI4NjcyIGJ5dGVzDQo+ID4gPiBwcmludGs6IGxvZ19idWZfbGVuIG1pbiBzaXplOiAxNjM4NCBi
-eXRlcw0KPiA+ID4gcHJpbnRrOiBsb2dfYnVmX2xlbjogNjU1MzYgYnl0ZXMNCj4gPiA+IHByaW50
-azogZWFybHkgbG9nIGJ1ZiBmcmVlOiAxMjQxMig3NSUpDQo+ID4gPiBEZW50cnkgY2FjaGUgaGFz
-aCB0YWJsZSBlbnRyaWVzOiA1MjQyODggKG9yZGVyOiAxMCwgNDE5NDMwNA0KPiA+ID4gYnl0ZXMp
-DQo+ID4gPiBJbm9kZS1jYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDI2MjE0NCAob3JkZXI6IDks
-IDIwOTcxNTIgYnl0ZXMpDQo+ID4gPiBNZW1vcnk6IDM5NzkyODRLLzQxOTQzMDRLIGF2YWlsYWJs
-ZSAoODcwNEsga2VybmVsIGNvZGUsIDE1ODRLDQo+ID4gPiByd2RhdGEsDQo+ID4gPiAyNDk2SyBy
-b2RhdGEsIDQ3MksgaW5pdCwgMjk5SyBic3MsIDIxNTAyMEsgcmVzZXJ2ZWQsIDBLIGNtYS0NCj4g
-PiA+IHJlc2VydmVkKQ0KPiA+ID4gU0xVQjogSFdhbGlnbj02NCwgT3JkZXI9MC0zLCBNaW5PYmpl
-Y3RzPTAsIENQVXM9OCwgTm9kZXM9MQ0KPiA+ID4gcmN1OiBQcmVlbXB0aWJsZSBoaWVyYXJjaGlj
-YWwgUkNVIGltcGxlbWVudGF0aW9uLg0KPiA+ID4gcmN1OsKgwqDCoMKgUkNVIGV2ZW50IHRyYWNp
-bmcgaXMgZW5hYmxlZC4NCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqBUYXNrcyBSQ1UgZW5hYmxlZC4N
-Cj4gPiA+IHJjdTogUkNVIGNhbGN1bGF0ZWQgdmFsdWUgb2Ygc2NoZWR1bGVyLWVubGlzdG1lbnQg
-ZGVsYXkgaXMgMjUNCj4gPiA+IGppZmZpZXMuDQo+ID4gPiBOUl9JUlFTOiA1MTIsIG5yX2lycXM6
-IDUxMiwgcHJlYWxsb2NhdGVkIGlycXM6IDE2DQo+ID4gPiBtcGljOiBTZXR0aW5nIHVwIE1QSUMg
-IiBPcGVuUElDwqDCoCIgdmVyc2lvbiAxLjIgYXQgZmZlMDQwMDAwLCBtYXgNCj4gPiA+IDgNCj4g
-PiA+IENQVXMNCj4gPiA+IG1waWM6IElTVSBzaXplOiA1MTIsIHNoaWZ0OiA5LCBtYXNrOiAxZmYN
-Cj4gPiA+IG1waWM6IEluaXRpYWxpemluZyBmb3IgNTEyIHNvdXJjZXMNCj4gPiA+IHRpbWVfaW5p
-dDogZGVjcmVtZW50ZXIgZnJlcXVlbmN5ID0gMzcuNTAwMDAwIE1Ieg0KPiA+ID4gdGltZV9pbml0
-OiBwcm9jZXNzb3IgZnJlcXVlbmN5wqDCoMKgPSAxNTAwLjAwMDAwMCBNSHoNCj4gPiA+IGNsb2Nr
-c291cmNlOiB0aW1lYmFzZTogbWFzazogMHhmZmZmZmZmZmZmZmZmZmZmIG1heF9jeWNsZXM6DQo+
-ID4gPiAweDhhNjBkZDZhOSwgbWF4X2lkbGVfbnM6IDQ0MDc5NTIwNDA1NiBucw0KPiA+ID4gY2xv
-Y2tzb3VyY2U6IHRpbWViYXNlIG11bHRbMWFhYWFhYWJdIHNoaWZ0WzI0XSByZWdpc3RlcmVkDQo+
-ID4gPiBjbG9ja2V2ZW50OiBkZWNyZW1lbnRlciBtdWx0Wzk5OTk5OWFdIHNoaWZ0WzMyXSBjcHVb
-MF0NCj4gPiA+IHBpZF9tYXg6IGRlZmF1bHQ6IDMyNzY4IG1pbmltdW06IDMwMQ0KPiA+ID4gTW91
-bnQtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA4MTkyIChvcmRlcjogNCwgNjU1MzYgYnl0ZXMp
-DQo+ID4gPiBNb3VudHBvaW50LWNhY2hlIGhhc2ggdGFibGUgZW50cmllczogODE5MiAob3JkZXI6
-IDQsIDY1NTM2IGJ5dGVzKQ0KPiA+ID4gZTY1MDAgZmFtaWx5IHBlcmZvcm1hbmNlIG1vbml0b3Ig
-aGFyZHdhcmUgc3VwcG9ydCByZWdpc3RlcmVkDQo+ID4gPiByY3U6IEhpZXJhcmNoaWNhbCBTUkNV
-IGltcGxlbWVudGF0aW9uLg0KPiA+ID4gc21wOiBCcmluZ2luZyB1cCBzZWNvbmRhcnkgQ1BVcyAu
-Li4=
+On Tue,  6 Aug 2019 18:00:12 +0800
+Leo Yan <leo.yan@linaro.org> wrote:
+
+> This small patch set is to add support for function error injection;
+> this can be used to eanble more advanced debugging feature, e.g.
+> CONFIG_BPF_KPROBE_OVERRIDE.
+> 
+> The patch 01/03 is to consolidate the function definition which can be
+> suared cross architectures, patches 02,03/03 are used for enabling
+> function error injection on arm64 and arm architecture respectively.
+> 
+> I tested on arm64 platform Juno-r2 and one of my laptop with x86
+> architecture with below steps; I don't test for Arm architecture so
+> only pass compilation.
+> 
+> - Enable kernel configuration:
+>   CONFIG_BPF_KPROBE_OVERRIDE
+>   CONFIG_BTRFS_FS
+>   CONFIG_BPF_EVENTS=y
+>   CONFIG_KPROBES=y
+>   CONFIG_KPROBE_EVENTS=y
+>   CONFIG_BPF_KPROBE_OVERRIDE=y
+> 
+> - Build samples/bpf on with Debian rootFS:
+>   # cd $kernel
+>   # make headers_install
+>   # make samples/bpf/ LLC=llc-7 CLANG=clang-7
+> 
+> - Run the sample tracex7:
+>   # dd if=/dev/zero of=testfile.img bs=1M seek=1000 count=1
+>   # DEVICE=$(losetup --show -f testfile.img)
+>   # mkfs.btrfs -f $DEVICE
+>   # ./tracex7 testfile.img
+>   [ 1975.211781] BTRFS error (device (efault)): open_ctree failed
+>   mount: /mnt/linux-kernel/linux-cs-dev/samples/bpf/tmpmnt: mount(2) system call failed: Cannot allocate memory.
+> 
+> Changes from v1:
+> * Consolidated the function definition into asm-generic header (Will);
+> * Used APIs to access pt_regs elements (Will);
+> * Fixed typos in the comments (Will).
+
+This looks good to me.
+
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+
+Thank you!
+
+> 
+> 
+> Leo Yan (3):
+>   error-injection: Consolidate override function definition
+>   arm64: Add support for function error injection
+>   arm: Add support for function error injection
+> 
+>  arch/arm/Kconfig                           |  1 +
+>  arch/arm/include/asm/ptrace.h              |  5 +++++
+>  arch/arm/lib/Makefile                      |  2 ++
+>  arch/arm/lib/error-inject.c                | 19 +++++++++++++++++++
+>  arch/arm64/Kconfig                         |  1 +
+>  arch/arm64/include/asm/ptrace.h            |  5 +++++
+>  arch/arm64/lib/Makefile                    |  2 ++
+>  arch/arm64/lib/error-inject.c              | 18 ++++++++++++++++++
+>  arch/powerpc/include/asm/error-injection.h | 13 -------------
+>  arch/x86/include/asm/error-injection.h     | 13 -------------
+>  include/asm-generic/error-injection.h      |  6 ++++++
+>  include/linux/error-injection.h            |  6 +++---
+>  12 files changed, 62 insertions(+), 29 deletions(-)
+>  create mode 100644 arch/arm/lib/error-inject.c
+>  create mode 100644 arch/arm64/lib/error-inject.c
+>  delete mode 100644 arch/powerpc/include/asm/error-injection.h
+>  delete mode 100644 arch/x86/include/asm/error-injection.h
+> 
+> -- 
+> 2.17.1
+> 
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
