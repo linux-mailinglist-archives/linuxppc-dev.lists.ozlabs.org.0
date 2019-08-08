@@ -2,78 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C7985D3C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 10:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F166685DE4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 11:10:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46428V2yd2zDqMT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 18:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4642dS5X17zDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 19:10:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=oohall@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="UH12Bwxv"; 
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="Os4xjysX"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46426Z2ZYGzDqHH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 18:46:43 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46426M58z8z9txqh;
- Thu,  8 Aug 2019 10:46:35 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=UH12Bwxv; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id b77WLz6w-gsB; Thu,  8 Aug 2019 10:46:35 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46426M40Sdz9txqg;
- Thu,  8 Aug 2019 10:46:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565253995; bh=/j0L6U1ootYvUCLGn7BUQxjfLDtBKup0NqPdL/Ob6TY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=UH12BwxvtavgiK4lPjeIoeLpZXpGNwS7KX7nZNNKTRvSBJwrEn3njbY85QnXA/AYy
- oFWdMTw98AgQuhjQbPgnGe7gLz7IzdJ1b3zytb1+LRma+usSGfgXOEd1GwGxFUpQ85
- Cy5lnvwQzv64T50DwJ6443s0c3fwJSWcIXCZPH48=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A81CA8B848;
- Thu,  8 Aug 2019 10:46:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PPwwiEIOCXua; Thu,  8 Aug 2019 10:46:36 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E466D8B7A0;
- Thu,  8 Aug 2019 10:46:35 +0200 (CEST)
-Subject: Re: SMP lockup at boot on Freescale/NXP T2080 (powerpc 64)
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "npiggin@gmail.com" <npiggin@gmail.com>
-References: <1564970785.27215.29.camel@alliedtelesis.co.nz>
- <4525a16cd3e65f89741b50daf2ec259b6baaab78.camel@alliedtelesis.co.nz>
- <87wofqv8a0.fsf@concordia.ellerman.id.au>
- <1565135404.16914.5.camel@alliedtelesis.co.nz>
- <87o911vktx.fsf@concordia.ellerman.id.au>
- <1565141097.19352.12.camel@alliedtelesis.co.nz>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <b0ad453c-3a2b-6dd5-7bfc-5e275aa7bf62@c-s.fr>
-Date: Thu, 8 Aug 2019 10:46:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4642bX3ThYzDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 19:08:23 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id b7so65512924otl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2019 02:08:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=45RFhgOOH9i9PHL0nBkZvR4v7gs8GCJIJKlYgNdMtSQ=;
+ b=Os4xjysXbSGRFzEM6a3kbSbF2m+oyZsRALS75rmkUIGd2opLdc5vMcR04lay+oeCrL
+ R09NKQJvNBSRsFIEMBN4x2cb+Zd1miSzLFaJB/e6l08QGzXvhSeSf37QI2omLIsQWzW5
+ S3sz1pMmOmDC6+HOQg9ha74fYgUn5lH5by3oPPdLr2cB68l1iPxyjY+NEfZBmxd68H6Q
+ GfB6Lsjeuej6WsJxkflAPa1xnrigL+KPoUi7c8UgJ6+egzdN+ncNa12ROhrhzCiWuueJ
+ vhTgFYIrv3RrOhgfKrxNF1yTYAE5QKvIYrKR4i+swo2RiCn/IKbp7/0KaPRzhVmt5dDF
+ BJbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=45RFhgOOH9i9PHL0nBkZvR4v7gs8GCJIJKlYgNdMtSQ=;
+ b=NxcXc9pWq9R9JbhQ5RPdWj1m87nCVNWvoPfxil9rqsOBtlKSwCH03JRsODgHxI1T7I
+ 9ReyfhcLwQnxw/ZQmmB9B+BIuxrvuEP7iUO3l2WRS+69BXPrS1t5nCepgWW11m2M8Net
+ cvC3xA3B0r/sdg6XnhvEsiX3OsxrcIAN6w5VBu9DfHFOFa/gIBg4DzcWHKJCJz90Zb8y
+ iRoMUEb9cRS3LxZZryLr6OiHmE199zrGMvXWsNTt4l8G1z84MDooCIEp09UffzMI8Jz/
+ x/20W9pKR4HeTvz4mHzLDqwQRIm5+3jBUFAHo900cu3Lx0T8WDWYCEX8+phJu3srBw6v
+ 5oRw==
+X-Gm-Message-State: APjAAAWzz5H5U/ktdVzlzXzNGSqkfDIsJH6J9ofMvqBsg5OqfZzLCaqC
+ 5MmvmmKndH1pUqCj44HCSjl46y702gwHsBqJtAw=
+X-Google-Smtp-Source: APXvYqyi4TRFCy9BjeFXyr9KSedagzzfTKKyw2ebnfsp6NrFs5d+V2/FSE688HSAivrjI7RrEzZE8V3CHZfW4K6gnuc=
+X-Received: by 2002:a6b:fb10:: with SMTP id h16mr13604117iog.195.1565255300784; 
+ Thu, 08 Aug 2019 02:08:20 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1565141097.19352.12.camel@alliedtelesis.co.nz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <cover.1565149456.git.sbobroff@linux.ibm.com>
+ <1cd007696df2db87a0b1e5677520806d4d9b3e24.1565149456.git.sbobroff@linux.ibm.com>
+ <1da83896323a35fc91312cd8eaf3a82b819f84eb.camel@gmail.com>
+In-Reply-To: <1da83896323a35fc91312cd8eaf3a82b819f84eb.camel@gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 8 Aug 2019 19:08:09 +1000
+Message-ID: <CAOSf1CF+DGmyWZuK9bixz3o0Tu-hpH_tXpNVh4XbMo0ZiozpEg@mail.gmail.com>
+Subject: Re: [PATCH v4 7/9] powerpc/eeh: Add bdfn field to eeh_dev
+To: Jordan Niethe <jniethe5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,50 +74,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Grant McEwan <grant.mcewan@alliedtelesis.co.nz>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Aug 8, 2019 at 5:05 PM Jordan Niethe <jniethe5@gmail.com> wrote:
+>
+> On Wed, 2019-08-07 at 13:44 +1000, Sam Bobroff wrote:
+> > From: Oliver O'Halloran <oohall@gmail.com>
+> >
+> > Preparation for removing pci_dn from the powernv EEH code. The only
+> > thing we really use pci_dn for is to get the bdfn of the device for
+> > config space accesses, so adding that information to eeh_dev reduces
+> > the need to carry around the pci_dn.
+> >
+> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> > [SB: Re-wrapped commit message, fixed whitespace damage.]
+> > Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
+> > ---
+> >  arch/powerpc/include/asm/eeh.h     | 2 ++
+> >  arch/powerpc/include/asm/ppc-pci.h | 2 ++
+> >  arch/powerpc/kernel/eeh_dev.c      | 2 ++
+> >  3 files changed, 6 insertions(+)
+> >
+> > diff --git a/arch/powerpc/include/asm/eeh.h
+> > b/arch/powerpc/include/asm/eeh.h
+> > index 7f9404a0c3bb..bbe0798f6624 100644
+> > --- a/arch/powerpc/include/asm/eeh.h
+> > +++ b/arch/powerpc/include/asm/eeh.h
+> > @@ -121,6 +121,8 @@ static inline bool eeh_pe_passed(struct eeh_pe
+> > *pe)
+> >  struct eeh_dev {
+> >       int mode;                       /* EEH mode                     */
+> >       int class_code;                 /* Class code of the device
+> > */
+> > +     int bdfn;                       /* bdfn of device (for cfg ops) */
+> > +     struct pci_controller *controller;
+>
+> The other members of the structure get a comment, maybe it would be
+> more consistant if this one did too?
 
-
-Le 07/08/2019 à 03:24, Chris Packham a écrit :
-> On Wed, 2019-08-07 at 11:13 +1000, Michael Ellerman wrote:
->> Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
->>>
->>> On Tue, 2019-08-06 at 21:32 +1000, Michael Ellerman wrote:
->>> The difference between a working and non working defconfig is
->>> CONFIG_PREEMPT specifically CONFIG_PREEMPT=y makes my system hang
->>> at
->>> boot.
->>>
->>> Is that now intentionally prohibited on 64-bit powerpc?
->> It's not prohibitied, but it probably should be because no one really
->> tests it properly. I have a handful of IBM machines where I boot a
->> PREEMPT kernel but that's about it.
->>
->> The corenet configs don't have PREEMPT enabled, which suggests it was
->> never really supported on those machines.
->>
->> But maybe someone from NXP can tell me otherwise.
->>
-> 
-> I think our workloads need CONFIG_PREEMPT=y because our systems have
-> switch ASIC drivers implemented in userland and we need to be able to
-> react quickly to network events in order to prevent loops. We have seen
-> instances of this not happening simply because some other process is in
-> the middle of a syscall.
-> 
-> One thing I am working on here is a setup with a few vendor boards and
-> some of our own kit that we can test the upstream kernels on. Hopefully
-> that'd make these kinds of reports more timely rather than just
-> whenever we decide to move to a new kernel version.
-> 
-> 
-
-
-The defconfig also sets CONFIG_DEBUG_PREEMPT. Have you tried without 
-CONFIG_DEBUG_PREEMPT ?
-
-Christophe
+At some point we need to go through all the EEH documentation /
+comments and get rid of everything that is not useful or just straight
+up wrong. The comments here are in-offensive, but they mostly just
+repeat the information in the variable name so it's hard to see the
+value.
