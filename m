@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B152086CE6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 00:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FD486CED
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 00:06:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 464Mm31cqVzDqQj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 08:01:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 464MsY2b14zDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 08:06:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 464MhN0MqkzDqNg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2019 07:58:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 464MqX6WHhzDqGB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2019 08:04:56 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id AAA8028BD4
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 21:58:41 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 84CA628BD4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 22:04:54 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 9F09128BD7; Thu,  8 Aug 2019 21:58:41 +0000 (UTC)
+ id 7555A28BD7; Thu,  8 Aug 2019 22:04:54 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -33,26 +33,27 @@ X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
  NO_RELAYS autolearn=ham version=3.3.1
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204479] KASAN hit at modprobe zram
-Date: Thu, 08 Aug 2019 21:58:41 +0000
-X-Bugzilla-Reason: CC
+Subject: [Bug 204375] kernel 5.2.4 w. KASAN enabled fails to boot on a
+ PowerMac G4 3,6 at very early stage
+Date: Thu, 08 Aug 2019 22:04:53 +0000
+X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: Flash/Memory Technology Devices
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: dwmw2@infradead.org
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-204479-206035-eF3vCnEaSZ@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204479-206035@https.bugzilla.kernel.org/>
-References: <bug-204479-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-204375-206035-2VdXJOELVR@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204375-206035@https.bugzilla.kernel.org/>
+References: <bug-204375-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -74,20 +75,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204479
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204375
 
 Erhard F. (erhard_f@mailbox.org) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
- Attachment #284175|0                           |1
-        is obsolete|                            |
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |CODE_FIX
 
---- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 284273
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284273&action=3Dedit
-dmesg (kernel 5.3-rc3 + patch, PowerMac G4 DP)
+--- Comment #15 from Erhard F. (erhard_f@mailbox.org) ---
+The fix landed succesfully in 5.2.7 and I can confirm it works on my G4 now.
+Thanks!
 
 --=20
 You are receiving this mail because:
-You are on the CC list for the bug.=
+You are watching the assignee of the bug.=
