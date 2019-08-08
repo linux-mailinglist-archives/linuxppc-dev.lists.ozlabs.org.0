@@ -2,64 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC92860D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 13:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3D18623D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 14:50:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4645j36RZdzDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 21:28:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4647XH5rDgzDqjX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2019 22:50:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="HrL2rwQa"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4645gW0sBMzDqTq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 21:27:02 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id F07E028B1C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 11:26:59 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id E543B28B18; Thu,  8 Aug 2019 11:26:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
- padding overwritten
-Date: Thu, 08 Aug 2019 11:26:58 +0000
-X-Bugzilla-Reason: CC
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Memory Management
-X-Bugzilla-Component: Slab Allocator
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: dsterba@suse.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: akpm@linux-foundation.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204371-206035-3TOBxXIdie@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
-References: <bug-204371-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4647TZ62CjzDqgr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2019 22:48:31 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4647TQ0kk0z9v092;
+ Thu,  8 Aug 2019 14:48:26 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=HrL2rwQa; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 00jIBSq5nYKe; Thu,  8 Aug 2019 14:48:26 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4647TP6PC3z9v091;
+ Thu,  8 Aug 2019 14:48:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565268505; bh=LkuvloXq0B1GPQ4se8YQMng+MHe39MOzCdt0xc5QcVQ=;
+ h=From:Subject:To:Cc:Date:From;
+ b=HrL2rwQaGJA9+MienkOeSMPmHAvp/4esoC/0OsD82dwCsmU655Ev2Eurb4kPCCEiC
+ 7MJgFy3wa8w7AIUXaBEXvHOb1XkhQiPc93H4bgvIVIOOlwhpaC+EWLyGvmulFGhIaa
+ j9YmrpM2+euV7o1oca8D7RwP5pVj0tkWlQLK3g7w=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EE128B870;
+ Thu,  8 Aug 2019 14:48:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id RX28SLrlltZi; Thu,  8 Aug 2019 14:48:27 +0200 (CEST)
+Received: from pc17473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 12F868B85B;
+ Thu,  8 Aug 2019 14:48:27 +0200 (CEST)
+Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id AFE6B69623; Thu,  8 Aug 2019 12:48:26 +0000 (UTC)
+Message-Id: <bef479514f4c08329fa649f67735df8918bc0976.1565268248.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/64e: drop stale call to smp_processor_id() which
+ hangs SMP startup
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Date: Thu,  8 Aug 2019 12:48:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,377 +74,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+Santa commit ebb9d30a6a74 ("powerpc/mm: any thread in one core can be
+the first to setup TLB1") removed the need to know the cpu_id in
+early_init_this_mmu(), but the call to smp_processor_id() which was
+marked __maybe_used remained.
 
---- Comment #10 from David Sterba (dsterba@suse.com) ---
-In my case it happened on 5.3-rc3, with a strestest. The same machine has b=
-een
-running fstests periodically, with slab debug on, but there are no slab rep=
-orts
-like that.
+Since commit ed1cd6deb013 ("powerpc: Activate
+CONFIG_THREAD_INFO_IN_TASK") thread_info cannot be reached before mmu
+is properly set up.
 
-[ 8516.870046] BUG kmalloc-4k (Not tainted): Poison overwritten=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.875873]
----------------------------------------------------------------------------=
---=20=20=20
+Drop this stale call to smp_processor_id() which make SMP hang
+when CONFIG_PREEMPT is set.
 
-[ 8516.885864] Disabling lock debugging due to kernel taint=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.891312] INFO: 0x000000001c70c8c9-0x000000003cd1e164. First byte 0x16
-instead of 0x6b=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.899717] INFO: Allocated in btrfs_read_tree_root+0x46/0x120 [btrfs]
-age=3D1769 cpu=3D7 pid=3D8717=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.908544]  __slab_alloc.isra.53+0x3e/0x70=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.912861]  kmem_cache_alloc_trace+0x1b0/0x330=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.917581]  btrfs_read_tree_root+0x46/0x120 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.922737]  btrfs_read_fs_root+0xe/0x40 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.927552]  create_reloc_root+0x17f/0x2a0 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.932536]  btrfs_init_reloc_root+0x72/0xe0 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.937686]  record_root_in_trans+0xbb/0xf0 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.942750]  btrfs_record_root_in_trans+0x50/0x70 [btrfs]=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.948340]  start_transaction+0xa1/0x550 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.953237]  __btrfs_prealloc_file_range+0xca/0x490 [btrfs]=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.959003]  btrfs_prealloc_file_range+0x10/0x20 [btrfs]=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.964509]  prealloc_file_extent_cluster+0x13e/0x2b0 [btrfs]=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.970447]  relocate_file_extent_cluster+0x8d/0x530 [btrfs]=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.976305]  relocate_data_extent+0x80/0x110 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.981469]  relocate_block_group+0x473/0x720 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.986711]  btrfs_relocate_block_group+0x15f/0x2c0 [btrfs]=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8516.992470] INFO: Freed in btrfs_drop_snapshot+0x832/0xbb0 [btrfs] age=
-=3D331
-cpu=3D5 pid=3D8717=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.000865]  kfree+0x29a/0x2d0=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20
-[ 8517.004098]  btrfs_drop_snapshot+0x832/0xbb0 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.009279]  clean_dirty_subvols+0xf7/0x120 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.014369]  relocate_block_group+0x25a/0x720 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.019616]  btrfs_relocate_block_group+0x15f/0x2c0 [btrfs]=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.025385]  btrfs_relocate_chunk+0x49/0x100 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.030557]  __btrfs_balance+0xa00/0xdb0 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.035365]  btrfs_balance+0x3b8/0xbb0 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.040011]  btrfs_ioctl_balance+0x2d5/0x380 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.045176]  btrfs_ioctl+0x16db/0x3460 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8517.049772]  do_vfs_ioctl+0xa5/0x710=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8517.053491]  ksys_ioctl+0x70/0x80=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8517.056958]  __x64_sys_ioctl+0x16/0x20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20
-[ 8517.060845]  do_syscall_64+0x5c/0x1d0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8517.064650]  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+Reported-by: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Fixes: ebb9d30a6a74 ("powerpc/mm: any thread in one core can be the first to setup TLB1")
+Link: https://github.com/linuxppc/issues/issues/264
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: stable@vger.kernel.org
+---
+ arch/powerpc/mm/nohash/tlb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-[ 8518.630509] INFO: 0x00000000088ac804-0x00000000600f3eff. First byte 0x17
-instead of 0x6b=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.640015] Object 0000000064763fee: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.650047] INFO: Allocated in btrfs_read_tree_root+0x46/0x120 [btrfs]
-age=3D2298 cpu=3D4 pid=3D8634=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.658240] Object 000000001d16ab39: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.667744]  __slab_alloc.isra.53+0x3e/0x70=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.667751]  kmem_cache_alloc_trace+0x1b0/0x330=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.676569] Object 000000000f5b2c4b: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.686125]  btrfs_read_tree_root+0x46/0x120 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.686186]  btrfs_read_fs_root+0xe/0x40 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.690444] Object 000000000e589530: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.695159]  create_reloc_root+0x17f/0x2a0 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.695226]  btrfs_init_reloc_root+0x72/0xe0 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.704680] Object 00000000e3821ddd: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.709851]  record_root_in_trans+0xbb/0xf0 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.709912]  btrfs_record_root_in_trans+0x50/0x70 [btrfs]=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.714606] Object 000000009552602b: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.724164]  start_transaction+0xa1/0x550 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.724225]  btrfs_start_transaction_fallback_global_rsv+0x34/0x1f0 [btr=
-fs]=20=20
-[ 8518.729096] Object 00000000048bc005: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.734242]  btrfs_unlink+0x34/0xd0 [btrfs]=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.734251]  vfs_unlink+0x106/0x1f0=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20
-[ 8518.743763] Object 00000000e803d7b6: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.748767]  do_unlinkat+0x2bf/0x330=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8518.748775]  do_syscall_64+0x5c/0x1d0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8518.754301] Object 00000000774a30d7: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.763804]  entry_SYSCALL_64_after_hwframe+0x49/0xbe=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.763864] INFO: Freed in btrfs_drop_snapshot+0x832/0xbb0 [btrfs] age=
-=3D746
-cpu=3D5 pid=3D8717=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.768641] Object 000000007b92411f: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.775730]  kfree+0x29a/0x2d0=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20
-[ 8518.775789]  btrfs_drop_snapshot+0x832/0xbb0 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.785253] Object 00000000ae532d5f: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.789626]  clean_dirty_subvols+0xf7/0x120 [btrfs]=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.789693]  relocate_block_group+0x25a/0x720 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.793253] Object 000000002df294e8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.802820]  btrfs_relocate_block_group+0x15f/0x2c0 [btrfs]=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.802886]  btrfs_relocate_chunk+0x49/0x100 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.806528] Object 00000000df2dd63a: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.810370]  __btrfs_balance+0xa00/0xdb0 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.810437]  btrfs_balance+0x3b8/0xbb0 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.819894] Object 00000000682d1c71: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.825135]  btrfs_ioctl_balance+0x2d5/0x380 [btrfs]=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.825202]  btrfs_ioctl+0x16db/0x3460 [btrfs]=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.833522] Object 00000000eb8c2c61: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.843038]  do_vfs_ioctl+0xa5/0x710=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8518.843044]  ksys_ioctl+0x70/0x80=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8518.846228] Object 00000000574d97aa: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.851322]  __x64_sys_ioctl+0x16/0x20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20
-[ 8518.851329]  do_syscall_64+0x5c/0x1d0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8518.860844] Object 00000000a5c7d1b2: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.865870]  entry_SYSCALL_64_after_hwframe+0x49/0xbe=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.865876] INFO: Slab 0x000000001ef6adf1 objects=3D7 used=3D7
-fp=3D0x00000000b9747429 flags=3D0x3ffff000010200=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20
-[ 8518.871058] Object 000000009c9435a8: 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b=
- 6b
-6b 6b 6b  kkkkkkkkkkkkkkkk=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8518.880559] INFO: Object 0x000000003bdbade7 @offset=3D8872
-fp=3D0x00000000b9747429
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index d4acf6fa0596..bf60983a58c7 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -630,7 +630,6 @@ static void early_init_this_mmu(void)
+ #ifdef CONFIG_PPC_FSL_BOOK3E
+ 	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
+ 		unsigned int num_cams;
+-		int __maybe_unused cpu = smp_processor_id();
+ 		bool map = true;
+ 
+ 		/* use a quarter of the TLBCAM for bolted linear map */
+-- 
+2.13.3
 
-[ 8522.364211] Redzone 00000000be2e5096: bb bb bb bb bb bb bb bb=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20
-          ........=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.364214] Padding 000000005d4fac5d: 5a 5a 5a 5a 5a 5a 5a 5a=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20
-          ZZZZZZZZ=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.364228] CPU: 3 PID: 2817 Comm: tmux Tainted: G    B=20=20=20=20=20=
-=20=20=20=20=20=20=20
-5.3.0-rc3-1.ge195904-vanilla+ #474=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20
-[ 8522.429558] Hardware name: empty empty/S3993, BIOS PAQEX0-3 02/24/2008=
-=20=20=20=20=20=20=20
-[ 8522.429561] Call Trace:=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.429581]  dump_stack+0x67/0x9b=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8522.444139]  check_bytes_and_report+0xc9/0xf0=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.444149]  check_object+0x284/0x330=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8522.444157]  ? __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.444163]  ? __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.444169]  alloc_debug_processing+0x197/0x200=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.444178]  ___slab_alloc+0x500/0x620=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20
-[ 8522.470992]  ? __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.471005]  ? stack_trace_save+0x70/0x70=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20
-[ 8522.480156]  ? __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.480162]  ? __slab_alloc.isra.53+0x3e/0x70=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.489651]  __slab_alloc.isra.53+0x3e/0x70=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.489676]  ? __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.489680]  __kmalloc+0x25e/0x370=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8522.489689]  __tty_buffer_request_room+0x94/0x1a0=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.507369]  tty_insert_flip_string_fixed_flag+0x57/0x130=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[ 8522.507412]  pty_write+0x52/0x90=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20
-[ 8522.507421]  n_tty_write+0x402/0x4f0=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8522.507433]  ? do_wait_intr_irq+0xe0/0xe0=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20
-[ 8522.507443]  tty_write+0x1a3/0x350=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8522.507450]  ? process_echoes+0x60/0x60=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20
-[ 8522.507459]  do_iter_write+0x182/0x1f0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20
-[ 8522.507466]  ? import_iovec+0x8b/0xb0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8522.507473]  vfs_writev+0x92/0x120=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8522.507497]  ? do_writev+0xde/0x130=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20
-[ 8522.546489]  do_writev+0xde/0x130=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20
-[ 8522.546500]  do_syscall_64+0x5c/0x1d0=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20
-[ 8522.553740]  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
---=20
-You are receiving this mail because:
-You are on the CC list for the bug.=
