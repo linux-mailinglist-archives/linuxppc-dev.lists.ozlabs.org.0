@@ -1,43 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C818B878FE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 13:46:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5A0879D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 14:23:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 464k3t3T7rzDqgF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 21:46:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 464ktD2LyvzDrC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 22:23:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 464k1r5jK6zDr97
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2019 21:44:59 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C12CD1596;
- Fri,  9 Aug 2019 04:44:57 -0700 (PDT)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
- [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DD783F575;
- Fri,  9 Aug 2019 04:44:53 -0700 (PDT)
-Date: Fri, 9 Aug 2019 12:44:51 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
- table helpers
-Message-ID: <20190809114450.GF48423@lakrids.cambridge.arm.com>
-References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
- <20190809101632.GM5482@bombadil.infradead.org>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 464kq418gGzDqtr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2019 22:20:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 464kpy5K69z9sBF;
+ Fri,  9 Aug 2019 22:20:42 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: John Hubbard <jhubbard@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 38/41] powerpc: convert put_page() to put_user_page*()
+In-Reply-To: <248c9ab2-93cc-6d8b-606d-d85b83e791e5@nvidia.com>
+References: <20190807013340.9706-1-jhubbard@nvidia.com>
+ <20190807013340.9706-39-jhubbard@nvidia.com>
+ <87k1botdpx.fsf@concordia.ellerman.id.au>
+ <248c9ab2-93cc-6d8b-606d-d85b83e791e5@nvidia.com>
+Date: Fri, 09 Aug 2019 22:20:40 +1000
+Message-ID: <875zn6ttrb.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190809101632.GM5482@bombadil.infradead.org>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,59 +47,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- James Hogan <jhogan@kernel.org>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
- Steven Price <Steven.Price@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Mark Brown <broonie@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Vlastimil Babka <vbabka@suse.cz>, Sri Krishna chowdary <schowdary@nvidia.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Hansen <dave.hansen@intel.com>, linux-mips@vger.kernel.org,
- Ralf Baechle <ralf@linux-mips.org>, linux-kernel@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Paul Burton <paul.burton@mips.com>, Vineet Gupta <vgupta@synopsys.com>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-fbdev@vger.kernel.org, Jan Kara <jack@suse.cz>, kvm@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dave Chinner <david@fromorbit.com>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ sparclinux@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+ ceph-devel@vger.kernel.org, devel@driverdev.osuosl.org,
+ rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@lst.de>,
+ Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ xen-devel@lists.xenproject.org, devel@lists.orangefs.org,
+ linux-media@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-block@vger.kernel.org,
+ =?utf-8?B?SsOpcsO0?= =?utf-8?B?bWU=?= Glisse <jglisse@redhat.com>,
+ linux-rpi-kernel@lists.infradead.org, Dan Williams <dan.j.williams@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ linux-xfs@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 09, 2019 at 03:16:33AM -0700, Matthew Wilcox wrote:
-> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
-> > Should alloc_gigantic_page() be made available as an interface for general
-> > use in the kernel. The test module here uses very similar implementation from
-> > HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
-> > needs to be exported through a header.
-> 
-> Why are you allocating memory at all instead of just using some
-> known-to-exist PFNs like I suggested?
+John Hubbard <jhubbard@nvidia.com> writes:
+> On 8/7/19 10:42 PM, Michael Ellerman wrote:
+>> Hi John,
+>> 
+>> john.hubbard@gmail.com writes:
+>>> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
+>>> index b056cae3388b..e126193ba295 100644
+>>> --- a/arch/powerpc/mm/book3s64/iommu_api.c
+>>> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
+>>> @@ -203,6 +202,7 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
+>>>  {
+>>>  	long i;
+>>>  	struct page *page = NULL;
+>>> +	bool dirty = false;
+>> 
+>> I don't think you need that initialisation do you?
+>> 
+>
+> Nope, it can go. Fixed locally, thanks.
 
-IIUC the issue is that there aren't necessarily known-to-exist PFNs that
-are sufficiently aligned -- they may not even exist.
+Thanks.
 
-For example, with 64K pages, a PMD covers 512M. The kernel image is
-(generally) smaller than 512M, and will be mapped at page granularity.
-In that case, any PMD entry for a kernel symbol address will point to
-the PTE level table, and that will only necessarily be page-aligned, as
-any P?D level table is only necessarily page-aligned.
+> Did you get a chance to look at enough of the other bits to feel comfortable 
+> with the patch, overall?
 
-In the same configuration, you could have less than 512M of total
-memory, and none of this memory is necessarily aligned to 512M. So
-beyond the PTE level, I don't think you can guarantee a known-to-exist
-valid PFN.
+Mostly :) It's not really my area, but all the conversions looked
+correct to me as best as I could tell.
 
-I also believe that synthetic PFNs could fail pfn_valid(), so that might
-cause us pain too...
+So I'm fine for it to go in as part of the series:
 
-Thanks,
-Mark.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers
