@@ -2,72 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FBA87E2F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 17:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 234AD87EE1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2019 18:05:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 464qBt422YzDqWX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 01:38:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 464qpJ4pGnzDrL6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 02:05:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="XiJKbl8O"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 464q823m8GzDqMh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 01:35:46 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 464q7x3x3Rz9v0Xm;
- Fri,  9 Aug 2019 17:35:41 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=XiJKbl8O; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ZfxJ1eKhQBmK; Fri,  9 Aug 2019 17:35:41 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 464q7x2jsnz9v0XK;
- Fri,  9 Aug 2019 17:35:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565364941; bh=MW9yLrwQEfrYZbXEf6+OUywwvutO0iJiW13AR54u9Wc=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=XiJKbl8Oy7jjy4aE0j6AIV/WKd5cmHO2RRbBlSohQqXkiXvGCJkSaCvPNYdeMQCM7
- O3AImR4Xwn43+oxzxMwgB3YJ5cOkhSb+qKU1ahD3DPbjUjaUWX4FXCVZRLB6DG662v
- lmMa4O0K8a95OkzxAZECo30JiVsP7+sZBXhxsaOg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0DAF08B8C1;
- Fri,  9 Aug 2019 17:35:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qwWvU-4DqhAu; Fri,  9 Aug 2019 17:35:42 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C2FD98B8BB;
- Fri,  9 Aug 2019 17:35:42 +0200 (CEST)
-Subject: Re: [PATCH 4/4] powerpc: Book3S 64-bit "heavyweight" KASAN support
-To: Daniel Axtens <dja@axtens.net>
-References: <20190806233827.16454-1-dja@axtens.net>
- <20190806233827.16454-5-dja@axtens.net>
- <372df444-27e7-12a7-0bdb-048f29983cf4@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <a47d9112-775f-1e04-3ff4-08681b4a6349@c-s.fr>
-Date: Fri, 9 Aug 2019 17:35:42 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 464qm22tMtzDr3t
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 02:03:30 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x79Fx0ZC115867; Fri, 9 Aug 2019 12:03:02 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u99yw5vm2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 09 Aug 2019 12:03:02 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x79Fxu6P120684;
+ Fri, 9 Aug 2019 12:03:02 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u99yw5vjh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 09 Aug 2019 12:03:01 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x79G0rHB030868;
+ Fri, 9 Aug 2019 16:03:00 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 2u51w67d6c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 09 Aug 2019 16:03:00 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x79G2wo847055168
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 9 Aug 2019 16:02:58 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE060C605A;
+ Fri,  9 Aug 2019 16:02:58 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BAAEC6059;
+ Fri,  9 Aug 2019 16:02:54 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.152.224])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Fri,  9 Aug 2019 16:02:53 +0000 (GMT)
+References: <20190806044919.10622-1-bauerman@linux.ibm.com>
+ <87sgqasdr6.fsf@concordia.ellerman.id.au>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: Re: [PATCH v4 0/6] Remove x86-specific code from generic headers
+In-reply-to: <87sgqasdr6.fsf@concordia.ellerman.id.au>
+Date: Fri, 09 Aug 2019 13:02:48 -0300
+Message-ID: <874l2qfhsn.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <372df444-27e7-12a7-0bdb-048f29983cf4@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-09_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908090155
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,61 +90,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- kasan-dev@googlegroups.com
+Cc: linux-s390@vger.kernel.org, Mike Anderson <andmike@linux.ibm.com>,
+ Lianbo Jiang <lijiang@redhat.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Alexey Dobriyan <adobriyan@gmail.com>, Halil Pasic <pasic@linux.ibm.com>,
+ iommu@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Lendacky <Thomas.Lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-fsdevel@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Daniel,
 
-Le 07/08/2019 à 18:34, Christophe Leroy a écrit :
-> 
-> 
-> Le 07/08/2019 à 01:38, Daniel Axtens a écrit :
->> KASAN support on powerpc64 is interesting:
+mpe@ellerman.id.au writes:
+
+> Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+>> Hello,
 >>
->>   - We want to be able to support inline instrumentation so as to be
->>     able to catch global and stack issues.
+>> This version has only a small change in the last patch as requested by
+>> Christoph and Halil, and collects Reviewed-by's.
 >>
->>   - We run a lot of code at boot in real mode. This includes stuff like
->>     printk(), so it's not feasible to just disable instrumentation
->>     around it.
-> 
-> Have you definitely given up the idea of doing a standard implementation 
-> of KASAN like other 64 bits arches have done ?
-> 
-> Isn't it possible to setup an early 1:1 mapping and go in virtual mode 
-> earlier ? What is so different between book3s64 and book3e64 ?
-> On book3e64, we've been able to setup KASAN before printing anything 
-> (except when using EARLY_DEBUG). Isn't it feasible on book3s64 too ?
-> 
+>> These patches are applied on top of v5.3-rc2.
+>>
+>> I don't have a way to test SME, SEV, nor s390's PEF so the patches have only
+>> been build tested.
+>
+> I need to take this series via the powerpc tree because there is another
+> fairly large powerpc specific series dependent on it.
+>
+> I think this series already has pretty much all the acks it needs, which
+> almost never happens, amazing work!
 
-I looked at it once more, and cannot find that "We run a lot of code at 
-boot in real mode. This includes stuff like printk()".
+Yes, thank you very much to everyone who reviewed the patches!
 
-Can you provide exemples ?
+> I'll put the series in a topic branch, just in case there's any bad
+> conflicts and other folks want to merge it later on. I'll then merge the
+> topic branch into my next, and so this series will be tested in
+> linux-next that way.
 
-AFAICS, there are two things which are run in real mode at boot:
-1/ prom_init() in kernel/prom_init.c
-2/ early_setup() in kernel/setup_64.c
+That's awesome. Thank you very much!
 
-1/ KASAN is already inhibited for prom_init(), and prom_init() only uses 
-prom_printf() to display stuff.
-2/ early_setup() only call a subset of simple functions. By regrouping 
-things in a new file called early_64.c as done for PPC32 with 
-early_32.c, we can easily inhibit kasan for those few stuff. printk() is 
-not used there either, there is even a comment at the startup of 
-early_setup() telling /* -------- printk is _NOT_ safe to use here ! 
-------- */. The only things that perform display is the function 
-udbg_printf(), which is called only when DEBUG is set and which is 
-linked to CONFIG_PPC_EARLY_DEBUG. We already discussed that and agreed 
-that CONFIG_PPC_EARLY_DEBUG could be made exclusive of CONFIG_KASAN.
-
-Once early_setup() has run, BOOK3S64 goes in virtual mode, just like 
-BOOK3E does.
-
-What am I missing ?
-
-Thanks
-Christophe
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
