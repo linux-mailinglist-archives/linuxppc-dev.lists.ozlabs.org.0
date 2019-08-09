@@ -2,72 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810228858F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 00:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C39A88594
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 00:07:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 464znj2sjpzDr5Z
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 08:05:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 464zqr6m0QzDqRL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 08:07:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
+ smtp.mailfrom=flex--ndesaulniers.bounces.google.com
+ (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com;
+ envelope-from=3yo1nxqwkdms4uv9rb24zv89x55x2v.t532z4be66t-uvc2z9a9.5g2rs9.58x@flex--ndesaulniers.bounces.google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="F2iKZ4lO"; 
+ unprotected) header.d=google.com header.i=@google.com header.b="UAy9ZliJ"; 
  dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com
+ [IPv6:2607:f8b0:4864:20::54a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 464zlj6msLzDr4D
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 08:03:45 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id d1so13673018pgp.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Aug 2019 15:03:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 464zm3026mzDr6t
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 08:03:55 +1000 (AEST)
+Received: by mail-pg1-x54a.google.com with SMTP id n9so57025304pgq.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Aug 2019 15:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=4YE5LFpbQmY5CUf9HiiZAitomsRy44hXFJVcN3+uc3g=;
- b=F2iKZ4lOk3Ih5R8vAeqlbdrBc0o0/2oPVqnxRiWVqXjqSSkS0hpJwY8/YpKGOaysmn
- S7RZmGdJWCcjYz5bky70ydz7Ay2uw/D5UfOz58OF/e09ambmcuAy/7caWD6Gu/8MZQDD
- kVqtz0SfTVti/fNY1P+4wOxv9CyVCfKZW/JhCEIdShv7eyoDF0003q3Qz5cDaNO/oV+8
- ocxCDTmnNj6lX9aKWMtmKBid2xr8N7AmyTYIAQSf2rpqUIxrXM6haG3j8DFCDjmQTg9z
- YMtbBY7z9XoMpxQTQAeQanKoqciXuUF8/jLaNvyJvHQlxiHfytWc3UIpLanxf2sUkmtH
- mUHA==
+ h=date:in-reply-to:message-id:mime-version:references:subject:from:to
+ :cc; bh=u8woyYEIswYwSZI+RYUkZJav0hcCzSUKciws/3A8eFI=;
+ b=UAy9ZliJfC3GBJda6OupIsMHCFcE4vNQm2ZAXWx+g5D+Xc+o6gxSBXsGdAj1BhAOjY
+ hSwd/IwvlqOvSdqSMQOmX9p/+rpqBYA08jtB9SYYVtWwVhP7F0S622nlMFQWmNLSOXa3
+ xK91hSiDK4QDyJzR0q2MhImhCKHoS3RNPrDf6KkCrCzwJ9qA7xvxtKRhQmrAjnEm4sf9
+ /2O4fsBnrhfr0f7F3ao8dLP9ZWeAKno01jBit4kG+8z8xxpdQrLtWxrKEPh5HqYs6E3a
+ L6e15UPxTBSSjZnDQZBhDAF4sY05lkmSxhnOiLpve//mGS5PNXfR1Sq+Vwdl1F283s11
+ EXHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=4YE5LFpbQmY5CUf9HiiZAitomsRy44hXFJVcN3+uc3g=;
- b=oR9bqZpAjaBt8kUMtOiYXYT08MKPXwP2QeaUQbSw2eu6/qIfhJnLO1QNVZ25UDKwyJ
- b8IrAKpi5y/YtnS6XKwBD06h87nadK+qh9qYKD76mn8MG9E22IIeOhoTPSxJya9FHvoN
- gQ5lBOxo9dnetjf6+yogatN9C6XYV5rflZCaXfacqriXRz7DwYUsSPx28k6CpXq+uftp
- DtfTIUQJpn/2F3sYPNJC98EhM081jbE8Eeoe3J+kQZivawcubIZT4V92hgZTS0HdnKR/
- NAUcYju7WZUPxeD8E4vX6zt74qpNCAGBtD5kKSuZVmerNriE6ZYyroP3TTEFRfuTMd7I
- QdLg==
-X-Gm-Message-State: APjAAAXKaiB1dQd7vvSkTJY/5jTgaT0odg6sQAnZr04PhsccWOXmvvMw
- BGWrjqgr5oo+BbjYivaUkXD35Y24g1fWaj281KuTwg==
-X-Google-Smtp-Source: APXvYqzoA3qP5cLMx/N6kQkj8ONKAvUo3SkoeRrc9oKrOALvTgOH+HjnoEMS8kqTYGRPlpr+JSvGRCE1qbTPLaobk8c=
-X-Received: by 2002:a63:61cd:: with SMTP id
- v196mr19675034pgb.263.1565388221708; 
- Fri, 09 Aug 2019 15:03:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <87h873zs88.fsf@concordia.ellerman.id.au>
- <20190809182106.62130-1-ndesaulniers@google.com>
- <CAK8P3a3LynWTbpV8=VPm2TqgNM2MnoEyCPJd0PL2D+tcZqJgHg@mail.gmail.com>
- <20190809220301.Horde.AR6y4Bx4WGIq58V9K0En9g4@messagerie.si.c-s.fr>
- <CAK8P3a1AwmAe+PpHTRmN153fhG4ZkF_pb+240rj1ZAg-S6SKeg@mail.gmail.com>
-In-Reply-To: <CAK8P3a1AwmAe+PpHTRmN153fhG4ZkF_pb+240rj1ZAg-S6SKeg@mail.gmail.com>
+ h=x-gm-message-state:date:in-reply-to:message-id:mime-version
+ :references:subject:from:to:cc;
+ bh=u8woyYEIswYwSZI+RYUkZJav0hcCzSUKciws/3A8eFI=;
+ b=fPPEqPK36tYKrpzV8M16Gm4z3Zz3BO8u4ezA64nq1FjN3P5xEf6LzYYmC3ObX1o18q
+ 3V76iTpCnZz+2h0j64nK7mI61cwbuPFTD92X0pY/bwLM+Mc01V3y2rXzHdz6IG+FrdSb
+ n7yS1BGn9oTHqAdGm2C8qn+LJuF1qvGpFAbPWQBPiqLmS8Eiy/Z7I/54FZaPYTPyV5dX
+ wEQx465/nyhJUjVEgS7CbIl7HAGjYFMNWpOa+4n40vmlMkvJqBYTA09P4PvGFk/oudsl
+ HxFqGwA2aMy4NTuQkyJV60phLbhk5Hj1pTGso5nwGzNWXNj8YdIrB/+9bl8wL9xJp6O1
+ o9jQ==
+X-Gm-Message-State: APjAAAWXkCjV+8rFbfEEsHNyK5sr4El2XmYQRoOc7WX1LLTHKcEpLWsG
+ EJkNu1RHoRmX6DgSWj3Up9Xv3QI1A3jsETi54Vo=
+X-Google-Smtp-Source: APXvYqzyM1XJN7FOkuZaGwj9xH3x7cZlnraGtnkG5xN3p+7O5NNPZIyQr9Gfn94WugA8q8zgwEwvJofBRod2VyPs1Tc=
+X-Received: by 2002:a63:6a81:: with SMTP id
+ f123mr19637717pgc.348.1565388232571; 
+ Fri, 09 Aug 2019 15:03:52 -0700 (PDT)
+Date: Fri,  9 Aug 2019 15:03:47 -0700
+In-Reply-To: <20190809220301.Horde.AR6y4Bx4WGIq58V9K0En9g4@messagerie.si.c-s.fr>
+Message-Id: <20190809220348.127314-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+References: <20190809220301.Horde.AR6y4Bx4WGIq58V9K0En9g4@messagerie.si.c-s.fr>
+X-Mailer: git-send-email 2.23.0.rc1.153.gdeed80330f-goog
+Subject: [PATCH v3] Revert "powerpc: slightly improve cache helpers"
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Fri, 9 Aug 2019 15:03:30 -0700
-Message-ID: <CAKwvOdmhUPTUPa3=_AQ04zEDTsScduqOM29TfK656riAb_t=rQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: fix inline asm constraints for dcbz
-To: Arnd Bergmann <arnd@arndb.de>
+To: mpe@ellerman.id.au
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,102 +75,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild test robot <lkp@intel.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
+Cc: arnd@arndb.de, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
  Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ kbuild test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 9, 2019 at 1:13 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Aug 9, 2019 at 10:02 PM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
-> >
-> > Arnd Bergmann <arnd@arndb.de> a =C3=A9crit :
-> > > On Fri, Aug 9, 2019 at 8:21 PM 'Nick Desaulniers' via Clang Built
-> > > Linux <clang-built-linux@googlegroups.com> wrote:
-> > >
-> > >>  static inline void dcbz(void *addr)
-> > >>  {
-> > >> -       __asm__ __volatile__ ("dcbz %y0" : : "Z"(*(u8 *)addr) : "mem=
-ory");
-> > >> +       __asm__ __volatile__ ("dcbz %y0" : "=3DZ"(*(u8 *)addr) :: "m=
-emory");
-> > >>  }
-> > >>
-> > >>  static inline void dcbi(void *addr)
-> > >>  {
-> > >> -       __asm__ __volatile__ ("dcbi %y0" : : "Z"(*(u8 *)addr) : "mem=
-ory");
-> > >> +       __asm__ __volatile__ ("dcbi %y0" : "=3DZ"(*(u8 *)addr) :: "m=
-emory");
-> > >>  }
-> > >
-> > > I think the result of the discussion was that an output argument only=
- kind-of
-> > > makes sense for dcbz, but for the others it's really an input, and cl=
-ang is
-> > > wrong in the way it handles the "Z" constraint by making a copy, whic=
-h it
-> > > doesn't do for "m".
-> > >
-> > > I'm not sure whether it's correct to use "m" instead of "Z" here, whi=
-ch
-> > > would be a better workaround if that works. More importantly though,
-> > > clang really needs to be fixed to handle "Z" correctly.
-> >
-> > As the benefit is null, I think the best is probably to reverse my
-> > original commit until at least CLang is fixed, as initialy suggested
-> > by mpe
->
-> Yes, makes sense.
->
-> There is one other use of the "Z" constraint, so on top of the revert, I
-> think it might be helpful if Nick could check if the patch below makes
-> any difference with clang and, if it does, whether the current version
-> is broken.
->
->        Arnd
->
-> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.=
-h
-> index 23e5d5d16c7e..28b467779328 100644
-> --- a/arch/powerpc/include/asm/io.h
-> +++ b/arch/powerpc/include/asm/io.h
-> @@ -106,7 +106,7 @@ static inline u##size name(const volatile u##size
-> __iomem *addr)    \
->  {                                                                      \
->         u##size ret;                                                    \
->         __asm__ __volatile__("sync;"#insn" %0,%y1;twi 0,%0,0;isync"     \
-> -               : "=3Dr" (ret) : "Z" (*addr) : "memory");                =
- \
-> +               : "=3Dr" (ret) : "m" (*addr) : "memory");                =
- \
->         return ret;                                                     \
->  }
->
-> @@ -114,7 +114,7 @@ static inline u##size name(const volatile u##size
-> __iomem *addr)    \
->  static inline void name(volatile u##size __iomem *addr, u##size val)   \
->  {                                                                      \
->         __asm__ __volatile__("sync;"#insn" %1,%y0"                      \
-> -               : "=3DZ" (*addr) : "r" (val) : "memory");                =
- \
-> +               : "=3Dm" (*addr) : "r" (val) : "memory");                =
- \
->         mmiowb_set_pending();                                           \
->  }
+This reverts commit 6c5875843b87c3adea2beade9d1b8b3d4523900a.
 
-Does not work:
-https://travis-ci.com/ClangBuiltLinux/continuous-integration/builds/1226548=
-99
-https://github.com/ClangBuiltLinux/continuous-integration/pull/197/files#di=
-ff-40bd16e3188587e4d648c30e0c2d6d37
+Work around Clang bug preventing ppc32 from booting.
 
---=20
-Thanks,
-~Nick Desaulniers
+Link: https://bugs.llvm.org/show_bug.cgi?id=42762
+Link: https://github.com/ClangBuiltLinux/linux/issues/593
+Debugged-by: Nathan Chancellor <natechancellor@gmail.com>
+Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+Reported-by: kbuild test robot <lkp@intel.com>
+Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+---
+Changes V2 -> V3:
+* Just revert, as per Christophe.
+Changes V1 -> V2:
+* Change to ouput paremeter.
+
+
+ arch/powerpc/include/asm/cache.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
+index b3388d95f451..45e3137ccd71 100644
+--- a/arch/powerpc/include/asm/cache.h
++++ b/arch/powerpc/include/asm/cache.h
+@@ -107,22 +107,22 @@ extern void _set_L3CR(unsigned long);
+ 
+ static inline void dcbz(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbz %y0" : : "Z"(*(u8 *)addr) : "memory");
++	__asm__ __volatile__ ("dcbz 0, %0" : : "r"(addr) : "memory");
+ }
+ 
+ static inline void dcbi(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbi %y0" : : "Z"(*(u8 *)addr) : "memory");
++	__asm__ __volatile__ ("dcbi 0, %0" : : "r"(addr) : "memory");
+ }
+ 
+ static inline void dcbf(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbf %y0" : : "Z"(*(u8 *)addr) : "memory");
++	__asm__ __volatile__ ("dcbf 0, %0" : : "r"(addr) : "memory");
+ }
+ 
+ static inline void dcbst(void *addr)
+ {
+-	__asm__ __volatile__ ("dcbst %y0" : : "Z"(*(u8 *)addr) : "memory");
++	__asm__ __volatile__ ("dcbst 0, %0" : : "r"(addr) : "memory");
+ }
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __KERNEL__ */
+-- 
+2.23.0.rc1.153.gdeed80330f-goog
+
