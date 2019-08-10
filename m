@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9390788C71
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 19:22:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1F088CB0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2019 20:01:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 465TTB6wwhzDqvl
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2019 03:22:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 465VKY6VzzzDr6x
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2019 04:01:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=2a00:1450:4864:20::241; helo=mail-lj1-x241.google.com;
- envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.b="HDMdkQiK"; dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 465TRR60RVzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2019 03:21:23 +1000 (AEST)
-Received: by mail-lj1-x241.google.com with SMTP id z17so6438146ljz.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 10:21:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=VW8idH99KA3pRF/4NW+1lhavjZazU3KwsFXq96WTi+4=;
- b=HDMdkQiKKd2sdXTYF0z3XbUmQCw+4+wsjbbal6Z9A6xiGaDfIQd3bDBhzoPUeJV6h2
- mB7DjLWktp8oNjn4jgp661sDPED3TTL+L4fDrqK+wA9scti8LJhXTmAHVEKLW5ArbTzV
- z4NHzTn525eeLifuS3lDIysMSxLCOvitxRtuo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=VW8idH99KA3pRF/4NW+1lhavjZazU3KwsFXq96WTi+4=;
- b=cw3PETrQjNwVrMlONtM5ZPEiRiRQ4UP1mRhOE/1rRSbo5vz0tnCw3p2Z5+hPZ1PG/F
- wZO2eAXjcXZ6MaI9Gdo/mg+/Uk4SzeP3/HHVFLM7xutKJ8HtS9Vgzz1P5BLj5YiEGutR
- UJq/VcZJp06dnuEjdbA/WpG/Tv72qpITMu59YmSSl0xJ1paYvQ/d6nxJJpP9hqeQDr5q
- Byu/Vy2xXaUihpsmIOdKCjMRpyLXAFxgI4GYFtlWgvLwxBcbK/mfTCGPDewZU2ghR7Cq
- 08MUs4AtoKj+Bud96REU8FNRV3Pk/ymB4JN9PpwSqIG2asZsJvuZ/YlTelQ9xnCtwZht
- An8w==
-X-Gm-Message-State: APjAAAXp0hzIe1Q3n8jP8MOpzhEwP91hqNy7iTOXfKXBK9YIIoYqCC3o
- V1BYAg3+0CDDtc2ZIUnv6+eNnQWxHgI=
-X-Google-Smtp-Source: APXvYqz3F6OHcKA8z/2r7ZhulX+eN5YF6ybxCOy9jVHb5CI+bxHvAAR/K/26KU6ryyy8Ry8IlQm3Ow==
-X-Received: by 2002:a2e:4794:: with SMTP id
- u142mr14967415lja.222.1565457678525; 
- Sat, 10 Aug 2019 10:21:18 -0700 (PDT)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com.
- [209.85.208.171])
- by smtp.gmail.com with ESMTPSA id n124sm18145668lfd.46.2019.08.10.10.21.17
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
- Sat, 10 Aug 2019 10:21:17 -0700 (PDT)
-Received: by mail-lj1-f171.google.com with SMTP id z28so40662023ljn.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 10:21:17 -0700 (PDT)
-X-Received: by 2002:a2e:9ec9:: with SMTP id h9mr14032162ljk.90.1565457677266; 
- Sat, 10 Aug 2019 10:21:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <87imr5s522.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87imr5s522.fsf@concordia.ellerman.id.au>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 10 Aug 2019 10:21:01 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whnEp5+EM53MaT-3ep1xjhrUqCdcfBfTF9YxByGsmDMRw@mail.gmail.com>
-Message-ID: <CAHk-=whnEp5+EM53MaT-3ep1xjhrUqCdcfBfTF9YxByGsmDMRw@mail.gmail.com>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.3-4 tag
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 465VHY7320zDr3y
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2019 03:59:37 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7AHukWn061752
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 13:59:33 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2u9te6bf8t-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2019 13:59:33 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sourabhjain@linux.ibm.com>;
+ Sat, 10 Aug 2019 18:59:31 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sat, 10 Aug 2019 18:59:28 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7AHxQL949676360
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 10 Aug 2019 17:59:26 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B43BCA405B;
+ Sat, 10 Aug 2019 17:59:26 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA01EA405C;
+ Sat, 10 Aug 2019 17:59:19 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.50.95])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat, 10 Aug 2019 17:59:19 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc/fadump: sysfs for fadump memory reservation
+Date: Sat, 10 Aug 2019 23:29:05 +0530
+X-Mailer: git-send-email 2.17.2
+X-TM-AS-GCONF: 00
+x-cbid: 19081017-0008-0000-0000-0000030788CC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081017-0009-0000-0000-00004A259485
+Message-Id: <20190810175905.7761-1-sourabhjain@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-10_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908100201
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,24 +83,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
+Cc: corbet@lwn.net, mahesh@linux.vnet.ibm.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 10, 2019 at 3:11 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Just one fix, a revert of a commit that was meant to be a minor improvement to
-> some inline asm, but ended up having no real benefit with GCC and broke booting
-> 32-bit machines when using Clang.
+Add a sys interface to allow querying the memory reserved by
+fadump for saving the crash dump.
 
-Pulled, but whenever there are possible subtle compiler issues I get
-nervous, and wonder if the problem was reported to the clang guys?
+Add an ABI doc entry for new sysfs interface.
+   - /sys/kernel/fadump_mem_reserved
 
-In particular, if the kernel change was technically correct, maybe
-somebody else comes along in a few years and tries the same, and then
-it's another odd "why doesn't this work for person X when it works
-just fine for me"..
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
+Changelog:
+v1 -> v2:
+  - Added ABI doc for new sysfs interface.
 
-                 Linus
+v2 -> v3:
+  - Updated the ABI documentation.
+---
+
+ Documentation/ABI/testing/sysfs-kernel-fadump    |  6 ++++++
+ Documentation/powerpc/firmware-assisted-dump.rst |  5 +++++
+ arch/powerpc/kernel/fadump.c                     | 14 ++++++++++++++
+ 3 files changed, 25 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump
+
+diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
+new file mode 100644
+index 000000000000..ec034939475b
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-kernel-fadump
+@@ -0,0 +1,6 @@
++What:		/sys/kernel/fadump_mem_reserved
++Date:		August 2019
++Contact:	linuxppc-dev@lists.ozlabs.org
++Description:	read only
++		Provide information about the amount of memory
++		reserved by fadump to save the crash dump.
+diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
+index 9ca12830a48e..a5dfb20d4dc3 100644
+--- a/Documentation/powerpc/firmware-assisted-dump.rst
++++ b/Documentation/powerpc/firmware-assisted-dump.rst
+@@ -222,6 +222,11 @@ Here is the list of files under kernel sysfs:
+     be handled and vmcore will not be captured. This interface can be
+     easily integrated with kdump service start/stop.
+ 
++ /sys/kernel/fadump_mem_reserved
++
++   This is used to display the memory reserved by fadump for saving the
++   crash dump.
++
+  /sys/kernel/fadump_release_mem
+     This file is available only when fadump is active during
+     second kernel. This is used to release the reserved memory
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 4eab97292cc2..cd373d1d4b82 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1514,6 +1514,13 @@ static ssize_t fadump_enabled_show(struct kobject *kobj,
+ 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
+ }
+ 
++static ssize_t fadump_mem_reserved_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
++					char *buf)
++{
++	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
++}
++
+ static ssize_t fadump_register_show(struct kobject *kobj,
+ 					struct kobj_attribute *attr,
+ 					char *buf)
+@@ -1632,6 +1639,9 @@ static struct kobj_attribute fadump_attr = __ATTR(fadump_enabled,
+ static struct kobj_attribute fadump_register_attr = __ATTR(fadump_registered,
+ 						0644, fadump_register_show,
+ 						fadump_register_store);
++static struct kobj_attribute fadump_mem_reserved_attr =
++			__ATTR(fadump_mem_reserved, 0444,
++			       fadump_mem_reserved_show, NULL);
+ 
+ DEFINE_SHOW_ATTRIBUTE(fadump_region);
+ 
+@@ -1663,6 +1673,10 @@ static void fadump_init_files(void)
+ 			printk(KERN_ERR "fadump: unable to create sysfs file"
+ 				" fadump_release_mem (%d)\n", rc);
+ 	}
++	rc = sysfs_create_file(kernel_kobj, &fadump_mem_reserved_attr.attr);
++	if (rc)
++		pr_err("unable to create sysfs file fadump_mem_reserved (%d)\n",
++		       rc);
+ 	return;
+ }
+ 
+-- 
+2.17.2
+
