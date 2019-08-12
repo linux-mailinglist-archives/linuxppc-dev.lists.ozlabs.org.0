@@ -2,68 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FA18AA11
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 23:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DF48AB14
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 01:23:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466qPk6rbwzDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 07:54:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466sNq1v0zzDqcQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 09:23:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (mailfrom)
- smtp.mailfrom=flex--ndesaulniers.bounces.google.com
- (client-ip=2607:f8b0:4864:20::a4a; helo=mail-vk1-xa4a.google.com;
- envelope-from=3md9rxqwkdja7xycue572ybc08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--ndesaulniers.bounces.google.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="QD2Q9TVx"; 
- dkim-atps=neutral
-Received: from mail-vk1-xa4a.google.com (mail-vk1-xa4a.google.com
- [IPv6:2607:f8b0:4864:20::a4a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466qMV08TLzDqXR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 07:52:29 +1000 (AEST)
-Received: by mail-vk1-xa4a.google.com with SMTP id x71so36175018vkd.15
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 14:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=2AgXEJvicJBSy/SRKWnK2/gvt/mXyTWKNhSQOzYorzg=;
- b=QD2Q9TVxotj25Bb1ouljTvMCvR83QJDYk2233b6aDf5UyAOc4+c3u0nYzqK2HiP9Jd
- mWjfm3fF7X8BxISaaea7HPxbpoGJAkgRdVmpjYKrjmNuH3MarsX7MS4wsNBe6G8n6f36
- n47LxqcnSGzw6RtyrzlLPb+EQoVzrvthsOmuGkhCqDIEAEO62T+Ih/9XGutE8xHgaxex
- niw/b9YZcCQAxTuG+nGc6XTtMhuRJ36Q9JkIWVX4S93KEdLzIXq0UIzJZCfKPIBEyf5h
- yv65GUdyh/ZiBeRFUstxqphaAC9yA1yaTYOoX+hpm1aZ4CwSO39oD+vxLn1QJTqzYfuB
- H22A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=2AgXEJvicJBSy/SRKWnK2/gvt/mXyTWKNhSQOzYorzg=;
- b=N25n8KXZfsuJ6W5/BGnjF6ZLKw84yd1KxLjFJ3qpxfJeoUyJlSQMJPmMOkSsgp4eFX
- bW5KtKY/jYsmlNspei5GLSyLOyTYIajQVpGWF6iYTQ3c8vR5EyH8h8FEOp8fOo6Z6brE
- ka3XHu0mbzXMEIFTSYOzs5hH5TFc5r+sBQF2fl+O5My33PWoxEP6SbCWXrNMWFx+HkwM
- ifCXrcC8N5ESXOjkAxvI9o6rm55ixgI4yAG0GV94yyy09er63DWJO+qdV/nsNJV4PQyc
- xEtQkO8L811ePApoUUsKKeJjHbNXQqKWm60x4DhUN11m1OCDv1kv+yS0ehC9STE333Mf
- OzMQ==
-X-Gm-Message-State: APjAAAV0noou68qDEa8n0s6pYC4nk/+zCghQXFfVJ/3M54gxNCPUCupI
- uOLJXCimPuGu2oCETOs1TKqzPNrvUHWRUPdLd1o=
-X-Google-Smtp-Source: APXvYqyYgGBEoezTTpIvU8mq/ZQBKS1RsoV2oTSHueva+H2OsTqtCQ71O4GdWT1QoPUyVfobIUtoTQjr5ewI4rtj4B0=
-X-Received: by 2002:a67:e447:: with SMTP id n7mr10737492vsm.115.1565646745461; 
- Mon, 12 Aug 2019 14:52:25 -0700 (PDT)
-Date: Mon, 12 Aug 2019 14:50:43 -0700
-In-Reply-To: <20190812215052.71840-1-ndesaulniers@google.com>
-Message-Id: <20190812215052.71840-10-ndesaulniers@google.com>
-Mime-Version: 1.0
-References: <20190812215052.71840-1-ndesaulniers@google.com>
-X-Mailer: git-send-email 2.23.0.rc1.153.gdeed80330f-goog
-Subject: [PATCH 10/16] powerpc: prefer __section and __printf from
- compiler_attributes.h
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: akpm@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466sLt3GtfzDqZy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 09:22:14 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7CNLtoM009116; Mon, 12 Aug 2019 19:22:01 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ubcybhr29-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Aug 2019 19:22:00 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7CNM0Jd009800;
+ Mon, 12 Aug 2019 19:22:00 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ubcybhr21-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Aug 2019 19:22:00 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7CNKAce030901;
+ Mon, 12 Aug 2019 23:21:59 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04wdc.us.ibm.com with ESMTP id 2u9nj6a6gr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Aug 2019 23:21:59 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7CNLwRn19005716
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Aug 2019 23:21:58 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FE98C6059;
+ Mon, 12 Aug 2019 23:21:58 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E063EC6055;
+ Mon, 12 Aug 2019 23:21:54 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.165.146])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Mon, 12 Aug 2019 23:21:54 +0000 (GMT)
+References: <20190806052237.12525-1-bauerman@linux.ibm.com>
+ <20190806052237.12525-12-bauerman@linux.ibm.com>
+ <8736i6sfhn.fsf@concordia.ellerman.id.au>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 11/16] powerpc/pseries/svm: Export guest SVM status to
+ user space via sysfs
+In-reply-to: <8736i6sfhn.fsf@concordia.ellerman.id.au>
+Date: Mon, 12 Aug 2019 20:21:50 -0300
+Message-ID: <87r25qgeb5.fsf@morokweng.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-12_09:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908120229
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,94 +92,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Rob Herring <robh@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, clang-built-linux@googlegroups.com,
- yhs@fb.com, jpoimboe@redhat.com, sedat.dilek@gmail.com,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
+Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reported-by: Sedat Dilek <sedat.dilek@gmail.com>
-Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
----
- arch/powerpc/boot/main.c         | 3 +--
- arch/powerpc/boot/ps3.c          | 6 ++----
- arch/powerpc/include/asm/cache.h | 2 +-
- arch/powerpc/kernel/btext.c      | 2 +-
- 4 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
-index 102cc546444d..3ccc84e06fc4 100644
---- a/arch/powerpc/boot/main.c
-+++ b/arch/powerpc/boot/main.c
-@@ -150,8 +150,7 @@ static struct addr_range prep_initrd(struct addr_range vmlinux, void *chosen,
-  * edit the command line passed to vmlinux (by setting /chosen/bootargs).
-  * The buffer is put in it's own section so that tools may locate it easier.
-  */
--static char cmdline[BOOT_COMMAND_LINE_SIZE]
--	__attribute__((__section__("__builtin_cmdline")));
-+static char cmdline[BOOT_COMMAND_LINE_SIZE] __section(__builtin_cmdline);
- 
- static void prep_cmdline(void *chosen)
- {
-diff --git a/arch/powerpc/boot/ps3.c b/arch/powerpc/boot/ps3.c
-index c52552a681c5..70b2ed82d2de 100644
---- a/arch/powerpc/boot/ps3.c
-+++ b/arch/powerpc/boot/ps3.c
-@@ -24,8 +24,7 @@ extern int lv1_get_repository_node_value(u64 in_1, u64 in_2, u64 in_3,
- #ifdef DEBUG
- #define DBG(fmt...) printf(fmt)
- #else
--static inline int __attribute__ ((format (printf, 1, 2))) DBG(
--	const char *fmt, ...) {return 0;}
-+static inline int __printf(1, 2) DBG(const char *fmt, ...) { return 0; }
- #endif
- 
- BSS_STACK(4096);
-@@ -35,8 +34,7 @@ BSS_STACK(4096);
-  * The buffer is put in it's own section so that tools may locate it easier.
-  */
- 
--static char cmdline[BOOT_COMMAND_LINE_SIZE]
--	__attribute__((__section__("__builtin_cmdline")));
-+static char cmdline[BOOT_COMMAND_LINE_SIZE] __section(__builtin_cmdline);
- 
- static void prep_cmdline(void *chosen)
- {
-diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
-index 45e3137ccd71..9114495855eb 100644
---- a/arch/powerpc/include/asm/cache.h
-+++ b/arch/powerpc/include/asm/cache.h
-@@ -91,7 +91,7 @@ static inline u32 l1_cache_bytes(void)
- 	isync
- 
- #else
--#define __read_mostly __attribute__((__section__(".data..read_mostly")))
-+#define __read_mostly __section(.data..read_mostly)
- 
- #ifdef CONFIG_PPC_BOOK3S_32
- extern long _get_L2CR(void);
-diff --git a/arch/powerpc/kernel/btext.c b/arch/powerpc/kernel/btext.c
-index 6dfceaa820e4..f57712a55815 100644
---- a/arch/powerpc/kernel/btext.c
-+++ b/arch/powerpc/kernel/btext.c
-@@ -26,7 +26,7 @@
- static void scrollscreen(void);
- #endif
- 
--#define __force_data __attribute__((__section__(".data")))
-+#define __force_data __section(.data)
- 
- static int g_loc_X __force_data;
- static int g_loc_Y __force_data;
+Michael Ellerman <mpe@ellerman.id.au> writes:
+
+> Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+>> From: Ryan Grimm <grimm@linux.vnet.ibm.com>
+>>
+>> User space might want to know it's running in a secure VM.  It can't do
+>> a mfmsr because mfmsr is a privileged instruction.
+>>
+>> The solution here is to create a cpu attribute:
+>>
+>> /sys/devices/system/cpu/svm
+>>
+>> which will read 0 or 1 based on the S bit of the guest's CPU 0.
+>
+> Why CPU 0?
+>
+> If we have different CPUs running with different MSR_S then something
+> has gone badly wrong, no?
+
+Yes, that would be very bad.
+
+> So can't we just read the MSR on whatever CPU the sysfs code happens to
+> run on.
+
+Good point. I made the change in the patch below.
+
 -- 
-2.23.0.rc1.153.gdeed80330f-goog
+Thiago Jung Bauermann
+IBM Linux Technology Center
 
+
+
+From 2d951305e118bf286f8e83cbf396448085186357 Mon Sep 17 00:00:00 2001
+From: Ryan Grimm <grimm@linux.vnet.ibm.com>
+Date: Tue, 15 Jan 2019 11:56:29 -0600
+Subject: [PATCH] powerpc/pseries/svm: Export guest SVM status to user space
+ via sysfs
+
+User space might want to know it's running in a secure VM.  It can't do
+a mfmsr because mfmsr is a privileged instruction.
+
+The solution here is to create a cpu attribute:
+
+/sys/devices/system/cpu/svm
+
+which will read 0 or 1 based on the S bit of the current CPU.
+
+Signed-off-by: Ryan Grimm <grimm@linux.vnet.ibm.com>
+Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+---
+ arch/powerpc/kernel/sysfs.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index e2147d7c9e72..80a676da11cb 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -19,6 +19,7 @@
+ #include <asm/smp.h>
+ #include <asm/pmc.h>
+ #include <asm/firmware.h>
++#include <asm/svm.h>
+ 
+ #include "cacheinfo.h"
+ #include "setup.h"
+@@ -715,6 +716,23 @@ static struct device_attribute pa6t_attrs[] = {
+ #endif /* HAS_PPC_PMC_PA6T */
+ #endif /* HAS_PPC_PMC_CLASSIC */
+ 
++#ifdef CONFIG_PPC_SVM
++static ssize_t show_svm(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "%u\n", is_secure_guest());
++}
++static DEVICE_ATTR(svm, 0444, show_svm, NULL);
++
++static void create_svm_file(void)
++{
++	device_create_file(cpu_subsys.dev_root, &dev_attr_svm);
++}
++#else
++static void create_svm_file(void)
++{
++}
++#endif /* CONFIG_PPC_SVM */
++
+ static int register_cpu_online(unsigned int cpu)
+ {
+ 	struct cpu *c = &per_cpu(cpu_devices, cpu);
+@@ -1058,6 +1076,8 @@ static int __init topology_init(void)
+ 	sysfs_create_dscr_default();
+ #endif /* CONFIG_PPC64 */
+ 
++	create_svm_file();
++
+ 	return 0;
+ }
+ subsys_initcall(topology_init);
