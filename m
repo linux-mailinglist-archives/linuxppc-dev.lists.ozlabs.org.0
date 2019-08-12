@@ -1,40 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A440489F25
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 15:05:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435EB89F65
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 15:16:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466bg44lf9zDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 23:05:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466bvf1KbwzDqhF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 23:16:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=sirena.co.uk
+ (client-ip=2a01:7e01::f03c:91ff:fed4:a3b6; helo=heliosphere.sirena.org.uk;
+ envelope-from=broonie@sirena.co.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=sirena.org.uk header.i=@sirena.org.uk
+ header.b="LdlKbGc7"; dkim-atps=neutral
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk
+ [IPv6:2a01:7e01::f03c:91ff:fed4:a3b6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466bcj5D6czDqcH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 23:03:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 466bcj1tK1z9sN6;
- Mon, 12 Aug 2019 23:03:17 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 11/16] powerpc/pseries/svm: Export guest SVM status to
- user space via sysfs
-In-Reply-To: <20190806052237.12525-12-bauerman@linux.ibm.com>
-References: <20190806052237.12525-1-bauerman@linux.ibm.com>
- <20190806052237.12525-12-bauerman@linux.ibm.com>
-Date: Mon, 12 Aug 2019 23:03:16 +1000
-Message-ID: <8736i6sfhn.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466bmV4FC3zDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 23:10:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+ Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+ List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+ List-Archive; bh=Q9qcnlkxDXzQ76coxQL/CdrXQ/CkPfBxp6V88YMLlQI=; b=LdlKbGc7EU4i
+ ze96X1m3Zp+EPrzGQLJ2Nho6DedV4JwLZGHGG76uyiUlIOpLiVkqRJHZQ4XK/WQMPPQFLI3ccZToJ
+ uWovDRVa9xJKbqXAiCW0b9zIBQW5pR/M+F1EfV1mbOvvXyzs4juE/0dhgQmfYLmA68Rtc0RxKTPXI
+ z91Nw=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.co.uk>)
+ id 1hxA59-0001M4-Ff; Mon, 12 Aug 2019 13:09:51 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+ id DBD082740CB7; Mon, 12 Aug 2019 14:09:50 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Applied "ASoC: fsl_esai: Add new compatible string for imx6ull" to
+ the asoc tree
+In-Reply-To: <1565346467-5769-2-git-send-email-shengjiu.wang@nxp.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190812130950.DBD082740CB7@ypsilon.sirena.org.uk>
+Date: Mon, 12 Aug 2019 14:09:50 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,89 +61,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ robh+dt@kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
-> From: Ryan Grimm <grimm@linux.vnet.ibm.com>
->
-> User space might want to know it's running in a secure VM.  It can't do
-> a mfmsr because mfmsr is a privileged instruction.
->
-> The solution here is to create a cpu attribute:
->
-> /sys/devices/system/cpu/svm
->
-> which will read 0 or 1 based on the S bit of the guest's CPU 0.
+The patch
 
-Why CPU 0?
+   ASoC: fsl_esai: Add new compatible string for imx6ull
 
-If we have different CPUs running with different MSR_S then something
-has gone badly wrong, no?
+has been applied to the asoc tree at
 
-So can't we just read the MSR on whatever CPU the sysfs code happens to
-run on.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
 
-cheers
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-> index e2147d7c9e72..f7100ab77d29 100644
-> --- a/arch/powerpc/kernel/sysfs.c
-> +++ b/arch/powerpc/kernel/sysfs.c
-> @@ -19,6 +19,7 @@
->  #include <asm/smp.h>
->  #include <asm/pmc.h>
->  #include <asm/firmware.h>
-> +#include <asm/svm.h>
->  
->  #include "cacheinfo.h"
->  #include "setup.h"
-> @@ -715,6 +716,32 @@ static struct device_attribute pa6t_attrs[] = {
->  #endif /* HAS_PPC_PMC_PA6T */
->  #endif /* HAS_PPC_PMC_CLASSIC */
->  
-> +#ifdef CONFIG_PPC_SVM
-> +static void get_svm(void *val)
-> +{
-> +	u32 *value = val;
-> +
-> +	*value = is_secure_guest();
-> +}
-> +
-> +static ssize_t show_svm(struct device *dev, struct device_attribute *attr, char *buf)
-> +{
-> +	u32 val;
-> +	smp_call_function_single(0, get_svm, &val, 1);
-> +	return sprintf(buf, "%u\n", val);
-> +}
-> +static DEVICE_ATTR(svm, 0444, show_svm, NULL);
-> +
-> +static void create_svm_file(void)
-> +{
-> +	device_create_file(cpu_subsys.dev_root, &dev_attr_svm);
-> +}
-> +#else
-> +static void create_svm_file(void)
-> +{
-> +}
-> +#endif /* CONFIG_PPC_SVM */
-> +
->  static int register_cpu_online(unsigned int cpu)
->  {
->  	struct cpu *c = &per_cpu(cpu_devices, cpu);
-> @@ -1058,6 +1085,8 @@ static int __init topology_init(void)
->  	sysfs_create_dscr_default();
->  #endif /* CONFIG_PPC64 */
->  
-> +	create_svm_file();
-> +
->  	return 0;
->  }
->  subsys_initcall(topology_init);
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 9ea08f2a6d27b6a26d33dae5c58e4099672d6bb3 Mon Sep 17 00:00:00 2001
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+Date: Fri, 9 Aug 2019 18:27:47 +0800
+Subject: [PATCH] ASoC: fsl_esai: Add new compatible string for imx6ull
+
+Add new compatible string "fsl,imx6ull-esai" in the binding document.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Link: https://lore.kernel.org/r/1565346467-5769-2-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/sound/fsl,esai.txt | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/sound/fsl,esai.txt b/Documentation/devicetree/bindings/sound/fsl,esai.txt
+index 5b9914367610..0e6e2166f76c 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,esai.txt
++++ b/Documentation/devicetree/bindings/sound/fsl,esai.txt
+@@ -7,8 +7,11 @@ other DSPs. It has up to six transmitters and four receivers.
+ 
+ Required properties:
+ 
+-  - compatible		: Compatible list, must contain "fsl,imx35-esai" or
+-			  "fsl,vf610-esai"
++  - compatible		: Compatible list, should contain one of the following
++			  compatibles:
++			  "fsl,imx35-esai",
++			  "fsl,vf610-esai",
++			  "fsl,imx6ull-esai",
+ 
+   - reg			: Offset and length of the register set for the device.
+ 
+-- 
+2.20.1
+
