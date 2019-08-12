@@ -1,66 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9667C8A4C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 19:37:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8798A76E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 21:43:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466jjV0d4TzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 03:37:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466mV63VJszDqdf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 05:43:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=google.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=ndesaulniers@google.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.7.59; helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.b="RsNkwjci"; 
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="dxEq5xKY"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr70059.outbound.protection.outlook.com [40.107.7.59])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466jgb2NwfzDqYM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 03:36:09 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id b13so50035171pfo.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 10:36:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oZi4p9sU++IMNyLOoMu4O4MSpldoBC3la4O/D+JmVeE=;
- b=RsNkwjciAZJFroOX5ILBuBvMy8TWcIT9hJzrTA5xuOZfMYJaav94/bNa1G1AZHA/sx
- IqeuX0m5wrq1olWYnCUFdWcRs4HHNmD+fSaxGCDngxV9gs9hEaGvpwiel6l6FYROI+wM
- b2h/J/0MtTn4wk+24P+lye5PvT7SR216V5ztbRz1yijbJD2TeXZKy39Wwf+AkV8DYbM0
- CP6fjXz/iairhkQqUorj+Ear31cpwrY8D8/ls28sODMfPbYKCYDBl2dAo83EtHCePTLH
- MGmTVzL/6+j8BOjr0vRr/sKO1HKHpXTj0Kqk+R5o3T3ezXSVTGqzUJFXtYU7FXUZdbq9
- iK5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oZi4p9sU++IMNyLOoMu4O4MSpldoBC3la4O/D+JmVeE=;
- b=RWWKCdCsehdiO7HAdY2elal/T5pHvuoR88WDRMNZfNVplwHhyXzW66u8ATe3UtZF3U
- I8iv25kMOtXJwqGFume0z0efnQRbZLk3+ySwxdWaDUy5tVSoVVboIMY158PWPS6QCCIS
- WTgPigzI2kkwD+yqhhUzMLKeIcQ99JV+E/v4u6J5yiYEzzMxCvws977q+gXmeXwheaO8
- rhZke8dK4G08v7upEOpz8AZbHEM1JOF8DiUq8LQJkxHgm3m3ZE2uu8LMz6ghD15GvS7c
- zRq7c/xyVlmioF8ZxNnwmC6KE12cslRge+xBFSfnNRdWYsck1NEk4HV8PL1HBvqUX15X
- ODVw==
-X-Gm-Message-State: APjAAAXVI9WJr3LTTiumo3Z91V+UWg/jX9SphD2C6MuLSVAREaMzl8W3
- MShIC63qtaloyxuRV46MAAKwUoYk974MF1QUn5IjAg==
-X-Google-Smtp-Source: APXvYqy2zouhlUGYS7Kh1lajVcXBTrIvaZyDmn96K5pB0TaQUQP3OryMKFONA/xS83RgDSxvOsb01vVyUXq5xlXLvmE=
-X-Received: by 2002:a63:f94c:: with SMTP id q12mr30736518pgk.10.1565631367302; 
- Mon, 12 Aug 2019 10:36:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466mRn08dgzDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 05:41:05 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D+xZsCUucq3VGeOZ2dVg4eyVN7+ZvxJ1OnCfXVXAlSATVPHqj3t3EqDJZQK2v+kzvglndKd/qzFG0TLUgjyojduLRo5IUwBDMS25WpPb5jD9v3WWLPHxYmYwEV0KgzZTZ5gtlzVqP2RBi6De4NKMRda8ZF88ZPSOZ+fXWdVZzIBcJB+QOv34ALvOtOKUVFPy8NlqikSKz4JLknYtJkJ64o9J6hsQjWLocKmjWBCjYeGFyRkCcRGdaadyZiEUdcaOoqZej8V76RBUQpKgBiypNRwFQTF5h7G8KpHWVmA14KEhcve5uPfGDBaptdHUv1Fned5lOlD1DDpgOnV2hR034Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hg2DmKUxfug3yUUwflDCB3ejSA4zSZtbC43QPCWR9j0=;
+ b=fk/GpU3EUv+Vw5eJmMApnxTMfdE+iDpzJP3hMtTjWRLKb/h8v5x43T3Pb8G9HcYBwSm4sQLxY5bXg7LJbRP2u43T1JFuuKutS4OIWqa2f0urnBpHBJS6GJE7w59qKZN9MUWkkCygZBqKSjXSGy4cmDLsEdpjxpcH435qLLcq8M98G1dELkzutUn05zSCuTWYgCL/PRp/MSlG9xDGISklJU0v2lGLX6L6PZOkuNhWqhGf0w32KIuc0108pUuRrerLiiKNVd2JrpV36eKviiAzQqcLPcZ5Idn/cFrlKjxA4D+n07vNlIvrkUzTUT98a2APuhwRoO7Y10vWjqpvOlilwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hg2DmKUxfug3yUUwflDCB3ejSA4zSZtbC43QPCWR9j0=;
+ b=dxEq5xKYVgsCnd2NWWqojjIYleGrS6p1s19kdehml1JPa6qzsRjG722SXdYIngbcghdd0QL75U++NiSgsgyKA5cuRmqN2CcRnc8sLk9L1Gj5mFoWkgoT32bK/hEWKaHdmwyPsXxDRicsICRpE9KGT7z+QzvtLTjGhlWLzX/VcZQ=
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com (20.179.235.152) by
+ VE1PR04MB6509.eurprd04.prod.outlook.com (20.179.233.159) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2157.23; Mon, 12 Aug 2019 19:40:58 +0000
+Received: from VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::3d61:6e52:a83c:7c59]) by VE1PR04MB6687.eurprd04.prod.outlook.com
+ ([fe80::3d61:6e52:a83c:7c59%6]) with mapi id 15.20.2136.018; Mon, 12 Aug 2019
+ 19:40:58 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Zhang Wei
+ <zw@zh-kernel.org>, Vinod Koul <vkoul@kernel.org>, Dan Williams
+ <dan.j.williams@intel.com>
+Subject: RE: [PATCH] dmaengine: fsldma: Mark expected switch fall-through
+Thread-Topic: [PATCH] dmaengine: fsldma: Mark expected switch fall-through
+Thread-Index: AQHVUKP5RUYlyDnoZkqg5dHV6OqYpqb36lNA
+Date: Mon, 12 Aug 2019 19:40:58 +0000
+Message-ID: <VE1PR04MB6687030F764BAAB24FDE80378FD30@VE1PR04MB6687.eurprd04.prod.outlook.com>
+References: <20190812002159.GA26899@embeddedor>
+In-Reply-To: <20190812002159.GA26899@embeddedor>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=leoyang.li@nxp.com; 
+x-originating-ip: [64.157.242.222]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1163b1d1-ffc2-4ea3-40fb-08d71f5d0001
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VE1PR04MB6509; 
+x-ms-traffictypediagnostic: VE1PR04MB6509:
+x-microsoft-antispam-prvs: <VE1PR04MB6509329803F117F61B9F85D18FD30@VE1PR04MB6509.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:843;
+x-forefront-prvs: 012792EC17
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(136003)(376002)(366004)(39860400002)(346002)(396003)(13464003)(189003)(199004)(486006)(14454004)(476003)(53546011)(7736002)(26005)(8936002)(71190400001)(186003)(11346002)(81156014)(6506007)(305945005)(8676002)(81166006)(102836004)(71200400001)(446003)(14444005)(256004)(66066001)(6116002)(3846002)(99286004)(33656002)(478600001)(5660300002)(2906002)(55016002)(52536014)(316002)(6436002)(9686003)(66946007)(76176011)(25786009)(66556008)(66476007)(229853002)(66446008)(64756008)(6246003)(7696005)(53936002)(4326008)(110136005)(54906003)(86362001)(76116006)(74316002);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6509;
+ H:VE1PR04MB6687.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 6/S78OHNcDcTbPW9gsiqQr8ozDoAMd3zikyIwZMBlQQpooo5VS2C4UNME+LIPOg3qTurfBIUOWlJaik1ZRjfUM/xv4bSZ4AH72U35swzmJegLIBXMf6vUUEdFwWWACljGAcNP/Jh2GQEcwkiXg460GzaO/w7namNnrmtPgmu31QM81iVBS3EORf3Zz78dPYDbym21poqaEYKHi2MYnooV9qPDnU78X3tS6yjOgUer6hr1TDmNvA5LWVI3cOsN0WplcrBIWEPtEZhzbA3cPO2aUm125BqvFmdAI/m381u1Ed6vP7oQg4lzu+oXi0TZysH9WmPdKkgWVBGgtFvce8yjo2SVlNoc7mRt399srgUodLs1XxskHJvqsJs90tt5clNxM+H/YEHrwnzp2VUSm+3UVIwSLyvIbxhbRORnxPH30c=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190812023214.107817-1-natechancellor@gmail.com>
-In-Reply-To: <20190812023214.107817-1-natechancellor@gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 12 Aug 2019 10:35:56 -0700
-Message-ID: <CAKwvOd=RzY2bkOOYUrvNSxZxz6B2VPn2siXA8pRFc9EP-W77qQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Avoid clang warnings around setjmp and longjmp
-To: Nathan Chancellor <natechancellor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1163b1d1-ffc2-4ea3-40fb-08d71f5d0001
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2019 19:40:58.7347 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: leoyang.li@nxp.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6509
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,105 +106,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 11, 2019 at 7:42 PM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
->
-> Commit aea447141c7e ("powerpc: Disable -Wbuiltin-requires-header when
-> setjmp is used") disabled -Wbuiltin-requires-header because of a warning
-> about the setjmp and longjmp declarations.
->
-> r367387 in clang added another diagnostic around this, complaining that
-> there is no jmp_buf declaration.
->
-> In file included from ../arch/powerpc/xmon/xmon.c:47:
-> ../arch/powerpc/include/asm/setjmp.h:10:13: error: declaration of
-> built-in function 'setjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern long setjmp(long *);
->             ^
-> ../arch/powerpc/include/asm/setjmp.h:11:13: error: declaration of
-> built-in function 'longjmp' requires the declaration of the 'jmp_buf'
-> type, commonly provided in the header <setjmp.h>.
-> [-Werror,-Wincomplete-setjmp-declaration]
-> extern void longjmp(long *, long);
->             ^
-> 2 errors generated.
->
-> Take the same approach as the above commit by disabling the warning for
-> the same reason, we provide our own longjmp/setjmp function.
->
-> Cc: stable@vger.kernel.org # 4.19+
-> Link: https://github.com/ClangBuiltLinux/linux/issues/625
-> Link: https://github.com/llvm/llvm-project/commit/3be25e79477db2d31ac46493d97eca8c20592b07
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-
-Thanks for the patch, Nathan.
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> ---
->
-> It may be worth using -fno-builtin-setjmp and -fno-builtin-longjmp
-> instead as it makes it clear to clang that we are not using the builtin
-> longjmp and setjmp functions, which I think is why these warnings are
-> appearing (at least according to the commit that introduced this waring).
->
-> Sample patch:
-> https://github.com/ClangBuiltLinux/linux/issues/625#issuecomment-519251372
->
-> However, this is the most conservative approach, as I have already had
-> someone notice this error when building LLVM with PGO on tip of tree
-> LLVM.
->
->  arch/powerpc/kernel/Makefile | 5 +++--
->  arch/powerpc/xmon/Makefile   | 5 +++--
->  2 files changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index ea0c69236789..44e340ed4722 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -5,8 +5,9 @@
->
->  CFLAGS_ptrace.o                += -DUTS_MACHINE='"$(UTS_MACHINE)"'
->
-> -# Disable clang warning for using setjmp without setjmp.h header
-> -CFLAGS_crash.o         += $(call cc-disable-warning, builtin-requires-header)
-> +# Avoid clang warnings about longjmp and setjmp built-ins (inclusion of setjmp.h and declaration of jmp_buf type)
-> +CFLAGS_crash.o         += $(call cc-disable-warning, builtin-requires-header) \
-> +                          $(call cc-disable-warning, incomplete-setjmp-declaration)
->
->  ifdef CONFIG_PPC64
->  CFLAGS_prom_init.o     += $(NO_MINIMAL_TOC)
-> diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-> index f142570ad860..53f341391210 100644
-> --- a/arch/powerpc/xmon/Makefile
-> +++ b/arch/powerpc/xmon/Makefile
-> @@ -1,8 +1,9 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for xmon
->
-> -# Disable clang warning for using setjmp without setjmp.h header
-> -subdir-ccflags-y := $(call cc-disable-warning, builtin-requires-header)
-> +# Avoid clang warnings about longjmp and setjmp built-ins (inclusion of setjmp.h and declaration of jmp_buf type)
-> +subdir-ccflags-y := $(call cc-disable-warning, builtin-requires-header) \
-> +                   $(call cc-disable-warning, incomplete-setjmp-declaration)
->
->  GCOV_PROFILE := n
->  KCOV_INSTRUMENT := n
-> --
-> 2.23.0.rc2
->
-
-
--- 
-Thanks,
-~Nick Desaulniers
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogR3VzdGF2byBBLiBSLiBT
+aWx2YSA8Z3VzdGF2b0BlbWJlZGRlZG9yLmNvbT4NCj4gU2VudDogU3VuZGF5LCBBdWd1c3QgMTEs
+IDIwMTkgNzoyMiBQTQ0KPiBUbzogTGVvIExpIDxsZW95YW5nLmxpQG54cC5jb20+OyBaaGFuZyBX
+ZWkgPHp3QHpoLWtlcm5lbC5vcmc+OyBWaW5vZA0KPiBLb3VsIDx2a291bEBrZXJuZWwub3JnPjsg
+RGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+DQo+IENjOiBsaW51eHBwYy1k
+ZXZAbGlzdHMub3psYWJzLm9yZzsgZG1hZW5naW5lQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+
+IGtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEd1c3Rhdm8gQS4gUi4gU2lsdmEgPGd1c3Rhdm9AZW1i
+ZWRkZWRvci5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSF0gZG1hZW5naW5lOiBmc2xkbWE6IE1hcmsg
+ZXhwZWN0ZWQgc3dpdGNoIGZhbGwtdGhyb3VnaA0KPiANCj4gTWFyayBzd2l0Y2ggY2FzZXMgd2hl
+cmUgd2UgYXJlIGV4cGVjdGluZyB0byBmYWxsIHRocm91Z2guDQo+IA0KPiBGaXggdGhlIGZvbGxv
+d2luZyB3YXJuaW5nIChCdWlsZGluZzogcG93ZXJwYy1wcGE4NTQ4X2RlZmNvbmZpZyBwb3dlcnBj
+KToNCj4gDQo+IGRyaXZlcnMvZG1hL2ZzbGRtYS5jOiBJbiBmdW5jdGlvbiDigJhmc2xfZG1hX2No
+YW5fcHJvYmXigJk6DQo+IGRyaXZlcnMvZG1hL2ZzbGRtYS5jOjExNjU6MjY6IHdhcm5pbmc6IHRo
+aXMgc3RhdGVtZW50IG1heSBmYWxsIHRocm91Z2ggWy0NCj4gV2ltcGxpY2l0LWZhbGx0aHJvdWdo
+PV0NCj4gICAgY2hhbi0+dG9nZ2xlX2V4dF9wYXVzZSA9IGZzbF9jaGFuX3RvZ2dsZV9leHRfcGF1
+c2U7DQo+ICAgIH5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+Xn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+DQo+IGRyaXZlcnMvZG1hL2ZzbGRtYS5jOjExNjY6Mjogbm90ZTogaGVyZQ0KPiAgIGNhc2Ug
+RlNMX0RNQV9JUF84M1hYOg0KPiAgIF5+fn4NCj4gDQo+IFJlcG9ydGVkLWJ5OiBrYnVpbGQgdGVz
+dCByb2JvdCA8bGtwQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogR3VzdGF2byBBLiBSLiBT
+aWx2YSA8Z3VzdGF2b0BlbWJlZGRlZG9yLmNvbT4NCg0KQWNrZWQtYnk6IExpIFlhbmcgPGxlb3lh
+bmcubGlAbnhwLmNvbT4NCg0KPiAtLS0NCj4gIGRyaXZlcnMvZG1hL2ZzbGRtYS5jIHwgMSArDQo+
+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL2RtYS9mc2xkbWEuYyBiL2RyaXZlcnMvZG1hL2ZzbGRtYS5jIGluZGV4DQo+IDIzZTBhMzU2
+ZjE2Ny4uYWQ3MmIzZjQyZmZhIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2RtYS9mc2xkbWEuYw0K
+PiArKysgYi9kcml2ZXJzL2RtYS9mc2xkbWEuYw0KPiBAQCAtMTE2Myw2ICsxMTYzLDcgQEAgc3Rh
+dGljIGludCBmc2xfZG1hX2NoYW5fcHJvYmUoc3RydWN0DQo+IGZzbGRtYV9kZXZpY2UgKmZkZXYs
+DQo+ICAJc3dpdGNoIChjaGFuLT5mZWF0dXJlICYgRlNMX0RNQV9JUF9NQVNLKSB7DQo+ICAJY2Fz
+ZSBGU0xfRE1BX0lQXzg1WFg6DQo+ICAJCWNoYW4tPnRvZ2dsZV9leHRfcGF1c2UgPSBmc2xfY2hh
+bl90b2dnbGVfZXh0X3BhdXNlOw0KPiArCQkvKiBGYWxsIHRocm91Z2ggKi8NCj4gIAljYXNlIEZT
+TF9ETUFfSVBfODNYWDoNCj4gIAkJY2hhbi0+dG9nZ2xlX2V4dF9zdGFydCA9IGZzbF9jaGFuX3Rv
+Z2dsZV9leHRfc3RhcnQ7DQo+ICAJCWNoYW4tPnNldF9zcmNfbG9vcF9zaXplID0gZnNsX2NoYW5f
+c2V0X3NyY19sb29wX3NpemU7DQo+IC0tDQo+IDIuMjIuMA0KDQo=
