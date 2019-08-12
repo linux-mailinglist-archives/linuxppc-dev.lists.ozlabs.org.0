@@ -2,40 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03AB89D71
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 13:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701C189DB4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 14:10:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466ZBn705GzDqcn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 21:59:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466ZRj0MRczDqdd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 22:10:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466Z8x2mgszDqZG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 21:57:34 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 9DBBD227A81; Mon, 12 Aug 2019 13:57:26 +0200 (CEST)
-Date: Mon, 12 Aug 2019 13:57:26 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH 3/6] usb: add a HCD_DMA flag instead of guestimating
- DMA capabilities
-Message-ID: <20190812115726.GA9180@lst.de>
-References: <20190811080520.21712-1-hch@lst.de>
- <20190811080520.21712-4-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466ZPC1JbwzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 22:08:15 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 466ZP80TPMz9sPT; Mon, 12 Aug 2019 22:08:12 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 466ZP7286pz9sPP;
+ Mon, 12 Aug 2019 22:08:11 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: kbuild test robot <lkp@intel.com>,
+ "Christopher M. Riedl" <cmr@informatik.wtf>
+Subject: Re: [PATCH v3 1/3] powerpc/spinlocks: Refactor SHARED_PROCESSOR
+In-Reply-To: <201908120917.L7bXpUsz%lkp@intel.com>
+References: <20190806030112.15232-2-cmr@informatik.wtf>
+ <201908120917.L7bXpUsz%lkp@intel.com>
+Date: Mon, 12 Aug 2019 22:08:12 +1000
+Message-ID: <878srysi1f.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190811080520.21712-4-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,33 +48,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Gavin Li <git@thegavinli.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Mathias Nyman <mathias.nyman@intel.com>, Geoff Levand <geoff@infradead.org>,
- Olav Kongas <ok@artecdesign.ee>, Sascha Hauer <s.hauer@pengutronix.de>,
- linux-usb@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>,
- linux-kernel@vger.kernel.org, Tony Prisk <linux@prisktech.co.nz>,
- iommu@lists.linux-foundation.org, Alan Stern <stern@rowland.harvard.edu>,
- NXP Linux Team <linux-imx@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Minas Harutyunyan <hminas@synopsys.com>, Shawn Guo <shawnguo@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Bin Liu <b-liu@ti.com>,
- linux-arm-kernel@lists.infradead.org,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: linuxppc-dev@ozlabs.org, kbuild-all@01.org,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/drivers/usb/host/ehci-ppc-of.c b/drivers/usb/host/ehci-ppc-of.c
-> index 576f7d79ad4e..9d17e0695e35 100644
-> --- a/drivers/usb/host/ehci-ppc-of.c
-> +++ b/drivers/usb/host/ehci-ppc-of.c
-> @@ -31,7 +31,7 @@ static const struct hc_driver ehci_ppc_of_hc_driver = {
->  	 * generic hardware linkage
->  	 */
->  	.irq			= ehci_irq,
-> -	.flags			= HCD_MEMORY | HCD_USB2 | HCD_BH,
-> +	.flags			= HCD_MEMORY | HC_DMA | HCD_USB2 | HCD_BH,
+kbuild test robot <lkp@intel.com> writes:
+> Hi "Christopher,
+>
+> Thank you for the patch! Yet something to improve:
+>
+> [auto build test ERROR on linus/master]
+> [cannot apply to v5.3-rc4 next-20190809]
+> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+>
+> url:    https://github.com/0day-ci/linux/commits/Christopher-M-Riedl/Fix-oops-in-shared-processor-spinlocks/20190806-204502
+> config: powerpc-powernv_defconfig (attached as .config)
+> compiler: powerpc64le-linux-gcc (GCC) 7.4.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>    In file included from include/linux/spinlock.h:89:0,
+>                     from include/linux/seqlock.h:36,
+>                     from include/linux/time.h:6,
+>                     from include/linux/compat.h:10,
+>                     from arch/powerpc/kernel/asm-offsets.c:14:
+>    arch/powerpc/include/asm/spinlock.h: In function 'is_shared_processor':
+>>> arch/powerpc/include/asm/spinlock.h:119:34: error: 'struct paca_struct' has no member named 'lppaca_ptr'; did you mean 'slb_cache_ptr'?
+>       lppaca_shared_proc(local_paca->lppaca_ptr));
+>                                      ^~~~~~~~~~
+>                                      slb_cache_ptr
+>    make[2]: *** [arch/powerpc/kernel/asm-offsets.s] Error 1
+>    make[2]: Target '__build' not remade because of errors.
+>    make[1]: *** [prepare0] Error 2
+>    make[1]: Target 'prepare' not remade because of errors.
+>    make: *** [sub-make] Error 2
+>    7 real  4 user  3 sys  110.24% cpu 	make prepare
+>
+> vim +119 arch/powerpc/include/asm/spinlock.h
+>
+>    110	
+>    111	static inline bool is_shared_processor(void)
+>    112	{
+>    113	/*
+>    114	 * LPPACA is only available on BOOK3S so guard anything LPPACA related to
+>    115	 * allow other platforms (which include this common header) to compile.
+>    116	 */
+>    117	#ifdef CONFIG_PPC_BOOK3S
 
-FYI, the kbuild bot found a little typo here, so even for the unlikely
-case that the series is otherwise perfect I'll have to resend it at
-least once.
+I think you should use PPC_PSERIES here and that will fix it.
+
+cheers
+
+>    118		return (IS_ENABLED(CONFIG_PPC_SPLPAR) &&
+>  > 119			lppaca_shared_proc(local_paca->lppaca_ptr));
+>    120	#else
+>    121		return false;
+>    122	#endif
+>    123	}
+>    124	
+>
+> ---
+> 0-DAY kernel test infrastructure                Open Source Technology Center
+> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
