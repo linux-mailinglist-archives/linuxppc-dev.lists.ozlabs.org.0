@@ -1,40 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701C189DB4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 14:10:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB9789E86
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 14:38:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466ZRj0MRczDqdd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 22:10:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466b3q0R3dzDqJm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 22:38:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466ZPC1JbwzDqQm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 22:08:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466b1R4SVPzDqZp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 22:36:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 466ZP80TPMz9sPT; Mon, 12 Aug 2019 22:08:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 466ZP7286pz9sPP;
- Mon, 12 Aug 2019 22:08:11 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 466b1Q0FR7z9sN6;
+ Mon, 12 Aug 2019 22:36:10 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: kbuild test robot <lkp@intel.com>,
- "Christopher M. Riedl" <cmr@informatik.wtf>
-Subject: Re: [PATCH v3 1/3] powerpc/spinlocks: Refactor SHARED_PROCESSOR
-In-Reply-To: <201908120917.L7bXpUsz%lkp@intel.com>
-References: <20190806030112.15232-2-cmr@informatik.wtf>
- <201908120917.L7bXpUsz%lkp@intel.com>
-Date: Mon, 12 Aug 2019 22:08:12 +1000
-Message-ID: <878srysi1f.fsf@concordia.ellerman.id.au>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 08/16] powerpc/pseries/svm: Use shared memory for
+ LPPACA structures
+In-Reply-To: <20190806052237.12525-9-bauerman@linux.ibm.com>
+References: <20190806052237.12525-1-bauerman@linux.ibm.com>
+ <20190806052237.12525-9-bauerman@linux.ibm.com>
+Date: Mon, 12 Aug 2019 22:36:11 +1000
+Message-ID: <875zn2sgqs.fsf@concordia.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,75 +46,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, kbuild-all@01.org,
- Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Christoph Hellwig <hch@lst.de>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Anshuman Khandual <khandual@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kbuild test robot <lkp@intel.com> writes:
-> Hi "Christopher,
+Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+> From: Anshuman Khandual <khandual@linux.vnet.ibm.com>
 >
-> Thank you for the patch! Yet something to improve:
+> LPPACA structures need to be shared with the host. Hence they need to be in
+> shared memory. Instead of allocating individual chunks of memory for a
+> given structure from memblock, a contiguous chunk of memory is allocated
+> and then converted into shared memory. Subsequent allocation requests will
+> come from the contiguous chunk which will be always shared memory for all
+> structures.
 >
-> [auto build test ERROR on linus/master]
-> [cannot apply to v5.3-rc4 next-20190809]
-> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+> While we are able to use a kmem_cache constructor for the Debug Trace Log,
+> LPPACAs are allocated very early in the boot process (before SLUB is
+> available) so we need to use a simpler scheme here.
 >
-> url:    https://github.com/0day-ci/linux/commits/Christopher-M-Riedl/Fix-oops-in-shared-processor-spinlocks/20190806-204502
-> config: powerpc-powernv_defconfig (attached as .config)
-> compiler: powerpc64le-linux-gcc (GCC) 7.4.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=7.4.0 make.cross ARCH=powerpc 
+> Introduce helper is_svm_platform() which uses the S bit of the MSR to tell
+> whether we're running as a secure guest.
 >
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Anshuman Khandual <khandual@linux.vnet.ibm.com>
+> Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/svm.h | 26 ++++++++++++++++++++
+>  arch/powerpc/kernel/paca.c     | 43 +++++++++++++++++++++++++++++++++-
+>  2 files changed, 68 insertions(+), 1 deletion(-)
 >
-> All errors (new ones prefixed by >>):
->
->    In file included from include/linux/spinlock.h:89:0,
->                     from include/linux/seqlock.h:36,
->                     from include/linux/time.h:6,
->                     from include/linux/compat.h:10,
->                     from arch/powerpc/kernel/asm-offsets.c:14:
->    arch/powerpc/include/asm/spinlock.h: In function 'is_shared_processor':
->>> arch/powerpc/include/asm/spinlock.h:119:34: error: 'struct paca_struct' has no member named 'lppaca_ptr'; did you mean 'slb_cache_ptr'?
->       lppaca_shared_proc(local_paca->lppaca_ptr));
->                                      ^~~~~~~~~~
->                                      slb_cache_ptr
->    make[2]: *** [arch/powerpc/kernel/asm-offsets.s] Error 1
->    make[2]: Target '__build' not remade because of errors.
->    make[1]: *** [prepare0] Error 2
->    make[1]: Target 'prepare' not remade because of errors.
->    make: *** [sub-make] Error 2
->    7 real  4 user  3 sys  110.24% cpu 	make prepare
->
-> vim +119 arch/powerpc/include/asm/spinlock.h
->
->    110	
->    111	static inline bool is_shared_processor(void)
->    112	{
->    113	/*
->    114	 * LPPACA is only available on BOOK3S so guard anything LPPACA related to
->    115	 * allow other platforms (which include this common header) to compile.
->    116	 */
->    117	#ifdef CONFIG_PPC_BOOK3S
+> diff --git a/arch/powerpc/include/asm/svm.h b/arch/powerpc/include/asm/svm.h
+> new file mode 100644
+> index 000000000000..fef3740f46a6
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/svm.h
+> @@ -0,0 +1,26 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * SVM helper functions
+> + *
+> + * Copyright 2019 Anshuman Khandual, IBM Corporation.
 
-I think you should use PPC_PSERIES here and that will fix it.
+Are we sure this copyright date is correct?
 
 cheers
-
->    118		return (IS_ENABLED(CONFIG_PPC_SPLPAR) &&
->  > 119			lppaca_shared_proc(local_paca->lppaca_ptr));
->    120	#else
->    121		return false;
->    122	#endif
->    123	}
->    124	
->
-> ---
-> 0-DAY kernel test infrastructure                Open Source Technology Center
-> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
