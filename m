@@ -2,94 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A21B89A26
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 11:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF79A89AEC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 12:08:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466WCm6fXkzDqQq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 19:44:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466Wl119ZMzDqWM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 20:08:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466W9n2hxFzDqNH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 19:43:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 466W9n1rVTz8tVd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 19:43:09 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 466W9n1PY4z9sNp; Mon, 12 Aug 2019 19:43:09 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 466W9m1xnyz9sNF
- for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 19:43:07 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7C9gKFe086777
- for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 05:43:04 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2ub58fh1at-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 05:43:04 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Mon, 12 Aug 2019 10:43:02 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 12 Aug 2019 10:42:59 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7C9gvQq51642490
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Aug 2019 09:42:57 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7AA8A5204F;
- Mon, 12 Aug 2019 09:42:57 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.109.198.204])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id A886A5204E;
- Mon, 12 Aug 2019 09:42:54 +0000 (GMT)
-Date: Mon, 12 Aug 2019 15:12:51 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH v4 05/25] pseries/fadump: introduce callbacks for
- platform specific operations
-References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
- <156327675065.27462.14816232938604700506.stgit@hbathini.in.ibm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 466WhT4QN4zDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 20:06:12 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13F0115A2;
+ Mon, 12 Aug 2019 03:06:08 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (unknown [10.1.196.255])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 98CE53F718;
+ Mon, 12 Aug 2019 03:06:05 -0700 (PDT)
+Date: Mon, 12 Aug 2019 11:06:00 +0100
+From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [PATCHv3 2/2] PCI: layerscape: Add CONFIG_PCI_LAYERSCAPE_EP to
+ build EP/RC separately
+Message-ID: <20190812100600.GA20861@e121166-lin.cambridge.arm.com>
+References: <20190628013826.4705-1-xiaowei.bao@nxp.com>
+ <20190628013826.4705-2-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <156327675065.27462.14816232938604700506.stgit@hbathini.in.ibm.com>
-User-Agent: NeoMutt/20180716
-X-TM-AS-GCONF: 00
-x-cbid: 19081209-0016-0000-0000-0000029DC695
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081209-0017-0000-0000-000032FDD5A3
-Message-Id: <20190812094251.fetkmjyp7ac37ivf@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-12_04:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908120108
+In-Reply-To: <20190628013826.4705-2-xiaowei.bao@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,325 +48,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.vnet.ibm.com
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Oliver <oohall@gmail.com>, Vasant Hegde <hegdevasant@linux.ibm.com>,
- Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: mark.rutland@arm.com, roy.zang@nxp.com, arnd@arndb.de,
+ devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
+ kstewart@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kishon@ti.com,
+ minghuan.Lian@nxp.com, robh+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, pombredanne@nexb.com,
+ bhelgaas@google.com, leoyang.li@nxp.com, shawnguo@kernel.org,
+ shawn.lin@rock-chips.com, mingkai.hu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019-07-16 17:02:30 Tue, Hari Bathini wrote:
-> Introduce callback functions for platform specific operations like
-> register, unregister, invalidate & such. Also, define place-holders
-> for the same on pSeries platform.
+On Fri, Jun 28, 2019 at 09:38:26AM +0800, Xiaowei Bao wrote:
+> Add CONFIG_PCI_LAYERSCAPE_EP to build EP/RC separately.
 > 
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 > ---
->  arch/powerpc/kernel/fadump-common.h          |   33 ++++++
->  arch/powerpc/kernel/fadump.c                 |   47 +--------
->  arch/powerpc/platforms/pseries/Makefile      |    1 
->  arch/powerpc/platforms/pseries/rtas-fadump.c |  134 ++++++++++++++++++++++++++
->  4 files changed, 171 insertions(+), 44 deletions(-)
->  create mode 100644 arch/powerpc/platforms/pseries/rtas-fadump.c
+> v2:
+>  - No change.
+> v3:
+>  - modify the commit message.
 > 
-> diff --git a/arch/powerpc/kernel/fadump-common.h b/arch/powerpc/kernel/fadump-common.h
-> index 09d6161..020d582 100644
-> --- a/arch/powerpc/kernel/fadump-common.h
-> +++ b/arch/powerpc/kernel/fadump-common.h
-> @@ -50,6 +50,12 @@
->  #define FADUMP_UNREGISTER		2
->  #define FADUMP_INVALIDATE		3
->  
-> +/* Firmware-Assited Dump platforms */
-> +enum fadump_platform_type {
-> +	FADUMP_PLATFORM_UNKNOWN = 0,
-> +	FADUMP_PLATFORM_PSERIES,
-> +};
-
-Do we really need these ? Aren't we hiding all platform specific things
-under fadump_ops functions ? I see that these values are used only for
-assignements and not making any decision in code flow. Am I missing
-anything here ?
-
-Thanks,
--Mahesh.
-
-> +
->  /*
->   * Copy the ascii values for first 8 characters from a string into u64
->   * variable at their respective indexes.
-> @@ -84,6 +90,9 @@ struct fad_crash_memory_ranges {
->  	unsigned long long	size;
->  };
->  
-> +/* Platform specific callback functions */
-> +struct fadump_ops;
-> +
->  /* Firmware-assisted dump configuration details. */
->  struct fw_dump {
->  	unsigned long	reserve_dump_area_start;
-> @@ -106,6 +115,21 @@ struct fw_dump {
->  	unsigned long	dump_active:1;
->  	unsigned long	dump_registered:1;
->  	unsigned long	nocma:1;
-> +
-> +	enum fadump_platform_type	fadump_platform;
-> +	struct fadump_ops		*ops;
-> +};
-> +
-> +struct fadump_ops {
-> +	ulong	(*init_fadump_mem_struct)(struct fw_dump *fadump_config);
-> +	int	(*register_fadump)(struct fw_dump *fadump_config);
-> +	int	(*unregister_fadump)(struct fw_dump *fadump_config);
-> +	int	(*invalidate_fadump)(struct fw_dump *fadump_config);
-> +	int	(*process_fadump)(struct fw_dump *fadump_config);
-> +	void	(*fadump_region_show)(struct fw_dump *fadump_config,
-> +				      struct seq_file *m);
-> +	void	(*fadump_trigger)(struct fadump_crash_info_header *fdh,
-> +				  const char *msg);
->  };
->  
->  /* Helper functions */
-> @@ -116,4 +140,13 @@ void fadump_update_elfcore_header(struct fw_dump *fadump_config, char *bufp);
->  int is_fadump_boot_mem_contiguous(struct fw_dump *fadump_conf);
->  int is_fadump_reserved_mem_contiguous(struct fw_dump *fadump_conf);
->  
-> +#ifdef CONFIG_PPC_PSERIES
-> +extern int rtas_fadump_dt_scan(struct fw_dump *fadump_config, ulong node);
-> +#else
-> +static inline int rtas_fadump_dt_scan(struct fw_dump *fadump_config, ulong node)
-> +{
-> +	return 1;
-> +}
-> +#endif
-> +
->  #endif /* __PPC64_FA_DUMP_INTERNAL_H__ */
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index f571cb3..a901ca1 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -112,24 +112,12 @@ static int __init fadump_cma_init(void) { return 1; }
->  int __init early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
->  				      int depth, void *data)
->  {
-> -	const __be32 *sections;
-> -	int i, num_sections;
-> -	int size;
-> -	const __be32 *token;
-> +	int ret;
->  
->  	if (depth != 1 || strcmp(uname, "rtas") != 0)
->  		return 0;
->  
-> -	/*
-> -	 * Check if Firmware Assisted dump is supported. if yes, check
-> -	 * if dump has been initiated on last reboot.
-> -	 */
-> -	token = of_get_flat_dt_prop(node, "ibm,configure-kernel-dump", NULL);
-> -	if (!token)
-> -		return 1;
-> -
-> -	fw_dump.fadump_supported = 1;
-> -	fw_dump.ibm_configure_kernel_dump = be32_to_cpu(*token);
-> +	ret = rtas_fadump_dt_scan(&fw_dump, node);
->  
->  	/*
->  	 * The 'ibm,kernel-dump' rtas node is present only if there is
-> @@ -139,36 +127,7 @@ int __init early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
->  	if (fdm_active)
->  		fw_dump.dump_active = 1;
->  
-> -	/* Get the sizes required to store dump data for the firmware provided
-> -	 * dump sections.
-> -	 * For each dump section type supported, a 32bit cell which defines
-> -	 * the ID of a supported section followed by two 32 bit cells which
-> -	 * gives teh size of the section in bytes.
-> -	 */
-> -	sections = of_get_flat_dt_prop(node, "ibm,configure-kernel-dump-sizes",
-> -					&size);
-> -
-> -	if (!sections)
-> -		return 1;
-> -
-> -	num_sections = size / (3 * sizeof(u32));
-> -
-> -	for (i = 0; i < num_sections; i++, sections += 3) {
-> -		u32 type = (u32)of_read_number(sections, 1);
-> -
-> -		switch (type) {
-> -		case RTAS_FADUMP_CPU_STATE_DATA:
-> -			fw_dump.cpu_state_data_size =
-> -					of_read_ulong(&sections[1], 2);
-> -			break;
-> -		case RTAS_FADUMP_HPTE_REGION:
-> -			fw_dump.hpte_region_size =
-> -					of_read_ulong(&sections[1], 2);
-> -			break;
-> -		}
-> -	}
-> -
-> -	return 1;
-> +	return ret;
->  }
->  
->  /*
-> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-> index ab3d59a..e248724 100644
-> --- a/arch/powerpc/platforms/pseries/Makefile
-> +++ b/arch/powerpc/platforms/pseries/Makefile
-> @@ -26,6 +26,7 @@ obj-$(CONFIG_IBMVIO)		+= vio.o
->  obj-$(CONFIG_IBMEBUS)		+= ibmebus.o
->  obj-$(CONFIG_PAPR_SCM)		+= papr_scm.o
->  obj-$(CONFIG_PPC_SPLPAR)	+= vphn.o
-> +obj-$(CONFIG_FA_DUMP)		+= rtas-fadump.o
->  
->  ifdef CONFIG_PPC_PSERIES
->  obj-$(CONFIG_SUSPEND)		+= suspend.o
-> diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.c b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> new file mode 100644
-> index 0000000..9e7c9bf
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> @@ -0,0 +1,134 @@
-> +/*
-> + * Firmware-Assisted Dump support on POWERVM platform.
-> + *
-> + * Copyright 2011, IBM Corporation
-> + * Author: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> + *
-> + * Copyright 2019, IBM Corp.
-> + * Author: Hari Bathini <hbathini@linux.ibm.com>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License
-> + * as published by the Free Software Foundation; either version
-> + * 2 of the License, or (at your option) any later version.
-> + */
-> +
-> +#undef DEBUG
-> +#define pr_fmt(fmt) "rtas fadump: " fmt
-> +
-> +#include <linux/string.h>
-> +#include <linux/memblock.h>
-> +#include <linux/delay.h>
-> +#include <linux/seq_file.h>
-> +#include <linux/crash_dump.h>
-> +
-> +#include <asm/page.h>
-> +#include <asm/prom.h>
-> +#include <asm/rtas.h>
-> +#include <asm/fadump.h>
-> +
-> +#include "../../kernel/fadump-common.h"
-> +#include "rtas-fadump.h"
-> +
-> +static ulong rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
-> +{
-> +	return fadump_conf->reserve_dump_area_start;
-> +}
-> +
-> +static int rtas_fadump_register_fadump(struct fw_dump *fadump_conf)
-> +{
-> +	return -EIO;
-> +}
-> +
-> +static int rtas_fadump_unregister_fadump(struct fw_dump *fadump_conf)
-> +{
-> +	return -EIO;
-> +}
-> +
-> +static int rtas_fadump_invalidate_fadump(struct fw_dump *fadump_conf)
-> +{
-> +	return -EIO;
-> +}
-> +
-> +/*
-> + * Validate and process the dump data stored by firmware before exporting
-> + * it through '/proc/vmcore'.
-> + */
-> +static int __init rtas_fadump_process_fadump(struct fw_dump *fadump_conf)
-> +{
-> +	return -EINVAL;
-> +}
-> +
-> +static void rtas_fadump_region_show(struct fw_dump *fadump_conf,
-> +				    struct seq_file *m)
-> +{
-> +}
-> +
-> +static void rtas_fadump_trigger(struct fadump_crash_info_header *fdh,
-> +				const char *msg)
-> +{
-> +	/* Call ibm,os-term rtas call to trigger firmware assisted dump */
-> +	rtas_os_term((char *)msg);
-> +}
-> +
-> +static struct fadump_ops rtas_fadump_ops = {
-> +	.init_fadump_mem_struct	= rtas_fadump_init_mem_struct,
-> +	.register_fadump	= rtas_fadump_register_fadump,
-> +	.unregister_fadump	= rtas_fadump_unregister_fadump,
-> +	.invalidate_fadump	= rtas_fadump_invalidate_fadump,
-> +	.process_fadump		= rtas_fadump_process_fadump,
-> +	.fadump_region_show	= rtas_fadump_region_show,
-> +	.fadump_trigger		= rtas_fadump_trigger,
-> +};
-> +
-> +int __init rtas_fadump_dt_scan(struct fw_dump *fadump_conf, ulong node)
-> +{
-> +	const __be32 *sections;
-> +	int i, num_sections;
-> +	int size;
-> +	const __be32 *token;
-> +
-> +	/*
-> +	 * Check if Firmware Assisted dump is supported. if yes, check
-> +	 * if dump has been initiated on last reboot.
-> +	 */
-> +	token = of_get_flat_dt_prop(node, "ibm,configure-kernel-dump", NULL);
-> +	if (!token)
-> +		return 1;
-> +
-> +	fadump_conf->ibm_configure_kernel_dump = be32_to_cpu(*token);
-> +	fadump_conf->ops		= &rtas_fadump_ops;
-> +	fadump_conf->fadump_platform	= FADUMP_PLATFORM_PSERIES;
-> +	fadump_conf->fadump_supported	= 1;
-> +
-> +	/* Get the sizes required to store dump data for the firmware provided
-> +	 * dump sections.
-> +	 * For each dump section type supported, a 32bit cell which defines
-> +	 * the ID of a supported section followed by two 32 bit cells which
-> +	 * gives the size of the section in bytes.
-> +	 */
-> +	sections = of_get_flat_dt_prop(node, "ibm,configure-kernel-dump-sizes",
-> +					&size);
-> +
-> +	if (!sections)
-> +		return 1;
-> +
-> +	num_sections = size / (3 * sizeof(u32));
-> +
-> +	for (i = 0; i < num_sections; i++, sections += 3) {
-> +		u32 type = (u32)of_read_number(sections, 1);
-> +
-> +		switch (type) {
-> +		case RTAS_FADUMP_CPU_STATE_DATA:
-> +			fadump_conf->cpu_state_data_size =
-> +					of_read_ulong(&sections[1], 2);
-> +			break;
-> +		case RTAS_FADUMP_HPTE_REGION:
-> +			fadump_conf->hpte_region_size =
-> +					of_read_ulong(&sections[1], 2);
-> +			break;
-> +		}
-> +	}
-> +
-> +	return 1;
-> +}
+>  drivers/pci/controller/dwc/Kconfig  |   20 ++++++++++++++++++--
+>  drivers/pci/controller/dwc/Makefile |    3 ++-
+>  2 files changed, 20 insertions(+), 3 deletions(-)
 > 
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> index a6ce1ee..a41ccf5 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -131,13 +131,29 @@ config PCI_KEYSTONE_EP
+>  	  DesignWare core functions to implement the driver.
+>  
+>  config PCI_LAYERSCAPE
+> -	bool "Freescale Layerscape PCIe controller"
+> +	bool "Freescale Layerscape PCIe controller - Host mode"
+>  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+>  	depends on PCI_MSI_IRQ_DOMAIN
+>  	select MFD_SYSCON
+>  	select PCIE_DW_HOST
+>  	help
+> -	  Say Y here if you want PCIe controller support on Layerscape SoCs.
+> +	  Say Y here if you want to enable PCIe controller support on Layerscape
+> +	  SoCs to work in Host mode.
+> +	  This controller can work either as EP or RC. The RCW[HOST_AGT_PEX]
 
--- 
-Mahesh J Salgaonkar
+What's "The RCW" ? This entry should explain why a kernel configuration
+should enable it.
 
+Lorenzo
+
+> +	  determines which PCIe controller works in EP mode and which PCIe
+> +	  controller works in RC mode.
+> +
+> +config PCI_LAYERSCAPE_EP
+> +	bool "Freescale Layerscape PCIe controller - Endpoint mode"
+> +	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+> +	depends on PCI_ENDPOINT
+> +	select PCIE_DW_EP
+> +	help
+> +	  Say Y here if you want to enable PCIe controller support on Layerscape
+> +	  SoCs to work in Endpoint mode.
+> +	  This controller can work either as EP or RC. The RCW[HOST_AGT_PEX]
+> +	  determines which PCIe controller works in EP mode and which PCIe
+> +	  controller works in RC mode.
+>  
+>  config PCI_HISI
+>  	depends on OF && (ARM64 || COMPILE_TEST)
+> diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
+> index b085dfd..824fde7 100644
+> --- a/drivers/pci/controller/dwc/Makefile
+> +++ b/drivers/pci/controller/dwc/Makefile
+> @@ -8,7 +8,8 @@ obj-$(CONFIG_PCI_EXYNOS) += pci-exynos.o
+>  obj-$(CONFIG_PCI_IMX6) += pci-imx6.o
+>  obj-$(CONFIG_PCIE_SPEAR13XX) += pcie-spear13xx.o
+>  obj-$(CONFIG_PCI_KEYSTONE) += pci-keystone.o
+> -obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o pci-layerscape-ep.o
+> +obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o
+> +obj-$(CONFIG_PCI_LAYERSCAPE_EP) += pci-layerscape-ep.o
+>  obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o
+>  obj-$(CONFIG_PCIE_ARMADA_8K) += pcie-armada8k.o
+>  obj-$(CONFIG_PCIE_ARTPEC6) += pcie-artpec6.o
+> -- 
+> 1.7.1
+> 
