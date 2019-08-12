@@ -1,74 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA20D896F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 07:43:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD0D8976E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 08:57:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466Prh2whrzDqZl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 15:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466RVW6QsczDqcS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 16:57:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tXM4FaMZ"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466RSJ1Gs2zDqZw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 16:55:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 466RSH0cGYz8x2C
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 16:55:27 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 466RSG6cVfz9sNC; Mon, 12 Aug 2019 16:55:26 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466Ppx4qhczDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 15:41:29 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 466Ppn2qyjzB09bJ;
- Mon, 12 Aug 2019 07:41:21 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=tXM4FaMZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id AL-sfYbjepFg; Mon, 12 Aug 2019 07:41:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 466Ppn1fyPzB09bG;
- Mon, 12 Aug 2019 07:41:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565588481; bh=aSvscXTe0OBobtl058VSABuVDDxAT9o0ET91HCafAZA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=tXM4FaMZLqgfa4UR8st58PV1szduvw8v5jkRKMjbScOYDFsi4YNXO0oKicwpOmSqz
- W0zVjFAoBzwPimyH5wKH18OkZFcMly4tE5ma3IQW9gs5GoppZEaa7lmdtJyrnu5vgi
- oAav5yZjevb1WD9dxYLY9XsxX/Y1sHQhaAawM2+s=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 249CB8B791;
- Mon, 12 Aug 2019 07:41:26 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id isJuowyE8M47; Mon, 12 Aug 2019 07:41:26 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EA6148B752;
- Mon, 12 Aug 2019 07:41:25 +0200 (CEST)
-Subject: Re: [PATCH 1/2] powerpc: Allow flush_icache_range to work across
- ranges >4GB
-To: Alastair D'Silva <alastair@au1.ibm.com>
-References: <20190809004548.22445-1-alastair@au1.ibm.com>
- <a9bcc457-9f9b-7010-6796-fb263135f8bc@c-s.fr>
- <72a3fca157a508a9f1bc6ea20801b9227d788f1d.camel@au1.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d481e068-5688-d507-b78c-c927ce7a70d3@c-s.fr>
-Date: Mon, 12 Aug 2019 07:41:25 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ozlabs.org (Postfix) with ESMTPS id 466RSG39N3z9sN6
+ for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 16:55:25 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7C6kUD2057538
+ for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 02:55:21 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ub2q0920n-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 02:55:20 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
+ Mon, 12 Aug 2019 07:55:18 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 12 Aug 2019 07:55:15 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7C6stGK31850794
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Aug 2019 06:54:55 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E47B24C044;
+ Mon, 12 Aug 2019 06:55:13 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C97D4C040;
+ Mon, 12 Aug 2019 06:55:11 +0000 (GMT)
+Received: from [9.109.198.204] (unknown [9.109.198.204])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 12 Aug 2019 06:55:10 +0000 (GMT)
+Subject: Re: [PATCH v4 03/25] powerpc/fadump: Improve fadump documentation
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+ <156327673568.27462.12962666023309715458.stgit@hbathini.in.ibm.com>
+From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
+Date: Mon, 12 Aug 2019 12:25:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <72a3fca157a508a9f1bc6ea20801b9227d788f1d.camel@au1.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <156327673568.27462.12962666023309715458.stgit@hbathini.in.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19081206-4275-0000-0000-0000035816CC
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081206-4276-0000-0000-0000386A222E
+Message-Id: <00364688-f735-3ad9-07d4-ee9bf6402667@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-12_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908120075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,47 +106,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Stewart Smith <stewart@linux.ibm.com>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 12/08/2019 à 03:19, Alastair D'Silva a écrit :
-> On Fri, 2019-08-09 at 10:59 +0200, Christophe Leroy wrote:
->>
->> Le 09/08/2019 à 02:45, Alastair D'Silva a écrit :
->>> From: Alastair D'Silva <alastair@d-silva.org>
->>>
->>> When calling flush_icache_range with a size >4GB, we were masking
->>> off the upper 32 bits, so we would incorrectly flush a range
->>> smaller
->>> than intended.
->>>
->>> This patch replaces the 32 bit shifts with 64 bit ones, so that
->>> the full size is accounted for.
->>>
->>> Heads-up for backporters: the old version of flush_dcache_range is
->>> subject to a similar bug (this has since been replaced with a C
->>> implementation).
->>
->> Can you submit a patch to stable, explaining this ?
->>
+On 7/16/19 5:02 PM, Hari Bathini wrote:
+> The figures depicting FADump's (Firmware-Assisted Dump) memory layout
+> are missing some finer details like different memory regions and what
+> they represent. Improve the documentation by updating those details.
 > 
-> This patch was sent to stable too - or did you mean send another patch
-> for the stable asm version of flush_dcache_range?
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  Documentation/powerpc/firmware-assisted-dump.txt |   65 ++++++++++++----------
+>  1 file changed, 35 insertions(+), 30 deletions(-)
+> 
+> diff --git a/Documentation/powerpc/firmware-assisted-dump.txt b/Documentation/powerpc/firmware-assisted-dump.txt
+> index 0c41d6d..e9b4e3c 100644
+> --- a/Documentation/powerpc/firmware-assisted-dump.txt
+> +++ b/Documentation/powerpc/firmware-assisted-dump.txt
+
+This will have to be rebased now on firmware-assisted-dump.rst. However
+Changes looks good to me.
+
+Thanks,
+-Mahesh.
+
+> @@ -74,8 +74,9 @@ as follows:
+>     there is crash data available from a previous boot. During
+>     the early boot OS will reserve rest of the memory above
+>     boot memory size effectively booting with restricted memory
+> -   size. This will make sure that the second kernel will not
+> -   touch any of the dump memory area.
+> +   size. This will make sure that this kernel (also, referred
+> +   to as second kernel or capture kernel) will not touch any
+> +   of the dump memory area.
+>  
+>  -- User-space tools will read /proc/vmcore to obtain the contents
+>     of memory, which holds the previous crashed kernel dump in ELF
+> @@ -125,48 +126,52 @@ space memory except the user pages that were present in CMA region.
+>  
+>    o Memory Reservation during first kernel
+>  
+> -  Low memory                                         Top of memory
+> -  0      boot memory size                                       |
+> -  |           |                |<--Reserved dump area -->|      |
+> -  V           V                |   Permanent Reservation |      V
+> -  +-----------+----------/ /---+---+----+-----------+----+------+
+> -  |           |                |CPU|HPTE|  DUMP     |ELF |      |
+> -  +-----------+----------/ /---+---+----+-----------+----+------+
+> -        |                                           ^
+> -        |                                           |
+> -        \                                           /
+> -         -------------------------------------------
+> -          Boot memory content gets transferred to
+> -          reserved area by firmware at the time of
+> -          crash
+> +  Low memory                                                Top of memory
+> +  0      boot memory size      |<--Reserved dump area --->|      |
+> +  |           |                |   Permanent Reservation  |      |
+> +  V           V                |   (Preserve area)        |      V
+> +  +-----------+----------/ /---+---+----+--------+---+----+------+
+> +  |           |                |CPU|HPTE|  DUMP  |HDR|ELF |      |
+> +  +-----------+----------/ /---+---+----+--------+---+----+------+
+> +        |                                   ^      ^
+> +        |                                   |      |
+> +        \                                   /      |
+> +         -----------------------------------     FADump Header
+> +          Boot memory content gets transferred   (meta area)
+> +          to reserved area by firmware at the
+> +          time of crash
+> +
+>                     Fig. 1
+>  
+> +
+>    o Memory Reservation during second kernel after crash
+>  
+> -  Low memory                                        Top of memory
+> -  0      boot memory size                                       |
+> -  |           |<------------- Reserved dump area ----------- -->|
+> -  V           V                                                 V
+> -  +-----------+----------/ /---+---+----+-----------+----+------+
+> -  |           |                |CPU|HPTE|  DUMP     |ELF |      |
+> -  +-----------+----------/ /---+---+----+-----------+----+------+
+> +  Low memory                                                Top of memory
+> +  0      boot memory size                                        |
+> +  |           |<------------- Reserved dump area --------------->|
+> +  V           V                |<---- Preserve area ----->|      V
+> +  +-----------+----------/ /---+---+----+--------+---+----+------+
+> +  |           |                |CPU|HPTE|  DUMP  |HDR|ELF |      |
+> +  +-----------+----------/ /---+---+----+--------+---+----+------+
+>          |                                              |
+>          V                                              V
+>     Used by second                                /proc/vmcore
+>     kernel to boot
+>                     Fig. 2
+>  
+> -Currently the dump will be copied from /proc/vmcore to a
+> -a new file upon user intervention. The dump data available through
+> -/proc/vmcore will be in ELF format. Hence the existing kdump
+> -infrastructure (kdump scripts) to save the dump works fine with
+> -minor modifications.
+> +Currently the dump will be copied from /proc/vmcore to a new file upon
+> +user intervention. The dump data available through /proc/vmcore will be
+> +in ELF format. Hence the existing kdump infrastructure (kdump scripts)
+> +to save the dump works fine with minor modifications. KDump scripts on
+> +major Distro releases have already been modified to work seemlessly (no
+> +user intervention in saving the dump) when FADump is used, instead of
+> +KDump, as dump mechanism.
+>  
+>  The tools to examine the dump will be same as the ones
+>  used for kdump.
+>  
+>  How to enable firmware-assisted dump (fadump):
+> --------------------------------------
+> +---------------------------------------------
+>  
+>  1. Set config option CONFIG_FA_DUMP=y and build kernel.
+>  2. Boot into linux kernel with 'fadump=on' kernel cmdline option.
+> @@ -189,7 +194,7 @@ NOTE: 1. 'fadump_reserve_mem=' parameter has been deprecated. Instead
+>           old behaviour.
+>  
+>  Sysfs/debugfs files:
+> -------------
+> +-------------------
+>  
+>  Firmware-assisted dump feature uses sysfs file system to hold
+>  the control files and debugfs file to display memory reserved region.
 > 
 
-Yes I meant a patch for your 'heads-up', in extenso a patch for fixing 
-flush_dcache_range().
-
-And for this patch, you put stable is copy of the mail, but for it to be 
-taken into account it needs to also explicitely include a Cc: 
-stable@vger.kernel.org in the commit message. I guess Michael will add 
-it for this time.
-
-Christophe
