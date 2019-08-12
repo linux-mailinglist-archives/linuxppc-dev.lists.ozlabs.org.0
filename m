@@ -2,81 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A009689515
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 02:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D3989529
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 03:21:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466HH25LL1zDqgp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 10:46:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466J3C0LNVzDqX8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2019 11:21:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=embeddedor.com
- (client-ip=192.185.47.179; helo=gateway22.websitewelcome.com;
- envelope-from=gustavo@embeddedor.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=embeddedor.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=embeddedor.com header.i=@embeddedor.com
- header.b="V+g+WALm"; dkim-atps=neutral
-X-Greylist: delayed 1397 seconds by postgrey-1.36 at bilbo;
- Mon, 12 Aug 2019 10:45:24 AEST
-Received: from gateway22.websitewelcome.com (gateway22.websitewelcome.com
- [192.185.47.179])
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466HFJ2XxPzDqcF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 10:45:23 +1000 (AEST)
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
- by gateway22.websitewelcome.com (Postfix) with ESMTP id A3493654A
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2019 19:22:03 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
- id wy65hDwns4FKpwy65hLFOF; Sun, 11 Aug 2019 19:22:03 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rOOPxfsGYN4ADAoetTEhwGr2GPC2m5yYCGICAwSLA1A=; b=V+g+WALm4X/kwH+wvXaJ6qDBvd
- waEP+UkdGFUylUdlIgI4Nevdkq6rFad044GJxvbyq1DCf2nLjQcTTnBONgh8Q7RNWPJJl1wcngKQ6
- tvWThJyI6b52FptrqWKwwudEfSMuwE5etxuDMPs6dLhsqCNrSzUjAZnuwgzxf1XavDACYLcnN+8eX
- P7p5q+x9/rMd/I9EfZYazn2SocvkmRIr2S1T6o6Oy/C3KqmN5ayXseInCj90f3yPE9aBwV9R3sNo/
- TX+Th24EIsrPyuCUgC0BJAWNlHdNIYzUKq5rDhjO2w7USIw6vW9xrt3zzsArkl5Rg5gJDw3aG/n4V
- Q1Shd5sA==;
-Received: from [187.192.11.120] (port=52044 helo=embeddedor)
- by gator4166.hostgator.com with esmtpa (Exim 4.92)
- (envelope-from <gustavo@embeddedor.com>)
- id 1hwy64-002b9l-LT; Sun, 11 Aug 2019 19:22:00 -0500
-Date: Sun, 11 Aug 2019 19:22:00 -0500
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>,
- Vinod Koul <vkoul@kernel.org>, Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH] dmaengine: fsldma: Mark expected switch fall-through
-Message-ID: <20190812002159.GA26899@embeddedor>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466J1F4B6tzDqcW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 11:20:00 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7C1GiYE045381
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2019 21:19:57 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uaug4v8uv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2019 21:19:57 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Mon, 12 Aug 2019 02:19:55 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 12 Aug 2019 02:19:52 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7C1JpxE48234554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Aug 2019 01:19:51 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1B93D4203F;
+ Mon, 12 Aug 2019 01:19:51 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BF80F42045;
+ Mon, 12 Aug 2019 01:19:50 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 12 Aug 2019 01:19:50 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A7973A021B;
+ Mon, 12 Aug 2019 11:19:49 +1000 (AEST)
+Subject: Re: [PATCH 1/2] powerpc: Allow flush_icache_range to work across
+ ranges >4GB
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Date: Mon, 12 Aug 2019 11:19:49 +1000
+In-Reply-To: <a9bcc457-9f9b-7010-6796-fb263135f8bc@c-s.fr>
+References: <20190809004548.22445-1-alastair@au1.ibm.com>
+ <a9bcc457-9f9b-7010-6796-fb263135f8bc@c-s.fr>
+Organization: IBM Australia
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.192.11.120
-X-Source-L: No
-X-Exim-ID: 1hwy64-002b9l-LT
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [187.192.11.120]:52044
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 12
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+X-TM-AS-GCONF: 00
+x-cbid: 19081201-0028-0000-0000-0000038E9C09
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081201-0029-0000-0000-00002450A655
+Message-Id: <72a3fca157a508a9f1bc6ea20801b9227d788f1d.camel@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-11_12:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=919 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908120012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,42 +96,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark switch cases where we are expecting to fall through.
+On Fri, 2019-08-09 at 10:59 +0200, Christophe Leroy wrote:
+> 
+> Le 09/08/2019 à 02:45, Alastair D'Silva a écrit :
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > When calling flush_icache_range with a size >4GB, we were masking
+> > off the upper 32 bits, so we would incorrectly flush a range
+> > smaller
+> > than intended.
+> > 
+> > This patch replaces the 32 bit shifts with 64 bit ones, so that
+> > the full size is accounted for.
+> > 
+> > Heads-up for backporters: the old version of flush_dcache_range is
+> > subject to a similar bug (this has since been replaced with a C
+> > implementation).
+> 
+> Can you submit a patch to stable, explaining this ?
+> 
 
-Fix the following warning (Building: powerpc-ppa8548_defconfig powerpc):
+This patch was sent to stable too - or did you mean send another patch
+for the stable asm version of flush_dcache_range?
 
-drivers/dma/fsldma.c: In function ‘fsl_dma_chan_probe’:
-drivers/dma/fsldma.c:1165:26: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   chan->toggle_ext_pause = fsl_chan_toggle_ext_pause;
-   ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/dma/fsldma.c:1166:2: note: here
-  case FSL_DMA_IP_83XX:
-  ^~~~
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/dma/fsldma.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/dma/fsldma.c b/drivers/dma/fsldma.c
-index 23e0a356f167..ad72b3f42ffa 100644
---- a/drivers/dma/fsldma.c
-+++ b/drivers/dma/fsldma.c
-@@ -1163,6 +1163,7 @@ static int fsl_dma_chan_probe(struct fsldma_device *fdev,
- 	switch (chan->feature & FSL_DMA_IP_MASK) {
- 	case FSL_DMA_IP_85XX:
- 		chan->toggle_ext_pause = fsl_chan_toggle_ext_pause;
-+		/* Fall through */
- 	case FSL_DMA_IP_83XX:
- 		chan->toggle_ext_start = fsl_chan_toggle_ext_start;
- 		chan->set_src_loop_size = fsl_chan_set_src_loop_size;
 -- 
-2.22.0
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
 
