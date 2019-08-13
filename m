@@ -1,65 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865F38B405
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 11:23:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9608B8B4A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 11:53:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4676hx5LzczDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 19:23:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4677MH5YRzzDqcK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 19:53:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4676cv4YBPzDqYh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 19:20:15 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id F12A42864F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 09:20:04 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id E54C928668; Tue, 13 Aug 2019 09:20:04 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=unavailable version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
- padding overwritten
-Date: Tue, 13 Aug 2019 09:20:03 +0000
-X-Bugzilla-Reason: CC
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Memory Management
-X-Bugzilla-Component: Slab Allocator
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: akpm@linux-foundation.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204371-206035-P7rk3N1lrb@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
-References: <bug-204371-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4677KM33ZkzDqQj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 19:51:48 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AC3A337;
+ Tue, 13 Aug 2019 02:51:46 -0700 (PDT)
+Received: from red-moon (red-moon.cambridge.arm.com [10.1.197.39])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 026FC3F706;
+ Tue, 13 Aug 2019 02:51:43 -0700 (PDT)
+Date: Tue, 13 Aug 2019 10:51:51 +0100
+From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [EXT] Re: [PATCHv5 1/2] PCI: layerscape: Add the bar_fixed_64bit
+ property in EP driver.
+Message-ID: <20190813095151.GA10070@red-moon>
+References: <20190813062840.2733-1-xiaowei.bao@nxp.com>
+ <61e6df1c-a0dc-8f05-f74a-85a3cac9823f@ti.com>
+ <AM5PR04MB32993CC1344DD660A298C7E1F5D20@AM5PR04MB3299.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AM5PR04MB32993CC1344DD660A298C7E1F5D20@AM5PR04MB3299.eurprd04.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,101 +50,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>,
+ Leonard Crestez <leonard.crestez@nxp.com>,
+ "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
+ "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "yue.wang@amlogic.com" <yue.wang@amlogic.com>,
+ Kishon Vijay Abraham I <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
+ "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
+ "jonnyc@amazon.com" <jonnyc@amazon.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "tpiepho@impinj.com" <tpiepho@impinj.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Mingkai Hu <mingkai.hu@nxp.com>,
+ "l.stach@pengutronix.de" <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+You should fix your email client set-up to avoid sticking an [EXT]
+tag to your emails $SUBJECT.
 
---- Comment #15 from Erhard F. (erhard_f@mailbox.org) ---
-On Fri, 09 Aug 2019 12:31:26 +0000
-bugzilla-daemon@bugzilla.kernel.org wrote:
+On Tue, Aug 13, 2019 at 07:39:48AM +0000, Xiaowei Bao wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Kishon Vijay Abraham I <kishon@ti.com>
+> > Sent: 2019年8月13日 15:30
+> > To: Xiaowei Bao <xiaowei.bao@nxp.com>; lorenzo.pieralisi@arm.com;
+> > bhelgaas@google.com; M.h. Lian <minghuan.lian@nxp.com>; Mingkai Hu
+> > <mingkai.hu@nxp.com>; Roy Zang <roy.zang@nxp.com>;
+> > l.stach@pengutronix.de; tpiepho@impinj.com; Leonard Crestez
+> > <leonard.crestez@nxp.com>; andrew.smirnov@gmail.com;
+> > yue.wang@amlogic.com; hayashi.kunihiko@socionext.com;
+> > dwmw@amazon.co.uk; jonnyc@amazon.com; linux-pci@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; linuxppc-dev@lists.ozlabs.org;
+> > linux-arm-kernel@lists.infradead.org
+> > Subject: [EXT] Re: [PATCHv5 1/2] PCI: layerscape: Add the bar_fixed_64bit
+> > property in EP driver.
+> > 
+> > Caution: EXT Email
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
-# cat ~/bisect01.log=20
-bin=C3=A4re Suche: danach noch 37903 Commits zum Testen =C3=BCbrig (ungef=
-=C3=A4hr 15 Schritte)
-[9abf8acea297b4c65f5fa3206e2b8e468e730e84] Merge tag 'tty-4.17-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty
-bin=C3=A4re Suche: danach noch 19051 Commits zum Testen =C3=BCbrig (ungef=
-=C3=A4hr 14 Schritte)
-[7c00e8ae041b349992047769af741b67379ce19a] Merge tag 'armsoc-soc' of
-git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc
-bin=C3=A4re Suche: danach noch 9762 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 13 Schritte)
-[dafa5f6577a9eecd2941add553d1672c30b02364] Merge branch 'linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
-bin=C3=A4re Suche: danach noch 4644 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 12 Schritte)
-[2ed9db3074fcd8d12709fe40ff0e691d74229818] net: sched: cls_api: fix dead co=
-de
-in switch
-bin=C3=A4re Suche: danach noch 2319 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 11 Schritte)
-[b219a1d2de0c025318475e3bbf8e3215cf49d083] Merge branch 'for-next' of
-git://git.kernel.org/pub/scm/linux/kernel/git/shli/md
-bin=C3=A4re Suche: danach noch 1153 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 10 Schritte)
-[85a0b791bc17f7a49280b33e2905d109c062a47b] Merge branch 'for-linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
-bin=C3=A4re Suche: danach noch 629 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 9 Schritte)
-[10f3e23f07cb0c20f9bcb77a5b5a7eb2a1b2a2fe] Merge tag 'ext4_for_linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/tytso/ext4
-bin=C3=A4re Suche: danach noch 273 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 8 Schritte)
-[575b94386bd539a7d803aee9fd4a8d275844c40f] Merge tag 'locks-v4.19-1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux
-bin=C3=A4re Suche: danach noch 136 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 7 Schritte)
-[d7e8555b1dd493c809e56e359974eecabe7d3fde] btrfs: remove unused member
-async_submit_bio::fs_info
-bin=C3=A4re Suche: danach noch 68 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 6 Schritte)
-[389305b2aa68723c754f88d9dbd268a400e10664] btrfs: relocation: Only remove r=
-eloc
-rb_trees if reloc control has been initialized
-bin=C3=A4re Suche: danach noch 34 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 5 Schritte)
-[d814a49198eafa6163698bdd93961302f3a877a4] btrfs: use correct compare funct=
-ion
-of dirty_metadata_bytes
-bin=C3=A4re Suche: danach noch 16 Commits zum Testen =C3=BCbrig (ungef=C3=
-=A4hr 4 Schritte)
-[c7b562c5480322ffaf591f45a4ff7ee089340ab4] btrfs: raid56: catch errors from
-full_stripe_write
-bin=C3=A4re Suche: danach noch 8 Commits zum Testen =C3=BCbrig (ungef=C3=A4=
-hr 3 Schritte)
-[65ad010488a5cc0f123a9924f7ad26a1b3f6a4f6] btrfs: pass only eb to
-num_extent_pages
-bin=C3=A4re Suche: danach noch 3 Commits zum Testen =C3=BCbrig (ungef=C3=A4=
-hr 2 Schritte)
-[37508515621551538addaf826ab4b8a9aaf0a382] btrfs: simplify some assignments=
- of
-inode numbers
-bin=C3=A4re Suche: danach noch 1 Commit zum Testen =C3=BCbrig (ungef=C3=A4h=
-r 1 Schritt)
-[69d2480456d1baf027a86e530989d7bedd698d5f] btrfs: use copy_page for copying
-pages instead of memcpy
-bin=C3=A4re Suche: danach noch 0 Commits zum Testen =C3=BCbrig (ungef=C3=A4=
-hr 0 Schritte)
-[3ffbd68c48320730ef64ebfb5e639220f1f65483] btrfs: simplify pointer chasing =
-of
-local fs_info variables
-69d2480456d1baf027a86e530989d7bedd698d5f is the first bad commit
-commit 69d2480456d1baf027a86e530989d7bedd698d5f
-Author: David Sterba <dsterba@suse.com>
-Date:   Fri Jun 29 10:56:44 2018 +0200
+See above, this "Caution" stuff should disappear.
 
-    btrfs: use copy_page for copying pages instead of memcpy
+Also, quoting the email header is useless, please configure your email
+client to remove it.
 
-    Use the helper that's possibly optimized for full page copies.
+Thanks,
+Lorenzo
 
-    Signed-off-by: David Sterba <dsterba@suse.com>
-
-:040000 040000 87de10a38618c1655c3266ff5a31358068fa1ca6
-d0a2612d260215acaff66adaa5183ebd29a4b710 M      fs
-
---=20
-You are receiving this mail because:
-You are on the CC list for the bug.=
+> > On 13/08/19 11:58 AM, Xiaowei Bao wrote:
+> > > The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1 is
+> > > 32bit, BAR2 and BAR4 is 64bit, this is determined by hardware, so set
+> > > the bar_fixed_64bit with 0x14.
+> > >
+> > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> > 
+> > Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
+> > > ---
+> > > v2:
+> > >  - Replace value 0x14 with a macro.
+> > > v3:
+> > >  - No change.
+> > > v4:
+> > >  - send the patch again with '--to'.
+> > > v5:
+> > >  - fix the commit message.
+> > >
+> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> > > b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> > > index be61d96..ca9aa45 100644
+> > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> > > @@ -44,6 +44,7 @@ static const struct pci_epc_features
+> > ls_pcie_epc_features = {
+> > >       .linkup_notifier = false,
+> > >       .msi_capable = true,
+> > >       .msix_capable = false,
+> > > +     .bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
+> > >  };
+> > >
+> > >  static const struct pci_epc_features*
+> I check other platforms, it is 'static const struct pci_epc_features', I can get the correct 
+> Value use this define way in pci-epf-test.c file.
+> > >
