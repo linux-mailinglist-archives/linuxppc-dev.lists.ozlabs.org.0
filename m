@@ -1,64 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E00C8AD16
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 05:15:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6678AD65
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:15:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466yX46Z21zDqgX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 13:15:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466zsS2qwpzDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:15:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466yPn5tlQzDqZS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 13:10:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466zLZ1xwvzDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 13:52:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
+ header.from=linux.vnet.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 466yPm4KFWz99gJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 13:10:04 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 466zLZ13dfz8tWN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 13:52:22 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 466yPm3pk0z9sND; Tue, 13 Aug 2019 13:10:04 +1000 (AEST)
+ id 466zLZ04dDz9sPf; Tue, 13 Aug 2019 13:52:22 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
- (client-ip=131.153.2.43; helo=h2.fbrelay.privateemail.com;
- envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=ljp@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
- [131.153.2.43])
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 466yPl45CPz9sNy
- for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 13:10:02 +1000 (AEST)
-Received: from MTA-06-3.privateemail.com (mta-06.privateemail.com
- [68.65.122.16])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 6EF4D813C2
- for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 23:09:59 -0400 (EDT)
-Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id 33E3760039
- for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 23:09:54 -0400 (EDT)
-Received: from wrwlf0000.attlocal.net (unknown [10.20.151.206])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id EF2C66004F
- for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 03:09:53 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v4 3/3] powerpc/spinlocks: Fix oops in shared-processor
- spinlocks
-Date: Mon, 12 Aug 2019 22:13:14 -0500
-Message-Id: <20190813031314.1828-4-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190813031314.1828-1-cmr@informatik.wtf>
-References: <20190813031314.1828-1-cmr@informatik.wtf>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by ozlabs.org (Postfix) with ESMTPS id 466zLY375Rz9sNF
+ for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 13:52:20 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7D3pkFu071061
+ for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 23:52:16 -0400
+Received: from e12.ny.us.ibm.com (e12.ny.us.ibm.com [129.33.205.202])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ubk50mrm0-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 12 Aug 2019 23:52:16 -0400
+Received: from localhost
+ by e12.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <ljp@linux.vnet.ibm.com>;
+ Tue, 13 Aug 2019 04:52:15 +0100
+Received: from b01cxnp23032.gho.pok.ibm.com (9.57.198.27)
+ by e12.ny.us.ibm.com (146.89.104.199) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 13 Aug 2019 04:52:13 +0100
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7D3qCjl53150072
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Aug 2019 03:52:12 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 32DF8124054;
+ Tue, 13 Aug 2019 03:52:12 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C2E95124052;
+ Tue, 13 Aug 2019 03:52:11 +0000 (GMT)
+Received: from [9.85.130.107] (unknown [9.85.130.107])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue, 13 Aug 2019 03:52:11 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH 2/2] powerpc/xive: Implement get_irqchip_state method for
+ XIVE to fix shutdown race
+From: Lijun Pan <ljp@linux.vnet.ibm.com>
+In-Reply-To: <20190812050743.aczgcqwmtqpkbx2l@oak.ozlabs.ibm.com>
+Date: Mon, 12 Aug 2019 22:52:11 -0500
+Content-Transfer-Encoding: quoted-printable
+References: <20190812050623.ltla46gh5futsqv4@oak.ozlabs.ibm.com>
+ <20190812050743.aczgcqwmtqpkbx2l@oak.ozlabs.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>
+X-Mailer: Apple Mail (2.3445.104.11)
+X-TM-AS-GCONF: 00
+x-cbid: 19081303-0060-0000-0000-0000036C168C
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011587; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01246035; UDB=6.00657517; IPR=6.01027540; 
+ MB=3.00028155; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-13 03:52:15
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081303-0061-0000-0000-00004A8823C7
+Message-Id: <E547965E-CC31-470F-8849-0F2A899A121F@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-13_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=913 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908130040
+X-Mailman-Approved-At: Tue, 13 Aug 2019 14:14:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,146 +110,210 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Booting w/ ppc64le_defconfig + CONFIG_PREEMPT results in the attached
-kernel trace due to calling shared-processor spinlocks while not running
-in an SPLPAR. Previously, the out-of-line spinlocks implementations were
-selected based on CONFIG_PPC_SPLPAR at compile time without a runtime
-shared-processor LPAR check.
 
-To fix, call the actual spinlock implementations from a set of common
-functions, spin_yield() and rw_yield(), which check for shared-processor
-LPAR during runtime and select the appropriate lock implementation.
 
-[    0.430878] BUG: Kernel NULL pointer dereference at 0x00000100
-[    0.431991] Faulting instruction address: 0xc000000000097f88
-[    0.432934] Oops: Kernel access of bad area, sig: 7 [#1]
-[    0.433448] LE PAGE_SIZE=64K MMU=Radix MMU=Hash PREEMPT SMP NR_CPUS=2048 NUMA PowerNV
-[    0.434479] Modules linked in:
-[    0.435055] CPU: 0 PID: 2 Comm: kthreadd Not tainted 5.2.0-rc6-00491-g249155c20f9b #28
-[    0.435730] NIP:  c000000000097f88 LR: c000000000c07a88 CTR: c00000000015ca10
-[    0.436383] REGS: c0000000727079f0 TRAP: 0300   Not tainted  (5.2.0-rc6-00491-g249155c20f9b)
-[    0.437004] MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000424  XER: 20040000
-[    0.437874] CFAR: c000000000c07a84 DAR: 0000000000000100 DSISR: 00080000 IRQMASK: 1
-[    0.437874] GPR00: c000000000c07a88 c000000072707c80 c000000001546300 c00000007be38a80
-[    0.437874] GPR04: c0000000726f0c00 0000000000000002 c00000007279c980 0000000000000100
-[    0.437874] GPR08: c000000001581b78 0000000080000001 0000000000000008 c00000007279c9b0
-[    0.437874] GPR12: 0000000000000000 c000000001730000 c000000000142558 0000000000000000
-[    0.437874] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.437874] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[    0.437874] GPR24: c00000007be38a80 c000000000c002f4 0000000000000000 0000000000000000
-[    0.437874] GPR28: c000000072221a00 c0000000726c2600 c00000007be38a80 c00000007be38a80
-[    0.443992] NIP [c000000000097f88] __spin_yield+0x48/0xa0
-[    0.444523] LR [c000000000c07a88] __raw_spin_lock+0xb8/0xc0
-[    0.445080] Call Trace:
-[    0.445670] [c000000072707c80] [c000000072221a00] 0xc000000072221a00 (unreliable)
-[    0.446425] [c000000072707cb0] [c000000000bffb0c] __schedule+0xbc/0x850
-[    0.447078] [c000000072707d70] [c000000000c002f4] schedule+0x54/0x130
-[    0.447694] [c000000072707da0] [c0000000001427dc] kthreadd+0x28c/0x2b0
-[    0.448389] [c000000072707e20] [c00000000000c1cc] ret_from_kernel_thread+0x5c/0x70
-[    0.449143] Instruction dump:
-[    0.449821] 4d9e0020 552a043e 210a07ff 79080fe0 0b080000 3d020004 3908b878 794a1f24
-[    0.450587] e8e80000 7ce7502a e8e70000 38e70100 <7ca03c2c> 70a70001 78a50020 4d820020
-[    0.452808] ---[ end trace 474d6b2b8fc5cb7e ]---
+> On Aug 12, 2019, at 12:07 AM, Paul Mackerras <paulus@ozlabs.org> =
+wrote:
+>=20
+> ---
+> arch/powerpc/include/asm/xive.h   |  8 ++++
+> arch/powerpc/kvm/book3s_xive.c    | 31 ++++++++++++++
+> arch/powerpc/sysdev/xive/common.c | 87 =
+++++++++++++++++++++++++++++-----------
+> 3 files changed, 103 insertions(+), 23 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/xive.h =
+b/arch/powerpc/include/asm/xive.h
+> index e4016985764e..efb0e597b272 100644
+> --- a/arch/powerpc/include/asm/xive.h
+> +++ b/arch/powerpc/include/asm/xive.h
+> @@ -46,7 +46,15 @@ struct xive_irq_data {
+>=20
+> 	/* Setup/used by frontend */
+> 	int target;
+> +	/*
+> +	 * saved_p means that there is a queue entry for this interrupt
+> +	 * in some CPU's queue (not including guest vcpu queues), even
+> +	 * if P is not set in the source ESB.
+> +	 * stale_p means that there is no queue entry for this interrupt
+> +	 * in some CPU's queue, even if P is set in the source ESB.
+> +	 */
+> 	bool saved_p;
+> +	bool stale_p;
+> };
+> #define XIVE_IRQ_FLAG_STORE_EOI	0x01
+> #define XIVE_IRQ_FLAG_LSI	0x02
+> diff --git a/arch/powerpc/kvm/book3s_xive.c =
+b/arch/powerpc/kvm/book3s_xive.c
+> index 09f838aa3138..74eea009c095 100644
+> --- a/arch/powerpc/kvm/book3s_xive.c
+> +++ b/arch/powerpc/kvm/book3s_xive.c
+> @@ -160,6 +160,9 @@ static irqreturn_t xive_esc_irq(int irq, void =
+*data)
+> 	 */
+> 	vcpu->arch.xive_esc_on =3D false;
+>=20
+> +	/* This orders xive_esc_on =3D false vs. subsequent stale_p =3D =
+true */
+> +	smp_wmb();	/* goes with smp_mb() in =
+cleanup_single_escalation */
+> +
+> 	return IRQ_HANDLED;
+> }
+>=20
+> @@ -1113,6 +1116,31 @@ void kvmppc_xive_disable_vcpu_interrupts(struct =
+kvm_vcpu *vcpu)
+> 	vcpu->arch.xive_esc_raddr =3D 0;
+> }
+>=20
+> +/*
+> + * In single escalation mode, the escalation interrupt is marked so
+> + * that EOI doesn't re-enable it, but just sets the stale_p flag to
+> + * indicate that the P bit has already been dealt with.  However, the
+> + * assembly code that enters the guest sets PQ to 00 without clearing
+> + * stale_p (because it has no easy way to address it).  Hence we have
+> + * to adjust stale_p before shutting down the interrupt.
+> + */
+> +static void cleanup_single_escalation(struct kvm_vcpu *vcpu,
+> +				      struct kvmppc_xive_vcpu *xc, int =
+irq)
+> +{
+> +	struct irq_data *d =3D irq_get_irq_data(irq);
+> +	struct xive_irq_data *xd =3D irq_data_get_irq_handler_data(d);
+> +
+> +	/*
+> +	 * This slightly odd sequence gives the right result
+> +	 * (i.e. stale_p set if xive_esc_on is false) even if
+> +	 * we race with xive_esc_irq() and xive_irq_eoi().
+> +	 */
 
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
- arch/powerpc/include/asm/spinlock.h | 36 ++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+Hi Paul,
 
-diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-index 0d04d468f660..e9a960e28f3c 100644
---- a/arch/powerpc/include/asm/spinlock.h
-+++ b/arch/powerpc/include/asm/spinlock.h
-@@ -103,11 +103,9 @@ static inline int arch_spin_trylock(arch_spinlock_t *lock)
- /* We only yield to the hypervisor if we are in shared processor mode */
- void splpar_spin_yield(arch_spinlock_t *lock);
- void splpar_rw_yield(arch_rwlock_t *lock);
--#define __spin_yield(x) splpar_spin_yield(x)
--#define __rw_yield(x) splpar_rw_yield(x)
- #else /* SPLPAR */
--#define __spin_yield(x)	barrier()
--#define __rw_yield(x)	barrier()
-+static inline void splpar_spin_yield(arch_spinlock_t *lock) {};
-+static inline void splpar_rw_yield(arch_rwlock_t *lock) {};
- #endif
- 
- static inline bool is_shared_processor(void)
-@@ -124,6 +122,22 @@ static inline bool is_shared_processor(void)
- #endif
- }
- 
-+static inline void spin_yield(arch_spinlock_t *lock)
-+{
-+	if (is_shared_processor())
-+		splpar_spin_yield(lock);
-+	else
-+		barrier();
-+}
-+
-+static inline void rw_yield(arch_rwlock_t *lock)
-+{
-+	if (is_shared_processor())
-+		splpar_rw_yield(lock);
-+	else
-+		barrier();
-+}
-+
- static inline void arch_spin_lock(arch_spinlock_t *lock)
- {
- 	while (1) {
-@@ -132,7 +146,7 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__spin_yield(lock);
-+				splpar_spin_yield(lock);
- 		} while (unlikely(lock->slock != 0));
- 		HMT_medium();
- 	}
-@@ -151,7 +165,7 @@ void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__spin_yield(lock);
-+				splpar_spin_yield(lock);
- 		} while (unlikely(lock->slock != 0));
- 		HMT_medium();
- 		local_irq_restore(flags_dis);
-@@ -241,7 +255,7 @@ static inline void arch_read_lock(arch_rwlock_t *rw)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__rw_yield(rw);
-+				splpar_rw_yield(rw);
- 		} while (unlikely(rw->lock < 0));
- 		HMT_medium();
- 	}
-@@ -255,7 +269,7 @@ static inline void arch_write_lock(arch_rwlock_t *rw)
- 		do {
- 			HMT_low();
- 			if (is_shared_processor())
--				__rw_yield(rw);
-+				splpar_rw_yield(rw);
- 		} while (unlikely(rw->lock != 0));
- 		HMT_medium();
- 	}
-@@ -295,9 +309,9 @@ static inline void arch_write_unlock(arch_rwlock_t *rw)
- 	rw->lock = 0;
- }
- 
--#define arch_spin_relax(lock)	__spin_yield(lock)
--#define arch_read_relax(lock)	__rw_yield(lock)
--#define arch_write_relax(lock)	__rw_yield(lock)
-+#define arch_spin_relax(lock)	spin_yield(lock)
-+#define arch_read_relax(lock)	rw_yield(lock)
-+#define arch_write_relax(lock)	rw_yield(lock)
- 
- /* See include/linux/spinlock.h */
- #define smp_mb__after_spinlock()   smp_mb()
--- 
-2.22.0
+I don=E2=80=99t quite understand the logic here.
+Are you saying the code sequence is
+vcpu->arch.xive_esc_on =3D false; (xive_esc_irq)
+then
+xd->stale_p =3D true; (cleanup_single_escaltion)
+
+> +	xd->stale_p =3D false;
+> +	smp_mb();		/* paired with smb_wmb in xive_esc_irq =
+*/
+> +	if (!vcpu->arch.xive_esc_on)
+> +		xd->stale_p =3D true;
+> +}
+> +
+> void kvmppc_xive_cleanup_vcpu(struct kvm_vcpu *vcpu)
+> {
+> 	struct kvmppc_xive_vcpu *xc =3D vcpu->arch.xive_vcpu;
+> @@ -1137,6 +1165,9 @@ void kvmppc_xive_cleanup_vcpu(struct kvm_vcpu =
+*vcpu)
+> 	/* Free escalations */
+> 	for (i =3D 0; i < KVMPPC_XIVE_Q_COUNT; i++) {
+> 		if (xc->esc_virq[i]) {
+> +			if (xc->xive->single_escalation)
+> +				cleanup_single_escalation(vcpu, xc,
+> +							  =
+xc->esc_virq[i]);
+> 			free_irq(xc->esc_virq[i], vcpu);
+> 			irq_dispose_mapping(xc->esc_virq[i]);
+> 			kfree(xc->esc_virq_names[i]);
+> diff --git a/arch/powerpc/sysdev/xive/common.c =
+b/arch/powerpc/sysdev/xive/common.c
+> index 1cdb39575eae..be86fce1a84e 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -135,7 +135,7 @@ static u32 xive_read_eq(struct xive_q *q, bool =
+just_peek)
+> static u32 xive_scan_interrupts(struct xive_cpu *xc, bool just_peek)
+> {
+> 	u32 irq =3D 0;
+> -	u8 prio;
+> +	u8 prio =3D 0;
+>=20
+> 	/* Find highest pending priority */
+> 	while (xc->pending_prio !=3D 0) {
+> @@ -148,8 +148,19 @@ static u32 xive_scan_interrupts(struct xive_cpu =
+*xc, bool just_peek)
+> 		irq =3D xive_read_eq(&xc->queue[prio], just_peek);
+>=20
+> 		/* Found something ? That's it */
+> -		if (irq)
+> -			break;
+> +		if (irq) {
+> +			if (just_peek || irq_to_desc(irq))
+> +				break;
+> +			/*
+> +			 * We should never get here; if we do then we =
+must
+> +			 * have failed to synchronize the interrupt =
+properly
+> +			 * when shutting it down.
+> +			 */
+> +			pr_crit("xive: got interrupt %d without =
+descriptor, dropping\n",
+> +				irq);
+> +			WARN_ON(1);
+> +			continue;
+> +		}
+>=20
+> 		/* Clear pending bits */
+> 		xc->pending_prio &=3D ~(1 << prio);
+> @@ -307,6 +318,7 @@ static void xive_do_queue_eoi(struct xive_cpu *xc)
+>  */
+> static void xive_do_source_eoi(u32 hw_irq, struct xive_irq_data *xd)
+> {
+> +	xd->stale_p =3D false;
+> 	/* If the XIVE supports the new "store EOI facility, use it */
+> 	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
+> 		xive_esb_write(xd, XIVE_ESB_STORE_EOI, 0);
+> @@ -350,7 +362,7 @@ static void xive_do_source_eoi(u32 hw_irq, struct =
+xive_irq_data *xd)
+> 	}
+> }
+>=20
+> -/* irq_chip eoi callback */
+> +/* irq_chip eoi callback, called with irq descriptor lock held */
+> static void xive_irq_eoi(struct irq_data *d)
+> {
+> 	struct xive_irq_data *xd =3D irq_data_get_irq_handler_data(d);
+> @@ -366,6 +378,8 @@ static void xive_irq_eoi(struct irq_data *d)
+> 	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d) &&
+> 	    !(xd->flags & XIVE_IRQ_NO_EOI))
+> 		xive_do_source_eoi(irqd_to_hwirq(d), xd);
+> +	else
+> +		xd->stale_p =3D true;
+>=20
+> 	/*
+> 	 * Clear saved_p to indicate that it's no longer occupying
+> @@ -397,11 +411,16 @@ static void xive_do_source_set_mask(struct =
+xive_irq_data *xd,
+> 	 */
+> 	if (mask) {
+> 		val =3D xive_esb_read(xd, XIVE_ESB_SET_PQ_01);
+> -		xd->saved_p =3D !!(val & XIVE_ESB_VAL_P);
+> -	} else if (xd->saved_p)
+> +		if (!xd->stale_p && !!(val & XIVE_ESB_VAL_P))
+> +			xd->saved_p =3D true;
+> +		xd->stale_p =3D false;
+> +	} else if (xd->saved_p) {
+> 		xive_esb_read(xd, XIVE_ESB_SET_PQ_10);
+> -	else
+> +		xd->saved_p =3D false;
+
+Should we also explicitly set xd->stale_p =3D true; here?
+
+> +	} else {
+> 		xive_esb_read(xd, XIVE_ESB_SET_PQ_00);
+> +		xd->stale_p =3D false;
+
+Should we also explicitly set xd->saved_p =3D true; here?
+
+Thanks,
+Lijun
 
