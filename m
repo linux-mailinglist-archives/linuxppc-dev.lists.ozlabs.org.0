@@ -2,63 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C0E8B791
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 13:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5648B87B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:23:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4679z43HNnzDqgC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 21:51:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467Bh26MNqzDqYd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 22:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467BZz1pcFzDqVR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 22:18:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
- (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
- envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
- [198.145.29.98])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 467BZy5DgVz8tR6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 22:18:50 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 467BZy4VYbz9sNk; Tue, 13 Aug 2019 22:18:50 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=178.33.251.173; helo=1.mo69.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 1.mo69.mail-out.ovh.net (1.mo69.mail-out.ovh.net
+ [178.33.251.173])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4679x50v5tzDqSF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 21:49:28 +1000 (AEST)
-Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 69A0E28641
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 11:49:25 +0000 (UTC)
-Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id 5DEBF28644; Tue, 13 Aug 2019 11:49:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
- pdx-wl-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
- NO_RELAYS autolearn=ham version=3.3.1
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 204479] KASAN hit at modprobe zram
-Date: Tue, 13 Aug 2019 11:49:24 +0000
-X-Bugzilla-Reason: CC
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: None
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: Flash/Memory Technology Devices
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: dwmw2@infradead.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-204479-206035-QyDVTJaINl@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-204479-206035@https.bugzilla.kernel.org/>
-References: <bug-204479-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by ozlabs.org (Postfix) with ESMTPS id 467BZx5kgBz9s7T
+ for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 22:18:46 +1000 (AEST)
+Received: from player728.ha.ovh.net (unknown [10.108.42.73])
+ by mo69.mail-out.ovh.net (Postfix) with ESMTP id 9A7635DFBF
+ for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 14:18:41 +0200 (CEST)
+Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
+ (Authenticated sender: clg@kaod.org)
+ by player728.ha.ovh.net (Postfix) with ESMTPSA id 5823B8BF0F57;
+ Tue, 13 Aug 2019 12:18:35 +0000 (UTC)
+Subject: Re: [PATCH v2 2/3] KVM: PPC: Book3S HV: Don't push XIVE context when
+ not using XIVE device
+To: Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@ozlabs.org,
+ kvm@vger.kernel.org
+References: <20190813095845.GA9567@blackberry>
+ <20190813100100.GC9567@blackberry>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <d8435ea8-cfa5-9a3b-b081-b5541b6052b3@kaod.org>
+Date: Tue, 13 Aug 2019 14:18:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20190813100100.GC9567@blackberry>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 12295108461400460262
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddviedggeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,24 +72,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D204479
+On 13/08/2019 12:01, Paul Mackerras wrote:
+> At present, when running a guest on POWER9 using HV KVM but not using
+> an in-kernel interrupt controller (XICS or XIVE), for example if QEMU
+> is run with the kernel_irqchip=off option, the guest entry code goes
+> ahead and tries to load the guest context into the XIVE hardware, even
+> though no context has been set up.
+> 
+> To fix this, we check that the "CAM word" is non-zero before pushing
+> it to the hardware.  The CAM word is initialized to a non-zero value
+> in kvmppc_xive_connect_vcpu() and kvmppc_xive_native_connect_vcpu(),
+> and is now cleared in kvmppc_xive_{,native_}cleanup_vcpu.
 
-Erhard F. (erhard_f@mailbox.org) changed:
+If a "CAM word" is defined, it means the vCPU (VP) was enabled at the
+XIVE HW level. So this is the criteria to consider that a vCPU needs
+to update (push) its XIVE thread interrupt context when scheduled
+to run.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #284271|0                           |1
-        is obsolete|                            |
 
---- Comment #21 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 284361
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D284361&action=3Dedit
-kernel .config (5.3-rc4, PowerMac G4 DP)
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
---=20
-You are receiving this mail because:
-You are on the CC list for the bug.=
+Thanks,
+
+C.
+
+> 
+> Cc: stable@vger.kernel.org # v4.11+
+> Reported-by: Cédric Le Goater <clg@kaod.org>
+> Fixes: 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt controller")
+> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+> ---
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S |  2 ++
+>  arch/powerpc/kvm/book3s_xive.c          | 11 ++++++++++-
+>  arch/powerpc/kvm/book3s_xive_native.c   |  3 +++
+>  3 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> index 2e7e788..07181d0 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -942,6 +942,8 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
+>  	ld	r11, VCPU_XIVE_SAVED_STATE(r4)
+>  	li	r9, TM_QW1_OS
+>  	lwz	r8, VCPU_XIVE_CAM_WORD(r4)
+> +	cmpwi	r8, 0
+> +	beq	no_xive
+>  	li	r7, TM_QW1_OS + TM_WORD2
+>  	mfmsr	r0
+>  	andi.	r0, r0, MSR_DR		/* in real mode? */
+> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+> index 09f838a..586867e 100644
+> --- a/arch/powerpc/kvm/book3s_xive.c
+> +++ b/arch/powerpc/kvm/book3s_xive.c
+> @@ -67,8 +67,14 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
+>  	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
+>  	u64 pq;
+>  
+> -	if (!tima)
+> +	/*
+> +	 * Nothing to do if the platform doesn't have a XIVE
+> +	 * or this vCPU doesn't have its own XIVE context
+> +	 * (e.g. because it's not using an in-kernel interrupt controller).
+> +	 */
+> +	if (!tima || !vcpu->arch.xive_cam_word)
+>  		return;
+> +
+>  	eieio();
+>  	__raw_writeq(vcpu->arch.xive_saved_state.w01, tima + TM_QW1_OS);
+>  	__raw_writel(vcpu->arch.xive_cam_word, tima + TM_QW1_OS + TM_WORD2);
+> @@ -1146,6 +1152,9 @@ void kvmppc_xive_cleanup_vcpu(struct kvm_vcpu *vcpu)
+>  	/* Disable the VP */
+>  	xive_native_disable_vp(xc->vp_id);
+>  
+> +	/* Clear the cam word so guest entry won't try to push context */
+> +	vcpu->arch.xive_cam_word = 0;
+> +
+>  	/* Free the queues */
+>  	for (i = 0; i < KVMPPC_XIVE_Q_COUNT; i++) {
+>  		struct xive_q *q = &xc->queues[i];
+> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+> index 368427f..11b91b4 100644
+> --- a/arch/powerpc/kvm/book3s_xive_native.c
+> +++ b/arch/powerpc/kvm/book3s_xive_native.c
+> @@ -81,6 +81,9 @@ void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu)
+>  	/* Disable the VP */
+>  	xive_native_disable_vp(xc->vp_id);
+>  
+> +	/* Clear the cam word so guest entry won't try to push context */
+> +	vcpu->arch.xive_cam_word = 0;
+> +
+>  	/* Free the queues */
+>  	for (i = 0; i < KVMPPC_XIVE_Q_COUNT; i++) {
+>  		kvmppc_xive_native_cleanup_queue(vcpu, i);
+> 
+
