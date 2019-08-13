@@ -2,51 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634E38ADEE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 298048ADF3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:43:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4670Qm2jLFzDqbC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:41:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4670Tg4SbLzDqNt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:43:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kernel.org
- (client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=vkoul@kernel.org;
- receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="hPwpGrIv"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="MJUg8Qcq"; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4670P12d8jzDqQB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:39:33 +1000 (AEST)
-Received: from localhost (unknown [106.201.103.22])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 366ED2054F;
- Tue, 13 Aug 2019 04:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565671171;
- bh=Yq3xjgq9j2Zb+0ptLtoV2Vl9gStxTv3sh2uj5jTv/4k=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=hPwpGrIvgTxtkfOL3WGglWuwIKmyDZsJHU/qtEEfGMyLgQ3WgMSwHwiVV9zpZPW2C
- C5h0JSbW+KMT4MGShNUQEaKgx+JzQpLtl2dirI6PVbmkc0MOOfb3pxTYvIbWTcfsSY
- 5MjQtn1/bN2ZjUB/g7VENKRWhRvD1d3z+8gku1kc=
-Date: Tue, 13 Aug 2019 10:08:18 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] dmaengine: fsldma: Mark expected switch fall-through
-Message-ID: <20190813043818.GQ12733@vkoul-mobl.Dlink>
-References: <20190812002159.GA26899@embeddedor>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4670RL333yzDqQj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:41:33 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4670RC2FPQz9v1VL;
+ Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=MJUg8Qcq; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id OYZtCG8COW2R; Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4670RC0xVpz9v1SR;
+ Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565671287; bh=mFjr2W6KC5v33j9Skz0AXA+ozawGYVEx6VDe5ntf+O8=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=MJUg8QcqtgZ9cJ9o2qzYPijV1PUjPCSlcGs/MNNWcjtzTqBJfacu3NAMosXPdzZU+
+ aNIkfB9QryR1lXiaphxAjvDtth2yGRzKt4ewwsxtrXvL/stm23/EmvEYlWNul7nT4O
+ XLxs0N7N++xJ4lZIW3eVvmZVIwG1vI6YlbPrfqtE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EF2268B79D;
+ Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6tIsM8rWN2WH; Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C108C8B79A;
+ Tue, 13 Aug 2019 06:41:27 +0200 (CEST)
+Subject: Re: Freeze on ppc32 MPC8248 board with 5.2 kernel
+To: Doug Crawford <doug.crawford@intelight-its.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <CAESxVDiyXu+=6+YmLej3K=i55h3=Z9JLA8JgrDn3fEQGUuSq7Q@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <b0fdb52f-7a30-dcc7-5ec3-e01dd9bd1d44@c-s.fr>
+Date: Tue, 13 Aug 2019 06:41:27 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <CAESxVDiyXu+=6+YmLej3K=i55h3=Z9JLA8JgrDn3fEQGUuSq7Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190812002159.GA26899@embeddedor>
-User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,27 +78,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
- Zhang Wei <zw@zh-kernel.org>, dmaengine@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11-08-19, 19:22, Gustavo A. R. Silva wrote:
-> Mark switch cases where we are expecting to fall through.
-> 
-> Fix the following warning (Building: powerpc-ppa8548_defconfig powerpc):
-> 
-> drivers/dma/fsldma.c: In function ‘fsl_dma_chan_probe’:
-> drivers/dma/fsldma.c:1165:26: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    chan->toggle_ext_pause = fsl_chan_toggle_ext_pause;
->    ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/dma/fsldma.c:1166:2: note: here
->   case FSL_DMA_IP_83XX:
->   ^~~~
+Hi Doug,
 
-Applied, thanks
+Le 26/07/2019 à 00:30, Doug Crawford a écrit :
+> We have a ppc32 MPC8248 board that is working perfectly with the 4.19 
+> kernel.
+> We have noticed two issues with the 5.2 kernel:
 
--- 
-~Vinod
+  Have you tried 5.0 and 5.1 ?
+
+> 
+> 1) If the new CONFIG_PPC_KUAP (kernel userspace access protection) is 
+> enabled the kernel freezes right after initializing all the drivers and 
+> just before starting /sbin/init.
+
+Can you provide your .config ?
+
+Can you also provide the output of the boot console ?
+
+> 
+> 2) If CONFIG_PPC_KUAP is disabled the system starts up, but any user 
+> space program will hang indefinitely after calling the GCC atomic 
+> "__sync_bool_compare_and_swap".  This happens when nginx starts.  The 
+> same nginx binary works fine on a 4.19 kernel.
+
+Can you provide 'dmesg' ?
+
+What version of GCC do you use ?
+
+Have you tried a simple program doing nothing else than 
+__sync_bool_compare_and_swap() ?
+
+Can you provide a disassembly of the function that uses 
+__sync_bool_compare_and_swap() ?
+
+Thanks
+Christophe
