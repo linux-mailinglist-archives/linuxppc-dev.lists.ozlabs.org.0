@@ -1,44 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9608B8B4A6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 11:53:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BE98B4E2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 12:02:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4677MH5YRzzDqcK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 19:53:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4677YW1PW7zDqXd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 20:02:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4677KM33ZkzDqQj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 19:51:48 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AC3A337;
- Tue, 13 Aug 2019 02:51:46 -0700 (PDT)
-Received: from red-moon (red-moon.cambridge.arm.com [10.1.197.39])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 026FC3F706;
- Tue, 13 Aug 2019 02:51:43 -0700 (PDT)
-Date: Tue, 13 Aug 2019 10:51:51 +0100
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [EXT] Re: [PATCHv5 1/2] PCI: layerscape: Add the bar_fixed_64bit
- property in EP driver.
-Message-ID: <20190813095151.GA10070@red-moon>
-References: <20190813062840.2733-1-xiaowei.bao@nxp.com>
- <61e6df1c-a0dc-8f05-f74a-85a3cac9823f@ti.com>
- <AM5PR04MB32993CC1344DD660A298C7E1F5D20@AM5PR04MB3299.eurprd04.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM5PR04MB32993CC1344DD660A298C7E1F5D20@AM5PR04MB3299.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="oX9/ZD77"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4677VQ5D3tzDqRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 19:59:41 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4677VH4Nw2z9v1W3;
+ Tue, 13 Aug 2019 11:59:35 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=oX9/ZD77; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id gBlsqgwwDUqb; Tue, 13 Aug 2019 11:59:35 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4677VH38Zsz9v1W2;
+ Tue, 13 Aug 2019 11:59:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565690375; bh=JYJjMFrksQkJQzsMa6XK5CV26FTWiMKh7UYmj9qLwak=;
+ h=From:Subject:To:Cc:Date:From;
+ b=oX9/ZD77VnUKlJ4pXoro5/1y0fvUrWValY7FqUx/ZyHeJsJc25Mlv8qiSQOQRonE5
+ MpZFJssbj+GFAMPEUraYfEKHC3OeNo3irfS/9X2R8SzqbXok4ei6dK3sXLCx17o0fq
+ JumRZszgPt0LLwrJ9kvPaUk+JyhP8E/y3fYQWxms=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A6D438B7D4;
+ Tue, 13 Aug 2019 11:59:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id RY1JyRUjw1C7; Tue, 13 Aug 2019 11:59:36 +0200 (CEST)
+Received: from pc17473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5D5F58B7D3;
+ Tue, 13 Aug 2019 11:59:36 +0200 (CEST)
+Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 18DD968F37; Tue, 13 Aug 2019 09:59:36 +0000 (UTC)
+Message-Id: <61d2a0b6f0c89b1ee546851ce9b6bd345e5ec968.1565690241.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 1/2] powerpc: rewrite LOAD_REG_IMMEDIATE() as an intelligent
+ macro
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ segher@kernel.crashing.org
+Date: Tue, 13 Aug 2019 09:59:35 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,92 +74,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>,
- Leonard Crestez <leonard.crestez@nxp.com>,
- "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
- "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "yue.wang@amlogic.com" <yue.wang@amlogic.com>,
- Kishon Vijay Abraham I <kishon@ti.com>, "M.h. Lian" <minghuan.lian@nxp.com>,
- "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
- "jonnyc@amazon.com" <jonnyc@amazon.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "tpiepho@impinj.com" <tpiepho@impinj.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mingkai Hu <mingkai.hu@nxp.com>,
- "l.stach@pengutronix.de" <l.stach@pengutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-You should fix your email client set-up to avoid sticking an [EXT]
-tag to your emails $SUBJECT.
+Today LOAD_REG_IMMEDIATE() is a basic #define which loads all
+parts on a value into a register, including the parts that are NUL.
 
-On Tue, Aug 13, 2019 at 07:39:48AM +0000, Xiaowei Bao wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Kishon Vijay Abraham I <kishon@ti.com>
-> > Sent: 2019年8月13日 15:30
-> > To: Xiaowei Bao <xiaowei.bao@nxp.com>; lorenzo.pieralisi@arm.com;
-> > bhelgaas@google.com; M.h. Lian <minghuan.lian@nxp.com>; Mingkai Hu
-> > <mingkai.hu@nxp.com>; Roy Zang <roy.zang@nxp.com>;
-> > l.stach@pengutronix.de; tpiepho@impinj.com; Leonard Crestez
-> > <leonard.crestez@nxp.com>; andrew.smirnov@gmail.com;
-> > yue.wang@amlogic.com; hayashi.kunihiko@socionext.com;
-> > dwmw@amazon.co.uk; jonnyc@amazon.com; linux-pci@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; linuxppc-dev@lists.ozlabs.org;
-> > linux-arm-kernel@lists.infradead.org
-> > Subject: [EXT] Re: [PATCHv5 1/2] PCI: layerscape: Add the bar_fixed_64bit
-> > property in EP driver.
-> > 
-> > Caution: EXT Email
+This means always 2 instructions on PPC32 and always 5 instructions
+on PPC64. And those instructions cannot run in parallele as they are
+updating the same register.
 
-See above, this "Caution" stuff should disappear.
+Ex: LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
 
-Also, quoting the email header is useless, please configure your email
-client to remove it.
+3c 20 00 00     lis     r1,0
+60 21 00 00     ori     r1,r1,0
+78 21 07 c6     rldicr  r1,r1,32,31
+64 21 00 00     oris    r1,r1,0
+60 21 40 00     ori     r1,r1,16384
 
-Thanks,
-Lorenzo
+Rewrite LOAD_REG_IMMEDIATE() with GAS macro in order to skip
+the parts that are NUL.
 
-> > On 13/08/19 11:58 AM, Xiaowei Bao wrote:
-> > > The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1 is
-> > > 32bit, BAR2 and BAR4 is 64bit, this is determined by hardware, so set
-> > > the bar_fixed_64bit with 0x14.
-> > >
-> > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > 
-> > Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
-> > > ---
-> > > v2:
-> > >  - Replace value 0x14 with a macro.
-> > > v3:
-> > >  - No change.
-> > > v4:
-> > >  - send the patch again with '--to'.
-> > > v5:
-> > >  - fix the commit message.
-> > >
-> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > index be61d96..ca9aa45 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > @@ -44,6 +44,7 @@ static const struct pci_epc_features
-> > ls_pcie_epc_features = {
-> > >       .linkup_notifier = false,
-> > >       .msi_capable = true,
-> > >       .msix_capable = false,
-> > > +     .bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
-> > >  };
-> > >
-> > >  static const struct pci_epc_features*
-> I check other platforms, it is 'static const struct pci_epc_features', I can get the correct 
-> Value use this define way in pci-epf-test.c file.
-> > >
+Rename existing LOAD_REG_IMMEDIATE() as LOAD_REG_IMMEDIATE_SYM()
+and use that one for loading value of symbols which are not known
+at compile time.
+
+Now LOAD_REG_IMMEDIATE(r1,THREAD_SIZE) in head_64.S results in:
+
+38 20 40 00     li      r1,16384
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/ppc_asm.h   | 42 +++++++++++++++++++++++++++++++-----
+ arch/powerpc/kernel/exceptions-64e.S | 10 ++++-----
+ arch/powerpc/kernel/head_64.S        |  2 +-
+ 3 files changed, 43 insertions(+), 11 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index e0637730a8e7..9a7c2ca9b714 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -311,13 +311,43 @@ GLUE(.,name):
+ 	addis	reg,reg,(name - 0b)@ha;		\
+ 	addi	reg,reg,(name - 0b)@l;
+ 
+-#ifdef __powerpc64__
+-#ifdef HAVE_AS_ATHIGH
++#if defined(__powerpc64__) && defined(HAVE_AS_ATHIGH)
+ #define __AS_ATHIGH high
+ #else
+ #define __AS_ATHIGH h
+ #endif
+-#define LOAD_REG_IMMEDIATE(reg,expr)		\
++
++.macro __LOAD_REG_IMMEDIATE_32 r, x
++	.if (\x) >= 0x8000 || (\x) < -0x8000
++		lis \r, (\x)@__AS_ATHIGH
++		.if (\x) & 0xffff != 0
++			ori \r, \r, (\x)@l
++		.endif
++	.else
++		li \r, (\x)@l
++	.endif
++.endm
++
++.macro __LOAD_REG_IMMEDIATE r, x
++	.if \x & ~0xffffffff != 0
++		__LOAD_REG_IMMEDIATE_32 \r, (\x) >> 32
++		rldicr	\r, \r, 32, 31
++		.if (\x) & 0xffff0000 != 0
++			oris \r, \r, (\x)@__AS_ATHIGH
++		.endif
++		.if (\x) & 0xffff != 0
++			oris \r, \r, (\x)@l
++		.endif
++	.else
++		__LOAD_REG_IMMEDIATE_32 \r, \x
++	.endif
++.endm
++
++#ifdef __powerpc64__
++
++#define LOAD_REG_IMMEDIATE(reg, expr) __LOAD_REG_IMMEDIATE reg, expr
++
++#define LOAD_REG_IMMEDIATE_SYM(reg,expr)	\
+ 	lis     reg,(expr)@highest;		\
+ 	ori     reg,reg,(expr)@higher;	\
+ 	rldicr  reg,reg,32,31;		\
+@@ -335,11 +365,13 @@ GLUE(.,name):
+ 
+ #else /* 32-bit */
+ 
+-#define LOAD_REG_IMMEDIATE(reg,expr)		\
++#define LOAD_REG_IMMEDIATE(reg, expr) __LOAD_REG_IMMEDIATE_32 reg, expr
++
++#define LOAD_REG_IMMEDIATE_SYM(reg,expr)		\
+ 	lis	reg,(expr)@ha;		\
+ 	addi	reg,reg,(expr)@l;
+ 
+-#define LOAD_REG_ADDR(reg,name)		LOAD_REG_IMMEDIATE(reg, name)
++#define LOAD_REG_ADDR(reg,name)		LOAD_REG_IMMEDIATE_SYM(reg, name)
+ 
+ #define LOAD_REG_ADDRBASE(reg, name)	lis	reg,name@ha
+ #define ADDROFF(name)			name@l
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 1cfb3da4a84a..898aae6da167 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -751,8 +751,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	ld	r14,interrupt_base_book3e@got(r15)
+ 	ld	r15,__end_interrupts@got(r15)
+ #else
+-	LOAD_REG_IMMEDIATE(r14,interrupt_base_book3e)
+-	LOAD_REG_IMMEDIATE(r15,__end_interrupts)
++	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
++	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
+ #endif
+ 	cmpld	cr0,r10,r14
+ 	cmpld	cr1,r10,r15
+@@ -821,8 +821,8 @@ kernel_dbg_exc:
+ 	ld	r14,interrupt_base_book3e@got(r15)
+ 	ld	r15,__end_interrupts@got(r15)
+ #else
+-	LOAD_REG_IMMEDIATE(r14,interrupt_base_book3e)
+-	LOAD_REG_IMMEDIATE(r15,__end_interrupts)
++	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
++	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
+ #endif
+ 	cmpld	cr0,r10,r14
+ 	cmpld	cr1,r10,r15
+@@ -1449,7 +1449,7 @@ a2_tlbinit_code_start:
+ a2_tlbinit_after_linear_map:
+ 
+ 	/* Now we branch the new virtual address mapped by this entry */
+-	LOAD_REG_IMMEDIATE(r3,1f)
++	LOAD_REG_IMMEDIATE_SYM(r3,1f)
+ 	mtctr	r3
+ 	bctr
+ 
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 91d297e696dd..1fd44761e997 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -635,7 +635,7 @@ __after_prom_start:
+ 	sub	r5,r5,r11
+ #else
+ 	/* just copy interrupts */
+-	LOAD_REG_IMMEDIATE(r5, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
++	LOAD_REG_IMMEDIATE_SYM(r5, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
+ #endif
+ 	b	5f
+ 3:
+-- 
+2.13.3
+
