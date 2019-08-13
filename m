@@ -2,85 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DF48AB14
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 01:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D71578AC1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 02:42:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 466sNq1v0zzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 09:23:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 466v6w47Y2zDqfC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 10:42:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="cOKIonQh"; 
+ dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 466sLt3GtfzDqZy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 09:22:14 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7CNLtoM009116; Mon, 12 Aug 2019 19:22:01 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ubcybhr29-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Aug 2019 19:22:00 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7CNM0Jd009800;
- Mon, 12 Aug 2019 19:22:00 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ubcybhr21-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Aug 2019 19:22:00 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7CNKAce030901;
- Mon, 12 Aug 2019 23:21:59 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma04wdc.us.ibm.com with ESMTP id 2u9nj6a6gr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Aug 2019 23:21:59 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7CNLwRn19005716
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Aug 2019 23:21:58 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FE98C6059;
- Mon, 12 Aug 2019 23:21:58 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E063EC6055;
- Mon, 12 Aug 2019 23:21:54 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.85.165.146])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Mon, 12 Aug 2019 23:21:54 +0000 (GMT)
-References: <20190806052237.12525-1-bauerman@linux.ibm.com>
- <20190806052237.12525-12-bauerman@linux.ibm.com>
- <8736i6sfhn.fsf@concordia.ellerman.id.au>
-User-agent: mu4e 1.2.0; emacs 26.2
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 11/16] powerpc/pseries/svm: Export guest SVM status to
- user space via sysfs
-In-reply-to: <8736i6sfhn.fsf@concordia.ellerman.id.au>
-Date: Mon, 12 Aug 2019 20:21:50 -0300
-Message-ID: <87r25qgeb5.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 466v4r68jXzDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 10:40:11 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id bj8so1516427plb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2019 17:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=wEjzfUHdySvpHZoE9Ji81eu76V6vjLajXj/MO0b1Tgk=;
+ b=cOKIonQhJPjpmgaeZtWqCUdhLyRYcIFlBTsNTeMHsWIoB0GnU2m/P9gw9fLAcXCcsg
+ SoHmuTpMF2/v5Lhke1NVyy1Zq6HxuXRsJllemjigoHp9o0u2BV+od6csQnDiEoSSYjWm
+ t2A65OhvmqZNzb+eatdppJmKoRtBxbRm3otkgCGj1B/yxiyDPSG4LPkDBptYk+HzGvPX
+ yJmc47n7WkRElBH5yzRxKrYzpNjZFjKY1Kt32oG2kBNAKAY+zYdlbZCUudCKg878NpR3
+ X/ySymuKoyv81V9AT05ngz4v/TMHk1dASIH7TxPVJpNTh9fdbvoACyPnS7mi+GfbG5V7
+ IgIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=wEjzfUHdySvpHZoE9Ji81eu76V6vjLajXj/MO0b1Tgk=;
+ b=St1lPgWVaEhdu195N7O6N9T/V9E4tsMXgPdO21CS0LhJ5Sohcv0KrrEaYu1ukw/8AN
+ uiOhLEHMB94HYHYKTG/ukc0sU0S4ffDO3GtYUemIZ2U/dl6m960tRzPf8e5cbQ+nyx/J
+ xyRkWpBgbk4bhWsPEapBZacqcChV/Q/IbpXbgqEYO8Qtc1QRsBwn3Z7DbhwTrj/GENLc
+ QuR0fYLVnaB2iYrPNMXWjv7T4OkmC1iMnA4jyAldl2QzyCZsFIB16rWv93UQnYQ4aFNW
+ 66KND19qgJXVQ4LYZT9SKCji5Fr8W+1ngyXiHGyY6p5Vto0sdT6W4SAAD2UwEOBQ5JPk
+ qSzQ==
+X-Gm-Message-State: APjAAAVHO5h6OxHC15MsVJwtWXGNbdfVWMi6cl+zvGPmQc5IDlApr92d
+ WT9XMgSnhkMUFsfpP7fErP79rg==
+X-Google-Smtp-Source: APXvYqwovxi4+LD8JcnlGBd0HqEiNZqc9KwjyNQxlfxPw1GDXP3FddZimhLoZamzzj/3dQf2czmwyw==
+X-Received: by 2002:a17:902:8543:: with SMTP id
+ d3mr28536971plo.80.1565656808287; 
+ Mon, 12 Aug 2019 17:40:08 -0700 (PDT)
+Received: from localhost ([183.82.18.139])
+ by smtp.gmail.com with ESMTPSA id g2sm173597842pfq.88.2019.08.12.17.40.07
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Mon, 12 Aug 2019 17:40:07 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Sasha Levin <sashal@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Balbir Singh <bsingharora@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v9 2/7] powerpc/mce: Fix MCE handling for huge pages
+In-Reply-To: <20190812135532.66AC120684@mail.kernel.org>
+References: <20190812092236.16648-3-santosh@fossix.org>
+ <20190812135532.66AC120684@mail.kernel.org>
+Date: Tue, 13 Aug 2019 06:10:04 +0530
+Message-ID: <87tvalrj8b.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-12_09:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908120229
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,112 +82,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sasha Levin <sashal@kernel.org> writes:
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-
-> Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
->> From: Ryan Grimm <grimm@linux.vnet.ibm.com>
->>
->> User space might want to know it's running in a secure VM.  It can't do
->> a mfmsr because mfmsr is a privileged instruction.
->>
->> The solution here is to create a cpu attribute:
->>
->> /sys/devices/system/cpu/svm
->>
->> which will read 0 or 1 based on the S bit of the guest's CPU 0.
+> Hi,
 >
-> Why CPU 0?
+> [This is an automated email]
 >
-> If we have different CPUs running with different MSR_S then something
-> has gone badly wrong, no?
+> This commit has been processed because it contains a "Fixes:" tag,
+> fixing commit: ba41e1e1ccb9 powerpc/mce: Hookup derror (load/store) UE errors.
+>
+> The bot has tested the following trees: v5.2.8, v4.19.66.
+>
+> v5.2.8: Build OK!
+> v4.19.66: Failed to apply! Possible dependencies:
+>     360cae313702 ("KVM: PPC: Book3S HV: Nested guest entry via hypercall")
+>     41f4e631daf8 ("KVM: PPC: Book3S HV: Extract PMU save/restore operations as C-callable functions")
+>     884dfb722db8 ("KVM: PPC: Book3S HV: Simplify machine check handling")
+>     89329c0be8bd ("KVM: PPC: Book3S HV: Clear partition table entry on vm teardown")
+>     8e3f5fc1045d ("KVM: PPC: Book3S HV: Framework and hcall stubs for nested virtualization")
+>     95a6432ce903 ("KVM: PPC: Book3S HV: Streamlined guest entry/exit path on P9 for radix guests")
+>     a43c1590426c ("powerpc/pseries: Flush SLB contents on SLB MCE errors.")
+>     c05772018491 ("powerpc/64s: Better printing of machine check info for guest MCEs")
+>     d24ea8a7336a ("KVM: PPC: Book3S: Simplify external interrupt handling")
+>     df709a296ef7 ("KVM: PPC: Book3S HV: Simplify real-mode interrupt handling")
+>     f7035ce9f1df ("KVM: PPC: Book3S HV: Move interrupt delivery on guest entry to C code")
+>
+>
+> NOTE: The patch will not be queued to stable trees until it is upstream.
+>
+> How should we proceed with this patch?
 
-Yes, that would be very bad.
+I will send a backport once this has been merged upstream.
 
-> So can't we just read the MSR on whatever CPU the sysfs code happens to
-> run on.
+Thanks,
+Santosh
 
-Good point. I made the change in the patch below.
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
-
-
-
-From 2d951305e118bf286f8e83cbf396448085186357 Mon Sep 17 00:00:00 2001
-From: Ryan Grimm <grimm@linux.vnet.ibm.com>
-Date: Tue, 15 Jan 2019 11:56:29 -0600
-Subject: [PATCH] powerpc/pseries/svm: Export guest SVM status to user space
- via sysfs
-
-User space might want to know it's running in a secure VM.  It can't do
-a mfmsr because mfmsr is a privileged instruction.
-
-The solution here is to create a cpu attribute:
-
-/sys/devices/system/cpu/svm
-
-which will read 0 or 1 based on the S bit of the current CPU.
-
-Signed-off-by: Ryan Grimm <grimm@linux.vnet.ibm.com>
-Signed-off-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
----
- arch/powerpc/kernel/sysfs.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-index e2147d7c9e72..80a676da11cb 100644
---- a/arch/powerpc/kernel/sysfs.c
-+++ b/arch/powerpc/kernel/sysfs.c
-@@ -19,6 +19,7 @@
- #include <asm/smp.h>
- #include <asm/pmc.h>
- #include <asm/firmware.h>
-+#include <asm/svm.h>
- 
- #include "cacheinfo.h"
- #include "setup.h"
-@@ -715,6 +716,23 @@ static struct device_attribute pa6t_attrs[] = {
- #endif /* HAS_PPC_PMC_PA6T */
- #endif /* HAS_PPC_PMC_CLASSIC */
- 
-+#ifdef CONFIG_PPC_SVM
-+static ssize_t show_svm(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	return sprintf(buf, "%u\n", is_secure_guest());
-+}
-+static DEVICE_ATTR(svm, 0444, show_svm, NULL);
-+
-+static void create_svm_file(void)
-+{
-+	device_create_file(cpu_subsys.dev_root, &dev_attr_svm);
-+}
-+#else
-+static void create_svm_file(void)
-+{
-+}
-+#endif /* CONFIG_PPC_SVM */
-+
- static int register_cpu_online(unsigned int cpu)
- {
- 	struct cpu *c = &per_cpu(cpu_devices, cpu);
-@@ -1058,6 +1076,8 @@ static int __init topology_init(void)
- 	sysfs_create_dscr_default();
- #endif /* CONFIG_PPC64 */
- 
-+	create_svm_file();
-+
- 	return 0;
- }
- subsys_initcall(topology_init);
+>
+> --
+> Thanks,
+> Sasha
