@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4018D8AE1A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2B88AE55
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 07:00:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4670ff1q3QzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:51:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4670sc4QWGzDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 15:00:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=ti.com
- (client-ip=198.47.23.248; helo=lelv0143.ext.ti.com;
- envelope-from=kishon@ti.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ti.com header.i=@ti.com header.b="vZT9vUuH"; 
- dkim-atps=neutral
-X-Greylist: delayed 660 seconds by postgrey-1.36 at bilbo;
- Tue, 13 Aug 2019 14:49:42 AEST
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4670ck3HL5zDqJt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:49:40 +1000 (AEST)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
- by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7D4cMHO075138;
- Mon, 12 Aug 2019 23:38:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
- s=ti-com-17Q1; t=1565671102;
- bh=Ew8tzQEV3bzDzArZx0dSvuT8DgjzVr1McyreXZiBsSc=;
- h=Subject:To:References:From:Date:In-Reply-To;
- b=vZT9vUuHjeJfqpbHC4JPY+yhxRma4e4qSkeST+7paoKsG84W2UZByMArh6fPFnWJq
- dIgNfQbSX2IfvtZnQIUuh1wRrWHV1Cl2fSl/20zrLzPmdAg0BUy5hJ4UdsWDpJTgAV
- ZryYQFfcBi+I0FwLxytw7j2IyY14hveNKE/bPrU8=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
- by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7D4cMeS030426
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
- Mon, 12 Aug 2019 23:38:22 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 12
- Aug 2019 23:38:21 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 12 Aug 2019 23:38:21 -0500
-Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
- by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7D4cDdj022723;
- Mon, 12 Aug 2019 23:38:14 -0500
-Subject: Re: [PATCHv4 1/2] PCI: layerscape: Add the bar_fixed_64bit property
- in EP driver.
-To: Xiaowei Bao <xiaowei.bao@nxp.com>, <lorenzo.pieralisi@arm.com>,
- <bhelgaas@google.com>, <minghuan.Lian@nxp.com>, <mingkai.hu@nxp.com>,
- <roy.zang@nxp.com>, <l.stach@pengutronix.de>, <tpiepho@impinj.com>,
- <leonard.crestez@nxp.com>, <andrew.smirnov@gmail.com>,
- <yue.wang@amlogic.com>, <hayashi.kunihiko@socionext.com>,
- <dwmw@amazon.co.uk>, <jonnyc@amazon.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-arm-kernel@lists.infradead.org>
-References: <20190813025317.48290-1-xiaowei.bao@nxp.com>
-From: Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <4a456d72-f5b5-e860-0215-dd215e2edf09@ti.com>
-Date: Tue, 13 Aug 2019 10:06:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4670qd6fTJzDqR7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:59:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="SBcQsiXN"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4670qd39hfz9sPG; Tue, 13 Aug 2019 14:59:09 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4670qd1zdnz9sP6; Tue, 13 Aug 2019 14:59:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1565672349; bh=8UJ/fbVBjvn5G6GKUqcRf7p6NknlS77OKW7AcNAtHL4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=SBcQsiXNS7jhwDQ+ruoR8BLpmEmdUp3VIS6DbaCA6/7WHzWV/WxO2I02unWgw/XsL
+ NOWgWeLBEf4QNT78DtcCoFrydtjH+qe9BasscDCNTMamE4Fn+NUnSYuSZ4eIY4ghoH
+ S2+++uPhY300Xlz4lyGVnrnYgf66XdmovrL1tgUhqdeZTSBWJa95xxC9+c8JZpgKEw
+ FQF9iWL5g9xFscCp7h3M/3yNlZ9s4eUwL+9M/mfbYidARcrco+iJPJJf23aFqvj0tc
+ ySUdvdenHKSQx544w1RWlf12tJbLD1MUNukXtKAA6jx1hVcHKguaNckRC1fHnxsgSP
+ JdE7206A16yqg==
+Date: Tue, 13 Aug 2019 14:56:39 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Lijun Pan <ljp@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc/xive: Implement get_irqchip_state method for
+ XIVE to fix shutdown race
+Message-ID: <20190813045639.lm443zsouievhtne@oak.ozlabs.ibm.com>
+References: <20190812050623.ltla46gh5futsqv4@oak.ozlabs.ibm.com>
+ <20190812050743.aczgcqwmtqpkbx2l@oak.ozlabs.ibm.com>
+ <E547965E-CC31-470F-8849-0F2A899A121F@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190813025317.48290-1-xiaowei.bao@nxp.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <E547965E-CC31-470F-8849-0F2A899A121F@linux.vnet.ibm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,45 +60,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@ozlabs.org, kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 13/08/19 8:23 AM, Xiaowei Bao wrote:
-> The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1
-> is 32bit, BAR3 and BAR4 is 64bit, this is determined by hardware,
-
-Do you mean BAR2 instead of BAR3 here?
-
-Thanks
-Kishon
-
-> so set the bar_fixed_64bit with 0x14.
+On Mon, Aug 12, 2019 at 10:52:11PM -0500, Lijun Pan wrote:
 > 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> ---
-> v2:
->  - Replace value 0x14 with a macro.
-> v3:
->  - No change.
-> v4:
->  - send the patch again with '--to'.
 > 
->  drivers/pci/controller/dwc/pci-layerscape-ep.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
+> > On Aug 12, 2019, at 12:07 AM, Paul Mackerras <paulus@ozlabs.org> wrote:
+
+[snip]
+
+> > +static void cleanup_single_escalation(struct kvm_vcpu *vcpu,
+> > +				      struct kvmppc_xive_vcpu *xc, int irq)
+> > +{
+> > +	struct irq_data *d = irq_get_irq_data(irq);
+> > +	struct xive_irq_data *xd = irq_data_get_irq_handler_data(d);
+> > +
+> > +	/*
+> > +	 * This slightly odd sequence gives the right result
+> > +	 * (i.e. stale_p set if xive_esc_on is false) even if
+> > +	 * we race with xive_esc_irq() and xive_irq_eoi().
+> > +	 */
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index be61d96..227c33b 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -44,6 +44,7 @@ static int ls_pcie_establish_link(struct dw_pcie *pci)
->  	.linkup_notifier = false,
->  	.msi_capable = true,
->  	.msix_capable = false,
-> +	.bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
->  };
->  
->  static const struct pci_epc_features*
+> Hi Paul,
 > 
+> I don’t quite understand the logic here.
+> Are you saying the code sequence is
+> vcpu->arch.xive_esc_on = false; (xive_esc_irq)
+> then
+> xd->stale_p = true; (cleanup_single_escaltion)
+> 
+> > +	xd->stale_p = false;
+> > +	smp_mb();		/* paired with smb_wmb in xive_esc_irq */
+> > +	if (!vcpu->arch.xive_esc_on)
+> > +		xd->stale_p = true;
+
+The natural sequence would be just
+	xd->stale_p = !vcpu->arch.xive_esc_on;
+
+However, imagine that vcpu->arch.xive_esc_on is true, and the
+escalation interrupt gets handled on another CPU between the load of
+vcpu->arch.xive_esc_on and the store to xd->stale_p.  The interrupt
+code calls xive_esc_irq(), which clears vcpu->arch.xive_esc_on, and
+then xive_irq_eoi(), which sets xd->stale_p.  The natural sequence
+could read vcpu->arch.xive_esc_on before the interrupt and see 1, then
+write 0 to xd->stale_p after xive_irq_eoi() has set it.  That would
+mean the final value of xd->stale_p was 0, which is wrong, since in
+fact the queue entry has been removed.
+
+With the code I wrote, because the clearing of xd->stale_p comes
+before the load from vcpu->arch.xive_esc_on (with a barrier to make
+sure they don't get reordered), then if a racing escalation interrupt
+on another CPU stores 1 to xd->stale_p before we clear it, then we
+must see vcpu->arch.xive_esc_on as 0, and we will set xd->stale_p
+again, giving the correct final state (xd->stale_p == 1).  If the
+racing interrupt clears vcpu->arch.xive_esc_on after we load it and
+see 1, then its store to set xd->stale_p must come after our store to
+clear it because of the barrier that I added to xive_esc_irq, so the
+final result is once again correct.
+
+[snip]
+
+> > @@ -397,11 +411,16 @@ static void xive_do_source_set_mask(struct xive_irq_data *xd,
+> > 	 */
+> > 	if (mask) {
+> > 		val = xive_esb_read(xd, XIVE_ESB_SET_PQ_01);
+> > -		xd->saved_p = !!(val & XIVE_ESB_VAL_P);
+> > -	} else if (xd->saved_p)
+> > +		if (!xd->stale_p && !!(val & XIVE_ESB_VAL_P))
+> > +			xd->saved_p = true;
+> > +		xd->stale_p = false;
+> > +	} else if (xd->saved_p) {
+> > 		xive_esb_read(xd, XIVE_ESB_SET_PQ_10);
+> > -	else
+> > +		xd->saved_p = false;
+> 
+> Should we also explicitly set xd->stale_p = true; here?
+
+We don't need to because xd->saved_p and xd->stale_p can never be both
+set, and we just saw that xd->saved_p was set.
+
+> > +	} else {
+> > 		xive_esb_read(xd, XIVE_ESB_SET_PQ_00);
+> > +		xd->stale_p = false;
+> 
+> Should we also explicitly set xd->saved_p = true; here?
+
+No, that would be incorrect.  This is the case where we are unmasking
+the interrupt and there is no queue entry currently.  Setting saved_p
+would imply that there is a queue entry, which there isn't.
+
+Paul.
