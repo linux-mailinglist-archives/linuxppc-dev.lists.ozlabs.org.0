@@ -2,65 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5648B87B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34BD8BBA4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 16:37:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467Bh26MNqzDqYd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 22:23:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467Fff0Fs2zDqPW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 00:37:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467BZz1pcFzDqVR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 22:18:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 467BZy5DgVz8tR6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 22:18:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467Fbf6Mw5zDqgC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 00:34:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 467Fbf0LKKz8tTT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 00:34:38 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 467BZy4VYbz9sNk; Tue, 13 Aug 2019 22:18:50 +1000 (AEST)
+ id 467Fbd5Yqdz9sNf; Wed, 14 Aug 2019 00:34:37 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=178.33.251.173; helo=1.mo69.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo69.mail-out.ovh.net (1.mo69.mail-out.ovh.net
- [178.33.251.173])
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 467BZx5kgBz9s7T
- for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 22:18:46 +1000 (AEST)
-Received: from player728.ha.ovh.net (unknown [10.108.42.73])
- by mo69.mail-out.ovh.net (Postfix) with ESMTP id 9A7635DFBF
- for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 14:18:41 +0200 (CEST)
-Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
- (Authenticated sender: clg@kaod.org)
- by player728.ha.ovh.net (Postfix) with ESMTPSA id 5823B8BF0F57;
- Tue, 13 Aug 2019 12:18:35 +0000 (UTC)
-Subject: Re: [PATCH v2 2/3] KVM: PPC: Book3S HV: Don't push XIVE context when
- not using XIVE device
-To: Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@ozlabs.org,
- kvm@vger.kernel.org
-References: <20190813095845.GA9567@blackberry>
- <20190813100100.GC9567@blackberry>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <d8435ea8-cfa5-9a3b-b081-b5541b6052b3@kaod.org>
-Date: Tue, 13 Aug 2019 14:18:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ozlabs.org (Postfix) with ESMTPS id 467Fbc51Byz9sND
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 00:34:35 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7DEYKEo055398
+ for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 10:34:33 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uby3980hn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 13 Aug 2019 10:34:32 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
+ Tue, 13 Aug 2019 15:34:29 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 13 Aug 2019 15:34:27 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7DEYMdH47120634
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Aug 2019 14:34:22 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F8A7AE055;
+ Tue, 13 Aug 2019 14:34:22 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ABEE2AE051;
+ Tue, 13 Aug 2019 14:34:20 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.37.181])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 13 Aug 2019 14:34:20 +0000 (GMT)
+Date: Tue, 13 Aug 2019 20:04:13 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v4 12/25] powernv/fadump: define register/un-register
+ callback functions
+References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+ <156327680307.27462.16414477591782848444.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190813100100.GC9567@blackberry>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 12295108461400460262
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddviedggeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <156327680307.27462.16414477591782848444.stgit@hbathini.in.ibm.com>
+User-Agent: NeoMutt/20180716
+X-TM-AS-GCONF: 00
+x-cbid: 19081314-0012-0000-0000-0000033E3205
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081314-0013-0000-0000-0000217841D4
+Message-Id: <20190813143413.lzhpqbx43d4nefpa@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-13_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908130155
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,102 +104,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, David Gibson <david@gibson.dropbear.id.au>
+Reply-To: mahesh@linux.vnet.ibm.com
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Oliver <oohall@gmail.com>, Vasant Hegde <hegdevasant@linux.ibm.com>,
+ Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13/08/2019 12:01, Paul Mackerras wrote:
-> At present, when running a guest on POWER9 using HV KVM but not using
-> an in-kernel interrupt controller (XICS or XIVE), for example if QEMU
-> is run with the kernel_irqchip=off option, the guest entry code goes
-> ahead and tries to load the guest context into the XIVE hardware, even
-> though no context has been set up.
+On 2019-07-16 17:03:23 Tue, Hari Bathini wrote:
+> Make OPAL calls to register and un-register with firmware for MPIPL.
 > 
-> To fix this, we check that the "CAM word" is non-zero before pushing
-> it to the hardware.  The CAM word is initialized to a non-zero value
-> in kvmppc_xive_connect_vcpu() and kvmppc_xive_native_connect_vcpu(),
-> and is now cleared in kvmppc_xive_{,native_}cleanup_vcpu.
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/powernv/opal-fadump.c |   71 +++++++++++++++++++++++++-
+>  1 file changed, 69 insertions(+), 2 deletions(-)
+> 
+[...]
+> @@ -88,12 +104,63 @@ static int opal_fadump_setup_kernel_metadata(struct fw_dump *fadump_conf)
+>  
+>  static int opal_fadump_register_fadump(struct fw_dump *fadump_conf)
+>  {
+> -	return -EIO;
+> +	int i, err = -EIO;
+> +	s64 rc;
+> +
+> +	for (i = 0; i < opal_fdm->region_cnt; i++) {
+> +		rc = opal_mpipl_update(OPAL_MPIPL_ADD_RANGE,
+> +				       opal_fdm->rgn[i].src,
+> +				       opal_fdm->rgn[i].dest,
+> +				       opal_fdm->rgn[i].size);
+> +		if (rc != OPAL_SUCCESS)
 
-If a "CAM word" is defined, it means the vCPU (VP) was enabled at the
-XIVE HW level. So this is the criteria to consider that a vCPU needs
-to update (push) its XIVE thread interrupt context when scheduled
-to run.
+You may want to remove ranges which has been added so far on error and reset
+opal_fdm->registered_regions.
 
+> +			break;
+> +
+> +		opal_fdm->registered_regions++;
+> +	}
+> +
+> +	switch (rc) {
+> +	case OPAL_SUCCESS:
+> +		pr_info("Registration is successful!\n");
+> +		fadump_conf->dump_registered = 1;
+> +		err = 0;
+> +		break;
+> +	case OPAL_UNSUPPORTED:
+> +		pr_err("Support not available.\n");
+> +		fadump_conf->fadump_supported = 0;
+> +		fadump_conf->fadump_enabled = 0;
+> +		break;
+> +	case OPAL_INTERNAL_ERROR:
+> +		pr_err("Failed to register. Hardware Error(%lld).\n", rc);
+> +		break;
+> +	case OPAL_PARAMETER:
+> +		pr_err("Failed to register. Parameter Error(%lld).\n", rc);
+> +		break;
+> +	case OPAL_PERMISSION:
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+You may want to remove this check. With latest opal mpipl patches
+opal_mpipl_update() no more returns OPAL_PERMISSION.
+
+Even if opal does, we can not say fadump already registered just by
+looking at return status of single entry addition.
 
 Thanks,
+-Mahesh.
 
-C.
-
-> 
-> Cc: stable@vger.kernel.org # v4.11+
-> Reported-by: Cédric Le Goater <clg@kaod.org>
-> Fixes: 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt controller")
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-> ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S |  2 ++
->  arch/powerpc/kvm/book3s_xive.c          | 11 ++++++++++-
->  arch/powerpc/kvm/book3s_xive_native.c   |  3 +++
->  3 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 2e7e788..07181d0 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -942,6 +942,8 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
->  	ld	r11, VCPU_XIVE_SAVED_STATE(r4)
->  	li	r9, TM_QW1_OS
->  	lwz	r8, VCPU_XIVE_CAM_WORD(r4)
-> +	cmpwi	r8, 0
-> +	beq	no_xive
->  	li	r7, TM_QW1_OS + TM_WORD2
->  	mfmsr	r0
->  	andi.	r0, r0, MSR_DR		/* in real mode? */
-> diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-> index 09f838a..586867e 100644
-> --- a/arch/powerpc/kvm/book3s_xive.c
-> +++ b/arch/powerpc/kvm/book3s_xive.c
-> @@ -67,8 +67,14 @@ void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu)
->  	void __iomem *tima = local_paca->kvm_hstate.xive_tima_virt;
->  	u64 pq;
->  
-> -	if (!tima)
-> +	/*
-> +	 * Nothing to do if the platform doesn't have a XIVE
-> +	 * or this vCPU doesn't have its own XIVE context
-> +	 * (e.g. because it's not using an in-kernel interrupt controller).
-> +	 */
-> +	if (!tima || !vcpu->arch.xive_cam_word)
->  		return;
+> +		pr_err("Already registered!\n");
+> +		fadump_conf->dump_registered = 1;
+> +		err = -EEXIST;
+> +		break;
+> +	default:
+> +		pr_err("Failed to register. Unknown Error(%lld).\n", rc);
+> +		break;
+> +	}
 > +
->  	eieio();
->  	__raw_writeq(vcpu->arch.xive_saved_state.w01, tima + TM_QW1_OS);
->  	__raw_writel(vcpu->arch.xive_cam_word, tima + TM_QW1_OS + TM_WORD2);
-> @@ -1146,6 +1152,9 @@ void kvmppc_xive_cleanup_vcpu(struct kvm_vcpu *vcpu)
->  	/* Disable the VP */
->  	xive_native_disable_vp(xc->vp_id);
->  
-> +	/* Clear the cam word so guest entry won't try to push context */
-> +	vcpu->arch.xive_cam_word = 0;
-> +
->  	/* Free the queues */
->  	for (i = 0; i < KVMPPC_XIVE_Q_COUNT; i++) {
->  		struct xive_q *q = &xc->queues[i];
-> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-> index 368427f..11b91b4 100644
-> --- a/arch/powerpc/kvm/book3s_xive_native.c
-> +++ b/arch/powerpc/kvm/book3s_xive_native.c
-> @@ -81,6 +81,9 @@ void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu)
->  	/* Disable the VP */
->  	xive_native_disable_vp(xc->vp_id);
->  
-> +	/* Clear the cam word so guest entry won't try to push context */
-> +	vcpu->arch.xive_cam_word = 0;
-> +
->  	/* Free the queues */
->  	for (i = 0; i < KVMPPC_XIVE_Q_COUNT; i++) {
->  		kvmppc_xive_native_cleanup_queue(vcpu, i);
-> 
+> +	return err;
+>  }
 
