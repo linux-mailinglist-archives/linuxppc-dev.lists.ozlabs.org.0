@@ -2,86 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60238AE0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4018D8AE1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 06:51:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4670b82MLzzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:48:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4670ff1q3QzDqQR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2019 14:51:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=ti.com
+ (client-ip=198.47.23.248; helo=lelv0143.ext.ti.com;
+ envelope-from=kishon@ti.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ti.com header.i=@ti.com header.b="vZT9vUuH"; 
+ dkim-atps=neutral
+X-Greylist: delayed 660 seconds by postgrey-1.36 at bilbo;
+ Tue, 13 Aug 2019 14:49:42 AEST
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4670Y81FzqzDqJt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:46:35 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7D4h3lD134501
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 00:46:32 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ubpaj8a9c-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 00:46:31 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Tue, 13 Aug 2019 05:46:29 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 13 Aug 2019 05:46:27 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7D4kPmD61669452
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Aug 2019 04:46:25 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D56E42041;
- Tue, 13 Aug 2019 04:46:25 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 45D624203F;
- Tue, 13 Aug 2019 04:46:22 +0000 (GMT)
-Received: from [9.193.100.20] (unknown [9.193.100.20])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 13 Aug 2019 04:46:22 +0000 (GMT)
-Subject: Re: [PATCH v9 1/7] powerpc/mce: Schedule work from irq_work
-To: Santosh Sivaraj <santosh@fossix.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel <linux-kernel@vger.kernel.org>
-References: <20190812092236.16648-1-santosh@fossix.org>
- <20190812092236.16648-2-santosh@fossix.org>
-From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
-Date: Tue, 13 Aug 2019 10:16:21 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4670ck3HL5zDqJt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2019 14:49:40 +1000 (AEST)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+ by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7D4cMHO075138;
+ Mon, 12 Aug 2019 23:38:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1565671102;
+ bh=Ew8tzQEV3bzDzArZx0dSvuT8DgjzVr1McyreXZiBsSc=;
+ h=Subject:To:References:From:Date:In-Reply-To;
+ b=vZT9vUuHjeJfqpbHC4JPY+yhxRma4e4qSkeST+7paoKsG84W2UZByMArh6fPFnWJq
+ dIgNfQbSX2IfvtZnQIUuh1wRrWHV1Cl2fSl/20zrLzPmdAg0BUy5hJ4UdsWDpJTgAV
+ ZryYQFfcBi+I0FwLxytw7j2IyY14hveNKE/bPrU8=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+ by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7D4cMeS030426
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Mon, 12 Aug 2019 23:38:22 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 12
+ Aug 2019 23:38:21 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 12 Aug 2019 23:38:21 -0500
+Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
+ by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7D4cDdj022723;
+ Mon, 12 Aug 2019 23:38:14 -0500
+Subject: Re: [PATCHv4 1/2] PCI: layerscape: Add the bar_fixed_64bit property
+ in EP driver.
+To: Xiaowei Bao <xiaowei.bao@nxp.com>, <lorenzo.pieralisi@arm.com>,
+ <bhelgaas@google.com>, <minghuan.Lian@nxp.com>, <mingkai.hu@nxp.com>,
+ <roy.zang@nxp.com>, <l.stach@pengutronix.de>, <tpiepho@impinj.com>,
+ <leonard.crestez@nxp.com>, <andrew.smirnov@gmail.com>,
+ <yue.wang@amlogic.com>, <hayashi.kunihiko@socionext.com>,
+ <dwmw@amazon.co.uk>, <jonnyc@amazon.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-arm-kernel@lists.infradead.org>
+References: <20190813025317.48290-1-xiaowei.bao@nxp.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <4a456d72-f5b5-e860-0215-dd215e2edf09@ti.com>
+Date: Tue, 13 Aug 2019 10:06:20 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190812092236.16648-2-santosh@fossix.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
+In-Reply-To: <20190813025317.48290-1-xiaowei.bao@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19081304-0008-0000-0000-000003086463
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081304-0009-0000-0000-00004A26755B
-Message-Id: <80d055bb-945c-e43d-05bb-6c33ec2f0c6f@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-13_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908130050
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,74 +83,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>, stable@vger.kernel.org,
- Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/12/19 2:52 PM, Santosh Sivaraj wrote:
-> schedule_work() cannot be called from MCE exception context as MCE can
-> interrupt even in interrupt disabled context.
+
+
+On 13/08/19 8:23 AM, Xiaowei Bao wrote:
+> The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1
+> is 32bit, BAR3 and BAR4 is 64bit, this is determined by hardware,
+
+Do you mean BAR2 instead of BAR3 here?
+
+Thanks
+Kishon
+
+> so set the bar_fixed_64bit with 0x14.
 > 
-> fixes: 733e4a4c ("powerpc/mce: hookup memory_failure for UE errors")
-> Suggested-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> Cc: stable@vger.kernel.org # v4.15+
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 > ---
->  arch/powerpc/kernel/mce.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
-
-Thanks,
--Mahesh.
-
+> v2:
+>  - Replace value 0x14 with a macro.
+> v3:
+>  - No change.
+> v4:
+>  - send the patch again with '--to'.
 > 
-> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-> index b18df633eae9..cff31d4a501f 100644
-> --- a/arch/powerpc/kernel/mce.c
-> +++ b/arch/powerpc/kernel/mce.c
-> @@ -33,6 +33,7 @@ static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT],
->  					mce_ue_event_queue);
->  
->  static void machine_check_process_queued_event(struct irq_work *work);
-> +static void machine_check_ue_irq_work(struct irq_work *work);
->  void machine_check_ue_event(struct machine_check_event *evt);
->  static void machine_process_ue_event(struct work_struct *work);
->  
-> @@ -40,6 +41,10 @@ static struct irq_work mce_event_process_work = {
->          .func = machine_check_process_queued_event,
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index be61d96..227c33b 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -44,6 +44,7 @@ static int ls_pcie_establish_link(struct dw_pcie *pci)
+>  	.linkup_notifier = false,
+>  	.msi_capable = true,
+>  	.msix_capable = false,
+> +	.bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
 >  };
 >  
-> +static struct irq_work mce_ue_event_irq_work = {
-> +	.func = machine_check_ue_irq_work,
-> +};
-> +
->  DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
->  
->  static void mce_set_error_info(struct machine_check_event *mce,
-> @@ -199,6 +204,10 @@ void release_mce_event(void)
->  	get_mce_event(NULL, true);
->  }
->  
-> +static void machine_check_ue_irq_work(struct irq_work *work)
-> +{
-> +	schedule_work(&mce_ue_event_work);
-> +}
->  
->  /*
->   * Queue up the MCE event which then can be handled later.
-> @@ -216,7 +225,7 @@ void machine_check_ue_event(struct machine_check_event *evt)
->  	memcpy(this_cpu_ptr(&mce_ue_event_queue[index]), evt, sizeof(*evt));
->  
->  	/* Queue work to process this event later. */
-> -	schedule_work(&mce_ue_event_work);
-> +	irq_work_queue(&mce_ue_event_irq_work);
->  }
->  
->  /*
+>  static const struct pci_epc_features*
 > 
-
