@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219C38CAAD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 07:39:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FE38CAB2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 07:41:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467dgX0qHBzDqjW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 15:39:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467dk036k3zDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 15:41:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,39 +18,39 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="B23Q+gu+"; dkim-atps=neutral
+ header.b="PakH2jaX"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467ddf1ggVzDqSq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 15:37:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467dg326JtzDqk5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 15:38:55 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
  Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
  List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Tbs+sFILsmF3FgHiG3KTpCBNIgzSXc15Dc691qgzyxE=; b=B23Q+gu+wx2zk/qfYzyE1l/dP
- g4kYOCi6IbxrSIPYsvhFjLeX2hhEExE00N2JC/kdPNVFxJdsZ/FuMJCwwSo7d5qWebA9L8Xq5/gXO
- N7SyUcLdT8dYgrzQDAosT71DXH7ZM7kJcF9bQNiPV0/yvtd3tc3SVZCQtlbW9zQVULASRJvmbTMi8
- 7P05el30TX2tKBlFEvA31zbsDbjmvvkwhV/rZ3JvkT0qAvsVq/YLxPBEhY0SfA+HLrUtwqOm9/J4R
- BEmqzshoFkDqBm+eRXEC2Rce1yOSz6IkanzuhCXtKTYFW13nI5n9IRNi6aTrkDQQVrJhe4vMFnWqY
- timLaOAig==;
+ bh=SlVqJKDhHhOV65ho42xhKFAezVWVkPicox2Ec3tGxgk=; b=PakH2jaXbBToCfuos4t+CAubT
+ lwx/wRgTpVs9alNcOCtl8VsIzzS5fl6E+TxQWxiS+iNy2NehAm1OUonV55GXj4rxxGY3Q3YpZcw48
+ qiEr3JyqLHobUgzDpC0ed+RLOkOUf/Njyg8q7o1fixpxsAAK/kDkij4TVOL7Mh9F4JEOHws06O99F
+ nSNgA1gaW0bE04qxe7mj+XreHnHfGTqBJgH1LtISXjFlGVsENnC9n/8IR5YO1g3DbuE0O2Z0W7xlu
+ 5BekPF04RbiJY2dlIvnotC7vUgpmOuhtWaLRixG/ov1LsbQpe4ec4Fj08zrXQN9ygD/jKrd6MBo5h
+ MitR12Z7Q==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hxlyW-0007AM-Ul; Wed, 14 Aug 2019 05:37:32 +0000
-Date: Tue, 13 Aug 2019 22:37:32 -0700
+ Linux)) id 1hxlzf-0007CA-DV; Wed, 14 Aug 2019 05:38:43 +0000
+Date: Tue, 13 Aug 2019 22:38:43 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/32s: fix boot failure with DEBUG_PAGEALLOC
- without KASAN.
-Message-ID: <20190814053732.GA27497@infradead.org>
-References: <8c83a4e1237658ed1acfb9a9891048a15f9ca36b.1565760495.git.christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v1 02/10] powerpc/mm: rework io-workaround invocation.
+Message-ID: <20190814053843.GB27497@infradead.org>
+References: <6bc35eca507359075528bc0e55938bc1ce8ee485.1565726867.git.christophe.leroy@c-s.fr>
+ <d6049aee232029c01c7569975d49455058c945fe.1565726867.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8c83a4e1237658ed1acfb9a9891048a15f9ca36b.1565760495.git.christophe.leroy@c-s.fr>
+In-Reply-To: <d6049aee232029c01c7569975d49455058c945fe.1565726867.git.christophe.leroy@c-s.fr>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -65,18 +65,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: j.neuschaefer@gmx.net, linux-kernel@vger.kernel.org,
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
  Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 14, 2019 at 05:28:35AM +0000, Christophe Leroy wrote:
-> When KASAN is selected, the definitive hash table has to be
-> set up later, but there is already an early temporary one.
+On Tue, Aug 13, 2019 at 08:11:34PM +0000, Christophe Leroy wrote:
+> ppc_md.ioremap() is only used for I/O workaround on CELL platform,
+> so indirect function call can be avoided.
 > 
-> When KASAN is not selected, there is no early hash table,
-> so the setup of the definitive hash table cannot be delayed.
+> This patch reworks the io-workaround and ioremap() functions to
+> use static keys for the activation of io-workaround.
+> 
+> When CONFIG_PPC_IO_WORKAROUNDS or CONFIG_PPC_INDIRECT_MMIO are not
+> selected, the I/O workaround ioremap() voids and the static key is
+> not used at all.
 
-I think you also want to add this information to the code itself
-as comments..
+Why bother with the complex static key?  ioremap isn't exactly a fast
+path.  Just make it a normal branch if enabled, with the option to
+compile it out entirely as in your patch.
