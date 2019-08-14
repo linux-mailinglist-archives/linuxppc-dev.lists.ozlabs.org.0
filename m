@@ -1,90 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04D18D0A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:20:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796298D0AD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:23:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467lwS5P2HzDqMh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 20:20:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467lzg4780zDqqD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 20:23:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467ltX4sNnzDqJt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:19:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467lxq6GJtzDqLy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:22:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 467ltW6NzNz8tVb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:19:15 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 467lxq59xBz8tTq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:22:07 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 467ltW66wqz9sNp; Wed, 14 Aug 2019 20:19:15 +1000 (AEST)
+ id 467lxq501Pz9sNp; Wed, 14 Aug 2019 20:22:07 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
  envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 467ltW0QYVz9sN1
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 20:19:14 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 467lxq1RG8z9sN1
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 20:22:06 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7EAJ5fh120797
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:19:12 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ucd5fyvv6-1
+ x7EAIAg8046561
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:22:04 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ucdq96m5a-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:19:08 -0400
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:22:03 -0400
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
- Wed, 14 Aug 2019 11:18:13 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Wed, 14 Aug 2019 11:22:02 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 14 Aug 2019 11:18:10 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7EAI8OQ31129798
+ Wed, 14 Aug 2019 11:21:58 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7EALuKd48300230
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Aug 2019 10:18:08 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A0C242052;
- Wed, 14 Aug 2019 10:18:08 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D442242041;
- Wed, 14 Aug 2019 10:18:04 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.109.198.140])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 14 Aug 2019 10:18:04 +0000 (GMT)
-Date: Wed, 14 Aug 2019 15:48:01 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
+ Wed, 14 Aug 2019 10:21:57 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CBEB4A4040;
+ Wed, 14 Aug 2019 10:21:56 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C797A404D;
+ Wed, 14 Aug 2019 10:21:54 +0000 (GMT)
+Received: from [9.109.198.140] (unknown [9.109.198.140])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 14 Aug 2019 10:21:53 +0000 (GMT)
+Subject: Re: [PATCH v4 11/25] powernv/fadump: register kernel metadata address
+ with opal
 To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH v4 14/25] powernv/fadump: process the crashdump by
- exporting it as /proc/vmcore
 References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
- <156327681824.27462.1314030665685342118.stgit@hbathini.in.ibm.com>
+ <156327679568.27462.14864917663459855788.stgit@hbathini.in.ibm.com>
+ <20190813104137.xsyommcjdrnpa6u6@in.ibm.com>
+ <6d34b5d7-5183-6222-1bdb-5b1b7291fc0a@linux.ibm.com>
+From: Mahesh Jagannath Salgaonkar <mahesh@linux.vnet.ibm.com>
+Date: Wed, 14 Aug 2019 15:51:52 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <156327681824.27462.1314030665685342118.stgit@hbathini.in.ibm.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <6d34b5d7-5183-6222-1bdb-5b1b7291fc0a@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 19081410-0016-0000-0000-0000029EADBB
+x-cbid: 19081410-0020-0000-0000-0000035FAC60
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081410-0017-0000-0000-000032FEC713
-Message-Id: <20190814101801.tbzqbds3n4qf5wey@in.ibm.com>
+x-cbparentid: 19081410-0021-0000-0000-000021B4C637
+Message-Id: <8d91f41e-c9c1-2397-1570-62de7a775093@linux.vnet.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-14_04:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
@@ -104,73 +108,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.vnet.ibm.com
 Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Oliver <oohall@gmail.com>, Vasant Hegde <hegdevasant@linux.ibm.com>,
- Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+ Vasant Hegde <hegdevasant@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Oliver <oohall@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Stewart Smith <stewart@linux.ibm.com>,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2019-07-16 17:03:38 Tue, Hari Bathini wrote:
-> Add support in the kernel to process the crash'ed kernel's memory
-> preserved during MPIPL and export it as /proc/vmcore file for the
-> userland scripts to filter and analyze it later.
+On 8/14/19 12:36 PM, Hari Bathini wrote:
 > 
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/opal-fadump.c |  190 ++++++++++++++++++++++++++
->  1 file changed, 187 insertions(+), 3 deletions(-)
 > 
-[...]
-> +		ret = opal_mpipl_query_tag(OPAL_MPIPL_TAG_KERNEL, &addr);
-> +		if ((ret != OPAL_SUCCESS) || !addr) {
-> +			pr_err("Failed to get Kernel metadata (%lld)\n", ret);
-> +			return 1;
-> +		}
-> +
-> +		addr = be64_to_cpu(addr);
-> +		pr_debug("Kernel metadata addr: %llx\n", addr);
-> +
-> +		opal_fdm_active = __va(addr);
-> +		r_opal_fdm_active = (void *)addr;
-> +		if (r_opal_fdm_active->version != OPAL_FADUMP_VERSION) {
-> +			pr_err("FADump active but version (%u) unsupported!\n",
-> +			       r_opal_fdm_active->version);
-> +			return 1;
-> +		}
-> +
-> +		/* Kernel regions not registered with f/w  for MPIPL */
-> +		if (r_opal_fdm_active->registered_regions == 0) {
-> +			opal_fdm_active = NULL;
+> On 13/08/19 4:11 PM, Mahesh J Salgaonkar wrote:
+>> On 2019-07-16 17:03:15 Tue, Hari Bathini wrote:
+>>> OPAL allows registering address with it in the first kernel and
+>>> retrieving it after MPIPL. Setup kernel metadata and register its
+>>> address with OPAL to use it for processing the crash dump.
+>>>
+>>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>>> ---
+>>>  arch/powerpc/kernel/fadump-common.h          |    4 +
+>>>  arch/powerpc/kernel/fadump.c                 |   65 ++++++++++++++---------
+>>>  arch/powerpc/platforms/powernv/opal-fadump.c |   73 ++++++++++++++++++++++++++
+>>>  arch/powerpc/platforms/powernv/opal-fadump.h |   37 +++++++++++++
+>>>  arch/powerpc/platforms/pseries/rtas-fadump.c |   32 +++++++++--
+>>>  5 files changed, 177 insertions(+), 34 deletions(-)
+>>>  create mode 100644 arch/powerpc/platforms/powernv/opal-fadump.h
+>>>
+>> [...]
+>>> @@ -346,30 +349,42 @@ int __init fadump_reserve_mem(void)
+>>>  		 * use memblock_find_in_range() here since it doesn't allocate
+>>>  		 * from bottom to top.
+>>>  		 */
+>>> -		for (base = fw_dump.boot_memory_size;
+>>> -		     base <= (memory_boundary - size);
+>>> -		     base += size) {
+>>> +		while (base <= (memory_boundary - size)) {
+>>>  			if (memblock_is_region_memory(base, size) &&
+>>>  			    !memblock_is_region_reserved(base, size))
+>>>  				break;
+>>> +
+>>> +			base += size;
+>>>  		}
+>>> -		if ((base > (memory_boundary - size)) ||
+>>> -		    memblock_reserve(base, size)) {
+>>> +
+>>> +		if (base > (memory_boundary - size)) {
+>>> +			pr_err("Failed to find memory chunk for reservation\n");
+>>> +			goto error_out;
+>>> +		}
+>>> +		fw_dump.reserve_dump_area_start = base;
+>>> +
+>>> +		/*
+>>> +		 * Calculate the kernel metadata address and register it with
+>>> +		 * f/w if the platform supports.
+>>> +		 */
+>>> +		if (fw_dump.ops->setup_kernel_metadata(&fw_dump) < 0)
+>>> +			goto error_out;
+>>
+>> I see setup_kernel_metadata() registers the metadata address with opal without
+>> having any minimum data initialized in it. Secondaly, why can't this wait until> registration ? I think we should defer this until fadump registration.
+> 
+> If setting up metadata address fails (it should ideally not fail, but..), everything else
+> is useless. 
 
-What about partial dump capture scenario ? What if opal crashes while
-kernel was in middle of registering ranges ? We may have partial dump
-captured which won't be useful.
-e,g. If we have total of 4 ranges to be registered and opal crashes
-after successful registration of only 2 ranges with 2 pending, we will get a
-partial dump which needs to be ignored.
+That's less likely.. so is true with opal_mpipl_update() as well.
 
-I think check shuold be comparing registered_regions against total number of
-regions. What do you think ?
+> So, we might as well try that early and fall back to KDump in case of an error..
+
+ok. Yeah but not uninitialized metadata.
+
+> 
+>> What if kernel crashes before metadata area is initialized ?
+> 
+> registered_regions would be '0'. So, it is treated as fadump is not registered case.
+> Let me
+> initialize metadata explicitly before registering the address with f/w to avoid any assumption...
+
+Do you want to do that before memblock reservation ? Should we move this
+to setup_fadump() ?
 
 Thanks,
 -Mahesh.
 
-> +			return 1;
-> +		}
-> +
-> +		pr_info("Firmware-assisted dump is active.\n");
-> +		fadump_conf->dump_active = 1;
-> +		opal_fadump_get_config(fadump_conf, r_opal_fdm_active);
-> +	}
-> +
->  	return 1;
->  }
 > 
-
--- 
-Mahesh J Salgaonkar
+>>
+>>> +
+>>> +		if (memblock_reserve(base, size)) {
+>>>  			pr_err("Failed to reserve memory\n");
+>>> -			return 0;
+>>> +			goto error_out;
+>>>  		}
+>> [...]
+>>> -
+>>>  static struct fadump_ops rtas_fadump_ops = {
+>>> -	.init_fadump_mem_struct	= rtas_fadump_init_mem_struct,
+>>> -	.register_fadump	= rtas_fadump_register_fadump,
+>>> -	.unregister_fadump	= rtas_fadump_unregister_fadump,
+>>> -	.invalidate_fadump	= rtas_fadump_invalidate_fadump,
+>>> -	.process_fadump		= rtas_fadump_process_fadump,
+>>> -	.fadump_region_show	= rtas_fadump_region_show,
+>>> -	.fadump_trigger		= rtas_fadump_trigger,
+>>> +	.init_fadump_mem_struct		= rtas_fadump_init_mem_struct,
+>>> +	.get_kernel_metadata_size	= rtas_fadump_get_kernel_metadata_size,
+>>> +	.setup_kernel_metadata		= rtas_fadump_setup_kernel_metadata,
+>>> +	.register_fadump		= rtas_fadump_register_fadump,
+>>> +	.unregister_fadump		= rtas_fadump_unregister_fadump,
+>>> +	.invalidate_fadump		= rtas_fadump_invalidate_fadump,
+>>> +	.process_fadump			= rtas_fadump_process_fadump,
+>>> +	.fadump_region_show		= rtas_fadump_region_show,
+>>> +	.fadump_trigger			= rtas_fadump_trigger,
+>>
+>> Can you make the tab space changes in your previous patch where these
+>> were initially introduced ? So that this patch can only show new members
+>> that are added.
+> 
+> done.
+> 
+> Thanks
+> Hari
+> 
 
