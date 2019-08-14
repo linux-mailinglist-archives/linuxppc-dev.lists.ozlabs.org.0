@@ -2,71 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4D48D3EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 14:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EAE8D4A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 15:26:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467qLB2kwmzDqLn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 22:54:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467r2t2wKpzDqnc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 23:26:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+147547a3be601d556dd4+5834+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Dalae2Qt"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="K1C/bVC0"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467qGF75TczDqJS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 22:51:33 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 467qG837FDz9tyn7;
- Wed, 14 Aug 2019 14:51:28 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Dalae2Qt; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id eImdWDUz0azO; Wed, 14 Aug 2019 14:51:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 467qG82236z9tyn6;
- Wed, 14 Aug 2019 14:51:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565787088; bh=mOCEMB2qdCSI10DBAqLVTT6XlR6gmRR0nFTEIlsddIY=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=Dalae2Qt0Ch584GmST3PYos10MrE314GXj1HW1Ji6Ex9IvGzIm/lFnCg3WAmyy+CM
- veH5s5VTN7r8usrxVNU/3VzDzMhDGjHSwTzBfTQWbZZbjQ5Udh9q1hHa48TLwI1IdR
- Q3jvSYIQIwAbKBTA+oXde9fw4QpbU4wND00MMdLs=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CD54D8B7F7;
- Wed, 14 Aug 2019 14:51:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 3NFi6Z7pSKLw; Wed, 14 Aug 2019 14:51:29 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id ADECA8B761;
- Wed, 14 Aug 2019 14:51:29 +0200 (CEST)
-Subject: Re: [PATCH 1/5] powerpc/ptdump: fix addresses display on PPC32
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467qyD3mFfzDqNN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 23:22:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6DipVnf/iFLR86E9PK/JkLlJ30aOoxuUFZkmN2ZR1VU=; b=K1C/bVC0YtBKBHBcSCCkF8NWj
+ mk/TaQ5AvnDUGjvesdXXjOSlnnkitLTjj2Y0sD0VPLYFC50BPF2Tx7qRcqeg3UWPWYk5b9yQVZHQg
+ IKJKJgfnm6Yk47lJgm4Y6PBFax2gl7KDZmyj+KTqvKLEDUilKHuozFOsWBcIxwuEH99YM5deSrnlQ
+ v0DnT0VBx/icjvXThyzdR3XTCPNJfY+eT90FW15uB4Z6sYGzBq2VgKjz8W6Cw2P4VGZ4WZyZ3iVyE
+ VjV3A02MkUY4jg0jo+H6qACSQuS0i5z6pFGeR6ccQy1Pce8/b2p9jRPwL+fUCngMZ9T1DkMtFrkCP
+ RFf7tlLAQ==;
+Received: from [2001:4bb8:180:1ec3:c70:4a89:bc61:2] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hxtEX-0002YB-6L; Wed, 14 Aug 2019 13:22:33 +0000
+From: Christoph Hellwig <hch@lst.de>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <eb4d626514e22f85814830012642329018ef6af9.1565786091.git.christophe.leroy@c-s.fr>
-Message-ID: <db36b9fe-e9f8-0007-ff87-03ac6ae87a8b@c-s.fr>
-Date: Wed, 14 Aug 2019 14:51:27 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Subject: use the generic DMA direct remap code on powerpc
+Date: Wed, 14 Aug 2019 15:22:29 +0200
+Message-Id: <20190814132230.31874-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <eb4d626514e22f85814830012642329018ef6af9.1565786091.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,47 +63,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael,
+Hi powerpc maintainers,
 
-Le 14/08/2019 à 14:36, Christophe Leroy a écrit :
-> Commit 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
-> wrongly changed KERN_VIRT_START from 0 to PAGE_OFFSET, leading to a
-> shift in the displayed addresses.
-> 
-> Lets revert that change to resync walk_pagetables()'s addr val and
-> pgd_t pointer for PPC32.
-> 
-> Fixes: 453d87f6a8ae ("powerpc/mm: Warn if W+X pages found on boot")
+this patch convers powerpc to use the generic dma remapping code
+for the uncached coherent allocation on non-coherent CPUs.
 
-Either this patch or patch 2 of the series has to go into fixes.
+Christophe Leroy tested a slightly earlier version on ppc8xx.
 
-If you prefer next patch for fixes, then this one can be squashed into 
-patch 3 which drops the PPC32 hacked definition of KERN_VIRT_START
-
-Christophe
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->   arch/powerpc/mm/ptdump/ptdump.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index 6a88a9f585d4..3ad64fc11419 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -27,7 +27,7 @@
->   #include "ptdump.h"
->   
->   #ifdef CONFIG_PPC32
-> -#define KERN_VIRT_START	PAGE_OFFSET
-> +#define KERN_VIRT_START	0
->   #endif
->   
->   /*
-> 
+Note that I plan to move the need for the arch to call
+dma_atomic_pool_init in this cycle, so either this needs to go in
+through the dma-mapping tree (or a shared stable branch with it), or
+we will need a small manual fixup in linux-next and when Linus merged
+the later of the two pull requests.
