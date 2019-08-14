@@ -1,44 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768E18D066
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:13:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04D18D0A2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:20:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467llZ6fwBzDqJt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 20:13:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467lwS5P2HzDqMh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 20:20:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=lorenzo.pieralisi@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 467ljC1KTYzDqcM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:11:08 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A79F3344;
- Wed, 14 Aug 2019 03:11:06 -0700 (PDT)
-Received: from e121166-lin.cambridge.arm.com (unknown [10.1.196.255])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6EC253F706;
- Wed, 14 Aug 2019 03:11:05 -0700 (PDT)
-Date: Wed, 14 Aug 2019 11:11:00 +0100
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCHv6 1/2] PCI: layerscape: Add the bar_fixed_64bit property
- in EP driver.
-Message-ID: <20190814101100.GA29414@e121166-lin.cambridge.arm.com>
-References: <20190814020330.12133-1-xiaowei.bao@nxp.com>
- <20190814092952.GA26840@e121166-lin.cambridge.arm.com>
- <AM5PR04MB32994A55A2951DD071C19F66F5AD0@AM5PR04MB3299.eurprd04.prod.outlook.com>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467ltX4sNnzDqJt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:19:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 467ltW6NzNz8tVb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:19:15 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 467ltW66wqz9sNp; Wed, 14 Aug 2019 20:19:15 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=mahesh@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 467ltW0QYVz9sN1
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 20:19:14 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7EAJ5fh120797
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:19:12 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ucd5fyvv6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 06:19:08 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <mahesh@linux.vnet.ibm.com>;
+ Wed, 14 Aug 2019 11:18:13 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 14 Aug 2019 11:18:10 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7EAI8OQ31129798
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 Aug 2019 10:18:08 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7A0C242052;
+ Wed, 14 Aug 2019 10:18:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D442242041;
+ Wed, 14 Aug 2019 10:18:04 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.109.198.140])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 14 Aug 2019 10:18:04 +0000 (GMT)
+Date: Wed, 14 Aug 2019 15:48:01 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v4 14/25] powernv/fadump: process the crashdump by
+ exporting it as /proc/vmcore
+References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
+ <156327681824.27462.1314030665685342118.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM5PR04MB32994A55A2951DD071C19F66F5AD0@AM5PR04MB3299.eurprd04.prod.outlook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <156327681824.27462.1314030665685342118.stgit@hbathini.in.ibm.com>
+User-Agent: NeoMutt/20180716
+X-TM-AS-GCONF: 00
+x-cbid: 19081410-0016-0000-0000-0000029EADBB
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081410-0017-0000-0000-000032FEC713
+Message-Id: <20190814101801.tbzqbds3n4qf5wey@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-14_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908140106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,89 +104,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Zang <roy.zang@nxp.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "M.h. Lian" <minghuan.lian@nxp.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mingkai Hu <mingkai.hu@nxp.com>
+Reply-To: mahesh@linux.vnet.ibm.com
+Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Oliver <oohall@gmail.com>, Vasant Hegde <hegdevasant@linux.ibm.com>,
+ Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 14, 2019 at 09:48:00AM +0000, Xiaowei Bao wrote:
+On 2019-07-16 17:03:38 Tue, Hari Bathini wrote:
+> Add support in the kernel to process the crash'ed kernel's memory
+> preserved during MPIPL and export it as /proc/vmcore file for the
+> userland scripts to filter and analyze it later.
 > 
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/powernv/opal-fadump.c |  190 ++++++++++++++++++++++++++
+>  1 file changed, 187 insertions(+), 3 deletions(-)
 > 
-> > -----Original Message-----
-> > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > Sent: 2019年8月14日 17:30
-> > To: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > Cc: M.h. Lian <minghuan.lian@nxp.com>; Mingkai Hu
-> > <mingkai.hu@nxp.com>; Roy Zang <roy.zang@nxp.com>;
-> > bhelgaas@google.com; linuxppc-dev@lists.ozlabs.org;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCHv6 1/2] PCI: layerscape: Add the bar_fixed_64bit property
-> > in EP driver.
+[...]
+> +		ret = opal_mpipl_query_tag(OPAL_MPIPL_TAG_KERNEL, &addr);
+> +		if ((ret != OPAL_SUCCESS) || !addr) {
+> +			pr_err("Failed to get Kernel metadata (%lld)\n", ret);
+> +			return 1;
+> +		}
+> +
+> +		addr = be64_to_cpu(addr);
+> +		pr_debug("Kernel metadata addr: %llx\n", addr);
+> +
+> +		opal_fdm_active = __va(addr);
+> +		r_opal_fdm_active = (void *)addr;
+> +		if (r_opal_fdm_active->version != OPAL_FADUMP_VERSION) {
+> +			pr_err("FADump active but version (%u) unsupported!\n",
+> +			       r_opal_fdm_active->version);
+> +			return 1;
+> +		}
+> +
+> +		/* Kernel regions not registered with f/w  for MPIPL */
+> +		if (r_opal_fdm_active->registered_regions == 0) {
+> +			opal_fdm_active = NULL;
 
-Do not quote the email header in your replies.
+What about partial dump capture scenario ? What if opal crashes while
+kernel was in middle of registering ranges ? We may have partial dump
+captured which won't be useful.
+e,g. If we have total of 4 ranges to be registered and opal crashes
+after successful registration of only 2 ranges with 2 pending, we will get a
+partial dump which needs to be ignored.
 
-> > I asked you to remove the period at the end of the patch $SUBJECT and you
-> > did not, either you do not read what I write or explain me what's going on.
-> Sorry, I didn't understand the meaning of period correctly before. 
-> > 
-> > On Wed, Aug 14, 2019 at 10:03:29AM +0800, Xiaowei Bao wrote:
-> > > The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1 is
-> > > 32bit, BAR2 and BAR4 is 64bit, this is determined by hardware, so set
-> > > the bar_fixed_64bit with 0x14.
-> > >
-> > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > 
-> > Kishon ACK'ed this patch and you have not carried his tag.
-> > 
-> > I will make these changes but that's the last time I do that for you.
-> Thanks a lot, your means is that I don't need to send the v7 patch and you help me to
-> Correct this patch, yes? Thanks a lot for your help about the rules of the upstream. I will
-> Correct this error next time. ^.^ 
-
-I fixed that up and pushed out, pci/layerscape, for v5.4.
+I think check shuold be comparing registered_regions against total number of
+regions. What do you think ?
 
 Thanks,
-Lorenzo
+-Mahesh.
 
-> > Lorenzo
-> > 
-> > > ---
-> > > v2:
-> > >  - Replace value 0x14 with a macro.
-> > > v3:
-> > >  - No change.
-> > > v4:
-> > >  - send the patch again with '--to'.
-> > > v5:
-> > >  - fix the commit message.
-> > > v6:
-> > >  - remove the [EXT] tag of the $SUBJECT in email.
-> > >
-> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > index be61d96..ca9aa45 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > @@ -44,6 +44,7 @@ static const struct pci_epc_features
-> > ls_pcie_epc_features = {
-> > >  	.linkup_notifier = false,
-> > >  	.msi_capable = true,
-> > >  	.msix_capable = false,
-> > > +	.bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
-> > >  };
-> > >
-> > >  static const struct pci_epc_features*
-> > > --
-> > > 2.9.5
-> > >
+> +			return 1;
+> +		}
+> +
+> +		pr_info("Firmware-assisted dump is active.\n");
+> +		fadump_conf->dump_active = 1;
+> +		opal_fadump_get_config(fadump_conf, r_opal_fdm_active);
+> +	}
+> +
+>  	return 1;
+>  }
+> 
+
+-- 
+Mahesh J Salgaonkar
+
