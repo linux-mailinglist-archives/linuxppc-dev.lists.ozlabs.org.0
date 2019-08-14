@@ -2,81 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7392C8CF48
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 11:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85D38CF6C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 11:27:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467kft1Db8zDqQF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 19:24:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467kky6SKgzDqSG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 19:27:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=bsingharora@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="pZV58FB9"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tDKSVHbM"; 
  dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467kcf2H4czDqPN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 19:22:10 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id 196so6059237pfz.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 02:22:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=o5VgXZSr3CkOKGeSUVxEPdzuhdzMHUJ4B37bTJdSkiA=;
- b=pZV58FB92yTQ58cFWIY0ZrR9WepwOaEZQCnUq50sbyNa7k9L6MBWPEX92IZuybhEq3
- yI2BD/pDGWGYbOcUJUKBuRR23L845lxAbNW9j/cvj0I2bGcKq+iloz3i5e1P1EFfywR8
- xBUgJjQFOml6qUhkad76CFVHSJB3NQU4WOA1+3keR8hFivk29EexKY90XVd542j6K5HL
- vkbqW8Eeqqmr1Kz5RXNU286kuc6Sl2khJfj1YV4mqSf+QScckN4ZP+65ynr99CtRr02A
- dEjNAsbk2KmaNPBYC73azwiMUeJU7JOtUK1ihuN4r+8k7r0oiIcyoy3ddEulEZE+McMC
- 3Dxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=o5VgXZSr3CkOKGeSUVxEPdzuhdzMHUJ4B37bTJdSkiA=;
- b=iokiMpk/Xa2oMshkf/uOztzb5S9lvh7pFI7WYed3iSFfJHeZMbFWUIoZATs7LJnR+e
- JN7l55q5hFnO+RpLKXFu97q5qiVheVoncAVtD3Cns9ialLxg3r0FTarTc0ijPy/BysRQ
- ddoOck+3+9uB7Ut8rpRsz2bwdQNzg33NKVOinRctTDTvEpI5+NxEU1XYwoj+4rc1ydSJ
- jMB195X/4a77/nL312xsI53dBCO5BeQWaifKpQLwBqVJG6ZwfEfSo/mF8E4BdorDNCc2
- onp/zN4fl42y1em5hQLR9SJgOvfeQ6f0ZLb6jgsC3hmEGobvw8fe/e1LCk6DH+uYcmdF
- GItw==
-X-Gm-Message-State: APjAAAWlUmw6TEw4HuOT1MsOrCDpjv0PenhKQmLcZ6nhE8ESiKnf2m8T
- XymEt5pVI1/3W5WXd0S+U2M=
-X-Google-Smtp-Source: APXvYqyiPptI/2rCkwsakVEWWwtICO6KfW5npJicVHWbTzex5WmfJr7zoLsHbjzFHyG4jJH65NIzwg==
-X-Received: by 2002:a17:90a:3465:: with SMTP id
- o92mr6113026pjb.20.1565774527842; 
- Wed, 14 Aug 2019 02:22:07 -0700 (PDT)
-Received: from [192.168.68.119] (203-219-253-117.static.tpgi.com.au.
- [203.219.253.117])
- by smtp.gmail.com with ESMTPSA id m6sm113712457pfb.151.2019.08.14.02.22.03
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 14 Aug 2019 02:22:07 -0700 (PDT)
-Subject: Re: [PATCH v9 4/7] extable: Add function to search only kernel
- exception table
-To: Santosh Sivaraj <santosh@fossix.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel <linux-kernel@vger.kernel.org>
-References: <20190812092236.16648-1-santosh@fossix.org>
- <20190812092236.16648-5-santosh@fossix.org>
-From: Balbir Singh <bsingharora@gmail.com>
-Message-ID: <916d5741-a0bd-8860-4a38-7a5ef677214a@gmail.com>
-Date: Wed, 14 Aug 2019 19:22:00 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190812092236.16648-5-santosh@fossix.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467kj23h7FzDqPN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 19:25:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 467khv4p4bz9v0GZ;
+ Wed, 14 Aug 2019 11:25:51 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=tDKSVHbM; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id npt1ratVQikb; Wed, 14 Aug 2019 11:25:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 467khv3lsvz9v0GY;
+ Wed, 14 Aug 2019 11:25:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565774751; bh=AnAI6eOBmIzFT0vPN6Zr0av8nS7BjNoeKOZuIxTShO0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=tDKSVHbMwzDrWOYdWHa0XmSb0QD9j9TeNf895KleI+g1tGRGYfdLh2EKXtGh6960E
+ zuM5VevsUXrbRej0XC46libkHIWfcnr3yc7evL3GPQMN5LQBL46tO+yir9mLHJZqmS
+ VUNqMCpHDYU6CNAOtz6ZmzNJyIhhZWyunfSTofSU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C16B28B7A3;
+ Wed, 14 Aug 2019 11:25:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 99Q4-iUKg2Gg; Wed, 14 Aug 2019 11:25:52 +0200 (CEST)
+Received: from pc17473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A1C2B8B761;
+ Wed, 14 Aug 2019 11:25:52 +0200 (CEST)
+Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 6D3DC69632; Wed, 14 Aug 2019 09:25:52 +0000 (UTC)
+Message-Id: <86b72f0c134367b214910b27b9a6dd3321af93bb.1565774657.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/futex: fix warning: 'oldval' may be used
+ uninitialized in this function
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 14 Aug 2019 09:25:52 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,77 +74,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Reza Arbab <arbab@linux.ibm.com>,
- Ingo Molnar <mingo@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+  CC      kernel/futex.o
+kernel/futex.c: In function 'do_futex':
+kernel/futex.c:1676:17: warning: 'oldval' may be used uninitialized in this function [-Wmaybe-uninitialized]
+   return oldval == cmparg;
+                 ^
+kernel/futex.c:1651:6: note: 'oldval' was declared here
+  int oldval, ret;
+      ^
 
+This is because arch_futex_atomic_op_inuser() only sets *oval
+if ret is NUL and GCC doesn't see that it will use it only when
+ret is NUL.
 
-On 12/8/19 7:22 pm, Santosh Sivaraj wrote:
-> Certain architecture specific operating modes (e.g., in powerpc machine
-> check handler that is unable to access vmalloc memory), the
-> search_exception_tables cannot be called because it also searches the
-> module exception tables if entry is not found in the kernel exception
-> table.
-> 
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  include/linux/extable.h |  2 ++
->  kernel/extable.c        | 11 +++++++++--
->  2 files changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/extable.h b/include/linux/extable.h
-> index 41c5b3a25f67..81ecfaa83ad3 100644
-> --- a/include/linux/extable.h
-> +++ b/include/linux/extable.h
-> @@ -19,6 +19,8 @@ void trim_init_extable(struct module *m);
->  
->  /* Given an address, look for it in the exception tables */
->  const struct exception_table_entry *search_exception_tables(unsigned long add);
-> +const struct exception_table_entry *
-> +search_kernel_exception_table(unsigned long addr);
-> 
+Anyway, the non-NUL ret path is an error path that won't suffer from
+setting *oval, and as *oval is a local var in futex_atomic_op_inuser()
+it will have no impact.
 
-Can we find a better name search_kernel still sounds like all of the kernel.
-Can we rename it to search_kernel_linear_map_extable?
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/futex.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/futex.h b/arch/powerpc/include/asm/futex.h
+index 3a6aa57b9d90..eea28ca679db 100644
+--- a/arch/powerpc/include/asm/futex.h
++++ b/arch/powerpc/include/asm/futex.h
+@@ -60,8 +60,7 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
  
->  #ifdef CONFIG_MODULES
->  /* For extable.c to search modules' exception tables. */
-> diff --git a/kernel/extable.c b/kernel/extable.c
-> index e23cce6e6092..f6c9406eec7d 100644
-> --- a/kernel/extable.c
-> +++ b/kernel/extable.c
-> @@ -40,13 +40,20 @@ void __init sort_main_extable(void)
->  	}
->  }
->  
-> +/* Given an address, look for it in the kernel exception table */
-> +const
-> +struct exception_table_entry *search_kernel_exception_table(unsigned long addr)
-> +{
-> +	return search_extable(__start___ex_table,
-> +			      __stop___ex_table - __start___ex_table, addr);
-> +}
-> +
->  /* Given an address, look for it in the exception tables. */
->  const struct exception_table_entry *search_exception_tables(unsigned long addr)
->  {
->  	const struct exception_table_entry *e;
->  
-> -	e = search_extable(__start___ex_table,
-> -			   __stop___ex_table - __start___ex_table, addr);
-> +	e = search_kernel_exception_table(addr);
->  	if (!e)
->  		e = search_module_extables(addr);
->  	return e;
-> 
+ 	pagefault_enable();
+ 
+-	if (!ret)
+-		*oval = oldval;
++	*oval = oldval;
+ 
+ 	prevent_write_to_user(uaddr, sizeof(*uaddr));
+ 	return ret;
+-- 
+2.13.3
+
