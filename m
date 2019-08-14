@@ -1,80 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122FC8CFEA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 11:44:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448B28D004
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 11:48:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467l6K2LzszDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 19:44:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467lBt0HZCzDqQv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 19:48:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
- envelope-from=bsingharora@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="jFuFnRB0"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Bz43zrqY"; 
  dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467l2V5yj2zDqsr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 19:41:06 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id v12so5465441pfn.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 02:41:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=LfFkLwjqyQIH9T75mSQkj/WAlvM62io+hnQFkWZp6Pc=;
- b=jFuFnRB0/8csf+W8FViKPIDaEmS37F+row4a3iyvUZTk3+UEYYsc/umedWVPXZUEPN
- LDdtmXgjxyfggY0JP9gzuxWNLkt9w7hpjz8XuE2kCmm80gh3Ki9JQxk9tWm1EBPlfH/K
- DP12ymtzlN9IHXiSHs19xPERgy/Qb624g0yuWHYl2dH4tQJSIcz8tQn7dX+ptc4xCSJz
- B5+5z3lM3tK0y5tdfekEiXiAa3s+bulCjpDfShlgK+v7H75t366TqhsaV7NYrIMciMC/
- qdUcENrR41a7h870LEPPVNzFj8aZQuAJJprtvNeh4/Pv5rXpcBKXNaVjOrJr6lJaZqWu
- frmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=LfFkLwjqyQIH9T75mSQkj/WAlvM62io+hnQFkWZp6Pc=;
- b=Tbtzi7kHpTx3YhdhLrOVqrMhRIT91VqlY7j/CzGxrz/RUcmkcVpn0fFKnWQno582Ck
- tX/tRriviDV5LtHs4uhEeQG7qloltlSJHEu4lCU/cBT/LXA9QbJLaZseQatcKLqc5ex3
- ZJqDOKkdOAHOezLn9Kvui8Jfb7ScbBAlENu5jOCXFKohpb934e8Ux87Cx815Jyw6cUEd
- hgj7Y3XxFVlh383gjUEgqNhV6LydHZ2AwvkrpE7GxV8602BFkA/nVGCQrbgn40vmBbAG
- /KRt09rRiNEB1RNoObc3VHU4RKAqM7SWSR0W2wl19gSF2u2LOVLS4NwrFx6cXU70aXn7
- JMSg==
-X-Gm-Message-State: APjAAAVTsT7spHy0YNhkhxBoz5aF0rDgy7WQE5QW0eI8r49GZDlIDpQz
- Mcf00s4XctKuGcMc89N03o8=
-X-Google-Smtp-Source: APXvYqyRTX2xe/RXO2a1R4wAMFoGUHd/8F69mYx1bwHIiLNCMYtDwXDbG78SgJR7jpu9zRPE3C/+Kg==
-X-Received: by 2002:a62:7a0f:: with SMTP id v15mr26284997pfc.35.1565775664294; 
- Wed, 14 Aug 2019 02:41:04 -0700 (PDT)
-Received: from [192.168.68.119] (203-219-253-117.static.tpgi.com.au.
- [203.219.253.117])
- by smtp.gmail.com with ESMTPSA id i11sm17425385pfk.34.2019.08.14.02.41.00
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 14 Aug 2019 02:41:03 -0700 (PDT)
-Subject: Re: [PATCH v9 7/7] powerpc: add machine check safe copy_to_user
-To: Santosh Sivaraj <santosh@fossix.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel <linux-kernel@vger.kernel.org>
-References: <20190812092236.16648-1-santosh@fossix.org>
- <20190812092236.16648-8-santosh@fossix.org>
-From: Balbir Singh <bsingharora@gmail.com>
-Message-ID: <74d12529-d068-0210-e229-5cea68bcf9da@gmail.com>
-Date: Wed, 14 Aug 2019 19:40:58 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467l952CmHzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 19:46:48 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 467l8z42V2z9v0Ff;
+ Wed, 14 Aug 2019 11:46:43 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Bz43zrqY; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id duYmpjDDdGb3; Wed, 14 Aug 2019 11:46:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 467l8z2ylKz9v0Fd;
+ Wed, 14 Aug 2019 11:46:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565776003; bh=BrHb6kuTC/Mg9gOVpCVXDn+9cEW6zECD+XrYrLBGZrw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Bz43zrqY6DkHgepmrZy8IMGoI34HYy7ngYk/QDdrVa/3/cNyEfkk+dUlEujLzqUKf
+ 65mt+1P9h2PsIv2PPQQoyXcW5E5hkentK4YunvZzNJ71IUqFnu4S83t/SOnKl4bYub
+ Z8I/IiFZHGpk019jmVlId2/HuMYNjwcbVZbJnHwE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 950A68B7A3;
+ Wed, 14 Aug 2019 11:46:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vROh-KTZERmY; Wed, 14 Aug 2019 11:46:44 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 94A1C8B761;
+ Wed, 14 Aug 2019 11:46:43 +0200 (CEST)
+Subject: Re: [PATCH 1/2] powerpc: rewrite LOAD_REG_IMMEDIATE() as an
+ intelligent macro
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <61d2a0b6f0c89b1ee546851ce9b6bd345e5ec968.1565690241.git.christophe.leroy@c-s.fr>
+ <20190814020803.it7i7mjxyruu4vy3@oak.ozlabs.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3d4e757f-84cd-7a48-0b5a-d39c44ea33ea@c-s.fr>
+Date: Wed, 14 Aug 2019 11:46:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190812092236.16648-8-santosh@fossix.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20190814020803.it7i7mjxyruu4vy3@oak.ozlabs.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,65 +79,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Chandan Rajendra <chandan@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 12/8/19 7:22 pm, Santosh Sivaraj wrote:
-> Use  memcpy_mcsafe() implementation to define copy_to_user_mcsafe()
+Le 14/08/2019 à 04:08, Paul Mackerras a écrit :
+> On Tue, Aug 13, 2019 at 09:59:35AM +0000, Christophe Leroy wrote:
 > 
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->  arch/powerpc/Kconfig               |  1 +
->  arch/powerpc/include/asm/uaccess.h | 14 ++++++++++++++
->  2 files changed, 15 insertions(+)
+> [snip]
 > 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 77f6ebf97113..4316e36095a2 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -137,6 +137,7 @@ config PPC
->  	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
->  	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
->  	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
-> +	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	select ARCH_KEEP_MEMBLOCK
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 8b03eb44e876..15002b51ff18 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -387,6 +387,20 @@ static inline unsigned long raw_copy_to_user(void __user *to,
->  	return ret;
->  }
->  
-> +static __always_inline unsigned long __must_check
-> +copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
-> +{
-> +	if (likely(check_copy_size(from, n, true))) {
-> +		if (access_ok(to, n)) {
-> +			allow_write_to_user(to, n);
-> +			n = memcpy_mcsafe((void *)to, from, n);
-> +			prevent_write_to_user(to, n);
-> +		}
-> +	}
-> +
-> +	return n;
-
-Do we always return n independent of the check_copy_size return value and access_ok return values?
-
-Balbir Singh.
-
-> +}
-> +
->  extern unsigned long __clear_user(void __user *addr, unsigned long size);
->  
->  static inline unsigned long clear_user(void __user *addr, unsigned long size)
+>> +.macro __LOAD_REG_IMMEDIATE r, x
+>> +	.if \x & ~0xffffffff != 0
+>> +		__LOAD_REG_IMMEDIATE_32 \r, (\x) >> 32
+>> +		rldicr	\r, \r, 32, 31
+>> +		.if (\x) & 0xffff0000 != 0
+>> +			oris \r, \r, (\x)@__AS_ATHIGH
+>> +		.endif
+>> +		.if (\x) & 0xffff != 0
+>> +			oris \r, \r, (\x)@l
+>> +		.endif
+>> +	.else
+>> +		__LOAD_REG_IMMEDIATE_32 \r, \x
+>> +	.endif
+>> +.endm
 > 
+> Doesn't this force all negative constants, even small ones, to use
+> the long sequence?  For example, __LOAD_REG_IMMEDIATE r3, -1 will
+> generate (as far as I can see):
+> 
+> 	li	r3, -1
+> 	rldicr	r3, r3, 32, 31
+> 	oris	r3, r3, 0xffff
+> 	ori	r3, r3, 0xffff
+> 
+> which seems suboptimal.
+
+Ah yes, thanks. And it is also buggy when \x is over 0x80000000 because 
+lis is a signed ops
+
+I'll send v2
+
+Christophe
