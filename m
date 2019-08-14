@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673698DED3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 22:30:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98488DEE9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 22:35:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4681RW3Z3JzDqxs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 06:30:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4681Yg28VdzDqw8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 06:35:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,13 +19,13 @@ Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
  [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4681PB64MJzDqjG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 06:28:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4681Wk3vL6zDqjG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 06:33:54 +1000 (AEST)
 Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
- by mail.wl.linuxfoundation.org (Postfix) with ESMTP id E840E28847
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:28:11 +0000 (UTC)
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 17CE328846
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:33:52 +0000 (UTC)
 Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
- id DC63428848; Wed, 14 Aug 2019 20:28:11 +0000 (UTC)
+ id 09F8328847; Wed, 14 Aug 2019 20:33:52 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
  pdx-wl-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -35,7 +35,7 @@ From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
  padding overwritten
-Date: Wed, 14 Aug 2019 20:28:11 +0000
+Date: Wed, 14 Aug 2019 20:33:51 +0000
 X-Bugzilla-Reason: CC
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: None
@@ -51,7 +51,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: akpm@linux-foundation.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-204371-206035-w6MpwkOE4d@https.bugzilla.kernel.org/>
+Message-ID: <bug-204371-206035-ZpUhI0lkeH@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
 References: <bug-204371-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -77,19 +77,9 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
---- Comment #24 from Christophe Leroy (christophe.leroy@c-s.fr) ---
-It confirms what I suspected: due to some debug options, kzalloc() doesn't
-provide aligned areas.
-
-In __load_free_space_cache() can you replace=20
-e->bitmap =3D kzalloc(PAGE_SIZE, GFP_NOFS);
-By
-e->bitmap =3D (void *)__get_free_page(GFP_NOFS | __GFP_ZERO);
-
-And same in insert_into_bitmap()
-
-Then replace the three kfree() which free bitmaps by something like
-free_page((unsigned long)entry->bitmap)
+--- Comment #25 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+You can use get_zeroed_page(GFP_NOFS) instead of __get_free_page(GFP_NOFS |
+__GFP_ZERO)
 
 --=20
 You are receiving this mail because:
