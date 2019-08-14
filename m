@@ -2,73 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A79E8D5EE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 16:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F35CA8D647
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 16:34:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467sQV139hzDqkd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 00:28:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467sY550XBzDqtk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 00:34:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="tw9y0mDZ"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467sGQ1kw6zDqXR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:21:49 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 467sGH235Bz9v0cP;
- Wed, 14 Aug 2019 16:21:43 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=tw9y0mDZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id ihWuT0UDAHpD; Wed, 14 Aug 2019 16:21:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 467sGH0zzDz9v0cN;
- Wed, 14 Aug 2019 16:21:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565792503; bh=WbfBX1iNlYYIE151XGSpJjY4OxfwXsdR+UkX1qdNpbQ=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=tw9y0mDZbaE5/e0Zdt6u9X/nGttQLRJ+l1EguSYqUjxHiaQ48pOTME7NT1lPZPaHm
- ASKLCWVPbADRh78PfFsjwR0hlpSeqXTfGVuzdMNeo061xCtutH+x2+OnRzxFnYVbJm
- 1FZ6ZvZlnQi/T54/VCgwJJyT5JSMo6nqDa2S6Hlg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C32E18B7F9;
- Wed, 14 Aug 2019 16:21:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fXoh92ifn8SY; Wed, 14 Aug 2019 16:21:44 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 94EC68B761;
- Wed, 14 Aug 2019 16:21:44 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467sJc2NLLzDqs8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:23:38 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 6C2D668B02; Wed, 14 Aug 2019 16:23:32 +0200 (CEST)
+Date: Wed, 14 Aug 2019 16:23:32 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH] powerpc: use the generic dma coherent remap allocator
-To: Christoph Hellwig <hch@lst.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <20190814142332.GA8873@lst.de>
 References: <20190814132230.31874-1-hch@lst.de>
  <20190814132230.31874-2-hch@lst.de>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <fd5df886-bd2e-8023-47aa-16d41973a8d3@c-s.fr>
-Date: Wed, 14 Aug 2019 16:21:42 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <34961f3c-e859-49a0-834f-0342bf1f7974@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20190814132230.31874-2-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <34961f3c-e859-49a0-834f-0342bf1f7974@c-s.fr>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,38 +46,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Aug 14, 2019 at 04:20:34PM +0200, Christophe Leroy wrote:
+>> index 56a7c814160d..afe71b89dec3 100644
+>> --- a/arch/powerpc/platforms/Kconfig.cputype
+>> +++ b/arch/powerpc/platforms/Kconfig.cputype
+>> @@ -450,8 +450,10 @@ config NOT_COHERENT_CACHE
+>>   	depends on 4xx || PPC_8xx || E200 || PPC_MPC512x || \
+>>   		GAMECUBE_COMMON || AMIGAONE
+>>   	select ARCH_HAS_DMA_COHERENT_TO_PFN
+>
+> You drop arch_dma_coherent_to_pfn(), it's surprising to see 
+> ARCH_HAS_DMA_COHERENT_TO_PFN remains. At first I thought I'd get a build 
+> failure.
+>
+> After looking more, I see there is a arch_dma_coherent_to_pfn()
+> defined in kernel/dma/remap.c when DMA_DIRECT_REMAP is selected.
+>
+> I think the naming is not really consistant and should be fixed some how, 
+> because that's misleading to have an arch_something() being common to all.
 
+I actually have patches in the queue kill arch_dma_coherent_to_pfn off
+entirely, as we can always just get back to the physical address and thus
+pfn from the dma address using dma_to_phys for dma-direct.
 
-Le 14/08/2019 à 15:22, Christoph Hellwig a écrit :
-> This switches to using common code for the DMA allocations, including
-> potential use of the CMA allocator if configured.
-> 
-> Switching to the generic code enables DMA allocations from atomic
-> context, which is required by the DMA API documentation, and also
-> adds various other minor features drivers start relying upon.  It
-> also makes sure we have on tested code base for all architectures
-> that require uncached pte bits for coherent DMA allocations.
-> 
-> Another advantage is that consistent memory allocations now share
-> the general vmalloc pool instead of needing an explicit careout
-> from it.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> # tested on 8xx
-
-> ---
->   arch/powerpc/Kconfig                         |  12 -
->   arch/powerpc/include/asm/book3s/32/pgtable.h |  12 +-
->   arch/powerpc/include/asm/nohash/32/pgtable.h |  12 +-
->   arch/powerpc/mm/dma-noncoherent.c            | 318 +------------------
->   arch/powerpc/mm/mem.c                        |   4 -
->   arch/powerpc/mm/ptdump/ptdump.c              |   9 -
->   arch/powerpc/platforms/Kconfig.cputype       |   2 +
->   7 files changed, 17 insertions(+), 352 deletions(-)
-> 
+But there is a huge review backlog for my outstanding dma patcheset,
+so it might take a bit until it is posted.
