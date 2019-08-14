@@ -2,73 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FAA8CBE7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 08:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C7D8CBED
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 08:32:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467fj46qNBzDql6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 16:25:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467fs73v03zDqRM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 16:32:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+147547a3be601d556dd4+5834+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="avbdMWC6"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="nNjq/9jK"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467fg366CjzDqNk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 16:23:59 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 467ffy4tKYz9vBn1;
- Wed, 14 Aug 2019 08:23:54 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=avbdMWC6; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id a4nZaAJs1IUV; Wed, 14 Aug 2019 08:23:54 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 467ffy3jSmz9vBn0;
- Wed, 14 Aug 2019 08:23:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565763834; bh=riZMoyaCD1+ZQ3eW9ssk+3+aGprxE6J0aY0oTm8WUHk=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=avbdMWC6gc6VxruvxXJGtYUHAYWYzSiS4yb5QNH+51hPcJHVoUSm6e/d/DNpYKicI
- vS8BErZ65r9GgWrakVITqUbxe3MQx1YDyYqkEDsIDZE0uQCzGij7OUCEWw2XfNC49T
- 7TCdqwMlO5wSet+PmpAdKey3vLAnVDf8FPuOq+Uc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 828FD8B780;
- Wed, 14 Aug 2019 08:23:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ApWTthVaOqfG; Wed, 14 Aug 2019 08:23:55 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FC4F8B761;
- Wed, 14 Aug 2019 08:23:55 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467fqH31tzzDqQl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 16:31:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=U4IdTV78FsPfI1DcGuq/VJWnEgDTS2/i20t6j7jbmAU=; b=nNjq/9jKjp3TgScQoIA0PaajSm
+ I+nF/VZU+awFuii2M9QQmEYmpz7kFngpkeM+GMdGeNiXqwSOy02R7RkbYZ4+Re81TryuRXnS00Kk8
+ BKE3VVZoV+5A2QyMl/MDMUDFaievGQuuCQq7FeEERHXM06pYBBewwzy8331i4uPsMf2UWMJm7K/qY
+ Dnn3PvTeVN86yedN7DJFvbKL3jt7Ors/rJ7rv6JOJZug4XenViaHJlPhkfnZOxjvyqMaUZvq5FYfG
+ BmA68PKRlXTGSa7X7ImXocXF7upPaH076Dw+nEOFTEl0oDyDirE9gzEzuH9j+TK4WAtl8hBcrG1Cq
+ 5HbZOoGA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1hxmo6-0003jz-0j; Wed, 14 Aug 2019 06:30:50 +0000
+Date: Tue, 13 Aug 2019 23:30:49 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH v1 10/10] powerpc/mm: refactor ioremap_range() and use
  ioremap_page_range()
-To: Christoph Hellwig <hch@infradead.org>
+Message-ID: <20190814063049.GA3981@infradead.org>
 References: <6bc35eca507359075528bc0e55938bc1ce8ee485.1565726867.git.christophe.leroy@c-s.fr>
  <bd784c8091cbf41231a862f73b52fd2a356ec8f1.1565726867.git.christophe.leroy@c-s.fr>
  <20190814054941.GC27497@infradead.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3f866bc8-7cc3-cb09-92f3-016dfb906526@c-s.fr>
-Date: Wed, 14 Aug 2019 08:23:54 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <3f866bc8-7cc3-cb09-92f3-016dfb906526@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20190814054941.GC27497@infradead.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <3f866bc8-7cc3-cb09-92f3-016dfb906526@c-s.fr>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,24 +70,25 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+ Christoph Hellwig <hch@infradead.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 14/08/2019 Ã  07:49, Christoph Hellwig a Ã©critÂ :
-> Somehow this series is missing a cover letter.
+On Wed, Aug 14, 2019 at 08:23:54AM +0200, Christophe Leroy wrote:
+> Le 14/08/2019 à 07:49, Christoph Hellwig a écrit :
+> > Somehow this series is missing a cover letter.
+> > 
+> > While you are touching all this "fun" can you also look into killing
+> > __ioremap?  It seems to be a weird non-standard version of ioremap_prot
+> > (probably predating ioremap_prot) that is missing a few lines of code
+> > setting attributes that might not even be applicable for the two drivers
+> > calling it.
+> > 
 > 
-> While you are touching all this "fun" can you also look into killing
-> __ioremap?  It seems to be a weird non-standard version of ioremap_prot
-> (probably predating ioremap_prot) that is missing a few lines of code
-> setting attributes that might not even be applicable for the two drivers
-> calling it.
-> 
+> ocm_init_node() [arch/powerpc/platforms/4xx/ocm.c] calls __ioremap() with
+> _PAGE_EXEC set while ioremap_prot() clears _PAGE_EXEC
 
-ocm_init_node() [arch/powerpc/platforms/4xx/ocm.c] calls __ioremap() 
-with _PAGE_EXEC set while ioremap_prot() clears _PAGE_EXEC
-
-Christophe
+Indeed.  But I don't see anything marking this intentional.  Then again
+the driver is entirely unused, so we might as well kill it off now.
