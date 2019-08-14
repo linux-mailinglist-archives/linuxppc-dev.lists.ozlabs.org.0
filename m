@@ -2,41 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0858D2B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 14:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C9F8D352
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 14:39:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467pGk0LJvzDqqY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 22:06:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467pzm4vPFzDqrT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 22:39:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="M1CfgpGd"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467pDN4TgwzDqmf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 22:04:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 467pDM3mp9z9sN1; Wed, 14 Aug 2019 22:04:51 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 467pDL4Wbvz9sDB;
- Wed, 14 Aug 2019 22:04:50 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Claudio Carvalho <cclaudio@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v5 5/7] powerpc/mm: Write to PTCR only if ultravisor
- disabled
-In-Reply-To: <20190808040555.2371-6-cclaudio@linux.ibm.com>
-References: <20190808040555.2371-1-cclaudio@linux.ibm.com>
- <20190808040555.2371-6-cclaudio@linux.ibm.com>
-Date: Wed, 14 Aug 2019 22:04:49 +1000
-Message-ID: <87wofg6jha.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467pwc1ZG1zDqpd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 22:36:16 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 467pwW3NxJz9v0QX;
+ Wed, 14 Aug 2019 14:36:11 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=M1CfgpGd; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id zL9cEQFFkHXo; Wed, 14 Aug 2019 14:36:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 467pwW2Fkdz9v0dJ;
+ Wed, 14 Aug 2019 14:36:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565786171; bh=FQUyM6c7VYcuMFXgP9DLplR+JJixkhgbCHgFtfjWXKI=;
+ h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
+ b=M1CfgpGd+59YMGG2W3jHT6lt4augCL1HrXFI/qdUfyYvag/qTpQyDcKVJgtXrTS6L
+ mVkfJj+eOkxRDJjD4VLoe8cKv2cfrAXT9bKnPipM2Wb0+o+kDKKk7nii3PhS2gBfMa
+ gH96bfUKLqnLxpO5/sOuCeT+0HZ/zb33ek0OYUdY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CCCA58B7F5;
+ Wed, 14 Aug 2019 14:36:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id T43b992SB-7o; Wed, 14 Aug 2019 14:36:12 +0200 (CEST)
+Received: from pc17473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AF41D8B761;
+ Wed, 14 Aug 2019 14:36:12 +0200 (CEST)
+Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id A92906B6C0; Wed, 14 Aug 2019 12:36:12 +0000 (UTC)
+Message-Id: <ff6c8f631bd4ce3a10e0cc241eb569816187bc20.1565786091.git.christophe.leroy@c-s.fr>
+In-Reply-To: <eb4d626514e22f85814830012642329018ef6af9.1565786091.git.christophe.leroy@c-s.fr>
+References: <eb4d626514e22f85814830012642329018ef6af9.1565786091.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 4/5] powerpc/ptdump: get out of note_prot_wx() when
+ CONFIG_PPC_DEBUG_WX is not selected.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 14 Aug 2019 12:36:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,77 +76,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Anderson <andmike@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, Ryan Grimm <grimm@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Guerney Hunt <gdhh@linux.ibm.com>, Thiago Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Claudio Carvalho <cclaudio@linux.ibm.com> writes:
-> In ultravisor enabled systems, PTCR becomes ultravisor privileged only
-> for writing and an attempt to write to it will cause a Hypervisor
-> Emulation Assitance interrupt.
->
-> This patch adds the try_set_ptcr(val) macro as an accessor to
-> mtspr(SPRN_PTCR, val), which will be executed only if ultravisor
-> disabled.
->
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/reg.h           | 13 +++++++++++++
->  arch/powerpc/mm/book3s64/hash_utils.c    |  4 ++--
->  arch/powerpc/mm/book3s64/pgtable.c       |  2 +-
->  arch/powerpc/mm/book3s64/radix_pgtable.c |  6 +++---
->  4 files changed, 19 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-> index 10caa145f98b..14139b1ebdb8 100644
-> --- a/arch/powerpc/include/asm/reg.h
-> +++ b/arch/powerpc/include/asm/reg.h
-> @@ -15,6 +15,7 @@
->  #include <asm/cputable.h>
->  #include <asm/asm-const.h>
->  #include <asm/feature-fixups.h>
-> +#include <asm/firmware.h>
+When CONFIG_PPC_DEBUG_WX, note_prot_wx() is useless.
 
-reg.h is already too big and unwieldy.
+Get out of it early and inconditionnally in that case,
+so that GCC can kick all the code out.
 
-Can you put this in ultravisor.h and include that in the appropriate places.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/mm/ptdump/ptdump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> @@ -1452,6 +1453,18 @@ static inline void update_power8_hid0(unsigned long hid0)
->  	 */
->  	asm volatile("sync; mtspr %0,%1; isync":: "i"(SPRN_HID0), "r"(hid0));
->  }
-> +
-> +/*
-> + * In ultravisor enabled systems, PTCR becomes ultravisor privileged only for
-> + * writing and an attempt to write to it will cause a Hypervisor Emulation
-> + * Assistance interrupt.
-> + */
-> +#define try_set_ptcr(val)						\
-> +	do {								\
-> +		if (!firmware_has_feature(FW_FEATURE_ULTRAVISOR))	\
-> +			mtspr(SPRN_PTCR, val);				\
-> +	} while (0)
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 9a2186c133e6..ab6a572202b4 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -177,7 +177,7 @@ static void dump_addr(struct pg_state *st, unsigned long addr)
+ 
+ static void note_prot_wx(struct pg_state *st, unsigned long addr)
+ {
+-	if (!st->check_wx)
++	if (!IS_ENABLED(CONFIG_PPC_DEBUG_WX) || !st->check_wx)
+ 		return;
+ 
+ 	if (!((st->current_flags & pgprot_val(PAGE_KERNEL_X)) == pgprot_val(PAGE_KERNEL_X)))
+-- 
+2.13.3
 
-This should be a static inline please, not a macro.
-
-Sorry, I don't like the name, we're not trying to set it, we know when
-to set it and when not to.
-
-It is awkward to come up with a good name because we don't have a term
-for "hypervisor that's not running under an ultravisor".
-
-Maybe set_ptcr_when_no_uv()
-
-Which is kinda messy, someone feel free to come up with something
-better.
-
-I also see some more accesses to the PTCR in
-arch/powerpc/platforms/powernv/idle.c which you haven't patched?
-
-cheers
