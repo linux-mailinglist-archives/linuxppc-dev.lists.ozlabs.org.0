@@ -2,48 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A048D771
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 17:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 063068D77B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 17:52:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467vDT3mGJzDqv5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 01:50:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467vGw4zRJzDqJR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 01:52:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=46.105.56.76; helo=6.mo179.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 6.mo179.mail-out.ovh.net (6.mo179.mail-out.ovh.net
- [46.105.56.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467vB923lHzDqs1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 01:48:16 +1000 (AEST)
-Received: from player770.ha.ovh.net (unknown [10.108.35.159])
- by mo179.mail-out.ovh.net (Postfix) with ESMTP id BB38013ED18
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:48:11 +0200 (CEST)
-Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
- (Authenticated sender: clg@kaod.org)
- by player770.ha.ovh.net (Postfix) with ESMTPSA id 0779A8DDB68D;
- Wed, 14 Aug 2019 15:48:05 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 1/3] powerpc/xmon: Check for HV mode when dumping XIVE info
- from OPAL
-Date: Wed, 14 Aug 2019 17:47:52 +0200
-Message-Id: <20190814154754.23682-2-clg@kaod.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190814154754.23682-1-clg@kaod.org>
-References: <20190814154754.23682-1-clg@kaod.org>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 467vCZ52sKzDqsd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 01:49:22 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0B2328;
+ Wed, 14 Aug 2019 08:49:17 -0700 (PDT)
+Received: from [10.1.197.57] (e110467-lin.cambridge.arm.com [10.1.197.57])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A26C3F694;
+ Wed, 14 Aug 2019 08:49:14 -0700 (PDT)
+Subject: Re: [PATCH 6/6] driver core: initialize a default DMA mask for
+ platform device
+To: Christoph Hellwig <hch@lst.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+References: <20190811080520.21712-1-hch@lst.de>
+ <20190811080520.21712-7-hch@lst.de>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <fbea6e6d-7721-b51d-0501-582e8446e9c9@arm.com>
+Date: Wed, 14 Aug 2019 16:49:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 3259198757676354481
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddruddvledgfedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
+In-Reply-To: <20190811080520.21712-7-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,52 +52,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arch@vger.kernel.org, Gavin Li <git@thegavinli.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Mathias Nyman <mathias.nyman@intel.com>, Geoff Levand <geoff@infradead.org>,
+ Olav Kongas <ok@artecdesign.ee>, Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-usb@vger.kernel.org, Michal Simek <michal.simek@xilinx.com>,
+ linux-kernel@vger.kernel.org, Tony Prisk <linux@prisktech.co.nz>,
+ iommu@lists.linux-foundation.org, Alan Stern <stern@rowland.harvard.edu>,
+ NXP Linux Team <linux-imx@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Minas Harutyunyan <hminas@synopsys.com>, Shawn Guo <shawnguo@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Bin Liu <b-liu@ti.com>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, the xmon 'dx' command calls OPAL to dump the XIVE state in
-the OPAL logs and also outputs some of the fields of the internal XIVE
-structures in Linux. The OPAL calls can only be done on baremetal
-(PowerNV) and they crash a pseries machine. Fix by checking the
-hypervisor feature of the CPU.
+On 11/08/2019 09:05, Christoph Hellwig wrote:
+> We still treat devices without a DMA mask as defaulting to 32-bits for
+> both mask, but a few releases ago we've started warning about such
+> cases, as they require special cases to work around this sloppyness.
+> Add a dma_mask field to struct platform_object so that we can initialize
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- arch/powerpc/xmon/xmon.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+s/object/device/
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 14e56c25879f..25d4adccf750 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -2534,13 +2534,16 @@ static void dump_pacas(void)
- static void dump_one_xive(int cpu)
- {
- 	unsigned int hwid = get_hard_smp_processor_id(cpu);
--
--	opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
--	opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
--	opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
--	opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
--	opal_xive_dump(XIVE_DUMP_VP, hwid);
--	opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
-+	bool hv = cpu_has_feature(CPU_FTR_HVMODE);
-+
-+	if (hv) {
-+		opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
-+		opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
-+		opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
-+		opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
-+		opal_xive_dump(XIVE_DUMP_VP, hwid);
-+		opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
-+	}
- 
- 	if (setjmp(bus_error_jmp) != 0) {
- 		catch_memory_errors = 0;
--- 
-2.21.0
+> the dma_mask pointer in struct device and initialize both masks to
+> 32-bits by default.  Architectures can still override this in
+> arch_setup_pdev_archdata if needed.
+> 
+> Note that the code looks a little odd with the various conditionals
+> because we have to support platform_device structures that are
+> statically allocated.
 
+This would be a good point to also get rid of the long-standing bodge in 
+platform_device_register_full().
+
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   drivers/base/platform.c         | 15 +++++++++++++--
+>   include/linux/platform_device.h |  1 +
+>   2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index ec974ba9c0c4..b216fcb0a8af 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -264,6 +264,17 @@ struct platform_object {
+>   	char name[];
+>   };
+>   
+> +static void setup_pdev_archdata(struct platform_device *pdev)
+
+Bikeshed: painting the generic DMA API properties as "archdata" feels a 
+bit off-target :/
+
+> +{
+> +	if (!pdev->dev.coherent_dma_mask)
+> +		pdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+> +	if (!pdev->dma_mask)
+> +		pdev->dma_mask = DMA_BIT_MASK(32);
+> +	if (!pdev->dev.dma_mask)
+> +		pdev->dev.dma_mask = &pdev->dma_mask;
+> +	arch_setup_pdev_archdata(pdev);
+
+AFAICS m68k's implementation of that arch hook becomes entirely 
+redundant after this change, so may as well go. That would just leave 
+powerpc's actual archdata, which at a glance looks like it could 
+probably be cleaned up with not *too* much trouble.
+
+Robin.
+
+> +};
+> +
+>   /**
+>    * platform_device_put - destroy a platform device
+>    * @pdev: platform device to free
+> @@ -310,7 +321,7 @@ struct platform_device *platform_device_alloc(const char *name, int id)
+>   		pa->pdev.id = id;
+>   		device_initialize(&pa->pdev.dev);
+>   		pa->pdev.dev.release = platform_device_release;
+> -		arch_setup_pdev_archdata(&pa->pdev);
+> +		setup_pdev_archdata(&pa->pdev);
+>   	}
+>   
+>   	return pa ? &pa->pdev : NULL;
+> @@ -512,7 +523,7 @@ EXPORT_SYMBOL_GPL(platform_device_del);
+>   int platform_device_register(struct platform_device *pdev)
+>   {
+>   	device_initialize(&pdev->dev);
+> -	arch_setup_pdev_archdata(pdev);
+> +	setup_pdev_archdata(pdev);
+>   	return platform_device_add(pdev);
+>   }
+>   EXPORT_SYMBOL_GPL(platform_device_register);
+> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+> index 9bc36b589827..a2abde2aef25 100644
+> --- a/include/linux/platform_device.h
+> +++ b/include/linux/platform_device.h
+> @@ -24,6 +24,7 @@ struct platform_device {
+>   	int		id;
+>   	bool		id_auto;
+>   	struct device	dev;
+> +	u64		dma_mask;
+>   	u32		num_resources;
+>   	struct resource	*resource;
+>   
+> 
