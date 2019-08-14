@@ -1,83 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527818E052
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 00:06:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885368E045
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 00:04:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4683ZT6Gm5zDr0R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 08:06:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4683Wy05FDzDr1Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 08:04:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=oracle.com
- (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
+ envelope-from=robdclark@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.b="ZbWpJN7E"; 
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="QsFDkKja"; 
  dkim-atps=neutral
-X-Greylist: delayed 27858 seconds by postgrey-1.36 at bilbo;
- Thu, 15 Aug 2019 08:04:21 AEST
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4683X560yVzDr0v
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 08:04:20 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EEIxcr121624;
- Wed, 14 Aug 2019 14:19:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=ae+YYtL1vgPhLbM0a9S2evjC1FwIggJXIW0M4o4SGyI=;
- b=ZbWpJN7E57uCEuErcNfUc/phFeBdGWKv4R9ZxHVmqM6esvnxsn1TTTYyIXbCGZ+UnITA
- lZNbN5WXD70uPPgZ3Se2Jg16w9RBCLxrn+Z2YAKvcKzjzub3eSA11LJ36a2Ge300CEi7
- liCLfQteJP1THCVbkud2T3KHezjXzPGF/zFA/i38egZ6bDSAUWlCjaZSlOCzzmfIgUGi
- Uuad4CyK1W65wQLKuxCrulgv/lIeXK7K0sI77vAg7w73VnCcOHHP5kSlv7QcZv9702gX
- 21BlI8Ufv6eM9yuC4/nxwquR+08X8+1Y72CXFfHI9uy9A3tWV1s8mSx734U3CCACUMhW 6w== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by aserp2120.oracle.com with ESMTP id 2u9nvpd85d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Aug 2019 14:19:50 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EEIiq3168890;
- Wed, 14 Aug 2019 14:19:50 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3020.oracle.com with ESMTP id 2ubwcy2m7h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Aug 2019 14:19:50 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7EEJhcB022563;
- Wed, 14 Aug 2019 14:19:48 GMT
-Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 14 Aug 2019 07:19:43 -0700
-Date: Wed, 14 Aug 2019 17:19:38 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: anton@samba.org
-Subject: [bug report] powerpc/iommu: Implement IOMMU pools to improve
- multiqueue adapter performance
-Message-ID: <20190814141938.GA587@mwanda>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4683V82QhPzDqt0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 08:02:37 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id b24so193102pfp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 15:02:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=3oPlzvlPf3Rzc4cpgcIkobJmF5pbYWdwPlsySxjkAj0=;
+ b=QsFDkKjaHSdT6ZUi+JJ7HPBAsxs4M45zVvakOMVd/f1v8yDy4Pe2ktVQIi6TcbQGs4
+ +0rdap1k9RPnLJwD5sJG3RNHYDxiRp0DpzJa5rPFrWQYYZMFBDR8URhlW4LyWGSqLgDi
+ v3nOVWGRXtObRIix2efxPL/FTSeXBV1Vh2bbPdS8+IInFkXk++Du4gd7sLVkXZIY9UIM
+ oYSDp2D5AqVVqNwWUutnIu0wP3/+nwxYcTorj1iRwjtVLn7UIscolWVJf7FLpK6z/dax
+ WEJZB9Z60/rNmcFNC4/QIfBMeYoSOqxs+6j8XIafhDh0BI51LPUU+2Cx0JIDhTMJ/+No
+ RmDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=3oPlzvlPf3Rzc4cpgcIkobJmF5pbYWdwPlsySxjkAj0=;
+ b=ixnQFrl/CjqzRycYuLvlGzW0g2rHDwYgMRG4RYgJIyMxAe/r+m/Q4+xAKSiK+0MrkM
+ k5StfKkI/ADhj7iHK5DFr+nlP3YUWyuJWvhjc6iKDz2NKfNujVQgwmL+3j1/HX8FHQnk
+ ANwBJs7/vVPF+RuRo79HwEdxc3xWXjd17g41gHtN9F2AdJbaSrcP0zdHoHElyLP4DiWS
+ Kcw8V8m/juBgtDQmUkrW1PwsLYhBWMQe02ir2K6Wvr0987yUs1Z+pMLq3U8voG1r/iyU
+ 3BaSCCgSJf70hukV6Fk7pK6ehsgciidq2Ctw5z86JnWQvRW1MCch2qCq5AwyRAdCQNyw
+ GMRg==
+X-Gm-Message-State: APjAAAX8eXdQ8pyyGAc7UkeIbtAqycCidg9bs2lCDCFaj0T6p1CvsFeE
+ R1oSn2Cpm6e3fIvLa8m6K8c=
+X-Google-Smtp-Source: APXvYqzCBQPKmpeFEXKLaI6VKfcy6SgcaxLxPzYa/x4WSu39Iu3WSkxBPKAcusu6di8joy6ZTM5XDQ==
+X-Received: by 2002:a62:4e09:: with SMTP id c9mr2268787pfb.130.1565820153895; 
+ Wed, 14 Aug 2019 15:02:33 -0700 (PDT)
+Received: from localhost ([100.118.89.196])
+ by smtp.gmail.com with ESMTPSA id d129sm896504pfc.168.2019.08.14.15.02.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Aug 2019 15:02:33 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
+To: dri-devel@lists.freedesktop.org
+Subject: [PATCH 0/6] drm+dma: cache support for arm, etc
+Date: Wed, 14 Aug 2019 14:59:55 -0700
+Message-Id: <20190814220011.26934-1-robdclark@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348
- signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=632
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908140149
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348
- signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=682 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908140149
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,46 +76,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+ "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Emil Velikov <emil.velikov@collabora.com>, Rob Clark <robdclark@chromium.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ "moderated list:ARM64 PORT AARCH64 ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
+ "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
+ Deepak Sharma <deepak.sharma@amd.com>, Joerg Roedel <jroedel@suse.de>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
+ Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ open list <linux-kernel@vger.kernel.org>, Paul Burton <paul.burton@mips.com>,
+ Souptick Joarder <jrdr.linux@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Ancient code.  The warning is correct but the bug seems harmless.
-  -- dan ]
+From: Rob Clark <robdclark@chromium.org>
 
-Hello Anton Blanchard,
+This is a replacement for a previous patches[1] that was adding arm64
+support for drm_clflush.  I've also added a patch to solve a similar
+cache issue in vgem.
 
-The patch b4c3a8729ae5: "powerpc/iommu: Implement IOMMU pools to
-improve multiqueue adapter performance" from Jun 7, 2012, leads to
-the following static checker warning:
+The first few patches just export arch_sync_dma_for_*().  Possibly
+instead the EXPORT_SYMBOL_GPL() should be somewere central, rather
+than per-arch (but where would make sense?)
 
-	arch/powerpc/kernel/iommu.c:377 get_pool()
-	warn: array off by one? '*tbl->pools + pool_nr'
+The fourth adds (and exports) these ops for arch/arm.  (Arnd Bergmann
+mentioned on IRC that Christoph Hellwig was working on this already
+for arch/arm which could replace the fourth patch.)
 
-arch/powerpc/kernel/iommu.c
-   364  static struct iommu_pool *get_pool(struct iommu_table *tbl,
-   365                                     unsigned long entry)
-   366  {
-   367          struct iommu_pool *p;
-   368          unsigned long largepool_start = tbl->large_pool.start;
-   369  
-   370          /* The large pool is the last pool at the top of the table */
-   371          if (entry >= largepool_start) {
-   372                  p = &tbl->large_pool;
-   373          } else {
-   374                  unsigned int pool_nr = entry / tbl->poolsize;
-   375  
-   376                  BUG_ON(pool_nr > tbl->nr_pools);
-                                       ^
-This should be ">=".  The tbl->nr_pools value is either 1 or
-IOMMU_NR_POOLS and the tbl->pools[] array has IOMMU_NR_POOLS elements.
+The last two patches actually fix things.
 
-   377                  p = &tbl->pools[pool_nr];
-   378          }
-   379  
-   380          return p;
-   381  }
+[1] https://patchwork.freedesktop.org/series/64732/
 
-regards,
-dan carpenter
+Rob Clark (6):
+  arm64: export arch_sync_dma_for_*()
+  mips: export arch_sync_dma_for_*()
+  powerpc: export arch_sync_dma_for_*()
+  arm: add arch_sync_dma_for_*()
+  drm/msm: stop abusing DMA API
+  drm/vgem: fix cache synchronization on arm/arm64 (take two)
+
+ arch/arm/Kconfig                  |   2 +
+ arch/arm/mm/dma-mapping-nommu.c   |  14 +++
+ arch/arm/mm/dma-mapping.c         |  28 ++++++
+ arch/arm64/mm/dma-mapping.c       |   2 +
+ arch/arm64/mm/flush.c             |   2 +
+ arch/mips/mm/dma-noncoherent.c    |   2 +
+ arch/powerpc/mm/dma-noncoherent.c |   2 +
+ drivers/gpu/drm/drm_cache.c       |  20 ++++-
+ drivers/gpu/drm/msm/msm_gem.c     |  37 +++-----
+ drivers/gpu/drm/vgem/vgem_drv.c   | 145 ++++++++++++++++++++----------
+ include/drm/drm_cache.h           |   4 +
+ 11 files changed, 182 insertions(+), 76 deletions(-)
+
+-- 
+2.21.0
+
