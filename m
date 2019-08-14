@@ -2,45 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5E78C696
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 04:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BA18C63B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 04:14:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467YBT6b3CzDqXt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467Y6c1xvXzDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 12:14:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=xiaowei.bao@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467Y5w3jJ4zDqKV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 12:13:22 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7CEAF1A0256;
- Wed, 14 Aug 2019 04:13:18 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CD5741A0269;
- Wed, 14 Aug 2019 04:13:13 +0200 (CEST)
-Received: from titan.ap.freescale.net (TITAN.ap.freescale.net [10.192.208.233])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 2C4AB402EC;
- Wed, 14 Aug 2019 10:13:08 +0800 (SGT)
-From: Xiaowei Bao <xiaowei.bao@nxp.com>
-To: minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com,
- lorenzo.pieralisi@arm.com, bhelgaas@google.com,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCHv6 1/2] PCI: layerscape: Add the bar_fixed_64bit property in EP
- driver.
-Date: Wed, 14 Aug 2019 10:03:29 +0800
-Message-Id: <20190814020330.12133-1-xiaowei.bao@nxp.com>
-X-Mailer: git-send-email 2.9.5
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467Y345Hk5zDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 12:10:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.b="OP/Amg57"; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 467Y344Lhfz9sN1; Wed, 14 Aug 2019 12:10:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1565748656; bh=rn8nn7nDZW6prBqqprg63BKRnGn4fJeOHCTFgi95aSM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=OP/Amg578H5HPYz9pLx7vbI154SYRemAbBtahq9i6PsUxSZWDR3+BR8fULNDSeFeT
+ lN69qph71OpRbZxQZhsadgnswfMK1QV/clTsnapeSNkeUkRKYQQ4LSjNDbU274LrOF
+ ldpdZIDuYSInULN7X+isqlJzTNXPYG8oM18g4tKWYb550qlvqPF/fjB72hsn+NMeQi
+ Z1dFASQTsVXoC4N10wAtLxS7KKB63r/mmlAf7tKGmYoHNTY0brp4LWnWEo0MEHCNbG
+ n8UVQ8NF2Q774Dm7CJYeh/k3SanuVkQHtyipth09R4+PBmEqmmUDNamcoL/9srZHMD
+ 03bI8d2GqLCEQ==
+Date: Wed, 14 Aug 2019 12:08:03 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 1/2] powerpc: rewrite LOAD_REG_IMMEDIATE() as an
+ intelligent macro
+Message-ID: <20190814020803.it7i7mjxyruu4vy3@oak.ozlabs.ibm.com>
+References: <61d2a0b6f0c89b1ee546851ce9b6bd345e5ec968.1565690241.git.christophe.leroy@c-s.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <61d2a0b6f0c89b1ee546851ce9b6bd345e5ec968.1565690241.git.christophe.leroy@c-s.fr>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,43 +54,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Xiaowei Bao <xiaowei.bao@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The PCIe controller of layerscape just have 4 BARs, BAR0 and BAR1
-is 32bit, BAR2 and BAR4 is 64bit, this is determined by hardware,
-so set the bar_fixed_64bit with 0x14.
+On Tue, Aug 13, 2019 at 09:59:35AM +0000, Christophe Leroy wrote:
 
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
----
-v2:
- - Replace value 0x14 with a macro.
-v3:
- - No change.
-v4:
- - send the patch again with '--to'.
-v5:
- - fix the commit message.
-v6:
- - remove the [EXT] tag of the $SUBJECT in email.
+[snip]
 
- drivers/pci/controller/dwc/pci-layerscape-ep.c | 1 +
- 1 file changed, 1 insertion(+)
+> +.macro __LOAD_REG_IMMEDIATE r, x
+> +	.if \x & ~0xffffffff != 0
+> +		__LOAD_REG_IMMEDIATE_32 \r, (\x) >> 32
+> +		rldicr	\r, \r, 32, 31
+> +		.if (\x) & 0xffff0000 != 0
+> +			oris \r, \r, (\x)@__AS_ATHIGH
+> +		.endif
+> +		.if (\x) & 0xffff != 0
+> +			oris \r, \r, (\x)@l
+> +		.endif
+> +	.else
+> +		__LOAD_REG_IMMEDIATE_32 \r, \x
+> +	.endif
+> +.endm
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index be61d96..ca9aa45 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -44,6 +44,7 @@ static const struct pci_epc_features ls_pcie_epc_features = {
- 	.linkup_notifier = false,
- 	.msi_capable = true,
- 	.msix_capable = false,
-+	.bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4),
- };
- 
- static const struct pci_epc_features*
--- 
-2.9.5
+Doesn't this force all negative constants, even small ones, to use
+the long sequence?  For example, __LOAD_REG_IMMEDIATE r3, -1 will
+generate (as far as I can see):
 
+	li	r3, -1
+	rldicr	r3, r3, 32, 31
+	oris	r3, r3, 0xffff
+	ori	r3, r3, 0xffff
+
+which seems suboptimal.
+
+Paul.
