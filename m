@@ -2,100 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886938CC55
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 09:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09098CC57
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 09:15:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 467gmJ3qpHzDqtZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 17:13:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 467gpB6nNbzDqw0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2019 17:15:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 467gkZ2bCtzDqPS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:12:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 467gkZ1fJ9z8tTq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:12:06 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 467gkZ0wksz9sML; Wed, 14 Aug 2019 17:12:06 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="d8RsycSc"; 
+ dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 467gkY4Shgz9sNC
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 17:12:05 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7E7AtEd023910
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 03:12:01 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uccyc9pvq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 14 Aug 2019 03:12:01 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <hbathini@linux.ibm.com>;
- Wed, 14 Aug 2019 08:11:58 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 14 Aug 2019 08:11:56 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7E7BskJ51445916
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Aug 2019 07:11:54 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 24E2511C05B;
- Wed, 14 Aug 2019 07:11:54 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB18811C05E;
- Wed, 14 Aug 2019 07:11:51 +0000 (GMT)
-Received: from [9.199.56.240] (unknown [9.199.56.240])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 14 Aug 2019 07:11:51 +0000 (GMT)
-Subject: Re: [PATCH v4 12/25] powernv/fadump: define register/un-register
- callback functions
-To: mahesh@linux.vnet.ibm.com
-References: <156327668777.27462.5297279227799429100.stgit@hbathini.in.ibm.com>
- <156327680307.27462.16414477591782848444.stgit@hbathini.in.ibm.com>
- <20190813143413.lzhpqbx43d4nefpa@in.ibm.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Date: Wed, 14 Aug 2019 12:41:50 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 467gls2D50zDqkX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:13:13 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 467gll6dK1z9tynb;
+ Wed, 14 Aug 2019 09:13:07 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=d8RsycSc; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VcD11XDerEHW; Wed, 14 Aug 2019 09:13:07 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 467gll5PnDz9tyn4;
+ Wed, 14 Aug 2019 09:13:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1565766787; bh=axBgY3KzG18BPxHa2bEjNVnsh2EVXvuyShmPh8pY/jw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=d8RsycScbQI6v7tVSdGDPKC95Qw8JInR0lIOAJhpQ8Ew/rXjte0j0gwk1kiWuSyfr
+ Ndrx8bAu00aYx+V+4sjk4oF+EgYPfuVLvCiFnER3xWqO3S9H1RfqRIYbJJe1lPbaQj
+ egVpXcTVSwBTF4IUCbQPg6p7FjqOxzguHtMMnSqs=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D12178B780;
+ Wed, 14 Aug 2019 09:13:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wzYJDwtJo_uN; Wed, 14 Aug 2019 09:13:08 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A66588B761;
+ Wed, 14 Aug 2019 09:13:08 +0200 (CEST)
+Subject: Re: [PATCH] powerpc: remove the ppc44x ocm.c file
+To: Christoph Hellwig <hch@lst.de>, alistair@popple.id.au,
+ mporter@kernel.crashing.org
+References: <20190814063202.18591-1-hch@lst.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <9a2f3c51-1c2b-6ff0-765c-ef397dbd154a@c-s.fr>
+Date: Wed, 14 Aug 2019 09:13:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190813143413.lzhpqbx43d4nefpa@in.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19081407-0012-0000-0000-0000033EA1AB
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081407-0013-0000-0000-00002178B3C5
-Message-Id: <bf71b0c6-ebee-d167-3814-17b1b3acc54e@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-14_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908140068
+In-Reply-To: <20190814063202.18591-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,81 +78,504 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ananth N Mavinakayanahalli <ananth@linux.ibm.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Oliver <oohall@gmail.com>, Vasant Hegde <hegdevasant@linux.ibm.com>,
- Stewart Smith <stewart@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 13/08/19 8:04 PM, Mahesh J Salgaonkar wrote:
-> On 2019-07-16 17:03:23 Tue, Hari Bathini wrote:
->> Make OPAL calls to register and un-register with firmware for MPIPL.
->>
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/powernv/opal-fadump.c |   71 +++++++++++++++++++++++++-
->>  1 file changed, 69 insertions(+), 2 deletions(-)
->>
-> [...]
->> @@ -88,12 +104,63 @@ static int opal_fadump_setup_kernel_metadata(struct fw_dump *fadump_conf)
->>  
->>  static int opal_fadump_register_fadump(struct fw_dump *fadump_conf)
->>  {
->> -	return -EIO;
->> +	int i, err = -EIO;
->> +	s64 rc;
->> +
->> +	for (i = 0; i < opal_fdm->region_cnt; i++) {
->> +		rc = opal_mpipl_update(OPAL_MPIPL_ADD_RANGE,
->> +				       opal_fdm->rgn[i].src,
->> +				       opal_fdm->rgn[i].dest,
->> +				       opal_fdm->rgn[i].size);
->> +		if (rc != OPAL_SUCCESS)
+Le 14/08/2019 à 08:32, Christoph Hellwig a écrit :
+> The on chip memory allocator is entirely unused in the kernel tree.
 > 
-> You may want to remove ranges which has been added so far on error and reset
-> opal_fdm->registered_regions.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Thanks for catching this, Mahesh.
-Will update..
+Since this driver was added in Linux 3.9, functions ppc4xx_ocm_alloc() 
+and ppc4xx_ocm_free() have never been used in any driver, and are not 
+even exported to modules.
 
+Acked-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
+> ---
+>   arch/powerpc/configs/ppc40x_defconfig |   1 -
+>   arch/powerpc/include/asm/ppc4xx_ocm.h |  31 --
+>   arch/powerpc/platforms/44x/Kconfig    |   8 -
+>   arch/powerpc/platforms/4xx/Makefile   |   1 -
+>   arch/powerpc/platforms/4xx/ocm.c      | 390 --------------------------
+>   5 files changed, 431 deletions(-)
+>   delete mode 100644 arch/powerpc/include/asm/ppc4xx_ocm.h
+>   delete mode 100644 arch/powerpc/platforms/4xx/ocm.c
 > 
->> +			break;
->> +
->> +		opal_fdm->registered_regions++;
->> +	}
->> +
->> +	switch (rc) {
->> +	case OPAL_SUCCESS:
->> +		pr_info("Registration is successful!\n");
->> +		fadump_conf->dump_registered = 1;
->> +		err = 0;
->> +		break;
->> +	case OPAL_UNSUPPORTED:
->> +		pr_err("Support not available.\n");
->> +		fadump_conf->fadump_supported = 0;
->> +		fadump_conf->fadump_enabled = 0;
->> +		break;
->> +	case OPAL_INTERNAL_ERROR:
->> +		pr_err("Failed to register. Hardware Error(%lld).\n", rc);
->> +		break;
->> +	case OPAL_PARAMETER:
->> +		pr_err("Failed to register. Parameter Error(%lld).\n", rc);
->> +		break;
->> +	case OPAL_PERMISSION:
+> diff --git a/arch/powerpc/configs/ppc40x_defconfig b/arch/powerpc/configs/ppc40x_defconfig
+> index 8f136b52198b..a5f683aed328 100644
+> --- a/arch/powerpc/configs/ppc40x_defconfig
+> +++ b/arch/powerpc/configs/ppc40x_defconfig
+> @@ -84,4 +84,3 @@ CONFIG_CRYPTO_ECB=y
+>   CONFIG_CRYPTO_PCBC=y
+>   CONFIG_CRYPTO_MD5=y
+>   CONFIG_CRYPTO_DES=y
+> -CONFIG_PPC4xx_OCM=y
+> diff --git a/arch/powerpc/include/asm/ppc4xx_ocm.h b/arch/powerpc/include/asm/ppc4xx_ocm.h
+> deleted file mode 100644
+> index fc4db6dcde84..000000000000
+> --- a/arch/powerpc/include/asm/ppc4xx_ocm.h
+> +++ /dev/null
+> @@ -1,31 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-or-later */
+> -/*
+> - * PowerPC 4xx OCM memory allocation support
+> - *
+> - * (C) Copyright 2009, Applied Micro Circuits Corporation
+> - * Victor Gallardo (vgallardo@amcc.com)
+> - *
+> - * See file CREDITS for list of people who contributed to this
+> - * project.
+> - */
+> -
+> -#ifndef __ASM_POWERPC_PPC4XX_OCM_H__
+> -#define __ASM_POWERPC_PPC4XX_OCM_H__
+> -
+> -#define PPC4XX_OCM_NON_CACHED 0
+> -#define PPC4XX_OCM_CACHED     1
+> -
+> -#if defined(CONFIG_PPC4xx_OCM)
+> -
+> -void *ppc4xx_ocm_alloc(phys_addr_t *phys, int size, int align,
+> -		  int flags, const char *owner);
+> -void ppc4xx_ocm_free(const void *virt);
+> -
+> -#else
+> -
+> -#define ppc4xx_ocm_alloc(phys, size, align, flags, owner)	NULL
+> -#define ppc4xx_ocm_free(addr)	((void)0)
+> -
+> -#endif /* CONFIG_PPC4xx_OCM */
+> -
+> -#endif  /* __ASM_POWERPC_PPC4XX_OCM_H__ */
+> diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
+> index b369ed4e3675..25ebe634a661 100644
+> --- a/arch/powerpc/platforms/44x/Kconfig
+> +++ b/arch/powerpc/platforms/44x/Kconfig
+> @@ -272,14 +272,6 @@ config PPC4xx_GPIO
+>   	help
+>   	  Enable gpiolib support for ppc440 based boards
+>   
+> -config PPC4xx_OCM
+> -	bool "PPC4xx On Chip Memory (OCM) support"
+> -	depends on 4xx
+> -	select PPC_LIB_RHEAP
+> -	help
+> -	  Enable OCM support for PowerPC 4xx platforms with on chip memory,
+> -	  OCM provides the fast place for memory access to improve performance.
+> -
+>   # 44x specific CPU modules, selected based on the board above.
+>   config 440EP
+>   	bool
+> diff --git a/arch/powerpc/platforms/4xx/Makefile b/arch/powerpc/platforms/4xx/Makefile
+> index f5ae27ca131b..d009d2e0b9e8 100644
+> --- a/arch/powerpc/platforms/4xx/Makefile
+> +++ b/arch/powerpc/platforms/4xx/Makefile
+> @@ -1,6 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+>   obj-y				+= uic.o machine_check.o
+> -obj-$(CONFIG_PPC4xx_OCM)	+= ocm.o
+>   obj-$(CONFIG_4xx_SOC)		+= soc.o
+>   obj-$(CONFIG_PCI)		+= pci.o
+>   obj-$(CONFIG_PPC4xx_HSTA_MSI)	+= hsta_msi.o
+> diff --git a/arch/powerpc/platforms/4xx/ocm.c b/arch/powerpc/platforms/4xx/ocm.c
+> deleted file mode 100644
+> index ba3257406ced..000000000000
+> --- a/arch/powerpc/platforms/4xx/ocm.c
+> +++ /dev/null
+> @@ -1,390 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0-or-later
+> -/*
+> - * PowerPC 4xx OCM memory allocation support
+> - *
+> - * (C) Copyright 2009, Applied Micro Circuits Corporation
+> - * Victor Gallardo (vgallardo@amcc.com)
+> - *
+> - * See file CREDITS for list of people who contributed to this
+> - * project.
+> - */
+> -
+> -#include <linux/kernel.h>
+> -#include <linux/dma-mapping.h>
+> -#include <linux/of.h>
+> -#include <linux/of_address.h>
+> -#include <asm/rheap.h>
+> -#include <asm/ppc4xx_ocm.h>
+> -#include <linux/slab.h>
+> -#include <linux/debugfs.h>
+> -
+> -#define OCM_DISABLED	0
+> -#define OCM_ENABLED		1
+> -
+> -struct ocm_block {
+> -	struct list_head	list;
+> -	void __iomem		*addr;
+> -	int					size;
+> -	const char			*owner;
+> -};
+> -
+> -/* non-cached or cached region */
+> -struct ocm_region {
+> -	phys_addr_t			phys;
+> -	void __iomem		*virt;
+> -
+> -	int					memtotal;
+> -	int					memfree;
+> -
+> -	rh_info_t			*rh;
+> -	struct list_head	list;
+> -};
+> -
+> -struct ocm_info {
+> -	int					index;
+> -	int					status;
+> -	int					ready;
+> -
+> -	phys_addr_t			phys;
+> -
+> -	int					alignment;
+> -	int					memtotal;
+> -	int					cache_size;
+> -
+> -	struct ocm_region	nc;	/* non-cached region */
+> -	struct ocm_region	c;	/* cached region */
+> -};
+> -
+> -static struct ocm_info *ocm_nodes;
+> -static int ocm_count;
+> -
+> -static struct ocm_info *ocm_get_node(unsigned int index)
+> -{
+> -	if (index >= ocm_count) {
+> -		printk(KERN_ERR "PPC4XX OCM: invalid index");
+> -		return NULL;
+> -	}
+> -
+> -	return &ocm_nodes[index];
+> -}
+> -
+> -static int ocm_free_region(struct ocm_region *ocm_reg, const void *addr)
+> -{
+> -	struct ocm_block *blk, *tmp;
+> -	unsigned long offset;
+> -
+> -	if (!ocm_reg->virt)
+> -		return 0;
+> -
+> -	list_for_each_entry_safe(blk, tmp, &ocm_reg->list, list) {
+> -		if (blk->addr == addr) {
+> -			offset = addr - ocm_reg->virt;
+> -			ocm_reg->memfree += blk->size;
+> -			rh_free(ocm_reg->rh, offset);
+> -			list_del(&blk->list);
+> -			kfree(blk);
+> -			return 1;
+> -		}
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -static void __init ocm_init_node(int count, struct device_node *node)
+> -{
+> -	struct ocm_info *ocm;
+> -
+> -	const unsigned int *cell_index;
+> -	const unsigned int *cache_size;
+> -	int len;
+> -
+> -	struct resource rsrc;
+> -
+> -	ocm = ocm_get_node(count);
+> -
+> -	cell_index = of_get_property(node, "cell-index", &len);
+> -	if (!cell_index) {
+> -		printk(KERN_ERR "PPC4XX OCM: missing cell-index property");
+> -		return;
+> -	}
+> -	ocm->index = *cell_index;
+> -
+> -	if (of_device_is_available(node))
+> -		ocm->status = OCM_ENABLED;
+> -
+> -	cache_size = of_get_property(node, "cached-region-size", &len);
+> -	if (cache_size)
+> -		ocm->cache_size = *cache_size;
+> -
+> -	if (of_address_to_resource(node, 0, &rsrc)) {
+> -		printk(KERN_ERR "PPC4XX OCM%d: could not get resource address\n",
+> -			ocm->index);
+> -		return;
+> -	}
+> -
+> -	ocm->phys = rsrc.start;
+> -	ocm->memtotal = (rsrc.end - rsrc.start + 1);
+> -
+> -	printk(KERN_INFO "PPC4XX OCM%d: %d Bytes (%s)\n",
+> -		ocm->index, ocm->memtotal,
+> -		(ocm->status == OCM_DISABLED) ? "disabled" : "enabled");
+> -
+> -	if (ocm->status == OCM_DISABLED)
+> -		return;
+> -
+> -	/* request region */
+> -
+> -	if (!request_mem_region(ocm->phys, ocm->memtotal, "ppc4xx_ocm")) {
+> -		printk(KERN_ERR "PPC4XX OCM%d: could not request region\n",
+> -			ocm->index);
+> -		return;
+> -	}
+> -
+> -	/* Configure non-cached and cached regions */
+> -
+> -	ocm->nc.phys = ocm->phys;
+> -	ocm->nc.memtotal = ocm->memtotal - ocm->cache_size;
+> -	ocm->nc.memfree = ocm->nc.memtotal;
+> -
+> -	ocm->c.phys = ocm->phys + ocm->nc.memtotal;
+> -	ocm->c.memtotal = ocm->cache_size;
+> -	ocm->c.memfree = ocm->c.memtotal;
+> -
+> -	if (ocm->nc.memtotal == 0)
+> -		ocm->nc.phys = 0;
+> -
+> -	if (ocm->c.memtotal == 0)
+> -		ocm->c.phys = 0;
+> -
+> -	printk(KERN_INFO "PPC4XX OCM%d: %d Bytes (non-cached)\n",
+> -		ocm->index, ocm->nc.memtotal);
+> -
+> -	printk(KERN_INFO "PPC4XX OCM%d: %d Bytes (cached)\n",
+> -		ocm->index, ocm->c.memtotal);
+> -
+> -	/* ioremap the non-cached region */
+> -	if (ocm->nc.memtotal) {
+> -		ocm->nc.virt = __ioremap(ocm->nc.phys, ocm->nc.memtotal,
+> -			_PAGE_EXEC | pgprot_val(PAGE_KERNEL_NCG));
+> -
+> -		if (!ocm->nc.virt) {
+> -			printk(KERN_ERR
+> -			       "PPC4XX OCM%d: failed to ioremap non-cached memory\n",
+> -			       ocm->index);
+> -			ocm->nc.memfree = 0;
+> -			return;
+> -		}
+> -	}
+> -
+> -	/* ioremap the cached region */
+> -
+> -	if (ocm->c.memtotal) {
+> -		ocm->c.virt = __ioremap(ocm->c.phys, ocm->c.memtotal,
+> -					_PAGE_EXEC | pgprot_val(PAGE_KERNEL));
+> -
+> -		if (!ocm->c.virt) {
+> -			printk(KERN_ERR
+> -			       "PPC4XX OCM%d: failed to ioremap cached memory\n",
+> -			       ocm->index);
+> -			ocm->c.memfree = 0;
+> -			return;
+> -		}
+> -	}
+> -
+> -	/* Create Remote Heaps */
+> -
+> -	ocm->alignment = 4; /* default 4 byte alignment */
+> -
+> -	if (ocm->nc.virt) {
+> -		ocm->nc.rh = rh_create(ocm->alignment);
+> -		rh_attach_region(ocm->nc.rh, 0, ocm->nc.memtotal);
+> -	}
+> -
+> -	if (ocm->c.virt) {
+> -		ocm->c.rh = rh_create(ocm->alignment);
+> -		rh_attach_region(ocm->c.rh, 0, ocm->c.memtotal);
+> -	}
+> -
+> -	INIT_LIST_HEAD(&ocm->nc.list);
+> -	INIT_LIST_HEAD(&ocm->c.list);
+> -
+> -	ocm->ready = 1;
+> -}
+> -
+> -static int ocm_debugfs_show(struct seq_file *m, void *v)
+> -{
+> -	struct ocm_block *blk, *tmp;
+> -	unsigned int i;
+> -
+> -	for (i = 0; i < ocm_count; i++) {
+> -		struct ocm_info *ocm = ocm_get_node(i);
+> -
+> -		if (!ocm || !ocm->ready)
+> -			continue;
+> -
+> -		seq_printf(m, "PPC4XX OCM   : %d\n", ocm->index);
+> -		seq_printf(m, "PhysAddr     : %pa\n", &(ocm->phys));
+> -		seq_printf(m, "MemTotal     : %d Bytes\n", ocm->memtotal);
+> -		seq_printf(m, "MemTotal(NC) : %d Bytes\n", ocm->nc.memtotal);
+> -		seq_printf(m, "MemTotal(C)  : %d Bytes\n\n", ocm->c.memtotal);
+> -
+> -		seq_printf(m, "NC.PhysAddr  : %pa\n", &(ocm->nc.phys));
+> -		seq_printf(m, "NC.VirtAddr  : 0x%p\n", ocm->nc.virt);
+> -		seq_printf(m, "NC.MemTotal  : %d Bytes\n", ocm->nc.memtotal);
+> -		seq_printf(m, "NC.MemFree   : %d Bytes\n", ocm->nc.memfree);
+> -
+> -		list_for_each_entry_safe(blk, tmp, &ocm->nc.list, list) {
+> -			seq_printf(m, "NC.MemUsed   : %d Bytes (%s)\n",
+> -							blk->size, blk->owner);
+> -		}
+> -
+> -		seq_printf(m, "\nC.PhysAddr   : %pa\n", &(ocm->c.phys));
+> -		seq_printf(m, "C.VirtAddr   : 0x%p\n", ocm->c.virt);
+> -		seq_printf(m, "C.MemTotal   : %d Bytes\n", ocm->c.memtotal);
+> -		seq_printf(m, "C.MemFree    : %d Bytes\n", ocm->c.memfree);
+> -
+> -		list_for_each_entry_safe(blk, tmp, &ocm->c.list, list) {
+> -			seq_printf(m, "C.MemUsed    : %d Bytes (%s)\n",
+> -						blk->size, blk->owner);
+> -		}
+> -
+> -		seq_putc(m, '\n');
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -static int ocm_debugfs_open(struct inode *inode, struct file *file)
+> -{
+> -	return single_open(file, ocm_debugfs_show, NULL);
+> -}
+> -
+> -static const struct file_operations ocm_debugfs_fops = {
+> -	.open = ocm_debugfs_open,
+> -	.read = seq_read,
+> -	.llseek = seq_lseek,
+> -	.release = single_release,
+> -};
+> -
+> -static int ocm_debugfs_init(void)
+> -{
+> -	struct dentry *junk;
+> -
+> -	junk = debugfs_create_dir("ppc4xx_ocm", 0);
+> -	if (!junk) {
+> -		printk(KERN_ALERT "debugfs ppc4xx ocm: failed to create dir\n");
+> -		return -1;
+> -	}
+> -
+> -	if (debugfs_create_file("info", 0644, junk, NULL, &ocm_debugfs_fops)) {
+> -		printk(KERN_ALERT "debugfs ppc4xx ocm: failed to create file\n");
+> -		return -1;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+> -void *ppc4xx_ocm_alloc(phys_addr_t *phys, int size, int align,
+> -			int flags, const char *owner)
+> -{
+> -	void __iomem *addr = NULL;
+> -	unsigned long offset;
+> -	struct ocm_info *ocm;
+> -	struct ocm_region *ocm_reg;
+> -	struct ocm_block *ocm_blk;
+> -	int i;
+> -
+> -	for (i = 0; i < ocm_count; i++) {
+> -		ocm = ocm_get_node(i);
+> -
+> -		if (!ocm || !ocm->ready)
+> -			continue;
+> -
+> -		if (flags == PPC4XX_OCM_NON_CACHED)
+> -			ocm_reg = &ocm->nc;
+> -		else
+> -			ocm_reg = &ocm->c;
+> -
+> -		if (!ocm_reg->virt)
+> -			continue;
+> -
+> -		if (align < ocm->alignment)
+> -			align = ocm->alignment;
+> -
+> -		offset = rh_alloc_align(ocm_reg->rh, size, align, NULL);
+> -
+> -		if (IS_ERR_VALUE(offset))
+> -			continue;
+> -
+> -		ocm_blk = kzalloc(sizeof(*ocm_blk), GFP_KERNEL);
+> -		if (!ocm_blk) {
+> -			rh_free(ocm_reg->rh, offset);
+> -			break;
+> -		}
+> -
+> -		*phys = ocm_reg->phys + offset;
+> -		addr = ocm_reg->virt + offset;
+> -		size = ALIGN(size, align);
+> -
+> -		ocm_blk->addr = addr;
+> -		ocm_blk->size = size;
+> -		ocm_blk->owner = owner;
+> -		list_add_tail(&ocm_blk->list, &ocm_reg->list);
+> -
+> -		ocm_reg->memfree -= size;
+> -
+> -		break;
+> -	}
+> -
+> -	return addr;
+> -}
+> -
+> -void ppc4xx_ocm_free(const void *addr)
+> -{
+> -	int i;
+> -
+> -	if (!addr)
+> -		return;
+> -
+> -	for (i = 0; i < ocm_count; i++) {
+> -		struct ocm_info *ocm = ocm_get_node(i);
+> -
+> -		if (!ocm || !ocm->ready)
+> -			continue;
+> -
+> -		if (ocm_free_region(&ocm->nc, addr) ||
+> -			ocm_free_region(&ocm->c, addr))
+> -			return;
+> -	}
+> -}
+> -
+> -static int __init ppc4xx_ocm_init(void)
+> -{
+> -	struct device_node *np;
+> -	int count;
+> -
+> -	count = 0;
+> -	for_each_compatible_node(np, NULL, "ibm,ocm")
+> -		count++;
+> -
+> -	if (!count)
+> -		return 0;
+> -
+> -	ocm_nodes = kzalloc((count * sizeof(struct ocm_info)), GFP_KERNEL);
+> -	if (!ocm_nodes)
+> -		return -ENOMEM;
+> -
+> -	ocm_count = count;
+> -	count = 0;
+> -
+> -	for_each_compatible_node(np, NULL, "ibm,ocm") {
+> -		ocm_init_node(count, np);
+> -		count++;
+> -	}
+> -
+> -	ocm_debugfs_init();
+> -
+> -	return 0;
+> -}
+> -
+> -arch_initcall(ppc4xx_ocm_init);
 > 
-> You may want to remove this check. With latest opal mpipl patches
-> opal_mpipl_update() no more returns OPAL_PERMISSION.
-> 
-> Even if opal does, we can not say fadump already registered just by
-> looking at return status of single entry addition.
-
-Sure.
-
-Thanks
-Hari
-
