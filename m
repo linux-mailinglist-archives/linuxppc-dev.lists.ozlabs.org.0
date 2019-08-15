@@ -1,42 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5478F362
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 20:29:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5806C8F38E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 20:35:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468Zjq50xPzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 04:29:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468Zrn3kZvzDrCl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 04:35:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468Zgq2mHTzDqkV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 04:27:51 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id EBED568AFE; Thu, 15 Aug 2019 20:27:42 +0200 (CEST)
-Date: Thu, 15 Aug 2019 20:27:42 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Koenig, Christian" <Christian.Koenig@amd.com>
-Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
-Message-ID: <20190815182742.GA20859@lst.de>
-References: <20190814220011.26934-1-robdclark@gmail.com>
- <20190815065117.GA23761@lst.de>
- <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
- <20190815175346.GA19839@lst.de>
- <e3f73b3c-49d5-3c19-dfff-0a24b4617e50@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468ZpN1F5pzDqxf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 04:33:31 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 1DACB28A24
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 18:33:29 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 1209828A51; Thu, 15 Aug 2019 18:33:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Thu, 15 Aug 2019 18:33:21 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@c-s.fr
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-SQpJJkE7X2@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e3f73b3c-49d5-3c19-dfff-0a24b4617e50@amd.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,56 +71,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
- "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Benjamin Gaignard <benjamin.gaignard@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Emil Velikov <emil.velikov@collabora.com>, Rob Clark <robdclark@chromium.org>,
- Paul Burton <paul.burton@mips.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
- <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- "Sharma, Deepak" <Deepak.Sharma@amd.com>, Joerg Roedel <jroedel@suse.de>,
- Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
- "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, Enrico Weigelt <info@metux.net>,
- open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 15, 2019 at 06:21:00PM +0000, Koenig, Christian wrote:
-> >   (2) Add support for DMA_ATTR_NO_KERNEL_MAPPING to this new API instead
-> >       of dma_alloc_attrs.  The initial difference with that flag is just
-> >       that we allow highmem, but in the future we could also unmap this
-> >       memory from the kernel linear mapping entirely on architectures
-> >       where we can easily do that.
-> 
-> Mhm, why would we want to do this?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
-To avoid the CPU misspeculating into this memory.  For example NVMe SSDs
-have a feature called host memory buffer that is a lot like your stolen
-main ram for the GPU case.  We currently hand the SSD a
-DMA_ATTR_NO_KERNEL_MAPPING allocation if it requests such a buffer.  If
-possible we'd really like to make sure no speculative execution bug
-(or intentional attacker with a kernel exploit for that matter) can easily
-access that memory.
+--- Comment #31 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Problem 1: test_add_free_space_entry() contains a kzalloc() to allocate a
+bitmap. That's the problem.
+
+
+Problem 2: btrfs_free_dummy_fs_info() has 3 kfree(). Need to know which one=
+ is
+creating your last warning (kernel BUG at mm/slub.c:3952!)
+
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
