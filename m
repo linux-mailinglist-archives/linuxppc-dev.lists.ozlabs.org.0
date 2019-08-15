@@ -1,72 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047D48E05F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 00:12:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026208E1AC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 02:09:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4683hz2twGzDqBj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 08:12:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4686JL6vKrzDqyv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 10:09:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
- envelope-from=robdclark@gmail.com; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.b="BTIl/9Tk"; 
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.b="uTNUm8o8"; 
  dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4683fl4y5RzDq6y
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 08:10:07 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id e11so294058pga.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 15:10:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=EgMxpqnDCUKKSviaeDfqej3uE+25ke/kBD5EQ8QhSvk=;
- b=BTIl/9TkKL1+c9ssk34W7XBCbm+8s/A7Aw49hrbdu/fvCvAhPq7IzZM6LQxNWC2QoE
- 43Fy8M+wBoAaew0rOCWEYQwW7hi4OWCZw6V6ljV8i60R6zk3xV1oqtX+5OAjikb7TOo1
- euYSXyToMva4nrJeLoOG98FDCZPQBFYfVuK757KSMnKyMdqqDJ7hJn9O82GWwbVWL9Va
- YaafGnFOnoXjFAO3qaf7hnVlz6fUzZ9nRvXAT9cifyZdFjtDpGNfVhryES6wHppUEFRl
- N8nXSFKxcF2k8iMc+4q6OzgcKiepinofnK8FF77cgrT+mIe6oir15Gjrwq/AEM4yw+XV
- l75g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4686GD1wKfzDqvh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 10:07:31 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id c81so334999pfc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=6AkzvLAhb44ySDSJof1CTP/r441hp6IrMh57XhAQ5QU=;
+ b=uTNUm8o8XrLZ9gJdyQUCzqYZPOXtQBONmBrOtlIg3G96m8gQeXFVHZ/GbdoZUgU0ex
+ dPZgtSMZQ1l84qTJw9wpkmg8RXPiCpCn7WsvaBZU8FmMktORf6NYE/vEjjhmm3nTvEle
+ JRfKL0vnPtnqxle8w60zC2OT7flRUEsenZdtRTvZjm9vbSvJmBjKpEfZSmYEdeTKYlKG
+ WD5ac56SN1E3n/MJPeLK7XjbjXUDIWmdMnT2nauS6H5TSj4AxxXURYF96Qfis5HSbZjS
+ qK+9oQAi7RC+rVzxnmvR6Oxl+uPcIohFR6H7V+nhF6CBJYg1lNrtmSY9BsVCpKj9EYOC
+ evaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=EgMxpqnDCUKKSviaeDfqej3uE+25ke/kBD5EQ8QhSvk=;
- b=PZ0JRc4JXelVu53Z8dSJ3AQDBrcMWQ6CGmNr8PjpFawh5z9nR9e1E+0ekjySf8gZcm
- r2EeiJj03XdZELrj5Em1BM0m5HgzmkVMAjri67StxVLDY0ejxYyxyTP8ixw2AasuVqSs
- l4syTR3PXdoD9DFaEof19lrojBs9fhR+6pVbeP+rR+3547rQJXIIG8H5pIiQtOnbA/uH
- CdlvtT9fA9wWdVi3xbaPKvwwYEs9ClTesYGcmUasmF+51DlhF7r6rfWB7ulKkAhX5XEI
- UxuNMY/2QzAOGq9x/1oHR46KbUEVZtrvSsX9F4qTzdw9UGwWo+wFkl7p3gvWO7Mcrv+O
- sWXA==
-X-Gm-Message-State: APjAAAXwh2+21PzbMM8rDpU3ProQPIZti4bJO+dHWPo/Ofj/21N1sMpn
- c6favsEDx7i5dEyTJddaV5I=
-X-Google-Smtp-Source: APXvYqxT0bYRzWmURPra22SeQuhBS+23yZe3pSx10q32MZ/PWreU7JH+YXqDftobAJdodjbhda6e0Q==
-X-Received: by 2002:a63:de4c:: with SMTP id y12mr1125128pgi.264.1565820604373; 
- Wed, 14 Aug 2019 15:10:04 -0700 (PDT)
-Received: from localhost ([100.118.89.196])
- by smtp.gmail.com with ESMTPSA id a189sm929015pfa.60.2019.08.14.15.10.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2019 15:10:03 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Subject: [PATCH 3/6] powerpc: export arch_sync_dma_for_*()
-Date: Wed, 14 Aug 2019 14:59:58 -0700
-Message-Id: <20190814220011.26934-4-robdclark@gmail.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190814220011.26934-1-robdclark@gmail.com>
-References: <20190814220011.26934-1-robdclark@gmail.com>
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=6AkzvLAhb44ySDSJof1CTP/r441hp6IrMh57XhAQ5QU=;
+ b=iffAIfAKzFNR41XiluRpX9S/CQHF+qGw7AFrDuhSWjRcJlTMyOoVsXMo8TBKdY7K5E
+ lUCdk2wvRzUw8I1dD1BnPtA3B3CK/+/Dzw0QDRVo97vd8vByUkoey1u7Fd5+/n9rpQtx
+ 3Rw5glEmIll1GKjC6WeaMqKq/tjge6OLPj9koFdFRhvXqzMEZQ1n84hzVrZXfwuSxOdA
+ cG++HMS0qWaI4qNpC3NCLUoeLDVTyERQWAroFlSDxYdhr1ChgbZusP5Wt2hV1OupX+/w
+ wLHsXWPwuLMas24IkZTJkOyub3Kc8m41j37BsuX6mSk/jzasy7wu5aWAsf3U/Idvey2N
+ 6RcQ==
+X-Gm-Message-State: APjAAAW7nxfUUP/X4UmeMEZfLoqu53vuqQM7HEFG2H6bVRGrj0U3OCJQ
+ MbVfRCeJQNBmSIQAfKcLY3hTiQ==
+X-Google-Smtp-Source: APXvYqwAf9uoH1s9sLDcRT8qkxaQoZiC+RAh4A0ZNB5kuA3yUd9Ew79QgOBoM1AP9p33GX0KgR8q+g==
+X-Received: by 2002:a62:1688:: with SMTP id 130mr2607323pfw.187.1565827648302; 
+ Wed, 14 Aug 2019 17:07:28 -0700 (PDT)
+Received: from localhost ([49.205.218.176])
+ by smtp.gmail.com with ESMTPSA id n185sm762325pga.16.2019.08.14.17.07.26
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Wed, 14 Aug 2019 17:07:27 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Balbir Singh <bsingharora@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v9 7/7] powerpc: add machine check safe copy_to_user
+In-Reply-To: <74d12529-d068-0210-e229-5cea68bcf9da@gmail.com>
+References: <20190812092236.16648-1-santosh@fossix.org>
+ <20190812092236.16648-8-santosh@fossix.org>
+ <74d12529-d068-0210-e229-5cea68bcf9da@gmail.com>
+Date: Thu, 15 Aug 2019 05:37:24 +0530
+Message-ID: <874l2jqojn.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,40 +82,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, Enrico Weigelt <info@metux.net>,
- Christoph Hellwig <hch@lst.de>, Allison Randal <allison@lohutok.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Chandan Rajendra <chandan@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rob Clark <robdclark@chromium.org>
+Hi Balbir,
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- arch/powerpc/mm/dma-noncoherent.c | 2 ++
- 1 file changed, 2 insertions(+)
+Balbir Singh <bsingharora@gmail.com> writes:
 
-diff --git a/arch/powerpc/mm/dma-noncoherent.c b/arch/powerpc/mm/dma-noncoherent.c
-index c617282d5b2a..80d53b950821 100644
---- a/arch/powerpc/mm/dma-noncoherent.c
-+++ b/arch/powerpc/mm/dma-noncoherent.c
-@@ -401,12 +401,14 @@ void arch_sync_dma_for_device(struct device *dev, phys_addr_t paddr,
- {
- 	__dma_sync_page(paddr, size, dir);
- }
-+EXPORT_SYMBOL_GPL(arch_sync_dma_for_device);
- 
- void arch_sync_dma_for_cpu(struct device *dev, phys_addr_t paddr,
- 		size_t size, enum dma_data_direction dir)
- {
- 	__dma_sync_page(paddr, size, dir);
- }
-+EXPORT_SYMBOL_GPL(arch_sync_dma_for_cpu);
- 
- /*
-  * Return the PFN for a given cpu virtual address returned by arch_dma_alloc.
--- 
-2.21.0
+> On 12/8/19 7:22 pm, Santosh Sivaraj wrote:
+>> Use  memcpy_mcsafe() implementation to define copy_to_user_mcsafe()
+>> 
+>> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+>> ---
+>>  arch/powerpc/Kconfig               |  1 +
+>>  arch/powerpc/include/asm/uaccess.h | 14 ++++++++++++++
+>>  2 files changed, 15 insertions(+)
+>> 
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 77f6ebf97113..4316e36095a2 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -137,6 +137,7 @@ config PPC
+>>  	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !RELOCATABLE && !HIBERNATION)
+>>  	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+>>  	select ARCH_HAS_UACCESS_FLUSHCACHE	if PPC64
+>> +	select ARCH_HAS_UACCESS_MCSAFE		if PPC64
+>>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
+>>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>>  	select ARCH_KEEP_MEMBLOCK
+>> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+>> index 8b03eb44e876..15002b51ff18 100644
+>> --- a/arch/powerpc/include/asm/uaccess.h
+>> +++ b/arch/powerpc/include/asm/uaccess.h
+>> @@ -387,6 +387,20 @@ static inline unsigned long raw_copy_to_user(void __user *to,
+>>  	return ret;
+>>  }
+>>  
+>> +static __always_inline unsigned long __must_check
+>> +copy_to_user_mcsafe(void __user *to, const void *from, unsigned long n)
+>> +{
+>> +	if (likely(check_copy_size(from, n, true))) {
+>> +		if (access_ok(to, n)) {
+>> +			allow_write_to_user(to, n);
+>> +			n = memcpy_mcsafe((void *)to, from, n);
+>> +			prevent_write_to_user(to, n);
+>> +		}
+>> +	}
+>> +
+>> +	return n;
+>
+> Do we always return n independent of the check_copy_size return value and
+> access_ok return values?
 
+Yes we always return the remaining bytes not copied even if check_copy_size
+or access_ok fails.
+
+Santosh
+
+>
+> Balbir Singh.
+>
+>> +}
+>> +
+>>  extern unsigned long __clear_user(void __user *addr, unsigned long size);
+>>  
+>>  static inline unsigned long clear_user(void __user *addr, unsigned long size)
+>> 
