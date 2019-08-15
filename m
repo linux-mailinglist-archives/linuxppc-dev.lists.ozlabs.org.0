@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1748E1CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 02:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8A48E1CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 02:24:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4686cG4rqlzDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 10:23:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4686fD5lHCzDr3f
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 10:24:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=axtens.net
- (client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ (client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com;
  envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.b="qWlkfAGQ"; 
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="EzjEg35m"; 
  dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4686TH3g6HzDr0v
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 10:17:07 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id t14so339393plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:17:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4686TL0rGYzDqxh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 10:17:09 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id b24so385026pfp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 17:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=w7zQctoUbbEOIFpo2YzbJpxQDN+pRrmLCUjs8vOkAsU=;
- b=qWlkfAGQoM9lNg5jrzdKX18t6sNjHQqFETlJMuNiVjnHwXmE5ER8oeVFulSqZe/BKr
- Ug4sI09UOOdHmFC6ggpqPP4NbkA9a4ZNhhdG1ZrS4GRxM+pRbHOg1URC5o6zSbzLT+i/
- QqaGtFntkOZjlvxFjQCqy+LaWbR5iK9QzKa6k=
+ bh=UahEbtdXwZNAU+KwZPeJAGjgE2lYz0Dt6XczqvKwLUQ=;
+ b=EzjEg35mc1bbHgqD1Ww7viar/jC2gY1ttaK6kS4nEhAVQAc9DPpjV5s9r/dHqVkDvP
+ 1aJjS12y4rJXR3CnBHGnF9uwmU85X95N5a/RVv5vtVMrGT/jXYcs+Npf3JRUlkGUst7Z
+ Y16NXi5EAZRKf1theyPlNghDSgylNqksp2oaU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=w7zQctoUbbEOIFpo2YzbJpxQDN+pRrmLCUjs8vOkAsU=;
- b=LmBEvH1PDLd6Zyqzr+yH3gmP6I5OdAslBUbBs4on1xT4Gl5x6sMkrSgvakWW3xJtsE
- f5UQMjXXbBkg+k+/bw9fZiZSwSyNK7Ti5njdxyrW4+zc8O5pE6bjiQUtpnisAFLNQe1C
- VpZ1B2ITeVr7U8GlbsP5Zz2A5crPwCeG4ZDvlSRK8u+BjPqIE8eULnl3BEG6QrM8pr6G
- 4bSbHobAdm5A2oLe1X56gOBebL7/brKAFyCmwdd+gwp3rmjP1W+YZR5PyUQAv/29yHE7
- oViWj9h8eGCBrh3I4JkX2Y5ub6xH31eqkLS4+SG2f8Fs0ReSR9wpi+LsIpvfJfMYsC/w
- eSOQ==
-X-Gm-Message-State: APjAAAU+NOHWe94WTCeyKLfMNE5D1wW0/W2kHDp4KQksTrZ/7qeQypxO
- 02P7aOQjUzP6Is6PLtBCjE8Qmw==
-X-Google-Smtp-Source: APXvYqwToY126Akzgc+y0UF2qzlU3mi5AwpPlz/jjn3ocLwQBwldvb4KUXKXncmzJjVHauguV6Dj+A==
-X-Received: by 2002:a17:902:b698:: with SMTP id
- c24mr1902458pls.28.1565828223382; 
- Wed, 14 Aug 2019 17:17:03 -0700 (PDT)
+ bh=UahEbtdXwZNAU+KwZPeJAGjgE2lYz0Dt6XczqvKwLUQ=;
+ b=MFy47I/SDtvM53cCfmo4Bs+gxoyVF72SaiyUVxOCdYn9zHPSAMMbz3O4F/5umWIuBz
+ pgCdBg1C7lZulbS35ZjhuJpD2b07/2pN1GQvt18SbKdLY+bEMDQENL+rixnP388pzVcu
+ k1+aHk5KmNAxvMdcFQWNYJzinl1OsPD31WBYI0ksL6b68+r1jdOZpJVCbejytkP7CFW9
+ UOqf7t82qOVvMSyaVH/hHLKcqHDTEcad+SOLm3jy3JoUcpIsDHZ2QgKm+bv3UmkA8ZMR
+ 8T3183isxK0rlgc3JiiQjpp6mC0kiUNz8H9utwf2kvlHhWYKvj1LFG4l++DrDGdVYDWw
+ 2Cgg==
+X-Gm-Message-State: APjAAAUhwQh1QyGtYn7xeG7/JRfLnKBAad9up6pXdXTrV0yKNrj5V0v5
+ Gy8H8FuPoqA1ISLEBE+GuUYChw==
+X-Google-Smtp-Source: APXvYqyOwUVEeEOFMMjqi2Q7om9z/6bSJUvhnhcNlFC8BJaTT3lhedq6m2ayGeI7jcoMRi+G57aL7A==
+X-Received: by 2002:aa7:9609:: with SMTP id q9mr2568209pfg.232.1565828228148; 
+ Wed, 14 Aug 2019 17:17:08 -0700 (PDT)
 Received: from localhost (ppp167-251-205.static.internode.on.net.
  [59.167.251.205])
- by smtp.gmail.com with ESMTPSA id z16sm835454pgi.8.2019.08.14.17.17.01
+ by smtp.gmail.com with ESMTPSA id g11sm821630pgu.11.2019.08.14.17.17.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2019 17:17:02 -0700 (PDT)
+ Wed, 14 Aug 2019 17:17:07 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: kasan-dev@googlegroups.com, linux-mm@kvack.org, x86@kernel.org,
  aryabinin@virtuozzo.com, glider@google.com, luto@kernel.org,
  linux-kernel@vger.kernel.org, mark.rutland@arm.com, dvyukov@google.com
-Subject: [PATCH v4 2/3] fork: support VMAP_STACK with KASAN_VMALLOC
-Date: Thu, 15 Aug 2019 10:16:35 +1000
-Message-Id: <20190815001636.12235-3-dja@axtens.net>
+Subject: [PATCH v4 3/3] x86/kasan: support KASAN_VMALLOC
+Date: Thu, 15 Aug 2019 10:16:36 +1000
+Message-Id: <20190815001636.12235-4-dja@axtens.net>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190815001636.12235-1-dja@axtens.net>
 References: <20190815001636.12235-1-dja@axtens.net>
@@ -85,66 +84,118 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Supporting VMAP_STACK with KASAN_VMALLOC is straightforward:
+In the case where KASAN directly allocates memory to back vmalloc
+space, don't map the early shadow page over it.
 
- - clear the shadow region of vmapped stacks when swapping them in
- - tweak Kconfig to allow VMAP_STACK to be turned on with KASAN
+We prepopulate pgds/p4ds for the range that would otherwise be empty.
+This is required to get it synced to hardware on boot, allowing the
+lower levels of the page tables to be filled dynamically.
 
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Acked-by: Dmitry Vyukov <dvyukov@google.com>
 Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- arch/Kconfig  | 9 +++++----
- kernel/fork.c | 4 ++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index a7b57dd42c26..e791196005e1 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -825,16 +825,17 @@ config HAVE_ARCH_VMAP_STACK
- config VMAP_STACK
- 	default y
- 	bool "Use a virtually-mapped stack"
--	depends on HAVE_ARCH_VMAP_STACK && !KASAN
-+	depends on HAVE_ARCH_VMAP_STACK
-+	depends on !KASAN || KASAN_VMALLOC
- 	---help---
- 	  Enable this if you want the use virtually-mapped kernel stacks
- 	  with guard pages.  This causes kernel stack overflows to be
- 	  caught immediately rather than causing difficult-to-diagnose
- 	  corruption.
+---
+
+v2: move from faulting in shadow pgds to prepopulating
+---
+ arch/x86/Kconfig            |  1 +
+ arch/x86/mm/kasan_init_64.c | 61 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 62 insertions(+)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 222855cc0158..40562cc3771f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -134,6 +134,7 @@ config X86
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if X86_64
++	select HAVE_ARCH_KASAN_VMALLOC		if X86_64
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS		if MMU
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if MMU && COMPAT
+diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+index 296da58f3013..2f57c4ddff61 100644
+--- a/arch/x86/mm/kasan_init_64.c
++++ b/arch/x86/mm/kasan_init_64.c
+@@ -245,6 +245,52 @@ static void __init kasan_map_early_shadow(pgd_t *pgd)
+ 	} while (pgd++, addr = next, addr != end);
+ }
  
--	  This is presently incompatible with KASAN because KASAN expects
--	  the stack to map directly to the KASAN shadow map using a formula
--	  that is incorrect if the stack is in vmalloc space.
-+	  To use this with KASAN, the architecture must support backing
-+	  virtual mappings with real shadow memory, and KASAN_VMALLOC must
-+	  be enabled.
- 
- config ARCH_OPTIONAL_KERNEL_RWX
- 	def_bool n
-diff --git a/kernel/fork.c b/kernel/fork.c
-index d8ae0f1b4148..ce3150fe8ff2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -94,6 +94,7 @@
- #include <linux/livepatch.h>
- #include <linux/thread_info.h>
- #include <linux/stackleak.h>
-+#include <linux/kasan.h>
- 
- #include <asm/pgtable.h>
- #include <asm/pgalloc.h>
-@@ -215,6 +216,9 @@ static unsigned long *alloc_thread_stack_node(struct task_struct *tsk, int node)
- 		if (!s)
- 			continue;
- 
-+		/* Clear the KASAN shadow of the stack. */
-+		kasan_unpoison_shadow(s->addr, THREAD_SIZE);
++static void __init kasan_shallow_populate_p4ds(pgd_t *pgd,
++		unsigned long addr,
++		unsigned long end,
++		int nid)
++{
++	p4d_t *p4d;
++	unsigned long next;
++	void *p;
 +
- 		/* Clear stale pointers from reused stack. */
- 		memset(s->addr, 0, THREAD_SIZE);
++	p4d = p4d_offset(pgd, addr);
++	do {
++		next = p4d_addr_end(addr, end);
++
++		if (p4d_none(*p4d)) {
++			p = early_alloc(PAGE_SIZE, nid, true);
++			p4d_populate(&init_mm, p4d, p);
++		}
++	} while (p4d++, addr = next, addr != end);
++}
++
++static void __init kasan_shallow_populate_pgds(void *start, void *end)
++{
++	unsigned long addr, next;
++	pgd_t *pgd;
++	void *p;
++	int nid = early_pfn_to_nid((unsigned long)start);
++
++	addr = (unsigned long)start;
++	pgd = pgd_offset_k(addr);
++	do {
++		next = pgd_addr_end(addr, (unsigned long)end);
++
++		if (pgd_none(*pgd)) {
++			p = early_alloc(PAGE_SIZE, nid, true);
++			pgd_populate(&init_mm, pgd, p);
++		}
++
++		/*
++		 * we need to populate p4ds to be synced when running in
++		 * four level mode - see sync_global_pgds_l4()
++		 */
++		kasan_shallow_populate_p4ds(pgd, addr, next, nid);
++	} while (pgd++, addr = next, addr != (unsigned long)end);
++}
++
++
+ #ifdef CONFIG_KASAN_INLINE
+ static int kasan_die_handler(struct notifier_block *self,
+ 			     unsigned long val,
+@@ -352,9 +398,24 @@ void __init kasan_init(void)
+ 	shadow_cpu_entry_end = (void *)round_up(
+ 			(unsigned long)shadow_cpu_entry_end, PAGE_SIZE);
  
++	/*
++	 * If we're in full vmalloc mode, don't back vmalloc space with early
++	 * shadow pages. Instead, prepopulate pgds/p4ds so they are synced to
++	 * the global table and we can populate the lower levels on demand.
++	 */
++#ifdef CONFIG_KASAN_VMALLOC
++	kasan_shallow_populate_pgds(
++		kasan_mem_to_shadow((void *)PAGE_OFFSET + MAXMEM),
++		kasan_mem_to_shadow((void *)VMALLOC_END));
++
++	kasan_populate_early_shadow(
++		kasan_mem_to_shadow((void *)VMALLOC_END + 1),
++		shadow_cpu_entry_begin);
++#else
+ 	kasan_populate_early_shadow(
+ 		kasan_mem_to_shadow((void *)PAGE_OFFSET + MAXMEM),
+ 		shadow_cpu_entry_begin);
++#endif
+ 
+ 	kasan_populate_shadow((unsigned long)shadow_cpu_entry_begin,
+ 			      (unsigned long)shadow_cpu_entry_end, 0);
 -- 
 2.20.1
 
