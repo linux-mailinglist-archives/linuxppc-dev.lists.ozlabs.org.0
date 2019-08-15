@@ -1,61 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744F78EAB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 13:52:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F22F8EAC3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 13:55:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468Pv43FxHzDqfW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 21:52:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468Pyx2FzqzDr6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 21:55:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=adrian.hunter@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=andrew.murray@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468Ps32p33zDqxk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 21:50:08 +1000 (AEST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 15 Aug 2019 04:50:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,389,1559545200"; d="scan'208";a="184601005"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.122])
- ([10.237.72.122])
- by FMSMGA003.fm.intel.com with ESMTP; 15 Aug 2019 04:50:00 -0700
-Subject: Re: [PATCH v1 4/4] mmc: sdhci-of-esdhc: add erratum A011334 support
- in ls1028a 1.0 SoC
-To: Yinbo Zhu <yinbo.zhu@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will.deacon@arm.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Li Yang <leoyang.li@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
- Amit Jain <amit.jain_1@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
- Vabhav Sharma <vabhav.sharma@nxp.com>, Rajesh Bhagat
- <rajesh.bhagat@nxp.com>, Ashish Kumar <Ashish.Kumar@nxp.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org
-References: <20190814072649.8237-1-yinbo.zhu@nxp.com>
- <20190814072649.8237-4-yinbo.zhu@nxp.com>
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <eeaf2862-8f05-e813-917b-a8358e6d90ab@intel.com>
-Date: Thu, 15 Aug 2019 14:48:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 468Px627CjzDqNw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 21:53:44 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E83528;
+ Thu, 15 Aug 2019 04:53:43 -0700 (PDT)
+Received: from localhost (unknown [10.37.6.20])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8B0783F694;
+ Thu, 15 Aug 2019 04:53:42 -0700 (PDT)
+Date: Thu, 15 Aug 2019 12:53:41 +0100
+From: Andrew Murray <andrew.murray@arm.com>
+To: Xiaowei Bao <xiaowei.bao@nxp.com>
+Subject: Re: [PATCH 02/10] PCI: designware-ep: Add the doorbell mode of MSI-X
+ in EP mode
+Message-ID: <20190815115340.GG43882@e119886-lin.cambridge.arm.com>
+References: <20190815083716.4715-1-xiaowei.bao@nxp.com>
+ <20190815083716.4715-2-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <20190814072649.8237-4-yinbo.zhu@nxp.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190815083716.4715-2-xiaowei.bao@nxp.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,37 +48,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alison Wang <alison.wang@nxp.com>,
- Alex Marginean <alexandru.marginean@nxp.com>, xiaobo.xie@nxp.com,
- Catalin Horghidan <catalin.horghidan@nxp.com>,
- Rajat Srivastava <rajat.srivastava@nxp.com>, jiafei.pan@nxp.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, roy.zang@nxp.com, lorenzo.pieralisi@arm.com,
+ arnd@arndb.de, gregkh@linuxfoundation.org, jingoohan1@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, leoyang.li@nxp.com, minghuan.Lian@nxp.com,
+ devicetree@vger.kernel.org, robh+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, gustavo.pimentel@synopsys.com,
+ bhelgaas@google.com, kishon@ti.com, shawnguo@kernel.org, mingkai.hu@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/08/19 10:26 AM, Yinbo Zhu wrote:
-> This patch is to add erratum A011334 support in ls1028a 1.0 SoC
+On Thu, Aug 15, 2019 at 04:37:08PM +0800, Xiaowei Bao wrote:
+> Add the doorbell mode of MSI-X in EP mode.
 > 
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
-
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 > ---
->  drivers/mmc/host/sdhci-of-esdhc.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 14 ++++++++++++++
+>  drivers/pci/controller/dwc/pcie-designware.h    | 14 ++++++++++++++
+>  2 files changed, 28 insertions(+)
 > 
-> diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-> index b16f7d440f78..eb2b290447fc 100644
-> --- a/drivers/mmc/host/sdhci-of-esdhc.c
-> +++ b/drivers/mmc/host/sdhci-of-esdhc.c
-> @@ -1006,6 +1006,7 @@ static struct soc_device_attribute soc_incorrect_hostver[] = {
->  static struct soc_device_attribute soc_fixup_sdhc_clkdivs[] = {
->  	{ .family = "QorIQ LX2160A", .revision = "1.0", },
->  	{ .family = "QorIQ LX2160A", .revision = "2.0", },
-> +	{ .family = "QorIQ LS1028A", .revision = "1.0", },
->  	{ },
->  };
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 75e2955..e3a7cdf 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -454,6 +454,20 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
 >  
-> 
+> +int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
+> +				       u16 interrupt_num)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> +	u32 msg_data;
+> +
+> +	msg_data = (func_no << PCIE_MSIX_DOORBELL_PF_SHIFT) |
+> +		   (interrupt_num - 1);
+> +
+> +	dw_pcie_writel_dbi(pci, PCIE_MSIX_DOORBELL, msg_data);
+> +
+> +	return 0;
+> +}
+> +
+>  int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			      u16 interrupt_num)
 
+Have I understood correctly that the hardware provides an alternative mechanism
+that allows for raising MSI-X interrupts without the bother of reading the
+capabilities registers?
+
+If so is there any good reason to keep dw_pcie_ep_raise_msix_irq? (And thus use
+it in dw_plat_pcie_ep_raise_irq also)?
+
+
+>  {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 2b291e8..cd903e9 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -88,6 +88,11 @@
+>  #define PCIE_MISC_CONTROL_1_OFF		0x8BC
+>  #define PCIE_DBI_RO_WR_EN		BIT(0)
+>  
+> +#define PCIE_MSIX_DOORBELL		0x948
+> +#define PCIE_MSIX_DOORBELL_PF_SHIFT	24
+> +#define PCIE_MSIX_DOORBELL_VF_SHIFT	16
+> +#define PCIE_MSIX_DOORBELL_VF_ACTIVE	BIT(15)
+
+The _VF defines are not used, I'd suggest removing them.
+
+Thanks,
+
+Andrew Murray
+
+> +
+>  /*
+>   * iATU Unroll-specific register definitions
+>   * From 4.80 core version the address translation will be made by unroll
+> @@ -399,6 +404,8 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			     u8 interrupt_num);
+>  int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			     u16 interrupt_num);
+> +int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
+> +				       u16 interrupt_num);
+>  void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar);
+>  #else
+>  static inline void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+> @@ -431,6 +438,13 @@ static inline int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> +static inline int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep,
+> +						     u8 func_no,
+> +						     u16 interrupt_num)
+> +{
+> +	return 0;
+> +}
+> +
+>  static inline void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
+>  {
+>  }
+> -- 
+> 2.9.5
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
