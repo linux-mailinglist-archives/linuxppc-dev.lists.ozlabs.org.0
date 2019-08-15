@@ -1,106 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCB18E5C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 09:54:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37D58E605
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 10:17:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468JdC5HgQzDqxs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 17:54:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468K7L1thQzDq6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 18:17:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468JbY1NJ4zDqx2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 17:53:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 468JbX3zkbz8tcN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 17:53:12 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 468JbX3RQVz9sN6; Thu, 15 Aug 2019 17:53:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (mailfrom) smtp.mailfrom=kaod.org
+ (client-ip=46.105.59.63; helo=4.mo68.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from 4.mo68.mail-out.ovh.net (4.mo68.mail-out.ovh.net [46.105.59.63])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 468JbW73fsz9sN1
- for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 17:53:10 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7F7qO7t087713
- for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 03:53:09 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ud11km3wu-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 03:53:09 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <ajd@linux.ibm.com>;
- Thu, 15 Aug 2019 08:53:06 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 15 Aug 2019 08:53:05 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7F7r43V57933928
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Aug 2019 07:53:04 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1161BAE045;
- Thu, 15 Aug 2019 07:53:04 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B5EB9AE051;
- Thu, 15 Aug 2019 07:53:03 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 15 Aug 2019 07:53:03 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D8981A01BD;
- Thu, 15 Aug 2019 17:53:00 +1000 (AEST)
-Subject: Re: [RFC PATCH v4 1/2] powerpc/xmon: Allow listing active breakpoints
- in read-only mode
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org,
- kernel-hardening@lists.openwall.com
-References: <20190815050616.2547-1-cmr@informatik.wtf>
- <20190815050616.2547-2-cmr@informatik.wtf>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 15 Aug 2019 17:52:54 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468K5T00LGzDr0v
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 18:15:36 +1000 (AEST)
+Received: from player797.ha.ovh.net (unknown [10.109.143.72])
+ by mo68.mail-out.ovh.net (Postfix) with ESMTP id F06871400C2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 10:15:31 +0200 (CEST)
+Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
+ (Authenticated sender: clg@kaod.org)
+ by player797.ha.ovh.net (Postfix) with ESMTPSA id 8DC168F83BE8;
+ Thu, 15 Aug 2019 08:15:26 +0000 (UTC)
+Subject: Re: [PATCH 1/3] powerpc/xmon: Check for HV mode when dumping XIVE
+ info from OPAL
+To: Jordan Niethe <jniethe5@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20190814154754.23682-1-clg@kaod.org>
+ <20190814154754.23682-2-clg@kaod.org>
+ <21746c620de5ac0b9489a10cdc1f584f94d592fd.camel@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <294237fc-13eb-a0eb-3c28-db4141140e8d@kaod.org>
+Date: Thu, 15 Aug 2019 10:15:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190815050616.2547-2-cmr@informatik.wtf>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-AU
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19081507-0012-0000-0000-0000033EFF23
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081507-0013-0000-0000-000021791516
-Message-Id: <081d1159-3dd2-4b9b-4936-091ee8cacc6b@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-15_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908150083
+In-Reply-To: <21746c620de5ac0b9489a10cdc1f584f94d592fd.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 1487032305732455363
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefuddgtdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddm
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,22 +58,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/8/19 3:06 pm, Christopher M. Riedl wrote:>   	case 'c':
-> +		if (xmon_is_ro) {
-> +			printf(xmon_ro_msg);
-> +			break;
-> +		}
->   		if (!scanhex(&a)) {
->   			/* clear all breakpoints */
->   			for (i = 0; i < NBPTS; ++i)
+On 15/08/2019 09:30, Jordan Niethe wrote:
+> On Wed, 2019-08-14 at 17:47 +0200, Cédric Le Goater wrote:
+>> Currently, the xmon 'dx' command calls OPAL to dump the XIVE state in
+>> the OPAL logs and also outputs some of the fields of the internal
+>> XIVE
+>> structures in Linux. The OPAL calls can only be done on baremetal
+>> (PowerNV) and they crash a pseries machine. Fix by checking the
+>> hypervisor feature of the CPU.
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>  arch/powerpc/xmon/xmon.c | 17 ++++++++++-------
+>>  1 file changed, 10 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+>> index 14e56c25879f..25d4adccf750 100644
+>> --- a/arch/powerpc/xmon/xmon.c
+>> +++ b/arch/powerpc/xmon/xmon.c
+>> @@ -2534,13 +2534,16 @@ static void dump_pacas(void)
+>>  static void dump_one_xive(int cpu)
+>>  {
+>>  	unsigned int hwid = get_hard_smp_processor_id(cpu);
+>> -
+>> -	opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
+>> -	opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
+>> -	opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
+>> -	opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
+>> -	opal_xive_dump(XIVE_DUMP_VP, hwid);
+>> -	opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
+>> +	bool hv = cpu_has_feature(CPU_FTR_HVMODE);
+>> +
+>> +	if (hv) {
+>> +		opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
+>> +		opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
+>> +		opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
+>> +		opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
+>> +		opal_xive_dump(XIVE_DUMP_VP, hwid);
+>> +		opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
+>> +	}
+>>  
+>>  	if (setjmp(bus_error_jmp) != 0) {
+>>  		catch_memory_errors = 0;
+> dump_one_xive() / other xive functions are guarded by #ifdef
+> CONFIG_PPC_POWERNV in xmon.c aren't they? With this series would it be
+> that these guards can be removed?
 
-Clearing breakpoints is probably alright too.
+One could compile without CONFIG_PPC_POWERNV but we would still want 
+these commands to be available for pseries. I missed that.
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+I think we should move the opal_xive_dump calls to some other command, 
+dxo for 'dump_xive_opal' may be, as they only output in the OPAL logs.
 
+This needs some rework.
+
+Thanks,
+
+C.
