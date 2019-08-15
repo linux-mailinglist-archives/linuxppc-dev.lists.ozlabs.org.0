@@ -2,70 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36FB8F640
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 23:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D9B8F6C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 00:04:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468fCz0p6xzDr1X
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 07:07:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468gV30vtKzDrBd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 08:04:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
+ spf=pass (mailfrom) smtp.mailfrom=chromium.org
  (client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+ envelope-from=robdclark@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="G0oO16fe"; 
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.b="LL9gmWZ1";
  dkim-atps=neutral
 Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
  [IPv6:2607:f8b0:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468fB4524rzDr0x
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 07:05:42 +1000 (AEST)
-Received: by mail-oi1-x242.google.com with SMTP id a127so3298004oii.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 14:05:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468Scy6x1vzDr3N
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 23:54:55 +1000 (AEST)
+Received: by mail-oi1-x242.google.com with SMTP id l12so2049936oil.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 06:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=I9e+9SyZx5VjvjikBKAovwQqTND+yZ6kEHPzcscfEXE=;
- b=G0oO16fejfjWYZTvMwMXu1Cj0dJB+vzMWdZX60FZuJxsaZtB9Hh2GRTIiEvu7n/HUc
- ODziU0shukzdJhRQxjSrmbdCsOuHOl6K84hNu0OOL/dEnub2FwxcYiy+zMlUBsB1vTyI
- qRcNMwYCHL80rxe1hcCYXYOzRhr3CIQNIJf5B+XtQAwNls5Rg/NefPlxKNDE26KQUg2v
- Vy6/6grsDxl49OibXehH9M8ZdoyCw3IayUs+TEVJyVvDMb7xK0bdngQiLCcmtynC4BHR
- KS8s52/uidaXSeePXWMwQaydJttfelgy7WxMAQYx74mx6U2TyesDJIYykpZlhEB875ve
- cFWw==
+ :cc; bh=X5MHSVxjVbFw14gqG5FUXdzsIwvacO5ycoZ+KZncf0s=;
+ b=LL9gmWZ1h+OhDYg38xhyOFgY6h1JTL7+BEI+M4/66SAuy+YS17/1GNt2LFCYlFwHgS
+ I2ORea3QECg5t802K1/kXe+MYRWXHFLGsmZw9w0b0C4PQffYsKhMpRJ5RWFKi2c56Q5H
+ lbZZv26jqw/MHeMc//ARtg43BTEsBpT31y1nQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=I9e+9SyZx5VjvjikBKAovwQqTND+yZ6kEHPzcscfEXE=;
- b=q264wmA0/lJfj2veV86od4kgfcvqDey9Qv3/Aic+DdbQM8ATfcsq/lkprUeHgCURBp
- +ZXoYXSLDBY8NYQH5/oSBU3KkCnHRM0SPrm+uyuxeaJXukOX6oe+wDnsjFh5DzY4c96N
- B23aBmug1E87cfn+kwdcs0ST3+vkIBf0/i7xrotMbB4bLxnfkK7YJfGUElazdkN6EMwF
- 9ZkclRtpcqGa8CoqpV7uJ/6P3ZxXvC4luof0PzrgrFSWV0B7JMAXoTvhUgurBoiAPJox
- QPGd1QbvKRFYlQ2t2AsCjizE79eOSphcNEHbpcBFKMjVMhIf12bKyOxII4Dt6unFxnXS
- PIOQ==
-X-Gm-Message-State: APjAAAUvob8QEZVGNMa9chaTGNt3iRltZIbnyyh05HiX/okorgC5N7bC
- h463aCn8rvLC2CCB1z/yvjiHquJ8mkRTlzJKNQMORA==
-X-Google-Smtp-Source: APXvYqxYSbulXo1jOKOyMJ30tBrdjOaomDGOnrp8V3xfCU7oj/pEvcII1W7WTWGA2OrnhNw6y+FgIV2qLf0CSUXVVGg=
-X-Received: by 2002:a05:6808:914:: with SMTP id
- w20mr2648263oih.73.1565903140485; 
- Thu, 15 Aug 2019 14:05:40 -0700 (PDT)
+ bh=X5MHSVxjVbFw14gqG5FUXdzsIwvacO5ycoZ+KZncf0s=;
+ b=T1VQ6XB67hts8JOjPYkiKETWOUTsnZ44GNJ+vxPAKu1RBfmShmyddbCPoMG6Pixbzy
+ oDLQP4OV2CXnAWMKfsGXBgbYmM+FW5PUuHD/B2wfKwyndWP8Qilh5HR3KpgSgvgQ8CXC
+ HVvm2T1BGyeqnrBDa7mF39nog0qOT8FYmAe51k/2QR5LIBDuBh/CSN15MoBRNcQ6EEJS
+ 2aJNRi91/jr0eOcVUZkoLZK1qYl8fJjUA/sNVwG9ecUH8LwbBGmQeXFO/GctltlTDrY2
+ c131LAYrVz8D9ItpX8F4bM4XINqTfv3yDn/8MYmd77EGAROXd9N97jrnTZW7xTbc1N5v
+ G0AQ==
+X-Gm-Message-State: APjAAAXXrOJu2GUBhgQ4AdmrFdz3S3o+3BIfjGTYhTl/udD7AVE9AfxC
+ 6dQUSoRX0Q0hYdlXBlRzHNVe+4bwlCN+ADfR9TmXtA==
+X-Google-Smtp-Source: APXvYqzxa6k1RXxyRnJ7m1wF7wJgwzc+l90Oa2P6408VZnjT7yIceyBMmq0y0ocLrushHIzYfzfGRi1TZ2X58HUfSGc=
+X-Received: by 2002:a02:770a:: with SMTP id g10mr4932288jac.15.1565877291690; 
+ Thu, 15 Aug 2019 06:54:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 15 Aug 2019 14:05:29 -0700
-Message-ID: <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
- coding
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20190814220011.26934-1-robdclark@gmail.com>
+ <20190815065117.GA23761@lst.de>
+In-Reply-To: <20190815065117.GA23761@lst.de>
+From: Rob Clark <robdclark@chromium.org>
+Date: Thu, 15 Aug 2019 06:54:39 -0700
+Message-ID: <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
+Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
+To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Fri, 16 Aug 2019 08:03:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,108 +71,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
+ "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Will Deacon <will@kernel.org>, Emil Velikov <emil.velikov@collabora.com>,
+ Deepak Sharma <deepak.sharma@amd.com>, Paul Burton <paul.burton@mips.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
+ <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
+ "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
+ Joerg Roedel <jroedel@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
+ "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
+ Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
+ Souptick Joarder <jrdr.linux@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
+On Wed, Aug 14, 2019 at 11:51 PM Christoph Hellwig <hch@lst.de> wrote:
 >
-> Use PAGE_SIZE instead of SZ_4K and sizeof(struct page) instead of 64.
-> If we have a kernel built with different struct page size the previous
-> patch should handle marking the namespace disabled.
+> As said before I don't think these low-level helpers are the
+> right API to export, but even if they did you'd just cover a tiny
+> subset of the architectures.
 
-Each of these changes carry independent non-overlapping regression
-risk, so lets split them into separate patches. Others might
+Are you thinking instead something like:
 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  drivers/nvdimm/label.c          | 2 +-
->  drivers/nvdimm/namespace_devs.c | 6 +++---
->  drivers/nvdimm/pfn_devs.c       | 3 ++-
->  drivers/nvdimm/region_devs.c    | 8 ++++----
->  4 files changed, 10 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-> index 73e197babc2f..7ee037063be7 100644
-> --- a/drivers/nvdimm/label.c
-> +++ b/drivers/nvdimm/label.c
-> @@ -355,7 +355,7 @@ static bool slot_valid(struct nvdimm_drvdata *ndd,
->
->         /* check that DPA allocations are page aligned */
->         if ((__le64_to_cpu(nd_label->dpa)
-> -                               | __le64_to_cpu(nd_label->rawsize)) % SZ_4K)
-> +                               | __le64_to_cpu(nd_label->rawsize)) % PAGE_SIZE)
+void dma_sync_sg_for_{cpu,device}(struct device *dev, struct scatterlist *sgl,
+                                  int nents, enum dma_data_direction dir)
+{
+    for_each_sg(sgl, sg, nents, i) {
+        arch_sync_dma_for_..(dev, sg_phys(sg), sg->length, dir);
+    }
+}
+EXPORT_SYMBOL_GPL(dma_sync_sg_for_..)
 
-The UEFI label specification has no concept of PAGE_SIZE, so this
-check is a pure Linux-ism. There's no strict requirement why
-slot_valid() needs to check for page alignment and it would seem to
-actively hurt cross-page-size compatibility, so let's delete the check
-and rely on checksum validation.
+or did you have something else in mind?
 
->                 return false;
->
->         /* check checksum */
-> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-> index a16e52251a30..a9c76df12cb9 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1006,10 +1006,10 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
->                 return -ENXIO;
->         }
->
-> -       div_u64_rem(val, SZ_4K * nd_region->ndr_mappings, &remainder);
-> +       div_u64_rem(val, PAGE_SIZE * nd_region->ndr_mappings, &remainder);
->         if (remainder) {
-> -               dev_dbg(dev, "%llu is not %dK aligned\n", val,
-> -                               (SZ_4K * nd_region->ndr_mappings) / SZ_1K);
-> +               dev_dbg(dev, "%llu is not %ldK aligned\n", val,
-> +                               (PAGE_SIZE * nd_region->ndr_mappings) / SZ_1K);
->                 return -EINVAL;
+I guess something like this would avoid figuring out *which* archs
+actually build drm..
 
-Yes, looks good, but this deserves its own independent patch.
 
->         }
->
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index 37e96811c2fc..c1d9be609322 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->                  * when populating the vmemmap. This *should* be equal to
->                  * PMD_SIZE for most architectures.
->                  */
-> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
-> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
+> Also to distil the previous thread - if you remap memory to uncached
+> the helper to use is arch_dma_prep_coherent, which does a writeback+
+> invalidate everywhere, and there is no need to clean up after a
+> long-term uncached mapping.  We might still get speculations into
+> that area, if we don't remap the direct mapping, but it isn't like
+> invalidting that just before freeing the memory is going to help
+> anyone.
 
-I'd prefer if this was not dynamic and was instead set to the maximum
-size of 'struct page' across all archs just to enhance cross-arch
-compatibility. I think that answer is '64'.
-> +                              align) - start;
->         } else if (nd_pfn->mode == PFN_MODE_RAM)
->                 offset = ALIGN(start + SZ_8K, align) - start;
->         else
-> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> index af30cbe7a8ea..20e265a534f8 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -992,10 +992,10 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
->                 struct nd_mapping_desc *mapping = &ndr_desc->mapping[i];
->                 struct nvdimm *nvdimm = mapping->nvdimm;
->
-> -               if ((mapping->start | mapping->size) % SZ_4K) {
-> -                       dev_err(&nvdimm_bus->dev, "%s: %s mapping%d is not 4K aligned\n",
-> -                                       caller, dev_name(&nvdimm->dev), i);
-> -
-> +               if ((mapping->start | mapping->size) % PAGE_SIZE) {
-> +                       dev_err(&nvdimm_bus->dev,
-> +                               "%s: %s mapping%d is not %ld aligned\n",
-> +                               caller, dev_name(&nvdimm->dev), i, PAGE_SIZE);
->                         return NULL;
->                 }
->
-> --
-> 2.21.0
->
+hmm, IIUC the aarch64 cache instructions, what I'm doing now is equiv
+to what I would get with dma_map_sg(DMA_BIDIRECTIONAL) and
+arch_dma_prep_coherent() is equiv to what I'd get w/ DMA_FROM_DEVICE
+(but a single pass instead of separate inv+clean passes)..
+
+but I can respin this with a single dma_prep_coherent_sg() which uses
+arch_dma_prep_coherent()..
+
+> Also it seems like patches 5 and 6 are missing in my inbox.
+
+Hmm, not entirely sure why.. you should be on the cc list for each
+individual patch.
+
+But here is the patchwork link if you want to see them:
+
+https://patchwork.freedesktop.org/series/65211/
+
+BR,
+-R
