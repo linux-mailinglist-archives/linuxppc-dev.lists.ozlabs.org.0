@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADAE8F723
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 00:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1129B8F79E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 01:33:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468hKG6L36zDq9R
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 08:42:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468jSd6tdMzDrB2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:33:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
+ (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
  envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
- [209.85.210.66])
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468hHK3jqvzDrB4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 08:40:25 +1000 (AEST)
-Received: by mail-ot1-f66.google.com with SMTP id o101so7900137ota.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:40:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468jQp1FhvzDqtR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 09:32:00 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id c7so8112410otp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 16:32:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=5N0BrmR1Tjy4UAxxe/8xM6uCYUxnCI+4Zt+Yt4/wBa0=;
- b=II31cxqE8y1NKxqbaFQD2nRAiLj7zfp2xClP/BXjl6Tcz8UFFDcMn0lmw3mGCZVIog
- rFAOStDHVrAnGN0DhbyfoegyyPnpbg2V1n6IeiTjTneaRdqteNhAKaxXfM+XjZ0dcas0
- 5iTWUPgb2lJ3lABz1HDfHhNk7+o/GdOE51RzOg8VFpIoykYrR4plaOIGguKKgts0BW+T
- jDBT7ABTo0KPNGBjg5qWJSfHSmFvljCh8ChiiGhQr6Kfkp6272YRy9hxsqrPN0SSCnUu
- u3WKN9bAlawNgqKsvTRsvqhn56oOX5HigKW3beP5SnYvcByfQFN1c5O7CdhHrvO4e8B0
- mahg==
-X-Gm-Message-State: APjAAAWxgd177xQiFwB0lwG7FsEp04ac5bTXZxCjBq3ktpODXll/ljpb
- 5vcieuvKw2efw10gpvEkpmWdlS2Zw7s=
-X-Google-Smtp-Source: APXvYqwgIKBBKYEEzyhJ1l4jgP7FXm5eUK9Xo6Wy/c6Hp6B2rg0dCqhgAKO7ZoQiBaKI2RMvuDa56Q==
-X-Received: by 2002:a9d:65ca:: with SMTP id z10mr4886677oth.167.1565908822492; 
- Thu, 15 Aug 2019 15:40:22 -0700 (PDT)
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com.
- [209.85.167.173])
- by smtp.gmail.com with ESMTPSA id g7sm1478076otp.20.2019.08.15.15.40.21
+ bh=3W/JXRczT4e7iKML5rUyQ8eYma8iSWGGWO86RntEySo=;
+ b=ssih72cCAclgB5AVSo/+IkLg/f7L462IHzZQUs7PrMcTUzuLXVR/0n7gSqc5Mfy4fw
+ sB75RbzirdS+UhGcek0Y+oNeDEnpRAOTUamq7d8iYq7VO2/o7YGHypwwI1xe/IOrT8uk
+ csueK6RbcaQtGMY42gVo610SwM7lzgd2zCmqYjQ9qY7kwZBMSpn/ebnwW2iPWRg0y3XS
+ xZxei+DVXtfXQqZzR3QxzcxRa+aDNDwJ7U3H9csXTKi1ZSK+rsBRADxqs9UyBuvQcKvN
+ StyO+zfEtHuZayAXKvENLcLBn3BLabgmB9a4smB8owWvHEeSHZEu4JHQmbljmj18XcKJ
+ FrBA==
+X-Gm-Message-State: APjAAAXx+Qz691QmSRXOm8b1TuCXEuy7Kt7R+c6amRje8uy7mG7xs8VY
+ 7xMZInCetUVXR/M1ogqQ2N00AlsFsC0=
+X-Google-Smtp-Source: APXvYqw8xRFoDg/HLHTjxQZtPSVTtH+t1Lo0yUphYV5Gc6yQzCrWXdP86i31A62MhSNUOHNYRnk9mQ==
+X-Received: by 2002:a9d:69d7:: with SMTP id v23mr5607291oto.321.1565911918183; 
+ Thu, 15 Aug 2019 16:31:58 -0700 (PDT)
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com.
+ [209.85.210.49])
+ by smtp.gmail.com with ESMTPSA id j6sm1432625otq.16.2019.08.15.16.31.57
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Aug 2019 15:40:21 -0700 (PDT)
-Received: by mail-oi1-f173.google.com with SMTP id k22so3417974oiw.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:40:21 -0700 (PDT)
-X-Received: by 2002:a54:4191:: with SMTP id 17mr2851640oiy.175.1565908820908; 
- Thu, 15 Aug 2019 15:40:20 -0700 (PDT)
+ Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
+Received: by mail-ot1-f49.google.com with SMTP id k18so8078526otr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
+X-Received: by 2002:a9d:6b84:: with SMTP id b4mr5482166otq.63.1565911917418;
+ Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190814072649.8237-1-yinbo.zhu@nxp.com>
- <20190814072649.8237-2-yinbo.zhu@nxp.com>
-In-Reply-To: <20190814072649.8237-2-yinbo.zhu@nxp.com>
+References: <1564690599-29713-1-git-send-email-roy.pledge@nxp.com>
+In-Reply-To: <1564690599-29713-1-git-send-email-roy.pledge@nxp.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Thu, 15 Aug 2019 17:40:09 -0500
-X-Gmail-Original-Message-ID: <CADRPPNSW4A0gkbzcPD=y-J_YHSnbAgP7p=RQnS6i0U-Ze=L6qA@mail.gmail.com>
-Message-ID: <CADRPPNSW4A0gkbzcPD=y-J_YHSnbAgP7p=RQnS6i0U-Ze=L6qA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] soc: fsl: guts: Add definition for LS1028A
-To: Yinbo Zhu <yinbo.zhu@nxp.com>
+Date: Thu, 15 Aug 2019 18:31:46 -0500
+X-Gmail-Original-Message-ID: <CADRPPNQ_3muAr_tVYOThhtPmGXk2gh4qMhhZK402HiHh4fO-Fw@mail.gmail.com>
+Message-ID: <CADRPPNQ_3muAr_tVYOThhtPmGXk2gh4qMhhZK402HiHh4fO-Fw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] soc/fsl/qbman: Enable Kexec for DPAA1 devices
+To: Roy Pledge <roy.pledge@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,63 +71,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will.deacon@arm.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Catalin Horghidan <catalin.horghidan@nxp.com>, linux-mmc@vger.kernel.org,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Rajesh Bhagat <rajesh.bhagat@nxp.com>,
- Alison Wang <alison.wang@nxp.com>, Ashish Kumar <Ashish.Kumar@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Vabhav Sharma <vabhav.sharma@nxp.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>, Amit Jain <amit.jain_1@nxp.com>,
- Alex Marginean <alexandru.marginean@nxp.com>,
- lkml <linux-kernel@vger.kernel.org>,
- Rajat Srivastava <rajat.srivastava@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>,
- Jiafei Pan <jiafei.pan@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Xiaobo Xie <xiaobo.xie@nxp.com>
+Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 14, 2019 at 2:26 AM Yinbo Zhu <yinbo.zhu@nxp.com> wrote:
+On Thu, Aug 1, 2019 at 3:20 PM Roy Pledge <roy.pledge@nxp.com> wrote:
 >
-> Adding compatible string "ls1028a-dcfg" to initialize guts driver
-> for ls1028 and SoC die attribute definition for LS1028A
+> Most DPAA1 devices do not support a soft reset which is an issue if
+> Kexec starts a new kernel. This patch series allows Kexec to function
+> by detecting that the QBMan device was previously initialized.
 >
-> Signed-off-by: Yinbo Zhu <yinbo.zhu@nxp.com>
+> The patches fix some issues with device cleanup as well as ensuring
+> that the location of the QBMan private memories has not changed
+> after the execution of the Kexec.
+>
+> Changes since v1:
+>         - Removed a bug fix and sent it separately to ease backporting
+> Changes since v2:
+>         - Expliciitly flush FQD memory from cache on PPC before unmapping
+>
+> Roy Pledge (7):
+>   soc/fsl/qbman: Rework QBMan private memory setup
+>   soc/fsl/qbman: Cleanup buffer pools if BMan was initialized prior to
+>     bootup
+>   soc/fsl/qbman: Cleanup QMan queues if device was already initialized
+>   soc/fsl/qbman: Fix drain_mr_fqni()
+>   soc/fsl/qbman: Disable interrupts during portal recovery
+>   soc/fsl/qbman: Fixup qman_shutdown_fq()
+>   soc/fsl/qbman: Update device tree with reserved memory
 
-Applied for next.
+Series applied for next.  Thanks!
 
-> ---
->  drivers/soc/fsl/guts.c | 6 ++++++
->  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-> index 1ef8068c8dd3..34810f9bb2ee 100644
-> --- a/drivers/soc/fsl/guts.c
-> +++ b/drivers/soc/fsl/guts.c
-> @@ -102,6 +102,11 @@ static const struct fsl_soc_die_attr fsl_soc_die[] = {
->           .svr          = 0x87360000,
->           .mask         = 0xff3f0000,
->         },
-> +       /* Die: LS1028A, SoC: LS1028A */
-> +       { .die          = "LS1028A",
-> +         .svr          = 0x870b0000,
-> +         .mask         = 0xff3f0000,
-> +       },
->         { },
->  };
+>  drivers/soc/fsl/qbman/bman.c        | 17 ++++----
+>  drivers/soc/fsl/qbman/bman_ccsr.c   | 36 +++++++++++++++-
+>  drivers/soc/fsl/qbman/bman_portal.c | 18 +++++++-
+>  drivers/soc/fsl/qbman/bman_priv.h   |  5 +++
+>  drivers/soc/fsl/qbman/dpaa_sys.c    | 63 ++++++++++++++++------------
+>  drivers/soc/fsl/qbman/qman.c        | 83 +++++++++++++++++++++++++++++--------
+>  drivers/soc/fsl/qbman/qman_ccsr.c   | 68 +++++++++++++++++++++++++++---
+>  drivers/soc/fsl/qbman/qman_portal.c | 18 +++++++-
+>  drivers/soc/fsl/qbman/qman_priv.h   |  8 ++++
+>  9 files changed, 255 insertions(+), 61 deletions(-)
 >
-> @@ -224,6 +229,7 @@ static const struct of_device_id fsl_guts_of_match[] = {
->         { .compatible = "fsl,ls1012a-dcfg", },
->         { .compatible = "fsl,ls1046a-dcfg", },
->         { .compatible = "fsl,lx2160a-dcfg", },
-> +       { .compatible = "fsl,ls1028a-dcfg", },
->         {}
->  };
->  MODULE_DEVICE_TABLE(of, fsl_guts_of_match);
 > --
-> 2.17.1
+> 2.7.4
 >
