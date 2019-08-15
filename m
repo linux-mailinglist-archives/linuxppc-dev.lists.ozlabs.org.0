@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F7A8E460
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 07:08:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0802C8E45A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 07:04:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468Dx92gjRzDr7p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 15:08:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468Ds35wxzzDr1q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 15:04:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468DqC6CX9zDqkR
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468DqC5rcmzDqk9
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 468DqC4P67z8t9Z
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 468DqC4fPpz8tT1
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 468DqC3zXLz9sNm; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
+ id 468DqC4Dz2z9sNf; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org;
  spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
@@ -33,27 +33,26 @@ Received: from h3.fbrelay.privateemail.com (h3.fbrelay.privateemail.com
  [131.153.2.44])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 468DqB5j9rz9sNf
+ by ozlabs.org (Postfix) with ESMTPS id 468DqB5B6Vz9sN6
  for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 15:03:02 +1000 (AEST)
 Received: from MTA-06-3.privateemail.com (mta-06.privateemail.com
  [68.65.122.16])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id CAC14814B6
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id B489D814B3
  for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 01:02:58 -0400 (EDT)
 Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
- by MTA-06.privateemail.com (Postfix) with ESMTP id D110660067;
- Thu, 15 Aug 2019 01:02:53 -0400 (EDT)
+ by MTA-06.privateemail.com (Postfix) with ESMTP id 587C76006A;
+ Thu, 15 Aug 2019 01:02:54 -0400 (EDT)
 Received: from wrwlf0000.attlocal.net (unknown [10.20.151.220])
- by MTA-06.privateemail.com (Postfix) with ESMTPA id 82E7860063;
+ by MTA-06.privateemail.com (Postfix) with ESMTPA id EC2D360063;
  Thu, 15 Aug 2019 05:02:53 +0000 (UTC)
 From: "Christopher M. Riedl" <cmr@informatik.wtf>
 To: linuxppc-dev@ozlabs.org,
 	kernel-hardening@lists.openwall.com
-Subject: [RFC PATCH v4 1/2] powerpc/xmon: Allow listing active breakpoints in
- read-only mode
-Date: Thu, 15 Aug 2019 00:06:15 -0500
-Message-Id: <20190815050616.2547-2-cmr@informatik.wtf>
+Subject: [RFC PATCH v4 2/2] powerpc/xmon: Restrict when kernel is locked down
+Date: Thu, 15 Aug 2019 00:06:16 -0500
+Message-Id: <20190815050616.2547-3-cmr@informatik.wtf>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190815050616.2547-1-cmr@informatik.wtf>
 References: <20190815050616.2547-1-cmr@informatik.wtf>
@@ -71,82 +70,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xmon can enter read-only mode dynamically due to changes in kernel
-lockdown state. This transition does not clear active breakpoints and
-any these breakpoints should remain visible to the xmon'er.
+Xmon should be either fully or partially disabled depending on the
+kernel lockdown state.
 
+Put xmon into read-only mode for lockdown=integrity and completely
+disable xmon when lockdown=confidentiality. Xmon checks the lockdown
+state and takes appropriate action:
+
+ (1) during xmon_setup to prevent early xmon'ing
+
+ (2) when triggered via sysrq
+
+ (3) when toggled via debugfs
+
+ (4) when triggered via a previously enabled breakpoint
+
+The following lockdown state transitions are handled:
+
+ (1) lockdown=none -> lockdown=integrity
+     set xmon read-only mode
+
+ (2) lockdown=none -> lockdown=confidentiality
+     clear all breakpoints, set xmon read-only mode,
+     prevent re-entry into xmon
+
+ (3) lockdown=integrity -> lockdown=confidentiality
+     clear all breakpoints, set xmon read-only mode,
+     prevent re-entry into xmon
+
+Suggested-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
 ---
- arch/powerpc/xmon/xmon.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/powerpc/xmon/xmon.c     | 59 ++++++++++++++++++++++++++++++++++--
+ include/linux/security.h     |  2 ++
+ security/lockdown/lockdown.c |  2 ++
+ 3 files changed, 60 insertions(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d0620d762a5a..bb63ecc599fd 100644
+index bb63ecc599fd..8fd79369974e 100644
 --- a/arch/powerpc/xmon/xmon.c
 +++ b/arch/powerpc/xmon/xmon.c
-@@ -1045,10 +1045,6 @@ cmds(struct pt_regs *excp)
- 			set_lpp_cmd();
- 			break;
- 		case 'b':
--			if (xmon_is_ro) {
--				printf(xmon_ro_msg);
--				break;
--			}
- 			bpt_cmds();
- 			break;
- 		case 'C':
-@@ -1317,11 +1313,16 @@ bpt_cmds(void)
- 	struct bpt *bp;
+@@ -25,6 +25,7 @@
+ #include <linux/nmi.h>
+ #include <linux/ctype.h>
+ #include <linux/highmem.h>
++#include <linux/security.h>
  
- 	cmd = inchar();
-+
- 	switch (cmd) {
- #ifndef CONFIG_PPC_8xx
- 	static const char badaddr[] = "Only kernel addresses are permitted for breakpoints\n";
- 	int mode;
- 	case 'd':	/* bd - hardware data breakpoint */
-+		if (xmon_is_ro) {
-+			printf(xmon_ro_msg);
-+			break;
-+		}
- 		if (!ppc_breakpoint_available()) {
- 			printf("Hardware data breakpoint not supported on this cpu\n");
- 			break;
-@@ -1349,6 +1350,10 @@ bpt_cmds(void)
- 		break;
- 
- 	case 'i':	/* bi - hardware instr breakpoint */
-+		if (xmon_is_ro) {
-+			printf(xmon_ro_msg);
-+			break;
-+		}
- 		if (!cpu_has_feature(CPU_FTR_ARCH_207S)) {
- 			printf("Hardware instruction breakpoint "
- 			       "not supported on this cpu\n");
-@@ -1372,6 +1377,10 @@ bpt_cmds(void)
+ #include <asm/debugfs.h>
+ #include <asm/ptrace.h>
+@@ -187,6 +188,9 @@ static void dump_tlb_44x(void);
+ static void dump_tlb_book3e(void);
  #endif
  
- 	case 'c':
-+		if (xmon_is_ro) {
-+			printf(xmon_ro_msg);
-+			break;
++static void clear_all_bpt(void);
++static void xmon_init(int);
++
+ #ifdef CONFIG_PPC64
+ #define REG		"%.16lx"
+ #else
+@@ -283,10 +287,41 @@ Commands:\n\
+ "  U	show uptime information\n"
+ "  ?	help\n"
+ "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
+-"  zr	reboot\n\
+-  zh	halt\n"
++"  zr	reboot\n"
++"  zh	halt\n"
+ ;
+ 
++#ifdef CONFIG_SECURITY
++static bool xmon_is_locked_down(void)
++{
++	static bool lockdown;
++
++	if (!lockdown) {
++		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
++		if (lockdown) {
++			printf("xmon: Disabled due to kernel lockdown\n");
++			xmon_is_ro = true;
++			xmon_on = 0;
++			xmon_init(0);
++			clear_all_bpt();
 +		}
- 		if (!scanhex(&a)) {
- 			/* clear all breakpoints */
- 			for (i = 0; i < NBPTS; ++i)
-@@ -1407,7 +1416,7 @@ bpt_cmds(void)
- 			break;
- 		}
- 		termch = cmd;
--		if (!scanhex(&a)) {
-+		if (xmon_is_ro || !scanhex(&a)) {
- 			/* print all breakpoints */
- 			printf("   type            address\n");
- 			if (dabr.enabled) {
++	}
++
++	if (!xmon_is_ro) {
++		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
++		if (xmon_is_ro)
++			printf("xmon: Read-only due to kernel lockdown\n");
++	}
++
++	return lockdown;
++}
++#else /* CONFIG_SECURITY */
++static inline bool xmon_is_locked_down(void)
++{
++	return false;
++}
++#endif
++
+ static struct pt_regs *xmon_regs;
+ 
+ static inline void sync(void)
+@@ -704,6 +739,9 @@ static int xmon_bpt(struct pt_regs *regs)
+ 	struct bpt *bp;
+ 	unsigned long offset;
+ 
++	if (xmon_is_locked_down())
++		return 0;
++
+ 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+ 		return 0;
+ 
+@@ -735,6 +773,9 @@ static int xmon_sstep(struct pt_regs *regs)
+ 
+ static int xmon_break_match(struct pt_regs *regs)
+ {
++	if (xmon_is_locked_down())
++		return 0;
++
+ 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+ 		return 0;
+ 	if (dabr.enabled == 0)
+@@ -745,6 +786,9 @@ static int xmon_break_match(struct pt_regs *regs)
+ 
+ static int xmon_iabr_match(struct pt_regs *regs)
+ {
++	if (xmon_is_locked_down())
++		return 0;
++
+ 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
+ 		return 0;
+ 	if (iabr == NULL)
+@@ -3750,6 +3794,9 @@ static void xmon_init(int enable)
+ #ifdef CONFIG_MAGIC_SYSRQ
+ static void sysrq_handle_xmon(int key)
+ {
++	if (xmon_is_locked_down())
++		return;
++
+ 	/* ensure xmon is enabled */
+ 	xmon_init(1);
+ 	debugger(get_irq_regs());
+@@ -3771,7 +3818,6 @@ static int __init setup_xmon_sysrq(void)
+ device_initcall(setup_xmon_sysrq);
+ #endif /* CONFIG_MAGIC_SYSRQ */
+ 
+-#ifdef CONFIG_DEBUG_FS
+ static void clear_all_bpt(void)
+ {
+ 	int i;
+@@ -3793,8 +3839,12 @@ static void clear_all_bpt(void)
+ 	printf("xmon: All breakpoints cleared\n");
+ }
+ 
++#ifdef CONFIG_DEBUG_FS
+ static int xmon_dbgfs_set(void *data, u64 val)
+ {
++	if (xmon_is_locked_down())
++		return 0;
++
+ 	xmon_on = !!val;
+ 	xmon_init(xmon_on);
+ 
+@@ -3853,6 +3903,9 @@ early_param("xmon", early_parse_xmon);
+ 
+ void __init xmon_setup(void)
+ {
++	if (xmon_is_locked_down())
++		return;
++
+ 	if (xmon_on)
+ 		xmon_init(1);
+ 	if (xmon_early)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 807dc0d24982..379b74b5d545 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -116,12 +116,14 @@ enum lockdown_reason {
+ 	LOCKDOWN_MODULE_PARAMETERS,
+ 	LOCKDOWN_MMIOTRACE,
+ 	LOCKDOWN_DEBUGFS,
++	LOCKDOWN_XMON_WR,
+ 	LOCKDOWN_INTEGRITY_MAX,
+ 	LOCKDOWN_KCORE,
+ 	LOCKDOWN_KPROBES,
+ 	LOCKDOWN_BPF_READ,
+ 	LOCKDOWN_PERF,
+ 	LOCKDOWN_TRACEFS,
++	LOCKDOWN_XMON_RW,
+ 	LOCKDOWN_CONFIDENTIALITY_MAX,
+ };
+ 
+diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+index f6c74cf6a798..79d1799a62ca 100644
+--- a/security/lockdown/lockdown.c
++++ b/security/lockdown/lockdown.c
+@@ -31,12 +31,14 @@ static char *lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1] = {
+ 	[LOCKDOWN_MODULE_PARAMETERS] = "unsafe module parameters",
+ 	[LOCKDOWN_MMIOTRACE] = "unsafe mmio",
+ 	[LOCKDOWN_DEBUGFS] = "debugfs access",
++	[LOCKDOWN_XMON_WR] = "xmon write access",
+ 	[LOCKDOWN_INTEGRITY_MAX] = "integrity",
+ 	[LOCKDOWN_KCORE] = "/proc/kcore access",
+ 	[LOCKDOWN_KPROBES] = "use of kprobes",
+ 	[LOCKDOWN_BPF_READ] = "use of bpf to read kernel RAM",
+ 	[LOCKDOWN_PERF] = "unsafe use of perf",
+ 	[LOCKDOWN_TRACEFS] = "use of tracefs",
++	[LOCKDOWN_XMON_RW] = "xmon read and write access",
+ 	[LOCKDOWN_CONFIDENTIALITY_MAX] = "confidentiality",
+ };
+ 
 -- 
 2.22.0
 
