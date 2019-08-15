@@ -2,39 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7718F29F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 19:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCBB8F2A3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 19:58:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468Yyr0yJXzDr83
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 03:55:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468Z205MHqzDr96
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 03:58:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (mailfrom) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468Ywg5nzbzDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 03:53:54 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id E3BED68AFE; Thu, 15 Aug 2019 19:53:46 +0200 (CEST)
-Date: Thu, 15 Aug 2019 19:53:46 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Rob Clark <robdclark@chromium.org>
-Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
-Message-ID: <20190815175346.GA19839@lst.de>
-References: <20190814220011.26934-1-robdclark@gmail.com>
- <20190815065117.GA23761@lst.de>
- <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468Yzr6219zDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 03:56:39 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id A977228736
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 17:56:37 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id 9DFF62899D; Thu, 15 Aug 2019 17:56:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=unavailable version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Thu, 15 Aug 2019 17:56:35 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-zdzPjBksX2@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,129 +71,393 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
- "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Benjamin Gaignard <benjamin.gaignard@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Emil Velikov <emil.velikov@collabora.com>,
- Deepak Sharma <deepak.sharma@amd.com>, Paul Burton <paul.burton@mips.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
- <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- Joerg Roedel <jroedel@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
- "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
- Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>,
- christian.koenig@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 15, 2019 at 06:54:39AM -0700, Rob Clark wrote:
-> On Wed, Aug 14, 2019 at 11:51 PM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > As said before I don't think these low-level helpers are the
-> > right API to export, but even if they did you'd just cover a tiny
-> > subset of the architectures.
-> 
-> Are you thinking instead something like:
-> 
-> void dma_sync_sg_for_{cpu,device}(struct device *dev, struct scatterlist *sgl,
->                                   int nents, enum dma_data_direction dir)
-> {
->     for_each_sg(sgl, sg, nents, i) {
->         arch_sync_dma_for_..(dev, sg_phys(sg), sg->length, dir);
->     }
-> }
-> EXPORT_SYMBOL_GPL(dma_sync_sg_for_..)
-> 
-> or did you have something else in mind?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
-No.  We really need an interface thay says please give me uncached
-memory (for some definition of uncached that includes that grapics
-drivers call write combine), and then let the architecture do the right
-thing.  Basically dma_alloc_coherent with DMA_ATTR_NO_KERNEL_MAPPING
-is superficially close to what you want, except that the way the drm
-drivers work you can't actually use it.
+--- Comment #30 from Erhard F. (erhard_f@mailbox.org) ---
+On Thu, 15 Aug 2019 17:11:36 +0000
+bugzilla-daemon@bugzilla.kernel.org wrote:
 
-The reason for that is if we can we really need to not create another
-uncachable alias, but instead change the page attributes in place.
-On x86 we can and must do that for example, and based on the
-conversation with Will arm64 could do that fairly easily.  arm32 can
-right now only do that for CMA, though.
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
+>=20
+> --- Comment #29 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+> Looks good. Does it work better ?
+Had some trouble getting the dmesg. With these modifications the btrfs modu=
+le
+hiccups as soon as it gets loaded, during btrfs selftests:
 
-The big question is what API do we want.  I had a pretty similar
-discussion with Christian on doing such an allocation for amdgpu,
-where the device normally is cache coherent, but they actually want
-to turn it into non-coherent by using PCIe unsnooped transactions.
+[...]
+[  167.258266] Btrfs loaded, crc32c=3Dcrc32c-generic, debug=3Don
+[  167.259388] BTRFS: selftest: sectorsize: 4096  nodesize: 4096
+[  167.259602] BTRFS: selftest: running btrfs free space cache tests
+[  167.259943] BTRFS: selftest: running extent only tests
+[  167.260201] BTRFS: selftest: running bitmap only tests
+[  167.260501] BTRFS: selftest: running bitmap and extent tests
+[  167.260963] WARNING: CPU: 0 PID: 266 at mm/slub.c:1846
+___slab_alloc.constprop.75+0x2ac/0x380
+[  167.261277] Modules linked in: btrfs(+) auth_rpcgss nfsv4 dns_resolver n=
+fs
+lockd grace sunrpc input_leds joydev b43legacy led_class hid_generic mac802=
+11
+usbhid hid snd_aoa_codec_tas snd_aoa_fabric_layout snd_aoa cfg80211 rfkill
+libarc4 evdev ohci_pci xor zstd_decompress zstd_compress zlib_deflate radeon
+raid6_pq zlib_inflate therm_windtunnel ehci_pci ohci_hcd hwmon i2c_algo_bit
+ehci_hcd backlight drm_kms_helper sungem firewire_ohci syscopyarea sungem_p=
+hy
+sysfillrect sr_mod firewire_core sysimgblt fb_sys_fops cdrom crc_itu_t
+snd_aoa_i2sbus snd_aoa_soundbus ttm snd_pcm usbcore snd_timer drm usb_common
+snd soundcore ssb uninorth_agp drm_panel_orientation_quirks agpgart lzo
+lzo_compress lzo_decompress zram zsmalloc
+[  167.263795] CPU: 0 PID: 266 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.3.0-rc4+ #3
+[  167.264074] NIP:  c0196ddc LR: c0196dd4 CTR: c019711c
+[  167.264236] REGS: ecde9a70 TRAP: 0700   Tainted: G        W=20=20=20=20=
+=20=20=20=20=20
+(5.3.0-rc4+)
+[  167.264488] MSR:  00021032 <ME,IR,DR,RI>  CR: 28224222  XER: 00000000
+[  167.264709]=20
+               GPR00: c0196dd4 ecde9b28 eb353380 00000000 ef3d3600 0003000e
+00000000 0007000f=20
+               GPR08: 00000001 00000001 ef42488c ecde9b28 48244222 00a9eff4
+00a64e74 00000004=20
+               GPR16: 00000000 ee800810 00000000 c0800000 00000000 ee800824
+f203de58 c07fea34=20
+               GPR24: 00210d00 ef424888 00000d40 ee800800 ef3d3600 ee8032e0
+00000000 eedb1af8=20
+[  167.265857] NIP [c0196ddc] ___slab_alloc.constprop.75+0x2ac/0x380
+[  167.266052] LR [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+[  167.266248] Call Trace:
+[  167.266308] [ecde9b28] [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+(unreliable)
+[  167.266567] [ecde9bb8] [c0196ef0] __slab_alloc.constprop.74+0x40/0x6c
+[  167.266776] [ecde9be8] [c0197198] kmem_cache_alloc_trace+0x7c/0x1a0
+[  167.267321] [ecde9c28] [f203de58] test_add_free_space_entry+0xf0/0x214
+[btrfs]
+[  167.267672] [ecde9c78] [f207e238] btrfs_test_free_space_cache+0x918/0x13=
+08
+[btrfs]
+[  167.268012] [ecde9cd8] [f207ad3c] btrfs_run_sanity_tests+0x8c/0x144 [btr=
+fs]
+[  167.268327] [ecde9d08] [f1678cd0] init_btrfs_fs+0xd4/0x12c [btrfs]
+[  167.268536] [ecde9d28] [c00052cc] do_one_initcall+0x54/0x288
+[  167.282204] [ecde9d98] [c00bebf8] do_init_module+0x60/0x1dc
+[  167.295710] [ecde9dc8] [c00c0ad4] load_module+0x1ca4/0x1e18
+[  167.308943] [ecde9ea8] [c00c0df4] sys_finit_module+0x98/0xb8
+[  167.322086] [ecde9f38] [c0014274] ret_from_syscall+0x0/0x34
+[  167.335151] --- interrupt: c01 at 0x8ed2c4
+                   LR =3D 0xa757c4
+[  167.361356] Instruction dump:
+[  167.374279] 7e048378 7f83e378 60e70001 90e10030 4bffda0d 2f830000 41beff=
+20
+7f84e378=20
+[  167.387497] 7f63db78 4bffdd35 7e090034 5529d97e <0f090000> 2f900000 41be=
+ff00
+7e527a14=20
+[  167.400820] irq event stamp: 0
+[  167.414008] hardirqs last  enabled at (0): [<00000000>] 0x0
+[  167.427196] hardirqs last disabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  167.440311] softirqs last  enabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  167.453198] softirqs last disabled at (0): [<00000000>] 0x0
+[  167.465906] ---[ end trace 74450a6aa18e595d ]---
+[  167.481091] BTRFS: selftest: running space stealing from bitmap to extent
+tests
+[  167.496220] BTRFS: selftest: running extent buffer operation tests
+[  167.510905] BTRFS: selftest: running btrfs_split_item tests
+[  167.525961] BTRFS: selftest: running extent I/O tests
+[  167.540569] BTRFS: selftest: running find delalloc tests
+[  168.104731] BTRFS: selftest: running find_first_clear_extent_bit test
+[  168.119119] BTRFS: selftest: running extent buffer bitmap tests
+[  168.463591] BTRFS: selftest: running inode tests
+[  168.477316] BTRFS: selftest: running btrfs_get_extent tests
+[  168.491784] BTRFS: selftest: running hole first btrfs_get_extent test
+[  168.506234] BTRFS: selftest: running outstanding_extents tests
+[  168.520925] BTRFS: selftest: running qgroup tests
+[  168.535039] BTRFS: selftest: running qgroup add/remove tests
+[  168.549344] BTRFS: selftest: running qgroup multiple refs test
+[  168.563713] BTRFS: selftest: running free space tree tests
+[  168.706099] BTRFS: selftest: sectorsize: 4096  nodesize: 8192
+[  168.718674] BTRFS: selftest: running btrfs free space cache tests
+[  168.731349] BTRFS: selftest: running extent only tests
+[  168.744380] BTRFS: selftest: running bitmap only tests
+[  168.757505] BTRFS: selftest: running bitmap and extent tests
+[  168.770615] WARNING: CPU: 0 PID: 266 at mm/slub.c:1846
+___slab_alloc.constprop.75+0x2ac/0x380
+[  168.783738] Modules linked in: btrfs(+) auth_rpcgss nfsv4 dns_resolver n=
+fs
+lockd grace sunrpc input_leds joydev b43legacy led_class hid_generic mac802=
+11
+usbhid hid snd_aoa_codec_tas snd_aoa_fabric_layout snd_aoa cfg80211 rfkill
+libarc4 evdev ohci_pci xor zstd_decompress zstd_compress zlib_deflate radeon
+raid6_pq zlib_inflate therm_windtunnel ehci_pci ohci_hcd hwmon i2c_algo_bit
+ehci_hcd backlight drm_kms_helper sungem firewire_ohci syscopyarea sungem_p=
+hy
+sysfillrect sr_mod firewire_core sysimgblt fb_sys_fops cdrom crc_itu_t
+snd_aoa_i2sbus snd_aoa_soundbus ttm snd_pcm usbcore snd_timer drm usb_common
+snd soundcore ssb uninorth_agp drm_panel_orientation_quirks agpgart lzo
+lzo_compress lzo_decompress zram zsmalloc
+[  168.828086] CPU: 0 PID: 266 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.3.0-rc4+ #3
+[  168.843577] NIP:  c0196ddc LR: c0196dd4 CTR: c019711c
+[  168.859054] REGS: ecde9a70 TRAP: 0700   Tainted: G        W=20=20=20=20=
+=20=20=20=20=20
+(5.3.0-rc4+)
+[  168.874772] MSR:  00021032 <ME,IR,DR,RI>  CR: 28224242  XER: 00000000
+[  168.890402]=20
+               GPR00: c0196dd4 ecde9b28 eb353380 00000000 ef3d3960 0001000e
+00000000 0007000f=20
+               GPR08: 00000001 00000001 ef432578 ecde9b28 48244242 00a9eff4
+00a64e74 00000006=20
+               GPR16: 00000000 ee800810 00000000 c0800000 00000000 ee800824
+f203de58 c07fea34=20
+               GPR24: 00210d00 ef432574 00000d40 ee800800 ef3d3960 ee8032e0
+00000000 eedb1af8=20
+[  168.960711] NIP [c0196ddc] ___slab_alloc.constprop.75+0x2ac/0x380
+[  168.974148] LR [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+[  168.987536] Call Trace:
+[  169.000772] [ecde9b28] [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+(unreliable)
+[  169.014236] [ecde9bb8] [c0196ef0] __slab_alloc.constprop.74+0x40/0x6c
+[  169.027634] [ecde9be8] [c0197198] kmem_cache_alloc_trace+0x7c/0x1a0
+[  169.041326] [ecde9c28] [f203de58] test_add_free_space_entry+0xf0/0x214
+[btrfs]
+[  169.054891] [ecde9c78] [f207dee4] btrfs_test_free_space_cache+0x5c4/0x13=
+08
+[btrfs]
+[  169.068328] [ecde9cd8] [f207ad3c] btrfs_run_sanity_tests+0x8c/0x144 [btr=
+fs]
+[  169.081776] [ecde9d08] [f1678cd0] init_btrfs_fs+0xd4/0x12c [btrfs]
+[  169.095039] [ecde9d28] [c00052cc] do_one_initcall+0x54/0x288
+[  169.108161] [ecde9d98] [c00bebf8] do_init_module+0x60/0x1dc
+[  169.121179] [ecde9dc8] [c00c0ad4] load_module+0x1ca4/0x1e18
+[  169.134179] [ecde9ea8] [c00c0df4] sys_finit_module+0x98/0xb8
+[  169.147133] [ecde9f38] [c0014274] ret_from_syscall+0x0/0x34
+[  169.159933] --- interrupt: c01 at 0x8ed2c4
+                   LR =3D 0xa757c4
+[  169.185350] Instruction dump:
+[  169.197936] 7e048378 7f83e378 60e70001 90e10030 4bffda0d 2f830000 41beff=
+20
+7f84e378=20
+[  169.210814] 7f63db78 4bffdd35 7e090034 5529d97e <0f090000> 2f900000 41be=
+ff00
+7e527a14=20
+[  169.223824] irq event stamp: 0
+[  169.236770] hardirqs last  enabled at (0): [<00000000>] 0x0
+[  169.249906] hardirqs last disabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  169.263077] softirqs last  enabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  169.276147] softirqs last disabled at (0): [<00000000>] 0x0
+[  169.289173] ---[ end trace 74450a6aa18e595e ]---
+[  169.305352] WARNING: CPU: 0 PID: 266 at mm/slub.c:1846
+___slab_alloc.constprop.75+0x2ac/0x380
+[  169.318278] Modules linked in: btrfs(+) auth_rpcgss nfsv4 dns_resolver n=
+fs
+lockd grace sunrpc input_leds joydev b43legacy led_class hid_generic mac802=
+11
+usbhid hid snd_aoa_codec_tas snd_aoa_fabric_layout snd_aoa cfg80211 rfkill
+libarc4 evdev ohci_pci xor zstd_decompress zstd_compress zlib_deflate radeon
+raid6_pq zlib_inflate therm_windtunnel ehci_pci ohci_hcd hwmon i2c_algo_bit
+ehci_hcd backlight drm_kms_helper sungem firewire_ohci syscopyarea sungem_p=
+hy
+sysfillrect sr_mod firewire_core sysimgblt fb_sys_fops cdrom crc_itu_t
+snd_aoa_i2sbus snd_aoa_soundbus ttm snd_pcm usbcore snd_timer drm usb_common
+snd soundcore ssb uninorth_agp drm_panel_orientation_quirks agpgart lzo
+lzo_compress lzo_decompress zram zsmalloc
+[  169.363085] CPU: 0 PID: 266 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.3.0-rc4+ #3
+[  169.378753] NIP:  c0196ddc LR: c0196dd4 CTR: c019711c
+[  169.394382] REGS: ecde9a70 TRAP: 0700   Tainted: G        W=20=20=20=20=
+=20=20=20=20=20
+(5.3.0-rc4+)
+[  169.410156] MSR:  00021032 <ME,IR,DR,RI>  CR: 28224222  XER: 00000000
+[  169.425900]=20
+               GPR00: c0196dd4 ecde9b28 eb353380 00000000 ef3d3ba0 0001000e
+00000000 0007000f=20
+               GPR08: 00000001 00000001 ef188f3c ecde9b28 48244222 00a9eff4
+00a64e74 00000006=20
+               GPR16: 00000000 ee800810 00000000 c0800000 00000000 ee800824
+f203de58 c07fea34=20
+               GPR24: 00210d00 ef188f38 00000d40 ee800800 ef3d3ba0 ee8032e0
+00000000 eedb1af8=20
+[  169.506070] NIP [c0196ddc] ___slab_alloc.constprop.75+0x2ac/0x380
+[  169.522457] LR [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+[  169.538919] Call Trace:
+[  169.555301] [ecde9b28] [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+(unreliable)
+[  169.572079] [ecde9bb8] [c0196ef0] __slab_alloc.constprop.74+0x40/0x6c
+[  169.588847] [ecde9be8] [c0197198] kmem_cache_alloc_trace+0x7c/0x1a0
+[  169.605861] [ecde9c28] [f203de58] test_add_free_space_entry+0xf0/0x214
+[btrfs]
+[  169.623013] [ecde9c78] [f207e08c] btrfs_test_free_space_cache+0x76c/0x13=
+08
+[btrfs]
+[  169.640288] [ecde9cd8] [f207ad3c] btrfs_run_sanity_tests+0x8c/0x144 [btr=
+fs]
+[  169.657589] [ecde9d08] [f1678cd0] init_btrfs_fs+0xd4/0x12c [btrfs]
+[  169.674812] [ecde9d28] [c00052cc] do_one_initcall+0x54/0x288
+[  169.692019] [ecde9d98] [c00bebf8] do_init_module+0x60/0x1dc
+[  169.709242] [ecde9dc8] [c00c0ad4] load_module+0x1ca4/0x1e18
+[  169.726533] [ecde9ea8] [c00c0df4] sys_finit_module+0x98/0xb8
+[  169.743904] [ecde9f38] [c0014274] ret_from_syscall+0x0/0x34
+[  169.761110] --- interrupt: c01 at 0x8ed2c4
+                   LR =3D 0xa757c4
+[  169.793422] Instruction dump:
+[  169.808483] 7e048378 7f83e378 60e70001 90e10030 4bffda0d 2f830000 41beff=
+20
+7f84e378=20
+[  169.823241] 7f63db78 4bffdd35 7e090034 5529d97e <0f090000> 2f900000 41be=
+ff00
+7e527a14=20
+[  169.838004] irq event stamp: 0
+[  169.852643] hardirqs last  enabled at (0): [<00000000>] 0x0
+[  169.867316] hardirqs last disabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  169.882061] softirqs last  enabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  169.896525] softirqs last disabled at (0): [<00000000>] 0x0
+[  169.910840] ---[ end trace 74450a6aa18e595f ]---
+[  169.928722] BTRFS: selftest: running space stealing from bitmap to extent
+tests
+[  169.943052] WARNING: CPU: 1 PID: 266 at mm/slub.c:1846
+___slab_alloc.constprop.75+0x2ac/0x380
+[  169.957190] Modules linked in: btrfs(+) auth_rpcgss nfsv4 dns_resolver n=
+fs
+lockd grace sunrpc input_leds joydev b43legacy led_class hid_generic mac802=
+11
+usbhid hid snd_aoa_codec_tas snd_aoa_fabric_layout snd_aoa cfg80211 rfkill
+libarc4 evdev ohci_pci xor zstd_decompress zstd_compress zlib_deflate radeon
+raid6_pq zlib_inflate therm_windtunnel ehci_pci ohci_hcd hwmon i2c_algo_bit
+ehci_hcd backlight drm_kms_helper sungem firewire_ohci syscopyarea sungem_p=
+hy
+sysfillrect sr_mod firewire_core sysimgblt fb_sys_fops cdrom crc_itu_t
+snd_aoa_i2sbus snd_aoa_soundbus ttm snd_pcm usbcore snd_timer drm usb_common
+snd soundcore ssb uninorth_agp drm_panel_orientation_quirks agpgart lzo
+lzo_compress lzo_decompress zram zsmalloc
+[  170.003934] CPU: 1 PID: 266 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.3.0-rc4+ #3
+[  170.019968] NIP:  c0196ddc LR: c0196dd4 CTR: c019711c
+[  170.035984] REGS: ecde9a70 TRAP: 0700   Tainted: G        W=20=20=20=20=
+=20=20=20=20=20
+(5.3.0-rc4+)
+[  170.052020] MSR:  00021032 <ME,IR,DR,RI>  CR: 28224242  XER: 00000000
+[  170.068087]=20
+               GPR00: c0196dd4 ecde9b28 eb353380 00000000 ef3d3cc0 0004000e
+00000000 0007000f=20
+               GPR08: 00000001 00000001 ef188eac ecde9b28 48244242 00a9eff4
+00a64e74 00000003=20
+               GPR16: 00000000 ee800810 00000000 c0800000 00000000 ee800824
+f203de58 c07fea34=20
+               GPR24: 00210d00 ef188ea8 00000d40 ee800800 ef3d3cc0 ee8032e0
+00000000 eedceaf8=20
+[  170.149103] NIP [c0196ddc] ___slab_alloc.constprop.75+0x2ac/0x380
+[  170.165571] LR [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+[  170.182082] Call Trace:
+[  170.198482] [ecde9b28] [c0196dd4] ___slab_alloc.constprop.75+0x2a4/0x380
+(unreliable)
+[  170.215245] [ecde9bb8] [c0196ef0] __slab_alloc.constprop.74+0x40/0x6c
+[  170.232091] [ecde9be8] [c0197198] kmem_cache_alloc_trace+0x7c/0x1a0
+[  170.249175] [ecde9c28] [f203de58] test_add_free_space_entry+0xf0/0x214
+[btrfs]
+[  170.266059] [ecde9c78] [f207e44c] btrfs_test_free_space_cache+0xb2c/0x13=
+08
+[btrfs]
+[  170.282918] [ecde9cd8] [f207ad3c] btrfs_run_sanity_tests+0x8c/0x144 [btr=
+fs]
+[  170.299700] [ecde9d08] [f1678cd0] init_btrfs_fs+0xd4/0x12c [btrfs]
+[  170.316388] [ecde9d28] [c00052cc] do_one_initcall+0x54/0x288
+[  170.333159] [ecde9d98] [c00bebf8] do_init_module+0x60/0x1dc
+[  170.349916] [ecde9dc8] [c00c0ad4] load_module+0x1ca4/0x1e18
+[  170.366610] [ecde9ea8] [c00c0df4] sys_finit_module+0x98/0xb8
+[  170.383179] [ecde9f38] [c0014274] ret_from_syscall+0x0/0x34
+[  170.399101] --- interrupt: c01 at 0x8ed2c4
+                   LR =3D 0xa757c4
+[  170.428916] Instruction dump:
+[  170.442826] 7e048378 7f83e378 60e70001 90e10030 4bffda0d 2f830000 41beff=
+20
+7f84e378=20
+[  170.456986] 7f63db78 4bffdd35 7e090034 5529d97e <0f090000> 2f900000 41be=
+ff00
+7e527a14=20
+[  170.471190] irq event stamp: 0
+[  170.485188] hardirqs last  enabled at (0): [<00000000>] 0x0
+[  170.499283] hardirqs last disabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  170.513322] softirqs last  enabled at (0): [<c0032f0c>]
+copy_process+0x474/0x1368
+[  170.527207] softirqs last disabled at (0): [<00000000>] 0x0
+[  170.540920] ---[ end trace 74450a6aa18e5960 ]---
+[  170.558438] ------------[ cut here ]------------
+[  170.572459] kernel BUG at mm/slub.c:3952!
+[  170.586496] Oops: Exception in kernel mode, sig: 5 [#1]
+[  170.600564] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
+[  170.614556] Modules linked in: btrfs(+) auth_rpcgss nfsv4 dns_resolver n=
+fs
+lockd grace sunrpc input_leds joydev b43legacy led_class hid_generic mac802=
+11
+usbhid hid snd_aoa_codec_tas snd_aoa_fabric_layout snd_aoa cfg80211 rfkill
+libarc4 evdev ohci_pci xor zstd_decompress zstd_compress zlib_deflate radeon
+raid6_pq zlib_inflate therm_windtunnel ehci_pci ohci_hcd hwmon i2c_algo_bit
+ehci_hcd backlight drm_kms_helper sungem firewire_ohci syscopyarea sungem_p=
+hy
+sysfillrect sr_mod firewire_core sysimgblt fb_sys_fops cdrom crc_itu_t
+snd_aoa_i2sbus snd_aoa_soundbus ttm snd_pcm usbcore snd_timer drm usb_common
+snd soundcore ssb uninorth_agp drm_panel_orientation_quirks agpgart lzo
+lzo_compress lzo_decompress zram zsmalloc
+[  170.662386] CPU: 0 PID: 266 Comm: modprobe Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.3.0-rc4+ #3
+[  170.678893] NIP:  c0198228 LR: c0198204 CTR: c01981a4
+[  170.695309] REGS: ecde9b10 TRAP: 0700   Tainted: G        W=20=20=20=20=
+=20=20=20=20=20
+(5.3.0-rc4+)
+[  170.711791] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 28242424  XER: 00000000
+[  170.728343]=20
+               GPR00: f207aa60 ecde9bc8 eb353380 ef3d3a80 c07fe5f8 c01600dc
+00003c40 00000000=20
+               GPR08: 00001032 00000001 00000000 ecde9c18 c01981a4 00a9eff4
+00a64e74 c0710cd4=20
+               GPR16: f16a1fac 000011ad 00000001 00000124 c00bbeac c0e7e55c
+00000001 ea8ed15c=20
+               GPR24: ea8ed16c f207aa60 f209a370 f209a343 00002000 c07fe5f8
+ea9a6458 ef3d3a80=20
+[  170.812601] NIP [c0198228] kfree+0x84/0x29c
+[  170.829631] LR [c0198204] kfree+0x60/0x29c
+[  170.846753] Call Trace:
+[  170.863878] [ecde9bc8] [f20d0000] test_error+0xd44/0xfffba69c [btrfs]
+(unreliable)
+[  170.881178] [ecde9c18] [f207aa60] btrfs_free_dummy_fs_info+0x168/0x1e0
+[btrfs]
+[  170.898408] [ecde9c78] [f207da3c] btrfs_test_free_space_cache+0x11c/0x13=
+08
+[btrfs]
+[  170.915026] [ecde9cd8] [f207ad3c] btrfs_run_sanity_tests+0x8c/0x144 [btr=
+fs]
+[  170.931323] [ecde9d08] [f1678cd0] init_btrfs_fs+0xd4/0x12c [btrfs]
+[  170.948575] [ecde9d28] [c00052cc] do_one_initcall+0x54/0x288
+[  170.965784] [ecde9d98] [c00bebf8] do_init_module+0x60/0x1dc
+[  170.982897] [ecde9dc8] [c00c0ad4] load_module+0x1ca4/0x1e18
+[  170.999911] [ecde9ea8] [c00c0df4] sys_finit_module+0x98/0xb8
+[  171.016767] [ecde9f38] [c0014274] ret_from_syscall+0x0/0x34
+[  171.032967] --- interrupt: c01 at 0x8ed2c4
+                   LR =3D 0xa757c4
+[  171.063206] Instruction dump:
+[  171.077290] 4bffade1 7c7f1b78 4bffadbd 81230000 71290200 40a200f8 813f00=
+00
+552987ff=20
+[  171.091622] 4082000c 813f0004 552907fe 69290001 <0f090000> 7fe3fb78 4bff=
+adcd
+7c641b78=20
+[  171.106020] ---[ end trace 74450a6aa18e5961 ]---
 
-Here is my high level plan, which still has a few lose end:
-
- (1) provide a new API:
-
-	struct page *dma_alloc_pages(struct device *dev, unsigned nr_pages,
-			gfp_t gfp, unsigned long flags);
-	void dma_free_pages(struct device *dev, unsigned nr_pages,
-			unsigned long flags);
-
-     These give you back page backed memory that is guaranteed to be
-     addressable by the device (no swiotlb or similar).  The memory can
-     then be mapped using dma_map*, including unmap and dma_sync to
-     bounce ownership around.  This is the replacement for the current
-     dma_alloc_attrs with DMA_ATTR_NON_CONSISTENT API, that is rather
-     badly defined.
-
- (2) Add support for DMA_ATTR_NO_KERNEL_MAPPING to this new API instead
-     of dma_alloc_attrs.  The initial difference with that flag is just
-     that we allow highmem, but in the future we could also unmap this
-     memory from the kernel linear mapping entirely on architectures
-     where we can easily do that.
-
- (3) Add a dma_pages_map/dma_pages_unmap or similar API that allows you
-     to get a kernel mapping for parts or all of a
-     DMA_ATTR_NO_KERNEL_MAPPING allocation.  This is to replace things
-     like your open-coded vmap in msm (or similarly elsewhere in dma-buf
-     providers).
-
- (4) Add support for a DMA_ATTR_UNCACHABLE flags (or similar) to the new
-     API, that maps the pages as uncachable iff they have a kernel
-     mapping, including invalidating the caches at time of this page
-     attribute change (or creation of a new mapping).  This API will fail
-     if the architecture does not allow in-place remapping.  Note that for
-     arm32 we could always dip into the CMA pool if one is present to not
-     fail.  We'll also need some helper to map from the DMA_ATTR_* flags
-     to a pgprot for mapping the page to userspace.  There is also a few
-     other weird bits here, e.g. on architectures like mips that use an
-     uncached segment we'll have to fail use with the plain
-     DMA_ATTR_UNCACHABLE flag, but it could be supported with
-     DMA_ATTR_UNCACHABLE | DMA_ATTR_NO_KERNEL_MAPPING.
-
-I was hoping to get most of this done for this merge window, but I'm
-probably lucky if I get at least parts done.  Too much distraction.
-
-> Hmm, not entirely sure why.. you should be on the cc list for each
-> individual patch.
-
-They finally made it, although even with the delay they only ended up
-in the spam mailbox.  I still can't see them on the various mailing
-lists.
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
