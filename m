@@ -2,66 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AD68E341
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 05:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A748E37A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 06:16:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468C3p5KQqzDr1D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 13:43:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468CnK2pZPzDqtY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 14:16:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.214.194; helo=mail-pl1-f194.google.com;
- envelope-from=bart.vanassche@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=acm.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com
- [209.85.214.194])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468C2724KPzDqVR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 13:42:22 +1000 (AEST)
-Received: by mail-pl1-f194.google.com with SMTP id go14so276662plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2019 20:42:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=JANJxBWQQ/lmx3e6gQBBNY3HZrSKplwd+VTRdmaTTlA=;
- b=VzUUfxsU75YOgu6iwYfJtb9FIUiTRej8gQ4duih/3iljsQpoqW68vQr+ke0PsI7gs8
- 0B9zaWcRH2CO5zIvklBRhkfqCdGmwht1Q80mVlyYnswEK438G14afvqe/NTKxHI63y0M
- ifO4mZuaX+bynjdELIf+OjBuCE5wB/K9VDt5fnXcUCD8npBt5XNzo5gmic+egME9MslS
- MDSCYwFtY/xV8jj/oQqL8kBz+/An4AjMNILHPeVt3pqPmF2+hL9wkBy253bZRts7jvzD
- N+Clf88Zi31NwkH1g6mFlcNgjrQpZjc6Iy/KC2Ps1cXyzx3q2pIMPZKV6waPWhOhEcdu
- mNOA==
-X-Gm-Message-State: APjAAAWebP8GjFqrW1mAxyVS/TRx8OjhQrWAFm93pZ+c5KdZxTvJCUAX
- RnLbSkmENbr8N9Z2gsqq9zw=
-X-Google-Smtp-Source: APXvYqx81wrPhXH/lYFj4J2/x/boo2UlT8ODFpdBydweGYIHtn18VNQq90jQEYeDTlyS2mxJb39Ung==
-X-Received: by 2002:a17:902:8302:: with SMTP id
- bd2mr2539863plb.9.1565840539761; 
- Wed, 14 Aug 2019 20:42:19 -0700 (PDT)
-Received: from asus.site ([2601:647:4000:7f38:138a:21ca:d24:734b])
- by smtp.gmail.com with ESMTPSA id y188sm1376690pfy.57.2019.08.14.20.42.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Aug 2019 20:42:18 -0700 (PDT)
-Subject: Re: [5.3.0-rc4-next][bisected 882632][qla2xxx] WARNING: CPU: 10 PID:
- 425 at drivers/scsi/qla2xxx/qla_isr.c:2784 qla2x00_status_entry.isra
-To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-References: <1565801523.6908.6.camel@abdul>
- <cafb1d40-a11e-c137-db06-4564e5f5caf5@acm.org>
- <1565803123.6908.10.camel@abdul>
-From: Bart Van Assche <bvanassche@acm.org>
-Message-ID: <7fc59d4c-b3d5-5ec8-cb7c-51cb863f2a77@acm.org>
-Date: Wed, 14 Aug 2019 20:42:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468Chp5xPSzDqsm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 14:12:26 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7F4CKc5175317
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:12:23 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ucysj0mty-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:12:22 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
+ Thu, 15 Aug 2019 05:12:05 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 15 Aug 2019 05:11:59 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7F4BwaK21889440
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 Aug 2019 04:11:58 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3C882A4051;
+ Thu, 15 Aug 2019 04:11:58 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DDB5EA4059;
+ Thu, 15 Aug 2019 04:11:57 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 15 Aug 2019 04:11:57 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D53CFA01BD;
+ Thu, 15 Aug 2019 14:11:54 +1000 (AEST)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH 0/6] powerpc: convert cache asm to C
+Date: Thu, 15 Aug 2019 14:10:45 +1000
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <1565803123.6908.10.camel@abdul>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19081504-4275-0000-0000-000003594ED0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081504-4276-0000-0000-0000386B636D
+Message-Id: <20190815041057.13627-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-15_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=875 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908150045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,53 +90,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp <sachinp@linux.vnet.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- linux-scsi <linux-scsi@vger.kernel.org>, martin.petersen@oracle.com,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-next <linux-next@vger.kernel.org>, hmadhani@marvell.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Mike Rapoport <rppt@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Qian Cai <cai@lca.pw>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/14/19 10:18 AM, Abdul Haleem wrote:
-> On Wed, 2019-08-14 at 10:05 -0700, Bart Van Assche wrote:
->> On 8/14/19 9:52 AM, Abdul Haleem wrote:
->>> Greeting's
->>>
->>> Today's linux-next kernel (5.3.0-rc4-next-20190813)  booted with warning on my powerpc power 8 lpar
->>>
->>> The WARN_ON_ONCE() was introduced by commit 88263208 (scsi: qla2xxx: Complain if sp->done() is not...)
->>>
->>> boot logs:
->>>
->>> WARNING: CPU: 10 PID: 425 at drivers/scsi/qla2xxx/qla_isr.c:2784
->>
->> Hi Abdul,
->>
->> Thank you for having reported this. Is that the only warning reported on your setup by the qla2xxx
->> driver? If that warning is commented out, does the qla2xxx driver work as expected?
-> 
-> boot warning did not show up when the commit is reverted.
-> 
-> should I comment out only the WARN_ON_ONCE() which is causing the issue,
-> and not the other one ?
+From: Alastair D'Silva <alastair@d-silva.org>
 
-Yes please. Commit 88263208 introduced five kernel warnings but I think 
-only one of these should be removed again, e.g. as follows:
+This series addresses a few issues discovered in how we flush caches:
+1. Flushes were truncated at 4GB, so larger flushes were incorrect.
+2. Flushing the dcache in arch_add_memory was unnecessary
 
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index cd39ac18c5fd..d81b5ecce24b 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -2780,8 +2780,6 @@ qla2x00_status_entry(scsi_qla_host_t *vha, struct 
-rsp_que *rsp, void *pkt)
+This series also converts much of the cache assembler to C, with the
+aim of making it easier to maintain.
 
-  	if (rsp->status_srb == NULL)
-  		sp->done(sp, res);
--	else
--		WARN_ON_ONCE(true);
-  }
+Alastair D'Silva (6):
+  powerpc: Allow flush_icache_range to work across ranges >4GB
+  powerpc: define helpers to get L1 icache sizes
+  powerpc: Convert flush_icache_range & friends to C
+  powerpc: Chunk calls to flush_dcache_range in arch_*_memory
+  powerpc: Remove 'extern' from func prototypes in cache headers
+  powerpc: Don't flush caches when adding memory
 
-  /**
+ arch/powerpc/include/asm/cache.h      |  63 +++++++++-----
+ arch/powerpc/include/asm/cacheflush.h |  49 ++++++-----
+ arch/powerpc/kernel/misc_32.S         | 117 --------------------------
+ arch/powerpc/kernel/misc_64.S         |  97 ---------------------
+ arch/powerpc/mm/mem.c                 |  80 +++++++++++++++++-
+ 5 files changed, 146 insertions(+), 260 deletions(-)
+
+-- 
+2.21.0
+
