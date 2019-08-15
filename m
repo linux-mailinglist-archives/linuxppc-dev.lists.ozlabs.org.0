@@ -2,52 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9336D8F18B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 19:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BA48F126
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 18:47:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468Xrb2VBwzDr9T
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 03:05:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468XRd01CRzDrBZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 02:47:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=kaod.org
- (client-ip=46.105.56.136; helo=1.mo6.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo6.mail-out.ovh.net (1.mo6.mail-out.ovh.net [46.105.56.136])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468XpN4r6JzDr5J
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 03:03:20 +1000 (AEST)
-Received: from player729.ha.ovh.net (unknown [10.109.160.143])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id B46801DC952
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 18:44:19 +0200 (CEST)
-Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
- (Authenticated sender: clg@kaod.org)
- by player729.ha.ovh.net (Postfix) with ESMTPSA id 833DD906E765;
- Thu, 15 Aug 2019 16:44:12 +0000 (UTC)
-Subject: Re: [PATCH 1/3] powerpc/xmon: Check for HV mode when dumping XIVE
- info from OPAL
-To: Jordan Niethe <jniethe5@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20190814154754.23682-1-clg@kaod.org>
- <20190814154754.23682-2-clg@kaod.org>
- <21746c620de5ac0b9489a10cdc1f584f94d592fd.camel@gmail.com>
- <294237fc-13eb-a0eb-3c28-db4141140e8d@kaod.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <3a65cb2f-a0bd-00b9-be88-2ef725af1f67@kaod.org>
-Date: Thu, 15 Aug 2019 18:44:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ spf=pass (mailfrom) smtp.mailfrom=bugzilla.kernel.org
+ (client-ip=198.145.29.98; helo=mail.wl.linuxfoundation.org;
+ envelope-from=bugzilla-daemon@bugzilla.kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.wl.linuxfoundation.org (mail.wl.linuxfoundation.org
+ [198.145.29.98])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468XPR23yNzDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 02:45:14 +1000 (AEST)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+ by mail.wl.linuxfoundation.org (Postfix) with ESMTP id F39FF2874F
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 16:45:11 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+ id E7C6C2887B; Thu, 15 Aug 2019 16:45:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+ pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.9 required=2.0 tests=BAYES_00,NO_RECEIVED,
+ NO_RELAYS autolearn=ham version=3.3.1
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 204371] BUG kmalloc-4k (Tainted: G        W        ): Object
+ padding overwritten
+Date: Thu, 15 Aug 2019 16:45:11 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Slab Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@c-s.fr
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-204371-206035-SmWPD5ukjo@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-204371-206035@https.bugzilla.kernel.org/>
+References: <bug-204371-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <294237fc-13eb-a0eb-3c28-db4141140e8d@kaod.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 10079900393183218627
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrudefuddguddtfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,106 +71,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/08/2019 10:15, Cédric Le Goater wrote:
-> On 15/08/2019 09:30, Jordan Niethe wrote:
->> On Wed, 2019-08-14 at 17:47 +0200, Cédric Le Goater wrote:
->>> Currently, the xmon 'dx' command calls OPAL to dump the XIVE state in
->>> the OPAL logs and also outputs some of the fields of the internal
->>> XIVE
->>> structures in Linux. The OPAL calls can only be done on baremetal
->>> (PowerNV) and they crash a pseries machine. Fix by checking the
->>> hypervisor feature of the CPU.
->>>
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> ---
->>>  arch/powerpc/xmon/xmon.c | 17 ++++++++++-------
->>>  1 file changed, 10 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
->>> index 14e56c25879f..25d4adccf750 100644
->>> --- a/arch/powerpc/xmon/xmon.c
->>> +++ b/arch/powerpc/xmon/xmon.c
->>> @@ -2534,13 +2534,16 @@ static void dump_pacas(void)
->>>  static void dump_one_xive(int cpu)
->>>  {
->>>  	unsigned int hwid = get_hard_smp_processor_id(cpu);
->>> -
->>> -	opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
->>> -	opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
->>> -	opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
->>> -	opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
->>> -	opal_xive_dump(XIVE_DUMP_VP, hwid);
->>> -	opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
->>> +	bool hv = cpu_has_feature(CPU_FTR_HVMODE);
->>> +
->>> +	if (hv) {
->>> +		opal_xive_dump(XIVE_DUMP_TM_HYP, hwid);
->>> +		opal_xive_dump(XIVE_DUMP_TM_POOL, hwid);
->>> +		opal_xive_dump(XIVE_DUMP_TM_OS, hwid);
->>> +		opal_xive_dump(XIVE_DUMP_TM_USER, hwid);
->>> +		opal_xive_dump(XIVE_DUMP_VP, hwid);
->>> +		opal_xive_dump(XIVE_DUMP_EMU_STATE, hwid);
->>> +	}
->>>  
->>>  	if (setjmp(bus_error_jmp) != 0) {
->>>  		catch_memory_errors = 0;
->> dump_one_xive() / other xive functions are guarded by #ifdef
->> CONFIG_PPC_POWERNV in xmon.c aren't they? With this series would it be
->> that these guards can be removed?
-> 
-> One could compile without CONFIG_PPC_POWERNV but we would still want 
-> these commands to be available for pseries. I missed that.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D204371
 
+--- Comment #27 from Christophe Leroy (christophe.leroy@c-s.fr) ---
+Can you post the changes you did ?
 
-The changes below should be enough to activate support for the xive 
-commands on pseries and powernv. The patch can come as a follow up.
+Did you replace the two kzalloc() by get_zeroed_page()  as suggested ?
+If so, it looks like you missed one kfree() (in free_bitmap()) to be replac=
+ed
+by free_page().
 
-Cheers,
-
-C. 
-
---- linux.git.orig/arch/powerpc/xmon/xmon.c
-+++ linux.git/arch/powerpc/xmon/xmon.c
-@@ -238,7 +238,7 @@ Commands:\n\
-   dt	dump the tracing buffers (uses printk)\n\
-   dtc	dump the tracing buffers for current CPU (uses printk)\n\
- "
--#ifdef CONFIG_PPC_POWERNV
-+#ifdef CONFIG_PPC_BOOK3S_64
- "  dx#   dump xive on CPU #\n\
-   dxi#  dump xive irq state #\n\
-   dxa   dump xive on all CPUs\n"
-@@ -2530,7 +2530,7 @@ static void dump_pacas(void)
- }
- #endif
- 
--#ifdef CONFIG_PPC_POWERNV
-+#ifdef CONFIG_PPC_BOOK3S_64
- static void dump_one_xive(int cpu)
- {
- 	unsigned int hwid = get_hard_smp_processor_id(cpu);
-@@ -2632,7 +2632,7 @@ static void dump_xives(void)
- 	else
- 		dump_one_xive(xmon_owner);
- }
--#endif /* CONFIG_PPC_POWERNV */
-+#endif /* CONFIG_PPC_BOOK3S_64 */
- 
- static void dump_by_size(unsigned long addr, long count, int size)
- {
-@@ -2682,7 +2682,7 @@ dump(void)
- 		return;
- 	}
- #endif
--#ifdef CONFIG_PPC_POWERNV
-+#ifdef CONFIG_PPC_BOOK3S_64
- 	if (c == 'x') {
- 		xmon_start_pagination();
- 		dump_xives();
-
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
