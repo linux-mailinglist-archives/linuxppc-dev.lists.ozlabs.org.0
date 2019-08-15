@@ -2,84 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21038E446
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 06:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAE58E45F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 07:06:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468DjK2NgwzDr1r
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 14:57:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468DvH6thXzDqk8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2019 15:06:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=au1.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468DqC5YmTzDqk8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 468DqC4FCYz8syQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 468DqC41v5z9sNx; Thu, 15 Aug 2019 15:03:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=informatik.wtf
+ (client-ip=131.153.2.43; helo=h2.fbrelay.privateemail.com;
+ envelope-from=cmr@informatik.wtf; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from h2.fbrelay.privateemail.com (h2.fbrelay.privateemail.com
+ [131.153.2.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468DgS5Q4YzDqT6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 14:56:20 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7F4sYuY099718
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:56:17 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ucxppbgk1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 00:56:17 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <alastair@au1.ibm.com>;
- Thu, 15 Aug 2019 05:56:14 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 15 Aug 2019 05:56:11 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7F4uAvG50528284
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 Aug 2019 04:56:10 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91B8D4C040;
- Thu, 15 Aug 2019 04:56:10 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F72B4C044;
- Thu, 15 Aug 2019 04:56:10 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 15 Aug 2019 04:56:10 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
- (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by ozlabs.org (Postfix) with ESMTPS id 468DqB5bx6z9sNF
+ for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 15:03:02 +1000 (AEST)
+Received: from MTA-06-3.privateemail.com (mta-06.privateemail.com
+ [68.65.122.16])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1F234A01BD;
- Thu, 15 Aug 2019 14:56:07 +1000 (AEST)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: alastair@d-silva.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc: Allow flush_(inval_)dcache_range to work across
- ranges >4GB
-Date: Thu, 15 Aug 2019 14:55:42 +1000
-X-Mailer: git-send-email 2.21.0
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id C90658139E
+ for <linuxppc-dev@ozlabs.org>; Thu, 15 Aug 2019 01:02:58 -0400 (EDT)
+Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
+ by MTA-06.privateemail.com (Postfix) with ESMTP id 6AA1F60065;
+ Thu, 15 Aug 2019 01:02:53 -0400 (EDT)
+Received: from wrwlf0000.attlocal.net (unknown [10.20.151.220])
+ by MTA-06.privateemail.com (Postfix) with ESMTPA id 1D2E360063;
+ Thu, 15 Aug 2019 05:02:53 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@informatik.wtf>
+To: linuxppc-dev@ozlabs.org,
+	kernel-hardening@lists.openwall.com
+Subject: [RFC PATCH v4 0/2] Restrict xmon when kernel is locked down
+Date: Thu, 15 Aug 2019 00:06:14 -0500
+Message-Id: <20190815050616.2547-1-cmr@informatik.wtf>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19081504-0020-0000-0000-0000035FED72
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081504-0021-0000-0000-000021B50A83
-Message-Id: <20190815045543.16325-1-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-15_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=844 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908150051
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,54 +68,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alastair D'Silva <alastair@d-silva.org>
+Xmon should be either fully or partially disabled depending on the
+kernel lockdown state.
 
-Heads Up: This patch cannot be submitted to Linus's tree, as the affected
-assembler functions have already been converted to C.
+Put xmon into read-only mode for lockdown=integrity and completely
+disable xmon when lockdown=confidentiality. Since this can occur
+dynamically, there may be pre-existing, active breakpoints in xmon when
+transitioning into read-only mode. These breakpoints will still trigger,
+so allow them to be listed, but not cleared or altered, using xmon.
 
-When calling flush_(inval_)dcache_range with a size >4GB, we were masking
-off the upper 32 bits, so we would incorrectly flush a range smaller
-than intended.
+Changes since v3:
+ - Allow active breakpoints to be shown/listed in read-only mode
 
-This patch replaces the 32 bit shifts with 64 bit ones, so that
-the full size is accounted for.
+Changes since v2:
+ - Rebased onto v36 of https://patchwork.kernel.org/cover/11049461/
+   (based on: f632a8170a6b667ee4e3f552087588f0fe13c4bb)
+ - Do not clear existing breakpoints when transitioning from
+   lockdown=none to lockdown=integrity
+ - Remove line continuation and dangling quote (confuses checkpatch.pl)
+   from the xmon command help/usage string
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- arch/powerpc/kernel/misc_64.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Christopher M. Riedl (2):
+  powerpc/xmon: Allow listing active breakpoints in read-only mode
+  powerpc/xmon: Restrict when kernel is locked down
 
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index 1ad4089dd110..d4d096f80f4b 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -130,7 +130,7 @@ _GLOBAL_TOC(flush_dcache_range)
- 	subf	r8,r6,r4		/* compute length */
- 	add	r8,r8,r5		/* ensure we get enough */
- 	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of dcache block size */
--	srw.	r8,r8,r9		/* compute line count */
-+	srd.	r8,r8,r9		/* compute line count */
- 	beqlr				/* nothing to do? */
- 	mtctr	r8
- 0:	dcbst	0,r6
-@@ -148,7 +148,7 @@ _GLOBAL(flush_inval_dcache_range)
- 	subf	r8,r6,r4		/* compute length */
- 	add	r8,r8,r5		/* ensure we get enough */
- 	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)/* Get log-2 of dcache block size */
--	srw.	r8,r8,r9		/* compute line count */
-+	srd.	r8,r8,r9		/* compute line count */
- 	beqlr				/* nothing to do? */
- 	sync
- 	isync
+ arch/powerpc/xmon/xmon.c     | 78 ++++++++++++++++++++++++++++++++----
+ include/linux/security.h     |  2 +
+ security/lockdown/lockdown.c |  2 +
+ 3 files changed, 74 insertions(+), 8 deletions(-)
+
 -- 
-2.21.0
+2.22.0
 
