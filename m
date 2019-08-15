@@ -1,64 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D9B8F6C0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 00:04:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0801D8F6C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 00:06:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468gV30vtKzDrBd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 08:04:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468gWz3HY7zDqR5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 08:06:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
- envelope-from=robdclark@chromium.org; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=debian.org
+ (client-ip=80.12.242.124; helo=smtp.smtpout.orange.fr;
+ envelope-from=marillat@debian.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="LL9gmWZ1";
- dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=debian.org
+Received: from smtp.smtpout.orange.fr (smtp02.smtpout.orange.fr
+ [80.12.242.124])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468Scy6x1vzDr3N
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 23:54:55 +1000 (AEST)
-Received: by mail-oi1-x242.google.com with SMTP id l12so2049936oil.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 06:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=X5MHSVxjVbFw14gqG5FUXdzsIwvacO5ycoZ+KZncf0s=;
- b=LL9gmWZ1h+OhDYg38xhyOFgY6h1JTL7+BEI+M4/66SAuy+YS17/1GNt2LFCYlFwHgS
- I2ORea3QECg5t802K1/kXe+MYRWXHFLGsmZw9w0b0C4PQffYsKhMpRJ5RWFKi2c56Q5H
- lbZZv26jqw/MHeMc//ARtg43BTEsBpT31y1nQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=X5MHSVxjVbFw14gqG5FUXdzsIwvacO5ycoZ+KZncf0s=;
- b=T1VQ6XB67hts8JOjPYkiKETWOUTsnZ44GNJ+vxPAKu1RBfmShmyddbCPoMG6Pixbzy
- oDLQP4OV2CXnAWMKfsGXBgbYmM+FW5PUuHD/B2wfKwyndWP8Qilh5HR3KpgSgvgQ8CXC
- HVvm2T1BGyeqnrBDa7mF39nog0qOT8FYmAe51k/2QR5LIBDuBh/CSN15MoBRNcQ6EEJS
- 2aJNRi91/jr0eOcVUZkoLZK1qYl8fJjUA/sNVwG9ecUH8LwbBGmQeXFO/GctltlTDrY2
- c131LAYrVz8D9ItpX8F4bM4XINqTfv3yDn/8MYmd77EGAROXd9N97jrnTZW7xTbc1N5v
- G0AQ==
-X-Gm-Message-State: APjAAAXXrOJu2GUBhgQ4AdmrFdz3S3o+3BIfjGTYhTl/udD7AVE9AfxC
- 6dQUSoRX0Q0hYdlXBlRzHNVe+4bwlCN+ADfR9TmXtA==
-X-Google-Smtp-Source: APXvYqzxa6k1RXxyRnJ7m1wF7wJgwzc+l90Oa2P6408VZnjT7yIceyBMmq0y0ocLrushHIzYfzfGRi1TZ2X58HUfSGc=
-X-Received: by 2002:a02:770a:: with SMTP id g10mr4932288jac.15.1565877291690; 
- Thu, 15 Aug 2019 06:54:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468Y2Y4vYTzDrC7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 03:13:50 +1000 (AEST)
+Received: from christian.marillat.net ([90.112.40.151]) by mwinf5d37 with ME
+ id pVDi2000D3FgnAJ03VDkWl; Thu, 15 Aug 2019 19:13:45 +0200
+X-ME-Helo: christian.marillat.net
+X-ME-Date: Thu, 15 Aug 2019 19:13:45 +0200
+X-ME-IP: 90.112.40.151
+Received: from marillat by christian.marillat.net with local (Exim 4.92.1)
+ (envelope-from <marillat@debian.org>)
+ id 1hyJJl-00030Y-52; Thu, 15 Aug 2019 19:13:41 +0200
+From: Christian Marillat <marillat@debian.org>
+To: Mathieu Malaterre <malat@debian.org>
+Subject: Re: 5.2.7 kernel doesn't boot on G5
+In-Reply-To: <CA+7wUsw5eTdwJG3UytWr9CajVhpUkyOGufmvUvqQJoEWq4nWhQ@mail.gmail.com>
+ (Mathieu Malaterre's message of "Thu, 15 Aug 2019 19:05:58 +0200")
+References: <87mugdtf08.fsf@christian.marillat.net>
+ <CA+7wUsw5eTdwJG3UytWr9CajVhpUkyOGufmvUvqQJoEWq4nWhQ@mail.gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAGFBMVEX+1pnqg1n5oHiqVDFh
+ Jg0YCQfMakOBPRwFLaSqAAACXElEQVQ4jW3UwW/bIBQGcJbD7jgS58Ak77oIB66rQsp9Nct1
+ lOzlOslu+Pf3PRx3qTSUVjG/fg/bPCoE7QUP8nOoU/G1xlrnEIRZ4YrrWEOYKkaD3CCXekpj
+ SCkeOQWwS0JeQ0ghMHJmBrgFfMCoiKXoGfQdyOMySzmsoFaQijot5RYR6wFlumF6I16N7AyG
+ PiBiaxW1LoC5rn0uKY3TP9gBZCelMduUEu74A/AwX7DIeGWYGFBca4auByT7CLKB1G9c670U
+ Cpk74EnSeQXTRiv1P0Cmk2oGjB9AZY40SFXEBp9sZ1St7gFCg77s5dYR0QNEBi1JFpclCy+e
+ 4gredls7tchwOsU53OHrSzFqePEIqQH7Pq3QP2etykQW24JuudG8liqvGjuFkdUcraNhBdyu
+ xNKkshqOVjKE9hzUXgjB1Px8cSg1N/iMHVJyyQy3LZUghiUB0HgjKhOVPeVLEP4OKOOWCLk9
+ 4TmGuKxh40QcIWtdVujdOfIOavKTy9xbBUBoV4F+je7qyFt+h7TAgSGlH/x2rcWkI4cv3oa5
+ MvzCnvf4u2Ix7TBf3sIIeNkYsdtsLYbDj6+WDucT4DtAbDYFO8KIfaTfI6+xMzvc1mvPtTgA
+ QGOL9BM9tRNm0tgmz+ePSzH8MQz9U+dWcIQuFaNogBjh6XBc6+QKblU8bRiMMBrPgXMYq3Xc
+ DuLb0oKd0Vh6bmC5rcWuQT9lfanzmBg8HwQujsAw3rrDiGuGoUEL4KieMxdIWNu2VmygsNro
+ FkDiHVThY3c78G/8b/Bvd5CFb288Hngeicrz6S8N2xFYrI8TOAAAAABJRU5ErkJggg==
+Date: Thu, 15 Aug 2019 19:13:41 +0200
+Message-ID: <87ef1ml5bu.fsf@christian.marillat.net>
 MIME-Version: 1.0
-References: <20190814220011.26934-1-robdclark@gmail.com>
- <20190815065117.GA23761@lst.de>
-In-Reply-To: <20190815065117.GA23761@lst.de>
-From: Rob Clark <robdclark@chromium.org>
-Date: Thu, 15 Aug 2019 06:54:39 -0700
-Message-ID: <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Fri, 16 Aug 2019 08:03:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,89 +67,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
- "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Benjamin Gaignard <benjamin.gaignard@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Will Deacon <will@kernel.org>, Emil Velikov <emil.velikov@collabora.com>,
- Deepak Sharma <deepak.sharma@amd.com>, Paul Burton <paul.burton@mips.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
- <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- Joerg Roedel <jroedel@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
- "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
- Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>
+Cc: marillat@debian.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 14, 2019 at 11:51 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> As said before I don't think these low-level helpers are the
-> right API to export, but even if they did you'd just cover a tiny
-> subset of the architectures.
+On 15 ao=C3=BBt 2019 19:05, Mathieu Malaterre <malat@debian.org> wrote:
 
-Are you thinking instead something like:
+> Does that ring a bell to anyone here ? Thanks
 
-void dma_sync_sg_for_{cpu,device}(struct device *dev, struct scatterlist *sgl,
-                                  int nents, enum dma_data_direction dir)
-{
-    for_each_sg(sgl, sg, nents, i) {
-        arch_sync_dma_for_..(dev, sg_phys(sg), sg->length, dir);
-    }
-}
-EXPORT_SYMBOL_GPL(dma_sync_sg_for_..)
+Din't reply to all. Second reply :
 
-or did you have something else in mind?
+Nothing. Fans turn 100% after 1 or 2 minutes.
 
-I guess something like this would avoid figuring out *which* archs
-actually build drm..
-
-
-> Also to distil the previous thread - if you remap memory to uncached
-> the helper to use is arch_dma_prep_coherent, which does a writeback+
-> invalidate everywhere, and there is no need to clean up after a
-> long-term uncached mapping.  We might still get speculations into
-> that area, if we don't remap the direct mapping, but it isn't like
-> invalidting that just before freeing the memory is going to help
-> anyone.
-
-hmm, IIUC the aarch64 cache instructions, what I'm doing now is equiv
-to what I would get with dma_map_sg(DMA_BIDIRECTIONAL) and
-arch_dma_prep_coherent() is equiv to what I'd get w/ DMA_FROM_DEVICE
-(but a single pass instead of separate inv+clean passes)..
-
-but I can respin this with a single dma_prep_coherent_sg() which uses
-arch_dma_prep_coherent()..
-
-> Also it seems like patches 5 and 6 are missing in my inbox.
-
-Hmm, not entirely sure why.. you should be on the cc list for each
-individual patch.
-
-But here is the patchwork link if you want to see them:
-
-https://patchwork.freedesktop.org/series/65211/
-
-BR,
--R
+Christian
