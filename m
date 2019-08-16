@@ -1,67 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55176900A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 13:20:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47D390131
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 14:17:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46918T6xdlzDrNL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 21:20:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4692Q217ZRzDrVN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 22:17:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (mailfrom) smtp.mailfrom=sirena.org.uk
+ (client-ip=209.85.128.97; helo=mail-wm1-f97.google.com;
+ envelope-from=postmaster@sirena.org.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="iyGheMYs"; 
- dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wm1-f97.google.com (mail-wm1-f97.google.com
+ [209.85.128.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4691392BN8zDrNG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 21:16:05 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4691333mTlz9tyXs;
- Fri, 16 Aug 2019 13:15:59 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=iyGheMYs; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Ll52ruOpJIhH; Fri, 16 Aug 2019 13:15:59 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4691332WGcz9tyXr;
- Fri, 16 Aug 2019 13:15:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565954159; bh=AZa/Vbvz2vvSVzzKeKFOlBKQpBBPn8tg+lwWM3PrWDc=;
- h=From:Subject:To:Cc:Date:From;
- b=iyGheMYsJGzG/1XCaE5L9KFLNeNn8MMnG5pDhiaMiUrKrHaRafvaCnhBGvBEOk3/h
- FV2uv5wOH5ODcEgqywBVQxlG+fDBZNULNMrlbm6Eoao5jGAUvt+IONp52E5r31qm8i
- 6dTfluEIu4RWdZi24lCbXOkS3z9KABK1NTpKHODQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BDC338B776;
- Fri, 16 Aug 2019 13:16:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id UoPRWb9ooZBL; Fri, 16 Aug 2019 13:16:00 +0200 (CEST)
-Received: from pc17473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 97C768B754;
- Fri, 16 Aug 2019 13:16:00 +0200 (CEST)
-Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 987C5698B9; Fri, 16 Aug 2019 11:16:00 +0000 (UTC)
-Message-Id: <b2fd7fdecdcf1d0fb836b8742f0422d3d02a1180.1565954131.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/32: Add VDSO version of getcpu
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Fri, 16 Aug 2019 11:16:00 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4692M915zKzDrTf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 22:14:57 +1000 (AEST)
+Received: by mail-wm1-f97.google.com with SMTP id v19so3906878wmj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 05:14:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:message-id:date;
+ bh=pLS4DxT1dPkt+ilKsw/CiwD4KIIKskFjBYK+1KbWdsE=;
+ b=bOqtVqqoM24KRFCjIqhqjulnqJy+mV/o3H4J/YGAhO0YGAVP9VPdZPoBuFa6F5BVTZ
+ VsPZlDTftC92jApwQQvJmawD8eC7Pvuw4lJ45gsbenaKOZcfz0kd/XeYH8DMkdfL2k+A
+ O3ULSwlMPnfdOWEmi56ESGhaUFVe0uGGRX/1kL7uvJuXaKC0anpZazC71pBOhfapem3i
+ wglul3lqR8wJOd5z38X/eSiRahr45E51jShSnA+ALZfyHJpJugQ7Vt7uIcO0fnfPYiga
+ mZn5ejPfm31apTWRzwcdoAHMw5jfjYsV4XNYpSZ67uetAqsHf1Op2xeQo2d2Bx9pl48q
+ eUgA==
+X-Gm-Message-State: APjAAAW08fVjMsA+kRj6lRSl9HV59apc4TQwrHX82p+1YxhpsNbWDy8I
+ TvNZL/7xbBN4aIyBGW704vqJxpidf5VwIWMlop2SVFl3gYmPUwTpHAhUe8sZcAFxvg==
+X-Google-Smtp-Source: APXvYqySVq6C/xknyvsxzKlqH7UE+qi1NJxPkT+wedb/ovVs8FyUI5SRHDjge/ud7Koip4TsqGPgyJPtw6LB
+X-Received: by 2002:a1c:cfc6:: with SMTP id f189mr6938434wmg.18.1565957694085; 
+ Fri, 16 Aug 2019 05:14:54 -0700 (PDT)
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk.
+ [2a01:7e01::f03c:91ff:fed4:a3b6])
+ by smtp-relay.gmail.com with ESMTPS id d8sm90830wro.28.2019.08.16.05.14.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Aug 2019 05:14:54 -0700 (PDT)
+X-Relaying-Domain: sirena.org.uk
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+ by heliosphere.sirena.org.uk with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <broonie@sirena.co.uk>)
+ id 1hyb89-0003L6-Nv; Fri, 16 Aug 2019 12:14:53 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+ id 184B12743134; Fri, 16 Aug 2019 13:14:53 +0100 (BST)
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Applied "ASoC: imx-audmux: Add driver suspend and resume to support
+ MEGA Fast" to the asoc tree
+In-Reply-To: <1565931794-7218-1-git-send-email-shengjiu.wang@nxp.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190816121453.184B12743134@ypsilon.sirena.org.uk>
+Date: Fri, 16 Aug 2019 13:14:53 +0100 (BST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,183 +71,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, s.hauer@pengutronix.de, tiwai@suse.com,
+ lgirdwood@gmail.com, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
+ Mark Brown <broonie@kernel.org>, linux-imx@nxp.com, kernel@pengutronix.de,
+ shawnguo@kernel.org, perex@perex.cz, festevam@gmail.com,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 18ad51dd342a ("powerpc: Add VDSO version of getcpu") added
-getcpu() for PPC64 only, by making use of a user readable general
-purpose SPR.
+The patch
 
-PPC32 doesn't have any such SPR, a full system call can still be
-avoided by implementing a fast system call which reads the CPU id
-in the task struct and returns immediately without going back in
-virtual mode.
+   ASoC: imx-audmux: Add driver suspend and resume to support MEGA Fast
 
-Before the patch, vdsotest reported:
-getcpu: syscall: 1572 nsec/call
-getcpu:    libc: 1787 nsec/call
-getcpu:    vdso: not tested
+has been applied to the asoc tree at
 
-Now, vdsotest reports:
-getcpu: syscall: 1582 nsec/call
-getcpu:    libc: 667 nsec/call
-getcpu:    vdso: 368 nsec/call
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
 
-For non SMP, just return CPU id 0 from the VDSO directly.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-PPC32 doesn't support CONFIG_NUMA so NUMA node is always 0.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 8661ab5b23d6d30d8687fc05bc1dba8f9a64b444 Mon Sep 17 00:00:00 2001
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+Date: Fri, 16 Aug 2019 01:03:14 -0400
+Subject: [PATCH] ASoC: imx-audmux: Add driver suspend and resume to support
+ MEGA Fast
+
+For i.MX6 SoloX, there is a mode of the SoC to shutdown all power
+source of modules during system suspend and resume procedure.
+Thus, AUDMUX needs to save all the values of registers before the
+system suspend and restore them after the system resume.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1565931794-7218-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-v2: fixed build error in getcpu.S
----
- arch/powerpc/include/asm/vdso.h         |  2 ++
- arch/powerpc/kernel/head_32.h           | 13 +++++++++++++
- arch/powerpc/kernel/head_booke.h        | 11 +++++++++++
- arch/powerpc/kernel/vdso32/Makefile     |  4 +---
- arch/powerpc/kernel/vdso32/getcpu.S     |  7 +++++++
- arch/powerpc/kernel/vdso32/vdso32.lds.S |  2 --
- 6 files changed, 34 insertions(+), 5 deletions(-)
+ sound/soc/fsl/imx-audmux.c | 54 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
-index b5e1f8f8a05c..adb54782df5f 100644
---- a/arch/powerpc/include/asm/vdso.h
-+++ b/arch/powerpc/include/asm/vdso.h
-@@ -16,6 +16,8 @@
- /* Define if 64 bits VDSO has procedure descriptors */
- #undef VDS64_HAS_DESCRIPTORS
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index b2351cd33b0f..16ede3b5cb32 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -23,6 +23,8 @@
  
-+#define NR_MAGIC_FAST_VDSO_SYSCALL	0x789a
+ static struct clk *audmux_clk;
+ static void __iomem *audmux_base;
++static u32 *regcache;
++static u32 reg_max;
+ 
+ #define IMX_AUDMUX_V2_PTCR(x)		((x) * 8)
+ #define IMX_AUDMUX_V2_PDCR(x)		((x) * 8 + 4)
+@@ -317,8 +319,23 @@ static int imx_audmux_probe(struct platform_device *pdev)
+ 	if (of_id)
+ 		pdev->id_entry = of_id->data;
+ 	audmux_type = pdev->id_entry->driver_data;
+-	if (audmux_type == IMX31_AUDMUX)
 +
- #ifndef __ASSEMBLY__
++	switch (audmux_type) {
++	case IMX31_AUDMUX:
+ 		audmux_debugfs_init();
++		reg_max = 14;
++		break;
++	case IMX21_AUDMUX:
++		reg_max = 6;
++		break;
++	default:
++		dev_err(&pdev->dev, "unsupported version!\n");
++		return -EINVAL;
++	}
++
++	regcache = devm_kzalloc(&pdev->dev, sizeof(u32) * reg_max, GFP_KERNEL);
++	if (!regcache)
++		return -ENOMEM;
  
- /* Offsets relative to thread->vdso_base */
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 4a692553651f..a2e38b59785a 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -3,6 +3,8 @@
- #define __HEAD_32_H__
+ 	if (of_id)
+ 		imx_audmux_parse_dt_defaults(pdev, pdev->dev.of_node);
+@@ -334,12 +351,47 @@ static int imx_audmux_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
- #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
-+#include <asm/vdso.h>
-+#include <asm/asm-offsets.h>
- 
- /*
-  * MSR_KERNEL is > 0x8000 on 4xx/Book-E since it include MSR_CE.
-@@ -74,7 +76,13 @@
- .endm
- 
- .macro SYSCALL_ENTRY trapno
-+#ifdef CONFIG_SMP
-+	cmplwi	cr0, r0, NR_MAGIC_FAST_VDSO_SYSCALL
-+#endif
- 	mfspr	r12,SPRN_SPRG_THREAD
-+#ifdef CONFIG_SMP
-+	beq-	1f
-+#endif
- 	mfcr	r10
- 	lwz	r11,TASK_STACK-THREAD(r12)
- 	mflr	r9
-@@ -152,6 +160,11 @@
- 	mtspr	SPRN_SRR0,r11
- 	SYNC
- 	RFI				/* jump to handler, enable MMU */
-+#ifdef CONFIG_SMP
-+1:
-+	lwz	r5, TASK_CPU - THREAD(r12)
-+	RFI
-+#endif
- .endm
- 
- /*
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 2ae635df9026..c534e87cac84 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -3,6 +3,8 @@
- #define __HEAD_BOOKE_H__
- 
- #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
-+#include <asm/vdso.h>
-+#include <asm/asm-offsets.h>
- #include <asm/kvm_asm.h>
- #include <asm/kvm_booke_hv_asm.h>
- 
-@@ -104,6 +106,10 @@ FTR_SECTION_ELSE
- #ifdef CONFIG_KVM_BOOKE_HV
- ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- #endif
-+#ifdef CONFIG_SMP
-+	cmplwi	cr0, r0, NR_MAGIC_FAST_VDSO_SYSCALL
-+	beq-	1f
-+#endif
- 	BOOKE_CLEAR_BTB(r11)
- 	lwz	r11, TASK_STACK - THREAD(r10)
- 	rlwinm	r12,r12,0,4,2	/* Clear SO bit in CR */
-@@ -176,6 +182,11 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	mtspr	SPRN_SRR0,r11
- 	SYNC
- 	RFI				/* jump to handler, enable MMU */
-+#ifdef CONFIG_SMP
-+1:
-+	lwz	r5, TASK_CPU - THREAD(r10)
-+	RFI
-+#endif
- .endm
- 
- /* To handle the additional exception priority levels on 40x and Book-E
-diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
-index 06f54d947057..e147bbdc12cd 100644
---- a/arch/powerpc/kernel/vdso32/Makefile
-+++ b/arch/powerpc/kernel/vdso32/Makefile
-@@ -2,9 +2,7 @@
- 
- # List of files in the vdso, has to be asm only for now
- 
--obj-vdso32-$(CONFIG_PPC64) = getcpu.o
--obj-vdso32 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o \
--		$(obj-vdso32-y)
-+obj-vdso32 = sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o getcpu.o
- 
- # Build rules
- 
-diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso32/getcpu.S
-index 63e914539e1a..bde226ad904d 100644
---- a/arch/powerpc/kernel/vdso32/getcpu.S
-+++ b/arch/powerpc/kernel/vdso32/getcpu.S
-@@ -17,7 +17,14 @@
-  */
- V_FUNCTION_BEGIN(__kernel_getcpu)
-   .cfi_startproc
-+#if defined(CONFIG_PPC64)
- 	mfspr	r5,SPRN_SPRG_VDSO_READ
-+#elif defined(CONFIG_SMP)
-+	li	r0, NR_MAGIC_FAST_VDSO_SYSCALL
-+	sc	/* returns cpuid in r5, clobbers cr0 and r10-r13 */
-+#else
-+	li	r5, 0
-+#endif
- 	cmpwi	cr0,r3,0
- 	cmpwi	cr1,r4,0
- 	clrlwi  r6,r5,16
-diff --git a/arch/powerpc/kernel/vdso32/vdso32.lds.S b/arch/powerpc/kernel/vdso32/vdso32.lds.S
-index 099a6db14e67..663880671e20 100644
---- a/arch/powerpc/kernel/vdso32/vdso32.lds.S
-+++ b/arch/powerpc/kernel/vdso32/vdso32.lds.S
-@@ -152,9 +152,7 @@ VERSION
- 		__kernel_sync_dicache_p5;
- 		__kernel_sigtramp32;
- 		__kernel_sigtramp_rt32;
--#ifdef CONFIG_PPC64
- 		__kernel_getcpu;
--#endif
- 		__kernel_time;
- 
- 	local: *;
++#ifdef CONFIG_PM_SLEEP
++static int imx_audmux_suspend(struct device *dev)
++{
++	int i;
++
++	clk_prepare_enable(audmux_clk);
++
++	for (i = 0; i < reg_max; i++)
++		regcache[i] = readl(audmux_base + i * 4);
++
++	clk_disable_unprepare(audmux_clk);
++
++	return 0;
++}
++
++static int imx_audmux_resume(struct device *dev)
++{
++	int i;
++
++	clk_prepare_enable(audmux_clk);
++
++	for (i = 0; i < reg_max; i++)
++		writel(regcache[i], audmux_base + i * 4);
++
++	clk_disable_unprepare(audmux_clk);
++
++	return 0;
++}
++#endif /* CONFIG_PM_SLEEP */
++
++static const struct dev_pm_ops imx_audmux_pm = {
++	SET_SYSTEM_SLEEP_PM_OPS(imx_audmux_suspend, imx_audmux_resume)
++};
++
+ static struct platform_driver imx_audmux_driver = {
+ 	.probe		= imx_audmux_probe,
+ 	.remove		= imx_audmux_remove,
+ 	.id_table	= imx_audmux_ids,
+ 	.driver	= {
+ 		.name	= DRIVER_NAME,
++		.pm = &imx_audmux_pm,
+ 		.of_match_table = imx_audmux_dt_ids,
+ 	}
+ };
 -- 
-2.13.3
+2.20.1
 
