@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA31C9066F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 19:07:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F7090676
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 19:09:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4698rB4YShzDr7d
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 03:07:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4698tW3MdTzDr6x
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 03:09:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,44 +16,44 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="iAasaNqo"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="Vi69agrm"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4698Tx2PVlzDq6J
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4698Ty0J0kzDq7F
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 02:51:17 +1000 (AEST)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id C61A342ECB;
- Fri, 16 Aug 2019 16:51:13 +0000 (UTC)
+ by mta-01.yadro.com (Postfix) with ESMTP id BCFE542EF1;
+ Fri, 16 Aug 2019 16:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1565974272; x=1567788673; bh=BJFN/GI/KntO7wMlGqrMXAQaRUhb2OOfNPC
- 26t3z61E=; b=iAasaNqorP9V0Ny9KkdAJMj5+iAkMBKhWxLykG0pkd2+N8IF/ah
- aUlRQ9CPKk1DXJqU6kCqcOlkOeCI3mhTvgw0GQdQ7cRy4dh2nLihXGZimLmu6QAD
- IhErlwyIM+ifNwgZZGbYkHj18abfEiG8+nP18gIR4mFEI2WEYSu3uxFo=
+ 1565974273; x=1567788674; bh=FSVV8q5WBRKslAVHaKA4i0lFoHgjjwl2Adk
+ SBwtzivg=; b=Vi69agrmuMePkqkdpYcZxVguopNdXN08USLHiv81CpGPDi0Nhia
+ vhYvek1oELiTfNFsLMX+iftsAqTueBKzI86nafd8z/4lQzWQcntB4Enz0X0zuJ/W
+ NJuEOBPUWa/LSnfubmmECDsRpxGHJ/C0uVTDtHJWQYBLCJ5pUwv1GXtE=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id SaXNuS75WM6f; Fri, 16 Aug 2019 19:51:12 +0300 (MSK)
+ with ESMTP id Ti_EuUNEhppF; Fri, 16 Aug 2019 19:51:13 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id 9234F42ECD;
+ by mta-01.yadro.com (Postfix) with ESMTPS id 9A92942ED0;
  Fri, 16 Aug 2019 19:51:10 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.60) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 16
- Aug 2019 19:51:09 +0300
+ Aug 2019 19:51:10 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v5 06/23] PCI: hotplug: movable BARs: Recalculate all bridge
- windows during rescan
-Date: Fri, 16 Aug 2019 19:50:44 +0300
-Message-ID: <20190816165101.911-7-s.miroshnichenko@yadro.com>
+Subject: [PATCH v5 08/23] PCI: Include fixed and immovable BARs into the bus
+ size calculating
+Date: Fri, 16 Aug 2019 19:50:46 +0300
+Message-ID: <20190816165101.911-9-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190816165101.911-1-s.miroshnichenko@yadro.com>
 References: <20190816165101.911-1-s.miroshnichenko@yadro.com>
@@ -80,105 +80,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the movable BARs feature is enabled and a rescan has been requested,
-release all the bridge windows and recalculate them from scratch, taking
-into account all kinds for BARs: fixed, immovable, movable, new.
+The only difference between the fixed/immovable and movable BARs is a size
+and offset preservation after they are released (the corresponding struct
+resource* detached from a bridge window for a while during a bus rescan).
 
-This increases the chances to find a memory space to fit BARs for newly
-hotplugged devices, especially if no/not enough gaps were reserved by the
-BIOS/bootloader/firmware.
-
-The last step of writing the recalculated windows to the bridges is done
-by the new pci_setup_bridges() function.
+Include fixed/immovable BARs into result of pbus_size_mem() and prohibit
+assigning them to non-direct parents.
 
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- drivers/pci/pci.h       |  1 +
- drivers/pci/probe.c     | 22 ++++++++++++++++++++++
- drivers/pci/setup-bus.c | 16 ++++++++++++++++
- 3 files changed, 39 insertions(+)
+ drivers/pci/setup-bus.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index be7acc477c64..a0ec696512eb 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -253,6 +253,7 @@ void __pci_bus_assign_resources(const struct pci_bus *bus,
- 				struct list_head *realloc_head,
- 				struct list_head *fail_head);
- bool pci_bus_clip_resource(struct pci_dev *dev, int idx);
-+void pci_bus_release_root_bridge_resources(struct pci_bus *bus);
- 
- void pci_reassigndev_resource_alignment(struct pci_dev *dev);
- void pci_disable_bridge_window(struct pci_dev *dev);
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 60e3b48d2251..a26bf740e9ab 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -3474,6 +3474,25 @@ static void pci_bus_rescan_done(struct pci_bus *bus)
- 		pci_config_pm_runtime_put(bus->self);
- }
- 
-+static void pci_setup_bridges(struct pci_bus *bus)
-+{
-+	struct pci_dev *dev;
-+
-+	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		struct pci_bus *child;
-+
-+		if (!pci_dev_is_added(dev) || pci_dev_is_ignored(dev))
-+			continue;
-+
-+		child = dev->subordinate;
-+		if (child)
-+			pci_setup_bridges(child);
-+	}
-+
-+	if (bus->self)
-+		pci_setup_bridge(bus);
-+}
-+
- /**
-  * pci_rescan_bus - Scan a PCI bus for devices
-  * @bus: PCI bus to scan
-@@ -3495,8 +3514,11 @@ unsigned int pci_rescan_bus(struct pci_bus *bus)
- 		pci_bus_rescan_prepare(root);
- 
- 		max = pci_scan_child_bus(root);
-+
-+		pci_bus_release_root_bridge_resources(root);
- 		pci_assign_unassigned_root_bus_resources(root);
- 
-+		pci_setup_bridges(root);
- 		pci_bus_rescan_done(root);
- 	} else {
- 		max = pci_scan_child_bus(bus);
 diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 7c2c57f77c6f..04f626e1ac18 100644
+index 1a731002ce18..2c250efca512 100644
 --- a/drivers/pci/setup-bus.c
 +++ b/drivers/pci/setup-bus.c
-@@ -1635,6 +1635,22 @@ static void pci_bus_release_bridge_resources(struct pci_bus *bus,
- 		pci_bridge_release_resources(bus, type);
- }
+@@ -1011,12 +1011,21 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+ 			struct resource *r = &dev->resource[i];
+ 			resource_size_t r_size;
  
-+void pci_bus_release_root_bridge_resources(struct pci_bus *root_bus)
-+{
-+	int i;
-+	struct resource *r;
+-			if (r->parent || (r->flags & IORESOURCE_PCI_FIXED) ||
++			if (r->parent ||
+ 			    ((r->flags & mask) != type &&
+ 			     (r->flags & mask) != type2 &&
+ 			     (r->flags & mask) != type3))
+ 				continue;
+ 			r_size = resource_size(r);
 +
-+	pci_bus_release_bridge_resources(root_bus, IORESOURCE_IO, whole_subtree);
-+	pci_bus_release_bridge_resources(root_bus, IORESOURCE_MEM, whole_subtree);
-+	pci_bus_release_bridge_resources(root_bus,
-+					 IORESOURCE_MEM_64 | IORESOURCE_PREFETCH,
-+					 whole_subtree);
++			if ((r->flags & IORESOURCE_PCI_FIXED) ||
++			    !pci_dev_movable_bars_supported(dev)) {
++				if (pci_movable_bars_enabled())
++					size += r_size;
 +
-+	pci_bus_for_each_resource(root_bus, r, i) {
-+		pci_release_child_resources(root_bus, r);
-+	}
-+}
++				continue;
++			}
 +
- static void pci_bus_dump_res(struct pci_bus *bus)
- {
- 	struct resource *res;
+ #ifdef CONFIG_PCI_IOV
+ 			/* Put SRIOV requested res to the optional list */
+ 			if (realloc_head && i >= PCI_IOV_RESOURCES &&
 -- 
 2.21.0
 
