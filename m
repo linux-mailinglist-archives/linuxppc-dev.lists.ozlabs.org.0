@@ -1,73 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC090521
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:59:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8199059F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 18:18:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4697LG05ptzDrWy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 01:59:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4697m14LhvzDrTn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 02:18:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=yadro.com
+ (client-ip=89.207.88.252; helo=mta-01.yadro.com;
+ envelope-from=s.miroshnichenko@yadro.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="i4vYuRvh"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="jaA1W4c9"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4697Hv49cBzDrKj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 01:57:31 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4697Hp4Hxsz9txKQ;
- Fri, 16 Aug 2019 17:57:26 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=i4vYuRvh; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1aF1Nh7DXJ84; Fri, 16 Aug 2019 17:57:26 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4697Hp2l79z9txKK;
- Fri, 16 Aug 2019 17:57:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1565971046; bh=C4MwGsOSBiPFS6TjAAwjC7UyECCJUqF4L3EYFExWE6g=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=i4vYuRvhymXPG9MijpoZTzbl3VlYeqk7V/a0yOBe12Jva853qoPakRiEwUrvyeC/A
- 6nyVxZtmtd1ku1mggUAr2hO/7FXDa7isaJ6wjkcNS5dRILplYj85HOepJm3k2Ar9hT
- yJ4nQeoKVPxCwSKUQRuaer5JBZ64sfOaZhXm3ngQ=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 284138B78F;
- Fri, 16 Aug 2019 17:57:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hMT4k5X4x1Nw; Fri, 16 Aug 2019 17:57:28 +0200 (CEST)
-Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EB96D8B754;
- Fri, 16 Aug 2019 17:57:27 +0200 (CEST)
-Subject: Re: [PATCH 3/6] powerpc: Convert flush_icache_range & friends to C
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20190815041057.13627-1-alastair@au1.ibm.com>
- <20190815041057.13627-4-alastair@au1.ibm.com>
- <8a86bccf-ae4d-6d2c-72b1-db136cec9d10@c-s.fr>
-Message-ID: <b6c76696-8b00-b35b-934a-5e6eb2e997c3@c-s.fr>
-Date: Fri, 16 Aug 2019 17:57:20 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4697js0gM1zDr9Q
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 02:16:32 +1000 (AEST)
+Received: from localhost (unknown [127.0.0.1])
+ by mta-01.yadro.com (Postfix) with ESMTP id 73F3642ECD;
+ Fri, 16 Aug 2019 16:16:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+ content-type:content-type:content-transfer-encoding:mime-version
+ :x-mailer:message-id:date:date:subject:subject:from:from
+ :received:received:received; s=mta-01; t=1565972186; x=
+ 1567786587; bh=N8kmDhJ6lbdeM1ACqFmDDfwOrCd6RU5x+mQv5WXi/e0=; b=j
+ aA1W4c996q1aTTaToBA+ZFUG5DHknYoqbzdg+43C291Mfj0LJyfMVE+BFneYazug
+ 4R8lab0p5GbAAWBOAVkTgEcCl1la8lvLj5Cee8XelwRPfN5JRiSJkAztJey73DAP
+ 3EqOQMbU8l3Wpt1xiZ8BaUMGIk5miL7ypywcvR4Vs0=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+ by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id W5z3Sscc6o3i; Fri, 16 Aug 2019 19:16:26 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
+ [172.17.10.102])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mta-01.yadro.com (Postfix) with ESMTPS id 9BF81412D2;
+ Fri, 16 Aug 2019 19:16:26 +0300 (MSK)
+Received: from NB-148.yadro.com (172.17.15.60) by T-EXCH-02.corp.yadro.com
+ (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 16
+ Aug 2019 19:16:24 +0300
+From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v6 0/5] powerpc/powernv/pci: Make hotplug self-sufficient,
+ independent of FW and DT
+Date: Fri, 16 Aug 2019 19:16:09 +0300
+Message-ID: <20190816161614.32344-1-s.miroshnichenko@yadro.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <8a86bccf-ae4d-6d2c-72b1-db136cec9d10@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.17.15.60]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-02.corp.yadro.com (172.17.10.102)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,40 +72,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Mike Rapoport <rppt@linux.vnet.ibm.com>,
- Qian Cai <cai@lca.pw>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Allison Randal <allison@lohutok.net>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>,
+ Sergey Miroshnichenko <s.miroshnichenko@yadro.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linux@yadro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Allow switching from the pnv_php module to the standard pciehp driver for
+PowerNV, if the platform supports it: it can be a server working on top of
+the skiboot with the [1] patchset applied.
 
+Add the ability to discover hot-added devices which weren't added to the
+Device Tree (by the pnv_php via an explicit OPAL call when a hotplug event
+was intercepted) by direct access to the bus.
 
-Le 15/08/2019 à 09:29, christophe leroy a écrit :
-> 
-> 
-> Le 15/08/2019 à 06:10, Alastair D'Silva a écrit :
->> From: Alastair D'Silva <alastair@d-silva.org>
->>
->> Similar to commit 22e9c88d486a
->> ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
->> this patch converts flush_icache_range() to C, and reimplements the
->> following functions as wrappers around it:
->> __flush_dcache_icache
->> __flush_dcache_icache_phys
-> 
-> Not sure you can do that for __flush_dcache_icache_phys(), see detailed 
-> comments below
-> 
+Sync the changes in PCIe topology (bus numbers and PEs) with the skiboot.
 
-I just sent you an RFC patch that could be the way to convert 
-__flush_dcache_icache_phys() to C.
+Tested on POWER8 PowerNV+PHB3 ppc64le (our Vesnin server) with:
+ - the pciehp driver active;
+ - the pnv_php driver disabled;
+ - the "pci=pcie_bus_peer2peer,realloc" kernel command line argument;
+ - controlled hotplug of a network card with SR-IOV works;
+ - activating of SR-IOV on a network card works;
+ - [with extra patches for movable BARs and bus numbers] manually initiated
+   (via sysfs) rescan has found and turned on a hotplugged bridge.
 
-Feel free to modify it as wished and include it in your series.
+[1] https://lists.ozlabs.org/pipermail/skiboot/2019-August/015140.html
+    [Skiboot] [PATCH v3 0/5] core/pci: Track changes of topology by an OS
 
-Christophe
+Change since v5:
+ - Activates on "ibm,supported-movable-bdfs" property in DT from skiboot
+   instead of the "pci=realloc" flag;
+ - Removed the code refactoring patches - will send them separately.
+
+Changes since v4:
+ - Fixed failing build when EEH is disabled in a kernel config;
+ - Unfreeze the bus on EEH_IO_ERROR_VALUE(size), not only 0xffffffff;
+ - Replaced the 0xff magic constant with phb->ioda.reserved_pe_idx;
+ - Renamed create_pdn() -> pci_create_pdn_from_dev();
+ - Renamed add_one_dev_pci_data(..., vf_index, ...) -> pci_alloc_pdn();
+ - Renamed add_dev_pci_data() -> pci_create_vf_pdns();
+ - Renamed remove_dev_pci_data() -> pci_destroy_vf_pdns();
+ - Removed the patch fixing uninitialized IOMMU group - now it is fixed in
+   commit 8f5b27347e88 ("powerpc/powernv/sriov: Register IOMMU groups for
+   VFs")
+
+Changes since v3:
+ - Subject changed;
+ - Don't disable EEH during rescan anymore - instead just unfreeze the
+   target buses deliberately;
+ - Add synchronization with the firmware when changing the PCIe topology;
+ - Fixed for VFs;
+ - Code cleanup.
+
+Changes since v2:
+ - Don't reassign bus numbers on PowerNV by default (to retain the default
+   behavior), but only when pci=realloc is passed;
+ - Less code affected;
+ - pci_add_device_node_info is refactored with add_one_dev_pci_data;
+ - Minor code cleanup.
+
+Changes since v1:
+ - Fixed build for ppc64le and ppc64be when CONFIG_PCI_IOV is disabled;
+ - Fixed build for ppc64e when CONFIG_EEH is disabled;
+ - Fixed code style warnings.
+
+Sergey Miroshnichenko (5):
+  powerpc/pci: Access PCI config space directly w/o pci_dn
+  powerpc/powernv/pci: Suppress an EEH error when reading an empty slot
+  powerpc/pci: Create pci_dn on demand
+  powerpc/powernv/pci: Hook up the writes to PCI_SECONDARY_BUS register
+  powerpc/pci: Enable assigning bus numbers instead of reading them from
+    DT
+
+ arch/powerpc/include/asm/ppc-pci.h           |   1 +
+ arch/powerpc/kernel/pci_dn.c                 |  95 +++++++--
+ arch/powerpc/kernel/rtas_pci.c               |  97 ++++++---
+ arch/powerpc/platforms/powernv/eeh-powernv.c |   2 +-
+ arch/powerpc/platforms/powernv/pci.c         | 205 +++++++++++++++++--
+ 5 files changed, 331 insertions(+), 69 deletions(-)
+
+-- 
+2.21.0
+
