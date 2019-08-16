@@ -2,54 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E331A8FBF3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7888FC02
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:21:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468vlV4HgGzDrL7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:17:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468vrg5NqLzDrN1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:21:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+66fbed4ec5b4f711ea06+5836+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linuxfoundation.org
- (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.b="iIgo3dUG"; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.b="Cwd5nn8m"; dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468vh91LHRzDrV2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:14:17 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 35AAA2077C;
- Fri, 16 Aug 2019 07:14:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565939654;
- bh=Evl2KKOh6MQV7F5Fco/BFBWeXigewfLlx6StyE+rljQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=iIgo3dUGMR9iE/l7kU96+kdHskaGuaFsxyB/rbyEh7/OuqhbX1SUm6V7roCjoI3EW
- iylJ7DGPqaYp/oaL2Usdl4/uz2VDbRqkODX+frdFkIAaddeiSlQqXkDckYoSEy46Vg
- zO9+mj0DYLxZ6JhhFo0C/O/eaXrPQySk0z8NGhfg=
-Date: Fri, 16 Aug 2019 09:14:12 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Allow flush_(inval_)dcache_range to work across
- ranges >4GB
-Message-ID: <20190816071412.GF1368@kroah.com>
-References: <20190815045543.16325-1-alastair@au1.ibm.com>
- <20190815071924.GA26670@kroah.com>
- <87mug97uo1.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468vlK2K8zzDrSC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:17:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+ :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=5slocbe6PQWQPCbfPHRmFcXbh8p3/1KOX8/V8eA6Q9A=; b=Cwd5nn8mGMcw08OzE0p/GngGiO
+ XNDinPVA9h0z8gOXLwNvPC5+xGzUuqzVJ7bzHX6VrHtT2KWxhDwEh2w+4DScwazticFb/jTlov9+O
+ ZsglZG/XJJ9o4ddV713LiunQaBw97yejihx2A6H9mBNjCWNm+CrvkGqbWkjZfSnppVn5Tc9zGVhYg
+ c1T64d90DXi99E4doAqi5iXtVW1wIlubAneZwAcO699CTmXKuJCmMx70YR0/75mKUVOSCEwsALe9m
+ J+CmrJ+zilbuREvyDod92BUSEGW1TzmHxcwBUEfT9HK4UT3AcOxXIQjmy7HHd4iFg+VVXFKVVOCIv
+ h1CBNIwg==;
+Received: from 089144199030.atnat0008.highway.a1.net ([89.144.199.30]
+ helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hyWTh-0000Zn-6C; Fri, 16 Aug 2019 07:16:50 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: iommu@lists.linux-foundation.org
+Subject: [PATCH 3/6] arm-nommu: remove the unused pgprot_dmacoherent define
+Date: Fri, 16 Aug 2019 09:07:51 +0200
+Message-Id: <20190816070754.15653-4-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190816070754.15653-1-hch@lst.de>
+References: <20190816070754.15653-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87mug97uo1.fsf@concordia.ellerman.id.au>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,70 +65,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alastair D'Silva <alastair@au1.ibm.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- alastair@d-silva.org, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
+Cc: Shawn Anastasio <shawn@anastas.io>, Will Deacon <will@kernel.org>,
+ linux-m68k@lists.linux-m68k.org, Guan Xuetao <gxt@pku.edu.cn>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+ Paul Burton <paul.burton@mips.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 16, 2019 at 11:42:22AM +1000, Michael Ellerman wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > On Thu, Aug 15, 2019 at 02:55:42PM +1000, Alastair D'Silva wrote:
-> >> From: Alastair D'Silva <alastair@d-silva.org>
-> >> 
-> >> Heads Up: This patch cannot be submitted to Linus's tree, as the affected
-> >> assembler functions have already been converted to C.
-> 
-> That was done in upstream commit:
-> 
-> 22e9c88d486a ("powerpc/64: reuse PPC32 static inline flush_dcache_range()")
-> 
-> Which is a larger change that we don't want to backport. This patch is a
-> minimal fix for stable trees.
-> 
-> 
-> >> When calling flush_(inval_)dcache_range with a size >4GB, we were masking
-> >> off the upper 32 bits, so we would incorrectly flush a range smaller
-> >> than intended.
-> >> 
-> >> This patch replaces the 32 bit shifts with 64 bit ones, so that
-> >> the full size is accounted for.
-> >> 
-> >> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> >> ---
-> >>  arch/powerpc/kernel/misc_64.S | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> 
-> > <formletter>
-> >
-> > This is not the correct way to submit patches for inclusion in the
-> > stable kernel tree.  Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> >
-> > </formletter>
-> 
-> Hi Greg,
-> 
-> This is "option 3", submit the patch directly, and the patch "deviates
-> from the original upstream patch" because the upstream patch was a
-> wholesale conversion from asm to C.
-> 
-> This patch applies cleanly to v4.14 and v4.19.
-> 
-> The change log should have mentioned which upstream patch it is not a
-> backport of, is there anything else we should have done differently to
-> avoid the formletter bot :)
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/arm/include/asm/pgtable-nommu.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-That is exactly what you should have done.  It needs to be VERY explicit
-as to why this is being submitted different from what upstream did, and
-to what trees it needs to go to and who is going to be responsible for
-when it breaks.  And it will break :)
+diff --git a/arch/arm/include/asm/pgtable-nommu.h b/arch/arm/include/asm/pgtable-nommu.h
+index 0b1f6799a32e..d0de24f06724 100644
+--- a/arch/arm/include/asm/pgtable-nommu.h
++++ b/arch/arm/include/asm/pgtable-nommu.h
+@@ -62,7 +62,6 @@ typedef pte_t *pte_addr_t;
+  */
+ #define pgprot_noncached(prot)	(prot)
+ #define pgprot_writecombine(prot) (prot)
+-#define pgprot_dmacoherent(prot) (prot)
+ #define pgprot_device(prot)	(prot)
+ 
+ 
+-- 
+2.20.1
 
-thanks,
-
-greg k-h
