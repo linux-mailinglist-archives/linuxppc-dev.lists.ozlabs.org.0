@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD288FBC9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E498FBDF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:14:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468vf80NMszDrbt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:12:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468vhd2M9JzDrWV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:14:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
@@ -18,36 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="EUv2id8K"; dkim-atps=neutral
+ header.b="CRP6GQ1L"; dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468vbv6hZ5zDrKj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:10:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468vf948pzzDrcR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:12:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=3Qq7qY/Y+/QokmnypVaIdWNfeKd51C+DAMqy1j/sP20=; b=EUv2id8KF6AVMyId8dBRZWLWJ
- h9SGxV5uCJ9kLyT35rUFDewwEvXSlaXsl5XaHyT/QSXLUVBpYsLKuk4fL649vva/sxEff8l2m3Zll
- GAex6W6DkgNQ7nNswD1rxqBNgzOithIMuZmp3dstghsycmY4JTPkWchBhKfogN2ZJtAJC4Lk/bwtD
- a/d0Q9BmkqFC9iY+87GngVasJtyAREnATxe/6Zm8rftfindKvbcOVr1Dyp8bQATfOuLCXTO15iilO
- liuT1E9JsRApYiZRwDf3zYs6W88Hl8TJ2s7S7Gz4py8h2Y7ewh6NSGjfie8HuI9MZM5JaESBTkkhY
- AXutx8eqw==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+ :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=M7aCOncE9cdu2lm40wE0sX+3YWUOlwEH41YvffpGGBk=; b=CRP6GQ1Lw34CR/2cSWO1S3ZZo7
+ e3qzMt3uC65GaHDy3QSzuRl1aPq3CtXFktR5fKF090cwLGuGBZGa6eAieGRaAnKnpuNfu5cGOn4Tf
+ FVjPlPIBzyavJz1TLlKfnWsPNcl0+ZzV951/W6lBM8PV+37b/MZSD/tEOS3Wwr8m51GBht62ZOyFU
+ sz7lXUAbthR+KCik65ooNskt93tJYvV69EyKiI2UMWnqSEDzM895lTxZfL/2oEOMUWlZWaQw2DyPt
+ PZuyiX/vzX6bI0w3BLRkuuu7yKSXeOODuvIg9eDLOccgfkc0J/tDK1E0fF7L/hCHctEEtVKipkDnM
+ aRayUKSA==;
 Received: from 089144199030.atnat0008.highway.a1.net ([89.144.199.30]
  helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hyWND-000653-C4; Fri, 16 Aug 2019 07:10:09 +0000
+ id 1hyWPO-0006sq-Qm; Fri, 16 Aug 2019 07:12:23 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org
-Subject: cleanup the dma_pgprot handling
-Date: Fri, 16 Aug 2019 09:07:48 +0200
-Message-Id: <20190816070754.15653-1-hch@lst.de>
+Subject: [PATCH 1/6] MIPS: remove support for DMA_ATTR_WRITE_COMBINE
+Date: Fri, 16 Aug 2019 09:07:49 +0200
+Message-Id: <20190816070754.15653-2-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190816070754.15653-1-hch@lst.de>
+References: <20190816070754.15653-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -74,12 +76,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+Mips uses the KSEG1 kernel memory segment do map dma coherent
+allocations for non-coherent devices as uncachable, and does not have
+any kind of special support for DMA_ATTR_WRITE_COMBINE in the allocation
+path.  Thus supporting DMA_ATTR_WRITE_COMBINE in dma_mmap_attrs will
+lead to multiple mappings with different caching attributes.
 
-this series replaced the arch_dma_mmap_pgprot hooks with the
-simpler pgprot_dmacoherent as used by the arm code already and
-cleans up various bits around that area.
+Fixes: 8c172467be36 ("MIPS: Add implementation of dma_map_ops.mmap()")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/mips/Kconfig              | 1 -
+ arch/mips/mm/dma-noncoherent.c | 8 --------
+ 2 files changed, 9 deletions(-)
 
-I'd still like to hear a confirmation from the mips folks how
-the write combibe attribute can or can't work with the KSEG1
-uncached segment.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d50fafd7bf3a..86e6760ef0d0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1119,7 +1119,6 @@ config DMA_PERDEV_COHERENT
+ 
+ config DMA_NONCOHERENT
+ 	bool
+-	select ARCH_HAS_DMA_MMAP_PGPROT
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select ARCH_HAS_UNCACHED_SEGMENT
+ 	select NEED_DMA_MAP_STATE
+diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-noncoherent.c
+index ed56c6fa7be2..1d4d57dd9acf 100644
+--- a/arch/mips/mm/dma-noncoherent.c
++++ b/arch/mips/mm/dma-noncoherent.c
+@@ -65,14 +65,6 @@ long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
+ 	return page_to_pfn(virt_to_page(cached_kernel_address(cpu_addr)));
+ }
+ 
+-pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
+-		unsigned long attrs)
+-{
+-	if (attrs & DMA_ATTR_WRITE_COMBINE)
+-		return pgprot_writecombine(prot);
+-	return pgprot_noncached(prot);
+-}
+-
+ static inline void dma_sync_virt(void *addr, size_t size,
+ 		enum dma_data_direction dir)
+ {
+-- 
+2.20.1
+
