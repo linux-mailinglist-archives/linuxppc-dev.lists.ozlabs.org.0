@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7198FC47
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:29:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC558FC90
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:41:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468w1p51V3zDr6L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:29:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468wH76sybzDr7d
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 17:41:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (mailfrom)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+66fbed4ec5b4f711ea06+5836+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.b="cYrzgGco"; dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468vv05pVyzDr5j
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:23:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
- :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=V5Zw49kQPZrMPdAV7XGYxZ4KnGSn0pXrZQuwIbjovPc=; b=cYrzgGcooFyvmagoHDTahcizcr
- ulAhAjBwfwJ77g7fjQVCrejwUPdW3+451tmr4XYxlVX8GxKY6cn3W8XzSqaVepJUUvLLtSTSTGMS2
- D6pUyCdbRYLrAnYboEv/JXnpSBpVixFIvWgyIfF5md8ZZXHK3JZ1uZkdsSR/CUj+a7OAuiX/QKZ4f
- IxilPeoBwYRLMyeTi9CQjAPYTO5lWlcHXkdKE5px7Tm0Z5Uv09MdQjAqWuzskLMQWZVz71rZHpeY5
- mK5d/REaLrxG8p8FjuCzLwlM5I1DLEWp0Hs1N6GdEsdYKhkTSq8vu8t5mK7Hc4pyUMSFWtRpfVilP
- iCSS6GWw==;
-Received: from 089144199030.atnat0008.highway.a1.net ([89.144.199.30]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hyWa8-0003qQ-O9; Fri, 16 Aug 2019 07:23:29 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org
-Subject: [PATCH 6/6] arm64: document the choice of page attributes for
- pgprot_dmacoherent
-Date: Fri, 16 Aug 2019 09:07:54 +0200
-Message-Id: <20190816070754.15653-7-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190816070754.15653-1-hch@lst.de>
-References: <20190816070754.15653-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468wF24vJ7zDr5d
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 17:39:17 +1000 (AEST)
+Received: by mail-ot1-f68.google.com with SMTP id k18so8886092otr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 00:39:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rNgiwRT8IqruHTtyg4qTM81WOjWWtlc2s7dRDLMNYXA=;
+ b=lIQ9peSDpku3ykacqJmjIbrZUxwVigq1mRR8rt/EoMqS9c1dRYOZ98UgcpPTBOIvxz
+ i1/DJPUh9yKsxo5j0iZeU+tIbatA4e7o7chQOph8lDXlnCc58XUaAmmojwMiLHCt/OQ3
+ 2CbgGzJ9yMcQL3PLDvgA6vhUnWW+rD+lfAsRI/+orpUOtMT7FcEPRUmpZeYBNN57okAH
+ cwARNtWf68sd3Nu59GKLmcXRV+TmsqLXNgZ6kDyhxVFmx/phOyJsL6GJ+tyLCy7lR652
+ SshVudxNttYsgxR3zRsiPbLHmqZ9XuYEL9TEaFyFEXthJO7mUAVcHeEyVnSqXoTbUJe0
+ r9CA==
+X-Gm-Message-State: APjAAAVXwkUknKHtvio/HYyuWsOUFUjw5jtl3hRFmG6GfGNWDk53/00X
+ LvY2It5WFu5JW7CiwbfTwNBoUbBhzS/EYGCzRn8=
+X-Google-Smtp-Source: APXvYqz193ixgGnhQHDM0sA58o87yH16orCv5VbCTsKEDkS808wZnFykFKzgKwDR213pxnj04zPYszKH8AWAfSfEEwQ=
+X-Received: by 2002:a9d:68c5:: with SMTP id i5mr6603053oto.250.1565941154237; 
+ Fri, 16 Aug 2019 00:39:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20190816062435.881-1-hch@lst.de> <20190816062435.881-7-hch@lst.de>
+In-Reply-To: <20190816062435.881-7-hch@lst.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 16 Aug 2019 09:39:03 +0200
+Message-ID: <CAMuHMdVj+4Kh6pRGrz32w4zgwGHH4-r+-iHX1CSAXU6t4sprJw@mail.gmail.com>
+Subject: Re: [PATCH 6/6] driver core: initialize a default DMA mask for
+ platform device
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,43 +61,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Anastasio <shawn@anastas.io>, Will Deacon <will@kernel.org>,
- linux-m68k@lists.linux-m68k.org, Guan Xuetao <gxt@pku.edu.cn>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
- Paul Burton <paul.burton@mips.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Gavin Li <git@thegavinli.com>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Linux-Arch <linux-arch@vger.kernel.org>,
+ Michal Simek <michal.simek@xilinx.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Alan Stern <stern@rowland.harvard.edu>, NXP Linux Team <linux-imx@nxp.com>,
+ Mathias Nyman <mathias.nyman@intel.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Minas Harutyunyan <hminas@synopsys.com>, Bin Liu <b-liu@ti.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>, Geoff Levand <geoff@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ USB list <linux-usb@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux IOMMU <iommu@lists.linux-foundation.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Based on an email from Will Deacon.
+Hi Christoph,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/arm64/include/asm/pgtable.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Fri, Aug 16, 2019 at 8:30 AM Christoph Hellwig <hch@lst.de> wrote:
+> We still treat devices without a DMA mask as defaulting to 32-bits for
+> both mask, but a few releases ago we've started warning about such
+> cases, as they require special cases to work around this sloppyness.
+> Add a dma_mask field to struct platform_device so that we can initialize
+> the dma_mask pointer in struct device and initialize both masks to
+> 32-bits by default, replacing similar functionality in m68k and
+> powerpc.  The arch_setup_pdev_archdata hooks is now unused and removed.
+>
+> Note that the code looks a little odd with the various conditionals
+> because we have to support platform_device structures that are
+> statically allocated.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/m68k/kernel/dma.c               |  9 -------
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6700371227d1..6ff221d9a631 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -435,6 +435,14 @@ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
- #define pgprot_device(prot) \
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, PTE_ATTRINDX(MT_DEVICE_nGnRE) | PTE_PXN | PTE_UXN)
-+/*
-+ * DMA allocations for non-coherent devices use what the Arm architecture calls
-+ * "Normal non-cacheable" memory, which permits speculation, unaligned accesses
-+ * and merging of writes.  This is different from "Strongly Ordered" memory
-+ * which is intended for MMIO and thus forbids speculation, preserves access
-+ * size, requires strict alignment and also forces write responses to come from
-+ * the endpoint.
-+ */
- #define pgprot_dmacoherent(prot) \
- 	__pgprot_modify(prot, PTE_ATTRINDX_MASK, \
- 			PTE_ATTRINDX(MT_NORMAL_NC) | PTE_PXN | PTE_UXN)
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+>  arch/sh/boards/mach-ecovec24/setup.c |  2 --
+>  arch/sh/boards/mach-migor/setup.c    |  1 -
+
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+given "[PATCH 0/2] Remove calls to empty arch_setup_pdev_archdata()"
+https://lore.kernel.org/linux-renesas-soc/1526641611-2769-1-git-send-email-geert+renesas@glider.be/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.20.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
