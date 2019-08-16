@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D96E905B2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 18:24:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B34B905B6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 18:27:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4697vJ0glpzDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 02:24:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4697y81fGTzDqNx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 02:27:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,43 +16,44 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=yadro.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.b="lQS1HxBw"; 
+ unprotected) header.d=yadro.com header.i=@yadro.com header.b="l/qgAOns"; 
  dkim-atps=neutral
 Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4697js5WRrzDrCj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4697jt10jwzDrDN
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 02:16:33 +1000 (AEST)
 Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 2429B41200;
+ by mta-01.yadro.com (Postfix) with ESMTP id A26A242001;
  Fri, 16 Aug 2019 16:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
  content-type:content-type:content-transfer-encoding:mime-version
  :references:in-reply-to:x-mailer:message-id:date:date:subject
  :subject:from:from:received:received:received; s=mta-01; t=
- 1565972189; x=1567786590; bh=M3q+n/GWaVDpD9TUZhsnxUWV9/Q4vO0m4zu
- +dMgM/qY=; b=lQS1HxBw9tKp/+4/KUI7YIZS89Ms/KPWa7nRTzL1G+sOhhPhh52
- PWEm9UkWEkN1WTvlEY+sUvy6I0K4Bczg+AlqMBbY6nWmDOKd3K/tafbGkjaAeMIe
- Dtb3yXnbRXxRSjp9oqzg6mGXF1rZQgU31NCdmk5IJtxv+DkF1toDgpPQ=
+ 1565972189; x=1567786590; bh=2mQY7T6R/M7OQA2zxjW7ZjAXYZVYrU3dEDH
+ zPnojeBY=; b=l/qgAOnsORU8BllT1sMPVWzZF5hHa80e9kmEZ84sba1f2O+tniw
+ ZyC/WWlf6dE6HApBVyoMORV/jn+DdTLxfDXSDm7maUY06tHeDj9+zRYUJ7oEdDFN
+ 0zZb2UKmUYQeLU0VM7p5c7CmLwjsjEILTUW2h0aIy9+EE16wJH0ShUIU=
 X-Virus-Scanned: amavisd-new at yadro.com
 Received: from mta-01.yadro.com ([127.0.0.1])
  by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id fov88eiz541S; Fri, 16 Aug 2019 19:16:29 +0300 (MSK)
+ with ESMTP id Irgaf_mSzF_V; Fri, 16 Aug 2019 19:16:29 +0300 (MSK)
 Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com
  [172.17.10.102])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id C7DAA42001;
- Fri, 16 Aug 2019 19:16:27 +0300 (MSK)
+ by mta-01.yadro.com (Postfix) with ESMTPS id 0BA1842ECA;
+ Fri, 16 Aug 2019 19:16:28 +0300 (MSK)
 Received: from NB-148.yadro.com (172.17.15.60) by T-EXCH-02.corp.yadro.com
  (172.17.10.102) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 16
  Aug 2019 19:16:27 +0300
 From: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6 3/5] powerpc/pci: Create pci_dn on demand
-Date: Fri, 16 Aug 2019 19:16:12 +0300
-Message-ID: <20190816161614.32344-4-s.miroshnichenko@yadro.com>
+Subject: [PATCH v6 4/5] powerpc/powernv/pci: Hook up the writes to
+ PCI_SECONDARY_BUS register
+Date: Fri, 16 Aug 2019 19:16:13 +0300
+Message-ID: <20190816161614.32344-5-s.miroshnichenko@yadro.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190816161614.32344-1-s.miroshnichenko@yadro.com>
 References: <20190816161614.32344-1-s.miroshnichenko@yadro.com>
@@ -80,185 +81,152 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a struct pci_dn hasn't yet been created for the PCIe device (there was
-no DT node for it), allocate this structure and fill with info read from
-the device directly.
+Writing a new value to the PCI_SECONDARY_BUS register of the bridge means
+that its children will become addressable on another address (new B in BDF)
+or even un-addressable if the secondary bus is set to zero.
+
+On PowerNV, device PEs are heavily BDF-dependent, so they must be updated
+on every such change of its address.
 
 Signed-off-by: Sergey Miroshnichenko <s.miroshnichenko@yadro.com>
 ---
- arch/powerpc/kernel/pci_dn.c | 88 ++++++++++++++++++++++++++++++------
- 1 file changed, 74 insertions(+), 14 deletions(-)
+ arch/powerpc/platforms/powernv/pci.c | 118 ++++++++++++++++++++++++++-
+ 1 file changed, 116 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-index e1a0ab2caafe..261d61460eac 100644
---- a/arch/powerpc/kernel/pci_dn.c
-+++ b/arch/powerpc/kernel/pci_dn.c
-@@ -20,6 +20,9 @@
- #include <asm/firmware.h>
- #include <asm/eeh.h>
- 
-+static struct pci_dn *pci_create_pdn_from_dev(struct pci_dev *pdev,
-+					      struct pci_dn *parent);
-+
- /*
-  * The function is used to find the firmware data of one
-  * specific PCI device, which is attached to the indicated
-@@ -52,6 +55,9 @@ struct pci_dn *pci_bus_to_pdn(struct pci_bus *bus)
- 	dn = pci_bus_to_OF_node(pbus);
- 	pdn = dn ? PCI_DN(dn) : NULL;
- 
-+	if (!pdn && pbus->self)
-+		pdn = pbus->self->dev.archdata.pci_data;
-+
- 	return pdn;
+diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+index a5b04410c8b4..e9b4ed0f97a3 100644
+--- a/arch/powerpc/platforms/powernv/pci.c
++++ b/arch/powerpc/platforms/powernv/pci.c
+@@ -717,13 +717,127 @@ int pnv_pci_cfg_read(struct pci_dn *pdn,
+ 				    where, size, val);
  }
  
-@@ -61,10 +67,13 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 	struct device_node *dn = NULL;
- 	struct pci_dn *parent, *pdn;
- 	struct pci_dev *pdev = NULL;
-+	bool pdev_found = false;
- 
- 	/* Fast path: fetch from PCI device */
- 	list_for_each_entry(pdev, &bus->devices, bus_list) {
- 		if (pdev->devfn == devfn) {
-+			pdev_found = true;
-+
- 			if (pdev->dev.archdata.pci_data)
- 				return pdev->dev.archdata.pci_data;
- 
-@@ -73,6 +82,9 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 		}
- 	}
- 
-+	if (!pdev_found)
-+		pdev = NULL;
-+
- 	/* Fast path: fetch from device node */
- 	pdn = dn ? PCI_DN(dn) : NULL;
- 	if (pdn)
-@@ -85,9 +97,12 @@ struct pci_dn *pci_get_pdn_by_devfn(struct pci_bus *bus,
- 
- 	list_for_each_entry(pdn, &parent->child_list, list) {
- 		if (pdn->busno == bus->number &&
--                    pdn->devfn == devfn)
--                        return pdn;
--        }
-+		    pdn->devfn == devfn) {
-+			if (pdev)
-+				pdev->dev.archdata.pci_data = pdn;
-+			return pdn;
-+		}
-+	}
- 
- 	return NULL;
- }
-@@ -117,17 +132,17 @@ struct pci_dn *pci_get_pdn(struct pci_dev *pdev)
- 
- 	list_for_each_entry(pdn, &parent->child_list, list) {
- 		if (pdn->busno == pdev->bus->number &&
--		    pdn->devfn == pdev->devfn)
-+		    pdn->devfn == pdev->devfn) {
-+			pdev->dev.archdata.pci_data = pdn;
- 			return pdn;
-+		}
- 	}
- 
--	return NULL;
-+	return pci_create_pdn_from_dev(pdev, parent);
- }
- 
--#ifdef CONFIG_PCI_IOV
--static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
--					   int vf_index,
--					   int busno, int devfn)
-+static struct pci_dn *pci_alloc_pdn(struct pci_dn *parent,
-+				    int busno, int devfn)
- {
- 	struct pci_dn *pdn;
- 
-@@ -143,7 +158,6 @@ static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
- 	pdn->parent = parent;
- 	pdn->busno = busno;
- 	pdn->devfn = devfn;
--	pdn->vf_index = vf_index;
- 	pdn->pe_number = IODA_INVALID_PE;
- 	INIT_LIST_HEAD(&pdn->child_list);
- 	INIT_LIST_HEAD(&pdn->list);
-@@ -151,7 +165,51 @@ static struct pci_dn *add_one_dev_pci_data(struct pci_dn *parent,
- 
- 	return pdn;
- }
--#endif
-+
-+static struct pci_dn *pci_create_pdn_from_dev(struct pci_dev *pdev,
-+					      struct pci_dn *parent)
++static void invalidate_children_pes(struct pci_dn *pdn)
 +{
-+	struct pci_dn *pdn = NULL;
-+	u32 class_code;
-+	u16 device_id;
-+	u16 vendor_id;
++	struct pnv_phb *phb = pdn->phb->private_data;
++	struct pci_dn *child;
++	bool found_pe = false;
++	int pe_num;
++	int pe_bus;
 +
-+	if (!parent)
-+		return NULL;
++	list_for_each_entry(child, &pdn->child_list, list) {
++		struct pnv_ioda_pe *pe = (child->pe_number != IODA_INVALID_PE) ?
++			&phb->ioda.pe_array[child->pe_number] :
++			NULL;
 +
-+	pdn = pci_alloc_pdn(parent, pdev->bus->busn_res.start, pdev->devfn);
-+	pci_info(pdev, "Create a new pdn for devfn %2x\n", pdev->devfn / 8);
++		if (!child->busno)
++			continue;
 +
-+	if (!pdn) {
-+		pci_err(pdev, "%s: Failed to allocate pdn\n", __func__);
-+		return NULL;
++		if ((child->class_code >> 8) == PCI_CLASS_BRIDGE_PCI)
++			invalidate_children_pes(child);
++
++		if (pe) {
++			u8 rid_bus = (pe->rid >> 8) & 0xff;
++
++			if (rid_bus) {
++				pe_num = child->pe_number;
++				pe_bus = rid_bus;
++				found_pe = true;
++			}
++
++			pe->rid &= 0xff;
++		}
++
++		child->busno = 0;
 +	}
 +
-+	#ifdef CONFIG_EEH
-+	if (!eeh_dev_init(pdn)) {
-+		kfree(pdn);
-+		pci_err(pdev, "%s: Failed to allocate edev\n", __func__);
-+		return NULL;
++	if (found_pe) {
++		u16 rid = pe_bus << 8;
++
++		opal_pci_set_pe(phb->opal_id, pe_num, rid, 7, 0, 0, OPAL_UNMAP_PE);
 +	}
-+	#endif /* CONFIG_EEH */
-+
-+	pci_bus_read_config_word(pdev->bus, pdev->devfn,
-+				 PCI_VENDOR_ID, &vendor_id);
-+	pdn->vendor_id = vendor_id;
-+
-+	pci_bus_read_config_word(pdev->bus, pdev->devfn,
-+				 PCI_DEVICE_ID, &device_id);
-+	pdn->device_id = device_id;
-+
-+	pci_bus_read_config_dword(pdev->bus, pdev->devfn,
-+				  PCI_CLASS_REVISION, &class_code);
-+	class_code >>= 8;
-+	pdn->class_code = class_code;
-+
-+	pdev->dev.archdata.pci_data = pdn;
-+
-+	return pdn;
 +}
- 
- struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
- {
-@@ -176,15 +234,17 @@ struct pci_dn *add_dev_pci_data(struct pci_dev *pdev)
- 	for (i = 0; i < pci_sriov_get_totalvfs(pdev); i++) {
- 		struct eeh_dev *edev __maybe_unused;
- 
--		pdn = add_one_dev_pci_data(parent, i,
--					   pci_iov_virtfn_bus(pdev, i),
--					   pci_iov_virtfn_devfn(pdev, i));
-+		pdn = pci_alloc_pdn(parent,
-+				    pci_iov_virtfn_bus(pdev, i),
-+				    pci_iov_virtfn_devfn(pdev, i));
- 		if (!pdn) {
- 			dev_warn(&pdev->dev, "%s: Cannot create firmware data for VF#%d\n",
- 				 __func__, i);
- 			return NULL;
- 		}
- 
-+		pdn->vf_index = i;
 +
- #ifdef CONFIG_EEH
- 		/* Create the EEH device for the VF */
- 		edev = eeh_dev_init(pdn);
++static u8 pre_hook_new_sec_bus(struct pci_dn *pdn, u8 new_secondary_bus)
++{
++	u32 old_secondary_bus = 0;
++
++	if ((pdn->class_code >> 8) != PCI_CLASS_BRIDGE_PCI)
++		return 0;
++
++	pnv_pci_cfg_read(pdn, PCI_SECONDARY_BUS, 1, &old_secondary_bus);
++	old_secondary_bus &= 0xff;
++
++	if (old_secondary_bus != new_secondary_bus)
++		invalidate_children_pes(pdn);
++
++	return old_secondary_bus;
++}
++
++static void update_children_pes(struct pci_dn *pdn, u8 new_secondary_bus)
++{
++	struct pnv_phb *phb = pdn->phb->private_data;
++	struct pci_dn *child;
++	bool found_pe = false;
++	int pe_num;
++
++	if (!new_secondary_bus)
++		return;
++
++	list_for_each_entry(child, &pdn->child_list, list) {
++		struct pnv_ioda_pe *pe = (child->pe_number != IODA_INVALID_PE) ?
++			&phb->ioda.pe_array[child->pe_number] :
++			NULL;
++
++		if (child->busno)
++			continue;
++
++		child->busno = new_secondary_bus;
++
++		if (pe) {
++			pe->rid |= (child->busno << 8);
++			pe_num = child->pe_number;
++			found_pe = true;
++		}
++	}
++
++	if (found_pe) {
++		u16 rid = new_secondary_bus << 8;
++
++		opal_pci_set_pe(phb->opal_id, pe_num, rid, 7, 0, 0, OPAL_MAP_PE);
++	}
++}
++
++static void post_hook_new_sec_bus(struct pci_dn *pdn, u8 new_secondary_bus)
++{
++	if ((pdn->class_code >> 8) != PCI_CLASS_BRIDGE_PCI)
++		return;
++
++	update_children_pes(pdn, new_secondary_bus);
++}
++
+ int pnv_pci_cfg_write(struct pci_dn *pdn,
+ 		      int where, int size, u32 val)
+ {
+ 	struct pnv_phb *phb = pdn->phb->private_data;
++	u8 old_secondary_bus = 0, new_secondary_bus = 0;
++	int rc;
++
++	if (where == PCI_SECONDARY_BUS) {
++		new_secondary_bus = val & 0xff;
++		old_secondary_bus = pre_hook_new_sec_bus(pdn, new_secondary_bus);
++	} else if (where == PCI_PRIMARY_BUS && size > 1) {
++		new_secondary_bus = (val >> 8) & 0xff;
++		old_secondary_bus = pre_hook_new_sec_bus(pdn, new_secondary_bus);
++	}
+ 
+-	return pnv_pci_cfg_write_raw(phb->opal_id, pdn->busno, pdn->devfn,
+-				     where, size, val);
++	rc = pnv_pci_cfg_write_raw(phb->opal_id, pdn->busno, pdn->devfn,
++				   where, size, val);
++
++	if (new_secondary_bus && old_secondary_bus != new_secondary_bus)
++		post_hook_new_sec_bus(pdn, new_secondary_bus);
++
++	return rc;
+ }
+ 
+ #if CONFIG_EEH
 -- 
 2.21.0
 
