@@ -1,65 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1129B8F79E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 01:33:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36ECB8F826
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 02:51:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468jSd6tdMzDrB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 09:33:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468lBb463QzDrDr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 10:51:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=gmail.com
- (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bauerman@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468jQp1FhvzDqtR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 09:32:00 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id c7so8112410otp.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 16:32:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=3W/JXRczT4e7iKML5rUyQ8eYma8iSWGGWO86RntEySo=;
- b=ssih72cCAclgB5AVSo/+IkLg/f7L462IHzZQUs7PrMcTUzuLXVR/0n7gSqc5Mfy4fw
- sB75RbzirdS+UhGcek0Y+oNeDEnpRAOTUamq7d8iYq7VO2/o7YGHypwwI1xe/IOrT8uk
- csueK6RbcaQtGMY42gVo610SwM7lzgd2zCmqYjQ9qY7kwZBMSpn/ebnwW2iPWRg0y3XS
- xZxei+DVXtfXQqZzR3QxzcxRa+aDNDwJ7U3H9csXTKi1ZSK+rsBRADxqs9UyBuvQcKvN
- StyO+zfEtHuZayAXKvENLcLBn3BLabgmB9a4smB8owWvHEeSHZEu4JHQmbljmj18XcKJ
- FrBA==
-X-Gm-Message-State: APjAAAXx+Qz691QmSRXOm8b1TuCXEuy7Kt7R+c6amRje8uy7mG7xs8VY
- 7xMZInCetUVXR/M1ogqQ2N00AlsFsC0=
-X-Google-Smtp-Source: APXvYqw8xRFoDg/HLHTjxQZtPSVTtH+t1Lo0yUphYV5Gc6yQzCrWXdP86i31A62MhSNUOHNYRnk9mQ==
-X-Received: by 2002:a9d:69d7:: with SMTP id v23mr5607291oto.321.1565911918183; 
- Thu, 15 Aug 2019 16:31:58 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com.
- [209.85.210.49])
- by smtp.gmail.com with ESMTPSA id j6sm1432625otq.16.2019.08.15.16.31.57
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id k18so8078526otr.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
-X-Received: by 2002:a9d:6b84:: with SMTP id b4mr5482166otq.63.1565911917418;
- Thu, 15 Aug 2019 16:31:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468l8Z1KGfzDrDY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 10:49:49 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7G0lE2g060786; Thu, 15 Aug 2019 20:49:38 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2udgdgufwu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 Aug 2019 20:49:38 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x7G0l82C060567;
+ Thu, 15 Aug 2019 20:49:38 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2udgdgufwh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 Aug 2019 20:49:37 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7G0idd1008401;
+ Fri, 16 Aug 2019 00:49:36 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma05wdc.us.ibm.com with ESMTP id 2udbc489w3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Aug 2019 00:49:36 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7G0nZSx61276572
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Aug 2019 00:49:35 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 10C61BE05B;
+ Fri, 16 Aug 2019 00:49:35 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39D37BE054;
+ Fri, 16 Aug 2019 00:49:32 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.85.158.166])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Fri, 16 Aug 2019 00:49:31 +0000 (GMT)
+References: <20190806052237.12525-1-bauerman@linux.ibm.com>
+ <20190806052237.12525-12-bauerman@linux.ibm.com>
+ <8736i6sfhn.fsf@concordia.ellerman.id.au>
+ <87r25qgeb5.fsf@morokweng.localdomain>
+ <87sgq36ivk.fsf@concordia.ellerman.id.au>
+User-agent: mu4e 1.2.0; emacs 26.2
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 11/16] powerpc/pseries/svm: Export guest SVM status to
+ user space via sysfs
+In-reply-to: <87sgq36ivk.fsf@concordia.ellerman.id.au>
+Date: Thu, 15 Aug 2019 21:49:26 -0300
+Message-ID: <87imqyrl2h.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-References: <1564690599-29713-1-git-send-email-roy.pledge@nxp.com>
-In-Reply-To: <1564690599-29713-1-git-send-email-roy.pledge@nxp.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Thu, 15 Aug 2019 18:31:46 -0500
-X-Gmail-Original-Message-ID: <CADRPPNQ_3muAr_tVYOThhtPmGXk2gh4qMhhZK402HiHh4fO-Fw@mail.gmail.com>
-Message-ID: <CADRPPNQ_3muAr_tVYOThhtPmGXk2gh4qMhhZK402HiHh4fO-Fw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] soc/fsl/qbman: Enable Kexec for DPAA1 devices
-To: Roy Pledge <roy.pledge@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-15_11:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=900 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908160005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,54 +94,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madalin-cristian Bucur <madalin.bucur@nxp.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Anshuman Khandual <anshuman.linux@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Mike Anderson <andmike@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Ryan Grimm <grimm@linux.vnet.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 1, 2019 at 3:20 PM Roy Pledge <roy.pledge@nxp.com> wrote:
->
-> Most DPAA1 devices do not support a soft reset which is an issue if
-> Kexec starts a new kernel. This patch series allows Kexec to function
-> by detecting that the QBMan device was previously initialized.
->
-> The patches fix some issues with device cleanup as well as ensuring
-> that the location of the QBMan private memories has not changed
-> after the execution of the Kexec.
->
-> Changes since v1:
->         - Removed a bug fix and sent it separately to ease backporting
-> Changes since v2:
->         - Expliciitly flush FQD memory from cache on PPC before unmapping
->
-> Roy Pledge (7):
->   soc/fsl/qbman: Rework QBMan private memory setup
->   soc/fsl/qbman: Cleanup buffer pools if BMan was initialized prior to
->     bootup
->   soc/fsl/qbman: Cleanup QMan queues if device was already initialized
->   soc/fsl/qbman: Fix drain_mr_fqni()
->   soc/fsl/qbman: Disable interrupts during portal recovery
->   soc/fsl/qbman: Fixup qman_shutdown_fq()
->   soc/fsl/qbman: Update device tree with reserved memory
 
-Series applied for next.  Thanks!
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
+> Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>> Thiago Jung Bauermann <bauerman@linux.ibm.com> writes:
+>>>> From: Ryan Grimm <grimm@linux.vnet.ibm.com>
+>>>> User space might want to know it's running in a secure VM.  It can't do
+>>>> a mfmsr because mfmsr is a privileged instruction.
+>>>>
+>>>> The solution here is to create a cpu attribute:
+>>>>
+>>>> /sys/devices/system/cpu/svm
+>>>>
+>>>> which will read 0 or 1 based on the S bit of the guest's CPU 0.
+>>>
+>>> Why CPU 0?
+>>>
+>>> If we have different CPUs running with different MSR_S then something
+>>> has gone badly wrong, no?
+>>
+>> Yes, that would be very bad.
+>>
+>>> So can't we just read the MSR on whatever CPU the sysfs code happens to
+>>> run on.
+>>
+>> Good point. I made the change in the patch below.
 >
->  drivers/soc/fsl/qbman/bman.c        | 17 ++++----
->  drivers/soc/fsl/qbman/bman_ccsr.c   | 36 +++++++++++++++-
->  drivers/soc/fsl/qbman/bman_portal.c | 18 +++++++-
->  drivers/soc/fsl/qbman/bman_priv.h   |  5 +++
->  drivers/soc/fsl/qbman/dpaa_sys.c    | 63 ++++++++++++++++------------
->  drivers/soc/fsl/qbman/qman.c        | 83 +++++++++++++++++++++++++++++--------
->  drivers/soc/fsl/qbman/qman_ccsr.c   | 68 +++++++++++++++++++++++++++---
->  drivers/soc/fsl/qbman/qman_portal.c | 18 +++++++-
->  drivers/soc/fsl/qbman/qman_priv.h   |  8 ++++
->  9 files changed, 255 insertions(+), 61 deletions(-)
+> The patch looks good. Although, it raises the question of whether it
+> should be an attribute of the CPU at all.
 >
-> --
-> 2.7.4
->
+> I guess there's not obviously anywhere better for it.
+
+Ok. TBH this patch is not as urgent as the others. It was added so that
+tests have an easy way to tell if they're in an SVM. I can leave it out
+for now to figure out if there's a better place for this information.
+
+> Still you should document the attribute in Documentation/ABI/testing/sysfs-devices-system-cpu
+
+Indedd, will do that.
+
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
