@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C598FA12
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 06:53:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5238FA16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 06:57:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 468rYw5SdRzDr69
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 14:53:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 468rds6R56zDrQK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2019 14:57:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,66 +19,67 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 468rRv691HzDrCB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 14:48:26 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 468rRw2l0ZzDrDX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 14:48:27 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7G4mGJr014474
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 00:48:24 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2udnsj806c-1
+ x7G4ldiZ063882
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 00:48:25 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2udgrp9agq-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 00:48:23 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 00:48:25 -0400
 Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Fri, 16 Aug 2019 05:48:21 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Fri, 16 Aug 2019 05:48:23 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 16 Aug 2019 05:48:19 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7G4mINc34471954
+ Fri, 16 Aug 2019 05:48:21 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7G4mKV332244028
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Aug 2019 04:48:18 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4FDB4203F;
- Fri, 16 Aug 2019 04:48:18 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6518B42042;
- Fri, 16 Aug 2019 04:48:18 +0000 (GMT)
+ Fri, 16 Aug 2019 04:48:20 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2EA31A404D;
+ Fri, 16 Aug 2019 04:48:20 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D33BFA4040;
+ Fri, 16 Aug 2019 04:48:19 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 16 Aug 2019 04:48:18 +0000 (GMT)
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Aug 2019 04:48:19 +0000 (GMT)
 Received: from tungsten.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
  (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3D88AA03C2;
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 492A2A03CD;
  Fri, 16 Aug 2019 14:48:16 +1000 (AEST)
 From: Sam Bobroff <sbobroff@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 04/12] powerpc/eeh: Initialize EEH address cache earlier
-Date: Fri, 16 Aug 2019 14:48:08 +1000
+Subject: [PATCH v5 07/12] powerpc/eeh: Add bdfn field to eeh_dev
+Date: Fri, 16 Aug 2019 14:48:11 +1000
 X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
 In-Reply-To: <cover.1565930772.git.sbobroff@linux.ibm.com>
 References: <cover.1565930772.git.sbobroff@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 19081604-4275-0000-0000-00000359A369
+x-cbid: 19081604-0016-0000-0000-0000029F413D
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081604-4276-0000-0000-0000386BBA88
-Message-Id: <0557206741bffee76cdfff042f65321f6f7a5b41.1565930772.git.sbobroff@linux.ibm.com>
+x-cbparentid: 19081604-0017-0000-0000-000032FF61F7
+Message-Id: <e458eb69a1f591d8a120782f23a8506b15d3c654.1565930772.git.sbobroff@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-16_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=29 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ mlxlogscore=944 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908160051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,91 +97,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EEH address cache is currently initialized and populated by a
-single function: eeh_addr_cache_build().  While the initial population
-of the cache can only be done once resources are allocated,
-initialization (just setting up a spinlock) could be done much
-earlier.
+From: Oliver O'Halloran <oohall@gmail.com>
 
-So move the initialization step into a separate function and call it
-from a core_initcall (rather than a subsys initcall).
+Preparation for removing pci_dn from the powernv EEH code. The only
+thing we really use pci_dn for is to get the bdfn of the device for
+config space accesses, so adding that information to eeh_dev reduces
+the need to carry around the pci_dn.
 
-This will allow future work to make use of the cache during boot time
-PCI scanning.
-
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+[SB: Re-wrapped commit message, fixed whitespace damage.]
 Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/include/asm/eeh.h  |  3 +++
- arch/powerpc/kernel/eeh.c       |  2 ++
- arch/powerpc/kernel/eeh_cache.c | 13 +++++++++++--
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/eeh.h     | 2 ++
+ arch/powerpc/include/asm/ppc-pci.h | 2 ++
+ arch/powerpc/kernel/eeh_dev.c      | 2 ++
+ 3 files changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-index 45c9b26e3cce..20105964287a 100644
+index 7f9404a0c3bb..bbe0798f6624 100644
 --- a/arch/powerpc/include/asm/eeh.h
 +++ b/arch/powerpc/include/asm/eeh.h
-@@ -275,6 +275,7 @@ int __init eeh_ops_register(struct eeh_ops *ops);
- int __exit eeh_ops_unregister(const char *name);
- int eeh_check_failure(const volatile void __iomem *token);
- int eeh_dev_check_failure(struct eeh_dev *edev);
-+void eeh_addr_cache_init(void);
- void eeh_addr_cache_build(void);
- void eeh_add_device_early(struct pci_dn *);
- void eeh_add_device_tree_early(struct pci_dn *);
-@@ -335,6 +336,8 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
+@@ -121,6 +121,8 @@ static inline bool eeh_pe_passed(struct eeh_pe *pe)
+ struct eeh_dev {
+ 	int mode;			/* EEH mode			*/
+ 	int class_code;			/* Class code of the device	*/
++	int bdfn;			/* bdfn of device (for cfg ops) */
++	struct pci_controller *controller;
+ 	int pe_config_addr;		/* PE config address		*/
+ 	u32 config_space[16];		/* Saved PCI config space	*/
+ 	int pcix_cap;			/* Saved PCIx capability	*/
+diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+index cec2d6409515..72860de205a0 100644
+--- a/arch/powerpc/include/asm/ppc-pci.h
++++ b/arch/powerpc/include/asm/ppc-pci.h
+@@ -74,6 +74,8 @@ static inline const char *eeh_driver_name(struct pci_dev *pdev)
  
- #define eeh_dev_check_failure(x) (0)
+ #endif /* CONFIG_EEH */
  
-+static inline void eeh_addr_cache_init(void) { }
++#define PCI_BUSNO(bdfn) ((bdfn >> 8) & 0xff)
 +
- static inline void eeh_addr_cache_build(void) { }
+ #else /* CONFIG_PCI */
+ static inline void init_pci_config_tokens(void) { }
+ #endif /* !CONFIG_PCI */
+diff --git a/arch/powerpc/kernel/eeh_dev.c b/arch/powerpc/kernel/eeh_dev.c
+index c4317c452d98..7370185c7a05 100644
+--- a/arch/powerpc/kernel/eeh_dev.c
++++ b/arch/powerpc/kernel/eeh_dev.c
+@@ -47,6 +47,8 @@ struct eeh_dev *eeh_dev_init(struct pci_dn *pdn)
+ 	/* Associate EEH device with OF node */
+ 	pdn->edev = edev;
+ 	edev->pdn = pdn;
++	edev->bdfn = (pdn->busno << 8) | pdn->devfn;
++	edev->controller = pdn->phb;
  
- static inline void eeh_add_device_early(struct pci_dn *pdn) { }
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 846cc697030c..ca8b0c58a6a7 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1200,6 +1200,8 @@ static int eeh_init(void)
- 	list_for_each_entry_safe(hose, tmp, &hose_list, list_node)
- 		eeh_dev_phb_init_dynamic(hose);
- 
-+	eeh_addr_cache_init();
-+
- 	/* Initialize EEH event */
- 	return eeh_event_init();
+ 	return edev;
  }
-diff --git a/arch/powerpc/kernel/eeh_cache.c b/arch/powerpc/kernel/eeh_cache.c
-index 320472373122..a790fa49c62d 100644
---- a/arch/powerpc/kernel/eeh_cache.c
-+++ b/arch/powerpc/kernel/eeh_cache.c
-@@ -254,6 +254,17 @@ void eeh_addr_cache_rmv_dev(struct pci_dev *dev)
- 	spin_unlock_irqrestore(&pci_io_addr_cache_root.piar_lock, flags);
- }
- 
-+/**
-+ * eeh_addr_cache_init - Initialize a cache of I/O addresses
-+ *
-+ * Initialize a cache of pci i/o addresses.  This cache will be used to
-+ * find the pci device that corresponds to a given address.
-+ */
-+void eeh_addr_cache_init(void)
-+{
-+	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
-+}
-+
- /**
-  * eeh_addr_cache_build - Build a cache of I/O addresses
-  *
-@@ -269,8 +280,6 @@ void eeh_addr_cache_build(void)
- 	struct eeh_dev *edev;
- 	struct pci_dev *dev = NULL;
- 
--	spin_lock_init(&pci_io_addr_cache_root.piar_lock);
--
- 	for_each_pci_dev(dev) {
- 		pdn = pci_get_pdn_by_devfn(dev->bus, dev->devfn);
- 		if (!pdn)
 -- 
 2.22.0.216.g00a2a96fc9
 
