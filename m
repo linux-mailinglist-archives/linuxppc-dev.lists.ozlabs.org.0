@@ -1,67 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF55390BC4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 02:33:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1BB90C13
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 04:22:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 469LlZ6rVdzDsNZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 10:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 469P9C0dMvzDrBc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 12:22:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
- envelope-from=robdclark@chromium.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=nxp.com
+ (client-ip=40.107.4.70; helo=eur03-db5-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
+ dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="VV8Vh+kn";
+ unprotected) header.d=nxp.com header.i=@nxp.com header.b="JyzmhBfV"; 
  dkim-atps=neutral
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
- [IPv6:2607:f8b0:4864:20::d42])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from EUR03-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr40070.outbound.protection.outlook.com [40.107.4.70])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 469G6W2QFWzDrp4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 07:04:49 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id j6so8914322ioa.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2019 14:04:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=s2ZBxhaoOWF4XzyIdX2Kvd1IcJ2ogm2WPdSG/NZ+cHk=;
- b=VV8Vh+knqRuk7GUG0+3pbm/YBPF2frCSqVFkN4P+uFmixSZ6gHA3fDaN4RsFw9h5CW
- 2TmqnBG2qqz370eAeG53IhA7Zzjk6eSYUhoNdAdlHGWLJQfz3owLOgHbX3JGmMIO8WW+
- LJGMhINHoWDCJY1O7+5wM6fUKA1BZS+Jvfs3w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=s2ZBxhaoOWF4XzyIdX2Kvd1IcJ2ogm2WPdSG/NZ+cHk=;
- b=B2IoHTeC7ClbSi5tGUK2fZpyB1oPE3b5LwfdiQSr/2mm4lGfET0NOJFqZbaeXFWA9t
- 5lptEZoU2B79LfA6DDXRzOE744jQJqxzKUJ1Y+SYmZq2iv+5WzyrFL1HPNNwIyU6HyoS
- Zb2mGL0EKHBcrELiTXixRuTQgJ/JnDfE/E5SrIShzhMpc84w1nk9nVVHvVuSvMgzOaUi
- Hxs9aIyud6UcM4GeJyl2/dcErWXr2Tv4Kra4YYqvv9V2pSbYg4Axz2ZJ5jDhRNEkmGPw
- BsA1SgjQZYO184IoRl3YVce0lb5hXzudb/mlt0vtbdA4kvHDRaZmlVBBG1fADl8ExhYf
- +uOw==
-X-Gm-Message-State: APjAAAUQG17n+y6Ars6/MXoy0K4eDhtwItJLb5KepdKHsvfMcA/bXa7J
- 2kYsqVKA7nv19v0hmGyxebipxctARV9khP4gfdl0Xw==
-X-Google-Smtp-Source: APXvYqwts082qPcfW8wQcKhac77m+kiLOKGgwLXDG/PpCvgImNQcMwgioRdTR9BSptcdU3ElXfdZLAB34kkoF2ZHZKA=
-X-Received: by 2002:a5e:924d:: with SMTP id z13mr12554582iop.247.1565989486594; 
- Fri, 16 Aug 2019 14:04:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 469P755CtPzDrgp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 12:20:45 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k3fbzZumeBMh2IQEKy85/mZyofUsnbLe3/YXvFsArYlEhajvZ4p1m3jQhkXnb1R39DxgcX4D0RajnrkTPqv2xoIJscm0rHNKQ0c297s9XTIDGWIhyq8F3HQdBMH0yRx1sz5xfE150+KMiVNSGzp2hIimymhTB5BC3OTGWdmKE27xMLZzN+2uE+9+YKm4wNqYb6WQbCi0wLS7LzIdy22OmAt/6L+6JiVxpfefPjnn5ngW60+gBJLRbXaEwSyT7ffiuGSVcMGpiNu2QZ6RD2mqcyDn+RjplisFcgec0bxLS4qdfYFR2Kfz5Onjul58ionea0BBtQg03SHSZ0hzBt3lfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+Q1xBVBBXj93m2DRzS5NYonMxuZ35iNr245vEHBXFTY=;
+ b=eB1dZFkPIOR0vBOFUTT2YlNLInFPyNgLWXdyEq3+BPJuF6NoDi4p/5ZpuyjRgoZJYX4g1Ep8tIIqSGb4nRJHWiyvSMN8mbFWu68fmqeVF7YfKuOr0A72yYurWm+/R0+c4mJC/LLyvrRRFjrs5wDafaypYHWACbAu9MZIDhdrCXs/7BFZiyEJugG4OsNKtepVgzSy4jk7QgFil18G9r8ekR0foVnNm6W6HPFOwZhq4iT24lfJqAXod1+vSzotVqPb73130cRHowfSgXCz2pOyPKJrpWFLlvGfKn/rQltJO/hrEEzrMZ5N3OCgoSLIByreoeTniFALuo9PABLpGWkorQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+Q1xBVBBXj93m2DRzS5NYonMxuZ35iNr245vEHBXFTY=;
+ b=JyzmhBfVH50LleNtTKasP4bf1z7K6nbJye/ZEbzizzsooQEHoq4UBkxAms5MTX1ggYz+XhKr11iJhqGiHjK8A3JBrvxx+lvyqjaxHihWPi9sD6kUj3tm9rrOlaPKIxTKQKqFZKYZ4LzcRDaHiD6IjSosMJu31Ukc0yL19GQ287U=
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
+ VE1PR04MB6383.eurprd04.prod.outlook.com (20.179.232.14) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2157.23; Sat, 17 Aug 2019 02:20:38 +0000
+Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::dcf3:49f4:c31b:e8cd]) by VE1PR04MB6479.eurprd04.prod.outlook.com
+ ([fe80::dcf3:49f4:c31b:e8cd%5]) with mapi id 15.20.2178.016; Sat, 17 Aug 2019
+ 02:20:38 +0000
+From: "S.j. Wang" <shengjiu.wang@nxp.com>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] ASoC: imx-audmux: Add driver suspend and resume to
+ support MEGA Fast
+Thread-Topic: [PATCH] ASoC: imx-audmux: Add driver suspend and resume to
+ support MEGA Fast
+Thread-Index: AdVUoehM0BPZ6qg6Rjq+cB6TmVVTDQ==
+Date: Sat, 17 Aug 2019 02:20:38 +0000
+Message-ID: <VE1PR04MB64791EC6FADFB2655D8074D0E3AE0@VE1PR04MB6479.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=shengjiu.wang@nxp.com; 
+x-originating-ip: [116.230.228.239]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f135a6ca-8bb3-49e7-21bf-08d722b97ed4
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
+ SRVR:VE1PR04MB6383; 
+x-ms-traffictypediagnostic: VE1PR04MB6383:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <VE1PR04MB6383B6689CF8A5D1B0BB5D80E3AE0@VE1PR04MB6383.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2958;
+x-forefront-prvs: 0132C558ED
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(376002)(346002)(39860400002)(366004)(136003)(396003)(189003)(199004)(66446008)(186003)(74316002)(55016002)(14454004)(102836004)(71190400001)(4326008)(229853002)(52536014)(71200400001)(86362001)(33656002)(25786009)(54906003)(5660300002)(99286004)(476003)(6506007)(478600001)(53936002)(316002)(305945005)(6116002)(7696005)(66556008)(66066001)(6916009)(7736002)(64756008)(2906002)(76116006)(6246003)(66946007)(66476007)(7416002)(4744005)(3846002)(81156014)(81166006)(26005)(8676002)(8936002)(486006)(9686003)(6436002)(256004);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6383;
+ H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: y9i7uPH3ZqWpg09Ho9ZrNIyPL110yW0nam0J2oKiRi9j+hMZFcWfqpco6+H341HlfDoBeI8F20RYzbIw0RakEzlH2TJUA3VkhqTJY64Px2JBCTABAfaCsCBeizQ3PPyiCvI8BD0wNzVx15U0g7XIREbsCUt/MlBK0pjkOvyhYoQxhCVU5zPKFtPk0C+IPjjyu+1DOGWfr8wam0sATS4GVlI2OmFmxneefAMMbGM+GBsoG9g7/rFuNoaaf0joai9hU0+o0rKXpala1L54jscBl2MR1KAoFPWkRS3ShLLq9ipJsBf8POVR3eYekTUifkxeoWqqvwe6zMAhblT+k/bRyGqKdK638jssapOGwEYP0XocczY+o7tX+veFX/4O1IoBsAbXeEt5PbCyjWy2iuxNTwjhEpWljO2aTs4jg9d0uRA=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190814220011.26934-1-robdclark@gmail.com>
- <20190815065117.GA23761@lst.de>
- <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
- <20190815175346.GA19839@lst.de>
-In-Reply-To: <20190815175346.GA19839@lst.de>
-From: Rob Clark <robdclark@chromium.org>
-Date: Fri, 16 Aug 2019 14:04:35 -0700
-Message-ID: <CAJs_Fx6am7TeDFSG=CcTT=4KwhqrZX_jnn56NaWcDkGVizuakg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Sat, 17 Aug 2019 10:32:17 +1000
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f135a6ca-8bb3-49e7-21bf-08d722b97ed4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2019 02:20:38.7110 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: d4fAXOp9m9q1xx4csBC1jms054QbvnU43mJuEROTjGW7d/1yCQa63NrA8V/UWE3LpYfrkOMq9P4pXo0yu2QaIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6383
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,145 +104,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
- "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Benjamin Gaignard <benjamin.gaignard@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Will Deacon <will@kernel.org>, Emil Velikov <emil.velikov@collabora.com>,
- Deepak Sharma <deepak.sharma@amd.com>, Paul Burton <paul.burton@mips.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
- <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- Joerg Roedel <jroedel@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
- "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
- Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>,
- christian.koenig@amd.com
+Cc: "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+ "perex@perex.cz" <perex@perex.cz>,
+ "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
+ dl-linux-imx <linux-imx@nxp.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 15, 2019 at 10:53 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Thu, Aug 15, 2019 at 06:54:39AM -0700, Rob Clark wrote:
-> > On Wed, Aug 14, 2019 at 11:51 PM Christoph Hellwig <hch@lst.de> wrote:
-> > >
-> > > As said before I don't think these low-level helpers are the
-> > > right API to export, but even if they did you'd just cover a tiny
-> > > subset of the architectures.
-> >
-> > Are you thinking instead something like:
-> >
-> > void dma_sync_sg_for_{cpu,device}(struct device *dev, struct scatterlist *sgl,
-> >                                   int nents, enum dma_data_direction dir)
-> > {
-> >     for_each_sg(sgl, sg, nents, i) {
-> >         arch_sync_dma_for_..(dev, sg_phys(sg), sg->length, dir);
-> >     }
-> > }
-> > EXPORT_SYMBOL_GPL(dma_sync_sg_for_..)
-> >
-> > or did you have something else in mind?
->
-> No.  We really need an interface thay says please give me uncached
-> memory (for some definition of uncached that includes that grapics
-> drivers call write combine), and then let the architecture do the right
-> thing.  Basically dma_alloc_coherent with DMA_ATTR_NO_KERNEL_MAPPING
-> is superficially close to what you want, except that the way the drm
-> drivers work you can't actually use it.
-
-I don't disagree about needing an API to get uncached memory (or
-ideally just something outside of the linear map).  But I think this
-is a separate problem.
-
-What I was hoping for, for v5.4, is a way to stop abusing dma_map/sync
-for cache ops to get rid of the hack I had to make for v5.3.  And also
-to fix vgem on non-x86.  (Unfortunately changing vgem to used cached
-mappings breaks x86 CI, but fixes CI on arm/arm64..)  We can do that
-without any changes in allocation.  There is still the possibility for
-problems due to cached alias, but that has been a problem this whole
-time, it isn't something new.
-
-BR,
--R
-
-> The reason for that is if we can we really need to not create another
-> uncachable alias, but instead change the page attributes in place.
-> On x86 we can and must do that for example, and based on the
-> conversation with Will arm64 could do that fairly easily.  arm32 can
-> right now only do that for CMA, though.
->
-> The big question is what API do we want.  I had a pretty similar
-> discussion with Christian on doing such an allocation for amdgpu,
-> where the device normally is cache coherent, but they actually want
-> to turn it into non-coherent by using PCIe unsnooped transactions.
->
-> Here is my high level plan, which still has a few lose end:
->
->  (1) provide a new API:
->
->         struct page *dma_alloc_pages(struct device *dev, unsigned nr_pages,
->                         gfp_t gfp, unsigned long flags);
->         void dma_free_pages(struct device *dev, unsigned nr_pages,
->                         unsigned long flags);
->
->      These give you back page backed memory that is guaranteed to be
->      addressable by the device (no swiotlb or similar).  The memory can
->      then be mapped using dma_map*, including unmap and dma_sync to
->      bounce ownership around.  This is the replacement for the current
->      dma_alloc_attrs with DMA_ATTR_NON_CONSISTENT API, that is rather
->      badly defined.
->
->  (2) Add support for DMA_ATTR_NO_KERNEL_MAPPING to this new API instead
->      of dma_alloc_attrs.  The initial difference with that flag is just
->      that we allow highmem, but in the future we could also unmap this
->      memory from the kernel linear mapping entirely on architectures
->      where we can easily do that.
->
->  (3) Add a dma_pages_map/dma_pages_unmap or similar API that allows you
->      to get a kernel mapping for parts or all of a
->      DMA_ATTR_NO_KERNEL_MAPPING allocation.  This is to replace things
->      like your open-coded vmap in msm (or similarly elsewhere in dma-buf
->      providers).
->
->  (4) Add support for a DMA_ATTR_UNCACHABLE flags (or similar) to the new
->      API, that maps the pages as uncachable iff they have a kernel
->      mapping, including invalidating the caches at time of this page
->      attribute change (or creation of a new mapping).  This API will fail
->      if the architecture does not allow in-place remapping.  Note that for
->      arm32 we could always dip into the CMA pool if one is present to not
->      fail.  We'll also need some helper to map from the DMA_ATTR_* flags
->      to a pgprot for mapping the page to userspace.  There is also a few
->      other weird bits here, e.g. on architectures like mips that use an
->      uncached segment we'll have to fail use with the plain
->      DMA_ATTR_UNCACHABLE flag, but it could be supported with
->      DMA_ATTR_UNCACHABLE | DMA_ATTR_NO_KERNEL_MAPPING.
->
-> I was hoping to get most of this done for this merge window, but I'm
-> probably lucky if I get at least parts done.  Too much distraction.
->
-> > Hmm, not entirely sure why.. you should be on the cc list for each
-> > individual patch.
->
-> They finally made it, although even with the delay they only ended up
-> in the spam mailbox.  I still can't see them on the various mailing
-> lists.
+SGkgTWFyaw0KDQo+IA0KPiBPbiBGcmksIEF1ZyAxNiwgMjAxOSBhdCAwMTowMzoxNEFNIC0wNDAw
+LCBTaGVuZ2ppdSBXYW5nIHdyb3RlOg0KPiANCj4gPiArCWZvciAoaSA9IDA7IGkgPCByZWdfbWF4
+OyBpKyspDQo+ID4gKwkJcmVnY2FjaGVbaV0gPSByZWFkbChhdWRtdXhfYmFzZSArIGkgKiA0KTsN
+Cj4gDQo+IElmIG9ubHkgdGhlcmUgd2VyZSBzb21lIGZyYW1ld29yayB3aGljaCBwcm92aWRlZCBh
+IHJlZ2lzdGVyIGNhY2hlISAg8J+YnQ0KDQpZZXMsIG5leHQgc3RlcCBJIGNhbiByZWZpbmUgdGhp
+cyBkcml2ZXIgdG8gdXNlIHRoZSByZWdtYXAuDQoNCkJlc3QgcmVnYXJkcw0KV2FuZyBzaGVuZ2pp
+dQ0K
