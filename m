@@ -1,98 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1BB90C13
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 04:22:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25ECB90E1A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 09:46:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 469P9C0dMvzDrBc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 12:22:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 469XM33DQ7zDsFk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2019 17:46:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.4.70; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="JyzmhBfV"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="lqRMJL8p"; 
  dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40070.outbound.protection.outlook.com [40.107.4.70])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 469P755CtPzDrgp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 12:20:45 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k3fbzZumeBMh2IQEKy85/mZyofUsnbLe3/YXvFsArYlEhajvZ4p1m3jQhkXnb1R39DxgcX4D0RajnrkTPqv2xoIJscm0rHNKQ0c297s9XTIDGWIhyq8F3HQdBMH0yRx1sz5xfE150+KMiVNSGzp2hIimymhTB5BC3OTGWdmKE27xMLZzN+2uE+9+YKm4wNqYb6WQbCi0wLS7LzIdy22OmAt/6L+6JiVxpfefPjnn5ngW60+gBJLRbXaEwSyT7ffiuGSVcMGpiNu2QZ6RD2mqcyDn+RjplisFcgec0bxLS4qdfYFR2Kfz5Onjul58ionea0BBtQg03SHSZ0hzBt3lfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Q1xBVBBXj93m2DRzS5NYonMxuZ35iNr245vEHBXFTY=;
- b=eB1dZFkPIOR0vBOFUTT2YlNLInFPyNgLWXdyEq3+BPJuF6NoDi4p/5ZpuyjRgoZJYX4g1Ep8tIIqSGb4nRJHWiyvSMN8mbFWu68fmqeVF7YfKuOr0A72yYurWm+/R0+c4mJC/LLyvrRRFjrs5wDafaypYHWACbAu9MZIDhdrCXs/7BFZiyEJugG4OsNKtepVgzSy4jk7QgFil18G9r8ekR0foVnNm6W6HPFOwZhq4iT24lfJqAXod1+vSzotVqPb73130cRHowfSgXCz2pOyPKJrpWFLlvGfKn/rQltJO/hrEEzrMZ5N3OCgoSLIByreoeTniFALuo9PABLpGWkorQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Q1xBVBBXj93m2DRzS5NYonMxuZ35iNr245vEHBXFTY=;
- b=JyzmhBfVH50LleNtTKasP4bf1z7K6nbJye/ZEbzizzsooQEHoq4UBkxAms5MTX1ggYz+XhKr11iJhqGiHjK8A3JBrvxx+lvyqjaxHihWPi9sD6kUj3tm9rrOlaPKIxTKQKqFZKYZ4LzcRDaHiD6IjSosMJu31Ukc0yL19GQ287U=
-Received: from VE1PR04MB6479.eurprd04.prod.outlook.com (20.179.233.80) by
- VE1PR04MB6383.eurprd04.prod.outlook.com (20.179.232.14) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2157.23; Sat, 17 Aug 2019 02:20:38 +0000
-Received: from VE1PR04MB6479.eurprd04.prod.outlook.com
- ([fe80::dcf3:49f4:c31b:e8cd]) by VE1PR04MB6479.eurprd04.prod.outlook.com
- ([fe80::dcf3:49f4:c31b:e8cd%5]) with mapi id 15.20.2178.016; Sat, 17 Aug 2019
- 02:20:38 +0000
-From: "S.j. Wang" <shengjiu.wang@nxp.com>
-To: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] ASoC: imx-audmux: Add driver suspend and resume to
- support MEGA Fast
-Thread-Topic: [PATCH] ASoC: imx-audmux: Add driver suspend and resume to
- support MEGA Fast
-Thread-Index: AdVUoehM0BPZ6qg6Rjq+cB6TmVVTDQ==
-Date: Sat, 17 Aug 2019 02:20:38 +0000
-Message-ID: <VE1PR04MB64791EC6FADFB2655D8074D0E3AE0@VE1PR04MB6479.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=shengjiu.wang@nxp.com; 
-x-originating-ip: [116.230.228.239]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f135a6ca-8bb3-49e7-21bf-08d722b97ed4
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VE1PR04MB6383; 
-x-ms-traffictypediagnostic: VE1PR04MB6383:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB6383B6689CF8A5D1B0BB5D80E3AE0@VE1PR04MB6383.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2958;
-x-forefront-prvs: 0132C558ED
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(376002)(346002)(39860400002)(366004)(136003)(396003)(189003)(199004)(66446008)(186003)(74316002)(55016002)(14454004)(102836004)(71190400001)(4326008)(229853002)(52536014)(71200400001)(86362001)(33656002)(25786009)(54906003)(5660300002)(99286004)(476003)(6506007)(478600001)(53936002)(316002)(305945005)(6116002)(7696005)(66556008)(66066001)(6916009)(7736002)(64756008)(2906002)(76116006)(6246003)(66946007)(66476007)(7416002)(4744005)(3846002)(81156014)(81166006)(26005)(8676002)(8936002)(486006)(9686003)(6436002)(256004);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VE1PR04MB6383;
- H:VE1PR04MB6479.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: y9i7uPH3ZqWpg09Ho9ZrNIyPL110yW0nam0J2oKiRi9j+hMZFcWfqpco6+H341HlfDoBeI8F20RYzbIw0RakEzlH2TJUA3VkhqTJY64Px2JBCTABAfaCsCBeizQ3PPyiCvI8BD0wNzVx15U0g7XIREbsCUt/MlBK0pjkOvyhYoQxhCVU5zPKFtPk0C+IPjjyu+1DOGWfr8wam0sATS4GVlI2OmFmxneefAMMbGM+GBsoG9g7/rFuNoaaf0joai9hU0+o0rKXpala1L54jscBl2MR1KAoFPWkRS3ShLLq9ipJsBf8POVR3eYekTUifkxeoWqqvwe6zMAhblT+k/bRyGqKdK638jssapOGwEYP0XocczY+o7tX+veFX/4O1IoBsAbXeEt5PbCyjWy2iuxNTwjhEpWljO2aTs4jg9d0uRA=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f135a6ca-8bb3-49e7-21bf-08d722b97ed4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2019 02:20:38.7110 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: d4fAXOp9m9q1xx4csBC1jms054QbvnU43mJuEROTjGW7d/1yCQa63NrA8V/UWE3LpYfrkOMq9P4pXo0yu2QaIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6383
+ by lists.ozlabs.org (Postfix) with ESMTPS id 469XJw5KS3zDrfV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2019 17:44:45 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 469XJl29Mjz9tyPF;
+ Sat, 17 Aug 2019 09:44:39 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=lqRMJL8p; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id dhoYL34YTQ9e; Sat, 17 Aug 2019 09:44:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 469XJl0kJ0z9tyP6;
+ Sat, 17 Aug 2019 09:44:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566027879; bh=2OB73IPwA1xyGUU/Zm+DsLXHeBY22vrfmhjVU3McqWU=;
+ h=From:Subject:To:Cc:Date:From;
+ b=lqRMJL8p+XRZKMrCrlL434gYKZ/3O8YnAxg0vZ71PqhYy3hY9CRn42EeE8MlOZqZW
+ CRClxTIJ8ReKVExfpLiVmd3NBsA3fYr/Whbzeo8sRw/DvLSA4n6r0XI0PYOg+Wckse
+ t2YLnHrFHto1Qd0NteOYNeMgll20kbdOhjdmXMUw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 302F08B793;
+ Sat, 17 Aug 2019 09:44:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id v7IDuIMBzNPg; Sat, 17 Aug 2019 09:44:40 +0200 (CEST)
+Received: from localhost.localdomain (unknown [192.168.232.53])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D5ADE8B790;
+ Sat, 17 Aug 2019 09:44:39 +0200 (CEST)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 84C6C1056A3; Sat, 17 Aug 2019 07:44:39 +0000 (UTC)
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] btrfs: fix allocation of bitmap pages.
+To: erhard_f@mailbox.org, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Message-Id: <20190817074439.84C6C1056A3@localhost.localdomain>
+Date: Sat, 17 Aug 2019 07:44:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,29 +73,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "timur@kernel.org" <timur@kernel.org>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "tiwai@suse.com" <tiwai@suse.com>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "perex@perex.cz" <perex@perex.cz>,
- "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
- dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgTWFyaw0KDQo+IA0KPiBPbiBGcmksIEF1ZyAxNiwgMjAxOSBhdCAwMTowMzoxNEFNIC0wNDAw
-LCBTaGVuZ2ppdSBXYW5nIHdyb3RlOg0KPiANCj4gPiArCWZvciAoaSA9IDA7IGkgPCByZWdfbWF4
-OyBpKyspDQo+ID4gKwkJcmVnY2FjaGVbaV0gPSByZWFkbChhdWRtdXhfYmFzZSArIGkgKiA0KTsN
-Cj4gDQo+IElmIG9ubHkgdGhlcmUgd2VyZSBzb21lIGZyYW1ld29yayB3aGljaCBwcm92aWRlZCBh
-IHJlZ2lzdGVyIGNhY2hlISAg8J+YnQ0KDQpZZXMsIG5leHQgc3RlcCBJIGNhbiByZWZpbmUgdGhp
-cyBkcml2ZXIgdG8gdXNlIHRoZSByZWdtYXAuDQoNCkJlc3QgcmVnYXJkcw0KV2FuZyBzaGVuZ2pp
-dQ0K
+Various notifications of type "BUG kmalloc-4096 () : Redzone
+overwritten" have been observed recently in various parts of
+the kernel. After some time, it has been made a relation with
+the use of BTRFS filesystem.
+
+[   22.809700] BUG kmalloc-4096 (Tainted: G        W        ): Redzone overwritten
+[   22.809971] -----------------------------------------------------------------------------
+
+[   22.810286] INFO: 0xbe1a5921-0xfbfc06cd. First byte 0x0 instead of 0xcc
+[   22.810866] INFO: Allocated in __load_free_space_cache+0x588/0x780 [btrfs] age=22 cpu=0 pid=224
+[   22.811193] 	__slab_alloc.constprop.26+0x44/0x70
+[   22.811345] 	kmem_cache_alloc_trace+0xf0/0x2ec
+[   22.811588] 	__load_free_space_cache+0x588/0x780 [btrfs]
+[   22.811848] 	load_free_space_cache+0xf4/0x1b0 [btrfs]
+[   22.812090] 	cache_block_group+0x1d0/0x3d0 [btrfs]
+[   22.812321] 	find_free_extent+0x680/0x12a4 [btrfs]
+[   22.812549] 	btrfs_reserve_extent+0xec/0x220 [btrfs]
+[   22.812785] 	btrfs_alloc_tree_block+0x178/0x5f4 [btrfs]
+[   22.813032] 	__btrfs_cow_block+0x150/0x5d4 [btrfs]
+[   22.813262] 	btrfs_cow_block+0x194/0x298 [btrfs]
+[   22.813484] 	commit_cowonly_roots+0x44/0x294 [btrfs]
+[   22.813718] 	btrfs_commit_transaction+0x63c/0xc0c [btrfs]
+[   22.813973] 	close_ctree+0xf8/0x2a4 [btrfs]
+[   22.814107] 	generic_shutdown_super+0x80/0x110
+[   22.814250] 	kill_anon_super+0x18/0x30
+[   22.814437] 	btrfs_kill_super+0x18/0x90 [btrfs]
+[   22.814590] INFO: Freed in proc_cgroup_show+0xc0/0x248 age=41 cpu=0 pid=83
+[   22.814841] 	proc_cgroup_show+0xc0/0x248
+[   22.814967] 	proc_single_show+0x54/0x98
+[   22.815086] 	seq_read+0x278/0x45c
+[   22.815190] 	__vfs_read+0x28/0x17c
+[   22.815289] 	vfs_read+0xa8/0x14c
+[   22.815381] 	ksys_read+0x50/0x94
+[   22.815475] 	ret_from_syscall+0x0/0x38
+
+Commit 69d2480456d1 ("btrfs: use copy_page for copying pages instead
+of memcpy") changed the way bitmap blocks are copied. But allthough
+bitmaps have the size of a page, they were allocated with kzalloc().
+
+Most of the time, kzalloc() allocates aligned blocks of memory, so
+copy_page() can be used. But when some debug options like SLAB_DEBUG
+are activated, kzalloc() may return unaligned pointer.
+
+On powerpc, memcpy(), copy_page() and other copying functions use
+'dcbz' instruction which provides an entire zeroed cacheline to avoid
+memory read when the intention is to overwrite a full line. Functions
+like memcpy() are writen to care about partial cachelines at the start
+and end of the destination, but copy_page() assumes it gets pages. As
+pages are naturally cache aligned, copy_page() doesn't care about
+partial lines. This means that when copy_page() is called with a
+misaligned pointer, a few leading bytes are zeroed.
+
+To fix it, allocate bitmaps with get_zeroed_page() instead of kzalloc()
+
+Reported-by: Erhard F. <erhard_f@mailbox.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=204371
+Fixes: 69d2480456d1 ("btrfs: use copy_page for copying pages instead of memcpy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Tested-by: Erhard F. <erhard_f@mailbox.org>
+---
+ fs/btrfs/free-space-cache.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index 062be9dde4c6..3229a058e025 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -764,7 +764,7 @@ static int __load_free_space_cache(struct btrfs_root *root, struct inode *inode,
+ 		} else {
+ 			ASSERT(num_bitmaps);
+ 			num_bitmaps--;
+-			e->bitmap = kzalloc(PAGE_SIZE, GFP_NOFS);
++			e->bitmap = (void *)get_zeroed_page(GFP_NOFS);
+ 			if (!e->bitmap) {
+ 				kmem_cache_free(
+ 					btrfs_free_space_cachep, e);
+@@ -1881,7 +1881,7 @@ static void free_bitmap(struct btrfs_free_space_ctl *ctl,
+ 			struct btrfs_free_space *bitmap_info)
+ {
+ 	unlink_free_space(ctl, bitmap_info);
+-	kfree(bitmap_info->bitmap);
++	free_page((unsigned long)bitmap_info->bitmap);
+ 	kmem_cache_free(btrfs_free_space_cachep, bitmap_info);
+ 	ctl->total_bitmaps--;
+ 	ctl->op->recalc_thresholds(ctl);
+@@ -2135,7 +2135,7 @@ static int insert_into_bitmap(struct btrfs_free_space_ctl *ctl,
+ 		}
+ 
+ 		/* allocate the bitmap */
+-		info->bitmap = kzalloc(PAGE_SIZE, GFP_NOFS);
++		info->bitmap = (void *)get_zeroed_page(GFP_NOFS);
+ 		spin_lock(&ctl->tree_lock);
+ 		if (!info->bitmap) {
+ 			ret = -ENOMEM;
+@@ -2146,7 +2146,7 @@ static int insert_into_bitmap(struct btrfs_free_space_ctl *ctl,
+ 
+ out:
+ 	if (info) {
+-		kfree(info->bitmap);
++		free_page((unsigned long)info->bitmap);
+ 		kmem_cache_free(btrfs_free_space_cachep, info);
+ 	}
+ 
+@@ -2802,7 +2802,7 @@ u64 btrfs_alloc_from_cluster(struct btrfs_block_group_cache *block_group,
+ 	if (entry->bytes == 0) {
+ 		ctl->free_extents--;
+ 		if (entry->bitmap) {
+-			kfree(entry->bitmap);
++			free_page((unsigned long)entry->bitmap);
+ 			ctl->total_bitmaps--;
+ 			ctl->op->recalc_thresholds(ctl);
+ 		}
+@@ -3606,7 +3606,7 @@ int test_add_free_space_entry(struct btrfs_block_group_cache *cache,
+ 	}
+ 
+ 	if (!map) {
+-		map = kzalloc(PAGE_SIZE, GFP_NOFS);
++		map = (void *)get_zeroed_page(GFP_NOFS);
+ 		if (!map) {
+ 			kmem_cache_free(btrfs_free_space_cachep, info);
+ 			return -ENOMEM;
+@@ -3635,7 +3635,7 @@ int test_add_free_space_entry(struct btrfs_block_group_cache *cache,
+ 
+ 	if (info)
+ 		kmem_cache_free(btrfs_free_space_cachep, info);
+-	kfree(map);
++	free_page((unsigned long)map);
+ 	return 0;
+ }
+ 
+-- 
+2.17.1
+
