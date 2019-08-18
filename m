@@ -1,37 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51C291459
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2019 05:50:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F2D91671
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2019 14:03:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46B34843TZzDrfY
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2019 13:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46BG0m6qVszDrNW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2019 22:03:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46B32X5sb8zDrP8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2019 13:49:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=permerror (mailfrom)
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46B32X1f6Hz9s00;
- Sun, 18 Aug 2019 13:49:08 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] powerpc/64s: remplement power4_idle code in C
-In-Reply-To: <20190711022404.18132-1-npiggin@gmail.com>
-References: <20190711022404.18132-1-npiggin@gmail.com>
-Date: Sun, 18 Aug 2019 13:49:03 +1000
-Message-ID: <8736hz6sls.fsf@concordia.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46BFz841JzzDqtm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2019 22:01:56 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id x7IC1aC2002066;
+ Sun, 18 Aug 2019 07:01:37 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id x7IC1ZQg002061;
+ Sun, 18 Aug 2019 07:01:35 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Sun, 18 Aug 2019 07:01:35 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc: optimise WARN_ON()
+Message-ID: <20190818120135.GV31406@gate.crashing.org>
+References: <20190817090442.C5FEF106613@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190817090442.C5FEF106613@localhost.localdomain>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,39 +50,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index eee5bef736c8..64d5ffbb07d1 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -2286,15 +2286,6 @@ USE_FIXED_SECTION(virt_trampolines)
->  __end_interrupts:
->  DEFINE_FIXED_SYMBOL(__end_interrupts)
->  
-> -#ifdef CONFIG_PPC_970_NAP
-> -EXC_COMMON_BEGIN(power4_fixup_nap)
-> -	andc	r9,r9,r10
-> -	std	r9,TI_LOCAL_FLAGS(r11)
-> -	ld	r10,_LINK(r1)		/* make idle task do the */
-> -	std	r10,_NIP(r1)		/* equivalent of a blr */
-> -	blr
-> -#endif
+On Sat, Aug 17, 2019 at 09:04:42AM +0000, Christophe Leroy wrote:
+> Unlike BUG_ON(x), WARN_ON(x) uses !!(x) as the trigger
+> of the t(d/w)nei instruction instead of using directly the
+> value of x.
+> 
+> This leads to GCC adding unnecessary pair of addic/subfe.
 
-This breaks ppc64_defconfig build with:
+And it has to, it is passed as an "r" to an asm, GCC has to put the "!!"
+value into a register.
 
-ERROR: start_text address is c000000000008100, should be c000000000008000
+> By using (x) instead of !!(x) like BUG_ON() does, the additional
+> instructions go away:
 
-Due to:
+But is it correct?  What happens if you pass an int to WARN_ON, on a
+64-bit kernel?
 
-c000000000008000 <0000001a.long_branch.power4_fixup_nap>:
-c000000000008000:       48 03 5a b4     b       c00000000003dab4 <power4_fixup_nap>
+(You might want to have 64-bit generate either tw or td.  But, with
+your __builtin_trap patch, all that will be automatic).
 
 
-Moving power4_fixup_nap back into exceptions-64s.S seems to fix it.
-
-cheers
+Segher
