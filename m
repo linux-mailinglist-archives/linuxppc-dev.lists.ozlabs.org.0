@@ -2,67 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F43692769
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 16:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DA19280C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 17:09:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BxcR0gHTzDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 00:48:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46By5K4bBNzDqjH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 01:09:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com;
- envelope-from=robdclark@chromium.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=gmail.com
+ (client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="G1P7027e";
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.b="NpXsGGFi"; 
  dkim-atps=neutral
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
- [IPv6:2607:f8b0:4864:20::d42])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BxQj5C4XzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 00:39:41 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id p12so2335169iog.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 07:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uihSuMZgomyGZANDE8KD/f274IaYbI03Q2f2KOfxM+I=;
- b=G1P7027eiopfDNG6P5YZ9VLMsznbA4z4vedgr8lIVKSFnae2VedRHZ6nX8k5yHQCUK
- KT2VGNI0tUXnWAj13PW27yUJ1Je5CbSjrJc4637U4Q++6YLy84df+X0IxMvBMxp8Ga5J
- gsL2kdXf74WAqz9w/dKETVrKY5fhbOpIzd3+c=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46By0R533FzDqdc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 01:05:26 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id v12so1318015pfn.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 08:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=2ngrUcm028FTMoHPYwWl4FMwsMbOztEIs+R4QrrR4rw=;
+ b=NpXsGGFiQO2Mz4ORGbsS+ZJTAE+cCEfnpxGV7ZTaS8n+cYKW15FoD17x/Vc1KyFmNH
+ PIDSLvIRG58tREVOAavFge/cofdX4gzRNlE9naek5zb4a89f/kPIGIy+pPd2CIHMli5t
+ dpBhGYbbkDTo9DANgDqNa8zKrZ+xio88LhvAWsdcdNQ20UWUef69za7EvrbIxDQBDFJo
+ jgCu/ZofkAe9DVOZXGNT+y7gpEzMjQQcLgq5vhd7tjWe90JsZefALpQM9YTcVVYnD6A+
+ y7czBeKXh0C3yG8IHs//zk6vWHoi0sMH22tCkTTXHpEI52Zy2pjgK8xTt4SCn9GtawsW
+ 7szg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uihSuMZgomyGZANDE8KD/f274IaYbI03Q2f2KOfxM+I=;
- b=dWhQoLJHQX42HFpTywHJ4jDzRkyPiOUy2x1yf2GZL+dvE8EUCHonX+qzCNP7J7Mnxe
- 9my2f09YELPRFCyIWJVrc6OPoyYiucx64PoaLrQskidocdQfX/vI5P+eA4wX25XE/yZl
- Ocrz4atUi04AGxKe/E78EXbEGVikFsouoHwBWoGxU1i4spT/C1c84BgRFrixeq7dwUSs
- bT8wzHL8ceYBiEjKsfHITVKcVgZrgwcrBjRt0UIZajADZjiEyEd9+B1sM9r8vqqF8r2r
- l6Bvzi7hzoFLSkeSXi4DQKFnVqUdIU67r/U94Jmyf1hZdSAnKgD5rx49arta6JMU5gZn
- 3dag==
-X-Gm-Message-State: APjAAAWE+vYoviIrPFMDNhdDOvyrqahndx1j/K42KjjCHkPesstuuLLc
- xUA7hsJRf94XBK9lX3ecQM/PMQ/yNQMedVqIbL9HUA==
-X-Google-Smtp-Source: APXvYqz6Nv2dbwOe9HSAvOxPraz8WQBelvTJmAdxSGjJxMIvJwbUVb+lNapnG//etYvf72f9eR76xtLaC0ncZuslMFg=
-X-Received: by 2002:a02:495:: with SMTP id 143mr26534114jab.94.1566225579086; 
- Mon, 19 Aug 2019 07:39:39 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=2ngrUcm028FTMoHPYwWl4FMwsMbOztEIs+R4QrrR4rw=;
+ b=nNqxAHAe/C4vmdeXgPezj6RnPb3Ogq1g/SWCgI+pKWC0AbkcFDGQupm9GDVP8JwweC
+ gfcShPCY8FdB38byq7Fgy1sQK59JX/EcT5tHqfFxMdSLIVkLe+laXd9rxeNrB42NZ9Jg
+ a6vKhyi/BGmoBfAYUr+K8qblJcR/6chfttzboNIwb4tXALr/oAmfZH0TCSN0xvXy5bxg
+ ruPYKYrXbxygET0d/tZxA+7mTptHDLb8RMCalhb8SyZAvaZecFLOz27t4gyosvjHMdM0
+ UzVFWWVclOd8q/jx0GywKRIT7TRrXg45Ph7Ftniq5TyhgBwTXeXLoaN9BQl2+k3Uxu39
+ ALfA==
+X-Gm-Message-State: APjAAAUOUcK0yXRZDjv2zkbyppI/7oY5RhyTcg9wU2aAy16ML4gZ5S2I
+ /tFv/zyUjHqOoGaw7nNvNoY=
+X-Google-Smtp-Source: APXvYqzTv8DMd0Hto6oUfVfrBBvkkCqsCKUum+sxq+xdhkH6KnGHqImWBaBZF1x5ryJuEqdshOhwMQ==
+X-Received: by 2002:a17:90a:bf82:: with SMTP id
+ d2mr10680284pjs.121.1566227123998; 
+ Mon, 19 Aug 2019 08:05:23 -0700 (PDT)
+Received: from localhost ([61.68.68.69])
+ by smtp.gmail.com with ESMTPSA id m20sm17596953pff.79.2019.08.19.08.05.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Aug 2019 08:05:23 -0700 (PDT)
+Date: Tue, 20 Aug 2019 01:05:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 3/3] powerpc/64: optimise LOAD_REG_IMMEDIATE_SYM()
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Segher Boessenkool
+ <segher@kernel.crashing.org>
+References: <be2b971c89b1af30d680cedd14e99a83138ef40a.1566223054.git.christophe.leroy@c-s.fr>
+ <92bf50b31f5f78cc76ed055b11a492e8e9e2c731.1566223054.git.christophe.leroy@c-s.fr>
+ <20190819142459.GJ31406@gate.crashing.org>
+In-Reply-To: <20190819142459.GJ31406@gate.crashing.org>
 MIME-Version: 1.0
-References: <20190814220011.26934-1-robdclark@gmail.com>
- <20190815065117.GA23761@lst.de>
- <CAJs_Fx4bS64s7+xQqsead3N80ZQpofqegFQu+tT=b3wcGd_2pA@mail.gmail.com>
- <20190815175346.GA19839@lst.de>
- <CAJs_Fx6am7TeDFSG=CcTT=4KwhqrZX_jnn56NaWcDkGVizuakg@mail.gmail.com>
- <20190819052337.GA16622@lst.de>
-In-Reply-To: <20190819052337.GA16622@lst.de>
-From: Rob Clark <robdclark@chromium.org>
-Date: Mon, 19 Aug 2019 07:39:28 -0700
-Message-ID: <CAJs_Fx4YfU8iqN+t-h-HxsWRd-KAasHcQaV-9p4Wz=A--5Epew@mail.gmail.com>
-Subject: Re: [PATCH 0/6] drm+dma: cache support for arm, etc
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1566226318.3km27rs0o4.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,73 +83,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Masayoshi Mizuma <m.mizuma@jp.fujitsu.com>,
- "Maciej W. Rozycki" <macro@linux-mips.org>, Eric Biggers <ebiggers@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Imre Deak <imre.deak@intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris@chris-wilson.co.uk>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Benjamin Gaignard <benjamin.gaignard@linaro.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Will Deacon <will@kernel.org>, Emil Velikov <emil.velikov@collabora.com>,
- Deepak Sharma <deepak.sharma@amd.com>, Paul Burton <paul.burton@mips.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- "moderated list:ARM64 PORT \(AARCH64 ARCHITECTURE\)"
- <linux-arm-kernel@lists.infradead.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Robin Murphy <robin.murphy@arm.com>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- Joerg Roedel <jroedel@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Hauke Mehrtens <hauke@hauke-m.de>, Jesper Dangaard Brouer <brouer@redhat.com>,
- "Wolfram Sang \(Renesas\)" <wsa+renesas@sang-engineering.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Alexios Zavras <alexios.zavras@intel.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Doug Anderson <armlinux@m.disordat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sean Paul <sean@poorly.run>, Allison Randal <allison@lohutok.net>,
- Enrico Weigelt <info@metux.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- open list <linux-kernel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
- Souptick Joarder <jrdr.linux@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <freedreno@lists.freedesktop.org>,
- christian.koenig@amd.com
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 18, 2019 at 10:23 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Fri, Aug 16, 2019 at 02:04:35PM -0700, Rob Clark wrote:
-> > I don't disagree about needing an API to get uncached memory (or
-> > ideally just something outside of the linear map).  But I think this
-> > is a separate problem.
-> >
-> > What I was hoping for, for v5.4, is a way to stop abusing dma_map/sync
-> > for cache ops to get rid of the hack I had to make for v5.3.  And also
-> > to fix vgem on non-x86.  (Unfortunately changing vgem to used cached
-> > mappings breaks x86 CI, but fixes CI on arm/arm64..)  We can do that
-> > without any changes in allocation.  There is still the possibility for
-> > problems due to cached alias, but that has been a problem this whole
-> > time, it isn't something new.
->
-> But that just means we start exposing random low-level APIs that
-> people will quickly abuse..  In fact even your simple plan to some
-> extent already is an abuse of the intent of these functions, and
-> it also requires a lot of knowledge in the driver that in the normal
-> cases drivers can't know (e.g. is the device dma coherent or not).
+Segher Boessenkool's on August 20, 2019 12:24 am:
+> On Mon, Aug 19, 2019 at 01:58:12PM +0000, Christophe Leroy wrote:
+>> -#define LOAD_REG_IMMEDIATE_SYM(reg,expr)	\
+>> -	lis     reg,(expr)@highest;		\
+>> -	ori     reg,reg,(expr)@higher;	\
+>> -	rldicr  reg,reg,32,31;		\
+>> -	oris    reg,reg,(expr)@__AS_ATHIGH;	\
+>> -	ori     reg,reg,(expr)@l;
+>> +#define LOAD_REG_IMMEDIATE_SYM(reg, tmp, expr)	\
+>> +	lis	reg, (expr)@highest;		\
+>> +	lis	tmp, (expr)@__AS_ATHIGH;	\
+>> +	ori	reg, reg, (expr)@higher;	\
+>> +	ori	tmp, reg, (expr)@l;		\
+>> +	rldimi	reg, tmp, 32, 0
+>=20
+> That should be
+>=20
+> #define LOAD_REG_IMMEDIATE_SYM(reg, tmp, expr)	\
+> 	lis	tmp, (expr)@highest;		\
+> 	ori	tmp, tmp, (expr)@higher;	\
+> 	lis	reg, (expr)@__AS_ATHIGH;	\
+> 	ori	reg, reg, (expr)@l;		\
+> 	rldimi	reg, tmp, 32, 0
+>=20
+> (tmp is the high half, reg is the low half, as inputs to that rldimi).
 
-I can agree that most drivers should use the higher level APIs.. but
-not that we must prevent *all* drivers from using them.  Most of what
-DMA API is trying to solve doesn't apply to a driver like drm/msm..
-which is how we ended up with hacks to try and misuse the high level
-API to accomplish what we need.
+I guess the intention was also to try to fit the independent ops into
+the earliest fetch/issue cycle possible.
 
-Perhaps we can protect the prototypes with #ifdef LOWLEVEL_DMA_API /
-#endif type thing to make it more obvious to other drivers that it
-probably isn't the API they should use?
+#define LOAD_REG_IMMEDIATE_SYM(reg, tmp, expr)	\
+	lis	tmp, (expr)@highest;		\
+	lis	reg, (expr)@__AS_ATHIGH;	\
+	ori	tmp, tmp, (expr)@higher;	\
+	ori	reg, reg, (expr)@l;		\
+	rldimi	reg, tmp, 32, 0
 
-BR,
--R
+Very cool series though.
+
+Thanks,
+Nick
+=
