@@ -2,46 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F4692126
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 12:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A8592140
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 12:28:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BqbZ3jKMzDqg6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 20:16:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Bqs03QhmzDqjb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 20:28:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 46BqYt1zSgzDqfq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 20:15:27 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52B92344;
- Mon, 19 Aug 2019 03:15:24 -0700 (PDT)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
- [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B14723F706;
- Mon, 19 Aug 2019 03:15:22 -0700 (PDT)
-Date: Mon, 19 Aug 2019 11:15:18 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v4 1/3] kasan: support backing vmalloc space with real
- shadow memory
-Message-ID: <20190819101517.GA7482@lakrids.cambridge.arm.com>
-References: <20190815001636.12235-1-dja@axtens.net>
- <20190815001636.12235-2-dja@axtens.net>
- <15c6110a-9e6e-495c-122e-acbde6e698d9@c-s.fr>
- <20190816170813.GA7417@lakrids.cambridge.arm.com>
- <CALCETrUn4FNjvRoJW77DNi5vdwO+EURUC_46tysjPQD0MM3THQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrUn4FNjvRoJW77DNi5vdwO+EURUC_46tysjPQD0MM3THQ@mail.gmail.com>
-User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
+ spf=none (mailfrom) smtp.mailfrom=linux.vnet.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=abdhalee@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46BqqH1XGCzDq6K
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 20:27:07 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7JAM2WJ022562; Mon, 19 Aug 2019 06:26:56 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ufr6vcjy5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Aug 2019 06:26:56 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7JAP2OH014030;
+ Mon, 19 Aug 2019 10:26:55 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01wdc.us.ibm.com with ESMTP id 2ue976d1bf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Aug 2019 10:26:55 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7JAQtQh57868626
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Aug 2019 10:26:55 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E90EC13608C;
+ Mon, 19 Aug 2019 10:26:54 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5603136083;
+ Mon, 19 Aug 2019 10:26:51 +0000 (GMT)
+Received: from [9.124.31.25] (unknown [9.124.31.25])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Aug 2019 10:26:51 +0000 (GMT)
+Message-ID: <1566210410.25520.5.camel@abdul.in.ibm.com>
+Subject: Re: [5.3.0-rc4-next][bisected 882632][qla2xxx] WARNING: CPU: 10
+ PID: 425 at drivers/scsi/qla2xxx/qla_isr.c:2784 qla2x00_status_entry.isra
+From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+To: Bart Van Assche <bvanassche@acm.org>
+Date: Mon, 19 Aug 2019 15:56:50 +0530
+In-Reply-To: <7fc59d4c-b3d5-5ec8-cb7c-51cb863f2a77@acm.org>
+References: <1565801523.6908.6.camel@abdul>
+ <cafb1d40-a11e-c137-db06-4564e5f5caf5@acm.org>
+ <1565803123.6908.10.camel@abdul>
+ <7fc59d4c-b3d5-5ec8-cb7c-51cb863f2a77@acm.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.10.4-0ubuntu1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-19_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908190119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,81 +87,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasily Gorbik <gor@linux.ibm.com>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
- Linux-MM <linux-mm@kvack.org>, Alexander Potapenko <glider@google.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
+Cc: sachinp <sachinp@linux.vnet.ibm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ linux-scsi <linux-scsi@vger.kernel.org>, martin.petersen@oracle.com,
+ manvanth <manvanth@linux.vnet.ibm.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-next <linux-next@vger.kernel.org>, hmadhani@marvell.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 16, 2019 at 10:41:00AM -0700, Andy Lutomirski wrote:
-> On Fri, Aug 16, 2019 at 10:08 AM Mark Rutland <mark.rutland@arm.com> wrote:
-> >
-> > Hi Christophe,
-> >
-> > On Fri, Aug 16, 2019 at 09:47:00AM +0200, Christophe Leroy wrote:
-> > > Le 15/08/2019 à 02:16, Daniel Axtens a écrit :
-> > > > Hook into vmalloc and vmap, and dynamically allocate real shadow
-> > > > memory to back the mappings.
-> > > >
-> > > > Most mappings in vmalloc space are small, requiring less than a full
-> > > > page of shadow space. Allocating a full shadow page per mapping would
-> > > > therefore be wasteful. Furthermore, to ensure that different mappings
-> > > > use different shadow pages, mappings would have to be aligned to
-> > > > KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
-> > > >
-> > > > Instead, share backing space across multiple mappings. Allocate
-> > > > a backing page the first time a mapping in vmalloc space uses a
-> > > > particular page of the shadow region. Keep this page around
-> > > > regardless of whether the mapping is later freed - in the mean time
-> > > > the page could have become shared by another vmalloc mapping.
-> > > >
-> > > > This can in theory lead to unbounded memory growth, but the vmalloc
-> > > > allocator is pretty good at reusing addresses, so the practical memory
-> > > > usage grows at first but then stays fairly stable.
-> > >
-> > > I guess people having gigabytes of memory don't mind, but I'm concerned
-> > > about tiny targets with very little amount of memory. I have boards with as
-> > > little as 32Mbytes of RAM. The shadow region for the linear space already
-> > > takes one eighth of the RAM. I'd rather avoid keeping unused shadow pages
-> > > busy.
-> >
-> > I think this depends on how much shadow would be in constant use vs what
-> > would get left unused. If the amount in constant use is sufficiently
-> > large (or the residue is sufficiently small), then it may not be
-> > worthwhile to support KASAN_VMALLOC on such small systems.
-> >
-> > > Each page of shadow memory represent 8 pages of real memory. Could we use
-> > > page_ref to count how many pieces of a shadow page are used so that we can
-> > > free it when the ref count decreases to 0.
-> > >
-> > > > This requires architecture support to actually use: arches must stop
-> > > > mapping the read-only zero page over portion of the shadow region that
-> > > > covers the vmalloc space and instead leave it unmapped.
-> > >
-> > > Why 'must' ? Couldn't we switch back and forth from the zero page to real
-> > > page on demand ?
-> > >
-> > > If the zero page is not mapped for unused vmalloc space, bad memory accesses
-> > > will Oops on the shadow memory access instead of Oopsing on the real bad
-> > > access, making it more difficult to locate and identify the issue.
-> >
-> > I agree this isn't nice, though FWIW this can already happen today for
-> > bad addresses that fall outside of the usual kernel address space. We
-> > could make the !KASAN_INLINE checks resilient to this by using
-> > probe_kernel_read() to check the shadow, and treating unmapped shadow as
-> > poison.
+On Wed, 2019-08-14 at 20:42 -0700, Bart Van Assche wrote:
+> On 8/14/19 10:18 AM, Abdul Haleem wrote:
+> > On Wed, 2019-08-14 at 10:05 -0700, Bart Van Assche wrote:
+> >> On 8/14/19 9:52 AM, Abdul Haleem wrote:
+> >>> Greeting's
+> >>>
+> >>> Today's linux-next kernel (5.3.0-rc4-next-20190813)  booted with warning on my powerpc power 8 lpar
+> >>>
+> >>> The WARN_ON_ONCE() was introduced by commit 88263208 (scsi: qla2xxx: Complain if sp->done() is not...)
+> >>>
+> >>> boot logs:
+> >>>
+> >>> WARNING: CPU: 10 PID: 425 at drivers/scsi/qla2xxx/qla_isr.c:2784
+> >>
+> >> Hi Abdul,
+> >>
+> >> Thank you for having reported this. Is that the only warning reported on your setup by the qla2xxx
+> >> driver? If that warning is commented out, does the qla2xxx driver work as expected?
+> > 
+> > boot warning did not show up when the commit is reverted.
+> > 
+> > should I comment out only the WARN_ON_ONCE() which is causing the issue,
+> > and not the other one ?
 > 
-> Could we instead modify the page fault handlers to detect this case
-> and print a useful message?
+> Yes please. Commit 88263208 introduced five kernel warnings but I think 
+> only one of these should be removed again, e.g. as follows:
+> 
+> diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+> index cd39ac18c5fd..d81b5ecce24b 100644
+> --- a/drivers/scsi/qla2xxx/qla_isr.c
+> +++ b/drivers/scsi/qla2xxx/qla_isr.c
+> @@ -2780,8 +2780,6 @@ qla2x00_status_entry(scsi_qla_host_t *vha, struct 
+> rsp_que *rsp, void *pkt)
+> 
+>   	if (rsp->status_srb == NULL)
+>   		sp->done(sp, res);
+> -	else
+> -		WARN_ON_ONCE(true);
+>   }
+> 
+>   /**
+ 
+Applying above patch on system boots fine.
 
-In general we can't know if a bad access was a KASAN shadow lookup (e.g.
-since the shadow of NULL falls outside of the shadow region), but we
-could always print a message using kasan_shadow_to_mem() for any
-unhandled fault to suggeest what the "real" address might have been.
+i.e no warnings pop up when keeping all WARN_ON_ONCE() except above one.
 
-Thanks,
-Mark.
+Reported-and-Tested-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+
+-- 
+Regard's
+
+Abdul Haleem
+IBM Linux Technology Centre
+
+
+
