@@ -1,76 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE66E94F15
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 22:34:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C418A94F1D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 22:37:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46C5JK0Wy8zDqqY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 06:34:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46C5MB1Z31zDqVL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 06:37:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=intel.com
+ (client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="Uvrjz53e"; 
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.b="psHWRrKd"; 
  dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46C5G55bsQzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 06:32:42 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46C5Fw5y57z9v0v5;
- Mon, 19 Aug 2019 22:32:36 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=Uvrjz53e; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id N3v1S5YbD57A; Mon, 19 Aug 2019 22:32:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46C5Fw4SSCz9v0v4;
- Mon, 19 Aug 2019 22:32:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566246756; bh=rMillmnFKS/ErlSfF4NLef5YT9zHq8E0WU7az2Rr9oI=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=Uvrjz53e6RbinKdej1jE3Cv2cdUooVoG4y2445VqjaYohvTV2KTqRVDPt1GAV9IbD
- KujZJsFGL9SsVlCLJM4fDQj0zOwPkOve7RiqKOnDgmvDLlQk986C/ak8/EkE+3YkpE
- E2K+iJgLEC0zTX+bllXHtbUf31L7RnMy9qfeIhmo=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B2898B7BF;
- Mon, 19 Aug 2019 22:32:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wIUA9py7n74G; Mon, 19 Aug 2019 22:32:37 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 669CB8B7B9;
- Mon, 19 Aug 2019 22:32:36 +0200 (CEST)
-Subject: Re: [PATCH] btrfs: fix allocation of bitmap pages.
-To: dsterba@suse.cz, erhard_f@mailbox.org, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20190817074439.84C6C1056A3@localhost.localdomain>
- <20190819174600.GN24086@twin.jikos.cz>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <86e4d577-36f4-683d-9227-0e9b8f18d929@c-s.fr>
-Date: Mon, 19 Aug 2019 22:32:36 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46C5H91lJKzDqpR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 06:33:39 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id k18so2934341otr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 13:33:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
+ b=psHWRrKd3x75XaBq4Qa+LS1cLPahMqjrX1Wn9mxcApv8yxQqSht7/8v5RuDSONcTl0
+ ehqF6W3K8BdBMNPmHEpQENl+LP9kj1ttVSPpJsNMgb4CFrSpSHeTXJfrbNIlcP/4P2ax
+ v/WYGq8gB4lM4fAbHXnXRH5vG+D6KqARROwqYsqvxa0BEXVHuSqlzyvY4cBCrpe0qGoz
+ SPOArGDUJmF04uROBncNRtZ5jVqMijWggZ1TrKwCut/1onZ9d8tQoJx1S9Oj2RYVRSO9
+ UDY9LRaj95qDLjn1TjoKhMj94FU49Cs6G2ne+/7PDV66Ps0ReP7phOU9Vmk0BhC4KDNz
+ 5niQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
+ b=N2q9H3HicGjSQv5sfGPg7wCVHy7I8rLno+wR7J7KDg4lDHhBLu3xMdedWVacS9SKoS
+ dFe+9T0aNbQNy+TXrEy/JYpT+GSxECPNdcb47BVyAl4MCx1YW2f2CnDhdOlW48kgSHn5
+ A64sB1C5JH84CT0NsJvg+/5xHayoQcZjEX6DcUHqmbVFc8CLYr7Q/p9tMR/TSXhmv/QL
+ E+GT/Kdx9DkrZkH9WFtZBQX8prYXKq61xPvJo+SpXDSaEDnklXoZ896Tafl4el6Q7zg5
+ 2WiYgIDZ/pNRl3rv+Rov2wD8RpztzDHt9WU7zjR7JyR7AJcnixx4OnHPy7aEbApCpLm1
+ XH0A==
+X-Gm-Message-State: APjAAAVB9CrK+quXOHaN2WTZpLNbZBcKxraVeR6iCSDN2wIlrCFFNmOq
+ 2lW4xcElceDyXQ/ld533dIftlpmkf/X2U8a6UUe1jA==
+X-Google-Smtp-Source: APXvYqy9tHBQADa1qvVeSsghOJr6TWr+3Lup/KNrD2wljjZJ0t87Se7fCmBqBKSv6ZJkJN9H9FM27wQ23v9EoryQYPc=
+X-Received: by 2002:a05:6830:458:: with SMTP id
+ d24mr19105752otc.126.1566246817595; 
+ Mon, 19 Aug 2019 13:33:37 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190819174600.GN24086@twin.jikos.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
+ <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
+ <87v9ut1vev.fsf@linux.ibm.com> <87mug5biyg.fsf@linux.ibm.com>
+In-Reply-To: <87mug5biyg.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 19 Aug 2019 13:33:26 -0700
+Message-ID: <CAPcyv4hTQ8iVPbOmQNHEeT9-Z6-52k4dxexq5mTr-A4cru0OkQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
+ coding
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,99 +79,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Aug 19, 2019 at 2:32 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
+>
+> > Dan Williams <dan.j.williams@intel.com> writes:
+> >
+> >> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
+> >> <aneesh.kumar@linux.ibm.com> wrote:
+> >>>
+> >>
+>
+> ...
+>
+> >>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> >>> index 37e96811c2fc..c1d9be609322 100644
+> >>> --- a/drivers/nvdimm/pfn_devs.c
+> >>> +++ b/drivers/nvdimm/pfn_devs.c
+> >>> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >>>                  * when populating the vmemmap. This *should* be equal to
+> >>>                  * PMD_SIZE for most architectures.
+> >>>                  */
+> >>> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
+> >>> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
+> >>
+> >> I'd prefer if this was not dynamic and was instead set to the maximum
+> >> size of 'struct page' across all archs just to enhance cross-arch
+> >> compatibility. I think that answer is '64'.
+> >
+> >
+> > That still doesn't take care of the case where we add new elements to
+> > struct page later. If we have struct page size changing across
+> > architectures, we should still be ok as long as new size is less than what is
+> > stored in pfn superblock? I understand the desire to keep it
+> > non-dynamic. But we also need to make sure we don't reserve less space
+> > when creating a new namespace on a config that got struct page size >
+> > 64?
+>
+>
+> How about
+>
+> libnvdimm/pfn_dev: Add a build check to make sure we notice when struct page size change
+>
+> When namespace is created with map device as pmem device, struct page is stored in the
+> reserve block area. We need to make sure we account for the right struct page
+> size while doing this. Instead of directly depending on sizeof(struct page)
+> which can change based on different kernel config option, use the max struct
+> page size (64) while calculating the reserve block area. This makes sure pmem
+> device can be used across kernels built with different configs.
+>
+> If the above assumption of max struct page size change, we need to update the
+> reserve block allocation space for new namespaces created.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>
+> 1 file changed, 7 insertions(+)
+> drivers/nvdimm/pfn_devs.c | 7 +++++++
+>
+> modified   drivers/nvdimm/pfn_devs.c
+> @@ -722,7 +722,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+>                  * The altmap should be padded out to the block size used
+>                  * when populating the vmemmap. This *should* be equal to
+>                  * PMD_SIZE for most architectures.
+> +                *
+> +                * Also make sure size of struct page is less than 64. We
+> +                * want to make sure we use large enough size here so that
+> +                * we don't have a dynamic reserve space depending on
+> +                * struct page size. But we also want to make sure we notice
+> +                * if we end up adding new elements to struct page.
+>                  */
+> +               BUILD_BUG_ON(64 < sizeof(struct page));
 
-
-Le 19/08/2019 à 19:46, David Sterba a écrit :
-> On Sat, Aug 17, 2019 at 07:44:39AM +0000, Christophe Leroy wrote:
->> Various notifications of type "BUG kmalloc-4096 () : Redzone
->> overwritten" have been observed recently in various parts of
->> the kernel. After some time, it has been made a relation with
->> the use of BTRFS filesystem.
->>
->> [   22.809700] BUG kmalloc-4096 (Tainted: G        W        ): Redzone overwritten
->> [   22.809971] -----------------------------------------------------------------------------
->>
->> [   22.810286] INFO: 0xbe1a5921-0xfbfc06cd. First byte 0x0 instead of 0xcc
->> [   22.810866] INFO: Allocated in __load_free_space_cache+0x588/0x780 [btrfs] age=22 cpu=0 pid=224
->> [   22.811193] 	__slab_alloc.constprop.26+0x44/0x70
->> [   22.811345] 	kmem_cache_alloc_trace+0xf0/0x2ec
->> [   22.811588] 	__load_free_space_cache+0x588/0x780 [btrfs]
->> [   22.811848] 	load_free_space_cache+0xf4/0x1b0 [btrfs]
->> [   22.812090] 	cache_block_group+0x1d0/0x3d0 [btrfs]
->> [   22.812321] 	find_free_extent+0x680/0x12a4 [btrfs]
->> [   22.812549] 	btrfs_reserve_extent+0xec/0x220 [btrfs]
->> [   22.812785] 	btrfs_alloc_tree_block+0x178/0x5f4 [btrfs]
->> [   22.813032] 	__btrfs_cow_block+0x150/0x5d4 [btrfs]
->> [   22.813262] 	btrfs_cow_block+0x194/0x298 [btrfs]
->> [   22.813484] 	commit_cowonly_roots+0x44/0x294 [btrfs]
->> [   22.813718] 	btrfs_commit_transaction+0x63c/0xc0c [btrfs]
->> [   22.813973] 	close_ctree+0xf8/0x2a4 [btrfs]
->> [   22.814107] 	generic_shutdown_super+0x80/0x110
->> [   22.814250] 	kill_anon_super+0x18/0x30
->> [   22.814437] 	btrfs_kill_super+0x18/0x90 [btrfs]
->> [   22.814590] INFO: Freed in proc_cgroup_show+0xc0/0x248 age=41 cpu=0 pid=83
->> [   22.814841] 	proc_cgroup_show+0xc0/0x248
->> [   22.814967] 	proc_single_show+0x54/0x98
->> [   22.815086] 	seq_read+0x278/0x45c
->> [   22.815190] 	__vfs_read+0x28/0x17c
->> [   22.815289] 	vfs_read+0xa8/0x14c
->> [   22.815381] 	ksys_read+0x50/0x94
->> [   22.815475] 	ret_from_syscall+0x0/0x38
->>
->> Commit 69d2480456d1 ("btrfs: use copy_page for copying pages instead
->> of memcpy") changed the way bitmap blocks are copied. But allthough
->> bitmaps have the size of a page, they were allocated with kzalloc().
->>
->> Most of the time, kzalloc() allocates aligned blocks of memory, so
->> copy_page() can be used. But when some debug options like SLAB_DEBUG
->> are activated, kzalloc() may return unaligned pointer.
->>
->> On powerpc, memcpy(), copy_page() and other copying functions use
->> 'dcbz' instruction which provides an entire zeroed cacheline to avoid
->> memory read when the intention is to overwrite a full line. Functions
->> like memcpy() are writen to care about partial cachelines at the start
->> and end of the destination, but copy_page() assumes it gets pages.
-> 
-> This assumption is not documented nor any pitfalls mentioned in
-> include/asm-generic/page.h that provides the generic implementation. I
-> as an API user cannot check each arch implementation for additional
-> constraints or I would expect that it deals with the boundary cases the
-> same way as arch-specific memcpy implementations.
-
-For me, copy_page() is there to ... copy pages. Not to copy any piece of 
-RAM having the size of a page.
-
-But it happened to others. See commit 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d72e9a7a93e4f8e9e52491921d99e0c8aa89eb4e
-
-> 
-> Another thing that is lost is the slub debugging support for all
-> architectures, because get_zeroed_pages lacking the red zones and sanity
-> checks.
-> 
-> I find working with raw pages in this code a bit inconsistent with the
-> rest of btrfs code, but that's rather minor compared to the above.
-
-What about using kmem_cache instead ? I see kmem_cache is already widely 
-used in BTRFS, so using it also for block of memory of size PAGE_SIZE 
-should be ok ?
-
-AFAICS, kmem_cache has the red zones and sanity checks.
-
-> 
-> Summing it up, I think that the proper fix should go to copy_page
-> implementation on architectures that require it or make it clear what
-> are the copy_page constraints.
-> 
-
-I guess anybody using copy_page() to copy something else than a page is 
-on his/her own.
-
-But following that (bad) experience, I propose a patch to at least 
-detect it early, see https://patchwork.ozlabs.org/patch/1148033/
-
-Christophe
+Looks ok to me. There are ongoing heroic efforts to make sure 'struct
+page' does not grown beyond the size of cacheline. The fact that
+'struct page_ext' is allocated out of line makes it safe to assume
+that 'struct page' will not be growing larger in the foreseeable
+future.
