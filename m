@@ -1,73 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EF891C0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 06:28:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55ACF91C50
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 07:17:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BgsG3JsjzDrCG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 14:28:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46BhyR01CLzDqld
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 15:17:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (mailfrom) smtp.mailfrom=socionext.com
- (client-ip=210.131.2.91; helo=conssluserg-06.nifty.com;
- envelope-from=yamada.masahiro@socionext.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=ozlabs.ru
+ (client-ip=107.173.13.209; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=socionext.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.b="nxrHN0Ys"; 
- dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com
- [210.131.2.91])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BgqY3lwrzDr70
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 14:26:48 +1000 (AEST)
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com
- [209.85.221.179]) (authenticated)
- by conssluserg-06.nifty.com with ESMTP id x7J4QTkw004548
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 13:26:30 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com x7J4QTkw004548
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1566188790;
- bh=OW1zICb/Mc7eyHaJB7F+0jGSnOYmZvCIzJbFodsGuQ4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=nxrHN0YsNDaS/A3TzwVTJrjMWHNoxXx9++LRPbmK0e6NmQju51D+ziozFzOerTSHj
- 0FDE7Q3U+qGXKj1dy2OoRArV11/pokJT/DDuaRqQ6/uC6GSUYvZ4cIgeWkKRjfoZ/1
- 7DQR/dNxYCOoo+1antF+eGJc5hIAyLGd9DRoY/+678+HavcyMMW0xXZin/7ZW+f4RS
- cAaZ7IdufwJP1y9n4xREqic8O41pXY9z+pqWnkulnsfK7r0FZNm6jC0wXSLkiZY/nr
- J03R5JjXKPf01oFqRrNM6takc1awzbDl+zo67p3S9SFmy4SdNUKTVEopvwIa9JxkNY
- DdM/qsZmy8SYQ==
-X-Nifty-SrcIP: [209.85.221.179]
-Received: by mail-vk1-f179.google.com with SMTP id t136so123894vkt.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2019 21:26:29 -0700 (PDT)
-X-Gm-Message-State: APjAAAU4FnYfwqk/Mi4jKsYj4cr26FgT/i0a2d401G0L1thTYQ7MIq12
- 1QDo43bklPOL4lsJ+hR1XngrU2U2xqushr/ktkI=
-X-Google-Smtp-Source: APXvYqyP0Fpi/HcxiJ414/X4VHQkyya1xBYajp/2fXLljetLW55Ed2rsnGbLxediWPOHVe7DHFQxGP0Mc9dQb2Dr/Bk=
-X-Received: by 2002:a1f:ee81:: with SMTP id m123mr2220428vkh.74.1566188788852; 
- Sun, 18 Aug 2019 21:26:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190713131642.GU14074@gate.crashing.org>
- <CAK7LNASBmZxX+U=LS+dgvet96cA3T6Tf_tiAa2vduUV81DEnBw@mail.gmail.com>
- <20190713235430.GZ14074@gate.crashing.org>
- <87v9w393r5.fsf@concordia.ellerman.id.au>
- <20190715072959.GB20882@gate.crashing.org>
- <87pnma89ak.fsf@concordia.ellerman.id.au>
- <20190717143811.GL20882@gate.crashing.org>
- <CAK7LNATesRrJFGZQOkTY+PL7FNyub5FJ0N6NF4s6icdXdPNr+Q@mail.gmail.com>
- <20190717164628.GN20882@gate.crashing.org>
- <CAK7LNAR7jkq1fAi_=xgsANCkgP2AAej9Yv7RZB3B_cpD7C_71Q@mail.gmail.com>
- <20190718204631.GV20882@gate.crashing.org>
- <87blxq8zhf.fsf@concordia.ellerman.id.au>
-In-Reply-To: <87blxq8zhf.fsf@concordia.ellerman.id.au>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Mon, 19 Aug 2019 13:25:52 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATgOMhr6Fw-ge_ph4Hq-SGuvGTYHDcjd7e4+eb5_Ebw3A@mail.gmail.com>
-Message-ID: <CAK7LNATgOMhr6Fw-ge_ph4Hq-SGuvGTYHDcjd7e4+eb5_Ebw3A@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: remove meaningless KBUILD_ARFLAGS addition
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (ozlabs.ru [107.173.13.209])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46BhwM50StzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 15:16:02 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 340AEAE8001C;
+ Mon, 19 Aug 2019 01:15:39 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] KVM: PPC: vfio/spapr_tce: Split out TCE invalidation
+ from TCE updates
+Date: Mon, 19 Aug 2019 15:15:53 +1000
+Message-Id: <20190819051553.14094-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,81 +39,333 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: kvm@vger.kernel.org, Jose Ricardo Ziviani <joserz@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Alistair Popple <alistair@popple.id.au>,
+ kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+The VFIO IOMMU implementation on SPAPR uses iommu_table::exchange() hook
+to update hardware TCE tables (a table where an index is a IOBA>>pageshift
+and the value is a host physical address). Each TCE update requires
+TCE cache invalidation, both at the PHB and NPU levels. The invalidation
+interface allows invalidation of 1) a single TCE, 2) all TCEs belonging
+to a specific IOMMU group (or "PE"), 3) entire cache. The invalidation
+is implemented in the host system firmware (skiboot) via an OPAL call and
+writes to the registers called "TCE Kill" (hence the naming).
 
-On Fri, Jul 19, 2019 at 12:43 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
-> > On Thu, Jul 18, 2019 at 11:19:58AM +0900, Masahiro Yamada wrote:
-> >> On Thu, Jul 18, 2019 at 1:46 AM Segher Boessenkool
-> >> <segher@kernel.crashing.org> wrote:
-> >> Kbuild always uses thin archives as far as vmlinux is concerned.
-> >>
-> >> But, there are some other call-sites.
-> >>
-> >> masahiro@pug:~/ref/linux$ git grep  '$(AR)' -- :^Documentation :^tools
-> >> arch/powerpc/boot/Makefile:    BOOTAR := $(AR)
-> >> arch/unicore32/lib/Makefile:    $(Q)$(AR) p $(GNU_LIBC_A) $(notdir $@) > $@
-> >> arch/unicore32/lib/Makefile:    $(Q)$(AR) p $(GNU_LIBGCC_A) $(notdir $@) > $@
-> >> lib/raid6/test/Makefile:         $(AR) cq $@ $^
-> >> scripts/Kbuild.include:ar-option = $(call try-run, $(AR) rc$(1)
-> >> "$$TMP",$(1),$(2))
-> >> scripts/Makefile.build:      cmd_ar_builtin = rm -f $@; $(AR)
-> >> rcSTP$(KBUILD_ARFLAGS) $@ $(real-prereqs)
-> >> scripts/Makefile.lib:      cmd_ar = rm -f $@; $(AR)
-> >> rcsTP$(KBUILD_ARFLAGS) $@ $(real-prereqs)
-> >>
-> >> Probably, you are interested in arch/powerpc/boot/Makefile.
-> >
-> > That one seems fine actually.  The raid6 one I don't know.
-> >
-> >
-> > My original commit message was
-> >
-> >     Without this, some versions of GNU ar fail to create
-> >     an archive index if the object files it is packing
-> >     together are of a different object format than ar's
-> >     default format (for example, binutils compiled to
-> >     default to 64-bit, with 32-bit objects).
-> >
-> > but I cannot reproduce the problem anymore.  Shortly after my patch the
-> > thin archive code happened to binutils, and that overhauled some other
-> > things, which might have fixed it already?
-> >
-> >> > Yes, I know.  This isn't about built-in.[oa], it is about *other*
-> >> > archives we at least *used to* create.  If we *know* we do not anymore,
-> >> > then this workaround can of course be removed (and good riddance).
-> >>
-> >> If it is not about built-in.[oa],
-> >> which archive are you talking about?
-> >>
-> >> Can you pin-point the one?
-> >
-> > No, not anymore.  Lost in the mists of time, I guess?  I think we'll
-> > just have to file it as "it seems to work fine now".
->
-> Yeah I think so. If someone finds a case it breaks we can fix it then.
->
-> > Thank you (and everyone else) for the time looking at this!
->
-> Likewise.
->
-> cheers
+At the moment iommu_tce_xchg() is the only interface to
+update-and-invalidate a TCE, i.e. we call OPAL for each TCE update.
+This is not a problem for relatively small guests (32GB guest takes
+less than 2s to map everything into the huge window) but it is for
+bigger guests. It gets worse with GPU+NVLinks as NPU (a hardware bit
+implementing NVLinks) needs its own TCE cache to be invalidated.
+
+To map a 100GB guest with 1 GPU + 2xNVLinks, a loop over the guest RAM
+takes 20s where 10s and 9s go to NPU and PHB TCE cache invalidation.
+This is that slow because:
+1) we call OPAL for every TCE entry;
+2) invalidating many TCEs takes longer than flushing the entire TCE cache.
+
+This implements iommu_tce_kill() and removes TCE cache invalidation from
+iommu_tce_xchg. This greatly reduces the number of OPAL calls and halves
+the time spent in invalidation. Also, since now OPAL is called for more
+just a single TCE, skiboot can choose to invalidate the entire TCE cache
+depending on the number of TCEs or entirely (NPU).
+
+This implements iommu_tce_kill_rm() locally in the realmode handlers file
+similar to iommu_tce_xchg_rm() as, unlike iommu_tce_kill(), it is not
+shared between VFIO IOMMU driver and KVM.
+
+While at this, this fixes incorrect early returns in KVM's
+H_PUT_TCE_INDIRECT handlers which skips unlocking locks:
+both kvmppc_h_put_tce_indirect and kvmppc_rm_h_put_tce_indirect used
+to return H_PARAMETER instead of jumping to unlock_exit.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+
+This came up after debugging https://patchwork.ozlabs.org/patch/1134763/
+"powerpc/pseries/iommu: Add cond_resched() for huge updates"
+which we do not actually need.
+
+This should fix bz https://bugzilla.linux.ibm.com/show_bug.cgi?id=175630#c19
+I have also backported it at https://github.ibm.com/alexey/linux/commit/25271aa004de51f518408a1f105e36fabe823bf5
 
 
-So, we agreed to apply this patch, right?
+---
+ arch/powerpc/include/asm/iommu.h          |  7 ++++++
+ arch/powerpc/kernel/iommu.c               |  8 +++++++
+ arch/powerpc/kvm/book3s_64_vio.c          | 21 ++++++++++++----
+ arch/powerpc/kvm/book3s_64_vio_hv.c       | 29 +++++++++++++++++++----
+ arch/powerpc/platforms/powernv/pci-ioda.c | 15 +++---------
+ drivers/vfio/vfio_iommu_spapr_tce.c       |  8 ++++++-
+ 6 files changed, 66 insertions(+), 22 deletions(-)
 
-Please let me know if there is some improvement that should be get done.
-
-
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index 18d342b815e4..0dd50e299d79 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -58,6 +58,11 @@ struct iommu_table_ops {
+ 			unsigned long *hpa,
+ 			enum dma_data_direction *direction);
+ 
++	void (*tce_kill)(struct iommu_table *tbl,
++			unsigned long index,
++			unsigned long pages,
++			bool realmode);
++
+ 	__be64 *(*useraddrptr)(struct iommu_table *tbl, long index, bool alloc);
+ #endif
+ 	void (*clear)(struct iommu_table *tbl,
+@@ -206,6 +211,8 @@ extern void iommu_del_device(struct device *dev);
+ extern long iommu_tce_xchg(struct mm_struct *mm, struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long *hpa,
+ 		enum dma_data_direction *direction);
++extern void iommu_tce_kill(struct iommu_table *tbl,
++		unsigned long entry, unsigned long pages);
+ #else
+ static inline void iommu_register_group(struct iommu_table_group *table_group,
+ 					int pci_domain_number,
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 0a67ce9f827e..48e3c2940327 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1005,6 +1005,14 @@ long iommu_tce_xchg(struct mm_struct *mm, struct iommu_table *tbl,
+ }
+ EXPORT_SYMBOL_GPL(iommu_tce_xchg);
+ 
++void iommu_tce_kill(struct iommu_table *tbl,
++		unsigned long entry, unsigned long pages)
++{
++	if (tbl->it_ops->tce_kill)
++		tbl->it_ops->tce_kill(tbl, entry, pages, false);
++}
++EXPORT_SYMBOL_GPL(iommu_tce_kill);
++
+ int iommu_take_ownership(struct iommu_table *tbl)
+ {
+ 	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index e99a14798ab0..3bd17ed0250f 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -579,6 +579,8 @@ long kvmppc_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
+ 			ret = kvmppc_tce_iommu_map(vcpu->kvm, stt, stit->tbl,
+ 					entry, ua, dir);
+ 
++		iommu_tce_kill(stit->tbl, entry, 1);
++
+ 		if (ret != H_SUCCESS) {
+ 			kvmppc_clear_tce(vcpu->kvm->mm, stit->tbl, entry);
+ 			goto unlock_exit;
+@@ -660,8 +662,10 @@ long kvmppc_h_put_tce_indirect(struct kvm_vcpu *vcpu,
+ 		}
+ 		tce = be64_to_cpu(tce);
+ 
+-		if (kvmppc_tce_to_ua(vcpu->kvm, tce, &ua))
+-			return H_PARAMETER;
++		if (kvmppc_tce_to_ua(vcpu->kvm, tce, &ua)) {
++			ret = H_PARAMETER;
++			goto invalidate_exit;
++		}
+ 
+ 		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+ 			ret = kvmppc_tce_iommu_map(vcpu->kvm, stt,
+@@ -678,6 +682,10 @@ long kvmppc_h_put_tce_indirect(struct kvm_vcpu *vcpu,
+ 		kvmppc_tce_put(stt, entry + i, tce);
+ 	}
+ 
++invalidate_exit:
++	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
++		iommu_tce_kill(stit->tbl, entry, npages);
++
+ unlock_exit:
+ 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 
+@@ -716,7 +724,7 @@ long kvmppc_h_stuff_tce(struct kvm_vcpu *vcpu,
+ 				continue;
+ 
+ 			if (ret == H_TOO_HARD)
+-				return ret;
++				goto invalidate_exit;
+ 
+ 			WARN_ON_ONCE(1);
+ 			kvmppc_clear_tce(vcpu->kvm->mm, stit->tbl, entry);
+@@ -726,6 +734,11 @@ long kvmppc_h_stuff_tce(struct kvm_vcpu *vcpu,
+ 	for (i = 0; i < npages; ++i, ioba += (1ULL << stt->page_shift))
+ 		kvmppc_tce_put(stt, ioba >> stt->page_shift, tce_value);
+ 
+-	return H_SUCCESS;
++invalidate_exit:
++	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
++		iommu_tce_kill(stit->tbl, ioba >> stt->page_shift, npages);
++
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(kvmppc_h_stuff_tce);
+diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3s_64_vio_hv.c
+index f50bbeedfc66..1170673c898f 100644
+--- a/arch/powerpc/kvm/book3s_64_vio_hv.c
++++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
+@@ -240,6 +240,13 @@ static long iommu_tce_xchg_rm(struct mm_struct *mm, struct iommu_table *tbl,
+ 	return ret;
+ }
+ 
++static void iommu_tce_kill_rm(struct iommu_table *tbl,
++		unsigned long entry, unsigned long pages)
++{
++	if (tbl->it_ops->tce_kill)
++		tbl->it_ops->tce_kill(tbl, entry, pages, true);
++}
++
+ static void kvmppc_rm_clear_tce(struct kvm *kvm, struct iommu_table *tbl,
+ 		unsigned long entry)
+ {
+@@ -417,6 +424,8 @@ long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
+ 			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm, stt,
+ 					stit->tbl, entry, ua, dir);
+ 
++		iommu_tce_kill_rm(stit->tbl, entry, 1);
++
+ 		if (ret != H_SUCCESS) {
+ 			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+ 			return ret;
+@@ -556,8 +565,10 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
+ 		unsigned long tce = be64_to_cpu(((u64 *)tces)[i]);
+ 
+ 		ua = 0;
+-		if (kvmppc_rm_tce_to_ua(vcpu->kvm, tce, &ua, NULL))
+-			return H_PARAMETER;
++		if (kvmppc_rm_tce_to_ua(vcpu->kvm, tce, &ua, NULL)) {
++			ret = H_PARAMETER;
++			goto invalidate_exit;
++		}
+ 
+ 		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+ 			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm, stt,
+@@ -567,13 +578,17 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
+ 			if (ret != H_SUCCESS) {
+ 				kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl,
+ 						entry);
+-				goto unlock_exit;
++				goto invalidate_exit;
+ 			}
+ 		}
+ 
+ 		kvmppc_rm_tce_put(stt, entry + i, tce);
+ 	}
+ 
++invalidate_exit:
++	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
++		iommu_tce_kill_rm(stit->tbl, entry, npages);
++
+ unlock_exit:
+ 	if (rmap)
+ 		unlock_rmap(rmap);
+@@ -616,7 +631,7 @@ long kvmppc_rm_h_stuff_tce(struct kvm_vcpu *vcpu,
+ 				continue;
+ 
+ 			if (ret == H_TOO_HARD)
+-				return ret;
++				goto invalidate_exit;
+ 
+ 			WARN_ON_ONCE_RM(1);
+ 			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+@@ -626,7 +641,11 @@ long kvmppc_rm_h_stuff_tce(struct kvm_vcpu *vcpu,
+ 	for (i = 0; i < npages; ++i, ioba += (1ULL << stt->page_shift))
+ 		kvmppc_rm_tce_put(stt, ioba >> stt->page_shift, tce_value);
+ 
+-	return H_SUCCESS;
++invalidate_exit:
++	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
++		iommu_tce_kill_rm(stit->tbl, ioba >> stt->page_shift, npages);
++
++	return ret;
+ }
+ 
+ /* This can be called in either virtual mode or real mode */
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index d8080558d020..ae1263bd9256 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2107,23 +2107,13 @@ static int pnv_ioda2_tce_build(struct iommu_table *tbl, long index,
+ static int pnv_ioda2_tce_xchg(struct iommu_table *tbl, long index,
+ 		unsigned long *hpa, enum dma_data_direction *direction)
+ {
+-	long ret = pnv_tce_xchg(tbl, index, hpa, direction, true);
+-
+-	if (!ret)
+-		pnv_pci_ioda2_tce_invalidate(tbl, index, 1, false);
+-
+-	return ret;
++	return pnv_tce_xchg(tbl, index, hpa, direction, true);
+ }
+ 
+ static int pnv_ioda2_tce_xchg_rm(struct iommu_table *tbl, long index,
+ 		unsigned long *hpa, enum dma_data_direction *direction)
+ {
+-	long ret = pnv_tce_xchg(tbl, index, hpa, direction, false);
+-
+-	if (!ret)
+-		pnv_pci_ioda2_tce_invalidate(tbl, index, 1, true);
+-
+-	return ret;
++	return pnv_tce_xchg(tbl, index, hpa, direction, false);
+ }
+ #endif
+ 
+@@ -2140,6 +2130,7 @@ static struct iommu_table_ops pnv_ioda2_iommu_ops = {
+ #ifdef CONFIG_IOMMU_API
+ 	.exchange = pnv_ioda2_tce_xchg,
+ 	.exchange_rm = pnv_ioda2_tce_xchg_rm,
++	.tce_kill = pnv_pci_ioda2_tce_invalidate,
+ 	.useraddrptr = pnv_tce_useraddrptr,
+ #endif
+ 	.clear = pnv_ioda2_tce_free,
+diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
+index babef8b00daf..91100afcf696 100644
+--- a/drivers/vfio/vfio_iommu_spapr_tce.c
++++ b/drivers/vfio/vfio_iommu_spapr_tce.c
+@@ -435,7 +435,7 @@ static int tce_iommu_clear(struct tce_container *container,
+ 	unsigned long oldhpa;
+ 	long ret;
+ 	enum dma_data_direction direction;
+-	unsigned long lastentry = entry + pages;
++	unsigned long lastentry = entry + pages, firstentry = entry;
+ 
+ 	for ( ; entry < lastentry; ++entry) {
+ 		if (tbl->it_indirect_levels && tbl->it_userspace) {
+@@ -476,6 +476,8 @@ static int tce_iommu_clear(struct tce_container *container,
+ 		tce_iommu_unuse_page(container, oldhpa);
+ 	}
+ 
++	iommu_tce_kill(tbl, firstentry, pages);
++
+ 	return 0;
+ }
+ 
+@@ -536,6 +538,8 @@ static long tce_iommu_build(struct tce_container *container,
+ 
+ 	if (ret)
+ 		tce_iommu_clear(container, tbl, entry, i);
++	else
++		iommu_tce_kill(tbl, entry, pages);
+ 
+ 	return ret;
+ }
+@@ -593,6 +597,8 @@ static long tce_iommu_build_v2(struct tce_container *container,
+ 
+ 	if (ret)
+ 		tce_iommu_clear(container, tbl, entry, i);
++	else
++		iommu_tce_kill(tbl, entry, pages);
+ 
+ 	return ret;
+ }
 -- 
-Best Regards
-Masahiro Yamada
+2.17.1
+
