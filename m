@@ -2,84 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED24792068
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 11:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F4692126
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 12:17:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Bpd40tRVzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 19:33:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46BqbZ3jKMzDqg6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 20:16:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
- (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BpZW6KSwzDqgF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 19:30:58 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7J9MU66097251
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 05:30:55 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ufp4uye47-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 05:30:55 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <aneesh.kumar@linux.ibm.com>;
- Mon, 19 Aug 2019 10:30:53 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 19 Aug 2019 10:30:50 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7J9Un0d22151242
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Aug 2019 09:30:49 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 850604C04A;
- Mon, 19 Aug 2019 09:30:49 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A075A4C052;
- Mon, 19 Aug 2019 09:30:48 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.124.35.64])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 19 Aug 2019 09:30:48 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
- coding
-In-Reply-To: <87v9ut1vev.fsf@linux.ibm.com>
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
- <87v9ut1vev.fsf@linux.ibm.com>
-Date: Mon, 19 Aug 2019 15:00:47 +0530
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 46BqYt1zSgzDqfq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 20:15:27 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52B92344;
+ Mon, 19 Aug 2019 03:15:24 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com
+ [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B14723F706;
+ Mon, 19 Aug 2019 03:15:22 -0700 (PDT)
+Date: Mon, 19 Aug 2019 11:15:18 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v4 1/3] kasan: support backing vmalloc space with real
+ shadow memory
+Message-ID: <20190819101517.GA7482@lakrids.cambridge.arm.com>
+References: <20190815001636.12235-1-dja@axtens.net>
+ <20190815001636.12235-2-dja@axtens.net>
+ <15c6110a-9e6e-495c-122e-acbde6e698d9@c-s.fr>
+ <20190816170813.GA7417@lakrids.cambridge.arm.com>
+ <CALCETrUn4FNjvRoJW77DNi5vdwO+EURUC_46tysjPQD0MM3THQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-x-cbid: 19081909-4275-0000-0000-0000035AAE53
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081909-4276-0000-0000-0000386CCA5F
-Message-Id: <87mug5biyg.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-19_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908190107
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrUn4FNjvRoJW77DNi5vdwO+EURUC_46tysjPQD0MM3THQ@mail.gmail.com>
+User-Agent: Mutt/1.11.1+11 (2f07cb52) (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,84 +53,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
+ Linux-MM <linux-mm@kvack.org>, Alexander Potapenko <glider@google.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Dmitry Vyukov <dvyukov@google.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
+On Fri, Aug 16, 2019 at 10:41:00AM -0700, Andy Lutomirski wrote:
+> On Fri, Aug 16, 2019 at 10:08 AM Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > Hi Christophe,
+> >
+> > On Fri, Aug 16, 2019 at 09:47:00AM +0200, Christophe Leroy wrote:
+> > > Le 15/08/2019 à 02:16, Daniel Axtens a écrit :
+> > > > Hook into vmalloc and vmap, and dynamically allocate real shadow
+> > > > memory to back the mappings.
+> > > >
+> > > > Most mappings in vmalloc space are small, requiring less than a full
+> > > > page of shadow space. Allocating a full shadow page per mapping would
+> > > > therefore be wasteful. Furthermore, to ensure that different mappings
+> > > > use different shadow pages, mappings would have to be aligned to
+> > > > KASAN_SHADOW_SCALE_SIZE * PAGE_SIZE.
+> > > >
+> > > > Instead, share backing space across multiple mappings. Allocate
+> > > > a backing page the first time a mapping in vmalloc space uses a
+> > > > particular page of the shadow region. Keep this page around
+> > > > regardless of whether the mapping is later freed - in the mean time
+> > > > the page could have become shared by another vmalloc mapping.
+> > > >
+> > > > This can in theory lead to unbounded memory growth, but the vmalloc
+> > > > allocator is pretty good at reusing addresses, so the practical memory
+> > > > usage grows at first but then stays fairly stable.
+> > >
+> > > I guess people having gigabytes of memory don't mind, but I'm concerned
+> > > about tiny targets with very little amount of memory. I have boards with as
+> > > little as 32Mbytes of RAM. The shadow region for the linear space already
+> > > takes one eighth of the RAM. I'd rather avoid keeping unused shadow pages
+> > > busy.
+> >
+> > I think this depends on how much shadow would be in constant use vs what
+> > would get left unused. If the amount in constant use is sufficiently
+> > large (or the residue is sufficiently small), then it may not be
+> > worthwhile to support KASAN_VMALLOC on such small systems.
+> >
+> > > Each page of shadow memory represent 8 pages of real memory. Could we use
+> > > page_ref to count how many pieces of a shadow page are used so that we can
+> > > free it when the ref count decreases to 0.
+> > >
+> > > > This requires architecture support to actually use: arches must stop
+> > > > mapping the read-only zero page over portion of the shadow region that
+> > > > covers the vmalloc space and instead leave it unmapped.
+> > >
+> > > Why 'must' ? Couldn't we switch back and forth from the zero page to real
+> > > page on demand ?
+> > >
+> > > If the zero page is not mapped for unused vmalloc space, bad memory accesses
+> > > will Oops on the shadow memory access instead of Oopsing on the real bad
+> > > access, making it more difficult to locate and identify the issue.
+> >
+> > I agree this isn't nice, though FWIW this can already happen today for
+> > bad addresses that fall outside of the usual kernel address space. We
+> > could make the !KASAN_INLINE checks resilient to this by using
+> > probe_kernel_read() to check the shadow, and treating unmapped shadow as
+> > poison.
+> 
+> Could we instead modify the page fault handlers to detect this case
+> and print a useful message?
 
-> Dan Williams <dan.j.williams@intel.com> writes:
->
->> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
->> <aneesh.kumar@linux.ibm.com> wrote:
->>>
->>
+In general we can't know if a bad access was a KASAN shadow lookup (e.g.
+since the shadow of NULL falls outside of the shadow region), but we
+could always print a message using kasan_shadow_to_mem() for any
+unhandled fault to suggeest what the "real" address might have been.
 
-...
-
->>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
->>> index 37e96811c2fc..c1d9be609322 100644
->>> --- a/drivers/nvdimm/pfn_devs.c
->>> +++ b/drivers/nvdimm/pfn_devs.c
->>> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->>>                  * when populating the vmemmap. This *should* be equal to
->>>                  * PMD_SIZE for most architectures.
->>>                  */
->>> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
->>> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
->>
->> I'd prefer if this was not dynamic and was instead set to the maximum
->> size of 'struct page' across all archs just to enhance cross-arch
->> compatibility. I think that answer is '64'.
->
->
-> That still doesn't take care of the case where we add new elements to
-> struct page later. If we have struct page size changing across
-> architectures, we should still be ok as long as new size is less than what is
-> stored in pfn superblock? I understand the desire to keep it
-> non-dynamic. But we also need to make sure we don't reserve less space
-> when creating a new namespace on a config that got struct page size >
-> 64? 
-
-
-How about
-
-libnvdimm/pfn_dev: Add a build check to make sure we notice when struct page size change
-
-When namespace is created with map device as pmem device, struct page is stored in the
-reserve block area. We need to make sure we account for the right struct page
-size while doing this. Instead of directly depending on sizeof(struct page)
-which can change based on different kernel config option, use the max struct
-page size (64) while calculating the reserve block area. This makes sure pmem
-device can be used across kernels built with different configs.
-
-If the above assumption of max struct page size change, we need to update the
-reserve block allocation space for new namespaces created.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
-1 file changed, 7 insertions(+)
-drivers/nvdimm/pfn_devs.c | 7 +++++++
-
-modified   drivers/nvdimm/pfn_devs.c
-@@ -722,7 +722,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 		 * The altmap should be padded out to the block size used
- 		 * when populating the vmemmap. This *should* be equal to
- 		 * PMD_SIZE for most architectures.
-+		 *
-+		 * Also make sure size of struct page is less than 64. We
-+		 * want to make sure we use large enough size here so that
-+		 * we don't have a dynamic reserve space depending on
-+		 * struct page size. But we also want to make sure we notice
-+		 * if we end up adding new elements to struct page.
- 		 */
-+		BUILD_BUG_ON(64 < sizeof(struct page));
- 		offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
- 	} else if (nd_pfn->mode == PFN_MODE_RAM)
- 		offset = ALIGN(start + SZ_8K, align) - start;
-
-
--aneesh
-
+Thanks,
+Mark.
