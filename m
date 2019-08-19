@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C418A94F1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 22:37:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C51F94F2D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 22:39:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46C5MB1Z31zDqVL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 06:37:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46C5PZ4mmyzDqTV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 06:39:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=intel.com
- (client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.b="psHWRrKd"; 
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="bQfGNoFg"; 
  dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46C5H91lJKzDqpR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 06:33:39 +1000 (AEST)
-Received: by mail-ot1-x342.google.com with SMTP id k18so2934341otr.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 13:33:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
- b=psHWRrKd3x75XaBq4Qa+LS1cLPahMqjrX1Wn9mxcApv8yxQqSht7/8v5RuDSONcTl0
- ehqF6W3K8BdBMNPmHEpQENl+LP9kj1ttVSPpJsNMgb4CFrSpSHeTXJfrbNIlcP/4P2ax
- v/WYGq8gB4lM4fAbHXnXRH5vG+D6KqARROwqYsqvxa0BEXVHuSqlzyvY4cBCrpe0qGoz
- SPOArGDUJmF04uROBncNRtZ5jVqMijWggZ1TrKwCut/1onZ9d8tQoJx1S9Oj2RYVRSO9
- UDY9LRaj95qDLjn1TjoKhMj94FU49Cs6G2ne+/7PDV66Ps0ReP7phOU9Vmk0BhC4KDNz
- 5niQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
- b=N2q9H3HicGjSQv5sfGPg7wCVHy7I8rLno+wR7J7KDg4lDHhBLu3xMdedWVacS9SKoS
- dFe+9T0aNbQNy+TXrEy/JYpT+GSxECPNdcb47BVyAl4MCx1YW2f2CnDhdOlW48kgSHn5
- A64sB1C5JH84CT0NsJvg+/5xHayoQcZjEX6DcUHqmbVFc8CLYr7Q/p9tMR/TSXhmv/QL
- E+GT/Kdx9DkrZkH9WFtZBQX8prYXKq61xPvJo+SpXDSaEDnklXoZ896Tafl4el6Q7zg5
- 2WiYgIDZ/pNRl3rv+Rov2wD8RpztzDHt9WU7zjR7JyR7AJcnixx4OnHPy7aEbApCpLm1
- XH0A==
-X-Gm-Message-State: APjAAAVB9CrK+quXOHaN2WTZpLNbZBcKxraVeR6iCSDN2wIlrCFFNmOq
- 2lW4xcElceDyXQ/ld533dIftlpmkf/X2U8a6UUe1jA==
-X-Google-Smtp-Source: APXvYqy9tHBQADa1qvVeSsghOJr6TWr+3Lup/KNrD2wljjZJ0t87Se7fCmBqBKSv6ZJkJN9H9FM27wQ23v9EoryQYPc=
-X-Received: by 2002:a05:6830:458:: with SMTP id
- d24mr19105752otc.126.1566246817595; 
- Mon, 19 Aug 2019 13:33:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46C5HC6pr3zDqlJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 06:33:43 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46C5H75FfWz9v0v6;
+ Mon, 19 Aug 2019 22:33:39 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=bQfGNoFg; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id OJe11MnV4u4U; Mon, 19 Aug 2019 22:33:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46C5H740q2z9v0v5;
+ Mon, 19 Aug 2019 22:33:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566246819; bh=hFWGJxIKGcnvPhboOuIrOh8sFB7rg4yQxRCCBqljhVs=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=bQfGNoFgJOwJwV3UEvhSpwp+VN7EREX0Qb86kX5U3MQXGv7+E8m7MP3J/fjASUEzn
+ NE6tvRzYSPvcADj/rwyEQ/f2rTJQ+9ZUgIHtCagnnUX7BWey3EvRc8nqGzzFYlvJD8
+ Jdj3oMoB1Pc8lKhR4H0oXI9W5AD0VlOLcCM+SUDc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 43D068B7BF;
+ Mon, 19 Aug 2019 22:33:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id kfbpiWo7zOu0; Mon, 19 Aug 2019 22:33:40 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C89798B7B9;
+ Mon, 19 Aug 2019 22:33:39 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/vdso32: Add support for
+ CLOCK_{REALTIME/MONOTONIC}_COARSE
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <1eb059dcb634c48980e5e43f465aabd3d35ba7f7.1565960416.git.christophe.leroy@c-s.fr>
+ <87tvadru13.fsf@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <d988bf0d-1780-2a0a-4f9d-48d233c32e5f@c-s.fr>
+Date: Mon, 19 Aug 2019 22:33:39 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
- <87v9ut1vev.fsf@linux.ibm.com> <87mug5biyg.fsf@linux.ibm.com>
-In-Reply-To: <87mug5biyg.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 19 Aug 2019 13:33:26 -0700
-Message-ID: <CAPcyv4hTQ8iVPbOmQNHEeT9-Z6-52k4dxexq5mTr-A4cru0OkQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
- coding
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87tvadru13.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,86 +81,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Santosh Sivaraj <santosh@fossix.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 19, 2019 at 2:32 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
->
-> > Dan Williams <dan.j.williams@intel.com> writes:
-> >
-> >> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
-> >> <aneesh.kumar@linux.ibm.com> wrote:
-> >>>
-> >>
->
-> ...
->
-> >>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> >>> index 37e96811c2fc..c1d9be609322 100644
-> >>> --- a/drivers/nvdimm/pfn_devs.c
-> >>> +++ b/drivers/nvdimm/pfn_devs.c
-> >>> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
-> >>>                  * when populating the vmemmap. This *should* be equal to
-> >>>                  * PMD_SIZE for most architectures.
-> >>>                  */
-> >>> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
-> >>> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
-> >>
-> >> I'd prefer if this was not dynamic and was instead set to the maximum
-> >> size of 'struct page' across all archs just to enhance cross-arch
-> >> compatibility. I think that answer is '64'.
-> >
-> >
-> > That still doesn't take care of the case where we add new elements to
-> > struct page later. If we have struct page size changing across
-> > architectures, we should still be ok as long as new size is less than what is
-> > stored in pfn superblock? I understand the desire to keep it
-> > non-dynamic. But we also need to make sure we don't reserve less space
-> > when creating a new namespace on a config that got struct page size >
-> > 64?
->
->
-> How about
->
-> libnvdimm/pfn_dev: Add a build check to make sure we notice when struct page size change
->
-> When namespace is created with map device as pmem device, struct page is stored in the
-> reserve block area. We need to make sure we account for the right struct page
-> size while doing this. Instead of directly depending on sizeof(struct page)
-> which can change based on different kernel config option, use the max struct
-> page size (64) while calculating the reserve block area. This makes sure pmem
-> device can be used across kernels built with different configs.
->
-> If the above assumption of max struct page size change, we need to update the
-> reserve block allocation space for new namespaces created.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->
-> 1 file changed, 7 insertions(+)
-> drivers/nvdimm/pfn_devs.c | 7 +++++++
->
-> modified   drivers/nvdimm/pfn_devs.c
-> @@ -722,7 +722,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->                  * The altmap should be padded out to the block size used
->                  * when populating the vmemmap. This *should* be equal to
->                  * PMD_SIZE for most architectures.
-> +                *
-> +                * Also make sure size of struct page is less than 64. We
-> +                * want to make sure we use large enough size here so that
-> +                * we don't have a dynamic reserve space depending on
-> +                * struct page size. But we also want to make sure we notice
-> +                * if we end up adding new elements to struct page.
->                  */
-> +               BUILD_BUG_ON(64 < sizeof(struct page));
+Hi,
 
-Looks ok to me. There are ongoing heroic efforts to make sure 'struct
-page' does not grown beyond the size of cacheline. The fact that
-'struct page_ext' is allocated out of line makes it safe to assume
-that 'struct page' will not be growing larger in the foreseeable
-future.
+Le 19/08/2019 à 18:37, Nathan Lynch a écrit :
+> Hi,
+> 
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> Benchmark from vdsotest:
+> 
+> I assume you also ran the verification/correctness parts of vdsotest...? :-)
+> 
+
+I did run vdsotest-all. I guess it runs the verifications too ?
+
+Christophe
