@@ -2,69 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62B5949E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 18:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A034A94A91
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 18:39:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BztV4DGTzDqgx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 02:30:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46C0533Y9PzDqnw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 02:39:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=chromium.org
- (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com;
- envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=linux.ibm.com
+ (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.b="BxmwhJll";
- dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Bzqv5lKlzDqhF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 02:28:08 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id gn20so1209492plb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 09:28:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=dtollBZp7Cd+ev2dDovCVJwksY+nLROyjuudRVM9OKw=;
- b=BxmwhJllUMx6b1ZbOB0Bait3CD4aF8Nn7N71cUa/X450cNrv63L2ssIVE3JWtHagWE
- KMf79uArWdp5TpG5aurF+084leROU41Y0YRKJsgFfXB+X01NaQgX/UgLRy5iHzyIwQtl
- iNjLpw5NRpqOuli+PZSjJgLgxOYvTz5hhoRb4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=dtollBZp7Cd+ev2dDovCVJwksY+nLROyjuudRVM9OKw=;
- b=cBPP+QzLA5ennDW0ubfCYUgjS91xiyVYkF9EELucW7cHFQ6XnomByshcWxxFeHrPT4
- OMUnWMAGD9dgbJ2cg6X7YBmy6eK4dPj0J74kwVT+RXfMDxzoIveAtELDNHnHHIF2GHog
- kc4LoT0Hj/Wke4a5RsV6cO5CrBA1cC0zYmkTsxSRMVpvk8sgGvjmq0+fkloOktX19w9V
- BfwMg6Bj3SUaP+9p2B9sAP02I97BJ8qvOwj4ojeVocqpJGXb5+ZMlH0tZwEY28wM+mm/
- p6zTlG8vOuMtfsKjU0n5t7PN1FOz6krWB5HxcOasjVSjU4mZ5kvvUVDxvDsaagJOgl1r
- jGkQ==
-X-Gm-Message-State: APjAAAXIu1Vm6gp3EUbTeQ4akDYc064HcGO9dPMOW3gX/EAlAlgK1d6P
- e7NTArqIiQPulxcaoGxFTtGsUg==
-X-Google-Smtp-Source: APXvYqz3swKpzU6/ulxtva6MdU20KzGqbm9MWaVfUX9EOYMl0e2vdxdyIjU27bv/Fze8Pmx0gRuQ8w==
-X-Received: by 2002:a17:902:be03:: with SMTP id
- r3mr23853750pls.156.1566232085869; 
- Mon, 19 Aug 2019 09:28:05 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id x2sm16090710pja.22.2019.08.19.09.28.04
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 19 Aug 2019 09:28:05 -0700 (PDT)
-Date: Mon, 19 Aug 2019 09:28:03 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH 1/3] powerpc: don't use __WARN() for WARN_ON()
-Message-ID: <201908190917.9C65E23D6A@keescook>
-References: <a6781075192afe0c909ce7d091de7931183a5d93.1566219503.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46C02d340szDqkm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2019 02:37:29 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7JGRd78138741; Mon, 19 Aug 2019 12:37:14 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ufwgx560d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Aug 2019 12:37:14 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7JGYNmx030926;
+ Mon, 19 Aug 2019 16:37:13 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 2ue976etnd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Aug 2019 16:37:13 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7JGbCSm9830790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Aug 2019 16:37:13 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BDA1D28059;
+ Mon, 19 Aug 2019 16:37:12 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9F2602805E;
+ Mon, 19 Aug 2019 16:37:12 +0000 (GMT)
+Received: from localhost (unknown [9.41.179.186])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Aug 2019 16:37:12 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/vdso32: Add support for
+ CLOCK_{REALTIME/MONOTONIC}_COARSE
+In-Reply-To: <1eb059dcb634c48980e5e43f465aabd3d35ba7f7.1565960416.git.christophe.leroy@c-s.fr>
+References: <1eb059dcb634c48980e5e43f465aabd3d35ba7f7.1565960416.git.christophe.leroy@c-s.fr>
+Date: Mon, 19 Aug 2019 11:37:12 -0500
+Message-ID: <87tvadru13.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6781075192afe0c909ce7d091de7931183a5d93.1566219503.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-19_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=632 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908190176
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,66 +83,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Drew Davenport <ddavenport@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Santosh Sivaraj <santosh@fossix.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 19, 2019 at 01:06:28PM +0000, Christophe Leroy wrote:
-> __WARN() used to just call __WARN_TAINT(TAINT_WARN)
-> 
-> But a call to printk() has been added in the commit identified below
-> to print a "---- cut here ----" line.
-> 
-> This change only applies to warnings using __WARN(), which means
-> WARN_ON() where the condition is constant at compile time.
-> For WARN_ON() with a non constant condition, the additional line is
-> not printed.
-> 
-> In addition, adding a call to printk() forces GCC to add a stack frame
-> and save volatile registers. Powerpc has been using traps to implement
-> warnings in order to avoid that.
-> 
-> So, call __WARN_TAINT(TAINT_WARN) directly instead of using __WARN()
-> in order to restore the previous behaviour.
-> 
-> If one day powerpc wants the decorative "---- cut here ----" line, it
-> has to be done in the trap handler, not in the WARN_ON() macro.
-> 
-> Fixes: 6b15f678fb7d ("include/asm-generic/bug.h: fix "cut here" for WARN_ON for __WARN_TAINT architectures")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Hi,
 
-Ah! Hmpf. Yeah, that wasn't an intended side-effect of this fix.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Benchmark from vdsotest:
 
-It seems PPC is not alone in this situation of making this code much
-noisier. It looks like there needs to be a way to indicate to the trap
-handler that a message was delivered or not. Perhaps we can add another
-taint flag?
+I assume you also ran the verification/correctness parts of vdsotest...? :-)
 
--kees
 
-> ---
->  arch/powerpc/include/asm/bug.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-> index fed7e6241349..3928fdaebb71 100644
-> --- a/arch/powerpc/include/asm/bug.h
-> +++ b/arch/powerpc/include/asm/bug.h
-> @@ -99,7 +99,7 @@
->  	int __ret_warn_on = !!(x);				\
->  	if (__builtin_constant_p(__ret_warn_on)) {		\
->  		if (__ret_warn_on)				\
-> -			__WARN();				\
-> +			__WARN_TAINT(TAINT_WARN);		\
->  	} else {						\
->  		__asm__ __volatile__(				\
->  		"1:	"PPC_TLNEI"	%4,0\n"			\
-> -- 
-> 2.13.3
-> 
-
--- 
-Kees Cook
