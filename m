@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E2092625
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 16:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D85DA92635
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 16:12:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Bwkz3QbJzDqY4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 00:08:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Bwqr17drzDqfY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2019 00:12:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,56 +16,55 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="WLNKijPn"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="b+qZijNH"; 
  dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BwVw20hGzDqkG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 23:58:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46BwVw3QykzDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 23:58:16 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 46BwVk41jjz9txwQ;
- Mon, 19 Aug 2019 15:58:06 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 46BwVl4yKDz9txwR;
+ Mon, 19 Aug 2019 15:58:07 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=WLNKijPn; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=b+qZijNH; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id p8Wca8SooVQV; Mon, 19 Aug 2019 15:58:06 +0200 (CEST)
+ with ESMTP id 3LAFpjc5ZZEF; Mon, 19 Aug 2019 15:58:07 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 46BwVk2xyQz9txvq;
- Mon, 19 Aug 2019 15:58:06 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46BwVl3dH2z9txvq;
+ Mon, 19 Aug 2019 15:58:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1566223086; bh=q9fBzwKwRG06oZLfSFusUm6TSq5MWQXriWe5dwr5++c=;
+ t=1566223087; bh=I3GscCUL+tagamYjLpeA1pHPoXl+L8tdwdhXghWn5l0=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=WLNKijPn12Do8FV/IX6OWMhwwsbOnj31DiENPaOc0x/VfPLKuX2y0MD2xrofl1BE6
- /iULLtZQczfvBzTk+Cr/rqXUF3I6p6FpsWNtqaXrwh4ofJHUB+gn/0jxeD4F+hpgys
- s7+BUn97Gwd6rUCGTM5OB72zC6HILNC57gMMba/U=
+ b=b+qZijNHwV2liAFXQ5G4UoQOQ4n6EJhBi5iFQe57jnHb9FKofxzxWI0l08oXemYoj
+ a201+iYI7S8StDrVvP5HlhCKhQy1TNRbqJbJGSd2TMpHAHa40mSsQbzZNCPZJfvWcb
+ 3iuqSFGUglNaozE51hq20VgT+Dqyo+HQuiCihuvI=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EDACF8B7B9;
- Mon, 19 Aug 2019 15:58:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E9B78B7B9;
+ Mon, 19 Aug 2019 15:58:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 98LYPPthgiV4; Mon, 19 Aug 2019 15:58:11 +0200 (CEST)
+ with ESMTP id jphAGcmKo54y; Mon, 19 Aug 2019 15:58:12 +0200 (CEST)
 Received: from pc17473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C73198B7B7;
- Mon, 19 Aug 2019 15:58:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CEF1D8B7B7;
+ Mon, 19 Aug 2019 15:58:12 +0200 (CEST)
 Received: by pc17473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C4F6F6B70A; Mon, 19 Aug 2019 13:58:11 +0000 (UTC)
-Message-Id: <2565f449255f8bca1277de1b29ea11642d362ae7.1566223054.git.christophe.leroy@c-s.fr>
+ id CDD536B70A; Mon, 19 Aug 2019 13:58:12 +0000 (UTC)
+Message-Id: <92bf50b31f5f78cc76ed055b11a492e8e9e2c731.1566223054.git.christophe.leroy@c-s.fr>
 In-Reply-To: <be2b971c89b1af30d680cedd14e99a83138ef40a.1566223054.git.christophe.leroy@c-s.fr>
 References: <be2b971c89b1af30d680cedd14e99a83138ef40a.1566223054.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 2/3] powerpc/32: replace LOAD_MSR_KERNEL() by
- LOAD_REG_IMMEDIATE()
+Subject: [PATCH v3 3/3] powerpc/64: optimise LOAD_REG_IMMEDIATE_SYM()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  segher@kernel.crashing.org
-Date: Mon, 19 Aug 2019 13:58:11 +0000 (UTC)
+Date: Mon, 19 Aug 2019 13:58:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,159 +81,109 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-LOAD_MSR_KERNEL() and LOAD_REG_IMMEDIATE() are doing the same thing
-in the same way. Drop LOAD_MSR_KERNEL()
+Optimise LOAD_REG_IMMEDIATE_SYM() using a temporary register to
+parallelise operations.
 
+It reduces the path from 5 to 3 instructions.
+
+Suggested-by: Segher Boessenkool <segher@kernel.crashing.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 ---
-v2: no change
-v3: no change
+v3: new
 ---
- arch/powerpc/kernel/entry_32.S | 18 +++++++++---------
- arch/powerpc/kernel/head_32.h  | 21 ++++-----------------
- 2 files changed, 13 insertions(+), 26 deletions(-)
+ arch/powerpc/include/asm/ppc_asm.h   | 12 ++++++------
+ arch/powerpc/kernel/exceptions-64e.S | 22 +++++++++++++---------
+ arch/powerpc/kernel/head_64.S        |  2 +-
+ 3 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 54fab22c9a43..972b05504a0a 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -230,7 +230,7 @@ transfer_to_handler_cont:
- 	 */
- 	lis	r12,reenable_mmu@h
- 	ori	r12,r12,reenable_mmu@l
--	LOAD_MSR_KERNEL(r0, MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r0, MSR_KERNEL)
- 	mtspr	SPRN_SRR0,r12
- 	mtspr	SPRN_SRR1,r0
- 	SYNC
-@@ -304,7 +304,7 @@ stack_ovf:
- 	addi	r1,r1,THREAD_SIZE-STACK_FRAME_OVERHEAD
- 	lis	r9,StackOverflow@ha
- 	addi	r9,r9,StackOverflow@l
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
- #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
- 	mtspr	SPRN_NRI, r0
- #endif
-@@ -324,7 +324,7 @@ trace_syscall_entry_irq_off:
- 	bl	trace_hardirqs_on
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index aa8717c1571a..9d55bff9a73c 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -347,12 +347,12 @@ GLUE(.,name):
  
- 	/* Now enable for real */
--	LOAD_MSR_KERNEL(r10, MSR_KERNEL | MSR_EE)
-+	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL | MSR_EE)
- 	mtmsr	r10
+ #define LOAD_REG_IMMEDIATE(reg, expr) __LOAD_REG_IMMEDIATE reg, expr
  
- 	REST_GPR(0, r1)
-@@ -394,7 +394,7 @@ ret_from_syscall:
- #endif
- 	mr	r6,r3
- 	/* disable interrupts so current_thread_info()->flags can't change */
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL)	/* doesn't include MSR_EE */
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)	/* doesn't include MSR_EE */
- 	/* Note: We don't bother telling lockdep about it */
- 	SYNC
- 	MTMSRD(r10)
-@@ -824,7 +824,7 @@ ret_from_except:
- 	 * can't change between when we test it and when we return
- 	 * from the interrupt. */
- 	/* Note: We don't bother telling lockdep about it */
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
- 	SYNC			/* Some chip revs have problems here... */
- 	MTMSRD(r10)		/* disable interrupts */
+-#define LOAD_REG_IMMEDIATE_SYM(reg,expr)	\
+-	lis     reg,(expr)@highest;		\
+-	ori     reg,reg,(expr)@higher;	\
+-	rldicr  reg,reg,32,31;		\
+-	oris    reg,reg,(expr)@__AS_ATHIGH;	\
+-	ori     reg,reg,(expr)@l;
++#define LOAD_REG_IMMEDIATE_SYM(reg, tmp, expr)	\
++	lis	reg, (expr)@highest;		\
++	lis	tmp, (expr)@__AS_ATHIGH;	\
++	ori	reg, reg, (expr)@higher;	\
++	ori	tmp, reg, (expr)@l;		\
++	rldimi	reg, tmp, 32, 0
  
-@@ -991,7 +991,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	 * can restart the exception exit path at the label
- 	 * exc_exit_restart below.  -- paulus
- 	 */
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL & ~MSR_RI)
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL & ~MSR_RI)
- 	SYNC
- 	MTMSRD(r10)		/* clear the RI bit */
- 	.globl exc_exit_restart
-@@ -1066,7 +1066,7 @@ exc_exit_restart_end:
- 	REST_NVGPRS(r1);						\
- 	lwz	r3,_MSR(r1);						\
- 	andi.	r3,r3,MSR_PR;						\
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL);				\
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL);				\
- 	bne	user_exc_return;					\
- 	lwz	r0,GPR0(r1);						\
- 	lwz	r2,GPR2(r1);						\
-@@ -1236,7 +1236,7 @@ recheck:
- 	 * neither. Those disable/enable cycles used to peek at
- 	 * TI_FLAGS aren't advertised.
- 	 */
--	LOAD_MSR_KERNEL(r10,MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)
- 	SYNC
- 	MTMSRD(r10)		/* disable interrupts */
- 	lwz	r9,TI_FLAGS(r2)
-@@ -1329,7 +1329,7 @@ _GLOBAL(enter_rtas)
- 	lwz	r4,RTASBASE(r4)
- 	mfmsr	r9
- 	stw	r9,8(r1)
--	LOAD_MSR_KERNEL(r0,MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r0,MSR_KERNEL)
- 	SYNC			/* disable interrupts so SRR0/1 */
- 	MTMSRD(r0)		/* don't get trashed */
- 	li	r9,MSR_KERNEL & ~(MSR_IR|MSR_DR)
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 4a692553651f..8abc7783dbe5 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -5,19 +5,6 @@
- #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
+ #define LOAD_REG_ADDR(reg,name)			\
+ 	ld	reg,name@got(r2)
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 898aae6da167..829950b96d29 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -750,12 +750,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ 	ld	r15,PACATOC(r13)
+ 	ld	r14,interrupt_base_book3e@got(r15)
+ 	ld	r15,__end_interrupts@got(r15)
+-#else
+-	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
+-	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
+-#endif
+ 	cmpld	cr0,r10,r14
+ 	cmpld	cr1,r10,r15
++#else
++	LOAD_REG_IMMEDIATE_SYM(r14, r15, interrupt_base_book3e)
++	cmpld	cr0, r10, r14
++	LOAD_REG_IMMEDIATE_SYM(r14, r15, __end_interrupts)
++	cmpld	cr1, r10, r14
++#endif
+ 	blt+	cr0,1f
+ 	bge+	cr1,1f
  
- /*
-- * MSR_KERNEL is > 0x8000 on 4xx/Book-E since it include MSR_CE.
-- */
--.macro __LOAD_MSR_KERNEL r, x
--.if \x >= 0x8000
--	lis \r, (\x)@h
--	ori \r, \r, (\x)@l
--.else
--	li \r, (\x)
--.endif
--.endm
--#define LOAD_MSR_KERNEL(r, x) __LOAD_MSR_KERNEL r, x
--
--/*
-  * Exception entry code.  This code runs with address translation
-  * turned off, i.e. using physical addresses.
-  * We assume sprg3 has the physical address of the current
-@@ -92,7 +79,7 @@
- #ifdef CONFIG_40x
- 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
+@@ -820,12 +822,14 @@ kernel_dbg_exc:
+ 	ld	r15,PACATOC(r13)
+ 	ld	r14,interrupt_base_book3e@got(r15)
+ 	ld	r15,__end_interrupts@got(r15)
+-#else
+-	LOAD_REG_IMMEDIATE_SYM(r14,interrupt_base_book3e)
+-	LOAD_REG_IMMEDIATE_SYM(r15,__end_interrupts)
+-#endif
+ 	cmpld	cr0,r10,r14
+ 	cmpld	cr1,r10,r15
++#else
++	LOAD_REG_IMMEDIATE_SYM(r14, r15, interrupt_base_book3e)
++	cmpld	cr0, r10, r14
++	LOAD_REG_IMMEDIATE_SYM(r14, r15,__end_interrupts)
++	cmpld	cr1, r10, r14
++#endif
+ 	blt+	cr0,1f
+ 	bge+	cr1,1f
+ 
+@@ -1449,7 +1453,7 @@ a2_tlbinit_code_start:
+ a2_tlbinit_after_linear_map:
+ 
+ 	/* Now we branch the new virtual address mapped by this entry */
+-	LOAD_REG_IMMEDIATE_SYM(r3,1f)
++	LOAD_REG_IMMEDIATE_SYM(r3, r5, 1f)
+ 	mtctr	r3
+ 	bctr
+ 
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 1fd44761e997..0f2d61af47cc 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -635,7 +635,7 @@ __after_prom_start:
+ 	sub	r5,r5,r11
  #else
--	LOAD_MSR_KERNEL(r10, MSR_KERNEL & ~(MSR_IR|MSR_DR)) /* can take exceptions */
-+	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL & ~(MSR_IR|MSR_DR)) /* can take exceptions */
- 	MTMSRD(r10)			/* (except for mach check in rtas) */
+ 	/* just copy interrupts */
+-	LOAD_REG_IMMEDIATE_SYM(r5, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
++	LOAD_REG_IMMEDIATE_SYM(r5, r11, FIXED_SYMBOL_ABS_ADDR(__end_interrupts))
  #endif
- 	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
-@@ -140,10 +127,10 @@
- 	 * otherwise we might risk taking an interrupt before we tell lockdep
- 	 * they are enabled.
- 	 */
--	LOAD_MSR_KERNEL(r10, MSR_KERNEL)
-+	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL)
- 	rlwimi	r10, r9, 0, MSR_EE
- #else
--	LOAD_MSR_KERNEL(r10, MSR_KERNEL | MSR_EE)
-+	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL | MSR_EE)
- #endif
- #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
- 	mtspr	SPRN_NRI, r0
-@@ -187,7 +174,7 @@
- #define EXC_XFER_TEMPLATE(hdlr, trap, msr, tfer, ret)		\
- 	li	r10,trap;					\
- 	stw	r10,_TRAP(r11);					\
--	LOAD_MSR_KERNEL(r10, msr);				\
-+	LOAD_REG_IMMEDIATE(r10, msr);				\
- 	bl	tfer;						\
- 	.long	hdlr;						\
- 	.long	ret
+ 	b	5f
+ 3:
 -- 
 2.13.3
 
