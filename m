@@ -1,101 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7760C91EAB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 10:16:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D2591EC0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 10:20:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BmwK602GzDqq7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 18:16:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Bn1f2n23zDqtS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 18:20:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (mailfrom) smtp.mailfrom=nxp.com
- (client-ip=40.107.3.46; helo=eur03-am5-obe.outbound.protection.outlook.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
+ spf=pass (mailfrom) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.b="qRuPGvY8"; 
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.b="fY/mLi0C"; 
  dkim-atps=neutral
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com
- (mail-eopbgr30046.outbound.protection.outlook.com [40.107.3.46])
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BmtV73NYzDqmC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 18:14:39 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RDK3OMKIBi+VOMZFkiPDQpEjOnm6c3FOck72WAUYuCELnXFoFrGrmcRH54ozY43QzfBgqZqcjppMlvNig1uc3/ONxMK2sc2D+8QhRmYTFrCyVT3cDB1bkLAY8rv+k7wY8Bz/zXxA7Sl2St6Jvwm3ZYvS0auFgXK88PBDc7iUFBYuwSMbI+zp9YP6zQ7gDaQCVRFE5MEiEVk6Xnw88GvxArHo1JB2sMP3dNfrlekHifWCnwwyOjpRbk/jmJsY4k3vCy+Hbp4YXMmUtS/UZ7UzsAQ7B+9LDPn2MKEfdJKu921t9a1PKCs8sAbXGyrkJlOL56pIvWzXPvGhH6bwnktsKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1R4sHq13+IaHO8Cmfot74gAVxrLkdYHIEVatTcdtYAA=;
- b=axtTiLU4ylr+ZCoPn8gJwXQm+RFmb2fxj21d/mesYb5wcWKK0dPiaAQLbfr7CirRqSXPQ6fS4HvwGDrj5nRkyidAX8CkuH5kN9dsmaqXkjj7HOb5Rho2dSEO4hAAII7uvV3PKCNG2IkM6EbJbVoc/jLU4guKxvV6aLBMIWuBeKR1oMbckfZx9M28Zb8H5b68jmgtkxzc/nXEXdNVQFhuC65NLA1evlvSiCR8v+0okwr/wgD3VLMHYe3k8f8yjUkbDRcsIYOGXiYXCvOQozSKxgMKiOdvcb7KwZpH6cgZieKqfjZa0CK39REosUa8YR8sB0tjyqXFbZWSpB78how2/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1R4sHq13+IaHO8Cmfot74gAVxrLkdYHIEVatTcdtYAA=;
- b=qRuPGvY8/aVkILijABFrzdxs3xezzvxedjs3gq491zcVoI4nWvTgL2/I8Kue1JlYYuYzxd6DpUDh5Vg/rJm5FyuYFR/H+WGyf2U3ON0UIsUR9gdRsFCEJthFesUH12QsXrdaiRgrsrhKC63PAaedJCeU9SbmUNPpyFCmod8o2hk=
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com (52.133.240.82) by
- DB8PR04MB6761.eurprd04.prod.outlook.com (20.179.251.89) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Mon, 19 Aug 2019 08:14:32 +0000
-Received: from DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::ad63:e8df:f0c2:7246]) by DB8PR04MB6826.eurprd04.prod.outlook.com
- ([fe80::ad63:e8df:f0c2:7246%2]) with mapi id 15.20.2178.018; Mon, 19 Aug 2019
- 08:14:32 +0000
-From: Ran Wang <ran.wang_1@nxp.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: RE: [PATCH v5 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Topic: [PATCH v5 1/3] PM: wakeup: Add routine to help fetch wakeup
- source object.
-Thread-Index: AQHVQfPC8fuUrwx+d0SKWP625Z9OpabsZPGAgBWwP7A=
-Date: Mon, 19 Aug 2019 08:14:32 +0000
-Message-ID: <DB8PR04MB682632A586827032F8D6EA2DF1A80@DB8PR04MB6826.eurprd04.prod.outlook.com>
-References: <20190724074722.12270-1-ran.wang_1@nxp.com>
- <4158639.B12JYek7R7@kreacher>
-In-Reply-To: <4158639.B12JYek7R7@kreacher>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ran.wang_1@nxp.com; 
-x-originating-ip: [92.121.36.198]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7024ef78-f04a-4d7a-b29b-08d7247d4416
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:DB8PR04MB6761; 
-x-ms-traffictypediagnostic: DB8PR04MB6761:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB8PR04MB676179B6D34FED0D2FFAC9EEF1A80@DB8PR04MB6761.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1247;
-x-forefront-prvs: 0134AD334F
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(39860400002)(136003)(376002)(396003)(366004)(346002)(189003)(51914003)(199004)(478600001)(229853002)(6916009)(8936002)(6116002)(8676002)(81166006)(81156014)(3846002)(66446008)(64756008)(76116006)(66946007)(9686003)(6436002)(55016002)(66476007)(66556008)(7736002)(305945005)(7416002)(74316002)(26005)(53546011)(6506007)(53936002)(186003)(102836004)(2906002)(476003)(11346002)(486006)(446003)(5660300002)(66066001)(6246003)(14454004)(5024004)(7696005)(256004)(71200400001)(14444005)(71190400001)(52536014)(99286004)(316002)(54906003)(76176011)(25786009)(33656002)(86362001)(4326008)(473944003);
- DIR:OUT; SFP:1101; SCL:1; SRVR:DB8PR04MB6761;
- H:DB8PR04MB6826.eurprd04.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: ClAH81fPqPTIE38CHMUl7jsd5XpSd2OmrOHQ0Ol/Pkp2Vi2doqzx/YPLiunYNfLQb5b2tmc4Omz9qKP5p1PneDVHak3mosR/4WIzt6VSq3ffYcukwKNHcAVVseLZLgpZlZKI5KJ4lkkuZOp9X+quLJZJdSBlqw17A6cVWnbi1wi5RVz9QKoRqIwl25mpWTe/n30h9U0z2ed/DKxM9R8l1BJG5Qi5gkWeOb6XIMh2RgeiSR6ZhO/ZC0FYKX2ko2TDXYLjmk1gtg7STDoSbgCfeOHSj70EII73YsinEeAnk/hE8WJP7Mkfr+Cx/AbNdgl3Tj64bmeRDjhTQqyLNUK8s2bW5+D/f82T1alWb3DJqF4VR4URCt8A+WZw2e+LMXEuZQjloKsTwdpWatSYBu3w7fvOQpqZP8GSUOqgS6OnNHE=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46Bmzn3QYhzDqn4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 18:19:16 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 46Bmzb5Gbfz9tyQN;
+ Mon, 19 Aug 2019 10:19:07 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=fY/mLi0C; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id x0jL0orQOV5N; Mon, 19 Aug 2019 10:19:07 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 46Bmzb4Bhhz9tyQK;
+ Mon, 19 Aug 2019 10:19:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1566202747; bh=hyz93VlF5VshkA7JRIXDWBACAMKFyp3ax7zG4J+d8HU=;
+ h=To:Cc:From:Subject:Date:From;
+ b=fY/mLi0CeO6g1zbGf3ZPOwk7euPagRZjBZMSmU68iBy6WUlZlmjKNMeZLv7A9BkFK
+ qMQ4CdjsDnM/tAYIQ3MCCiLrC4vGCuPuQGFgQUbmmU1+bve8RmkJM0/bFAMFZtmjX6
+ bT1nS6ofNuD4rJRyejsBcKID1yF9OH923kktfTAQ=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A79588B79C;
+ Mon, 19 Aug 2019 10:19:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id rRWjh1eTtjhR; Mon, 19 Aug 2019 10:19:12 +0200 (CEST)
+Received: from [172.25.230.101] (po15451.idsi0.si.c-s.fr [172.25.230.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 73DB18B778;
+ Mon, 19 Aug 2019 10:19:12 +0200 (CEST)
+To: Drew Davenport <ddavenport@chromium.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: WARN_ON(1) generates ugly code since commit 6b15f678fb7d
+Message-ID: <1d4fcfcf-e0b1-5af7-a54d-a5a3bbcedb89@c-s.fr>
+Date: Mon, 19 Aug 2019 10:18:57 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7024ef78-f04a-4d7a-b29b-08d7247d4416
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2019 08:14:32.6873 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Yx15X8XyY62S0HxtKc7BKR/zlRhf10FWXwHYcgqR7P9kjh8/oBFHkeYn6p2uXHo83ANLf85h/5YHE8Ze61eSBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6761
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: fr
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,116 +75,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Biwen Li <biwen.li@nxp.com>,
- Len Brown <len.brown@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Leo Li <leoyang.li@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rafael,
+Hi Drew,
 
-On Monday, August 05, 2019 17:59, Rafael J. Wysocki wrote:
->=20
-> On Wednesday, July 24, 2019 9:47:20 AM CEST Ran Wang wrote:
-> > Some user might want to go through all registered wakeup sources and
-> > doing things accordingly. For example, SoC PM driver might need to do
-> > HW programming to prevent powering down specific IP which wakeup
-> > source depending on. So add this API to help walk through all
-> > registered wakeup source objects on that list and return them one by on=
-e.
-> >
-> > Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
-> > ---
-> > Change in v5:
-> > 	- Update commit message, add decription of walk through all wakeup
-> > 	source objects.
-> > 	- Add SCU protection in function wakeup_source_get_next().
-> > 	- Rename wakeup_source member 'attached_dev' to 'dev' and move it
-> up
-> > 	(before wakeirq).
-> >
-> > Change in v4:
-> > 	- None.
-> >
-> > Change in v3:
-> > 	- Adjust indentation of *attached_dev;.
-> >
-> > Change in v2:
-> > 	- None.
-> >
-> >  drivers/base/power/wakeup.c | 24 ++++++++++++++++++++++++
-> >  include/linux/pm_wakeup.h   |  3 +++
-> >  2 files changed, 27 insertions(+)
-> >
-> > diff --git a/drivers/base/power/wakeup.c b/drivers/base/power/wakeup.c
-> > index ee31d4f..2fba891 100644
-> > --- a/drivers/base/power/wakeup.c
-> > +++ b/drivers/base/power/wakeup.c
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/suspend.h>
-> >  #include <linux/seq_file.h>
-> >  #include <linux/debugfs.h>
-> > +#include <linux/of_device.h>
-> >  #include <linux/pm_wakeirq.h>
-> >  #include <trace/events/power.h>
-> >
-> > @@ -226,6 +227,28 @@ void wakeup_source_unregister(struct
-> wakeup_source *ws)
-> >  	}
-> >  }
-> >  EXPORT_SYMBOL_GPL(wakeup_source_unregister);
-> > +/**
-> > + * wakeup_source_get_next - Get next wakeup source from the list
-> > + * @ws: Previous wakeup source object, null means caller want first on=
-e.
-> > + */
-> > +struct wakeup_source *wakeup_source_get_next(struct wakeup_source
-> > +*ws) {
-> > +	struct list_head *ws_head =3D &wakeup_sources;
-> > +	struct wakeup_source *next_ws =3D NULL;
-> > +	int idx;
-> > +
-> > +	idx =3D srcu_read_lock(&wakeup_srcu);
-> > +	if (ws)
-> > +		next_ws =3D list_next_or_null_rcu(ws_head, &ws->entry,
-> > +				struct wakeup_source, entry);
-> > +	else
-> > +		next_ws =3D list_entry_rcu(ws_head->next,
-> > +				struct wakeup_source, entry);
-> > +	srcu_read_unlock(&wakeup_srcu, idx);
-> > +
->=20
-> This is incorrect.
->=20
-> The SRCU cannot be unlocked until the caller of this is done with the obj=
-ect
-> returned by it, or that object can be freed while it is still being acces=
-sed.
+I recently noticed gcc suddenly generating ugly code for WARN_ON(1).
 
-Thanks for the comment. Looks like I was not fully understanding your point=
- on
-v4 discussion. So I will implement 3 APIs by referring wakeup_sources_stats=
-_seq_start/next/stop()
-=20
-> Besides, this patch conflicts with some general wakeup sources changes in=
- the
-> works, so it needs to be deferred and rebased on top of those changes.
+It looks like commit 6b15f678fb7d ("include/asm-generic/bug.h: fix "cut 
+here" for WARN_ON for __WARN_TAINT architectures") is the culprit.
 
-Could you please tell me which is the right code base I should developing o=
-n?
-I just tried applying v5 patch on latest git://git.kernel.org/pub/scm/linux=
-/kernel/git/gregkh/usb.git branch master (d1abaeb Linux 5.3-rc5)
-and no conflict encountered.
+unsigned long test_mul1(unsigned long a, unsigned long b)
+{
+     unsigned long long r = (unsigned long long)a * (unsigned long long)b;
 
-Thanks & Regards,
-Ran
+     if (r > 0xffffffff)
+         WARN_ON(1);
+
+     return r;
+}
+
+Before that patch, I was getting the following code:
+
+00000008 <test_mul1>:
+    8:    7d 23 20 16     mulhwu  r9,r3,r4
+    c:    7c 63 21 d6     mullw   r3,r3,r4
+   10:    2f 89 00 00     cmpwi   cr7,r9,0
+   14:    4d 9e 00 20     beqlr   cr7
+   18:    0f e0 00 00     twui    r0,0
+   1c:    4e 80 00 20     blr
+
+Now I get:
+
+0000002c <test_mul1>:
+   2c:    7d 23 20 16     mulhwu  r9,r3,r4
+   30:    94 21 ff f0     stwu    r1,-16(r1)
+   34:    7c 08 02 a6     mflr    r0
+   38:    93 e1 00 0c     stw     r31,12(r1)
+   3c:    90 01 00 14     stw     r0,20(r1)
+   40:    7f e3 21 d6     mullw   r31,r3,r4
+   44:    2f 89 00 00     cmpwi   cr7,r9,0
+   48:    40 9e 00 1c     bne     cr7,64 <test_mul1+0x38>
+   4c:    80 01 00 14     lwz     r0,20(r1)
+   50:    7f e3 fb 78     mr      r3,r31
+   54:    83 e1 00 0c     lwz     r31,12(r1)
+   58:    7c 08 03 a6     mtlr    r0
+   5c:    38 21 00 10     addi    r1,r1,16
+   60:    4e 80 00 20     blr
+   64:    3c 60 00 00     lis     r3,0
+             66: R_PPC_ADDR16_HA    .rodata.str1.4
+   68:    38 63 00 00     addi    r3,r3,0
+             6a: R_PPC_ADDR16_LO    .rodata.str1.4
+   6c:    48 00 00 01     bl      6c <test_mul1+0x40>
+             6c: R_PPC_REL24    printk
+   70:    0f e0 00 00     twui    r0,0
+   74:    4b ff ff d8     b       4c <test_mul1+0x20>
+
+As you can see, a call to printk() is added, which means setting up a 
+stack frame, saving volatile registers, etc ...
+That's all the things we want to avoid when using WARN_ON().
+
+And digging a bit more, I see that you are only adding this 'cut here' 
+to calls like WARN_ON(1), ie where the condition is a constant.
+For calls where the condition is not a constant, there is no change and 
+no 'cut here' line added:
+
+unsigned long test_mul2(unsigned long a, unsigned long b)
+{
+     unsigned long long r = (unsigned long long)a * (unsigned long long)b;
+
+     WARN_ON(r > 0xffffffff);
+
+     return r;
+}
+
+Before and after your patch, the code is clean and no call to add any 
+'cut here' line.
+00000078 <test_mul2>:
+   78:    7d 43 20 16     mulhwu  r10,r3,r4
+   7c:    7c 63 21 d6     mullw   r3,r3,r4
+   80:    31 2a ff ff     addic   r9,r10,-1
+   84:    7d 29 51 10     subfe   r9,r9,r10
+   88:    0f 09 00 00     twnei   r9,0
+   8c:    4e 80 00 20     blr
+
+
+Was it your intention to modify the behaviour and kill the lightweight 
+implementations of WARN_ON() ?
+
+Looking into arch/powerpc/include/bug.h, I see that when the condition 
+is constant, WARN_ON() uses __WARN(), which itself calls __WARN_FLAGS() 
+with relevant flags.
+
+In the old days, __WARN() was implemented in arch/powerpc/include/bug.h
+Commit b2be05273a17 ("panic: Allow warnings to set different taint 
+flags") replaced __WARN() by __WARN_TAINT() and added a generic 
+definition of __WARN()
+In the begining I thought the __WARN() call in 
+arch/powerpc/include/bug.h was forgotten, but looking into the commit in 
+full, it looks like it was intentional to make __WARN() generic and have 
+arches use it.
+
+Then commit 19d436268dde ("debug: Add _ONCE() logic to report_bug()") 
+replaced __WARN_TAINT() by __WARN_FLAGS().
+
+So by changing the generic __WARN() you are impacting all users include 
+those using 'trap' like instruction in order to avoid function calls.
+
+What is to be done for getting back a clean code which doesn't call 
+printk() on the hot path ?
+
+Thanks,
+Christophe
+
 
 
