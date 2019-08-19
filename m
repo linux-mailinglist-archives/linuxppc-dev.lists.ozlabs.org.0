@@ -1,37 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A990691AEC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 04:02:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DDE91BAC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 06:00:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46BcdS43XczDq7c
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 12:02:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46BgFN6dh2zDrBn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2019 14:00:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (mailfrom) smtp.mailfrom=axtens.net
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=dja@axtens.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.b="ZA6XLzRF"; 
+ dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46BcZW5FvdzDr9Q
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 12:00:19 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 46BcZW3LDcz9s3Z;
- Mon, 19 Aug 2019 12:00:19 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/3] powerpc/64s/radix: all CPUs should flush local
- translation structure before turning MMU on
-In-Reply-To: <20190816040733.5737-3-npiggin@gmail.com>
-References: <20190816040733.5737-1-npiggin@gmail.com>
- <20190816040733.5737-3-npiggin@gmail.com>
-Date: Mon, 19 Aug 2019 12:00:19 +1000
-Message-ID: <87zhk56hjg.fsf@concordia.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46BgCd4JFXzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2019 13:59:06 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id i18so359969pgl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2019 20:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=qkepw2mcByNh/XDFWlSo/1pf2rJV4AneuZO+UsdnIoM=;
+ b=ZA6XLzRFd2ebKR/TJCR+ADB6Xh9XcGEECwjMBoMxa6uKoZf5G5Nhm/KuNzQIu8RvB4
+ nZM9n+RjmwM+ORVQozvjk1GcBBUAhyakdS8qsqDebJDeU1O0XVbiJ8v6t2dKoX0rlm5J
+ th7q4VdBjxXvwK1Sz1gcitgvYs3PzRiY1ZCwM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=qkepw2mcByNh/XDFWlSo/1pf2rJV4AneuZO+UsdnIoM=;
+ b=DxQ12rIpzEMrUZ+F8nmTJ+U9vZi+3R8AQcfuL+U+VtSprZOIk9IKw7Bb6jtADfIL/k
+ rN4alBBL3cKE8l63v6TeSe1IFApGlHFwc8bbng4urkClSoVe7DjhF7h+tLuoSeLBDv+P
+ 5mmJ70FRlk/ndT8MsnbeD7JDR5Vbfh23QneJym49DqFlmK0IxlhLD/806x3I0tgGk1sM
+ qr0qfZfMTVUsLM10RHu0tgAlrGorvxxhUx9qGPcpH8rTDHuXoFMtnyNsLpre4xJumM8K
+ IaHeD2sVZJtQTfPGZT1w9MrN+G7r/T8fYVIuDCjC3lwj8KgDWlidhDTyzgU79pNk1Pd9
+ JpRQ==
+X-Gm-Message-State: APjAAAWar4JcmmM5qpW77kFdUkF5boYJEd4PKgY/jXzcR47v7MYgyLiw
+ Wl8ORTm6S8AXeltbYXyT1fPidA==
+X-Google-Smtp-Source: APXvYqyel1bRmaINRgt273aUt9VqMcblyqiDf6mM5vaVRn/c66GBKoPiiyt6RgkWa+sUPSwErio+sw==
+X-Received: by 2002:a63:c203:: with SMTP id b3mr18301448pgd.450.1566187141292; 
+ Sun, 18 Aug 2019 20:59:01 -0700 (PDT)
+Received: from localhost (ppp167-251-205.static.internode.on.net.
+ [59.167.251.205])
+ by smtp.gmail.com with ESMTPSA id t6sm12987903pgu.23.2019.08.18.20.58.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 18 Aug 2019 20:59:00 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Mark Rutland <mark.rutland@arm.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v4 1/3] kasan: support backing vmalloc space with real
+ shadow memory
+In-Reply-To: <20190816170813.GA7417@lakrids.cambridge.arm.com>
+References: <20190815001636.12235-1-dja@axtens.net>
+ <20190815001636.12235-2-dja@axtens.net>
+ <15c6110a-9e6e-495c-122e-acbde6e698d9@c-s.fr>
+ <20190816170813.GA7417@lakrids.cambridge.arm.com>
+Date: Mon, 19 Aug 2019 13:58:55 +1000
+Message-ID: <87imqtu7pc.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,96 +79,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Cc: gor@linux.ibm.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
+ luto@kernel.org, aryabinin@virtuozzo.com, linuxppc-dev@lists.ozlabs.org,
+ dvyukov@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Rather than sprinkle various translation structure invalidations
-> around different places in early boot, have each CPU flush everything
-> from its local translation structures before enabling its MMU.
+
+>> > Instead, share backing space across multiple mappings. Allocate
+>> > a backing page the first time a mapping in vmalloc space uses a
+>> > particular page of the shadow region. Keep this page around
+>> > regardless of whether the mapping is later freed - in the mean time
+>> > the page could have become shared by another vmalloc mapping.
+>> > 
+>> > This can in theory lead to unbounded memory growth, but the vmalloc
+>> > allocator is pretty good at reusing addresses, so the practical memory
+>> > usage grows at first but then stays fairly stable.
+>> 
+>> I guess people having gigabytes of memory don't mind, but I'm concerned
+>> about tiny targets with very little amount of memory. I have boards with as
+>> little as 32Mbytes of RAM. The shadow region for the linear space already
+>> takes one eighth of the RAM. I'd rather avoid keeping unused shadow pages
+>> busy.
 >
-> Radix guests can execute tlbie(l), so have them tlbiel_all in the same
-> place as radix host does.
+> I think this depends on how much shadow would be in constant use vs what
+> would get left unused. If the amount in constant use is sufficiently
+> large (or the residue is sufficiently small), then it may not be
+> worthwhile to support KASAN_VMALLOC on such small systems.
+
+I'm not unsympathetic to the cause of small-memory systems, but this is
+useful as-is for x86, especially for VMAP_STACK. arm64 and s390 have
+already been able to make use of it as well. So unless the design is
+going to make it difficult to extend to small-memory systems - if it
+bakes in concepts or APIs that are going to make things harder - I think
+it might be worth merging as is. (pending the fixes for documentation
+nits etc that you point out.)
+
+>> Each page of shadow memory represent 8 pages of real memory. Could we use
+>> page_ref to count how many pieces of a shadow page are used so that we can
+>> free it when the ref count decreases to 0.
+
+I'm not sure how much of a difference it will make, but I'll have a look.
+
+>> > This requires architecture support to actually use: arches must stop
+>> > mapping the read-only zero page over portion of the shadow region that
+>> > covers the vmalloc space and instead leave it unmapped.
+>> 
+>> Why 'must' ? Couldn't we switch back and forth from the zero page to real
+>> page on demand ?
+
+This code as currently written will not work if the architecture maps
+the zero page over the portion of the shadow region that covers the
+vmalloc space. So it's an implementation 'must' rather than a laws of
+the universe 'must'.
+
+We could perhaps map the zero page, but:
+
+ - you have to be really careful to get it right. If you accidentally
+   map the zero page onto memory where you shouldn't, you may permit
+   memory accesses that you should catch.
+
+   We could ameliorate this by taking Mark's suggestion and mapping a
+   poision page over the vmalloc space instead.
+
+ - I'm not sure what benefit is provided by having something mapped vs
+   leaving a hole, other than making the fault addresses more obvious.
+
+ - This gets complex, especially to do swapping correctly with respect
+   to various architectures' quirks (see e.g. 56eecdb912b5 "mm: Use
+   ptep/pmdp_set_numa() for updating _PAGE_NUMA bit" - ppc64 at least
+   requires that set_pte_at is never called on a valid PTE).
+
+>> If the zero page is not mapped for unused vmalloc space, bad memory accesses
+>> will Oops on the shadow memory access instead of Oopsing on the real bad
+>> access, making it more difficult to locate and identify the issue.
+
+I suppose. It's pretty easy on at least x86 and my draft ppc64
+implementation to identify when an access falls into the shadow region
+and then to reverse engineer the memory access that was being checked
+based on the offset. As Andy points out, the fault handler could do this
+automatically.
+
+> I agree this isn't nice, though FWIW this can already happen today for
+> bad addresses that fall outside of the usual kernel address space. We
+> could make the !KASAN_INLINE checks resilient to this by using
+> probe_kernel_read() to check the shadow, and treating unmapped shadow as
+> poison.
 >
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 11 ++---------
->  1 file changed, 2 insertions(+), 9 deletions(-)
+> It's also worth noting that flipping back and forth isn't generally safe
+> unless going via an invalid table entry, so there'd still be windows
+> where a bad access might not have shadow mapped.
 >
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index d60cfa05447a..839e01795211 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -382,11 +382,6 @@ static void __init radix_init_pgtable(void)
->  	 */
->  	register_process_table(__pa(process_tb), 0, PRTB_SIZE_SHIFT - 12);
->  	pr_info("Process table %p and radix root for kernel: %p\n", process_tb, init_mm.pgd);
-> -	asm volatile("ptesync" : : : "memory");
-> -	asm volatile(PPC_TLBIE_5(%0,%1,2,1,1) : :
-> -		     "r" (TLBIEL_INVAL_SET_LPID), "r" (0));
-> -	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
-> -	trace_tlbie(0, 0, TLBIEL_INVAL_SET_LPID, 0, 2, 1, 1);
->  
->  	/*
->  	 * The init_mm context is given the first available (non-zero) PID,
-> @@ -633,8 +628,7 @@ void __init radix__early_init_mmu(void)
->  	radix_init_pgtable();
->  	/* Switch to the guard PID before turning on MMU */
->  	radix__switch_mmu_context(NULL, &init_mm);
-> -	if (cpu_has_feature(CPU_FTR_HVMODE))
-> -		tlbiel_all();
-> +	tlbiel_all();
->  }
+> We'd need to reuse the common p4d/pud/pmd/pte tables for unallocated
+> regions, or the tables alone would consume significant amounts of memory
+> (e..g ~32GiB for arm64 defconfig), and thus we'd need to be able to
+> switch all levels between pgd and pte, which is much more complicated.
+>
+> I strongly suspect that the additional complexity will outweigh the
+> benefit.
+>
 
-This is oopsing for me in a guest on Power9:
+I'm not opposed to this in principle but I am also concerned about the
+complexity involved.
 
-  [    0.000000] radix-mmu: Page sizes from device-tree:
-  [    0.000000] radix-mmu: Page size shift = 12 AP=0x0
-  [    0.000000] radix-mmu: Page size shift = 16 AP=0x5
-  [    0.000000] radix-mmu: Page size shift = 21 AP=0x1
-  [    0.000000] radix-mmu: Page size shift = 30 AP=0x2
-  [    0.000000]  -> fw_vec5_feature_init()
-  [    0.000000]  <- fw_vec5_feature_init()
-  [    0.000000]  -> fw_hypertas_feature_init()
-  [    0.000000]  <- fw_hypertas_feature_init()
-  [    0.000000] radix-mmu: Activating Kernel Userspace Execution Prevention
-  [    0.000000] radix-mmu: Activating Kernel Userspace Access Prevention
-  [    0.000000] lpar: Using radix MMU under hypervisor
-  [    0.000000] radix-mmu: Mapped 0x0000000000000000-0x0000000040000000 with 1.00 GiB pages (exec)
-  [    0.000000] radix-mmu: Mapped 0x0000000040000000-0x0000000100000000 with 1.00 GiB pages
-  [    0.000000] radix-mmu: Process table (____ptrval____) and radix root for kernel: (____ptrval____)
-  [    0.000000] Oops: Exception in kernel mode, sig: 4 [#1]
-  [    0.000000] LE PAGE_SIZE=64K MMU=Radix MMU=Hash SMP NR_CPUS=2048 NUMA 
-  [    0.000000] Modules linked in:
-  [    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc2-gcc-8.2.0-00063-gef906dcf7b75 #633
-  [    0.000000] NIP:  c0000000000838f8 LR: c000000001066864 CTR: c0000000000838c0
-  [    0.000000] REGS: c000000001647c40 TRAP: 0700   Not tainted  (5.3.0-rc2-gcc-8.2.0-00063-gef906dcf7b75)
-  [    0.000000] MSR:  8000000000043003 <SF,FP,ME,RI,LE>  CR: 48000222  XER: 20040000
-  [    0.000000] CFAR: c0000000000839b4 IRQMASK: 1 
-  [    0.000000] GPR00: c000000001066864 c000000001647ed0 c000000001649700 0000000000000000 
-  [    0.000000] GPR04: c000000001608830 0000000000000000 0000000000000010 2000000000000000 
-  [    0.000000] GPR08: 0000000000000c00 0000000000000000 0000000000000002 726f6620746f6f72 
-  [    0.000000] GPR12: c0000000000838c0 c000000001930000 000000000dc5bef0 0000000001309e10 
-  [    0.000000] GPR16: 0000000001309c90 fffffffffffffffd 000000000dc5bef0 0000000001339800 
-  [    0.000000] GPR20: 0000000000000014 0000000001ac0000 000000000dc5bf38 000000000daf0000 
-  [    0.000000] GPR24: 0000000001f4000c c000000000000000 0000000000400000 c000000001802858 
-  [    0.000000] GPR28: c007ffffffffffff c000000001803954 c000000001681cb0 c000000001608830 
-  [    0.000000] NIP [c0000000000838f8] radix__tlbiel_all+0x48/0x110
-  [    0.000000] LR [c000000001066864] radix__early_init_mmu+0x494/0x4c8
-  [    0.000000] Call Trace:
-  [    0.000000] [c000000001647ed0] [c000000001066820] radix__early_init_mmu+0x450/0x4c8 (unreliable)
-  [    0.000000] [c000000001647f60] [c00000000105c628] early_setup+0x160/0x198
-  [    0.000000] [c000000001647f90] [000000000000b460] 0xb460
-  [    0.000000] Instruction dump:
-  [    0.000000] 2b830001 39000002 409e00e8 3d220003 3929c318 e9290000 e9290010 75290002 
-  [    0.000000] 41820088 7c4004ac 39200000 79085564 <7d294224> 3940007f 39201000 38e00000 
-  [    0.000000] random: get_random_bytes called from print_oops_end_marker+0x40/0x80 with crng_init=0
-  [    0.000000] ---[ end trace 0000000000000000 ]---
+Regards,
+Daniel
 
-
-So I think we still need a HV check in there somewhere.
-
-cheers
+> [...]
+>
+>> > +#ifdef CONFIG_KASAN_VMALLOC
+>> > +static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+>> > +				      void *unused)
+>> > +{
+>> > +	unsigned long page;
+>> > +	pte_t pte;
+>> > +
+>> > +	if (likely(!pte_none(*ptep)))
+>> > +		return 0;
+>> 
+>> Prior to this, the zero shadow area should be mapped, and the test should
+>> be:
+>> 
+>> if (likely(pte_pfn(*ptep) != PHYS_PFN(__pa(kasan_early_shadow_page))))
+>> 	return 0;
+>
+> As above, this would need a more comprehensive redesign, so I don't
+> think it's worth going into that level of nit here. :)
+>
+> If we do try to use common shadow for unallocate VA ranges, it probably
+> makes sense to have a common poison page that we can use, so that we can
+> report vmalloc-out-of-bounfds.
+>
+> Thanks,
+> Mark.
