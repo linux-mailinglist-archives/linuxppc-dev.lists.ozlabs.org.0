@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892A196C34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 00:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5E996C3D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 00:30:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 46Clmh5fxlzDqbF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 08:28:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 46Clr05zTbzDr6d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2019 08:30:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 46Clj708FgzDrFL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 08:24:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 46ClnG1KMQzDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2019 08:28:34 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 812CD68B20; Wed, 21 Aug 2019 00:24:54 +0200 (CEST)
-Date: Wed, 21 Aug 2019 00:24:54 +0200
+ id BEB5868B20; Wed, 21 Aug 2019 00:28:28 +0200 (CEST)
+Date: Wed, 21 Aug 2019 00:28:28 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v2 04/12] powerpc/mm: drop function __ioremap()
-Message-ID: <20190820222454.GB18433@lst.de>
+Subject: Re: [PATCH v2 05/12] powerpc/mm: rework io-workaround invocation.
+Message-ID: <20190820222828.GC18433@lst.de>
 References: <cover.1566309262.git.christophe.leroy@c-s.fr>
- <ccc439f481a0884e00a6be1bab44bab2a4477fea.1566309262.git.christophe.leroy@c-s.fr>
+ <5fa3ef069fbd0f152512afaae19e7a60161454cf.1566309262.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ccc439f481a0884e00a6be1bab44bab2a4477fea.1566309262.git.christophe.leroy@c-s.fr>
+In-Reply-To: <5fa3ef069fbd0f152512afaae19e7a60161454cf.1566309262.git.christophe.leroy@c-s.fr>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -51,13 +51,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 20, 2019 at 02:07:12PM +0000, Christophe Leroy wrote:
-> __ioremap() is not used anymore, drop it.
+On Tue, Aug 20, 2019 at 02:07:13PM +0000, Christophe Leroy wrote:
+> ppc_md.ioremap() is only used for I/O workaround on CELL platform,
+> so indirect function call can be avoided.
 > 
-> Suggested-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> This patch reworks the io-workaround and ioremap() functions to
+> use the global 'io_workaround_inited' flag for the activation
+> of io-workaround.
+> 
+> When CONFIG_PPC_IO_WORKAROUNDS or CONFIG_PPC_INDIRECT_MMIO are not
+> selected, the I/O workaround ioremap() voids and the global flag is
+> not used.
 
-Looks good, I've already dropped my version of this from the generic
-ioremap series:
+Note that CONFIG_PPC_IO_WORKAROUNDS is only selected by a specific cell
+config,  and CONFIG_PPC_INDIRECT_MMIO is always selected by cell, so
+I think we can make CONFIG_PPC_IO_WORKAROUNDS depend on
+CONFIG_PPC_INDIRECT_MMIO
+
+>  #define _IO_WORKAROUNDS_H
+>  
+> +#ifdef CONFIG_PPC_IO_WORKAROUNDS
+>  #include <linux/io.h>
+>  #include <asm/pci-bridge.h>
+>  
+> @@ -32,4 +33,23 @@ extern int spiderpci_iowa_init(struct iowa_bus *, void *);
+>  #define SPIDER_PCI_DUMMY_READ		0x0810
+>  #define SPIDER_PCI_DUMMY_READ_BASE	0x0814
+>  
+> +#endif
+> +
+> +#if defined(CONFIG_PPC_IO_WORKAROUNDS) && defined(CONFIG_PPC_INDIRECT_MMIO)
+
+and simplify the ifdefs here a bit.
+
+Otherwise this looks fine:
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
